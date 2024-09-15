@@ -1,5 +1,5 @@
 import { Worker } from "node:worker_threads"
-import { rgb2oklch, type Color, oklch2rgb } from "./conversion.ts"
+import { type Color, rgb2oklch, oklch2rgb, oklab2rgb, rgb2oklab } from "./conversion.ts"
 
 /**
  * @param source image data, must be smaller than 4_294_967_295 (equivalent to a 65_535 x 65_535 square)
@@ -40,12 +40,6 @@ function countColors(
 	}
 	return colors
 }
-const degreesToHex = 255 / 360
-function arrayToHex(array: Uint8ClampedArray | Uint8Array, index: number): number {
-	const lch = rgb2oklch([array[index], array[index + 1], array[index + 2]])
-	if (Number.isNaN(lch[2])) lch[2] = 0
-	return Math.round(lch[0] * 2.55) << 16 | Math.round(lch[1] * 2.55) << 8 | Math.round(lch[2] * degreesToHex)
-}
 
 function transferableMap(map: Map<number, number>): Uint32Array {
 	const length = map.size * 2
@@ -85,10 +79,11 @@ async function kmeans(array: Uint32Array, k: number, useWorkers: boolean) {
 
 
 interface ColorSpace {
-	toHex(array: Uint8ClampedArray | Uint8Array, index: number): number
+	toHex(array: Uint8ClampedArray | Uint8Array | Array<number>, index: number): number
 	toRgb(hex: number): number
 }
 
+const degreesToHex = 255 / 360
 export const oklchSpace: ColorSpace = {
 	/** takes RGB values in 0-255 from an array, and converts them to an okLCH value as a single uint8 number */
 	toHex(array, index) {
@@ -98,10 +93,22 @@ export const oklchSpace: ColorSpace = {
 	},
 	/** takes okLCH uint8 number, and converts it to an RGB value as a single uint8 number */
 	toRgb(hex) {
-		const rgb = oklch2rgb([(hex >> 16 & 0xff) / 2.55, (hex >> 8 & 0xff) / 2.55, (hex & 0xff) / 255 * 360] as Color)
+		const rgb = oklch2rgb([(hex >> 16 & 0xff) / 2.55, (hex >> 8 & 0xff) / 2.55, (hex & 0xff) / degreesToHex] as Color)
 		return rgb[0] << 16 | rgb[1] << 8 | rgb[2]
 	},
 }
+
+// const negativePercentToHex = 255 / 200
+// export const oklabSpace: ColorSpace = {
+// 	toHex(array, index) {
+// 		const lab = rgb2oklab([array[index], array[index + 1], array[index + 2]])
+// 		return Math.round(lab[0] * 2.55) << 16 | Math.round((lab[1] + 100) * negativePercentToHex) << 8 | Math.round((lab[2] + 100) * negativePercentToHex)
+// 	},
+// 	toRgb(hex) {
+// 		const rgb = oklab2rgb([(hex >> 16 & 0xff) / 2.55, (hex >> 8 & 0xff) / negativePercentToHex - 100, (hex & 0xff) / negativePercentToHex - 100] as Color)
+// 		return rgb[0] << 16 | rgb[1] << 8 | rgb[2]
+// 	},
+// }
 
 export const rgbSpace: ColorSpace = {
 	toHex(array, index) {

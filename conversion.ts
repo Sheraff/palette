@@ -78,3 +78,9 @@ export const oklch2rgb = (lch: Color) =>
 
 export const rgb2oklch = (rgb: Color) =>
 	oklab2oklch(xyz2oklab(rgbLinear2xyz(rgb2srgbLinear(rgb))))
+
+export const rgb2oklab = (rgb: Color) =>
+	xyz2oklab(rgbLinear2xyz(rgb2srgbLinear(rgb)))
+
+export const oklab2rgb = (lab: Color) =>
+	srgbLinear2rgb(xyz2rgbLinear(oklab2xyz(lab)))

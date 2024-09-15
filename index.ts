@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import { extname, join } from "node:path"
 import { parseArgs } from "node:util"
 import { elbowKmeans, extractColors, oklchSpace, gapStatisticKmeans, rgbSpace } from "./extractColors.ts"
+import { oklab2rgb, rgb2oklab } from "./conversion.ts"
 
 const { values } = parseArgs({
 	options: {
@@ -44,6 +45,44 @@ const small = transformed.jpeg()
 		}
 	})
 
+// console.log(rgb2oklab([0, 0, 0]))
+// console.log(rgb2oklab([255, 0, 0]))
+// console.log(rgb2oklab([255, 255, 0]))
+// console.log(rgb2oklab([255, 255, 255]))
+
+// const test = transformed.raw({ depth: "uchar" }).toBuffer({ resolveWithObject: true }).then(async ({ data, info }) => {
+// 	const lch = new Uint8ClampedArray(data.length)
+// 	let minb = Infinity
+// 	let maxb = -Infinity
+// 	let minl = Infinity
+// 	let maxl = -Infinity
+// 	let mina = Infinity
+// 	let maxa = -Infinity
+// 	for (let i = 0; i < data.length; i += info.channels) {
+// 		const val = rgb2oklab([data[i], data[i + 1], data[i + 2]])
+// 		lch[i] = Math.round(val[0] * 2.55)
+// 		lch[i + 1] = Math.round((val[1] + 100) * 255 / 200)
+// 		lch[i + 2] = Math.round((val[2] + 100) * 255 / 200)
+// 		minl = Math.min(minl, val[0])
+// 		maxl = Math.max(maxl, val[0])
+// 		mina = Math.min(mina, val[1])
+// 		maxa = Math.max(maxa, val[1])
+// 		minb = Math.min(minb, val[2])
+// 		maxb = Math.max(maxb, val[2])
+// 	}
+// 	console.log('minl:', minl, 'maxl:', maxl)
+// 	console.log('mina:', mina, 'maxa:', maxa)
+// 	console.log('minb:', minb, 'maxb:', maxb)
+// 	const rgb = new Uint8ClampedArray(data.length)
+// 	for (let i = 0; i < data.length; i += info.channels) {
+// 		const val = oklab2rgb([lch[i] / 2.55, lch[i + 1] * 200 / 255 - 100, lch[i + 2] * 200 / 255 - 100])
+// 		rgb[i] = Math.round(val[0])
+// 		rgb[i + 1] = Math.round(val[1])
+// 		rgb[i + 2] = Math.round(val[2])
+// 	}
+// 	return sharp(rgb.buffer, { raw: { width: info.width, height: info.height, channels: 3 } }).jpeg().toFile(join(cwd, `${name}-small-lch-round-trip.jpg`))
+// })
+
 const grouped = transformed.raw({ depth: "uchar" }).toBuffer({ resolveWithObject: true }).then(async ({ data, info }) => {
 	if (info.channels !== 3 && info.channels !== 4) {
 		throw new Error('Image must have 3 or 4 channels')
@@ -53,7 +92,7 @@ const grouped = transformed.raw({ depth: "uchar" }).toBuffer({ resolveWithObject
 	const centroids = await extractColors(data, info.channels, {
 		useWorkers: USE_WORKERS,
 		colorSpace: oklchSpace,
-		strategy: elbowKmeans()
+		strategy: gapStatisticKmeans()
 	})
 	performance.mark('end')
 	console.log('K-means color extraction took:', performance.measure('kmeans', 'start', 'end').duration)
