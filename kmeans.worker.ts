@@ -1,4 +1,4 @@
-import { parentPort, workerData, isMainThread } from 'worker_threads'
+import { parentPort, workerData, isMainThread } from 'node:worker_threads'
 
 function euclideanDistance(hex1: number, hex2: number): number {
 	const r = (hex1 >> 16 & 0xff) - (hex2 >> 16 & 0xff)
@@ -36,6 +36,10 @@ function computeMedian(colors: number[], centroid: number): number {
 	return median
 }
 
+/**
+ * @param data repeated pairs color,count, kid of like a flattened Map
+ * @param k number of clusters
+ */
 export function kmeans(data: Uint32Array, k = 5) {
 	const colors: number[] = []
 	for (let i = 0; i < data.length; i += 2) {
@@ -86,7 +90,7 @@ export function kmeans(data: Uint32Array, k = 5) {
 		return [color, count]
 	}))
 
-	/** within-cluster sum of squares */
+	/** within-cluster dispersion (sum of squared distances to the cluster's centroid) */
 	let wcss = 0
 	let total = 0
 	for (let i = 0; i < colors.length; i++) {
@@ -107,7 +111,6 @@ export function kmeans(data: Uint32Array, k = 5) {
 
 if (!isMainThread) {
 	if (!parentPort) throw new Error('No parent port')
-	/** array of repeated pairs color,count */
 	const array = new Uint32Array(workerData.buffer)
 	const k = workerData.k
 	parentPort.postMessage(kmeans(array, k))
