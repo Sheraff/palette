@@ -1,26 +1,26 @@
 import { parentPort, workerData, isMainThread } from 'node:worker_threads'
 
 function euclideanDistance(hex1: number, hex2: number): number {
-	const r = (hex1 >> 16 & 0xff) - (hex2 >> 16 & 0xff)
-	const g = (hex1 >> 8 & 0xff) - (hex2 >> 8 & 0xff)
-	const b = (hex1 & 0xff) - (hex2 & 0xff)
-	return Math.sqrt(r * r + g * g + b * b)
+	const x = (hex1 >> 16 & 0xff) - (hex2 >> 16 & 0xff)
+	const y = (hex1 >> 8 & 0xff) - (hex2 >> 8 & 0xff)
+	const z = (hex1 & 0xff) - (hex2 & 0xff)
+	return Math.sqrt(x * x + y * y + z * z)
 }
 
 function computeCentroid(colors: Uint32Array, cluster: number[]): number {
-	let r = 0
-	let g = 0
-	let b = 0
+	let x = 0
+	let y = 0
+	let z = 0
 	let total = 0
 	for (const index of cluster) {
 		const color = colors[index * 2]
 		const count = colors[index * 2 + 1]
 		total += count
-		r += (color >> 16 & 0xff) * count
-		g += (color >> 8 & 0xff) * count
-		b += (color & 0xff) * count
+		x += (color >> 16 & 0xff) * count
+		y += (color >> 8 & 0xff) * count
+		z += (color & 0xff) * count
 	}
-	return (r / total) << 16 | (g / total) << 8 | (b / total)
+	return (x / total) << 16 | (y / total) << 8 | (z / total)
 }
 
 function computeMedian(colors: number[], centroid: number): number {

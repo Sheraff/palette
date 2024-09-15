@@ -2,7 +2,7 @@ import sharp from 'sharp'
 import fs from 'node:fs'
 import { extname, join } from "node:path"
 import { parseArgs } from "node:util"
-import { extractColors } from "./extractColors.ts"
+import { elbowKmeans, extractColors, oklchSpace, gapStatisticKmeans, rgbSpace } from "./extractColors.ts"
 
 const { values } = parseArgs({
 	options: {
@@ -50,7 +50,11 @@ const grouped = transformed.raw({ depth: "uchar" }).toBuffer({ resolveWithObject
 	}
 
 	performance.mark('start')
-	const centroids = await extractColors(data, info.channels, USE_WORKERS)
+	const centroids = await extractColors(data, info.channels, {
+		useWorkers: USE_WORKERS,
+		colorSpace: oklchSpace,
+		strategy: elbowKmeans()
+	})
 	performance.mark('end')
 	console.log('K-means color extraction took:', performance.measure('kmeans', 'start', 'end').duration)
 	performance.clearMarks()
