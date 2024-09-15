@@ -1,9 +1,12 @@
 # Color palette extraction
 
 With an emphasis on 
-- accuracy, using a clustering algorithm to find the most representative colors
-- usability, by returning colors that are visually distinct and can be used in a design
-- speed, by using worker threads and array buffers
+- **Accuracy**, using a clustering algorithm to find the most representative colors
+  *Other libraries use a simple histogram and manual thresholding / quantization*
+- **Usability**, by returning colors that are visually distinct and can be used in a design
+  *Other libraries return "just the main colors", we also look for contrast and accents*
+- **Speed**, by using worker threads and array buffers
+  *Other libraries are synchronous and require a lot of memory to run*
 
 
 ```ts
