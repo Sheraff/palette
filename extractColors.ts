@@ -266,10 +266,10 @@ export function elbowKmeans({
 		])
 
 		// for 1 cluster per color, we can guarantee that the WCSS is 0, which can be used to compute the slope intersection
-		if (size > end.at(-1)! * 2) {
-			end.push(size)
-			endPoints.push({ centroids: new Map(), wcss: 0 })
-		}
+		// if (size > end.at(-1)! * 2) {
+		// 	end.push(size)
+		// 	endPoints.push({ centroids: new Map(), wcss: 0 })
+		// }
 
 		const startSlope = startPoints.reduce((acc, val, i, arr) => i === 0
 			? 0

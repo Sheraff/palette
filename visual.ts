@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
 	// root path
 	if (req.url === '/') {
 		res.writeHead(200, { 'Content-Type': 'text/html' })
-		res.write('<style>body{background:black}</style>')
+		res.write('<style>body{background:rgb(13, 17, 23); color: rgb(240, 246, 252);}</style>')
 		res.write('<h1>Album Art Color Extractor</h1>')
 		res.write(`<ul style="
 			display:grid;
@@ -138,7 +138,9 @@ const server = http.createServer((req, res) => {
 							colorSpace: oklabSpace,
 							// colorSpace: rgbSpace,
 							clamp: 0.005,
-							strategy: gapStatisticKmeans({ maxK: 15 }),
+							// clamp: false,
+							strategy: gapStatisticKmeans({ maxK: 30 }),
+							// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17] }),
 							// strategy: elbowKmeans(),
 						}, image)
 

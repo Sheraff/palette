@@ -25,7 +25,7 @@ function computeCentroid(colors: Uint32Array, clusters: number[], index: number)
 		y += (color >> 8 & 0xff) * count
 		z += (color & 0xff) * count
 	}
-	return (x / total) << 16 | (y / total) << 8 | (z / total)
+	return Math.round(x / total) << 16 | Math.round(y / total) << 8 | Math.round(z / total)
 }
 
 function computeMedian(delta: ColorSpace['distance'], colors: number[], centroid: number): number {
