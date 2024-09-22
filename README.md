@@ -18,4 +18,5 @@ const colors = await extractColors(buffer, 3, {
 })
 ```
 
-<img width="1350" alt="Screenshot 2024-09-22 at 16 51 30" src="https://github.com/user-attachments/assets/1220d047-1d72-4365-9a94-8497d4225cf2">
+<img width="1341" alt="Screenshot 2024-09-22 at 18 29 58" src="https://github.com/user-attachments/assets/95c2e64d-4046-4499-9b95-3b255377ffaf">
+
