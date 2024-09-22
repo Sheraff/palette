@@ -20,6 +20,12 @@ const sources = [
 	'images/maroon5.jpg',
 	'images/birdsofprey.jpg',
 	'images/nobs.jpg',
+	'images/ybbb.jpg',
+	'images/johns.jpg',
+	'images/once.jpg',
+	'images/orelsan.jpg',
+	'images/krafty.jpg',
+	'images/muse.jpg',
 ]
 
 const cwd = process.cwd()
@@ -44,18 +50,16 @@ const server = http.createServer((req, res) => {
 			list-style:none;
 		">`)
 		for (const source of sources) {
-			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%);">
-				<div id="${source}" data-img>
-					<img src="/image/${source}" width=200 />
-					<div style="
-						display:inline-flex;
-						aspect-ratio:1;
-						width:200px;
-						vertical-align:top;
-						flex-direction:column;"
-					>
-						<div style="flex:1;background:hotpink;"></div>
-					</div>
+			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
+				<img src="/image/${source}" width=200 />
+				<div style="
+					display:inline-flex;
+					aspect-ratio:1;
+					width:200px;
+					vertical-align:top;
+					flex-direction:column;"
+				>
+					<div style="flex:1;background:hotpink;"></div>
 				</div>
 			</li>`)
 		}
