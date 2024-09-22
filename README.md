@@ -11,8 +11,11 @@ With an emphasis on
 
 ```ts
 const colors = await extractColors(buffer, 3, {
-	useWorkers: USE_WORKERS,
-	colorSpace: oklchSpace,
-	strategy: gapStatisticKmeans({ max: 10 })
+	useWorkers: true,
+	colorSpace: oklabSpace,
+	strategy: gapStatisticKmeans({ max: 10 }),
+	clamp: 0.005,
 })
 ```
+
+<img width="1350" alt="Screenshot 2024-09-22 at 16 51 30" src="https://github.com/user-attachments/assets/1220d047-1d72-4365-9a94-8497d4225cf2">
