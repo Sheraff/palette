@@ -10,7 +10,7 @@ const multiplyMatrices = (A, B): Color => {
 	]
 }
 
-const oklch2oklab = ([l, c, h]: Color): Color => [
+export const oklch2oklab = ([l, c, h]: Color): Color => [
 	l,
 	isNaN(h) ? 0 : c * Math.cos(h * Math.PI / 180),
 	isNaN(h) ? 0 : c * Math.sin(h * Math.PI / 180)
