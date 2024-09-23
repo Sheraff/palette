@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types index.ts",
     "serve": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types visual.ts",
-    "foo": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc extractColors.ts"
+    "foo": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc extractColors.ts",
+    "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts"
   },
   "dependencies": {
     "sharp": "0.33.5"
