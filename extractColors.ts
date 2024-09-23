@@ -18,6 +18,8 @@ export type ExtractOptions = {
 	strategy?: Strategy
 	/** when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
 	clamp?: boolean | number
+	/** how much of the image to trim on each side, trimming helps avoid border artifacts */
+	trimPercent?: number
 }
 
 
@@ -30,10 +32,13 @@ export async function extractColors(
 		colorSpace = oklabSpace,
 		strategy = elbowKmeans(),
 		clamp = true,
+		trimPercent = 2.5,
 	}: ExtractOptions = {},
 	name = ""
 ) {
-	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
+	const trimmed = trimSource(source, meta, trimPercent)
+	const data = trimmed[0]
+	meta = trimmed[1]
 	const total = data.length / meta.channels
 
 	const map = countColors(data, meta.channels, colorSpace)
@@ -142,6 +147,30 @@ export async function extractColors(
 		innerColors: innerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 		outerColors: outerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 	}
+}
+
+/**
+ * remove some of the image from each side, to remove any border artifacts
+ */
+function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
+	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
+	const { width, height, channels } = meta
+
+	const xMin = Math.round(width * percent / 100)
+	const xMax = Math.round(width * (1 - percent / 100))
+	const yMin = Math.round(height * percent / 100)
+	const yMax = Math.round(height * (1 - percent / 100))
+
+	const size = (xMax - xMin) * (yMax - yMin) * channels
+	const trimmed = new Uint8ClampedArray(size)
+
+	let i = 0
+	const adjustedXSlice = (xMax - xMin) * channels
+	for (let y = yMin; y < yMax; y++) {
+		trimmed.set(data.slice((y * width + xMin) * channels, (y * width + xMax) * channels), i)
+		i += adjustedXSlice
+	}
+	return [trimmed, { width: xMax - xMin, height: yMax - yMin, channels }]
 }
 
 function sortColorMap(colors: Map<number, number>): [hex: number, count: number][] {

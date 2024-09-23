@@ -159,86 +159,76 @@ const server = http.createServer((req, res) => {
 			})
 			return
 		}
-		const s = sharp(path)
-		s.metadata().then(metadata => {
-			const transformed = s.extract({
-				top: Math.round(metadata.height! * 0.025),
-				left: Math.round(metadata.width! * 0.025),
-				width: Math.round(metadata.width! * 0.95),
-				height: Math.round(metadata.height! * 0.95),
-			})
-			if (format === 'small') {
-				transformed
-					// .resize(300, 300, {
-					// 	fit: "cover",
-					// 	fastShrinkOnLoad: true,
-					// 	kernel: sharp.kernel.nearest
-					// })
-					// .jpeg()
-					.raw({ depth: "uchar" })
-					.toBuffer({ resolveWithObject: true })
-					.then(({ data, info: { width, height, channels } }) => {
-						const outside = new Uint8Array({
-							[Symbol.iterator]: function* () {
-								const radius = Math.max(width, height) / 2
-								const wCenter = width / 2
-								const hCenter = height / 2
-								for (let i = 0; i < data.length; i += channels) {
-									const x = i / channels % width
-									const y = i / channels / width
-									const isOut = Math.hypot(x - wCenter, y - hCenter) > radius * 0.95
-									const isIn = !isOut && (Math.hypot(x - wCenter, y - hCenter) < radius * 0.70)
-									if (isOut || isIn) {
-										for (let j = 0; j < channels; j++) {
-											yield data[i + j]
-										}
-									} else {
-										for (let j = 0; j < channels; j++) {
-											yield 0
-										}
+		const transformed = sharp(path)
+
+		if (format === 'small') {
+			transformed
+				// .resize(300, 300, {
+				// 	fit: "cover",
+				// 	fastShrinkOnLoad: true,
+				// 	kernel: sharp.kernel.nearest
+				// })
+				// .jpeg()
+				.raw({ depth: "uchar" })
+				.toBuffer({ resolveWithObject: true })
+				.then(({ data, info: { width, height, channels } }) => {
+					const outside = new Uint8Array({
+						[Symbol.iterator]: function* () {
+							const radius = Math.max(width, height) / 2
+							const wCenter = width / 2
+							const hCenter = height / 2
+							for (let i = 0; i < data.length; i += channels) {
+								const x = i / channels % width
+								const y = i / channels / width
+								const isOut = Math.hypot(x - wCenter, y - hCenter) > radius * 0.95
+								const isIn = !isOut && (Math.hypot(x - wCenter, y - hCenter) < radius * 0.70)
+								if (isOut || isIn) {
+									for (let j = 0; j < channels; j++) {
+										yield data[i + j]
+									}
+								} else {
+									for (let j = 0; j < channels; j++) {
+										yield 0
 									}
 								}
 							}
-						})
-						sharp(outside.buffer, { raw: { width, height, channels } }).jpeg().toBuffer().then(buffer => {
-							res.writeHead(200, { 'Content-Type': 'image/jpeg' })
-							res.end(buffer)
-						})
-					})
-				return
-			}
-			if (format === 'extract') {
-				transformed.raw({ depth: "uchar" })
-					.toBuffer({ resolveWithObject: true })
-					.then(async ({ data, info }) => {
-						if (info.channels !== 3 && info.channels !== 4) {
-							throw new Error('Image must have 3 or 4 channels')
 						}
-						const { centroids, ...rest } = await extractColors(data, info, {
-							useWorkers: true,
-							colorSpace: oklabSpace,
-							// colorSpace: rgbSpace,
-							// colorSpace: labSpace,
-							clamp: 0.005,
-							// clamp: false,
-							strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
-							// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17, 50] }),
-							// strategy: elbowKmeans(),
-						}, image)
-
-						const sorted = sortColorMap(centroids)
-						res.writeHead(200, { 'Content-Type': 'application/json' })
-						res.end(JSON.stringify({ centroids: sorted, ...rest }))
-						return
 					})
-				return
-			}
-			res.writeHead(400, { 'Content-Type': 'text/plain' })
-			res.end('Invalid format')
-		}, err => {
-			res.writeHead(500, { 'Content-Type': 'text/plain' })
-			res.end(err.message)
-		})
+					sharp(outside.buffer, { raw: { width, height, channels } }).jpeg().toBuffer().then(buffer => {
+						res.writeHead(200, { 'Content-Type': 'image/jpeg' })
+						res.end(buffer)
+					})
+				})
+			return
+		}
+		if (format === 'extract') {
+			transformed.raw({ depth: "uchar" })
+				.toBuffer({ resolveWithObject: true })
+				.then(async ({ data, info }) => {
+					if (info.channels !== 3 && info.channels !== 4) {
+						throw new Error('Image must have 3 or 4 channels')
+					}
+					const { centroids, ...rest } = await extractColors(data, info, {
+						useWorkers: true,
+						colorSpace: oklabSpace,
+						// colorSpace: rgbSpace,
+						// colorSpace: labSpace,
+						clamp: 0.005,
+						// clamp: false,
+						strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
+						// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17, 50] }),
+						// strategy: elbowKmeans(),
+					}, image)
+
+					const sorted = sortColorMap(centroids)
+					res.writeHead(200, { 'Content-Type': 'application/json' })
+					res.end(JSON.stringify({ centroids: sorted, ...rest }))
+					return
+				})
+			return
+		}
+		res.writeHead(400, { 'Content-Type': 'text/plain' })
+		res.end('Invalid format')
 	}
 })
 
