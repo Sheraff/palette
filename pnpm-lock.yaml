@@ -7,14 +7,16 @@ settings:
 importers:
 
   .:
-    dependencies:
-      sharp:
-        specifier: 0.33.5
-        version: 0.33.5
     devDependencies:
       '@types/node':
         specifier: 22.5.5
         version: 22.5.5
+      colorjs.io:
+        specifier: 0.5.2
+        version: 0.5.2
+      sharp:
+        specifier: 0.33.5
+        version: 0.33.5
       typescript:
         specifier: 5.6.2
         version: 5.6.2
@@ -145,6 +147,9 @@ packages:
   color@4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
     engines: {node: '>=12.5.0'}
+
+  colorjs.io@0.5.2:
+    resolution: {integrity: sha512-twmVoizEW7ylZSN32OgKdXRmo1qg+wT5/6C3xu5b9QsWzSFAhHLn2xd8ro0diCsKfCj1RdaTP/nrcW+vAoQPIw==}
 
   detect-libc@2.0.3:
     resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
@@ -277,6 +282,8 @@ snapshots:
     dependencies:
       color-convert: 2.0.1
       color-string: 1.9.1
+
+  colorjs.io@0.5.2: {}
 
   detect-libc@2.0.3: {}
 

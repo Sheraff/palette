@@ -231,6 +231,15 @@ export const labSpace: ColorSpace = {
 	lightness(hex) {
 		return (hex >> 16) / 2.55
 	},
+	chroma(hex) {
+		const a = (hex >> 8 & 0xff) / negativePercentToHex - 125
+		const b = (hex & 0xff) / negativePercentToHex - 125
+
+		const isAchromatic = Math.abs(a) < dε && Math.abs(b) < dε
+		const chroma = isAchromatic ? 0 : Math.sqrt(a ** 2 + b ** 2)
+
+		return chroma / 1.5
+	}
 }
 
 function pow7(x) {

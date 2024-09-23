@@ -7,13 +7,14 @@
     "dev": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types index.ts",
     "serve": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types visual.ts",
     "foo": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc extractColors.ts",
-    "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts"
+    "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts",
+    "test": "NODE_NO_WARNINGS=1 node --watch --test --experimental-strip-types tests/toto.test.ts"
   },
-  "dependencies": {
-    "sharp": "0.33.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "22.5.5",
+    "colorjs.io": "0.5.2",
+    "sharp": "0.33.5",
     "typescript": "5.6.2"
   },
   "keywords": [],

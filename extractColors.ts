@@ -2,12 +2,22 @@ import { Worker } from "node:worker_threads"
 import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import { rgbSpace } from "./spaces/rgb.ts"
+import sharp from "sharp"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
 	channels: number
 	width: number
 	height: number
+}
+
+export type ExtractOptions = {
+	/** whether to use worker threads for the kmeans algorithm, which is CPU intensive */
+	useWorkers?: boolean
+	colorSpace?: ColorSpace
+	strategy?: Strategy
+	/** when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
+	clamp?: boolean | number
 }
 
 
@@ -20,28 +30,22 @@ export async function extractColors(
 		colorSpace = oklabSpace,
 		strategy = elbowKmeans(),
 		clamp = true,
-	}: {
-		/** whether to use worker threads for the kmeans algorithm, which is CPU intensive */
-		useWorkers?: boolean
-		colorSpace?: ColorSpace
-		strategy?: Strategy
-		/** when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
-		clamp?: boolean | number
-	} = {},
+	}: ExtractOptions = {},
 	name = ""
 ) {
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
+	const total = data.length / meta.channels
 
 	const map = countColors(data, meta.channels, colorSpace)
 	const sorted = sortColorMap(map)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
-	const centroids = await strategy(name, colorSpace, array, source.length / meta.channels, useWorkers)
+	const centroids = await strategy(name, colorSpace, array, total, useWorkers)
 	console.log(name, centroids)
 	if (clamp !== false) {
 		clampCentroidsToOriginalColors(
 			clamp,
-			data.length / meta.channels,
+			total,
 			centroids,
 			map,
 			array,
@@ -52,65 +56,81 @@ export async function extractColors(
 	console.log(name, "Final Colors:", centroids)
 
 	const outer = mainZoneColor(data, meta, colorSpace, centroids, 'outer')
-	console.log(name, "Outer Color:", outer, colorSpace.lightness(outer))
-	// const inner = mainZoneColor(data, meta, colorSpace, centroids, 'inner', exclude)
+	const outerLum = colorSpace.lightness(outer)
+	console.log(name, "Outer Color:", outer, outerLum)
+
 	const inner = (() => {
 		let maxContrastValue = 0
 		let maxContrastColor = 0
 		for (const color of centroids.keys()) {
 			if (color === outer) continue
-			const contrast = colorSpace.contrast(color, outer)
+			const contrast = colorSpace.contrast(outer, color)
 			if (contrast > maxContrastValue) {
 				maxContrastValue = contrast
 				maxContrastColor = color
 			}
+		}
+		if (maxContrastValue < 20) {
+			const white = colorSpace.toHex([255, 255, 255], 0)
+			const black = colorSpace.toHex([0, 0, 0], 0)
+			const cw = colorSpace.contrast(outer, white)
+			const cb = colorSpace.contrast(outer, black)
+			const newColor = cw > cb ? white : black
+			centroids.set(newColor, 1)
+			centroids.set(outer, centroids.get(outer)! - 1)
+			return newColor
 		}
 		return maxContrastColor
 	})()
 	const innerLum = colorSpace.lightness(inner)
-	const outerLum = colorSpace.lightness(outer)
 	const outerColors = Array.from(centroids.keys()).filter(c => {
 		const lum = colorSpace.lightness(c)
-		return Math.abs(lum - innerLum) > Math.abs(outerLum - innerLum)
+		return Math.abs(lum - innerLum) > Math.abs(lum - outerLum)
 	})
-	// const lums = Array.from(centroids.keys()).map(c => colorSpace.lightness(c)).sort((a, b) => a - b)
-	// const meanLum = lums[Math.floor(lums.length / 2)]
-	// const outerSide = colorSpace.lightness(outer) > meanLum ? 1 : -1
-	// const outerColors = Array.from(centroids.keys()).filter(c => colorSpace.lightness(c) * outerSide > meanLum * outerSide)
-	// const innerColors = Array.from(centroids.keys()).filter(c => colorSpace.lightness(c) * -outerSide > meanLum * -outerSide)
-	const total = data.length / meta.channels
+	const innerColors = Array.from(centroids.keys()).filter(c => !outerColors.includes(c))
+
+	const accent = (() => {
+		let maxScore = 0
+		let maxColor = -1
+		for (const color of innerColors) {
+			if (color === outer || color === inner) continue
+			if (centroids.get(color)! / total < 0.01) continue
+			if (colorSpace.contrast(outer, color) < 9) continue
+			const chroma = colorSpace.chroma(color)
+			const delta = colorSpace.distance(color, inner)
+			const prevalence = centroids.get(color)! / total * 100
+			const score = chroma * delta * prevalence
+			if (score > maxScore) {
+				maxScore = score
+				maxColor = color
+			}
+		}
+		if (maxColor === -1) {
+			return inner
+		}
+		return maxColor
+	})()
+
 	const third = (() => {
-		let maxContrastValue = 0
-		let maxContrastColor = -1
+		let maxScore = 0
+		let maxColor = -1
 		for (const color of outerColors) {
 			if (color === outer || color === inner) continue
 			if (centroids.get(color)! / total < 0.01) continue
-			const contrast = colorSpace.contrast(color, inner)
-			if (contrast > maxContrastValue) {
-				maxContrastValue = contrast
-				maxContrastColor = color
+			const contrastInner = colorSpace.contrast(color, inner)
+			const contrastAccent = colorSpace.contrast(color, accent)
+			const contrast = Math.min(contrastInner, contrastAccent)
+			const prevalence = centroids.get(color)! / total * 100
+			const score = contrast * prevalence
+			if (score > maxScore) {
+				maxScore = score
+				maxColor = color
 			}
 		}
-		if (maxContrastColor === -1) {
+		if (maxColor === -1) {
 			return outer
 		}
-		return maxContrastColor
-	})()
-	const accent = (() => {
-		let maxContrastValue = 0
-		let maxContrastColor = -1
-		for (const color of centroids.keys()) {
-			if (color === outer || color === inner || color === third) continue
-			const contrast = colorSpace.contrast(color, outer)
-			if (contrast > maxContrastValue) {
-				maxContrastValue = contrast
-				maxContrastColor = color
-			}
-		}
-		if (maxContrastColor === -1) {
-			return inner
-		}
-		return maxContrastColor
+		return maxColor
 	})()
 
 	return {
@@ -119,6 +139,8 @@ export async function extractColors(
 		inner: colorSpace.toRgb(inner),
 		third: colorSpace.toRgb(third),
 		accent: colorSpace.toRgb(accent),
+		innerColors: innerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
+		outerColors: outerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 	}
 }
 
@@ -624,7 +646,7 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 // 		for (let g = 0; g <= 255; g++) {
 // 			for (let b = 0; b <= 255; b++) {
 // 				const hex = oklabSpace.toHex([r, g, b], 0)
-// 				const lum = oklabSpace.lightness(hex)
+// 				const lum = oklabSpace.chroma(hex)
 // 				if (lum < min) {
 // 					min = lum
 // 					minC = hex
@@ -640,8 +662,9 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 // 	console.log('min:', min, oklabSpace.toRgb(minC).toString(16).padStart(6, '0'))
 // 	console.log('max:', max, oklabSpace.toRgb(maxC).toString(16).padStart(6, '0'))
 
-// 	console.log(oklabSpace.lightness(oklabSpace.toHex([0, 0, 0], 0)))
-// 	console.log(oklabSpace.lightness(oklabSpace.toHex([255, 255, 255], 0)))
+// 	console.log(oklabSpace.chroma(0xffffff))
+// 	console.log(oklabSpace.chroma(0x888888))
+// 	console.log(oklabSpace.chroma(0x808080))
 // }
 
 // fooofoo()
@@ -655,3 +678,24 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 // const black = rgbSpace.toHex([0, 0, 0], 0)
 // console.log(rgbSpace.contrast(black, white))
 // console.log(rgbSpace.contrast(white, black))
+
+
+
+
+
+// // generate a 500x500 pure black image
+// function fooo() {
+// 	const channels = 3
+// 	const size = 500
+// 	const array = new Uint8Array(size * size * channels)
+// 	const r = 255
+// 	const g = 255
+// 	const b = 255
+// 	for (let i = 0; i < array.length; i += channels) {
+// 		array[i + 0] = r
+// 		array[i + 1] = g
+// 		array[i + 2] = b
+// 	}
+// 	sharp(array, { raw: { width: size, height: size, channels } }).jpeg().toFile('./images/purewhite.jpg').then(console.log, console.error)
+// }
+// fooo()

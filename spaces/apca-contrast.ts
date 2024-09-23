@@ -40,6 +40,7 @@ function linearize(val) {
 
 /**
  * output: [0 - 100] for full RGB range
+ * background first, then foreground
  */
 export function contrastAPCA(r1: number, g1: number, b1: number, r2: number, g2: number, b2: number) {
 	let S

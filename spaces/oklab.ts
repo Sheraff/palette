@@ -10,6 +10,8 @@ const rgb2srgbLinearBase = (c: number) => ((c + 0.055) / 1.055) ** factIn
 const factOut = 1 / factIn
 const srgbLinear2rgbBase = (c: number) => 1.055 * (c ** factOut) - 0.055
 
+const dε = .000075
+
 export const oklabSpace: ColorSpace = {
 	name: "oklab",
 	toHex(array, index) {
@@ -100,7 +102,18 @@ export const oklabSpace: ColorSpace = {
 		return Math.sqrt(ΔL ** 2 + Δa ** 2 + Δb ** 2)
 	},
 	epsilon: 8,
+	/** [0-100] */
 	lightness(hex) {
 		return (hex >> 16) / 2.06
 	},
+	/** [0-100] */
+	chroma(hex) {
+		const a = (hex >> 8 & 0xff) / negativePercentToHex - 100
+		const b = (hex & 0xff) / negativePercentToHex - 100
+
+		const isAchromatic = Math.abs(a) < dε && Math.abs(b) < dε
+		/** [0-150] (interval is theoretical, RGB values only reach ~ [0-26]) */
+		const chroma = isAchromatic ? 0 : Math.sqrt(a ** 2 + b ** 2)
+		return chroma / 1.5
+	}
 }

@@ -34,6 +34,10 @@ const sources = [
 	'images/doja-scrambled.jpg',
 	'images/nada-scrambled.jpg',
 	'images/slipknot-scrambled.jpg',
+	'images/snarky-scrambled.jpg',
+	'images/purered-scrambled.jpg',
+	'images/pureblack-scrambled.jpg',
+	'images/purewhite-scrambled.jpg',
 ]
 
 const cwd = process.cwd()
@@ -52,7 +56,7 @@ const server = http.createServer((req, res) => {
 		res.write('<h1>Album Art Color Extractor</h1>')
 		res.write(`<ul style="
 			display:grid;
-			grid-template-columns:repeat(auto-fill, 600px);
+			grid-template-columns:repeat(auto-fill, 1000px);
 			gap:1rem;
 			padding:1rem;
 			list-style:none;
@@ -70,7 +74,13 @@ const server = http.createServer((req, res) => {
 				>
 					<div style="flex:1;background:hotpink;"></div>
 				</div>
-				<div style="aspect-ratio:1;width:200px;" data-html>
+				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-html>
+					<div style="flex:1;background:hotpink;"></div>
+				</div>
+				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-outer>
+					<div style="flex:1;background:hotpink;"></div>
+				</div>
+				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-inner>
 					<div style="flex:1;background:hotpink;"></div>
 				</div>
 			</li>`)
@@ -79,16 +89,15 @@ const server = http.createServer((req, res) => {
 		<script>
 			for (const div of document.querySelectorAll('[data-img]')) {
 				fetch('/image/' + div.id + '?extract').then(async (response) => {
-					const {centroids, inner, outer, third, accent} = await response.json()
+					const {centroids, inner, outer, third, accent, innerColors, outerColors} = await response.json()
 					const total = centroids.reduce((acc, [_, count]) => acc + count, 0)
 					let content = ''
 					for (const [hex, count] of centroids) {
-						const percent = count / total * 100
 						const color = hex.toString(16).padStart(6, '0')
 						content += \`<div style="
 							background-color: #\${color};
 							width: 100%;
-							flex: \${percent};
+							flex: \${count};
 						"></div>\`
 					}
 					div.querySelector('[data-colors]').innerHTML = content
@@ -98,17 +107,31 @@ const server = http.createServer((req, res) => {
 						color:#\${inner.toString(16).padStart(6, '0')};
 						align-content:center;
 					">
-						<p>hello</p>
+						<p style="margin-bottom:0;">hello</p>
+						<p style="font-size:0.5em;">
+							<span style="color:#\${accent.toString(16).padStart(6, '0')};">world</span>
+						</p>
 						<div style="
-							font-size:0.5em;
 							background:#\${third.toString(16).padStart(6, '0')};
-							padding:0.5rem;
+							padding: 0.5rem;
 						">
-							<p style="
-								color:#\${accent.toString(16).padStart(6, '0')};
-							">world</p>
+							<p style="font-size:0.5em;">other</p>
 						</div>
 					</div>\`
+					div.querySelector('[data-outer]').innerHTML = outerColors.map(([color, count]) => (\`
+						<div style="
+							background-color: #\${color.toString(16).padStart(6, '0')};
+							width: 100%;
+							flex: \${count};
+						"></div>
+					\`)).join('')
+					div.querySelector('[data-inner]').innerHTML = innerColors.map(([color, count]) => (\`
+						<div style="
+							background-color: #\${color.toString(16).padStart(6, '0')};
+							width: 100%;
+							flex: \${count};
+						"></div>
+					\`)).join('')
 				})
 			}
 		</script>`)
@@ -191,7 +214,7 @@ const server = http.createServer((req, res) => {
 						if (info.channels !== 3 && info.channels !== 4) {
 							throw new Error('Image must have 3 or 4 channels')
 						}
-						const { centroids, inner, outer, third, accent } = await extractColors(data, info, {
+						const { centroids, ...rest } = await extractColors(data, info, {
 							useWorkers: true,
 							colorSpace: oklabSpace,
 							// colorSpace: rgbSpace,
@@ -205,7 +228,7 @@ const server = http.createServer((req, res) => {
 
 						const sorted = sortColorMap(centroids)
 						res.writeHead(200, { 'Content-Type': 'application/json' })
-						res.end(JSON.stringify({ centroids: sorted, inner, outer, third, accent }))
+						res.end(JSON.stringify({ centroids: sorted, ...rest }))
 						return
 					})
 				return
