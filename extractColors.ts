@@ -1,13 +1,20 @@
 import { Worker } from "node:worker_threads"
 import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
+import { rgbSpace } from "./spaces/rgb.ts"
+
+type Meta = {
+	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
+	channels: number
+	width: number
+	height: number
+}
 
 
 export async function extractColors(
 	/** image data, must be smaller than 4_294_967_295 (equivalent to a 65_535 x 65_535 square) */
 	source: Uint8ClampedArray | Uint8Array | Buffer,
-	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
-	channels: number,
+	meta: Meta,
 	{
 		useWorkers = true,
 		colorSpace = oklabSpace,
@@ -24,68 +31,94 @@ export async function extractColors(
 	name = ""
 ) {
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
-	const map = countColors(data, 3, colorSpace)
+
+	const map = countColors(data, meta.channels, colorSpace)
 	const array = transferableMap(map)
 	console.log(name, "Unique Colors:", array.length / 2)
-	const centroids = await strategy(colorSpace, array, source.length / channels, useWorkers)
+	const centroids = await strategy(colorSpace, array, source.length / meta.channels, useWorkers)
 	console.log(name, centroids)
 	if (clamp !== false) {
 		clampCentroidsToOriginalColors(
 			clamp,
-			data.length / channels,
+			data.length / meta.channels,
 			centroids,
 			map,
 			array,
-			colorSpace
+			colorSpace,
 		)
 	}
+	groupImperceptiblyDifferentColors(centroids, colorSpace)
 	console.log(name, "Final Colors:", centroids)
-	// const final = Array.from(centroids.entries())
-	// const groups: Array<Set<number>> = []
-	// for (let i = 0; i < final.length; i++) {
-	// 	for (let j = i + 1; j < final.length; j++) {
-	// 		const a = final[i][0]
-	// 		const b = final[j][0]
-	// 		const dist = colorSpace.distance(a, b)
-	// 		if (dist < colorSpace.epsilon) {
-	// 			const clusters = groups.filter(g => g.has(a) || g.has(b))
-	// 			if (clusters.length === 0) {
-	// 				groups.push(new Set([a, b]))
-	// 			} else {
-	// 				const group = new Set<number>()
-	// 				for (const cluster of clusters) {
-	// 					for (const color of cluster) {
-	// 						group.add(color)
-	// 					}
-	// 					groups.splice(groups.indexOf(cluster), 1)
-	// 				}
-	// 				groups.push(group)
-	// 			}
-	// 			console.log(name, "Distance between", a.toString(16).padStart(6, '0'), "and", b.toString(16).padStart(6, '0'), "is", dist)
-	// 		}
-	// 		else if (dist < 20) {
-	// 			console.log(name, "Distance between FOO", a.toString(16).padStart(6, '0'), "and", b.toString(16).padStart(6, '0'), "is", dist)
-	// 		}
-	// 	}
-	// }
-	// if (groups.length > 0) {
-	// 	for (const group of groups) {
-	// 		let total = 0
-	// 		let max = 0
-	// 		let maxColor = 0
-	// 		for (const color of group) {
-	// 			const count = centroids.get(color) || 0
-	// 			total += count
-	// 			centroids.delete(color)
-	// 			if (count > max) {
-	// 				max = count
-	// 				maxColor = color
-	// 			}
-	// 		}
-	// 		centroids.set(maxColor, total)
-	// 	}
-	// }
-	return new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count]))
+
+	const outer = mainZoneColor(data, meta, colorSpace, centroids, 'outer')
+	console.log(name, "Outer Color:", outer, colorSpace.lightness(outer))
+	// const inner = mainZoneColor(data, meta, colorSpace, centroids, 'inner', exclude)
+	const inner = (() => {
+		let maxContrastValue = 0
+		let maxContrastColor = 0
+		for (const color of centroids.keys()) {
+			if (color === outer) continue
+			const contrast = colorSpace.contrast(color, outer)
+			if (contrast > maxContrastValue) {
+				maxContrastValue = contrast
+				maxContrastColor = color
+			}
+		}
+		return maxContrastColor
+	})()
+	const innerLum = colorSpace.lightness(inner)
+	const outerLum = colorSpace.lightness(outer)
+	const outerColors = Array.from(centroids.keys()).filter(c => {
+		const lum = colorSpace.lightness(c)
+		return Math.abs(lum - innerLum) > Math.abs(outerLum - innerLum)
+	})
+	// const lums = Array.from(centroids.keys()).map(c => colorSpace.lightness(c)).sort((a, b) => a - b)
+	// const meanLum = lums[Math.floor(lums.length / 2)]
+	// const outerSide = colorSpace.lightness(outer) > meanLum ? 1 : -1
+	// const outerColors = Array.from(centroids.keys()).filter(c => colorSpace.lightness(c) * outerSide > meanLum * outerSide)
+	// const innerColors = Array.from(centroids.keys()).filter(c => colorSpace.lightness(c) * -outerSide > meanLum * -outerSide)
+	const total = data.length / meta.channels
+	const third = (() => {
+		let maxContrastValue = 0
+		let maxContrastColor = -1
+		for (const color of outerColors) {
+			if (color === outer || color === inner) continue
+			if (centroids.get(color)! / total < 0.01) continue
+			const contrast = colorSpace.contrast(color, inner)
+			if (contrast > maxContrastValue) {
+				maxContrastValue = contrast
+				maxContrastColor = color
+			}
+		}
+		if (maxContrastColor === -1) {
+			return outer
+		}
+		return maxContrastColor
+	})()
+	const accent = (() => {
+		let maxContrastValue = 0
+		let maxContrastColor = -1
+		for (const color of centroids.keys()) {
+			if (color === outer || color === inner || color === third) continue
+			const contrast = colorSpace.contrast(color, outer)
+			if (contrast > maxContrastValue) {
+				maxContrastValue = contrast
+				maxContrastColor = color
+			}
+		}
+		if (maxContrastColor === -1) {
+			return inner
+		}
+		return maxContrastColor
+	})()
+
+	return {
+		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
+		outer: colorSpace.toRgb(outer),
+		inner: colorSpace.toRgb(inner),
+		third: colorSpace.toRgb(third),
+		accent: colorSpace.toRgb(accent),
+	}
 }
 
 function sortColorMap(colors: Map<number, number>): [hex: number, count: number][] {
@@ -188,18 +221,122 @@ function clampCentroidsToOriginalColors(
 			}
 		}
 		if (closest === -1) {
-			console.log(name, "Couldn't find a close color for", color)
-			continue
+			// if we didn't find a color that is above the threshold, abandon threshold but still clamp to the closest color
+			for (let i = 0; i < colorArray.length; i += 2) {
+				if (colorArray[i + 1] / total >= min) continue
+				const distance = colorSpace.distance(color, colorArray[i])
+				if (distance < minDistance) {
+					minDistance = distance
+					closest = colorArray[i]
+				}
+			}
 		}
 		centroids.delete(color)
 		centroids.set(closest, (centroids.get(closest) || 0) + count)
 	}
 }
 
+function groupImperceptiblyDifferentColors(
+	centroids: Map<number, number>,
+	colorSpace: ColorSpace,
+) {
+	const final = Array.from(centroids.entries())
+	const groups: Array<Set<number>> = []
+	for (let i = 0; i < final.length; i++) {
+		for (let j = i + 1; j < final.length; j++) {
+			const a = final[i][0]
+			const b = final[j][0]
+			const dist = colorSpace.distance(a, b)
+			if (dist < colorSpace.epsilon) {
+				const clusters = groups.filter(g => g.has(a) || g.has(b))
+				if (clusters.length === 0) {
+					groups.push(new Set([a, b]))
+				} else {
+					const group = new Set<number>()
+					for (const cluster of clusters) {
+						for (const color of cluster) {
+							group.add(color)
+						}
+						groups.splice(groups.indexOf(cluster), 1)
+					}
+					groups.push(group)
+				}
+			}
+		}
+	}
+	if (groups.length > 0) {
+		for (const group of groups) {
+			let total = 0
+			let max = 0
+			let maxColor = 0
+			for (const color of group) {
+				const count = centroids.get(color) || 0
+				total += count
+				centroids.delete(color)
+				if (count > max) {
+					max = count
+					maxColor = color
+				}
+			}
+			centroids.set(maxColor, total)
+		}
+	}
+}
+
+function mainZoneColor(
+	data: Uint8ClampedArray | Uint8Array,
+	{ width, height, channels }: Meta,
+	colorSpace: ColorSpace,
+	centroids: Map<number, number>,
+	direction: 'outer' | 'inner',
+	exclude: number[] = []
+) {
+	const mult = direction === 'outer' ? 1 : -1
+	const percent = direction === 'outer' ? 0.95 : 0.70
+	// create a new Uint8ClampedArray from the source, which excludes all pixels within `radius` of the center
+	const outside = new Uint8Array({
+		[Symbol.iterator]: function* () {
+			const radius = Math.max(width, height) / 2 * percent
+			const wCenter = width / 2
+			const hCenter = height / 2
+			for (let i = 0; i < data.length; i += channels) {
+				const x = i / channels % width
+				const y = i / channels / width
+				if (Math.hypot(x - wCenter, y - hCenter) * mult > radius * mult) {
+					for (let j = 0; j < channels; j++) {
+						yield data[i + j]
+					}
+				}
+			}
+		}
+	})
+
+	const map = countColors(outside, 3, colorSpace)
+
+	const tally = new Map<number, number>()
+	const centroidsArray = Array.from(centroids.keys()).filter(c => !exclude.includes(c))
+	for (const [color, count] of map) {
+		let closest = -1
+		let minDistance = Infinity
+		for (const centroid of centroidsArray) {
+			const distance = colorSpace.distance(color, centroid)
+			if (distance < minDistance) {
+				minDistance = distance
+				closest = centroid
+			}
+		}
+		tally.set(closest, (tally.get(closest) || 0) + count)
+	}
+
+	const sorted = sortColorMap(tally)
+
+	return sorted[0][0]
+}
+
 async function kmeans(space: ColorSpace, array: Uint32Array, k: number, useWorkers: boolean) {
 	if (!useWorkers) {
 		const { kmeans } = await import('./kmeans.worker.ts')
-		return kmeans(space.distance, array, k)
+		return kmeans(space, array, k)
 	}
 	const worker = new Worker('./kmeans.worker.ts', {
 		workerData: { buffer: array.buffer, k, space: space.name },
@@ -266,10 +403,10 @@ export function elbowKmeans({
 		])
 
 		// for 1 cluster per color, we can guarantee that the WCSS is 0, which can be used to compute the slope intersection
-		// if (size > end.at(-1)! * 2) {
-		// 	end.push(size)
-		// 	endPoints.push({ centroids: new Map(), wcss: 0 })
-		// }
+		if (size > end.at(-1)! * 2) {
+			end.push(size)
+			endPoints.push({ centroids: new Map(), wcss: 0 })
+		}
 
 		const startSlope = startPoints.reduce((acc, val, i, arr) => i === 0
 			? 0
@@ -315,7 +452,7 @@ export function elbowKmeans({
 // /**
 //  * Using "gap statistic", we tend to get ~7 colors, which might be too many (e.g. black album gets 6 colors)
 //  */
-export function gapStatisticKmeans({ maxK = 10 } = {}): Strategy {
+export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 	function makeUniformData(size: number) {
 		const max = 0xffffff
 		const step = max / size
@@ -328,7 +465,7 @@ export function gapStatisticKmeans({ maxK = 10 } = {}): Strategy {
 		return array
 	}
 	return async (space, data, size, useWorkers) => {
-		const ks = Array.from({ length: maxK }, (_, i) => i + 1)
+		const ks = Array.from({ length: maxK - minK + 1 }, (_, i) => i + minK)
 
 		const reference = makeUniformData(size)
 		const [
@@ -339,18 +476,19 @@ export function gapStatisticKmeans({ maxK = 10 } = {}): Strategy {
 			Promise.all(ks.map(k => kmeans(space, reference, k, useWorkers))),
 		])
 
-		const gaps = ks.map((k) => {
-			const wk = all[k - 1].wcss
-			const wkb = references[k - 1].wcss
+		const gaps = ks.map((k, i) => {
+			const wk = all[i].wcss
+			const wkb = references[i].wcss
 			const logWk = Math.log(wk)
 			const logWkb = Math.log(wkb)
 			const gap = logWkb - logWk
 			return gap
 		})
 
-		const optimal = gaps.indexOf(Math.max(...gaps)) + 1
+		const optimalIndex = gaps.indexOf(Math.max(...gaps))
+		const optimal = ks[optimalIndex]
 		console.log("Optimal K:", optimal)
-		return all[optimal - 1].centroids
+		return all[optimalIndex].centroids
 	}
 }
 
@@ -473,3 +611,46 @@ export function gapStatisticKmeans({ maxK = 10 } = {}): Strategy {
 // }
 
 // fiifoo()
+
+
+// function fooofoo() {
+// 	let min = Infinity
+// 	let minC = 0
+// 	let max = -Infinity
+// 	let maxC = 0
+
+// 	for (let r = 0; r <= 255; r++) {
+// 		for (let g = 0; g <= 255; g++) {
+// 			for (let b = 0; b <= 255; b++) {
+// 				const hex = oklabSpace.toHex([r, g, b], 0)
+// 				const lum = oklabSpace.lightness(hex)
+// 				if (lum < min) {
+// 					min = lum
+// 					minC = hex
+// 				}
+// 				if (lum > max) {
+// 					max = lum
+// 					maxC = hex
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	console.log('min:', min, oklabSpace.toRgb(minC).toString(16).padStart(6, '0'))
+// 	console.log('max:', max, oklabSpace.toRgb(maxC).toString(16).padStart(6, '0'))
+
+// 	console.log(oklabSpace.lightness(oklabSpace.toHex([0, 0, 0], 0)))
+// 	console.log(oklabSpace.lightness(oklabSpace.toHex([255, 255, 255], 0)))
+// }
+
+// fooofoo()
+
+
+
+
+
+
+// const white = rgbSpace.toHex([255, 255, 255], 0)
+// const black = rgbSpace.toHex([0, 0, 0], 0)
+// console.log(rgbSpace.contrast(black, white))
+// console.log(rgbSpace.contrast(white, black))

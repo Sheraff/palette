@@ -6,6 +6,7 @@ import sharp from "sharp"
 import { elbowKmeans, extractColors, gapStatisticKmeans } from "./extractColors.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import { rgbSpace } from "./spaces/rgb.ts"
+import { labSpace } from "./spaces/lab.ts"
 
 const sources = [
 	'images/black.jpg',
@@ -26,6 +27,13 @@ const sources = [
 	'images/orelsan.jpg',
 	'images/krafty.jpg',
 	'images/muse.jpg',
+	'images/franz.jpg',
+	'images/loups.jpg',
+	'images/knuckles.jpg',
+	'images/infected.jpg',
+	'images/doja.jpg',
+	'images/nada.jpg',
+	'images/slipknot.jpg',
 ]
 
 const cwd = process.cwd()
@@ -40,11 +48,11 @@ const server = http.createServer((req, res) => {
 	// root path
 	if (req.url === '/') {
 		res.writeHead(200, { 'Content-Type': 'text/html' })
-		res.write('<style>body{background:rgb(13, 17, 23); color: rgb(240, 246, 252);}</style>')
+		res.write('<style>body{background:rgb(13, 17, 23); color: rgb(240, 246, 252);font-size:32px;font-family:sans-serif; text-align:center;}</style>')
 		res.write('<h1>Album Art Color Extractor</h1>')
 		res.write(`<ul style="
 			display:grid;
-			grid-template-columns:repeat(auto-fill, 430px);
+			grid-template-columns:repeat(auto-fill, 600px);
 			gap:1rem;
 			padding:1rem;
 			list-style:none;
@@ -52,13 +60,17 @@ const server = http.createServer((req, res) => {
 		for (const source of sources) {
 			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
 				<img src="/image/${source}" width=200 />
+				<!--<img src="/image/${source}?small" width=200 />-->
 				<div style="
-					display:inline-flex;
+					display:flex;
 					aspect-ratio:1;
 					width:200px;
-					vertical-align:top;
 					flex-direction:column;"
+					data-colors
 				>
+					<div style="flex:1;background:hotpink;"></div>
+				</div>
+				<div style="aspect-ratio:1;width:200px;" data-html>
 					<div style="flex:1;background:hotpink;"></div>
 				</div>
 			</li>`)
@@ -67,19 +79,36 @@ const server = http.createServer((req, res) => {
 		<script>
 			for (const div of document.querySelectorAll('[data-img]')) {
 				fetch('/image/' + div.id + '?extract').then(async (response) => {
-					const colors = await response.json()
-					const total = colors.reduce((acc, [_, count]) => acc + count, 0)
-					let inner = ''
-					for (const [hex, count] of colors) {
-						const percent = Math.round(count / total * 100)
+					const {centroids, inner, outer, third, accent} = await response.json()
+					const total = centroids.reduce((acc, [_, count]) => acc + count, 0)
+					let content = ''
+					for (const [hex, count] of centroids) {
+						const percent = count / total * 100
 						const color = hex.toString(16).padStart(6, '0')
-						inner += \`<div style="
+						content += \`<div style="
 							background-color: #\${color};
 							width: 100%;
 							flex: \${percent};
 						"></div>\`
 					}
-					div.querySelector('div').innerHTML = inner
+					div.querySelector('[data-colors]').innerHTML = content
+					div.querySelector('[data-html]').innerHTML = \`<div style="
+						height:100%;
+						background:#\${outer.toString(16).padStart(6, '0')};
+						color:#\${inner.toString(16).padStart(6, '0')};
+						align-content:center;
+					">
+						<p>hello</p>
+						<div style="
+							font-size:0.5em;
+							background:#\${third.toString(16).padStart(6, '0')};
+							padding:0.5rem;
+						">
+							<p style="
+								color:#\${accent.toString(16).padStart(6, '0')};
+							">world</p>
+						</div>
+					</div>\`
 				})
 			}
 		</script>`)
@@ -110,23 +139,48 @@ const server = http.createServer((req, res) => {
 		const s = sharp(path)
 		s.metadata().then(metadata => {
 			const transformed = s.extract({
-				top: Math.round(metadata.height! * 0.05),
-				left: Math.round(metadata.width! * 0.05),
-				width: Math.round(metadata.width! * 0.9),
-				height: Math.round(metadata.height! * 0.9),
+				top: Math.round(metadata.height! * 0.025),
+				left: Math.round(metadata.width! * 0.025),
+				width: Math.round(metadata.width! * 0.95),
+				height: Math.round(metadata.height! * 0.95),
 			})
 			if (format === 'small') {
 				transformed
-					.resize(300, 300, {
-						fit: "cover",
-						fastShrinkOnLoad: true,
-						kernel: sharp.kernel.nearest
-					})
-					.jpeg()
-					.toBuffer()
-					.then(buffer => {
-						res.writeHead(200, { 'Content-Type': 'image/jpeg' })
-						res.end(buffer)
+					// .resize(300, 300, {
+					// 	fit: "cover",
+					// 	fastShrinkOnLoad: true,
+					// 	kernel: sharp.kernel.nearest
+					// })
+					// .jpeg()
+					.raw({ depth: "uchar" })
+					.toBuffer({ resolveWithObject: true })
+					.then(({ data, info: { width, height, channels } }) => {
+						const outside = new Uint8Array({
+							[Symbol.iterator]: function* () {
+								const radius = Math.max(width, height) / 2
+								const wCenter = width / 2
+								const hCenter = height / 2
+								for (let i = 0; i < data.length; i += channels) {
+									const x = i / channels % width
+									const y = i / channels / width
+									const isOut = Math.hypot(x - wCenter, y - hCenter) > radius * 0.95
+									const isIn = !isOut && (Math.hypot(x - wCenter, y - hCenter) < radius * 0.70)
+									if (isOut || isIn) {
+										for (let j = 0; j < channels; j++) {
+											yield data[i + j]
+										}
+									} else {
+										for (let j = 0; j < channels; j++) {
+											yield 0
+										}
+									}
+								}
+							}
+						})
+						sharp(outside.buffer, { raw: { width, height, channels } }).jpeg().toBuffer().then(buffer => {
+							res.writeHead(200, { 'Content-Type': 'image/jpeg' })
+							res.end(buffer)
+						})
 					})
 				return
 			}
@@ -137,20 +191,21 @@ const server = http.createServer((req, res) => {
 						if (info.channels !== 3 && info.channels !== 4) {
 							throw new Error('Image must have 3 or 4 channels')
 						}
-						const centroids = await extractColors(data, info.channels, {
+						const { centroids, inner, outer, third, accent } = await extractColors(data, info, {
 							useWorkers: true,
 							colorSpace: oklabSpace,
 							// colorSpace: rgbSpace,
+							// colorSpace: labSpace,
 							clamp: 0.005,
 							// clamp: false,
-							strategy: gapStatisticKmeans({ maxK: 30 }),
-							// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17] }),
+							strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
+							// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17, 50] }),
 							// strategy: elbowKmeans(),
 						}, image)
 
 						const sorted = sortColorMap(centroids)
 						res.writeHead(200, { 'Content-Type': 'application/json' })
-						res.end(JSON.stringify(sorted))
+						res.end(JSON.stringify({ centroids: sorted, inner, outer, third, accent }))
 						return
 					})
 				return

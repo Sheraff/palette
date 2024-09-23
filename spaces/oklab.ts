@@ -1,3 +1,4 @@
+import { contrastAPCA } from "./apca-contrast.ts"
 import type { ColorSpace } from "./types"
 
 const negativePercentToHex = 255 / 200
@@ -13,10 +14,6 @@ export const oklabSpace: ColorSpace = {
 	name: "oklab",
 	toHex(array, index) {
 		/**
-		 * l: 0;100
-		 * a: -100;100
-		 * b: -100;100
-		 * 
 		 * source https://gist.github.com/dkaraush/65d19d61396f5f3cd8ba7d1b4b3c9432
 		 * source https://github.com/color-js/color.js/blob/main/src/spaces/oklch.js
 		 */
@@ -28,14 +25,28 @@ export const oklabSpace: ColorSpace = {
 		const sg = rgb2srgbLinearBase(g)
 		const sb = rgb2srgbLinearBase(b)
 
+		/**
+		 * xyz 65
+		 * source: https://github.com/color-js/color.js/blob/main/src/spaces/srgb-linear.js
+		 */
 		const x = 0.41239079926595934 * sr + 0.357584339383878 * sg + 0.1804807884018343 * sb
 		const y = 0.21263900587151027 * sr + 0.715168678767756 * sg + 0.07219231536073371 * sb
 		const z = 0.01933081871559182 * sr + 0.11919477979462598 * sg + 0.9505321522496607 * sb
 
+		/**
+		 * oklab intermediary
+		 */
 		const l0 = Math.cbrt(0.8190224379967030 * x + 0.3619062600528904 * y + -0.1288737815209879 * z)
 		const a0 = Math.cbrt(0.0329836539323885 * x + 0.9292868615863434 * y + 0.0361446663506424 * z)
 		const b0 = Math.cbrt(0.0481771893596242 * x + 0.2642395317527308 * y + 0.6335478284694309 * z)
 
+		/**
+		 * okklab
+		 * source: https://github.com/color-js/color.js/blob/main/src/spaces/oklab.js
+		 * l: 0;100
+		 * a: -100;100
+		 * b: -100;100
+		 */
 		const l1 = 0.2104542683093140 * l0 + 0.7936177747023054 * a0 + -0.0040720430116193 * b0
 		const a1 = 1.9779985324311684 * l0 + -2.4285922420485799 * a0 + 0.4505937096174110 * b0
 		const b1 = 0.0259040424655478 * l0 + 0.7827717124575296 * a0 + -0.8086757549230774 * b0
@@ -61,6 +72,17 @@ export const oklabSpace: ColorSpace = {
 
 		return clamp(srgbLinear2rgbBase(sr)) << 16 | clamp(srgbLinear2rgbBase(sg)) << 8 | clamp(srgbLinear2rgbBase(sb))
 	},
+	contrast(hex1, hex2) {
+		const rgb1 = oklabSpace.toRgb(hex1)
+		const rgb2 = oklabSpace.toRgb(hex2)
+		const r1 = ((rgb1 >> 16) & 0xff) / 255
+		const g1 = ((rgb1 >> 8) & 0xff) / 255
+		const b1 = (rgb1 & 0xff) / 255
+		const r2 = ((rgb2 >> 16) & 0xff) / 255
+		const g2 = ((rgb2 >> 8) & 0xff) / 255
+		const b2 = (rgb2 & 0xff) / 255
+		return contrastAPCA(r1, g1, b1, r2, g2, b2)
+	},
 	/**
 	 * https://github.com/color-js/color.js/blob/main/src/deltaE/deltaEOK2.js
 	 */
@@ -72,10 +94,13 @@ export const oklabSpace: ColorSpace = {
 		const a2 = hex2 >> 8 & 0xff
 		const b2 = hex2 & 0xff
 		const ΔL = (L1 - L2) / 2.55
-		const abscale = 2 / negativePercentToHex
+		const abscale = 2.35 / negativePercentToHex
 		const Δa = abscale * (a1 - a2)
 		const Δb = abscale * (b1 - b2)
 		return Math.sqrt(ΔL ** 2 + Δa ** 2 + Δb ** 2)
 	},
-	epsilon: 9
+	epsilon: 8,
+	lightness(hex) {
+		return (hex >> 16) / 2.06
+	},
 }
