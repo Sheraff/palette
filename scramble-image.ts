@@ -30,7 +30,7 @@ sharp(path)
 	.toBuffer({ resolveWithObject: true })
 	.then(async ({ data, info: { width, height, channels } }) => {
 
-		const radius = Math.max(width, height) / 2 * 0.95
+		const radius = Math.max(width, height) / 2 * 0.90
 		const wCenter = width / 2
 		const hCenter = height / 2
 

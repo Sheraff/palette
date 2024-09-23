@@ -50,17 +50,55 @@ function closestColor(space: ColorSpace, colors: number[], centroid: number): nu
 }
 
 /**
+ * initialize centroids as the first K unique colors (i.e. all significantly different from each other)
+ */
+function initialCentroids(name: string, space: ColorSpace, data: Uint32Array, k: number, n: number): Array<number> {
+	const centroids = Array<number>(k)
+
+	/** index of `centroid` for which we're currently looking for a color */
+	let j = 0
+
+	for (let i = 0; i < n; i++) {
+		const candidate = data[i * 2]
+		let unique = true
+		for (let l = 0; l < j; l++) {
+			if (space.distance(centroids[l], candidate) < space.epsilon) {
+				unique = false
+				break
+			}
+		}
+		if (unique) {
+			centroids[j] = candidate
+			j++
+			if (j === k) {
+				break
+			}
+		}
+	}
+
+	if (j < k) {
+		centroids.length = j
+		console.log(name, 'Not enough unique colors to create k clusters', { j, k, n })
+	}
+
+	return centroids
+}
+
+/**
  * @param space color space string ID
  * @param data repeated pairs color,count, kind of like a flattened Map
  * color: 0xffffff
  *          ││││└┴──> z
  *          ││└┴──> y
  *          └┴──> x
- * @param k number of clusters
+ * @param k number of clusters (can be reduced if data doesn't have enough unique colors)
  */
-export function kmeans(space: ColorSpace, data: Uint32Array, k = 5) {
+export function kmeans(name: string, space: ColorSpace, data: Uint32Array, k = 5) {
 	const n = data.length / 2
-	const centroids = Array.from({ length: k }, (_, i) => data[i * 2])
+	const centroids = initialCentroids(name, space, data, k, n)
+	if (centroids.length !== k) {
+		k = centroids.length
+	}
 	/** The value of `clusters[n]` means "the color at `data[n*2]` belongs to `centroids[clusters[n]]`" */
 	const clusters: number[] = new Array(n)
 
@@ -121,6 +159,7 @@ export function kmeans(space: ColorSpace, data: Uint32Array, k = 5) {
 	return {
 		centroids: result,
 		wcss,
+		k,
 	}
 }
 
@@ -134,5 +173,6 @@ if (!isMainThread) {
 	const array = new Uint32Array(workerData.buffer)
 	const k = workerData.k
 	const space = workerData.space
-	parentPort.postMessage(kmeans(difference[space], array, k))
+	const name = workerData.name
+	parentPort.postMessage(kmeans(name, difference[space], array, k))
 }

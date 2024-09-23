@@ -33,9 +33,10 @@ export async function extractColors(
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
 
 	const map = countColors(data, meta.channels, colorSpace)
-	const array = transferableMap(map)
+	const sorted = sortColorMap(map)
+	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
-	const centroids = await strategy(colorSpace, array, source.length / meta.channels, useWorkers)
+	const centroids = await strategy(name, colorSpace, array, source.length / meta.channels, useWorkers)
 	console.log(name, centroids)
 	if (clamp !== false) {
 		clampCentroidsToOriginalColors(
@@ -181,8 +182,8 @@ function countColors(
 	return colors
 }
 
-function transferableMap(map: Map<number, number>): Uint32Array {
-	const length = map.size * 2
+function transferableMap(map: [hex: number, count: number][]): Uint32Array {
+	const length = map.length * 2
 	const buffer = new SharedArrayBuffer(Uint32Array.BYTES_PER_ELEMENT * length)
 	/**
 	 * using a `Uint32Array` (max 4_294_967_295), in `key-value` pairs:
@@ -333,13 +334,13 @@ function mainZoneColor(
 	return sorted[0][0]
 }
 
-async function kmeans(space: ColorSpace, array: Uint32Array, k: number, useWorkers: boolean) {
+async function kmeans(name: string, space: ColorSpace, array: Uint32Array, k: number, useWorkers: boolean) {
 	if (!useWorkers) {
 		const { kmeans } = await import('./kmeans.worker.ts')
-		return kmeans(space, array, k)
+		return kmeans(name, space, array, k)
 	}
 	const worker = new Worker('./kmeans.worker.ts', {
-		workerData: { buffer: array.buffer, k, space: space.name },
+		workerData: { buffer: array.buffer, k, space: space.name, name },
 	})
 	worker.unref()
 	return new Promise<{ centroids: Map<number, number>, wcss: number }>((resolve, reject) => {
@@ -377,7 +378,7 @@ async function kmeans(space: ColorSpace, array: Uint32Array, k: number, useWorke
 
 
 interface Strategy {
-	(colorSpace: ColorSpace, data: Uint32Array, size: number, useWorkers: boolean): Promise<Map<number, number>>
+	(name: string, colorSpace: ColorSpace, data: Uint32Array, size: number, useWorkers: boolean): Promise<Map<number, number>>
 }
 
 /**
@@ -396,10 +397,10 @@ export function elbowKmeans({
 	start = [1, 2, 3, 4],
 	end = [50, 100]
 } = {}): Strategy {
-	return async (space, data, size, useWorkers) => {
+	return async (name, space, data, size, useWorkers) => {
 		const [startPoints, endPoints] = await Promise.all([
-			Promise.all(start.map(k => kmeans(space, data, k, useWorkers))),
-			Promise.all(end.map(k => kmeans(space, data, k, useWorkers))),
+			Promise.all(start.map(k => kmeans(name, space, data, k, useWorkers))),
+			Promise.all(end.map(k => kmeans(name, space, data, k, useWorkers))),
 		])
 
 		// for 1 cluster per color, we can guarantee that the WCSS is 0, which can be used to compute the slope intersection
@@ -445,7 +446,7 @@ export function elbowKmeans({
 			return endPoints[inEnd].centroids
 		}
 
-		return (await kmeans(space, data, optimal, useWorkers)).centroids
+		return (await kmeans(name, space, data, optimal, useWorkers)).centroids
 	}
 }
 
@@ -464,7 +465,7 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 		}
 		return array
 	}
-	return async (space, data, size, useWorkers) => {
+	return async (name, space, data, size, useWorkers) => {
 		const ks = Array.from({ length: maxK - minK + 1 }, (_, i) => i + minK)
 
 		const reference = makeUniformData(size)
@@ -472,8 +473,8 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 			all,
 			references
 		] = await Promise.all([
-			Promise.all(ks.map(k => kmeans(space, data, k, useWorkers))),
-			Promise.all(ks.map(k => kmeans(space, reference, k, useWorkers))),
+			Promise.all(ks.map(k => kmeans(name, space, data, k, useWorkers))),
+			Promise.all(ks.map(k => kmeans(name, space, reference, k, useWorkers))),
 		])
 
 		const gaps = ks.map((k, i) => {
