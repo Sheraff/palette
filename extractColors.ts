@@ -46,7 +46,6 @@ export async function extractColors(
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
 	const centroids = await strategy(name, colorSpace, array, total, useWorkers)
-	console.log(name, centroids)
 	if (clamp !== false) {
 		clampCentroidsToOriginalColors(
 			clamp,
@@ -58,11 +57,9 @@ export async function extractColors(
 		)
 	}
 	groupImperceptiblyDifferentColors(centroids, colorSpace)
-	console.log(name, "Final Colors:", centroids)
 
 	const outer = mainZoneColor(data, meta, colorSpace, centroids, 'outer')
 	const outerLum = colorSpace.lightness(outer)
-	console.log(name, "Outer Color:", outer, outerLum)
 
 	const inner = (() => {
 		let maxContrastValue = 0
@@ -102,9 +99,13 @@ export async function extractColors(
 			if (centroids.get(color)! / total < 0.01) continue
 			if (colorSpace.contrast(outer, color) < 9) continue
 			const chroma = colorSpace.chroma(color)
-			const delta = colorSpace.distance(color, inner)
+			const distance = colorSpace.distance(color, inner)
 			const prevalence = centroids.get(color)! / total * 100
-			const score = chroma * delta * prevalence
+			// const lum = outerLum > innerLum
+			// 	? 100 - colorSpace.lightness(color)
+			// 	: colorSpace.lightness(color)
+			// const score = chroma * (distance ** 2) * prevalence * lum
+			const score = chroma * distance * prevalence
 			if (score > maxScore) {
 				maxScore = score
 				maxColor = color
@@ -474,8 +475,8 @@ export function elbowKmeans({
 		const startPoint = startPoints[0].wcss
 		const endPoint = endPoints[0].wcss
 
-		console.log("Start Slope:", startSlope, startPoints.map(p => p.wcss))
-		console.log("End Slope:", endSlope, endPoints.map(p => p.wcss))
+		console.log(name, "Start Slope:", startSlope, startPoints.map(p => p.wcss))
+		console.log(name, "End Slope:", endSlope, endPoints.map(p => p.wcss))
 
 		// compute at which K the start slope and end slope intersect
 		// wcss = m * k + b
@@ -485,7 +486,7 @@ export function elbowKmeans({
 		// k = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
 
 		const _optimal = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
-		console.log("Optimal K:", _optimal)
+		console.log(name, "Optimal K:", _optimal)
 		const optimal = Math.round(_optimal)
 
 		const inStart = start.indexOf(optimal)
@@ -539,7 +540,7 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 
 		const optimalIndex = gaps.indexOf(Math.max(...gaps))
 		const optimal = ks[optimalIndex]
-		console.log("Optimal K:", optimal)
+		console.log(name, "Optimal K:", optimal)
 		return all[optimalIndex].centroids
 	}
 }

@@ -108,14 +108,19 @@ const server = http.createServer((req, res) => {
 						align-content:center;
 					">
 						<p style="margin-bottom:0;">hello</p>
-						<p style="font-size:0.5em;">
+						<p style="font-size:0.5em;margin-top: 0.5em;">
 							<span style="color:#\${accent.toString(16).padStart(6, '0')};">world</span>
 						</p>
 						<div style="
 							background:#\${third.toString(16).padStart(6, '0')};
 							padding: 0.5rem;
 						">
-							<p style="font-size:0.5em;">other</p>
+							<p style="font-size:0.5em;">
+								other
+								<span style="color:#\${accent.toString(16).padStart(6, '0')};">
+									world
+								</span>
+							</p>
 						</div>
 					</div>\`
 					div.querySelector('[data-outer]').innerHTML = outerColors.map(([color, count]) => (\`
