@@ -55,6 +55,20 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 			})
 	})
 
+	test('Slipknot', async (t) => {
+		await loadImage(join(import.meta.dirname, '../images/slipknot.jpg'), options)
+			.then(({ accent, outer, inner, third }) => {
+				assert.strictEqual(nameColor(accent), 'white')
+				t.diagnostic(`accent: ${hex(accent)} >> white`)
+				assert.strictEqual(nameColor(outer), 'black')
+				t.diagnostic(`outer: ${hex(outer)} >> black`)
+				assert.strictEqual(nameColor(inner), 'white')
+				t.diagnostic(`inner: ${hex(inner)} >> white`)
+				assert.strictEqual(nameColor(third), 'black')
+				t.diagnostic(`third: ${hex(third)} >> black`)
+			})
+	})
+
 	test('Infected Mushrooms', async (t) => {
 		await loadImage(join(import.meta.dirname, '../images/infected.jpg'), options)
 			.then(({ accent, outer, inner, third }) => {
