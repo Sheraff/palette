@@ -1,8 +1,8 @@
 import { parentPort, workerData, isMainThread } from 'node:worker_threads'
-import { rgbSpace } from "./spaces/rgb.ts"
-import { oklabSpace } from "./spaces/oklab.ts"
-import { labSpace } from "./spaces/lab.ts"
-import type { ColorSpace } from "./spaces/types.ts"
+import { rgbSpace } from "../spaces/rgb.ts"
+import { oklabSpace } from "../spaces/oklab.ts"
+import { labSpace } from "../spaces/lab.ts"
+import type { ColorSpace } from "../spaces/types.ts"
 
 const difference: Record<string, ColorSpace> = {
 	rgb: rgbSpace,

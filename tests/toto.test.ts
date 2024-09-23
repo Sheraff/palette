@@ -3,8 +3,9 @@ import assert from "node:assert"
 import { nameColor } from "./color-name.ts"
 import sharp from "sharp"
 import { oklabSpace } from "../spaces/oklab.ts"
-import { extractColors, gapStatisticKmeans, type ExtractOptions } from "../extractColors.ts"
+import { extractColors, type ExtractOptions } from "../extractColors.ts"
 import { join } from "node:path"
+import { gapStatisticKmeans } from "../kmeans/gapStatistic.ts"
 
 function loadImage(path: string, options: ExtractOptions) {
 	return sharp(path)
@@ -21,7 +22,7 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 	concurrency: true,
 }, () => {
 	const options: ExtractOptions = {
-		useWorkers: true,
+		useWorkers: false,
 		colorSpace: oklabSpace,
 		clamp: 0.005,
 		strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),

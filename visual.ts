@@ -3,41 +3,43 @@ import * as fs from 'fs'
 import { parseArgs, styleText } from "util"
 import { join } from "path"
 import sharp from "sharp"
-import { elbowKmeans, extractColors, gapStatisticKmeans } from "./extractColors.ts"
+import { extractColors } from "./extractColors.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import { rgbSpace } from "./spaces/rgb.ts"
 import { labSpace } from "./spaces/lab.ts"
+import { gapStatisticKmeans } from "./kmeans/gapStatistic.ts"
+import { elbowKmeans } from "./kmeans/elbow.ts"
 
 const sources = [
-	'images/black-scrambled.jpg',
-	'images/elephunk-scrambled.jpg',
-	'images/horrorwood-scrambled.jpg',
-	'images/meteora-scrambled.jpg',
-	'images/placebo-scrambled.jpg',
-	'images/slim-scrambled.jpg',
-	'images/vvbrown-scrambled.jpg',
-	'images/skap-scrambled.jpg',
-	'images/toxicity-scrambled.jpg',
-	'images/maroon5-scrambled.jpg',
-	'images/birdsofprey-scrambled.jpg',
-	'images/nobs-scrambled.jpg',
-	'images/ybbb-scrambled.jpg',
-	'images/johns-scrambled.jpg',
-	'images/once-scrambled.jpg',
-	'images/orelsan-scrambled.jpg',
-	'images/krafty-scrambled.jpg',
-	'images/muse-scrambled.jpg',
-	'images/franz-scrambled.jpg',
-	'images/loups-scrambled.jpg',
-	'images/knuckles-scrambled.jpg',
-	'images/infected-scrambled.jpg',
-	'images/doja-scrambled.jpg',
-	'images/nada-scrambled.jpg',
-	'images/slipknot-scrambled.jpg',
-	'images/snarky-scrambled.jpg',
-	'images/purered-scrambled.jpg',
-	'images/pureblack-scrambled.jpg',
-	'images/purewhite-scrambled.jpg',
+	'images/black.jpg',
+	'images/elephunk.jpg',
+	'images/horrorwood.jpg',
+	'images/meteora.jpg',
+	'images/placebo.jpg',
+	'images/slim.jpg',
+	'images/vvbrown.jpg',
+	'images/skap.jpg',
+	'images/toxicity.jpg',
+	'images/maroon5.jpg',
+	'images/birdsofprey.jpg',
+	'images/nobs.jpg',
+	'images/ybbb.jpg',
+	'images/johns.jpg',
+	'images/once.jpg',
+	'images/orelsan.jpg',
+	'images/krafty.jpg',
+	'images/muse.jpg',
+	'images/franz.jpg',
+	'images/loups.jpg',
+	'images/knuckles.jpg',
+	'images/infected.jpg',
+	'images/doja.jpg',
+	'images/nada.jpg',
+	'images/slipknot.jpg',
+	'images/snarky.jpg',
+	'images/purered.jpg',
+	'images/pureblack.jpg',
+	'images/purewhite.jpg',
 ]
 
 const cwd = process.cwd()

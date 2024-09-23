@@ -3,6 +3,8 @@ import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import { rgbSpace } from "./spaces/rgb.ts"
 import sharp from "sharp"
+import type { Strategy } from "./kmeans/types.ts"
+import { elbowKmeans } from "./kmeans/elbow.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -58,7 +60,7 @@ export async function extractColors(
 	}
 	groupImperceptiblyDifferentColors(centroids, colorSpace)
 
-	const outer = mainZoneColor(data, meta, colorSpace, centroids, 'outer')
+	const outer = mainZoneColor(data, meta, colorSpace, centroids)
 	const outerLum = colorSpace.lightness(outer)
 
 	const inner = (() => {
@@ -176,49 +178,6 @@ function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent:
 
 function sortColorMap(colors: Map<number, number>): [hex: number, count: number][] {
 	return Array.from(colors.entries()).sort((a, b) => b[1] - a[1])
-}
-
-function countColors2(
-	array: Uint8ClampedArray | Uint8Array,
-	channels: number,
-	colorSpace: ColorSpace
-): Uint32Array {
-	const total = array.length / channels
-	const max = 256 ** Uint32Array.BYTES_PER_ELEMENT - 1
-	if (total > max) throw new Error(`Image is too large, it must be smaller than ${max} pixels`)
-	/**
-	 * Count the number of pixels for each color
-	 */
-	const counts = new Uint32Array(0xffffff)
-	for (let i = 0; i < array.length; i += channels) {
-		const hex = colorSpace.toHex(array, i)
-		counts[hex]++
-	}
-	/**
-	 * Count the number of unique colors
-	 */
-	let colorsCount = 0
-	for (let i = 0; i < counts.length; i++) {
-		const count = counts[i]
-		if (count === 0) continue
-		colorsCount++
-	}
-	/**
-	 * Reduce to a smaller map based on shared array buffer
-	 * using a `Uint32Array` (max 4_294_967_295), in `key-value` pairs:
-	 * - the max `key` is a color, in a 24-bit RGB image, the max color is 16_777_215 (0xffffff)
-	 * - the max `value` is a count of pixels, in a 300x300 image, the max count is 90_000
-	 */
-	const buffer = new SharedArrayBuffer(Uint32Array.BYTES_PER_ELEMENT * colorsCount * 2)
-	const transferable = new Uint32Array(buffer)
-	let j = 0
-	for (let i = 0; i < counts.length; i++) {
-		const count = counts[i]
-		if (count === 0) continue
-		transferable[j++] = i
-		transferable[j++] = count
-	}
-	return transferable
 }
 
 function countColors(
@@ -340,38 +299,28 @@ function mainZoneColor(
 	data: Uint8ClampedArray | Uint8Array,
 	{ width, height, channels }: Meta,
 	colorSpace: ColorSpace,
-	centroids: Map<number, number>,
-	direction: 'outer' | 'inner',
-	exclude: number[] = []
+	centroids: Map<number, number>
 ) {
-	const mult = direction === 'outer' ? 1 : -1
-	const percent = direction === 'outer' ? 0.95 : 0.70
-	// create a new Uint8ClampedArray from the source, which excludes all pixels within `radius` of the center
-	const outside = new Uint8Array({
-		[Symbol.iterator]: function* () {
-			const radius = Math.max(width, height) / 2 * percent
-			const wCenter = width / 2
-			const hCenter = height / 2
-			for (let i = 0; i < data.length; i += channels) {
-				const x = i / channels % width
-				const y = i / channels / width
-				if (Math.hypot(x - wCenter, y - hCenter) * mult > radius * mult) {
-					for (let j = 0; j < channels; j++) {
-						yield data[i + j]
-					}
-				}
-			}
-		}
-	})
+	const map = new Map<number, number>()
 
-	const map = countColors(outside, 3, colorSpace)
+	// create a new Uint8ClampedArray from the source, which excludes all pixels within `radius` of the center
+	const radius = Math.max(width, height) / 2 * 0.95
+	const wCenter = width / 2
+	const hCenter = height / 2
+	for (let i = 0; i < data.length; i += channels) {
+		const x = i / channels % width
+		const y = i / channels / width
+		if (Math.hypot(x - wCenter, y - hCenter) > radius) {
+			const color = colorSpace.toHex(data, i)
+			map.set(color, (map.get(color) || 0) + 1)
+		}
+	}
 
 	const tally = new Map<number, number>()
-	const centroidsArray = Array.from(centroids.keys()).filter(c => !exclude.includes(c))
 	for (const [color, count] of map) {
 		let closest = -1
 		let minDistance = Infinity
-		for (const centroid of centroidsArray) {
+		for (const centroid of centroids.keys()) {
 			const distance = colorSpace.distance(color, centroid)
 			if (distance < minDistance) {
 				minDistance = distance
@@ -381,29 +330,18 @@ function mainZoneColor(
 		tally.set(closest, (tally.get(closest) || 0) + count)
 	}
 
-	const sorted = sortColorMap(tally)
-
-	return sorted[0][0]
-}
-
-async function kmeans(name: string, space: ColorSpace, array: Uint32Array, k: number, useWorkers: boolean) {
-	if (!useWorkers) {
-		const { kmeans } = await import('./kmeans.worker.ts')
-		return kmeans(name, space, array, k)
+	let max = 0
+	let maxColor = 0
+	for (const [color, count] of tally) {
+		if (count > max) {
+			max = count
+			maxColor = color
+		}
 	}
-	const worker = new Worker('./kmeans.worker.ts', {
-		workerData: { buffer: array.buffer, k, space: space.name, name },
-	})
-	worker.unref()
-	return new Promise<{ centroids: Map<number, number>, wcss: number }>((resolve, reject) => {
-		worker.on('message', resolve)
-		worker.on('error', reject)
-		worker.on('exit', (code) => {
-			if (code !== 0)
-				reject(new Error(`Worker stopped with exit code ${code}`))
-		})
-	})
+
+	return maxColor
 }
+
 
 // const degreesToHex = 255 / 360
 // const clamp = (value: number) => Math.max(0, Math.min(255, Math.round(value)))
@@ -425,125 +363,6 @@ async function kmeans(name: string, space: ColorSpace, array: Uint32Array, k: nu
 // 		return clamp(rgb[0]) << 16 | clamp(rgb[1]) << 8 | clamp(rgb[2])
 // 	},
 // }
-
-
-
-
-interface Strategy {
-	(name: string, colorSpace: ColorSpace, data: Uint32Array, size: number, useWorkers: boolean): Promise<Map<number, number>>
-}
-
-/**
- * We don't know how many clusters we need in advance,
- * i.e. how many colors we should divide the pixels into to get the most accurate representation.
- * 
- * We can use the elbow method to find the optimal number of clusters:
- * 1. Compute the Within-Cluster-Sum-of-Squares (WCSS) for different values of K (number of clusters).
- * 2. We take "early" K values (at which the WCSS is still decreasing rapidly) and "late" K values (at which the WCSS is decreasing slowly).
- * 3. We compute the point at which the slopes of the early and late K values intersect.
- * 
- * The "slope intersection" is not trivial to compute and is easily influenced by the `start` and `end` values.
- * It should be improved by using a more sophisticated method, such as the "gap statistic".
- */
-export function elbowKmeans({
-	start = [1, 2, 3, 4],
-	end = [50, 100]
-} = {}): Strategy {
-	return async (name, space, data, size, useWorkers) => {
-		const [startPoints, endPoints] = await Promise.all([
-			Promise.all(start.map(k => kmeans(name, space, data, k, useWorkers))),
-			Promise.all(end.map(k => kmeans(name, space, data, k, useWorkers))),
-		])
-
-		// for 1 cluster per color, we can guarantee that the WCSS is 0, which can be used to compute the slope intersection
-		if (size > end.at(-1)! * 2) {
-			end.push(size)
-			endPoints.push({ centroids: new Map(), wcss: 0 })
-		}
-
-		const startSlope = startPoints.reduce((acc, val, i, arr) => i === 0
-			? 0
-			: acc + (val.wcss - arr[i - 1].wcss) / (start[i] - start[i - 1]),
-			0
-		) / (start.length - 1)
-		const endSlope = endPoints.reduce((acc, val, i, arr) => i === 0
-			? 0
-			: acc + (val.wcss - arr[i - 1].wcss) / (end[i] - end[i - 1]),
-			0
-		) / (end.length - 1)
-
-		const startPoint = startPoints[0].wcss
-		const endPoint = endPoints[0].wcss
-
-		console.log(name, "Start Slope:", startSlope, startPoints.map(p => p.wcss))
-		console.log(name, "End Slope:", endSlope, endPoints.map(p => p.wcss))
-
-		// compute at which K the start slope and end slope intersect
-		// wcss = m * k + b
-		// start: wcss = startSlope * k + startPoint - startSlope * start[0]
-		// end: wcss = endSlope * k + endPoint - endSlope * end[0]
-		// startSlope * k + startPoint - startSlope * start[0] = endSlope * k + endPoint - endSlope * end[0]
-		// k = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
-
-		const _optimal = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
-		console.log(name, "Optimal K:", _optimal)
-		const optimal = Math.round(_optimal)
-
-		const inStart = start.indexOf(optimal)
-		if (inStart !== -1) {
-			return startPoints[inStart].centroids
-		}
-		const inEnd = end.indexOf(optimal)
-		if (inEnd !== -1) {
-			return endPoints[inEnd].centroids
-		}
-
-		return (await kmeans(name, space, data, optimal, useWorkers)).centroids
-	}
-}
-
-// /**
-//  * Using "gap statistic", we tend to get ~7 colors, which might be too many (e.g. black album gets 6 colors)
-//  */
-export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
-	function makeUniformData(size: number) {
-		const max = 0xffffff
-		const step = max / size
-		const array = new Uint32Array(size * 2)
-		for (let i = 0; i < size; i++) {
-			const color = Math.round(i * step)
-			array[i] = color
-			array[i + 1] = 1
-		}
-		return array
-	}
-	return async (name, space, data, size, useWorkers) => {
-		const ks = Array.from({ length: maxK - minK + 1 }, (_, i) => i + minK)
-
-		const reference = makeUniformData(size)
-		const [
-			all,
-			references
-		] = await Promise.all([
-			Promise.all(ks.map(k => kmeans(name, space, data, k, useWorkers))),
-			Promise.all(ks.map(k => kmeans(name, space, reference, k, useWorkers))),
-		])
-
-		const gaps = ks.map((k, i) => {
-			const wk = all[i].wcss
-			const wkb = references[i].wcss
-			const logWk = Math.log(wk)
-			const logWkb = Math.log(wkb)
-			const gap = logWkb - logWk
-			return gap
-		})
-
-		const optimalIndex = gaps.indexOf(Math.max(...gaps))
-		const optimal = ks[optimalIndex]
-		console.log(name, "Optimal K:", optimal)
-		return all[optimalIndex].centroids
-	}
-}
 
 
 
