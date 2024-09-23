@@ -18,23 +18,29 @@ export function elbowKmeans({
 	end = [50, 100]
 } = {}): Strategy {
 	return async (name, space, data, size, useWorkers) => {
+		const n = data.length / 2
+		if (n === 1) return (await kmeans(name, space, data, 1, useWorkers)).centroids
+
+		start = start.filter(k => k < n)
+		end = end.filter(k => k < n)
+
 		const [startPoints, endPoints] = await Promise.all([
 			Promise.all(start.map(k => kmeans(name, space, data, k, useWorkers))),
 			Promise.all(end.map(k => kmeans(name, space, data, k, useWorkers))),
 		])
 
 		// for 1 cluster per color, we can guarantee that the WCSS is 0, which can be used to compute the slope intersection
-		if (size > end.at(-1)! * 2) {
-			end.push(size)
+		if (n > end.at(-1)! * 2) {
+			end.push(n)
 			endPoints.push({ centroids: new Map(), wcss: 0 })
 		}
 
-		const startSlope = startPoints.reduce((acc, val, i, arr) => i === 0
+		const startSlope = start.length < 2 ? 0 : startPoints.reduce((acc, val, i, arr) => i === 0
 			? 0
 			: acc + (val.wcss - arr[i - 1].wcss) / (start[i] - start[i - 1]),
 			0
 		) / (start.length - 1)
-		const endSlope = endPoints.reduce((acc, val, i, arr) => i === 0
+		const endSlope = end.length < 2 ? 0 : endPoints.reduce((acc, val, i, arr) => i === 0
 			? 0
 			: acc + (val.wcss - arr[i - 1].wcss) / (end[i] - end[i - 1]),
 			0

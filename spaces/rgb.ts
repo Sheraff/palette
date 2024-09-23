@@ -22,7 +22,7 @@ export const rgbSpace: ColorSpace = {
 		const z = (hex1 & 0xff) - (hex2 & 0xff)
 		return Math.sqrt(x * x + y * y + z * z)
 	},
-	epsilon: 1,
+	epsilon: 20,
 	lightness(hex) {
 		/**
 		 * source https://gist.github.com/dkaraush/65d19d61396f5f3cd8ba7d1b4b3c9432
