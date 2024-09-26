@@ -9,6 +9,7 @@ import { rgbSpace } from "./spaces/rgb.ts"
 import { labSpace } from "./spaces/lab.ts"
 import { gapStatisticKmeans } from "./kmeans/gapStatistic.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
+import { constant } from "./kmeans/constant.ts"
 
 const sources = [
 	'images/black.jpg',
@@ -223,8 +224,9 @@ const server = http.createServer((req, res) => {
 						clamp: 0.005,
 						// clamp: false,
 						strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
-						// strategy: elbowKmeans({ start: [2, 3, 4], end: [15, 16, 17, 50] }),
+						// strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
 						// strategy: elbowKmeans(),
+						// strategy: constant()
 					}, image)
 
 					const sorted = sortColorMap(centroids)
