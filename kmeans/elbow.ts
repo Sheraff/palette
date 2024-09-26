@@ -35,16 +35,19 @@ export function elbowKmeans({
 			endPoints.push({ centroids: new Map(), wcss: 0 })
 		}
 
-		const startSlope = start.length < 2 ? 0 : startPoints.reduce((acc, val, i, arr) => i === 0
-			? 0
-			: acc + (val.wcss - arr[i - 1].wcss) / (start[i] - start[i - 1]),
-			0
-		) / (start.length - 1)
-		const endSlope = end.length < 2 ? 0 : endPoints.reduce((acc, val, i, arr) => i === 0
-			? 0
-			: acc + (val.wcss - arr[i - 1].wcss) / (end[i] - end[i - 1]),
-			0
-		) / (end.length - 1)
+		// const startSlope = start.length < 2 ? 0 : startPoints.reduce((acc, val, i, arr) => i === 0
+		// 	? 0
+		// 	: acc + (val.wcss - arr[i - 1].wcss) / (start[i] - start[i - 1]),
+		// 	0
+		// ) / (start.length - 1)
+		// const endSlope = end.length < 2 ? 0 : endPoints.reduce((acc, val, i, arr) => i === 0
+		// 	? 0
+		// 	: acc + (val.wcss - arr[i - 1].wcss) / (end[i] - end[i - 1]),
+		// 	0
+		// ) / (end.length - 1)
+
+		const startSlope = computeSlope(start, startPoints)
+		const endSlope = computeSlope(end, endPoints)
 
 		const startPoint = startPoints[0].wcss
 		const endPoint = endPoints[0].wcss
@@ -74,4 +77,19 @@ export function elbowKmeans({
 
 		return (await kmeans(name, space, data, optimal, useWorkers)).centroids
 	}
+}
+
+/** 
+ * Compute the slope of a line given a set of points.
+ * Derived from the formula for the slope of the best-fit line in linear regression
+ */
+function computeSlope(points: number[], results: { wcss: number }[]): number {
+	if (points.length < 2) return 0
+	const n = points.length
+	const sumX = points.reduce((a, b) => a + b, 0)
+	const sumY = results.reduce((a, b) => a + b.wcss, 0)
+	const sumXY = points.reduce((sum, x, i) => sum + x * results[i].wcss, 0)
+	const sumX2 = points.reduce((sum, x) => sum + x * x, 0)
+
+	return (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
 }
