@@ -35,17 +35,6 @@ export function elbowKmeans({
 			endPoints.push({ centroids: new Map(), wcss: 0 })
 		}
 
-		// const startSlope = start.length < 2 ? 0 : startPoints.reduce((acc, val, i, arr) => i === 0
-		// 	? 0
-		// 	: acc + (val.wcss - arr[i - 1].wcss) / (start[i] - start[i - 1]),
-		// 	0
-		// ) / (start.length - 1)
-		// const endSlope = end.length < 2 ? 0 : endPoints.reduce((acc, val, i, arr) => i === 0
-		// 	? 0
-		// 	: acc + (val.wcss - arr[i - 1].wcss) / (end[i] - end[i - 1]),
-		// 	0
-		// ) / (end.length - 1)
-
 		const startSlope = computeSlope(start, startPoints)
 		const endSlope = computeSlope(end, endPoints)
 
@@ -86,10 +75,34 @@ export function elbowKmeans({
 function computeSlope(points: number[], results: { wcss: number }[]): number {
 	if (points.length < 2) return 0
 	const n = points.length
-	const sumX = points.reduce((a, b) => a + b, 0)
-	const sumY = results.reduce((a, b) => a + b.wcss, 0)
-	const sumXY = points.reduce((sum, x, i) => sum + x * results[i].wcss, 0)
-	const sumX2 = points.reduce((sum, x) => sum + x * x, 0)
 
-	return (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)
+	// Detect and handle outliers
+	const cleanedPoints = removeOutliers(points)
+	const cleanedResults = removeOutliers(results.map(r => r.wcss))
+
+	const sumX = cleanedPoints.reduce((a, b) => a + b, 0)
+	const sumY = cleanedResults.reduce((a, b) => a + b, 0)
+	const sumXY = cleanedPoints.reduce((sum, x, i) => sum + x * cleanedResults[i], 0)
+	const sumX2 = cleanedPoints.reduce((sum, x) => sum + x * x, 0)
+
+	const denominator = n * sumX2 - sumX * sumX
+	if (denominator === 0) return 0
+
+	return (n * sumXY - sumX * sumY) / denominator
+}
+
+
+/** 
+ * Remove outliers from an array of numbers.
+ */
+function removeOutliers(data: number[]): number[] {
+	const sortedData = data.slice().sort((a, b) => a - b)
+	const q1 = sortedData[Math.floor((sortedData.length / 4))]
+	const q3 = sortedData[Math.floor((sortedData.length * (3 / 4)))]
+	const iqr = q3 - q1
+
+	const lowerBound = q1 - 1.5 * iqr
+	const upperBound = q3 + 1.5 * iqr
+
+	return data.filter(x => x >= lowerBound && x <= upperBound)
 }
