@@ -22,7 +22,7 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 	concurrency: true,
 }, () => {
 	const options: ExtractOptions = {
-		useWorkers: false,
+		workers: false,
 		colorSpace: oklabSpace,
 		clamp: 0.005,
 		strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),

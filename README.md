@@ -11,7 +11,7 @@ With an emphasis on
 
 ```ts
 const colors = await extractColors(buffer, 3, {
-	useWorkers: true,
+	workers: true,
 	colorSpace: oklabSpace,
 	strategy: gapStatisticKmeans({ max: 10 }),
 	clamp: 0.005,

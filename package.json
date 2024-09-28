@@ -6,6 +6,7 @@
   "scripts": {
     "serve": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types visual.ts",
     "foo": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc extractColors.ts",
+    "bar": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc kmeans/gapStatistic.ts",
     "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts",
     "test": "NODE_NO_WARNINGS=1 node --watch --test --experimental-strip-types tests/toto.test.ts"
   },
@@ -15,6 +16,14 @@
     "colorjs.io": "0.5.2",
     "sharp": "0.33.5",
     "typescript": "5.6.2"
+  },
+  "peerDependencies": {
+    "piscina": "^4.7.0"
+  },
+  "peerDependenciesMeta": {
+    "piscina": {
+      "optional": true
+    }
   },
   "keywords": [],
   "author": "",

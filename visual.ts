@@ -217,14 +217,14 @@ const server = http.createServer((req, res) => {
 						throw new Error('Image must have 3 or 4 channels')
 					}
 					const { centroids, ...rest } = await extractColors(data, info, {
-						useWorkers: true,
+						workers: true,
 						colorSpace: oklabSpace,
 						// colorSpace: rgbSpace,
 						// colorSpace: labSpace,
 						clamp: 0.005,
 						// clamp: false,
-						strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
-						// strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
+						// strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
+						strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
 						// strategy: elbowKmeans(),
 						// strategy: constant()
 					}, image)

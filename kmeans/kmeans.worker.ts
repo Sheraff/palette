@@ -168,11 +168,30 @@ const findColorsForIndices = (data: Uint32Array, i: number): number => data[i * 
 const sumCountsForIndices = (data: Uint32Array, acc: number, i: number): number => acc + data[i * 2 + 1]
 
 
-if (!isMainThread) {
+/** for using this file as a worker without pooling */
+const rawWorkerId = 'no-pooling-call'
+export type StandaloneWorkerData = {
+	id: typeof rawWorkerId
+	buffer: ArrayBuffer
+	k: number
+	space: string
+	name: string
+}
+if (!isMainThread && workerData && workerData.id === 'no-pooling-call') {
 	if (!parentPort) throw new Error('No parent port')
-	const array = new Uint32Array(workerData.buffer)
-	const k = workerData.k
-	const space = workerData.space
-	const name = workerData.name
+	const { buffer, k, space, name } = workerData as StandaloneWorkerData
+	const array = new Uint32Array(buffer)
 	parentPort.postMessage(kmeans(name, difference[space], array, k))
+}
+
+
+/** for using this file as a worker with pooling */
+export type PooledWorkerArgs = {
+	name: string,
+	space: string,
+	array: Uint32Array,
+	k: number
+}
+export default function ({ name, space, array, k }: PooledWorkerArgs) {
+	return kmeans(name, difference[space], array, k)
 }

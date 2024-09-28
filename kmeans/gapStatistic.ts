@@ -16,7 +16,7 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 		}
 		return array
 	}
-	return async (name, space, data, size, useWorkers) => {
+	return async (name, space, data, size, workers) => {
 		const ks = Array.from({ length: maxK - minK + 1 }, (_, i) => i + minK)
 
 		const reference = makeUniformData(size)
@@ -24,8 +24,8 @@ export function gapStatisticKmeans({ maxK = 10, minK = 1 } = {}): Strategy {
 			all,
 			references
 		] = await Promise.all([
-			Promise.all(ks.map(k => kmeans(name, space, data, k, useWorkers))),
-			Promise.all(ks.map(k => kmeans(name, space, reference, k, useWorkers))),
+			Promise.all(ks.map(k => kmeans(name, space, data, k, workers))),
+			Promise.all(ks.map(k => kmeans(name, space, reference, k, workers))),
 		])
 
 		const gaps = ks.map((k, i) => {

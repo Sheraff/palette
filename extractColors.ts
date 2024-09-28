@@ -1,9 +1,6 @@
-import { Worker } from "node:worker_threads"
 import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
-import { rgbSpace } from "./spaces/rgb.ts"
-import sharp from "sharp"
-import type { Strategy } from "./kmeans/types.ts"
+import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 
 type Meta = {
@@ -14,8 +11,13 @@ type Meta = {
 }
 
 export type ExtractOptions = {
-	/** whether to use worker threads for the kmeans algorithm, which is CPU intensive */
-	useWorkers?: boolean
+	/**
+	 * whether to use worker threads for the kmeans algorithm
+	 * - `false` (default): don't use workers (not recommended as this is CPU intensive)
+	 * - `true`: use workers, if piscina is installed they will be pooled automatically
+	 * - `Pool`: use a custom worker pool (should be an instance of `Piscina` or compatible)
+	 */
+	workers?: boolean | Pool
 	colorSpace?: ColorSpace
 	strategy?: Strategy
 	/** when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
@@ -30,7 +32,7 @@ export async function extractColors(
 	source: Uint8ClampedArray | Uint8Array | Buffer,
 	meta: Meta,
 	{
-		useWorkers = true,
+		workers = false,
 		colorSpace = oklabSpace,
 		strategy = elbowKmeans(),
 		clamp = true,
@@ -47,7 +49,7 @@ export async function extractColors(
 	const sorted = sortColorMap(map)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
-	const centroids = await strategy(name, colorSpace, array, total, useWorkers)
+	const centroids = await strategy(name, colorSpace, array, total, workers)
 	if (clamp !== false) {
 		clampCentroidsToOriginalColors(
 			clamp,
