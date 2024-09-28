@@ -1,4 +1,3 @@
-import { Worker } from "node:worker_threads"
 import type { ColorSpace } from "../spaces/types.ts"
 import { join } from "node:path"
 import type { Pool } from "./types.ts"
@@ -38,7 +37,7 @@ export async function kmeans(
 }
 
 const makeStandaloneWorker = () => ({
-	run({ name, space, array, k }) {
+	async run({ name, space, array, k }) {
 		const workerData: StandaloneWorkerData = {
 			id: 'no-pooling-call',
 			buffer: array.buffer,
@@ -46,6 +45,7 @@ const makeStandaloneWorker = () => ({
 			space,
 			name,
 		}
+		const { Worker } = await import("node:worker_threads")
 		const worker = new Worker(join(import.meta.dirname, 'kmeans.worker.ts'), { workerData })
 		worker.unref()
 		return new Promise((resolve, reject) => {
