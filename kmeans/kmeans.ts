@@ -37,26 +37,24 @@ export async function kmeans(
 	})
 }
 
-function makeStandaloneWorker() {
-	return {
-		run({ name, space, array, k }) {
-			const workerData: StandaloneWorkerData = {
-				id: 'no-pooling-call',
-				buffer: array.buffer,
-				k,
-				space,
-				name,
-			}
-			const worker = new Worker(join(import.meta.dirname, 'kmeans.worker.ts'), { workerData })
-			worker.unref()
-			return new Promise((resolve, reject) => {
-				worker.on('message', resolve)
-				worker.on('error', reject)
-				worker.on('exit', (code) => {
-					if (code !== 0)
-						reject(new Error(`Worker stopped with exit code ${code}`))
-				})
-			})
+const makeStandaloneWorker = () => ({
+	run({ name, space, array, k }) {
+		const workerData: StandaloneWorkerData = {
+			id: 'no-pooling-call',
+			buffer: array.buffer,
+			k,
+			space,
+			name,
 		}
+		const worker = new Worker(join(import.meta.dirname, 'kmeans.worker.ts'), { workerData })
+		worker.unref()
+		return new Promise((resolve, reject) => {
+			worker.on('message', resolve)
+			worker.on('error', reject)
+			worker.on('exit', (code) => {
+				if (code !== 0)
+					reject(new Error(`Worker stopped with exit code ${code}`))
+			})
+		})
 	}
-}
+})
