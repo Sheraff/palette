@@ -20,7 +20,7 @@ const colors = await extractColors(buffer, 3, {
 
 ## How does it work
 
-| foo | fii |
+| image | step |
 |-----|-----|
 | ![maroon5-scrambled](https://github.com/user-attachments/assets/cfebd938-680a-4a1c-99ca-c78c695c1c83) | original image (*here the original image is scrambled to avoid infringing on copyrights*) |
 | <img width="298" alt="Screenshot 2024-09-29 at 14 52 30" src="https://github.com/user-attachments/assets/d492f285-b65b-488b-b007-41ea189738fa"> | main colors are extracted by kmeans clustering |
