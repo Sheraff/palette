@@ -1,14 +1,6 @@
 import { parentPort, workerData, isMainThread } from 'node:worker_threads'
-import { rgbSpace } from "../spaces/rgb.ts"
-import { oklabSpace } from "../spaces/oklab.ts"
-import { labSpace } from "../spaces/lab.ts"
 import type { ColorSpace } from "../spaces/types.ts"
-
-const difference: Record<string, ColorSpace> = {
-	rgb: rgbSpace,
-	oklab: oklabSpace,
-	lab: labSpace,
-}
+import { spacesByKey } from "../spaces/spacesByKey.ts"
 
 /**
  * Euclidian center of mass of a cluster in arbitrary color space
@@ -181,7 +173,7 @@ if (!isMainThread && workerData && workerData.id === 'no-pooling-call') {
 	if (!parentPort) throw new Error('No parent port')
 	const { buffer, k, space, name } = workerData as StandaloneWorkerData
 	const array = new Uint32Array(buffer)
-	parentPort.postMessage(kmeans(name, difference[space], array, k))
+	parentPort.postMessage(kmeans(name, spacesByKey[space], array, k))
 }
 
 
@@ -193,5 +185,5 @@ export type PooledWorkerArgs = {
 	k: number
 }
 export default function ({ name, space, array, k }: PooledWorkerArgs) {
-	return kmeans(name, difference[space], array, k)
+	return kmeans(name, spacesByKey[space], array, k)
 }

@@ -1,11 +1,17 @@
-import type { ColorSpace } from "./spaces/types"
+import { isMainThread, parentPort, workerData } from "node:worker_threads"
+import type { ColorSpace } from "../spaces/types"
+import { spacesByKey } from "../spaces/spacesByKey.ts"
 
-export function ittiKochSaliency(
+/**
+ * Compute the Itti-Koch saliency map
+ */
+export function saliency(
 	space: ColorSpace,
 	data: Uint8ClampedArray | Uint8Array,
 	width: number,
 	height: number,
 	channels: number,
+	/** in which to store the results, should be of size `width * height * Uint8Array.BYTES_PER_ELEMENT` */
 	destination: Uint8ClampedArray | Uint8Array
 ): void {
 	const LEVELS = Math.floor(Math.log2(Math.min(width, height)))
@@ -117,4 +123,55 @@ function otsuThreshold(saliencyMap: Uint8ClampedArray): number {
 
 function easeInOutCubic(x: number): number {
 	return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
+}
+
+
+
+
+
+/** for using this file as a worker without pooling */
+const rawWorkerId = 'no-pooling-call'
+export type StandaloneWorkerData = {
+	id: typeof rawWorkerId
+	data: ArrayBuffer
+	buffer: ArrayBuffer
+	space: string
+	name: string
+	width: number,
+	height: number,
+	channels: number,
+}
+if (!isMainThread && workerData && workerData.id === 'no-pooling-call') {
+	if (!parentPort) throw new Error('No parent port')
+	const { buffer, space, name, channels, height, width, data } = workerData as StandaloneWorkerData
+	parentPort.postMessage(saliency(
+		spacesByKey[space],
+		new Uint8Array(data),
+		width,
+		height,
+		channels,
+		new Uint8Array(buffer)
+	))
+}
+
+
+/** for using this file as a worker with pooling */
+export type PooledWorkerArgs = {
+	name: string,
+	space: string,
+	data: Uint8Array | Uint8ClampedArray,
+	result: Uint8Array | Uint8ClampedArray,
+	width: number,
+	height: number,
+	channels: number,
+}
+export default function ({ channels, data, height, result, space, width }: PooledWorkerArgs) {
+	return saliency(
+		spacesByKey[space],
+		data,
+		width,
+		height,
+		channels,
+		result
+	)
 }

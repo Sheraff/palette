@@ -2,7 +2,7 @@ import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
-import { ittiKochSaliency } from "./saliency.ts"
+import { saliency } from "./saliency/saliency.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -31,6 +31,11 @@ export type ExtractOptions = {
 	saliencyWeight?: number
 }
 
+/**
+ * - `undefined` means we haven't tried to import piscina yet
+ * - `null` means piscina is not available
+ */
+let localPool: Pool | null | undefined
 
 export async function extractColors(
 	/** image data, must be smaller than 4_294_967_295 (equivalent to a 65_535 x 65_535 square) */
@@ -47,14 +52,29 @@ export async function extractColors(
 	}: ExtractOptions = {},
 	name = ""
 ) {
+	if (workers === true) {
+		if (localPool === undefined) {
+			try {
+				const { default: Piscina } = await import("piscina")
+				localPool = new Piscina({
+					idleTimeout: 100,
+				})
+			} catch {
+				localPool = null
+			}
+		}
+		if (localPool) {
+			workers = localPool
+		}
+	}
 	const trimmed = trimSource(source, meta, trimPercent)
 	const data = trimmed[0]
 	meta = trimmed[1]
 	const total = data.length / meta.channels
 
-	const saliency = new Uint8ClampedArray(meta.width * meta.height)
-	ittiKochSaliency(colorSpace, data, meta.width, meta.height, meta.channels, saliency)
-	const map = countColors(data, meta, colorSpace, saliency, saliencyWeight)
+	const saliencyMap = new Uint8ClampedArray(new SharedArrayBuffer(meta.width * meta.height * Uint8ClampedArray.BYTES_PER_ELEMENT))
+	await saliency(name, colorSpace, data, saliencyMap, meta.width, meta.height, meta.channels, workers)
+	const map = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
 	const sorted = sortColorMap(map)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
@@ -139,10 +159,10 @@ export async function extractColors(
 		// sum of each color's saliency
 		const salientColors = new Map<number, number>()
 		let saliencyTotal = 0
-		for (let i = 0; i < saliency.length; i += 1) {
+		for (let i = 0; i < saliencyMap.length; i += 1) {
 			const index = i * meta.channels
 			const hex = colorSpace.toHex(data, index)
-			const value = saliency[i]
+			const value = saliencyMap[i]
 			saliencyTotal += value
 			salientColors.set(hex, (salientColors.get(hex) || 0) + value)
 		}

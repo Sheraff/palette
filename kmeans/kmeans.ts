@@ -3,8 +3,6 @@ import { join } from "node:path"
 import type { Pool } from "./types.ts"
 import type { PooledWorkerArgs, StandaloneWorkerData } from "./kmeans.worker"
 
-let localPool: Pool
-
 export async function kmeans(
 	name: string,
 	space: ColorSpace,
@@ -19,17 +17,9 @@ export async function kmeans(
 		const { kmeans } = await import('./kmeans.worker.ts')
 		return kmeans(name, space, array, k)
 	}
-	if (workers === true && !localPool) {
-		try {
-			const { default: Piscina } = await import("piscina")
-			localPool = new Piscina({
-				idleTimeout: 100,
-			})
-		} catch {
-			localPool = makeStandaloneWorker()
-		}
-	}
-	const pool = workers === true ? localPool : workers
+	const pool = workers === true
+		? makeStandaloneWorker()
+		: workers
 	const workerArgs: PooledWorkerArgs = { name, space: space.name, array, k }
 	return await pool.run(workerArgs, {
 		filename: join(import.meta.dirname, 'kmeans.worker.ts'),

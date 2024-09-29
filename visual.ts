@@ -11,7 +11,7 @@ import { gapStatisticKmeans } from "./kmeans/gapStatistic.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { constant } from "./kmeans/constant.ts"
 import { extractTextRegions } from "./edgeDetection.ts"
-import { ittiKochSaliency } from "./saliency.ts"
+import { saliency } from "./saliency/saliency.ts"
 // import { extractTextRegions } from "./textRegions.ts"
 
 const sources = [
@@ -193,9 +193,9 @@ const server = http.createServer((req, res) => {
 			transformed
 				.raw({ depth: "uchar" })
 				.toBuffer({ resolveWithObject: true })
-				.then(({ data, info }) => {
-					const saliencyMap = new Uint8ClampedArray(info.width * info.height)
-					ittiKochSaliency(oklabSpace, data, info.width, info.height, info.channels, saliencyMap)
+				.then(async ({ data, info }) => {
+					const saliencyMap = new Uint8ClampedArray(new SharedArrayBuffer(info.width * info.height * Uint8ClampedArray.BYTES_PER_ELEMENT))
+					await saliency(image, oklabSpace, data, saliencyMap, info.width, info.height, info.channels, false)
 					const result = new Uint8Array(info.width * info.height * 4)
 					for (let i = 0; i < saliencyMap.length; i++) {
 						const value = saliencyMap[i]
