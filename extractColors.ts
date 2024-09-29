@@ -47,7 +47,7 @@ export async function extractColors(
 		strategy = elbowKmeans(),
 		clamp = 0.005,
 		trimPercent = 2.5,
-		minForegroundContrast = 20,
+		minForegroundContrast = 22,
 		saliencyWeight = 2,
 	}: ExtractOptions = {},
 	name = ""
@@ -292,6 +292,15 @@ export async function extractColors(
 		if (maxColor === -1) {
 			return inner
 		}
+		// console.log(name, "Accent color contrast w/ outer", colorSpace.contrast(outer, maxColor))
+		// if (colorSpace.contrast(outer, maxColor) < minForegroundContrast) {
+		// 	const contrasted = colorSpace.increaseContrast(maxColor, outer, inner, minForegroundContrast, true)
+		// 	const count = centroids.get(maxColor)!
+		// 	centroids.delete(maxColor)
+		// 	centroids.set(contrasted, count)
+		// 	innerColors[innerColors.indexOf(maxColor)] = contrasted
+		// 	maxColor = contrasted
+		// }
 		return maxColor
 	})()
 
@@ -314,8 +323,38 @@ export async function extractColors(
 		if (maxColor === -1) {
 			return outer
 		}
+		// const lacksContrastWithInner = colorSpace.contrast(maxColor, inner) < minForegroundContrast
+		// const lacksContrastWithAccent = colorSpace.contrast(maxColor, accent) < minForegroundContrast
+		// if (lacksContrastWithInner || lacksContrastWithAccent) {
+		// 	let contrasted = maxColor
+		// 	if (lacksContrastWithInner) contrasted = colorSpace.increaseContrast(contrasted, inner, outer, minForegroundContrast, false)
+		// 	if (lacksContrastWithAccent) contrasted = colorSpace.increaseContrast(contrasted, accent, outer, minForegroundContrast, false)
+		// 	const count = centroids.get(maxColor)!
+		// 	centroids.delete(maxColor)
+		// 	centroids.set(contrasted, count)
+		// 	outerColors[outerColors.indexOf(maxColor)] = contrasted
+		// 	maxColor = contrasted
+		// }
 		return maxColor
 	})()
+
+	const readable = (c: number) => '#' + colorSpace.toRgb(c).toString(16).padStart(6, '0')
+
+	console.log(name, "Summary: ---------------------------")
+	console.log("Background", readable(outer))
+	console.log("Foreground", readable(inner))
+	console.log("Accent", readable(accent))
+	console.log("Gradient", readable(third))
+	console.log(">> contrast outer/inner", Math.round(colorSpace.contrast(outer, inner)))
+	console.log(">> contrast outer/accent", Math.round(colorSpace.contrast(outer, accent)))
+	console.log(">> contrast gradient/inner", Math.round(colorSpace.contrast(third, inner)))
+	console.log(">> contrast gradient/accent", Math.round(colorSpace.contrast(third, accent)))
+	console.log("°° lightness outer", Math.round(colorSpace.lightness(outer)))
+	console.log("°° lightness inner", Math.round(colorSpace.lightness(inner)))
+	console.log("°° lightness accent", Math.round(colorSpace.lightness(accent)))
+	console.log("°° lightness gradient", Math.round(colorSpace.lightness(third)))
+	console.log('------------------------------------')
+
 
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),

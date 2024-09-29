@@ -115,5 +115,37 @@ export const oklabSpace: ColorSpace = {
 		/** [0-150] (interval is theoretical, RGB values only reach ~ [0-26]) */
 		const chroma = isAchromatic ? 0 : Math.sqrt(a ** 2 + b ** 2)
 		return chroma / 1.5
+	},
+	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean) {
+		let contrast = 0
+		let result = of
+		let l = oklabSpace.lightness(of)
+		let c = oklabSpace.chroma(of)
+		const a = (of >> 8 & 0xff) / negativePercentToHex - 100
+		const b = (of & 0xff) / negativePercentToHex - 100
+		const h = Math.abs(a) < 0.0002 && Math.abs(b) < 0.0002 ? NaN : (((Math.atan2(b, a) * 180) / Math.PI % 360) + 360) % 360
+		const lumTowards = oklabSpace.lightness(towards)
+		const lumAgainst = oklabSpace.lightness(against)
+		const lighter = lumTowards > lumAgainst
+		const add = lighter ? 1 : -1
+		let iterations = 0
+		while (contrast < desired) {
+			l += add
+			c -= 0.01
+			if (l <= 0 || l >= 100) break
+
+			iterations++
+			const a = Math.round((c * Math.cos(h * Math.PI / 180) + 100) * negativePercentToHex)
+			const b = Math.round((c * Math.sin(h * Math.PI / 180) + 100) * negativePercentToHex)
+			result = ((l * 2.06) << 16) | (a << 8) | b
+
+			contrast = foreground
+				? oklabSpace.contrast(against, result)
+				: oklabSpace.contrast(result, against)
+		}
+		console.log('Adjusted contrast', {
+			contrast, iterations, lumTowards, lumAgainst, lighter
+		}, '#' + oklabSpace.toRgb(of).toString(16).padStart(6, '0'), '#' + oklabSpace.toRgb(result).toString(16).padStart(6, '0'))
+		return result
 	}
 }

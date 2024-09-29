@@ -6,6 +6,8 @@ const rgb2srgbLinearBase = (c: number) => ((c + 0.055) / 1.055) ** factIn
 const factOut = 1 / factIn
 const srgbLinear2rgbBase = (c: number) => 1.055 * (c ** factOut) - 0.055
 
+const clamp = (value: number) => Math.max(0, Math.min(255, Math.round(value)))
+
 const dε = .000075
 
 export const rgbSpace: ColorSpace = {
@@ -82,4 +84,47 @@ export const rgbSpace: ColorSpace = {
 
 		return chroma / 1.5
 	},
+	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean) {
+		let contrast = 0
+		let result = of
+		const lumTowards = rgbSpace.lightness(towards)
+		const lumAgainst = rgbSpace.lightness(against)
+		const lighter = lumTowards > lumAgainst
+		const add = lighter ? 0.01 : -0.01
+
+		const r = result >> 16 & 0xff
+		const g = result >> 8 & 0xff
+		const b = result & 0xff
+
+		const sr = rgb2srgbLinearBase(r)
+		const sg = rgb2srgbLinearBase(g)
+		const sb = rgb2srgbLinearBase(b)
+
+		const x = 0.41239079926595934 * sr + 0.357584339383878 * sg + 0.1804807884018343 * sb
+		let y = 0.21263900587151027 * sr + 0.715168678767756 * sg + 0.07219231536073371 * sb
+		const z = 0.01933081871559182 * sr + 0.11919477979462598 * sg + 0.9505321522496607 * sb
+
+		while (contrast < desired) {
+			y += add
+			if (y <= 0 || y >= 1) {
+				break
+			}
+
+			const nsr = 3.2409699419045226 * x + -1.537383177570094 * y + -0.4986107602930034 * z
+			const nsg = -0.9692436362808796 * x + 1.8759675015077202 * y + 0.04155505740717559 * z
+			const nsb = 0.05563007969699366 * x + -0.20397695888897652 * y + 1.0569715142428786 * z
+
+			const nr = clamp(srgbLinear2rgbBase(nsr))
+			const ng = clamp(srgbLinear2rgbBase(nsg))
+			const nb = clamp(srgbLinear2rgbBase(nsb))
+
+			result = nr << 16 | ng << 8 | nb
+
+			contrast = foreground
+				? rgbSpace.contrast(against, result)
+				: rgbSpace.contrast(result, against)
+		}
+
+		return result
+	}
 }
