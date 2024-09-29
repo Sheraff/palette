@@ -2,6 +2,7 @@ import type { ColorSpace } from "./spaces/types.ts"
 import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
+import { ittiKochSaliency } from "./saliency.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -20,10 +21,14 @@ export type ExtractOptions = {
 	workers?: boolean | Pool
 	colorSpace?: ColorSpace
 	strategy?: Strategy
-	/** when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
+	/** [0-100] when enabled, forbids the use of colors that aren't in the initial data in the final result, use a [0-100] number to impose a % floor under which use of those colors is also forbidden */
 	clamp?: boolean | number
-	/** how much of the image to trim on each side, trimming helps avoid border artifacts */
+	/** [0-100] how much of the image to trim on each side, trimming helps avoid border artifacts */
 	trimPercent?: number
+	/** [0-100] when extracting the text/foreground color, the minimum contrast with the background color, default to 20 */
+	minForegroundContrast?: number
+	/** importance of salient feature detection in the color extraction, default to 2 */
+	saliencyWeight?: number
 }
 
 
@@ -35,8 +40,10 @@ export async function extractColors(
 		workers = false,
 		colorSpace = oklabSpace,
 		strategy = elbowKmeans(),
-		clamp = true,
+		clamp = 0.005,
 		trimPercent = 2.5,
+		minForegroundContrast = 20,
+		saliencyWeight = 2,
 	}: ExtractOptions = {},
 	name = ""
 ) {
@@ -45,7 +52,9 @@ export async function extractColors(
 	meta = trimmed[1]
 	const total = data.length / meta.channels
 
-	const map = countColors(data, meta.channels, colorSpace)
+	const saliency = new Uint8ClampedArray(meta.width * meta.height)
+	ittiKochSaliency(colorSpace, data, meta.width, meta.height, meta.channels, saliency)
+	const map = countColors(data, meta, colorSpace, saliency, saliencyWeight)
 	const sorted = sortColorMap(map)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
@@ -65,7 +74,111 @@ export async function extractColors(
 	const outer = mainZoneColor(data, meta, colorSpace, centroids)
 	const outerLum = colorSpace.lightness(outer)
 
+	// const inner = (() => {
+	// 	const { data: text } = extractTextRegions(data, meta)
+	// 	const textColors = countColors(text, meta.channels, colorSpace)
+	// 	const clamped = new Map<number, number>()
+	// 	for (const [color, count] of textColors) {
+	// 		let minDistance = Infinity
+	// 		let closest: number = -1
+	// 		for (const centroid of centroids.keys()) {
+	// 			const distance = colorSpace.distance(color, centroid)
+	// 			if (distance < minDistance) {
+	// 				minDistance = distance
+	// 				closest = centroid
+	// 			}
+	// 		}
+	// 		clamped.set(closest, (clamped.get(closest) || 0) + count)
+	// 	}
+	// 	// by ratio, color that is the most prevalent in `clamped` but not in `centroids`
+	// 	const textTotal = text.length / meta.channels
+	// 	const diff = Array.from(clamped.keys()).map(t => {
+	// 		const textRatio = clamped.get(t)! / textTotal
+	// 		const colorRatio = centroids.get(t)! / total
+	// 		const delta = ((textRatio - colorRatio) + 100) / 2
+	// 		return [t, delta]
+	// 	}).sort((a, b) => b[1] - a[1])
+	// 	const main = diff.filter((d, i) => i === 0 || (d[1] > 0 && d[1] >= diff[0][1] * 0.999))
+	// 	let textContrastValue = 0
+	// 	let textContrastColor = 0
+	// 	for (const [color] of main) {
+	// 		const contrast = colorSpace.contrast(outer, color)
+	// 		if (contrast > textContrastValue) {
+	// 			textContrastValue = contrast
+	// 			textContrastColor = color
+	// 		}
+	// 	}
+	// 	if (textContrastValue && colorSpace.distance(textContrastColor, outer) > 20) {
+	// 		console.log(name, "Inner Color from Text: #", colorSpace.toRgb(textContrastColor).toString(16).padStart(6, '0'))
+	// 		return textContrastColor
+	// 	}
+	// 	let maxContrastValue = 0
+	// 	let maxContrastColor = 0
+	// 	for (const color of centroids.keys()) {
+	// 		if (color === outer) continue
+	// 		const contrast = colorSpace.contrast(outer, color)
+	// 		if (contrast > maxContrastValue) {
+	// 			maxContrastValue = contrast
+	// 			maxContrastColor = color
+	// 		}
+	// 	}
+	// 	if (maxContrastValue < 20) {
+	// 		const white = colorSpace.toHex([255, 255, 255], 0)
+	// 		const black = colorSpace.toHex([0, 0, 0], 0)
+	// 		const cw = colorSpace.contrast(outer, white)
+	// 		const cb = colorSpace.contrast(outer, black)
+	// 		const newColor = cw > cb ? white : black
+	// 		centroids.set(newColor, 1)
+	// 		centroids.set(outer, centroids.get(outer)! - 1)
+	// 		return newColor
+	// 	}
+	// 	return maxContrastColor
+	// })()
+
 	const inner = (() => {
+		// sum of each color's saliency
+		const salientColors = new Map<number, number>()
+		let saliencyTotal = 0
+		for (let i = 0; i < saliency.length; i += 1) {
+			const index = i * meta.channels
+			const hex = colorSpace.toHex(data, index)
+			const value = saliency[i]
+			saliencyTotal += value
+			salientColors.set(hex, (salientColors.get(hex) || 0) + value)
+		}
+		// map each color to the closest centroid
+		const clamped = new Map<number, number>()
+		for (const [color, count] of salientColors) {
+			let minDistance = Infinity
+			let closest: number = -1
+			for (const centroid of centroids.keys()) {
+				const distance = colorSpace.distance(color, centroid)
+				if (distance < minDistance) {
+					minDistance = distance
+					closest = centroid
+				}
+			}
+			clamped.set(closest, (clamped.get(closest) || 0) + count)
+		}
+		// by ratio, color whose prevalence has most increased from `centroids` to `clamped`
+		const diff = Array.from(clamped.keys()).map(t => {
+			const saliencyRatio = clamped.get(t)! / saliencyTotal
+			const colorRatio = centroids.get(t)! / total
+			const delta = ((saliencyRatio - colorRatio) + 100) / 2
+			return [t, delta] as const
+		})
+			.filter(([, delta]) => delta > 0)
+			.sort((a, b) => b[1] - a[1])
+
+		// find the color with the highest ratio delta that has enough contrast with the outer color
+		const contrasted = diff.find(([color]) => colorSpace.contrast(outer, color) >= minForegroundContrast)
+		if (contrasted) {
+			console.log(name, "Inner Color from Saliency: #", colorSpace.toRgb(contrasted[0]).toString(16).padStart(6, '0'))
+			return contrasted[0]
+		}
+		console.log(name, "Inner Color NOT FOUND IN SALIENCY")
+
+		// fallback to the color with the highest contrast with the outer color
 		let maxContrastValue = 0
 		let maxContrastColor = 0
 		for (const color of centroids.keys()) {
@@ -76,18 +189,44 @@ export async function extractColors(
 				maxContrastColor = color
 			}
 		}
-		if (maxContrastValue < 20) {
-			const white = colorSpace.toHex([255, 255, 255], 0)
-			const black = colorSpace.toHex([0, 0, 0], 0)
-			const cw = colorSpace.contrast(outer, white)
-			const cb = colorSpace.contrast(outer, black)
-			const newColor = cw > cb ? white : black
-			centroids.set(newColor, 1)
-			centroids.set(outer, centroids.get(outer)! - 1)
-			return newColor
+		if (maxContrastValue >= minForegroundContrast) {
+			return maxContrastColor
 		}
-		return maxContrastColor
+
+		// fallback to black or white, whichever has the highest contrast with the outer color
+		const white = colorSpace.toHex([255, 255, 255], 0)
+		const black = colorSpace.toHex([0, 0, 0], 0)
+		const cw = colorSpace.contrast(outer, white)
+		const cb = colorSpace.contrast(outer, black)
+		const newColor = cw > cb ? white : black
+		centroids.set(newColor, 1)
+		centroids.set(outer, centroids.get(outer)! - 1)
+		return newColor
 	})()
+
+	// const inner = (() => {
+	// 	let maxContrastValue = 0
+	// 	let maxContrastColor = 0
+	// 	for (const color of centroids.keys()) {
+	// 		if (color === outer) continue
+	// 		const contrast = colorSpace.contrast(outer, color)
+	// 		if (contrast > maxContrastValue) {
+	// 			maxContrastValue = contrast
+	// 			maxContrastColor = color
+	// 		}
+	// 	}
+	// 	if (maxContrastValue < 20) {
+	// 		const white = colorSpace.toHex([255, 255, 255], 0)
+	// 		const black = colorSpace.toHex([0, 0, 0], 0)
+	// 		const cw = colorSpace.contrast(outer, white)
+	// 		const cb = colorSpace.contrast(outer, black)
+	// 		const newColor = cw > cb ? white : black
+	// 		centroids.set(newColor, 1)
+	// 		centroids.set(outer, centroids.get(outer)! - 1)
+	// 		return newColor
+	// 	}
+	// 	return maxContrastColor
+	// })()
 	const innerLum = colorSpace.lightness(inner)
 	const outerColors = Array.from(centroids.keys()).filter(c => {
 		const lum = colorSpace.lightness(c)
@@ -184,13 +323,25 @@ function sortColorMap(colors: Map<number, number>): [hex: number, count: number]
 
 function countColors(
 	array: Uint8ClampedArray | Uint8Array,
-	channels: number,
-	colorSpace: ColorSpace
+	meta: Meta,
+	colorSpace: ColorSpace,
+	saliency: Uint8ClampedArray,
+	saliencyWeight: number
 ): Map<number, number> {
 	const colors = new Map<number, number>()
-	for (let i = 0; i < array.length; i += channels) {
-		const hex = colorSpace.toHex(array, i)
-		colors.set(hex, (colors.get(hex) || 0) + 1)
+	let added = 0
+	for (let i = 0; i < array.length / meta.channels; i += 1) {
+		const index = i * meta.channels
+		const salient = saliency[i] * saliencyWeight
+		added += salient
+		const hex = colorSpace.toHex(array, index)
+		colors.set(hex, (colors.get(hex) || 0) + 1 + salient)
+	}
+	if (saliencyWeight) {
+		const total = array.length / meta.channels
+		for (const [color, count] of colors) {
+			colors.set(color, Math.round(count / (total + added) * total))
+		}
 	}
 	return colors
 }

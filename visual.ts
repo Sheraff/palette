@@ -10,6 +10,9 @@ import { labSpace } from "./spaces/lab.ts"
 import { gapStatisticKmeans } from "./kmeans/gapStatistic.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { constant } from "./kmeans/constant.ts"
+import { extractTextRegions } from "./edgeDetection.ts"
+import { ittiKochSaliency } from "./saliency.ts"
+// import { extractTextRegions } from "./textRegions.ts"
 
 const sources = [
 	'images/black.jpg',
@@ -59,7 +62,7 @@ const server = http.createServer((req, res) => {
 		res.write('<h1>Album Art Color Extractor</h1>')
 		res.write(`<ul style="
 			display:grid;
-			grid-template-columns:repeat(auto-fill, 1000px);
+			grid-template-columns:repeat(auto-fill, 1200px);
 			gap:1rem;
 			padding:1rem;
 			list-style:none;
@@ -67,7 +70,7 @@ const server = http.createServer((req, res) => {
 		for (const source of sources) {
 			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
 				<img src="/image/${source}" width=200 />
-				<!--<img src="/image/${source}?small" width=200 />-->
+				<img src="/image/${source}?saliency" width=200 />
 				<div style="
 					display:flex;
 					aspect-ratio:1;
@@ -169,7 +172,52 @@ const server = http.createServer((req, res) => {
 		}
 		const transformed = sharp(path)
 
-		if (format === 'small') {
+		if (format === 'text') {
+			transformed
+				.raw({ depth: "uchar" })
+				.toBuffer({ resolveWithObject: true })
+				.then(({ data, info }) => {
+					const { regions } = extractTextRegions(data, info)
+					sharp(regions.buffer, { raw: { width: info.width, height: info.height, channels: info.channels } })
+						.jpeg()
+						.toBuffer()
+						.then(textData => {
+							res.writeHead(200, { 'Content-Type': 'image/jpeg' })
+							res.end(textData)
+						})
+				})
+			return
+		}
+
+		if (format === 'saliency') {
+			transformed
+				.raw({ depth: "uchar" })
+				.toBuffer({ resolveWithObject: true })
+				.then(({ data, info }) => {
+					const saliencyMap = new Uint8ClampedArray(info.width * info.height)
+					ittiKochSaliency(oklabSpace, data, info.width, info.height, info.channels, saliencyMap)
+					const result = new Uint8Array(info.width * info.height * 4)
+					for (let i = 0; i < saliencyMap.length; i++) {
+						const value = saliencyMap[i]
+						const a = i * 4
+						const b = i * info.channels
+						result[a + 0] = data[b + 0] * value
+						result[a + 1] = data[b + 1] * value
+						result[a + 2] = data[b + 2] * value
+						result[a + 3] = value * 255
+					}
+					sharp(result.buffer, { raw: { width: info.width, height: info.height, channels: 4 } })
+						.png()
+						.toBuffer()
+						.then(textData => {
+							res.writeHead(200, { 'Content-Type': 'image/png' })
+							res.end(textData)
+						})
+				})
+			return
+		}
+
+		if (format === 'mask') {
 			transformed
 				// .resize(300, 300, {
 				// 	fit: "cover",
