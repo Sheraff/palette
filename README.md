@@ -1,5 +1,11 @@
 # Color palette extraction
 
+> [!WARNING]
+> This library is still in development and the API is subject to change.
+> - The entry point is `extractColors.ts`
+> - use `pnpm test` to launch the tests
+> - use `pnpm serve` to get a visual preview of what is happening on `localhost:3000`
+
 With an emphasis on 
 - **Accuracy**, using a clustering algorithm and saliency feature detection to find the most representative colors.
   *Other libraries use a simple histogram and manual thresholding / quantization*
@@ -37,3 +43,14 @@ const colors = await extractColors(buffer, 3, {
 ## Multi-threading
 
 A lot of the work done by this library is CPU intensive, so is performance is *at all* a concern, you should enable multithreading by using the `workers: true` option. If [`piscina`](https://www.npmjs.com/package/piscina) is installed, it will be used to manage the worker pool, and the pool can be provided (`worker: pool`) to integrate with the rest of your application
+
+## Unit-testing colors
+
+Because changes on "color manipulation" algorithms can be chaotic, we need to be able to test our resulting colors with some form of *fuzzy matching*. Additionally, color codes don't immediately mentally map to actual colors, making tests hard to read.
+
+For this we base our tests on "named colors" (taken from the CSS list):
+```ts
+t.diagnostic(`accent: ${hex(accent)} >> ${nameColor(accent)} (${simpleColor(accent)})`)
+assert.strictEqual(nameColor(accent), 'lightcoral')
+// will output: ℹ accent: #f85963 >> lightcoral (salmon)
+```
