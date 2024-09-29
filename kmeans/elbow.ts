@@ -51,9 +51,11 @@ export function elbowKmeans({
 		// startSlope * k + startPoint - startSlope * start[0] = endSlope * k + endPoint - endSlope * end[0]
 		// k = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
 
-		const _optimal = (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
+		const _optimal = startSlope - endSlope === 0
+			? 1
+			: (endPoint - endSlope * end[0] - startPoint + startSlope * start[0]) / (startSlope - endSlope)
 		console.log(name, "Optimal K:", _optimal)
-		const optimal = Math.round(_optimal)
+		const optimal = Math.ceil(_optimal)
 
 		const inStart = start.indexOf(optimal)
 		if (inStart !== -1) {
@@ -77,8 +79,9 @@ function computeSlope(points: number[], results: { wcss: number }[]): number {
 	const n = points.length
 
 	// Detect and handle outliers
-	const cleanedPoints = removeOutliers(points)
-	const cleanedResults = removeOutliers(results.map(r => r.wcss))
+	const outliers = findOutlierIndices(results.map(r => r.wcss))
+	const cleanedPoints = points.filter((_, i) => !outliers.includes(i))
+	const cleanedResults = results.filter((_, i) => !outliers.includes(i)).map(r => r.wcss)
 
 	const sumX = cleanedPoints.reduce((a, b) => a + b, 0)
 	const sumY = cleanedResults.reduce((a, b) => a + b, 0)
@@ -95,7 +98,7 @@ function computeSlope(points: number[], results: { wcss: number }[]): number {
 /** 
  * Remove outliers from an array of numbers.
  */
-function removeOutliers(data: number[]): number[] {
+function findOutlierIndices(data: number[]): number[] {
 	const sortedData = data.slice().sort((a, b) => a - b)
 	const q1 = sortedData[Math.floor((sortedData.length / 4))]
 	const q3 = sortedData[Math.floor((sortedData.length * (3 / 4)))]
@@ -104,5 +107,5 @@ function removeOutliers(data: number[]): number[] {
 	const lowerBound = q1 - 1.5 * iqr
 	const upperBound = q3 + 1.5 * iqr
 
-	return data.filter(x => x >= lowerBound && x <= upperBound)
+	return data.map((_, i) => i).filter(i => data[i] < lowerBound || data[i] > upperBound)
 }
