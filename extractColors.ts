@@ -155,20 +155,20 @@ export async function extractColors(
 	// 	return maxContrastColor
 	// })()
 
-	const inner = (() => {
-		// sum of each color's saliency
-		const salientColors = new Map<number, number>()
+	const salientColors = new Map<number, number>()
+	{
+		const base = new Map<number, number>()
 		let saliencyTotal = 0
 		for (let i = 0; i < saliencyMap.length; i += 1) {
 			const index = i * meta.channels
 			const hex = colorSpace.toHex(data, index)
 			const value = saliencyMap[i]
 			saliencyTotal += value
-			salientColors.set(hex, (salientColors.get(hex) || 0) + value)
+			base.set(hex, (base.get(hex) || 0) + value)
 		}
 		// map each color to the closest centroid
 		const clamped = new Map<number, number>()
-		for (const [color, count] of salientColors) {
+		for (const [color, count] of base) {
 			let minDistance = Infinity
 			let closest: number = -1
 			for (const centroid of centroids.keys()) {
@@ -180,14 +180,19 @@ export async function extractColors(
 			}
 			clamped.set(closest, (clamped.get(closest) || 0) + count)
 		}
-		// by ratio, color whose prevalence has most increased from `centroids` to `clamped`
-		const diff = Array.from(clamped.keys()).map(t => {
-			const saliencyRatio = clamped.get(t)! / saliencyTotal
-			const colorRatio = centroids.get(t)! / total
-			const delta = ((saliencyRatio - colorRatio) + 100) / 2
-			return [t, delta] as const
-		})
-			.filter(([, delta]) => delta > 0)
+		for (const [color, count] of clamped) {
+			const ratio = count / saliencyTotal
+			const colorRatio = centroids.get(color)! / total
+			const delta = ((ratio - colorRatio) + 100) / 2
+			if (delta > 0) {
+				salientColors.set(color, delta)
+			}
+		}
+	}
+
+	const inner = (() => {
+		// sum of each color's saliency
+		const diff = Array.from(salientColors.entries())
 			.sort((a, b) => b[1] - a[1])
 
 		// find the color with the highest ratio delta that has enough contrast with the outer color
@@ -264,11 +269,12 @@ export async function extractColors(
 			const chroma = colorSpace.chroma(color)
 			const distance = colorSpace.distance(color, inner)
 			const prevalence = centroids.get(color)! / total * 100
-			// const lum = outerLum > innerLum
-			// 	? 100 - colorSpace.lightness(color)
-			// 	: colorSpace.lightness(color)
-			// const score = chroma * (distance ** 2) * prevalence * lum
-			const score = chroma * distance * prevalence
+			const saliency = (salientColors.get(color) || 0) + 1
+			const lum = outerLum > innerLum
+				? 100 - colorSpace.lightness(color)
+				: colorSpace.lightness(color)
+
+			const score = chroma * distance * prevalence * lum ** 4 * saliency ** 3
 			if (score > maxScore) {
 				maxScore = score
 				maxColor = color
@@ -327,6 +333,9 @@ function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent:
 
 	const size = (xMax - xMin) * (yMax - yMin) * channels
 	const trimmed = new Uint8ClampedArray(size)
+	if (trimmed.length / meta.channels >= Uint32Array.BYTES_PER_ELEMENT ** 16) {
+		throw new Error("Image is too large to process, the total number of pixels (after trimming `trimPercent`% from each side) should fit into a single Uint32Array item, or 4_294_967_295 pixels")
+	}
 
 	let i = 0
 	const adjustedXSlice = (xMax - xMin) * channels
