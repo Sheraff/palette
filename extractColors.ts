@@ -253,11 +253,20 @@ export async function extractColors(
 	// 	return maxContrastColor
 	// })()
 	const innerLum = colorSpace.lightness(inner)
-	const outerColors = Array.from(centroids.keys()).filter(c => {
-		const lum = colorSpace.lightness(c)
-		return Math.abs(lum - innerLum) > Math.abs(lum - outerLum)
-	})
-	const innerColors = Array.from(centroids.keys()).filter(c => !outerColors.includes(c))
+	const outerColors: number[] = []
+	const innerColors: number[] = []
+	{
+		const favorGroupingLighterColors = innerLum > outerLum ? 0.8 : 1.2
+		for (const color of centroids.keys()) {
+			const lum = colorSpace.lightness(color)
+			const isOuter = Math.abs(lum - innerLum) * favorGroupingLighterColors > Math.abs(lum - outerLum)
+			if (isOuter) {
+				outerColors.push(color)
+			} else {
+				innerColors.push(color)
+			}
+		}
+	}
 
 	const accent = (() => {
 		let maxScore = 0
