@@ -23,9 +23,9 @@ const colors = await extractColors(buffer, 3, {
 | image | step |
 |-----|-----|
 | ![maroon5-scrambled](https://github.com/user-attachments/assets/cfebd938-680a-4a1c-99ca-c78c695c1c83) | original image (*here the original image is scrambled to avoid infringing on copyrights*) |
-| <img width="298" alt="Screenshot 2024-09-29 at 14 52 30" src="https://github.com/user-attachments/assets/d492f285-b65b-488b-b007-41ea189738fa"> | main colors are extracted by kmeans clustering |
+| <img width="298" alt="Screenshot 2024-09-29 at 14 52 30" src="https://github.com/user-attachments/assets/d492f285-b65b-488b-b007-41ea189738fa"> | main colors are extracted by [k-means](https://en.wikipedia.org/wiki/K-means_clustering) clustering |
 | ![maroon5-masked](https://github.com/user-attachments/assets/23166d7a-9dbf-45d6-9461-9eeff1112c66) | the **background** is picked from extracted colors by looking at the most prevalent colors outside of the masked center |
-| ![maroon5-saliency](https://github.com/user-attachments/assets/eafe7d71-6987-4bd8-8c19-7dce327d9722) | the **foreground** is picked from the most salient features of the image |
+| ![maroon5-saliency](https://github.com/user-attachments/assets/eafe7d71-6987-4bd8-8c19-7dce327d9722) | the **foreground** is picked from the most salient features by [Itti-Koch filtering](https://en.wikipedia.org/wiki/Laurent_Itti) of the image |
 | <img width="598" alt="Screenshot 2024-09-29 at 14 54 39" src="https://github.com/user-attachments/assets/21d409e2-be9c-464e-8143-d1ea135b2893"> | main colors are split into 2 pools depending on their proximity with either the background or the foreground |
 | <img width="296" alt="Screenshot 2024-09-29 at 14 55 01" src="https://github.com/user-attachments/assets/84831c11-2103-42d0-8541-4fa2d800cbdb"> | <ul><li>the **accent** is picked from the foreground pool based on its *chroma*, *prevalence*, and *distance* to the already picked colors. </li><li> the **alternate background** is picked from the background pool based on its *prevalence* and *contrast* with the foreground colors.</li></ul> |
 
