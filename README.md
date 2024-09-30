@@ -42,7 +42,7 @@ const colors = await extractColors(buffer, 3, {
 
 ## Multi-threading
 
-A lot of the work done by this library is CPU intensive, so is performance is *at all* a concern, you should enable multithreading by using the `workers: true` option. If [`piscina`](https://www.npmjs.com/package/piscina) is installed, it will be used to manage the worker pool, and the pool can be provided (`worker: pool`) to integrate with the rest of your application
+A lot of the work done by this library is CPU intensive, so if performance is *at all* a concern, you should enable multithreading by using the `workers: true` option. If [`piscina`](https://www.npmjs.com/package/piscina) is installed, it will be used to manage the worker pool, and the pool can be provided (`worker: pool`) to integrate with the rest of your application
 
 ## Unit-testing colors
 
