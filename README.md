@@ -38,7 +38,8 @@ const colors = await extractColors(buffer, 3, {
 
 ## Sample of results
 
-<img width="927" alt="Screenshot 2024-09-29 at 15 11 04" src="https://github.com/user-attachments/assets/6a25f428-7cff-4006-b58b-90b04c875cf1">
+![localhost_3000_ (2)](https://github.com/user-attachments/assets/b3afea74-fd35-4838-a7db-4871d6b512ce)
+
 
 ## Multi-threading
 
