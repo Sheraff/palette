@@ -7,7 +7,7 @@
 
 import sharp from "sharp"
 import { parseArgs } from "util"
-import { join } from "path"
+import { extname, join } from "path"
 
 const cwd = process.cwd()
 
@@ -24,11 +24,13 @@ if (!values.image) {
 }
 
 const path = join(cwd, values.image)
-
-sharp(path)
+const file = sharp(path)
+file
 	.raw({ depth: 'uchar' })
 	.toBuffer({ resolveWithObject: true })
 	.then(async ({ data, info: { width, height, channels } }) => {
+		const meta = await file.metadata()
+		const extension = extname(path).slice(1)
 
 		const radius = Math.max(width, height) / 2 * 0.90
 		const wCenter = width / 2
@@ -54,7 +56,7 @@ sharp(path)
 		}
 
 		sharp(buffer, { raw: { width, height, channels } })
-			.jpeg()
-			.toFile(path.replace(/\.[^.]+$/, '-scrambled.jpg'))
+			.toFormat(meta.format ?? 'jpeg', meta)
+			.toFile(path.replace(/\.[^.]+$/, `-scrambled.${meta.format ? extension : 'jpg'}`))
 	})
 

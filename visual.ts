@@ -41,6 +41,8 @@ const sources = [
 	'images/nada.jpg',
 	'images/slipknot.jpg',
 	'images/snarky.jpg',
+	'images/greenday.jpg',
+	'images/disney.avif',
 	'images/purered.jpg',
 	'images/pureblack.jpg',
 	'images/purewhite.jpg',
