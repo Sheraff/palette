@@ -15,6 +15,9 @@ import { saliency } from "./saliency/saliency.ts"
 // import { extractTextRegions } from "./textRegions.ts"
 
 const sources = [
+	'images/artofficial.jpg',
+	'images/havana.jpg',
+	'images/horsley.jpg',
 	'images/black.jpg',
 	'images/elephunk.jpg',
 	'images/horrorwood.jpg',
@@ -272,9 +275,10 @@ const server = http.createServer((req, res) => {
 						// colorSpace: rgbSpace,
 						// colorSpace: labSpace,
 						clamp: 0.005,
+						// trimPercent: 0,
 						// clamp: false,
-						// strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
-						strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
+						strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
+						// strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
 						// strategy: elbowKmeans(),
 						// strategy: constant()
 					}, image)

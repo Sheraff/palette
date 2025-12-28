@@ -353,6 +353,10 @@ export async function extractColors(
 	console.log("°° lightness inner", Math.round(colorSpace.lightness(inner)))
 	console.log("°° lightness accent", Math.round(colorSpace.lightness(accent)))
 	console.log("°° lightness gradient", Math.round(colorSpace.lightness(third)))
+	console.log("°° chroma outer", Math.round(colorSpace.chroma(outer)))
+	console.log("°° chroma inner", Math.round(colorSpace.chroma(inner)))
+	console.log("°° chroma accent", Math.round(colorSpace.chroma(accent)))
+	console.log("°° chroma gradient", Math.round(colorSpace.chroma(third)))
 	console.log('------------------------------------')
 
 
