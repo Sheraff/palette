@@ -3,6 +3,7 @@ import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { saliency } from "./saliency/saliency.ts"
+import { clusterIntermediateZone, histogramAnalysis } from "./gradientDetection.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -359,6 +360,9 @@ export async function extractColors(
 	console.log("°° chroma gradient", Math.round(colorSpace.chroma(third)))
 	console.log('------------------------------------')
 
+	const bgGradient = outer === third
+		? false
+		: histogramAnalysis(outer, third, data, meta, colorSpace).isGradient
 
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
@@ -368,6 +372,7 @@ export async function extractColors(
 		accent: colorSpace.toRgb(accent),
 		innerColors: innerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 		outerColors: outerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
+		bgGradient: bgGradient,
 	}
 }
 

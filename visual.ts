@@ -100,7 +100,8 @@ const server = http.createServer((req, res) => {
 		<script>
 			for (const div of document.querySelectorAll('[data-img]')) {
 				fetch('/image/' + div.id + '?extract').then(async (response) => {
-					const {centroids, inner, outer, third, accent, innerColors, outerColors} = await response.json()
+					const {centroids, inner, outer, third, accent, innerColors, outerColors, bgGradient} = await response.json()
+					console.log('Extracted colors for', div.id, 'is gradient', bgGradient)
 					const total = centroids.reduce((acc, [_, count]) => acc + count, 0)
 					let content = ''
 					for (const [hex, count] of centroids) {
@@ -115,6 +116,7 @@ const server = http.createServer((req, res) => {
 					div.querySelector('[data-html]').innerHTML = \`<div style="
 						height:100%;
 						background:#\${outer.toString(16).padStart(6, '0')};
+						\${bgGradient ? \`background: linear-gradient(135deg, #\${outer.toString(16).padStart(6, '0')}, #\${third.toString(16).padStart(6, '0')});\` : ''}
 						color:#\${inner.toString(16).padStart(6, '0')};
 						align-content:center;
 					">
@@ -123,7 +125,7 @@ const server = http.createServer((req, res) => {
 							<span style="color:#\${accent.toString(16).padStart(6, '0')};">world</span>
 						</p>
 						<div style="
-							background:#\${third.toString(16).padStart(6, '0')};
+							background:#\${bgGradient ? 0000 : third.toString(16).padStart(6, '0')};
 							padding: 0.5rem;
 						">
 							<p style="font-size:0.5em;">

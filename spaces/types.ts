@@ -19,5 +19,5 @@ export interface ColorSpace {
 	 * @param desired the desired contrast value (0-100)
 	 * @param foreground when measuring contrast, should `of` be the foreground or the background?
 	 */
-	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean)
+	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean): number
 }

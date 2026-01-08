@@ -8,7 +8,7 @@
     "foo": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc extractColors.ts",
     "bar": "NODE_NO_WARNINGS=1 node --experimental-strip-types --expose-gc kmeans/gapStatistic.ts",
     "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts",
-    "test": "NODE_NO_WARNINGS=1 node --watch --test --experimental-strip-types tests/toto.test.ts"
+    "test": "NODE_NO_WARNINGS=1 node --watch --test --experimental-strip-types tests/gradient-detection.test.ts"
   },
   "dependencies": {},
   "devDependencies": {
