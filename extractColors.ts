@@ -92,8 +92,8 @@ export async function extractColors(
 	}
 	groupImperceptiblyDifferentColors(centroids, colorSpace)
 
-	const outer = mainZoneColor(data, meta, colorSpace, centroids)
-	const outerLum = colorSpace.lightness(outer)
+	// const outer = mainZoneColor(data, meta, colorSpace, centroids)
+
 
 	// const inner = (() => {
 	// 	const { data: text } = extractTextRegions(data, meta)
@@ -157,6 +157,7 @@ export async function extractColors(
 	// })()
 
 	const salientColors = new Map<number, number>()
+	const unsalientColors = new Map<number, number>()
 	{
 		const base = new Map<number, number>()
 		let saliencyTotal = 0
@@ -184,12 +185,78 @@ export async function extractColors(
 		for (const [color, count] of clamped) {
 			const ratio = count / saliencyTotal
 			const colorRatio = centroids.get(color)! / total
-			const delta = ((ratio - colorRatio) + 100) / 2
+			const delta = ratio - colorRatio
 			if (delta > 0) {
 				salientColors.set(color, delta)
+			} else {
+				unsalientColors.set(color, -delta)
 			}
 		}
 	}
+
+	// outer is the centroid with the largest contiguous region
+	const outer = (() => {
+		const { width, height, channels } = meta
+		const totalPixels = width * height
+
+		// Create label map: assign each pixel to its nearest centroid
+		const labels = new Uint32Array(totalPixels)
+		for (let i = 0; i < totalPixels; i++) {
+			const color = colorSpace.toHex(data, i * channels)
+			let minDistance = Infinity
+			let closest = -1
+			for (const centroid of centroids.keys()) {
+				const distance = colorSpace.distance(color, centroid)
+				if (distance < minDistance) {
+					minDistance = distance
+					closest = centroid
+				}
+			}
+			labels[i] = closest
+		}
+
+		// Find largest connected component using flood fill
+		const visited = new Set<number>()
+		let largestSize = 0
+		let largestCentroid = -1
+
+		const floodFill = (startIdx: number, targetLabel: number): number => {
+			const stack = [startIdx]
+			let size = 0
+
+			while (stack.length > 0) {
+				const idx = stack.pop()!
+				if (visited.has(idx) || labels[idx] !== targetLabel) continue
+
+				visited.add(idx)
+				size++
+
+				const x = idx % width
+				const y = Math.floor(idx / width)
+
+				// Add 4-connected neighbors
+				if (x > 0) stack.push(idx - 1) // left
+				if (x < width - 1) stack.push(idx + 1) // right
+				if (y > 0) stack.push(idx - width) // top
+				if (y < height - 1) stack.push(idx + width) // bottom
+			}
+
+			return size
+		}
+
+		for (let i = 0; i < totalPixels; i++) {
+			if (visited.has(i)) continue
+			const label = labels[i]
+			const size = floodFill(i, label)
+
+			if (size > largestSize) {
+				largestSize = size
+				largestCentroid = label
+			}
+		}
+
+		return largestCentroid
+	})()
 
 	const inner = (() => {
 		// sum of each color's saliency
@@ -253,6 +320,7 @@ export async function extractColors(
 	// 	}
 	// 	return maxContrastColor
 	// })()
+	const outerLum = colorSpace.lightness(outer)
 	const innerLum = colorSpace.lightness(inner)
 	const outerColors: number[] = []
 	const innerColors: number[] = []
@@ -418,7 +486,7 @@ function countColors(
 	let added = 0
 	for (let i = 0; i < array.length / meta.channels; i += 1) {
 		const index = i * meta.channels
-		const salient = saliency[i] * saliencyWeight
+		const salient = saliency[i] * saliencyWeight / 255
 		added += salient
 		const hex = colorSpace.toHex(array, index)
 		colors.set(hex, (colors.get(hex) || 0) + 1 + salient)
