@@ -112,15 +112,15 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 
 	// Check if distribution is mostly at the edges (separate colors)
 	const edgeBins = histogram.slice(0, 3).reduce((a, b) => a + b, 0) + histogram.slice(-3).reduce((a, b) => a + b, 0)
-	const edgeHeavy = edgeBins / totalCounted > 0.95
+	const edgeHeavy = edgeBins / totalCounted > 0.9
 
 	// Gradients have:
 	// - High coverage (many pixels on the interpolation path)
-	// - High continuity (few gaps in the histogram)
+	// - High continuity (few gaps in the histogram) 
 	// - Relatively uniform distribution (not too peaky)
 	// - NOT bimodal or edge-heavy
 
-	const isGradient = coverage > 0.0025 && continuityScore > 0.35 && gapCount < histogram.length * 0.3 && !isBimodal && !edgeHeavy
+	const isGradient = coverage > 0.002 && continuityScore > 0.35 && gapCount < histogram.length * 0.32 && !isBimodal && !edgeHeavy
 
 	// Confidence based on how strongly the metrics support the conclusion
 	let confidence = 0
@@ -129,14 +129,14 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 	if (isGradient) {
 		if (coverage > 0.2) confidence += 0.3
 		else if (coverage > 0.1) confidence += 0.25
-		else if (coverage > 0.0025) confidence += 0.15
+		else if (coverage > 0.002) confidence += 0.15
 
 		if (continuityScore > 0.7) confidence += 0.4
 		else if (continuityScore > 0.5) confidence += 0.3
 		else if (continuityScore > 0.35) confidence += 0.2
 
 		if (gapCount < histogram.length * 0.15) confidence += 0.3
-		else if (gapCount < histogram.length * 0.3) confidence += 0.2
+		else if (gapCount < histogram.length * 0.32) confidence += 0.2
 	} else {
 		// For separate colors - high confidence when clearly bimodal or edge-heavy
 		if (isBimodal) confidence += 0.5
@@ -263,18 +263,18 @@ function analyzeSpatialCoherence(
 
 	// Calculate spatial coherence metrics
 	// Gradients have:
-	// - High concentration in largest cluster (>20%) - intermediate pixels form coherent band
+	// - High concentration in largest cluster (>15%) - intermediate pixels form coherent band
 	// - Cluster count only matters when concentration is low
 	// - Some intermediate pixels (>0.1%)
 
 	// Primary signal: high concentration means spatially coherent gradient
-	const highConcentration = clusterRatio > 0.20
-	const moderateConcentration = clusterRatio > 0.12 && clusters.length <= 100
+	const highConcentration = clusterRatio > 0.15
+	const moderateConcentration = clusterRatio > 0.10 && clusters.length <= 150
 	const sufficientCoverage = coverage > 0.001
 
 	// Scattered pixels indicate separate colors
 	// Only flag as scattered if BOTH low concentration AND many clusters
-	const isScattered = clusterRatio < 0.08 && clusters.length > 150
+	const isScattered = clusterRatio < 0.06 && clusters.length > 250
 
 	const isCoherent = (highConcentration || moderateConcentration) && sufficientCoverage && !isScattered
 
@@ -284,19 +284,19 @@ function analyzeSpatialCoherence(
 	if (isCoherent) {
 		// For gradients - reward high concentration
 		if (clusterRatio > 0.3) confidence += 0.5
-		else if (clusterRatio > 0.20) confidence += 0.4
-		else if (clusterRatio > 0.12) confidence += 0.25
+		else if (clusterRatio > 0.15) confidence += 0.4
+		else if (clusterRatio > 0.10) confidence += 0.25
 
 		if (clusters.length === 1) confidence += 0.3
 		else if (clusters.length <= 50) confidence += 0.25
-		else if (clusters.length <= 100) confidence += 0.15
+		else if (clusters.length <= 150) confidence += 0.15
 
 		if (coverage > 0.02) confidence += 0.2
 		else if (coverage > 0.001) confidence += 0.15
 	} else {
 		// For separate colors - high confidence when clearly scattered
 		if (isScattered) confidence += 0.6
-		if (clusterRatio < 0.08) confidence += 0.2
+		if (clusterRatio < 0.06) confidence += 0.2
 		if (coverage < 0.001) confidence += 0.2
 	}
 
@@ -361,22 +361,41 @@ export function detectGradient(
 	const histResult = histogramAnalysis(color1, color2, data, meta, colorSpace)
 	const clusterResult = clusterIntermediateZone(color1, color2, data, meta, colorSpace)
 
-	// Use the result with higher confidence
-	const result = histResult.confidence > clusterResult.confidence ? histResult : clusterResult
+	// When methods disagree, prefer histogram if it has strong signals
+	const histogramHasStrongSignal = (
+		histResult.details.isBimodal ||
+		histResult.details.edgeHeavy ||
+		(histResult.details.continuityScore > 0.7 && histResult.details.gapCount < 5)
+	)
 
-	// If both agree, increase confidence
+	let result: GradientAnalysisResult
+
+	// If both agree, use higher confidence and boost
 	if (histResult.isGradient === clusterResult.isGradient) {
-		result.confidence = Math.min(
-			0.95,
-			result.confidence + 0.2
-		)
+		result = histResult.confidence > clusterResult.confidence ? histResult : clusterResult
+		result.confidence = Math.min(0.95, result.confidence + 0.2)
 		result.method = 'combined'
 		result.details = {
 			histogram: histResult.details,
 			clustering: clusterResult.details,
 			agreement: true
 		}
-	} else {
+	}
+	// If they disagree and histogram has strong signal, trust histogram
+	else if (histogramHasStrongSignal) {
+		result = histResult
+		result.method = 'combined (histogram priority)'
+		result.details = {
+			histogram: histResult.details,
+			clustering: clusterResult.details,
+			agreement: false,
+			reason: 'histogram has strong signal'
+		}
+	}
+	// Otherwise use higher confidence
+	else {
+		result = histResult.confidence > clusterResult.confidence ? histResult : clusterResult
+		result.method = 'combined'
 		result.details = {
 			histogram: histResult.details,
 			clustering: clusterResult.details,
