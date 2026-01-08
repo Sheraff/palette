@@ -343,11 +343,11 @@ export async function extractColors(
 		for (const color of innerColors) {
 			if (color === outer || color === inner) continue
 			if (centroids.get(color)! / total < 0.01) continue
-			if (colorSpace.contrast(outer, color) < 9) continue
+			if (colorSpace.contrast(outer, color) < minForegroundContrast / 2) continue
 			const chroma = colorSpace.chroma(color)
 			const distance = colorSpace.distance(color, inner)
 			const prevalence = centroids.get(color)! / total * 100
-			const saliency = (salientColors.get(color) || 0) + 1
+			const saliency = (salientColors.get(color) || 0) / 255 + 1
 			const lum = outerLum > innerLum
 				? 100 - colorSpace.lightness(color)
 				: colorSpace.lightness(color)

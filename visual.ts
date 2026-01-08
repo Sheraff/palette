@@ -75,7 +75,7 @@ const server = http.createServer((req, res) => {
 		for (const source of sources) {
 			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
 				<img src="/image/${source}" width=200 />
-				<img src="/image/${source}?saliency" width=200 style="background: darkgrey;" />
+				<img src="/image/${source}?saliency" width=200 style="background:repeating-conic-gradient(#ccc 0 25%, #eee 0 50%) 50% / 8px 8px" />
 				<div style="
 					display:flex;
 					aspect-ratio:1;
