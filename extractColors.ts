@@ -376,13 +376,16 @@ export async function extractColors(
 	const third = (() => {
 		let maxScore = 0
 		let maxColor = -1
+		const outerTotal = outerColors.reduce((sum, c) => sum + centroids.get(c)!, 0)
 		for (const color of outerColors) {
 			if (color === outer || color === inner) continue
-			if (centroids.get(color)! / total < 0.01) continue
+			if (centroids.get(color)! / outerTotal < 0.111) continue
 			const contrastInner = colorSpace.contrast(color, inner)
+			if (contrastInner < minForegroundContrast) continue
 			const contrastAccent = colorSpace.contrast(color, accent)
-			const contrast = Math.min(contrastInner, contrastAccent)
-			const prevalence = centroids.get(color)! / total * 100
+			if (contrastAccent < minForegroundContrast / 3) continue
+			const contrast = Math.sqrt(contrastInner * contrastAccent)
+			const prevalence = centroids.get(color)! / outerTotal * 100
 			const score = contrast * prevalence
 			if (score > maxScore) {
 				maxScore = score
