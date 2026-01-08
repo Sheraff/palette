@@ -50,15 +50,19 @@ export function saliency(
 
 	// Apply light Gaussian blur to reduce noise
 	const kernel = [0.25, 0.5, 0.25] // 3-tap Gaussian
+	// const kernel = [0.0625, 0.25, 0.375, 0.25, 0.0625] // 5-tap Gaussian
+	// const kernel = [0.03125, 0.109375, 0.21875, 0.28125, 0.21875, 0.109375, 0.03125] // 7-tap Gaussian
+	const kmin = -Math.floor(kernel.length / 2)
+	const kmax = Math.floor(kernel.length / 2)
 
 	// Horizontal pass
 	const temp = new Float32Array(totalPixels)
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
 			let sum = 0
-			for (let k = -1; k <= 1; k++) {
+			for (let k = kmin, i = 0; k <= kmax; k++, i++) {
 				const nx = Math.max(0, Math.min(width - 1, x + k))
-				sum += variance[y * width + nx] * kernel[k + 1]
+				sum += variance[y * width + nx] * kernel[i]
 			}
 			temp[y * width + x] = sum
 		}
@@ -69,22 +73,40 @@ export function saliency(
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
 			let sum = 0
-			for (let k = -1; k <= 1; k++) {
+			for (let k = kmin, i = 0; k <= kmax; k++, i++) {
 				const ny = Math.max(0, Math.min(height - 1, y + k))
-				sum += temp[ny * width + x] * kernel[k + 1]
+				sum += temp[ny * width + x] * kernel[i]
 			}
 			blurred[y * width + x] = sum
+		}
+	}
+
+	// Apply dilation to spread high values inward
+	const dilated = new Float32Array(totalPixels)
+	const dilationRadius = Math.round(Math.min(height, width) * 0.001)
+
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			let maxVal = 0
+			for (let dy = -dilationRadius; dy <= dilationRadius; dy++) {
+				const ny = Math.max(0, Math.min(height - 1, y + dy))
+				for (let dx = -dilationRadius; dx <= dilationRadius; dx++) {
+					const nx = Math.max(0, Math.min(width - 1, x + dx))
+					maxVal = Math.max(maxVal, blurred[ny * width + nx])
+				}
+			}
+			dilated[y * width + x] = maxVal
 		}
 	}
 
 	// Normalize without easing for more sensitivity
 	let max = 0
 	for (let i = 0; i < totalPixels; i++) {
-		max = Math.max(max, blurred[i])
+		max = Math.max(max, dilated[i])
 	}
 
 	for (let i = 0; i < totalPixels; i++) {
-		destination[i] = Math.min(255, (blurred[i] / (max + 1e-10)) * 255)
+		destination[i] = Math.min(255, (dilated[i] / (max + 1e-10)) * 255)
 	}
 }
 
