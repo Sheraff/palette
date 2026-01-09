@@ -75,8 +75,8 @@ export async function extractColors(
 
 	const saliencyMap = new Uint8ClampedArray(new SharedArrayBuffer(meta.width * meta.height * Uint8ClampedArray.BYTES_PER_ELEMENT))
 	await saliency(name, colorSpace, data, saliencyMap, meta.width, meta.height, meta.channels, workers)
-	const map = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
-	const sorted = sortColorMap(map)
+	const colorCount = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
+	const sorted = sortColorMap(colorCount)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
 	const centroids = await strategy(name, colorSpace, array, total, workers)
@@ -85,7 +85,7 @@ export async function extractColors(
 			clamp,
 			total,
 			centroids,
-			map,
+			colorCount,
 			array,
 			colorSpace,
 		)
@@ -433,7 +433,7 @@ export async function extractColors(
 
 	const bgGradient = outer === third
 		? false
-		: histogramAnalysis(outer, third, data, meta, colorSpace).isGradient
+		: histogramAnalysis(outer, third, colorCount, colorSpace)
 
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
