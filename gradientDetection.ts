@@ -114,13 +114,41 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 	const edgeBins = histogram.slice(0, 3).reduce((a, b) => a + b, 0) + histogram.slice(-3).reduce((a, b) => a + b, 0)
 	const edgeHeavy = edgeBins / totalCounted > 0.9
 
+	// Check for excessive peakiness (large spikes suggest discrete colors, not smooth gradient)
+	// Calculate coefficient of variation (std dev / mean) for non-zero bins
+	const nonZeroValues = histogram.filter(v => v > 0)
+	const avgBinCount = totalCounted / nonZeroBins
+	let stdDev = 0
+	for (const value of nonZeroValues) {
+		stdDev += Math.pow(value - avgBinCount, 2)
+	}
+	stdDev = Math.sqrt(stdDev / nonZeroValues.length)
+	const coefficientOfVariation = stdDev / avgBinCount
+	
+	// Check for dominant peaks (bins that contain a disproportionate amount of pixels)
+	const maxBin = Math.max(...histogram)
+	const maxBinRatio = maxBin / totalCounted
+	
+	// Sort bins to find top peaks
+	const sortedBins = [...histogram].sort((a, b) => b - a)
+	const secondHighest = sortedBins[1] || 1
+	const peakDominance = maxBin / secondHighest
+	
+	// A very dominant single peak suggests discrete colors, but only if coverage is low
+	// High coverage (>15%) indicates a gradient even with some color banding/peakiness
+	// This allows placebo.jpg (coverage=0.177, peakDominance=3.05) to be detected as gradient
+	// while catching johns.jpg (coverage=0.143, peakDominance=1.715) as non-gradient
+	const hasDominantPeak = peakDominance > 1.71 && maxBinRatio > 0.08 && coverage < 0.16
+	
+	const isPeaky = hasDominantPeak || coefficientOfVariation > 2.0 || maxBinRatio > 0.30
+
 	// Gradients have:
 	// - High coverage (many pixels on the interpolation path)
 	// - High continuity (few gaps in the histogram) 
 	// - Relatively uniform distribution (not too peaky)
 	// - NOT bimodal or edge-heavy
 
-	const isGradient = coverage > 0.002 && continuityScore > 0.35 && gapCount < histogram.length * 0.32 && !isBimodal && !edgeHeavy
+	const isGradient = coverage > 0.002 && continuityScore > 0.35 && gapCount < histogram.length * 0.32 && !isBimodal && !edgeHeavy && !isPeaky
 
 	// Confidence based on how strongly the metrics support the conclusion
 	let confidence = 0
@@ -141,6 +169,7 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 		// For separate colors - high confidence when clearly bimodal or edge-heavy
 		if (isBimodal) confidence += 0.5
 		if (edgeHeavy) confidence += 0.3
+		if (isPeaky) confidence += 0.3
 		if (coverage < 0.08) confidence += 0.2
 	}
 
@@ -154,254 +183,11 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 		variance,
 		totalCounted,
 		isBimodal,
-		edgeHeavy
+		edgeHeavy,
+		isPeaky,
+		coefficientOfVariation,
+		maxBinRatio,
+		peakDominance,
+		hasDominantPeak
 	}
-}
-
-/**
- * Cluster pixels in the intermediate zone between two colors and analyze their spatial distribution.
- * - Gradient: Forms a coherent transitional band
- * - Separate: Sparse, random, or absent
- */
-export function clusterIntermediateZone(
-	color1: number,
-	color2: number,
-	data: Uint8ClampedArray | Uint8Array,
-	meta: Meta,
-	colorSpace: ColorSpace
-): GradientAnalysisResult {
-	const { width, height, channels } = meta
-	const totalDistance = colorSpace.distance(color1, color2)
-
-	// Extract intermediate pixels (those between the two colors in color space)
-	const intermediatePixels: Array<{ x: number, y: number, color: number }> = []
-
-	for (let y = 0; y < height; y++) {
-		for (let x = 0; x < width; x++) {
-			const i = (y * width + x) * channels
-			const pixelColor = colorSpace.toHex(data, i)
-			const d1 = colorSpace.distance(pixelColor, color1)
-			const d2 = colorSpace.distance(pixelColor, color2)
-
-			// Check if pixel is in the intermediate zone
-			const totalDist = d1 + d2
-			const pathDeviation = Math.abs(totalDist - totalDistance)
-			const maxDeviation = totalDistance * 0.3 // More lenient deviation tolerance
-
-			// Must be between the colors (not closer to one extreme)
-			const isIntermediate = pathDeviation < maxDeviation &&
-				d1 > totalDistance * 0.15 && // Less strict distance from extremes
-				d2 > totalDistance * 0.15
-
-			if (isIntermediate) {
-				intermediatePixels.push({ x, y, color: pixelColor })
-			}
-		}
-	}
-
-	if (intermediatePixels.length === 0) {
-		return {
-			isGradient: false,
-			confidence: 0.9,
-			method: 'intermediate-zone',
-			details: {
-				intermediateCount: 0,
-				reason: 'no intermediate pixels found'
-			}
-		}
-	}
-
-	// Analyze spatial distribution
-	const spatialAnalysis = analyzeSpatialCoherence(intermediatePixels, width, height)
-
-	return {
-		isGradient: spatialAnalysis.isCoherent,
-		confidence: spatialAnalysis.confidence,
-		method: 'intermediate-zone',
-		details: {
-			intermediateCount: intermediatePixels.length,
-			totalPixels: width * height,
-			intermediateRatio: intermediatePixels.length / (width * height),
-			...spatialAnalysis
-		}
-	}
-}
-
-function analyzeSpatialCoherence(
-	pixels: Array<{ x: number, y: number, color: number }>,
-	width: number,
-	height: number
-) {
-	const count = pixels.length
-	const totalPixels = width * height
-	const coverage = count / totalPixels
-
-	// Create a bitmap of intermediate pixels
-	const bitmap = new Uint8Array(width * height)
-	for (const pixel of pixels) {
-		bitmap[pixel.y * width + pixel.x] = 1
-	}
-
-	// Find connected components using flood fill
-	const visited = new Uint8Array(width * height)
-	const clusters: number[] = []
-
-	for (const pixel of pixels) {
-		const index = pixel.y * width + pixel.x
-		if (!visited[index]) {
-			const clusterSize = floodFill(bitmap, visited, pixel.x, pixel.y, width, height)
-			clusters.push(clusterSize)
-		}
-	}
-
-	// Sort clusters by size
-	clusters.sort((a, b) => b - a)
-
-	// Analyze cluster distribution
-	const largestCluster = clusters[0] || 0
-	const clusterRatio = largestCluster / count
-
-	// Calculate spatial coherence metrics
-	// Gradients have:
-	// - High concentration in largest cluster (>15%) - intermediate pixels form coherent band
-	// - Cluster count only matters when concentration is low
-	// - Some intermediate pixels (>0.1%)
-
-	// Primary signal: high concentration means spatially coherent gradient
-	const highConcentration = clusterRatio > 0.15
-	const moderateConcentration = clusterRatio > 0.10 && clusters.length <= 150
-	const sufficientCoverage = coverage > 0.001
-
-	// Scattered pixels indicate separate colors
-	// Only flag as scattered if BOTH low concentration AND many clusters
-	const isScattered = clusterRatio < 0.06 && clusters.length > 250
-
-	const isCoherent = (highConcentration || moderateConcentration) && sufficientCoverage && !isScattered
-
-	// Calculate confidence
-	let confidence = 0
-
-	if (isCoherent) {
-		// For gradients - reward high concentration
-		if (clusterRatio > 0.3) confidence += 0.5
-		else if (clusterRatio > 0.15) confidence += 0.4
-		else if (clusterRatio > 0.10) confidence += 0.25
-
-		if (clusters.length === 1) confidence += 0.3
-		else if (clusters.length <= 50) confidence += 0.25
-		else if (clusters.length <= 150) confidence += 0.15
-
-		if (coverage > 0.02) confidence += 0.2
-		else if (coverage > 0.001) confidence += 0.15
-	} else {
-		// For separate colors - high confidence when clearly scattered
-		if (isScattered) confidence += 0.6
-		if (clusterRatio < 0.06) confidence += 0.2
-		if (coverage < 0.001) confidence += 0.2
-	}
-
-	return {
-		isCoherent,
-		confidence,
-		coverage,
-		clusterCount: clusters.length,
-		largestClusterSize: largestCluster,
-		clusterRatio,
-		isScattered,
-		clusterSizes: clusters.slice(0, 5) // Top 5 clusters
-	}
-}
-
-function floodFill(
-	bitmap: Uint8Array,
-	visited: Uint8Array,
-	startX: number,
-	startY: number,
-	width: number,
-	height: number
-): number {
-	const stack: Array<{ x: number, y: number }> = [{ x: startX, y: startY }]
-	let size = 0
-
-	while (stack.length > 0) {
-		const { x, y } = stack.pop()!
-		const index = y * width + x
-
-		if (x < 0 || x >= width || y < 0 || y >= height) continue
-		if (visited[index] || !bitmap[index]) continue
-
-		visited[index] = 1
-		size++
-
-		// Add 8-connected neighbors
-		stack.push({ x: x + 1, y })
-		stack.push({ x: x - 1, y })
-		stack.push({ x, y: y + 1 })
-		stack.push({ x, y: y - 1 })
-		stack.push({ x: x + 1, y: y + 1 })
-		stack.push({ x: x + 1, y: y - 1 })
-		stack.push({ x: x - 1, y: y + 1 })
-		stack.push({ x: x - 1, y: y - 1 })
-	}
-
-	return size
-}
-
-/**
- * Combined gradient detection using multiple methods.
- * Returns the most confident result.
- */
-export function detectGradient(
-	color1: number,
-	color2: number,
-	data: Uint8ClampedArray | Uint8Array,
-	meta: Meta,
-	colorSpace: ColorSpace
-): GradientAnalysisResult {
-	const histResult = histogramAnalysis(color1, color2, data, meta, colorSpace)
-	const clusterResult = clusterIntermediateZone(color1, color2, data, meta, colorSpace)
-
-	// When methods disagree, prefer histogram if it has strong signals
-	const histogramHasStrongSignal = (
-		histResult.details.isBimodal ||
-		histResult.details.edgeHeavy ||
-		(histResult.details.continuityScore > 0.7 && histResult.details.gapCount < 5)
-	)
-
-	let result: GradientAnalysisResult
-
-	// If both agree, use higher confidence and boost
-	if (histResult.isGradient === clusterResult.isGradient) {
-		result = histResult.confidence > clusterResult.confidence ? histResult : clusterResult
-		result.confidence = Math.min(0.95, result.confidence + 0.2)
-		result.method = 'combined'
-		result.details = {
-			histogram: histResult.details,
-			clustering: clusterResult.details,
-			agreement: true
-		}
-	}
-	// If they disagree and histogram has strong signal, trust histogram
-	else if (histogramHasStrongSignal) {
-		result = histResult
-		result.method = 'combined (histogram priority)'
-		result.details = {
-			histogram: histResult.details,
-			clustering: clusterResult.details,
-			agreement: false,
-			reason: 'histogram has strong signal'
-		}
-	}
-	// Otherwise use higher confidence
-	else {
-		result = histResult.confidence > clusterResult.confidence ? histResult : clusterResult
-		result.method = 'combined'
-		result.details = {
-			histogram: histResult.details,
-			clustering: clusterResult.details,
-			agreement: false
-		}
-	}
-
-	return result
 }
