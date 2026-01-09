@@ -157,7 +157,6 @@ export async function extractColors(
 	// })()
 
 	const salientColors = new Map<number, number>()
-	const unsalientColors = new Map<number, number>()
 	{
 		const base = new Map<number, number>()
 		let saliencyTotal = 0
@@ -188,8 +187,6 @@ export async function extractColors(
 			const delta = ratio - colorRatio
 			if (delta > 0) {
 				salientColors.set(color, delta)
-			} else {
-				unsalientColors.set(color, -delta)
 			}
 		}
 	}
@@ -221,24 +218,30 @@ export async function extractColors(
 		let largestCentroid = -1
 
 		const floodFill = (startIdx: number, targetLabel: number): number => {
-			const stack = [startIdx]
+			const stack: number[] = []
 			let size = 0
+
+			const push = (idx: number) => {
+				if (labels[idx] !== targetLabel) return
+				if (visited.has(idx)) return
+				visited.add(idx)
+				stack.push(idx)
+			}
+
+			push(startIdx)
 
 			while (stack.length > 0) {
 				const idx = stack.pop()!
-				if (visited.has(idx) || labels[idx] !== targetLabel) continue
-
-				visited.add(idx)
 				size++
 
 				const x = idx % width
 				const y = Math.floor(idx / width)
 
 				// Add 4-connected neighbors
-				if (x > 0) stack.push(idx - 1) // left
-				if (x < width - 1) stack.push(idx + 1) // right
-				if (y > 0) stack.push(idx - width) // top
-				if (y < height - 1) stack.push(idx + width) // bottom
+				if (x > 0) push(idx - 1) // left
+				if (x < width - 1) push(idx + 1) // right
+				if (y > 0) push(idx - width) // top
+				if (y < height - 1) push(idx + width) // bottom
 			}
 
 			return size
@@ -450,7 +453,7 @@ export async function extractColors(
 /**
  * remove some of the image from each side, to remove any border artifacts
  */
-function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
+function trimSource(source: Uint8ClampedArray | Uint8Array | Buffer, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
 	const { width, height, channels } = meta
 
