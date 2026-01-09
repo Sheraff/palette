@@ -214,8 +214,6 @@ export async function extractColors(
 
 		// Find largest connected component using flood fill
 		const visited = new Set<number>()
-		let largestSize = 0
-		let largestCentroid = -1
 
 		const floodFill = (startIdx: number, targetLabel: number): number => {
 			const stack: number[] = []
@@ -247,6 +245,8 @@ export async function extractColors(
 			return size
 		}
 
+		let largestSize = 0
+		let largestCentroid = -1
 		for (let i = 0; i < totalPixels; i++) {
 			if (visited.has(i)) continue
 			const label = labels[i]
