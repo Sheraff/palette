@@ -3,7 +3,7 @@ import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { saliency } from "./saliency/saliency.ts"
-import { clusterIntermediateZone, histogramAnalysis } from "./gradientDetection.ts"
+import { histogramAnalysis } from "./gradientDetection.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */

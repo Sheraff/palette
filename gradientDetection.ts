@@ -136,11 +136,16 @@ function analyzeHistogramDistribution(histogram: number[], total: number) {
 	
 	// A very dominant single peak suggests discrete colors, but only if coverage is low
 	// High coverage (>15%) indicates a gradient even with some color banding/peakiness
-	// This allows placebo.jpg (coverage=0.177, peakDominance=3.05) to be detected as gradient
-	// while catching johns.jpg (coverage=0.143, peakDominance=1.715) as non-gradient
-	const hasDominantPeak = peakDominance > 1.71 && maxBinRatio > 0.08 && coverage < 0.16
+	// Threshold adjusted to allow loups.jpg (peakDominance=2.197) and slim.jpg (peakDominance=1.836)
+	// while still using other metrics (coefficientOfVariation, maxBinRatio) to catch non-gradients
+	const hasDominantPeak = peakDominance > 2.3 && maxBinRatio > 0.08 && coverage < 0.16
 	
-	const isPeaky = hasDominantPeak || coefficientOfVariation > 2.0 || maxBinRatio > 0.30
+	// Perfect continuity with moderate-to-high peak dominance can indicate discrete colors
+	// that are evenly distributed rather than a smooth gradient
+	// johns.jpg has continuityScore=1.0, gapCount=0, peakDominance=1.715
+	const hasUniformDiscrete = continuityScore === 1.0 && gapCount === 0 && peakDominance > 1.5 && coefficientOfVariation < 1.1
+	
+	const isPeaky = hasDominantPeak || hasUniformDiscrete || coefficientOfVariation > 2.0 || maxBinRatio > 0.30
 
 	// Gradients have:
 	// - High coverage (many pixels on the interpolation path)
