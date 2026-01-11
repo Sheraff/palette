@@ -38,7 +38,7 @@ const colors = await extractColors(buffer, 3, {
 
 ## Sample of results
 
-![localhost_3000_ (2)](https://github.com/user-attachments/assets/b3afea74-fd35-4838-a7db-4871d6b512ce)
+![sample of results]([https://github.com/user-attachments/assets/b3afea74-fd35-4838-a7db-4871d6b512ce](https://github.com/user-attachments/assets/ebe09489-23ca-4880-af23-bee217a224f8))
 
 
 ## Multi-threading
