@@ -34,6 +34,7 @@ const colors = await extractColors(buffer, 3, {
 | ![maroon5-saliency](https://github.com/user-attachments/assets/eafe7d71-6987-4bd8-8c19-7dce327d9722) | the **foreground** is picked from the most salient features by [Itti-Koch filtering](https://en.wikipedia.org/wiki/Laurent_Itti) of the image |
 | <img width="598" alt="Screenshot 2024-09-29 at 14 54 39" src="https://github.com/user-attachments/assets/21d409e2-be9c-464e-8143-d1ea135b2893"> | main colors are split into 2 pools depending on their proximity with either the background or the foreground |
 | <img width="296" alt="Screenshot 2024-09-29 at 14 55 01" src="https://github.com/user-attachments/assets/84831c11-2103-42d0-8541-4fa2d800cbdb"> | <ul><li>the **accent** is picked from the foreground pool based on its *chroma*, *prevalence*, and *distance* to the already picked colors. </li><li> the **alternate background** is picked from the background pool based on its *prevalence* and *contrast* with the foreground colors.</li></ul> |
+|    |  finally we look back at the original image to determine if the **background** and the **alternate background** formed a gradient in the original image. This allows us to use either flat color or a gradient in our UI.
 
 
 ## Sample of results
