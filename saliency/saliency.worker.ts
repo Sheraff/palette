@@ -3,7 +3,8 @@ import type { ColorSpace } from "../spaces/types"
 import { spacesByKey } from "../spaces/spacesByKey.ts"
 
 /**
- * Compute the Itti-Koch saliency map
+ * Compute saliency map using local color variance
+ * Detects regions with high local contrast (text, edges, details)
  */
 export function saliency(
 	space: ColorSpace,
@@ -14,72 +15,98 @@ export function saliency(
 	/** in which to store the results, should be of size `width * height * Uint8Array.BYTES_PER_ELEMENT` */
 	destination: Uint8ClampedArray | Uint8Array
 ): void {
-	const LEVELS = Math.floor(Math.log2(Math.min(width, height)))
+	const totalPixels = width * height
+	const radius = 3 // smaller window for more detail sensitivity
 
-	// Create grayscale image
-	const black = space.toHex([0, 0, 0], 0)
-	const grayscale = new Uint8ClampedArray(width * height)
-	for (let i = 0; i < data.length; i += 1) {
-		const index = i * channels
-		const hex = space.toHex(data, index)
-		grayscale[i] = space.distance(hex, black)
-	}
+	// Compute local variance (standard deviation of color distances)
+	const variance = new Float32Array(totalPixels)
 
-	// Apply Gaussian pyramid
-	const pyramid = [grayscale]
-	for (let level = 1; level <= LEVELS; level++) {
-		const previous = pyramid[level - 1]
-		const downWidth = Math.max(1, Math.floor(width / (2 ** level)))
-		const downHeight = Math.max(1, Math.floor(height / (2 ** level)))
-		const srcWidth = Math.max(1, Math.floor(width / (2 ** (level - 1))))
-		const srcHeight = Math.max(1, Math.floor(height / (2 ** (level - 1))))
-		const downsampled = new Uint8ClampedArray(downWidth * downHeight)
-		for (let y = 0; y < downHeight; y++) {
-			for (let x = 0; x < downWidth; x++) {
-				let sum = 0
-				for (let ky = 0; ky < 2; ky++) {
-					const srcY = y * 2 + ky
-					const srcYW = srcY * srcWidth
-					for (let kx = 0; kx < 2; kx++) {
-						const srcX = x * 2 + kx
-						if (srcX < srcWidth && srcY < srcHeight) {
-							sum += previous[srcYW + srcX]
-						}
-					}
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const centerIdx = y * width + x
+			const centerHex = space.toHex(data, centerIdx * channels)
+
+			let maxDist = 0
+
+			// Check neighborhood for maximum color distance
+			for (let dy = -radius; dy <= radius; dy++) {
+				const ny = y + dy
+				if (ny < 0 || ny >= height) continue
+
+				for (let dx = -radius; dx <= radius; dx++) {
+					const nx = x + dx
+					if (nx < 0 || nx >= width) continue
+
+					const neighborIdx = ny * width + nx
+					const neighborHex = space.toHex(data, neighborIdx * channels)
+					const dist = space.distance(centerHex, neighborHex)
+					maxDist = Math.max(maxDist, dist)
 				}
-				downsampled[y * downWidth + x] = sum / 4
 			}
+
+			variance[centerIdx] = maxDist
 		}
-		pyramid.push(downsampled)
 	}
 
-	// Create saliency map
+	// Apply light Gaussian blur to reduce noise
+	const kernel = [0.25, 0.5, 0.25] // 3-tap Gaussian
+	// const kernel = [0.0625, 0.25, 0.375, 0.25, 0.0625] // 5-tap Gaussian
+	// const kernel = [0.03125, 0.109375, 0.21875, 0.28125, 0.21875, 0.109375, 0.03125] // 7-tap Gaussian
+	const kmin = -Math.floor(kernel.length / 2)
+	const kmax = Math.floor(kernel.length / 2)
+
+	// Horizontal pass
+	const temp = new Float32Array(totalPixels)
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
 			let sum = 0
-			const i = y * width + x
-			for (let level = 1; level <= LEVELS; level++) {
-				const scale = 2 ** level
-				const downWidth = Math.max(1, Math.floor(width / scale))
-				const pixelIndex = Math.floor(y / scale) * downWidth + Math.floor(x / scale)
-				if (pixelIndex < pyramid[level].length) {
-					const pixel = pyramid[level][pixelIndex]
-					sum += Math.abs(pyramid[0][i] - pixel)
-				}
+			for (let k = kmin, i = 0; k <= kmax; k++, i++) {
+				const nx = Math.max(0, Math.min(width - 1, x + k))
+				sum += variance[y * width + nx] * kernel[i]
 			}
-			destination[i] = sum / LEVELS
+			temp[y * width + x] = sum
 		}
 	}
 
-	// Normalize saliency with ease-in-out cubic function
-	let max = 0
-	for (let i = 0; i < destination.length; i++) {
-		max = Math.max(max, destination[i])
+	// Vertical pass
+	const blurred = new Float32Array(totalPixels)
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			let sum = 0
+			for (let k = kmin, i = 0; k <= kmax; k++, i++) {
+				const ny = Math.max(0, Math.min(height - 1, y + k))
+				sum += temp[ny * width + x] * kernel[i]
+			}
+			blurred[y * width + x] = sum
+		}
 	}
-	for (let i = 0; i < destination.length; i++) {
-		const linear = destination[i] / max
-		const ease = easeInOutCubic(linear)
-		destination[i] = ease
+
+	// Apply dilation to spread high values inward
+	const dilated = new Float32Array(totalPixels)
+	const dilationRadius = Math.round(Math.min(height, width) * 0.001)
+
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			let maxVal = 0
+			for (let dy = -dilationRadius; dy <= dilationRadius; dy++) {
+				const ny = Math.max(0, Math.min(height - 1, y + dy))
+				for (let dx = -dilationRadius; dx <= dilationRadius; dx++) {
+					const nx = Math.max(0, Math.min(width - 1, x + dx))
+					maxVal = Math.max(maxVal, blurred[ny * width + nx])
+				}
+			}
+			dilated[y * width + x] = maxVal
+		}
+	}
+
+	// Normalize without easing for more sensitivity
+	let max = 0
+	for (let i = 0; i < totalPixels; i++) {
+		max = Math.max(max, dilated[i])
+	}
+
+	for (let i = 0; i < totalPixels; i++) {
+		destination[i] = Math.min(255, (dilated[i] / (max + 1e-10)) * 255)
 	}
 }
 
@@ -119,10 +146,6 @@ function otsuThreshold(saliencyMap: Uint8ClampedArray): number {
 	}
 
 	return threshold
-}
-
-function easeInOutCubic(x: number): number {
-	return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
 }
 
 

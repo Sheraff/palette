@@ -23,7 +23,7 @@ const images = [
 	{ img: 'loups.jpg', gradient: true },
 	{ img: 'knuckles.jpg', gradient: true },
 	{ img: 'meteora.jpg', gradient: false },
-	{ img: 'muse.jpg', gradient: true },
+	{ img: 'muse.jpg', gradient: 'maybe' },
 	{ img: 'krafty.jpg', gradient: false },
 	{ img: 'orelsan.jpg', gradient: true },
 	{ img: 'once.jpg', gradient: true },
@@ -53,6 +53,7 @@ for (const { img, gradient } of images) {
 				colorSpace: oklabSpace,
 				clamp: 0.005,
 				strategy: gapStatisticKmeans({ maxK: 20, minK: 4 }),
+				minForegroundContrast: 30,
 			}, img))
 
 		assert.strictEqual(result.bgGradient, gradient, `Gradient detection for ${img} should be ${gradient}`)

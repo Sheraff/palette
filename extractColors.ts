@@ -3,7 +3,7 @@ import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { saliency } from "./saliency/saliency.ts"
-import { clusterIntermediateZone, histogramAnalysis } from "./gradientDetection.ts"
+import { histogramAnalysis } from "./gradientDetection.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -75,8 +75,8 @@ export async function extractColors(
 
 	const saliencyMap = new Uint8ClampedArray(new SharedArrayBuffer(meta.width * meta.height * Uint8ClampedArray.BYTES_PER_ELEMENT))
 	await saliency(name, colorSpace, data, saliencyMap, meta.width, meta.height, meta.channels, workers)
-	const map = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
-	const sorted = sortColorMap(map)
+	const colorCount = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
+	const sorted = sortColorMap(colorCount)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
 	const centroids = await strategy(name, colorSpace, array, total, workers)
@@ -85,15 +85,15 @@ export async function extractColors(
 			clamp,
 			total,
 			centroids,
-			map,
+			colorCount,
 			array,
 			colorSpace,
 		)
 	}
 	groupImperceptiblyDifferentColors(centroids, colorSpace)
 
-	const outer = mainZoneColor(data, meta, colorSpace, centroids)
-	const outerLum = colorSpace.lightness(outer)
+	// const outer = mainZoneColor(data, meta, colorSpace, centroids)
+
 
 	// const inner = (() => {
 	// 	const { data: text } = extractTextRegions(data, meta)
@@ -184,12 +184,82 @@ export async function extractColors(
 		for (const [color, count] of clamped) {
 			const ratio = count / saliencyTotal
 			const colorRatio = centroids.get(color)! / total
-			const delta = ((ratio - colorRatio) + 100) / 2
+			const delta = ratio - colorRatio
 			if (delta > 0) {
 				salientColors.set(color, delta)
 			}
 		}
 	}
+
+	// outer is the centroid with the largest contiguous region
+	const outer = (() => {
+		const { width, height, channels } = meta
+		const totalPixels = width * height
+
+		// Create label map: assign each pixel to its nearest centroid
+		const labels = new Uint32Array(totalPixels)
+		for (let i = 0; i < totalPixels; i++) {
+			const color = colorSpace.toHex(data, i * channels)
+			let minDistance = Infinity
+			let closest = -1
+			for (const centroid of centroids.keys()) {
+				const distance = colorSpace.distance(color, centroid)
+				if (distance < minDistance) {
+					minDistance = distance
+					closest = centroid
+				}
+			}
+			labels[i] = closest
+		}
+
+		// Find largest connected component using flood fill
+		const visited = new Set<number>()
+
+		const floodFill = (startIdx: number, targetLabel: number): number => {
+			const stack: number[] = []
+			let size = 0
+
+			const push = (idx: number) => {
+				if (labels[idx] !== targetLabel) return
+				if (visited.has(idx)) return
+				visited.add(idx)
+				stack.push(idx)
+			}
+
+			push(startIdx)
+
+			while (stack.length > 0) {
+				const idx = stack.pop()!
+				size++
+
+				const x = idx % width
+				const y = Math.floor(idx / width)
+
+				// Add 4-connected neighbors
+				if (x > 0) push(idx - 1) // left
+				if (x < width - 1) push(idx + 1) // right
+				if (y > 0) push(idx - width) // top
+				if (y < height - 1) push(idx + width) // bottom
+			}
+
+			return size
+		}
+
+		let largestSize = 0
+		let largestCentroid = -1
+		for (let i = 0; i < totalPixels; i++) {
+			if (visited.has(i)) continue
+			const label = labels[i]
+			const size = floodFill(i, label)
+
+			if (size > largestSize) {
+				largestSize = size
+				largestCentroid = label
+			}
+		}
+
+		return largestCentroid
+	})()
 
 	const inner = (() => {
 		// sum of each color's saliency
@@ -253,6 +323,7 @@ export async function extractColors(
 	// 	}
 	// 	return maxContrastColor
 	// })()
+	const outerLum = colorSpace.lightness(outer)
 	const innerLum = colorSpace.lightness(inner)
 	const outerColors: number[] = []
 	const innerColors: number[] = []
@@ -275,11 +346,11 @@ export async function extractColors(
 		for (const color of innerColors) {
 			if (color === outer || color === inner) continue
 			if (centroids.get(color)! / total < 0.01) continue
-			if (colorSpace.contrast(outer, color) < 9) continue
+			if (colorSpace.contrast(outer, color) < minForegroundContrast / 2) continue
 			const chroma = colorSpace.chroma(color)
 			const distance = colorSpace.distance(color, inner)
 			const prevalence = centroids.get(color)! / total * 100
-			const saliency = (salientColors.get(color) || 0) + 1
+			const saliency = (salientColors.get(color) || 0) / 255 + 1
 			const lum = outerLum > innerLum
 				? 100 - colorSpace.lightness(color)
 				: colorSpace.lightness(color)
@@ -308,13 +379,16 @@ export async function extractColors(
 	const third = (() => {
 		let maxScore = 0
 		let maxColor = -1
+		const outerTotal = outerColors.reduce((sum, c) => sum + centroids.get(c)!, 0)
 		for (const color of outerColors) {
 			if (color === outer || color === inner) continue
-			if (centroids.get(color)! / total < 0.01) continue
+			if (centroids.get(color)! / outerTotal < 0.111) continue
 			const contrastInner = colorSpace.contrast(color, inner)
+			if (contrastInner < minForegroundContrast) continue
 			const contrastAccent = colorSpace.contrast(color, accent)
-			const contrast = Math.min(contrastInner, contrastAccent)
-			const prevalence = centroids.get(color)! / total * 100
+			if (contrastAccent < minForegroundContrast / 3) continue
+			const contrast = Math.sqrt(contrastInner * contrastAccent)
+			const prevalence = centroids.get(color)! / outerTotal * 100
 			const score = contrast * prevalence
 			if (score > maxScore) {
 				maxScore = score
@@ -362,7 +436,7 @@ export async function extractColors(
 
 	const bgGradient = outer === third
 		? false
-		: histogramAnalysis(outer, third, data, meta, colorSpace).isGradient
+		: histogramAnalysis(outer, third, colorCount, colorSpace)
 
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
@@ -379,7 +453,7 @@ export async function extractColors(
 /**
  * remove some of the image from each side, to remove any border artifacts
  */
-function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
+function trimSource(source: Uint8ClampedArray | Uint8Array | Buffer, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
 	const { width, height, channels } = meta
 
@@ -418,7 +492,7 @@ function countColors(
 	let added = 0
 	for (let i = 0; i < array.length / meta.channels; i += 1) {
 		const index = i * meta.channels
-		const salient = saliency[i] * saliencyWeight
+		const salient = saliency[i] * saliencyWeight / 255
 		added += salient
 		const hex = colorSpace.toHex(array, index)
 		colors.set(hex, (colors.get(hex) || 0) + 1 + salient)
