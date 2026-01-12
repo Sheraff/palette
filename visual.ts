@@ -75,7 +75,7 @@ const server = http.createServer((req, res) => {
 		for (const source of sources) {
 			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
 				<img src="/image/${source}" width=200 />
-				<img src="/image/${source}?saliency" width=200 />
+				<img src="/image/${source}?saliency" width=200 style="background:repeating-conic-gradient(#ccc 0 25%, #eee 0 50%) 50% / 8px 8px" />
 				<div style="
 					display:flex;
 					aspect-ratio:1;
@@ -100,7 +100,8 @@ const server = http.createServer((req, res) => {
 		<script>
 			for (const div of document.querySelectorAll('[data-img]')) {
 				fetch('/image/' + div.id + '?extract').then(async (response) => {
-					const {centroids, inner, outer, third, accent, innerColors, outerColors} = await response.json()
+					const {centroids, inner, outer, third, accent, innerColors, outerColors, bgGradient} = await response.json()
+					console.log('Extracted colors for', div.id, 'is gradient', bgGradient)
 					const total = centroids.reduce((acc, [_, count]) => acc + count, 0)
 					let content = ''
 					for (const [hex, count] of centroids) {
@@ -115,6 +116,7 @@ const server = http.createServer((req, res) => {
 					div.querySelector('[data-html]').innerHTML = \`<div style="
 						height:100%;
 						background:#\${outer.toString(16).padStart(6, '0')};
+						\${bgGradient ? \`background: linear-gradient(135deg, #\${outer.toString(16).padStart(6, '0')}, #\${third.toString(16).padStart(6, '0')});\` : ''}
 						color:#\${inner.toString(16).padStart(6, '0')};
 						align-content:center;
 					">
@@ -123,7 +125,7 @@ const server = http.createServer((req, res) => {
 							<span style="color:#\${accent.toString(16).padStart(6, '0')};">world</span>
 						</p>
 						<div style="
-							background:#\${third.toString(16).padStart(6, '0')};
+							background:#\${bgGradient ? 0000 : third.toString(16).padStart(6, '0')};
 							padding: 0.5rem;
 						">
 							<p style="font-size:0.5em;">
@@ -203,7 +205,7 @@ const server = http.createServer((req, res) => {
 					await saliency(image, oklabSpace, data, saliencyMap, info.width, info.height, info.channels, false)
 					const result = new Uint8Array(info.width * info.height * 4)
 					for (let i = 0; i < saliencyMap.length; i++) {
-						const value = saliencyMap[i]
+						const value = saliencyMap[i] / 255
 						const a = i * 4
 						const b = i * info.channels
 						result[a + 0] = data[b + 0] * value
@@ -281,6 +283,7 @@ const server = http.createServer((req, res) => {
 						// strategy: elbowKmeans({ start: [2, 3, 4, 5], end: [15, 16, 17, 50] }),
 						// strategy: elbowKmeans(),
 						// strategy: constant()
+						minForegroundContrast: 30,
 					}, image)
 
 					const sorted = sortColorMap(centroids)
