@@ -3,7 +3,7 @@ import { oklabSpace } from "./spaces/oklab.ts"
 import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { saliency } from "./saliency/saliency.ts"
-import { clusterIntermediateZone, histogramAnalysis } from "./gradientDetection.ts"
+import { histogramAnalysis } from "./gradientDetection.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -75,8 +75,8 @@ export async function extractColors(
 
 	const saliencyMap = new Uint8ClampedArray(new SharedArrayBuffer(meta.width * meta.height * Uint8ClampedArray.BYTES_PER_ELEMENT))
 	await saliency(name, colorSpace, data, saliencyMap, meta.width, meta.height, meta.channels, workers)
-	const map = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
-	const sorted = sortColorMap(map)
+	const colorCount = countColors(data, meta, colorSpace, saliencyMap, saliencyWeight)
+	const sorted = sortColorMap(colorCount)
 	const array = transferableMap(sorted)
 	console.log(name, "Unique Colors:", array.length / 2)
 	const centroids = await strategy(name, colorSpace, array, total, workers)
@@ -85,7 +85,7 @@ export async function extractColors(
 			clamp,
 			total,
 			centroids,
-			map,
+			colorCount,
 			array,
 			colorSpace,
 		)
@@ -157,7 +157,6 @@ export async function extractColors(
 	// })()
 
 	const salientColors = new Map<number, number>()
-	const unsalientColors = new Map<number, number>()
 	{
 		const base = new Map<number, number>()
 		let saliencyTotal = 0
@@ -188,8 +187,6 @@ export async function extractColors(
 			const delta = ratio - colorRatio
 			if (delta > 0) {
 				salientColors.set(color, delta)
-			} else {
-				unsalientColors.set(color, -delta)
 			}
 		}
 	}
@@ -217,33 +214,39 @@ export async function extractColors(
 
 		// Find largest connected component using flood fill
 		const visited = new Set<number>()
-		let largestSize = 0
-		let largestCentroid = -1
 
 		const floodFill = (startIdx: number, targetLabel: number): number => {
-			const stack = [startIdx]
+			const stack: number[] = []
 			let size = 0
+
+			const push = (idx: number) => {
+				if (labels[idx] !== targetLabel) return
+				if (visited.has(idx)) return
+				visited.add(idx)
+				stack.push(idx)
+			}
+
+			push(startIdx)
 
 			while (stack.length > 0) {
 				const idx = stack.pop()!
-				if (visited.has(idx) || labels[idx] !== targetLabel) continue
-
-				visited.add(idx)
 				size++
 
 				const x = idx % width
 				const y = Math.floor(idx / width)
 
 				// Add 4-connected neighbors
-				if (x > 0) stack.push(idx - 1) // left
-				if (x < width - 1) stack.push(idx + 1) // right
-				if (y > 0) stack.push(idx - width) // top
-				if (y < height - 1) stack.push(idx + width) // bottom
+				if (x > 0) push(idx - 1) // left
+				if (x < width - 1) push(idx + 1) // right
+				if (y > 0) push(idx - width) // top
+				if (y < height - 1) push(idx + width) // bottom
 			}
 
 			return size
 		}
 
+		let largestSize = 0
+		let largestCentroid = -1
 		for (let i = 0; i < totalPixels; i++) {
 			if (visited.has(i)) continue
 			const label = labels[i]
@@ -433,7 +436,7 @@ export async function extractColors(
 
 	const bgGradient = outer === third
 		? false
-		: histogramAnalysis(outer, third, data, meta, colorSpace).isGradient
+		: histogramAnalysis(outer, third, colorCount, colorSpace)
 
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
@@ -450,7 +453,7 @@ export async function extractColors(
 /**
  * remove some of the image from each side, to remove any border artifacts
  */
-function trimSource(source: Uint8ClampedArray | Uint8Array, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
+function trimSource(source: Uint8ClampedArray | Uint8Array | Buffer, meta: Meta, percent: number): [data: Uint8ClampedArray, meta: Meta] {
 	const data = source instanceof Buffer ? Uint8ClampedArray.from(source) : source
 	const { width, height, channels } = meta
 
