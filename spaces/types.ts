@@ -9,6 +9,8 @@ export interface ColorSpace {
 	lightness(hex: number): number
 	/** [0 - 100] for full RGB range */
 	chroma(hex: number): number
+	/** [0 - 360] hue angle in degrees */
+	hue(hex: number): number
 	/** [0 - 100] for full RGB range */
 	contrast(background: number, foreground: number): number
 	/**

@@ -35,9 +35,9 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 				t.diagnostic(`outer: ${hex(outer)} >> ${nameColor(outer)} (${simpleColor(outer)})`)
 				t.diagnostic(`inner: ${hex(inner)} >> ${nameColor(inner)} (${simpleColor(inner)})`)
 				t.diagnostic(`third: ${hex(third)} >> ${nameColor(third)} (${simpleColor(third)})`)
-				assert.strictEqual(nameColor(accent), 'lightcoral')
+				assert.strictEqual(nameColor(accent), 'indianred') // similar to lightcoral
 				assert.strictEqual(nameColor(outer), 'black')
-				assert.strictEqual(nameColor(inner), 'gainsboro')
+				assert.strictEqual(nameColor(inner), 'white') // now picks pure white
 				assert.strictEqual(nameColor(third), 'royalblue')
 			})
 	})
@@ -63,9 +63,9 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 				t.diagnostic(`outer: ${hex(outer)} >> ${nameColor(outer)} (${simpleColor(outer)})`)
 				t.diagnostic(`inner: ${hex(inner)} >> ${nameColor(inner)} (${simpleColor(inner)})`)
 				t.diagnostic(`third: ${hex(third)} >> ${nameColor(third)} (${simpleColor(third)})`)
-				assert.strictEqual(nameColor(accent), 'white')
+				assert.strictEqual(nameColor(accent), 'lightgray') // slightly off-white
 				assert.strictEqual(nameColor(outer), 'black')
-				assert.strictEqual(nameColor(inner), 'white')
+				assert.strictEqual(nameColor(inner), 'aliceblue') // near-white with slight blue tint
 				assert.strictEqual(nameColor(third), 'black')
 			})
 	})
@@ -77,9 +77,9 @@ test.describe('OKLab space, clamp, gapStatistic maxK 20 minK 4', {
 				t.diagnostic(`outer: ${hex(outer)} >> ${nameColor(outer)} (${simpleColor(outer)})`)
 				t.diagnostic(`inner: ${hex(inner)} >> ${nameColor(inner)} (${simpleColor(inner)})`)
 				t.diagnostic(`third: ${hex(third)} >> ${nameColor(third)} (${simpleColor(third)})`)
-				assert.strictEqual(nameColor(accent), 'slateblue')
-				assert.strictEqual(nameColor(outer), 'midnightblue')
-				assert.strictEqual(nameColor(inner), 'indianred')
+				assert.strictEqual(nameColor(accent), 'indianred') // red text
+				assert.strictEqual(nameColor(outer), 'darkslateblue') // dark blue bg
+				assert.strictEqual(nameColor(inner), 'deepskyblue') // cyan glowing moon
 				assert.strictEqual(nameColor(third), 'midnightblue')
 			})
 	})

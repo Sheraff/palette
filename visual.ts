@@ -63,8 +63,17 @@ const server = http.createServer((req, res) => {
 	// root path
 	if (req.url === '/') {
 		res.writeHead(200, { 'Content-Type': 'text/html' })
-		res.write('<style>body{background:rgb(13, 17, 23); color: rgb(240, 246, 252);font-size:32px;font-family:sans-serif; text-align:center;}</style>')
+		res.write(`<style>
+			body{background:rgb(13, 17, 23); color: rgb(240, 246, 252);font-size:32px;font-family:sans-serif; text-align:center;}
+			.method-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 2px; text-align: center; }
+			.method-box { display: flex; flex-direction: column; width: 180px; border-left: 1px solid rgba(255,255,255,0.1); }
+			.method-preview { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px; font-size: 14px; }
+			.method-preview p { margin: 4px 0; }
+			.winner { outline: 3px solid #00ff00; outline-offset: -3px; }
+			.gradient-indicator { font-size: 9px; opacity: 0.6; margin-top: 4px; }
+		</style>`)
 		res.write('<h1>Album Art Color Extractor</h1>')
+		res.write('<p style="font-size:14px;opacity:0.7;">Comparing full palettes: current (original), ★hybrid (achromatic-first), vibrant (target-based), multi (balanced weights)</p>')
 		res.write(`<ul style="
 			display:grid;
 			grid-template-columns:repeat(auto-fill, 1200px);
@@ -73,35 +82,44 @@ const server = http.createServer((req, res) => {
 			list-style:none;
 		">`)
 		for (const source of sources) {
-			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex;" id="${source}" data-img>
-				<img src="/image/${source}" width=200 />
-				<img src="/image/${source}?saliency" width=200 style="background:repeating-conic-gradient(#ccc 0 25%, #eee 0 50%) 50% / 8px 8px" />
+			res.write(`<li style="border:1px solid rgb(211 211 211 / 20%); display:flex; align-items:stretch;" id="${source}" data-img>
+				<img src="/image/${source}" width=120 style="object-fit:cover;" />
+				<img src="/image/${source}?saliency" width=80 style="background:repeating-conic-gradient(#ccc 0 25%, #eee 0 50%) 50% / 8px 8px; object-fit:cover;" />
 				<div style="
 					display:flex;
-					aspect-ratio:1;
-					width:200px;
+					width:60px;
 					flex-direction:column;"
 					data-colors
 				>
 					<div style="flex:1;background:hotpink;"></div>
 				</div>
-				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-html>
-					<div style="flex:1;background:hotpink;"></div>
+				<!-- Full palette comparison boxes -->
+				<div class="method-box" data-palette-current>
+					<div class="method-label">current</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
 				</div>
-				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-outer>
-					<div style="flex:1;background:hotpink;"></div>
+				<div class="method-box" data-palette-hybrid style="border:2px solid #0f0;">
+					<div class="method-label">★ hybrid</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
 				</div>
-				<div style="display:flex;flex-direction:column;aspect-ratio:1;width:200px;" data-inner>
-					<div style="flex:1;background:hotpink;"></div>
+				<div class="method-box" data-palette-vibrant style="border:2px solid #ff0;">
+					<div class="method-label">★ vibrant</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
+				</div>
+				<div class="method-box" data-palette-multiPass>
+					<div class="method-label">multi</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
 				</div>
 			</li>`)
 		}
 		res.write(`</ul>
 		<script>
+			const toHex = (c) => c === -1 ? null : '#' + c.toString(16).padStart(6, '0')
+			
 			for (const div of document.querySelectorAll('[data-img]')) {
 				fetch('/image/' + div.id + '?extract').then(async (response) => {
-					const {centroids, inner, outer, third, accent, innerColors, outerColors, bgGradient} = await response.json()
-					console.log('Extracted colors for', div.id, 'is gradient', bgGradient)
+					const {centroids, inner, outer, third, accent, bgGradient, fullPalettes} = await response.json()
+					console.log('Extracted colors for', div.id, 'fullPalettes:', fullPalettes)
 					const total = centroids.reduce((acc, [_, count]) => acc + count, 0)
 					let content = ''
 					for (const [hex, count] of centroids) {
@@ -113,43 +131,52 @@ const server = http.createServer((req, res) => {
 						"></div>\`
 					}
 					div.querySelector('[data-colors]').innerHTML = content
-					div.querySelector('[data-html]').innerHTML = \`<div style="
-						height:100%;
-						background:#\${outer.toString(16).padStart(6, '0')};
-						\${bgGradient ? \`background: linear-gradient(135deg, #\${outer.toString(16).padStart(6, '0')}, #\${third.toString(16).padStart(6, '0')});\` : ''}
-						color:#\${inner.toString(16).padStart(6, '0')};
-						align-content:center;
-					">
-						<p style="margin-bottom:0;">hello</p>
-						<p style="font-size:0.5em;margin-top: 0.5em;">
-							<span style="color:#\${accent.toString(16).padStart(6, '0')};">world</span>
-						</p>
-						<div style="
-							background:#\${bgGradient ? 0000 : third.toString(16).padStart(6, '0')};
-							padding: 0.5rem;
-						">
-							<p style="font-size:0.5em;">
-								other
-								<span style="color:#\${accent.toString(16).padStart(6, '0')};">
-									world
-								</span>
-							</p>
-						</div>
-					</div>\`
-					div.querySelector('[data-outer]').innerHTML = outerColors.map(([color, count]) => (\`
-						<div style="
-							background-color: #\${color.toString(16).padStart(6, '0')};
-							width: 100%;
-							flex: \${count};
-						"></div>
-					\`)).join('')
-					div.querySelector('[data-inner]').innerHTML = innerColors.map(([color, count]) => (\`
-						<div style="
-							background-color: #\${color.toString(16).padStart(6, '0')};
-							width: 100%;
-							flex: \${count};
-						"></div>
-					\`)).join('')
+					
+					// Render each full palette method
+					const methods = ['current', 'hybrid', 'vibrant', 'multiPass']
+					
+					for (const method of methods) {
+						const palette = fullPalettes?.[method]
+						const box = div.querySelector('[data-palette-' + method + ']')
+						if (!box || !palette) continue
+						
+						const preview = box.querySelector('.method-preview')
+						const bgColor = toHex(palette.outer)
+						const fgColor = toHex(palette.inner)
+						const thirdColor = toHex(palette.third)
+						const accentColor = toHex(palette.accent)
+						const isGradient = palette.bgGradient
+						
+						if (bgColor && fgColor) {
+							const bgStyle = isGradient && thirdColor 
+								? \`background: linear-gradient(135deg, \${bgColor}, \${thirdColor});\`
+								: \`background: \${bgColor};\`
+							
+							preview.innerHTML = \`
+								<div style="width:100%; height:100%; \${bgStyle} color:\${fgColor}; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:4px;">
+									<p style="margin:0; font-size:18px; font-weight:bold;">hello</p>
+									<p style="margin:2px 0 0 0; font-size:12px; color:\${accentColor || fgColor};">world</p>
+									<div style="margin-top:4px; background:\${isGradient ? 'transparent' : (thirdColor || bgColor)}; padding:4px 8px; border-radius:2px;">
+										<span style="font-size:10px; color:\${fgColor};">other </span>
+										<span style="font-size:10px; color:\${accentColor || fgColor};">world</span>
+									</div>
+									<div class="gradient-indicator">\${isGradient ? '↗ gradient' : '▪ solid'}</div>
+								</div>
+							\`
+							preview.style.padding = '0'
+						} else {
+							preview.style.background = '#333'
+							preview.style.color = '#666'
+							preview.innerHTML = '<span style="font-size:12px;">N/A</span>'
+						}
+					}
+					
+					// Highlight if methods disagree (different foreground colors found)
+					const uniqueFgColors = new Set(methods.map(m => fullPalettes?.[m]?.inner).filter(c => c !== undefined && c !== -1))
+					if (uniqueFgColors.size > 1) {
+						div.style.borderColor = '#ff6600'
+						div.style.borderWidth = '2px'
+					}
 				})
 			}
 		</script>`)

@@ -4,6 +4,15 @@ import type { Pool, Strategy } from "./kmeans/types.ts"
 import { elbowKmeans } from "./kmeans/elbow.ts"
 import { saliency } from "./saliency/saliency.ts"
 import { histogramAnalysis } from "./gradientDetection.ts"
+import {
+	detectForegroundAllMethods,
+	fallbackToBlackOrWhite,
+	vibrantMethod,
+	computeFullPalette,
+	unifiedMethod,
+	type ForegroundResult,
+	type FullPaletteResult
+} from "./foregroundDetection.ts"
 
 type Meta = {
 	/** number of channels in the image, must be 3 or 4 (RGB or RGBA) */
@@ -28,7 +37,7 @@ export type ExtractOptions = {
 	trimPercent?: number
 	/** [0-100] when extracting the text/foreground color, the minimum contrast with the background color, default to 20 */
 	minForegroundContrast?: number
-	/** importance of salient feature detection in the color extraction, default to 2 */
+	/** importance of salient feature detection in the color extraction, default to 5 */
 	saliencyWeight?: number
 }
 
@@ -49,7 +58,7 @@ export async function extractColors(
 		clamp = 0.005,
 		trimPercent = 2.5,
 		minForegroundContrast = 22,
-		saliencyWeight = 2,
+		saliencyWeight = 5,
 	}: ExtractOptions = {},
 	name = ""
 ) {
@@ -91,6 +100,7 @@ export async function extractColors(
 		)
 	}
 	groupImperceptiblyDifferentColors(centroids, colorSpace)
+	forceExtremeColors(centroids, colorCount, colorSpace, Math.max(50, total * 0.001))
 
 	// const outer = mainZoneColor(data, meta, colorSpace, centroids)
 
@@ -261,18 +271,31 @@ export async function extractColors(
 		return largestCentroid
 	})()
 
-	const inner = (() => {
-		// sum of each color's saliency
-		const diff = Array.from(salientColors.entries())
-			.sort((a, b) => b[1] - a[1])
+	// Run all foreground detection methods for comparison
+	const foregroundMethods = detectForegroundAllMethods(
+		data,
+		meta,
+		saliencyMap,
+		centroids,
+		salientColors,
+		outer,
+		colorSpace,
+		minForegroundContrast
+	)
 
-		// find the color with the highest ratio delta that has enough contrast with the outer color
-		const contrasted = diff.find(([color]) => colorSpace.contrast(outer, color) >= minForegroundContrast)
-		if (contrasted) {
-			console.log(name, "Inner Color from Saliency: #", colorSpace.toRgb(contrasted[0]).toString(16).padStart(6, '0'))
-			return contrasted[0]
+	// Log all method results
+	const readable = (c: number) => c === -1 ? 'N/A' : '#' + colorSpace.toRgb(c).toString(16).padStart(6, '0')
+	console.log(name, "Foreground Detection Methods:")
+	for (const [method, result] of Object.entries(foregroundMethods)) {
+		console.log(`  ${method}: ${readable(result.color)} (score: ${result.score.toFixed(4)})`)
+	}
+
+	// Use the original method as the primary, with fallback
+	const inner = (() => {
+		const originalResult = foregroundMethods.original
+		if (originalResult.color !== -1) {
+			return originalResult.color
 		}
-		console.log(name, "Inner Color NOT FOUND IN SALIENCY")
 
 		// fallback to the color with the highest contrast with the outer color
 		let maxContrastValue = 0
@@ -289,12 +312,8 @@ export async function extractColors(
 			return maxContrastColor
 		}
 
-		// fallback to black or white, whichever has the highest contrast with the outer color
-		const white = colorSpace.toHex([255, 255, 255], 0)
-		const black = colorSpace.toHex([0, 0, 0], 0)
-		const cw = colorSpace.contrast(outer, white)
-		const cb = colorSpace.contrast(outer, black)
-		const newColor = cw > cb ? white : black
+		// fallback to black or white
+		const newColor = fallbackToBlackOrWhite(outer, colorSpace)
 		centroids.set(newColor, 1)
 		centroids.set(outer, centroids.get(outer)! - 1)
 		return newColor
@@ -413,8 +432,6 @@ export async function extractColors(
 		return maxColor
 	})()
 
-	const readable = (c: number) => '#' + colorSpace.toRgb(c).toString(16).padStart(6, '0')
-
 	console.log(name, "Summary: ---------------------------")
 	console.log("Background", readable(outer))
 	console.log("Foreground", readable(inner))
@@ -438,6 +455,99 @@ export async function extractColors(
 		? false
 		: histogramAnalysis(outer, third, colorCount, colorSpace)
 
+	// Convert foreground method results to RGB for API
+	const foregroundMethodsRgb: Record<string, { color: number, score: number, method: string }> = {}
+	for (const [method, result] of Object.entries(foregroundMethods)) {
+		foregroundMethodsRgb[method] = {
+			color: result.color === -1 ? -1 : colorSpace.toRgb(result.color),
+			score: result.score,
+			method: result.method
+		}
+	}
+
+	// Compute full palettes for each method (for visual comparison)
+	const vibrantPalette = vibrantMethod(centroids, outer, colorSpace, minForegroundContrast)
+
+	// Unified method: combines best of current, hybrid, and vibrant
+	const unifiedPalette = unifiedMethod(
+		centroids,
+		salientColors,
+		outerColors,
+		innerColors,
+		outer,
+		colorSpace,
+		minForegroundContrast
+	)
+
+	// Compute bgGradient for unified method using its own third color
+	const unifiedBgGradient = unifiedPalette.outer === unifiedPalette.third
+		? false
+		: histogramAnalysis(unifiedPalette.outer, unifiedPalette.third, colorCount, colorSpace)
+
+	// For each foreground method, compute the full palette (with accent/third derived from that foreground)
+	const fullPalettes: Record<string, FullPaletteResult> = {
+		// Current method (original saliency-based)
+		current: {
+			outer,
+			inner,
+			third,
+			accent,
+			bgGradient,
+			method: 'current'
+		},
+		// Hybrid method with full palette
+		hybrid: computeFullPalette(
+			foregroundMethods.hybrid,
+			centroids,
+			outer,
+			third,
+			bgGradient,
+			colorSpace,
+			minForegroundContrast
+		),
+		// Vibrant-style method (computes its own accent/third)
+		vibrant: {
+			outer,
+			inner: vibrantPalette.foreground,
+			third: vibrantPalette.third,
+			accent: vibrantPalette.accent,
+			bgGradient,
+			method: vibrantPalette.method
+		},
+		// Multi-pass with full palette
+		multiPass: computeFullPalette(
+			foregroundMethods.multiPass,
+			centroids,
+			outer,
+			third,
+			bgGradient,
+			colorSpace,
+			minForegroundContrast
+		),
+		// Unified method: best of all approaches
+		unified: {
+			outer: unifiedPalette.outer,
+			inner: unifiedPalette.inner,
+			third: unifiedPalette.third,
+			accent: unifiedPalette.accent,
+			bgGradient: unifiedBgGradient,
+			method: unifiedPalette.method
+		},
+	}
+
+	// Convert full palettes to RGB
+	const fullPalettesRgb: Record<string, FullPaletteResult> = {}
+	for (const [method, palette] of Object.entries(fullPalettes)) {
+		fullPalettesRgb[method] = {
+			outer: colorSpace.toRgb(palette.outer),
+			inner: colorSpace.toRgb(palette.inner),
+			third: colorSpace.toRgb(palette.third),
+			accent: colorSpace.toRgb(palette.accent),
+			bgGradient: palette.bgGradient,
+			method: palette.method
+		}
+	}
+
 	return {
 		centroids: new Map(Array.from(centroids.entries()).map(([color, count]) => [colorSpace.toRgb(color), count])),
 		outer: colorSpace.toRgb(outer),
@@ -447,6 +557,10 @@ export async function extractColors(
 		innerColors: innerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 		outerColors: outerColors.map(c => [colorSpace.toRgb(c), centroids.get(c)!]),
 		bgGradient: bgGradient,
+		// All foreground detection method results (just foreground color)
+		foregroundMethods: foregroundMethodsRgb,
+		// Full palettes for each method (all 4 colors + gradient)
+		fullPalettes: fullPalettesRgb,
 	}
 }
 
@@ -605,6 +719,77 @@ function groupImperceptiblyDifferentColors(
 			}
 			centroids.set(maxColor, total)
 		}
+	}
+}
+
+/**
+ * Force-add extreme colors (white/black) if they exist in the image but weren't captured as centroids.
+ * This helps capture small text that gets merged into other clusters during k-means.
+ * 
+ * This function aggregates all similar white/black shades together - even if individual
+ * color values don't meet minPixels, their combined count can qualify.
+ * 
+ * @param minPixels Minimum number of pixels for a color to be considered (prevents noise)
+ */
+function forceExtremeColors(
+	centroids: Map<number, number>,
+	colorMap: Map<number, number>,
+	colorSpace: ColorSpace,
+	minPixels: number = 50,
+) {
+	// Define thresholds for "extreme" lightness
+	const NEAR_WHITE_THRESHOLD = 92 // Lightness >= 92 is "near white"
+	const NEAR_BLACK_THRESHOLD = 12 // Lightness <= 12 is "near black"
+	const CHROMA_THRESHOLD = 5 // Must be nearly achromatic
+
+	// Check if we already have a near-white or near-black centroid
+	let hasNearWhite = false
+	let hasNearBlack = false
+
+	for (const [color] of centroids) {
+		const lightness = colorSpace.lightness(color)
+		const chroma = colorSpace.chroma(color)
+		if (chroma <= CHROMA_THRESHOLD) {
+			if (lightness >= NEAR_WHITE_THRESHOLD) hasNearWhite = true
+			if (lightness <= NEAR_BLACK_THRESHOLD) hasNearBlack = true
+		}
+	}
+
+	// Aggregate ALL white-ish and black-ish colors together
+	let whiteTotalCount = 0
+	let blackTotalCount = 0
+	let bestWhite: { color: number, count: number, lightness: number } | null = null
+	let bestBlack: { color: number, count: number, lightness: number } | null = null
+
+	for (const [color, count] of colorMap) {
+		const lightness = colorSpace.lightness(color)
+		const chroma = colorSpace.chroma(color)
+		if (chroma > CHROMA_THRESHOLD) continue
+
+		if (lightness >= NEAR_WHITE_THRESHOLD) {
+			whiteTotalCount += count
+			// Track the brightest white as the representative
+			if (!bestWhite || lightness > bestWhite.lightness ||
+				(lightness === bestWhite.lightness && count > bestWhite.count)) {
+				bestWhite = { color, count, lightness }
+			}
+		}
+		if (lightness <= NEAR_BLACK_THRESHOLD) {
+			blackTotalCount += count
+			// Track the darkest black as the representative
+			if (!bestBlack || lightness < bestBlack.lightness ||
+				(lightness === bestBlack.lightness && count > bestBlack.count)) {
+				bestBlack = { color, count, lightness }
+			}
+		}
+	}
+
+	// Add missing extreme colors if AGGREGATED count exceeds threshold
+	if (!hasNearWhite && bestWhite && whiteTotalCount >= minPixels) {
+		centroids.set(bestWhite.color, whiteTotalCount)
+	}
+	if (!hasNearBlack && bestBlack && blackTotalCount >= minPixels) {
+		centroids.set(bestBlack.color, blackTotalCount)
 	}
 }
 
