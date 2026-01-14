@@ -10,6 +10,9 @@ import {
 	vibrantMethod,
 	computeFullPalette,
 	unifiedMethod,
+	pairedMethod,
+	computePairedPalette,
+	tripletMethod,
 	type ForegroundResult,
 	type FullPaletteResult
 } from "./foregroundDetection.ts"
@@ -56,7 +59,7 @@ export async function extractColors(
 		colorSpace = oklabSpace,
 		strategy = elbowKmeans(),
 		clamp = 0.005,
-		trimPercent = 2.5,
+		trimPercent = 0,
 		minForegroundContrast = 22,
 		saliencyWeight = 5,
 	}: ExtractOptions = {},
@@ -484,6 +487,83 @@ export async function extractColors(
 		? false
 		: histogramAnalysis(unifiedPalette.outer, unifiedPalette.third, colorCount, colorSpace)
 
+	// Compute hybrid and multiPass palettes (they compute their own accent/third)
+	const hybridPalette = computeFullPalette(
+		foregroundMethods.hybrid,
+		centroids,
+		salientColors,
+		outerColors,
+		innerColors,
+		outer,
+		false, // gradient will be computed below
+		colorSpace,
+		minForegroundContrast
+	)
+
+	const multiPassPalette = computeFullPalette(
+		foregroundMethods.multiPass,
+		centroids,
+		salientColors,
+		outerColors,
+		innerColors,
+		outer,
+		false,
+		colorSpace,
+		minForegroundContrast
+	)
+
+	// Compute gradients for each method using their own outer/third pairs
+	const hybridBgGradient = hybridPalette.outer === hybridPalette.third
+		? false
+		: histogramAnalysis(hybridPalette.outer, hybridPalette.third, colorCount, colorSpace)
+
+	const multiPassBgGradient = multiPassPalette.outer === multiPassPalette.third
+		? false
+		: histogramAnalysis(multiPassPalette.outer, multiPassPalette.third, colorCount, colorSpace)
+
+	const vibrantBgGradient = vibrantPalette.foreground === vibrantPalette.third
+		? false
+		: histogramAnalysis(outer, vibrantPalette.third, colorCount, colorSpace)
+
+	// Compute paired palette (joint outer+inner selection)
+	// NOTE: pairedMethod determines its own background candidates via edge flood fill
+	// It does NOT rely on pre-computed outerColors
+	const pairedResult = pairedMethod(
+		data,
+		meta,
+		centroids,
+		salientColors,
+		colorSpace,
+		minForegroundContrast,
+		0.5 // Take candidates with score >= 50% of best
+	)
+
+	const pairedPalette = computePairedPalette(
+		pairedResult,
+		data,
+		meta,
+		centroids,
+		salientColors,
+		colorSpace,
+		minForegroundContrast
+	)
+
+	const pairedBgGradient = pairedPalette.outer === pairedPalette.third
+		? false
+		: histogramAnalysis(pairedPalette.outer, pairedPalette.third, colorCount, colorSpace)
+
+	// Compute triplet palette (joint outer+third+inner selection using spatial graph)
+	const tripletPalette = tripletMethod(
+		data,
+		meta,
+		centroids,
+		salientColors,
+		colorCount,
+		colorSpace,
+		minForegroundContrast,
+		0.5 // Take candidates with score >= 50% of best
+	)
+
 	// For each foreground method, compute the full palette (with accent/third derived from that foreground)
 	const fullPalettes: Record<string, FullPaletteResult> = {
 		// Current method (original saliency-based)
@@ -496,34 +576,24 @@ export async function extractColors(
 			method: 'current'
 		},
 		// Hybrid method with full palette
-		hybrid: computeFullPalette(
-			foregroundMethods.hybrid,
-			centroids,
-			outer,
-			third,
-			bgGradient,
-			colorSpace,
-			minForegroundContrast
-		),
-		// Vibrant-style method (computes its own accent/third)
+		hybrid: {
+			...hybridPalette,
+			bgGradient: hybridBgGradient,
+		},
+		// Vibrant-style method
 		vibrant: {
 			outer,
 			inner: vibrantPalette.foreground,
 			third: vibrantPalette.third,
 			accent: vibrantPalette.accent,
-			bgGradient,
+			bgGradient: vibrantBgGradient,
 			method: vibrantPalette.method
 		},
 		// Multi-pass with full palette
-		multiPass: computeFullPalette(
-			foregroundMethods.multiPass,
-			centroids,
-			outer,
-			third,
-			bgGradient,
-			colorSpace,
-			minForegroundContrast
-		),
+		multiPass: {
+			...multiPassPalette,
+			bgGradient: multiPassBgGradient,
+		},
 		// Unified method: best of all approaches
 		unified: {
 			outer: unifiedPalette.outer,
@@ -533,6 +603,17 @@ export async function extractColors(
 			bgGradient: unifiedBgGradient,
 			method: unifiedPalette.method
 		},
+		// Paired method: joint outer+inner selection
+		paired: {
+			outer: pairedPalette.outer,
+			inner: pairedPalette.inner,
+			third: pairedPalette.third,
+			accent: pairedPalette.accent,
+			bgGradient: pairedBgGradient,
+			method: pairedPalette.method
+		},
+		// Triplet method: joint outer+third+inner selection using spatial graph
+		triplet: tripletPalette,
 	}
 
 	// Convert full palettes to RGB

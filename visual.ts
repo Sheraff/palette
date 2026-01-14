@@ -73,7 +73,7 @@ const server = http.createServer((req, res) => {
 			.gradient-indicator { font-size: 9px; opacity: 0.6; margin-top: 4px; }
 		</style>`)
 		res.write('<h1>Album Art Color Extractor</h1>')
-		res.write('<p style="font-size:14px;opacity:0.7;">Comparing full palettes: current (original), ★hybrid (achromatic-first), vibrant (target-based), multi (balanced weights)</p>')
+		res.write('<p style="font-size:14px;opacity:0.7;">Comparing full palettes: current, ★hybrid, vibrant, multi, ★paired (joint outer+inner)</p>')
 		res.write(`<ul style="
 			display:grid;
 			grid-template-columns:repeat(auto-fill, 1200px);
@@ -110,6 +110,14 @@ const server = http.createServer((req, res) => {
 					<div class="method-label">multi</div>
 					<div class="method-preview" style="background:hotpink;">—</div>
 				</div>
+				<div class="method-box" data-palette-paired style="border:2px solid #0ff;">
+					<div class="method-label">★ paired</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
+				</div>
+				<div class="method-box" data-palette-triplet style="border:2px solid #0ff;">
+					<div class="method-label">★ triplet</div>
+					<div class="method-preview" style="background:hotpink;">—</div>
+				</div>
 			</li>`)
 		}
 		res.write(`</ul>
@@ -133,7 +141,7 @@ const server = http.createServer((req, res) => {
 					div.querySelector('[data-colors]').innerHTML = content
 					
 					// Render each full palette method
-					const methods = ['current', 'hybrid', 'vibrant', 'multiPass']
+					const methods = ['current', 'hybrid', 'vibrant', 'multiPass', 'paired', 'triplet']
 					
 					for (const method of methods) {
 						const palette = fullPalettes?.[method]
@@ -193,14 +201,10 @@ const server = http.createServer((req, res) => {
 		}
 		const path = join(cwd, image)
 		if (!format) {
-			fs.readFile(path, (err, buffer) => {
-				if (err) {
-					res.writeHead(500, { 'Content-Type': 'text/plain' })
-					res.end(err.message)
-					return
-				}
-				res.writeHead(200, { 'Content-Type': 'image/jpeg' })
-				res.end(buffer)
+			const stream = fs.createReadStream(path)
+			stream.on('open', function () {
+				res.setHeader('Content-Type', 'image/jpeg')
+				stream.pipe(res)
 			})
 			return
 		}

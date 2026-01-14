@@ -42,11 +42,6 @@ export function histogramAnalysis(
 		}
 	}
 
-	// Check if the two colors are too similar (not a meaningful gradient)
-	if (totalDistance < 8) {
-		return false // Colors too similar to form a meaningful gradient
-	}
-
 	// Check if the histogram shows discrete color blocks rather than smooth gradient
 	// Count how many pixels are NOT on the interpolation path
 	const onPath = histogram.reduce((sum, count) => sum + count, 0)
