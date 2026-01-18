@@ -1,0 +1,1 @@
+when selecting `outer` by floodfill, look if some neighboring pixels belong to a centroid that would form a gradient with `outer`. If so, we might have a good `third` candidate, and we can boost the score of the `outer` candidate (by a factor relative to the gradient strength? to the `third` pixel count? by???).

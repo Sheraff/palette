@@ -116,6 +116,14 @@ export const oklabSpace: ColorSpace = {
 		const chroma = isAchromatic ? 0 : Math.sqrt(a ** 2 + b ** 2)
 		return chroma / 1.5
 	},
+	/** [0-360] hue angle in degrees */
+	hue(hex) {
+		const a = (hex >> 8 & 0xff) / negativePercentToHex - 100
+		const b = (hex & 0xff) / negativePercentToHex - 100
+		const isAchromatic = Math.abs(a) < dε && Math.abs(b) < dε
+		if (isAchromatic) return 0
+		return (((Math.atan2(b, a) * 180) / Math.PI % 360) + 360) % 360
+	},
 	increaseContrast(of: number, against: number, towards: number, desired: number, foreground: boolean) {
 		let contrast = 0
 		let result = of
