@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-18T14:41:59.669Z",
-  "algorithmVersion": "region-graph-0.11.0",
+  "generatedAt": "2026-07-18T17:19:12.600Z",
+  "algorithmVersion": "region-graph-0.13.0",
   "entries": [
     {
       "file": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
@@ -9,7 +9,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -365,7 +365,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 234
+          "processingMs": 243
         }
       }
     },
@@ -376,7 +376,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -732,7 +732,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 198
         }
       }
     },
@@ -743,7 +743,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -1086,7 +1086,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 236
+          "processingMs": 245
         }
       }
     },
@@ -1097,7 +1097,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -1440,7 +1440,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 205
+          "processingMs": 215
         }
       }
     },
@@ -1451,7 +1451,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -1807,7 +1807,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 227
+          "processingMs": 236
         }
       }
     },
@@ -1818,7 +1818,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -2161,7 +2161,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 225
+          "processingMs": 233
         }
       }
     },
@@ -2172,7 +2172,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -2515,7 +2515,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 223
+          "processingMs": 233
         }
       }
     },
@@ -2526,7 +2526,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -2882,7 +2882,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 217
+          "processingMs": 290
         }
       }
     },
@@ -2893,7 +2893,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -3249,7 +3249,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 213
+          "processingMs": 321
         }
       }
     },
@@ -3260,7 +3260,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -3287,13 +3287,13 @@
             },
             "surface": {
               "rgb": [
-                112,
-                186,
-                37
+                255,
+                255,
+                255
               ],
-              "hex": "#70ba25",
+              "hex": "#ffffff",
               "generated": false,
-              "sourceDistance": 0.0004678723926209963
+              "sourceDistance": 6.526453821820232e-9
             },
             "accent": {
               "rgb": [
@@ -3308,19 +3308,19 @@
             "gradient": {
               "isGradient": false,
               "confidence": 0.6158386683738797,
-              "coverage": 0.25416133162612037,
+              "coverage": 0.9236088966836735,
               "continuity": 1,
-              "coherence": 0.6139473174507359
+              "coherence": 0.49715729627289956
             },
-            "score": 0.7124735425926332,
+            "score": 0.736510736135873,
             "metrics": {
               "foregroundContrast": 8.73922545930632,
-              "foregroundSurfaceContrast": 8.73922545930632,
+              "foregroundSurfaceContrast": 21,
               "accentContrast": 1.6978066895763009,
-              "accentSurfaceContrast": 1.6978066895763009,
-              "minimumRoleDistance": 0,
-              "meanSourceDistance": 0.01891263532024889,
-              "meanReconstructionError": 0.2570823277452449
+              "accentSurfaceContrast": 4.079759773577504,
+              "minimumRoleDistance": 0.34303704446034533,
+              "meanSourceDistance": 0.018795668853707096,
+              "meanReconstructionError": 0.017860962129581718
             }
           },
           "expressive": {
@@ -3346,13 +3346,13 @@
             },
             "surface": {
               "rgb": [
-                112,
-                186,
-                37
+                255,
+                255,
+                255
               ],
-              "hex": "#70ba25",
+              "hex": "#ffffff",
               "generated": false,
-              "sourceDistance": 0.0004678723926209963
+              "sourceDistance": 6.526453821820232e-9
             },
             "accent": {
               "rgb": [
@@ -3367,19 +3367,19 @@
             "gradient": {
               "isGradient": false,
               "confidence": 0.6158386683738797,
-              "coverage": 0.25416133162612037,
+              "coverage": 0.9236088966836735,
               "continuity": 1,
-              "coherence": 0.6139473174507359
+              "coherence": 0.49715729627289956
             },
-            "score": 0.638584678539612,
+            "score": 0.6626218720828518,
             "metrics": {
               "foregroundContrast": 8.73922545930632,
-              "foregroundSurfaceContrast": 8.73922545930632,
+              "foregroundSurfaceContrast": 21,
               "accentContrast": 1.6978066895763009,
-              "accentSurfaceContrast": 1.6978066895763009,
-              "minimumRoleDistance": 0,
-              "meanSourceDistance": 0.01891263532024889,
-              "meanReconstructionError": 0.2570823277452449
+              "accentSurfaceContrast": 4.079759773577504,
+              "minimumRoleDistance": 0.34303704446034533,
+              "meanSourceDistance": 0.018795668853707096,
+              "meanReconstructionError": 0.017860962129581718
             }
           },
           "quantized": {
@@ -3616,7 +3616,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 198
         }
       }
     },
@@ -3627,7 +3627,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -3983,7 +3983,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 227
+          "processingMs": 255
         }
       }
     },
@@ -3994,7 +3994,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -4337,7 +4337,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 228
+          "processingMs": 254
         }
       }
     },
@@ -4348,7 +4348,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -4691,7 +4691,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 209
         }
       }
     },
@@ -4702,7 +4702,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -5058,7 +5058,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 214
+          "processingMs": 218
         }
       }
     },
@@ -5069,7 +5069,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -5425,7 +5425,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 201
+          "processingMs": 208
         }
       }
     },
@@ -5436,7 +5436,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -5792,7 +5792,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 214
+          "processingMs": 216
         }
       }
     },
@@ -5803,7 +5803,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -6159,7 +6159,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 195
+          "processingMs": 215
         }
       }
     },
@@ -6170,7 +6170,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -6526,7 +6526,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 202
+          "processingMs": 218
         }
       }
     },
@@ -6537,7 +6537,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -6893,7 +6893,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 203
+          "processingMs": 224
         }
       }
     },
@@ -6904,7 +6904,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -7260,7 +7260,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 153
+          "processingMs": 167
         }
       }
     },
@@ -7271,7 +7271,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -7614,7 +7614,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 257
         }
       }
     },
@@ -7625,7 +7625,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -7968,7 +7968,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 198
+          "processingMs": 253
         }
       }
     },
@@ -7979,7 +7979,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -8335,7 +8335,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 205
+          "processingMs": 376
         }
       }
     },
@@ -8346,7 +8346,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -8689,7 +8689,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 202
+          "processingMs": 259
         }
       }
     },
@@ -8700,7 +8700,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -9043,7 +9043,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 205
+          "processingMs": 245
         }
       }
     },
@@ -9054,7 +9054,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -9397,7 +9397,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 214
+          "processingMs": 245
         }
       }
     },
@@ -9408,7 +9408,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -9764,7 +9764,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 209
+          "processingMs": 198
         }
       }
     },
@@ -9775,7 +9775,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -10131,7 +10131,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 191
         }
       }
     },
@@ -10142,7 +10142,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -10498,7 +10498,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 203
+          "processingMs": 194
         }
       }
     },
@@ -10509,7 +10509,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -10852,7 +10852,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 197
+          "processingMs": 187
         }
       }
     },
@@ -10863,7 +10863,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -11206,7 +11206,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 209
+          "processingMs": 188
         }
       }
     },
@@ -11217,7 +11217,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -11573,7 +11573,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 209
+          "processingMs": 199
         }
       }
     },
@@ -11584,7 +11584,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -11927,7 +11927,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 173
+          "processingMs": 169
         }
       }
     },
@@ -11938,7 +11938,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -12281,7 +12281,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 194
         }
       }
     },
@@ -12292,7 +12292,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -12648,7 +12648,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 221
+          "processingMs": 201
         }
       }
     },
@@ -12659,7 +12659,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -13002,7 +13002,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 199
+          "processingMs": 194
         }
       }
     },
@@ -13013,7 +13013,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -13369,7 +13369,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 197
+          "processingMs": 196
         }
       }
     },
@@ -13380,7 +13380,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -13723,7 +13723,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 204
+          "processingMs": 196
         }
       }
     },
@@ -13734,7 +13734,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -14101,7 +14101,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -14457,7 +14457,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 200
+          "processingMs": 199
         }
       }
     },
@@ -14468,7 +14468,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -14835,7 +14835,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -15178,7 +15178,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 191
         }
       }
     },
@@ -15189,7 +15189,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -15532,7 +15532,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 149
+          "processingMs": 152
         }
       }
     },
@@ -15543,7 +15543,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -15899,7 +15899,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 159
+          "processingMs": 166
         }
       }
     },
@@ -15910,7 +15910,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -16266,7 +16266,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 175
+          "processingMs": 173
         }
       }
     },
@@ -16277,7 +16277,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -16633,7 +16633,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 203
+          "processingMs": 198
         }
       }
     },
@@ -16644,7 +16644,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -16987,7 +16987,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 156
+          "processingMs": 152
         }
       }
     },
@@ -16998,7 +16998,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -17365,7 +17365,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -17721,7 +17721,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 205
+          "processingMs": 198
         }
       }
     },
@@ -17732,7 +17732,7 @@
       "width": 223,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 223,
         "height": 224,
         "methods": {
@@ -18075,7 +18075,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 184
         }
       }
     },
@@ -18086,7 +18086,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -18429,7 +18429,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 189
+          "processingMs": 188
         }
       }
     },
@@ -18440,7 +18440,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -18783,7 +18783,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 193
         }
       }
     },
@@ -18794,7 +18794,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -19137,7 +19137,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 194
+          "processingMs": 195
         }
       }
     },
@@ -19148,7 +19148,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -19491,7 +19491,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 194
         }
       }
     },
@@ -19502,7 +19502,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -19858,7 +19858,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 197
+          "processingMs": 195
         }
       }
     },
@@ -19869,7 +19869,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -20225,7 +20225,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 212
+          "processingMs": 227
         }
       }
     },
@@ -20236,7 +20236,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -20592,7 +20592,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 201
+          "processingMs": 213
         }
       }
     },
@@ -20603,7 +20603,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -20959,7 +20959,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 204
         }
       }
     },
@@ -20970,7 +20970,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -21326,7 +21326,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 212
+          "processingMs": 214
         }
       }
     },
@@ -21337,7 +21337,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -21693,7 +21693,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 215
+          "processingMs": 225
         }
       }
     },
@@ -21704,7 +21704,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -22060,7 +22060,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 195
+          "processingMs": 208
         }
       }
     },
@@ -22071,7 +22071,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -22414,7 +22414,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 180
+          "processingMs": 188
         }
       }
     },
@@ -22425,7 +22425,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -22768,7 +22768,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 185
         }
       }
     },
@@ -22779,7 +22779,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -23122,7 +23122,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 204
+          "processingMs": 215
         }
       }
     },
@@ -23133,7 +23133,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -23489,7 +23489,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 212
         }
       }
     },
@@ -23500,7 +23500,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -23856,7 +23856,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 197
+          "processingMs": 208
         }
       }
     },
@@ -23867,7 +23867,7 @@
       "width": 224,
       "height": 213,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 213,
         "methods": {
@@ -24210,7 +24210,7 @@
         "diagnostics": {
           "regionCount": 272,
           "candidateCount": 12,
-          "processingMs": 191
+          "processingMs": 203
         }
       }
     },
@@ -24221,7 +24221,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -24577,7 +24577,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 204
+          "processingMs": 215
         }
       }
     },
@@ -24588,7 +24588,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -24944,7 +24944,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 209
         }
       }
     },
@@ -24955,7 +24955,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -25298,7 +25298,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 198
+          "processingMs": 208
         }
       }
     },
@@ -25309,7 +25309,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -25652,7 +25652,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 191
+          "processingMs": 200
         }
       }
     },
@@ -25663,7 +25663,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -26006,7 +26006,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 205
+          "processingMs": 214
         }
       }
     },
@@ -26017,7 +26017,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -26373,7 +26373,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 205
+          "processingMs": 213
         }
       }
     },
@@ -26384,7 +26384,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -26740,7 +26740,7 @@
         "diagnostics": {
           "regionCount": 288,
           "candidateCount": 13,
-          "processingMs": 196
+          "processingMs": 210
         }
       }
     },
@@ -26751,7 +26751,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -27107,7 +27107,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 216
         }
       }
     },
@@ -27118,7 +27118,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -27461,7 +27461,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 193
         }
       }
     },
@@ -27472,7 +27472,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -27828,7 +27828,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 209
+          "processingMs": 205
         }
       }
     },
@@ -27839,7 +27839,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -28195,7 +28195,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 194
+          "processingMs": 189
         }
       }
     },
@@ -28206,7 +28206,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -28549,7 +28549,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 193
+          "processingMs": 190
         }
       }
     },
@@ -28560,7 +28560,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -28916,7 +28916,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 214
+          "processingMs": 204
         }
       }
     },
@@ -28927,7 +28927,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -29283,7 +29283,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 200
+          "processingMs": 198
         }
       }
     },
@@ -29294,7 +29294,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -29650,7 +29650,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 189
         }
       }
     },
@@ -29661,7 +29661,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -30004,7 +30004,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 194
+          "processingMs": 187
         }
       }
     },
@@ -30015,7 +30015,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -30358,7 +30358,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 206
+          "processingMs": 197
         }
       }
     },
@@ -30369,7 +30369,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -30712,7 +30712,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 184
         }
       }
     },
@@ -30723,7 +30723,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -31079,7 +31079,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 196
         }
       }
     },
@@ -31090,7 +31090,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -31433,7 +31433,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 180
+          "processingMs": 178
         }
       }
     },
@@ -31444,7 +31444,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -31787,7 +31787,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 212
+          "processingMs": 198
         }
       }
     },
@@ -31798,7 +31798,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -32141,7 +32141,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 208
+          "processingMs": 204
         }
       }
     },
@@ -32152,7 +32152,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -32508,7 +32508,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 186
         }
       }
     },
@@ -32519,7 +32519,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -32875,7 +32875,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 190
         }
       }
     },
@@ -32886,7 +32886,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -33242,7 +33242,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 203
+          "processingMs": 196
         }
       }
     },
@@ -33253,7 +33253,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -33609,7 +33609,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 195
+          "processingMs": 192
         }
       }
     },
@@ -33620,7 +33620,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -33987,7 +33987,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -34330,7 +34330,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 206
+          "processingMs": 203
         }
       }
     },
@@ -34341,7 +34341,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -34684,7 +34684,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 170
+          "processingMs": 163
         }
       }
     },
@@ -34695,7 +34695,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -35038,7 +35038,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 198
+          "processingMs": 197
         }
       }
     },
@@ -35049,7 +35049,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -35392,7 +35392,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 200
+          "processingMs": 198
         }
       }
     },
@@ -35403,7 +35403,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -35759,7 +35759,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 152
+          "processingMs": 148
         }
       }
     },
@@ -35770,7 +35770,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -36113,7 +36113,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 183
         }
       }
     },
@@ -36124,7 +36124,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -36480,7 +36480,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 216
+          "processingMs": 197
         }
       }
     },
@@ -36491,7 +36491,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -36834,7 +36834,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 194
+          "processingMs": 187
         }
       }
     },
@@ -36845,7 +36845,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -37201,7 +37201,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 195
         }
       }
     },
@@ -37212,7 +37212,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -37568,7 +37568,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 197
         }
       }
     },
@@ -37579,7 +37579,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -37922,7 +37922,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 202
+          "processingMs": 216
         }
       }
     },
@@ -37933,7 +37933,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -38276,7 +38276,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 206
+          "processingMs": 217
         }
       }
     },
@@ -38287,7 +38287,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -38630,7 +38630,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 215
         }
       }
     },
@@ -38641,7 +38641,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -38997,7 +38997,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 210
         }
       }
     },
@@ -39008,7 +39008,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -39364,7 +39364,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 204
+          "processingMs": 211
         }
       }
     },
@@ -39375,7 +39375,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -39718,7 +39718,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 201
+          "processingMs": 208
         }
       }
     },
@@ -39729,7 +39729,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -40085,7 +40085,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 200
+          "processingMs": 208
         }
       }
     },
@@ -40096,7 +40096,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -40439,7 +40439,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 169
+          "processingMs": 179
         }
       }
     },
@@ -40450,7 +40450,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -40806,7 +40806,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 217
+          "processingMs": 225
         }
       }
     },
@@ -40817,7 +40817,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -41173,7 +41173,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 201
+          "processingMs": 212
         }
       }
     },
@@ -41184,7 +41184,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -41540,7 +41540,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 204
+          "processingMs": 213
         }
       }
     },
@@ -41551,7 +41551,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -41894,7 +41894,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 199
+          "processingMs": 209
         }
       }
     },
@@ -41905,7 +41905,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -42248,7 +42248,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 204
+          "processingMs": 215
         }
       }
     },
@@ -42259,7 +42259,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -42615,7 +42615,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 209
         }
       }
     },
@@ -42626,7 +42626,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -42982,7 +42982,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 208
         }
       }
     },
@@ -42993,7 +42993,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -43336,7 +43336,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 191
+          "processingMs": 199
         }
       }
     },
@@ -43347,7 +43347,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -43703,7 +43703,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 206
         }
       }
     },
@@ -43714,7 +43714,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -44057,7 +44057,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 190
+          "processingMs": 200
         }
       }
     },
@@ -44068,7 +44068,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -44424,7 +44424,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 198
+          "processingMs": 207
         }
       }
     },
@@ -44435,7 +44435,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -44778,7 +44778,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 207
         }
       }
     },
@@ -44789,7 +44789,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -45145,7 +45145,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 208
+          "processingMs": 215
         }
       }
     },
@@ -45156,7 +45156,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -45499,7 +45499,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 205
+          "processingMs": 214
         }
       }
     },
@@ -45510,7 +45510,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -45853,7 +45853,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 193
+          "processingMs": 204
         }
       }
     },
@@ -45864,7 +45864,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -46207,7 +46207,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 188
+          "processingMs": 197
         }
       }
     },
@@ -46218,7 +46218,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -46561,7 +46561,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 199
+          "processingMs": 215
         }
       }
     },
@@ -46572,7 +46572,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -46915,7 +46915,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 205
+          "processingMs": 207
         }
       }
     },
@@ -46926,7 +46926,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -47269,7 +47269,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 202
+          "processingMs": 214
         }
       }
     },
@@ -47280,7 +47280,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -47623,7 +47623,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 197
+          "processingMs": 207
         }
       }
     },
@@ -47634,7 +47634,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -47977,7 +47977,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 217
         }
       }
     },
@@ -47988,7 +47988,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -48344,7 +48344,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 207
+          "processingMs": 199
         }
       }
     },
@@ -48355,7 +48355,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -48698,7 +48698,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 192
+          "processingMs": 189
         }
       }
     },
@@ -48709,7 +48709,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -49052,7 +49052,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 195
         }
       }
     },
@@ -49063,7 +49063,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -49406,7 +49406,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 202
+          "processingMs": 201
         }
       }
     },
@@ -49417,7 +49417,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -49773,7 +49773,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 205
+          "processingMs": 197
         }
       }
     },
@@ -49784,7 +49784,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -50151,7 +50151,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -50507,7 +50507,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 199
+          "processingMs": 200
         }
       }
     },
@@ -50518,7 +50518,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -50872,7 +50872,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -51228,7 +51228,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 203
+          "processingMs": 197
         }
       }
     },
@@ -51239,7 +51239,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -51606,7 +51606,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -51949,7 +51949,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 199
+          "processingMs": 197
         }
       }
     },
@@ -51960,7 +51960,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -52316,7 +52316,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 197
+          "processingMs": 195
         }
       }
     },
@@ -52327,7 +52327,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -52670,7 +52670,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 224
+          "processingMs": 192
         }
       }
     },
@@ -52681,7 +52681,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -53024,7 +53024,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 194
+          "processingMs": 190
         }
       }
     },
@@ -53035,7 +53035,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -53378,7 +53378,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 195
+          "processingMs": 192
         }
       }
     },
@@ -53389,7 +53389,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -53756,7 +53756,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -54099,7 +54099,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 207
+          "processingMs": 196
         }
       }
     },
@@ -54110,7 +54110,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -54453,7 +54453,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 200
+          "processingMs": 197
         }
       }
     },
@@ -54464,7 +54464,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -54820,7 +54820,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 200
+          "processingMs": 190
         }
       }
     },
@@ -54831,7 +54831,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -55174,7 +55174,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 206
+          "processingMs": 196
         }
       }
     },
@@ -55185,7 +55185,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -55541,7 +55541,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 194
         }
       }
     },
@@ -55552,7 +55552,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -55895,7 +55895,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 192
         }
       }
     },
@@ -55906,7 +55906,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -56249,7 +56249,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 152
+          "processingMs": 160
         }
       }
     },
@@ -56260,7 +56260,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -56616,7 +56616,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 185
+          "processingMs": 195
         }
       }
     },
@@ -56627,7 +56627,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -56970,7 +56970,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 196
         }
       }
     },
@@ -56981,7 +56981,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -57324,7 +57324,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 195
         }
       }
     },
@@ -57335,7 +57335,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -57678,7 +57678,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 204
         }
       }
     },
@@ -57689,7 +57689,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -58032,7 +58032,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 190
         }
       }
     },
@@ -58043,7 +58043,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -58386,7 +58386,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 200
         }
       }
     },
@@ -58397,7 +58397,7 @@
       "width": 224,
       "height": 149,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 149,
         "methods": {
@@ -58753,7 +58753,7 @@
         "diagnostics": {
           "regionCount": 187,
           "candidateCount": 13,
-          "processingMs": 121
+          "processingMs": 129
         }
       }
     },
@@ -58764,7 +58764,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -59120,7 +59120,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 197
         }
       }
     },
@@ -59131,7 +59131,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -59474,7 +59474,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 178
+          "processingMs": 190
         }
       }
     },
@@ -59485,7 +59485,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -59841,7 +59841,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 199
         }
       }
     },
@@ -59852,7 +59852,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -60208,7 +60208,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 199
         }
       }
     },
@@ -60219,7 +60219,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -60562,7 +60562,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 194
         }
       }
     },
@@ -60573,7 +60573,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -60929,7 +60929,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 192
+          "processingMs": 203
         }
       }
     },
@@ -60940,7 +60940,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -61283,7 +61283,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 179
+          "processingMs": 191
         }
       }
     },
@@ -61294,7 +61294,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -61650,7 +61650,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 198
         }
       }
     },
@@ -61661,7 +61661,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -62004,7 +62004,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 199
         }
       }
     },
@@ -62015,7 +62015,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -62358,7 +62358,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 194
         }
       }
     },
@@ -62369,7 +62369,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -62725,7 +62725,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 193
         }
       }
     },
@@ -62736,7 +62736,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -63079,7 +63079,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 195
         }
       }
     },
@@ -63090,7 +63090,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -63433,7 +63433,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 190
         }
       }
     },
@@ -63444,7 +63444,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -63787,7 +63787,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 191
         }
       }
     },
@@ -63798,7 +63798,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -64141,7 +64141,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 193
+          "processingMs": 202
         }
       }
     },
@@ -64152,7 +64152,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -64508,7 +64508,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 180
+          "processingMs": 198
         }
       }
     },
@@ -64519,7 +64519,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -64875,7 +64875,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 201
         }
       }
     },
@@ -64886,7 +64886,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -65242,7 +65242,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 176
+          "processingMs": 188
         }
       }
     },
@@ -65253,7 +65253,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -65596,7 +65596,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 196
         }
       }
     },
@@ -65607,7 +65607,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -65963,7 +65963,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 198
         }
       }
     },
@@ -65974,7 +65974,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -66317,7 +66317,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 180
+          "processingMs": 192
         }
       }
     },
@@ -66328,7 +66328,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -66684,7 +66684,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 195
         }
       }
     },
@@ -66695,7 +66695,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -67038,7 +67038,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 195
         }
       }
     },
@@ -67049,7 +67049,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -67392,7 +67392,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 197
         }
       }
     },
@@ -67403,7 +67403,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -67746,7 +67746,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 181
+          "processingMs": 204
         }
       }
     },
@@ -67757,7 +67757,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -68100,7 +68100,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 198
         }
       }
     },
@@ -68111,7 +68111,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -68454,7 +68454,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 193
         }
       }
     },
@@ -68465,7 +68465,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -68821,7 +68821,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 182
+          "processingMs": 190
         }
       }
     },
@@ -68832,7 +68832,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -69175,7 +69175,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 205
         }
       }
     },
@@ -69186,7 +69186,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -69542,7 +69542,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 182
+          "processingMs": 192
         }
       }
     },
@@ -69553,7 +69553,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -69909,7 +69909,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 177
+          "processingMs": 188
         }
       }
     },
@@ -69920,7 +69920,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -70276,7 +70276,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 195
         }
       }
     },
@@ -70287,7 +70287,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -70630,7 +70630,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 193
         }
       }
     },
@@ -70641,7 +70641,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -70997,7 +70997,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 198
         }
       }
     },
@@ -71008,7 +71008,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -71364,7 +71364,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 179
+          "processingMs": 191
         }
       }
     },
@@ -71375,7 +71375,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -71731,7 +71731,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 181
+          "processingMs": 193
         }
       }
     },
@@ -71742,7 +71742,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -72098,7 +72098,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 179
+          "processingMs": 192
         }
       }
     },
@@ -72109,7 +72109,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -72465,7 +72465,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 178
+          "processingMs": 191
         }
       }
     },
@@ -72476,7 +72476,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -72819,7 +72819,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 191
         }
       }
     },
@@ -72830,7 +72830,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -73186,7 +73186,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 202
         }
       }
     },
@@ -73197,7 +73197,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -73553,7 +73553,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 197
         }
       }
     },
@@ -73564,7 +73564,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -73920,7 +73920,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 189
+          "processingMs": 200
         }
       }
     },
@@ -73931,7 +73931,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -74274,7 +74274,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 197
         }
       }
     },
@@ -74285,7 +74285,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -74641,7 +74641,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 194
         }
       }
     },
@@ -74652,7 +74652,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -74995,7 +74995,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 198
         }
       }
     },
@@ -75006,7 +75006,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -75349,7 +75349,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 194
         }
       }
     },
@@ -75360,7 +75360,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -75716,7 +75716,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 206
         }
       }
     },
@@ -75727,7 +75727,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -76070,7 +76070,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 187
         }
       }
     },
@@ -76081,7 +76081,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -76437,7 +76437,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 163
+          "processingMs": 172
         }
       }
     },
@@ -76448,7 +76448,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -76791,7 +76791,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 193
         }
       }
     },
@@ -76802,7 +76802,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -77145,7 +77145,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 195
         }
       }
     },
@@ -77156,7 +77156,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -77512,7 +77512,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 195
         }
       }
     },
@@ -77523,7 +77523,7 @@
       "width": 224,
       "height": 221,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 221,
         "methods": {
@@ -77866,7 +77866,7 @@
         "diagnostics": {
           "regionCount": 272,
           "candidateCount": 12,
-          "processingMs": 176
+          "processingMs": 183
         }
       }
     },
@@ -77877,7 +77877,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -78233,7 +78233,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 198
         }
       }
     },
@@ -78244,7 +78244,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -78587,7 +78587,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 189
+          "processingMs": 198
         }
       }
     },
@@ -78598,7 +78598,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -78941,7 +78941,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 193
+          "processingMs": 202
         }
       }
     },
@@ -78952,7 +78952,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -79295,7 +79295,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 186
         }
       }
     },
@@ -79306,7 +79306,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -79649,7 +79649,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 193
         }
       }
     },
@@ -79660,7 +79660,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -80016,7 +80016,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 192
+          "processingMs": 198
         }
       }
     },
@@ -80027,7 +80027,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -80383,7 +80383,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 200
         }
       }
     },
@@ -80394,7 +80394,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -80750,7 +80750,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 177
+          "processingMs": 186
         }
       }
     },
@@ -80761,7 +80761,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -81104,7 +81104,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 179
+          "processingMs": 190
         }
       }
     },
@@ -81115,7 +81115,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -81458,7 +81458,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 181
+          "processingMs": 190
         }
       }
     },
@@ -81469,7 +81469,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -81812,7 +81812,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 189
         }
       }
     },
@@ -81823,7 +81823,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -82166,7 +82166,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 179
+          "processingMs": 188
         }
       }
     },
@@ -82177,7 +82177,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -82533,7 +82533,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 170
+          "processingMs": 176
         }
       }
     },
@@ -82544,7 +82544,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -82887,7 +82887,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 149
+          "processingMs": 151
         }
       }
     },
@@ -82898,7 +82898,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -83241,7 +83241,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 174
+          "processingMs": 180
         }
       }
     },
@@ -83252,7 +83252,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -83595,7 +83595,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 174
+          "processingMs": 182
         }
       }
     },
@@ -83606,7 +83606,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -83949,7 +83949,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 178
+          "processingMs": 185
         }
       }
     },
@@ -83960,7 +83960,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -84303,7 +84303,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 191
         }
       }
     },
@@ -84314,7 +84314,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -84657,7 +84657,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 190
         }
       }
     },
@@ -84668,7 +84668,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -85011,7 +85011,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 190
         }
       }
     },
@@ -85022,7 +85022,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -85365,7 +85365,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 178
+          "processingMs": 184
         }
       }
     },
@@ -85376,7 +85376,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -85732,7 +85732,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 182
+          "processingMs": 192
         }
       }
     },
@@ -85743,7 +85743,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -86099,7 +86099,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 192
+          "processingMs": 200
         }
       }
     },
@@ -86110,7 +86110,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -86466,7 +86466,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 181
+          "processingMs": 189
         }
       }
     },
@@ -86477,7 +86477,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -86833,7 +86833,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 192
         }
       }
     },
@@ -86844,7 +86844,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -87200,7 +87200,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 197
         }
       }
     },
@@ -87211,7 +87211,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -87554,7 +87554,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 193
         }
       }
     },
@@ -87565,7 +87565,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -87921,7 +87921,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 176
+          "processingMs": 187
         }
       }
     },
@@ -87932,7 +87932,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -88275,7 +88275,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 172
+          "processingMs": 182
         }
       }
     },
@@ -88286,7 +88286,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -88629,7 +88629,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 157
+          "processingMs": 165
         }
       }
     },
@@ -88640,7 +88640,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -88983,7 +88983,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 195
         }
       }
     },
@@ -88994,7 +88994,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -89350,7 +89350,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 181
+          "processingMs": 189
         }
       }
     },
@@ -89361,7 +89361,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -89704,7 +89704,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 189
         }
       }
     },
@@ -89715,7 +89715,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -90058,7 +90058,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 193
         }
       }
     },
@@ -90069,7 +90069,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -90425,7 +90425,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 195
         }
       }
     },
@@ -90436,7 +90436,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -90792,7 +90792,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 172
+          "processingMs": 181
         }
       }
     },
@@ -90803,7 +90803,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -91146,7 +91146,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 174
+          "processingMs": 186
         }
       }
     },
@@ -91157,7 +91157,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -91500,7 +91500,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 194
         }
       }
     },
@@ -91511,7 +91511,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -91867,7 +91867,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 185
+          "processingMs": 197
         }
       }
     },
@@ -91878,7 +91878,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -92234,7 +92234,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 197
         }
       }
     },
@@ -92245,7 +92245,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -92588,7 +92588,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 181
+          "processingMs": 192
         }
       }
     },
@@ -92599,7 +92599,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -92942,7 +92942,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 181
+          "processingMs": 193
         }
       }
     },
@@ -92953,7 +92953,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -93296,7 +93296,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 157
+          "processingMs": 163
         }
       }
     },
@@ -93307,7 +93307,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -93650,7 +93650,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 188
+          "processingMs": 201
         }
       }
     },
@@ -93661,7 +93661,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -94017,7 +94017,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 198
         }
       }
     },
@@ -94028,7 +94028,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -94371,7 +94371,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 176
+          "processingMs": 189
         }
       }
     },
@@ -94382,7 +94382,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -94738,7 +94738,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 185
+          "processingMs": 197
         }
       }
     },
@@ -94749,7 +94749,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -95092,7 +95092,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 173
+          "processingMs": 183
         }
       }
     },
@@ -95103,7 +95103,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -95446,7 +95446,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 200
         }
       }
     },
@@ -95457,7 +95457,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -95813,7 +95813,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 192
+          "processingMs": 205
         }
       }
     },
@@ -95824,7 +95824,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -96167,7 +96167,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 198
         }
       }
     },
@@ -96178,7 +96178,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -96521,7 +96521,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 181
+          "processingMs": 194
         }
       }
     },
@@ -96532,7 +96532,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -96875,7 +96875,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 193
         }
       }
     },
@@ -96886,7 +96886,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -97242,7 +97242,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 179
+          "processingMs": 190
         }
       }
     },
@@ -97253,7 +97253,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -97609,7 +97609,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 201
         }
       }
     },
@@ -97620,7 +97620,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -97976,7 +97976,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 196
         }
       }
     },
@@ -97987,7 +97987,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -98343,7 +98343,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 193
         }
       }
     },
@@ -98354,7 +98354,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -98710,7 +98710,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 197
         }
       }
     },
@@ -98721,7 +98721,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -99077,7 +99077,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 189
+          "processingMs": 194
         }
       }
     },
@@ -99088,7 +99088,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -99431,7 +99431,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 193
         }
       }
     },
@@ -99442,7 +99442,7 @@
       "width": 224,
       "height": 222,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 222,
         "methods": {
@@ -99798,7 +99798,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 201
         }
       }
     },
@@ -99809,7 +99809,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -100165,7 +100165,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 194
         }
       }
     },
@@ -100176,7 +100176,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -100519,7 +100519,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 194
         }
       }
     },
@@ -100530,7 +100530,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -100873,7 +100873,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 191
         }
       }
     },
@@ -100884,7 +100884,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -101240,7 +101240,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 196
         }
       }
     },
@@ -101251,7 +101251,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -101594,7 +101594,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 192
+          "processingMs": 202
         }
       }
     },
@@ -101605,7 +101605,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -101961,7 +101961,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 192
+          "processingMs": 201
         }
       }
     },
@@ -101972,7 +101972,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -102009,13 +102009,13 @@
             },
             "accent": {
               "rgb": [
-                254,
-                229,
-                217
+                168,
+                37,
+                62
               ],
-              "hex": "#fee5d9",
+              "hex": "#a8253e",
               "generated": false,
-              "sourceDistance": 0.03026915584676562
+              "sourceDistance": 0.015385415148119723
             },
             "gradient": {
               "isGradient": true,
@@ -102024,15 +102024,15 @@
               "continuity": 1,
               "coherence": 0.8056394763343404
             },
-            "score": 0.6745812360794115,
+            "score": 0.6587380523407498,
             "metrics": {
               "foregroundContrast": 5.807552501641683,
               "foregroundSurfaceContrast": 7.85082605114557,
-              "accentContrast": 2.728045190692656,
-              "accentSurfaceContrast": 2.0180380470265153,
+              "accentContrast": 2.129578564559674,
+              "accentSurfaceContrast": 2.878829053698637,
               "minimumRoleDistance": 0.07877763745691525,
-              "meanSourceDistance": 0.009565823848403907,
-              "meanReconstructionError": 0.0767974353555865
+              "meanSourceDistance": 0.005844888673742435,
+              "meanReconstructionError": 0.05793362825828296
             }
           },
           "expressive": {
@@ -102328,7 +102328,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 199
         }
       }
     },
@@ -102339,7 +102339,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -102356,13 +102356,13 @@
             },
             "foreground": {
               "rgb": [
-                175,
-                188,
+                210,
+                253,
                 76
               ],
-              "hex": "#afbc4c",
+              "hex": "#d2fd4c",
               "generated": false,
-              "sourceDistance": 0.026401819773835558
+              "sourceDistance": 0.0029314260265731417
             },
             "surface": {
               "rgb": [
@@ -102376,13 +102376,13 @@
             },
             "accent": {
               "rgb": [
-                210,
-                253,
-                76
+                245,
+                130,
+                229
               ],
-              "hex": "#d2fd4c",
+              "hex": "#f582e5",
               "generated": false,
-              "sourceDistance": 0.0029314260265731417
+              "sourceDistance": 0.010137629385159089
             },
             "gradient": {
               "isGradient": false,
@@ -102391,15 +102391,15 @@
               "continuity": 1,
               "coherence": 0.7574916860935889
             },
-            "score": 0.6289876465402606,
+            "score": 0.6325406446121339,
             "metrics": {
-              "foregroundContrast": 10.120440439685458,
-              "foregroundSurfaceContrast": 10.120440439685458,
-              "accentContrast": 17.89480003208909,
-              "accentSurfaceContrast": 17.89480003208909,
+              "foregroundContrast": 17.89480003208909,
+              "foregroundSurfaceContrast": 17.89480003208909,
+              "accentContrast": 9.20697673984907,
+              "accentSurfaceContrast": 9.20697673984907,
               "minimumRoleDistance": 0,
-              "meanSourceDistance": 0.007333311450102175,
-              "meanReconstructionError": 0.08198727101344983
+              "meanSourceDistance": 0.003267263852933058,
+              "meanReconstructionError": 0.07075776394369737
             }
           },
           "expressive": {
@@ -102682,7 +102682,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 167
+          "processingMs": 178
         }
       }
     },
@@ -102693,7 +102693,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -103036,7 +103036,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 195
         }
       }
     },
@@ -103047,7 +103047,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -103390,7 +103390,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 200
         }
       }
     },
@@ -103401,7 +103401,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -103744,7 +103744,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 195
         }
       }
     },
@@ -103755,7 +103755,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -104111,7 +104111,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 192
         }
       }
     },
@@ -104122,7 +104122,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -104465,7 +104465,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 179
+          "processingMs": 189
         }
       }
     },
@@ -104476,7 +104476,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -104819,7 +104819,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 191
         }
       }
     },
@@ -104830,7 +104830,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -105173,7 +105173,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 158
+          "processingMs": 167
         }
       }
     },
@@ -105184,7 +105184,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -105527,7 +105527,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 164
+          "processingMs": 173
         }
       }
     },
@@ -105538,7 +105538,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -105894,7 +105894,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 179
+          "processingMs": 191
         }
       }
     },
@@ -105905,7 +105905,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -106248,7 +106248,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 192
+          "processingMs": 196
         }
       }
     },
@@ -106259,7 +106259,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -106602,7 +106602,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 194
+          "processingMs": 198
         }
       }
     },
@@ -106613,7 +106613,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -106956,7 +106956,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 189
+          "processingMs": 198
         }
       }
     },
@@ -106967,7 +106967,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -107310,7 +107310,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 170
+          "processingMs": 174
         }
       }
     },
@@ -107321,7 +107321,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -107677,7 +107677,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 195
+          "processingMs": 198
         }
       }
     },
@@ -107688,7 +107688,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -108031,7 +108031,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 169
+          "processingMs": 175
         }
       }
     },
@@ -108042,7 +108042,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -108398,7 +108398,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 191
+          "processingMs": 201
         }
       }
     },
@@ -108409,7 +108409,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -108765,7 +108765,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 193
+          "processingMs": 197
         }
       }
     },
@@ -108776,7 +108776,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -109132,7 +109132,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 196
+          "processingMs": 200
         }
       }
     },
@@ -109143,7 +109143,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -109499,7 +109499,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 188
+          "processingMs": 190
         }
       }
     },
@@ -109510,7 +109510,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -109866,7 +109866,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 196
         }
       }
     },
@@ -109877,7 +109877,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -110233,7 +110233,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 194
         }
       }
     },
@@ -110244,7 +110244,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -110587,7 +110587,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 189
         }
       }
     },
@@ -110598,7 +110598,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -110954,7 +110954,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 193
         }
       }
     },
@@ -110965,7 +110965,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -111308,7 +111308,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 189
+          "processingMs": 210
         }
       }
     },
@@ -111319,7 +111319,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -111675,7 +111675,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 195
         }
       }
     },
@@ -111686,7 +111686,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -112029,7 +112029,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 207
+          "processingMs": 197
         }
       }
     },
@@ -112040,7 +112040,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -112383,7 +112383,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 188
+          "processingMs": 196
         }
       }
     },
@@ -112394,7 +112394,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -112750,7 +112750,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 195
         }
       }
     },
@@ -112761,7 +112761,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -113117,7 +113117,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 194
         }
       }
     },
@@ -113128,7 +113128,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -113484,7 +113484,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 180
+          "processingMs": 187
         }
       }
     },
@@ -113495,7 +113495,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -113838,7 +113838,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 188
+          "processingMs": 197
         }
       }
     },
@@ -113849,7 +113849,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -114205,7 +114205,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 178
+          "processingMs": 188
         }
       }
     },
@@ -114216,7 +114216,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -114559,7 +114559,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 155
+          "processingMs": 161
         }
       }
     },
@@ -114570,7 +114570,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -114926,7 +114926,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 189
+          "processingMs": 194
         }
       }
     },
@@ -114937,7 +114937,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -115280,7 +115280,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 197
         }
       }
     },
@@ -115291,7 +115291,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -115634,7 +115634,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 194
         }
       }
     },
@@ -115645,7 +115645,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -115988,7 +115988,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 196
+          "processingMs": 198
         }
       }
     },
@@ -115999,7 +115999,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -116355,7 +116355,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 189
+          "processingMs": 196
         }
       }
     },
@@ -116366,7 +116366,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -116709,7 +116709,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 187
+          "processingMs": 197
         }
       }
     },
@@ -116720,7 +116720,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -117076,7 +117076,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 190
+          "processingMs": 203
         }
       }
     },
@@ -117087,7 +117087,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -117430,7 +117430,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 157
+          "processingMs": 170
         }
       }
     },
@@ -117441,7 +117441,7 @@
       "width": 224,
       "height": 223,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 223,
         "methods": {
@@ -117797,7 +117797,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 178
+          "processingMs": 187
         }
       }
     },
@@ -117808,7 +117808,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -118151,7 +118151,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 188
+          "processingMs": 194
         }
       }
     },
@@ -118162,7 +118162,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -118516,7 +118516,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -118872,7 +118872,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 196
+          "processingMs": 197
         }
       }
     },
@@ -118883,7 +118883,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -119239,7 +119239,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 189
+          "processingMs": 197
         }
       }
     },
@@ -119250,7 +119250,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -119593,7 +119593,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 198
         }
       }
     },
@@ -119604,7 +119604,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -119947,7 +119947,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 179
+          "processingMs": 192
         }
       }
     },
@@ -119958,7 +119958,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -120314,7 +120314,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 155
+          "processingMs": 161
         }
       }
     },
@@ -120325,7 +120325,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -120668,7 +120668,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 193
+          "processingMs": 212
         }
       }
     },
@@ -120679,7 +120679,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -121022,7 +121022,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 189
+          "processingMs": 199
         }
       }
     },
@@ -121033,7 +121033,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -121376,7 +121376,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 195
         }
       }
     },
@@ -121387,7 +121387,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -121743,7 +121743,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 199
         }
       }
     },
@@ -121754,7 +121754,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -122110,7 +122110,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 196
         }
       }
     },
@@ -122121,7 +122121,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -122464,7 +122464,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 186
+          "processingMs": 197
         }
       }
     },
@@ -122475,7 +122475,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -122818,7 +122818,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 177
+          "processingMs": 189
         }
       }
     },
@@ -122829,7 +122829,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -123185,7 +123185,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 200
         }
       }
     },
@@ -123196,7 +123196,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -123552,7 +123552,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 197
         }
       }
     },
@@ -123563,7 +123563,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -123919,7 +123919,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 184
+          "processingMs": 196
         }
       }
     },
@@ -123930,7 +123930,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -124286,7 +124286,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 185
+          "processingMs": 198
         }
       }
     },
@@ -124297,7 +124297,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -124640,7 +124640,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 183
+          "processingMs": 197
         }
       }
     },
@@ -124651,7 +124651,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -124994,7 +124994,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 182
+          "processingMs": 194
         }
       }
     },
@@ -125005,7 +125005,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -125348,7 +125348,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 185
+          "processingMs": 197
         }
       }
     },
@@ -125359,7 +125359,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -125702,7 +125702,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 197
         }
       }
     },
@@ -125713,7 +125713,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -126069,7 +126069,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 182
+          "processingMs": 191
         }
       }
     },
@@ -126080,7 +126080,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -126436,7 +126436,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 186
+          "processingMs": 195
         }
       }
     },
@@ -126447,7 +126447,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -126803,7 +126803,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 197
         }
       }
     },
@@ -126814,7 +126814,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -127170,7 +127170,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 183
+          "processingMs": 198
         }
       }
     },
@@ -127181,7 +127181,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -127524,7 +127524,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 12,
-          "processingMs": 184
+          "processingMs": 197
         }
       }
     },
@@ -127535,7 +127535,7 @@
       "width": 224,
       "height": 224,
       "extraction": {
-        "version": "region-graph-0.11.0",
+        "version": "region-graph-0.13.0",
         "width": 224,
         "height": 224,
         "methods": {
@@ -127891,7 +127891,7 @@
         "diagnostics": {
           "regionCount": 289,
           "candidateCount": 13,
-          "processingMs": 187
+          "processingMs": 197
         }
       }
     }

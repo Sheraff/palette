@@ -6,6 +6,7 @@ const state = {
 	carriedReviews: new Set(),
 	index: 0,
 	comparison: "iteration",
+	iterationOnly: false,
 	algorithmVersion: "",
 	presentationVersion: 0,
 	preference: null,
@@ -37,6 +38,7 @@ function palettesDiffer(first, second) {
 }
 
 function selectComparison(comparison) {
+	if (state.iterationOnly && comparison !== "iteration") return
 	state.comparison = comparison
 	const completed = new Set(state.feedback
 		.filter((item) => item.reviewSchema === 2 && item.algorithmVersion === state.algorithmVersion &&
@@ -62,6 +64,8 @@ const submit = document.querySelector("#submit")
 const note = document.querySelector("#note")
 const previousButton = document.querySelector("#previous")
 const skipButton = document.querySelector("#skip")
+const comparisonButton = document.querySelector("#comparison")
+const galleryLink = document.querySelector("#gallery-link")
 const reasonInputs = [...document.querySelectorAll('#reasons input[type="checkbox"]')]
 const preferenceButtons = [...document.querySelectorAll("[data-preference]")]
 const shipButtons = [...document.querySelectorAll("[data-ship]")]
@@ -191,7 +195,8 @@ function selectShip(ship) {
 preferenceButtons.forEach((button) => button.addEventListener("click", () => selectPreference(button.dataset.preference)))
 shipButtons.forEach((button) => button.addEventListener("click", () => selectShip(button.dataset.ship)))
 
-document.querySelector("#comparison").addEventListener("click", (event) => {
+comparisonButton.addEventListener("click", (event) => {
+	if (state.iterationOnly) return
 	const modes = ["iteration", "baseline", "variant"]
 	selectComparison(modes[(modes.indexOf(state.comparison) + 1) % modes.length])
 	event.currentTarget.textContent = `${state.comparison[0].toUpperCase()}${state.comparison.slice(1)} comparison`
@@ -255,6 +260,10 @@ window.addEventListener("keydown", (event) => {
 
 const response = await fetch("/api/review")
 const payload = await response.json()
+state.iterationOnly = payload.iterationOnly === true
+comparisonButton.hidden = state.iterationOnly
+comparisonButton.disabled = state.iterationOnly
+galleryLink.hidden = state.iterationOnly
 state.allEntries = payload.results.entries
 state.previousEntries = new Map(payload.previousResults.entries.map((entry) => [entry.file, entry]))
 state.feedback = payload.feedback.entries

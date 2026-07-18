@@ -1,6 +1,7 @@
-import { mkdir, readdir, rename, writeFile } from "node:fs/promises"
+import { readdir } from "node:fs/promises"
 import { extname, join } from "node:path"
 import { fileURLToPath } from "node:url"
+import { prepareOutputTarget, resolveOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
 import { ALGORITHM_VERSION, extractPalette } from "./src/extract.ts"
 import { loadImage } from "./src/image.ts"
 import type { CorpusEntry, CorpusResult } from "./src/types.ts"
@@ -8,7 +9,7 @@ import type { CorpusEntry, CorpusResult } from "./src/types.ts"
 const researchRoot = fileURLToPath(new URL(".", import.meta.url))
 const projectRoot = fileURLToPath(new URL("..", import.meta.url))
 const imagesRoot = join(projectRoot, "images")
-const outputPath = join(researchRoot, "data", "results.json")
+const output = resolveOutputTarget(projectRoot, researchRoot, "results.json", process.env.RESEARCH_OUTPUT_DIR)
 
 function classify(file: string): CorpusEntry {
 	if (file.includes("-masked") || file.includes("-saliency")) {
@@ -20,13 +21,8 @@ function classify(file: string): CorpusEntry {
 	return { file, kind: "artwork", review: true }
 }
 
-async function writeJsonAtomic(path: string, value: unknown): Promise<void> {
-	const temporary = `${path}.${process.pid}.tmp`
-	await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`)
-	await rename(temporary, path)
-}
-
 const supported = new Set([".jpg", ".jpeg", ".png", ".avif", ".webp"])
+await prepareOutputTarget(output)
 const files = (await readdir(imagesRoot))
 	.filter((file) => supported.has(extname(file).toLowerCase()))
 	.filter((file) => !file.includes("-scrambled"))
@@ -52,6 +48,5 @@ const result: CorpusResult = {
 	entries,
 }
 
-await mkdir(join(researchRoot, "data"), { recursive: true })
-await writeJsonAtomic(outputPath, result)
-console.log(`Wrote ${entries.length} corpus results to ${outputPath}`)
+await writeJsonAtomic(output, result)
+console.log(`Wrote ${entries.length} corpus results to ${output.path}`)

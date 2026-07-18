@@ -1,17 +1,20 @@
-import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises"
+import { readFile, readdir } from "node:fs/promises"
 import { basename, extname, join } from "node:path"
 import { fileURLToPath } from "node:url"
+import { prepareOutputTarget, resolveOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
+import { validateCandidateSummaryVersions } from "./src/candidate-validation.ts"
 import { okDistance, rgbToOKLab } from "./src/color.ts"
-import { extractPalette } from "./src/extract.ts"
+import { ALGORITHM_VERSION, extractPalette } from "./src/extract.ts"
 import { loadImage } from "./src/image.ts"
 import type { CorpusResult, Palette, RoleName } from "./src/types.ts"
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url))
 const researchRoot = fileURLToPath(new URL(".", import.meta.url))
 const holdoutRoot = join(projectRoot, "00")
-const resultsPath = join(researchRoot, "data", "results.json")
-const holdoutPath = join(researchRoot, "data", "holdout-results.json")
-const outputPath = join(researchRoot, "data", "holdout-summary.json")
+const outputDirectory = process.env.RESEARCH_OUTPUT_DIR
+const results = resolveOutputTarget(projectRoot, researchRoot, "results.json", outputDirectory)
+const holdoutResults = resolveOutputTarget(projectRoot, researchRoot, "holdout-results.json", outputDirectory)
+const output = resolveOutputTarget(projectRoot, researchRoot, "holdout-summary.json", outputDirectory)
 const supported = new Set([".jpg", ".jpeg", ".png", ".avif", ".webp"])
 const roles: RoleName[] = ["background", "foreground", "surface", "accent"]
 
@@ -48,8 +51,12 @@ function compare(first: Palette, second: Palette): number[] {
 	return roles.map((role) => okDistance(rgbToOKLab(first[role].rgb), rgbToOKLab(second[role].rgb)))
 }
 
-const development = JSON.parse(await readFile(resultsPath, "utf8")) as CorpusResult
-const holdout = JSON.parse(await readFile(holdoutPath, "utf8")) as CorpusResult
+await prepareOutputTarget(output)
+const developmentValue: unknown = JSON.parse(await readFile(results.path, "utf8"))
+const holdoutValue: unknown = JSON.parse(await readFile(holdoutResults.path, "utf8"))
+if (outputDirectory !== undefined) validateCandidateSummaryVersions(developmentValue, holdoutValue, ALGORITHM_VERSION)
+const development = developmentValue as CorpusResult
+const holdout = holdoutValue as CorpusResult
 const selectedById = new Map(holdout.entries.map((entry) => [artworkId(basename(entry.file)), entry]))
 const groups = new Map<string, string[]>()
 for (const file of (await readdir(holdoutRoot)).filter((candidate) => supported.has(extname(candidate).toLowerCase()))) {
@@ -106,8 +113,5 @@ const report = {
 	},
 }
 
-await mkdir(join(researchRoot, "data"), { recursive: true })
-const temporary = `${outputPath}.${process.pid}.tmp`
-await writeFile(temporary, `${JSON.stringify(report, null, 2)}\n`)
-await rename(temporary, outputPath)
+await writeJsonAtomic(output, report)
 console.log(report)

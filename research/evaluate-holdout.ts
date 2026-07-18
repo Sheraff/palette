@@ -1,6 +1,7 @@
-import { mkdir, readdir, rename, writeFile } from "node:fs/promises"
+import { readdir } from "node:fs/promises"
 import { extname, join } from "node:path"
 import { fileURLToPath } from "node:url"
+import { prepareOutputTarget, resolveOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
 import { ALGORITHM_VERSION, extractPalette } from "./src/extract.ts"
 import { loadImage } from "./src/image.ts"
 import type { CorpusResult } from "./src/types.ts"
@@ -8,7 +9,7 @@ import type { CorpusResult } from "./src/types.ts"
 const projectRoot = fileURLToPath(new URL("..", import.meta.url))
 const researchRoot = fileURLToPath(new URL(".", import.meta.url))
 const holdoutRoot = join(projectRoot, "00")
-const outputPath = join(researchRoot, "data", "holdout-results.json")
+const output = resolveOutputTarget(projectRoot, researchRoot, "holdout-results.json", process.env.RESEARCH_OUTPUT_DIR)
 const supported = new Set([".jpg", ".jpeg", ".png", ".avif", ".webp"])
 
 function artworkId(file: string): string {
@@ -22,6 +23,7 @@ function sourcePreference(file: string): number {
 }
 
 const sourceByArtwork = new Map<string, string>()
+await prepareOutputTarget(output)
 for (const file of (await readdir(holdoutRoot)).filter((candidate) => supported.has(extname(candidate).toLowerCase())).sort()) {
 	const id = artworkId(file)
 	const current = sourceByArtwork.get(id)
@@ -52,8 +54,5 @@ const result: CorpusResult = {
 	entries,
 }
 
-await mkdir(join(researchRoot, "data"), { recursive: true })
-const temporary = `${outputPath}.${process.pid}.tmp`
-await writeFile(temporary, `${JSON.stringify(result, null, 2)}\n`)
-await rename(temporary, outputPath)
-console.log(`Wrote ${entries.length} holdout results to ${outputPath}`)
+await writeJsonAtomic(output, result)
+console.log(`Wrote ${entries.length} holdout results to ${output.path}`)

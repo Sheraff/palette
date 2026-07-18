@@ -74,12 +74,17 @@ function stableSelectionKey(selection: Selection): string {
 		.join(":")
 }
 
-function isBetterSelection(candidate: Selection, current: Selection | undefined): boolean {
+function isBetterSelection(candidate: Selection, current: Selection | undefined, mode: Mode): boolean {
 	if (!current) return true
 	const scoreResolution = 0.05
 	const candidateBucket = Math.floor(candidate.score / scoreResolution)
 	const currentBucket = Math.floor(current.score / scoreResolution)
 	if (candidateBucket !== currentBucket) return candidateBucket > currentBucket
+	if (mode === "spatial") {
+		const candidateHasStrongTypography = hasStrongTypographyEvidence(candidate.foreground)
+		const currentHasStrongTypography = hasStrongTypographyEvidence(current.foreground)
+		if (candidateHasStrongTypography !== currentHasStrongTypography) return candidateHasStrongTypography
+	}
 	return stableSelectionKey(candidate) < stableSelectionKey(current)
 }
 
@@ -168,8 +173,10 @@ function surfaceScore(
 	if (!smoothGradient && background.lab[0] < 0.15 && candidate.lab[0] < 0.25 && candidate.chroma < 0.05) {
 		return 0.2
 	}
-	const representativeField = allowRepresentativeSurface && candidate.population >= 0.15 &&
-		candidate.background >= 0.4 && distance >= 0.08
+	const representativeField = distance >= 0.08 && (
+		(allowRepresentativeSurface && candidate.population >= 0.15 && candidate.background >= 0.4) ||
+		(!smoothGradient && candidate.population >= 0.5 && candidate.background < 0.4)
+	)
 		? 0.1
 		: 0
 	if (smoothGradient) {
@@ -226,7 +233,8 @@ function accentScore(
 	const identity = clamp01(textIdentityScore(candidate))
 	const backgroundPenalty = candidate.background * 0.16
 	const extremeTypography = candidate.text >= 0.53 && candidate.saliency >= 0.55 && (
-		(foreground.lab[0] < 0.7 && candidate.chroma < 0.08 && candidate.lab[0] > 0.9) ||
+		(foreground.lab[0] < 0.7 && candidate.chroma < 0.08 && candidate.lab[0] > 0.9 &&
+			(candidate.population >= 0.005 || candidate.text >= 0.58)) ||
 		(foreground.lab[0] > 0.7 && background.chroma >= 0.04 && candidate.chroma < 0.02 &&
 			candidate.population <= 0.03 && candidate.lab[0] < 0.18)
 	)
@@ -603,7 +611,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 						accentScore(accent, foreground, background, maxPopulation, mode)
 					) / 4 - duplicatePenalty - generatedPenalty
 					const selection = { background, foreground, surface, accent, score, gradientHint: expectsGradient }
-					if (isBetterSelection(selection, best)) best = selection
+					if (isBetterSelection(selection, best, mode)) best = selection
 				}
 			}
 		}
