@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "manifestId": "057f9020988ea0a0e797036bb5ffe6b53c46d3b7b3d7bd0d732cde253519ef7e",
-  "algorithmVersion": "region-graph-0.13.0",
-  "semanticResultsSha256": "c6a464eb54dc504a2cccdc4722f7d38262312d0d97e8442de93d40bfae0ed63a",
+  "manifestId": "8bc6b88704d204be77e2f25144abf3738f3492b5c62edf9abb1afd2dfd1dc2e6",
+  "algorithmVersion": "region-graph-0.15.0",
+  "semanticResultsSha256": "2462759b87e4629fb114d7ecbe977b7e60e3e12614c91a64d2a51cae6eeac415",
   "presentationVersion": 1,
   "entries": [
     {
@@ -102,12 +102,10 @@
     },
     {
       "image": "00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
-      "shippable": false,
-      "reasons": [
-        "surface"
-      ],
-      "note": "surface doesn't feel like it belongs with the artwork",
-      "decidedAt": "2026-07-18T16:12:42.532Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:14.964Z"
     },
     {
       "image": "00/ab67616d00001e020000a698bc37d2fd54342130.jpg",
@@ -173,12 +171,10 @@
     },
     {
       "image": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
-      "shippable": false,
-      "reasons": [
-        "surface"
-      ],
-      "note": "surface doesn't seem like it belongs in this artwork, it looks like a mixed / made-up color",
-      "decidedAt": "2026-07-18T16:15:59.463Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:02.172Z"
     },
     {
       "image": "00/ab67616d00001e020000c59b1facbb9e2d899099.jpg",
@@ -545,12 +541,10 @@
     },
     {
       "image": "00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg",
-      "shippable": false,
-      "reasons": [
-        "surface"
-      ],
-      "note": "surface color doesn't feel like it is part of the artwork, it looks like it was added as a mix of existing colors",
-      "decidedAt": "2026-07-18T16:30:07.267Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-18T19:54:28.181Z"
     },
     {
       "image": "00/ab67616d00001e020000bdd8f68862e90ee24dc8.jpg",

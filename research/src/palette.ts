@@ -156,6 +156,13 @@ function isChromaticTypography(candidate: Candidate): boolean {
 		candidate.text >= 0.55 && candidate.saliency >= 0.7
 }
 
+function isVividMajorIdentity(candidate: Candidate, analysis: RegionAnalysis): boolean {
+	return !candidate.generated && !candidate.typographyOnly &&
+		candidate.population >= 0.03 && candidate.population < 0.15 &&
+		candidate.chroma >= 0.22 && candidate.saliency >= 0.45 && candidate.background <= 0.35 &&
+		nearestSourceDistance(candidate.lab, analysis) <= 0.02
+}
+
 function surfaceScore(
 	candidate: Candidate,
 	background: Candidate,
@@ -225,6 +232,8 @@ function accentScore(
 	background: Candidate,
 	maxPopulation: number,
 	mode: Mode,
+	preferVividMajorIdentity: boolean,
+	analysis: RegionAnalysis,
 ): number {
 	const colorfulness = clamp01(candidate.chroma / 0.18)
 	const foregroundDistance = clamp01(okDistance(candidate.lab, foreground.lab) / 0.28)
@@ -240,10 +249,12 @@ function accentScore(
 	)
 		? 0.22
 		: 0
-	const chromaticTypography = candidate.chroma >= 0.14 && candidate.population >= 0.005 && candidate.population <= 0.02 &&
+	const chromaticTypography = !preferVividMajorIdentity && candidate.chroma >= 0.14 &&
+		candidate.population >= 0.005 && candidate.population <= 0.02 &&
 		candidate.text >= 0.58 && candidate.saliency >= 0.45 && candidate.background < 0.4
 		? 0.18
 		: 0
+	const vividMajorIdentity = preferVividMajorIdentity && isVividMajorIdentity(candidate, analysis) ? 0.12 : 0
 	const vividDetail = colorfulness * candidate.saliency * (1 - candidate.background)
 	const lightNeutralColorCoverage = background.lab[0] > 0.85 && background.chroma < 0.05
 		? clamp01(candidate.population / 0.05) * colorfulness * (1 - candidate.background)
@@ -259,7 +270,7 @@ function accentScore(
 	return colorfulness * 0.3 + candidate.saliency * 0.21 + foregroundDistance * 0.14 +
 		population * 0.05 + candidate.text * 0.07 + achromaticIntent * 0.15 + identity * 0.12 +
 		vividDetail * 0.12 + lightNeutralColorCoverage * 0.25 + prominentIdentity * 0.12 +
-		extremeTypography + chromaticTypography - backgroundPenalty
+		extremeTypography + chromaticTypography + vividMajorIdentity - backgroundPenalty
 }
 
 function textIdentityScore(candidate: Candidate): number {
@@ -508,8 +519,8 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 				contrastRatio(candidate.rgb, background.rgb) >= minimumAccentBackgroundContrast &&
 				(candidate.chroma >= 0.04 || candidate.population >= 0.008))
 			.sort((first, second) =>
-				accentScore(second, foreground, background, maxPopulation, mode) -
-				accentScore(first, foreground, background, maxPopulation, mode),
+				accentScore(second, foreground, background, maxPopulation, mode, false, analysis) -
+				accentScore(first, foreground, background, maxPopulation, mode, false, analysis),
 			)[0]
 		return toPalette({ background, foreground, surface: background, accent: sourceAccent || foreground, score: 1 }, analysis)
 	}
@@ -545,11 +556,16 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 			) >= bestForegroundScore - 0.08)
 			.slice(0, 6)
 		for (const foreground of foregrounds) {
+			const preferVividMajorIdentity = mode === "spatial" && background.lab[0] >= 0.85 &&
+				background.chroma >= 0.05 && foreground.lab[0] <= 0.18 &&
+				candidates.some((candidate) => isVividMajorIdentity(candidate, analysis))
 			const familyCoverage = colorFamilyCoverage(background, candidates)
 			const distinctSurfaces = candidates.filter((candidate) =>
 				!candidate.typographyOnly &&
 				candidate.id !== background.id &&
 				candidate.population >= (expectsGradient ? 0.008 : 0.02) &&
+				(expectsGradient || candidate.population >= 0.04 || candidate.background >= 0.75 ||
+					nearestSourceDistance(candidate.lab, analysis) <= 0.02) &&
 				okDistance(background.lab, candidate.lab) >= (expectsGradient ? 0.025 : 0.05) &&
 				okDistance(background.lab, candidate.lab) <= 0.38 &&
 				(!expectsGradient || chromaticCoverage < 0.15 || candidate.chroma >= 0.04) &&
@@ -587,15 +603,15 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 					(candidate.chroma >= 0.04 || contrastRatio(foreground.rgb, candidate.rgb) >= 1.5),
 				)
 					.sort((first, second) =>
-						accentScore(second, foreground, background, maxPopulation, mode) -
-						accentScore(first, foreground, background, maxPopulation, mode),
+						accentScore(second, foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis) -
+						accentScore(first, foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis),
 					)
 				const bestAccentScore = rankedAccents.length > 0
-					? accentScore(rankedAccents[0], foreground, background, maxPopulation, mode)
+					? accentScore(rankedAccents[0], foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis)
 					: -Infinity
 				const accents = rankedAccents
 					.filter((candidate) => accentScore(
-						candidate, foreground, background, maxPopulation, mode,
+						candidate, foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis,
 					) >= bestAccentScore - 0.02)
 					.slice(0, 5)
 				if (accents.length === 0) accents.push(foreground)
@@ -608,7 +624,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 						surfaceScore(
 							surface, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface,
 						) +
-						accentScore(accent, foreground, background, maxPopulation, mode)
+						accentScore(accent, foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis)
 					) / 4 - duplicatePenalty - generatedPenalty
 					const selection = { background, foreground, surface, accent, score, gradientHint: expectsGradient }
 					if (isBetterSelection(selection, best, mode)) best = selection

@@ -88,6 +88,19 @@ function singlePixelAnalysis(rgb: RGB): RegionAnalysis {
 	}
 }
 
+function analysisWithRegionColors(pixel: RGB, regionColors: RGB[]): RegionAnalysis {
+	const analysis = singlePixelAnalysis(pixel)
+	return {
+		...analysis,
+		regions: regionColors.map((rgb, id) => ({
+			...analysis.regions[0],
+			id,
+			rgb,
+			lab: rgbToOKLab(rgb),
+		})),
+	}
+}
+
 function assertValidPalette(palette: Palette, allowRelaxedContrast = true): void {
 	for (const role of ["background", "foreground", "surface", "accent"] as const) {
 		assert.match(palette[role].hex, /^#[0-9a-f]{6}$/)
@@ -101,8 +114,8 @@ function assertValidPalette(palette: Palette, allowRelaxedContrast = true): void
 	assert.ok(Number.isFinite(palette.metrics.meanReconstructionError))
 }
 
-test("reports the 0.13 algorithm version", () => {
-	assert.equal(ALGORITHM_VERSION, "region-graph-0.13.0")
+test("reports the 0.15 algorithm version", () => {
+	assert.equal(ALGORITHM_VERSION, "region-graph-0.15.0")
 })
 
 test("spatial score buckets prefer strong typography without changing expressive selection", () => {
@@ -179,6 +192,63 @@ test("near-white accent evidence requires population or stronger text", () => {
 		candidate(3, [220, 50, 50], 0.02, 0, 0.4, 0.2),
 	], singlePixelAnalysis(darkBackground), "spatial")
 	assert.equal(darkAccent.accent.hex, "#050505")
+})
+
+test("flat surfaces need population or direct region support", () => {
+	const background: RGB = [80, 150, 190]
+	const surface: RGB = [205, 225, 235]
+	const solve = (surfacePopulation: number, regionColors: RGB[], surfaceBackground = 0.749) => solvePalette([
+		candidate(0, background, 0.3, 1, 0, 0),
+		candidate(1, [5, 10, 15], 0.1, 0, 0.7, 0.7),
+		candidate(2, surface, surfacePopulation, surfaceBackground, 0.1, 0.1),
+		candidate(3, [180, 20, 40], 0.05, 0, 0.6, 0.2),
+	], analysisWithRegionColors(background, regionColors), "spatial")
+
+	assert.equal(solve(0.039, [background]).surface.hex, rgbToHex(background))
+	assert.equal(solve(0.04, [background]).surface.hex, rgbToHex(surface))
+	assert.equal(solve(0.039, [background, surface]).surface.hex, rgbToHex(surface))
+	assert.equal(solve(0.039, [background], 0.75).surface.hex, rgbToHex(surface))
+})
+
+test("vivid major identity colors outrank tiny chromatic typography in spatial palettes", () => {
+	const background: RGB = [176, 253, 252]
+	const surface: RGB = [231, 254, 239]
+	const vivid: RGB = [232, 7, 4]
+	const muted: RGB = [144, 44, 5]
+	const candidates = [
+		candidate(0, background, 0.15, 0.66, 0.08, 0.22),
+		candidate(1, [0, 0, 0], 0.014, 0.04, 0.83, 0.4),
+		candidate(2, surface, 0.105, 0.37, 0.21, 0.26),
+		candidate(3, vivid, 0.039, 0.33, 0.62, 0.51),
+		candidate(4, muted, 0.012, 0.22, 0.76, 0.78),
+	]
+	const analysis = analysisWithRegionColors(background, [background, surface, vivid])
+
+	assert.equal(solvePalette(candidates, analysis, "spatial").accent.hex, rgbToHex(vivid))
+	assert.equal(solvePalette(candidates, analysis, "expressive").accent.hex, rgbToHex(muted))
+})
+
+test("vivid identity scoring can expose a supported near-white surface", () => {
+	const background: RGB = [252, 207, 0]
+	const foreground: RGB = [7, 3, 2]
+	const white: RGB = [252, 250, 248]
+	const vivid: RGB = [250, 3, 2]
+	const candidates = [
+		candidate(0, background, 0.476, 0.45, 0.2, 0.33),
+		candidate(1, foreground, 0.061, 0.1, 0.86, 0.57),
+		candidate(2, white, 0.144, 0.28, 0.3, 0.37),
+		candidate(3, vivid, 0.139, 0.18, 0.49, 0.32),
+		candidate(4, [251, 225, 182], 0.034, 0.28, 0.31, 0.4),
+		candidate(5, [135, 0, 4], 0.011, 0.14, 0.67, 0.6),
+	]
+	const palette = solvePalette(
+		candidates,
+		analysisWithRegionColors(background, [background, foreground, white, vivid]),
+		"spatial",
+	)
+
+	assert.equal(palette.surface.hex, rgbToHex(white))
+	assert.equal(palette.accent.hex, rgbToHex(vivid))
 })
 
 test("uniform images use their source color as the background", () => {

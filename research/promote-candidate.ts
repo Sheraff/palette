@@ -36,7 +36,7 @@ type CandidateFeedback = {
 	id: string
 	timestamp: string
 	reviewSchema: 2
-	presentationVersion: 2
+	presentationVersion: 4
 	algorithmVersion: string
 	previousAlgorithmVersion: string
 }
@@ -50,7 +50,7 @@ type CandidateFeedbackStore = {
 	candidateResultsSemanticSha256: string
 	candidateHoldoutSemanticSha256: string
 	selectionManifestId: string
-	presentationVersion: 2
+	presentationVersion: 4
 	sourceHashes: Record<string, string>
 	entries: CandidateFeedback[]
 }
@@ -72,13 +72,15 @@ type AbsoluteFeedbackStore = {
 	entries: AbsoluteFeedbackEntry[]
 }
 
-const checkpointCommit = "99b29f87ac6de9e06d1a7838550939043016dd00"
-const expectedBaselineAlgorithmVersion = "region-graph-0.11.0"
-const expectedCandidateAlgorithmVersion = "region-graph-0.13.0"
+const checkpointCommit = "4fa63d3190aed8ce1b083b3a9f1028b197eec851"
+const expectedBaselineAlgorithmVersion = "region-graph-0.13.0"
+const expectedCandidateAlgorithmVersion = "region-graph-0.15.0"
+const expectedCandidateHoldoutSummarySha256 = "e60434c6ee1b4a3bef7687587b9a0d1e4cd3e776168592189c8377090918128a"
+const expectedCandidateRobustnessSha256 = "6eafeabfdd4aa40bd36ef3cf5daf1e31f7d8ca9117d1da29589514e5c8f256da"
 const expectedChangedRejectedTargets = new Set([
-	"00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
-	"00/ab67616d0000b2730000b69d0872db47295208b2.jpg",
-	"00/ab67616d0000b2730000b82d833c330bb6fd6e75.jpg",
+	"00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+	"00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
+	"00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg",
 ])
 const sha256Pattern = /^[a-f0-9]{64}$/
 const preferences = new Set<Preference>(["left", "right", "tie"])
@@ -177,13 +179,11 @@ function sourcePath(file: string): string {
 	return resolve(imagesRoot, file)
 }
 
-function reviewMethodsFor(image: string): readonly [ReviewMethod, ReviewMethod] {
-	let result = 2166136261
-	const value = `${image}:iteration`
-	for (let index = 0; index < value.length; index++) {
-		result = Math.imul(result ^ value.charCodeAt(index), 16777619)
-	}
-	return (result >>> 0) % 2 === 0 ? ["spatial", "previous"] : ["previous", "spatial"]
+function reviewMethodsFor(image: string, candidateResultsSemanticSha256: string): readonly [ReviewMethod, ReviewMethod] {
+	const digest = createHash("sha256")
+		.update(`${candidateResultsSemanticSha256}:${image}:iteration`)
+		.digest()
+	return digest[0] % 2 === 0 ? ["spatial", "previous"] : ["previous", "spatial"]
 }
 
 function methodSide(entry: CandidateFeedback, method: ReviewMethod): "left" | "right" {
@@ -219,7 +219,7 @@ function validateCandidateFeedbackStore(value: unknown, expected: {
 		"sourceHashes",
 		"entries",
 	], "Candidate feedback store")
-	if (value.schemaVersion !== 1 || value.presentationVersion !== 2 ||
+	if (value.schemaVersion !== 1 || value.presentationVersion !== 4 ||
 		value.baselineAlgorithmVersion !== expected.baselineAlgorithmVersion ||
 		value.baselineResultsSemanticSha256 !== expected.baselineResultsSemanticSha256 ||
 		value.baselineHoldoutSemanticSha256 !== expected.baselineHoldoutSemanticSha256 ||
@@ -269,7 +269,7 @@ function validateCandidateFeedbackStore(value: unknown, expected: {
 		if (typeof image !== "string" || !expectedFiles.has(image) || images.has(image)) {
 			throw new Error("Candidate feedback images are unknown or duplicated")
 		}
-		const [leftMethod, rightMethod] = reviewMethodsFor(image)
+		const [leftMethod, rightMethod] = reviewMethodsFor(image, expected.candidateResultsSemanticSha256)
 		if (entryValue.comparison !== "iteration" || entryValue.leftMethod !== leftMethod || entryValue.rightMethod !== rightMethod) {
 			throw new Error(`Candidate feedback method assignment is invalid for ${image}`)
 		}
@@ -290,7 +290,7 @@ function validateCandidateFeedbackStore(value: unknown, expected: {
 		if (typeof entryValue.id !== "string" || entryValue.id.length === 0 || ids.has(entryValue.id)) {
 			throw new Error("Candidate feedback IDs are invalid or duplicated")
 		}
-		if (!validTimestamp(entryValue.timestamp) || entryValue.reviewSchema !== 2 || entryValue.presentationVersion !== 2 ||
+		if (!validTimestamp(entryValue.timestamp) || entryValue.reviewSchema !== 2 || entryValue.presentationVersion !== 4 ||
 			entryValue.algorithmVersion !== expected.candidateAlgorithmVersion ||
 			entryValue.previousAlgorithmVersion !== expected.baselineAlgorithmVersion) {
 			throw new Error(`Candidate feedback entry provenance is invalid for ${image}`)
@@ -480,11 +480,15 @@ if (baselineAlgorithmVersion !== expectedBaselineAlgorithmVersion) {
 if (candidateAlgorithmVersion !== expectedCandidateAlgorithmVersion || candidateAlgorithmVersion !== ALGORITHM_VERSION) {
 	throw new Error(`Candidate ${candidateAlgorithmVersion} does not match expected and implemented version ${ALGORITHM_VERSION}`)
 }
-validateCandidateSummaryVersions(candidateResults, candidateHoldout, ALGORITHM_VERSION)
-if (!isRecord(candidateHoldoutSummaryValue) || candidateHoldoutSummaryValue.algorithmVersion !== ALGORITHM_VERSION) {
-	throw new Error("Candidate holdout summary does not match the implemented algorithm")
+validateCandidateSummaryVersions(candidateResults, candidateHoldout, expectedCandidateAlgorithmVersion)
+if (!isRecord(candidateHoldoutSummaryValue) || candidateHoldoutSummaryValue.algorithmVersion !== expectedCandidateAlgorithmVersion) {
+	throw new Error("Candidate holdout summary does not match the expected candidate version")
 }
-validateCandidateRobustness(candidateRobustnessValue, ALGORITHM_VERSION)
+validateCandidateRobustness(candidateRobustnessValue, expectedCandidateAlgorithmVersion)
+if (sha256(candidateHoldoutSummarySource) !== expectedCandidateHoldoutSummarySha256 ||
+	sha256(candidateRobustnessSource) !== expectedCandidateRobustnessSha256) {
+	throw new Error("Candidate diagnostic artifacts do not match the reviewed 0.15 inputs")
+}
 
 const baselineHoldoutRawSha256 = sha256(baselineHoldoutSource)
 validateSelectionManifest(selectionValue, baselineHoldout, baselineHoldoutRawSha256)
@@ -555,7 +559,7 @@ const changedAccepted = new Set(report.accepted.changedFiles)
 const changedRejected = new Set(report.rejected.changedFiles)
 if (changedRejected.size !== expectedChangedRejectedTargets.size ||
 	[...changedRejected].some((file) => !expectedChangedRejectedTargets.has(file))) {
-	throw new Error("Candidate changed-rejection set does not match the reviewed 0.13 transition")
+	throw new Error("Candidate changed-rejection set does not match the reviewed 0.15 transition")
 }
 const reviewFiles = [
 	...baselineResults.entries.filter((entry) => changedLegacyReviewable.has(entry.file)).map((entry) => entry.file),
@@ -637,8 +641,8 @@ const promotedAbsoluteFeedback: AbsoluteFeedbackStore = {
 validateAbsoluteFeedbackStore(promotedAbsoluteFeedback, promotedSelection, promotedCuration)
 const oldShippableTotal = absoluteFeedback.entries.filter((entry) => entry.shippable).length
 const newShippableTotal = promotedAbsoluteFeedback.entries.filter((entry) => entry.shippable).length
-if (oldShippableTotal !== 83 || newShippableTotal !== 86) {
-	throw new Error(`Expected the reviewed 83-to-86 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
+if (oldShippableTotal !== 86 || newShippableTotal !== 89) {
+	throw new Error(`Expected the reviewed 86-to-89 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
 }
 
 function comparisonGroupSummary(group: { total: number; changedCount: number; unchangedCount: number; changedFiles: string[] }) {
@@ -783,6 +787,7 @@ const canonicalTargets = [
 const canonicalTemporaries: string[] = []
 const rollbackLinks = canonicalTargets.map((target) =>
 	join(dirname(target.path), `.${basename(target.path)}.${process.pid}.${randomUUID()}.rollback`))
+const preservedRollbackLinks = new Set<string>()
 let replacementsCompleted = 0
 try {
 	for (const target of canonicalTargets) {
@@ -800,7 +805,10 @@ try {
 		try {
 			await rename(rollbackLinks[index], canonicalTargets[index].path)
 		} catch (rollbackError) {
-			rollbackErrors.push(rollbackError)
+			preservedRollbackLinks.add(rollbackLinks[index])
+			rollbackErrors.push(new Error(`Failed to restore ${canonicalTargets[index].path} from ${rollbackLinks[index]}`, {
+				cause: rollbackError,
+			}))
 		}
 	}
 	if (rollbackErrors.length === 0) {
@@ -811,7 +819,8 @@ try {
 	}
 	throw new Error("Candidate promotion write failed", { cause: error })
 } finally {
-	await Promise.all([...canonicalTemporaries, ...rollbackLinks].map((path) => rm(path, { force: true }).catch(() => undefined)))
+	await Promise.all([...canonicalTemporaries, ...rollbackLinks.filter((path) => !preservedRollbackLinks.has(path))]
+		.map((path) => rm(path, { force: true }).catch(() => undefined)))
 }
 
 console.log(JSON.stringify(promotionSummary, null, 2))

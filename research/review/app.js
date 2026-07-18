@@ -7,6 +7,7 @@ const state = {
 	index: 0,
 	comparison: "iteration",
 	iterationOnly: false,
+	assignments: new Map(),
 	algorithmVersion: "",
 	presentationVersion: 0,
 	preference: null,
@@ -79,6 +80,7 @@ function hash(value) {
 }
 
 function methodsFor(entry) {
+	if (state.iterationOnly) return state.assignments.get(entry.file)
 	const pair = methodsForComparison(state.comparison)
 	return hash(`${entry.file}:${state.comparison}`) % 2 === 0 ? pair : pair.reverse()
 }
@@ -165,9 +167,9 @@ function render() {
 	previousButton.disabled = false
 	skipButton.disabled = false
 	const [leftMethod, rightMethod] = methodsFor(entry)
-	artworkName.textContent = entry.file
+	artworkName.textContent = state.iterationOnly ? `Artwork ${state.index + 1}` : entry.file
 	artwork.src = `/images/${encodeURIComponent(entry.file)}`
-	artwork.alt = `Artwork under review: ${entry.file}`
+	artwork.alt = state.iterationOnly ? "Artwork under review" : `Artwork under review: ${entry.file}`
 	candidates.replaceChildren(
 		preview("A", paletteFor(entry, leftMethod), artwork.src),
 		preview("B", paletteFor(entry, rightMethod), artwork.src),
@@ -261,6 +263,7 @@ window.addEventListener("keydown", (event) => {
 const response = await fetch("/api/review")
 const payload = await response.json()
 state.iterationOnly = payload.iterationOnly === true
+state.assignments = new Map(Object.entries(payload.assignments || {}))
 comparisonButton.hidden = state.iterationOnly
 comparisonButton.disabled = state.iterationOnly
 galleryLink.hidden = state.iterationOnly

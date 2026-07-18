@@ -3,7 +3,7 @@ import { quantizedBaseline, solvePalette } from "./palette.ts"
 import { analyzeRegions } from "./regions.ts"
 import type { ExtractionResult, RawImage } from "./types.ts"
 
-export const ALGORITHM_VERSION = "region-graph-0.13.0"
+export const ALGORITHM_VERSION = "region-graph-0.15.0"
 
 export function extractPalette(image: RawImage): ExtractionResult {
 	const startedAt = performance.now()

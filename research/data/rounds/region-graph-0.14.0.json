@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "archivedAt": "2026-07-18T19:44:12.000Z",
+  "decision": "rejected",
+  "algorithmVersion": "region-graph-0.14.0",
+  "baselineAlgorithmVersion": "region-graph-0.13.0",
+  "artifactHashes": {
+    "results.json": "f7e57f6b35d81e1b75efa8a3e635131efbd92c959e4cc6b557956592487664b7",
+    "holdout-results.json": "b3be355854acdc7ba6c5713416fa1cc1e8dd48f17a2a3290e75fd4925d318093",
+    "robustness.json": "b7ff6b8c39e999e188cd575bca73f8286facb7e4a5f6848374d09083f1ba3878",
+    "holdout-summary.json": "03890508aa7825a6f0c41bd9524860dc2e55f59944d5e248c618583e33f24d67",
+    "feedback.json": "fdd2bae495047c20ee1727ffb83e1fb45b22da2596932d0fe1ceaa661cc161c5"
+  },
+  "comparisonSummary": {
+    "legacyReviewable": { "total": 35, "changedCount": 0 },
+    "legacyDiagnostics": { "total": 2, "changedCount": 0 },
+    "accepted": { "total": 86, "changedCount": 0 },
+    "rejected": {
+      "total": 14,
+      "changedCount": 4,
+      "changedFiles": [
+        "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "00/ab67616d00001e0200005ddc313068597b41ae3b.jpg",
+        "00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
+        "00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg"
+      ]
+    },
+    "unselected": { "total": 255, "changedCount": 0 }
+  },
+  "reviewSummary": {
+    "candidatePreferred": 2,
+    "baselinePreferred": 1,
+    "ties": 1,
+    "candidateOnlyShippable": 1,
+    "baselineOnlyShippable": 0,
+    "bothShippable": 0,
+    "neitherShippable": 3
+  },
+  "rejectionReason": "Only one of four replacements was shippable; one replacement regressed against the accepted baseline and three remained unshippable.",
+  "feedback": {
+    "schemaVersion": 1,
+    "baselineAlgorithmVersion": "region-graph-0.13.0",
+    "baselineResultsSemanticSha256": "0e5a79ba59dfe644468ba02c8dca6c0f3994dad7b7731ad7f8b29c791075279e",
+    "baselineHoldoutSemanticSha256": "c6a464eb54dc504a2cccdc4722f7d38262312d0d97e8442de93d40bfae0ed63a",
+    "candidateAlgorithmVersion": "region-graph-0.14.0",
+    "candidateResultsSemanticSha256": "17016815b8e7c5f30f8c58cd1b0edfff71ecf7cef93451770f4142891a05acd7",
+    "candidateHoldoutSemanticSha256": "1dce20ff8040e5479096eaf590bb406ec23ed42a448183b0422774c2d1d3a91a",
+    "selectionManifestId": "057f9020988ea0a0e797036bb5ffe6b53c46d3b7b3d7bd0d732cde253519ef7e",
+    "presentationVersion": 3,
+    "sourceHashes": {
+      "00/ab67616d00001e0200005ddc313068597b41ae3b.jpg": "a44a626e0fe6f6c455ae208b9a71fd91e2d6024aec002f60c425053b6829cb66",
+      "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+      "00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg": "da12e18d4f3f40db154641f2caa04edd1ced052890554f5f4f7027fd80f473fd",
+      "00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg": "62f3efc824549c6881c427b7f15edb9bdfd02eace0b17246caf57aae8cb77411"
+    },
+    "entries": [
+      {
+        "image": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "comparison": "iteration",
+        "leftMethod": "spatial",
+        "rightMethod": "previous",
+        "preference": "tie",
+        "ship": "neither",
+        "reasons": [],
+        "note": "The red of the accent isn't red enough. The white of the surface isn't white enough. Those don't look like the colors of the artwork. The yellow is good though ",
+        "id": "6eabece6-46e7-4903-a2ea-889ad804ff37",
+        "timestamp": "2026-07-18T19:19:26.653Z",
+        "reviewSchema": 2,
+        "presentationVersion": 3,
+        "algorithmVersion": "region-graph-0.14.0",
+        "previousAlgorithmVersion": "region-graph-0.13.0"
+      },
+      {
+        "image": "00/ab67616d00001e0200005ddc313068597b41ae3b.jpg",
+        "comparison": "iteration",
+        "leftMethod": "previous",
+        "rightMethod": "spatial",
+        "preference": "left",
+        "ship": "neither",
+        "reasons": [],
+        "note": "Candidate A does work, but if I'm being critical, the background should probably be black because that's visually what the main background is, and also the text on the artwork is blue and white, and we don't have that shade of boolean the palette of candidate A. Kennedy Deck B does have a shade of blue that matches, but it's used for the surface ",
+        "id": "1c328d46-8c51-4d62-9b58-4b58cb11ae11",
+        "timestamp": "2026-07-18T19:21:03.811Z",
+        "reviewSchema": 2,
+        "presentationVersion": 3,
+        "algorithmVersion": "region-graph-0.14.0",
+        "previousAlgorithmVersion": "region-graph-0.13.0"
+      },
+      {
+        "image": "00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
+        "comparison": "iteration",
+        "leftMethod": "spatial",
+        "rightMethod": "previous",
+        "preference": "left",
+        "ship": "neither",
+        "reasons": [],
+        "note": "The accent is some sort of muddy brown/slash maroon, but the artwork has a pretty vivid fire red and some yellow oranges on the side, and those colors aren't found in either candidate's palette ",
+        "id": "cc626c8d-98ce-466e-a954-e2f2bced0c1d",
+        "timestamp": "2026-07-18T19:22:11.244Z",
+        "reviewSchema": 2,
+        "presentationVersion": 3,
+        "algorithmVersion": "region-graph-0.14.0",
+        "previousAlgorithmVersion": "region-graph-0.13.0"
+      },
+      {
+        "image": "00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg",
+        "comparison": "iteration",
+        "leftMethod": "previous",
+        "rightMethod": "spatial",
+        "preference": "right",
+        "ship": "right",
+        "reasons": [],
+        "note": "",
+        "id": "c6432df6-d764-4d4d-a8f7-f50e710b97aa",
+        "timestamp": "2026-07-18T19:22:39.289Z",
+        "reviewSchema": 2,
+        "presentationVersion": 3,
+        "algorithmVersion": "region-graph-0.14.0",
+        "previousAlgorithmVersion": "region-graph-0.13.0"
+      }
+    ]
+  }
+}

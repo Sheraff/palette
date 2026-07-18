@@ -41,7 +41,7 @@ Current generated round:
 - 22 perceptually changed balanced-versus-expressive comparisons
 - Crop/noise role movement: median `0.000`, p90 `0.067`, maximum `0.780` OKLab
 - 355 deduplicated holdout artworks analyzed separately
-- Validation generated foreground: 11/355; relaxed background: 17/355; relaxed surface: 7/355; collapsed surface: 78/355; gradients: 168/355
+- Validation generated foreground: 11/355; relaxed background: 17/355; relaxed surface: 7/355; collapsed surface: 78/355; gradients: 170/355
 - Duplicate-resolution role movement: median `0.003`, p90 `0.105`, maximum `0.720` OKLab; 2 gradient disagreements
 
 The robustness tail is retained in `research/data/robustness.json`; it is not role-rematched or excluded from reporting.
@@ -53,11 +53,11 @@ The robustness tail is retained in `research/data/robustness.json`; it is not ro
 `research/data/selection.json` records the SHA-256 of the exact raw `holdout-results.json` artifact, which the server verifies byte-for-byte. Manifest and review identity instead use a semantic digest that excludes `generatedAt` and extraction `processingMs`, so equivalent reruns retain identity. The selector strategy, algorithm version, dimensions, and exact source image hashes remain bound to the manifest, and the server verifies the on-disk source bytes.
 
 1. Stage 1 at <http://127.0.0.1:3100/curate> is source-only eligibility review. It shows the source, dimensions, and source hash, but no palette, selection-track label, or other output-derived stratum. A veto requires a recorded reason, with a note for `other`; its slot is deterministically replaced from the same track's reserve queue. Decisions remain undoable only until palette output is first disclosed.
-2. All three quotas must be filled, for 100 eligible sources total, before holdout output appears in the gallery or <http://127.0.0.1:3100/absolute> unseals. After completion, opening `/absolute` or revealing holdout output in `/gallery` persistently freezes membership before output is served. Deleting absolute feedback does not unfreeze curation. Stage 2 is an absolute shippability review of each accepted `region-graph-0.13.0` spatial palette on its own; no legacy or rejected extraction is shown.
+2. All three quotas must be filled, for 100 eligible sources total, before holdout output appears in the gallery or <http://127.0.0.1:3100/absolute> unseals. After completion, opening `/absolute` or revealing holdout output in `/gallery` persistently freezes membership before output is served. Deleting absolute feedback does not unfreeze curation. Stage 2 is an absolute shippability review of each accepted `region-graph-0.15.0` spatial palette on its own; no legacy or rejected extraction is shown.
 
 Selection is stored in `research/data/selection.json`, source decisions in `research/data/curation.json`, and absolute decisions in `research/data/absolute-feedback.json`. `research/data/holdout-results.json` remains the extraction and provenance input for both selection and the accepted spatial palettes.
 
-The initial 0.11 review screened 112 sources to fill the 100-source quotas, then marked 83 palettes shippable and 17 unshippable under a deliberately severe release-quality threshold. Version 0.13 changed three of those rejected palettes; blinded review preferred 0.13 in all three cases and accepted each replacement. The carried current review therefore contains 86 shippable and 14 unshippable palettes. See `research/data/corpus-review-summary.md` for the frozen 0.11 review summary and `research/data/rounds/region-graph-0.13.0-summary.md` for the accepted transition.
+The initial 0.11 review screened 112 sources to fill the 100-source quotas, then marked 83 palettes shippable and 17 unshippable under a deliberately severe release-quality threshold. Version 0.13 repaired and passed blinded review for three rejected palettes, moving the carried review to 86/14. Version 0.14 was rejected; its narrower 0.15 follow-up repaired and passed review for three more palettes. The current review therefore contains 89 shippable and 11 unshippable palettes. See `research/data/corpus-review-summary.md` for the frozen 0.11 review and the summaries under `research/data/rounds/` for subsequent transitions.
 
 A round transition with changed semantic results requires preserving or archiving the existing selection, curation, and absolute stores, then explicitly initializing a new review state. `pnpm research:archive` archives only generated results and pairwise feedback; it does not perform this corpus-review transition.
 
@@ -137,4 +137,4 @@ Human pairwise preference is the primary endpoint. Objective diagnostics identif
 - The 355 validation artworks broaden development coverage but cannot support final generalization claims after their documented use during iteration.
 
 See `research/RESEARCH.md` for the research basis and planned learned-model experiments.
-See `research/ALGORITHM.md` for a complete explanation of the accepted 0.13 algorithm and role constraints.
+See `research/ALGORITHM.md` for a complete explanation of the accepted 0.15 algorithm and role constraints.

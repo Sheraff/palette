@@ -89,8 +89,8 @@ test("standalone comparison classifies the current provenance-bound review", asy
 	const input = await canonicalComparisonInput()
 	const report = buildCandidateComparisonReport(input)
 
-	assert.equal(report.accepted.total, 86)
-	assert.equal(report.rejected.total, 14)
+	assert.equal(report.accepted.total, 89)
+	assert.equal(report.rejected.total, 11)
 	assert.equal(report.unselectedHoldout.total, 255)
 	assert.equal(report.accepted.changedCount, 0)
 	assert.equal(report.rejected.changedCount, 0)

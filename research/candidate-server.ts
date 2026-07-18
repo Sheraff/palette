@@ -3,7 +3,7 @@ import { readFileSync, rmSync } from "node:fs"
 import { readFile, rename, rm, stat, writeFile } from "node:fs/promises"
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http"
 import { hostname } from "node:os"
-import { extname, isAbsolute, join, resolve } from "node:path"
+import { basename, extname, isAbsolute, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { buildCandidateComparisonReport } from "./src/candidate-comparison.ts"
 import { validateCandidateArtifacts } from "./src/candidate-validation.ts"
@@ -35,7 +35,7 @@ type CandidateFeedback = FeedbackInput & {
 	id: string
 	timestamp: string
 	reviewSchema: 2
-	presentationVersion: 2
+	presentationVersion: 4
 	algorithmVersion: string
 	previousAlgorithmVersion: string
 }
@@ -49,7 +49,7 @@ type CandidateFeedbackStore = {
 	candidateResultsSemanticSha256: string
 	candidateHoldoutSemanticSha256: string
 	selectionManifestId: string
-	presentationVersion: 2
+	presentationVersion: 4
 	sourceHashes: Record<string, string>
 	entries: CandidateFeedback[]
 }
@@ -57,6 +57,7 @@ type CandidateFeedbackStore = {
 const researchRoot = fileURLToPath(new URL(".", import.meta.url))
 const projectRoot = fileURLToPath(new URL("..", import.meta.url))
 const dataRoot = join(researchRoot, "data")
+const roundsRoot = join(dataRoot, "rounds")
 const reviewRoot = join(researchRoot, "review")
 const imagesRoot = join(projectRoot, "images")
 const candidateDirectoryValue = process.env.RESEARCH_CANDIDATE_DIR
@@ -71,7 +72,7 @@ if (!candidateDirectoryStat.isDirectory()) throw new Error(`Candidate path is no
 
 const port = Number(process.env.PORT ?? 3102)
 if (!Number.isInteger(port) || port < 1 || port > 65_535) throw new Error("PORT must be an integer from 1 to 65535")
-const presentationVersion = 2 as const
+const presentationVersion = 4 as const
 const feedbackPath = join(candidateDirectory, "feedback.json")
 const candidateLockPath = join(candidateDirectory, ".candidate-server.lock")
 const acceptedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`])
@@ -333,6 +334,16 @@ const baselineResults = baselineResultsValue as CorpusResult
 const baselineHoldout = baselineHoldoutValue as CorpusResult
 const candidateResults = candidateResultsValue as CorpusResult
 const candidateHoldout = candidateHoldoutValue as CorpusResult
+if (basename(candidateDirectory) !== candidateResults.algorithmVersion) {
+	throw new Error("Candidate directory name must match its algorithmVersion")
+}
+const finalizedArchive = join(roundsRoot, `${candidateResults.algorithmVersion}.json`)
+if (await stat(finalizedArchive).then(() => true, (error: unknown) => {
+	if ((error as NodeJS.ErrnoException).code === "ENOENT") return false
+	throw error
+})) {
+	throw new Error(`Candidate round is finalized: ${finalizedArchive}`)
+}
 
 const baselineHoldoutSourceSha256 = createHash("sha256").update(baselineHoldoutSource).digest("hex")
 validateSelectionManifest(selectionValue, baselineHoldout, baselineHoldoutSourceSha256)
@@ -398,12 +409,10 @@ function validateReasonList(value: unknown): string[] {
 }
 
 function reviewMethodsFor(image: string): readonly [ReviewMethod, ReviewMethod] {
-	let result = 2166136261
-	const value = `${image}:iteration`
-	for (let index = 0; index < value.length; index++) {
-		result = Math.imul(result ^ value.charCodeAt(index), 16777619)
-	}
-	return (result >>> 0) % 2 === 0 ? ["spatial", "previous"] : ["previous", "spatial"]
+	const digest = createHash("sha256")
+		.update(`${expectedFeedbackStore.candidateResultsSemanticSha256}:${image}:iteration`)
+		.digest()
+	return digest[0] % 2 === 0 ? ["spatial", "previous"] : ["previous", "spatial"]
 }
 
 function validateFeedbackInput(value: unknown): FeedbackInput {
@@ -595,6 +604,7 @@ server = createServer(async (request, response) => {
 				results: responseResults,
 				previousResults: responsePreviousResults,
 				presentationVersion,
+				assignments: Object.fromEntries(reviewFiles.map((file) => [file, reviewMethodsFor(file)])),
 				feedback: await loadFeedbackStore(),
 				carriedReviews: [],
 				iterationOnly: true,
