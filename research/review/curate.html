@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Corpus eligibility</title>
+		<link rel="stylesheet" href="/corpus.css">
+	</head>
+	<body>
+		<header class="site-header">
+			<div>
+				<p class="eyebrow">Stage 1 / source only</p>
+				<h1>Corpus eligibility</h1>
+			</div>
+			<nav aria-label="Research pages">
+				<a href="/">Comparison review</a>
+				<a href="/absolute">Absolute review</a>
+			</nav>
+		</header>
+		<main>
+			<section class="intro">
+				<p id="summary">Loading corpus status</p>
+				<p>Judge only whether the input belongs in the corpus. Palette output stays sealed until source eligibility is complete.</p>
+			</section>
+			<div id="status" class="status-region" role="status" aria-live="polite" aria-atomic="true">Loading source eligibility...</div>
+			<section id="progress" class="progress-grid" aria-label="Selection progress"></section>
+			<section id="review-stage" class="review-stage" aria-labelledby="decision-title" hidden>
+				<div id="source-panel" class="source-panel" aria-busy="true">
+					<div class="panel-heading">
+						<span>Source candidate</span>
+						<span id="image-state">Awaiting image</span>
+					</div>
+					<img id="source-image" alt="" decoding="async">
+					<div class="source-meta">
+						<strong id="source-file"></strong>
+						<span id="source-size"></span>
+					</div>
+				</div>
+				<div class="decision-panel">
+					<p class="step-label">Input decision</p>
+					<h2 id="decision-title">Is this usable album artwork?</h2>
+					<button id="include" class="primary-action include" type="button">Include source</button>
+					<form id="veto-form">
+						<fieldset>
+							<legend>Or veto with a reason</legend>
+							<div id="veto-reasons" class="reason-grid"></div>
+						</fieldset>
+						<label class="note-field"><span>Note (required when Other is selected)</span><textarea id="note" maxlength="500" rows="3" aria-describedby="note-help"></textarea><small id="note-help">Explain any issue not covered by the listed reasons.</small></label>
+						<button id="veto" class="primary-action veto" type="submit">Veto and replace</button>
+					</form>
+				</div>
+			</section>
+			<section id="curation-complete" class="completion" aria-labelledby="curation-complete-title" hidden>
+				<p class="step-label">Eligibility complete</p>
+				<h2 id="curation-complete-title">The source corpus is locked.</h2>
+				<p id="curation-complete-detail"></p>
+				<a id="absolute-link" href="/absolute">Begin absolute review</a>
+			</section>
+			<section id="curation-blocked" class="locked blocker" aria-labelledby="curation-blocked-title" hidden>
+				<p id="curation-blocked-label" class="step-label">Screening blocked</p>
+				<h2 id="curation-blocked-title">No source is available.</h2>
+				<p id="curation-blocked-detail"></p>
+			</section>
+			<section class="history-section">
+				<div class="section-heading"><h2>All decisions</h2><span id="history-note">Eligibility decisions are listed in full.</span></div>
+				<div id="history" class="history" tabindex="0" aria-label="All eligibility decisions"></div>
+			</section>
+		</main>
+		<script type="module" src="/curate.js"></script>
+	</body>
+</html>

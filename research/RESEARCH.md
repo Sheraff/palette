@@ -71,3 +71,5 @@ Validation failures may inform documented exploration, but they cannot establish
 5. Explicit uncertainty and Pareto candidate output instead of only a scalar solver rank.
 6. CIEDE2000 and optimal-transport reporting without feeding either metric directly into optimization.
 7. Resize, JPEG re-encode, and thin-border metamorphic cases in addition to crop and noise.
+8. Revisit an optional fifth, source-observed identity color only if downstream UI can consume another token; keep the accepted four-role accessibility contract unchanged until then.
+9. Test an evidence-gated, artwork-supported third gradient control stop when direct background-surface OKLCH interpolation crosses hues absent from the artwork. Treat it as gradient metadata rather than a fifth UI role. Diagnostic case: `ab67616d0000b2730000e5d07b040a02043e7460` (`#8f8182` to `#e6c18a`).

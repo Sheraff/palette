@@ -8,6 +8,7 @@
     "recorder": "NODE_NO_WARNINGS=1 node --watch --experimental-strip-types recorder.ts",
     "research:generate": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/generate.ts",
     "research:holdout": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/evaluate-holdout.ts",
+    "research:select": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/select-corpus.ts",
     "research:holdout:summary": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/summarize-holdout.ts",
     "research:archive": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/archive-round.ts",
     "research:benchmark": "NODE_NO_WARNINGS=1 node --experimental-strip-types research/benchmark.ts",

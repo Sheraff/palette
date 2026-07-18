@@ -6,16 +6,18 @@ The current version is an inspectable classical review candidate intended to col
 
 ## Review
 
-Generate results and start the reviewer:
+Generate results, write the corpus selection, and start the reviewer:
 
 ```sh
 pnpm research:generate
+pnpm research:holdout
+pnpm research:select
 pnpm research:review
 ```
 
 Open <http://127.0.0.1:3100>.
 
-Open <http://127.0.0.1:3100/gallery> to inspect every generated corpus entry beside its current spatial palette preview.
+Open <http://127.0.0.1:3100/gallery> to inspect generated corpus entries beside their current spatial palette previews. Holdout output remains omitted until source eligibility is complete.
 
 The default queue compares the current spatial method against the archived previous iteration. The comparison button cycles through iteration, quantization-baseline, and balanced-versus-expressive queues. Pairs are omitted unless a role moves by more than `0.025` OKLab or the gradient decision changes. A previously reviewed baseline or expressive pair is also omitted in later rounds when both candidates remain perceptually unchanged from its latest judgment.
 
@@ -44,13 +46,29 @@ Current generated round:
 
 The robustness tail is retained in `research/data/robustness.json`; it is not role-rematched or excluded from reporting.
 
+## Deterministic Corpus Review
+
+`pnpm research:select` reads `research/data/holdout-results.json` and deterministically assigns all 355 representative `00/` sources to disjoint, fixed queues. The accepted-corpus target is 50 diversity cases, 30 diagnostic-risk cases, and 20 deterministic random controls. The current queues contain 205, 90, and 60 candidates respectively; candidates beyond each quota are fixed reserves for that same track, so a veto cannot change the target mix.
+
+`research/data/selection.json` records the SHA-256 of the exact raw `holdout-results.json` artifact, which the server verifies byte-for-byte. Manifest and review identity instead use a semantic digest that excludes `generatedAt` and extraction `processingMs`, so equivalent reruns retain identity. The selector strategy, algorithm version, dimensions, and exact source image hashes remain bound to the manifest, and the server verifies the on-disk source bytes.
+
+1. Stage 1 at <http://127.0.0.1:3100/curate> is source-only eligibility review. It shows the source, dimensions, and source hash, but no palette, selection-track label, or other output-derived stratum. A veto requires a recorded reason, with a note for `other`; its slot is deterministically replaced from the same track's reserve queue. Decisions remain undoable only until palette output is first disclosed.
+2. All three quotas must be filled, for 100 eligible sources total, before holdout output appears in the gallery or <http://127.0.0.1:3100/absolute> unseals. After completion, opening `/absolute` or revealing holdout output in `/gallery` persistently freezes membership before output is served. Deleting absolute feedback does not unfreeze curation. Stage 2 is an absolute shippability review of each accepted `region-graph-0.11.0` spatial palette on its own; no legacy or rejected extraction is shown.
+
+Selection is stored in `research/data/selection.json`, source decisions in `research/data/curation.json`, and absolute decisions in `research/data/absolute-feedback.json`. `research/data/holdout-results.json` remains the extraction and provenance input for both selection and the accepted spatial palettes.
+
+The completed review screened 112 sources to fill the 100-source quotas, then marked 83 palettes shippable and 17 unshippable under a deliberately severe release-quality threshold. Three rejection notes explicitly record low confidence but remain unshippable in the binary totals. See `research/data/corpus-review-summary.md` for the frozen review summary.
+
+A round transition with changed semantic results requires preserving or archiving the existing selection, curation, and absolute stores, then explicitly initializing a new review state. `pnpm research:archive` archives only generated results and pairwise feedback; it does not perform this corpus-review transition.
+
 ## Commands
 
 ```sh
 pnpm research:generate   # Analyze every non-scrambled corpus image
 pnpm research:holdout    # Analyze one representative for each artwork in 00/
+pnpm research:select     # Create provenance-locked selection queues for 100 accepted sources
 pnpm research:holdout:summary # Compare cohort diagnostics and duplicate resolutions
-pnpm research:archive    # Freeze results and feedback before a new iteration
+pnpm research:archive    # Archive results and pairwise feedback before a new iteration
 pnpm research:benchmark  # Crop/noise metamorphic diagnostics
 pnpm research:test       # Deterministic unit and corpus checks
 pnpm research:review     # Feedback server on port 3100
@@ -79,11 +97,11 @@ Accent is always perceptually distinct from both background and surface, with a 
 
 All 37 files in `images/` that do not contain `-scrambled` form the difficult development corpus. `maroon5-masked.jpg` and `maroon5-saliency.png` remain in diagnostics but are excluded from the default human queue. Pure-color fixtures remain in the queue as useful controls.
 
-The random-artwork `00/` folder is a separate validation cohort. It contains 385 valid files representing 355 artwork IDs; 30 IDs have both 300px and 640px variants. `pnpm research:holdout` evaluates one representative per ID, preferring the larger source, and writes `research/data/holdout-results.json`. These entries appear in the gallery but are excluded from review queues and feedback validation. Version 0.12 visually audited the gradient cases changed by its coherence threshold, so this cohort is explicitly development-facing validation and cannot serve as an untouched final test set.
+The random-artwork `00/` folder is development-facing validation. It contains 385 valid files representing 355 artwork IDs; 30 IDs have both 300px and 640px variants. `pnpm research:holdout` evaluates one representative per ID, preferring the larger source, and writes `research/data/holdout-results.json`. Version 0.12 visually audited the gradient cases changed by its coherence threshold, and the deterministic corpus review now selects from the same results. This workflow prevents output-aware source vetoes, but it is not a sealed generalization test. Future generalization evaluation requires a new untouched corpus, such as `01/`.
 
 `research/data/holdout-summary.json` compares aggregate development/holdout diagnostics and measures role movement across the 30 duplicate-resolution pairs. These objective checks can expose instability but cannot establish visual quality without a sealed human evaluation.
 
-The original artwork files are ignored by the repository's root `.gitignore`; this research harness therefore requires the local corpus and will not work from a fresh clone containing only scrambled images.
+The original artwork files, including `00/`, remain ignored by the repository's root `.gitignore`; this research harness therefore requires the local corpus and will not work from a fresh clone containing only scrambled images.
 
 ## Evaluation Policy
 
