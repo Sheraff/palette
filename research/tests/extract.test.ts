@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises"
 import test from "node:test"
 import { contrastRatio, okDistance, rgbToOKLab } from "../src/color.ts"
 import { extractPalette } from "../src/extract.ts"
+import { minimumAccentBackgroundContrast } from "../src/palette.ts"
 import type { CorpusResult, Palette, RawImage, RGB } from "../src/types.ts"
 
 function solid(width: number, height: number, rgb: RGB): RawImage {
@@ -70,6 +71,8 @@ test("generated corpus excludes scrambled files and satisfies hard gates", async
 		const palette = entry.extraction.methods.spatial
 		assertValidPalette(palette)
 		assertValidPalette(entry.extraction.methods.expressive)
+		assert.ok(palette.metrics.accentContrast >= minimumAccentBackgroundContrast)
+		assert.ok(entry.extraction.methods.expressive.metrics.accentContrast >= minimumAccentBackgroundContrast)
 		assertValidPalette(entry.extraction.methods.quantized, false)
 		const sourceColors = new Set(entry.extraction.candidates.map((candidate) => candidate.hex))
 		assert.equal(palette.background.generated, false)
@@ -138,8 +141,12 @@ test("generated corpus excludes scrambled files and satisfies hard gates", async
 		}
 		if (entry.file === "nobs.jpg") {
 			const backgroundLab = rgbToOKLab(palette.background.rgb)
+			const foregroundCandidate = entry.extraction.candidates.find((candidate) => candidate.hex === palette.foreground.hex)
 			const accentCandidate = entry.extraction.candidates.find((candidate) => candidate.hex === palette.accent.hex)
 			assert.ok(backgroundLab[0] >= 0.95 && Math.hypot(backgroundLab[1], backgroundLab[2]) < 0.02)
+			assert.equal(palette.surface.hex, palette.background.hex)
+			assert.ok(foregroundCandidate && foregroundCandidate.chroma >= 0.1)
+			assert.ok(palette.metrics.foregroundContrast >= 4.5)
 			assert.ok(accentCandidate && accentCandidate.chroma >= 0.15)
 		}
 		if (entry.file === "skap.jpg") {
@@ -162,6 +169,8 @@ test("holdout corpus is separate, deduplicated, and satisfies hard gates", async
 		const palette = entry.extraction.methods.spatial
 		assertValidPalette(palette)
 		assertValidPalette(entry.extraction.methods.expressive)
+		assert.ok(palette.metrics.accentContrast >= minimumAccentBackgroundContrast)
+		assert.ok(entry.extraction.methods.expressive.metrics.accentContrast >= minimumAccentBackgroundContrast)
 		assertValidPalette(entry.extraction.methods.quantized, false)
 		const sourceColors = new Set(entry.extraction.candidates.map((candidate) => candidate.hex))
 		for (const role of ["background", "foreground", "surface", "accent"] as const) {

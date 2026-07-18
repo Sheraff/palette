@@ -24,8 +24,10 @@ type Selection = {
 
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value))
 const minimumAccentRoleDistance = 0.025
+const minimumDistinctSurfaceScoreGain = 0.04
 export const minimumForegroundBackgroundContrast = 3
 export const minimumForegroundSurfaceContrast = 2.5
+export const minimumAccentBackgroundContrast = 1.2
 
 function hasStrongTypographyEvidence(candidate: Candidate): boolean {
 	return !candidate.generated && candidate.population >= 0.1 && candidate.text >= 0.5 && candidate.saliency >= 0.55
@@ -56,7 +58,8 @@ function sourceForegroundPool(candidates: Candidate[], background: Candidate): C
 
 function hasMultipleBackgroundFields(candidates: Candidate[], background: Candidate): boolean {
 	const alternatives = candidates.filter((candidate) =>
-		candidate.id !== background.id && candidate.population >= 0.15 && candidate.background >= 0.4 &&
+		!candidate.typographyOnly && candidate.id !== background.id &&
+		candidate.population >= 0.15 && candidate.background >= 0.4 &&
 		okDistance(candidate.lab, background.lab) >= 0.08)
 	return alternatives.length >= 2
 }
@@ -93,6 +96,7 @@ function generatedCandidate(rgb: RGB, id: number): Candidate {
 		text: 0,
 		chroma: chroma(lab),
 		generated: true,
+		typographyOnly: false,
 		regionIds: [],
 	}
 }
@@ -110,6 +114,7 @@ function foregroundScore(
 	background: Candidate,
 	maxPopulation: number,
 	mode: Mode,
+	preferChromaticTypography = false,
 ): number {
 	const ratio = contrastRatio(background.rgb, candidate.rgb)
 	const minimumContrast = ratio >= 4.5 ? 4.5 : foregroundBackgroundContrast(candidate)
@@ -128,13 +133,22 @@ function foregroundScore(
 	const relaxedSourceIdentity = contrastRatio(background.rgb, candidate.rgb) < 4.5
 		? clamp01(candidate.chroma / 0.08) * 0.6
 		: 0
+	const chromaticTypography = preferChromaticTypography && ratio >= 4.5 && isChromaticTypography(candidate)
+		? 0.24
+		: 0
 	if (mode === "expressive") {
 		return contrast * 0.25 + candidate.saliency * 0.27 + candidate.text * 0.2 +
 			clamp01(candidate.chroma / 0.18) * 0.16 + population * 0.04 + source * 0.03 + sourceTextExtreme * 0.05
 	}
 	return contrast * 0.23 + candidate.text * 0.21 + candidate.saliency * 0.15 + population * 0.08 +
 		source * 0.07 + sourceTextExtreme * 0.18 + prominentExtreme * 0.15 + explicitExtreme +
-		relaxedSourceIdentity
+		relaxedSourceIdentity + chromaticTypography
+}
+
+function isChromaticTypography(candidate: Candidate): boolean {
+	return !candidate.generated && candidate.chroma >= 0.1 &&
+		candidate.population >= 0.02 && candidate.population <= 0.08 &&
+		candidate.text >= 0.55 && candidate.saliency >= 0.7
 }
 
 function surfaceScore(
@@ -154,6 +168,10 @@ function surfaceScore(
 	if (!smoothGradient && background.lab[0] < 0.15 && candidate.lab[0] < 0.25 && candidate.chroma < 0.05) {
 		return 0.2
 	}
+	const representativeField = allowRepresentativeSurface && candidate.population >= 0.15 &&
+		candidate.background >= 0.4 && distance >= 0.08
+		? 0.1
+		: 0
 	if (smoothGradient) {
 		const population = Math.sqrt(candidate.population / Math.max(maxPopulation, 1e-9))
 		const ratio = contrastRatio(candidate.rgb, foreground.rgb)
@@ -162,7 +180,7 @@ function surfaceScore(
 		const contrast = clamp01((ratio - minimumContrast) / (10 - minimumContrast))
 		const separation = clamp01(distance / 0.32)
 		return candidate.background * 0.15 + population * 0.24 + separation * 0.34 +
-			contrast * 0.14 + clamp01(candidate.chroma / 0.15) * 0.13
+			contrast * 0.14 + clamp01(candidate.chroma / 0.15) * 0.13 + representativeField
 	}
 	const idealDistance = smoothGradient ? 0.16 : 0.1
 	const affinity = Math.exp(-((distance - idealDistance) ** 2) / 0.018)
@@ -172,7 +190,26 @@ function surfaceScore(
 	const minimumContrast = ratio >= 4.5 ? 4.5 : allowedContrast
 	const contrast = clamp01((ratio - minimumContrast) / (10 - minimumContrast))
 	const gradientSeparation = smoothGradient ? clamp01(distance / 0.24) * 0.14 : 0
-	return candidate.background * 0.28 + population * 0.22 + affinity * 0.25 + contrast * 0.17 + gradientSeparation
+	return candidate.background * 0.28 + population * 0.22 + affinity * 0.25 + contrast * 0.17 +
+		gradientSeparation + representativeField
+}
+
+function hasDistinctSurfaceConfidence(
+	candidate: Candidate,
+	background: Candidate,
+	foreground: Candidate,
+	maxPopulation: number,
+	expectsGradient: boolean,
+	backgroundFamilyCoverage: number,
+	allowRepresentativeSurface: boolean,
+): boolean {
+	const candidateScore = surfaceScore(
+		candidate, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface,
+	)
+	const collapsedScore = surfaceScore(
+		background, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface,
+	)
+	return candidateScore >= collapsedScore + minimumDistinctSurfaceScoreGain
 }
 
 function accentScore(
@@ -426,7 +463,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 	if (candidates.length === 0) throw new Error("Cannot solve a palette without color candidates")
 	const maxPopulation = Math.max(...candidates.map((candidate) => candidate.population))
 	const generated = [generatedCandidate([0, 0, 0], -1), generatedCandidate([255, 255, 255], -2)]
-	const rankedBackgrounds = [...candidates]
+	const rankedBackgrounds = candidates.filter((candidate) => !candidate.typographyOnly)
 		.sort((first, second) => backgroundScore(second, maxPopulation) - backgroundScore(first, maxPopulation))
 	const bestBackgroundScore = backgroundScore(rankedBackgrounds[0], maxPopulation)
 	const smoothGradient = smoothGradientEvidence(analysis)
@@ -460,6 +497,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 		const sourceAccent = candidates
 			.filter((candidate) => candidate.id !== background.id && candidate.id !== foreground.id &&
 				okDistance(candidate.lab, background.lab) >= 0.08 && okDistance(candidate.lab, foreground.lab) >= 0.08 &&
+				contrastRatio(candidate.rgb, background.rgb) >= minimumAccentBackgroundContrast &&
 				(candidate.chroma >= 0.04 || candidate.population >= 0.008))
 			.sort((first, second) =>
 				accentScore(second, foreground, background, maxPopulation, mode) -
@@ -478,20 +516,30 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 		const expectsGradient = smoothGradient.isGradient || darkChromaticGradient
 		const sourceForegrounds = sourceForegroundPool(candidates, background)
 		const foregroundPool = sourceForegrounds.length > 0 ? sourceForegrounds : generated
-		const rankedForegrounds = foregroundPool
+		const eligibleForegrounds = foregroundPool
 			.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate))
+		const defaultForeground = [...eligibleForegrounds].sort((first, second) =>
+			foregroundScore(second, background, maxPopulation, mode) - foregroundScore(first, background, maxPopulation, mode),
+		)[0]
+		const preferChromaticTypography = !!defaultForeground && !defaultForeground.generated && defaultForeground.chroma < 0.08 &&
+			candidates.filter(isChromaticTypography).length >= 3
+		const rankedForegrounds = eligibleForegrounds
 			.sort((first, second) =>
-				foregroundScore(second, background, maxPopulation, mode) - foregroundScore(first, background, maxPopulation, mode),
+				foregroundScore(second, background, maxPopulation, mode, preferChromaticTypography) -
+					foregroundScore(first, background, maxPopulation, mode, preferChromaticTypography),
 			)
 		const bestForegroundScore = rankedForegrounds.length > 0
-			? foregroundScore(rankedForegrounds[0], background, maxPopulation, mode)
+			? foregroundScore(rankedForegrounds[0], background, maxPopulation, mode, preferChromaticTypography)
 			: -Infinity
 		const foregrounds = rankedForegrounds
-			.filter((candidate) => foregroundScore(candidate, background, maxPopulation, mode) >= bestForegroundScore - 0.08)
+			.filter((candidate) => foregroundScore(
+				candidate, background, maxPopulation, mode, preferChromaticTypography,
+			) >= bestForegroundScore - 0.08)
 			.slice(0, 6)
 		for (const foreground of foregrounds) {
 			const familyCoverage = colorFamilyCoverage(background, candidates)
-			const rankedSurfaces = [background, ...candidates.filter((candidate) =>
+			const distinctSurfaces = candidates.filter((candidate) =>
+				!candidate.typographyOnly &&
 				candidate.id !== background.id &&
 				candidate.population >= (expectsGradient ? 0.008 : 0.02) &&
 				okDistance(background.lab, candidate.lab) >= (expectsGradient ? 0.025 : 0.05) &&
@@ -499,8 +547,12 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 				(!expectsGradient || chromaticCoverage < 0.15 || candidate.chroma >= 0.04) &&
 				contrastRatio(candidate.rgb, foreground.rgb) >= foregroundSurfaceContrast(
 					foreground, background, allowRepresentativeSurface,
+				) &&
+				hasDistinctSurfaceConfidence(
+					candidate, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface,
 				),
-			)]
+			)
+			const rankedSurfaces = [background, ...distinctSurfaces]
 				.sort((first, second) =>
 					surfaceScore(second, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface) -
 					surfaceScore(first, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface),
@@ -523,6 +575,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 					okDistance(background.lab, candidate.lab) >= 0.08 &&
 					okDistance(surface.lab, candidate.lab) >= 0.06 &&
 					okDistance(foreground.lab, candidate.lab) >= 0.08 &&
+					contrastRatio(candidate.rgb, background.rgb) >= minimumAccentBackgroundContrast &&
 					(candidate.chroma >= 0.04 || contrastRatio(foreground.rgb, candidate.rgb) >= 1.5),
 				)
 					.sort((first, second) =>
@@ -543,7 +596,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 					const generatedPenalty = foreground.generated ? 0.12 : 0
 					const score = (
 						backgroundScore(background, maxPopulation) +
-						foregroundScore(foreground, background, maxPopulation, mode) +
+						foregroundScore(foreground, background, maxPopulation, mode, preferChromaticTypography) +
 						surfaceScore(
 							surface, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface,
 						) +
@@ -589,7 +642,8 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 				? candidate.population
 				: 0), 0)
 		const alternatives = candidates.filter((candidate) =>
-			candidate.id !== selected.background.id && candidate.id !== selected.foreground.id && candidate.id !== selected.accent.id &&
+			!candidate.typographyOnly && candidate.id !== selected.background.id &&
+			candidate.id !== selected.foreground.id && candidate.id !== selected.accent.id &&
 			candidate.population >= 0.008 && candidate.background >= 0.3 &&
 			okDistance(selected.background.lab, candidate.lab) >= 0.025 &&
 			okDistance(selected.background.lab, candidate.lab) <= 0.38 &&
@@ -609,7 +663,8 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 		okDistance(selected.background.lab, selected.surface.lab) < 0.1) {
 		const allowRepresentativeSurface = hasMultipleBackgroundFields(candidates, selected.background)
 		const alternatives = candidates.filter((candidate) =>
-			candidate.id !== selected.background.id && candidate.id !== selected.foreground.id && candidate.id !== selected.accent.id &&
+			!candidate.typographyOnly && candidate.id !== selected.background.id &&
+			candidate.id !== selected.foreground.id && candidate.id !== selected.accent.id &&
 			candidate.population >= 0.04 && candidate.background >= 0.4 &&
 			okDistance(selected.background.lab, candidate.lab) >= 0.12 &&
 			okDistance(selected.background.lab, candidate.lab) <= 0.38 &&
@@ -621,6 +676,24 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 			okDistance(selected.background.lab, second.lab) - okDistance(selected.background.lab, first.lab),
 		)
 		if (alternatives[0]) selected = { ...selected, surface: alternatives[0] }
+	}
+	if (selected.surface.id !== selected.background.id) {
+		const allowRepresentativeSurface = hasMultipleBackgroundFields(candidates, selected.background)
+		const familyCoverage = colorFamilyCoverage(selected.background, candidates)
+		if (!hasDistinctSurfaceConfidence(
+			selected.surface,
+			selected.background,
+			selected.foreground,
+			maxPopulation,
+			selected.gradientHint || false,
+			familyCoverage,
+			allowRepresentativeSurface,
+		)) {
+			selected = { ...selected, surface: selected.background }
+		}
+	}
+	if (contrastRatio(selected.background.rgb, selected.accent.rgb) < minimumAccentBackgroundContrast) {
+		selected = { ...selected, accent: selected.foreground }
 	}
 	return toPalette(selected, analysis)
 }

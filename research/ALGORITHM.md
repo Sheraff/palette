@@ -1,4 +1,4 @@
-# Palette Algorithm 0.9 Candidate
+# Palette Algorithm 0.11 Candidate
 
 ## Purpose
 
@@ -49,11 +49,11 @@ A role-aware weighted clustering pass reduces this evidence to about 12 candidat
 
 The shortlist cannot invent information on low-color artwork: every candidate must resolve to an observed pixel, and truly uniform fixtures produce one candidate. JPEG noise or subtle shading can still create several observed near-colors. Simple-cover role collapse prevents those shades from being treated as four meaningful UI roles.
 
-Gradient analysis continues to use the full pixel and region buffers rather than only the 12 candidates. Version 0.9 excludes tiny edge colors from smooth-gradient background shortlists when substantial candidates exist, repairs muddy surface/accent pairs with edge-supported source surfaces, and expands highly coherent endpoint pairs when the selected colors cover only the middle of a gradient.
+Gradient analysis continues to use the full pixel and region buffers rather than only the 12 candidates. Version 0.9 excluded tiny edge colors from smooth-gradient background shortlists when substantial candidates exist, repaired muddy surface/accent pairs with edge-supported source surfaces, and expanded highly coherent endpoint pairs when the selected colors cover only the middle of a gradient.
 
 The final RGB value is never the cluster average. Each cluster selects an observed histogram representative nearest its center, and each histogram representative is itself an exact artwork pixel. This preserves source fidelity while the floating-point center remains useful for grouping.
 
-A separate pass preserves a small, highly light, near-neutral typography candidate when the main clustering would otherwise absorb it.
+A separate pass preserves a small, highly light, near-neutral typography candidate when the main clustering would otherwise absorb it. Version 0.10 marks this auxiliary candidate as typography-only: it can serve foreground or accent, but cannot masquerade as a background or surface.
 
 ## 5. Jointly Assign The Four Roles
 
@@ -68,11 +68,13 @@ Background scoring favors:
 
 Foreground eligibility is tiered. A source color normally requires 4.0:1 against background. A large, salient, text-like source region may use 3.0:1. When any source candidate reaches 4.5:1, relaxed candidates compete only if they have that strong typography evidence. Scoring still favors higher contrast, text evidence, saliency, source colors, and prominent near-black or near-white artwork typography.
 
-Surface contrast remains 4.5:1 for ordinary high-contrast palettes. It may fall to 3.0:1 when the source foreground already uses relaxed contrast or when several substantial edge-supported background fields need representation. A strong typography foreground may use 2.5:1 on surface. A surface is rewarded when it has background evidence, useful population, and an appropriate perceptual relationship to the background. Reusing the background is intentionally allowed for simple or effectively single-background artwork. Gradient evidence instead encourages a separated endpoint. Redundant near-black surfaces are penalized on flat dark covers.
+Version 0.11 adds one evidence-gated exception to the normal preference for an achromatic high-contrast foreground. When the default winner is an observed low-chroma color and the artwork contains at least three substantial, salient, text-like chromatic candidates, accessible chromatic candidates receive an identity bonus. Each candidate still requires at least 4.5:1 before receiving the bonus. The three-candidate gate keeps the rule inactive on isolated colorful noise and on the separate validation cohort.
+
+Surface contrast remains 4.5:1 for ordinary high-contrast palettes. It may fall to 3.0:1 when the source foreground already uses relaxed contrast or when several substantial edge-supported background fields need representation. A strong typography foreground may use 2.5:1 on surface. These eligibility gates apply equally when the surface becomes a gradient endpoint. A surface is rewarded when it has background evidence, useful population, and an appropriate perceptual relationship to the background. Reusing the background is intentionally allowed for simple or effectively single-background artwork. Version 0.10 requires a distinct surface to beat the collapsed surface score by 0.04. A separate evidence bonus lets a substantial edge-supported alternate background field clear that margin without weakening text contrast. Gradient evidence instead encourages a separated endpoint. Redundant near-black surfaces are penalized on flat dark covers.
 
 Accent scoring favors colorful or salient identity detail, perceptual separation from foreground, low background likelihood, and text-like source colors. Focused evidence also preserves prominent major colors, small saturated title colors, and small near-black details on chromatic artwork.
 
-The accent has a hard minimum distance of 0.025 OKLab from both background and surface. It may match foreground, but it may not match either background role.
+The accent has a hard minimum distance of 0.025 OKLab from both background and surface and, in version 0.10, at least 1.2:1 contrast against background. It may match foreground, but it may not match either background role. When no source accent clears the visibility floor, the accessible foreground fills the accent role.
 
 Near-equal total scores are placed into coarse score buckets and resolved with a stable color key. This reduces output churn from tiny numeric changes and keeps extraction deterministic.
 
@@ -125,11 +127,11 @@ Crop and deterministic one-level noise tests are reported separately. They are d
 - All non-fallback role RGB values are exact observed pixels.
 - Generated black or white fallback retains a non-compensable 4.5:1 gate.
 - Source foreground may use the documented 4.0/3.0 background and 4.5/3.0/2.5 surface tiers.
-- Accent is distinct from background and surface.
+- Accent is distinct from background and surface and reaches at least 1.2:1 against background.
 - The algorithm is deterministic for identical normalized bytes.
 - Structural text evidence is weaker than OCR on unusual typography.
 - One foreground token cannot represent every multi-background artwork while remaining accessible on every selected field.
 - The 35 reviewable difficult artworks are the development corpus, not evidence of broad statistical superiority.
-- The separate 355-artwork random holdout is used for aggregate diagnostics and gallery inspection, not per-artwork tuning.
+- The separate 355-artwork random cohort is now development-facing validation after aggregate analysis and the documented 0.12 visual audit; final generalization claims require new sealed artwork.
 
-Version 0.9 is a focused review candidate, not a new stable result. It changes only the eight gallery failures identified after 0.8 plus Disney, where relaxed surface contrast now permits a major blue source field while retaining the artwork's white foreground.
+Version 0.11 is the accepted current four-color candidate. It retains 0.10's surface confidence and accent visibility constraints, then adds the evidence-gated chromatic foreground preference. It preserves all foreground-to-surface contrast requirements and the four-color contract. Version 0.12's stricter gradient coherence experiment was rejected by human review.

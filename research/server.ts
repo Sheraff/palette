@@ -38,7 +38,7 @@ const resultsPath = join(researchRoot, "data", "results.json")
 const holdoutResultsPath = join(researchRoot, "data", "holdout-results.json")
 const feedbackPath = join(researchRoot, "data", "feedback.json")
 const roundsRoot = join(researchRoot, "data", "rounds")
-const previousRoundPath = join(roundsRoot, "region-graph-0.8.0.json")
+const previousRoundPath = join(roundsRoot, "region-graph-0.10.0.json")
 const port = Number(process.env.PORT || 3100)
 const presentationVersion = 2
 

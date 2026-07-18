@@ -13,6 +13,7 @@ export type Candidate = {
 	text: number
 	chroma: number
 	generated: boolean
+	typographyOnly: boolean
 	regionIds: number[]
 }
 
@@ -231,6 +232,7 @@ export function buildCandidates(
 			text: weighted("text"),
 			chroma: chroma(lab),
 			generated: false,
+			typographyOnly: false,
 			regionIds: [],
 		}
 	}).filter((candidate): candidate is Candidate => candidate !== undefined)
@@ -261,6 +263,7 @@ export function buildCandidates(
 				text: weighted("text"),
 				chroma: chroma(representative.lab),
 				generated: false,
+				typographyOnly: true,
 				regionIds: [],
 			})
 		}

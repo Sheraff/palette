@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-18T12:43:56.849Z",
+  "generatedAt": "2026-07-18T14:20:55.706Z",
   "thresholds": {
     "medianAdvisory": 0.02,
     "maximumAdvisory": 0.08
   },
   "summary": {
-    "median": 0.0006313448613055576,
-    "p90": 0.0679018211884073,
+    "median": 0,
+    "p90": 0.06658054719691626,
     "maximum": 0.780447751602501,
-    "warnings": 25
+    "warnings": 24
   },
   "entries": [
     {
@@ -91,13 +91,13 @@
       "cropDistance": {
         "background": 0.0015555486399983637,
         "foreground": 0,
-        "surface": 0,
+        "surface": 0.0015555486399983637,
         "accent": 0
       },
       "noiseDistance": {
         "background": 0.0015555486399983637,
         "foreground": 0,
-        "surface": 0.06493001681921544,
+        "surface": 0.0015555486399983637,
         "accent": 0.002373164996486292
       }
     },
@@ -336,9 +336,9 @@
       },
       "noiseDistance": {
         "background": 0,
-        "foreground": 0.030637087049074946,
-        "surface": 0.0028313582361328134,
-        "accent": 0.3672316984950524
+        "foreground": 0.19631186482170793,
+        "surface": 0,
+        "accent": 0
       }
     },
     {
@@ -436,13 +436,13 @@
       "cropDistance": {
         "background": 0,
         "foreground": 0,
-        "surface": 0.022544669144366425,
+        "surface": 0,
         "accent": 0.30004470271646244
       },
       "noiseDistance": {
         "background": 0.005431084366876661,
         "foreground": 0.0814272598772463,
-        "surface": 0.0032995451455373054,
+        "surface": 0.0013438290324964406,
         "accent": 0.028184763783219643
       }
     },
@@ -511,11 +511,11 @@
       "cropDistance": {
         "background": 0,
         "foreground": 0,
-        "surface": 0.23223667846465124,
-        "accent": 0.06364164868543211
+        "surface": 0,
+        "accent": 0
       },
       "noiseDistance": {
-        "background": 0.05872262047809831,
+        "background": 0.0024569579087047517,
         "foreground": 0.008285189714764912,
         "surface": 0.0024569579087047517,
         "accent": 0.0024676890937084268

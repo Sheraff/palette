@@ -1,35 +1,35 @@
 {
-  "generatedAt": "2026-07-18T13:03:25.626Z",
-  "algorithmVersion": "region-graph-0.9.0",
+  "generatedAt": "2026-07-18T14:42:17.019Z",
+  "algorithmVersion": "region-graph-0.11.0",
   "development": {
     "entries": 35,
     "generatedForegrounds": 7,
     "relaxedBackgrounds": 2,
-    "relaxedSurfaces": 2,
-    "collapsedSurfaces": 12,
+    "relaxedSurfaces": 3,
+    "collapsedSurfaces": 14,
     "gradients": 13,
     "medianCandidates": 12,
-    "medianReconstructionError": 0.06424904463722232,
-    "medianSourceDistance": 0.009297070500771816
+    "medianReconstructionError": 0.06475981660114297,
+    "medianSourceDistance": 0.008565607512317268
   },
   "holdout": {
     "entries": 355,
     "generatedForegrounds": 11,
     "relaxedBackgrounds": 17,
     "relaxedSurfaces": 7,
-    "collapsedSurfaces": 67,
+    "collapsedSurfaces": 79,
     "gradients": 168,
     "medianCandidates": 12,
-    "medianReconstructionError": 0.0707130865518625,
-    "medianSourceDistance": 0.008742729735170067
+    "medianReconstructionError": 0.06951899658245905,
+    "medianSourceDistance": 0.007991235062046203
   },
   "resolutionConsistency": {
     "duplicatePairs": 30,
     "roleMedian": 0.0025212726525864824,
-    "roleP90": 0.09032726608044622,
+    "roleP90": 0.10534277601500677,
     "roleMaximum": 0.7198815272126624,
-    "roleWarnings": 14,
-    "gradientDisagreements": 0,
+    "roleWarnings": 15,
+    "gradientDisagreements": 2,
     "entries": [
       {
         "artworkId": "000001335fe604d859a69094.jpg",
@@ -134,10 +134,10 @@
         "roleDistance": {
           "background": 0.02051446483531835,
           "foreground": 0.026191162147605168,
-          "surface": 0.06177904372051711,
-          "accent": 0
+          "surface": 0.0016247050371369929,
+          "accent": 0.7116587855341047
         },
-        "gradientDisagreement": false
+        "gradientDisagreement": true
       },
       {
         "artworkId": "00003bdffa5565ae80d51afa.jpg",
@@ -158,10 +158,10 @@
         "roleDistance": {
           "background": 0.04124562939895342,
           "foreground": 0,
-          "surface": 0.10839306123142878,
+          "surface": 0.10661964171557774,
           "accent": 0.0015888361151738554
         },
-        "gradientDisagreement": false
+        "gradientDisagreement": true
       },
       {
         "artworkId": "00004fc35a3d65a2d4b1db69.jpg",
@@ -207,7 +207,7 @@
           "background": 0,
           "foreground": 0.0030640117005247373,
           "surface": 0,
-          "accent": 0.00450550269973453
+          "accent": 0.021343857881249925
         },
         "gradientDisagreement": false
       },
