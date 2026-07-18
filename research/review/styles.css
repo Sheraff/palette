@@ -1,0 +1,268 @@
+:root {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	color: #fff;
+	background: #000;
+	font-synthesis: none;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: #000;
+	color: #fff;
+}
+
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem;
+	border-bottom: 2px solid #fff;
+}
+
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+h1 {
+	font-size: 1rem;
+}
+
+h2 {
+	font-size: 0.9rem;
+}
+
+button,
+input,
+a {
+	font: inherit;
+	border: 1px solid #fff;
+	border-radius: 0;
+	background: #000;
+	color: #fff;
+}
+
+a {
+	padding: 0.65rem 0.8rem;
+	text-decoration: none;
+}
+
+button {
+	padding: 0.65rem 0.8rem;
+	cursor: pointer;
+}
+
+button:hover,
+button:focus-visible,
+button.selected,
+a:hover,
+a:focus-visible {
+	background: #fff;
+	color: #000;
+	outline: none;
+}
+
+button:disabled {
+	border-style: dashed;
+	cursor: not-allowed;
+}
+
+.header-actions,
+.preference-choices,
+.ship-choices,
+.navigation {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+main {
+	display: grid;
+	grid-template-columns: minmax(12rem, 24rem) minmax(32rem, 1fr);
+	gap: 1rem;
+	padding: 1rem;
+}
+
+.artwork-section,
+.decision {
+	display: grid;
+	align-content: start;
+	gap: 1rem;
+}
+
+#artwork {
+	display: block;
+	width: 100%;
+	max-height: calc(100vh - 10rem);
+	object-fit: contain;
+	border: 1px solid #fff;
+}
+
+.candidates {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(14rem, 1fr));
+	gap: 1rem;
+}
+
+.candidate {
+	border: 1px solid #fff;
+}
+
+.candidate > h2 {
+	padding: 0.75rem;
+	border-bottom: 1px solid #fff;
+}
+
+.preview {
+	min-height: 20rem;
+	padding: 1.25rem;
+	display: grid;
+	align-content: space-between;
+	gap: 1rem;
+}
+
+.background-content {
+	display: grid;
+	grid-template-columns: minmax(4rem, 32%) 1fr;
+	align-items: center;
+	gap: 1rem;
+}
+
+.preview-artwork {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	object-fit: cover;
+}
+
+.background-copy {
+	display: grid;
+	gap: 0.4rem;
+}
+
+.background-title {
+	font-family: system-ui, sans-serif;
+	font-size: clamp(1rem, 2.5vw, 1.8rem);
+	font-weight: 800;
+	line-height: 1;
+}
+
+.background-detail {
+	font-size: 0.7rem;
+}
+
+.background-accent {
+	font-family: system-ui, sans-serif;
+	font-size: 0.8rem;
+	font-weight: 800;
+}
+
+.preview-surface {
+	padding: 1rem;
+	border: 2px solid;
+}
+
+.preview-kicker {
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+}
+
+.preview-title {
+	font-family: system-ui, sans-serif;
+	font-size: clamp(1.5rem, 4vw, 3rem);
+	font-weight: 800;
+	line-height: 0.95;
+	margin: 0.35rem 0 1rem;
+}
+
+.accent-line {
+	height: 0.65rem;
+	width: 68%;
+}
+
+.swatches {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	min-height: 6rem;
+	border-top: 1px solid #fff;
+}
+
+.swatch {
+	display: flex;
+	align-items: end;
+	padding: 0.45rem;
+	font-size: 0.65rem;
+}
+
+.decision {
+	grid-column: 2;
+	border-top: 2px solid #fff;
+	padding-top: 1rem;
+}
+
+fieldset {
+	display: flex;
+	gap: 0.75rem 1rem;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0.75rem;
+	border: 1px solid #fff;
+}
+
+input[type="checkbox"] {
+	appearance: none;
+	width: 1rem;
+	height: 1rem;
+	margin: 0 0.35rem 0 0;
+	vertical-align: -0.15rem;
+}
+
+input[type="checkbox"]:checked {
+	background: #fff;
+}
+
+.note {
+	display: grid;
+	gap: 0.4rem;
+}
+
+.note input {
+	width: 100%;
+	padding: 0.65rem;
+}
+
+#status {
+	min-height: 1.2rem;
+}
+
+@media (max-width: 800px) {
+	header {
+		align-items: start;
+	}
+
+	main {
+		display: block;
+	}
+
+	.artwork-section,
+	.candidates,
+	.decision {
+		margin-bottom: 1rem;
+	}
+
+	#artwork {
+		max-height: 70vh;
+	}
+
+	.candidates {
+		grid-template-columns: 1fr;
+	}
+}

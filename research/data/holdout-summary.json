@@ -1,0 +1,396 @@
+{
+  "generatedAt": "2026-07-18T13:03:25.626Z",
+  "algorithmVersion": "region-graph-0.9.0",
+  "development": {
+    "entries": 35,
+    "generatedForegrounds": 7,
+    "relaxedBackgrounds": 2,
+    "relaxedSurfaces": 2,
+    "collapsedSurfaces": 12,
+    "gradients": 13,
+    "medianCandidates": 12,
+    "medianReconstructionError": 0.06424904463722232,
+    "medianSourceDistance": 0.009297070500771816
+  },
+  "holdout": {
+    "entries": 355,
+    "generatedForegrounds": 11,
+    "relaxedBackgrounds": 17,
+    "relaxedSurfaces": 7,
+    "collapsedSurfaces": 67,
+    "gradients": 168,
+    "medianCandidates": 12,
+    "medianReconstructionError": 0.0707130865518625,
+    "medianSourceDistance": 0.008742729735170067
+  },
+  "resolutionConsistency": {
+    "duplicatePairs": 30,
+    "roleMedian": 0.0025212726525864824,
+    "roleP90": 0.09032726608044622,
+    "roleMaximum": 0.7198815272126624,
+    "roleWarnings": 14,
+    "gradientDisagreements": 0,
+    "entries": [
+      {
+        "artworkId": "000001335fe604d859a69094.jpg",
+        "selectedFile": "ab67616d0000b273000001335fe604d859a69094.jpg",
+        "alternateFile": "ab67616d00001e02000001335fe604d859a69094.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0,
+          "surface": 0,
+          "accent": 0.02747601799388098
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00000ee5a62175fc8d58e0af.jpg",
+        "selectedFile": "ab67616d0000b27300000ee5a62175fc8d58e0af.jpg",
+        "alternateFile": "ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0068595583077472365,
+          "surface": 0,
+          "accent": 0.030780982946014807
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000013cdd885595a94002abc.jpg",
+        "selectedFile": "ab67616d0000b273000013cdd885595a94002abc.jpg",
+        "alternateFile": "ab67616d00001e02000013cdd885595a94002abc.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0,
+          "surface": 0.061253656650785054,
+          "accent": 0.007827883133150493
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000021fd811bf36e739e61bf.jpg",
+        "selectedFile": "ab67616d0000b273000021fd811bf36e739e61bf.jpg",
+        "alternateFile": "ab67616d00001e02000021fd811bf36e739e61bf.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.04269396742678005,
+          "surface": 0.0015623425800759985,
+          "accent": 0.005561087467577714
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000027594d67b44c00995865.jpg",
+        "selectedFile": "ab67616d0000b273000027594d67b44c00995865.jpg",
+        "alternateFile": "ab67616d00001e02000027594d67b44c00995865.jpg",
+        "roleDistance": {
+          "background": 0.00302251168898273,
+          "foreground": 0.15826798954203433,
+          "surface": 0.06709053330555957,
+          "accent": 0.15648829207243922
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000030b6e37a6c32606d9eb7.jpg",
+        "selectedFile": "ab67616d0000b273000030b6e37a6c32606d9eb7.jpg",
+        "alternateFile": "ab67616d00001e02000030b6e37a6c32606d9eb7.jpg",
+        "roleDistance": {
+          "background": 0.001055741952189331,
+          "foreground": 0.04014043929005005,
+          "surface": 0.003029567580685617,
+          "accent": 0.008351947826213266
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00003409c3db06f20f3ed7b6.jpg",
+        "selectedFile": "ab67616d0000b27300003409c3db06f20f3ed7b6.jpg",
+        "alternateFile": "ab67616d00001e0200003409c3db06f20f3ed7b6.jpg",
+        "roleDistance": {
+          "background": 0.10534277601500677,
+          "foreground": 0.004281149760032972,
+          "surface": 0.33029894883279687,
+          "accent": 0.08255158754548578
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000036958eae956237a47c07.jpg",
+        "selectedFile": "ab67616d0000b273000036958eae956237a47c07.jpg",
+        "alternateFile": "ab67616d00001e02000036958eae956237a47c07.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.011484520932144951,
+          "surface": 0,
+          "accent": 0.0038195318605228584
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00003a64886c352827bad270.jpg",
+        "selectedFile": "ab67616d0000b27300003a64886c352827bad270.jpg",
+        "alternateFile": "ab67616d00001e0200003a64886c352827bad270.jpg",
+        "roleDistance": {
+          "background": 0.02051446483531835,
+          "foreground": 0.026191162147605168,
+          "surface": 0.06177904372051711,
+          "accent": 0
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00003bdffa5565ae80d51afa.jpg",
+        "selectedFile": "ab67616d0000b27300003bdffa5565ae80d51afa.jpg",
+        "alternateFile": "ab67616d00001e0200003bdffa5565ae80d51afa.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.04000836011036106,
+          "surface": 0.0025890055634376014,
+          "accent": 0.044944592517969936
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00004db1289b032139a9cb9b.jpg",
+        "selectedFile": "ab67616d0000b27300004db1289b032139a9cb9b.jpg",
+        "alternateFile": "ab67616d00001e0200004db1289b032139a9cb9b.jpg",
+        "roleDistance": {
+          "background": 0.04124562939895342,
+          "foreground": 0,
+          "surface": 0.10839306123142878,
+          "accent": 0.0015888361151738554
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00004fc35a3d65a2d4b1db69.jpg",
+        "selectedFile": "ab67616d0000b27300004fc35a3d65a2d4b1db69.jpg",
+        "alternateFile": "ab67616d00001e0200004fc35a3d65a2d4b1db69.jpg",
+        "roleDistance": {
+          "background": 0.0014352046354522794,
+          "foreground": 0,
+          "surface": 0.0013317802358267232,
+          "accent": 0.015557131558853032
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00006b11649b0efcbd7bdd14.jpg",
+        "selectedFile": "ab67616d0000b27300006b11649b0efcbd7bdd14.jpg",
+        "alternateFile": "ab67616d00001e0200006b11649b0efcbd7bdd14.jpg",
+        "roleDistance": {
+          "background": 0.001980658164673978,
+          "foreground": 0.0030328487360033697,
+          "surface": 0.0014433427375460817,
+          "accent": 0.0014524252606414937
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00006fba1d94572cce0ef256.jpg",
+        "selectedFile": "ab67616d0000b27300006fba1d94572cce0ef256.jpg",
+        "alternateFile": "ab67616d00001e0200006fba1d94572cce0ef256.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0,
+          "surface": 0,
+          "accent": 0.7198815272126624
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000703a9e8740c609dd28e7.jpg",
+        "selectedFile": "ab67616d0000b2730000703a9e8740c609dd28e7.jpg",
+        "alternateFile": "ab67616d00001e020000703a9e8740c609dd28e7.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0030640117005247373,
+          "surface": 0,
+          "accent": 0.00450550269973453
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00007a9fd0edca5330d06caf.jpg",
+        "selectedFile": "ab67616d0000b27300007a9fd0edca5330d06caf.jpg",
+        "alternateFile": "ab67616d00001e0200007a9fd0edca5330d06caf.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0050055107522770995,
+          "surface": 0,
+          "accent": 0.0030731711599596583
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "000088d4459266e0834d3c3f.jpg",
+        "selectedFile": "ab67616d0000b273000088d4459266e0834d3c3f.jpg",
+        "alternateFile": "ab67616d00001e02000088d4459266e0834d3c3f.jpg",
+        "roleDistance": {
+          "background": 0.0017341593064479075,
+          "foreground": 0.002571158200032716,
+          "surface": 0.002419880105229073,
+          "accent": 0.1353578144628306
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00008f3074a6ca2bcc3b094f.jpg",
+        "selectedFile": "ab67616d0000b27300008f3074a6ca2bcc3b094f.jpg",
+        "alternateFile": "ab67616d00001e0200008f3074a6ca2bcc3b094f.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.040214263516346334,
+          "surface": 0.010206842687463672,
+          "accent": 0.002520300279887983
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00009dc4234926af8340af73.jpg",
+        "selectedFile": "ab67616d0000b27300009dc4234926af8340af73.jpg",
+        "alternateFile": "ab67616d00001e0200009dc4234926af8340af73.jpg",
+        "roleDistance": {
+          "background": 0.03311055607534793,
+          "foreground": 0.06232152357541158,
+          "surface": 0.03268329325022925,
+          "accent": 0.09032726608044622
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "00009e400506d81cf5476b3a.jpg",
+        "selectedFile": "ab67616d0000b27300009e400506d81cf5476b3a.jpg",
+        "alternateFile": "ab67616d00001e0200009e400506d81cf5476b3a.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.07868654193396088,
+          "surface": 0.0005728869840504421,
+          "accent": 0.01823878139128736
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000bc69a10ece071f6570b7.jpg",
+        "selectedFile": "ab67616d0000b2730000bc69a10ece071f6570b7.jpg",
+        "alternateFile": "ab67616d00001e020000bc69a10ece071f6570b7.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.030742136961235688,
+          "surface": 0,
+          "accent": 0.4524466653128589
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000c28d56285dbdbe6ba733.jpg",
+        "selectedFile": "ab67616d0000b2730000c28d56285dbdbe6ba733.jpg",
+        "alternateFile": "ab67616d00001e020000c28d56285dbdbe6ba733.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0,
+          "surface": 0,
+          "accent": 0.10668067695902785
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000d746ec7216004f7256d7.jpg",
+        "selectedFile": "ab67616d0000b2730000d746ec7216004f7256d7.jpg",
+        "alternateFile": "ab67616d00001e020000d746ec7216004f7256d7.jpg",
+        "roleDistance": {
+          "background": 0.0024715214205279627,
+          "foreground": 0.0023241758628421514,
+          "surface": 0.15226343267048253,
+          "accent": 0.2369970087958867
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000de7ae77345fca0f790a2.jpg",
+        "selectedFile": "ab67616d0000b2730000de7ae77345fca0f790a2.jpg",
+        "alternateFile": "ab67616d00001e020000de7ae77345fca0f790a2.jpg",
+        "roleDistance": {
+          "background": 0.0027832339384406095,
+          "foreground": 0.0013177553445458648,
+          "surface": 0,
+          "accent": 0
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000e47a4e869d4323ad0e3d.jpg",
+        "selectedFile": "ab67616d0000b2730000e47a4e869d4323ad0e3d.jpg",
+        "alternateFile": "ab67616d00001e020000e47a4e869d4323ad0e3d.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0019818593140445034,
+          "surface": 0,
+          "accent": 0.15342167948385269
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000f31d2426debbeaea5105.jpg",
+        "selectedFile": "ab67616d0000b2730000f31d2426debbeaea5105.jpg",
+        "alternateFile": "ab67616d00001e020000f31d2426debbeaea5105.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0028009099429513163,
+          "surface": 0,
+          "accent": 0
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000f329bdedf99c818740d1.jpg",
+        "selectedFile": "ab67616d0000b2730000f329bdedf99c818740d1.jpg",
+        "alternateFile": "ab67616d00001e020000f329bdedf99c818740d1.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0662134073715104,
+          "surface": 0.05842061432200467,
+          "accent": 0.02847136694880641
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000f8cf5df83cfdce135f6a.jpg",
+        "selectedFile": "ab67616d0000b2730000f8cf5df83cfdce135f6a.jpg",
+        "alternateFile": "ab67616d00001e020000f8cf5df83cfdce135f6a.jpg",
+        "roleDistance": {
+          "background": 0,
+          "foreground": 0.0019349352309928403,
+          "surface": 0.0014746837372252087,
+          "accent": 0.0012983449700559643
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000fa1e4e6e43799c966c37.jpg",
+        "selectedFile": "ab67616d0000b2730000fa1e4e6e43799c966c37.jpg",
+        "alternateFile": "ab67616d00001e020000fa1e4e6e43799c966c37.jpg",
+        "roleDistance": {
+          "background": 0.0012540582323389915,
+          "foreground": 0.0730855624104089,
+          "surface": 0.001441357507708069,
+          "accent": 0.0025212726525864824
+        },
+        "gradientDisagreement": false
+      },
+      {
+        "artworkId": "0000fcab64f02ecb6cbc2f14.jpg",
+        "selectedFile": "ab67616d0000b2730000fcab64f02ecb6cbc2f14.jpg",
+        "alternateFile": "ab67616d00001e020000fcab64f02ecb6cbc2f14.jpg",
+        "roleDistance": {
+          "background": 0.0025576607205496605,
+          "foreground": 0,
+          "surface": 0,
+          "accent": 0.07623279300174826
+        },
+        "gradientDisagreement": false
+      }
+    ]
+  }
+}
