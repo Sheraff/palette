@@ -72,15 +72,16 @@ type AbsoluteFeedbackStore = {
 	entries: AbsoluteFeedbackEntry[]
 }
 
-const checkpointCommit = "4fa63d3190aed8ce1b083b3a9f1028b197eec851"
-const expectedBaselineAlgorithmVersion = "region-graph-0.13.0"
-const expectedCandidateAlgorithmVersion = "region-graph-0.15.0"
-const expectedCandidateHoldoutSummarySha256 = "e60434c6ee1b4a3bef7687587b9a0d1e4cd3e776168592189c8377090918128a"
-const expectedCandidateRobustnessSha256 = "6eafeabfdd4aa40bd36ef3cf5daf1e31f7d8ca9117d1da29589514e5c8f256da"
+const checkpointCommit = "2076f2b7e6162a83a43566ceb5165134ab90e87b"
+const expectedBaselineAlgorithmVersion = "region-graph-0.15.0"
+const expectedCandidateAlgorithmVersion = "region-graph-0.16.0"
+const expectedReviewedAlgorithmVersion = "region-guarded-correction-0.1.0-poc.1"
+const expectedCandidateHoldoutSummarySha256 = "0f9056ce446019f2ea6eca19f8afea477d2ddad1ed4a420e91aac3ab614e76fc"
+const expectedCandidateRobustnessSha256 = "f2e8ae426f9147c165a52cf0a164fcfe259fcd3f1823152a0d63b09d1e2a9cfe"
 const expectedChangedRejectedTargets = new Set([
-	"00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
-	"00/ab67616d0000b2730000158e02a7e22b0c5565ef.jpg",
-	"00/ab67616d0000b27300008f3ed9782ff5e97dc1e7.jpg",
+	"00/ab67616d0000b27300001a3ee120f20345896b12.jpg",
+	"00/ab67616d0000b273000064c47077c5d50085297f.jpg",
+	"00/ab67616d0000b2730000f31d2426debbeaea5105.jpg",
 ])
 const sha256Pattern = /^[a-f0-9]{64}$/
 const preferences = new Set<Preference>(["left", "right", "tie"])
@@ -118,12 +119,15 @@ const imagesRoot = join(projectRoot, "images")
 const arguments_ = process.argv.slice(2)
 const dryRun = arguments_.includes("--dry-run")
 const positionalArguments = arguments_.filter((argument) => argument !== "--dry-run")
-if (positionalArguments.length !== 1 || arguments_.length !== positionalArguments.length + (dryRun ? 1 : 0)) {
-	throw new Error("Usage: research/promote-candidate.ts [--dry-run] <candidate-dir>")
+if (positionalArguments.length !== 2 || arguments_.length !== positionalArguments.length + (dryRun ? 1 : 0)) {
+	throw new Error("Usage: research/promote-candidate.ts [--dry-run] <candidate-dir> <reviewed-candidate-dir>")
 }
 const candidateDirectory = isAbsolute(positionalArguments[0])
 	? resolve(positionalArguments[0])
 	: resolve(projectRoot, positionalArguments[0])
+const reviewedCandidateDirectory = isAbsolute(positionalArguments[1])
+	? resolve(positionalArguments[1])
+	: resolve(projectRoot, positionalArguments[1])
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null && !Array.isArray(value)
@@ -142,6 +146,26 @@ function validTimestamp(value: unknown): value is string {
 
 function sha256(source: string | Uint8Array): string {
 	return createHash("sha256").update(source).digest("hex")
+}
+
+function scientificPayload(corpus: CorpusResult): unknown {
+	return corpus.entries.map((entry) => ({
+		file: entry.file,
+		kind: entry.kind,
+		review: entry.review,
+		width: entry.width,
+		height: entry.height,
+		extraction: {
+			width: entry.extraction.width,
+			height: entry.extraction.height,
+			methods: entry.extraction.methods,
+			candidates: entry.extraction.candidates,
+			diagnostics: {
+				regionCount: entry.extraction.diagnostics.regionCount,
+				candidateCount: entry.extraction.diagnostics.candidateCount,
+			},
+		},
+	}))
 }
 
 async function readSource(path: string): Promise<Buffer> {
@@ -402,6 +426,12 @@ const candidateStat = await stat(candidateDirectory).catch((error: unknown) => {
 	throw new Error(`Unable to access candidate directory ${candidateDirectory}`, { cause: error })
 })
 if (!candidateStat.isDirectory()) throw new Error(`Candidate path is not a directory: ${candidateDirectory}`)
+const reviewedCandidateStat = await stat(reviewedCandidateDirectory).catch((error: unknown) => {
+	throw new Error(`Unable to access reviewed candidate directory ${reviewedCandidateDirectory}`, { cause: error })
+})
+if (!reviewedCandidateStat.isDirectory()) {
+	throw new Error(`Reviewed candidate path is not a directory: ${reviewedCandidateDirectory}`)
+}
 const roundsStat = await stat(roundsRoot).catch((error: unknown) => {
 	throw new Error(`Unable to access rounds directory ${roundsRoot}`, { cause: error })
 })
@@ -416,9 +446,11 @@ const baselineHoldoutSummaryPath = join(dataRoot, "holdout-summary.json")
 const baselineRobustnessPath = join(dataRoot, "robustness.json")
 const candidateResultsPath = join(candidateDirectory, "results.json")
 const candidateHoldoutPath = join(candidateDirectory, "holdout-results.json")
-const candidateFeedbackPath = join(candidateDirectory, "feedback.json")
 const candidateHoldoutSummaryPath = join(candidateDirectory, "holdout-summary.json")
 const candidateRobustnessPath = join(candidateDirectory, "robustness.json")
+const reviewedResultsPath = join(reviewedCandidateDirectory, "results.json")
+const reviewedHoldoutPath = join(reviewedCandidateDirectory, "holdout-results.json")
+const reviewedFeedbackPath = join(reviewedCandidateDirectory, "feedback.json")
 
 const [
 	baselineResultsSource,
@@ -430,9 +462,11 @@ const [
 	baselineRobustnessSource,
 	candidateResultsSource,
 	candidateHoldoutSource,
-	candidateFeedbackSource,
 	candidateHoldoutSummarySource,
 	candidateRobustnessSource,
+	reviewedResultsSource,
+	reviewedHoldoutSource,
+	reviewedFeedbackSource,
 ] = await Promise.all([
 	readSource(baselineResultsPath),
 	readSource(baselineHoldoutPath),
@@ -443,9 +477,11 @@ const [
 	readSource(baselineRobustnessPath),
 	readSource(candidateResultsPath),
 	readSource(candidateHoldoutPath),
-	readSource(candidateFeedbackPath),
 	readSource(candidateHoldoutSummaryPath),
 	readSource(candidateRobustnessPath),
+	readSource(reviewedResultsPath),
+	readSource(reviewedHoldoutPath),
+	readSource(reviewedFeedbackPath),
 ])
 
 const baselineResultsValue = parseJson(baselineResultsSource, baselineResultsPath)
@@ -457,9 +493,11 @@ const baselineHoldoutSummaryValue = parseJson(baselineHoldoutSummarySource, base
 const baselineRobustnessValue = parseJson(baselineRobustnessSource, baselineRobustnessPath)
 const candidateResultsValue = parseJson(candidateResultsSource, candidateResultsPath)
 const candidateHoldoutValue = parseJson(candidateHoldoutSource, candidateHoldoutPath)
-const candidateFeedbackValue = parseJson(candidateFeedbackSource, candidateFeedbackPath)
 const candidateHoldoutSummaryValue = parseJson(candidateHoldoutSummarySource, candidateHoldoutSummaryPath)
 const candidateRobustnessValue = parseJson(candidateRobustnessSource, candidateRobustnessPath)
+const reviewedResultsValue = parseJson(reviewedResultsSource, reviewedResultsPath)
+const reviewedHoldoutValue = parseJson(reviewedHoldoutSource, reviewedHoldoutPath)
+const reviewedFeedbackValue = parseJson(reviewedFeedbackSource, reviewedFeedbackPath)
 
 validateCandidateArtifacts(baselineResultsValue, baselineHoldoutValue, "<baseline-validation>")
 const candidateValidation = validateCandidateArtifacts(
@@ -468,26 +506,48 @@ const candidateValidation = validateCandidateArtifacts(
 	baselineResultsValue,
 	baselineHoldoutValue,
 )
+const reviewedValidation = validateCandidateArtifacts(
+	reviewedResultsValue,
+	reviewedHoldoutValue,
+	baselineResultsValue,
+	baselineHoldoutValue,
+)
 const baselineResults = baselineResultsValue as CorpusResult
 const baselineHoldout = baselineHoldoutValue as CorpusResult
 const candidateResults = candidateResultsValue as CorpusResult
 const candidateHoldout = candidateHoldoutValue as CorpusResult
+const reviewedResults = reviewedResultsValue as CorpusResult
+const reviewedHoldout = reviewedHoldoutValue as CorpusResult
 const baselineAlgorithmVersion = baselineResults.algorithmVersion
 const candidateAlgorithmVersion = candidateValidation.algorithmVersion
+const reviewedAlgorithmVersion = reviewedValidation.algorithmVersion
 if (baselineAlgorithmVersion !== expectedBaselineAlgorithmVersion) {
 	throw new Error(`Expected baseline ${expectedBaselineAlgorithmVersion}, received ${baselineAlgorithmVersion}`)
 }
 if (candidateAlgorithmVersion !== expectedCandidateAlgorithmVersion || candidateAlgorithmVersion !== ALGORITHM_VERSION) {
 	throw new Error(`Candidate ${candidateAlgorithmVersion} does not match expected and implemented version ${ALGORITHM_VERSION}`)
 }
+if (reviewedAlgorithmVersion !== expectedReviewedAlgorithmVersion) {
+	throw new Error(`Reviewed candidate ${reviewedAlgorithmVersion} does not match ${expectedReviewedAlgorithmVersion}`)
+}
 validateCandidateSummaryVersions(candidateResults, candidateHoldout, expectedCandidateAlgorithmVersion)
+validateCandidateSummaryVersions(reviewedResults, reviewedHoldout, expectedReviewedAlgorithmVersion)
 if (!isRecord(candidateHoldoutSummaryValue) || candidateHoldoutSummaryValue.algorithmVersion !== expectedCandidateAlgorithmVersion) {
 	throw new Error("Candidate holdout summary does not match the expected candidate version")
 }
 validateCandidateRobustness(candidateRobustnessValue, expectedCandidateAlgorithmVersion)
 if (sha256(candidateHoldoutSummarySource) !== expectedCandidateHoldoutSummarySha256 ||
 	sha256(candidateRobustnessSource) !== expectedCandidateRobustnessSha256) {
-	throw new Error("Candidate diagnostic artifacts do not match the reviewed 0.15 inputs")
+	throw new Error("Candidate diagnostic artifacts do not match the reviewed 0.16 inputs")
+}
+
+const candidateResultsScientificSha256 = sha256(jsonSource(scientificPayload(candidateResults)))
+const candidateHoldoutScientificSha256 = sha256(jsonSource(scientificPayload(candidateHoldout)))
+const reviewedResultsScientificSha256 = sha256(jsonSource(scientificPayload(reviewedResults)))
+const reviewedHoldoutScientificSha256 = sha256(jsonSource(scientificPayload(reviewedHoldout)))
+if (candidateResultsScientificSha256 !== reviewedResultsScientificSha256 ||
+	candidateHoldoutScientificSha256 !== reviewedHoldoutScientificSha256) {
+	throw new Error("Canonical candidate scientific payload differs from the reviewed POC")
 }
 
 const baselineHoldoutRawSha256 = sha256(baselineHoldoutSource)
@@ -514,6 +574,8 @@ const baselineResultsSemanticSha256 = computeSemanticResultsSha256(baselineResul
 const baselineHoldoutSemanticSha256 = computeSemanticResultsSha256(baselineHoldout)
 const candidateResultsSemanticSha256 = computeSemanticResultsSha256(candidateResults)
 const candidateHoldoutSemanticSha256 = computeSemanticResultsSha256(candidateHoldout)
+const reviewedResultsSemanticSha256 = computeSemanticResultsSha256(reviewedResults)
+const reviewedHoldoutSemanticSha256 = computeSemanticResultsSha256(reviewedHoldout)
 const candidateHoldoutRawSha256 = sha256(candidateHoldoutSource)
 
 const unchangedSourceHashes = new Map<string, string>()
@@ -559,7 +621,7 @@ const changedAccepted = new Set(report.accepted.changedFiles)
 const changedRejected = new Set(report.rejected.changedFiles)
 if (changedRejected.size !== expectedChangedRejectedTargets.size ||
 	[...changedRejected].some((file) => !expectedChangedRejectedTargets.has(file))) {
-	throw new Error("Candidate changed-rejection set does not match the reviewed 0.15 transition")
+	throw new Error("Candidate changed-rejection set does not match the reviewed 0.16 transition")
 }
 const reviewFiles = [
 	...baselineResults.entries.filter((entry) => changedLegacyReviewable.has(entry.file)).map((entry) => entry.file),
@@ -577,18 +639,18 @@ for (const file of reviewFiles) {
 	const selectedHash = unchangedSourceHashes.get(file)
 	expectedFeedbackSourceHashes[file] = selectedHash ?? sha256(await readSource(sourcePath(file)))
 }
-validateCandidateFeedbackStore(candidateFeedbackValue, {
+validateCandidateFeedbackStore(reviewedFeedbackValue, {
 	baselineAlgorithmVersion,
 	baselineResultsSemanticSha256,
 	baselineHoldoutSemanticSha256,
-	candidateAlgorithmVersion,
-	candidateResultsSemanticSha256,
-	candidateHoldoutSemanticSha256,
+	candidateAlgorithmVersion: reviewedAlgorithmVersion,
+	candidateResultsSemanticSha256: reviewedResultsSemanticSha256,
+	candidateHoldoutSemanticSha256: reviewedHoldoutSemanticSha256,
 	selectionManifestId: selection.manifestId,
 	reviewFiles,
 	sourceHashes: expectedFeedbackSourceHashes,
 })
-const candidateFeedback = candidateFeedbackValue
+const candidateFeedback = reviewedFeedbackValue
 const candidateFeedbackByImage = new Map(candidateFeedback.entries.map((entry) => [entry.image, entry]))
 
 let baselineOnlyShippable = 0
@@ -641,8 +703,8 @@ const promotedAbsoluteFeedback: AbsoluteFeedbackStore = {
 validateAbsoluteFeedbackStore(promotedAbsoluteFeedback, promotedSelection, promotedCuration)
 const oldShippableTotal = absoluteFeedback.entries.filter((entry) => entry.shippable).length
 const newShippableTotal = promotedAbsoluteFeedback.entries.filter((entry) => entry.shippable).length
-if (oldShippableTotal !== 86 || newShippableTotal !== 89) {
-	throw new Error(`Expected the reviewed 86-to-89 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
+if (oldShippableTotal !== 89 || newShippableTotal !== 92) {
+	throw new Error(`Expected the reviewed 89-to-92 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
 }
 
 function comparisonGroupSummary(group: { total: number; changedCount: number; unchangedCount: number; changedFiles: string[] }) {
@@ -703,7 +765,18 @@ const candidateRoundArchive = {
 	results: candidateResults,
 	holdoutSummary: candidateHoldoutSummaryValue,
 	robustness: candidateRobustnessValue,
-	feedback: candidateFeedback,
+	reviewProvenance: {
+		algorithmVersion: reviewedAlgorithmVersion,
+		results: reviewedResults,
+		holdoutResults: reviewedHoldout,
+		feedback: candidateFeedback,
+		resultsSemanticSha256: reviewedResultsSemanticSha256,
+		holdoutSemanticSha256: reviewedHoldoutSemanticSha256,
+		resultsScientificSha256: reviewedResultsScientificSha256,
+		holdoutScientificSha256: reviewedHoldoutScientificSha256,
+		canonicalResultsScientificSha256: candidateResultsScientificSha256,
+		canonicalHoldoutScientificSha256: candidateHoldoutScientificSha256,
+	},
 	comparisonSummary,
 	candidateHoldoutSemanticSha256,
 	acceptance,
@@ -725,9 +798,11 @@ const snapshots = [
 	{ path: baselineRobustnessPath, source: baselineRobustnessSource },
 	{ path: candidateResultsPath, source: candidateResultsSource },
 	{ path: candidateHoldoutPath, source: candidateHoldoutSource },
-	{ path: candidateFeedbackPath, source: candidateFeedbackSource },
 	{ path: candidateHoldoutSummaryPath, source: candidateHoldoutSummarySource },
 	{ path: candidateRobustnessPath, source: candidateRobustnessSource },
+	{ path: reviewedResultsPath, source: reviewedResultsSource },
+	{ path: reviewedHoldoutPath, source: reviewedHoldoutSource },
+	{ path: reviewedFeedbackPath, source: reviewedFeedbackSource },
 ]
 await assertSnapshotsUnchanged(snapshots)
 
@@ -736,6 +811,8 @@ const promotionSummary = {
 	dryRun,
 	baselineAlgorithmVersion,
 	candidateAlgorithmVersion,
+	reviewedAlgorithmVersion,
+	reviewedScientificPayloadMatches: true,
 	changedRejectedTargets: changedRejected.size,
 	absoluteFeedback: {
 		entries: promotedAbsoluteFeedback.entries.length,

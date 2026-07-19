@@ -1,16 +1,17 @@
 import { buildCandidates } from "./candidates.ts"
+import { solveGuardedPalette } from "./guarded-palette.ts"
 import { quantizedBaseline, solvePalette } from "./palette.ts"
 import { analyzeRegions } from "./regions.ts"
 import type { ExtractionResult, RawImage } from "./types.ts"
 
-export const ALGORITHM_VERSION = "region-graph-0.15.0"
+export const ALGORITHM_VERSION = "region-graph-0.16.0"
 
 export function extractPalette(image: RawImage): ExtractionResult {
 	const startedAt = performance.now()
 	const analysis = analyzeRegions(image)
 	const candidates = buildCandidates(analysis, 12, true)
 	const quantizedCandidates = buildCandidates(analysis, 7, false)
-	const spatial = solvePalette(candidates, analysis, "spatial")
+	const spatial = solveGuardedPalette(candidates, analysis).palette
 	const expressive = solvePalette(candidates, analysis, "expressive")
 	const quantized = quantizedBaseline(quantizedCandidates, analysis)
 

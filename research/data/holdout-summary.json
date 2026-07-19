@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-18T19:49:51.514Z",
-  "algorithmVersion": "region-graph-0.15.0",
+  "generatedAt": "2026-07-19T07:12:51.081Z",
+  "algorithmVersion": "region-graph-0.16.0",
   "development": {
     "entries": 35,
     "generatedForegrounds": 7,
@@ -17,15 +17,15 @@
     "generatedForegrounds": 11,
     "relaxedBackgrounds": 17,
     "relaxedSurfaces": 7,
-    "collapsedSurfaces": 78,
+    "collapsedSurfaces": 79,
     "gradients": 170,
     "medianCandidates": 12,
     "medianReconstructionError": 0.06909069900942799,
-    "medianSourceDistance": 0.007799840176725835
+    "medianSourceDistance": 0.007785872788172719
   },
   "resolutionConsistency": {
     "duplicatePairs": 30,
-    "roleMedian": 0.0025212726525864824,
+    "roleMedian": 0.0025576607205496605,
     "roleP90": 0.10534277601500677,
     "roleMaximum": 0.7198815272126624,
     "roleWarnings": 15,
@@ -339,7 +339,7 @@
           "background": 0,
           "foreground": 0.0028009099429513163,
           "surface": 0,
-          "accent": 0
+          "accent": 0.029238824342559637
         },
         "gradientDisagreement": false
       },

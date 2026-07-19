@@ -4,7 +4,7 @@ import { resolve } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
 import { chroma, contrastRatio, okDistance, rgbToHex, rgbToOKLab } from "../src/color.ts"
-import type { Candidate } from "../src/candidates.ts"
+import { emptyCandidateSpatialEvidence, type Candidate } from "../src/candidates.ts"
 import { ALGORITHM_VERSION, extractPalette } from "../src/extract.ts"
 import { minimumAccentBackgroundContrast, solvePalette } from "../src/palette.ts"
 import type { RegionAnalysis } from "../src/regions.ts"
@@ -53,6 +53,9 @@ function candidate(
 		generated: false,
 		typographyOnly: false,
 		regionIds: [],
+		familyId: id,
+		spatial: emptyCandidateSpatialEvidence(),
+		familySpatial: emptyCandidateSpatialEvidence(),
 	}
 }
 
@@ -114,8 +117,8 @@ function assertValidPalette(palette: Palette, allowRelaxedContrast = true): void
 	assert.ok(Number.isFinite(palette.metrics.meanReconstructionError))
 }
 
-test("reports the 0.15 algorithm version", () => {
-	assert.equal(ALGORITHM_VERSION, "region-graph-0.15.0")
+test("reports the 0.16 algorithm version", () => {
+	assert.equal(ALGORITHM_VERSION, "region-graph-0.16.0")
 })
 
 test("spatial score buckets prefer strong typography without changing expressive selection", () => {

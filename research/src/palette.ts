@@ -7,7 +7,7 @@ import {
 	rgbToOKLab,
 	roleMinimumDistance,
 } from "./color.ts"
-import type { Candidate } from "./candidates.ts"
+import { emptyCandidateSpatialEvidence, type Candidate } from "./candidates.ts"
 import type { RegionAnalysis } from "./regions.ts"
 import type { GradientEvidence, OKLab, Palette, PaletteMetrics, RGB, RoleColor } from "./types.ts"
 
@@ -103,6 +103,9 @@ function generatedCandidate(rgb: RGB, id: number): Candidate {
 		generated: true,
 		typographyOnly: false,
 		regionIds: [],
+		familyId: id,
+		spatial: emptyCandidateSpatialEvidence(),
+		familySpatial: emptyCandidateSpatialEvidence(),
 	}
 }
 
@@ -339,7 +342,7 @@ function smoothGradientEvidence(analysis: RegionAnalysis): GradientEvidence {
 	}
 }
 
-function detectGradient(
+export function detectGradient(
 	background: Candidate,
 	surface: Candidate,
 	analysis: RegionAnalysis,

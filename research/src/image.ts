@@ -5,8 +5,8 @@ export type LoadImageOptions = {
 	maxSize?: number
 }
 
-export async function loadImage(path: string, { maxSize = 224 }: LoadImageOptions = {}): Promise<RawImage> {
-	const { data, info } = await sharp(path)
+export async function loadImage(source: string | Uint8Array, { maxSize = 224 }: LoadImageOptions = {}): Promise<RawImage> {
+	const { data, info } = await sharp(source)
 		.rotate()
 		.flatten({ background: { r: 255, g: 255, b: 255 } })
 		.toColourspace("srgb")
