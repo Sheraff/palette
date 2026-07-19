@@ -5,6 +5,8 @@ import test from "node:test"
 import {
 	buildSelectionManifest,
 	computeSemanticResultsSha256,
+	frozenReviewedCorpusStrategyVersion,
+	migrateFrozenSelectionManifest,
 	selectionManifestId,
 	selectionQuotas,
 	selectionTracks,
@@ -49,4 +51,27 @@ test("corpus selection is deterministic, disjoint, provenance-bound, and has res
 	const missingHashes = new Map(hashes)
 	missingHashes.delete(corpus.entries[0].file)
 	assert.throws(() => buildSelectionManifest(corpus, missingHashes, sourceResultsSha256), /Missing source SHA-256/)
+})
+
+test("frozen selection migration preserves the reviewed corpus and track assignments", async () => {
+	const source = await readFile(new URL("../data/holdout-results.json", import.meta.url))
+	const sourceResultsSha256 = createHash("sha256").update(source).digest("hex")
+	const corpus = JSON.parse(source.toString("utf8")) as CorpusResult
+	const hashes = new Map(corpus.entries.map((entry) => [entry.file, createHash("sha256").update(entry.file).digest("hex")]))
+	const baseline = buildSelectionManifest(corpus, hashes, sourceResultsSha256, "2026-01-01T00:00:00.000Z")
+	const promotedCorpus = structuredClone(corpus)
+	promotedCorpus.algorithmVersion = "promoted-version"
+	for (const entry of promotedCorpus.entries) entry.extraction.version = promotedCorpus.algorithmVersion
+	const promoted = migrateFrozenSelectionManifest(
+		baseline,
+		promotedCorpus,
+		hashes,
+		"e".repeat(64),
+		"2026-02-01T00:00:00.000Z",
+	)
+
+	assert.equal(promoted.selectorStrategyVersion, `${frozenReviewedCorpusStrategyVersion}:${baseline.manifestId}`)
+	assert.deepEqual(promoted.tracks, baseline.tracks)
+	assert.notEqual(promoted.manifestId, baseline.manifestId)
+	validateSelectionManifest(promoted, promotedCorpus, "e".repeat(64))
 })

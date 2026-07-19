@@ -11,8 +11,8 @@ import {
 	type CurationStore,
 } from "./src/corpus-curation.ts"
 import {
-	buildSelectionManifest,
 	computeSemanticResultsSha256,
+	migrateFrozenSelectionManifest,
 	selectionTracks,
 	validateSelectionManifest,
 	type SelectionManifest,
@@ -72,16 +72,54 @@ type AbsoluteFeedbackStore = {
 	entries: AbsoluteFeedbackEntry[]
 }
 
-const checkpointCommit = "2076f2b7e6162a83a43566ceb5165134ab90e87b"
-const expectedBaselineAlgorithmVersion = "region-graph-0.15.0"
-const expectedCandidateAlgorithmVersion = "region-graph-0.16.0"
-const expectedReviewedAlgorithmVersion = "region-guarded-correction-0.1.0-poc.1"
-const expectedCandidateHoldoutSummarySha256 = "0f9056ce446019f2ea6eca19f8afea477d2ddad1ed4a420e91aac3ab614e76fc"
-const expectedCandidateRobustnessSha256 = "f2e8ae426f9147c165a52cf0a164fcfe259fcd3f1823152a0d63b09d1e2a9cfe"
+const checkpointCommit = "b56e4197bb734ece89a9b9ab1163c1954c21115f"
+const expectedBaselineAlgorithmVersion = "region-graph-0.16.0"
+const expectedCandidateAlgorithmVersion = "region-graph-0.17.0"
+const expectedReviewedAlgorithmVersion = "region-joint-spatial-0.1.0-poc.3"
+const expectedCandidateHoldoutSummarySha256 = "7b7b1937efab11b153e583ee6138e6d1cfe1e4635ab7b9e73d890eda90e19db8"
+const expectedCandidateRobustnessSha256 = "2b704d8600431df4fb587928d7d3e6faf08e0120f144a3e639b93239b388719f"
+const expectedReviewedJointCertificatesSha256 = "113f55517ad1097f692f08f2df9ea446bc67e6b5819a17f3bb08e9f09f9f675c"
+const expectedReviewedHoldoutJointCertificatesSha256 = "a06af0464dc206df4c58de33df17081320c9779f630137cfa8f4d3f99201ea33"
+const expectedChangedLegacyReviewableTargets = new Set(["once.jpg"])
+const expectedChangedLegacyDiagnosticTargets = new Set(["maroon5-masked.jpg"])
+const expectedChangedAcceptedTargets = new Set([
+	"00/ab67616d00001e020000d1502df8d8aaf3418f0f.jpg",
+	"00/ab67616d0000b2730000089bb2fab58ed5653b0b.jpg",
+	"00/ab67616d0000b273000037d5a2d47245cb9abc79.jpg",
+	"00/ab67616d0000b27300004554beea0eaa5fef3858.jpg",
+	"00/ab67616d0000b27300004851d00ca04301880f47.jpg",
+	"00/ab67616d0000b2730000685cd0e9597f68328ca8.jpg",
+])
 const expectedChangedRejectedTargets = new Set([
-	"00/ab67616d0000b27300001a3ee120f20345896b12.jpg",
-	"00/ab67616d0000b273000064c47077c5d50085297f.jpg",
-	"00/ab67616d0000b2730000f31d2426debbeaea5105.jpg",
+	"00/ab67616d00001e02000045be7b6dfb8bf9fe7a15.jpg",
+	"00/ab67616d00001e0200005ddc313068597b41ae3b.jpg",
+	"00/ab67616d0000b27300003bdffa5565ae80d51afa.jpg",
+	"00/ab67616d0000b27300003d2a08ce63af9a2c19b0.jpg",
+])
+const expectedChangedUnselectedTargets = new Set([
+	"00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+	"00/ab67616d00001e02000023e98b7381eaed77a9cb.jpg",
+	"00/ab67616d00001e02000048e988ab5b276f2faf93.jpg",
+	"00/ab67616d00001e02000070d555a0bc90060282c4.jpg",
+	"00/ab67616d00001e0200009cc217370640dba6c2b2.jpg",
+	"00/ab67616d00001e020000e7f187b75529eda4b178.jpg",
+	"00/ab67616d0000b273000018eeb2fbe34ab01638ce.jpg",
+	"00/ab67616d0000b273000030b6e37a6c32606d9eb7.jpg",
+	"00/ab67616d0000b27300003428f1c912cafa855fff.jpg",
+	"00/ab67616d0000b273000058c3996b51b7579968f0.jpg",
+	"00/ab67616d0000b27300005f98559139b7dbc802fd.jpg",
+	"00/ab67616d0000b27300007f06d53e3868928f9d8f.jpg",
+	"00/ab67616d0000b273000087f3e406c09740e0a34e.jpg",
+	"00/ab67616d0000b2730000928d22696c584836c540.jpg",
+	"00/ab67616d0000b27300009a10085a7a721a344040.jpg",
+	"00/ab67616d0000b27300009dc4234926af8340af73.jpg",
+	"00/ab67616d0000b2730000b08cbffa8436ded16a82.jpg",
+	"00/ab67616d0000b2730000c12779d6bc733df89c32.jpg",
+	"00/ab67616d0000b2730000c258ff41ad4f15ddc953.jpg",
+	"00/ab67616d0000b2730000c57a2d9bcbd2b5c5cc3b.jpg",
+	"00/ab67616d0000b2730000ce131af8496d1d5d37d3.jpg",
+	"00/ab67616d0000b2730000f329bdedf99c818740d1.jpg",
+	"00/ab67616d0000b2730000f8cf5df83cfdce135f6a.jpg",
 ])
 const sha256Pattern = /^[a-f0-9]{64}$/
 const preferences = new Set<Preference>(["left", "right", "tie"])
@@ -192,6 +230,24 @@ function validateCandidateRobustness(value: unknown, expectedVersion: string): v
 	}
 }
 
+function validateJointCertificates(value: unknown, expectedVersion: string, corpus: CorpusResult, label: string): void {
+	if (!isRecord(value) || value.schemaVersion !== 1 || value.algorithmVersion !== expectedVersion || !isRecord(value.entries)) {
+		throw new Error(`${label} provenance is invalid`)
+	}
+	const expectedFiles = new Set(corpus.entries.map((entry) => entry.file))
+	const certificateFiles = Object.keys(value.entries)
+	if (certificateFiles.length !== expectedFiles.size || certificateFiles.some((file) => !expectedFiles.has(file))) {
+		throw new Error(`${label} does not exactly cover its reviewed corpus`)
+	}
+	for (const file of certificateFiles) {
+		const certificate = value.entries[file]
+		if (!isRecord(certificate) || certificate.schemaVersion !== 1 || certificate.algorithmVersion !== expectedVersion ||
+			certificate.baselineAlgorithmVersion !== expectedBaselineAlgorithmVersion) {
+			throw new Error(`${label} contains invalid provenance for ${file}`)
+		}
+	}
+}
+
 function sourcePath(file: string): string {
 	if (file.startsWith("00/")) {
 		if (!/^00\/[^/\\]+$/.test(file)) throw new Error(`Invalid holdout source path: ${file}`)
@@ -216,6 +272,16 @@ function methodSide(entry: CandidateFeedback, method: ReviewMethod): "left" | "r
 
 function methodIsShippable(entry: CandidateFeedback, method: ReviewMethod): boolean {
 	return entry.ship === "both" || entry.ship === methodSide(entry, method)
+}
+
+function methodIsPreferred(entry: CandidateFeedback, method: ReviewMethod): boolean {
+	return entry.preference === methodSide(entry, method)
+}
+
+function requireExactSet(actual: ReadonlySet<string>, expected: ReadonlySet<string>, label: string): void {
+	if (actual.size !== expected.size || [...actual].some((file) => !expected.has(file))) {
+		throw new Error(`${label} does not match the reviewed 0.17 transition`)
+	}
 }
 
 function validateCandidateFeedbackStore(value: unknown, expected: {
@@ -451,6 +517,8 @@ const candidateRobustnessPath = join(candidateDirectory, "robustness.json")
 const reviewedResultsPath = join(reviewedCandidateDirectory, "results.json")
 const reviewedHoldoutPath = join(reviewedCandidateDirectory, "holdout-results.json")
 const reviewedFeedbackPath = join(reviewedCandidateDirectory, "feedback.json")
+const reviewedJointCertificatesPath = join(reviewedCandidateDirectory, "joint-certificates.json")
+const reviewedHoldoutJointCertificatesPath = join(reviewedCandidateDirectory, "holdout-joint-certificates.json")
 
 const [
 	baselineResultsSource,
@@ -467,6 +535,8 @@ const [
 	reviewedResultsSource,
 	reviewedHoldoutSource,
 	reviewedFeedbackSource,
+	reviewedJointCertificatesSource,
+	reviewedHoldoutJointCertificatesSource,
 ] = await Promise.all([
 	readSource(baselineResultsPath),
 	readSource(baselineHoldoutPath),
@@ -482,6 +552,8 @@ const [
 	readSource(reviewedResultsPath),
 	readSource(reviewedHoldoutPath),
 	readSource(reviewedFeedbackPath),
+	readSource(reviewedJointCertificatesPath),
+	readSource(reviewedHoldoutJointCertificatesPath),
 ])
 
 const baselineResultsValue = parseJson(baselineResultsSource, baselineResultsPath)
@@ -498,6 +570,11 @@ const candidateRobustnessValue = parseJson(candidateRobustnessSource, candidateR
 const reviewedResultsValue = parseJson(reviewedResultsSource, reviewedResultsPath)
 const reviewedHoldoutValue = parseJson(reviewedHoldoutSource, reviewedHoldoutPath)
 const reviewedFeedbackValue = parseJson(reviewedFeedbackSource, reviewedFeedbackPath)
+const reviewedJointCertificatesValue = parseJson(reviewedJointCertificatesSource, reviewedJointCertificatesPath)
+const reviewedHoldoutJointCertificatesValue = parseJson(
+	reviewedHoldoutJointCertificatesSource,
+	reviewedHoldoutJointCertificatesPath,
+)
 
 validateCandidateArtifacts(baselineResultsValue, baselineHoldoutValue, "<baseline-validation>")
 const candidateValidation = validateCandidateArtifacts(
@@ -538,7 +615,18 @@ if (!isRecord(candidateHoldoutSummaryValue) || candidateHoldoutSummaryValue.algo
 validateCandidateRobustness(candidateRobustnessValue, expectedCandidateAlgorithmVersion)
 if (sha256(candidateHoldoutSummarySource) !== expectedCandidateHoldoutSummarySha256 ||
 	sha256(candidateRobustnessSource) !== expectedCandidateRobustnessSha256) {
-	throw new Error("Candidate diagnostic artifacts do not match the reviewed 0.16 inputs")
+	throw new Error("Candidate diagnostic artifacts do not match the reviewed 0.17 inputs")
+}
+validateJointCertificates(reviewedJointCertificatesValue, expectedReviewedAlgorithmVersion, reviewedResults, "Joint certificates")
+validateJointCertificates(
+	reviewedHoldoutJointCertificatesValue,
+	expectedReviewedAlgorithmVersion,
+	reviewedHoldout,
+	"Holdout joint certificates",
+)
+if (sha256(reviewedJointCertificatesSource) !== expectedReviewedJointCertificatesSha256 ||
+	sha256(reviewedHoldoutJointCertificatesSource) !== expectedReviewedHoldoutJointCertificatesSha256) {
+	throw new Error("Reviewed joint certificates do not match the frozen POC3 artifacts")
 }
 
 const candidateResultsScientificSha256 = sha256(jsonSource(scientificPayload(candidateResults)))
@@ -593,7 +681,8 @@ if (candidateHoldoutFiles.size !== candidateHoldout.entries.length || unchangedS
 }
 
 const promotedAt = new Date().toISOString()
-const promotedSelection = buildSelectionManifest(
+const promotedSelection = migrateFrozenSelectionManifest(
+	selection,
 	candidateHoldout,
 	unchangedSourceHashes,
 	candidateHoldoutRawSha256,
@@ -617,12 +706,15 @@ if (!promotedCurationProgress.complete || promotedCurationProgress.accepted !== 
 }
 
 const changedLegacyReviewable = new Set(report.legacyResearch.reviewable.changedFiles)
+const changedLegacyDiagnostics = new Set(report.legacyResearch.diagnostics.changedFiles)
 const changedAccepted = new Set(report.accepted.changedFiles)
 const changedRejected = new Set(report.rejected.changedFiles)
-if (changedRejected.size !== expectedChangedRejectedTargets.size ||
-	[...changedRejected].some((file) => !expectedChangedRejectedTargets.has(file))) {
-	throw new Error("Candidate changed-rejection set does not match the reviewed 0.16 transition")
-}
+const changedUnselected = new Set(report.unselectedHoldout.changedFiles)
+requireExactSet(changedLegacyReviewable, expectedChangedLegacyReviewableTargets, "Changed legacy reviewable set")
+requireExactSet(changedLegacyDiagnostics, expectedChangedLegacyDiagnosticTargets, "Changed legacy diagnostic set")
+requireExactSet(changedAccepted, expectedChangedAcceptedTargets, "Changed accepted set")
+requireExactSet(changedRejected, expectedChangedRejectedTargets, "Changed rejected set")
+requireExactSet(changedUnselected, expectedChangedUnselectedTargets, "Changed unselected holdout set")
 const reviewFiles = [
 	...baselineResults.entries.filter((entry) => changedLegacyReviewable.has(entry.file)).map((entry) => entry.file),
 	...baselineHoldout.entries.filter((entry) => changedAccepted.has(entry.file) || changedRejected.has(entry.file))
@@ -658,23 +750,32 @@ for (const entry of candidateFeedback.entries) {
 	if (methodIsShippable(entry, "previous") && !methodIsShippable(entry, "spatial")) baselineOnlyShippable++
 }
 if (baselineOnlyShippable !== 0) throw new Error("Candidate feedback contains baseline-only shippability")
-if (report.accepted.changedCount !== 0) {
-	throw new Error(`Candidate changes ${report.accepted.changedCount} previously accepted entries`)
-}
-if (report.unselectedHoldout.changedCount !== 0) {
-	throw new Error(`Candidate changes ${report.unselectedHoldout.changedCount} unselected holdout entries`)
-}
 const changedLegacyCount = report.legacyResearch.reviewable.changedCount + report.legacyResearch.diagnostics.changedCount
-if (changedLegacyCount !== 0) throw new Error(`Candidate changes ${changedLegacyCount} legacy entries`)
+for (const file of changedAccepted) {
+	const feedback = candidateFeedbackByImage.get(file)
+	if (!feedback) throw new Error(`Candidate feedback is missing changed accepted target ${file}`)
+	if (!methodIsShippable(feedback, "spatial")) {
+		throw new Error(`Candidate is not shippable for changed accepted target ${file}`)
+	}
+}
+let candidatePreferredChangedRejectedTargets = 0
+let candidateShippableChangedRejectedTargets = 0
 for (const file of changedRejected) {
 	const feedback = candidateFeedbackByImage.get(file)
 	if (!feedback) throw new Error(`Candidate feedback is missing changed rejected target ${file}`)
-	if (feedback.preference !== methodSide(feedback, "spatial")) {
-		throw new Error(`Candidate is not preferred for changed rejected target ${file}`)
-	}
-	if (!methodIsShippable(feedback, "spatial")) {
-		throw new Error(`Candidate is not shippable for changed rejected target ${file}`)
-	}
+	if (methodIsPreferred(feedback, "spatial")) candidatePreferredChangedRejectedTargets++
+	if (methodIsShippable(feedback, "spatial")) candidateShippableChangedRejectedTargets++
+}
+if (candidatePreferredChangedRejectedTargets !== 2 || candidateShippableChangedRejectedTargets !== 3) {
+	throw new Error("Changed rejected outcomes do not match the reviewed 0.17 transition")
+}
+const candidatePreferredReviewEntries = candidateFeedback.entries.filter((entry) => methodIsPreferred(entry, "spatial")).length
+const baselinePreferredReviewEntries = candidateFeedback.entries.filter((entry) => methodIsPreferred(entry, "previous")).length
+const tiedReviewEntries = candidateFeedback.entries.filter((entry) => entry.preference === "tie").length
+const candidateShippableReviewEntries = candidateFeedback.entries.filter((entry) => methodIsShippable(entry, "spatial")).length
+if (candidatePreferredReviewEntries !== 7 || baselinePreferredReviewEntries !== 1 || tiedReviewEntries !== 3 ||
+	candidateShippableReviewEntries !== 10) {
+	throw new Error("Aggregate feedback outcomes do not match the completed POC3 review")
 }
 
 const changedReviewedSources = new Set([...changedAccepted, ...changedRejected])
@@ -688,14 +789,12 @@ const promotedAbsoluteFeedback: AbsoluteFeedbackStore = {
 		if (!changedReviewedSources.has(entry.image)) return { ...entry, reasons: [...entry.reasons] }
 		const feedback = candidateFeedbackByImage.get(entry.image)
 		if (!feedback) throw new Error(`Candidate feedback is missing changed reviewed source ${entry.image}`)
-		if (!methodIsShippable(feedback, "spatial")) {
-			throw new Error(`Cannot migrate candidate-unshippable outcome for ${entry.image}`)
-		}
+		const shippable = methodIsShippable(feedback, "spatial")
 		return {
 			image: entry.image,
-			shippable: true,
-			reasons: [],
-			note: feedback.note,
+			shippable,
+			reasons: shippable ? [] : [...entry.reasons],
+			note: shippable ? "" : entry.note,
 			decidedAt: feedback.timestamp,
 		}
 	}),
@@ -703,8 +802,8 @@ const promotedAbsoluteFeedback: AbsoluteFeedbackStore = {
 validateAbsoluteFeedbackStore(promotedAbsoluteFeedback, promotedSelection, promotedCuration)
 const oldShippableTotal = absoluteFeedback.entries.filter((entry) => entry.shippable).length
 const newShippableTotal = promotedAbsoluteFeedback.entries.filter((entry) => entry.shippable).length
-if (oldShippableTotal !== 89 || newShippableTotal !== 92) {
-	throw new Error(`Expected the reviewed 89-to-92 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
+if (oldShippableTotal !== 92 || newShippableTotal !== 95) {
+	throw new Error(`Expected the reviewed 92-to-95 shippable transition, received ${oldShippableTotal}-to-${newShippableTotal}`)
 }
 
 function comparisonGroupSummary(group: { total: number; changedCount: number; unchangedCount: number; changedFiles: string[] }) {
@@ -736,11 +835,16 @@ const acceptance = {
 	decision: "accepted" as const,
 	changedReviewEntries: reviewFiles.length,
 	changedRejectedTargets: changedRejected.size,
-	candidatePreferredChangedRejectedTargets: changedRejected.size,
-	candidateShippableChangedRejectedTargets: changedRejected.size,
+	candidatePreferredChangedRejectedTargets,
+	candidateShippableChangedRejectedTargets,
+	candidatePreferredReviewEntries,
+	baselinePreferredReviewEntries,
+	tiedReviewEntries,
+	candidateShippableReviewEntries,
 	baselineOnlyShippable,
 	changedAcceptedEntries: report.accepted.changedCount,
 	changedLegacyEntries: changedLegacyCount,
+	changedUnselectedEntries: report.unselectedHoldout.changedCount,
 }
 
 const baselineCorpusArchive = {
@@ -770,6 +874,10 @@ const candidateRoundArchive = {
 		results: reviewedResults,
 		holdoutResults: reviewedHoldout,
 		feedback: candidateFeedback,
+		jointCertificates: reviewedJointCertificatesValue,
+		holdoutJointCertificates: reviewedHoldoutJointCertificatesValue,
+		jointCertificatesSha256: expectedReviewedJointCertificatesSha256,
+		holdoutJointCertificatesSha256: expectedReviewedHoldoutJointCertificatesSha256,
 		resultsSemanticSha256: reviewedResultsSemanticSha256,
 		holdoutSemanticSha256: reviewedHoldoutSemanticSha256,
 		resultsScientificSha256: reviewedResultsScientificSha256,
@@ -803,6 +911,8 @@ const snapshots = [
 	{ path: reviewedResultsPath, source: reviewedResultsSource },
 	{ path: reviewedHoldoutPath, source: reviewedHoldoutSource },
 	{ path: reviewedFeedbackPath, source: reviewedFeedbackSource },
+	{ path: reviewedJointCertificatesPath, source: reviewedJointCertificatesSource },
+	{ path: reviewedHoldoutJointCertificatesPath, source: reviewedHoldoutJointCertificatesSource },
 ]
 await assertSnapshotsUnchanged(snapshots)
 

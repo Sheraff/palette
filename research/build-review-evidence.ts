@@ -50,6 +50,8 @@ export const acceptedRoundArchives = Object.freeze([
 	{ file: "region-graph-0.15.0.json", algorithmVersion: "region-graph-0.15.0" },
 	{ file: "region-graph-0.15.0-corpus-review.json", algorithmVersion: "region-graph-0.15.0" },
 	{ file: "region-graph-0.16.0.json", algorithmVersion: "region-graph-0.16.0" },
+	{ file: "region-graph-0.16.0-corpus-review.json", algorithmVersion: "region-graph-0.16.0" },
+	{ file: "region-graph-0.17.0.json", algorithmVersion: "region-graph-0.17.0" },
 ] as const)
 
 export const reviewEvidenceInputPaths: readonly string[] = Object.freeze([

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-19T07:13:06.767Z",
-  "algorithmVersion": "region-graph-0.16.0",
+  "generatedAt": "2026-07-19T09:27:32.819Z",
+  "algorithmVersion": "region-graph-0.17.0",
   "source": {
     "corpus": "images",
     "fileCount": 35,
@@ -12,9 +12,9 @@
   },
   "summary": {
     "median": 0,
-    "p90": 0.06658054719691626,
+    "p90": 0.0814272598772463,
     "maximum": 0.780447751602501,
-    "warnings": 24
+    "warnings": 29
   },
   "entries": [
     {
@@ -251,10 +251,10 @@
         "accent": 0
       },
       "noiseDistance": {
-        "background": 0.002091963526066631,
-        "foreground": 0.5442171885498092,
-        "surface": 0.06840062412617204,
-        "accent": 0.0679018211884073
+        "background": 0.08682111173222716,
+        "foreground": 0.03275947652953004,
+        "surface": 0.023123852802473227,
+        "accent": 0.04745571317307041
       }
     },
     {
@@ -356,10 +356,10 @@
         "accent": 0
       },
       "noiseDistance": {
-        "background": 0,
-        "foreground": 0,
-        "surface": 0,
-        "accent": 0.0017705073591493582
+        "background": 0.3460699858361168,
+        "foreground": 0.5449697275297418,
+        "surface": 0.3460699858361168,
+        "accent": 0.5010747350115349
       }
     },
     {
@@ -508,8 +508,8 @@
       "noiseDistance": {
         "background": 0,
         "foreground": 0.028181700703126922,
-        "surface": 0.0010859652426696256,
-        "accent": 0.0007182977929348752
+        "surface": 0.07438184565912331,
+        "accent": 0.2801155200615783
       }
     },
     {

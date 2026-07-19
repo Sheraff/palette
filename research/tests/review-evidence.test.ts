@@ -225,6 +225,8 @@ test("review evidence uses only the explicit accepted archive allowlist", () => 
 		"region-graph-0.15.0.json",
 		"region-graph-0.15.0-corpus-review.json",
 		"region-graph-0.16.0.json",
+		"region-graph-0.16.0-corpus-review.json",
+		"region-graph-0.17.0.json",
 	])
 	assert.equal(reviewEvidenceInputPaths.includes("data/rounds/region-graph-0.14.0.json"), false)
 	assert.equal(reviewEvidenceInputPaths.some((path) => path.startsWith("data/candidates/")), false)

@@ -28,6 +28,7 @@ export type SelectionManifest = {
 }
 
 export const selectorStrategyVersion = "balanced-diversity-risk-random-v1"
+export const frozenReviewedCorpusStrategyVersion = "frozen-reviewed-corpus-v1"
 export const selectionTracks: SelectionTrack[] = ["diversity", "risk", "random"]
 export const selectionQuotas: Record<SelectionTrack, number> = {
 	diversity: 50,
@@ -245,6 +246,52 @@ export function buildSelectionManifest(
 	return manifest
 }
 
+export function migrateFrozenSelectionManifest(
+	baseline: SelectionManifest,
+	corpus: CorpusResult,
+	hashes: ReadonlyMap<string, string>,
+	sourceResultsSha256: string,
+	generatedAt = new Date().toISOString(),
+): SelectionManifest {
+	if (!sha256Pattern.test(baseline.manifestId)) throw new Error("Baseline selection manifest ID is invalid")
+	if (!sha256Pattern.test(sourceResultsSha256)) throw new Error("Invalid holdout-results source SHA-256")
+	if (selectionTracks.some((track) => baseline.quotas[track] !== selectionQuotas[track])) {
+		throw new Error("Baseline selection quotas do not match the frozen corpus strategy")
+	}
+	const entries = new Map(corpus.entries.filter((entry) => entry.kind === "holdout").map((entry) => [entry.file, entry]))
+	const baselineCandidates = selectionTracks.flatMap((track) => baseline.tracks[track])
+	if (entries.size !== baselineCandidates.length || baselineCandidates.some((candidate) => !entries.has(candidate.file))) {
+		throw new Error("Frozen selection does not exactly cover the promoted holdout corpus")
+	}
+	const tracks = Object.fromEntries(selectionTracks.map((track) => [
+		track,
+		baseline.tracks[track].map((candidate, rank) => {
+			const entry = entries.get(candidate.file)!
+			const digest = hashes.get(candidate.file)
+			if (!digest || !sha256Pattern.test(digest)) throw new Error(`Invalid source SHA-256 for ${candidate.file}`)
+			if (entry.width !== candidate.width || entry.height !== candidate.height) {
+				throw new Error(`Frozen selection dimensions changed for ${candidate.file}`)
+			}
+			return { ...candidate, sha256: digest, track, rank }
+		}),
+	])) as Record<SelectionTrack, SelectionCandidate[]>
+	const manifest: SelectionManifest = {
+		schemaVersion: 3,
+		generatedAt,
+		selectorStrategyVersion: `${frozenReviewedCorpusStrategyVersion}:${baseline.manifestId}`,
+		manifestId: "",
+		algorithmVersion: corpus.algorithmVersion,
+		sourceResultsSha256,
+		semanticResultsSha256: computeSemanticResultsSha256(corpus),
+		sourceCount: entries.size,
+		targetSize: Object.values(selectionQuotas).reduce((sum, quota) => sum + quota, 0),
+		quotas: { ...selectionQuotas },
+		tracks,
+	}
+	manifest.manifestId = selectionManifestId(manifest)
+	return manifest
+}
+
 export function validateSelectionManifest(
 	value: unknown,
 	corpus: CorpusResult,
@@ -252,7 +299,13 @@ export function validateSelectionManifest(
 ): asserts value is SelectionManifest {
 	if (!isRecord(value)) throw new Error("Selection manifest must be an object")
 	if (value.schemaVersion !== 3) throw new Error("Unsupported selection manifest schema")
-	if (value.selectorStrategyVersion !== selectorStrategyVersion) throw new Error("Selection strategy version does not match")
+	const frozenStrategyPattern = new RegExp(`^${frozenReviewedCorpusStrategyVersion}:([a-f0-9]{64})$`)
+	const frozenStrategy = typeof value.selectorStrategyVersion === "string"
+		? frozenStrategyPattern.exec(value.selectorStrategyVersion)
+		: null
+	if (value.selectorStrategyVersion !== selectorStrategyVersion && !frozenStrategy) {
+		throw new Error("Selection strategy version does not match")
+	}
 	if (typeof value.generatedAt !== "string" || !Number.isFinite(Date.parse(value.generatedAt))) {
 		throw new Error("Selection generatedAt is invalid")
 	}
@@ -282,18 +335,19 @@ export function validateSelectionManifest(
 	if (!isRecord(value.tracks) || Object.keys(value.tracks).sort().join(",") !== [...selectionTracks].sort().join(",")) {
 		throw new Error("Selection tracks are invalid")
 	}
-	const expectedTracks = buildTrackQueues(corpus)
+	const expectedTracks = value.selectorStrategyVersion === selectorStrategyVersion ? buildTrackQueues(corpus) : null
 	const seen = new Set<string>()
 	for (const track of selectionTracks) {
 		const queue = value.tracks[track]
-		if (!Array.isArray(queue) || queue.length !== expectedTracks[track].length || queue.length < selectionQuotas[track] * 2) {
+		if (!Array.isArray(queue) || (expectedTracks && queue.length !== expectedTracks[track].length) ||
+			queue.length < selectionQuotas[track] * 2) {
 			throw new Error(`Selection track ${track} does not have sufficient reserves`)
 		}
 		for (const [rank, candidateValue] of queue.entries()) {
 			if (!isRecord(candidateValue)) throw new Error(`Selection candidate ${track}:${rank} is invalid`)
 			const candidate = candidateValue as Record<string, unknown>
 			if (typeof candidate.file !== "string" || seen.has(candidate.file)) throw new Error("Selection candidate files must be unique")
-			if (candidate.file !== expectedTracks[track][rank]?.file) {
+			if (expectedTracks && candidate.file !== expectedTracks[track][rank]?.file) {
 				throw new Error(`Selection queue does not match the ${selectorStrategyVersion} strategy`)
 			}
 			const source = entryMap.get(candidate.file)

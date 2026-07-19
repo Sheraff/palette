@@ -2,7 +2,7 @@ import { createHash, randomUUID } from "node:crypto"
 import { createReadStream } from "node:fs"
 import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises"
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http"
-import { extname, join } from "node:path"
+import { extname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import {
 	acceptedCandidates,
@@ -90,10 +90,23 @@ for (const candidate of selectionTracks.flatMap((track) => selection.tracks[trac
 	const digest = createHash("sha256").update(await readFile(path)).digest("hex")
 	if (digest !== candidate.sha256) throw new Error(`On-disk SHA-256 does not match selection for ${candidate.file}`)
 }
+const galleryDataRoot = process.env.GALLERY_DATA_DIR ? resolve(researchRoot, process.env.GALLERY_DATA_DIR) : null
+const galleryDevelopment = galleryDataRoot
+	? JSON.parse(await readFile(join(galleryDataRoot, "results.json"), "utf8")) as CorpusResult
+	: results
+const galleryHoldout = galleryDataRoot
+	? JSON.parse(await readFile(join(galleryDataRoot, "holdout-results.json"), "utf8")) as CorpusResult
+	: holdoutResults
+if (galleryDevelopment.algorithmVersion !== galleryHoldout.algorithmVersion) {
+	throw new Error("Gallery development and holdout algorithm versions differ")
+}
+if (galleryDevelopment.entries.length !== results.entries.length || galleryHoldout.entries.length !== holdoutResults.entries.length) {
+	throw new Error("Gallery override corpus coverage differs from canonical data")
+}
 const galleryResults: CorpusResult = {
-	generatedAt: holdoutResults.generatedAt,
-	algorithmVersion: results.algorithmVersion,
-	entries: [...results.entries, ...holdoutResults.entries],
+	generatedAt: galleryHoldout.generatedAt,
+	algorithmVersion: galleryDevelopment.algorithmVersion,
+	entries: [...galleryDevelopment.entries, ...galleryHoldout.entries],
 }
 const previousRound = JSON.parse(await readFile(previousRoundPath, "utf8")) as { results: CorpusResult }
 const previousResults = previousRound.results

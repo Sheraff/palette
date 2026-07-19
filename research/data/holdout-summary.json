@@ -1,34 +1,34 @@
 {
-  "generatedAt": "2026-07-19T07:12:51.081Z",
-  "algorithmVersion": "region-graph-0.16.0",
+  "generatedAt": "2026-07-19T09:27:02.642Z",
+  "algorithmVersion": "region-graph-0.17.0",
   "development": {
     "entries": 35,
-    "generatedForegrounds": 7,
+    "generatedForegrounds": 6,
     "relaxedBackgrounds": 2,
     "relaxedSurfaces": 3,
-    "collapsedSurfaces": 14,
+    "collapsedSurfaces": 15,
     "gradients": 13,
     "medianCandidates": 12,
     "medianReconstructionError": 0.06475981660114297,
-    "medianSourceDistance": 0.008565607512317268
+    "medianSourceDistance": 0.00845361517166806
   },
   "holdout": {
     "entries": 355,
     "generatedForegrounds": 11,
-    "relaxedBackgrounds": 17,
+    "relaxedBackgrounds": 15,
     "relaxedSurfaces": 7,
-    "collapsedSurfaces": 79,
-    "gradients": 170,
+    "collapsedSurfaces": 105,
+    "gradients": 166,
     "medianCandidates": 12,
-    "medianReconstructionError": 0.06909069900942799,
-    "medianSourceDistance": 0.007785872788172719
+    "medianReconstructionError": 0.06825019995690773,
+    "medianSourceDistance": 0.007148535397952256
   },
   "resolutionConsistency": {
     "duplicatePairs": 30,
-    "roleMedian": 0.0025576607205496605,
-    "roleP90": 0.10534277601500677,
-    "roleMaximum": 0.7198815272126624,
-    "roleWarnings": 15,
+    "roleMedian": 0.0028009099429513163,
+    "roleP90": 0.15826798954203433,
+    "roleMaximum": 0.9948082021320631,
+    "roleWarnings": 25,
     "gradientDisagreements": 2,
     "entries": [
       {
@@ -60,10 +60,10 @@
         "selectedFile": "ab67616d0000b273000013cdd885595a94002abc.jpg",
         "alternateFile": "ab67616d00001e02000013cdd885595a94002abc.jpg",
         "roleDistance": {
-          "background": 0,
-          "foreground": 0,
+          "background": 0.17950678108193352,
+          "foreground": 0.37849960893344575,
           "surface": 0.061253656650785054,
-          "accent": 0.007827883133150493
+          "accent": 0.5137192852034961
         },
         "gradientDisagreement": false
       },
@@ -96,9 +96,9 @@
         "selectedFile": "ab67616d0000b273000030b6e37a6c32606d9eb7.jpg",
         "alternateFile": "ab67616d00001e02000030b6e37a6c32606d9eb7.jpg",
         "roleDistance": {
-          "background": 0.001055741952189331,
+          "background": 0.0035964522288796474,
           "foreground": 0.04014043929005005,
-          "surface": 0.003029567580685617,
+          "surface": 0.0035964522288796474,
           "accent": 0.008351947826213266
         },
         "gradientDisagreement": false
@@ -144,10 +144,10 @@
         "selectedFile": "ab67616d0000b27300003bdffa5565ae80d51afa.jpg",
         "alternateFile": "ab67616d00001e0200003bdffa5565ae80d51afa.jpg",
         "roleDistance": {
-          "background": 0,
-          "foreground": 0.04000836011036106,
-          "surface": 0.0025890055634376014,
-          "accent": 0.044944592517969936
+          "background": 0.0018372342389266496,
+          "foreground": 0.044944592517969936,
+          "surface": 0,
+          "accent": 0
         },
         "gradientDisagreement": false
       },
@@ -204,10 +204,10 @@
         "selectedFile": "ab67616d0000b2730000703a9e8740c609dd28e7.jpg",
         "alternateFile": "ab67616d00001e020000703a9e8740c609dd28e7.jpg",
         "roleDistance": {
-          "background": 0,
-          "foreground": 0.0030640117005247373,
-          "surface": 0,
-          "accent": 0.021343857881249925
+          "background": 0.9948082021320631,
+          "foreground": 0.6881930844098538,
+          "surface": 0.9948082021320631,
+          "accent": 0.3260496555094895
         },
         "gradientDisagreement": false
       },
@@ -252,9 +252,9 @@
         "selectedFile": "ab67616d0000b27300009dc4234926af8340af73.jpg",
         "alternateFile": "ab67616d00001e0200009dc4234926af8340af73.jpg",
         "roleDistance": {
-          "background": 0.03311055607534793,
+          "background": 0,
           "foreground": 0.06232152357541158,
-          "surface": 0.03268329325022925,
+          "surface": 0.15779899394091923,
           "accent": 0.09032726608044622
         },
         "gradientDisagreement": false
@@ -350,8 +350,8 @@
         "roleDistance": {
           "background": 0,
           "foreground": 0.0662134073715104,
-          "surface": 0.05842061432200467,
-          "accent": 0.02847136694880641
+          "surface": 0.09727103965903486,
+          "accent": 0.09137614542948765
         },
         "gradientDisagreement": false
       },
@@ -362,8 +362,8 @@
         "roleDistance": {
           "background": 0,
           "foreground": 0.0019349352309928403,
-          "surface": 0.0014746837372252087,
-          "accent": 0.0012983449700559643
+          "surface": 0,
+          "accent": 0.06289831444069778
         },
         "gradientDisagreement": false
       },

@@ -59,6 +59,8 @@ A separate pass preserves a small, highly light, near-neutral typography candida
 
 The spatial solver does not choose each role independently. It shortlists plausible backgrounds and jointly enumerates foreground, surface, and accent assignments for each one.
 
+Version 0.17 first computes the reviewed 0.16 palette as an incumbent, then completely enumerates every feasible four-role tuple with pair-specific gradient evidence and explicit surface/accent collapse. A replacement is admissible only when none of five structural objectives regresses, at least one improves by `0.05`, and the mean improvement is at least `0.16`. The five objectives cover background, foreground, surface, accent, and source-identity coverage. Selection first minimizes the number of changed roles, then maximizes total gain, then uses a stable semantic key. If no tuple clears those constraints, the incumbent is preserved byte-for-byte. This permits coherent multi-role corrections without composing independent post-hoc guards.
+
 Background scoring favors:
 
 - propagated background evidence

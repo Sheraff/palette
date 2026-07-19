@@ -1,8 +1,8 @@
 {
   "schemaVersion": 3,
-  "manifestId": "98f948e14b659165d37ccaf0e860ceeca23281b75e6ac0d032ae4524023871d4",
-  "algorithmVersion": "region-graph-0.16.0",
-  "semanticResultsSha256": "37de7c35eabdc75dd7cd9eb8bc761bcd670d522c1d8636f53934f4328de9cfaa",
+  "manifestId": "3452fec2f0e791d91c84f8fd7aaeb3c01ad2fdaacdfc20f1fd6029d48771e533",
+  "algorithmVersion": "region-graph-0.17.0",
+  "semanticResultsSha256": "558d2f2fbb3350b836017ac10631794cf06f0c1694ffc5b1b143e5c9fe1c5c48",
   "presentationVersion": 1,
   "entries": [
     {
@@ -47,7 +47,7 @@
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:10:36.997Z"
+      "decidedAt": "2026-07-19T09:20:52.342Z"
     },
     {
       "image": "00/ab67616d00001e0200005430e79a3e6fda4ec936.jpg",
@@ -123,14 +123,10 @@
     },
     {
       "image": "00/ab67616d00001e0200005ddc313068597b41ae3b.jpg",
-      "shippable": false,
-      "reasons": [
-        "background",
-        "foreground",
-        "surface"
-      ],
-      "note": "low confidence rejection: visually it feels the background is black but palette chose black as the foreground. Surface doesn't seem to belong in the artwork.",
-      "decidedAt": "2026-07-18T16:14:14.804Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:20:11.106Z"
     },
     {
       "image": "00/ab67616d00001e0200004a7c432cc405b024d111.jpg",
@@ -517,7 +513,7 @@
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:29:13.391Z"
+      "decidedAt": "2026-07-19T09:22:06.727Z"
     },
     {
       "image": "00/ab67616d0000b2730000048c04b59b6a354136b8.jpg",
@@ -552,32 +548,28 @@
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:30:29.860Z"
+      "decidedAt": "2026-07-19T09:22:47.065Z"
     },
     {
       "image": "00/ab67616d0000b273000037d5a2d47245cb9abc79.jpg",
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:30:34.258Z"
+      "decidedAt": "2026-07-19T09:21:08.574Z"
     },
     {
       "image": "00/ab67616d00001e02000045be7b6dfb8bf9fe7a15.jpg",
-      "shippable": false,
-      "reasons": [
-        "lacks-artwork-identity"
-      ],
-      "note": "the artwork has very distinctive blue, green, red, yellow, brown colors, but the palette is only shades of blue",
-      "decidedAt": "2026-07-18T16:31:21.807Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:19:44.764Z"
     },
     {
       "image": "00/ab67616d0000b27300003d2a08ce63af9a2c19b0.jpg",
-      "shippable": false,
-      "reasons": [
-        "accent"
-      ],
-      "note": "accent is lacking a bit of contrast with the background (minor issue, low confidence rejection)",
-      "decidedAt": "2026-07-18T16:32:17.040Z"
+      "shippable": true,
+      "reasons": [],
+      "note": "",
+      "decidedAt": "2026-07-19T09:21:31.565Z"
     },
     {
       "image": "00/ab67616d00001e02000025b4e66a00806cb6dd7d.jpg",
@@ -619,7 +611,7 @@
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:32:49.904Z"
+      "decidedAt": "2026-07-19T09:20:16.053Z"
     },
     {
       "image": "00/ab67616d0000b2730000c4d94ab67ad33dc51941.jpg",
@@ -665,7 +657,7 @@
         "surface"
       ],
       "note": "surface doesn't look like it belongs in this artwork, it looks invented / mixed",
-      "decidedAt": "2026-07-18T16:33:58.835Z"
+      "decidedAt": "2026-07-19T09:21:21.393Z"
     },
     {
       "image": "00/ab67616d00001e020000342093dd7f3bdbbe9705.jpg",
@@ -714,7 +706,7 @@
       "shippable": true,
       "reasons": [],
       "note": "",
-      "decidedAt": "2026-07-18T16:34:24.518Z"
+      "decidedAt": "2026-07-19T09:22:34.672Z"
     },
     {
       "image": "00/ab67616d00001e02000068b80cb9d0cf032793d6.jpg",
