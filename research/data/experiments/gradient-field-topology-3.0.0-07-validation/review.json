@@ -1,0 +1,1115 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "gradient-field-topology-3.0.0-07-review-1",
+  "generatedAt": "2026-07-20T15:35:56.184Z",
+  "manifestId": "e69e76f5fe44bc8b1af5cb68bfac013b26099b158c8133b2f115832a0309350d",
+  "provenance": {
+    "manifestSha256": "eb3615ca14c82b8a117cedcc11ecede4865946862d9fbda95c9264dc047255d4",
+    "evaluationSha256": "abfb3ed846f5fd2484ec97100a83d3147dd05a17a77bda466b4a837062dbfd58",
+    "modelFileSha256": "0ec901a4dde9a88e6ae0ce3dc5fb5587a726aea69ef5da023059a27e84a6b09c",
+    "modelIdentitySha256": "9cd15f12004578c2a8a65cd83b63401889266428495551f569c16236be8c9818",
+    "parameterSha256": "98d0a0d89e83d1e66a211c05557db74467f13bf4cb1d99766a650f29178fbc11"
+  },
+  "entries": [
+    {
+      "familyId": "gv-30faaf5d95f59e73e7a8",
+      "anchor": {
+        "file": "07/ab67616d00001e020007e70520825af1edbf9619",
+        "sha256": "947e8535f9137afdae64f371b2ffd074b1f4ba952fce326f2077817a2fd28b27",
+        "bytes": 29170
+      },
+      "pairSha256": "964a0ecc6120327e38dcb51defde0f8ebaa9bd65ae9a0c6e1e49394310b723bd",
+      "palette": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe"
+        },
+        "foreground": {
+          "rgb": [
+            6,
+            7,
+            7
+          ],
+          "hex": "#060707"
+        },
+        "surface": {
+          "rgb": [
+            228,
+            217,
+            205
+          ],
+          "hex": "#e4d9cd"
+        },
+        "accent": {
+          "rgb": [
+            129,
+            66,
+            60
+          ],
+          "hex": "#81423c"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-909aab2667130a1156b8",
+      "anchor": {
+        "file": "07/ab67616d0000b27300070d094b3638c1e184754e",
+        "sha256": "069849f75f572d0e74e14207f3d09bcdc4843ad4fc40c420b8d690c07700b87a",
+        "bytes": 131942
+      },
+      "pairSha256": "affdc0c538b5c14b1d12713888d76e3ada4262a198ec4a0079ee97313f9d11fd",
+      "palette": {
+        "background": {
+          "rgb": [
+            59,
+            78,
+            104
+          ],
+          "hex": "#3b4e68"
+        },
+        "foreground": {
+          "rgb": [
+            252,
+            252,
+            247
+          ],
+          "hex": "#fcfcf7"
+        },
+        "surface": {
+          "rgb": [
+            139,
+            101,
+            95
+          ],
+          "hex": "#8b655f"
+        },
+        "accent": {
+          "rgb": [
+            233,
+            227,
+            121
+          ],
+          "hex": "#e9e379"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-ef1a102e61e25bcc5f1f",
+      "anchor": {
+        "file": "07/ab67616d00001e020007e7766fcbf5059eded4e9",
+        "sha256": "84721d94d000f17f9c94dcc118f33cb6b034136624fdd64678f395acdfe5dc23",
+        "bytes": 55094
+      },
+      "pairSha256": "76908afbf2da1282c1215e12ce561118b27be66067602005a1578c96fb467438",
+      "palette": {
+        "background": {
+          "rgb": [
+            157,
+            79,
+            42
+          ],
+          "hex": "#9d4f2a"
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            237,
+            10
+          ],
+          "hex": "#f9ed0a"
+        },
+        "surface": {
+          "rgb": [
+            50,
+            18,
+            13
+          ],
+          "hex": "#32120d"
+        },
+        "accent": {
+          "rgb": [
+            17,
+            158,
+            6
+          ],
+          "hex": "#119e06"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-5d64d048539f85e3820a",
+      "anchor": {
+        "file": "07/ab67616d0000b273000738e0f667d26237053ffe",
+        "sha256": "24db75614b24f77b4bd000c73d1539c730541a9974d518ecce2e54bd43b39dff",
+        "bytes": 62429
+      },
+      "pairSha256": "3ab07b618aea6ed928f0aefe52ef06fc27cffb79edeea2f5760c51aaeeac4a78",
+      "palette": {
+        "background": {
+          "rgb": [
+            241,
+            242,
+            228
+          ],
+          "hex": "#f1f2e4"
+        },
+        "foreground": {
+          "rgb": [
+            53,
+            16,
+            16
+          ],
+          "hex": "#351010"
+        },
+        "surface": {
+          "rgb": [
+            207,
+            197,
+            181
+          ],
+          "hex": "#cfc5b5"
+        },
+        "accent": {
+          "rgb": [
+            193,
+            70,
+            26
+          ],
+          "hex": "#c1461a"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-42e14f62b38473485e02",
+      "anchor": {
+        "file": "07/ab67616d00001e0200074e7814fc87ccaca04c7a",
+        "sha256": "35f6d2ce5ff97c1b7211e2ca97b93fb8b2af6a6bb69990641a23a06c695f9894",
+        "bytes": 22295
+      },
+      "pairSha256": "102ff9f944726c289a21591a0aa7e0fb4cbd4e0c83148df15712915230053ac8",
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "foreground": {
+          "rgb": [
+            17,
+            9,
+            35
+          ],
+          "hex": "#110923"
+        },
+        "surface": {
+          "rgb": [
+            237,
+            229,
+            225
+          ],
+          "hex": "#ede5e1"
+        },
+        "accent": {
+          "rgb": [
+            94,
+            58,
+            207
+          ],
+          "hex": "#5e3acf"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-4c3347a81c1a0fd98ec2",
+      "anchor": {
+        "file": "07/ab67616d0000b27300070f53f6a812ada0c579c5",
+        "sha256": "c8a99511ce8ea546eefeaeff360431714ed9df21d5ab033c95ca353b9db8b6ad",
+        "bytes": 107317
+      },
+      "pairSha256": "08f3be9d679004b1c0cf3673a87b7e85682a1cc4eb246ba8101c8dfc4263d171",
+      "palette": {
+        "background": {
+          "rgb": [
+            11,
+            6,
+            14
+          ],
+          "hex": "#0b060e"
+        },
+        "foreground": {
+          "rgb": [
+            210,
+            206,
+            214
+          ],
+          "hex": "#d2ced6"
+        },
+        "surface": {
+          "rgb": [
+            3,
+            59,
+            121
+          ],
+          "hex": "#033b79"
+        },
+        "accent": {
+          "rgb": [
+            159,
+            76,
+            36
+          ],
+          "hex": "#9f4c24"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-d5b24516d51bda3d411f",
+      "anchor": {
+        "file": "07/ab67616d0000b27300077dd312caff8fbe51ade9",
+        "sha256": "9e38792d8fa0360fbc38ffd72659d2b2fe125cd019aee55d6e2a0c18ce2fe7d4",
+        "bytes": 77132
+      },
+      "pairSha256": "a052376e89587690f3515df6e43f1a5557c38448a7f8c1d8ac4d1b0f2db9e1d5",
+      "palette": {
+        "background": {
+          "rgb": [
+            252,
+            249,
+            245
+          ],
+          "hex": "#fcf9f5"
+        },
+        "foreground": {
+          "rgb": [
+            18,
+            18,
+            16
+          ],
+          "hex": "#121210"
+        },
+        "surface": {
+          "rgb": [
+            247,
+            214,
+            178
+          ],
+          "hex": "#f7d6b2"
+        },
+        "accent": {
+          "rgb": [
+            254,
+            159,
+            65
+          ],
+          "hex": "#fe9f41"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-ce02c5ffe50259985850",
+      "anchor": {
+        "file": "07/ab67616d0000b273000775ee889dd7402cbe5217",
+        "sha256": "f382310c6eac8634a7f788aaa13337c3d960c50085ccb5539607c82ece2e2bc5",
+        "bytes": 142816
+      },
+      "pairSha256": "897dbc0495fd14c675467d9aea4ca096b1ed720ae5f503d8d5521be9d16f8536",
+      "palette": {
+        "background": {
+          "rgb": [
+            125,
+            176,
+            208
+          ],
+          "hex": "#7db0d0"
+        },
+        "foreground": {
+          "rgb": [
+            54,
+            55,
+            37
+          ],
+          "hex": "#363725"
+        },
+        "surface": {
+          "rgb": [
+            238,
+            173,
+            121
+          ],
+          "hex": "#eead79"
+        },
+        "accent": {
+          "rgb": [
+            246,
+            236,
+            227
+          ],
+          "hex": "#f6ece3"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-3fb75abd78dbb065d3d1",
+      "anchor": {
+        "file": "07/ab67616d00001e0200076c167fe26123dddbf552",
+        "sha256": "9136f9fa6625e2670bd2a4fd25f43cc89811dc63a50f4e28849d90130a9135b7",
+        "bytes": 18454
+      },
+      "pairSha256": "f8dba4d12f8d95215ecdd58a3f3b595e3f9fc20c9abed776ec8735434f7143c6",
+      "palette": {
+        "background": {
+          "rgb": [
+            16,
+            16,
+            16
+          ],
+          "hex": "#101010"
+        },
+        "foreground": {
+          "rgb": [
+            205,
+            208,
+            211
+          ],
+          "hex": "#cdd0d3"
+        },
+        "surface": {
+          "rgb": [
+            29,
+            30,
+            26
+          ],
+          "hex": "#1d1e1a"
+        },
+        "accent": {
+          "rgb": [
+            116,
+            112,
+            107
+          ],
+          "hex": "#74706b"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-cb205a046bf1ea90afc6",
+      "anchor": {
+        "file": "07/ab67616d0000b27300079f9ad0372526979bfb09",
+        "sha256": "977c144f0bf9a43b199fe722fecf14232c16791032f862f81c24b4a3fadbf7a4",
+        "bytes": 82575
+      },
+      "pairSha256": "bc7fa20fdaab21675a1c69120af4d8e8264e6bed6d71d8787686ba170ce0dbc3",
+      "palette": {
+        "background": {
+          "rgb": [
+            38,
+            36,
+            41
+          ],
+          "hex": "#262429"
+        },
+        "foreground": {
+          "rgb": [
+            229,
+            228,
+            232
+          ],
+          "hex": "#e5e4e8"
+        },
+        "surface": {
+          "rgb": [
+            180,
+            51,
+            96
+          ],
+          "hex": "#b43360"
+        },
+        "accent": {
+          "rgb": [
+            1,
+            0,
+            2
+          ],
+          "hex": "#010002"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-b6477741720455bfb060",
+      "anchor": {
+        "file": "07/ab67616d0000b2730007c03dff0c364df87fa8d9",
+        "sha256": "e3bd63fa0f6b5b4a3ecb99029351645cd8f870e68710bf50d3f34be203ded97c",
+        "bytes": 116647
+      },
+      "pairSha256": "f8c9b498c7f5a066b92709f38886391162da060db45c88f652a2eba0d544b8a0",
+      "palette": {
+        "background": {
+          "rgb": [
+            9,
+            3,
+            2
+          ],
+          "hex": "#090302"
+        },
+        "foreground": {
+          "rgb": [
+            189,
+            158,
+            27
+          ],
+          "hex": "#bd9e1b"
+        },
+        "surface": {
+          "rgb": [
+            42,
+            33,
+            96
+          ],
+          "hex": "#2a2160"
+        },
+        "accent": {
+          "rgb": [
+            218,
+            30,
+            68
+          ],
+          "hex": "#da1e44"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-617b3eec2b1035fe9371",
+      "anchor": {
+        "file": "07/ab67616d0000b27300076c99cd068459fcf5f287",
+        "sha256": "368b5d07cdb4f7e42beaf5d626b02e031dd0b9a340b8b95417794e0584d0771a",
+        "bytes": 174292
+      },
+      "pairSha256": "1a5f36b57b142fe05febd679da45bcaf42f47573a13d142647766d6191fbdabc",
+      "palette": {
+        "background": {
+          "rgb": [
+            250,
+            55,
+            3
+          ],
+          "hex": "#fa3703"
+        },
+        "foreground": {
+          "rgb": [
+            2,
+            1,
+            5
+          ],
+          "hex": "#020105"
+        },
+        "surface": {
+          "rgb": [
+            250,
+            223,
+            7
+          ],
+          "hex": "#fadf07"
+        },
+        "accent": {
+          "rgb": [
+            253,
+            252,
+            84
+          ],
+          "hex": "#fdfc54"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-22995ca0659eab0c2703",
+      "anchor": {
+        "file": "07/ab67616d0000b273000763ef74f3dba2805fc517",
+        "sha256": "51f59c5f452279479e1ddf0ad056561e28636a1b214f774fce2d488204772f4b",
+        "bytes": 65027
+      },
+      "pairSha256": "18760b9543bca553acc85a826e9c34abecaf81812681e01444485c6f2e7cc9c6",
+      "palette": {
+        "background": {
+          "rgb": [
+            247,
+            223,
+            219
+          ],
+          "hex": "#f7dfdb"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            124,
+            157,
+            148
+          ],
+          "hex": "#7c9d94"
+        },
+        "accent": {
+          "rgb": [
+            55,
+            113,
+            116
+          ],
+          "hex": "#377174"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-47e2e0a13de112e6df00",
+      "anchor": {
+        "file": "07/ab67616d0000b273000753068dd5505ab3bd1305",
+        "sha256": "c7c5a81d2446dff1f4d7b7d0b7896d06fdaf55c5705b703edd974ba07bd02bb2",
+        "bytes": 88409
+      },
+      "pairSha256": "de7773befb46b42135e1f9a2a7d019df359ab1b8259c8de381a3c889b6096b88",
+      "palette": {
+        "background": {
+          "rgb": [
+            245,
+            245,
+            245
+          ],
+          "hex": "#f5f5f5"
+        },
+        "foreground": {
+          "rgb": [
+            1,
+            0,
+            0
+          ],
+          "hex": "#010000"
+        },
+        "surface": {
+          "rgb": [
+            235,
+            203,
+            173
+          ],
+          "hex": "#ebcbad"
+        },
+        "accent": {
+          "rgb": [
+            136,
+            91,
+            69
+          ],
+          "hex": "#885b45"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-122b804c71eb20acc562",
+      "anchor": {
+        "file": "07/ab67616d0000b273000708f20c8a5c1f55baf3c4",
+        "sha256": "09fad8aac193fb7b9ca5ec600d0834975c5a396308ea53e0b45f195941476748",
+        "bytes": 85941
+      },
+      "pairSha256": "dc6c80847d1cab411f9c2976c022ad4b18abec33f727805df80de37bd8fa4bc2",
+      "palette": {
+        "background": {
+          "rgb": [
+            237,
+            238,
+            238
+          ],
+          "hex": "#edeeee"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            195,
+            213,
+            211
+          ],
+          "hex": "#c3d5d3"
+        },
+        "accent": {
+          "rgb": [
+            73,
+            69,
+            64
+          ],
+          "hex": "#494540"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-3fe908fceee5aa066ed1",
+      "anchor": {
+        "file": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+        "sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+        "bytes": 181804
+      },
+      "pairSha256": "89ca12aeb06dd651dc2e87be9ca432d8cddb627ab0b2334fd85282aab4a0ba70",
+      "palette": {
+        "background": {
+          "rgb": [
+            157,
+            39,
+            103
+          ],
+          "hex": "#9d2767"
+        },
+        "foreground": {
+          "rgb": [
+            246,
+            255,
+            254
+          ],
+          "hex": "#f6fffe"
+        },
+        "surface": {
+          "rgb": [
+            43,
+            39,
+            71
+          ],
+          "hex": "#2b2747"
+        },
+        "accent": {
+          "rgb": [
+            243,
+            123,
+            178
+          ],
+          "hex": "#f37bb2"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-2b303eb6104edc2d82ef",
+      "anchor": {
+        "file": "07/ab67616d0000b27300071ae95ac69d8583f29ec2",
+        "sha256": "fc65fae1d3d2b751d522dc39570b7fb8413dd01d6398d949b573789edd87cb6b",
+        "bytes": 103026
+      },
+      "pairSha256": "2b4d00803ef4105129cb7dc73cef4cdebd05562cca26d46c47c52176a2457be5",
+      "palette": {
+        "background": {
+          "rgb": [
+            36,
+            19,
+            8
+          ],
+          "hex": "#241308"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            64,
+            50,
+            36
+          ],
+          "hex": "#403224"
+        },
+        "accent": {
+          "rgb": [
+            127,
+            82,
+            54
+          ],
+          "hex": "#7f5236"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-3c36103fb81dfdac6402",
+      "anchor": {
+        "file": "07/ab67616d0000b27300074a75ed66bed5651ba229",
+        "sha256": "e36713bee02e6783fa6c697996612c61fd11d5176b9b2824f8cb539ed7563488",
+        "bytes": 151065
+      },
+      "pairSha256": "ff66f1ea25f6298f89ac759613f05cf3cd9e0fa8e6c9da77ebbde1088a334da7",
+      "palette": {
+        "background": {
+          "rgb": [
+            27,
+            28,
+            28
+          ],
+          "hex": "#1b1c1c"
+        },
+        "foreground": {
+          "rgb": [
+            229,
+            229,
+            229
+          ],
+          "hex": "#e5e5e5"
+        },
+        "surface": {
+          "rgb": [
+            55,
+            56,
+            56
+          ],
+          "hex": "#373838"
+        },
+        "accent": {
+          "rgb": [
+            123,
+            47,
+            47
+          ],
+          "hex": "#7b2f2f"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-fcc6452e718d57bc6e0f",
+      "anchor": {
+        "file": "07/ab67616d00001e02000738f3b7c987e2e335dcc3",
+        "sha256": "9d5bf7a8af2346ed8dc07e1289c7845e7be71ba76132e36df8c165f358cef4b2",
+        "bytes": 38856
+      },
+      "pairSha256": "0b2e09131c6d6fc92f10f3e0aef8f61064284a6573522dd5ec67095df13636c9",
+      "palette": {
+        "background": {
+          "rgb": [
+            156,
+            169,
+            186
+          ],
+          "hex": "#9ca9ba"
+        },
+        "foreground": {
+          "rgb": [
+            16,
+            15,
+            22
+          ],
+          "hex": "#100f16"
+        },
+        "surface": {
+          "rgb": [
+            248,
+            224,
+            191
+          ],
+          "hex": "#f8e0bf"
+        },
+        "accent": {
+          "rgb": [
+            230,
+            193,
+            143
+          ],
+          "hex": "#e6c18f"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-8b6f6dc238b59ce0ce80",
+      "anchor": {
+        "file": "07/ab67616d00001e020007fb79fa36bb50ca43468c",
+        "sha256": "5b58025b0bd345f37f1dd129e54821465de942630a1f1746c96d73fe161edae1",
+        "bytes": 34250
+      },
+      "pairSha256": "d54b1ab52ea6011c130e570af634b45e3bbf3fa1b16bd6abdac7f4c6b9266e78",
+      "palette": {
+        "background": {
+          "rgb": [
+            14,
+            14,
+            16
+          ],
+          "hex": "#0e0e10"
+        },
+        "foreground": {
+          "rgb": [
+            210,
+            188,
+            105
+          ],
+          "hex": "#d2bc69"
+        },
+        "surface": {
+          "rgb": [
+            76,
+            70,
+            38
+          ],
+          "hex": "#4c4626"
+        },
+        "accent": {
+          "rgb": [
+            164,
+            135,
+            57
+          ],
+          "hex": "#a48739"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-d8a4cbee95a6d6a5daae",
+      "anchor": {
+        "file": "07/ab67616d0000b273000746f063b3779fe7bf8cbb",
+        "sha256": "a0c028321cbd1e345848f098fcf35bf058f03e313c89fcf88c2fa811677c60d5",
+        "bytes": 125765
+      },
+      "pairSha256": "c7aa9f6c02c05a2f901b07a46e27f3c34f968085c19ad16147a5c6d4d2f31fe9",
+      "palette": {
+        "background": {
+          "rgb": [
+            1,
+            0,
+            15
+          ],
+          "hex": "#01000f"
+        },
+        "foreground": {
+          "rgb": [
+            34,
+            225,
+            241
+          ],
+          "hex": "#22e1f1"
+        },
+        "surface": {
+          "rgb": [
+            3,
+            32,
+            120
+          ],
+          "hex": "#032078"
+        },
+        "accent": {
+          "rgb": [
+            12,
+            76,
+            173
+          ],
+          "hex": "#0c4cad"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-976c0ffb3b6e6d2517d0",
+      "anchor": {
+        "file": "07/ab67616d0000b2730007df6b815952a42225e175",
+        "sha256": "c7b7ba88279d450e5dd7edf8b467b92ec0e9afc7116bc336fa7a09a5262d1c0e",
+        "bytes": 142301
+      },
+      "pairSha256": "279941420cf2539e08e7ea583c9aed1e64156c06a2de7e8d7870e37ff9b6598a",
+      "palette": {
+        "background": {
+          "rgb": [
+            11,
+            11,
+            11
+          ],
+          "hex": "#0b0b0b"
+        },
+        "foreground": {
+          "rgb": [
+            156,
+            185,
+            199
+          ],
+          "hex": "#9cb9c7"
+        },
+        "surface": {
+          "rgb": [
+            21,
+            47,
+            70
+          ],
+          "hex": "#152f46"
+        },
+        "accent": {
+          "rgb": [
+            47,
+            139,
+            115
+          ],
+          "hex": "#2f8b73"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-bd2f4ce7a7a2bbb05eef",
+      "anchor": {
+        "file": "07/ab67616d00001e020007f679b7beee7b809ac232",
+        "sha256": "1f032785c337e65d1de228ffae28e038c889840e0fdff383f4e682f0911e0cfb",
+        "bytes": 36486
+      },
+      "pairSha256": "e418b912ff7c07e08fae156d3604dad8634d3eb19ced2a2739cd008b2620a5a1",
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            216,
+            204,
+            220
+          ],
+          "hex": "#d8ccdc"
+        },
+        "surface": {
+          "rgb": [
+            62,
+            38,
+            89
+          ],
+          "hex": "#3e2659"
+        },
+        "accent": {
+          "rgb": [
+            32,
+            139,
+            206
+          ],
+          "hex": "#208bce"
+        }
+      },
+      "gradientFirst": true
+    },
+    {
+      "familyId": "gv-df468c5159ab7021bc6d",
+      "anchor": {
+        "file": "07/ab67616d0000b273000755ba7b79d5f16cfe16c1",
+        "sha256": "138df45b616cd323ae01feddb048ed881f7b79e8127ceceffe6a252decc537c2",
+        "bytes": 148254
+      },
+      "pairSha256": "0ceababace2411103ca1a7181e934f2f3b0ccddd8387a831fc33e46e8091b2c6",
+      "palette": {
+        "background": {
+          "rgb": [
+            40,
+            29,
+            64
+          ],
+          "hex": "#281d40"
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            249,
+            236
+          ],
+          "hex": "#f9f9ec"
+        },
+        "surface": {
+          "rgb": [
+            70,
+            51,
+            82
+          ],
+          "hex": "#463352"
+        },
+        "accent": {
+          "rgb": [
+            236,
+            195,
+            55
+          ],
+          "hex": "#ecc337"
+        }
+      },
+      "gradientFirst": false
+    },
+    {
+      "familyId": "gv-76d9f786e676b9f15318",
+      "anchor": {
+        "file": "07/ab67616d0000b2730007433800a4f941db226d6a",
+        "sha256": "575929dca3965fa8b2fafc537ab23b0fbb6a2553ce9873d88af3200b0c833bc9",
+        "bytes": 54300
+      },
+      "pairSha256": "a6eace31b13c88ad0d0428e454fd424f8cd5e72190ae169543e80e3c96a5b0ef",
+      "palette": {
+        "background": {
+          "rgb": [
+            33,
+            32,
+            38
+          ],
+          "hex": "#212026"
+        },
+        "foreground": {
+          "rgb": [
+            244,
+            246,
+            238
+          ],
+          "hex": "#f4f6ee"
+        },
+        "surface": {
+          "rgb": [
+            52,
+            52,
+            61
+          ],
+          "hex": "#34343d"
+        },
+        "accent": {
+          "rgb": [
+            160,
+            158,
+            157
+          ],
+          "hex": "#a09e9d"
+        }
+      },
+      "gradientFirst": false
+    }
+  ]
+}

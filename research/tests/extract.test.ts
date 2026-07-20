@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url"
 import { chroma, contrastRatio, okDistance, rgbToHex, rgbToOKLab } from "../src/color.ts"
 import { emptyCandidateSpatialEvidence, type Candidate } from "../src/candidates.ts"
 import { ALGORITHM_VERSION, extractPalette } from "../src/extract.ts"
-import { minimumAccentBackgroundContrast, solvePalette } from "../src/palette.ts"
+import { detectGradient, minimumAccentBackgroundContrast, solvePalette } from "../src/palette.ts"
 import type { RegionAnalysis } from "../src/regions.ts"
 import type { CorpusResult, Palette, RawImage, RGB } from "../src/types.ts"
 
@@ -119,6 +119,32 @@ function assertValidPalette(palette: Palette, allowRelaxedContrast = true): void
 
 test("reports the 0.17 algorithm version", () => {
 	assert.equal(ALGORITHM_VERSION, "region-graph-0.17.0")
+})
+
+test("pair-only gradient evidence cannot use the global smooth fallback", () => {
+	const background = candidate(0, [30, 40, 50], 0.5, 1, 0, 0)
+	const surface = candidate(1, [35, 45, 55], 0.5, 1, 0, 0)
+	const width = 24
+	const height = 24
+	const analysis = singlePixelAnalysis(background.rgb)
+	analysis.width = width
+	analysis.height = height
+	analysis.labels = new Int32Array(width * height)
+	analysis.labs = new Float32Array(width * height * 3)
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) analysis.labs[(y * width + x) * 3] = 0.2 + x / (width - 1) * 0.4
+	}
+
+	const defaultEvidence = detectGradient(background, surface, analysis)
+	assert.equal(defaultEvidence.isGradient, true)
+	assert.deepEqual(defaultEvidence, detectGradient(background, surface, analysis, { allowSmoothFallback: true }))
+	assert.deepEqual(detectGradient(background, surface, analysis, { allowSmoothFallback: false }), {
+		isGradient: false,
+		confidence: 1,
+		coverage: 0,
+		continuity: 0,
+		coherence: 0,
+	})
 })
 
 test("spatial score buckets prefer strong typography without changing expressive selection", () => {

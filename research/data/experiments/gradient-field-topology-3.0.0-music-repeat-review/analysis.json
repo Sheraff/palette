@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-field-topology-3.0.0-music-repeat-analysis-1",
+  "generatedAt": "2026-07-20T16:20:51.706Z",
+  "registryLabelsMutated": false,
+  "thresholdRefit": false,
+  "interpretation": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-07-20T16:20:31Z",
+    "decisionScope": "exact-directed-background-surface-pair",
+    "reviewPurpose": "repeat-label-consistency",
+    "registryLabelsMutated": false,
+    "reviewSha256": "664c9e29e5901cb3a353d964b1cd216386b3a184b9b2fad9abd5105727dc6f16",
+    "htmlSha256": "4ba6d334b13284bf6152f10ae56b2e61818578760891a9383b3de44604a2b5cb",
+    "feedbackSha256": "d4701cb7aab3c87bf91143c01b8e998098d3b74bdd2e2858481aaf6f3842367a",
+    "note": "All 25 blinded repeat-label cases were reviewed. Analyze agreement with the historical labels without replacing or mutating those labels."
+  },
+  "provenance": {
+    "manifestSha256": "e56a4f440deca9ea772aa320caa1b6b6f1e5b5a52728c06e78fae5d42d77de28",
+    "evaluationSha256": "11fa300be018b3748ab66ad18e76a838218a1f1718a1f8008ebfb7fcdff1a205",
+    "reviewSha256": "664c9e29e5901cb3a353d964b1cd216386b3a184b9b2fad9abd5105727dc6f16",
+    "renderSha256": "9f076e0a34084fa53a521384cc79514362f27f2bd6b5354009bae9129169880d",
+    "htmlSha256": "4ba6d334b13284bf6152f10ae56b2e61818578760891a9383b3de44604a2b5cb",
+    "feedbackSha256": "d4701cb7aab3c87bf91143c01b8e998098d3b74bdd2e2858481aaf6f3842367a",
+    "interpretationSha256": "944fc1c333a09270042851292aaf2a824daa2e73ffd1f9cc7b4b1b86f2913f00"
+  },
+  "summary": {
+    "cases": 25,
+    "agreementMatrix": {
+      "should-be-gradient": {
+        "should-be-gradient": 7,
+        "should-not-be-gradient": 0,
+        "either-way": 2,
+        "no-visible-difference": 1,
+        "selected-colors-not-identifiable": 0
+      },
+      "should-not-be-gradient": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 10,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0
+      },
+      "either-way": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 4,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 1
+      },
+      "no-visible-difference": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0
+      },
+      "selected-colors-not-identifiable": {
+        "should-be-gradient": 0,
+        "should-not-be-gradient": 0,
+        "either-way": 0,
+        "no-visible-difference": 0,
+        "selected-colors-not-identifiable": 0
+      }
+    },
+    "exactFiveWayAgreement": 21,
+    "bothDecisive": 17,
+    "decisiveRepeatAgreement": 17,
+    "decisiveToNondecisive": 3,
+    "gradientToFlatFlips": 0,
+    "flatToGradientFlips": 0,
+    "v3AgainstHistorical": {
+      "decisive": 20,
+      "correct": 13
+    },
+    "v3AgainstRepeat": {
+      "decisive": 17,
+      "correct": 11
+    },
+    "identifiabilityChanges": {
+      "newNoVisibleDifference": 1,
+      "newSelectedColorsNotIdentifiable": 1
+    },
+    "byPrivateCell": {
+      "either-way/v3-flat": {
+        "cases": 3,
+        "currentLabels": {
+          "selected-colors-not-identifiable": 1,
+          "either-way": 2
+        },
+        "exactAgreement": 2
+      },
+      "either-way/v3-gradient": {
+        "cases": 2,
+        "currentLabels": {
+          "either-way": 2
+        },
+        "exactAgreement": 2
+      },
+      "should-be-gradient/v3-flat": {
+        "cases": 1,
+        "currentLabels": {
+          "either-way": 1
+        },
+        "exactAgreement": 0
+      },
+      "should-be-gradient/v3-gradient": {
+        "cases": 9,
+        "currentLabels": {
+          "no-visible-difference": 1,
+          "should-be-gradient": 7,
+          "either-way": 1
+        },
+        "exactAgreement": 7
+      },
+      "should-not-be-gradient/v3-flat": {
+        "cases": 4,
+        "currentLabels": {
+          "should-not-be-gradient": 4
+        },
+        "exactAgreement": 4
+      },
+      "should-not-be-gradient/v3-gradient": {
+        "cases": 6,
+        "currentLabels": {
+          "should-not-be-gradient": 6
+        },
+        "exactAgreement": 6
+      }
+    },
+    "bySelectionLane": {
+      "either-fifth-nearest": {
+        "cases": 1,
+        "currentLabels": {
+          "either-way": 1
+        },
+        "exactAgreement": 1
+      },
+      "either-outcome-nearest": {
+        "cases": 2,
+        "currentLabels": {
+          "either-way": 2
+        },
+        "exactAgreement": 2
+      },
+      "either-outcome-pair-hash": {
+        "cases": 2,
+        "currentLabels": {
+          "selected-colors-not-identifiable": 1,
+          "either-way": 1
+        },
+        "exactAgreement": 1
+      },
+      "nearest-margin": {
+        "cases": 8,
+        "currentLabels": {
+          "no-visible-difference": 1,
+          "should-be-gradient": 4,
+          "should-not-be-gradient": 3
+        },
+        "exactAgreement": 7
+      },
+      "pair-hash": {
+        "cases": 6,
+        "currentLabels": {
+          "should-be-gradient": 3,
+          "should-not-be-gradient": 2,
+          "either-way": 1
+        },
+        "exactAgreement": 5
+      },
+      "v3-disagreement-pair-hash": {
+        "cases": 6,
+        "currentLabels": {
+          "should-not-be-gradient": 5,
+          "either-way": 1
+        },
+        "exactAgreement": 5
+      }
+    }
+  },
+  "entries": [
+    {
+      "familyId": "gc-0fe57ca77f27b6cf9b12",
+      "pairSha256": "0474e36cc1f9f262559d3f0973b92ec70ae9dce5d496362ecfda1a7927065372",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:51.251Z"
+    },
+    {
+      "familyId": "gc-1a6b3c2ddc2c0258f96d",
+      "pairSha256": "c9b9fb63cf9ad2e4a4c21d6de347eceb7afc41b0f6851d719dff8bdf071b01c5",
+      "historicalLabel": "should-be-gradient",
+      "current": "no-visible-difference",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:43.825Z"
+    },
+    {
+      "familyId": "gc-35dbfaa59c24f7520864",
+      "pairSha256": "f846dc35fc246b811a028fb23c8d0160193609f1af8063d2e8d66ef021d61a29",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:15.293Z"
+    },
+    {
+      "familyId": "gc-46dcd9b58e907172c50e",
+      "pairSha256": "07a365c8d9f2636351e769135bf15a1e9b3c1bfe1765155cf330751e9e06ef89",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:52.251Z"
+    },
+    {
+      "familyId": "gc-514e9ffec779bb95c0a1",
+      "pairSha256": "0ad5a9281b1541e5338a55a92990f31558e65bbd5148d480285f2ee805db8b2a",
+      "historicalLabel": "either-way",
+      "current": "selected-colors-not-identifiable",
+      "v3Eligible": false,
+      "old086Eligible": false,
+      "privateCell": "either-way/v3-flat",
+      "selectionLane": "either-outcome-pair-hash",
+      "historicalV3Correct": null,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:18:42.725Z"
+    },
+    {
+      "familyId": "gc-535b0c12c20aed0d9863",
+      "pairSha256": "340c651f47c91c4d45647d1fa67acd2b79fcdd992fa58158744347ea176914ce",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:18:04.597Z"
+    },
+    {
+      "familyId": "gc-5d7bbac0337b80ae983e",
+      "pairSha256": "1cbe0c785558bf201bcf0cbf9d5f460e1b0bd80b427a4662c21d77dd2666fd53",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:00.546Z"
+    },
+    {
+      "familyId": "gc-6369505abecd3b1f9a24",
+      "pairSha256": "00426716fa80654ac80196a389cd150a2bc0cf86c10e7dbacffa3ff602effdf2",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:38.618Z"
+    },
+    {
+      "familyId": "gc-6a100e26bcc7459bf64f",
+      "pairSha256": "e079d3e5f679723bd6c377fa3504c15113f9a498042c5fe21384adabc1ba75e4",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": false,
+      "old086Eligible": true,
+      "privateCell": "should-not-be-gradient/v3-flat",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:37.998Z"
+    },
+    {
+      "familyId": "gc-71ac0e35b83fd14ba7d5",
+      "pairSha256": "0833c0132e16aca5c3f4df734745fe509b44b54d89d409f31f91d95f292c4ad2",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": false,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-flat",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:18:13.334Z"
+    },
+    {
+      "familyId": "gc-7b85b0efda636805512b",
+      "pairSha256": "04df6e8da7cd2a20c5451ce0fb8e00d79b5bfff04d3e24fa3cc03a8dba0ecff7",
+      "historicalLabel": "should-be-gradient",
+      "current": "either-way",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:28.496Z"
+    },
+    {
+      "familyId": "gc-968bcbdcc038d6c8e20e",
+      "pairSha256": "2f454679d09436ca3d61a68d17b7b14605964b14516b11367fd475ef67e7593c",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:20.364Z"
+    },
+    {
+      "familyId": "gc-9fc3173c8a32f9a37060",
+      "pairSha256": "b3af791c6eae0a902d64fe6478d07eb01a22be30d4641dcf46322e8392ad9ecc",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:18:56.913Z"
+    },
+    {
+      "familyId": "gc-b0abb72969be0537049a",
+      "pairSha256": "04e33ac81a4a96c251f884324f7c88cde54c4d770c914b19213c44da900ec847",
+      "historicalLabel": "should-be-gradient",
+      "current": "should-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-gradient",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:49.320Z"
+    },
+    {
+      "familyId": "gc-b6dcad5d62ef22ef29e1",
+      "pairSha256": "bc2f40d541f7bfbef1e3a15e716b44f0d579efb5054a141d14580c82145ee1a8",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": false,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-flat",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:41.829Z"
+    },
+    {
+      "familyId": "gc-b99827ae221843eb0578",
+      "pairSha256": "2ff3a0f69b3eef7d8067dd3566c7fbf5f6fd6a607f023672f9be5a87f620ee0d",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:05.024Z"
+    },
+    {
+      "familyId": "gc-c79a6d529180b9fdd5c9",
+      "pairSha256": "0a408b64b3459f86519c7c88173b064f5f3624943ebf75a202f9ce327859dde1",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:33.579Z"
+    },
+    {
+      "familyId": "gc-cb38c2834ee134726a0f",
+      "pairSha256": "1687414874b193bb5d4c18c6d2dc0960df55eaa938f8f3aecf26c1c87051eb9b",
+      "historicalLabel": "either-way",
+      "current": "either-way",
+      "v3Eligible": true,
+      "old086Eligible": true,
+      "privateCell": "either-way/v3-gradient",
+      "selectionLane": "either-outcome-nearest",
+      "historicalV3Correct": null,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:29.301Z"
+    },
+    {
+      "familyId": "gc-d67d2a270d9ef853e69b",
+      "pairSha256": "535ab99d3aca85f6e6934dc859752fa55beba4f45429f28ef7334b381b68532a",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "nearest-margin",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:56.605Z"
+    },
+    {
+      "familyId": "gc-d98318e1e3bb1182fd21",
+      "pairSha256": "a39673c63ae8090a3535f519f3a11225cf6034f493ce794f22a304c1dcc65b79",
+      "historicalLabel": "either-way",
+      "current": "either-way",
+      "v3Eligible": false,
+      "old086Eligible": true,
+      "privateCell": "either-way/v3-flat",
+      "selectionLane": "either-fifth-nearest",
+      "historicalV3Correct": null,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:47.525Z"
+    },
+    {
+      "familyId": "gc-e518f46ad5348fac5ad9",
+      "pairSha256": "3fd934deab56b0d39c2fe8bdedb19cc8b570f25fc18cdd455450f7998cf4759f",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": true,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-gradient",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": false,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:18:25.637Z"
+    },
+    {
+      "familyId": "gc-e6d899d23bac8228abf9",
+      "pairSha256": "0346fecf43f054889a193bccfd870ea15e8fb14722735c4c791bb9573ea32385",
+      "historicalLabel": "should-not-be-gradient",
+      "current": "should-not-be-gradient",
+      "v3Eligible": false,
+      "old086Eligible": false,
+      "privateCell": "should-not-be-gradient/v3-flat",
+      "selectionLane": "pair-hash",
+      "historicalV3Correct": true,
+      "repeatV3Correct": true,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:11.587Z"
+    },
+    {
+      "familyId": "gc-e820b3df344c32557ab2",
+      "pairSha256": "031483f556b6120f646774a406540c059419952f7747bbbce7116180ab29124d",
+      "historicalLabel": "either-way",
+      "current": "either-way",
+      "v3Eligible": true,
+      "old086Eligible": false,
+      "privateCell": "either-way/v3-gradient",
+      "selectionLane": "either-outcome-pair-hash",
+      "historicalV3Correct": null,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:17:58.659Z"
+    },
+    {
+      "familyId": "gc-f45125dccbfb90cc7d24",
+      "pairSha256": "0d88ab14faf16f196c7a801416aaf40336ffdec26f6ad7a6cf1f5c3ee475f598",
+      "historicalLabel": "should-be-gradient",
+      "current": "either-way",
+      "v3Eligible": false,
+      "old086Eligible": true,
+      "privateCell": "should-be-gradient/v3-flat",
+      "selectionLane": "v3-disagreement-pair-hash",
+      "historicalV3Correct": false,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:15:36.108Z"
+    },
+    {
+      "familyId": "gc-fd719894e11aa09fe37f",
+      "pairSha256": "61bb1cf0b07dee677b1eab3356e4d60201c21763db69b75566a30aed620e214f",
+      "historicalLabel": "either-way",
+      "current": "either-way",
+      "v3Eligible": false,
+      "old086Eligible": false,
+      "privateCell": "either-way/v3-flat",
+      "selectionLane": "either-outcome-nearest",
+      "historicalV3Correct": null,
+      "repeatV3Correct": null,
+      "comment": "",
+      "submittedAt": "2026-07-20T16:16:07.740Z"
+    }
+  ]
+}

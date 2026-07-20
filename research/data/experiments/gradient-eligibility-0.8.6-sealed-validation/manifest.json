@@ -1,0 +1,6284 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": "gradient-eligibility-sealed-validation-0.6.0",
+  "generatedAt": "2026-07-20T11:13:11.986Z",
+  "protocolSha256": "c0b1e117ed2cbbb0dd41e3c58fa031090fea4a888bf50e3ed87154dc22c06bb8",
+  "generatorSha256": "5de197ca87dc8cdc029860b450ff0d654984e8d926b441c25b491925e6e44e0f",
+  "baselineAlgorithmVersion": "region-graph-0.17.0",
+  "candidateAlgorithmVersion": "gradient-eligibility-0.8.6-dev",
+  "evidenceVersion": "gradient-eligibility-evidence-0.2.0-dev",
+  "thresholds": {
+    "minimumEndpointDistance": 0.025,
+    "minimumConnectedFieldContinuity": 0.7857142857142857,
+    "minimumConnectedFieldShare": 0.05,
+    "minimumOrderedPathContinuity": 0.9285714285714286,
+    "minimumIntermediatePathShare": 0.3,
+    "minimumColorPathDirectionalOrdering": 0.15,
+    "maximumFlatBackgroundIsolatedSurfaceRisk": 0.4,
+    "maximumEndpointDominatedIntermediatePathShare": 0.4,
+    "maximumFlatRiskDirectionalOrdering": 0.2,
+    "minimumBroadIntermediateCoverage": 0.2,
+    "maximumBroadFieldSurfaceFlatness": 0.2,
+    "minimumNonlinearPathContinuity": 1,
+    "minimumNonlinearIntermediatePathShare": 0.6,
+    "minimumNonlinearPairCoherence": 0.5,
+    "maximumNonlinearConnectedFieldCoverage": 0,
+    "maximumSparseIntermediateCoverage": 0.08,
+    "minimumBorderBackgroundCoverage": 0.03,
+    "minimumSparseFieldBackgroundCoverage": 0.2,
+    "minimumBroadTenBinContinuity": 0.7142857142857143,
+    "minimumBroadTenBinConnectedCoverage": 0.7,
+    "minimumBroadTenBinConnectedShare": 0.9,
+    "minimumBroadTenBinIntermediateCoverage": 0.2,
+    "minimumBroadTenBinDirectionalOrdering": 0.5,
+    "maximumBroadTenBinAbruptTransitionShare": 0.2,
+    "minimumSparseOrderedEndpointDistance": 0.2,
+    "minimumSparseOrderedPathContinuity": 1,
+    "minimumSparseOrderedDirectionalOrdering": 0.85,
+    "maximumUnsupportedEndpointDistance": 0.15,
+    "maximumUnsupportedColorPathCoverage": 0.11,
+    "maximumUnsupportedPairCoherence": 0.3,
+    "minimumFragmentedConnectedCoverage": 0.09,
+    "maximumFragmentedConnectedShare": 0.2,
+    "minimumDualBorderCoverage": 0.27,
+    "maximumDualBorderIntermediatePathShare": 0.17,
+    "maximumSparseConnectedIntermediateCoverage": 0.04,
+    "minimumSparseConnectedCoverage": 0.05,
+    "maximumSparseConnectedBackgroundCoherence": 0.3,
+    "minimumCoherentFieldConnectedShare": 0.993,
+    "minimumCoherentFieldPairCoherence": 0.55,
+    "maximumCoherentFieldSurfaceCoherence": 0.3
+  },
+  "implementationSha256": {
+    "src/candidates.ts": "0a6a5aa0f69a6fe95c87ea2e4febd9f4d856c56fa40bf1041c714c76bb2edc3c",
+    "src/color.ts": "8e4dce03468e5c715fd94de8858cbf69c09f32e709ae47f78524a71eccd3fbd0",
+    "src/extract.ts": "8468074be51bb0f575cf7a71f2565cd9098b9bd37221e338a0872f6661c06f62",
+    "src/gradient-eligibility-extract.ts": "757854f6d46c509c066f6ed412d1622a7b2e1350d7f7df4cd55a59738980bb9a",
+    "src/gradient-eligibility.ts": "c9c4a46c1d65f88d058bd90769356c3f96ccd013cddd3b42ded7cc3be3e650e6",
+    "src/guarded-palette.ts": "592dc03a386ba0f6ba9cb231a123795f7b331bb15a909cda122a788998983a6d",
+    "src/image.ts": "c043d1169c8f8338bf9fdce98707ed1533122580770bceb38170c4953adaa8e4",
+    "src/joint-palette.ts": "80809e1eb1b9e0e9696253cf6d0573eda4a825a987d63e3b0362b4b173469442",
+    "src/palette.ts": "7ce749e0056ac9af13b76a24c7b50af1cafe96c0cd9dadc4e433b8c990a2b9e6",
+    "src/regions.ts": "7b2f6e1665e3104a7dd90b3042af3672e7ce4ad33e1cca25579587c32d67f1f8",
+    "src/types.ts": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb"
+  },
+  "inputs": {
+    "sourceDirectory": "06",
+    "priorDirectories": [
+      "00",
+      "01",
+      "02",
+      "03",
+      "04",
+      "05"
+    ],
+    "priorInventorySha256": "b6f09f5b46fef7cd4465f0f1620faa4b2aa1fcf3fd8a5a85e8aee4c05a811bcb",
+    "musicManifest": "data/candidates/region-graph-0.18.0-poc.1-sealed/manifest.json",
+    "musicManifestSha256": "10ab5c52059c784d6ad63ec8a3460c13d003f840ebf1de29ba7ecef4abb43690"
+  },
+  "runtime": {
+    "node": "v25.8.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "summary": {
+    "rawSources": 340,
+    "artworkFamilies": 317,
+    "includedFamilies": 317,
+    "excludedFamilies": 0,
+    "multiSourceFamilies": 23,
+    "internalExactDuplicateGroups": 0,
+    "internalExactSourceExclusions": 0,
+    "priorArtworkIdOverlaps": 0,
+    "priorExactSourceOverlaps": 0,
+    "musicExactSourceOverlaps": 0
+  },
+  "excluded": [],
+  "families": [
+    {
+      "familyId": "gv-53a5e0faf20a0eb44386",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006000dac8c7aced000db3b",
+        "sha256": "5353363cdbffc3fd1dff88e2010ae4bdc1ac21f65da52e80ca1555c60ec2a69c",
+        "width": 640,
+        "height": 640,
+        "bytes": 164113
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006000dac8c7aced000db3b",
+          "sha256": "5353363cdbffc3fd1dff88e2010ae4bdc1ac21f65da52e80ca1555c60ec2a69c",
+          "width": 640,
+          "height": 640,
+          "bytes": 164113
+        }
+      ]
+    },
+    {
+      "familyId": "gv-01899dcad4234e821247",
+      "anchor": {
+        "file": "06/ab67616d00001e020006012cd9a7ec7703255ae1",
+        "sha256": "e1bf70a71360442019995eee15661ac878305f05220c7209b82e01b111c612a5",
+        "width": 300,
+        "height": 300,
+        "bytes": 25392
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006012cd9a7ec7703255ae1",
+          "sha256": "e1bf70a71360442019995eee15661ac878305f05220c7209b82e01b111c612a5",
+          "width": 300,
+          "height": 300,
+          "bytes": 25392
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e9e37eddee988b096517",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006016ce00b97c2aa178f71",
+        "sha256": "2ddab5a83874376223bae8268b42ad1cb90f47822bace9223ac2c3c11c5ace3a",
+        "width": 640,
+        "height": 640,
+        "bytes": 128794
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006016ce00b97c2aa178f71",
+          "sha256": "2ddab5a83874376223bae8268b42ad1cb90f47822bace9223ac2c3c11c5ace3a",
+          "width": 640,
+          "height": 640,
+          "bytes": 128794
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4beeae29a3363cb1fd4f",
+      "anchor": {
+        "file": "06/ab67616d0000b273000602c54e824377342b893f",
+        "sha256": "2f1cb108cabd431fabbe7d4103fb3773f51d5cda4d1ecf00620dd5cca16d0927",
+        "width": 640,
+        "height": 640,
+        "bytes": 35289
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000602c54e824377342b893f",
+          "sha256": "2f1cb108cabd431fabbe7d4103fb3773f51d5cda4d1ecf00620dd5cca16d0927",
+          "width": 640,
+          "height": 640,
+          "bytes": 35289
+        }
+      ]
+    },
+    {
+      "familyId": "gv-cfc30673abf3d2e83a26",
+      "anchor": {
+        "file": "06/ab67616d00001e0200060491ade88c8893373d9f",
+        "sha256": "9ae81cd12e4bd2a4fc8b92f169647174f67cb4c2f4d1d45244fed0d6b3f83ccd",
+        "width": 300,
+        "height": 300,
+        "bytes": 40177
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200060491ade88c8893373d9f",
+          "sha256": "9ae81cd12e4bd2a4fc8b92f169647174f67cb4c2f4d1d45244fed0d6b3f83ccd",
+          "width": 300,
+          "height": 300,
+          "bytes": 40177
+        }
+      ]
+    },
+    {
+      "familyId": "gv-76be3ea3b0b5314bc16f",
+      "anchor": {
+        "file": "06/ab67616d0000b273000606d3a5c7da73c3887268",
+        "sha256": "661805cbbb6159b42cf233d3db95478d75c69f1ae62f07409ce45ab4bd49f6f6",
+        "width": 640,
+        "height": 640,
+        "bytes": 194241
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000606d3a5c7da73c3887268",
+          "sha256": "661805cbbb6159b42cf233d3db95478d75c69f1ae62f07409ce45ab4bd49f6f6",
+          "width": 640,
+          "height": 640,
+          "bytes": 194241
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6714141213a65fb4d380",
+      "anchor": {
+        "file": "06/ab67616d0000b273000607016a75d355ddcda4d5",
+        "sha256": "ffb5bee71c58ea66f2d3861e01aee3a58fee679e99c8d7808d3afc9320271bc8",
+        "width": 640,
+        "height": 640,
+        "bytes": 111304
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000607016a75d355ddcda4d5",
+          "sha256": "ffb5bee71c58ea66f2d3861e01aee3a58fee679e99c8d7808d3afc9320271bc8",
+          "width": 640,
+          "height": 640,
+          "bytes": 111304
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3ec59002261a85787988",
+      "anchor": {
+        "file": "06/ab67616d0000b273000608831bb2c85ceb69b5cd",
+        "sha256": "685157eb27176d5d08c9c5b85f09ca5da117072f031be265485b50f920e0ff58",
+        "width": 640,
+        "height": 640,
+        "bytes": 145050
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000608831bb2c85ceb69b5cd",
+          "sha256": "685157eb27176d5d08c9c5b85f09ca5da117072f031be265485b50f920e0ff58",
+          "width": 640,
+          "height": 640,
+          "bytes": 145050
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b9c72a2679af70b2f25c",
+      "anchor": {
+        "file": "06/ab67616d00001e020006090d89ec279f2804eb04",
+        "sha256": "3e9ce4757aefea7ed3d17c01a26e5f185503bcbd9e951477cde8c30e9de9b2fb",
+        "width": 300,
+        "height": 300,
+        "bytes": 17197
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006090d89ec279f2804eb04",
+          "sha256": "3e9ce4757aefea7ed3d17c01a26e5f185503bcbd9e951477cde8c30e9de9b2fb",
+          "width": 300,
+          "height": 300,
+          "bytes": 17197
+        }
+      ]
+    },
+    {
+      "familyId": "gv-857a809399f5bc05fe6b",
+      "anchor": {
+        "file": "06/ab67616d0000b273000609192a3e16b625a5c830",
+        "sha256": "54581e38730b73b1aab85f3b732354fb04f999e8648c9e46e6bf66b1137fc135",
+        "width": 640,
+        "height": 640,
+        "bytes": 134403
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000609192a3e16b625a5c830",
+          "sha256": "54581e38730b73b1aab85f3b732354fb04f999e8648c9e46e6bf66b1137fc135",
+          "width": 640,
+          "height": 640,
+          "bytes": 134403
+        }
+      ]
+    },
+    {
+      "familyId": "gv-78d42df29f992e87db94",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060ba7f999691e5c422754",
+        "sha256": "ff3a1e6d6cf4005a36933be4b7bb1685fa42d9fad30a81a006b2b701d7c5e55c",
+        "width": 640,
+        "height": 640,
+        "bytes": 89295
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060ba7f999691e5c422754",
+          "sha256": "ff3a1e6d6cf4005a36933be4b7bb1685fa42d9fad30a81a006b2b701d7c5e55c",
+          "width": 640,
+          "height": 640,
+          "bytes": 89295
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6d5b77b70b8c92692456",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060bf1781dd9688d5969f5",
+        "sha256": "03a1df2fd5ef48874aac8970e5f225fde908985ac30fe558c58bdf27f9d888c8",
+        "width": 640,
+        "height": 640,
+        "bytes": 130911
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060bf1781dd9688d5969f5",
+          "sha256": "03a1df2fd5ef48874aac8970e5f225fde908985ac30fe558c58bdf27f9d888c8",
+          "width": 640,
+          "height": 640,
+          "bytes": 130911
+        },
+        {
+          "file": "06/ab67616d00001e0200060bf1781dd9688d5969f5",
+          "sha256": "fb238a276b1ac6841348b0eb5482b43489d964865085d718fabb72195e20ec20",
+          "width": 300,
+          "height": 300,
+          "bytes": 37682
+        }
+      ]
+    },
+    {
+      "familyId": "gv-cbd2fc479c1210ed976f",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060c4c0c8be614df51d75d",
+        "sha256": "156ab2a9d94e452c2fc1aa9a9b370dac0452b76755450a1baa42bd546097803f",
+        "width": 640,
+        "height": 640,
+        "bytes": 176841
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060c4c0c8be614df51d75d",
+          "sha256": "156ab2a9d94e452c2fc1aa9a9b370dac0452b76755450a1baa42bd546097803f",
+          "width": 640,
+          "height": 640,
+          "bytes": 176841
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1414ef7d4496eca9da48",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060d3b8eb1ed3b84b40cbd",
+        "sha256": "81eba80b52fa2ff64087bd07aa4ba85e318bc57f0bd2d47785806747e610e3de",
+        "width": 640,
+        "height": 640,
+        "bytes": 43066
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060d3b8eb1ed3b84b40cbd",
+          "sha256": "81eba80b52fa2ff64087bd07aa4ba85e318bc57f0bd2d47785806747e610e3de",
+          "width": 640,
+          "height": 640,
+          "bytes": 43066
+        }
+      ]
+    },
+    {
+      "familyId": "gv-87473b9021a82fe8f3e9",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060efaed4ada5673f1a5b9",
+        "sha256": "e3a0889a0741c496791bfb3994be07ed5940f8e0b8c595c72f2cdaf450001273",
+        "width": 640,
+        "height": 640,
+        "bytes": 43841
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060efaed4ada5673f1a5b9",
+          "sha256": "e3a0889a0741c496791bfb3994be07ed5940f8e0b8c595c72f2cdaf450001273",
+          "width": 640,
+          "height": 640,
+          "bytes": 43841
+        }
+      ]
+    },
+    {
+      "familyId": "gv-272f82004fe48fcd8bfa",
+      "anchor": {
+        "file": "06/ab67616d0000b27300060fc1104eacbe4153f29b",
+        "sha256": "35e351934287c22776cc0709da21c64d0d727de36f874f60ed8db727248538f3",
+        "width": 640,
+        "height": 640,
+        "bytes": 73177
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300060fc1104eacbe4153f29b",
+          "sha256": "35e351934287c22776cc0709da21c64d0d727de36f874f60ed8db727248538f3",
+          "width": 640,
+          "height": 640,
+          "bytes": 73177
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2547867283a4652f3e87",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006108d474017714bdd48e6",
+        "sha256": "2ade9779070fef3c409e15d3ccfd3e79fb56b0c7db8592bca25415d50d971b50",
+        "width": 640,
+        "height": 640,
+        "bytes": 155752
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006108d474017714bdd48e6",
+          "sha256": "2ade9779070fef3c409e15d3ccfd3e79fb56b0c7db8592bca25415d50d971b50",
+          "width": 640,
+          "height": 640,
+          "bytes": 155752
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d121e2591909215324f1",
+      "anchor": {
+        "file": "06/ab67616d0000b273000610f760a284b8a769ad85",
+        "sha256": "b241fd05af9d56f0d063957f812ae3297efeb5366ba7398b90f8d1e2f6e73b2f",
+        "width": 640,
+        "height": 640,
+        "bytes": 141934
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000610f760a284b8a769ad85",
+          "sha256": "b241fd05af9d56f0d063957f812ae3297efeb5366ba7398b90f8d1e2f6e73b2f",
+          "width": 640,
+          "height": 640,
+          "bytes": 141934
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fc371abfd7adc778ff7e",
+      "anchor": {
+        "file": "06/ab67616d0000b273000611aa30f53bf6fb21dd63",
+        "sha256": "713114e1343061ff49c62d9348bb514e4cf1a382c005013aae8045eaefb0144f",
+        "width": 640,
+        "height": 640,
+        "bytes": 254380
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000611aa30f53bf6fb21dd63",
+          "sha256": "713114e1343061ff49c62d9348bb514e4cf1a382c005013aae8045eaefb0144f",
+          "width": 640,
+          "height": 640,
+          "bytes": 254380
+        }
+      ]
+    },
+    {
+      "familyId": "gv-df46395bd09bb21a639d",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061216983cd3a68ebeddeb",
+        "sha256": "3170822116a5a432a16d3f730efd29f000e3612b89f3b7ba65e62098fa995d76",
+        "width": 640,
+        "height": 640,
+        "bytes": 52922
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061216983cd3a68ebeddeb",
+          "sha256": "3170822116a5a432a16d3f730efd29f000e3612b89f3b7ba65e62098fa995d76",
+          "width": 640,
+          "height": 640,
+          "bytes": 52922
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a7d9aa6ef1ccb91157d1",
+      "anchor": {
+        "file": "06/ab67616d00001e020006124fc1d50e91c7a11f56",
+        "sha256": "8eb9afeb9a18a05e0038d434d34084850d87eae0f9eaee799dfc9deef1086b01",
+        "width": 300,
+        "height": 300,
+        "bytes": 23457
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006124fc1d50e91c7a11f56",
+          "sha256": "8eb9afeb9a18a05e0038d434d34084850d87eae0f9eaee799dfc9deef1086b01",
+          "width": 300,
+          "height": 300,
+          "bytes": 23457
+        }
+      ]
+    },
+    {
+      "familyId": "gv-18e5dfb39f74f936fc4a",
+      "anchor": {
+        "file": "06/ab67616d00001e0200061333942097edb5de0ef9",
+        "sha256": "f52c2d32096c481b78745ca4235e1885b683c07b085900482f06634c08dc2517",
+        "width": 300,
+        "height": 300,
+        "bytes": 22334
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200061333942097edb5de0ef9",
+          "sha256": "f52c2d32096c481b78745ca4235e1885b683c07b085900482f06634c08dc2517",
+          "width": 300,
+          "height": 300,
+          "bytes": 22334
+        }
+      ]
+    },
+    {
+      "familyId": "gv-87bb75de62f75ff02fec",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006173a4c5fef787115c65b",
+        "sha256": "f8319ee3aa807c4c43e8a262c3f2e291cc54dbc93abbc9d53f812983bca3b146",
+        "width": 640,
+        "height": 640,
+        "bytes": 81425
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006173a4c5fef787115c65b",
+          "sha256": "f8319ee3aa807c4c43e8a262c3f2e291cc54dbc93abbc9d53f812983bca3b146",
+          "width": 640,
+          "height": 640,
+          "bytes": 81425
+        }
+      ]
+    },
+    {
+      "familyId": "gv-79628007e4edb56cd7e1",
+      "anchor": {
+        "file": "06/ab67616d00001e020006177f757a4450281d133f",
+        "sha256": "ab9ad7c98f5e00acff28abe1b62eda6a271b1247ded77fb3b2dc09ecbbd11044",
+        "width": 300,
+        "height": 300,
+        "bytes": 49050
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006177f757a4450281d133f",
+          "sha256": "ab9ad7c98f5e00acff28abe1b62eda6a271b1247ded77fb3b2dc09ecbbd11044",
+          "width": 300,
+          "height": 300,
+          "bytes": 49050
+        }
+      ]
+    },
+    {
+      "familyId": "gv-151a95e77a72d9ef54d0",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006181dc65491f49f4ac0e4",
+        "sha256": "840ef00501833a40220dfa456ddec69de3650a940466f015144c5143017b0fd6",
+        "width": 640,
+        "height": 640,
+        "bytes": 171369
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006181dc65491f49f4ac0e4",
+          "sha256": "840ef00501833a40220dfa456ddec69de3650a940466f015144c5143017b0fd6",
+          "width": 640,
+          "height": 640,
+          "bytes": 171369
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fc07da77d70913efc0e3",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061a4addc37d8a55fd2ecb",
+        "sha256": "8d9a51ee3c559506a9cecc1e1044fca1ae424a670c9d9016b38c9d2f2865b106",
+        "width": 640,
+        "height": 640,
+        "bytes": 77044
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061a4addc37d8a55fd2ecb",
+          "sha256": "8d9a51ee3c559506a9cecc1e1044fca1ae424a670c9d9016b38c9d2f2865b106",
+          "width": 640,
+          "height": 640,
+          "bytes": 77044
+        }
+      ]
+    },
+    {
+      "familyId": "gv-166be6d1b0a9e2fda0c2",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061a9724adf286aece5aa2",
+        "sha256": "dca318b2fd725aaedd6fe20fe4d5e2fd7c5ec2a4edcd012f07af3a08feeff9d0",
+        "width": 640,
+        "height": 640,
+        "bytes": 171550
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061a9724adf286aece5aa2",
+          "sha256": "dca318b2fd725aaedd6fe20fe4d5e2fd7c5ec2a4edcd012f07af3a08feeff9d0",
+          "width": 640,
+          "height": 640,
+          "bytes": 171550
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4c3456bbdd9f995f066c",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061b2047e758485c06182e",
+        "sha256": "ae48cef3da6369e63d75c1368047510c411fbf946c6b077895e5805eb36c366d",
+        "width": 640,
+        "height": 640,
+        "bytes": 18590
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061b2047e758485c06182e",
+          "sha256": "ae48cef3da6369e63d75c1368047510c411fbf946c6b077895e5805eb36c366d",
+          "width": 640,
+          "height": 640,
+          "bytes": 18590
+        }
+      ]
+    },
+    {
+      "familyId": "gv-af39de54f62b113f16cc",
+      "anchor": {
+        "file": "06/ab67616d00001e0200061bf089621ca441409461",
+        "sha256": "8d4f85c0142aeb95641877b2a6d0ff4b6a0950e1af7c6cc2cfc1304c4fcf2a3b",
+        "width": 300,
+        "height": 300,
+        "bytes": 52456
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200061bf089621ca441409461",
+          "sha256": "8d4f85c0142aeb95641877b2a6d0ff4b6a0950e1af7c6cc2cfc1304c4fcf2a3b",
+          "width": 300,
+          "height": 300,
+          "bytes": 52456
+        }
+      ]
+    },
+    {
+      "familyId": "gv-83ee5640d8d52210606b",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061d1ecdc156ef898d1cd0",
+        "sha256": "f73d94a293a2436c5f48f4dbddf8989ca2fd0a74954054c988e91057a5d8dfea",
+        "width": 640,
+        "height": 640,
+        "bytes": 107669
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061d1ecdc156ef898d1cd0",
+          "sha256": "f73d94a293a2436c5f48f4dbddf8989ca2fd0a74954054c988e91057a5d8dfea",
+          "width": 640,
+          "height": 640,
+          "bytes": 107669
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e1e37950d08a40b8bb45",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061d4a7e87f3752b44b42a",
+        "sha256": "918f19b6061beb30320a826d5435aa7327bc60f31a4ef242c55b325f13b1f117",
+        "width": 640,
+        "height": 640,
+        "bytes": 101772
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061d4a7e87f3752b44b42a",
+          "sha256": "918f19b6061beb30320a826d5435aa7327bc60f31a4ef242c55b325f13b1f117",
+          "width": 640,
+          "height": 640,
+          "bytes": 101772
+        }
+      ]
+    },
+    {
+      "familyId": "gv-34f3fd8c4a4171f7e6d9",
+      "anchor": {
+        "file": "06/ab67616d00001e0200061ddf98cc83885d6b855c",
+        "sha256": "b5b053affd47341620fed9e94be10d2b5ae07c75045e2d575769eb6ac73df8a5",
+        "width": 300,
+        "height": 300,
+        "bytes": 31464
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200061ddf98cc83885d6b855c",
+          "sha256": "b5b053affd47341620fed9e94be10d2b5ae07c75045e2d575769eb6ac73df8a5",
+          "width": 300,
+          "height": 300,
+          "bytes": 31464
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b9a5fadd025f378f7a6c",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061e9ba3ac69846812989b",
+        "sha256": "7ded17c624901565a36ebf5251f1cc90f0596f611872ddd39c38a975e604f688",
+        "width": 640,
+        "height": 640,
+        "bytes": 167612
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061e9ba3ac69846812989b",
+          "sha256": "7ded17c624901565a36ebf5251f1cc90f0596f611872ddd39c38a975e604f688",
+          "width": 640,
+          "height": 640,
+          "bytes": 167612
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8d0f1329d5d11265ca75",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061f8039175f7b1e7a00e0",
+        "sha256": "c77e1d15555e3398e72321925826bcfdfd70c6914dc6ce3b27b8865435caef1b",
+        "width": 640,
+        "height": 640,
+        "bytes": 171451
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061f8039175f7b1e7a00e0",
+          "sha256": "c77e1d15555e3398e72321925826bcfdfd70c6914dc6ce3b27b8865435caef1b",
+          "width": 640,
+          "height": 640,
+          "bytes": 171451
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0a28d7dfee76e054d518",
+      "anchor": {
+        "file": "06/ab67616d0000b27300061f809b1e3d9c3b709362",
+        "sha256": "0a2d9b88705e04d99bc61b86890a20b7cfe2d3b4b57a7c01ef229e22082ca8f5",
+        "width": 640,
+        "height": 640,
+        "bytes": 90976
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300061f809b1e3d9c3b709362",
+          "sha256": "0a2d9b88705e04d99bc61b86890a20b7cfe2d3b4b57a7c01ef229e22082ca8f5",
+          "width": 640,
+          "height": 640,
+          "bytes": 90976
+        }
+      ]
+    },
+    {
+      "familyId": "gv-df5c26077aab0af6c964",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006204336d83c2fac448e94",
+        "sha256": "332de2c8576d95c03833b2d5c62a1e237a471cd288f6993394e07606d4834988",
+        "width": 640,
+        "height": 640,
+        "bytes": 60123
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006204336d83c2fac448e94",
+          "sha256": "332de2c8576d95c03833b2d5c62a1e237a471cd288f6993394e07606d4834988",
+          "width": 640,
+          "height": 640,
+          "bytes": 60123
+        }
+      ]
+    },
+    {
+      "familyId": "gv-08d93315cde31ad46084",
+      "anchor": {
+        "file": "06/ab67616d00001e02000620619f5ee82bd9b25019",
+        "sha256": "9c5fcb5ad44e8f3d2ab7065f645cee02feffe867ed9acd7f42d82d3c205a4135",
+        "width": 300,
+        "height": 300,
+        "bytes": 36510
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000620619f5ee82bd9b25019",
+          "sha256": "9c5fcb5ad44e8f3d2ab7065f645cee02feffe867ed9acd7f42d82d3c205a4135",
+          "width": 300,
+          "height": 300,
+          "bytes": 36510
+        }
+      ]
+    },
+    {
+      "familyId": "gv-861f75d2ffa9134d0063",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062088f0f2674554e0e551",
+        "sha256": "c416fcccbd809a62277027f955fc656105c5fb9fc548aa5963f01020594c7e87",
+        "width": 640,
+        "height": 640,
+        "bytes": 132017
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062088f0f2674554e0e551",
+          "sha256": "c416fcccbd809a62277027f955fc656105c5fb9fc548aa5963f01020594c7e87",
+          "width": 640,
+          "height": 640,
+          "bytes": 132017
+        }
+      ]
+    },
+    {
+      "familyId": "gv-435961210f7019b58467",
+      "anchor": {
+        "file": "06/ab67616d00001e020006219a3a616e3ebb7bb04e",
+        "sha256": "32bfb9382593359f03783194841f1f3dd51c0419a722f82bd9f6a471e2b7ef71",
+        "width": 300,
+        "height": 300,
+        "bytes": 5896
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006219a3a616e3ebb7bb04e",
+          "sha256": "32bfb9382593359f03783194841f1f3dd51c0419a722f82bd9f6a471e2b7ef71",
+          "width": 300,
+          "height": 300,
+          "bytes": 5896
+        }
+      ]
+    },
+    {
+      "familyId": "gv-17e49c273da243059755",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006225c0e8f276e58b7bc3a",
+        "sha256": "dc86076be05c5dc9a2424a9dd34df93a598dce984d77c9ddeb4a8cbbb0d2d7b2",
+        "width": 640,
+        "height": 640,
+        "bytes": 133308
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006225c0e8f276e58b7bc3a",
+          "sha256": "dc86076be05c5dc9a2424a9dd34df93a598dce984d77c9ddeb4a8cbbb0d2d7b2",
+          "width": 640,
+          "height": 640,
+          "bytes": 133308
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a9c359771762481d73c5",
+      "anchor": {
+        "file": "06/ab67616d00001e02000623295e6dea8a4526dcf6",
+        "sha256": "a982217ecf60b40b97652b7a42f1f94caa4240335f0581d56c233ef99e54a143",
+        "width": 300,
+        "height": 300,
+        "bytes": 39495
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000623295e6dea8a4526dcf6",
+          "sha256": "a982217ecf60b40b97652b7a42f1f94caa4240335f0581d56c233ef99e54a143",
+          "width": 300,
+          "height": 300,
+          "bytes": 39495
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d3b0973f5c5641f3ba47",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062339a473711468f14643",
+        "sha256": "884f4211f43165c2b9a50dd1f1cfe4ee37188ff43d3b037de214a253be30821a",
+        "width": 640,
+        "height": 640,
+        "bytes": 133223
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062339a473711468f14643",
+          "sha256": "884f4211f43165c2b9a50dd1f1cfe4ee37188ff43d3b037de214a253be30821a",
+          "width": 640,
+          "height": 640,
+          "bytes": 133223
+        }
+      ]
+    },
+    {
+      "familyId": "gv-815417defcd26ed2fff9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006245876858fb505b1cbbd",
+        "sha256": "5bb4eaac338c730cc7e717c5b4c8cc8d90c0d21548259271710982f748eda3d7",
+        "width": 640,
+        "height": 640,
+        "bytes": 72483
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006245876858fb505b1cbbd",
+          "sha256": "5bb4eaac338c730cc7e717c5b4c8cc8d90c0d21548259271710982f748eda3d7",
+          "width": 640,
+          "height": 640,
+          "bytes": 72483
+        },
+        {
+          "file": "06/ab67616d00001e020006245876858fb505b1cbbd",
+          "sha256": "4481a7b2b005366d451b488df80a68777930d033962d9876ba8b59d998773482",
+          "width": 300,
+          "height": 300,
+          "bytes": 21964
+        }
+      ]
+    },
+    {
+      "familyId": "gv-81a0ca2975bd64e5f564",
+      "anchor": {
+        "file": "06/ab67616d00001e02000625de0ff8c286c670faf9",
+        "sha256": "16da173b9dcf76f44f7a8f0c11fa1aa3a95fff7f5cd5f510e451f611a75e74d7",
+        "width": 300,
+        "height": 300,
+        "bytes": 35986
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000625de0ff8c286c670faf9",
+          "sha256": "16da173b9dcf76f44f7a8f0c11fa1aa3a95fff7f5cd5f510e451f611a75e74d7",
+          "width": 300,
+          "height": 300,
+          "bytes": 35986
+        }
+      ]
+    },
+    {
+      "familyId": "gv-647dad92424b657d2672",
+      "anchor": {
+        "file": "06/ab67616d00001e02000626327cd2fcc47836f324",
+        "sha256": "5025be57466caa9981cfee517c55be0f3f8c88c59fd2151689836378ba2846f9",
+        "width": 300,
+        "height": 300,
+        "bytes": 12923
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000626327cd2fcc47836f324",
+          "sha256": "5025be57466caa9981cfee517c55be0f3f8c88c59fd2151689836378ba2846f9",
+          "width": 300,
+          "height": 300,
+          "bytes": 12923
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d184495ea6de0ee1f5b9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006266490694f0a0a22cabd",
+        "sha256": "471ab474f03461d38ec14eb0fd80f1b9b2d26e024de355087597e45bcc84b8ac",
+        "width": 640,
+        "height": 640,
+        "bytes": 19332
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006266490694f0a0a22cabd",
+          "sha256": "471ab474f03461d38ec14eb0fd80f1b9b2d26e024de355087597e45bcc84b8ac",
+          "width": 640,
+          "height": 640,
+          "bytes": 19332
+        }
+      ]
+    },
+    {
+      "familyId": "gv-671dfa56444d75324bd5",
+      "anchor": {
+        "file": "06/ab67616d0000b273000626ecf8e6af81a2e365bd",
+        "sha256": "44b757bceba656586764a6febdf16399a4ccb82a5e86e649e647710f328498d1",
+        "width": 640,
+        "height": 640,
+        "bytes": 166473
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000626ecf8e6af81a2e365bd",
+          "sha256": "44b757bceba656586764a6febdf16399a4ccb82a5e86e649e647710f328498d1",
+          "width": 640,
+          "height": 640,
+          "bytes": 166473
+        },
+        {
+          "file": "06/ab67616d00001e02000626ecf8e6af81a2e365bd",
+          "sha256": "4e43cb3e506f3a63bd818b7d456521376057f3c4c8e83dd3e34695f515273cfd",
+          "width": 300,
+          "height": 300,
+          "bytes": 47226
+        }
+      ]
+    },
+    {
+      "familyId": "gv-be1e98f89d3c6b4dc758",
+      "anchor": {
+        "file": "06/ab67616d0000b273000626fb25df8b60c4b97ca4",
+        "sha256": "57b9084d7072895d074886aa6fc9330d348c0651e9f6d08fa47332ace7ef0594",
+        "width": 640,
+        "height": 640,
+        "bytes": 140156
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000626fb25df8b60c4b97ca4",
+          "sha256": "57b9084d7072895d074886aa6fc9330d348c0651e9f6d08fa47332ace7ef0594",
+          "width": 640,
+          "height": 640,
+          "bytes": 140156
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a34848ee2ccb37050740",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062981100d09abd9929023",
+        "sha256": "ed634d202ffbac1e57677349dd8ec1f2b31eb44d51e1db3b1e34119b596d5814",
+        "width": 640,
+        "height": 640,
+        "bytes": 28350
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062981100d09abd9929023",
+          "sha256": "ed634d202ffbac1e57677349dd8ec1f2b31eb44d51e1db3b1e34119b596d5814",
+          "width": 640,
+          "height": 640,
+          "bytes": 28350
+        }
+      ]
+    },
+    {
+      "familyId": "gv-da125d354b60e342ddb0",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062ab769df5e8d4dd4befb",
+        "sha256": "8308a130a98442d84fb73eba469440e81ba579f3a3d0bb976b356da41c58c77f",
+        "width": 640,
+        "height": 640,
+        "bytes": 129256
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062ab769df5e8d4dd4befb",
+          "sha256": "8308a130a98442d84fb73eba469440e81ba579f3a3d0bb976b356da41c58c77f",
+          "width": 640,
+          "height": 640,
+          "bytes": 129256
+        },
+        {
+          "file": "06/ab67616d00001e0200062ab769df5e8d4dd4befb",
+          "sha256": "786f464e2c4dbce07e1e15de4c480675bcca178ec29eb026d0aab62f52d7f9ea",
+          "width": 300,
+          "height": 300,
+          "bytes": 42793
+        }
+      ]
+    },
+    {
+      "familyId": "gv-be73819a90fdf1e31d26",
+      "anchor": {
+        "file": "06/ab67616d00001e0200062c3b97180d1850630ff1",
+        "sha256": "ab968782bcddd6a6c7dbbd0d1ad72566ac18f51e77bf461a07ca32a9da39a140",
+        "width": 300,
+        "height": 300,
+        "bytes": 51348
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200062c3b97180d1850630ff1",
+          "sha256": "ab968782bcddd6a6c7dbbd0d1ad72566ac18f51e77bf461a07ca32a9da39a140",
+          "width": 300,
+          "height": 300,
+          "bytes": 51348
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c4e36a2ab409b86135d7",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062c53fad05b728d742d50",
+        "sha256": "c99bd1ca47393a382049976c8a671bad4e03a55de4f848000cecbc761b7a6a8c",
+        "width": 640,
+        "height": 640,
+        "bytes": 83513
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062c53fad05b728d742d50",
+          "sha256": "c99bd1ca47393a382049976c8a671bad4e03a55de4f848000cecbc761b7a6a8c",
+          "width": 640,
+          "height": 640,
+          "bytes": 83513
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d13f08c5709a7c9eed56",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062c94c2aaace49f1029a2",
+        "sha256": "9b4d317aa20249c07e73901c264da018c1194a1fd34b050c41a0040546895dd0",
+        "width": 640,
+        "height": 640,
+        "bytes": 148577
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062c94c2aaace49f1029a2",
+          "sha256": "9b4d317aa20249c07e73901c264da018c1194a1fd34b050c41a0040546895dd0",
+          "width": 640,
+          "height": 640,
+          "bytes": 148577
+        }
+      ]
+    },
+    {
+      "familyId": "gv-34242c86e2c4d1266410",
+      "anchor": {
+        "file": "06/ab67616d00001e0200062d08e53c9cb66f7d758a",
+        "sha256": "2ba18d3c2f47782d7c553971d2c5de7321f2283addca8b38b7a0ff0cbc955354",
+        "width": 300,
+        "height": 300,
+        "bytes": 36411
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200062d08e53c9cb66f7d758a",
+          "sha256": "2ba18d3c2f47782d7c553971d2c5de7321f2283addca8b38b7a0ff0cbc955354",
+          "width": 300,
+          "height": 300,
+          "bytes": 36411
+        }
+      ]
+    },
+    {
+      "familyId": "gv-211a3b25c9909d41387b",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062d2fbf6e6d0528d71043",
+        "sha256": "4bc298d75bae808253bc4175bedef5394189cb2cb53f4022f1cb78d3fcc350ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 79935
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062d2fbf6e6d0528d71043",
+          "sha256": "4bc298d75bae808253bc4175bedef5394189cb2cb53f4022f1cb78d3fcc350ea",
+          "width": 640,
+          "height": 640,
+          "bytes": 79935
+        },
+        {
+          "file": "06/ab67616d00001e0200062d2fbf6e6d0528d71043",
+          "sha256": "f2a962a84a5c379fd31e3a0b34eab3b5bd5a178ef9de07784f11d45b92d0631a",
+          "width": 300,
+          "height": 300,
+          "bytes": 26682
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ec0e7520b859d52c26a7",
+      "anchor": {
+        "file": "06/ab67616d00001e0200062d9c7de7972864bc7458",
+        "sha256": "d18126b7552b122ab6d25a7a7ff7795d056d77f672c2c95900791d080aa09ab1",
+        "width": 300,
+        "height": 300,
+        "bytes": 71938
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200062d9c7de7972864bc7458",
+          "sha256": "d18126b7552b122ab6d25a7a7ff7795d056d77f672c2c95900791d080aa09ab1",
+          "width": 300,
+          "height": 300,
+          "bytes": 71938
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ae0128fba1e089384dee",
+      "anchor": {
+        "file": "06/ab67616d0000b27300062e58bb2e59b1119cc905",
+        "sha256": "dac38e240b2dd5a49efc282bbaccc5f65a12dd11a88a80af484dc6451242b34d",
+        "width": 640,
+        "height": 640,
+        "bytes": 100990
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300062e58bb2e59b1119cc905",
+          "sha256": "dac38e240b2dd5a49efc282bbaccc5f65a12dd11a88a80af484dc6451242b34d",
+          "width": 640,
+          "height": 640,
+          "bytes": 100990
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5a54c3f35b5a6d847183",
+      "anchor": {
+        "file": "06/ab67616d00001e0200063062adb0c2ea0e5c0343",
+        "sha256": "2b806be363b0698e990406266b038c42d6bcce1b335c26e3961ae8e5a2ed6544",
+        "width": 300,
+        "height": 300,
+        "bytes": 30288
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200063062adb0c2ea0e5c0343",
+          "sha256": "2b806be363b0698e990406266b038c42d6bcce1b335c26e3961ae8e5a2ed6544",
+          "width": 300,
+          "height": 300,
+          "bytes": 30288
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8ccc65f42a3200f2cb15",
+      "anchor": {
+        "file": "06/ab67616d00001e020006313d244c3ae4484920b0",
+        "sha256": "839df470a981d8135b90c1e09d304f2dbe8410a5a1dde591596e7ad4b81cb9a3",
+        "width": 300,
+        "height": 300,
+        "bytes": 16255
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006313d244c3ae4484920b0",
+          "sha256": "839df470a981d8135b90c1e09d304f2dbe8410a5a1dde591596e7ad4b81cb9a3",
+          "width": 300,
+          "height": 300,
+          "bytes": 16255
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3fd7624caa85ec651d52",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063234122ee10ef555101a",
+        "sha256": "3b3fa25b28c9edb469595ffb9eeaebc26f14988cb9b523122394ea5316deeef1",
+        "width": 640,
+        "height": 640,
+        "bytes": 200373
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063234122ee10ef555101a",
+          "sha256": "3b3fa25b28c9edb469595ffb9eeaebc26f14988cb9b523122394ea5316deeef1",
+          "width": 640,
+          "height": 640,
+          "bytes": 200373
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e0e44d7807554df8e86c",
+      "anchor": {
+        "file": "06/ab67616d0000b273000632f789fe0804c731f8c4",
+        "sha256": "39cca324683520e584d679ce1cee4f4c7ab99caee3d8a0d483f24685ad4bd66c",
+        "width": 640,
+        "height": 640,
+        "bytes": 145403
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000632f789fe0804c731f8c4",
+          "sha256": "39cca324683520e584d679ce1cee4f4c7ab99caee3d8a0d483f24685ad4bd66c",
+          "width": 640,
+          "height": 640,
+          "bytes": 145403
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2728eb7449e2e3121f65",
+      "anchor": {
+        "file": "06/ab67616d00001e02000633d228d4f49a8bde8666",
+        "sha256": "26268a2f1ea924c0393387c7ca9aa000c7a0ccd8abfe0f18fe1f8d4f03a5b747",
+        "width": 300,
+        "height": 300,
+        "bytes": 40351
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000633d228d4f49a8bde8666",
+          "sha256": "26268a2f1ea924c0393387c7ca9aa000c7a0ccd8abfe0f18fe1f8d4f03a5b747",
+          "width": 300,
+          "height": 300,
+          "bytes": 40351
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f00abddf087b210e6ab0",
+      "anchor": {
+        "file": "06/ab67616d00001e02000634602136ef13b7bde3f1",
+        "sha256": "4a00ba37fc8c16a0c7f48418c802acc7bf5a6fb63c97c486695e0beb5b9b4db3",
+        "width": 300,
+        "height": 300,
+        "bytes": 33416
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000634602136ef13b7bde3f1",
+          "sha256": "4a00ba37fc8c16a0c7f48418c802acc7bf5a6fb63c97c486695e0beb5b9b4db3",
+          "width": 300,
+          "height": 300,
+          "bytes": 33416
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d1a76c8d8f14661ddc49",
+      "anchor": {
+        "file": "06/ab67616d0000b273000634b840c9b36fb113d3cd",
+        "sha256": "9a9f23214af10ef2bc6339c5ae4c59c80eb224ee59a72cb8136e1ef8424f6354",
+        "width": 640,
+        "height": 640,
+        "bytes": 119654
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000634b840c9b36fb113d3cd",
+          "sha256": "9a9f23214af10ef2bc6339c5ae4c59c80eb224ee59a72cb8136e1ef8424f6354",
+          "width": 640,
+          "height": 640,
+          "bytes": 119654
+        }
+      ]
+    },
+    {
+      "familyId": "gv-32523a5363d4ee8130fd",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063582f57cbe8db6c0047e",
+        "sha256": "f5c04f39327668b824c96a14a47f16fb622a8e4014955273a818720174a5bad1",
+        "width": 640,
+        "height": 640,
+        "bytes": 64609
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063582f57cbe8db6c0047e",
+          "sha256": "f5c04f39327668b824c96a14a47f16fb622a8e4014955273a818720174a5bad1",
+          "width": 640,
+          "height": 640,
+          "bytes": 64609
+        }
+      ]
+    },
+    {
+      "familyId": "gv-597ec1e9041f16f19b99",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006361b45c61735b93bb8c1",
+        "sha256": "02035984af63550e0f36dfe3a0498e2e1602e672290339aaf339c68d7a253545",
+        "width": 640,
+        "height": 640,
+        "bytes": 83150
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006361b45c61735b93bb8c1",
+          "sha256": "02035984af63550e0f36dfe3a0498e2e1602e672290339aaf339c68d7a253545",
+          "width": 640,
+          "height": 640,
+          "bytes": 83150
+        },
+        {
+          "file": "06/ab67616d00001e020006361b45c61735b93bb8c1",
+          "sha256": "acdde2804f78ffd1628e336cd6a8cd91f0b85303d6d81ca7816d0eb4f36a36eb",
+          "width": 300,
+          "height": 300,
+          "bytes": 26098
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9b33fdd384e781bd53ce",
+      "anchor": {
+        "file": "06/ab67616d0000b273000637ffe82ad17bfa0f1073",
+        "sha256": "b768973dceefe1015bc72c8266ec3ce5640b8464e7a82a942447703100cf33a4",
+        "width": 640,
+        "height": 640,
+        "bytes": 139272
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000637ffe82ad17bfa0f1073",
+          "sha256": "b768973dceefe1015bc72c8266ec3ce5640b8464e7a82a942447703100cf33a4",
+          "width": 640,
+          "height": 640,
+          "bytes": 139272
+        }
+      ]
+    },
+    {
+      "familyId": "gv-700d379bd0a449278e5e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006381d077fd247acf0498b",
+        "sha256": "78e56e28b989bcb6a14b61e02e431bb602b9e405419d9982ded51b0f53b4028d",
+        "width": 640,
+        "height": 640,
+        "bytes": 129194
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006381d077fd247acf0498b",
+          "sha256": "78e56e28b989bcb6a14b61e02e431bb602b9e405419d9982ded51b0f53b4028d",
+          "width": 640,
+          "height": 640,
+          "bytes": 129194
+        }
+      ]
+    },
+    {
+      "familyId": "gv-83da004e73a61db38b5f",
+      "anchor": {
+        "file": "06/ab67616d00001e0200063b80ad1fcf5feb0599af",
+        "sha256": "a398f01a7e7668cee417341ee3056b175225f879b2e5552ca7e405fe993137db",
+        "width": 300,
+        "height": 300,
+        "bytes": 6076
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200063b80ad1fcf5feb0599af",
+          "sha256": "a398f01a7e7668cee417341ee3056b175225f879b2e5552ca7e405fe993137db",
+          "width": 300,
+          "height": 300,
+          "bytes": 6076
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3cabf17f1250896410d4",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063c7dde456251257e38a6",
+        "sha256": "6c35e639909a696821b8a83b955a6a9fff86cbadb278bcdc367da71194ce24ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 28056
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063c7dde456251257e38a6",
+          "sha256": "6c35e639909a696821b8a83b955a6a9fff86cbadb278bcdc367da71194ce24ea",
+          "width": 640,
+          "height": 640,
+          "bytes": 28056
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3b0919b0be6ae958adc8",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063d3109ab670753eb7c16",
+        "sha256": "369a63346c67286bd5fd037f0ae952ae82e5d5e62d99ca23ea28ef54d5383a6f",
+        "width": 640,
+        "height": 640,
+        "bytes": 181876
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063d3109ab670753eb7c16",
+          "sha256": "369a63346c67286bd5fd037f0ae952ae82e5d5e62d99ca23ea28ef54d5383a6f",
+          "width": 640,
+          "height": 640,
+          "bytes": 181876
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b42fb86df91a1f627d40",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063d7333fabe864029ed82",
+        "sha256": "cf21703d5099627d9505b0fb99f38b0eaa0253d25e3a96e79afda6b4f2453077",
+        "width": 640,
+        "height": 640,
+        "bytes": 68727
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063d7333fabe864029ed82",
+          "sha256": "cf21703d5099627d9505b0fb99f38b0eaa0253d25e3a96e79afda6b4f2453077",
+          "width": 640,
+          "height": 640,
+          "bytes": 68727
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7d187c9b014d142cdd0a",
+      "anchor": {
+        "file": "06/ab67616d0000b27300063f7dc05d9d092eaf0ba9",
+        "sha256": "278ef25c1ae40151f8fe4a295d5eefc7ba79c04f0fe9819e9bdf4dcd646aef15",
+        "width": 640,
+        "height": 640,
+        "bytes": 153051
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300063f7dc05d9d092eaf0ba9",
+          "sha256": "278ef25c1ae40151f8fe4a295d5eefc7ba79c04f0fe9819e9bdf4dcd646aef15",
+          "width": 640,
+          "height": 640,
+          "bytes": 153051
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e6582280c46a81075897",
+      "anchor": {
+        "file": "06/ab67616d0000b273000642079bc69a96183b5f34",
+        "sha256": "e60c1777b136c77ed9d686513e0c601df8428f6f821e628373952c9d7e2546ac",
+        "width": 640,
+        "height": 640,
+        "bytes": 159394
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000642079bc69a96183b5f34",
+          "sha256": "e60c1777b136c77ed9d686513e0c601df8428f6f821e628373952c9d7e2546ac",
+          "width": 640,
+          "height": 640,
+          "bytes": 159394
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5792c8d98e91195168d3",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006429b32cb53dcfe9dce3d",
+        "sha256": "22342d15b36e76ff50d41d89d9e123d84badcba4ae6d17598487b809a053e320",
+        "width": 640,
+        "height": 640,
+        "bytes": 189161
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006429b32cb53dcfe9dce3d",
+          "sha256": "22342d15b36e76ff50d41d89d9e123d84badcba4ae6d17598487b809a053e320",
+          "width": 640,
+          "height": 640,
+          "bytes": 189161
+        }
+      ]
+    },
+    {
+      "familyId": "gv-edebb703e1b22ae3d961",
+      "anchor": {
+        "file": "06/ab67616d00001e02000643526ea69af0c9cf6a86",
+        "sha256": "46790562bee547e3479a85e8d98bb3f55a0be56f4e9132c4129a2c3c8e958c2e",
+        "width": 300,
+        "height": 300,
+        "bytes": 38442
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000643526ea69af0c9cf6a86",
+          "sha256": "46790562bee547e3479a85e8d98bb3f55a0be56f4e9132c4129a2c3c8e958c2e",
+          "width": 300,
+          "height": 300,
+          "bytes": 38442
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4494c27e9a771e15edef",
+      "anchor": {
+        "file": "06/ab67616d00001e02000643efb8110eeabd761672",
+        "sha256": "89c67cb480f132fdc89ea6ec5dfed8f007a0cfdae027aba4f4d0853a99917e66",
+        "width": 300,
+        "height": 300,
+        "bytes": 34135
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000643efb8110eeabd761672",
+          "sha256": "89c67cb480f132fdc89ea6ec5dfed8f007a0cfdae027aba4f4d0853a99917e66",
+          "width": 300,
+          "height": 300,
+          "bytes": 34135
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f59cb4b8701085b192ad",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064415c85cf7fce04d2a9f",
+        "sha256": "e9e5a4abc4a356d459ded848ee5f3fb3068bb7509edded2d8b8164d08a5943a8",
+        "width": 640,
+        "height": 640,
+        "bytes": 294427
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064415c85cf7fce04d2a9f",
+          "sha256": "e9e5a4abc4a356d459ded848ee5f3fb3068bb7509edded2d8b8164d08a5943a8",
+          "width": 640,
+          "height": 640,
+          "bytes": 294427
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b495e4b60e484f052a4f",
+      "anchor": {
+        "file": "06/ab67616d00001e02000644e1d986cf391222c3f6",
+        "sha256": "83b7088d9935fd4f6edd9172525073009f6a4a0784e8a1b69ffa63b7dd0f08dd",
+        "width": 300,
+        "height": 300,
+        "bytes": 23135
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000644e1d986cf391222c3f6",
+          "sha256": "83b7088d9935fd4f6edd9172525073009f6a4a0784e8a1b69ffa63b7dd0f08dd",
+          "width": 300,
+          "height": 300,
+          "bytes": 23135
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c08226e2990c20a6aba8",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064567c5f08a04d4df1da7",
+        "sha256": "cc5ae104c1937fe0c81094f08f2b63f97cb29829678d86e0f1c5bb948453c252",
+        "width": 640,
+        "height": 640,
+        "bytes": 63302
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064567c5f08a04d4df1da7",
+          "sha256": "cc5ae104c1937fe0c81094f08f2b63f97cb29829678d86e0f1c5bb948453c252",
+          "width": 640,
+          "height": 640,
+          "bytes": 63302
+        }
+      ]
+    },
+    {
+      "familyId": "gv-27036cc98252ddfcb0a5",
+      "anchor": {
+        "file": "06/ab67616d0000b273000645b4cec9fad2f12c32e3",
+        "sha256": "53fcf0e2d9ce5706d2ab5b0e74744c484f12686236bb4da9b4d6c1fedd01c8fe",
+        "width": 640,
+        "height": 640,
+        "bytes": 85020
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000645b4cec9fad2f12c32e3",
+          "sha256": "53fcf0e2d9ce5706d2ab5b0e74744c484f12686236bb4da9b4d6c1fedd01c8fe",
+          "width": 640,
+          "height": 640,
+          "bytes": 85020
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b9375643912d0dbeb5c7",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006465a4f831bc200cd919c",
+        "sha256": "f4771b47b05c24fcf402b38ce44fa7a69ce13269efcf493e730e5dfdf252fa3c",
+        "width": 640,
+        "height": 640,
+        "bytes": 154164
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006465a4f831bc200cd919c",
+          "sha256": "f4771b47b05c24fcf402b38ce44fa7a69ce13269efcf493e730e5dfdf252fa3c",
+          "width": 640,
+          "height": 640,
+          "bytes": 154164
+        },
+        {
+          "file": "06/ab67616d00001e020006465a4f831bc200cd919c",
+          "sha256": "ba4b43e934893ee35799733677d943690e0770ff15a510ca2226e152480785f4",
+          "width": 300,
+          "height": 300,
+          "bytes": 34648
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8f022da181113b16ad16",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006470cdd4b1ad8956ecb1d",
+        "sha256": "8cff29d6f59099ec890d9e9fa43280d1192a91222d8d0e83ad8fa08b1a33f22a",
+        "width": 640,
+        "height": 640,
+        "bytes": 267419
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006470cdd4b1ad8956ecb1d",
+          "sha256": "8cff29d6f59099ec890d9e9fa43280d1192a91222d8d0e83ad8fa08b1a33f22a",
+          "width": 640,
+          "height": 640,
+          "bytes": 267419
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9ca99e552f83b732d729",
+      "anchor": {
+        "file": "06/ab67616d0000b273000647728cdc057fd3e1c66b",
+        "sha256": "cb157f52cea2a2b20f0ee402d6b6ffd009e2836a40dcc0cfbaab9b6761e44018",
+        "width": 640,
+        "height": 640,
+        "bytes": 93428
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000647728cdc057fd3e1c66b",
+          "sha256": "cb157f52cea2a2b20f0ee402d6b6ffd009e2836a40dcc0cfbaab9b6761e44018",
+          "width": 640,
+          "height": 640,
+          "bytes": 93428
+        },
+        {
+          "file": "06/ab67616d00001e02000647728cdc057fd3e1c66b",
+          "sha256": "28b83b22d813fc8a0c204afc8df81e4c2b24f654bddb11ca7b8cf699fdaa0f3d",
+          "width": 300,
+          "height": 300,
+          "bytes": 24706
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e59ad652f63ce240a8e9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006477bf48be35b818e98d5",
+        "sha256": "050755e5e31256749fc46ec41381f2958c964bb6ccf593d6e1cb9422d6ef4d5b",
+        "width": 640,
+        "height": 640,
+        "bytes": 137774
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006477bf48be35b818e98d5",
+          "sha256": "050755e5e31256749fc46ec41381f2958c964bb6ccf593d6e1cb9422d6ef4d5b",
+          "width": 640,
+          "height": 640,
+          "bytes": 137774
+        }
+      ]
+    },
+    {
+      "familyId": "gv-19468eaea49ab33e049a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006478150e9b606fa9147ea",
+        "sha256": "6e7fd73c000e8b8128b35f0a0b64bc769edbf70211e52af7243108acf19eaf1b",
+        "width": 640,
+        "height": 640,
+        "bytes": 37252
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006478150e9b606fa9147ea",
+          "sha256": "6e7fd73c000e8b8128b35f0a0b64bc769edbf70211e52af7243108acf19eaf1b",
+          "width": 640,
+          "height": 640,
+          "bytes": 37252
+        }
+      ]
+    },
+    {
+      "familyId": "gv-570b7c96c351ae347dca",
+      "anchor": {
+        "file": "06/ab67616d00001e02000647d85a0dbaf99091a601",
+        "sha256": "c730d476dd0297a79d4a864ebd1f09a560456346e982ca7043d50dcc976cb2dc",
+        "width": 300,
+        "height": 300,
+        "bytes": 38491
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000647d85a0dbaf99091a601",
+          "sha256": "c730d476dd0297a79d4a864ebd1f09a560456346e982ca7043d50dcc976cb2dc",
+          "width": 300,
+          "height": 300,
+          "bytes": 38491
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e4a0cbaae0ade99983b1",
+      "anchor": {
+        "file": "06/ab67616d00001e02000647dbce7e41587a7ab935",
+        "sha256": "7995edde5537f1bd4f7f1539b223a8446ba29c5462c6f6a2447247021f629f0c",
+        "width": 300,
+        "height": 300,
+        "bytes": 49558
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000647dbce7e41587a7ab935",
+          "sha256": "7995edde5537f1bd4f7f1539b223a8446ba29c5462c6f6a2447247021f629f0c",
+          "width": 300,
+          "height": 300,
+          "bytes": 49558
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2adeed1d19b5908c5ee6",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064830dbafd1e94428d7a0",
+        "sha256": "ebf8ea470280bc90896d4b093e50b0c5772d7754257bba33123a9adec57de0b9",
+        "width": 640,
+        "height": 640,
+        "bytes": 334233
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064830dbafd1e94428d7a0",
+          "sha256": "ebf8ea470280bc90896d4b093e50b0c5772d7754257bba33123a9adec57de0b9",
+          "width": 640,
+          "height": 640,
+          "bytes": 334233
+        }
+      ]
+    },
+    {
+      "familyId": "gv-508d5d21ef2c59f1d67d",
+      "anchor": {
+        "file": "06/ab67616d00001e0200064892cd192138d35e9ed1",
+        "sha256": "dedeb37c1c2aad2b2fe4ab95b1e95a9bcaeba3edc1c04cf0ad1508203c0299b8",
+        "width": 300,
+        "height": 300,
+        "bytes": 44157
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200064892cd192138d35e9ed1",
+          "sha256": "dedeb37c1c2aad2b2fe4ab95b1e95a9bcaeba3edc1c04cf0ad1508203c0299b8",
+          "width": 300,
+          "height": 300,
+          "bytes": 44157
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c773b4911b5c9db9eb29",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064a710c13c0d61ec36cfc",
+        "sha256": "61172f29d3ee12b1184f1eab19f68934c03192f3210791c5ae1e1bfa9ec19206",
+        "width": 640,
+        "height": 640,
+        "bytes": 133287
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064a710c13c0d61ec36cfc",
+          "sha256": "61172f29d3ee12b1184f1eab19f68934c03192f3210791c5ae1e1bfa9ec19206",
+          "width": 640,
+          "height": 640,
+          "bytes": 133287
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c50835730b9ea37978eb",
+      "anchor": {
+        "file": "06/ab67616d00001e0200064e59e9524923d96c269f",
+        "sha256": "5d21da62a67ce9499c5379df82af0356c4b328123e398013609961d753e9cb6c",
+        "width": 300,
+        "height": 300,
+        "bytes": 52517
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200064e59e9524923d96c269f",
+          "sha256": "5d21da62a67ce9499c5379df82af0356c4b328123e398013609961d753e9cb6c",
+          "width": 300,
+          "height": 300,
+          "bytes": 52517
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5b6b0f5e53e45c878ad7",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064fddf48a67a4b5ecbbde",
+        "sha256": "4bd8e1907a323f00ada01989c37eb728bcde00a42861d75afeb871e6d376f5ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 114566
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064fddf48a67a4b5ecbbde",
+          "sha256": "4bd8e1907a323f00ada01989c37eb728bcde00a42861d75afeb871e6d376f5ea",
+          "width": 640,
+          "height": 640,
+          "bytes": 114566
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d3866140ab0162581d10",
+      "anchor": {
+        "file": "06/ab67616d0000b27300064ffc586f2ab598f8ff3f",
+        "sha256": "774600c0d12651160ba6d9d35f9180fa3ad2b05e2bc90fcae0b45f907c622c36",
+        "width": 640,
+        "height": 640,
+        "bytes": 193640
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300064ffc586f2ab598f8ff3f",
+          "sha256": "774600c0d12651160ba6d9d35f9180fa3ad2b05e2bc90fcae0b45f907c622c36",
+          "width": 640,
+          "height": 640,
+          "bytes": 193640
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a1f46cd43946cae32bf9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006513207b4c9d5e4736ab6",
+        "sha256": "67537ea739bceb60234fa6e4f54e4d9b538b81134e3c8054f5a569a3ca2ded5c",
+        "width": 640,
+        "height": 640,
+        "bytes": 142093
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006513207b4c9d5e4736ab6",
+          "sha256": "67537ea739bceb60234fa6e4f54e4d9b538b81134e3c8054f5a569a3ca2ded5c",
+          "width": 640,
+          "height": 640,
+          "bytes": 142093
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2558f9547f948f8e148c",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006516b60fd9d14c59a3f0c",
+        "sha256": "883451394abca7644a4931d5c295808e1cc778be738faf70a0be19556852bb4c",
+        "width": 640,
+        "height": 640,
+        "bytes": 108828
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006516b60fd9d14c59a3f0c",
+          "sha256": "883451394abca7644a4931d5c295808e1cc778be738faf70a0be19556852bb4c",
+          "width": 640,
+          "height": 640,
+          "bytes": 108828
+        }
+      ]
+    },
+    {
+      "familyId": "gv-993ec4528b3a305add04",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006525d5904e9d75b505798",
+        "sha256": "b1893068647baecc3e40bc0fab4cfb71898891dde788760c62e16dd031adafe6",
+        "width": 640,
+        "height": 640,
+        "bytes": 35190
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006525d5904e9d75b505798",
+          "sha256": "b1893068647baecc3e40bc0fab4cfb71898891dde788760c62e16dd031adafe6",
+          "width": 640,
+          "height": 640,
+          "bytes": 35190
+        }
+      ]
+    },
+    {
+      "familyId": "gv-491eb4e182240b39b537",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006530e8e84b45862748482",
+        "sha256": "4e982653c58b8b37936f9c21486caeef9c13ae479a8c98e55c8a89712d4fa8aa",
+        "width": 640,
+        "height": 640,
+        "bytes": 131076
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006530e8e84b45862748482",
+          "sha256": "4e982653c58b8b37936f9c21486caeef9c13ae479a8c98e55c8a89712d4fa8aa",
+          "width": 640,
+          "height": 640,
+          "bytes": 131076
+        },
+        {
+          "file": "06/ab67616d00001e020006530e8e84b45862748482",
+          "sha256": "84aa50b116b06ff9d9bf4fd47d25e774ea5341792650c0099053d23f97652284",
+          "width": 300,
+          "height": 300,
+          "bytes": 38725
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0fac01dd2ed35136b683",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065322612da5d05bcf05d8",
+        "sha256": "ecf26e6d8ec7722d6f78bf2d3ae592b3f358a966e6b356b4bab6ce6c666f00a4",
+        "width": 640,
+        "height": 640,
+        "bytes": 167986
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065322612da5d05bcf05d8",
+          "sha256": "ecf26e6d8ec7722d6f78bf2d3ae592b3f358a966e6b356b4bab6ce6c666f00a4",
+          "width": 640,
+          "height": 640,
+          "bytes": 167986
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b0c4a6b01ff18d7df0a2",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065436a5abd41dedcca5e5",
+        "sha256": "c4e44f7a31377d2e82f79abe54f478f81db54fd642cc743a5ee5e2a5ee74c4ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 61887
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065436a5abd41dedcca5e5",
+          "sha256": "c4e44f7a31377d2e82f79abe54f478f81db54fd642cc743a5ee5e2a5ee74c4ea",
+          "width": 640,
+          "height": 640,
+          "bytes": 61887
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8ac926756c8fd726b8f4",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065505bbd2b12aff2c6b12",
+        "sha256": "23cc456dc5a63a1e94fd502d89e2a1bd19baffc1952c6a9e23f18a1b1f554b97",
+        "width": 640,
+        "height": 640,
+        "bytes": 113228
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065505bbd2b12aff2c6b12",
+          "sha256": "23cc456dc5a63a1e94fd502d89e2a1bd19baffc1952c6a9e23f18a1b1f554b97",
+          "width": 640,
+          "height": 640,
+          "bytes": 113228
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f21612ed8e89f89eb965",
+      "anchor": {
+        "file": "06/ab67616d00001e020006564d5d5d778e4d4b1c40",
+        "sha256": "8aff22eead412d398e221b733da2e0d4a316b5e101c98dd8a43204161945bd4f",
+        "width": 300,
+        "height": 300,
+        "bytes": 63347
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006564d5d5d778e4d4b1c40",
+          "sha256": "8aff22eead412d398e221b733da2e0d4a316b5e101c98dd8a43204161945bd4f",
+          "width": 300,
+          "height": 300,
+          "bytes": 63347
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b428294567669afb3c2a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006565e0bb81e72af35635f",
+        "sha256": "7fcac6dce989211b1203442a53c928c9522d3a754c8badd0515eaf30789df377",
+        "width": 640,
+        "height": 640,
+        "bytes": 82719
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006565e0bb81e72af35635f",
+          "sha256": "7fcac6dce989211b1203442a53c928c9522d3a754c8badd0515eaf30789df377",
+          "width": 640,
+          "height": 640,
+          "bytes": 82719
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7657c1ae7689d2e003ae",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006565e41f4f2d02b017256",
+        "sha256": "d898c78f209dde34c709423b7f15989aae864c51414dca743b7a0886d4579e40",
+        "width": 640,
+        "height": 640,
+        "bytes": 95100
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006565e41f4f2d02b017256",
+          "sha256": "d898c78f209dde34c709423b7f15989aae864c51414dca743b7a0886d4579e40",
+          "width": 640,
+          "height": 640,
+          "bytes": 95100
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7a81973bf4833db570f6",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006577dd408934a8e222cad",
+        "sha256": "6956d6001efd086b8e86ce733d700f7a1d26fc02cf410daf5d62584d0ddfd2ce",
+        "width": 640,
+        "height": 640,
+        "bytes": 88182
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006577dd408934a8e222cad",
+          "sha256": "6956d6001efd086b8e86ce733d700f7a1d26fc02cf410daf5d62584d0ddfd2ce",
+          "width": 640,
+          "height": 640,
+          "bytes": 88182
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1ccfc49ee40378b3b999",
+      "anchor": {
+        "file": "06/ab67616d00001e02000657e9cd97271fdc415eda",
+        "sha256": "322146ea2f4f0f6168c5f46f2aba9f5dceb48c21d1f0ec8643f9459bd9d75786",
+        "width": 300,
+        "height": 300,
+        "bytes": 34561
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000657e9cd97271fdc415eda",
+          "sha256": "322146ea2f4f0f6168c5f46f2aba9f5dceb48c21d1f0ec8643f9459bd9d75786",
+          "width": 300,
+          "height": 300,
+          "bytes": 34561
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4784ceff5a4987279b87",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006581569222facd6df95f2",
+        "sha256": "e4963a60f169bc8e36f61cf29f54b4723ffc14b048e654b8a0c6b65ae28837cd",
+        "width": 640,
+        "height": 640,
+        "bytes": 177145
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006581569222facd6df95f2",
+          "sha256": "e4963a60f169bc8e36f61cf29f54b4723ffc14b048e654b8a0c6b65ae28837cd",
+          "width": 640,
+          "height": 640,
+          "bytes": 177145
+        }
+      ]
+    },
+    {
+      "familyId": "gv-70f821ce992c7367a99f",
+      "anchor": {
+        "file": "06/ab67616d00001e02000659cd997dd185cfe2b870",
+        "sha256": "129f0c26e41ffc8df3f07c21969e0b9676925bdd46338d77511782388e3af4b6",
+        "width": 300,
+        "height": 300,
+        "bytes": 44222
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000659cd997dd185cfe2b870",
+          "sha256": "129f0c26e41ffc8df3f07c21969e0b9676925bdd46338d77511782388e3af4b6",
+          "width": 300,
+          "height": 300,
+          "bytes": 44222
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0a8f43a155184634ebf3",
+      "anchor": {
+        "file": "06/ab67616d00001e02000659e5ec892eae5bfb3297",
+        "sha256": "50803a0b1673478a6f34938c91e35772bb95afbb6ab7e2ec20214770c41db3ce",
+        "width": 300,
+        "height": 300,
+        "bytes": 22324
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000659e5ec892eae5bfb3297",
+          "sha256": "50803a0b1673478a6f34938c91e35772bb95afbb6ab7e2ec20214770c41db3ce",
+          "width": 300,
+          "height": 300,
+          "bytes": 22324
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9226a14f05a4ff8b8957",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065a770d7d85a8e025c82d",
+        "sha256": "3b1f4d7f69026f859f760c855c3b404a89391d9200779217bbf7f3f1d5707d06",
+        "width": 640,
+        "height": 640,
+        "bytes": 84927
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065a770d7d85a8e025c82d",
+          "sha256": "3b1f4d7f69026f859f760c855c3b404a89391d9200779217bbf7f3f1d5707d06",
+          "width": 640,
+          "height": 640,
+          "bytes": 84927
+        }
+      ]
+    },
+    {
+      "familyId": "gv-84bc70429932efdcb0d2",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065ade0fa8586d337725c9",
+        "sha256": "63ee5a4d71dc4efe08adb63475d06e56b41c9ef63c8633ed82f91d8498f7b6c2",
+        "width": 640,
+        "height": 640,
+        "bytes": 104275
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065ade0fa8586d337725c9",
+          "sha256": "63ee5a4d71dc4efe08adb63475d06e56b41c9ef63c8633ed82f91d8498f7b6c2",
+          "width": 640,
+          "height": 640,
+          "bytes": 104275
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c8977ff513204b737d3c",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065b7a24878555c820fa9d",
+        "sha256": "cd06c2a51d7df665cdbe675df94f50b37f644049822b9e61af4dda742d0b946b",
+        "width": 640,
+        "height": 640,
+        "bytes": 102155
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065b7a24878555c820fa9d",
+          "sha256": "cd06c2a51d7df665cdbe675df94f50b37f644049822b9e61af4dda742d0b946b",
+          "width": 640,
+          "height": 640,
+          "bytes": 102155
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1906fba46fa595af3bf0",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065b82219f9be0ac7e8912",
+        "sha256": "6d954ff20e8b92a7a892d5b8e20c6b841559099032fe0ba6c22909178fe762c7",
+        "width": 640,
+        "height": 640,
+        "bytes": 124834
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065b82219f9be0ac7e8912",
+          "sha256": "6d954ff20e8b92a7a892d5b8e20c6b841559099032fe0ba6c22909178fe762c7",
+          "width": 640,
+          "height": 640,
+          "bytes": 124834
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8a729464230d82f7468d",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065ba43435fcdf99648b53",
+        "sha256": "03df8c044f75ce13501fcb17999222719ff902ecba401de05fae9b106a40e71c",
+        "width": 640,
+        "height": 640,
+        "bytes": 98247
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065ba43435fcdf99648b53",
+          "sha256": "03df8c044f75ce13501fcb17999222719ff902ecba401de05fae9b106a40e71c",
+          "width": 640,
+          "height": 640,
+          "bytes": 98247
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0f25b7d66e34cf67851d",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065d645dfb0afd1b242d84",
+        "sha256": "a46687d9b4aed48de55e70a3dd3c29c2e062b271db70720d7f26539298016cae",
+        "width": 640,
+        "height": 640,
+        "bytes": 142989
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065d645dfb0afd1b242d84",
+          "sha256": "a46687d9b4aed48de55e70a3dd3c29c2e062b271db70720d7f26539298016cae",
+          "width": 640,
+          "height": 640,
+          "bytes": 142989
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d1743272087cac646656",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065f294b0942db1dcf9f98",
+        "sha256": "941fa076eba212443c7cf11cf0ca84707dab26b10f144c6e6fd06df1d316dbcb",
+        "width": 640,
+        "height": 640,
+        "bytes": 184462
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065f294b0942db1dcf9f98",
+          "sha256": "941fa076eba212443c7cf11cf0ca84707dab26b10f144c6e6fd06df1d316dbcb",
+          "width": 640,
+          "height": 640,
+          "bytes": 184462
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d228840795d81e8d0aa5",
+      "anchor": {
+        "file": "06/ab67616d0000b27300065f38121eeedcd6de8a50",
+        "sha256": "614226a801dc038f2ed08e544420e742298b057bb872b1251e1f0409c08968a2",
+        "width": 640,
+        "height": 640,
+        "bytes": 209704
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300065f38121eeedcd6de8a50",
+          "sha256": "614226a801dc038f2ed08e544420e742298b057bb872b1251e1f0409c08968a2",
+          "width": 640,
+          "height": 640,
+          "bytes": 209704
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1f5adaf7c74daf8c8bbe",
+      "anchor": {
+        "file": "06/ab67616d00001e020006620190cdb933843071fe",
+        "sha256": "30218a97e4aad60bea6df8f0e279ed31d972b0f0ed4d116cbaafd93fb7ae9837",
+        "width": 300,
+        "height": 300,
+        "bytes": 42519
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006620190cdb933843071fe",
+          "sha256": "30218a97e4aad60bea6df8f0e279ed31d972b0f0ed4d116cbaafd93fb7ae9837",
+          "width": 300,
+          "height": 300,
+          "bytes": 42519
+        }
+      ]
+    },
+    {
+      "familyId": "gv-51a6d0d19b329b984cd1",
+      "anchor": {
+        "file": "06/ab67616d0000b273000662c3089a1aa28e6eda6f",
+        "sha256": "a04365e6ec0037c1a4cfd9d464b15cbde4cef94fa77adb2cd830b6434b3dd3ba",
+        "width": 640,
+        "height": 640,
+        "bytes": 36607
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000662c3089a1aa28e6eda6f",
+          "sha256": "a04365e6ec0037c1a4cfd9d464b15cbde4cef94fa77adb2cd830b6434b3dd3ba",
+          "width": 640,
+          "height": 640,
+          "bytes": 36607
+        }
+      ]
+    },
+    {
+      "familyId": "gv-661e6d2e21e8524bd69d",
+      "anchor": {
+        "file": "06/ab67616d0000b273000662f39e51fecd56cc6d26",
+        "sha256": "10ed1af4c5a6ead752c60407baba3cd28e74a8d453dd9ca47466b5040196b780",
+        "width": 640,
+        "height": 640,
+        "bytes": 100498
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000662f39e51fecd56cc6d26",
+          "sha256": "10ed1af4c5a6ead752c60407baba3cd28e74a8d453dd9ca47466b5040196b780",
+          "width": 640,
+          "height": 640,
+          "bytes": 100498
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9efb24a28436115c68a4",
+      "anchor": {
+        "file": "06/ab67616d0000b273000662ff2be76334a8758ff3",
+        "sha256": "8ec93178c84dda535f2756db1235034f75be6c7df11a6de28ae2ec0449b6331f",
+        "width": 640,
+        "height": 640,
+        "bytes": 106032
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000662ff2be76334a8758ff3",
+          "sha256": "8ec93178c84dda535f2756db1235034f75be6c7df11a6de28ae2ec0449b6331f",
+          "width": 640,
+          "height": 640,
+          "bytes": 106032
+        }
+      ]
+    },
+    {
+      "familyId": "gv-87f75f5e21c79c288214",
+      "anchor": {
+        "file": "06/ab67616d0000b273000664e9d33757887e51a060",
+        "sha256": "129765473d502862aa0a8fe0bb636f7d1fbe99f15df6bfdf0ee07025b5aa865a",
+        "width": 640,
+        "height": 640,
+        "bytes": 128710
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000664e9d33757887e51a060",
+          "sha256": "129765473d502862aa0a8fe0bb636f7d1fbe99f15df6bfdf0ee07025b5aa865a",
+          "width": 640,
+          "height": 640,
+          "bytes": 128710
+        }
+      ]
+    },
+    {
+      "familyId": "gv-857dedf1e2022a0c28ab",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006653a2f706f24b6ac8346",
+        "sha256": "e1e913a4e0cd5ea0740bb71fa6febce13eb180040744db311b7a53efc393a367",
+        "width": 640,
+        "height": 640,
+        "bytes": 34574
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006653a2f706f24b6ac8346",
+          "sha256": "e1e913a4e0cd5ea0740bb71fa6febce13eb180040744db311b7a53efc393a367",
+          "width": 640,
+          "height": 640,
+          "bytes": 34574
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d9023452234df427c769",
+      "anchor": {
+        "file": "06/ab67616d0000b273000665a4c54a39431760ba35",
+        "sha256": "81ed076f734cece892ed0410e79b977c490df4c95c776c5bdfd285b148943518",
+        "width": 640,
+        "height": 640,
+        "bytes": 158201
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000665a4c54a39431760ba35",
+          "sha256": "81ed076f734cece892ed0410e79b977c490df4c95c776c5bdfd285b148943518",
+          "width": 640,
+          "height": 640,
+          "bytes": 158201
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f5f147a815231a94e282",
+      "anchor": {
+        "file": "06/ab67616d00001e02000666946de8c9c6acd5e9c6",
+        "sha256": "7b9e0f773bbd06b60fe4a278421cec0d13f92e2bdb3ec8962e3b64a25f65c5e0",
+        "width": 300,
+        "height": 300,
+        "bytes": 53709
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000666946de8c9c6acd5e9c6",
+          "sha256": "7b9e0f773bbd06b60fe4a278421cec0d13f92e2bdb3ec8962e3b64a25f65c5e0",
+          "width": 300,
+          "height": 300,
+          "bytes": 53709
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a95ac372b979e8c85098",
+      "anchor": {
+        "file": "06/ab67616d0000b273000667f718c405d6e7decf57",
+        "sha256": "1a2a40ef156348708257148945a9e052d5df055d45b49b97acd91212599d7d9a",
+        "width": 640,
+        "height": 640,
+        "bytes": 193737
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000667f718c405d6e7decf57",
+          "sha256": "1a2a40ef156348708257148945a9e052d5df055d45b49b97acd91212599d7d9a",
+          "width": 640,
+          "height": 640,
+          "bytes": 193737
+        },
+        {
+          "file": "06/ab67616d00001e02000667f718c405d6e7decf57",
+          "sha256": "976fdd139dd6627948d97b44faa2e7e5496eb8b9d515a18e91ea7d167d47ac4d",
+          "width": 300,
+          "height": 300,
+          "bytes": 58615
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9faef1ddf9b808254237",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006693489e3d89d451f8583",
+        "sha256": "b7d7575da9bc2d35e3e1e3f698ddc753e29780a83365720cdde4692ef6575f88",
+        "width": 640,
+        "height": 640,
+        "bytes": 108244
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006693489e3d89d451f8583",
+          "sha256": "b7d7575da9bc2d35e3e1e3f698ddc753e29780a83365720cdde4692ef6575f88",
+          "width": 640,
+          "height": 640,
+          "bytes": 108244
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8343b3666daf941ab7fa",
+      "anchor": {
+        "file": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+        "sha256": "c6d19597ab9d71847da3dc53ae70d7526d61ea14bb08ffdcac3bd475d768eace",
+        "width": 300,
+        "height": 300,
+        "bytes": 38200
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+          "sha256": "c6d19597ab9d71847da3dc53ae70d7526d61ea14bb08ffdcac3bd475d768eace",
+          "width": 300,
+          "height": 300,
+          "bytes": 38200
+        }
+      ]
+    },
+    {
+      "familyId": "gv-60e488b8bc6f794a195b",
+      "anchor": {
+        "file": "06/ab67616d00001e0200066b38570ff16e0d243f19",
+        "sha256": "77455ba15ac92f7bc6c6a4d66b5879e1a673f48e492b73ab333b437f1f9b7a39",
+        "width": 300,
+        "height": 300,
+        "bytes": 50593
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200066b38570ff16e0d243f19",
+          "sha256": "77455ba15ac92f7bc6c6a4d66b5879e1a673f48e492b73ab333b437f1f9b7a39",
+          "width": 300,
+          "height": 300,
+          "bytes": 50593
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e0a3e4c458d9cb3d00a7",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066b40a527bef8d564c069",
+        "sha256": "e8d831fd71444eef129e97227239ffdec18baaebf3caaef75b8f4ea653b3412d",
+        "width": 640,
+        "height": 640,
+        "bytes": 114307
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066b40a527bef8d564c069",
+          "sha256": "e8d831fd71444eef129e97227239ffdec18baaebf3caaef75b8f4ea653b3412d",
+          "width": 640,
+          "height": 640,
+          "bytes": 114307
+        }
+      ]
+    },
+    {
+      "familyId": "gv-520dade00bd3f0b49128",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066b9b23a141071e26133e",
+        "sha256": "26adb3681d42919368e8aea97bc26ec5ed4b164860f19ade5e5d6363917fe7e2",
+        "width": 640,
+        "height": 640,
+        "bytes": 95044
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066b9b23a141071e26133e",
+          "sha256": "26adb3681d42919368e8aea97bc26ec5ed4b164860f19ade5e5d6363917fe7e2",
+          "width": 640,
+          "height": 640,
+          "bytes": 95044
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8b628fd05d3766ba6648",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066ba69237923c1ef79d69",
+        "sha256": "b0e4060f49d38a93b4849bf426a78cd2c22c58f4a28db331200ee7656cd9a75a",
+        "width": 640,
+        "height": 640,
+        "bytes": 126659
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066ba69237923c1ef79d69",
+          "sha256": "b0e4060f49d38a93b4849bf426a78cd2c22c58f4a28db331200ee7656cd9a75a",
+          "width": 640,
+          "height": 640,
+          "bytes": 126659
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b4397a41f9f3870e810d",
+      "anchor": {
+        "file": "06/ab67616d00001e0200066c0361fbda761e48c1ef",
+        "sha256": "213fa4add1919b9bebf14e6a49b180eeeeadb031ddf0b3bf9ab8f84e20efc993",
+        "width": 300,
+        "height": 300,
+        "bytes": 27086
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200066c0361fbda761e48c1ef",
+          "sha256": "213fa4add1919b9bebf14e6a49b180eeeeadb031ddf0b3bf9ab8f84e20efc993",
+          "width": 300,
+          "height": 300,
+          "bytes": 27086
+        }
+      ]
+    },
+    {
+      "familyId": "gv-71f52eea446431e3cd5f",
+      "anchor": {
+        "file": "06/ab67616d00001e0200066e27157c425492c40d98",
+        "sha256": "fbd43274cee57a12ba745e83a24b35629a295ba057da9d029ab91aa84d21cb0f",
+        "width": 300,
+        "height": 300,
+        "bytes": 10380
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200066e27157c425492c40d98",
+          "sha256": "fbd43274cee57a12ba745e83a24b35629a295ba057da9d029ab91aa84d21cb0f",
+          "width": 300,
+          "height": 300,
+          "bytes": 10380
+        }
+      ]
+    },
+    {
+      "familyId": "gv-53b49bb9506fe1c4be55",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066e4885ea79bd7e8d592d",
+        "sha256": "d50bce09edbb2b8598221530f702089880259b66674fcbb202db27dbc851ef7a",
+        "width": 640,
+        "height": 640,
+        "bytes": 189332
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066e4885ea79bd7e8d592d",
+          "sha256": "d50bce09edbb2b8598221530f702089880259b66674fcbb202db27dbc851ef7a",
+          "width": 640,
+          "height": 640,
+          "bytes": 189332
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a510c6220232966c0634",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066e73a833b92557fe3332",
+        "sha256": "eaa04f80e173356ae90958d9097d91e44d4f46b90a775ee4c0fedbb743b399b2",
+        "width": 640,
+        "height": 640,
+        "bytes": 147961
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066e73a833b92557fe3332",
+          "sha256": "eaa04f80e173356ae90958d9097d91e44d4f46b90a775ee4c0fedbb743b399b2",
+          "width": 640,
+          "height": 640,
+          "bytes": 147961
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f178b5fab32c0739ed47",
+      "anchor": {
+        "file": "06/ab67616d0000b27300066ee1ec421e160b525873",
+        "sha256": "80bfe733b2a6e725aa33005d6e26857a49c7453c7d192910c70c170b84556554",
+        "width": 640,
+        "height": 640,
+        "bytes": 166199
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300066ee1ec421e160b525873",
+          "sha256": "80bfe733b2a6e725aa33005d6e26857a49c7453c7d192910c70c170b84556554",
+          "width": 640,
+          "height": 640,
+          "bytes": 166199
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a55ece7d837ee1be9ed1",
+      "anchor": {
+        "file": "06/ab67616d00001e0200066eeacb026d4c40860077",
+        "sha256": "4e3be2e03c6a8feff62307100b6849968dce940f2f8382e7c671638babde2495",
+        "width": 300,
+        "height": 300,
+        "bytes": 39839
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200066eeacb026d4c40860077",
+          "sha256": "4e3be2e03c6a8feff62307100b6849968dce940f2f8382e7c671638babde2495",
+          "width": 300,
+          "height": 300,
+          "bytes": 39839
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ba418e525f90209e4909",
+      "anchor": {
+        "file": "06/ab67616d0000b273000671ce0a0e9429d9bb67d3",
+        "sha256": "d09597388eb2bc44d49f44f07eff8badf2885b98ed84509a7f00b58f7511cd7b",
+        "width": 640,
+        "height": 640,
+        "bytes": 109559
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000671ce0a0e9429d9bb67d3",
+          "sha256": "d09597388eb2bc44d49f44f07eff8badf2885b98ed84509a7f00b58f7511cd7b",
+          "width": 640,
+          "height": 640,
+          "bytes": 109559
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c5ba6c5f5ee86427e72b",
+      "anchor": {
+        "file": "06/ab67616d00001e0200067219c6e91792e9a96aa4",
+        "sha256": "3b1f2211b94e84185f1e18076614fbac32769f0311517986580340762a5552f8",
+        "width": 300,
+        "height": 300,
+        "bytes": 44117
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200067219c6e91792e9a96aa4",
+          "sha256": "3b1f2211b94e84185f1e18076614fbac32769f0311517986580340762a5552f8",
+          "width": 300,
+          "height": 300,
+          "bytes": 44117
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b98ddc593a7b3b7affab",
+      "anchor": {
+        "file": "06/ab67616d0000b273000672d06c2f9646ab224139",
+        "sha256": "c173aa9ad903c8766e7012ef74066d3b5bb90440d9f24fc731453ffd46d99750",
+        "width": 640,
+        "height": 640,
+        "bytes": 97306
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000672d06c2f9646ab224139",
+          "sha256": "c173aa9ad903c8766e7012ef74066d3b5bb90440d9f24fc731453ffd46d99750",
+          "width": 640,
+          "height": 640,
+          "bytes": 97306
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1f94d2508fcf3bf5f7ed",
+      "anchor": {
+        "file": "06/ab67616d0000b273000674b1702388d9576d04be",
+        "sha256": "7b8c28de79c54fb82acbd3ecf67c52822eb5da14b63242cf2f6046ba725b5e93",
+        "width": 640,
+        "height": 640,
+        "bytes": 248367
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000674b1702388d9576d04be",
+          "sha256": "7b8c28de79c54fb82acbd3ecf67c52822eb5da14b63242cf2f6046ba725b5e93",
+          "width": 640,
+          "height": 640,
+          "bytes": 248367
+        }
+      ]
+    },
+    {
+      "familyId": "gv-421244a4cf13c8a2ecc3",
+      "anchor": {
+        "file": "06/ab67616d00001e02000674f89e662c75908a11c8",
+        "sha256": "8eae571e883c9b0da87ce39e01d97f2a44d7a59b32ef08e3020fdd317878b9cb",
+        "width": 300,
+        "height": 300,
+        "bytes": 58296
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000674f89e662c75908a11c8",
+          "sha256": "8eae571e883c9b0da87ce39e01d97f2a44d7a59b32ef08e3020fdd317878b9cb",
+          "width": 300,
+          "height": 300,
+          "bytes": 58296
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c10282df2e66797cca9b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006753b3fa7caa41a0b9584",
+        "sha256": "264996fdf2b94a0bfcc2cf430adf2f0424d73b29c4a96104f6a1292a14475fb8",
+        "width": 640,
+        "height": 640,
+        "bytes": 167635
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006753b3fa7caa41a0b9584",
+          "sha256": "264996fdf2b94a0bfcc2cf430adf2f0424d73b29c4a96104f6a1292a14475fb8",
+          "width": 640,
+          "height": 640,
+          "bytes": 167635
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a732ddd77a24fd5784b4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006754414cdcbc8a0039799",
+        "sha256": "9636a32819635ab23f409c3ca241228c053b915edef6b820fdf798159639d5a4",
+        "width": 640,
+        "height": 640,
+        "bytes": 132246
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006754414cdcbc8a0039799",
+          "sha256": "9636a32819635ab23f409c3ca241228c053b915edef6b820fdf798159639d5a4",
+          "width": 640,
+          "height": 640,
+          "bytes": 132246
+        }
+      ]
+    },
+    {
+      "familyId": "gv-dddd50144ff6d52782d9",
+      "anchor": {
+        "file": "06/ab67616d0000b273000675c2d32202176b2fa7ed",
+        "sha256": "fa25014bad8e231e0246749d01afc787271fb63e8a0262f0fdd2047c44c21dc5",
+        "width": 640,
+        "height": 640,
+        "bytes": 158851
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000675c2d32202176b2fa7ed",
+          "sha256": "fa25014bad8e231e0246749d01afc787271fb63e8a0262f0fdd2047c44c21dc5",
+          "width": 640,
+          "height": 640,
+          "bytes": 158851
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d9c2ac8c597c72e61129",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006761df28ae65c04255a1d",
+        "sha256": "7fea0c13d11773fdad08785b5ed7e896d6f7e3ff284f97d6eec856d1a0eef9a9",
+        "width": 640,
+        "height": 640,
+        "bytes": 120568
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006761df28ae65c04255a1d",
+          "sha256": "7fea0c13d11773fdad08785b5ed7e896d6f7e3ff284f97d6eec856d1a0eef9a9",
+          "width": 640,
+          "height": 640,
+          "bytes": 120568
+        },
+        {
+          "file": "06/ab67616d00001e020006761df28ae65c04255a1d",
+          "sha256": "ced0a8407799ef0c86e3d22d152621c0f2b0897442ff3992c43edc34e5c9a2f9",
+          "width": 300,
+          "height": 300,
+          "bytes": 37571
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f4749cbf177264e16661",
+      "anchor": {
+        "file": "06/ab67616d00001e02000676b993ffc8d5727f8b13",
+        "sha256": "755d4c7feef72506aa346e06761b173499f6c7217411235af25efd14d15c8851",
+        "width": 300,
+        "height": 300,
+        "bytes": 32998
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000676b993ffc8d5727f8b13",
+          "sha256": "755d4c7feef72506aa346e06761b173499f6c7217411235af25efd14d15c8851",
+          "width": 300,
+          "height": 300,
+          "bytes": 32998
+        }
+      ]
+    },
+    {
+      "familyId": "gv-141d086dc086fb537819",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006779241fdf9ab6e511500",
+        "sha256": "1e386a8dc73672296d849df5c1061937d60aab887515a9c2fe9d1b06a0e2f5e0",
+        "width": 640,
+        "height": 640,
+        "bytes": 89048
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006779241fdf9ab6e511500",
+          "sha256": "1e386a8dc73672296d849df5c1061937d60aab887515a9c2fe9d1b06a0e2f5e0",
+          "width": 640,
+          "height": 640,
+          "bytes": 89048
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e19f0cc4a98a6ba0a40e",
+      "anchor": {
+        "file": "06/ab67616d00001e020006783d04b122b5bfb7522e",
+        "sha256": "3f584908296f0a254b05cb12a45a39b468b0b0d6d321179b19a0578bad198c3c",
+        "width": 300,
+        "height": 300,
+        "bytes": 21686
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006783d04b122b5bfb7522e",
+          "sha256": "3f584908296f0a254b05cb12a45a39b468b0b0d6d321179b19a0578bad198c3c",
+          "width": 300,
+          "height": 300,
+          "bytes": 21686
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d306acb0cc49a1454ddb",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067932cad998656deb67ee",
+        "sha256": "7f23be214de940788779fb9d640a5ec39aa315447d2cd21350a231471767b353",
+        "width": 640,
+        "height": 640,
+        "bytes": 85713
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067932cad998656deb67ee",
+          "sha256": "7f23be214de940788779fb9d640a5ec39aa315447d2cd21350a231471767b353",
+          "width": 640,
+          "height": 640,
+          "bytes": 85713
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2f5cbe40575928ec3070",
+      "anchor": {
+        "file": "06/ab67616d00001e0200067a3aa177a1a18dd65b04",
+        "sha256": "cae598207e45c7383f6d5b145fcb2e75997f13aa223fc637d6e95b049723c07b",
+        "width": 300,
+        "height": 300,
+        "bytes": 47467
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200067a3aa177a1a18dd65b04",
+          "sha256": "cae598207e45c7383f6d5b145fcb2e75997f13aa223fc637d6e95b049723c07b",
+          "width": 300,
+          "height": 300,
+          "bytes": 47467
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5480590bdb200e60067c",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067a65f1ad80df9d7aa13d",
+        "sha256": "6c19db858a199f1e0adac6631ea36f23adf37e4403d1bd82dda1f449d331fa17",
+        "width": 640,
+        "height": 640,
+        "bytes": 92950
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067a65f1ad80df9d7aa13d",
+          "sha256": "6c19db858a199f1e0adac6631ea36f23adf37e4403d1bd82dda1f449d331fa17",
+          "width": 640,
+          "height": 640,
+          "bytes": 92950
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5b3fe6cc1f3209933f2b",
+      "anchor": {
+        "file": "06/ab67616d00001e0200067b11a3780e5a0b404a51",
+        "sha256": "23f876f8cd2a6ebda42c0c275bdecf43c8fe6654b527c047a6174440c4f17c46",
+        "width": 300,
+        "height": 300,
+        "bytes": 19451
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200067b11a3780e5a0b404a51",
+          "sha256": "23f876f8cd2a6ebda42c0c275bdecf43c8fe6654b527c047a6174440c4f17c46",
+          "width": 300,
+          "height": 300,
+          "bytes": 19451
+        }
+      ]
+    },
+    {
+      "familyId": "gv-803221ae012429f26f80",
+      "anchor": {
+        "file": "06/ab67616d00001e0200067b75dc58f1a6c7f807cf",
+        "sha256": "ca14720cc896385570ec4bcae53f1292bfda283aa629cb519c5d5760f4194250",
+        "width": 300,
+        "height": 300,
+        "bytes": 27450
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200067b75dc58f1a6c7f807cf",
+          "sha256": "ca14720cc896385570ec4bcae53f1292bfda283aa629cb519c5d5760f4194250",
+          "width": 300,
+          "height": 300,
+          "bytes": 27450
+        }
+      ]
+    },
+    {
+      "familyId": "gv-617267b83178f204c7f3",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067c3d98bf00f2b2e8378f",
+        "sha256": "d6b2483c535c4f098589e91083d4341ef3a34b066a3a8a019de3d16f076879df",
+        "width": 640,
+        "height": 640,
+        "bytes": 191397
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067c3d98bf00f2b2e8378f",
+          "sha256": "d6b2483c535c4f098589e91083d4341ef3a34b066a3a8a019de3d16f076879df",
+          "width": 640,
+          "height": 640,
+          "bytes": 191397
+        },
+        {
+          "file": "06/ab67616d00001e0200067c3d98bf00f2b2e8378f",
+          "sha256": "c2ce2e2deb88436f0cee1aaceb79a0faaa44e0782ca64d61a8392bf798b89c38",
+          "width": 300,
+          "height": 300,
+          "bytes": 38443
+        }
+      ]
+    },
+    {
+      "familyId": "gv-891d487defea5ce5150c",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067c57bd4017f76191647b",
+        "sha256": "a2b12b12cd1e6e7bf101c10a8de9c781a13be35a0beae3a98121778a9744ab93",
+        "width": 640,
+        "height": 640,
+        "bytes": 125839
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067c57bd4017f76191647b",
+          "sha256": "a2b12b12cd1e6e7bf101c10a8de9c781a13be35a0beae3a98121778a9744ab93",
+          "width": 640,
+          "height": 640,
+          "bytes": 125839
+        }
+      ]
+    },
+    {
+      "familyId": "gv-40984abfb31236cc8c3f",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067d8543289e463a9b44fb",
+        "sha256": "796088e14c79c4aeaf047860e83149fa9e1eddc212a156361563617d46d82b9d",
+        "width": 640,
+        "height": 640,
+        "bytes": 86664
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067d8543289e463a9b44fb",
+          "sha256": "796088e14c79c4aeaf047860e83149fa9e1eddc212a156361563617d46d82b9d",
+          "width": 640,
+          "height": 640,
+          "bytes": 86664
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3cda03ae068adfdcc012",
+      "anchor": {
+        "file": "06/ab67616d0000b27300067ea1c968c9189792c46e",
+        "sha256": "59840af3b8516c464021ed039df677f7fba811d6d900b4b23b0f36b8ade1701d",
+        "width": 640,
+        "height": 640,
+        "bytes": 102834
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300067ea1c968c9189792c46e",
+          "sha256": "59840af3b8516c464021ed039df677f7fba811d6d900b4b23b0f36b8ade1701d",
+          "width": 640,
+          "height": 640,
+          "bytes": 102834
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fab8e08bcc630c7db3b5",
+      "anchor": {
+        "file": "06/ab67616d00001e0200067eeb85a0654b33e81700",
+        "sha256": "fa232962d683541e56a1a50a8ab2111849779b2864c709ae3509fbe87745d8ce",
+        "width": 300,
+        "height": 300,
+        "bytes": 16080
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200067eeb85a0654b33e81700",
+          "sha256": "fa232962d683541e56a1a50a8ab2111849779b2864c709ae3509fbe87745d8ce",
+          "width": 300,
+          "height": 300,
+          "bytes": 16080
+        }
+      ]
+    },
+    {
+      "familyId": "gv-64f2fa9a7092e3056105",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068045a4edd856d0d2d598",
+        "sha256": "23d85d807321a54562a84161c320d2950190824be0952ac92784c4de1e34e9e2",
+        "width": 300,
+        "height": 300,
+        "bytes": 41512
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200068045a4edd856d0d2d598",
+          "sha256": "23d85d807321a54562a84161c320d2950190824be0952ac92784c4de1e34e9e2",
+          "width": 300,
+          "height": 300,
+          "bytes": 41512
+        }
+      ]
+    },
+    {
+      "familyId": "gv-dcfe6602b842584b7ca7",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006806792f52c44638d665f",
+        "sha256": "e76e2550ac14e519ae3e7cc3465ce16da62e939da8951a8cd817776c0dbe677b",
+        "width": 640,
+        "height": 640,
+        "bytes": 117640
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006806792f52c44638d665f",
+          "sha256": "e76e2550ac14e519ae3e7cc3465ce16da62e939da8951a8cd817776c0dbe677b",
+          "width": 640,
+          "height": 640,
+          "bytes": 117640
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ad255facc9eba8ff001f",
+      "anchor": {
+        "file": "06/ab67616d0000b273000680cd2ed3dae18bb5cc4d",
+        "sha256": "f9246eefd21b5f9b267c90f723c7b65334a62e0e7b53fe875c6d848aeb2eafdd",
+        "width": 640,
+        "height": 640,
+        "bytes": 95556
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000680cd2ed3dae18bb5cc4d",
+          "sha256": "f9246eefd21b5f9b267c90f723c7b65334a62e0e7b53fe875c6d848aeb2eafdd",
+          "width": 640,
+          "height": 640,
+          "bytes": 95556
+        },
+        {
+          "file": "06/ab67616d00001e02000680cd2ed3dae18bb5cc4d",
+          "sha256": "c70d55fa94a5de921472de7d02b1cf42b1fbeacad8a8ff431d4a8114aa18961c",
+          "width": 300,
+          "height": 300,
+          "bytes": 28811
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1b239c8766cfd2438928",
+      "anchor": {
+        "file": "06/ab67616d0000b273000681d91f6735194f3f2922",
+        "sha256": "c0d9345e4abc52a07311fc9f95efbfc1afee37829d2e8964cfdebc715920afb8",
+        "width": 640,
+        "height": 640,
+        "bytes": 127426
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000681d91f6735194f3f2922",
+          "sha256": "c0d9345e4abc52a07311fc9f95efbfc1afee37829d2e8964cfdebc715920afb8",
+          "width": 640,
+          "height": 640,
+          "bytes": 127426
+        }
+      ]
+    },
+    {
+      "familyId": "gv-175abbc6434137b08ab8",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068387f0da195c45c23476",
+        "sha256": "7b9365fc797db19771206f68b00b81f05eabc59fd0edbbcb239fca96da19eba0",
+        "width": 300,
+        "height": 300,
+        "bytes": 24449
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200068387f0da195c45c23476",
+          "sha256": "7b9365fc797db19771206f68b00b81f05eabc59fd0edbbcb239fca96da19eba0",
+          "width": 300,
+          "height": 300,
+          "bytes": 24449
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d002e63372934fb668ac",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068647e66711bc49d6f7a6",
+        "sha256": "a1b5742d23c6d8b91599e6f40416b1f93e0d9be296ce74da75fe48bf0f010b02",
+        "width": 640,
+        "height": 640,
+        "bytes": 75431
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068647e66711bc49d6f7a6",
+          "sha256": "a1b5742d23c6d8b91599e6f40416b1f93e0d9be296ce74da75fe48bf0f010b02",
+          "width": 640,
+          "height": 640,
+          "bytes": 75431
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4299f3715b59e84408b5",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006866975354e5a71b76b5a",
+        "sha256": "c6f43608803058f772c43be78e78d70245722ab007ee0a4eee858e2f975f9111",
+        "width": 640,
+        "height": 640,
+        "bytes": 83453
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006866975354e5a71b76b5a",
+          "sha256": "c6f43608803058f772c43be78e78d70245722ab007ee0a4eee858e2f975f9111",
+          "width": 640,
+          "height": 640,
+          "bytes": 83453
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2f9abd3d883f74b0f820",
+      "anchor": {
+        "file": "06/ab67616d00001e020006873de000f1e0a7e7d1f2",
+        "sha256": "7f28b62a1fddcad382caa5bb5aea4820b2ac96d6eb8523ca75d0a9bb21d159eb",
+        "width": 300,
+        "height": 300,
+        "bytes": 47690
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006873de000f1e0a7e7d1f2",
+          "sha256": "7f28b62a1fddcad382caa5bb5aea4820b2ac96d6eb8523ca75d0a9bb21d159eb",
+          "width": 300,
+          "height": 300,
+          "bytes": 47690
+        }
+      ]
+    },
+    {
+      "familyId": "gv-40529c92e0f5f84e1286",
+      "anchor": {
+        "file": "06/ab67616d00001e02000687d16b1911d2cb5ec7db",
+        "sha256": "d2f621166c767eee856b6dba34511dd96bad1c955e277851b4d4410e13baa9b3",
+        "width": 300,
+        "height": 300,
+        "bytes": 35079
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000687d16b1911d2cb5ec7db",
+          "sha256": "d2f621166c767eee856b6dba34511dd96bad1c955e277851b4d4410e13baa9b3",
+          "width": 300,
+          "height": 300,
+          "bytes": 35079
+        }
+      ]
+    },
+    {
+      "familyId": "gv-cd7845a0e43644fdc4c9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006886b38d047446e654597",
+        "sha256": "cec246f844ac87b39cdbc775ea679317f526af1aa20e9808e366b94d6872f62a",
+        "width": 640,
+        "height": 640,
+        "bytes": 159461
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006886b38d047446e654597",
+          "sha256": "cec246f844ac87b39cdbc775ea679317f526af1aa20e9808e366b94d6872f62a",
+          "width": 640,
+          "height": 640,
+          "bytes": 159461
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0f5f51d33f573471a81e",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068921754b85875f8a0528",
+        "sha256": "4d30974397103fc90c31cd29e270d4441f03fa3427b38154d0ad2df8ae7445ff",
+        "width": 640,
+        "height": 640,
+        "bytes": 45251
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068921754b85875f8a0528",
+          "sha256": "4d30974397103fc90c31cd29e270d4441f03fa3427b38154d0ad2df8ae7445ff",
+          "width": 640,
+          "height": 640,
+          "bytes": 45251
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3cf5b789df402b9a2ed4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006895cff675edc733bc914",
+        "sha256": "7cf0a814904671d1957bd072dca4390b4e8b8b2a99a12cb5d0723872c18ad25d",
+        "width": 640,
+        "height": 640,
+        "bytes": 91946
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006895cff675edc733bc914",
+          "sha256": "7cf0a814904671d1957bd072dca4390b4e8b8b2a99a12cb5d0723872c18ad25d",
+          "width": 640,
+          "height": 640,
+          "bytes": 91946
+        }
+      ]
+    },
+    {
+      "familyId": "gv-32582e3e2864cc795ed4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006899094d916c5de2d5945",
+        "sha256": "b0f19df8904e290bfb46146572734243a5352217a36bd86e7cc8522438f90954",
+        "width": 640,
+        "height": 640,
+        "bytes": 77921
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006899094d916c5de2d5945",
+          "sha256": "b0f19df8904e290bfb46146572734243a5352217a36bd86e7cc8522438f90954",
+          "width": 640,
+          "height": 640,
+          "bytes": 77921
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ca93cf86e09bbdd49398",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068a14c964619648ed8dfb",
+        "sha256": "58c7c5c2cdb9d273768621aaef393220de7e7edf0970fb88eb478315c47f081b",
+        "width": 640,
+        "height": 640,
+        "bytes": 98636
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068a14c964619648ed8dfb",
+          "sha256": "58c7c5c2cdb9d273768621aaef393220de7e7edf0970fb88eb478315c47f081b",
+          "width": 640,
+          "height": 640,
+          "bytes": 98636
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3eb66842e2fe11b8542d",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068b0cbd750f78120dc793",
+        "sha256": "507e0fad4d20bbe0719842b2091c5b7708065521e75a47e808ae935c39c801b8",
+        "width": 300,
+        "height": 300,
+        "bytes": 67104
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200068b0cbd750f78120dc793",
+          "sha256": "507e0fad4d20bbe0719842b2091c5b7708065521e75a47e808ae935c39c801b8",
+          "width": 300,
+          "height": 300,
+          "bytes": 67104
+        }
+      ]
+    },
+    {
+      "familyId": "gv-75ae4a719d658e261eff",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068dc393a8ee6e1cec8f9f",
+        "sha256": "602ee855da5ab47f81e87922306e7740f0b5718142902a9cf95408151cbad9af",
+        "width": 640,
+        "height": 640,
+        "bytes": 197103
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068dc393a8ee6e1cec8f9f",
+          "sha256": "602ee855da5ab47f81e87922306e7740f0b5718142902a9cf95408151cbad9af",
+          "width": 640,
+          "height": 640,
+          "bytes": 197103
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0503de0e66e5547611d6",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068dc6f62c8c8d7423979e",
+        "sha256": "cdae06e123e7589218a868a633570f730c087c3b5d6318ace5e475ced57b86f1",
+        "width": 640,
+        "height": 640,
+        "bytes": 40094
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068dc6f62c8c8d7423979e",
+          "sha256": "cdae06e123e7589218a868a633570f730c087c3b5d6318ace5e475ced57b86f1",
+          "width": 640,
+          "height": 640,
+          "bytes": 40094
+        }
+      ]
+    },
+    {
+      "familyId": "gv-35ed2c0a57b62b43384c",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068dcfd43f6862e6f01e4e",
+        "sha256": "a0ba7139eda67f14a418af617ce038f00d4a1da586ab8e5f8bc77c9215198034",
+        "width": 300,
+        "height": 300,
+        "bytes": 37456
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200068dcfd43f6862e6f01e4e",
+          "sha256": "a0ba7139eda67f14a418af617ce038f00d4a1da586ab8e5f8bc77c9215198034",
+          "width": 300,
+          "height": 300,
+          "bytes": 37456
+        }
+      ]
+    },
+    {
+      "familyId": "gv-73e7e13e315f19b2f258",
+      "anchor": {
+        "file": "06/ab67616d00001e0200068df644dc12e5a70ec654",
+        "sha256": "7fe477e5b16963919e6bc4db548de64094e1e38affb95c75535369c61fe6afb5",
+        "width": 300,
+        "height": 300,
+        "bytes": 36840
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200068df644dc12e5a70ec654",
+          "sha256": "7fe477e5b16963919e6bc4db548de64094e1e38affb95c75535369c61fe6afb5",
+          "width": 300,
+          "height": 300,
+          "bytes": 36840
+        }
+      ]
+    },
+    {
+      "familyId": "gv-282e8fdf5fb5c8f2d457",
+      "anchor": {
+        "file": "06/ab67616d0000b27300068f56c410102f7239c1ca",
+        "sha256": "64592386f4c8edceb9d9c849e1610038907e4a9d95744b3b0e4694520b1e528e",
+        "width": 640,
+        "height": 640,
+        "bytes": 109037
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300068f56c410102f7239c1ca",
+          "sha256": "64592386f4c8edceb9d9c849e1610038907e4a9d95744b3b0e4694520b1e528e",
+          "width": 640,
+          "height": 640,
+          "bytes": 109037
+        },
+        {
+          "file": "06/ab67616d00001e0200068f56c410102f7239c1ca",
+          "sha256": "109891bdb271c69f9ea42f6b5871dd7b09d5efe5d4d6eb5164c58b7a64cb3b0f",
+          "width": 300,
+          "height": 300,
+          "bytes": 33538
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a642e72389a03d067db0",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006922d9fd6fe719a41eb7b",
+        "sha256": "f5f44217e8b6d3ec5bdf694a7676138b9da3e254c7a56628f5223c32c8eed9db",
+        "width": 640,
+        "height": 640,
+        "bytes": 125994
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006922d9fd6fe719a41eb7b",
+          "sha256": "f5f44217e8b6d3ec5bdf694a7676138b9da3e254c7a56628f5223c32c8eed9db",
+          "width": 640,
+          "height": 640,
+          "bytes": 125994
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c2bc0810c816ee6e33c7",
+      "anchor": {
+        "file": "06/ab67616d00001e020006927bbbc64732cfef4336",
+        "sha256": "8c86dd46372116b3da700cf061f8ed0d61b8f5da0f3d9d7588b8f8d6c7b5414c",
+        "width": 300,
+        "height": 300,
+        "bytes": 32529
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006927bbbc64732cfef4336",
+          "sha256": "8c86dd46372116b3da700cf061f8ed0d61b8f5da0f3d9d7588b8f8d6c7b5414c",
+          "width": 300,
+          "height": 300,
+          "bytes": 32529
+        }
+      ]
+    },
+    {
+      "familyId": "gv-838be13b6e7833a34d24",
+      "anchor": {
+        "file": "06/ab67616d0000b273000692890a21ae29cc92f5bf",
+        "sha256": "4f28c002cd5dfdc07e0d4d9bef33015230ce5d89f092bf88f25948f9e27f161b",
+        "width": 640,
+        "height": 640,
+        "bytes": 311535
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000692890a21ae29cc92f5bf",
+          "sha256": "4f28c002cd5dfdc07e0d4d9bef33015230ce5d89f092bf88f25948f9e27f161b",
+          "width": 640,
+          "height": 640,
+          "bytes": 311535
+        }
+      ]
+    },
+    {
+      "familyId": "gv-666fe1e8e7713718f674",
+      "anchor": {
+        "file": "06/ab67616d0000b273000693069db568aa7e7e8559",
+        "sha256": "df7a26fd7e1a28c9bfde63239bbbd06f4c0e05703fe8fea6c63c7f34f86879d5",
+        "width": 640,
+        "height": 640,
+        "bytes": 149869
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000693069db568aa7e7e8559",
+          "sha256": "df7a26fd7e1a28c9bfde63239bbbd06f4c0e05703fe8fea6c63c7f34f86879d5",
+          "width": 640,
+          "height": 640,
+          "bytes": 149869
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5820d5ef06b71931cb7d",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069308f3107fe674a78558",
+        "sha256": "dc1ddbd9ecf0aff4734b6d0ef29dcda92be10279d61856fbccbf8508f6b9fe11",
+        "width": 640,
+        "height": 640,
+        "bytes": 174868
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069308f3107fe674a78558",
+          "sha256": "dc1ddbd9ecf0aff4734b6d0ef29dcda92be10279d61856fbccbf8508f6b9fe11",
+          "width": 640,
+          "height": 640,
+          "bytes": 174868
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f58939d0fabaf3c78404",
+      "anchor": {
+        "file": "06/ab67616d0000b273000693b002a0854b22d7e51c",
+        "sha256": "04cb9736192f4175b063acf5b71ee357d30394a3e7d52d5d5af5f9b0cb088c4b",
+        "width": 640,
+        "height": 640,
+        "bytes": 29205
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000693b002a0854b22d7e51c",
+          "sha256": "04cb9736192f4175b063acf5b71ee357d30394a3e7d52d5d5af5f9b0cb088c4b",
+          "width": 640,
+          "height": 640,
+          "bytes": 29205
+        }
+      ]
+    },
+    {
+      "familyId": "gv-31158039dca31fa3fe68",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006941409fff111358ae02e",
+        "sha256": "ce2ec6bc77b9210e1a6b4d83c1d9801f25f0aeb958453da2aa67b38a5a7c1069",
+        "width": 640,
+        "height": 640,
+        "bytes": 77129
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006941409fff111358ae02e",
+          "sha256": "ce2ec6bc77b9210e1a6b4d83c1d9801f25f0aeb958453da2aa67b38a5a7c1069",
+          "width": 640,
+          "height": 640,
+          "bytes": 77129
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a52ec0c9b0dec79858cd",
+      "anchor": {
+        "file": "06/ab67616d00001e02000694aceb023850f73aabc1",
+        "sha256": "c10037d43ba2f980f7e8426fbb2506f8e1982976d1bcfe414a5a5b4ad106dd55",
+        "width": 300,
+        "height": 300,
+        "bytes": 30572
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000694aceb023850f73aabc1",
+          "sha256": "c10037d43ba2f980f7e8426fbb2506f8e1982976d1bcfe414a5a5b4ad106dd55",
+          "width": 300,
+          "height": 300,
+          "bytes": 30572
+        }
+      ]
+    },
+    {
+      "familyId": "gv-30a8bd9fa18a52e8af7b",
+      "anchor": {
+        "file": "06/ab67616d00001e02000694f5ab33462981be865c",
+        "sha256": "76fbff799f6c42a79629403ea0c610f6d1cdfd14e42d28bdfce31e2be6b069cf",
+        "width": 300,
+        "height": 300,
+        "bytes": 23145
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e02000694f5ab33462981be865c",
+          "sha256": "76fbff799f6c42a79629403ea0c610f6d1cdfd14e42d28bdfce31e2be6b069cf",
+          "width": 300,
+          "height": 300,
+          "bytes": 23145
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2305bcee38d04ed2b082",
+      "anchor": {
+        "file": "06/ab67616d0000b273000698de440211f02d51fe1c",
+        "sha256": "31ad56a8fffce3c9141fab44abb0ca007e5d36b4f18de44e0c70147bc0fe77a8",
+        "width": 640,
+        "height": 640,
+        "bytes": 120796
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b273000698de440211f02d51fe1c",
+          "sha256": "31ad56a8fffce3c9141fab44abb0ca007e5d36b4f18de44e0c70147bc0fe77a8",
+          "width": 640,
+          "height": 640,
+          "bytes": 120796
+        },
+        {
+          "file": "06/ab67616d00001e02000698de440211f02d51fe1c",
+          "sha256": "be1a6cbdc701beafd1c08f1ca7a3ebf5791cce6b9433992ebed22dd1402fa38f",
+          "width": 300,
+          "height": 300,
+          "bytes": 45699
+        }
+      ]
+    },
+    {
+      "familyId": "gv-84773d914d9c79343cc0",
+      "anchor": {
+        "file": "06/ab67616d00001e0200069937669c4ba31401ecdd",
+        "sha256": "c42325e6aa0041d70cb75dbdb8438938d1419f3ae90abe91079746b0fca941c3",
+        "width": 300,
+        "height": 300,
+        "bytes": 44080
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200069937669c4ba31401ecdd",
+          "sha256": "c42325e6aa0041d70cb75dbdb8438938d1419f3ae90abe91079746b0fca941c3",
+          "width": 300,
+          "height": 300,
+          "bytes": 44080
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d4f57e948cbbb674d5ba",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069b07996b7fc430b58ece",
+        "sha256": "2f6447b5dbe1e6789b9f7ae81e36158eb6d6dff6a78b864be5061fa7b84d4a96",
+        "width": 640,
+        "height": 640,
+        "bytes": 53971
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069b07996b7fc430b58ece",
+          "sha256": "2f6447b5dbe1e6789b9f7ae81e36158eb6d6dff6a78b864be5061fa7b84d4a96",
+          "width": 640,
+          "height": 640,
+          "bytes": 53971
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2c00539e0a591dee7b87",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069b9b788f69a566ffe58a",
+        "sha256": "5ab46fbae3a68257deaaf4902833142576552323d3f8a3b485de90b3be4ce7e4",
+        "width": 640,
+        "height": 640,
+        "bytes": 93469
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069b9b788f69a566ffe58a",
+          "sha256": "5ab46fbae3a68257deaaf4902833142576552323d3f8a3b485de90b3be4ce7e4",
+          "width": 640,
+          "height": 640,
+          "bytes": 93469
+        }
+      ]
+    },
+    {
+      "familyId": "gv-cf1d71c01e9d12b97041",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069ba24213c4ab4e15f0a7",
+        "sha256": "563cc718bbf16a61b3a1c3eec31710a22d4edbf8def413ba79a7d240777ae1dd",
+        "width": 640,
+        "height": 640,
+        "bytes": 140374
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069ba24213c4ab4e15f0a7",
+          "sha256": "563cc718bbf16a61b3a1c3eec31710a22d4edbf8def413ba79a7d240777ae1dd",
+          "width": 640,
+          "height": 640,
+          "bytes": 140374
+        },
+        {
+          "file": "06/ab67616d00001e0200069ba24213c4ab4e15f0a7",
+          "sha256": "28f852e04e46b8a3a62157afff0a86f40db4b5086663ddc60eda3adc6ac77440",
+          "width": 300,
+          "height": 300,
+          "bytes": 39387
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e34c986f8023de57ae8d",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069cb7887a3b41d7656d03",
+        "sha256": "70719a72cf683427236eaf2f9ccdfee7eee4baf93729f67c73e9962d0a728860",
+        "width": 640,
+        "height": 640,
+        "bytes": 152821
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069cb7887a3b41d7656d03",
+          "sha256": "70719a72cf683427236eaf2f9ccdfee7eee4baf93729f67c73e9962d0a728860",
+          "width": 640,
+          "height": 640,
+          "bytes": 152821
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1f932a58289a33a3ca18",
+      "anchor": {
+        "file": "06/ab67616d00001e0200069d1aa77e41a0f64c1510",
+        "sha256": "5f2c5566bf612545cb76d1aed714be7902c748a5a20aa271635b42114af0513c",
+        "width": 300,
+        "height": 300,
+        "bytes": 35886
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e0200069d1aa77e41a0f64c1510",
+          "sha256": "5f2c5566bf612545cb76d1aed714be7902c748a5a20aa271635b42114af0513c",
+          "width": 300,
+          "height": 300,
+          "bytes": 35886
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5264757224173a0b2458",
+      "anchor": {
+        "file": "06/ab67616d0000b27300069e5c98fedf859af2f315",
+        "sha256": "54f2a92f04618f2e2e2b062b77563da0d3bfc63598afd6fc93aec5b93795dff3",
+        "width": 640,
+        "height": 640,
+        "bytes": 153884
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b27300069e5c98fedf859af2f315",
+          "sha256": "54f2a92f04618f2e2e2b062b77563da0d3bfc63598afd6fc93aec5b93795dff3",
+          "width": 640,
+          "height": 640,
+          "bytes": 153884
+        }
+      ]
+    },
+    {
+      "familyId": "gv-21350479437c402f6814",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+        "sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+        "width": 640,
+        "height": 640,
+        "bytes": 83190
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+          "sha256": "d6487802175c04276c01a6f7a687e6e0e132d4676da4b1b7aaf9d71f43dfd5cc",
+          "width": 640,
+          "height": 640,
+          "bytes": 83190
+        },
+        {
+          "file": "06/ab67616d00001e020006a059abb2a6b7dd4ad461",
+          "sha256": "1d91f3429b408cccfb49d248749a3d9ccd0090c6e405ebaebf5750636759ef7f",
+          "width": 300,
+          "height": 300,
+          "bytes": 28232
+        }
+      ]
+    },
+    {
+      "familyId": "gv-82ee1d7dec4e0db1e0e5",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a0811da073ed76fc8d5b",
+        "sha256": "87df816232d311af3532113b0cafe0c03d2deb97797271cb6fed9f934ec9a674",
+        "width": 640,
+        "height": 640,
+        "bytes": 130463
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a0811da073ed76fc8d5b",
+          "sha256": "87df816232d311af3532113b0cafe0c03d2deb97797271cb6fed9f934ec9a674",
+          "width": 640,
+          "height": 640,
+          "bytes": 130463
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fa70441b1c14b97bd635",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a1d30246b027584f8382",
+        "sha256": "5f10f77783adce9bbe4b44db805e480914da4bfbb2665cfd90c7a01cd7a21e60",
+        "width": 640,
+        "height": 640,
+        "bytes": 226873
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a1d30246b027584f8382",
+          "sha256": "5f10f77783adce9bbe4b44db805e480914da4bfbb2665cfd90c7a01cd7a21e60",
+          "width": 640,
+          "height": 640,
+          "bytes": 226873
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5fa29e82746ead45f3f7",
+      "anchor": {
+        "file": "06/ab67616d00001e020006a3555a1b8bc36721204f",
+        "sha256": "46c829e1b9686cf9a1705372c31458100718f0a4e6c7cf450e051fc5426f1135",
+        "width": 300,
+        "height": 300,
+        "bytes": 31358
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006a3555a1b8bc36721204f",
+          "sha256": "46c829e1b9686cf9a1705372c31458100718f0a4e6c7cf450e051fc5426f1135",
+          "width": 300,
+          "height": 300,
+          "bytes": 31358
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e93ec4eb65d7720c6c7e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a43186182eecccda36a1",
+        "sha256": "30843a1b7cf74941ad1089d749b9a2bedfd9153e191106d7683a57c498c42c4e",
+        "width": 640,
+        "height": 640,
+        "bytes": 97390
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a43186182eecccda36a1",
+          "sha256": "30843a1b7cf74941ad1089d749b9a2bedfd9153e191106d7683a57c498c42c4e",
+          "width": 640,
+          "height": 640,
+          "bytes": 97390
+        }
+      ]
+    },
+    {
+      "familyId": "gv-98c7caa719cd217c31d0",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a562f3662df7779189b4",
+        "sha256": "5174f9a393ab1eca2c5533d0c7c359836ac2f270d8d74b2d6edb516755a95517",
+        "width": 640,
+        "height": 640,
+        "bytes": 136182
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a562f3662df7779189b4",
+          "sha256": "5174f9a393ab1eca2c5533d0c7c359836ac2f270d8d74b2d6edb516755a95517",
+          "width": 640,
+          "height": 640,
+          "bytes": 136182
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e265e447be75e1f8eb7a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a585e8b3bb908d2a1e95",
+        "sha256": "657e129a9b1b00d5372b408829f3ed25229880cb04f10b0f2067f51ff3db1cb5",
+        "width": 640,
+        "height": 640,
+        "bytes": 179582
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a585e8b3bb908d2a1e95",
+          "sha256": "657e129a9b1b00d5372b408829f3ed25229880cb04f10b0f2067f51ff3db1cb5",
+          "width": 640,
+          "height": 640,
+          "bytes": 179582
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6283776d48f1108e32e1",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a777195e68d23f76cf2e",
+        "sha256": "6abf66bf1c6b1afd4bcae87e148505ff355953df501e374cef2b90b8e8bb42d4",
+        "width": 640,
+        "height": 640,
+        "bytes": 84974
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a777195e68d23f76cf2e",
+          "sha256": "6abf66bf1c6b1afd4bcae87e148505ff355953df501e374cef2b90b8e8bb42d4",
+          "width": 640,
+          "height": 640,
+          "bytes": 84974
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a1f5502f3985da69b4ef",
+      "anchor": {
+        "file": "06/ab67616d00001e020006a80fd5e5291cf4ccc16b",
+        "sha256": "8930e2608171ee592cfb7e80f13c81b8fc1281544a63b6fbb1970d893c7dea00",
+        "width": 300,
+        "height": 300,
+        "bytes": 19867
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006a80fd5e5291cf4ccc16b",
+          "sha256": "8930e2608171ee592cfb7e80f13c81b8fc1281544a63b6fbb1970d893c7dea00",
+          "width": 300,
+          "height": 300,
+          "bytes": 19867
+        }
+      ]
+    },
+    {
+      "familyId": "gv-722defb8ceee40a78baa",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a89e91a697e0aa44a947",
+        "sha256": "5d250fa144a70fdfb72b237cac8e4aab18154cb8bfb30c51abd3701731d582f7",
+        "width": 640,
+        "height": 640,
+        "bytes": 133830
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a89e91a697e0aa44a947",
+          "sha256": "5d250fa144a70fdfb72b237cac8e4aab18154cb8bfb30c51abd3701731d582f7",
+          "width": 640,
+          "height": 640,
+          "bytes": 133830
+        }
+      ]
+    },
+    {
+      "familyId": "gv-34488092e0b1c9231547",
+      "anchor": {
+        "file": "06/ab67616d00001e020006a90d0518cff40d268187",
+        "sha256": "c119805223c39af636927d68e0cf0c218abce4f6515c6187d60ad2a6e531bcfc",
+        "width": 300,
+        "height": 300,
+        "bytes": 56543
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006a90d0518cff40d268187",
+          "sha256": "c119805223c39af636927d68e0cf0c218abce4f6515c6187d60ad2a6e531bcfc",
+          "width": 300,
+          "height": 300,
+          "bytes": 56543
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6b235d7c5ab3b4ef3c50",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006a9ffb0ee35152ce8b61d",
+        "sha256": "c260c1c2be8b826a5a3b966241e12537dee202caeb047963602fca643e451ed7",
+        "width": 640,
+        "height": 640,
+        "bytes": 92570
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006a9ffb0ee35152ce8b61d",
+          "sha256": "c260c1c2be8b826a5a3b966241e12537dee202caeb047963602fca643e451ed7",
+          "width": 640,
+          "height": 640,
+          "bytes": 92570
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f252f49a2ea77dade15f",
+      "anchor": {
+        "file": "06/ab67616d00001e020006aad7d77accd70981bcf9",
+        "sha256": "d636690ad92d8621d4ce8af2d8bdf052edc82df5f19f7e110dc2f45c8f0d26c2",
+        "width": 300,
+        "height": 300,
+        "bytes": 38752
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006aad7d77accd70981bcf9",
+          "sha256": "d636690ad92d8621d4ce8af2d8bdf052edc82df5f19f7e110dc2f45c8f0d26c2",
+          "width": 300,
+          "height": 300,
+          "bytes": 38752
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5a236aaf3bfa615a6348",
+      "anchor": {
+        "file": "06/ab67616d00001e020006abb185f8d448dc24c04e",
+        "sha256": "21083b518aa12d2e7ab8bb3cd62352a28e2017b67bbe7b64359fe77631a15459",
+        "width": 300,
+        "height": 300,
+        "bytes": 29833
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006abb185f8d448dc24c04e",
+          "sha256": "21083b518aa12d2e7ab8bb3cd62352a28e2017b67bbe7b64359fe77631a15459",
+          "width": 300,
+          "height": 300,
+          "bytes": 29833
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e7c8d21cd8eb9e4b7852",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006adb6825b8d3ed8c917c8",
+        "sha256": "dc931b91335664ce40a4794741c5e87b524bce2263743049aeab5dc11ccb2045",
+        "width": 640,
+        "height": 640,
+        "bytes": 176193
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006adb6825b8d3ed8c917c8",
+          "sha256": "dc931b91335664ce40a4794741c5e87b524bce2263743049aeab5dc11ccb2045",
+          "width": 640,
+          "height": 640,
+          "bytes": 176193
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2f701ff78547116b7650",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006ae2ecdb12cde0aab466d",
+        "sha256": "800ce99944f39d8abd09b8a990f16fbae30c395169a7d01893e53d9f2f2720af",
+        "width": 640,
+        "height": 640,
+        "bytes": 76475
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006ae2ecdb12cde0aab466d",
+          "sha256": "800ce99944f39d8abd09b8a990f16fbae30c395169a7d01893e53d9f2f2720af",
+          "width": 640,
+          "height": 640,
+          "bytes": 76475
+        }
+      ]
+    },
+    {
+      "familyId": "gv-23ec5a491f844b4e6df1",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006aeabb6d69f23724af1fd",
+        "sha256": "e2a8964c2472d7ee4fc66c00b1f2b3d0353d58e601689327a1061253f226341f",
+        "width": 640,
+        "height": 640,
+        "bytes": 131331
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006aeabb6d69f23724af1fd",
+          "sha256": "e2a8964c2472d7ee4fc66c00b1f2b3d0353d58e601689327a1061253f226341f",
+          "width": 640,
+          "height": 640,
+          "bytes": 131331
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c6020b0cc04c6fd386e0",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006aef365b261baa2689374",
+        "sha256": "40c88e579dfeb2974bd8ef60675487927992cd86825b14cdcc8a378757e5545b",
+        "width": 640,
+        "height": 640,
+        "bytes": 240270
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006aef365b261baa2689374",
+          "sha256": "40c88e579dfeb2974bd8ef60675487927992cd86825b14cdcc8a378757e5545b",
+          "width": 640,
+          "height": 640,
+          "bytes": 240270
+        }
+      ]
+    },
+    {
+      "familyId": "gv-62651a026bc51c6960c6",
+      "anchor": {
+        "file": "06/ab67616d00001e020006af6af60b1f8b0a281bae",
+        "sha256": "78fc7b5a15c3b3588be6cb05df1194e7832cd04d8f73e5f0827096e04175bdfb",
+        "width": 300,
+        "height": 300,
+        "bytes": 7801
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006af6af60b1f8b0a281bae",
+          "sha256": "78fc7b5a15c3b3588be6cb05df1194e7832cd04d8f73e5f0827096e04175bdfb",
+          "width": 300,
+          "height": 300,
+          "bytes": 7801
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f1015148d0fa86028857",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b024d438a5852357a172",
+        "sha256": "e07063f257aa0818a66ac71f2afe873a8067e9538599553204425845099d933b",
+        "width": 640,
+        "height": 640,
+        "bytes": 203261
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b024d438a5852357a172",
+          "sha256": "e07063f257aa0818a66ac71f2afe873a8067e9538599553204425845099d933b",
+          "width": 640,
+          "height": 640,
+          "bytes": 203261
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3e306315473846ca9345",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b1fb7b654554e2732088",
+        "sha256": "400d91b14d6507aeaa0685a3d916eed60152a67ecb09492d7d2dc33600cb81fc",
+        "width": 640,
+        "height": 640,
+        "bytes": 107689
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b1fb7b654554e2732088",
+          "sha256": "400d91b14d6507aeaa0685a3d916eed60152a67ecb09492d7d2dc33600cb81fc",
+          "width": 640,
+          "height": 640,
+          "bytes": 107689
+        }
+      ]
+    },
+    {
+      "familyId": "gv-25a92b43a6de5b54f252",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b216e59acf2101a3a108",
+        "sha256": "8ab91f323caee0bffb266bf112490d21c1f7a77b37892ab69e7a2d5dce63f019",
+        "width": 640,
+        "height": 640,
+        "bytes": 78947
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b216e59acf2101a3a108",
+          "sha256": "8ab91f323caee0bffb266bf112490d21c1f7a77b37892ab69e7a2d5dce63f019",
+          "width": 640,
+          "height": 640,
+          "bytes": 78947
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d19bc8f953ae95b82344",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b27a9698f2b527357f3a",
+        "sha256": "df9678c1cee834d7c2af505772640855df0960ecd9ad840e86f3320f27fee4a9",
+        "width": 640,
+        "height": 640,
+        "bytes": 72438
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b27a9698f2b527357f3a",
+          "sha256": "df9678c1cee834d7c2af505772640855df0960ecd9ad840e86f3320f27fee4a9",
+          "width": 640,
+          "height": 640,
+          "bytes": 72438
+        }
+      ]
+    },
+    {
+      "familyId": "gv-39395048446fffea6aa6",
+      "anchor": {
+        "file": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+        "sha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+        "width": 300,
+        "height": 300,
+        "bytes": 27992
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+          "sha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+          "width": 300,
+          "height": 300,
+          "bytes": 27992
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6a7f14a1625d858f3970",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b3d128babd28d56d292b",
+        "sha256": "034569a10a240362d9afd10b32a6df769858ba18f29018935d4cec9ce25b2b9c",
+        "width": 640,
+        "height": 640,
+        "bytes": 23145
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b3d128babd28d56d292b",
+          "sha256": "034569a10a240362d9afd10b32a6df769858ba18f29018935d4cec9ce25b2b9c",
+          "width": 640,
+          "height": 640,
+          "bytes": 23145
+        }
+      ]
+    },
+    {
+      "familyId": "gv-60a67585b3f19f925f1b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b3ddaa78b25938246c29",
+        "sha256": "b94a62ab2683a0e4280f229cad43f5f2830ec2a62b1d7413d1b7d17b219b6a1b",
+        "width": 640,
+        "height": 640,
+        "bytes": 119931
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b3ddaa78b25938246c29",
+          "sha256": "b94a62ab2683a0e4280f229cad43f5f2830ec2a62b1d7413d1b7d17b219b6a1b",
+          "width": 640,
+          "height": 640,
+          "bytes": 119931
+        }
+      ]
+    },
+    {
+      "familyId": "gv-380450a1375dfc6ef3d8",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b4e74c839258d60cf39d",
+        "sha256": "1f973416618d71b1629ccbcab960174760c69f2a0808c9934fec38fb1bb1ec3f",
+        "width": 640,
+        "height": 640,
+        "bytes": 86988
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b4e74c839258d60cf39d",
+          "sha256": "1f973416618d71b1629ccbcab960174760c69f2a0808c9934fec38fb1bb1ec3f",
+          "width": 640,
+          "height": 640,
+          "bytes": 86988
+        }
+      ]
+    },
+    {
+      "familyId": "gv-91e369fc4aba4da973c7",
+      "anchor": {
+        "file": "06/ab67616d00001e020006b661f51ffd83f13c7358",
+        "sha256": "351935847a16bc1ada2f6198924a3161a864efb5e2976ad7414751f9c90880f0",
+        "width": 300,
+        "height": 300,
+        "bytes": 58213
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006b661f51ffd83f13c7358",
+          "sha256": "351935847a16bc1ada2f6198924a3161a864efb5e2976ad7414751f9c90880f0",
+          "width": 300,
+          "height": 300,
+          "bytes": 58213
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fa14400b6161775c42d4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006b6f880b14a5b2aec0957",
+        "sha256": "f263926916f207d27cf15456cdaedaa66ca2a7da563823a78ac1525d476e9152",
+        "width": 640,
+        "height": 640,
+        "bytes": 104412
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006b6f880b14a5b2aec0957",
+          "sha256": "f263926916f207d27cf15456cdaedaa66ca2a7da563823a78ac1525d476e9152",
+          "width": 640,
+          "height": 640,
+          "bytes": 104412
+        }
+      ]
+    },
+    {
+      "familyId": "gv-eac00ea4a997a80e54ee",
+      "anchor": {
+        "file": "06/ab67616d00001e020006ba524d9c875c8a308a00",
+        "sha256": "613174c0286a868fa81148ecd5d99a8febf277bac54bd85d30d93c0f679b1091",
+        "width": 300,
+        "height": 300,
+        "bytes": 61317
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006ba524d9c875c8a308a00",
+          "sha256": "613174c0286a868fa81148ecd5d99a8febf277bac54bd85d30d93c0f679b1091",
+          "width": 300,
+          "height": 300,
+          "bytes": 61317
+        }
+      ]
+    },
+    {
+      "familyId": "gv-79cfcc965e293a00f5ba",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006bb1520264070c0e2971e",
+        "sha256": "e266d310a0ed57ed5c021254ccbad7862855c15f50457dd39243aeaf1ae2c311",
+        "width": 640,
+        "height": 640,
+        "bytes": 50284
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006bb1520264070c0e2971e",
+          "sha256": "e266d310a0ed57ed5c021254ccbad7862855c15f50457dd39243aeaf1ae2c311",
+          "width": 640,
+          "height": 640,
+          "bytes": 50284
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7a6625789d2e4fc50747",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bb624b19982714aa0645",
+        "sha256": "02b9feca8f1bd9edb898557fd81e10f78dff41945bbe9cd4bb8824b3f2c1c43f",
+        "width": 300,
+        "height": 300,
+        "bytes": 20166
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bb624b19982714aa0645",
+          "sha256": "02b9feca8f1bd9edb898557fd81e10f78dff41945bbe9cd4bb8824b3f2c1c43f",
+          "width": 300,
+          "height": 300,
+          "bytes": 20166
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5cedbc26a509fe63039b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006bc78e3aea3b8965b28b4",
+        "sha256": "ab0c8195a0a89b52e82be1ff5ef9589eef067b8b1f557effae6b7d07082e8d5e",
+        "width": 640,
+        "height": 640,
+        "bytes": 20540
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006bc78e3aea3b8965b28b4",
+          "sha256": "ab0c8195a0a89b52e82be1ff5ef9589eef067b8b1f557effae6b7d07082e8d5e",
+          "width": 640,
+          "height": 640,
+          "bytes": 20540
+        }
+      ]
+    },
+    {
+      "familyId": "gv-aace4277cdbada1d89c0",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bcb4b80e6d6c49820121",
+        "sha256": "c0dd6fb340b6c30112c945e1dae2b6a375fb83e84aaf5a6d63c68313327f33ba",
+        "width": 300,
+        "height": 300,
+        "bytes": 35181
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bcb4b80e6d6c49820121",
+          "sha256": "c0dd6fb340b6c30112c945e1dae2b6a375fb83e84aaf5a6d63c68313327f33ba",
+          "width": 300,
+          "height": 300,
+          "bytes": 35181
+        }
+      ]
+    },
+    {
+      "familyId": "gv-172e3f6299f0fe99bfe7",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bd0cd831e3e78a7dda49",
+        "sha256": "0314258bd69fc56211265c7dc88ba12745c5f6c1a2b114705dd310dcb1857bf9",
+        "width": 300,
+        "height": 300,
+        "bytes": 51323
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bd0cd831e3e78a7dda49",
+          "sha256": "0314258bd69fc56211265c7dc88ba12745c5f6c1a2b114705dd310dcb1857bf9",
+          "width": 300,
+          "height": 300,
+          "bytes": 51323
+        }
+      ]
+    },
+    {
+      "familyId": "gv-31880bb7b67d1fd1fbce",
+      "anchor": {
+        "file": "06/ab67616d00001e020006be7e6027e8bb73e67cda",
+        "sha256": "ff69cf6f594797dc15ed18fb27d1d42d7351539a517772279b90cd43a940763b",
+        "width": 300,
+        "height": 300,
+        "bytes": 16602
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006be7e6027e8bb73e67cda",
+          "sha256": "ff69cf6f594797dc15ed18fb27d1d42d7351539a517772279b90cd43a940763b",
+          "width": 300,
+          "height": 300,
+          "bytes": 16602
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7a634af928f5e9382c33",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bec235e494f38b257cd4",
+        "sha256": "065acfd6d667d27b31a9a9fbf8b764cf1ab639cd90f3d5e2076379e0f5a39071",
+        "width": 300,
+        "height": 300,
+        "bytes": 30364
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bec235e494f38b257cd4",
+          "sha256": "065acfd6d667d27b31a9a9fbf8b764cf1ab639cd90f3d5e2076379e0f5a39071",
+          "width": 300,
+          "height": 300,
+          "bytes": 30364
+        }
+      ]
+    },
+    {
+      "familyId": "gv-545104279d4c7a6cc7cd",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bf78693a7f21e4fd2037",
+        "sha256": "fad6ddadc4a5c385ca7313c742526d3e39131795bdc451238fa33fcdc7a6623f",
+        "width": 300,
+        "height": 300,
+        "bytes": 49702
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bf78693a7f21e4fd2037",
+          "sha256": "fad6ddadc4a5c385ca7313c742526d3e39131795bdc451238fa33fcdc7a6623f",
+          "width": 300,
+          "height": 300,
+          "bytes": 49702
+        }
+      ]
+    },
+    {
+      "familyId": "gv-973897c0c2dfaa232e7a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006bfbfc11a344df7ff9e66",
+        "sha256": "5984a9c0fda8eba540b5869324a4258c2eb18301cf57b6ccaa6050bb07d7a6b1",
+        "width": 640,
+        "height": 640,
+        "bytes": 37833
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006bfbfc11a344df7ff9e66",
+          "sha256": "5984a9c0fda8eba540b5869324a4258c2eb18301cf57b6ccaa6050bb07d7a6b1",
+          "width": 640,
+          "height": 640,
+          "bytes": 37833
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9855d969945931336902",
+      "anchor": {
+        "file": "06/ab67616d00001e020006bff3a61acf7fa3da4bbc",
+        "sha256": "63497cddf9fc20814ea78351f7ff06759356b6483043a5716196a6047d805aed",
+        "width": 300,
+        "height": 300,
+        "bytes": 3433
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006bff3a61acf7fa3da4bbc",
+          "sha256": "63497cddf9fc20814ea78351f7ff06759356b6483043a5716196a6047d805aed",
+          "width": 300,
+          "height": 300,
+          "bytes": 3433
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8bc493c65588e8919682",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c0153a1b04953874945a",
+        "sha256": "4adf7ebed8efe290ee618a3314570c4536d925b24958f992259ff25e1ef10e8e",
+        "width": 300,
+        "height": 300,
+        "bytes": 65998
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c0153a1b04953874945a",
+          "sha256": "4adf7ebed8efe290ee618a3314570c4536d925b24958f992259ff25e1ef10e8e",
+          "width": 300,
+          "height": 300,
+          "bytes": 65998
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8ece797608f705e47cb9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c0afab43e95affa0e148",
+        "sha256": "d9b19d7d4821cb59d1d315588cb39c0811ac9b3a70a54d38e1d22340a7781354",
+        "width": 640,
+        "height": 640,
+        "bytes": 150791
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c0afab43e95affa0e148",
+          "sha256": "d9b19d7d4821cb59d1d315588cb39c0811ac9b3a70a54d38e1d22340a7781354",
+          "width": 640,
+          "height": 640,
+          "bytes": 150791
+        },
+        {
+          "file": "06/ab67616d00001e020006c0afab43e95affa0e148",
+          "sha256": "815f4c040252225b274a8e248e6480e39c076eb5ff641946c37f1847a8a88b53",
+          "width": 300,
+          "height": 300,
+          "bytes": 48377
+        }
+      ]
+    },
+    {
+      "familyId": "gv-5bb987ab916cb591e65e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c0c9437ca49d1c3a740c",
+        "sha256": "fd9aeb4f0659a9eae4b3c1c22fc46d7f09c48c017f20745aad269fb71fb78522",
+        "width": 640,
+        "height": 640,
+        "bytes": 148546
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c0c9437ca49d1c3a740c",
+          "sha256": "fd9aeb4f0659a9eae4b3c1c22fc46d7f09c48c017f20745aad269fb71fb78522",
+          "width": 640,
+          "height": 640,
+          "bytes": 148546
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ceaaebf9fccb097ff2b6",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c1984fcc884a58346289",
+        "sha256": "0b5fe3aa3bebd1146380e1cdcfbdd2b13a7b00effd26e5abd6554f1210c73d9c",
+        "width": 300,
+        "height": 300,
+        "bytes": 25638
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c1984fcc884a58346289",
+          "sha256": "0b5fe3aa3bebd1146380e1cdcfbdd2b13a7b00effd26e5abd6554f1210c73d9c",
+          "width": 300,
+          "height": 300,
+          "bytes": 25638
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e4e1e4a2f8fb52973f7f",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c2fbec6cc337b99d541c",
+        "sha256": "29486c305dd15d0e35d2a10803204d383e384a3c7e8d97a169f2a625ff170b94",
+        "width": 640,
+        "height": 640,
+        "bytes": 209882
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c2fbec6cc337b99d541c",
+          "sha256": "29486c305dd15d0e35d2a10803204d383e384a3c7e8d97a169f2a625ff170b94",
+          "width": 640,
+          "height": 640,
+          "bytes": 209882
+        }
+      ]
+    },
+    {
+      "familyId": "gv-d69d5e1299c4d5d62cc9",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c376b34af7b7417b2b12",
+        "sha256": "3ede9c5d91652bbd4a1b6fe09cb5b3171d6ce886a843d8c54a3507cb434dd42d",
+        "width": 300,
+        "height": 300,
+        "bytes": 6640
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c376b34af7b7417b2b12",
+          "sha256": "3ede9c5d91652bbd4a1b6fe09cb5b3171d6ce886a843d8c54a3507cb434dd42d",
+          "width": 300,
+          "height": 300,
+          "bytes": 6640
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b4f35fafa3c347031eb3",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c4c8047f0fa58230f912",
+        "sha256": "7f7d96c08563880888451ea604b1afc3e649809c5271ccb74831c397bc2ec830",
+        "width": 300,
+        "height": 300,
+        "bytes": 53886
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c4c8047f0fa58230f912",
+          "sha256": "7f7d96c08563880888451ea604b1afc3e649809c5271ccb74831c397bc2ec830",
+          "width": 300,
+          "height": 300,
+          "bytes": 53886
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a3d6f1fefc308cef1093",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c4f5852c6edb3af773af",
+        "sha256": "0505aaa7e0c2f68c64424cd3cdeba34ec4841cfe7001ad2fb7f1693a1f6e9eac",
+        "width": 300,
+        "height": 300,
+        "bytes": 28188
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c4f5852c6edb3af773af",
+          "sha256": "0505aaa7e0c2f68c64424cd3cdeba34ec4841cfe7001ad2fb7f1693a1f6e9eac",
+          "width": 300,
+          "height": 300,
+          "bytes": 28188
+        }
+      ]
+    },
+    {
+      "familyId": "gv-be5280a7cbe9726bc041",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c507ad31fdec8b336fc6",
+        "sha256": "eae4798e198bd94a66cfd7175e75cf12e8825206e967a9bc0577af54fb44a6d1",
+        "width": 300,
+        "height": 300,
+        "bytes": 21260
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c507ad31fdec8b336fc6",
+          "sha256": "eae4798e198bd94a66cfd7175e75cf12e8825206e967a9bc0577af54fb44a6d1",
+          "width": 300,
+          "height": 300,
+          "bytes": 21260
+        }
+      ]
+    },
+    {
+      "familyId": "gv-fc2b8d31186908e142d8",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c524bfc2e70e836e7917",
+        "sha256": "c18be1387eede290b04828e770302fe481ecf55dffd21193dacbb6e3562afb10",
+        "width": 640,
+        "height": 640,
+        "bytes": 40118
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c524bfc2e70e836e7917",
+          "sha256": "c18be1387eede290b04828e770302fe481ecf55dffd21193dacbb6e3562afb10",
+          "width": 640,
+          "height": 640,
+          "bytes": 40118
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f75834fe5f17a3d0911b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+        "sha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+        "width": 640,
+        "height": 640,
+        "bytes": 152814
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+          "sha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+          "width": 640,
+          "height": 640,
+          "bytes": 152814
+        }
+      ]
+    },
+    {
+      "familyId": "gv-07005219c436c0461bad",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c6c16d0c3f3c723866a4",
+        "sha256": "9a5e0e43fca7fdc4279a7f243baa716e6872838a7c7e4587183c8c96cea5dc93",
+        "width": 640,
+        "height": 640,
+        "bytes": 201763
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c6c16d0c3f3c723866a4",
+          "sha256": "9a5e0e43fca7fdc4279a7f243baa716e6872838a7c7e4587183c8c96cea5dc93",
+          "width": 640,
+          "height": 640,
+          "bytes": 201763
+        }
+      ]
+    },
+    {
+      "familyId": "gv-35c84b242c47dd41b4b3",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c72047cc3c0c52ecfd5e",
+        "sha256": "fb597eb9cd6d1f296b92a1810d25aec4c50b687f018a534f6601164b8195522a",
+        "width": 640,
+        "height": 640,
+        "bytes": 115050
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c72047cc3c0c52ecfd5e",
+          "sha256": "fb597eb9cd6d1f296b92a1810d25aec4c50b687f018a534f6601164b8195522a",
+          "width": 640,
+          "height": 640,
+          "bytes": 115050
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0fbffdf9181cb31290d4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c72712ba8ceffc64d390",
+        "sha256": "1adab97a815bd039dd2cba594945a6a826ea8cc5c859a38c529688c91a37ca6b",
+        "width": 640,
+        "height": 640,
+        "bytes": 80138
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c72712ba8ceffc64d390",
+          "sha256": "1adab97a815bd039dd2cba594945a6a826ea8cc5c859a38c529688c91a37ca6b",
+          "width": 640,
+          "height": 640,
+          "bytes": 80138
+        }
+      ]
+    },
+    {
+      "familyId": "gv-2962830c09e323cc3e88",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c7fce932bdd662afcdff",
+        "sha256": "e9fb85e4fa6148567d308448b49d252671590603a5cdc27fc73bea1c7cba5f29",
+        "width": 640,
+        "height": 640,
+        "bytes": 82060
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c7fce932bdd662afcdff",
+          "sha256": "e9fb85e4fa6148567d308448b49d252671590603a5cdc27fc73bea1c7cba5f29",
+          "width": 640,
+          "height": 640,
+          "bytes": 82060
+        }
+      ]
+    },
+    {
+      "familyId": "gv-990f4c505d7c736cca1d",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c8199f990e68f91e8403",
+        "sha256": "64a7f060bf2d2302951876e9f0643e0098059bf86831b15a13ee7239b3371f44",
+        "width": 640,
+        "height": 640,
+        "bytes": 154909
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c8199f990e68f91e8403",
+          "sha256": "64a7f060bf2d2302951876e9f0643e0098059bf86831b15a13ee7239b3371f44",
+          "width": 640,
+          "height": 640,
+          "bytes": 154909
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c2f43259bbf5a8ffff53",
+      "anchor": {
+        "file": "06/ab67616d00001e020006c853f748f5342343456f",
+        "sha256": "d3bda50cbdba4c27e62121c7ef876f037e9407551eae79c85aa5f0356849a9e3",
+        "width": 300,
+        "height": 300,
+        "bytes": 30550
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006c853f748f5342343456f",
+          "sha256": "d3bda50cbdba4c27e62121c7ef876f037e9407551eae79c85aa5f0356849a9e3",
+          "width": 300,
+          "height": 300,
+          "bytes": 30550
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8efdaaf2f24143b7784b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c8f68a7e0f6df05f0476",
+        "sha256": "f9c571a89bbb66063bf442741ba661b2a309fac52781fc7feb23998e928083a7",
+        "width": 640,
+        "height": 640,
+        "bytes": 188614
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c8f68a7e0f6df05f0476",
+          "sha256": "f9c571a89bbb66063bf442741ba661b2a309fac52781fc7feb23998e928083a7",
+          "width": 640,
+          "height": 640,
+          "bytes": 188614
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c9db4641568a62ebda59",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c92f1c6aa4589973aa12",
+        "sha256": "aa3e85b52b249ef418b1920c11a28a757174af5a67b8604607294aaf9fc31343",
+        "width": 640,
+        "height": 640,
+        "bytes": 127314
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c92f1c6aa4589973aa12",
+          "sha256": "aa3e85b52b249ef418b1920c11a28a757174af5a67b8604607294aaf9fc31343",
+          "width": 640,
+          "height": 640,
+          "bytes": 127314
+        },
+        {
+          "file": "06/ab67616d00001e020006c92f1c6aa4589973aa12",
+          "sha256": "5f3e93a5f4a7ed3d76f9894d624607feae27a035855e54b12487539ae48a7221",
+          "width": 300,
+          "height": 300,
+          "bytes": 39143
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a645d3feb066a4dfef6b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c94ad29a52682bbef333",
+        "sha256": "bc000705c0467b8d96453454a35bdd8eb2de04161f6b24ebb9957a9149656a4b",
+        "width": 600,
+        "height": 600,
+        "bytes": 105749
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c94ad29a52682bbef333",
+          "sha256": "bc000705c0467b8d96453454a35bdd8eb2de04161f6b24ebb9957a9149656a4b",
+          "width": 600,
+          "height": 600,
+          "bytes": 105749
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c3079f50320add1e2f45",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c9b92c33b6a3ecc93dab",
+        "sha256": "5c2baee2ede5908bdb3e30e4bf54963cb3d6e562565fe58b9a840d2b7abd229b",
+        "width": 640,
+        "height": 640,
+        "bytes": 154836
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c9b92c33b6a3ecc93dab",
+          "sha256": "5c2baee2ede5908bdb3e30e4bf54963cb3d6e562565fe58b9a840d2b7abd229b",
+          "width": 640,
+          "height": 640,
+          "bytes": 154836
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1be4c45d9b9166c84477",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006c9f88bf491556907096f",
+        "sha256": "227d7558c2b7900270b676a1cb39eb621dd17bfab605acd45766b59cfab7d0c0",
+        "width": 640,
+        "height": 640,
+        "bytes": 71129
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006c9f88bf491556907096f",
+          "sha256": "227d7558c2b7900270b676a1cb39eb621dd17bfab605acd45766b59cfab7d0c0",
+          "width": 640,
+          "height": 640,
+          "bytes": 71129
+        }
+      ]
+    },
+    {
+      "familyId": "gv-22a6f298db5b13e7b3ce",
+      "anchor": {
+        "file": "06/ab67616d00001e020006ca98c1bdf1abb9834b49",
+        "sha256": "2226871a18c9d1ef5ccd7ee701a0f2f62a194db0f8ec54aed53e74aa9829283a",
+        "width": 300,
+        "height": 300,
+        "bytes": 42548
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006ca98c1bdf1abb9834b49",
+          "sha256": "2226871a18c9d1ef5ccd7ee701a0f2f62a194db0f8ec54aed53e74aa9829283a",
+          "width": 300,
+          "height": 300,
+          "bytes": 42548
+        }
+      ]
+    },
+    {
+      "familyId": "gv-758b7be186e186a1c4e5",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006cb65772a4ceabfe311db",
+        "sha256": "5121d06f15eefc5925a3d6c5808780910733ca13a881b0007bdb56534fc1a110",
+        "width": 640,
+        "height": 640,
+        "bytes": 168563
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006cb65772a4ceabfe311db",
+          "sha256": "5121d06f15eefc5925a3d6c5808780910733ca13a881b0007bdb56534fc1a110",
+          "width": 640,
+          "height": 640,
+          "bytes": 168563
+        }
+      ]
+    },
+    {
+      "familyId": "gv-28d5ac2191512acb8df3",
+      "anchor": {
+        "file": "06/ab67616d00001e020006cb7b23dfb0c212f2c842",
+        "sha256": "e1a126fcb25ce1b8da0ebb79010d9611ed720d0737dcd59258db131dc7e310ae",
+        "width": 300,
+        "height": 300,
+        "bytes": 60518
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006cb7b23dfb0c212f2c842",
+          "sha256": "e1a126fcb25ce1b8da0ebb79010d9611ed720d0737dcd59258db131dc7e310ae",
+          "width": 300,
+          "height": 300,
+          "bytes": 60518
+        }
+      ]
+    },
+    {
+      "familyId": "gv-868aecb15477fb3b9dca",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006cb88584ff321fa9e929c",
+        "sha256": "4d43dd115f5fada9484ef9d6efac73858b96ae172285701146bbce4e0efd0fba",
+        "width": 640,
+        "height": 640,
+        "bytes": 87899
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006cb88584ff321fa9e929c",
+          "sha256": "4d43dd115f5fada9484ef9d6efac73858b96ae172285701146bbce4e0efd0fba",
+          "width": 640,
+          "height": 640,
+          "bytes": 87899
+        },
+        {
+          "file": "06/ab67616d00001e020006cb88584ff321fa9e929c",
+          "sha256": "e121a586ac84dfe67654a0dd3de593ea1799ade35d80ed290a38b82535c675b8",
+          "width": 300,
+          "height": 300,
+          "bytes": 25033
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3363aa1a8aed6e6b3683",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006ccfb40e5a77987cff5c0",
+        "sha256": "bf022b99ce50c34af45a7db7b34131e08891f2aaf67f3dbb30e33ae304e5b3cf",
+        "width": 640,
+        "height": 640,
+        "bytes": 106871
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006ccfb40e5a77987cff5c0",
+          "sha256": "bf022b99ce50c34af45a7db7b34131e08891f2aaf67f3dbb30e33ae304e5b3cf",
+          "width": 640,
+          "height": 640,
+          "bytes": 106871
+        }
+      ]
+    },
+    {
+      "familyId": "gv-ba898fc4d8a483fbfb1b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006cd498bf203c9c1b41b44",
+        "sha256": "4f1a915ba5f710a71fbe1d18909e2bdbee0aab4ae354443557098a37a6969bcf",
+        "width": 640,
+        "height": 640,
+        "bytes": 113530
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006cd498bf203c9c1b41b44",
+          "sha256": "4f1a915ba5f710a71fbe1d18909e2bdbee0aab4ae354443557098a37a6969bcf",
+          "width": 640,
+          "height": 640,
+          "bytes": 113530
+        },
+        {
+          "file": "06/ab67616d00001e020006cd498bf203c9c1b41b44",
+          "sha256": "368daf3b8a48ba07b1f5e9d2ce513c9c2143f012250d07545f7ad7b88c0d8d7e",
+          "width": 300,
+          "height": 300,
+          "bytes": 33566
+        }
+      ]
+    },
+    {
+      "familyId": "gv-43863e030f1f60504eb9",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006ceaa27b6241dbb73b173",
+        "sha256": "ee5a277004349f5f657eb8ce4b815567802e1ac901f0980aa22c17590c5bf0c7",
+        "width": 640,
+        "height": 640,
+        "bytes": 161330
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006ceaa27b6241dbb73b173",
+          "sha256": "ee5a277004349f5f657eb8ce4b815567802e1ac901f0980aa22c17590c5bf0c7",
+          "width": 640,
+          "height": 640,
+          "bytes": 161330
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4ea37ab0bb2587a176ff",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006cfef93f80361afe533b3",
+        "sha256": "a261381f2ea7b4102e0bfff9cc8de50f8236399d2da0cadc0780df6ec7f617ea",
+        "width": 640,
+        "height": 640,
+        "bytes": 135671
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006cfef93f80361afe533b3",
+          "sha256": "a261381f2ea7b4102e0bfff9cc8de50f8236399d2da0cadc0780df6ec7f617ea",
+          "width": 640,
+          "height": 640,
+          "bytes": 135671
+        }
+      ]
+    },
+    {
+      "familyId": "gv-378de2fe6293e584270a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d08a38c49af8178c51ca",
+        "sha256": "0538e7b6c930ba00152c4756c8a885177fe6fddd4e5df055fefd5df478e3cf87",
+        "width": 640,
+        "height": 640,
+        "bytes": 312335
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d08a38c49af8178c51ca",
+          "sha256": "0538e7b6c930ba00152c4756c8a885177fe6fddd4e5df055fefd5df478e3cf87",
+          "width": 640,
+          "height": 640,
+          "bytes": 312335
+        }
+      ]
+    },
+    {
+      "familyId": "gv-dd3b9dd0c7dd45063d6b",
+      "anchor": {
+        "file": "06/ab67616d00001e020006d0fa33910f18abd3e5d9",
+        "sha256": "52fde18841b6257ce555bbbef1d3e7d7e24b178f19c8c77c8c2865c1e1dade44",
+        "width": 300,
+        "height": 300,
+        "bytes": 38548
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006d0fa33910f18abd3e5d9",
+          "sha256": "52fde18841b6257ce555bbbef1d3e7d7e24b178f19c8c77c8c2865c1e1dade44",
+          "width": 300,
+          "height": 300,
+          "bytes": 38548
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a64fdbc89f19ff4e7033",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d18f54f9ccde7c989db5",
+        "sha256": "f367725afce4ea2285ecbcc6e2ac2c4cd81197424d619b186759dedba8698ac0",
+        "width": 640,
+        "height": 640,
+        "bytes": 33817
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d18f54f9ccde7c989db5",
+          "sha256": "f367725afce4ea2285ecbcc6e2ac2c4cd81197424d619b186759dedba8698ac0",
+          "width": 640,
+          "height": 640,
+          "bytes": 33817
+        }
+      ]
+    },
+    {
+      "familyId": "gv-3207678b7649dc99f820",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d4e920cb35eb29b99313",
+        "sha256": "9d96c6533271dc292f6ac54f3cbd804920c086bde62f321c2f432544d9d762f8",
+        "width": 640,
+        "height": 640,
+        "bytes": 183540
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d4e920cb35eb29b99313",
+          "sha256": "9d96c6533271dc292f6ac54f3cbd804920c086bde62f321c2f432544d9d762f8",
+          "width": 640,
+          "height": 640,
+          "bytes": 183540
+        }
+      ]
+    },
+    {
+      "familyId": "gv-1181bd27d0359b238e9b",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d52a610ad62749815845",
+        "sha256": "392d54e84bccf570ee4f1245fe4c443cb1188f2cfd88118ccd1f61f75249e064",
+        "width": 640,
+        "height": 640,
+        "bytes": 176610
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d52a610ad62749815845",
+          "sha256": "392d54e84bccf570ee4f1245fe4c443cb1188f2cfd88118ccd1f61f75249e064",
+          "width": 640,
+          "height": 640,
+          "bytes": 176610
+        }
+      ]
+    },
+    {
+      "familyId": "gv-60a085c0d5f9432c276a",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d6fe43d602a38656469f",
+        "sha256": "0ec65c8186aeabc99c7cea3ccce050fb376fecfb8c75dfaa25c4bd3da137e7dd",
+        "width": 640,
+        "height": 640,
+        "bytes": 155973
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d6fe43d602a38656469f",
+          "sha256": "0ec65c8186aeabc99c7cea3ccce050fb376fecfb8c75dfaa25c4bd3da137e7dd",
+          "width": 640,
+          "height": 640,
+          "bytes": 155973
+        }
+      ]
+    },
+    {
+      "familyId": "gv-de1dd853048e7b6ce024",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006d76a60adb07632a1a3bd",
+        "sha256": "e19a1c1ab0833fc88a1ead8a0c39263bf2236bcbf8898eaa66addb91063398a1",
+        "width": 640,
+        "height": 640,
+        "bytes": 151455
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006d76a60adb07632a1a3bd",
+          "sha256": "e19a1c1ab0833fc88a1ead8a0c39263bf2236bcbf8898eaa66addb91063398a1",
+          "width": 640,
+          "height": 640,
+          "bytes": 151455
+        }
+      ]
+    },
+    {
+      "familyId": "gv-38637502e46c1a686495",
+      "anchor": {
+        "file": "06/ab67616d00001e020006d771d5cf3c0206faa950",
+        "sha256": "02fdcbad569ba3a6f797b6367f4032849f7714f93a73766eeaa88f6dd17e71ee",
+        "width": 300,
+        "height": 300,
+        "bytes": 29493
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006d771d5cf3c0206faa950",
+          "sha256": "02fdcbad569ba3a6f797b6367f4032849f7714f93a73766eeaa88f6dd17e71ee",
+          "width": 300,
+          "height": 300,
+          "bytes": 29493
+        }
+      ]
+    },
+    {
+      "familyId": "gv-70dfc6255e331bf69468",
+      "anchor": {
+        "file": "06/ab67616d00001e020006d8ff340c3853b8ba6ca3",
+        "sha256": "172e721f271f34dff54cd4b77d82efdb8c50411dd6b56ceaf6222245e56e2870",
+        "width": 300,
+        "height": 300,
+        "bytes": 32930
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006d8ff340c3853b8ba6ca3",
+          "sha256": "172e721f271f34dff54cd4b77d82efdb8c50411dd6b56ceaf6222245e56e2870",
+          "width": 300,
+          "height": 300,
+          "bytes": 32930
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4efefe72fad5a1b0b998",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006da675762557114120e46",
+        "sha256": "e8bcc85236297563d6e7438ca69b306b75df7ed0a38d4b86f0933458198e7e9a",
+        "width": 640,
+        "height": 640,
+        "bytes": 105753
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006da675762557114120e46",
+          "sha256": "e8bcc85236297563d6e7438ca69b306b75df7ed0a38d4b86f0933458198e7e9a",
+          "width": 640,
+          "height": 640,
+          "bytes": 105753
+        }
+      ]
+    },
+    {
+      "familyId": "gv-676470efdd5a91f6da61",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006daf45ab5c7346d5c627e",
+        "sha256": "034004e307577e8de6121471749d3ec328b5096a6f5b04d8e1839ed228187e55",
+        "width": 640,
+        "height": 640,
+        "bytes": 165895
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006daf45ab5c7346d5c627e",
+          "sha256": "034004e307577e8de6121471749d3ec328b5096a6f5b04d8e1839ed228187e55",
+          "width": 640,
+          "height": 640,
+          "bytes": 165895
+        },
+        {
+          "file": "06/ab67616d00001e020006daf45ab5c7346d5c627e",
+          "sha256": "73b0b1d7f316fd760c5899f20790b4b24b91db139b045972d154e023c9f0ef7e",
+          "width": 300,
+          "height": 300,
+          "bytes": 51747
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b47056b94aa638a5ad4e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006db5ea28e13b099a7b46d",
+        "sha256": "b6bf9fc7ddf2a4f2c844781e5f9c0f9a46fdc1260275dc4bb5dad915ae8488d7",
+        "width": 640,
+        "height": 640,
+        "bytes": 167933
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006db5ea28e13b099a7b46d",
+          "sha256": "b6bf9fc7ddf2a4f2c844781e5f9c0f9a46fdc1260275dc4bb5dad915ae8488d7",
+          "width": 640,
+          "height": 640,
+          "bytes": 167933
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b05a06bb774a153cebd1",
+      "anchor": {
+        "file": "06/ab67616d00001e020006dc81aa7aac8b586f2a5b",
+        "sha256": "15cb47aa762d4b33d583eebfd06366e7e261868281ad5540b7f3b6f96673f091",
+        "width": 300,
+        "height": 300,
+        "bytes": 24473
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006dc81aa7aac8b586f2a5b",
+          "sha256": "15cb47aa762d4b33d583eebfd06366e7e261868281ad5540b7f3b6f96673f091",
+          "width": 300,
+          "height": 300,
+          "bytes": 24473
+        }
+      ]
+    },
+    {
+      "familyId": "gv-58e4ea04f64543db7f90",
+      "anchor": {
+        "file": "06/ab67616d00001e020006dc9d24c3bfa8159aa7e7",
+        "sha256": "793724b762bf928122746cebb0bc8da8f766aba96d14c535334cbe2a6f597df7",
+        "width": 300,
+        "height": 300,
+        "bytes": 18046
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006dc9d24c3bfa8159aa7e7",
+          "sha256": "793724b762bf928122746cebb0bc8da8f766aba96d14c535334cbe2a6f597df7",
+          "width": 300,
+          "height": 300,
+          "bytes": 18046
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b110231c706e27e19b2f",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006dcd35b198e14c0ceefc0",
+        "sha256": "0ade5de0f47494289b86a925098789ca042aff25b1ff413c360cb7b9ea1ee852",
+        "width": 640,
+        "height": 640,
+        "bytes": 219088
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006dcd35b198e14c0ceefc0",
+          "sha256": "0ade5de0f47494289b86a925098789ca042aff25b1ff413c360cb7b9ea1ee852",
+          "width": 640,
+          "height": 640,
+          "bytes": 219088
+        }
+      ]
+    },
+    {
+      "familyId": "gv-169ba72614613f965f1e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006dda2de7bf0bb8a0e9afb",
+        "sha256": "58c9eec11c71615a5d31d0e30b1bd519b8954cde03e8b75b070b34f3e85d5485",
+        "width": 640,
+        "height": 640,
+        "bytes": 110885
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006dda2de7bf0bb8a0e9afb",
+          "sha256": "58c9eec11c71615a5d31d0e30b1bd519b8954cde03e8b75b070b34f3e85d5485",
+          "width": 640,
+          "height": 640,
+          "bytes": 110885
+        }
+      ]
+    },
+    {
+      "familyId": "gv-160a5571a96d9df3660f",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006dda3ea7846b6be1ad78d",
+        "sha256": "31f7ef07a63573b7b46baa5051b7cb531f6d08d8ad385c6726b0924fa03bb657",
+        "width": 640,
+        "height": 640,
+        "bytes": 129382
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006dda3ea7846b6be1ad78d",
+          "sha256": "31f7ef07a63573b7b46baa5051b7cb531f6d08d8ad385c6726b0924fa03bb657",
+          "width": 640,
+          "height": 640,
+          "bytes": 129382
+        }
+      ]
+    },
+    {
+      "familyId": "gv-a2367f861006e10e61ae",
+      "anchor": {
+        "file": "06/ab67616d00001e020006dda3ee65e92247609bf9",
+        "sha256": "5cc8899d22b13f3cac58755e29f022ea91ec591cb406c0b089208f750b2642af",
+        "width": 300,
+        "height": 300,
+        "bytes": 41994
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006dda3ee65e92247609bf9",
+          "sha256": "5cc8899d22b13f3cac58755e29f022ea91ec591cb406c0b089208f750b2642af",
+          "width": 300,
+          "height": 300,
+          "bytes": 41994
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8e603d2f580882826e62",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006dda86e7642fbac93fc1c",
+        "sha256": "9d4c8c5834e9ecb17798176a0ae0b9ddd43f841c23368d8de52a2f25705576df",
+        "width": 640,
+        "height": 640,
+        "bytes": 132668
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006dda86e7642fbac93fc1c",
+          "sha256": "9d4c8c5834e9ecb17798176a0ae0b9ddd43f841c23368d8de52a2f25705576df",
+          "width": 640,
+          "height": 640,
+          "bytes": 132668
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e2f2347bc2b12f039b47",
+      "anchor": {
+        "file": "06/ab67616d00001e020006ddb9b0454245fb73d1b7",
+        "sha256": "0d5a57cd5a74c8b57258fdf9733b9ba6ef0d2600b2d875057770106bf79e753c",
+        "width": 300,
+        "height": 300,
+        "bytes": 47924
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006ddb9b0454245fb73d1b7",
+          "sha256": "0d5a57cd5a74c8b57258fdf9733b9ba6ef0d2600b2d875057770106bf79e753c",
+          "width": 300,
+          "height": 300,
+          "bytes": 47924
+        }
+      ]
+    },
+    {
+      "familyId": "gv-6ba9546f2c4c739cb24e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006df5fcc1a0d3d270856d1",
+        "sha256": "92c2fedebdcea8cb6e7d36e22785ce40b87397886a5dd3ebed66b8963b0fe461",
+        "width": 640,
+        "height": 640,
+        "bytes": 120232
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006df5fcc1a0d3d270856d1",
+          "sha256": "92c2fedebdcea8cb6e7d36e22785ce40b87397886a5dd3ebed66b8963b0fe461",
+          "width": 640,
+          "height": 640,
+          "bytes": 120232
+        },
+        {
+          "file": "06/ab67616d00001e020006df5fcc1a0d3d270856d1",
+          "sha256": "977ea368578b206c5849df13687c0fad44114f5f8f7b5bc0faa8cbda5f22b9d7",
+          "width": 300,
+          "height": 300,
+          "bytes": 30637
+        }
+      ]
+    },
+    {
+      "familyId": "gv-807bb74359c04276b14c",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006dfd63b152eecc8833b68",
+        "sha256": "cfe2194236d62b6fee52d9175c9bee841b121ef6a475586430fe7a72fe467dfe",
+        "width": 640,
+        "height": 640,
+        "bytes": 110640
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006dfd63b152eecc8833b68",
+          "sha256": "cfe2194236d62b6fee52d9175c9bee841b121ef6a475586430fe7a72fe467dfe",
+          "width": 640,
+          "height": 640,
+          "bytes": 110640
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b857757de7a1ecc1bd42",
+      "anchor": {
+        "file": "06/ab67616d00001e020006e0026236f9c1ef7b0173",
+        "sha256": "6d7789c98bde62d4c7c521e2cf48bae79de1eebd3ebffc6c79eb9dec3662dbf6",
+        "width": 300,
+        "height": 300,
+        "bytes": 35800
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006e0026236f9c1ef7b0173",
+          "sha256": "6d7789c98bde62d4c7c521e2cf48bae79de1eebd3ebffc6c79eb9dec3662dbf6",
+          "width": 300,
+          "height": 300,
+          "bytes": 35800
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c4c4cc6ae1ddf40219cc",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e076b0029293ec606f87",
+        "sha256": "35940032a04c4eb370515f9cffb7dac462e59aaba89526bf59ce1648037bee28",
+        "width": 640,
+        "height": 640,
+        "bytes": 120489
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e076b0029293ec606f87",
+          "sha256": "35940032a04c4eb370515f9cffb7dac462e59aaba89526bf59ce1648037bee28",
+          "width": 640,
+          "height": 640,
+          "bytes": 120489
+        }
+      ]
+    },
+    {
+      "familyId": "gv-78eeca607227e5eee698",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e0abdb28fa8bd1582cd2",
+        "sha256": "6f0a1f6dfb2161bdf7f0beea2477502f249fadeb621f91b9f1a20b636f270be1",
+        "width": 640,
+        "height": 640,
+        "bytes": 145538
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e0abdb28fa8bd1582cd2",
+          "sha256": "6f0a1f6dfb2161bdf7f0beea2477502f249fadeb621f91b9f1a20b636f270be1",
+          "width": 640,
+          "height": 640,
+          "bytes": 145538
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e6821a74b5b7688ca100",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e0fd424635ffdf458bc5",
+        "sha256": "aa6ff066fdc7cb1a19959648835e348408dd644116bae65c4097ae0161196998",
+        "width": 640,
+        "height": 640,
+        "bytes": 44397
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e0fd424635ffdf458bc5",
+          "sha256": "aa6ff066fdc7cb1a19959648835e348408dd644116bae65c4097ae0161196998",
+          "width": 640,
+          "height": 640,
+          "bytes": 44397
+        }
+      ]
+    },
+    {
+      "familyId": "gv-274fe9c416aded9d280e",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e1ddc97fc4875207e3c3",
+        "sha256": "f8fd9f7ab00e548b76c35e71803e8b0f7d04ec4f4d53149875ce2638ee4a856c",
+        "width": 640,
+        "height": 640,
+        "bytes": 199764
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e1ddc97fc4875207e3c3",
+          "sha256": "f8fd9f7ab00e548b76c35e71803e8b0f7d04ec4f4d53149875ce2638ee4a856c",
+          "width": 640,
+          "height": 640,
+          "bytes": 199764
+        }
+      ]
+    },
+    {
+      "familyId": "gv-bd2fb186b9e4fb32878c",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e1f2f0b1dfe4eb1f035e",
+        "sha256": "6bc5548327ba4fdac3050ee937ba017dc1dab1fbb23fad096e8d7cf148bda97e",
+        "width": 640,
+        "height": 640,
+        "bytes": 208669
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e1f2f0b1dfe4eb1f035e",
+          "sha256": "6bc5548327ba4fdac3050ee937ba017dc1dab1fbb23fad096e8d7cf148bda97e",
+          "width": 640,
+          "height": 640,
+          "bytes": 208669
+        }
+      ]
+    },
+    {
+      "familyId": "gv-84335ab12bb0382088ac",
+      "anchor": {
+        "file": "06/ab67616d00001e020006e33f075f900f3633730b",
+        "sha256": "0bd23166b6cc34e17717bc0ae75e30d73ca5a2fca5a1ed4829b44179a6e4c9f1",
+        "width": 300,
+        "height": 300,
+        "bytes": 17780
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006e33f075f900f3633730b",
+          "sha256": "0bd23166b6cc34e17717bc0ae75e30d73ca5a2fca5a1ed4829b44179a6e4c9f1",
+          "width": 300,
+          "height": 300,
+          "bytes": 17780
+        }
+      ]
+    },
+    {
+      "familyId": "gv-c95c295724f126302a27",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e4c44b252d14cbeea729",
+        "sha256": "046d3ab75175e64427701b4ce767b8751ec07df0b6c6fca71bc6650f431fe7fb",
+        "width": 640,
+        "height": 640,
+        "bytes": 152592
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e4c44b252d14cbeea729",
+          "sha256": "046d3ab75175e64427701b4ce767b8751ec07df0b6c6fca71bc6650f431fe7fb",
+          "width": 640,
+          "height": 640,
+          "bytes": 152592
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7b120a56e5f1e0056853",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e5311e27a75962c4397f",
+        "sha256": "5e5df13d215eda25232042eebc121c7491f8d02f8d8abe4aa0d98712f23e370c",
+        "width": 640,
+        "height": 640,
+        "bytes": 70751
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e5311e27a75962c4397f",
+          "sha256": "5e5df13d215eda25232042eebc121c7491f8d02f8d8abe4aa0d98712f23e370c",
+          "width": 640,
+          "height": 640,
+          "bytes": 70751
+        }
+      ]
+    },
+    {
+      "familyId": "gv-41d6c632cc8468311bcd",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006e7a073b564717025fe8e",
+        "sha256": "a0fccf49b5281069a0b6d4813de0a99540f7e4fc911833d2932330950f9f9d63",
+        "width": 640,
+        "height": 640,
+        "bytes": 86659
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006e7a073b564717025fe8e",
+          "sha256": "a0fccf49b5281069a0b6d4813de0a99540f7e4fc911833d2932330950f9f9d63",
+          "width": 640,
+          "height": 640,
+          "bytes": 86659
+        }
+      ]
+    },
+    {
+      "familyId": "gv-0c3b27b158867fa9385f",
+      "anchor": {
+        "file": "06/ab67616d00001e020006e8e89548e787bbd762e6",
+        "sha256": "1fe31c1c5f378e7a774356b6a94372ab6a1403bd8b54f086eb491c38af1b1fa7",
+        "width": 300,
+        "height": 300,
+        "bytes": 44999
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006e8e89548e787bbd762e6",
+          "sha256": "1fe31c1c5f378e7a774356b6a94372ab6a1403bd8b54f086eb491c38af1b1fa7",
+          "width": 300,
+          "height": 300,
+          "bytes": 44999
+        }
+      ]
+    },
+    {
+      "familyId": "gv-86db7c2f78dd4f3bc362",
+      "anchor": {
+        "file": "06/ab67616d00001e020006ea693fddd14b1f30962a",
+        "sha256": "315b0afb490bcd5d5b09330392587f445ec8ed9f8a165f92a86b22041c3c6ee8",
+        "width": 300,
+        "height": 300,
+        "bytes": 40363
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006ea693fddd14b1f30962a",
+          "sha256": "315b0afb490bcd5d5b09330392587f445ec8ed9f8a165f92a86b22041c3c6ee8",
+          "width": 300,
+          "height": 300,
+          "bytes": 40363
+        }
+      ]
+    },
+    {
+      "familyId": "gv-9f14d55bff8dbc86e840",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006eab2754cb6382c2cf30e",
+        "sha256": "2bb95c38d8ceddce06d852eea132fb2fd245b03e9862bf666728b13d3b111071",
+        "width": 640,
+        "height": 640,
+        "bytes": 71506
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006eab2754cb6382c2cf30e",
+          "sha256": "2bb95c38d8ceddce06d852eea132fb2fd245b03e9862bf666728b13d3b111071",
+          "width": 640,
+          "height": 640,
+          "bytes": 71506
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b9b941b0d1379e6e86d3",
+      "anchor": {
+        "file": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+        "sha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+        "width": 300,
+        "height": 300,
+        "bytes": 52972
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+          "sha256": "61c43a39a8ba9605d3593e1231fbe12e6d5342639d7f77b3dfeef9b8abff732f",
+          "width": 300,
+          "height": 300,
+          "bytes": 52972
+        }
+      ]
+    },
+    {
+      "familyId": "gv-7452b71df55504a7c999",
+      "anchor": {
+        "file": "06/ab67616d00001e020006ed38ed6ade12eaae169f",
+        "sha256": "f37a871f0a632414f56b23008dc410312d9309e10ba327b91007ae2033906b32",
+        "width": 300,
+        "height": 300,
+        "bytes": 36714
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006ed38ed6ade12eaae169f",
+          "sha256": "f37a871f0a632414f56b23008dc410312d9309e10ba327b91007ae2033906b32",
+          "width": 300,
+          "height": 300,
+          "bytes": 36714
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f25989648720e9dd93ec",
+      "anchor": {
+        "file": "06/ab67616d00001e020006f0d5b2170262d8e6a195",
+        "sha256": "59d5a29f74bdad8af34be5e9e49c2077e31f19fa53d388bf8a85f6f5458dbb19",
+        "width": 300,
+        "height": 300,
+        "bytes": 19965
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006f0d5b2170262d8e6a195",
+          "sha256": "59d5a29f74bdad8af34be5e9e49c2077e31f19fa53d388bf8a85f6f5458dbb19",
+          "width": 300,
+          "height": 300,
+          "bytes": 19965
+        }
+      ]
+    },
+    {
+      "familyId": "gv-69d23325ef8414a40846",
+      "anchor": {
+        "file": "06/ab67616d00001e020006f21692f65735b636f18f",
+        "sha256": "1659a5c36ae14e3fa18f14fdd1e6b2bce65b04fc46b2e2feccb79034b603f5f8",
+        "width": 300,
+        "height": 300,
+        "bytes": 37275
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006f21692f65735b636f18f",
+          "sha256": "1659a5c36ae14e3fa18f14fdd1e6b2bce65b04fc46b2e2feccb79034b603f5f8",
+          "width": 300,
+          "height": 300,
+          "bytes": 37275
+        }
+      ]
+    },
+    {
+      "familyId": "gv-8833837fabdbc7b74f91",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006f43a343dafa829a049b3",
+        "sha256": "05374c3f77c101dee8bcc06a9966ddbfa5dd668f595cc570fef85545d3726b29",
+        "width": 640,
+        "height": 640,
+        "bytes": 219408
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006f43a343dafa829a049b3",
+          "sha256": "05374c3f77c101dee8bcc06a9966ddbfa5dd668f595cc570fef85545d3726b29",
+          "width": 640,
+          "height": 640,
+          "bytes": 219408
+        }
+      ]
+    },
+    {
+      "familyId": "gv-f9649fe3bc41c66edb5d",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006f5e66242fc36ce5cbe8d",
+        "sha256": "6efb761e95687b6a8b18e14832baf89769c325daf5f9961674bc33f178b45206",
+        "width": 640,
+        "height": 640,
+        "bytes": 150413
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006f5e66242fc36ce5cbe8d",
+          "sha256": "6efb761e95687b6a8b18e14832baf89769c325daf5f9961674bc33f178b45206",
+          "width": 640,
+          "height": 640,
+          "bytes": 150413
+        }
+      ]
+    },
+    {
+      "familyId": "gv-e2ce7d21a0daba903585",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006f5f2f05abe88958cccb0",
+        "sha256": "91ac205af53e4cc29ae05f8bb88a6c0b111b667a429ea2317129c59923ca49a4",
+        "width": 640,
+        "height": 640,
+        "bytes": 141036
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006f5f2f05abe88958cccb0",
+          "sha256": "91ac205af53e4cc29ae05f8bb88a6c0b111b667a429ea2317129c59923ca49a4",
+          "width": 640,
+          "height": 640,
+          "bytes": 141036
+        }
+      ]
+    },
+    {
+      "familyId": "gv-09f0174c259dec2e49da",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006f8405a16469873760544",
+        "sha256": "f7769abf8f33c40d06c3beac8ae7e0e011415516534f57239b78b739befa11a3",
+        "width": 640,
+        "height": 640,
+        "bytes": 153787
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006f8405a16469873760544",
+          "sha256": "f7769abf8f33c40d06c3beac8ae7e0e011415516534f57239b78b739befa11a3",
+          "width": 640,
+          "height": 640,
+          "bytes": 153787
+        }
+      ]
+    },
+    {
+      "familyId": "gv-b3d17439915ccad946fc",
+      "anchor": {
+        "file": "06/ab67616d00001e020006fa3bdaa0476c408ba203",
+        "sha256": "0cb9967c85139b7b272d6b236098350792ea7c82c55107bc50bf06060c7ff13f",
+        "width": 300,
+        "height": 300,
+        "bytes": 28081
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d00001e020006fa3bdaa0476c408ba203",
+          "sha256": "0cb9967c85139b7b272d6b236098350792ea7c82c55107bc50bf06060c7ff13f",
+          "width": 300,
+          "height": 300,
+          "bytes": 28081
+        }
+      ]
+    },
+    {
+      "familyId": "gv-492a5ff5b0e5f577aae4",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fa52a9a3618760b52b19",
+        "sha256": "6e2392325a5f19fa9498b50521f503d6acf520aba8836abeacdb4c0a75340556",
+        "width": 640,
+        "height": 640,
+        "bytes": 114826
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fa52a9a3618760b52b19",
+          "sha256": "6e2392325a5f19fa9498b50521f503d6acf520aba8836abeacdb4c0a75340556",
+          "width": 640,
+          "height": 640,
+          "bytes": 114826
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4a535d575bc092cf0efd",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fc24f3f1d15a2af715c6",
+        "sha256": "e12f2ef14ef82f87781cc3433b334c9cb8a2f2aa4c11a12461fd06e3d6e63252",
+        "width": 640,
+        "height": 640,
+        "bytes": 57894
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fc24f3f1d15a2af715c6",
+          "sha256": "e12f2ef14ef82f87781cc3433b334c9cb8a2f2aa4c11a12461fd06e3d6e63252",
+          "width": 640,
+          "height": 640,
+          "bytes": 57894
+        }
+      ]
+    },
+    {
+      "familyId": "gv-84f68d8677bba55e8565",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fc9254d586f6b735242f",
+        "sha256": "2034b3e908f3215af3737ad7f7d3833f4823681a4cb8ed791a3f243f8335b6f3",
+        "width": 640,
+        "height": 640,
+        "bytes": 133724
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fc9254d586f6b735242f",
+          "sha256": "2034b3e908f3215af3737ad7f7d3833f4823681a4cb8ed791a3f243f8335b6f3",
+          "width": 640,
+          "height": 640,
+          "bytes": 133724
+        }
+      ]
+    },
+    {
+      "familyId": "gv-28653d2d4f6d72c29fea",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fcb8e052340382c89d77",
+        "sha256": "f06e0508af041c04494ed538d193b2a432d0db01976db35b25cc1c9fb87293fa",
+        "width": 640,
+        "height": 640,
+        "bytes": 82366
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fcb8e052340382c89d77",
+          "sha256": "f06e0508af041c04494ed538d193b2a432d0db01976db35b25cc1c9fb87293fa",
+          "width": 640,
+          "height": 640,
+          "bytes": 82366
+        }
+      ]
+    },
+    {
+      "familyId": "gv-4600b8cf43d3f63b7f90",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fd24920f604f91f6e4b5",
+        "sha256": "d6b4eaecd5f1d900f918dac899bc95669a878a54f0b8510e71085a0747e23635",
+        "width": 640,
+        "height": 640,
+        "bytes": 91547
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fd24920f604f91f6e4b5",
+          "sha256": "d6b4eaecd5f1d900f918dac899bc95669a878a54f0b8510e71085a0747e23635",
+          "width": 640,
+          "height": 640,
+          "bytes": 91547
+        }
+      ]
+    },
+    {
+      "familyId": "gv-87e94333df880fb6e63c",
+      "anchor": {
+        "file": "06/ab67616d0000b2730006fd735b965a9ffc0fedf9",
+        "sha256": "4a740a5b3fe3c3d56ebc1cc05ac3f2030569540378bad79af86c9e084c05210b",
+        "width": 640,
+        "height": 640,
+        "bytes": 84844
+      },
+      "variants": [
+        {
+          "file": "06/ab67616d0000b2730006fd735b965a9ffc0fedf9",
+          "sha256": "4a740a5b3fe3c3d56ebc1cc05ac3f2030569540378bad79af86c9e084c05210b",
+          "width": 640,
+          "height": 640,
+          "bytes": 84844
+        }
+      ]
+    }
+  ],
+  "manifestId": "c0fffc6201ce82b005175b54e033bf97a1bea2da9fdcf723c88ce279881c2957"
+}

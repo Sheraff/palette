@@ -1,13 +1,19 @@
-import { buildCandidates } from "./candidates.ts"
+import { buildCandidates, type Candidate } from "./candidates.ts"
 import { solveGuardedPalette } from "./guarded-palette.ts"
 import { solveJointPalette } from "./joint-palette.ts"
 import { quantizedBaseline, solvePalette } from "./palette.ts"
-import { analyzeRegions } from "./regions.ts"
+import { analyzeRegions, type RegionAnalysis } from "./regions.ts"
 import type { ExtractionResult, RawImage } from "./types.ts"
 
 export const ALGORITHM_VERSION = "region-graph-0.17.0"
 
-export function extractPalette(image: RawImage): ExtractionResult {
+export type ExtractionContext = {
+	extraction: ExtractionResult
+	analysis: RegionAnalysis
+	candidates: Candidate[]
+}
+
+export function extractPaletteWithContext(image: RawImage): ExtractionContext {
 	const startedAt = performance.now()
 	const analysis = analyzeRegions(image)
 	const candidates = buildCandidates(analysis, 12, true)
@@ -18,23 +24,31 @@ export function extractPalette(image: RawImage): ExtractionResult {
 	const quantized = quantizedBaseline(quantizedCandidates, analysis)
 
 	return {
-		version: ALGORITHM_VERSION,
-		width: image.width,
-		height: image.height,
-		methods: { spatial, expressive, quantized },
-		candidates: candidates.map((candidate) => ({
-			hex: candidate.hex,
-			rgb: candidate.rgb,
-			population: candidate.population,
-			background: candidate.background,
-			saliency: candidate.saliency,
-			text: candidate.text,
-			chroma: candidate.chroma,
-		})),
-		diagnostics: {
-			regionCount: analysis.regions.length,
-			candidateCount: candidates.length,
-			processingMs: Math.round(performance.now() - startedAt),
+		extraction: {
+			version: ALGORITHM_VERSION,
+			width: image.width,
+			height: image.height,
+			methods: { spatial, expressive, quantized },
+			candidates: candidates.map((candidate) => ({
+				hex: candidate.hex,
+				rgb: candidate.rgb,
+				population: candidate.population,
+				background: candidate.background,
+				saliency: candidate.saliency,
+				text: candidate.text,
+				chroma: candidate.chroma,
+			})),
+			diagnostics: {
+				regionCount: analysis.regions.length,
+				candidateCount: candidates.length,
+				processingMs: Math.round(performance.now() - startedAt),
+			},
 		},
+		analysis,
+		candidates,
 	}
+}
+
+export function extractPalette(image: RawImage): ExtractionResult {
+	return extractPaletteWithContext(image).extraction
 }

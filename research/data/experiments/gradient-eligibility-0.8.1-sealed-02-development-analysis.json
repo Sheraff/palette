@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-sealed-development-reanalysis-0.2.0",
+  "generatedAt": "2026-07-19T23:04:35.105Z",
+  "manifestId": "ca5ab9e0bab235287deb2e26d87c4f98da2e395ec233875e9b2626f36d9026e7",
+  "sourceCandidateVersion": "gradient-eligibility-0.8.0-dev",
+  "candidateVersion": "gradient-eligibility-0.8.1-dev",
+  "evidenceVersion": "gradient-eligibility-evidence-0.2.0-dev",
+  "thresholds": {
+    "minimumEndpointDistance": 0.025,
+    "minimumConnectedFieldContinuity": 0.7857142857142857,
+    "minimumConnectedFieldShare": 0.05,
+    "minimumOrderedPathContinuity": 0.9285714285714286,
+    "minimumIntermediatePathShare": 0.3,
+    "minimumColorPathDirectionalOrdering": 0.15,
+    "maximumFlatBackgroundIsolatedSurfaceRisk": 0.4,
+    "maximumEndpointDominatedIntermediatePathShare": 0.4,
+    "maximumFlatRiskDirectionalOrdering": 0.2,
+    "minimumBroadIntermediateCoverage": 0.2,
+    "maximumBroadFieldSurfaceFlatness": 0.2,
+    "minimumNonlinearPathContinuity": 1,
+    "minimumNonlinearIntermediatePathShare": 0.6,
+    "minimumNonlinearPairCoherence": 0.5,
+    "maximumNonlinearConnectedFieldCoverage": 0,
+    "maximumSparseIntermediateCoverage": 0.08,
+    "minimumBorderBackgroundCoverage": 0.03,
+    "minimumSparseFieldBackgroundCoverage": 0.2
+  },
+  "promotionEligible": false,
+  "developmentFitOnly": true,
+  "warning": "This candidate was changed after observing the sealed gradient-eligibility-0.8.0-dev result. The corpus is development evidence for this candidate and cannot validate promotion.",
+  "provenance": {
+    "sealedEvaluationSha256": "c78ebc58aed694242d4f32ce758e9f6ffacb532971b15fde119541f8e9f44aae",
+    "sealedAnalysisSha256": "4a9d2d110136500884fbe0eff1cbe9b2973f19aeaada9d7f8a0963da4bf83da3",
+    "candidateImplementationSha256": "d7f7975cc8367a30c1b3dd7ba012967b8d0d384a7fa736c2b3a237edeb88dfa5"
+  },
+  "summary": {
+    "baselineGradients": 160,
+    "candidateEligible": 144,
+    "candidateRejected": 16,
+    "reviewJudgments": {
+      "either-way": 8,
+      "should-not-be-gradient": 6,
+      "no-visible-difference": 2
+    },
+    "decisive": 6,
+    "truePositive": 0,
+    "trueNegative": 6,
+    "falsePositive": 0,
+    "falseNegative": 0
+  },
+  "entries": [
+    {
+      "familyId": "gv-82eb8d480ae839261eb3",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-7b4c2cc75921a7ce0713",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-8b1b5f052c4cf5bb4b81",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-12317ae61bd55a0d9e32",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-737b06910b450570c099",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-385e29fbf301aa2fc340",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-3eb6993a3d986da7a1ee",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-37a603c74a166eedd6eb",
+      "judgment": "no-visible-difference",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-38a49e4944bcd690e1bc",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-b382a8da2be2ef0bd1f5",
+      "judgment": "no-visible-difference",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-9c5f5cbc970791e84786",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-10f19dad839d7c184a8a",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-df73c25da94ec85caa81",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-080281b650900403eecd",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-8b8faeccd05f79f1886a",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "flat-background-isolated-surface"
+      }
+    },
+    {
+      "familyId": "gv-280b21146366bb04850f",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.1-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    }
+  ]
+}

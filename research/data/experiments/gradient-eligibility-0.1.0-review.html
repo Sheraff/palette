@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gradient eligibility development review</title>
+<style>
+	:root{color-scheme:dark;background:#000;color:#fff;font:15px/1.45 Inter,ui-sans-serif,system-ui,sans-serif;--line:#fff}*{box-sizing:border-box}body{margin:0;background:#000;color:#fff}main{width:min(1420px,100%);margin:auto;padding:clamp(18px,4vw,56px)}.masthead{display:grid;grid-template-columns:1fr minmax(300px,560px);gap:30px;align-items:end;border-bottom:1px solid #fff;padding-bottom:28px}.eyebrow{color:#fff;font:750 11px/1 ui-monospace,monospace;letter-spacing:.18em}h1{font:650 clamp(44px,7vw,86px)/.88 Georgia,serif;letter-spacing:-.05em;margin:15px 0 0}.instructions,.instructions strong{color:#fff}.progress{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:center;padding:14px 0;background:#000}meter{width:min(430px,65vw);accent-color:#fff}#progress{color:#fff;font:700 12px/1 ui-monospace,monospace}.grid{display:grid;gap:34px}article{background:#000;border:1px solid #fff}article>header{display:grid;grid-template-columns:auto 1fr auto;gap:14px;padding:11px 14px;border-bottom:1px solid #fff;color:#fff;font:700 12px/1 ui-monospace,monospace}article>header span,article>header output,article[data-complete=true]>header output{color:#fff}.preview{display:grid;gap:clamp(20px,3vw,42px);min-height:580px;padding:clamp(22px,4vw,54px);background:var(--path);color:var(--foreground)}.preview-main{display:grid;grid-template-columns:minmax(220px,42%) 1fr;gap:clamp(20px,4vw,58px);align-items:center}.artwork{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:0;border-radius:0;outline:0;box-shadow:none}.preview-copy{color:var(--foreground)}.preview-copy small,.preview-copy b,.surface-panel small{display:block;color:var(--accent);font:800 11px/1.2 ui-monospace,monospace;letter-spacing:.15em}.preview-copy strong{display:block;color:var(--foreground);font:650 clamp(36px,6vw,78px)/.88 Georgia,serif;letter-spacing:-.05em;margin:14px 0}.preview-copy p{color:var(--foreground);max-width:34ch}.preview-copy b{margin-top:24px}.surface-panel{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:20px 22px;background:var(--surface);color:var(--foreground)}.surface-panel strong{display:block;color:var(--foreground);margin-top:8px}.controls{display:flex;align-items:center;gap:14px;color:var(--foreground)}.controls>i{display:block;width:30px;height:30px;background:var(--accent)}.controls>span{display:block;width:100px;height:6px;background:var(--foreground)}.controls>span>b{display:block;width:62%;height:100%;background:var(--accent)}.controls em{color:var(--foreground);font:700 11px/1 ui-monospace,monospace;font-style:normal}form{display:grid;grid-template-columns:2fr 1fr;gap:18px;padding:20px;border-top:1px solid #fff;background:#000;color:#fff}fieldset{border:1px solid #fff;margin:0;padding:14px}legend{padding:0 7px;color:#fff;font:750 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}fieldset>label{display:flex;align-items:flex-start;gap:9px;margin:10px 0;color:#fff}fieldset label span{display:grid;gap:2px}fieldset label small{color:#fff}input{margin-top:3px;accent-color:#fff}.confidence label{display:inline-flex;margin-right:16px}.note{grid-column:1/-1;display:grid;gap:7px}.note span,.note small{color:#fff;font:700 12px/1 ui-monospace,monospace}textarea{width:100%;resize:vertical;background:#000;color:#fff;border:1px solid #fff;padding:10px;font:inherit}textarea::placeholder{color:#fff}.submit-status{align-self:center;color:#fff;font:700 12px/1 ui-monospace,monospace}button{justify-self:end;border:1px solid #fff;background:#fff;color:#000;padding:13px 22px;font:800 12px/1 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}button:disabled{background:#000;color:#fff}@media(max-width:820px){.masthead,.preview-main{grid-template-columns:1fr}.artwork{width:min(100%,560px)}form{grid-template-columns:1fr}.note{grid-column:auto}.submit-status{min-height:16px}}@media(max-width:520px){main{padding:14px}.preview{min-height:0;padding:18px}.surface-panel{grid-template-columns:1fr}.controls{flex-wrap:wrap}article>header{grid-template-columns:auto 1fr}article>header output{grid-column:2}}
+</style></head><body><main>
+<header class="masthead"><div><div class="eyebrow">DEVELOPMENT LABELS / BATCH 1</div><h1>Is this one background field?</h1></div><div class="instructions"><p>Classify the <strong>selected background-to-surface pair</strong> from the source artwork. A true gradient must be spatially continuous; similar colors on separate objects do not count.</p><p>Use <strong>flat background, isolated surface</strong> when the second color belongs to a subject, object, typography, or bounded detail over a dominant flat field.</p></div></header>
+<div class="progress"><meter min="0" max="24" value="0"></meter><output id="progress">0 / 24</output></div>
+<section class="grid"><article data-family-id="gc-0a4377bd241656d874e8">
+	<header><span>01</span><code>gc-0a4377bd241656d874e8</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#0e1116;--surface:#1d1d23;--foreground:#c3bbb1;--accent:#9c3830;--path:linear-gradient(in oklab 112deg,#0e1116 0 45%,#1d1d23 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-0a4377bd241656d874e8" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-0" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-0" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-0" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-0" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-0" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-0" value="high"> High</label>
+			<label><input type="radio" name="confidence-0" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-0" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-986f78743fe27db7e7b6">
+	<header><span>02</span><code>gc-986f78743fe27db7e7b6</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#1c161e;--surface:#27222b;--foreground:#fbfdfd;--accent:#946451;--path:linear-gradient(in oklab 112deg,#1c161e 0 45%,#27222b 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-986f78743fe27db7e7b6" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-1" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-1" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-1" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-1" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-1" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-1" value="high"> High</label>
+			<label><input type="radio" name="confidence-1" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-1" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-94d79a07a44a3e7bf4a1">
+	<header><span>03</span><code>gc-94d79a07a44a3e7bf4a1</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#f7b203;--surface:#fecc03;--foreground:#070402;--accent:#eef2e4;--path:linear-gradient(in oklab 112deg,#f7b203 0 45%,#fecc03 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-94d79a07a44a3e7bf4a1" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-2" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-2" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-2" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-2" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-2" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-2" value="high"> High</label>
+			<label><input type="radio" name="confidence-2" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-2" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-74e0a42c62677ebc070f">
+	<header><span>04</span><code>gc-74e0a42c62677ebc070f</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#30111f;--surface:#b3323d;--foreground:#fdf7fa;--accent:#b36326;--path:linear-gradient(in oklab 112deg,#30111f 0 45%,#b3323d 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-74e0a42c62677ebc070f" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-3" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-3" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-3" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-3" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-3" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-3" value="high"> High</label>
+			<label><input type="radio" name="confidence-3" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-3" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-70073bc28db1e6d2f8ec">
+	<header><span>05</span><code>gc-70073bc28db1e6d2f8ec</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#ae7072;--surface:#c38183;--foreground:#1a1e21;--accent:#f8f6f5;--path:linear-gradient(in oklab 112deg,#ae7072 0 45%,#c38183 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-70073bc28db1e6d2f8ec" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-4" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-4" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-4" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-4" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-4" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-4" value="high"> High</label>
+			<label><input type="radio" name="confidence-4" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-4" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-46dcd9b58e907172c50e">
+	<header><span>06</span><code>gc-46dcd9b58e907172c50e</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#c2c8d4;--surface:#d9dae2;--foreground:#90132f;--accent:#6e707e;--path:linear-gradient(in oklab 112deg,#c2c8d4 0 45%,#d9dae2 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-46dcd9b58e907172c50e" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-5" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-5" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-5" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-5" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-5" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-5" value="high"> High</label>
+			<label><input type="radio" name="confidence-5" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-5" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-ede61257ba30362e7424">
+	<header><span>07</span><code>gc-ede61257ba30362e7424</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#653050;--surface:#9e465b;--foreground:#ffffff;--accent:#f45477;--path:linear-gradient(in oklab 112deg,#653050 0 45%,#9e465b 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-ede61257ba30362e7424" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-6" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-6" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-6" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-6" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-6" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-6" value="high"> High</label>
+			<label><input type="radio" name="confidence-6" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-6" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-a9f5c1d7a87b79ec81d2">
+	<header><span>08</span><code>gc-a9f5c1d7a87b79ec81d2</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#570c01;--surface:#105f02;--foreground:#f8f0ee;--accent:#e49500;--path:linear-gradient(in oklab 112deg,#570c01 0 45%,#105f02 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-a9f5c1d7a87b79ec81d2" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-7" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-7" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-7" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-7" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-7" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-7" value="high"> High</label>
+			<label><input type="radio" name="confidence-7" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-7" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-8835d18376d53392460b">
+	<header><span>09</span><code>gc-8835d18376d53392460b</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#ffffff;--surface:#e8e5e0;--foreground:#000000;--accent:#46453f;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#e8e5e0 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-8835d18376d53392460b" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-8" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-8" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-8" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-8" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-8" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-8" value="high"> High</label>
+			<label><input type="radio" name="confidence-8" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-8" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-9092cb780e471f0a2536">
+	<header><span>10</span><code>gc-9092cb780e471f0a2536</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#0a0a0c;--surface:#272524;--foreground:#eeeeef;--accent:#828283;--path:linear-gradient(in oklab 112deg,#0a0a0c 0 45%,#272524 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-9092cb780e471f0a2536" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-9" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-9" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-9" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-9" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-9" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-9" value="high"> High</label>
+			<label><input type="radio" name="confidence-9" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-9" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-3d4814e8282c18d359bf">
+	<header><span>11</span><code>gc-3d4814e8282c18d359bf</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#ffffff;--surface:#ddd1a7;--foreground:#17160c;--accent:#cdb171;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#ddd1a7 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-3d4814e8282c18d359bf" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-10" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-10" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-10" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-10" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-10" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-10" value="high"> High</label>
+			<label><input type="radio" name="confidence-10" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-10" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-8da5c6aa577a32dd68a7">
+	<header><span>12</span><code>gc-8da5c6aa577a32dd68a7</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#b47243;--surface:#c3883f;--foreground:#1f1d23;--accent:#3c567f;--path:linear-gradient(in oklab 112deg,#b47243 0 45%,#c3883f 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-8da5c6aa577a32dd68a7" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-11" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-11" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-11" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-11" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-11" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-11" value="high"> High</label>
+			<label><input type="radio" name="confidence-11" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-11" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-d3b3f3e65c04c48b40e5">
+	<header><span>13</span><code>gc-d3b3f3e65c04c48b40e5</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#ffffff;--surface:#d6cec7;--foreground:#0f0f18;--accent:#6a03c7;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#d6cec7 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-d3b3f3e65c04c48b40e5" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-12" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-12" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-12" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-12" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-12" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-12" value="high"> High</label>
+			<label><input type="radio" name="confidence-12" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-12" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-d0eaa813277279784f9b">
+	<header><span>14</span><code>gc-d0eaa813277279784f9b</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#000000;--surface:#570061;--foreground:#e49f89;--accent:#770c58;--path:linear-gradient(in oklab 112deg,#000000 0 45%,#570061 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-d0eaa813277279784f9b" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-13" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-13" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-13" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-13" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-13" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-13" value="high"> High</label>
+			<label><input type="radio" name="confidence-13" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-13" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-d40922433c80476472dd">
+	<header><span>15</span><code>gc-d40922433c80476472dd</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#1f3b6d;--surface:#131716;--foreground:#f2f1f0;--accent:#000101;--path:linear-gradient(in oklab 112deg,#1f3b6d 0 45%,#131716 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-d40922433c80476472dd" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-14" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-14" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-14" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-14" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-14" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-14" value="high"> High</label>
+			<label><input type="radio" name="confidence-14" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-14" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-dd434855bcd69c699daf">
+	<header><span>16</span><code>gc-dd434855bcd69c699daf</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#3ea0db;--surface:#96d0eb;--foreground:#0c080e;--accent:#033766;--path:linear-gradient(in oklab 112deg,#3ea0db 0 45%,#96d0eb 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-dd434855bcd69c699daf" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-15" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-15" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-15" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-15" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-15" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-15" value="high"> High</label>
+			<label><input type="radio" name="confidence-15" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-15" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-cf9a196aa89b1c819b3f">
+	<header><span>17</span><code>gc-cf9a196aa89b1c819b3f</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#33000e;--surface:#1c0004;--foreground:#d7b59a;--accent:#917358;--path:linear-gradient(in oklab 112deg,#33000e 0 45%,#1c0004 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-cf9a196aa89b1c819b3f" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-16" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-16" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-16" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-16" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-16" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-16" value="high"> High</label>
+			<label><input type="radio" name="confidence-16" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-16" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-5c27201d8bda6d2975d2">
+	<header><span>18</span><code>gc-5c27201d8bda6d2975d2</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#b79f69;--surface:#d5c5a1;--foreground:#252722;--accent:#837868;--path:linear-gradient(in oklab 112deg,#b79f69 0 45%,#d5c5a1 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-5c27201d8bda6d2975d2" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-17" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-17" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-17" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-17" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-17" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-17" value="high"> High</label>
+			<label><input type="radio" name="confidence-17" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-17" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-dd4ba537eeb1683f6561">
+	<header><span>19</span><code>gc-dd4ba537eeb1683f6561</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#050507;--surface:#252623;--foreground:#e8e8e9;--accent:#7a7a7a;--path:linear-gradient(in oklab 112deg,#050507 0 45%,#252623 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-dd4ba537eeb1683f6561" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-18" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-18" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-18" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-18" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-18" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-18" value="high"> High</label>
+			<label><input type="radio" name="confidence-18" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-18" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-70c40022643d66a2ae26">
+	<header><span>20</span><code>gc-70c40022643d66a2ae26</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#a9c0dc;--surface:#87a6cd;--foreground:#0d0806;--accent:#efeae4;--path:linear-gradient(in oklab 112deg,#a9c0dc 0 45%,#87a6cd 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-70c40022643d66a2ae26" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-19" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-19" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-19" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-19" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-19" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-19" value="high"> High</label>
+			<label><input type="radio" name="confidence-19" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-19" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-968bcbdcc038d6c8e20e">
+	<header><span>21</span><code>gc-968bcbdcc038d6c8e20e</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#241e83;--surface:#464e96;--foreground:#decdca;--accent:#010000;--path:linear-gradient(in oklab 112deg,#241e83 0 45%,#464e96 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-968bcbdcc038d6c8e20e" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-20" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-20" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-20" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-20" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-20" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-20" value="high"> High</label>
+			<label><input type="radio" name="confidence-20" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-20" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-44f500b20d26ca9a20ac">
+	<header><span>22</span><code>gc-44f500b20d26ca9a20ac</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#ffffff;--surface:#dacec6;--foreground:#051312;--accent:#d9b596;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#dacec6 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-44f500b20d26ca9a20ac" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-21" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-21" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-21" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-21" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-21" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-21" value="high"> High</label>
+			<label><input type="radio" name="confidence-21" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-21" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-d67d2a270d9ef853e69b">
+	<header><span>23</span><code>gc-d67d2a270d9ef853e69b</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#0f0f0f;--surface:#b20114;--foreground:#fafcfb;--accent:#97c2f1;--path:linear-gradient(in oklab 112deg,#0f0f0f 0 45%,#b20114 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-d67d2a270d9ef853e69b" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-22" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-22" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-22" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-22" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-22" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-22" value="high"> High</label>
+			<label><input type="radio" name="confidence-22" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-22" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article>
+<article data-family-id="gc-094a9f9e3b65eea89990">
+	<header><span>24</span><code>gc-094a9f9e3b65eea89990</code><output>Not submitted</output></header>
+	<section class="preview" style="--background:#1c4187;--surface:#106693;--foreground:#f2eee9;--accent:#db282a;--path:linear-gradient(in oklab 112deg,#1c4187 0 45%,#106693 95%)">
+		<div class="preview-main">
+			<img class="artwork" loading="lazy" src="/artwork/gc-094a9f9e3b65eea89990" alt="Artwork under review">
+			<div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div>
+		</div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+	</section>
+	<form novalidate>
+		<fieldset><legend>Background-to-surface relationship</legend>
+			<label><input type="radio" name="classification-23" value="true-background-gradient"> <span><b>True background gradient</b><small>The pair belongs to one spatially continuous background field.</small></span></label>
+			<label><input type="radio" name="classification-23" value="flat-background-isolated-surface"> <span><b>Flat background, isolated surface</b><small>The surface comes from a separate object, subject, or detail.</small></span></label>
+			<label><input type="radio" name="classification-23" value="not-gradient-other"> <span><b>Not a gradient, other</b><small>The colors are separate fields, blocks, or otherwise not one continuous gradient.</small></span></label>
+			<label><input type="radio" name="classification-23" value="gradient-wrong-endpoints"> <span><b>Gradient, wrong pair</b><small>A background gradient exists, but these are not its meaningful endpoints.</small></span></label>
+			<label><input type="radio" name="classification-23" value="uncertain"> <span><b>Uncertain</b><small>The relationship cannot be classified reliably from this artwork.</small></span></label>
+		</fieldset>
+		<fieldset class="confidence"><legend>Confidence</legend>
+			<label><input type="radio" name="confidence-23" value="high"> High</label>
+			<label><input type="radio" name="confidence-23" value="medium"> Medium</label>
+			<label><input type="radio" name="confidence-23" value="low"> Low</label>
+		</fieldset>
+		<label class="note"><span>Artwork feedback <small>(optional, free-form)</small></span><textarea name="note" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation not captured by the structured label."></textarea></label>
+		<output class="submit-status" aria-live="polite"></output><button type="submit">Save label</button>
+	</form>
+</article></section>
+</main><script>
+	const classifications=new Set(["true-background-gradient","flat-background-isolated-surface","not-gradient-other","gradient-wrong-endpoints","uncertain"]);const confidences=new Set(["high","medium","low"]);
+	function setStatus(article,message){article.querySelector("header output").textContent=message;article.querySelector(".submit-status").textContent=message}
+	function updateProgress(){const count=document.querySelectorAll('article[data-complete="true"]').length;document.querySelector("meter").value=count;document.querySelector("#progress").textContent=count+" / 24"}
+	function apply(article,entry){for(const input of article.querySelectorAll('input[type="radio"]'))input.checked=input.value===entry.classification||input.value===entry.confidence;article.querySelector("textarea").value=entry.note;article.dataset.complete="true";setStatus(article,"Saved")}
+	async function load(){try{const response=await fetch("/api/feedback",{cache:"no-store"});if(!response.ok)throw new Error(await response.text());const store=await response.json();const byFamily=new Map(store.entries.map(entry=>[entry.familyId,entry]));for(const article of document.querySelectorAll("article[data-family-id]")){const entry=byFamily.get(article.dataset.familyId);if(entry)apply(article,entry)}updateProgress()}catch(error){document.querySelector("#progress").textContent="Could not load labels";console.error(error)}}
+	document.addEventListener("change",event=>{const article=event.target.closest("article[data-family-id]");if(!article)return;article.dataset.complete="false";setStatus(article,"Not submitted");updateProgress()});
+	document.addEventListener("submit",async event=>{event.preventDefault();const article=event.target.closest("article[data-family-id]");const classification=article.querySelector('input[name^="classification-"]:checked')?.value;const confidence=article.querySelector('input[name^="confidence-"]:checked')?.value;const note=article.querySelector("textarea").value;if(!classifications.has(classification)||!confidences.has(confidence)){setStatus(article,"Choose a classification and confidence");return}const button=article.querySelector("button");button.disabled=true;setStatus(article,"Saving...");try{const response=await fetch("/api/feedback",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({familyId:article.dataset.familyId,classification,confidence,note})});if(!response.ok)throw new Error(await response.text());article.dataset.complete="true";setStatus(article,"Saved");updateProgress()}catch(error){setStatus(article,"Save failed: "+error.message)}finally{button.disabled=false}});load();
+</script></body></html>

@@ -19,7 +19,9 @@
     "scramble": "NODE_NO_WARNINGS=1 node --experimental-strip-types scramble-image.ts",
     "test": "NODE_NO_WARNINGS=1 node --watch --test --experimental-strip-types tests/visual-images.test.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "colornames-oklab": "0.6.0"
+  },
   "devDependencies": {
     "@types/node": "22.5.5",
     "colorjs.io": "0.5.2",

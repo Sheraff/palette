@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-music-promotion-audit-analysis-0.2.0",
+  "generatedAt": "2026-07-20T11:10:08.093Z",
+  "reviewedCandidateVersion": "gradient-eligibility-0.8.0-dev",
+  "candidateVersion": "gradient-eligibility-0.8.6-dev",
+  "evidenceVersion": "gradient-eligibility-evidence-0.2.0-dev",
+  "thresholds": {
+    "minimumEndpointDistance": 0.025,
+    "minimumConnectedFieldContinuity": 0.7857142857142857,
+    "minimumConnectedFieldShare": 0.05,
+    "minimumOrderedPathContinuity": 0.9285714285714286,
+    "minimumIntermediatePathShare": 0.3,
+    "minimumColorPathDirectionalOrdering": 0.15,
+    "maximumFlatBackgroundIsolatedSurfaceRisk": 0.4,
+    "maximumEndpointDominatedIntermediatePathShare": 0.4,
+    "maximumFlatRiskDirectionalOrdering": 0.2,
+    "minimumBroadIntermediateCoverage": 0.2,
+    "maximumBroadFieldSurfaceFlatness": 0.2,
+    "minimumNonlinearPathContinuity": 1,
+    "minimumNonlinearIntermediatePathShare": 0.6,
+    "minimumNonlinearPairCoherence": 0.5,
+    "maximumNonlinearConnectedFieldCoverage": 0,
+    "maximumSparseIntermediateCoverage": 0.08,
+    "minimumBorderBackgroundCoverage": 0.03,
+    "minimumSparseFieldBackgroundCoverage": 0.2,
+    "minimumBroadTenBinContinuity": 0.7142857142857143,
+    "minimumBroadTenBinConnectedCoverage": 0.7,
+    "minimumBroadTenBinConnectedShare": 0.9,
+    "minimumBroadTenBinIntermediateCoverage": 0.2,
+    "minimumBroadTenBinDirectionalOrdering": 0.5,
+    "maximumBroadTenBinAbruptTransitionShare": 0.2,
+    "minimumSparseOrderedEndpointDistance": 0.2,
+    "minimumSparseOrderedPathContinuity": 1,
+    "minimumSparseOrderedDirectionalOrdering": 0.85,
+    "maximumUnsupportedEndpointDistance": 0.15,
+    "maximumUnsupportedColorPathCoverage": 0.11,
+    "maximumUnsupportedPairCoherence": 0.3,
+    "minimumFragmentedConnectedCoverage": 0.09,
+    "maximumFragmentedConnectedShare": 0.2,
+    "minimumDualBorderCoverage": 0.27,
+    "maximumDualBorderIntermediatePathShare": 0.17,
+    "maximumSparseConnectedIntermediateCoverage": 0.04,
+    "minimumSparseConnectedCoverage": 0.05,
+    "maximumSparseConnectedBackgroundCoherence": 0.3,
+    "minimumCoherentFieldConnectedShare": 0.993,
+    "minimumCoherentFieldPairCoherence": 0.55,
+    "maximumCoherentFieldSurfaceCoherence": 0.3
+  },
+  "promotionRecommended": false,
+  "developmentFitOnly": true,
+  "promotionDecision": "requires-new-independent-validation",
+  "reviewInterpretation": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-07-19T22:22:06Z",
+    "decisionScope": "exact-selected-background-surface-pair",
+    "promotionDecision": "reject-gradient-eligibility-0.8",
+    "manualJudgments": [
+      {
+        "familyId": "gc-15a1a79ee427004b55f5",
+        "reviewSet": "removed",
+        "decision": "should-be-gradient",
+        "note": "This is the only false removal written down explicitly; there may have been more."
+      }
+    ],
+    "qualitativeFindings": [
+      "Many removed gradients were either-way.",
+      "Many gradients retained by 0.8 should actually be flat."
+    ],
+    "roleSelectionBugs": [
+      {
+        "familyId": "gc-583a7f4b2375592af971",
+        "kind": "background-representativeness",
+        "note": "The selected background works but is not the color visually associated with the artwork background."
+      },
+      {
+        "familyId": "gc-330aec036a8605e596c0",
+        "kind": "palette-color-fidelity",
+        "note": "The selected palette does not appear to use the proper artwork colors."
+      }
+    ]
+  },
+  "provenance": {
+    "removedPlanSha256": "a3c02f9e66414d38893a1401eacea7d18d40463d7673690478abca539768a619",
+    "removedHtmlSha256": "4c9789b4ff825177bf9cd9884adf9bfaf83d7f205dd5df84b958d8c1914ad0d4",
+    "removedFeedbackSha256": "9203a0048da48838ccf08f8ab57c5f42daf78d6eec723b7f1677d835def04759",
+    "retainedPlanSha256": "fee2bf2f5621c708cd805dc296ff19854061671d114fd6815436ca51c2ef9d9b",
+    "retainedHtmlSha256": "ddc70f322d3580f4b5dda4b5a32f44608bdc6dd343e300bf2deebf11bfc40675",
+    "retainedFeedbackSha256": "77c2e8fac77d327636f9a1c0b51dd7ec1a46fb8842940ee287adc3d42708c404",
+    "developmentSha256": "82190fef1aef68ad569832887d4e97bfd55356f087066b5225c570ccd19ca647",
+    "interpretationSha256": "7e3ef42779dfc79a7e1a4fb8e0b248069c97e448f40719c00b4980804ec60c14"
+  },
+  "summary": {
+    "corpus": {
+      "baselineGradients": 1327,
+      "candidateEligible": 1082,
+      "candidateRejected": 245,
+      "reasons": {
+        "eligible": 1082,
+        "flat-background-isolated-surface": 60,
+        "insufficient-progressive-field-support": 124,
+        "insufficient-spatial-continuity": 59,
+        "unsupported-disconnected-color-path": 2
+      }
+    },
+    "removed": {
+      "planned": 78,
+      "feedbackSubmitted": 0,
+      "manualJudgments": 1,
+      "unreviewed": 77,
+      "judgments": {
+        "should-be-gradient": 1
+      },
+      "knownFalseRemovalsRecovered": 1
+    },
+    "retained": {
+      "planned": 1183,
+      "submitted": 102,
+      "unreviewed": 1081,
+      "judgments": {
+        "should-not-be-gradient": 37,
+        "should-be-gradient": 43,
+        "either-way": 22
+      },
+      "fit": {
+        "shouldBeGradient": {
+          "total": 43,
+          "eligible": 43,
+          "rejected": 0
+        },
+        "shouldNotBeGradient": {
+          "total": 37,
+          "eligible": 17,
+          "rejected": 20
+        },
+        "eitherWay": {
+          "total": 22,
+          "eligible": 22,
+          "rejected": 0
+        },
+        "noVisibleDifference": {
+          "total": 0,
+          "eligible": 0,
+          "rejected": 0
+        }
+      }
+    }
+  },
+  "knownFalseRemovals": [
+    {
+      "familyId": "gc-15a1a79ee427004b55f5",
+      "decision": "should-be-gradient",
+      "comment": "This is the only false removal written down explicitly; there may have been more.",
+      "submittedAt": "2026-07-19T22:22:06Z",
+      "source": "manual-note",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      },
+      "candidateReason": "insufficient-spatial-continuity"
+    }
+  ],
+  "reviewedFalseRetentions": [
+    {
+      "familyId": "gc-02a3180ebb37c62d2bcb",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:25.973Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-0d3278928d1c86840a2d",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:14:33.371Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-0e1d229645131c804b72",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:52.407Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-21cf20d02f6ccb15e65c",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:02:13.787Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-25c89c7984bab8761a5b",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:54.685Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-32f958716c2053ec64f6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:20.862Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-36fa9524c0c64e0819d1",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:00.247Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-3c2697ea07d3bc75ea21",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:50.979Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-3dcaaaf4388b9f38260e",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:20.237Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-420a33c8c9eec748fd30",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:53.196Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-535b0c12c20aed0d9863",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:07:58.083Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-665ba14f4419fa770468",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:49.590Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-6a100e26bcc7459bf64f",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:44.729Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-6b0ca1eddb96f04ff1a0",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:52.505Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-6bec7d385f7aa8452b7f",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:30.342Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-6bf191568fbb22c71bae",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:10:57.116Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-6d78670eb4d2aac144d6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:42.904Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-75a59426c1d5220738b8",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:36.435Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-77e426e34e6e5b66bce5",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:38.806Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-783016dc0a71c1df1038",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:04.968Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-7b9dac598964f418586c",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:12.677Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-9330501e75612a1501fd",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:39.686Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-952a828fe80eee05c802",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:06:47.231Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-a7c9ef53dfaed8a77ea3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:07:32.373Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-a9a980233071f56d96a3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:36.528Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-aa5901cfd71b7090175d",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:08:23.718Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-b505578b456ef9b16a0b",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:18:28.383Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-b6dcad5d62ef22ef29e1",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:17:17.236Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-ba9ba421c87a0a707419",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:09:38.016Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-bcd538b195c37a8abca3",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:12:22.157Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-be6078805bc6f9906353",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:46.375Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-c79a6d529180b9fdd5c9",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:16:27.566Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-d7779096c7915aaf3801",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:15:41.170Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-da8cf60fb17003448fb6",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:15:53.499Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-e03bf7ec6284b484c894",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:13:19.010Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gc-ecd2ad28b722f1552b24",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:14:40.319Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gc-f7efc310c0a65eca9d36",
+      "decision": "should-not-be-gradient",
+      "comment": "",
+      "submittedAt": "2026-07-19T22:05:48.159Z",
+      "current": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    }
+  ]
+}

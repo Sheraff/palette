@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      colornames-oklab:
+        specifier: 0.6.0
+        version: 0.6.0
       piscina:
         specifier: ^4.7.0
         version: 4.7.0
@@ -255,6 +258,9 @@ packages:
   colorjs.io@0.5.2:
     resolution: {integrity: sha512-twmVoizEW7ylZSN32OgKdXRmo1qg+wT5/6C3xu5b9QsWzSFAhHLn2xd8ro0diCsKfCj1RdaTP/nrcW+vAoQPIw==}
 
+  colornames-oklab@0.6.0:
+    resolution: {integrity: sha512-TKd5uasTBQfk7ErJfb+W110OqsgeEC9JIz5LPmA0uwJZs6RciTzy/tqXs8FAvXADpT9i85F2/7k1xV9XESBYBQ==}
+
   detect-libc@2.0.3:
     resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
     engines: {node: '>=8'}
@@ -459,6 +465,8 @@ snapshots:
       color-string: 1.9.1
 
   colorjs.io@0.5.2: {}
+
+  colornames-oklab@0.6.0: {}
 
   detect-libc@2.0.3: {}
 

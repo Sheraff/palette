@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-07-20T00:10:00Z",
+  "experiment": "gradient-eligibility-0.8.2-geometry-diagnostic",
+  "candidateBaseline": "gradient-eligibility-0.8.1-dev",
+  "evidenceVersion": "gradient-eligibility-evidence-0.3.0-dev",
+  "developmentSha256": "79085c5bf5c7e48504a51d975f4d0a79fa57869e5d28c7cea04a33e451d70a02",
+  "diagnostics": [
+    "coreBinSpatialSupportQ25",
+    "surfaceEndpointEdgeEnclosure",
+    "surfaceEndpointBackgroundAffinity"
+  ],
+  "joinedLabels": {
+    "positive": 65,
+    "negative": 86,
+    "eitherWay": 39,
+    "residualFalseRetentions": 17
+  },
+  "result": "reject-diagnostic-branch",
+  "decision": "keep-gradient-eligibility-0.8.1",
+  "findings": {
+    "bestWideMarginRule": "surfaceEndpointEdgeEnclosure >= 0.8 and surfaceEndpointBackgroundAffinity <= 0.05",
+    "residualFalseRetentionsCaptured": 2,
+    "additionalUnlabeledMusicRemovals": 35,
+    "exactPositiveLosses": 0,
+    "componentwiseOverlappedResiduals": 9
+  },
+  "note": "The diagnostics move in the expected direction but do not separate subject- or disc-local tone paths from all reviewed positive gradients. Their small safe yield does not justify a new veto or the added extraction cost."
+}

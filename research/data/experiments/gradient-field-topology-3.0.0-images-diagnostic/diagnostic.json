@@ -1,0 +1,2737 @@
+{
+  "schemaVersion": 1,
+  "diagnosticVersion": "gradient-field-topology-3.0.0-images-diagnostic-1",
+  "generatedAt": "2026-07-20T16:08:31.734Z",
+  "selectionRule": "regular direct child with supported extension and no hyphen in basename before extension",
+  "bindings": {
+    "protocol": {
+      "file": "GRADIENT_FIELD_TOPOLOGY_IMAGES_DIAGNOSTIC_3.md",
+      "sha256": "bd9e205c19aab6436fd7483f5225d6f35c0ef319afddf6d3a6737d0114d2d905"
+    },
+    "tooling": {
+      "prepare-gradient-field-topology-images-diagnostic.ts": "d0712b00b5b92d23d6fcdcc9298504e0130d787c70aa9c4635203b021dd54ade",
+      "render-gradient-field-topology-images-diagnostic.ts": "1371a0e0983b5ea1409f59831007dacdc9244642b66e1b10622c59a7b08fb3b1",
+      "serve-gradient-field-topology-images-diagnostic.ts": "087ef820c013a3672f25bf62c31667c8b8afdc4d95140817be63bd9be6b18712"
+    },
+    "implementation": {
+      "src/extract.ts": "8468074be51bb0f575cf7a71f2565cd9098b9bd37221e338a0872f6661c06f62",
+      "src/gradient-field-topology-extract.ts": "fd2ef8746d04bbc853d2b757556524dfb5343e32691a3130ceea433dd939fb99",
+      "src/gradient-field-topology-model.ts": "0ec901a4dde9a88e6ae0ce3dc5fb5587a726aea69ef5da023059a27e84a6b09c",
+      "src/gradient-field-topology.ts": "f4458249198161d920603d0a8c7f10c32e7f2164611cd5286c702850668a5237"
+    },
+    "canonicalVersion": "region-graph-0.17.0",
+    "experimentVersion": "gradient-field-topology-model-3.0.0-experimental",
+    "evidenceVersion": "gradient-field-topology-evidence-3.0.0-dev",
+    "modelIdentity": {
+      "modelVersion": "gradient-field-topology-model-3.0.0-dev",
+      "variant": "unified-owned-continuity",
+      "evidenceVersion": "gradient-field-topology-evidence-3.0.0-dev",
+      "featureNames": [
+        "unifiedOwnedContinuity",
+        "ownedProgression",
+        "ownedConnectivity"
+      ],
+      "featureFormulas": [
+        "1 - (1 - sqrt(features.distributionContinuity * ownership.surfaceRoleOwnership)) * (1 - sqrt(features.distributionContinuity * ownership.spatialFieldOwnership))",
+        "features.fieldOwnership * max(progression.linearFit, progression.nonlinearFit)",
+        "features.fieldOwnership * topology.rootedConnectivity"
+      ],
+      "featureTransforms": [
+        "identity",
+        "identity",
+        "identity"
+      ],
+      "intercept": -0.03878414572829437,
+      "coefficients": [
+        2.0957691140229535,
+        0.5506220479091976,
+        0
+      ],
+      "featureMeans": [
+        0.5745412789598641,
+        0.2564454338897794,
+        0.21306668557921601
+      ],
+      "featureScales": [
+        0.22765616962247104,
+        0.2006111505833459,
+        0.1637037677760149
+      ],
+      "rawEquivalentIntercept": -6.031798096253494,
+      "rawEquivalentCoefficients": [
+        9.205852481390815,
+        2.74472304409837,
+        0
+      ],
+      "threshold": 0.25629320384844717,
+      "trainingArtifactSha256": "2722e5a99b8b218b3d28c975f5ae00624862420acae790da71f2cadfa3ec1983",
+      "fittingConfigSha256": "ea380df441f2473b2ad2ee18db7954cf10844019af95c6e74f968a008d559dc4",
+      "parameterSha256": "98d0a0d89e83d1e66a211c05557db74467f13bf4cb1d99766a650f29178fbc11"
+    },
+    "modelIdentitySha256": "9cd15f12004578c2a8a65cd83b63401889266428495551f569c16236be8c9818",
+    "parameterSha256": "98d0a0d89e83d1e66a211c05557db74467f13bf4cb1d99766a650f29178fbc11",
+    "packageJsonSha256": "e1dbcf105391063ed29cc354c9f72434ab12a7deaef67bbccb2c4fe5604becbb"
+  },
+  "runtime": {
+    "node": "v25.8.1",
+    "nodeVersions": {
+      "node": "25.8.1",
+      "acorn": "8.16.0",
+      "ada": "3.4.3",
+      "amaro": "1.1.8",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "lief": "0.17.0",
+      "llhttp": "9.3.1",
+      "merve": "1.2.0",
+      "modules": "141",
+      "napi": "10",
+      "nbytes": "0.1.3",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.68.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "3.5.5",
+      "simdjson": "4.3.1",
+      "simdutf": "7.3.3",
+      "sqlite": "3.52.0",
+      "tz": "2025c",
+      "undici": "7.22.0",
+      "unicode": "17.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "14.1.146.11-node.21",
+      "zlib": "1.3.1-e00f703",
+      "zstd": "1.5.7"
+    },
+    "sharpVersions": {
+      "aom": "3.9.1",
+      "archive": "3.7.4",
+      "cairo": "1.18.0",
+      "cgif": "0.4.1",
+      "exif": "0.6.24",
+      "expat": "2.6.2",
+      "ffi": "3.4.6",
+      "fontconfig": "2.15.0",
+      "freetype": "2.13.2",
+      "fribidi": "1.0.15",
+      "glib": "2.81.1",
+      "harfbuzz": "9.0.0",
+      "heif": "1.18.2",
+      "highway": "1.2.0",
+      "imagequant": "2.4.1",
+      "lcms": "2.16",
+      "mozjpeg": "4.1.5",
+      "pango": "1.54.0",
+      "pixman": "0.43.4",
+      "png": "1.6.43",
+      "proxy-libintl": "0.4",
+      "rsvg": "2.58.93",
+      "spng": "0.7.4",
+      "tiff": "4.6.0",
+      "vips": "8.15.3",
+      "webp": "1.4.0",
+      "xml": "2.13.3",
+      "zlib-ng": "2.2.1",
+      "sharp": "0.33.5"
+    },
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "summary": {
+    "baseFiles": 34,
+    "canonicalGradients": 13,
+    "canonicalFlats": 21,
+    "v3Gradients": 11,
+    "v3Flats": 23
+  },
+  "entries": [
+    {
+      "familyId": "image-6b069b8a4d534c235b13",
+      "anchor": {
+        "file": "images/artofficial.jpg",
+        "sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+        "bytes": 1657931,
+        "width": 1000,
+        "height": 1000
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "9e7398aa69de1afd36ea6c92f80e9b1d7878e2023f07a6f84eab1e62107eaf92",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            48,
+            47,
+            92
+          ],
+          "hex": "#302f5c"
+        },
+        "surface": {
+          "rgb": [
+            5,
+            0,
+            42
+          ],
+          "hex": "#05002a"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            48,
+            47,
+            92
+          ],
+          "hex": "#302f5c"
+        },
+        "foreground": {
+          "rgb": [
+            247,
+            231,
+            158
+          ],
+          "hex": "#f7e79e"
+        },
+        "surface": {
+          "rgb": [
+            5,
+            0,
+            42
+          ],
+          "hex": "#05002a"
+        },
+        "accent": {
+          "rgb": [
+            241,
+            224,
+            12
+          ],
+          "hex": "#f1e00c"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.42705518891399574,
+        "threshold": 0.25629320384844717,
+        "margin": 0.17076198506554857
+      }
+    },
+    {
+      "familyId": "image-5e1b891a9eb405c59688",
+      "anchor": {
+        "file": "images/birdsofprey.jpg",
+        "sha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+        "bytes": 136233,
+        "width": 1000,
+        "height": 1000
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "c5b6a8c5c8bb2b8b12748e7bc5f594762be1d5e7c5055e583f914afaff449f8c",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            64,
+            176,
+            49
+          ],
+          "hex": "#40b031"
+        },
+        "surface": {
+          "rgb": [
+            81,
+            203,
+            170
+          ],
+          "hex": "#51cbaa"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            64,
+            176,
+            49
+          ],
+          "hex": "#40b031"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            81,
+            203,
+            170
+          ],
+          "hex": "#51cbaa"
+        },
+        "accent": {
+          "rgb": [
+            209,
+            65,
+            159
+          ],
+          "hex": "#d1419f"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.6960855016973978,
+        "threshold": 0.25629320384844717,
+        "margin": 0.43979229784895063
+      }
+    },
+    {
+      "familyId": "image-b4f38b73da7b6745aa09",
+      "anchor": {
+        "file": "images/black.jpg",
+        "sha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+        "bytes": 38119,
+        "width": 807,
+        "height": 807
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "5f87cbfd427ba99225e229c235f5fce5c1c92ffec5dcf4b47340dd9b48f38775",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "accent": {
+          "rgb": [
+            38,
+            38,
+            38
+          ],
+          "hex": "#262626"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-3ab5f8555be4cde8ffce",
+      "anchor": {
+        "file": "images/disney.avif",
+        "sha256": "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b",
+        "bytes": 8996,
+        "width": 483,
+        "height": 483
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "1becaa338f8e7dd08bccb3e34ea47ce77be02db0f98cb9d0ffad8a3124ca5e32",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            199,
+            38,
+            144
+          ],
+          "hex": "#c72690"
+        },
+        "surface": {
+          "rgb": [
+            33,
+            153,
+            214
+          ],
+          "hex": "#2199d6"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            199,
+            38,
+            144
+          ],
+          "hex": "#c72690"
+        },
+        "foreground": {
+          "rgb": [
+            252,
+            253,
+            250
+          ],
+          "hex": "#fcfdfa"
+        },
+        "surface": {
+          "rgb": [
+            33,
+            153,
+            214
+          ],
+          "hex": "#2199d6"
+        },
+        "accent": {
+          "rgb": [
+            251,
+            167,
+            43
+          ],
+          "hex": "#fba72b"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-707fbdd4810b395bc32b",
+      "anchor": {
+        "file": "images/doja.jpg",
+        "sha256": "6db5579b6d143c716ac1658937fe60587a47812251c13524fb8cd580512e54ef",
+        "bytes": 133578,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "1a7331e9c1f9e928da399c4060da04ea01ee65731f805a842599790da6b8c82a",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            253,
+            114,
+            176
+          ],
+          "hex": "#fd72b0"
+        },
+        "surface": {
+          "rgb": [
+            253,
+            134,
+            189
+          ],
+          "hex": "#fd86bd"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            253,
+            114,
+            176
+          ],
+          "hex": "#fd72b0"
+        },
+        "foreground": {
+          "rgb": [
+            114,
+            14,
+            27
+          ],
+          "hex": "#720e1b"
+        },
+        "surface": {
+          "rgb": [
+            253,
+            134,
+            189
+          ],
+          "hex": "#fd86bd"
+        },
+        "accent": {
+          "rgb": [
+            251,
+            236,
+            227
+          ],
+          "hex": "#fbece3"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.799843437127411,
+        "threshold": 0.25629320384844717,
+        "margin": 0.5435502332789639
+      }
+    },
+    {
+      "familyId": "image-a63e50c847f1f7492458",
+      "anchor": {
+        "file": "images/elephunk.jpg",
+        "sha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+        "bytes": 70051,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "ad9b467c3b2cc107f9c0a91c14460471768301af37338c36b76eb90cebbeae5a",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            85,
+            144,
+            153
+          ],
+          "hex": "#559099"
+        },
+        "surface": {
+          "rgb": [
+            85,
+            144,
+            153
+          ],
+          "hex": "#559099"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            85,
+            144,
+            153
+          ],
+          "hex": "#559099"
+        },
+        "foreground": {
+          "rgb": [
+            253,
+            253,
+            211
+          ],
+          "hex": "#fdfdd3"
+        },
+        "surface": {
+          "rgb": [
+            85,
+            144,
+            153
+          ],
+          "hex": "#559099"
+        },
+        "accent": {
+          "rgb": [
+            9,
+            40,
+            49
+          ],
+          "hex": "#092831"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-cb99c832b770fc3bea62",
+      "anchor": {
+        "file": "images/franz.jpg",
+        "sha256": "634d27eb2a703963e7da87b1b6ebfb2a68a7b23f2a8c7445fe8c88b5daec774e",
+        "bytes": 50193,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "c9f9043163215654c175fe1b8dff74dd534b4753eb79a3d12d29930472a1a1ca",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            2,
+            6,
+            18
+          ],
+          "hex": "#020612"
+        },
+        "surface": {
+          "rgb": [
+            2,
+            6,
+            18
+          ],
+          "hex": "#020612"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            2,
+            6,
+            18
+          ],
+          "hex": "#020612"
+        },
+        "foreground": {
+          "rgb": [
+            251,
+            235,
+            197
+          ],
+          "hex": "#fbebc5"
+        },
+        "surface": {
+          "rgb": [
+            2,
+            6,
+            18
+          ],
+          "hex": "#020612"
+        },
+        "accent": {
+          "rgb": [
+            218,
+            153,
+            37
+          ],
+          "hex": "#da9925"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-c5ed91f85470d210507f",
+      "anchor": {
+        "file": "images/greenday.jpg",
+        "sha256": "082b0cbb95852a1d871360e0b3672d5acde9be62765a100c751f9482101f5853",
+        "bytes": 81805,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "7a039d048d08561f5752b0c49c204508b604ea597418d453aff50c0764bd0d7f",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            2,
+            17
+          ],
+          "hex": "#000211"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            2,
+            17
+          ],
+          "hex": "#000211"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            2,
+            17
+          ],
+          "hex": "#000211"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            254,
+            254
+          ],
+          "hex": "#fffefe"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            2,
+            17
+          ],
+          "hex": "#000211"
+        },
+        "accent": {
+          "rgb": [
+            193,
+            49,
+            49
+          ],
+          "hex": "#c13131"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-27b6b62a32614c24c440",
+      "anchor": {
+        "file": "images/havana.jpg",
+        "sha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+        "bytes": 258556,
+        "width": 1200,
+        "height": 1200
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "b60ab246256e934a3089de3a7cb4a196b7274cc4c6ebe3d0e82c9928aa701934",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            40,
+            81,
+            116
+          ],
+          "hex": "#285174"
+        },
+        "surface": {
+          "rgb": [
+            41,
+            62,
+            81
+          ],
+          "hex": "#293e51"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            40,
+            81,
+            116
+          ],
+          "hex": "#285174"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            250,
+            201
+          ],
+          "hex": "#fffac9"
+        },
+        "surface": {
+          "rgb": [
+            41,
+            62,
+            81
+          ],
+          "hex": "#293e51"
+        },
+        "accent": {
+          "rgb": [
+            239,
+            100,
+            96
+          ],
+          "hex": "#ef6460"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.4933211685321757,
+        "threshold": 0.25629320384844717,
+        "margin": 0.23702796468372855
+      }
+    },
+    {
+      "familyId": "image-048bbb66d9fb50f390bf",
+      "anchor": {
+        "file": "images/horrorwood.jpg",
+        "sha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+        "bytes": 241855,
+        "width": 1200,
+        "height": 1200
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "760e678e2bbdcc5fbc9cc366eb69b359d6f885de3e0609b358730859fa9db7bd",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            14,
+            18,
+            22
+          ],
+          "hex": "#0e1216"
+        },
+        "surface": {
+          "rgb": [
+            23,
+            30,
+            40
+          ],
+          "hex": "#171e28"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            14,
+            18,
+            22
+          ],
+          "hex": "#0e1216"
+        },
+        "foreground": {
+          "rgb": [
+            175,
+            191,
+            201
+          ],
+          "hex": "#afbfc9"
+        },
+        "surface": {
+          "rgb": [
+            23,
+            30,
+            40
+          ],
+          "hex": "#171e28"
+        },
+        "accent": {
+          "rgb": [
+            119,
+            133,
+            142
+          ],
+          "hex": "#77858e"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.44622969933516277,
+        "threshold": 0.25629320384844717,
+        "margin": 0.1899364954867156
+      }
+    },
+    {
+      "familyId": "image-6cf4df51235b0c677274",
+      "anchor": {
+        "file": "images/horsley.jpg",
+        "sha256": "3b32f2f95f2ce01af5ecd0ca8383b2b292ba160a874aac5f8480ae6e26634acb",
+        "bytes": 71019,
+        "width": 1000,
+        "height": 1000
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "7d159435214ec4e93d80e2aa79ab6a6aceda227d51574c615441e88727f2a47f",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            181,
+            113,
+            61
+          ],
+          "hex": "#b5713d"
+        },
+        "surface": {
+          "rgb": [
+            217,
+            171,
+            69
+          ],
+          "hex": "#d9ab45"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            181,
+            113,
+            61
+          ],
+          "hex": "#b5713d"
+        },
+        "foreground": {
+          "rgb": [
+            16,
+            16,
+            16
+          ],
+          "hex": "#101010"
+        },
+        "surface": {
+          "rgb": [
+            217,
+            171,
+            69
+          ],
+          "hex": "#d9ab45"
+        },
+        "accent": {
+          "rgb": [
+            243,
+            240,
+            194
+          ],
+          "hex": "#f3f0c2"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.9598800216433269,
+        "threshold": 0.25629320384844717,
+        "margin": 0.7035868177948796
+      }
+    },
+    {
+      "familyId": "image-2fbf616c4bdf21558778",
+      "anchor": {
+        "file": "images/infected.jpg",
+        "sha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+        "bytes": 146935,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "4a7fd1634053af5bcc692c3b53119b4296214e3a5acdeb5f0d913c14778f67d8",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            44,
+            34,
+            87
+          ],
+          "hex": "#2c2257"
+        },
+        "surface": {
+          "rgb": [
+            46,
+            57,
+            143
+          ],
+          "hex": "#2e398f"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            44,
+            34,
+            87
+          ],
+          "hex": "#2c2257"
+        },
+        "foreground": {
+          "rgb": [
+            77,
+            195,
+            243
+          ],
+          "hex": "#4dc3f3"
+        },
+        "surface": {
+          "rgb": [
+            46,
+            57,
+            143
+          ],
+          "hex": "#2e398f"
+        },
+        "accent": {
+          "rgb": [
+            215,
+            97,
+            99
+          ],
+          "hex": "#d76163"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.9261926373751846,
+        "threshold": 0.25629320384844717,
+        "margin": 0.6698994335267374
+      }
+    },
+    {
+      "familyId": "image-f683cb4eacc004de8165",
+      "anchor": {
+        "file": "images/johns.jpg",
+        "sha256": "3c519a67314f999a0e52b005eef4b146a9e43ab70819ce00f6e197c62f01dac1",
+        "bytes": 79960,
+        "width": 700,
+        "height": 700
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "72fc25c94593eb56a172e924f7356cab8d5347bb2efd89ae105f86621533c1fb",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            13,
+            24,
+            28
+          ],
+          "hex": "#0d181c"
+        },
+        "surface": {
+          "rgb": [
+            18,
+            37,
+            64
+          ],
+          "hex": "#122540"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            13,
+            24,
+            28
+          ],
+          "hex": "#0d181c"
+        },
+        "foreground": {
+          "rgb": [
+            249,
+            251,
+            252
+          ],
+          "hex": "#f9fbfc"
+        },
+        "surface": {
+          "rgb": [
+            18,
+            37,
+            64
+          ],
+          "hex": "#122540"
+        },
+        "accent": {
+          "rgb": [
+            252,
+            87,
+            94
+          ],
+          "hex": "#fc575e"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-b36c4ae5324de997d51c",
+      "anchor": {
+        "file": "images/knuckles.jpg",
+        "sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+        "bytes": 90657,
+        "width": 350,
+        "height": 350
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "b7142aaa500ee79de779296d0f736d20ba63b153e2ca59b82b9e5bf692f83f76",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            157,
+            155,
+            192
+          ],
+          "hex": "#9d9bc0"
+        },
+        "surface": {
+          "rgb": [
+            156,
+            181,
+            210
+          ],
+          "hex": "#9cb5d2"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            157,
+            155,
+            192
+          ],
+          "hex": "#9d9bc0"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            156,
+            181,
+            210
+          ],
+          "hex": "#9cb5d2"
+        },
+        "accent": {
+          "rgb": [
+            213,
+            245,
+            235
+          ],
+          "hex": "#d5f5eb"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-410b2433d1f52c2f85df",
+      "anchor": {
+        "file": "images/krafty.jpg",
+        "sha256": "3afaf90cd911c134fe26708b3da3fdad181eb38cd8455a8a4538de88a4894091",
+        "bytes": 181770,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "486ec82e40dbfd2fd3f3e8a36b4bf0f46fd15d6bd9c4d7e15e83b0823c3eba59",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            5,
+            4,
+            6
+          ],
+          "hex": "#050406"
+        },
+        "surface": {
+          "rgb": [
+            5,
+            4,
+            6
+          ],
+          "hex": "#050406"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            5,
+            4,
+            6
+          ],
+          "hex": "#050406"
+        },
+        "foreground": {
+          "rgb": [
+            228,
+            150,
+            37
+          ],
+          "hex": "#e49625"
+        },
+        "surface": {
+          "rgb": [
+            5,
+            4,
+            6
+          ],
+          "hex": "#050406"
+        },
+        "accent": {
+          "rgb": [
+            232,
+            11,
+            137
+          ],
+          "hex": "#e80b89"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-20ec20c07647e2b07a58",
+      "anchor": {
+        "file": "images/loups.jpg",
+        "sha256": "ac5784abcef2493024b69ce3d7295cd6c1d7e942386830c848e0b9243be629fa",
+        "bytes": 69808,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "fa73fd21ec1502bbf585e0a7ba799484c97302fe59c6f4d7d2bbdc735c688c4b",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            252,
+            207,
+            208
+          ],
+          "hex": "#fccfd0"
+        },
+        "surface": {
+          "rgb": [
+            253,
+            183,
+            97
+          ],
+          "hex": "#fdb761"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            252,
+            207,
+            208
+          ],
+          "hex": "#fccfd0"
+        },
+        "foreground": {
+          "rgb": [
+            183,
+            45,
+            33
+          ],
+          "hex": "#b72d21"
+        },
+        "surface": {
+          "rgb": [
+            253,
+            183,
+            97
+          ],
+          "hex": "#fdb761"
+        },
+        "accent": {
+          "rgb": [
+            253,
+            106,
+            41
+          ],
+          "hex": "#fd6a29"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": false,
+        "reason": "scored",
+        "score": 0.2363968356305035,
+        "threshold": 0.25629320384844717,
+        "margin": -0.01989636821794366
+      }
+    },
+    {
+      "familyId": "image-ecb52137274ea256939e",
+      "anchor": {
+        "file": "images/maroon5.jpg",
+        "sha256": "6dfd27c93891e02bccb9597196bca250807177c210e3e660f6fb66257cd2c1ef",
+        "bytes": 105355,
+        "width": 1000,
+        "height": 1000
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "2c55e842569e18a67964ba1db20d9dd9f50611090bfc53282b78e7e27bb1b9d0",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            10,
+            10,
+            10
+          ],
+          "hex": "#0a0a0a"
+        },
+        "surface": {
+          "rgb": [
+            72,
+            15,
+            22
+          ],
+          "hex": "#480f16"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            10,
+            10,
+            10
+          ],
+          "hex": "#0a0a0a"
+        },
+        "foreground": {
+          "rgb": [
+            235,
+            142,
+            113
+          ],
+          "hex": "#eb8e71"
+        },
+        "surface": {
+          "rgb": [
+            72,
+            15,
+            22
+          ],
+          "hex": "#480f16"
+        },
+        "accent": {
+          "rgb": [
+            178,
+            19,
+            39
+          ],
+          "hex": "#b21327"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-08893b7a4f17244e758e",
+      "anchor": {
+        "file": "images/meteora.jpg",
+        "sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+        "bytes": 68076,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "ee0321d16dd8ab3cde9bc26a87c0090f73fba518288e5ebc2ffac32c3dca9c9c",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            250,
+            249
+          ],
+          "hex": "#fafaf9"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "accent": {
+          "rgb": [
+            166,
+            145,
+            116
+          ],
+          "hex": "#a69174"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-a9e574a961521afd176b",
+      "anchor": {
+        "file": "images/muse.jpg",
+        "sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "bytes": 113438,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "94dc676afb272d47e8516080454bb0004cfaebcd5168b546fde2c66a82b9d9ab",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            4,
+            53,
+            99
+          ],
+          "hex": "#043563"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            244,
+            251,
+            254
+          ],
+          "hex": "#f4fbfe"
+        },
+        "surface": {
+          "rgb": [
+            4,
+            53,
+            99
+          ],
+          "hex": "#043563"
+        },
+        "accent": {
+          "rgb": [
+            19,
+            165,
+            212
+          ],
+          "hex": "#13a5d4"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": false,
+        "reason": "scored",
+        "score": 0.22308830752240646,
+        "threshold": 0.25629320384844717,
+        "margin": -0.033204896326040706
+      }
+    },
+    {
+      "familyId": "image-16ff3a6d8de4bdd42282",
+      "anchor": {
+        "file": "images/nada.jpg",
+        "sha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+        "bytes": 174998,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "740a8fe5b915eedc05e67a5987702b21cb534cce52a799fcfd224f26d2bbd98f",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            59,
+            89,
+            122
+          ],
+          "hex": "#3b597a"
+        },
+        "surface": {
+          "rgb": [
+            43,
+            47,
+            93
+          ],
+          "hex": "#2b2f5d"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            59,
+            89,
+            122
+          ],
+          "hex": "#3b597a"
+        },
+        "foreground": {
+          "rgb": [
+            248,
+            249,
+            249
+          ],
+          "hex": "#f8f9f9"
+        },
+        "surface": {
+          "rgb": [
+            43,
+            47,
+            93
+          ],
+          "hex": "#2b2f5d"
+        },
+        "accent": {
+          "rgb": [
+            250,
+            200,
+            66
+          ],
+          "hex": "#fac842"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.2583512639370455,
+        "threshold": 0.25629320384844717,
+        "margin": 0.0020580600885983236
+      }
+    },
+    {
+      "familyId": "image-f48408a63dfe0c0e7ab4",
+      "anchor": {
+        "file": "images/nobs.jpg",
+        "sha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+        "bytes": 364846,
+        "width": 1200,
+        "height": 1200
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "d742f7490322d732f143b4a563011d713ff9f83d86be170ff59595310e610d5f",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            247,
+            255,
+            255
+          ],
+          "hex": "#f7ffff"
+        },
+        "surface": {
+          "rgb": [
+            247,
+            255,
+            255
+          ],
+          "hex": "#f7ffff"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            247,
+            255,
+            255
+          ],
+          "hex": "#f7ffff"
+        },
+        "foreground": {
+          "rgb": [
+            175,
+            57,
+            74
+          ],
+          "hex": "#af394a"
+        },
+        "surface": {
+          "rgb": [
+            247,
+            255,
+            255
+          ],
+          "hex": "#f7ffff"
+        },
+        "accent": {
+          "rgb": [
+            244,
+            208,
+            3
+          ],
+          "hex": "#f4d003"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-62fba194d9f9ebed6bbc",
+      "anchor": {
+        "file": "images/once.jpg",
+        "sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+        "bytes": 91019,
+        "width": 1000,
+        "height": 980
+      },
+      "normalized": {
+        "width": 224,
+        "height": 220
+      },
+      "pairSha256": "8efeeafddefb41ebf971e1786f1f65e24fa1bf0372bbb8d4f2888345d9d04729",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            218,
+            218,
+            230
+          ],
+          "hex": "#dadae6"
+        },
+        "surface": {
+          "rgb": [
+            218,
+            218,
+            230
+          ],
+          "hex": "#dadae6"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            218,
+            218,
+            230
+          ],
+          "hex": "#dadae6"
+        },
+        "foreground": {
+          "rgb": [
+            94,
+            82,
+            97
+          ],
+          "hex": "#5e5261"
+        },
+        "surface": {
+          "rgb": [
+            218,
+            218,
+            230
+          ],
+          "hex": "#dadae6"
+        },
+        "accent": {
+          "rgb": [
+            68,
+            56,
+            70
+          ],
+          "hex": "#443846"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-75f667faa3f0b6684297",
+      "anchor": {
+        "file": "images/orelsan.jpg",
+        "sha256": "2d2bb16bda633340d7b7ece3c98b04772d9f48d900d4535fd6ba448c7cdcd0f6",
+        "bytes": 17077,
+        "width": 340,
+        "height": 340
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "688127d95423cfd0228e1ad3e39f9eed7595eed69bcb2f584f311c45ba9924ba",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            37,
+            53,
+            71
+          ],
+          "hex": "#253547"
+        },
+        "surface": {
+          "rgb": [
+            13,
+            21,
+            35
+          ],
+          "hex": "#0d1523"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            37,
+            53,
+            71
+          ],
+          "hex": "#253547"
+        },
+        "foreground": {
+          "rgb": [
+            241,
+            226,
+            199
+          ],
+          "hex": "#f1e2c7"
+        },
+        "surface": {
+          "rgb": [
+            13,
+            21,
+            35
+          ],
+          "hex": "#0d1523"
+        },
+        "accent": {
+          "rgb": [
+            139,
+            117,
+            111
+          ],
+          "hex": "#8b756f"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.9317671555171639,
+        "threshold": 0.25629320384844717,
+        "margin": 0.6754739516687167
+      }
+    },
+    {
+      "familyId": "image-2b322bb04f3cba35804a",
+      "anchor": {
+        "file": "images/placebo.jpg",
+        "sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+        "bytes": 210759,
+        "width": 1400,
+        "height": 1400
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "9f9d3cb464f56da65db7287627f8626674f98d1a4cab7a2374aaeab3b2811ba4",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            104,
+            137,
+            137
+          ],
+          "hex": "#688989"
+        },
+        "surface": {
+          "rgb": [
+            136,
+            165,
+            172
+          ],
+          "hex": "#88a5ac"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            104,
+            137,
+            137
+          ],
+          "hex": "#688989"
+        },
+        "foreground": {
+          "rgb": [
+            19,
+            21,
+            20
+          ],
+          "hex": "#131514"
+        },
+        "surface": {
+          "rgb": [
+            136,
+            165,
+            172
+          ],
+          "hex": "#88a5ac"
+        },
+        "accent": {
+          "rgb": [
+            253,
+            254,
+            254
+          ],
+          "hex": "#fdfefe"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.7356898708319821,
+        "threshold": 0.25629320384844717,
+        "margin": 0.47939666698353495
+      }
+    },
+    {
+      "familyId": "image-d2b15bac6cedeeb35a83",
+      "anchor": {
+        "file": "images/pureblack.jpg",
+        "sha256": "79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+        "bytes": 1802,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "169f198596049874b4c302180eeecd544b229082ace0c679053032f74db69b29",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "accent": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-920b08420126619c285a",
+      "anchor": {
+        "file": "images/purered.jpg",
+        "sha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+        "bytes": 1806,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "10e6d6a283a5617ca081a281c4004d66a0889b7817909b7ce100e61fe482fd36",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            254,
+            0,
+            0
+          ],
+          "hex": "#fe0000"
+        },
+        "surface": {
+          "rgb": [
+            254,
+            0,
+            0
+          ],
+          "hex": "#fe0000"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            254,
+            0,
+            0
+          ],
+          "hex": "#fe0000"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            254,
+            0,
+            0
+          ],
+          "hex": "#fe0000"
+        },
+        "accent": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-b8b38b2ada079916274b",
+      "anchor": {
+        "file": "images/purewhite.jpg",
+        "sha256": "527a833d1a546df5bc3d1c8f6d523a2c2429432eb21c0e17856f56312fe1aaa0",
+        "bytes": 1802,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "7f4644756692fedb23e41e9dadecc2171d5ac716566be8b4573d2f1fd6fa9a04",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "accent": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-a986c988c329d79d98a3",
+      "anchor": {
+        "file": "images/skap.jpg",
+        "sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+        "bytes": 162561,
+        "width": 1000,
+        "height": 894
+      },
+      "normalized": {
+        "width": 224,
+        "height": 200
+      },
+      "pairSha256": "b8c922b2e19e0dbea96aac9b9fb1e07b836f5813474ed7feef498fffddc75098",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe"
+        },
+        "surface": {
+          "rgb": [
+            232,
+            227,
+            231
+          ],
+          "hex": "#e8e3e7"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe"
+        },
+        "foreground": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            232,
+            227,
+            231
+          ],
+          "hex": "#e8e3e7"
+        },
+        "accent": {
+          "rgb": [
+            188,
+            62,
+            52
+          ],
+          "hex": "#bc3e34"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-579dd37efd63610d95c3",
+      "anchor": {
+        "file": "images/slim.jpg",
+        "sha256": "e44c8ebb6e50520d38ec0c62c5333708150c2116ddcd9d97aaa083dbcd864c3e",
+        "bytes": 169226,
+        "width": 1200,
+        "height": 1200
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "7cd09eb9cfb7f5502c80d0ecad302bcb9d6ccb2648938017eadabb5193720f5d",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            11,
+            7,
+            15
+          ],
+          "hex": "#0b070f"
+        },
+        "surface": {
+          "rgb": [
+            2,
+            16,
+            36
+          ],
+          "hex": "#021024"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            11,
+            7,
+            15
+          ],
+          "hex": "#0b070f"
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            2,
+            16,
+            36
+          ],
+          "hex": "#021024"
+        },
+        "accent": {
+          "rgb": [
+            180,
+            33,
+            38
+          ],
+          "hex": "#b42126"
+        }
+      },
+      "canonicalGradient": true,
+      "v3": {
+        "evaluated": true,
+        "eligible": true,
+        "reason": "scored",
+        "score": 0.6344908688965266,
+        "threshold": 0.25629320384844717,
+        "margin": 0.37819766504807945
+      }
+    },
+    {
+      "familyId": "image-3f3853f5bcd1f7c0b09c",
+      "anchor": {
+        "file": "images/slipknot.jpg",
+        "sha256": "8faff414922e52af414bbcf979694481597ebb67cf39dbbc22432172b3015899",
+        "bytes": 14864,
+        "width": 500,
+        "height": 500
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "e5d5be149f7320e7fc9ce9991f62af6f41ec9c86acb60bd64b6f412e3d30dc70",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "foreground": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe"
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000"
+        },
+        "accent": {
+          "rgb": [
+            254,
+            254,
+            254
+          ],
+          "hex": "#fefefe"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-a091e82e784b75ec86fa",
+      "anchor": {
+        "file": "images/snarky.jpg",
+        "sha256": "681a2c4a00cdee770a08049034023bb45309455ab8bf796571fcc6bb3b3a5f9e",
+        "bytes": 32831,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "6e8c7adea5c72ab950d17aecaba5ba59e7792c5d2acb2ca62f3f5e3f13c350ec",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            199,
+            191,
+            54
+          ],
+          "hex": "#c7bf36"
+        },
+        "surface": {
+          "rgb": [
+            199,
+            191,
+            54
+          ],
+          "hex": "#c7bf36"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            199,
+            191,
+            54
+          ],
+          "hex": "#c7bf36"
+        },
+        "foreground": {
+          "rgb": [
+            12,
+            18,
+            6
+          ],
+          "hex": "#0c1206"
+        },
+        "surface": {
+          "rgb": [
+            199,
+            191,
+            54
+          ],
+          "hex": "#c7bf36"
+        },
+        "accent": {
+          "rgb": [
+            253,
+            254,
+            254
+          ],
+          "hex": "#fdfefe"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-3ec99bbbfce66f5d174b",
+      "anchor": {
+        "file": "images/toxicity.jpg",
+        "sha256": "b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+        "bytes": 204217,
+        "width": 640,
+        "height": 640
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "196f06166068748e4ef001761e86f61c3347a336f60fb1a5175d239346297cd8",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            178,
+            156,
+            140
+          ],
+          "hex": "#b29c8c"
+        },
+        "surface": {
+          "rgb": [
+            190,
+            137,
+            80
+          ],
+          "hex": "#be8950"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            178,
+            156,
+            140
+          ],
+          "hex": "#b29c8c"
+        },
+        "foreground": {
+          "rgb": [
+            44,
+            25,
+            6
+          ],
+          "hex": "#2c1906"
+        },
+        "surface": {
+          "rgb": [
+            190,
+            137,
+            80
+          ],
+          "hex": "#be8950"
+        },
+        "accent": {
+          "rgb": [
+            207,
+            24,
+            52
+          ],
+          "hex": "#cf1834"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-135d29f50bf7c16138a4",
+      "anchor": {
+        "file": "images/vvbrown.jpg",
+        "sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "bytes": 57673,
+        "width": 1000,
+        "height": 1000
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "786d3ccda54d2c60c3ea40aea4e7f3ea39ff59949ac008190901a6781eb845c6",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "surface": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "foreground": {
+          "rgb": [
+            8,
+            8,
+            8
+          ],
+          "hex": "#080808"
+        },
+        "surface": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "hex": "#ffffff"
+        },
+        "accent": {
+          "rgb": [
+            219,
+            217,
+            15
+          ],
+          "hex": "#dbd90f"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    },
+    {
+      "familyId": "image-d413f8d56dfa07c1c663",
+      "anchor": {
+        "file": "images/ybbb.jpg",
+        "sha256": "67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+        "bytes": 35092,
+        "width": 700,
+        "height": 700
+      },
+      "normalized": {
+        "width": 224,
+        "height": 224
+      },
+      "pairSha256": "c82708851ccd6e13136e06ce727b8a9e7ec19653c8e03433c4c0a9249361c488",
+      "directedPair": {
+        "background": {
+          "rgb": [
+            133,
+            9,
+            11
+          ],
+          "hex": "#85090b"
+        },
+        "surface": {
+          "rgb": [
+            133,
+            9,
+            11
+          ],
+          "hex": "#85090b"
+        }
+      },
+      "palette": {
+        "background": {
+          "rgb": [
+            133,
+            9,
+            11
+          ],
+          "hex": "#85090b"
+        },
+        "foreground": {
+          "rgb": [
+            231,
+            205,
+            149
+          ],
+          "hex": "#e7cd95"
+        },
+        "surface": {
+          "rgb": [
+            133,
+            9,
+            11
+          ],
+          "hex": "#85090b"
+        },
+        "accent": {
+          "rgb": [
+            11,
+            11,
+            13
+          ],
+          "hex": "#0b0b0d"
+        }
+      },
+      "canonicalGradient": false,
+      "v3": {
+        "evaluated": false,
+        "eligible": false,
+        "reason": "baseline-not-gradient",
+        "score": null,
+        "threshold": 0.25629320384844717,
+        "margin": null
+      }
+    }
+  ],
+  "diagnosticId": "8529a67fcf95160146ea140c79527737ac70e7ba2d304696fce4a7130f4f8cc6"
+}

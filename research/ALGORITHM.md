@@ -107,6 +107,8 @@ Another projects image pixels onto the OKLab line between selected background an
 
 A gradient is emitted only when coverage, continuity, and coherence pass explicit thresholds. Dark chromatic gradients receive a limited secondary hint when smoothness and chromatic coverage support it.
 
+The accepted 0.17 behavior still permits the global smooth detector to support a selected endpoint pair. The current development candidate deliberately disables that fallback and uses pair-specific connected-field coverage, endpoint isolation, directional ordering, and local transition evidence. It targets dominant flat backgrounds paired with isolated object colors while preserving coherent endpoint-spanning fields. No eligibility thresholds from that experiment are part of the accepted algorithm yet.
+
 The UI preview renders an accepted gradient as:
 
 ```css

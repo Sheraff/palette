@@ -346,8 +346,10 @@ export function detectGradient(
 	background: Candidate,
 	surface: Candidate,
 	analysis: RegionAnalysis,
+	options: { allowSmoothFallback?: boolean } = {},
 ): GradientEvidence {
-	const smooth = smoothGradientEvidence(analysis)
+	const allowSmoothFallback = options.allowSmoothFallback ?? true
+	const smooth = allowSmoothFallback ? smoothGradientEvidence(analysis) : null
 	const difference: OKLab = [
 		surface.lab[0] - background.lab[0],
 		surface.lab[1] - background.lab[1],
@@ -356,7 +358,7 @@ export function detectGradient(
 	const squaredDistance = difference[0] ** 2 + difference[1] ** 2 + difference[2] ** 2
 	const distance = Math.sqrt(squaredDistance)
 	if (distance < 0.045) {
-		return smooth
+		return smooth ?? { isGradient: false, confidence: 1, coverage: 0, continuity: 0, coherence: 0 }
 	}
 
 	const binCount = 18
@@ -429,10 +431,10 @@ export function detectGradient(
 		Math.min(componentCount, 30) / 100,
 	)
 	const isGradient = coverage >= 0.08 && intermediateRatio >= 0.035 && continuity >= 0.55 && coherence >= 0.22
-	if (smooth.isGradient && !isGradient) return smooth
+	if (smooth?.isGradient && !isGradient) return smooth
 	return {
 		isGradient,
-		confidence: isGradient ? rawConfidence : Math.max(smooth.confidence, 1 - rawConfidence * 0.65),
+		confidence: isGradient ? rawConfidence : Math.max(smooth?.confidence ?? 0, 1 - rawConfidence * 0.65),
 		coverage,
 		continuity,
 		coherence,

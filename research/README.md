@@ -131,10 +131,10 @@ Human pairwise preference is the primary endpoint. Objective diagnostics identif
 - The background model supports several edge-connected colors but still has to choose one role color for all-over or quadrant compositions.
 - SLIC regions are not connectivity-cleaned after assignment; this is acceptable for feature aggregation but not suitable as a segmentation mask API.
 - Accent selection remains less stable than background selection on nearly monochrome and highly textured covers.
-- Gradient detection now has explicit missing/unnecessary feedback tags, but still needs a labeled review round.
+- Pair-specific gradient eligibility has multiple labeled rounds; versions 0.8.4 through 0.8.6 failed independent evaluation, and 0.8.6 also produced a `31.25%` retained flat rate. Narrow threshold fitting is closed without changing canonical 0.17.
 - A single foreground token still constrains multi-background artwork; 0.10 preserves the evidence-gated contrast tiers that represent Disney's blue field without replacing its white typography.
 - The 35 reviewable local cases are a development corpus, not an unbiased benchmark or sufficient basis for statistical superiority claims.
-- The 355 validation artworks broaden development coverage but cannot support final generalization claims after their documented use during iteration.
+- The 355 round-4 source files broaden development coverage but cannot validate version 0.8.5 after informing its recovery rule.
 
 See `research/RESEARCH.md` for the research basis and planned learned-model experiments.
 See `research/ALGORITHM.md` for a complete explanation of the accepted 0.15 algorithm and role constraints.

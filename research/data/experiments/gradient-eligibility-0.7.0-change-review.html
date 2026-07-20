@@ -1,0 +1,956 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gradient decision changes</title>
+<style>
+:root{color-scheme:dark;background:#000;color:#fff;font:15px/1.45 Inter,ui-sans-serif,system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;background:#000;color:#fff}main{width:min(1600px,100%);margin:auto;padding:clamp(18px,4vw,56px)}.masthead{display:grid;grid-template-columns:1fr minmax(300px,560px);gap:30px;align-items:end;border-bottom:1px solid #fff;padding-bottom:28px}.eyebrow{font:750 11px/1 ui-monospace,monospace;letter-spacing:.18em}h1{font:650 clamp(44px,7vw,86px)/.88 Georgia,serif;letter-spacing:-.05em;margin:15px 0 0}.progress{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:center;padding:14px 0;background:#000}meter{width:min(430px,65vw);accent-color:#fff}#progress{font:700 12px/1 ui-monospace,monospace}.grid{display:grid;gap:36px}article{border:1px solid #fff;background:#000}article>header{display:grid;grid-template-columns:auto 1fr auto;gap:14px;padding:11px 14px;border-bottom:1px solid #fff;font:700 12px/1 ui-monospace,monospace}.comparisons{display:grid;grid-template-columns:1fr 1fr}.rendering{display:grid;gap:clamp(18px,3vw,36px);min-width:0;padding:clamp(20px,3vw,42px);background:var(--path);color:var(--foreground)}.rendering:first-child{border-right:1px solid #fff}.preview-main{display:grid;grid-template-columns:minmax(150px,42%) 1fr;gap:clamp(18px,3vw,42px);align-items:center}.artwork{display:block;width:100%;aspect-ratio:1;object-fit:cover;border:0;border-radius:0;outline:0;box-shadow:none}.preview-copy{color:var(--foreground)}.preview-copy small,.preview-copy b,.surface-panel small{display:block;color:var(--accent);font:800 10px/1.2 ui-monospace,monospace;letter-spacing:.15em}.preview-copy strong{display:block;color:var(--foreground);font:650 clamp(28px,4vw,58px)/.9 Georgia,serif;letter-spacing:-.045em;margin:12px 0}.preview-copy p{color:var(--foreground);max-width:30ch}.surface-panel{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;padding:18px 20px;background:var(--surface);color:var(--foreground)}.surface-panel strong{display:block;color:var(--foreground);margin-top:7px}.controls{display:flex;align-items:center;gap:12px}.controls>i{display:block;width:28px;height:28px;background:var(--accent)}.controls>span{display:block;width:85px;height:6px;background:var(--foreground)}.controls>span>b{display:block;width:62%;height:100%;background:var(--accent)}.controls em{color:var(--foreground);font:700 10px/1 ui-monospace,monospace;font-style:normal}.rendering h3{margin:0;padding:10px 0 0;border-top:1px solid var(--foreground);color:var(--foreground);font:700 13px/1 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em}form{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px;border-top:1px solid #fff}fieldset{border:1px solid #fff;margin:0;padding:14px}legend{padding:0 7px;font:750 11px/1 ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase}fieldset label{display:block;margin:10px 0}input{accent-color:#fff}.comment{display:grid;gap:7px}.comment span{font:700 12px/1 ui-monospace,monospace}textarea{width:100%;resize:vertical;background:#000;color:#fff;border:1px solid #fff;padding:10px;font:inherit}textarea::placeholder{color:#fff}.submit-status{align-self:center;font:700 12px/1 ui-monospace,monospace}button{justify-self:end;border:1px solid #fff;background:#fff;color:#000;padding:13px 22px;font:800 12px/1 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}button:disabled{background:#000;color:#fff}@media(max-width:900px){.masthead,.comparisons{grid-template-columns:1fr}.rendering:first-child{border:0;border-bottom:1px solid #fff}form{grid-template-columns:1fr}}@media(max-width:540px){main{padding:14px}.preview-main{grid-template-columns:1fr}.surface-panel{grid-template-columns:1fr}.controls{flex-wrap:wrap}article>header{grid-template-columns:auto 1fr}article>header output{grid-column:2}}
+</style></head><body><main><header class="masthead"><div><div class="eyebrow">GRADIENT ELIGIBILITY / CHANGED CASES</div><h1>Gradient or flat?</h1></div><div><p>Compare the same extracted palette under the previous 0.17 gradient decision and the new flat decision. Judge which treatment better represents the artwork.</p><p>The candidate is veto-only, so no previously flat palettes became gradients.</p></div></header><div class="progress"><meter min="0" max="50" value="0"></meter><output id="progress">0 / 50</output></div><section class="grid"><article data-family-id="gc-0ef559842c83cf4ba0fa">
+	<header><span>01</span><code>gc-0ef559842c83cf4ba0fa</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#c7bbac;--surface:#c7bbac;--foreground:#211e1c;--accent:#f1f1ed;--path:linear-gradient(in oklab 112deg,#c7bbac 0 45%,#c7bbac 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0ef559842c83cf4ba0fa" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#c7bbac;--surface:#c7bbac;--foreground:#211e1c;--accent:#f1f1ed;--path:#c7bbac">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0ef559842c83cf4ba0fa" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-0" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-0" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-0" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b2730000631f4a1f3f8a3286f79d">
+	<header><span>02</span><code>holdout-ab67616d0000b2730000631f4a1f3f8a3286f79d</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#050505;--surface:#125f76;--foreground:#d0dcdf;--accent:#488da1;--path:linear-gradient(in oklab 112deg,#050505 0 45%,#125f76 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b2730000631f4a1f3f8a3286f79d" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#050505;--surface:#125f76;--foreground:#d0dcdf;--accent:#488da1;--path:#050505">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b2730000631f4a1f3f8a3286f79d" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-1" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-1" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-1" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-5c87815af95150c28cf6">
+	<header><span>03</span><code>gc-5c87815af95150c28cf6</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#702d2b;--surface:#74393a;--foreground:#faf8ee;--accent:#0c181d;--path:linear-gradient(in oklab 112deg,#702d2b 0 45%,#74393a 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5c87815af95150c28cf6" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#702d2b;--surface:#74393a;--foreground:#faf8ee;--accent:#0c181d;--path:#702d2b">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5c87815af95150c28cf6" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-2" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-2" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-2" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-5c4932a65d37817645c6">
+	<header><span>04</span><code>gc-5c4932a65d37817645c6</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#f9f9f9;--surface:#dbdbdd;--foreground:#010101;--accent:#2d2e30;--path:linear-gradient(in oklab 112deg,#f9f9f9 0 45%,#dbdbdd 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5c4932a65d37817645c6" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#f9f9f9;--surface:#dbdbdd;--foreground:#010101;--accent:#2d2e30;--path:#f9f9f9">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5c4932a65d37817645c6" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-3" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-3" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-3" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-9177c6e82a046871739b">
+	<header><span>05</span><code>gc-9177c6e82a046871739b</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#111111;--surface:#1e1e1e;--foreground:#dbdbdb;--accent:#8c8c8c;--path:linear-gradient(in oklab 112deg,#111111 0 45%,#1e1e1e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-9177c6e82a046871739b" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#111111;--surface:#1e1e1e;--foreground:#dbdbdb;--accent:#8c8c8c;--path:#111111">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-9177c6e82a046871739b" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-4" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-4" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-4" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-a623c624b1aaa281d0c2">
+	<header><span>06</span><code>gc-a623c624b1aaa281d0c2</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#dcdddc;--foreground:#0d0200;--accent:#db6a2d;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#dcdddc 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-a623c624b1aaa281d0c2" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#dcdddc;--foreground:#0d0200;--accent:#db6a2d;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-a623c624b1aaa281d0c2" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-5" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-5" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-5" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-7897da56772587093445">
+	<header><span>07</span><code>gc-7897da56772587093445</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#03080c;--surface:#575c7b;--foreground:#f1e9ee;--accent:#c5494d;--path:linear-gradient(in oklab 112deg,#03080c 0 45%,#575c7b 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-7897da56772587093445" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#03080c;--surface:#575c7b;--foreground:#f1e9ee;--accent:#c5494d;--path:#03080c">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-7897da56772587093445" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-6" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-6" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-6" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-8687e6984d49c1b32f78">
+	<header><span>08</span><code>gc-8687e6984d49c1b32f78</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#ccd2d5;--foreground:#000000;--accent:#9aa1a2;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#ccd2d5 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-8687e6984d49c1b32f78" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#ccd2d5;--foreground:#000000;--accent:#9aa1a2;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-8687e6984d49c1b32f78" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-7" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-7" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-7" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-c07811015acd7daef60d">
+	<header><span>09</span><code>gc-c07811015acd7daef60d</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#cec4c1;--foreground:#000000;--accent:#aa7558;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#cec4c1 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-c07811015acd7daef60d" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#cec4c1;--foreground:#000000;--accent:#aa7558;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-c07811015acd7daef60d" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-8" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-8" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-8" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-150207433a6cd7dbb1f0">
+	<header><span>10</span><code>gc-150207433a6cd7dbb1f0</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#5b3c34;--surface:#5b3c34;--foreground:#f4f0f1;--accent:#040102;--path:linear-gradient(in oklab 112deg,#5b3c34 0 45%,#5b3c34 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-150207433a6cd7dbb1f0" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#5b3c34;--surface:#5b3c34;--foreground:#f4f0f1;--accent:#040102;--path:#5b3c34">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-150207433a6cd7dbb1f0" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-9" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-9" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-9" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-1a8b573a2977663bd6f4">
+	<header><span>11</span><code>gc-1a8b573a2977663bd6f4</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#050b08;--surface:#09120e;--foreground:#f1f1f2;--accent:#898e8b;--path:linear-gradient(in oklab 112deg,#050b08 0 45%,#09120e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1a8b573a2977663bd6f4" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#050b08;--surface:#09120e;--foreground:#f1f1f2;--accent:#898e8b;--path:#050b08">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1a8b573a2977663bd6f4" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-10" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-10" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-10" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-0962f913b5ce4a0b971c">
+	<header><span>12</span><code>gc-0962f913b5ce4a0b971c</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#18204e;--surface:#a82a26;--foreground:#e0e0de;--accent:#f0c42d;--path:linear-gradient(in oklab 112deg,#18204e 0 45%,#a82a26 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0962f913b5ce4a0b971c" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#18204e;--surface:#a82a26;--foreground:#e0e0de;--accent:#f0c42d;--path:#18204e">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0962f913b5ce4a0b971c" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-11" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-11" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-11" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-09cc580700e34f496be1">
+	<header><span>13</span><code>gc-09cc580700e34f496be1</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#d9dadd;--foreground:#000000;--accent:#2c2c34;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#d9dadd 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-09cc580700e34f496be1" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#d9dadd;--foreground:#000000;--accent:#2c2c34;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-09cc580700e34f496be1" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-12" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-12" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-12" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-0c83af85288c21e806d7">
+	<header><span>14</span><code>gc-0c83af85288c21e806d7</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#fffffc;--surface:#d1d5c5;--foreground:#000000;--accent:#b0481b;--path:linear-gradient(in oklab 112deg,#fffffc 0 45%,#d1d5c5 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0c83af85288c21e806d7" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#fffffc;--surface:#d1d5c5;--foreground:#000000;--accent:#b0481b;--path:#fffffc">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-0c83af85288c21e806d7" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-13" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-13" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-13" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-4efe4946b2ed45dd8843">
+	<header><span>15</span><code>gc-4efe4946b2ed45dd8843</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#030406;--surface:#262525;--foreground:#ebebea;--accent:#606060;--path:linear-gradient(in oklab 112deg,#030406 0 45%,#262525 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-4efe4946b2ed45dd8843" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#030406;--surface:#262525;--foreground:#ebebea;--accent:#606060;--path:#030406">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-4efe4946b2ed45dd8843" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-14" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-14" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-14" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-5d89924bfad41d0a9143">
+	<header><span>16</span><code>gc-5d89924bfad41d0a9143</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#efd5d2;--foreground:#5d2b21;--accent:#b96a59;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#efd5d2 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5d89924bfad41d0a9143" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#efd5d2;--foreground:#5d2b21;--accent:#b96a59;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-5d89924bfad41d0a9143" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-15" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-15" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-15" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-35dbfaa59c24f7520864">
+	<header><span>17</span><code>gc-35dbfaa59c24f7520864</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#92322c;--surface:#a13729;--foreground:#ede4dc;--accent:#eede7a;--path:linear-gradient(in oklab 112deg,#92322c 0 45%,#a13729 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-35dbfaa59c24f7520864" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#92322c;--surface:#a13729;--foreground:#ede4dc;--accent:#eede7a;--path:#92322c">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-35dbfaa59c24f7520864" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-16" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-16" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-16" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-e81fd9a9e48d8b9d06aa">
+	<header><span>18</span><code>gc-e81fd9a9e48d8b9d06aa</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#3b89c8;--surface:#85c5ec;--foreground:#000000;--accent:#e3843b;--path:linear-gradient(in oklab 112deg,#3b89c8 0 45%,#85c5ec 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e81fd9a9e48d8b9d06aa" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#3b89c8;--surface:#85c5ec;--foreground:#000000;--accent:#e3843b;--path:#3b89c8">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e81fd9a9e48d8b9d06aa" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-17" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-17" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-17" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-271e455bdcc7848fa0ce">
+	<header><span>19</span><code>gc-271e455bdcc7848fa0ce</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#0d1115;--surface:#69423a;--foreground:#ffffff;--accent:#cd596d;--path:linear-gradient(in oklab 112deg,#0d1115 0 45%,#69423a 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-271e455bdcc7848fa0ce" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#0d1115;--surface:#69423a;--foreground:#ffffff;--accent:#cd596d;--path:#0d1115">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-271e455bdcc7848fa0ce" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-18" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-18" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-18" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-8c4d24639a8b544846a9">
+	<header><span>20</span><code>gc-8c4d24639a8b544846a9</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#312d6c;--surface:#a13526;--foreground:#fefaff;--accent:#000001;--path:linear-gradient(in oklab 112deg,#312d6c 0 45%,#a13526 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-8c4d24639a8b544846a9" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#312d6c;--surface:#a13526;--foreground:#fefaff;--accent:#000001;--path:#312d6c">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-8c4d24639a8b544846a9" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-19" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-19" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-19" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-e820b3df344c32557ab2">
+	<header><span>21</span><code>gc-e820b3df344c32557ab2</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#181818;--surface:#252525;--foreground:#d1d1d1;--accent:#676767;--path:linear-gradient(in oklab 112deg,#181818 0 45%,#252525 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e820b3df344c32557ab2" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#181818;--surface:#252525;--foreground:#d1d1d1;--accent:#676767;--path:#181818">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e820b3df344c32557ab2" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-20" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-20" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-20" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b27300001a23d0861b8ae261f7e0">
+	<header><span>22</span><code>holdout-ab67616d0000b27300001a23d0861b8ae261f7e0</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#777987;--surface:#37a5c0;--foreground:#020000;--accent:#fff8c1;--path:linear-gradient(in oklab 112deg,#777987 0 45%,#37a5c0 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300001a23d0861b8ae261f7e0" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#777987;--surface:#37a5c0;--foreground:#020000;--accent:#fff8c1;--path:#777987">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300001a23d0861b8ae261f7e0" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-21" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-21" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-21" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-6369505abecd3b1f9a24">
+	<header><span>23</span><code>gc-6369505abecd3b1f9a24</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#010011;--surface:#00011e;--foreground:#ddb580;--accent:#846c57;--path:linear-gradient(in oklab 112deg,#010011 0 45%,#00011e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-6369505abecd3b1f9a24" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#010011;--surface:#00011e;--foreground:#ddb580;--accent:#846c57;--path:#010011">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-6369505abecd3b1f9a24" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-22" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-22" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-22" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-18e3170513f3bb41bf6a">
+	<header><span>24</span><code>gc-18e3170513f3bb41bf6a</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#85b8f1;--surface:#98a490;--foreground:#0a080e;--accent:#7f3528;--path:linear-gradient(in oklab 112deg,#85b8f1 0 45%,#98a490 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-18e3170513f3bb41bf6a" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#85b8f1;--surface:#98a490;--foreground:#0a080e;--accent:#7f3528;--path:#85b8f1">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-18e3170513f3bb41bf6a" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-23" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-23" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-23" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-22925faa447024d48b59">
+	<header><span>25</span><code>gc-22925faa447024d48b59</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#d6a128;--surface:#daab29;--foreground:#3f312b;--accent:#e3e7cd;--path:linear-gradient(in oklab 112deg,#d6a128 0 45%,#daab29 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-22925faa447024d48b59" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#d6a128;--surface:#daab29;--foreground:#3f312b;--accent:#e3e7cd;--path:#d6a128">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-22925faa447024d48b59" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-24" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-24" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-24" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b27300001a3ee120f20345896b12">
+	<header><span>26</span><code>holdout-ab67616d0000b27300001a3ee120f20345896b12</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#4b7cbb;--surface:#4b7cbb;--foreground:#000000;--accent:#d8e8f7;--path:linear-gradient(in oklab 112deg,#4b7cbb 0 45%,#4b7cbb 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300001a3ee120f20345896b12" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#4b7cbb;--surface:#4b7cbb;--foreground:#000000;--accent:#d8e8f7;--path:#4b7cbb">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300001a3ee120f20345896b12" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-25" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-25" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-25" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-1a6b3c2ddc2c0258f96d">
+	<header><span>27</span><code>gc-1a6b3c2ddc2c0258f96d</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#03000b;--surface:#070110;--foreground:#eff0ea;--accent:#4d3636;--path:linear-gradient(in oklab 112deg,#03000b 0 45%,#070110 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1a6b3c2ddc2c0258f96d" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#03000b;--surface:#070110;--foreground:#eff0ea;--accent:#4d3636;--path:#03000b">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1a6b3c2ddc2c0258f96d" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-26" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-26" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-26" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-59f6be8d62cfa727ee07">
+	<header><span>28</span><code>gc-59f6be8d62cfa727ee07</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#030306;--surface:#34258e;--foreground:#faebf9;--accent:#d5617d;--path:linear-gradient(in oklab 112deg,#030306 0 45%,#34258e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-59f6be8d62cfa727ee07" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#030306;--surface:#34258e;--foreground:#faebf9;--accent:#d5617d;--path:#030306">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-59f6be8d62cfa727ee07" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-27" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-27" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-27" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b27300006ca7c0530cf8a60ceb92">
+	<header><span>29</span><code>holdout-ab67616d0000b27300006ca7c0530cf8a60ceb92</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#deeefe;--surface:#bdbff9;--foreground:#000000;--accent:#a89cef;--path:linear-gradient(in oklab 112deg,#deeefe 0 45%,#bdbff9 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300006ca7c0530cf8a60ceb92" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#deeefe;--surface:#bdbff9;--foreground:#000000;--accent:#a89cef;--path:#deeefe">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300006ca7c0530cf8a60ceb92" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-28" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-28" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-28" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-96759e1930f1f4c142be">
+	<header><span>30</span><code>gc-96759e1930f1f4c142be</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#111111;--surface:#1e1e1e;--foreground:#d0d0d0;--accent:#7a7a7a;--path:linear-gradient(in oklab 112deg,#111111 0 45%,#1e1e1e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-96759e1930f1f4c142be" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#111111;--surface:#1e1e1e;--foreground:#d0d0d0;--accent:#7a7a7a;--path:#111111">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-96759e1930f1f4c142be" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-29" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-29" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-29" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-30090eb3b8ca12c893c0">
+	<header><span>31</span><code>gc-30090eb3b8ca12c893c0</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#070304;--surface:#6c4e3c;--foreground:#f8edde;--accent:#d7cd05;--path:linear-gradient(in oklab 112deg,#070304 0 45%,#6c4e3c 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-30090eb3b8ca12c893c0" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#070304;--surface:#6c4e3c;--foreground:#f8edde;--accent:#d7cd05;--path:#070304">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-30090eb3b8ca12c893c0" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-30" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-30" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-30" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-38488dab44660405e82f">
+	<header><span>32</span><code>gc-38488dab44660405e82f</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#fffefe;--surface:#d0d3d6;--foreground:#000000;--accent:#960506;--path:linear-gradient(in oklab 112deg,#fffefe 0 45%,#d0d3d6 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-38488dab44660405e82f" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#fffefe;--surface:#d0d3d6;--foreground:#000000;--accent:#960506;--path:#fffefe">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-38488dab44660405e82f" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-31" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-31" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-31" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-01fb7ae1535fee775cef">
+	<header><span>33</span><code>gc-01fb7ae1535fee775cef</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#fffefe;--surface:#e6e6e3;--foreground:#000000;--accent:#d5cc32;--path:linear-gradient(in oklab 112deg,#fffefe 0 45%,#e6e6e3 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-01fb7ae1535fee775cef" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#fffefe;--surface:#e6e6e3;--foreground:#000000;--accent:#d5cc32;--path:#fffefe">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-01fb7ae1535fee775cef" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-32" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-32" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-32" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-4be72e433b3ee72a7df9">
+	<header><span>34</span><code>gc-4be72e433b3ee72a7df9</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#12120e;--surface:#6d4d44;--foreground:#eff0ef;--accent:#b73031;--path:linear-gradient(in oklab 112deg,#12120e 0 45%,#6d4d44 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-4be72e433b3ee72a7df9" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#12120e;--surface:#6d4d44;--foreground:#eff0ef;--accent:#b73031;--path:#12120e">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-4be72e433b3ee72a7df9" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-33" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-33" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-33" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-cbb8a3a3b5f1582d3c2d">
+	<header><span>35</span><code>gc-cbb8a3a3b5f1582d3c2d</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#000000;--surface:#423e22;--foreground:#f4eee4;--accent:#857a43;--path:linear-gradient(in oklab 112deg,#000000 0 45%,#423e22 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-cbb8a3a3b5f1582d3c2d" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#000000;--surface:#423e22;--foreground:#f4eee4;--accent:#857a43;--path:#000000">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-cbb8a3a3b5f1582d3c2d" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-34" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-34" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-34" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-966cff16f5be66016967">
+	<header><span>36</span><code>gc-966cff16f5be66016967</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#171717;--surface:#000000;--foreground:#efefef;--accent:#a0a0a0;--path:linear-gradient(in oklab 112deg,#171717 0 45%,#000000 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-966cff16f5be66016967" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#171717;--surface:#000000;--foreground:#efefef;--accent:#a0a0a0;--path:#171717">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-966cff16f5be66016967" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-35" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-35" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-35" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-a7299da16a5c776df2c6">
+	<header><span>37</span><code>gc-a7299da16a5c776df2c6</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#ebe4e2;--foreground:#1d1413;--accent:#a94f63;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#ebe4e2 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-a7299da16a5c776df2c6" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#ebe4e2;--foreground:#1d1413;--accent:#a94f63;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-a7299da16a5c776df2c6" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-36" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-36" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-36" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-514e9ffec779bb95c0a1">
+	<header><span>38</span><code>gc-514e9ffec779bb95c0a1</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#d7d0c8;--foreground:#2c2e2b;--accent:#eca15a;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#d7d0c8 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-514e9ffec779bb95c0a1" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#d7d0c8;--foreground:#2c2e2b;--accent:#eca15a;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-514e9ffec779bb95c0a1" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-37" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-37" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-37" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b27300003732606221eb423e62d8">
+	<header><span>39</span><code>holdout-ab67616d0000b27300003732606221eb423e62d8</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#080a0a;--surface:#2b3479;--foreground:#babbbb;--accent:#af1c08;--path:linear-gradient(in oklab 112deg,#080a0a 0 45%,#2b3479 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300003732606221eb423e62d8" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#080a0a;--surface:#2b3479;--foreground:#babbbb;--accent:#af1c08;--path:#080a0a">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b27300003732606221eb423e62d8" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-38" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-38" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-38" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d00001e020000db2029bf51eb7804821f">
+	<header><span>40</span><code>holdout-ab67616d00001e020000db2029bf51eb7804821f</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#4d391e;--surface:#042036;--foreground:#ffffff;--accent:#100805;--path:linear-gradient(in oklab 112deg,#4d391e 0 45%,#042036 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d00001e020000db2029bf51eb7804821f" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#4d391e;--surface:#042036;--foreground:#ffffff;--accent:#100805;--path:#4d391e">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d00001e020000db2029bf51eb7804821f" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-39" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-39" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-39" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-b99827ae221843eb0578">
+	<header><span>41</span><code>gc-b99827ae221843eb0578</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#5a5457;--surface:#b9462e;--foreground:#ffffff;--accent:#130f0c;--path:linear-gradient(in oklab 112deg,#5a5457 0 45%,#b9462e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-b99827ae221843eb0578" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#5a5457;--surface:#b9462e;--foreground:#ffffff;--accent:#130f0c;--path:#5a5457">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-b99827ae221843eb0578" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-40" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-40" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-40" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b273000066a9d9ea3dad3a1cb9d5">
+	<header><span>42</span><code>holdout-ab67616d0000b273000066a9d9ea3dad3a1cb9d5</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#671f9f;--surface:#671f9f;--foreground:#eab2ed;--accent:#da3bcf;--path:linear-gradient(in oklab 112deg,#671f9f 0 45%,#671f9f 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b273000066a9d9ea3dad3a1cb9d5" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#671f9f;--surface:#671f9f;--foreground:#eab2ed;--accent:#da3bcf;--path:#671f9f">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b273000066a9d9ea3dad3a1cb9d5" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-41" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-41" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-41" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-e66f4724c8aa829ebda1">
+	<header><span>43</span><code>gc-e66f4724c8aa829ebda1</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#544b4a;--surface:#2e221e;--foreground:#fedbae;--accent:#c03233;--path:linear-gradient(in oklab 112deg,#544b4a 0 45%,#2e221e 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e66f4724c8aa829ebda1" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#544b4a;--surface:#2e221e;--foreground:#fedbae;--accent:#c03233;--path:#544b4a">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-e66f4724c8aa829ebda1" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-42" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-42" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-42" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-478a901992776512e6a2">
+	<header><span>44</span><code>gc-478a901992776512e6a2</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#edc220;--surface:#d29b54;--foreground:#0a0a07;--accent:#fcfcf7;--path:linear-gradient(in oklab 112deg,#edc220 0 45%,#d29b54 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-478a901992776512e6a2" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#edc220;--surface:#d29b54;--foreground:#0a0a07;--accent:#fcfcf7;--path:#edc220">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-478a901992776512e6a2" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-43" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-43" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-43" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-1be7fc4181565d0d02c7">
+	<header><span>45</span><code>gc-1be7fc4181565d0d02c7</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#232723;--surface:#232723;--foreground:#fdfcec;--accent:#5889ed;--path:linear-gradient(in oklab 112deg,#232723 0 45%,#232723 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1be7fc4181565d0d02c7" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#232723;--surface:#232723;--foreground:#fdfcec;--accent:#5889ed;--path:#232723">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-1be7fc4181565d0d02c7" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-44" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-44" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-44" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-815b854e5f768e848241">
+	<header><span>46</span><code>gc-815b854e5f768e848241</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#c5e1ea;--foreground:#000001;--accent:#14263e;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#c5e1ea 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-815b854e5f768e848241" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#c5e1ea;--foreground:#000001;--accent:#14263e;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-815b854e5f768e848241" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-45" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-45" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-45" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="holdout-ab67616d0000b2730000ee282de52410006b6ff3">
+	<header><span>47</span><code>holdout-ab67616d0000b2730000ee282de52410006b6ff3</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#0f0e0e;--surface:#920e0f;--foreground:#f2f3ef;--accent:#e7d335;--path:linear-gradient(in oklab 112deg,#0f0e0e 0 45%,#920e0f 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b2730000ee282de52410006b6ff3" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#0f0e0e;--surface:#920e0f;--foreground:#f2f3ef;--accent:#e7d335;--path:#0f0e0e">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/holdout-ab67616d0000b2730000ee282de52410006b6ff3" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-46" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-46" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-46" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-71ac0e35b83fd14ba7d5">
+	<header><span>48</span><code>gc-71ac0e35b83fd14ba7d5</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#0c010f;--surface:#5c1c1b;--foreground:#b89a7e;--accent:#ab2218;--path:linear-gradient(in oklab 112deg,#0c010f 0 45%,#5c1c1b 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-71ac0e35b83fd14ba7d5" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#0c010f;--surface:#5c1c1b;--foreground:#b89a7e;--accent:#ab2218;--path:#0c010f">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-71ac0e35b83fd14ba7d5" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-47" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-47" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-47" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-83a840ce4f86a4b7647e">
+	<header><span>49</span><code>gc-83a840ce4f86a4b7647e</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#d9dbd8;--foreground:#101014;--accent:#0ddcb4;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#d9dbd8 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-83a840ce4f86a4b7647e" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#d9dbd8;--foreground:#101014;--accent:#0ddcb4;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-83a840ce4f86a4b7647e" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-48" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-48" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-48" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article>
+<article data-family-id="gc-fcdba3c69f6d07af3bfa">
+	<header><span>50</span><code>gc-fcdba3c69f6d07af3bfa</code><output>Not submitted</output></header>
+	<div class="comparisons"><section class="rendering" style="--background:#ffffff;--surface:#e6e6e6;--foreground:#000000;--accent:#d9da4e;--path:linear-gradient(in oklab 112deg,#ffffff 0 45%,#e6e6e6 95%)">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-fcdba3c69f6d07af3bfa" alt="Artwork in Previous: gradient preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>Previous: gradient</h3>
+	</section><section class="rendering" style="--background:#ffffff;--surface:#e6e6e6;--foreground:#000000;--accent:#d9da4e;--path:#ffffff">
+		<div class="preview-main"><img class="artwork" loading="lazy" src="/artwork/gc-fcdba3c69f6d07af3bfa" alt="Artwork in New: flat preview"><div class="preview-copy"><small>NOW PLAYING</small><strong>Signal / Field</strong><p>Background and surface colors extracted from this artwork.</p><b>Selected accent</b></div></div>
+		<div class="surface-panel"><div><small>UP NEXT</small><strong>Continuous color</strong></div><div class="controls"><i></i><span><b></b></span><em>02:14</em></div></div>
+		<h3>New: flat</h3>
+	</section></div>
+	<form novalidate><fieldset><legend>Which decision is correct?</legend>
+		<label><input type="radio" name="decision-49" value="should-be-gradient"> Should be gradient</label>
+		<label><input type="radio" name="decision-49" value="should-not-be-gradient"> Should not be gradient</label>
+		<label><input type="radio" name="decision-49" value="either-way"> Either way</label>
+	</fieldset>
+	<label class="comment"><span>Comment <small>(optional)</small></span><textarea name="comment" maxlength="2000" rows="4" placeholder="Record any artwork-specific observation."></textarea></label>
+	<output class="submit-status" aria-live="polite"></output><button type="submit">Save decision</button></form>
+</article></section></main>
+<script>
+const decisions=new Set(["should-be-gradient","should-not-be-gradient","either-way"]);function setStatus(article,message){article.querySelector("header output").textContent=message;article.querySelector(".submit-status").textContent=message}function updateProgress(){const count=document.querySelectorAll('article[data-complete="true"]').length;document.querySelector("meter").value=count;document.querySelector("#progress").textContent=count+" / 50"}function apply(article,entry){for(const input of article.querySelectorAll('input[type="radio"]'))input.checked=input.value===entry.decision;article.querySelector("textarea").value=entry.comment;article.dataset.complete="true";setStatus(article,"Saved")}async function load(){try{const response=await fetch("/api/feedback",{cache:"no-store"});if(!response.ok)throw new Error(await response.text());const store=await response.json();const byFamily=new Map(store.entries.map(entry=>[entry.familyId,entry]));for(const article of document.querySelectorAll("article[data-family-id]")){const entry=byFamily.get(article.dataset.familyId);if(entry)apply(article,entry)}updateProgress()}catch(error){document.querySelector("#progress").textContent="Could not load decisions";console.error(error)}}document.addEventListener("change",event=>{const article=event.target.closest("article[data-family-id]");if(!article)return;article.dataset.complete="false";setStatus(article,"Not submitted");updateProgress()});document.addEventListener("submit",async event=>{event.preventDefault();const article=event.target.closest("article[data-family-id]");const decision=article.querySelector('input[name^="decision-"]:checked')?.value;const comment=article.querySelector("textarea").value;if(!decisions.has(decision)){setStatus(article,"Choose a decision");return}const button=article.querySelector("button");button.disabled=true;setStatus(article,"Saving...");try{const response=await fetch("/api/feedback",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({familyId:article.dataset.familyId,decision,comment})});if(!response.ok)throw new Error(await response.text());article.dataset.complete="true";setStatus(article,"Saved");updateProgress()}catch(error){setStatus(article,"Save failed: "+error.message)}finally{button.disabled=false}});load();
+</script></body></html>

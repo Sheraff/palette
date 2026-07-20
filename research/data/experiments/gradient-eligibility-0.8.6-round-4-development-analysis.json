@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-sealed-development-reanalysis-0.2.0",
+  "generatedAt": "2026-07-20T11:10:08.788Z",
+  "manifestId": "ff2f7bf25e36b6e702396254e80adc48acb4cd61c8b7c408b40e5b11dec4194c",
+  "sourceCandidateVersion": "gradient-eligibility-0.8.4-dev",
+  "candidateVersion": "gradient-eligibility-0.8.6-dev",
+  "evidenceVersion": "gradient-eligibility-evidence-0.2.0-dev",
+  "thresholds": {
+    "minimumEndpointDistance": 0.025,
+    "minimumConnectedFieldContinuity": 0.7857142857142857,
+    "minimumConnectedFieldShare": 0.05,
+    "minimumOrderedPathContinuity": 0.9285714285714286,
+    "minimumIntermediatePathShare": 0.3,
+    "minimumColorPathDirectionalOrdering": 0.15,
+    "maximumFlatBackgroundIsolatedSurfaceRisk": 0.4,
+    "maximumEndpointDominatedIntermediatePathShare": 0.4,
+    "maximumFlatRiskDirectionalOrdering": 0.2,
+    "minimumBroadIntermediateCoverage": 0.2,
+    "maximumBroadFieldSurfaceFlatness": 0.2,
+    "minimumNonlinearPathContinuity": 1,
+    "minimumNonlinearIntermediatePathShare": 0.6,
+    "minimumNonlinearPairCoherence": 0.5,
+    "maximumNonlinearConnectedFieldCoverage": 0,
+    "maximumSparseIntermediateCoverage": 0.08,
+    "minimumBorderBackgroundCoverage": 0.03,
+    "minimumSparseFieldBackgroundCoverage": 0.2,
+    "minimumBroadTenBinContinuity": 0.7142857142857143,
+    "minimumBroadTenBinConnectedCoverage": 0.7,
+    "minimumBroadTenBinConnectedShare": 0.9,
+    "minimumBroadTenBinIntermediateCoverage": 0.2,
+    "minimumBroadTenBinDirectionalOrdering": 0.5,
+    "maximumBroadTenBinAbruptTransitionShare": 0.2,
+    "minimumSparseOrderedEndpointDistance": 0.2,
+    "minimumSparseOrderedPathContinuity": 1,
+    "minimumSparseOrderedDirectionalOrdering": 0.85,
+    "maximumUnsupportedEndpointDistance": 0.15,
+    "maximumUnsupportedColorPathCoverage": 0.11,
+    "maximumUnsupportedPairCoherence": 0.3,
+    "minimumFragmentedConnectedCoverage": 0.09,
+    "maximumFragmentedConnectedShare": 0.2,
+    "minimumDualBorderCoverage": 0.27,
+    "maximumDualBorderIntermediatePathShare": 0.17,
+    "maximumSparseConnectedIntermediateCoverage": 0.04,
+    "minimumSparseConnectedCoverage": 0.05,
+    "maximumSparseConnectedBackgroundCoherence": 0.3,
+    "minimumCoherentFieldConnectedShare": 0.993,
+    "minimumCoherentFieldPairCoherence": 0.55,
+    "maximumCoherentFieldSurfaceCoherence": 0.3
+  },
+  "promotionEligible": false,
+  "developmentFitOnly": true,
+  "warning": "This candidate was changed after observing the sealed gradient-eligibility-0.8.4-dev result. The corpus is development evidence for this candidate and cannot validate promotion.",
+  "provenance": {
+    "sealedEvaluationSha256": "1e158f7511a78fffad754999e70bf7d4a36840800779db09fc0f68865272fd8c",
+    "sealedAnalysisSha256": "e56ba3a5bc8923cca05e51883a2ba069306b2b78b3c1873667600bc571db2856",
+    "candidateImplementationSha256": "c9c4a46c1d65f88d058bd90769356c3f96ccd013cddd3b42ded7cc3be3e650e6"
+  },
+  "summary": {
+    "baselineGradients": 145,
+    "candidateEligible": 133,
+    "candidateRejected": 12,
+    "reviewJudgments": {
+      "should-not-be-gradient": 6,
+      "should-be-gradient": 2,
+      "either-way": 2,
+      "selected-colors-not-identifiable": 1,
+      "no-visible-difference": 3
+    },
+    "decisive": 8,
+    "truePositive": 2,
+    "trueNegative": 6,
+    "falsePositive": 0,
+    "falseNegative": 0
+  },
+  "entries": [
+    {
+      "familyId": "gv-c0a876913f4046aabdba",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-d592d349e55cc27e9f55",
+      "judgment": "should-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gv-c25c63fe37d0d901c40d",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    },
+    {
+      "familyId": "gv-cd9bb1fdd2e581231484",
+      "judgment": "selected-colors-not-identifiable",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "unsupported-disconnected-color-path"
+      }
+    },
+    {
+      "familyId": "gv-20a8426e8cb1d603093e",
+      "judgment": "no-visible-difference",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-1b88a157fd81cde8304d",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-02a3584b861813401072",
+      "judgment": "no-visible-difference",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-e36ea5d9be68ae4de0cc",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-f8c0ea9d350b67bc0f67",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-bea1bd989fffb8d5d9c9",
+      "judgment": "should-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": true,
+        "reason": "eligible"
+      }
+    },
+    {
+      "familyId": "gv-29a48aff7ae0fbfd52cc",
+      "judgment": "either-way",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-c6fe380945aec2901ef7",
+      "judgment": "no-visible-difference",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-93989bb2fa62ff054c61",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-spatial-continuity"
+      }
+    },
+    {
+      "familyId": "gv-730e9722d8dd78defe5a",
+      "judgment": "should-not-be-gradient",
+      "decision": {
+        "candidateVersion": "gradient-eligibility-0.8.6-dev",
+        "eligible": false,
+        "reason": "insufficient-progressive-field-support"
+      }
+    }
+  ]
+}

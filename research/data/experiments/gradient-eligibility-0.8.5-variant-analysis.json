@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "analysisVersion": "gradient-eligibility-native-variant-analysis-0.1.0",
+  "generatedAt": "2026-07-20T10:20:16.485Z",
+  "candidateVersion": "gradient-eligibility-0.8.5-dev",
+  "developmentSha256": "82190fef1aef68ad569832887d4e97bfd55356f087066b5225c570ccd19ca647",
+  "variantsSha256": "e17fbaea58a435696a8493d3841ed5dffbf97842923e36f1f8a7dcfa8421d17e",
+  "summary": {
+    "comparableVariants": 659,
+    "canonicalGradientStableVariants": 637,
+    "candidateStableVariants": 630,
+    "candidateUnstableVariants": 7,
+    "familiesWithCanonicalGradientStableVariants": 337,
+    "candidateStableFamilies": 332
+  },
+  "unstable": [
+    {
+      "familyId": "gc-03b59dfa7729a6b38de0",
+      "file": "music-artworks/1/4/5/145c5fefc171baec5dacd7a996a25f28_483x483.avif",
+      "baselineGradient": true,
+      "anchorEligible": true,
+      "variantEligible": false,
+      "anchorReason": "eligible",
+      "variantReason": "insufficient-progressive-field-support",
+      "stable": false
+    },
+    {
+      "familyId": "gc-75ff70ba4519e19acd51",
+      "file": "music-artworks/4/6/1/461e0415ea5cc123b5e966b9cffa6f53_333x333.avif",
+      "baselineGradient": true,
+      "anchorEligible": true,
+      "variantEligible": false,
+      "anchorReason": "eligible",
+      "variantReason": "insufficient-spatial-continuity",
+      "stable": false
+    },
+    {
+      "familyId": "gc-96e0b3baa7c5661f632e",
+      "file": "music-artworks/0/c/8/0c8b883f786a065793c6128a06d64b20_483x483.avif",
+      "baselineGradient": true,
+      "anchorEligible": false,
+      "variantEligible": true,
+      "anchorReason": "insufficient-spatial-continuity",
+      "variantReason": "eligible",
+      "stable": false
+    },
+    {
+      "familyId": "gc-f7f5deb62024ad3d49db",
+      "file": "music-artworks/a/0/6/a06bb0595b6913f84ec47f2a6d677833_332x332.avif",
+      "baselineGradient": true,
+      "anchorEligible": true,
+      "variantEligible": false,
+      "anchorReason": "eligible",
+      "variantReason": "flat-background-isolated-surface",
+      "stable": false
+    },
+    {
+      "familyId": "gc-f7f5deb62024ad3d49db",
+      "file": "music-artworks/a/0/6/a06bb0595b6913f84ec47f2a6d677833_333x333.avif",
+      "baselineGradient": true,
+      "anchorEligible": true,
+      "variantEligible": false,
+      "anchorReason": "eligible",
+      "variantReason": "flat-background-isolated-surface",
+      "stable": false
+    },
+    {
+      "familyId": "gc-fd719894e11aa09fe37f",
+      "file": "music-artworks/6/5/2/652b3d490acfee2ac788175c2b0a5adf_253x253.avif",
+      "baselineGradient": true,
+      "anchorEligible": false,
+      "variantEligible": true,
+      "anchorReason": "insufficient-progressive-field-support",
+      "variantReason": "eligible",
+      "stable": false
+    },
+    {
+      "familyId": "gc-fd719894e11aa09fe37f",
+      "file": "music-artworks/6/5/2/652b3d490acfee2ac788175c2b0a5adf_333x333.avif",
+      "baselineGradient": true,
+      "anchorEligible": false,
+      "variantEligible": true,
+      "anchorReason": "insufficient-progressive-field-support",
+      "variantReason": "eligible",
+      "stable": false
+    }
+  ]
+}
