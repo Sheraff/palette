@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v4",
+  "manifestId": "177ce08df7a470804a78d95dcfff918bfc6e949529e9ebbff587cdffbdde8bda",
+  "entries": [
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T19:27:26.763Z"
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "Option B is the best, but both D and B have the issue that to match the artwork, the background should be the black one and the surface the blue",
+      "submittedAt": "2026-07-26T19:29:31.566Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "validOptionIds": [
+        "A",
+        "B"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T19:29:58.061Z"
+    },
+    {
+      "caseId": "development-28",
+      "sourceSha256": "a6ab0f61e3614c297af70c9b484a62fc31b6ee1d12eda1cc2369fc6a57fb17c8",
+      "validOptionIds": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T19:30:16.425Z"
+    }
+  ]
+}

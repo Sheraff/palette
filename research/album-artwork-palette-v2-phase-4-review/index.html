@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Blinded complete-treatment review</title>
+	<link rel="stylesheet" href="/styles.css">
+	<script type="module" src="/app.js"></script>
+</head>
+<body>
+	<header class="masthead">
+		<div>
+			<p class="eyebrow">Blinded complete-treatment review</p>
+			<h1>Two treatments.<br>One artwork.</h1>
+		</div>
+		<div class="instructions">
+			<p>Rate A and B independently before comparing them. Both sides use the same background-dominant interface mock.</p>
+			<p>More than one treatment can be valid. Color names are presentation aids only.</p>
+		</div>
+	</header>
+	<nav class="review-navigation" aria-label="Review navigation">
+		<button id="previous" type="button">Previous</button>
+		<div class="progress-block">
+			<meter id="meter" min="0" max="1" value="0"></meter>
+			<output id="progress">Loading cases...</output>
+		</div>
+		<button id="next" type="button">Next</button>
+	</nav>
+	<main id="review" aria-live="polite"></main>
+</body>
+</html>

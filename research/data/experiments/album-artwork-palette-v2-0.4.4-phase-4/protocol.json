@@ -1,0 +1,432 @@
+{
+  "schemaVersion": 1,
+  "experimentVersion": "album-artwork-palette-v2-0.4.4-phase-4",
+  "createdAt": "2026-07-27T00:11:57.831Z",
+  "outputDirectory": "research/data/experiments/album-artwork-palette-v2-0.4.4-phase-4",
+  "phase3Freeze": {
+    "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+    "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722",
+    "candidateVersion": "album-artwork-first-principles-0.4.4",
+    "implementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+    "scientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+    "gatePass": true,
+    "freezeCandidateForPhase4": true
+  },
+  "candidate": {
+    "version": "album-artwork-first-principles-0.4.4",
+    "frozenImplementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+    "frozenHashMethod": "development-evaluator-runtime-and-declared-files-v1",
+    "closure": {
+      "version": "album-artwork-palette-v2-phase-4-static-import-closure-v1",
+      "roots": [
+        "research/album-artwork-palette-v2-phase-4-candidate-child.ts"
+      ],
+      "files": [
+        {
+          "path": "research/album-artwork-palette-v2-phase-4-candidate-child.ts",
+          "rawSha256": "a447126f05b72d7345d6c30fc10eeb12dda5141ac7daeda23c44dba3f7976de4"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2-protocol.ts",
+          "rawSha256": "dd93f718f5f3d65bf4163b558e83b8b9e5abc26e8fd9f77abd58447412a57ed2"
+        },
+        {
+          "path": "research/src/album-artwork-palette-v2.ts",
+          "rawSha256": "303d19f32fa1edf2b5706cb05a3a225edf2dbf21ac76c5c2dbaec962d898a92d"
+        },
+        {
+          "path": "research/src/color-name.ts",
+          "rawSha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c"
+        },
+        {
+          "path": "research/src/color.ts",
+          "rawSha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033"
+        },
+        {
+          "path": "research/src/native-resolution-image.ts",
+          "rawSha256": "0fed2b94aec333b144088f41d7eaa9165097cf001d0e253c664255f4bb300bb2"
+        },
+        {
+          "path": "research/src/types.ts",
+          "rawSha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb"
+        }
+      ],
+      "sha256": "ff43207c11773fbe89c9e85bba0c76230b6db038f8db9712f3bf81a6933a66be"
+    }
+  },
+  "baseline": {
+    "version": "region-graph-0.19.0",
+    "entryPoints": [
+      "research/src/image.ts#loadImage(bytes)",
+      "research/src/extract.ts#extractPalette(image).methods.spatial"
+    ],
+    "closure": {
+      "version": "album-artwork-palette-v2-phase-4-static-import-closure-v1",
+      "roots": [
+        "research/album-artwork-palette-v2-phase-4-baseline-child.ts"
+      ],
+      "files": [
+        {
+          "path": "research/album-artwork-palette-v2-phase-4-baseline-child.ts",
+          "rawSha256": "c0eb78e690d3fa045c2d18f5c94599c1391dc74b033127bba73667c14bd27cc8"
+        },
+        {
+          "path": "research/src/accent-contrast.ts",
+          "rawSha256": "7bad392473ce4bf16adec6e0114a35bd9637b7b80e799071aad346e3648962fb"
+        },
+        {
+          "path": "research/src/candidates.ts",
+          "rawSha256": "8785749f96183408d5984a84b10154fc887cc708bd2d8419ec8ba7b9b1068950"
+        },
+        {
+          "path": "research/src/chromatic-candidate-availability.ts",
+          "rawSha256": "2cc366406a01f23f19d7db8ccf1f0cfb296cd0b58a1acd7c0d8fb1b71c202bed"
+        },
+        {
+          "path": "research/src/chromatic-role-extract.ts",
+          "rawSha256": "3b6788a666600609702cd807239c6c04dfb3d9d068d851afeb5a62a43b4cf34a"
+        },
+        {
+          "path": "research/src/color-name.ts",
+          "rawSha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c"
+        },
+        {
+          "path": "research/src/color.ts",
+          "rawSha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033"
+        },
+        {
+          "path": "research/src/extract.ts",
+          "rawSha256": "18eff4f07193f01006e08674d33b0ec0f654d1c9253991d1e4686c32064fbf84"
+        },
+        {
+          "path": "research/src/foreground-contrast.ts",
+          "rawSha256": "b5f9ad499e85f7bf8058e6c13774c1c0f09f4c2b5ce7a8b2891c325e57ed4999"
+        },
+        {
+          "path": "research/src/guarded-palette.ts",
+          "rawSha256": "bed24c0ccc7854b96dcddf8c487bbfb11edf264ee3053b7358120b44ca6ada2e"
+        },
+        {
+          "path": "research/src/image.ts",
+          "rawSha256": "c043d1169c8f8338bf9fdce98707ed1533122580770bceb38170c4953adaa8e4"
+        },
+        {
+          "path": "research/src/joint-palette.ts",
+          "rawSha256": "6806c95730090c31ce78e9217e4cad2ce228fd876786ad457058610ab827af92"
+        },
+        {
+          "path": "research/src/palette.ts",
+          "rawSha256": "bba8d53a7a0649bc0603673db65c6ae78e03e5aa8bca66d771e3b3df0e60a420"
+        },
+        {
+          "path": "research/src/region-graph-0.17-extract.ts",
+          "rawSha256": "a1ebdc39c3fb954edb93531d6d03caf7da70b95b866e9b4a9392533724fc64f2"
+        },
+        {
+          "path": "research/src/regions.ts",
+          "rawSha256": "2812a6b40a0b948dc6d97e6067d9a71e4d168b88ac30a99c9b61199ecf59b845"
+        },
+        {
+          "path": "research/src/types.ts",
+          "rawSha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb"
+        }
+      ],
+      "sha256": "2ac223fe820818986a475f29195cc4832df482874f1a673379ef4d19c8aed8b1"
+    },
+    "promotedPoc10": {
+      "path": "research/data/experiments/chromatic-role-reserve-validation-0.8.0-0f/candidate-results.json",
+      "sha256": "5d0cfdaf80575046ecf8273bde4bc19a8ccd8ecccd95f74991230b397e4ed6f8",
+      "historicalVersion": "region-chromatic-role-0.1.0-poc.10",
+      "comparison": "normalized-displayed-presentation-exact; historical-version-and-undisplayed-diagnostics-ignored"
+    }
+  },
+  "freshManifest": {
+    "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+    "rawSha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3",
+    "manifestId": "3e85bab09130d0fb6c883ba1e4543fce841e1a94a6b63a6539aececb8f58cb91",
+    "sealCommitment": "cd780b094b2a83117a2fd767566df657017ae4491f0555db7a999d40a8e3f180",
+    "sourceCount": 12,
+    "uniqueGroupCount": 12,
+    "inventory": {
+      "path": "research/data/source-provenance-inventory-00-14.json",
+      "id": "3907c57f94cd7dfea992c5d1ce98da6de2165c720b75259b32f0250da1881c7f",
+      "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+    }
+  },
+  "sourceCustody": {
+    "root": "0f",
+    "pathRule": "direct-child-only",
+    "checksBeforeDecode": [
+      "bound-path",
+      "realpath",
+      "regular-file",
+      "non-symlink",
+      "byte-count",
+      "sha256"
+    ],
+    "candidateAndBaselineReadSeparately": true
+  },
+  "sideAssignment": {
+    "domain": "album-artwork-palette-v2-phase-4-side-assignment-v1",
+    "digest": "SHA256(UTF8(domain) || NUL || UTF8(fresh seal commitment) || NUL || UTF8(source SHA-256))",
+    "order": "ascending-lowercase-hex-digest",
+    "rule": "candidate-is-A-for-first-six-and-B-for-last-six",
+    "assignments": [
+      {
+        "caseId": "fresh-07",
+        "sourceSha256": "28f9510d7f84801be3ef873617bd42388a1d88ce0fa7c82a78ce1750b6c47e3e",
+        "key": "522ec8a241ae070e9995b8fa7b83cf6366cc8f003cf7cbd29369e61c9f9a3129",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-02",
+        "sourceSha256": "347efe08c1c9fc478356318563b53cbd9e4b55df8b50f8b707f015851b17f55d",
+        "key": "6e0bea36fbd29f3b48042d94a0828aeba0407107cc0b8d6951b13e4639bc6dcc",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-08",
+        "sourceSha256": "7cfa0f1c1b35625a6c35e6ec48d5e4b8d767d6f75e6a79b5302ee72cdf28c4ad",
+        "key": "70ceed4c0383a97835f9f41102410dc82d4040cfb26c2db99bdd20a4ed93f993",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-01",
+        "sourceSha256": "8bf9fd2f6abdf6ee9b9ccd808abdd9b3d2475abf89cb6854d47acc7d13ba80a0",
+        "key": "7cf39a15255bd26a0d958f18ddf8f6fb729cd3cc4d96da57d5948d12b96c287e",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-10",
+        "sourceSha256": "5441d52e60c1fd01388bfb6933b62ac75e71e9e24b1f535a6c66c555cdd51c02",
+        "key": "8ce8b005da2cbb5685dc613ea7002b98e3ca392c558769226ef0ca057c34a9c8",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-12",
+        "sourceSha256": "43985495b51ddd618f26b28c9e0c43e95be845038aae836d12096c6aa6fdc67d",
+        "key": "8d6cb6d5290de4dc9c00a8af1d5679cb5fa5e8e5ade8a49643cbf84125cea3a5",
+        "candidateSide": "A",
+        "baselineSide": "B"
+      },
+      {
+        "caseId": "fresh-06",
+        "sourceSha256": "03aa6e5678067c3d85186f6cc6c6a608cd4a3ac182a3777bf72144fdc9b5891c",
+        "key": "aad2dd34c47dda1a1bed54217a798b1bbeb7db4b7ee90b487aba1374e010c13f",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "fresh-04",
+        "sourceSha256": "2426fbf241c0f8b96a0ac2b8183f782f48e83a7725b2a1cb3854031b1a0b4a73",
+        "key": "bdd706faa249e75649f2b4321a50eb5106146ed81fcbfbf49718e8991145dd8b",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "fresh-05",
+        "sourceSha256": "4617556951304c596abe236321842be5c32e48d39d510a5eacddcf7797e25729",
+        "key": "c81cb07acb2b79e31f351a2491ce49bb59dd2c897e82a6e96da53e62a3506c4e",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "fresh-11",
+        "sourceSha256": "c0f935ea9cef7ec98eb06e502445e5eac6197d0137c31d1c5a5f41f4a8f20a10",
+        "key": "c99d23baffde6cb0931d82810a7fbf7b1cc8e556dfd8f578eb891fc227c82b7f",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "fresh-09",
+        "sourceSha256": "1a602bce91717dd3eab48a546bb74670b8f2078d8938fdd260f97895c197869a",
+        "key": "daa1e5610dc436077ffecf0320c2542570720bc7bfb76e183ac0b86605ffae55",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      },
+      {
+        "caseId": "fresh-03",
+        "sourceSha256": "9761fbb47b62eff8f6d7cf2607b70751d2e407f44503e7bd7ce45af5e185f20a",
+        "key": "f3b73f94f3e316695ede4ea4bef5cc85bf6300e23630a4d633f6d1193a946a57",
+        "candidateSide": "B",
+        "baselineSide": "A"
+      }
+    ],
+    "assignmentSha256": "4f5e713d921dac085ab1cdcf0186fc5a6dc6cf1d8a38f98f7e19cc8ecfd3e822"
+  },
+  "presentation": {
+    "version": "album-artwork-palette-v2-phase-4-presentation-v1",
+    "roles": [
+      "background",
+      "surface",
+      "foreground",
+      "accent"
+    ],
+    "fields": [
+      "rgb",
+      "hex",
+      "generated",
+      "collapsedTo",
+      "colorName"
+    ],
+    "gradient": "boolean",
+    "collapse": [
+      "surface",
+      "accent"
+    ],
+    "colorNames": "colornames-oklab-0.6.0-presentation-only"
+  },
+  "execution": {
+    "arguments": [],
+    "candidateWorkers": 6,
+    "candidateFirst": true,
+    "baselineStartsAfterDurableCandidateCompleteMarker": true,
+    "baselineMode": "sequential-separate-children-stop-on-first-mismatch",
+    "force": false,
+    "overwrite": false,
+    "reuse": false,
+    "automaticRetry": false
+  },
+  "runtime": {
+    "node": "v25.8.1",
+    "versions": {
+      "node": "25.8.1",
+      "acorn": "8.16.0",
+      "ada": "3.4.3",
+      "amaro": "1.1.8",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "lief": "0.17.0",
+      "llhttp": "9.3.1",
+      "merve": "1.2.0",
+      "modules": "141",
+      "napi": "10",
+      "nbytes": "0.1.3",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.68.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "3.5.5",
+      "simdjson": "4.3.1",
+      "simdutf": "7.3.3",
+      "sqlite": "3.52.0",
+      "tz": "2025c",
+      "undici": "7.22.0",
+      "unicode": "17.0",
+      "uv": "1.51.0",
+      "uvwasi": "0.0.23",
+      "v8": "14.1.146.11-node.21",
+      "zlib": "1.3.1-e00f703",
+      "zstd": "1.5.7"
+    },
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/Users/Flo/.nvm/versions/node/v25.8.1/bin/node"
+  },
+  "controls": {
+    "method": "raw-sha256",
+    "files": [
+      {
+        "path": "package.json",
+        "rawSha256": "6d01b7ca68aae4015b98c3cc560c0dfaf774d0020348271d302b62322ce27ff3"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "rawSha256": "a858afe1d3946e113b58fc0c7bea25ed6a418d8190ce57951b6a4d0fe3af6058"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PLAN_V2.md",
+        "rawSha256": "cf43b640ab6c89bb64fffb7cd143a6b2486259a9dc252311684bd2b4dc317855"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2.md",
+        "rawSha256": "9bfb4f3f5e66992860fa412f04b6cb09ceed202d9c0b4461335a786b19f30c13"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-development-child.ts",
+        "rawSha256": "bea3a920845457979596c6d86945c6424145e7246d4d1e80a63e1c6eef07bbb6"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-baseline-child.ts",
+        "rawSha256": "c0eb78e690d3fa045c2d18f5c94599c1391dc74b033127bba73667c14bd27cc8"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-candidate-child.ts",
+        "rawSha256": "a447126f05b72d7345d6c30fc10eeb12dda5141ac7daeda23c44dba3f7976de4"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/app.js",
+        "rawSha256": "20b90f6d171b67bde68e6129d74e8364b1490f16c977a5cdc95a70cb6b287f9c"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/index.html",
+        "rawSha256": "c598c633b3b03d5a5ebda5d213b25e2506b548324f604e586530530c6db435a5"
+      },
+      {
+        "path": "research/album-artwork-palette-v2-phase-4-review/styles.css",
+        "rawSha256": "8b5f4fe927d18d057c251f939d7cef3364409ea369c524b97538c83de947b5b5"
+      },
+      {
+        "path": "research/analyze-album-artwork-palette-v2-phase-4-review.ts",
+        "rawSha256": "5a001c6469bc24f6256588fa00453b27c7ddeb84a6129e03393d291e139a2a1d"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+        "rawSha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.4.4-development/absolute-quality-delta-analysis.json",
+        "rawSha256": "b6faac15ae598e495ab4154db4ba8cffc05409bbd7a48a87a3292b7fa3795722"
+      },
+      {
+        "path": "research/data/experiments/chromatic-role-reserve-validation-0.8.0-0f/candidate-results.json",
+        "rawSha256": "5d0cfdaf80575046ecf8273bde4bc19a8ccd8ecccd95f74991230b397e4ed6f8"
+      },
+      {
+        "path": "research/data/source-provenance-inventory-00-14.json",
+        "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+      },
+      {
+        "path": "research/evaluate-album-artwork-palette-v2-development.ts",
+        "rawSha256": "b187f68ec0a1c6ef80ee37c01a70a5e2a4f6b3992ed6d32f2ab5bb07fba7b1a8"
+      },
+      {
+        "path": "research/run-album-artwork-palette-v2-phase-4.ts",
+        "rawSha256": "8d9848026b12ed92795d0a03ab57cd6cf71fefb752fe7a2e32d390ffb0ddc1d9"
+      },
+      {
+        "path": "research/serve-album-artwork-palette-v2-phase-4-review.ts",
+        "rawSha256": "bb34f784ba03f656b7d83f2c84aa215377d3dd22e923e66eb42c8a99fe27bfb6"
+      },
+      {
+        "path": "research/src/album-artwork-palette-v2-phase-4-review.ts",
+        "rawSha256": "05ba35d2d3e7face7ec500f42c7974d40b824d95ef1a5cc87a5299f9c5a4581d"
+      },
+      {
+        "path": "research/src/album-artwork-palette-v2-protocol.ts",
+        "rawSha256": "dd93f718f5f3d65bf4163b558e83b8b9e5abc26e8fd9f77abd58447412a57ed2"
+      },
+      {
+        "path": "research/src/source-provenance-inventory.ts",
+        "rawSha256": "13d18358e69ec9eb77dd44357593da5b05aadf28dd1b20db06fa28814364d79a"
+      },
+      {
+        "path": "research/tests/album-artwork-palette-v2-phase-4.test.ts",
+        "rawSha256": "9de5e937ad28711553c0f279788741530d188907b4aca803d1a3e3cdd4e21684"
+      },
+      {
+        "path": "research/tsconfig.json",
+        "rawSha256": "13b922dd408d2512b88f07e1b97e2760db28648db38cbcfbf9bf30dce6b26667"
+      }
+    ],
+    "sha256": "01d07ebf0c15aa6982a0a95ee5f5e05d5f5a118c1dd6bd5553e6fa86197e1d72"
+  },
+  "protocolId": "221af26a6be614b34ef22e3ce3098cf09c54eb497611aaba3ec7f89e8f728e43"
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.6.0-gradient-challenger-review-v1",
+  "manifestId": "1e9ceb7e2d682223808ef0fc0af8d2536275e9a9a9e8eba70a1dd51e840bf107",
+  "candidateVersion": "album-artwork-first-principles-0.6.0",
+  "implementationHash": "3f25579340ec3dea5efaa0d8aeeceb35483610b7519fa8892a5b99a96261f315",
+  "scientificSha256": "f0437a4ab86f321d3723e30527ff455222ed6e5590e891e3f590ab1b920e7d52",
+  "predecessorVersion": "album-artwork-first-principles-0.5.2",
+  "inputHashes": {
+    "manifestSha256": "6570800748ec89cb19de90a9221267149fb07a0d12961aa33e5b76741bac7e08",
+    "feedbackSha256": "e81771c40e988970feb606818cf3b1ae99460b3571654141e909daa034dabc6c",
+    "preparationSha256": "8aa7dbbc8c7419e6e274e6cd4d70a6d2ac7e5129fff1672536a2952e8790f00f",
+    "currentAggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "predecessorAggregateSha256": "ac8b958107ec31cafcb77bcd5c7054661e7ce12cf97459741b2585a829f9e560",
+    "developmentAnalysisSha256": "90cc15f24bc822b5db59cceb5296abe821543c3162f5a5cf1c013a0575fdf8c8",
+    "futureSample03Sha256": "690e85ace6377fd154db1124754dfb7d876c64a3c063f8b567e0e219d88f0183"
+  },
+  "gate": {
+    "pass": true,
+    "reviewedCount": 2,
+    "candidatePositiveCount": 2,
+    "candidateStrongerCount": 2,
+    "cleanCandidateTagCount": 2,
+    "failedCaseIds": []
+  },
+  "cases": [
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "candidateTreatmentId": "gradient:field-domain-0:radial-upper-center:center-out:family-3745:family-2863:#2f3788:#2d2554|47,55,136|45,37,84|86,216,250|226,72,82|gradient",
+      "predecessorTreatmentId": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+      "candidateQuality": "strong",
+      "predecessorQuality": "acceptable",
+      "comparison": "a-stronger",
+      "candidateTags": [],
+      "predecessorTags": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "positive": true,
+      "strictlyStronger": true,
+      "tagsPass": true,
+      "pass": true
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "candidateTreatmentId": "gradient:field-domain-232:radial-center:center-out:family-1101:family-2843:#010d1d:#102037|3,2,8|7,36,66|190,214,226|83,157,184|gradient",
+      "predecessorTreatmentId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+      "candidateQuality": "strong",
+      "predecessorQuality": "acceptable",
+      "comparison": "b-stronger",
+      "candidateTags": [],
+      "predecessorTags": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "positive": true,
+      "strictlyStronger": true,
+      "tagsPass": true,
+      "pass": true
+    }
+  ],
+  "futureSample03": {
+    "manifestId": "bee665792a4ddfaeb3541aa5e58181c8f3a0685836b13475643d9deccace4060",
+    "opened": false
+  },
+  "phaseDisposition": "0.6.0-gradient-challenger-human-gate-passed-candidate-freeze-eligible",
+  "analysisId": "3e18186f2c721959b680aca5dadda5702e5c0aea32b5a699f9b8bb854647e2dc"
+}

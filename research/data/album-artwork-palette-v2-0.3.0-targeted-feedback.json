@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v1",
+  "manifestId": "a31eb91d0eeda12ff8fee857b5ba25790c1499191b77c9f851f61464fc397bbb",
+  "entries": [
+    {
+      "caseId": "development-20",
+      "sourceSha256": "d07c8ca590c619cccdbeea00aef8e25a700b859d3f9a01b8cabf03dd2dc22aa9",
+      "validOptionIds": [
+        "B",
+        "C",
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T17:55:44.646Z"
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "validOptionIds": [
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "there are enough colors to find a good surface (but the Umbra surface of the other candidates doesn't fit the artwork)",
+      "submittedAt": "2026-07-26T17:56:49.537Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [],
+      "noneConfidentlyValid": true,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T17:57:01.768Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "validOptionIds": [
+        "B"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T17:57:44.180Z"
+    }
+  ]
+}

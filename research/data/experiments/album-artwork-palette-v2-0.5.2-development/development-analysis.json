@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.5.2",
+  "implementationHash": "ea1205ebd2d33abf99d8eed8a0e5e7625f1af6722dbe7879c90350c23d36fd40",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "scientificSha256": "44dad7455a43fb4c7eaea70ee3f5b522d6742bdb320cf3855ef3fb085b344b57",
+  "inputHashes": {
+    "currentAggregateSha256": "ac8b958107ec31cafcb77bcd5c7054661e7ce12cf97459741b2585a829f9e560",
+    "predecessorAggregateSha256": "11396af3e128a4404c4b4e26e687fc2216e51529411027c6187bddb8ee72cf6b",
+    "failedCandidateAggregateSha256": "15921ae1d183f56b0e10f8166355897dcd4b3e4527dd089e127bde1d7724b156",
+    "futureSampleSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+    "protocolSha256": "f17b3b8ba707c2084a6f56ee51a7d63e53714c109a43305f058fed5c76116a1e",
+    "reviewManifestSha256": "239fe5418fe77e0c7e52cc45df6f94a07e03b95d8268c318d0572b52fd9bff7e",
+    "reviewPreparationSha256": "516899675ae5ab28ed0ea0bb90f94d8537e87ce5c557a44f135b46dcc1dc85cc",
+    "reviewAnalysisSha256": "12f5a234265fbec65453676bab207cf4776a9cb6b3d03e46c5341afdf2961654"
+  },
+  "futureSample": {
+    "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+    "sealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+    "opened": false
+  },
+  "mechanical": {
+    "changedWinnerCaseIds": [
+      "development-24"
+    ],
+    "changedGradientStateCaseIds": [],
+    "changedFieldTreatmentCaseIds": [],
+    "changedFullyObservablePredecessorCaseIds": [],
+    "completeCandidateCountDeltaByCase": {},
+    "frontierCandidateCountDeltaByCase": {},
+    "retainedMixedZeroTreatmentCount": 11,
+    "reviewTransfers": {
+      "development-24": {
+        "pass": true,
+        "candidateQuality": "strong",
+        "comparison": "b-stronger",
+        "predecessorActiveRolePathObservability": 0.6,
+        "currentActiveRolePathObservability": 1
+      }
+    }
+  },
+  "mechanismGate": {
+    "pass": true,
+    "scientificOutputChanged": true,
+    "candidateCountsUnchanged": true,
+    "frontierCountsUnchanged": true,
+    "pathFoundationSatisfied": true,
+    "pathFoundationExercised": true,
+    "fullyObservablePredecessorWinnersUnchanged": true,
+    "gradientStatesUnchanged": true,
+    "fieldTreatmentsUnchanged": true,
+    "candidateBoundSatisfied": true
+  },
+  "reviewTransferGate": {
+    "pass": true,
+    "transferredCaseCount": 1,
+    "requiredCaseCount": 1,
+    "allChangedWinnersExactlyReviewed": true
+  },
+  "phaseDisposition": "0.5.2-bounded-gates-passed-candidate-freeze-eligible",
+  "analysisId": "8fdfd3b1fb8e4ca7b4446f72f157430cb8d00c01cc9ccaed97e21683071bc028"
+}

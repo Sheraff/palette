@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-future-02-review-v1",
+  "manifestId": "22e9af376c7da380f260841860fed08ca2e4e67af908e313e98d2e8682ae3dbc",
+  "protocolId": "71ef0088f8b95c2a52fb73dc17683bb366e4bd3811a640f09c8ba74214a74a46",
+  "futureSampleManifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+  "futureSampleSealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+  "inputHashes": {
+    "manifestSha256": "f34a88b5937be7d3885542e1a0a8eb46cb6d1a4882d6cd829a9f7dfef92e3446",
+    "provenanceSha256": "ab2e53e0f86cb9e849381f41b6cf30740ea9f113a2657fab4ad5357f9f84002b",
+    "runCompleteSha256": "44743c79e6cc16a9871668a27048da5f4a36548ac759347d330349ffe08a3f03",
+    "feedbackSha256": "6dc6dd20c8726da51329ee646d74acbe6c630ecc6b6ed484e8376d22ddbc0c13",
+    "technicalInterpretationsSha256": "7d70f50c7b0da052ccf119a5156f8a6944d2b458f46e75ae44ebf289a7d9b925"
+  },
+  "counts": {
+    "caseCount": 12,
+    "relative": {
+      "baseline-stronger": 3,
+      "candidate-stronger": 3,
+      "similarly-valid": 6
+    },
+    "candidateQuality": {
+      "acceptable": 2,
+      "strong": 9,
+      "weak-fallback": 1
+    },
+    "baselineQuality": {
+      "acceptable": 4,
+      "strong": 8
+    },
+    "candidateTags": {
+      "extraneous gradient": 1,
+      "incomplete artwork identity": 3,
+      "missing gradient": 1
+    },
+    "baselineTags": {
+      "incomplete artwork identity": 1,
+      "missing gradient": 1
+    },
+    "positiveCandidateCount": 11,
+    "technicalClasses": {
+      "signature-color-accent-availability-underselection": 1
+    }
+  },
+  "runtime": {
+    "candidate": {
+      "workerCount": 6,
+      "wallMs": 1643.415458,
+      "totalChildWallMs": 5990.067415,
+      "totalCpuUserMicros": 8647414,
+      "totalCpuSystemMicros": 198061
+    },
+    "baseline": {
+      "mode": "sequential-stop-on-first-error",
+      "wallMs": 8460.777791,
+      "totalChildWallMs": 7151.224709000001,
+      "totalCpuUserMicros": 9439891,
+      "totalCpuSystemMicros": 145103
+    },
+    "totalWallMs": 10258.587
+  },
+  "repeatConsistency": {
+    "intentionalRepeatsIncluded": false
+  },
+  "results": [
+    {
+      "caseId": "future02-01-028db36d5d35",
+      "futureCaseId": "future-02-03",
+      "assignmentKey": "028db36d5d35abd23c396218f1064cc62b95175749e0e71bb5ef7a24a7700f2e",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "acceptable",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [
+        "missing gradient"
+      ],
+      "comment": "option A is very very good",
+      "technicalInterpretation": {
+        "caseId": "future02-01-028db36d5d35",
+        "commentSha256": "c7a7269e1526d426f85e73b3089ef839eb42e4183d53f40981e472e19bd29b86",
+        "classes": [],
+        "rationale": "The candidate is option A. The response rates it strong and stronger, describes it as very good, and records no issue tag. Its source-supported gradient, foreground, accent, and complete treatment are therefore positive directional evidence rather than evidence of a technical failure mechanism.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future02-02-0431ed4c317d",
+      "futureCaseId": "future-02-12",
+      "assignmentKey": "0431ed4c317db69a28dad892f5e87c4ec14e14eb12c5e39bedf9f34cabe7579d",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-03-1931ef7793b2",
+      "futureCaseId": "future-02-01",
+      "assignmentKey": "1931ef7793b25d4b39884211c122fead176381376bae291acb1cb781639c13a9",
+      "candidateSide": "A",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "acceptable",
+      "relative": "similarly-valid",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [
+        "incomplete artwork identity"
+      ],
+      "comment": "we are missing the gold writing and lines from the artwork, which could be a great accent color",
+      "technicalInterpretation": {
+        "caseId": "future02-03-1931ef7793b2",
+        "commentSha256": "82238f1eef1a4dde4ee717c10f66958dcbc3a2da41b23c131ba308e00ce29bde",
+        "classes": [
+          "signature-color-accent-availability-underselection"
+        ],
+        "rationale": "The candidate is option A. Yellow-gold source families were retained in the signature evidence lane, including family-9043 and related warm families, but none reached the complete-candidate accent-family set; the retained slate used only achromatic accent families. The missing gold writing and lines therefore reflect loss during bounded accent availability before complete-treatment Pareto ranking. The baseline also misses the gold, but the class describes the candidate mechanism only.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future02-04-58f074ea96d7",
+      "futureCaseId": "future-02-11",
+      "assignmentKey": "58f074ea96d7f73002b3ff19ea1ae89441989a170a243257618401b12851101d",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-05-6810a9417c1b",
+      "futureCaseId": "future-02-02",
+      "assignmentKey": "6810a9417c1bdd1ea7346647bd18a1eaa3c5ffdd7aea3b6b9b48c58e1fff5825",
+      "candidateSide": "A",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-06-69f982a25759",
+      "futureCaseId": "future-02-07",
+      "assignmentKey": "69f982a257593404592fc393de03b2ea92ca12e853f12cdb187455adf00ee8e0",
+      "candidateSide": "A",
+      "candidateQuality": "weak-fallback",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-07-7352ccbbf459",
+      "futureCaseId": "future-02-10",
+      "assignmentKey": "7352ccbbf459be6e43dcf428d9785634501db6c22e078121cc0511b86ae5cd58",
+      "candidateSide": "B",
+      "candidateQuality": "acceptable",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-08-aad655002487",
+      "futureCaseId": "future-02-04",
+      "assignmentKey": "aad655002487ad2c010cdeee84a600517b8569542b00dd3e3064ebb268f44839",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "baseline-stronger",
+      "candidateTags": [
+        "incomplete artwork identity"
+      ],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-09-b6a4a78aab70",
+      "futureCaseId": "future-02-09",
+      "assignmentKey": "b6a4a78aab7005541c841b8a529552018786b86b95a0ffc8020ca54c3e71e63f",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "acceptable",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    },
+    {
+      "caseId": "future02-10-dbac5ebcfdc2",
+      "futureCaseId": "future-02-06",
+      "assignmentKey": "dbac5ebcfdc287696a684f7e8b08ebff42145de96950473441099c2efe8ef007",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "acceptable",
+      "relative": "candidate-stronger",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "the Yellow accent is better on B, and since this is a big part of this artwork's identity, B wins\nhowever, option A has better foreground, and correctly collapses background and surface together",
+      "technicalInterpretation": {
+        "caseId": "future02-10-dbac5ebcfdc2",
+        "commentSha256": "9ccd5d89dd61688fb5406ec86ac8fcc9af757fdbfbcf90f3437aff7c41346827",
+        "classes": [],
+        "rationale": "The candidate is option B. Its #fcfc04 yellow accent is the identity feature that the response prefers, and the candidate is rated strong and stronger overall. The comment also prefers the baseline foreground and honest field collapse, but records those as a tradeoff rather than a candidate failure; no repeated candidate mechanism is inferred from this positive result.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future02-11-e50fa5297f56",
+      "futureCaseId": "future-02-05",
+      "assignmentKey": "e50fa5297f5652bb9ee5d2c471596b9da8a38b45fc71790c9b3b008b3af48c51",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [],
+      "baselineTags": [],
+      "comment": "I like that option A is slightly more purple-pink, and has a gradient, it represents the artwork very well\nI like that option B incorporates some of the blue (Quarry) because it is also present in the artwork",
+      "technicalInterpretation": {
+        "caseId": "future02-11-e50fa5297f56",
+        "commentSha256": "dd2fbd54ae32d957d607d20e4b1ac813d358065b09ae1052c18e5490dc5f76f5",
+        "classes": [],
+        "rationale": "The candidate is option B. The response values its blue Quarry surface while also valuing the baseline's purple-pink gradient, rates both treatments strong, and marks them similarly valid without issue tags. This is a legitimate complete-treatment tradeoff and does not identify a candidate evidence, generation, or ranking defect.",
+        "uncertain": false
+      }
+    },
+    {
+      "caseId": "future02-12-fb68a9f83e2f",
+      "futureCaseId": "future-02-08",
+      "assignmentKey": "fb68a9f83e2fd4cfdfb6d6e46f83292d889933ffa767ed750e30d31be2ca5781",
+      "candidateSide": "B",
+      "candidateQuality": "strong",
+      "baselineQuality": "strong",
+      "relative": "similarly-valid",
+      "candidateTags": [
+        "missing gradient",
+        "extraneous gradient"
+      ],
+      "baselineTags": [],
+      "comment": "",
+      "technicalInterpretation": null
+    }
+  ],
+  "advancementGate": {
+    "pass": false,
+    "candidateStrongerThanBaseline": false,
+    "candidateQualityCommonlyPositive": true,
+    "noRepeatedSystemicFailureClass": true,
+    "repeatedTechnicalClasses": []
+  },
+  "limitations": [
+    "This is a 12-source deterministic directional sample, not a population-wide estimate.",
+    "No adaptation or rerun on future sample 02 is permitted.",
+    "Phase 5, promotion, persistence, and full-roster execution require a separate decision."
+  ],
+  "phaseDisposition": "phase4-future-02-directional-gate-failed-return-to-development-with-new-future-sample"
+}

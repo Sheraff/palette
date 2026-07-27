@@ -1,0 +1,3666 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-absolute-quality-delta-review-v10",
+  "reviewUnit": "absolute-quality-plus-optional-comment-for-one-changed-frozen-top-treatment-per-artwork",
+  "candidateVersion": "album-artwork-first-principles-0.4.4",
+  "implementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "scientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+  "selectionDomain": "album-artwork-palette-v2-absolute-quality-delta-review-v10",
+  "cases": [
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "sourcePath": "images/placebo.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "photography and portrait",
+        "low-chroma",
+        "typography-led"
+      ],
+      "dimensions": {
+        "width": 1400,
+        "height": 1400
+      },
+      "winnerTreatmentId": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|251,253,250|69,91,89|gradient",
+      "alternatives": [
+        {
+          "id": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|251,253,250|69,91,89|gradient",
+          "background": {
+            "rgb": [
+              108,
+              138,
+              138
+            ],
+            "oklab": [
+              0.6104831695556641,
+              -0.03256030008196831,
+              -0.009519651532173157
+            ],
+            "hex": "#6c8a8a",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 307,
+                "y": 1
+              },
+              "anchorFamilyId": "family-6813",
+              "regionIds": [
+                "family-6813-region-0",
+                "family-6813-region-1069488",
+                "family-6813-region-251423",
+                "family-6813-region-563933",
+                "family-6813-region-1183943",
+                "family-6813-region-455856",
+                "family-6813-region-1164482",
+                "family-6813-region-1122544",
+                "family-6813-region-571254",
+                "family-6813-region-1296646",
+                "family-6813-region-1837637",
+                "family-6813-region-1394454",
+                "family-6813-region-1742622",
+                "family-6813-region-52875",
+                "family-6813-region-1073586",
+                "family-6813-region-5952",
+                "family-6813-region-1871226",
+                "family-6813-region-1107241",
+                "family-6813-region-1124250",
+                "family-6813-region-1907611",
+                "family-6813-region-1677249",
+                "family-6813-region-1446272",
+                "family-6813-region-1845996",
+                "family-6813-region-1888062",
+                "family-6813-region-1826469",
+                "family-6813-region-1759264",
+                "family-6813-region-1804050",
+                "family-6813-region-1895127"
+              ],
+              "perceptualDensity": 0.999118542554379,
+              "totalSupport": 0.26509897959183676,
+              "connectedSupport": 0.18168571428571428,
+              "spatialCoverage": 1,
+              "concentration": 0.685350485186511,
+              "prototypeDistance": 0,
+              "outlierScore": 0.000881457445620959,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              134,
+              165,
+              170
+            ],
+            "oklab": [
+              0.7002964019775391,
+              -0.030742673203349113,
+              -0.01660999283194542
+            ],
+            "hex": "#86a5aa",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 1393,
+                "y": 175
+              },
+              "anchorFamilyId": "family-7695",
+              "regionIds": [
+                "family-7695-region-1119",
+                "family-7695-region-1196571",
+                "family-7695-region-310",
+                "family-7695-region-502060",
+                "family-7695-region-1167586",
+                "family-7695-region-1490438",
+                "family-7695-region-1687912",
+                "family-7695-region-1720117",
+                "family-7695-region-1783073",
+                "family-7695-region-1742487",
+                "family-7695-region-1743977",
+                "family-7695-region-1665529",
+                "family-7695-region-1671090",
+                "family-7695-region-1519645",
+                "family-7695-region-1493213",
+                "family-7695-region-1746661",
+                "family-7695-region-1518210",
+                "family-7695-region-1462339",
+                "family-7695-region-1577329",
+                "family-7695-region-1388247",
+                "family-7695-region-1445509",
+                "family-7695-region-1727075",
+                "family-7695-region-1530904",
+                "family-7695-region-1808389",
+                "family-7695-region-614639",
+                "family-7695-region-1062689",
+                "family-7695-region-792439",
+                "family-7695-region-851239",
+                "family-7695-region-1291425"
+              ],
+              "perceptualDensity": 0.7463459146037366,
+              "totalSupport": 0.18619081632653062,
+              "connectedSupport": 0.11779744897959184,
+              "spatialCoverage": 1,
+              "concentration": 0.6326705650884817,
+              "prototypeDistance": 0,
+              "outlierScore": 0.25365408539626344,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              251,
+              253,
+              250
+            ],
+            "oklab": [
+              0.9917055368423462,
+              -0.0031459014862775803,
+              0.0031625288538634777
+            ],
+            "hex": "#fbfdfa",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 74,
+                "y": 293
+              },
+              "anchorFamilyId": "family-10783",
+              "regionIds": [
+                "family-10783-region-875040",
+                "family-10783-region-1031840",
+                "family-10783-region-558651",
+                "family-10783-region-673450",
+                "family-10783-region-974454",
+                "family-10783-region-749040",
+                "family-10783-region-616040",
+                "family-10783-region-1304872",
+                "family-10783-region-407471",
+                "family-10783-region-505474",
+                "family-10783-region-1111647",
+                "family-10783-region-1163440",
+                "family-10783-region-1211040",
+                "family-10783-region-800840",
+                "family-10783-region-1257282",
+                "family-10783-region-456440",
+                "family-10783-region-852640",
+                "family-10783-region-1089240",
+                "family-10783-region-1327820",
+                "family-10783-region-1330613",
+                "family-10783-region-1330615",
+                "family-10783-region-1332012",
+                "family-10783-region-1332014"
+              ],
+              "perceptualDensity": 0.988854834215659,
+              "totalSupport": 0.007324489795918368,
+              "connectedSupport": 0.0006744897959183674,
+              "spatialCoverage": 0.5,
+              "concentration": 0.09208693229311786,
+              "prototypeDistance": 0,
+              "outlierScore": 0.011145165784340993,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              69,
+              91,
+              89
+            ],
+            "oklab": [
+              0.4524900019168854,
+              -0.02654801681637764,
+              -0.00437210826203227
+            ],
+            "hex": "#455b59",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 426,
+                "y": 633
+              },
+              "anchorFamilyId": "family-5049",
+              "regionIds": [
+                "family-5049-region-907629",
+                "family-5049-region-1632297",
+                "family-5049-region-496650",
+                "family-5049-region-1081729",
+                "family-5049-region-1896353",
+                "family-5049-region-1770392",
+                "family-5049-region-1144840",
+                "family-5049-region-1231723",
+                "family-5049-region-1437351",
+                "family-5049-region-1925865",
+                "family-5049-region-434843",
+                "family-5049-region-1759201",
+                "family-5049-region-1877872",
+                "family-5049-region-1923087",
+                "family-5049-region-999447",
+                "family-5049-region-1923112",
+                "family-5049-region-1637390",
+                "family-5049-region-766084",
+                "family-5049-region-1479336",
+                "family-5049-region-1593810",
+                "family-5049-region-1826371",
+                "family-5049-region-1554576",
+                "family-5049-region-1492930",
+                "family-5049-region-1836167",
+                "family-5049-region-1942776",
+                "family-5049-region-1724222",
+                "family-5049-region-1668168",
+                "family-5049-region-1497515"
+              ],
+              "perceptualDensity": 0.8636494484894016,
+              "totalSupport": 0.07266683673469387,
+              "connectedSupport": 0.016928061224489796,
+              "spatialCoverage": 1,
+              "concentration": 0.23295442577601158,
+              "prototypeDistance": 0,
+              "outlierScore": 0.13635055151059838,
+              "synthesis": null
+            }
+          },
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "sourceFieldHypothesisId": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a",
+          "familyRoles": {
+            "background": "family-6813",
+            "surface": "family-7695",
+            "foreground": "family-10783",
+            "accent": "family-5049"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0,
+                "signedLc": -68.54128717293543,
+                "absoluteLc": 68.54128717293543
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0,
+                "signedLc": 18.439245927000773,
+                "absoluteLc": 18.439245927000773
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.25,
+                "signedLc": -65.17086648386827,
+                "absoluteLc": 65.17086648386827
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.25,
+                "signedLc": 21.766126160270275,
+                "absoluteLc": 21.766126160270275
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.5,
+                "signedLc": -62.00710798919828,
+                "absoluteLc": 62.00710798919828
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.5,
+                "signedLc": 24.857261278619465,
+                "absoluteLc": 24.857261278619465
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.75,
+                "signedLc": -58.45580869788586,
+                "absoluteLc": 58.45580869788586
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.75,
+                "signedLc": 28.29334191537051,
+                "absoluteLc": 28.29334191537051
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 1,
+                "signedLc": -54.72434777814759,
+                "absoluteLc": 54.72434777814759
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 1,
+                "signedLc": 31.868297561801917,
+                "absoluteLc": 31.868297561801917
+              }
+            ],
+            "minimumAbsoluteLc": 18.439245927000773,
+            "meanAbsoluteLc": 43.412369096509835
+          },
+          "scores": {
+            "fieldFidelity": 0.8522810939408699,
+            "surfaceFidelity": 0.6915546569510167,
+            "fieldStructure": 0.7087549576613725,
+            "fieldIdentity": 0.7576898226393561,
+            "treatmentFoundation": 0.7729875543728864,
+            "artworkIdentity": 0.810003317966981,
+            "representativeness": 0.8270957908163266,
+            "uiUtility": 0.5877398593847437,
+            "foregroundUtility": 0.8045158357758987,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.7310737762735349,
+            "accentUtility": 0.5384180562574857,
+            "coherence": 0.9686248818932661,
+            "economy": 0.7113142166122758,
+            "generatorConfidence": 0.8692535257502134,
+            "foundation": 0.8297934009080592,
+            "balance": 0.7113142166122758,
+            "generatedPenalty": 0,
+            "rankingScore": 0.8032493996992212
+          },
+          "gradientEvidence": {
+            "topology": "linear",
+            "direction": "diagonal-up",
+            "endpointBands": [
+              0.2,
+              0.8
+            ],
+            "progression": 0.6363636363636364,
+            "modeProgression": 0.6363636363636364,
+            "monotonicity": 0.8181818181818182,
+            "residual": 0.08855657909589304,
+            "span": 0.2098047012231813,
+            "texture": 0.04259774115082098,
+            "bandDispersion": 0.47020015186117137,
+            "edgeContinuity": 0.8915610783937713,
+            "coverage": 0.577909462563995,
+            "supportingFamilyIds": [
+              "family-6813",
+              "family-7695"
+            ],
+            "supportingEndpointHexes": [
+              "#607b76",
+              "#a0a39a"
+            ],
+            "backgroundTopologyEndpoint": "low",
+            "roleAssignment": {
+              "backgroundFamilyId": "family-6813",
+              "surfaceFamilyId": "family-7695",
+              "backgroundProfile": {
+                "frameCoverage": 0.47794363766473946,
+                "peripheralCoverage": 0.6327066427969011,
+                "connectedCoverage": 0.7202962134808732,
+                "fieldScore": 0.7717998530760269,
+                "populationCoverage": 1,
+                "evidenceLevels": [
+                  11,
+                  15,
+                  18,
+                  19,
+                  25
+                ]
+              },
+              "surfaceProfile": {
+                "frameCoverage": 0.23701867952327466,
+                "peripheralCoverage": 0.47455871151891776,
+                "connectedCoverage": 0.5572513593968015,
+                "fieldScore": 0.6490757752929386,
+                "populationCoverage": 0.775795068027211,
+                "evidenceLevels": [
+                  5,
+                  11,
+                  13,
+                  16,
+                  19
+                ]
+              },
+              "decisiveCriterion": "frameCoverage",
+              "confidence": 0.24
+            },
+            "fieldDomainId": "field-domain-0",
+            "fieldDomainPopulationFraction": 0.7117061224489796,
+            "fieldDomainBorderCoverage": 0.7961043602573267,
+            "fieldDomainOwnedCornerCount": 4,
+            "supportingComponentIds": [
+              "family-4189-region-1003626",
+              "family-4189-region-1062447",
+              "family-4189-region-1077804",
+              "family-4189-region-1098893",
+              "family-4189-region-1507343",
+              "family-4189-region-360209",
+              "family-4189-region-572186",
+              "family-4189-region-607208",
+              "family-4189-region-696856",
+              "family-4189-region-807456",
+              "family-5049-region-1081729",
+              "family-5049-region-1144840",
+              "family-5049-region-1231723",
+              "family-5049-region-1437351",
+              "family-5049-region-1479336",
+              "family-5049-region-1497515",
+              "family-5049-region-1632297",
+              "family-5049-region-434843",
+              "family-5049-region-496650",
+              "family-5049-region-766084",
+              "family-5049-region-907629",
+              "family-5049-region-999447",
+              "family-5931-region-1078175",
+              "family-5931-region-1101632",
+              "family-5931-region-1121254",
+              "family-5931-region-1137947",
+              "family-5931-region-1139229",
+              "family-5931-region-1169272",
+              "family-5931-region-1208393",
+              "family-5931-region-1219648",
+              "family-5931-region-1278004",
+              "family-5931-region-14309",
+              "family-5931-region-1464331",
+              "family-5931-region-1643478",
+              "family-5931-region-1707875",
+              "family-5931-region-1882660",
+              "family-5931-region-1919044",
+              "family-5931-region-1930816",
+              "family-5931-region-1935843",
+              "family-5931-region-381668",
+              "family-5931-region-702521",
+              "family-5931-region-896426",
+              "family-6813-region-0",
+              "family-6813-region-1069488",
+              "family-6813-region-1073586",
+              "family-6813-region-1107241",
+              "family-6813-region-1122544",
+              "family-6813-region-1164482",
+              "family-6813-region-1183943",
+              "family-6813-region-1296646",
+              "family-6813-region-251423",
+              "family-6813-region-455856",
+              "family-6813-region-563933",
+              "family-6836-region-1017548",
+              "family-6836-region-1027109",
+              "family-6836-region-1032990",
+              "family-6836-region-1048342",
+              "family-6836-region-1066513",
+              "family-6836-region-1132299",
+              "family-6836-region-1174368",
+              "family-6836-region-1251430",
+              "family-6836-region-167048",
+              "family-6836-region-1705241",
+              "family-6836-region-370034",
+              "family-6836-region-37317",
+              "family-6836-region-50019",
+              "family-6836-region-545411",
+              "family-6836-region-585891",
+              "family-6836-region-649913",
+              "family-6836-region-725525",
+              "family-6836-region-729820",
+              "family-6836-region-756346",
+              "family-6836-region-87277",
+              "family-6836-region-954556",
+              "family-6836-region-972837",
+              "family-6836-region-974184",
+              "family-6836-region-990633",
+              "family-7695-region-1119",
+              "family-7695-region-1196571",
+              "family-7695-region-1665529",
+              "family-7695-region-1671090",
+              "family-7695-region-1687912",
+              "family-7695-region-1720117",
+              "family-7695-region-1727075",
+              "family-7695-region-1742487",
+              "family-7695-region-1743977",
+              "family-7695-region-1783073",
+              "family-7695-region-310",
+              "family-7695-region-502060",
+              "family-7718-region-1014806",
+              "family-7718-region-1017428",
+              "family-7718-region-1056740",
+              "family-7718-region-1058264",
+              "family-7718-region-1069379",
+              "family-7718-region-1114121",
+              "family-7718-region-1195387",
+              "family-7718-region-1220617",
+              "family-7718-region-1259803",
+              "family-7718-region-1266816",
+              "family-7718-region-1317185",
+              "family-7718-region-144643",
+              "family-7718-region-213243",
+              "family-7718-region-21845",
+              "family-7718-region-277603",
+              "family-7718-region-386979",
+              "family-7718-region-61174",
+              "family-7718-region-618081",
+              "family-7718-region-62092",
+              "family-7718-region-638931",
+              "family-7718-region-654346",
+              "family-7718-region-834",
+              "family-7718-region-839427",
+              "family-7718-region-846674",
+              "family-7718-region-973961",
+              "family-8578-region-1216228",
+              "family-8578-region-1370336",
+              "family-8578-region-1536760",
+              "family-8578-region-1585776",
+              "family-8578-region-1631993",
+              "family-8578-region-1673946",
+              "family-8578-region-1696299",
+              "family-8578-region-237675",
+              "family-8578-region-392",
+              "family-8578-region-51437",
+              "family-9041-region-1024397",
+              "family-9041-region-1027230",
+              "family-9041-region-1034378",
+              "family-9041-region-1042692",
+              "family-9041-region-1066484",
+              "family-9041-region-1072167",
+              "family-9041-region-1100165",
+              "family-9041-region-1247240",
+              "family-9041-region-1294753",
+              "family-9041-region-174104",
+              "family-9041-region-206350",
+              "family-9041-region-379914",
+              "family-9041-region-398106",
+              "family-9041-region-543",
+              "family-9041-region-701848",
+              "family-9041-region-732847",
+              "family-9041-region-76552",
+              "family-9041-region-791563",
+              "family-9041-region-83219",
+              "family-9041-region-844840",
+              "family-9041-region-932178",
+              "family-9041-region-946201",
+              "family-9041-region-958804",
+              "family-9041-region-982565",
+              "family-9041-region-999377",
+              "family-9923-region-364512",
+              "family-9923-region-534",
+              "family-9923-region-557",
+              "family-9923-region-606",
+              "family-9923-region-863442",
+              "family-9923-region-911031",
+              "family-9923-region-929232",
+              "family-9923-region-941832"
+            ]
+          }
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|251,253,250|69,91,89|gradient",
+          "roles": {
+            "background": {
+              "sourceHex": "#6c8a8a",
+              "nearestName": "Campfire Smoke",
+              "nearest": {
+                "name": "Campfire Smoke",
+                "tier": "srgb",
+                "referenceHex": "#768a8c",
+                "referenceOKLab": [
+                  0.6185,
+                  -0.0218,
+                  -0.0085
+                ],
+                "distance": 0.013457099074894317
+              }
+            },
+            "surface": {
+              "sourceHex": "#86a5aa",
+              "nearestName": "Storm's Coming",
+              "nearest": {
+                "name": "Storm's Coming",
+                "tier": "srgb",
+                "referenceHex": "#93a6af",
+                "referenceOKLab": [
+                  0.7128,
+                  -0.0172,
+                  -0.0187
+                ],
+                "distance": 0.018550249344956877
+              }
+            },
+            "foreground": {
+              "sourceHex": "#fbfdfa",
+              "nearestName": "Snow",
+              "nearest": {
+                "name": "Snow",
+                "tier": "p3",
+                "referenceHex": "#fffaf9",
+                "referenceOKLab": [
+                  0.9879,
+                  0.0071,
+                  0.0029
+                ],
+                "distance": 0.010932959346455641
+              }
+            },
+            "accent": {
+              "sourceHex": "#455b59",
+              "nearestName": "Blue Steel",
+              "nearest": {
+                "name": "Blue Steel",
+                "tier": "srgb",
+                "referenceHex": "#455b64",
+                "referenceOKLab": [
+                  0.4568,
+                  -0.0225,
+                  -0.0211
+                ],
+                "distance": 0.017742175664781076
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "sourcePath": "images/infected.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "illustration",
+        "small signature colors",
+        "highly chromatic"
+      ],
+      "dimensions": {
+        "width": 640,
+        "height": 640
+      },
+      "winnerTreatmentId": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+          "background": {
+            "rgb": [
+              49,
+              47,
+              112
+            ],
+            "oklab": [
+              0.3462722897529602,
+              0.01975507102906704,
+              -0.10736638307571411
+            ],
+            "hex": "#312f70",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 288,
+                "y": 7
+              },
+              "anchorFamilyId": "family-3745",
+              "regionIds": [
+                "family-3745-region-0",
+                "family-3745-region-312208",
+                "family-3745-region-360533",
+                "family-3745-region-316728",
+                "family-3745-region-212490",
+                "family-3745-region-357778",
+                "family-3745-region-106069",
+                "family-3745-region-392775",
+                "family-3745-region-211812",
+                "family-3745-region-102866",
+                "family-3745-region-371252",
+                "family-3745-region-202503",
+                "family-3745-region-216551",
+                "family-3745-region-222592",
+                "family-3745-region-274055",
+                "family-3745-region-211730",
+                "family-3745-region-380293",
+                "family-3745-region-315464",
+                "family-3745-region-303914",
+                "family-3745-region-291057",
+                "family-3745-region-355899",
+                "family-3745-region-378352",
+                "family-3745-region-373829",
+                "family-3745-region-353334",
+                "family-3745-region-364828",
+                "family-3745-region-363676",
+                "family-3745-region-15894"
+              ],
+              "perceptualDensity": 0.5192419655333023,
+              "totalSupport": 0.4193359375,
+              "connectedSupport": 0.29628173828125,
+              "spatialCoverage": 1,
+              "concentration": 0.7065498369818352,
+              "prototypeDistance": 0,
+              "outlierScore": 0.48075803446669774,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              33,
+              24,
+              69
+            ],
+            "oklab": [
+              0.24886484444141388,
+              0.0253942608833313,
+              -0.07693967968225479
+            ],
+            "hex": "#211845",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 216,
+                "y": 238
+              },
+              "anchorFamilyId": "family-2863",
+              "regionIds": [
+                "family-2863-region-206931",
+                "family-2863-region-276280",
+                "family-2863-region-122440",
+                "family-2863-region-255675",
+                "family-2863-region-339397",
+                "family-2863-region-507",
+                "family-2863-region-357849",
+                "family-2863-region-372355",
+                "family-2863-region-148732",
+                "family-2863-region-341884",
+                "family-2863-region-149411",
+                "family-2863-region-195383",
+                "family-2863-region-269232",
+                "family-2863-region-14643",
+                "family-2863-region-394404",
+                "family-2863-region-314816",
+                "family-2863-region-342546",
+                "family-2863-region-14669",
+                "family-2863-region-31278",
+                "family-2863-region-179402",
+                "family-2863-region-347604",
+                "family-2863-region-342577",
+                "family-2863-region-27443",
+                "family-2863-region-348329",
+                "family-2863-region-348892",
+                "family-2863-region-362952",
+                "family-2863-region-341843",
+                "family-2863-region-361096",
+                "family-2863-region-23649",
+                "family-2863-region-356016",
+                "family-2863-region-367460",
+                "family-2863-region-362368"
+              ],
+              "perceptualDensity": 0.877436524491117,
+              "totalSupport": 0.16971435546875,
+              "connectedSupport": 0.05160888671875,
+              "spatialCoverage": 1,
+              "concentration": 0.3040926418758541,
+              "prototypeDistance": 0,
+              "outlierScore": 0.12256347550888302,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              86,
+              216,
+              250
+            ],
+            "oklab": [
+              0.8237345218658447,
+              -0.09544140100479126,
+              -0.07553590089082718
+            ],
+            "hex": "#56d8fa",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 412,
+                "y": 319
+              },
+              "anchorFamilyId": "family-8974",
+              "regionIds": [
+                "family-8974-region-383749",
+                "family-8974-region-188559",
+                "family-8974-region-271290",
+                "family-8974-region-374793",
+                "family-8974-region-269414",
+                "family-8974-region-46294",
+                "family-8974-region-272472",
+                "family-8974-region-51444",
+                "family-8974-region-64948",
+                "family-8974-region-45699",
+                "family-8974-region-52738",
+                "family-8974-region-51917",
+                "family-8974-region-148881",
+                "family-8974-region-219300",
+                "family-8974-region-315271",
+                "family-8974-region-40548",
+                "family-8974-region-306949",
+                "family-8974-region-44394",
+                "family-8974-region-296709",
+                "family-8974-region-44319",
+                "family-8974-region-272415",
+                "family-8974-region-42483",
+                "family-8974-region-392747",
+                "family-8974-region-217997"
+              ],
+              "perceptualDensity": 0.9929656724817107,
+              "totalSupport": 0.0086767578125,
+              "connectedSupport": 0.00228759765625,
+              "spatialCoverage": 0.75,
+              "concentration": 0.26364659538548113,
+              "prototypeDistance": 0,
+              "outlierScore": 0.007034327518289252,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              226,
+              72,
+              82
+            ],
+            "oklab": [
+              0.6215139031410217,
+              0.177176833152771,
+              0.06828326731920242
+            ],
+            "hex": "#e24852",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 82,
+                "y": 559
+              },
+              "anchorFamilyId": "family-6920",
+              "regionIds": [
+                "family-6920-region-356529",
+                "family-6920-region-13975",
+                "family-6920-region-357289",
+                "family-6920-region-338731",
+                "family-6920-region-338605",
+                "family-6920-region-357230",
+                "family-6920-region-357253",
+                "family-6920-region-357211",
+                "family-6920-region-357272",
+                "family-6920-region-357174",
+                "family-6920-region-338645",
+                "family-6920-region-338713",
+                "family-6920-region-357194",
+                "family-6920-region-338668",
+                "family-6920-region-336672",
+                "family-6920-region-338687",
+                "family-6920-region-338627",
+                "family-6920-region-176920",
+                "family-6920-region-175015",
+                "family-6920-region-183173",
+                "family-6920-region-250021",
+                "family-6920-region-226502",
+                "family-6920-region-201176",
+                "family-6920-region-14058"
+              ],
+              "perceptualDensity": 0.7076456310679612,
+              "totalSupport": 0.0201171875,
+              "connectedSupport": 0.00157470703125,
+              "spatialCoverage": 1,
+              "concentration": 0.07827669902912622,
+              "prototypeDistance": 0,
+              "outlierScore": 0.2923543689320388,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-3745:family-2863",
+          "familyRoles": {
+            "background": "family-3745",
+            "surface": "family-2863",
+            "foreground": "family-8974",
+            "accent": "family-6920"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -66.53840379118272,
+                "absoluteLc": 66.53840379118272
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -28.35941924121484,
+                "absoluteLc": 28.35941924121484
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -71.66049038341285,
+                "absoluteLc": 71.66049038341285
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -33.48150583344498,
+                "absoluteLc": 33.48150583344498
+              }
+            ],
+            "minimumAbsoluteLc": 28.35941924121484,
+            "meanAbsoluteLc": 50.00995481231384
+          },
+          "scores": {
+            "fieldFidelity": 0.7512713136927053,
+            "surfaceFidelity": 0.6582086194559129,
+            "fieldStructure": 0.6095068471411316,
+            "fieldIdentity": 0.7169480294379695,
+            "treatmentFoundation": 0.7641463026115836,
+            "artworkIdentity": 0.8433284700999715,
+            "representativeness": 0.7729322814941406,
+            "uiUtility": 0.6682319701710806,
+            "foregroundUtility": 0.8680689004863371,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.8394145871029381,
+            "accentUtility": 0.6286487189655007,
+            "coherence": 0.9822302569086563,
+            "economy": 0.7488116032794255,
+            "generatorConfidence": 0.8028783442862544,
+            "foundation": 0.7891773550956058,
+            "balance": 0.7488116032794255,
+            "generatedPenalty": 0,
+            "rankingScore": 0.7962456715461949
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-3745:family-2863|49,47,112|33,24,69|86,216,250|226,72,82|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#312f70",
+              "nearestName": "Nightfall",
+              "nearest": {
+                "name": "Nightfall",
+                "tier": "srgb",
+                "referenceHex": "#373372",
+                "referenceOKLab": [
+                  0.361,
+                  0.0226,
+                  -0.1022
+                ],
+                "distance": 0.015864758966668654
+              }
+            },
+            "surface": {
+              "sourceHex": "#211845",
+              "nearestName": "Velvet Night",
+              "nearest": {
+                "name": "Velvet Night",
+                "tier": "srgb",
+                "referenceHex": "#1f1443",
+                "referenceOKLab": [
+                  0.2363,
+                  0.0268,
+                  -0.0793
+                ],
+                "distance": 0.012861667946700812
+              }
+            },
+            "foreground": {
+              "sourceHex": "#56d8fa",
+              "nearestName": "Splashing Wave",
+              "nearest": {
+                "name": "Splashing Wave",
+                "tier": "p3",
+                "referenceHex": "#54d9ff",
+                "referenceOKLab": [
+                  0.8279,
+                  -0.1027,
+                  -0.0868
+                ],
+                "distance": 0.014032753785658618
+              }
+            },
+            "accent": {
+              "sourceHex": "#e24852",
+              "nearestName": "Hex Appeal",
+              "nearest": {
+                "name": "Hex Appeal",
+                "tier": "srgb",
+                "referenceHex": "#e54057",
+                "referenceOKLab": [
+                  0.6203,
+                  0.191,
+                  0.0609
+                ],
+                "distance": 0.015718336980852135
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "sourcePath": "images/horrorwood.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "high-detail artwork",
+        "photography",
+        "small signature colors"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 1200
+      },
+      "winnerTreatmentId": "flat:family-2403:family-4167|20,27,37|54,68,79|204,211,217|128,139,145|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-2403:family-4167|20,27,37|54,68,79|204,211,217|128,139,145|flat",
+          "background": {
+            "rgb": [
+              20,
+              27,
+              37
+            ],
+            "oklab": [
+              0.2200143188238144,
+              -0.0049133808352053165,
+              -0.021777447313070297
+            ],
+            "hex": "#141b25",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 1014,
+                "y": 82
+              },
+              "anchorFamilyId": "family-2403",
+              "regionIds": [
+                "family-2403-region-1478",
+                "family-2403-region-997896",
+                "family-2403-region-1152025",
+                "family-2403-region-1298869",
+                "family-2403-region-271072",
+                "family-2403-region-205179",
+                "family-2403-region-453593",
+                "family-2403-region-101628",
+                "family-2403-region-104847",
+                "family-2403-region-1326254",
+                "family-2403-region-191439",
+                "family-2403-region-1005218",
+                "family-2403-region-639667",
+                "family-2403-region-1302248",
+                "family-2403-region-918733",
+                "family-2403-region-1089203",
+                "family-2403-region-1031928",
+                "family-2403-region-1316593",
+                "family-2403-region-912632",
+                "family-2403-region-1027141",
+                "family-2403-region-1325482",
+                "family-2403-region-1055593",
+                "family-2403-region-1334863",
+                "family-2403-region-918596",
+                "family-2403-region-913977",
+                "family-2403-region-734581",
+                "family-2403-region-1018423",
+                "family-2403-region-1302295",
+                "family-2403-region-926964",
+                "family-2403-region-1351838",
+                "family-2403-region-932926",
+                "family-2403-region-1082024"
+              ],
+              "perceptualDensity": 0.8401541282122992,
+              "totalSupport": 0.49165416666666667,
+              "connectedSupport": 0.28179930555555555,
+              "spatialCoverage": 1,
+              "concentration": 0.5731657019528745,
+              "prototypeDistance": 0,
+              "outlierScore": 0.15984587178770082,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              54,
+              68,
+              79
+            ],
+            "oklab": [
+              0.3788171708583832,
+              -0.012258217670023441,
+              -0.02310771495103836
+            ],
+            "hex": "#36444f",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 1140,
+                "y": 140
+              },
+              "anchorFamilyId": "family-4167",
+              "regionIds": [
+                "family-4167-region-284903",
+                "family-4167-region-593578",
+                "family-4167-region-940291",
+                "family-4167-region-539408",
+                "family-4167-region-519535",
+                "family-4167-region-677048",
+                "family-4167-region-514979",
+                "family-4167-region-515756",
+                "family-4167-region-1242542",
+                "family-4167-region-1056275",
+                "family-4167-region-976836",
+                "family-4167-region-1061712",
+                "family-4167-region-288004",
+                "family-4167-region-1029416",
+                "family-4167-region-891948",
+                "family-4167-region-885177",
+                "family-4167-region-1168448",
+                "family-4167-region-852376",
+                "family-4167-region-1196132",
+                "family-4167-region-1008150",
+                "family-4167-region-1136808",
+                "family-4167-region-971001",
+                "family-4167-region-717478",
+                "family-4167-region-1129132",
+                "family-4167-region-728259",
+                "family-4167-region-593845",
+                "family-4167-region-659847",
+                "family-4167-region-396100",
+                "family-4167-region-1029911",
+                "family-4167-region-879367",
+                "family-4167-region-1032230",
+                "family-4167-region-1261786"
+              ],
+              "perceptualDensity": 0.5559212420908859,
+              "totalSupport": 0.08440069444444444,
+              "connectedSupport": 0.009558333333333334,
+              "spatialCoverage": 1,
+              "concentration": 0.11324946312645531,
+              "prototypeDistance": 0,
+              "outlierScore": 0.4440787579091141,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              204,
+              211,
+              217
+            ],
+            "oklab": [
+              0.8632318377494812,
+              -0.00500867422670126,
+              -0.01012261863797903
+            ],
+            "hex": "#ccd3d9",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 664,
+                "y": 45
+              },
+              "anchorFamilyId": "family-9459",
+              "regionIds": [
+                "family-9459-region-173878",
+                "family-9459-region-914974",
+                "family-9459-region-917335",
+                "family-9459-region-913713",
+                "family-9459-region-192772",
+                "family-9459-region-182793",
+                "family-9459-region-1369454",
+                "family-9459-region-1314168",
+                "family-9459-region-169332",
+                "family-9459-region-831493",
+                "family-9459-region-178908",
+                "family-9459-region-190160",
+                "family-9459-region-1338218",
+                "family-9459-region-1310607",
+                "family-9459-region-1001882",
+                "family-9459-region-182682",
+                "family-9459-region-1298613",
+                "family-9459-region-1369600",
+                "family-9459-region-171959",
+                "family-9459-region-996937",
+                "family-9459-region-188989",
+                "family-9459-region-1298573",
+                "family-9459-region-920317",
+                "family-9459-region-1300040"
+              ],
+              "perceptualDensity": 0.8446942517738978,
+              "totalSupport": 0.008710416666666667,
+              "connectedSupport": 0.00081875,
+              "spatialCoverage": 1,
+              "concentration": 0.09399665151877541,
+              "prototypeDistance": 0,
+              "outlierScore": 0.1553057482261022,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              128,
+              139,
+              145
+            ],
+            "oklab": [
+              0.6297281980514526,
+              -0.009818917140364647,
+              -0.012282060459256172
+            ],
+            "hex": "#808b91",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 534,
+                "y": 44
+              },
+              "anchorFamilyId": "family-6813",
+              "regionIds": [
+                "family-6813-region-639512",
+                "family-6813-region-779764",
+                "family-6813-region-824534",
+                "family-6813-region-1028529",
+                "family-6813-region-747895",
+                "family-6813-region-610556",
+                "family-6813-region-845868",
+                "family-6813-region-955906",
+                "family-6813-region-837480",
+                "family-6813-region-931112",
+                "family-6813-region-951076",
+                "family-6813-region-128491",
+                "family-6813-region-220940",
+                "family-6813-region-956396",
+                "family-6813-region-801460",
+                "family-6813-region-936788",
+                "family-6813-region-318854",
+                "family-6813-region-903484",
+                "family-6813-region-151658",
+                "family-6813-region-948418",
+                "family-6813-region-967116",
+                "family-6813-region-991502",
+                "family-6813-region-725783",
+                "family-6813-region-1007817",
+                "family-6813-region-1046672",
+                "family-6813-region-256103",
+                "family-6813-region-860250",
+                "family-6813-region-806250",
+                "family-6813-region-97664",
+                "family-6813-region-274603"
+              ],
+              "perceptualDensity": 0.7309313364432442,
+              "totalSupport": 0.03394166666666667,
+              "connectedSupport": 0.002757638888888889,
+              "spatialCoverage": 1,
+              "concentration": 0.08124641951059824,
+              "prototypeDistance": 0,
+              "outlierScore": 0.26906866355675585,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-2403:family-4167",
+          "familyRoles": {
+            "background": "family-2403",
+            "surface": "family-4167",
+            "foreground": "family-9459",
+            "accent": "family-6813"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -77.85100710721264,
+                "absoluteLc": 77.85100710721264
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -37.80138864132977,
+                "absoluteLc": 37.80138864132977
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -68.74737884915199,
+                "absoluteLc": 68.74737884915199
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -28.697760383269127,
+                "absoluteLc": 28.697760383269127
+              }
+            ],
+            "minimumAbsoluteLc": 28.697760383269127,
+            "meanAbsoluteLc": 53.274383745240875
+          },
+          "scores": {
+            "fieldFidelity": 0.712982305830129,
+            "surfaceFidelity": 0.7470490612535114,
+            "fieldStructure": 0.6162448661022247,
+            "fieldIdentity": 0.7043236685744948,
+            "treatmentFoundation": 0.7609823148636466,
+            "artworkIdentity": 0.8049914204590627,
+            "representativeness": 0.7633534288194443,
+            "uiUtility": 0.7105252886713763,
+            "foregroundUtility": 0.8883398118191981,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.7362124326414976,
+            "accentUtility": 0.64263693687581,
+            "coherence": 1,
+            "economy": 0.7416307469475045,
+            "generatorConfidence": 0.7829786254114321,
+            "foundation": 0.7604423850362121,
+            "balance": 0.712982305830129,
+            "generatedPenalty": 0,
+            "rankingScore": 0.7884339654854275
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-2403:family-4167|20,27,37|54,68,79|204,211,217|128,139,145|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#141b25",
+              "nearestName": "Jaguar",
+              "nearest": {
+                "name": "Jaguar",
+                "tier": "srgb",
+                "referenceHex": "#132029",
+                "referenceOKLab": [
+                  0.2359,
+                  -0.0128,
+                  -0.0215
+                ],
+                "distance": 0.01773783314298744
+              }
+            },
+            "surface": {
+              "sourceHex": "#36444f",
+              "nearestName": "Pi",
+              "nearest": {
+                "name": "Pi",
+                "tier": "srgb",
+                "referenceHex": "#364456",
+                "referenceOKLab": [
+                  0.3831,
+                  -0.0102,
+                  -0.0342
+                ],
+                "distance": 0.01206721803362941
+              }
+            },
+            "foreground": {
+              "sourceHex": "#ccd3d9",
+              "nearestName": "Zen",
+              "nearest": {
+                "name": "Zen",
+                "tier": "srgb",
+                "referenceHex": "#c9d2d4",
+                "referenceOKLab": [
+                  0.857,
+                  -0.0085,
+                  -0.0062
+                ],
+                "distance": 0.008149379815115328
+              }
+            },
+            "accent": {
+              "sourceHex": "#808b91",
+              "nearestName": "Campfire Smoke",
+              "nearest": {
+                "name": "Campfire Smoke",
+                "tier": "srgb",
+                "referenceHex": "#768a8c",
+                "referenceOKLab": [
+                  0.6185,
+                  -0.0218,
+                  -0.0085
+                ],
+                "distance": 0.016849990965230294
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "sourcePath": "images/nada.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "broad flat field",
+        "repeated small signatures",
+        "highly chromatic"
+      ],
+      "dimensions": {
+        "width": 640,
+        "height": 640
+      },
+      "winnerTreatmentId": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|16,13,40|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|16,13,40|flat",
+          "background": {
+            "rgb": [
+              68,
+              100,
+              139
+            ],
+            "oklab": [
+              0.495659738779068,
+              -0.020228393375873566,
+              -0.07036488503217697
+            ],
+            "hex": "#44648b",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 472,
+                "y": 20
+              },
+              "anchorFamilyId": "family-5489",
+              "regionIds": [
+                "family-5489-region-0",
+                "family-5489-region-304074",
+                "family-5489-region-282260",
+                "family-5489-region-209858",
+                "family-5489-region-239364",
+                "family-5489-region-311282",
+                "family-5489-region-115655",
+                "family-5489-region-74912",
+                "family-5489-region-230948",
+                "family-5489-region-94355",
+                "family-5489-region-11494",
+                "family-5489-region-325972",
+                "family-5489-region-7623",
+                "family-5489-region-239340",
+                "family-5489-region-12755",
+                "family-5489-region-302750",
+                "family-5489-region-8280",
+                "family-5489-region-310445",
+                "family-5489-region-312383",
+                "family-5489-region-406528",
+                "family-5489-region-94471",
+                "family-5489-region-96250",
+                "family-5489-region-93777",
+                "family-5489-region-96941",
+                "family-5489-region-408361"
+              ],
+              "perceptualDensity": 0.9863163813077687,
+              "totalSupport": 0.68173583984375,
+              "connectedSupport": 0.668515625,
+              "spatialCoverage": 1,
+              "concentration": 0.9806080096261626,
+              "prototypeDistance": 0,
+              "outlierScore": 0.013683618692231336,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              53,
+              79,
+              112
+            ],
+            "oklab": [
+              0.4218747913837433,
+              -0.01668141968548298,
+              -0.061641305685043335
+            ],
+            "hex": "#354f70",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 603,
+                "y": 26
+              },
+              "anchorFamilyId": "family-4607",
+              "regionIds": [
+                "family-4607-region-218171",
+                "family-4607-region-237449",
+                "family-4607-region-590",
+                "family-4607-region-76770",
+                "family-4607-region-302916",
+                "family-4607-region-291002",
+                "family-4607-region-292933",
+                "family-4607-region-305352",
+                "family-4607-region-86451",
+                "family-4607-region-302690",
+                "family-4607-region-200884",
+                "family-4607-region-281681",
+                "family-4607-region-199581",
+                "family-4607-region-69163",
+                "family-4607-region-249529",
+                "family-4607-region-266402",
+                "family-4607-region-288923",
+                "family-4607-region-62136",
+                "family-4607-region-196417",
+                "family-4607-region-204757",
+                "family-4607-region-65942",
+                "family-4607-region-300433",
+                "family-4607-region-303716",
+                "family-4607-region-310763",
+                "family-4607-region-313199"
+              ],
+              "perceptualDensity": 0.9897498795391826,
+              "totalSupport": 0.05573486328125,
+              "connectedSupport": 0.0098291015625,
+              "spatialCoverage": 1,
+              "concentration": 0.17635463664637085,
+              "prototypeDistance": 0,
+              "outlierScore": 0.010250120460817413,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              251,
+              252,
+              247
+            ],
+            "oklab": [
+              0.9889328479766846,
+              -0.0028854210395365953,
+              0.005994992796331644
+            ],
+            "hex": "#fbfcf7",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 338,
+                "y": 142
+              },
+              "anchorFamilyId": "family-10783",
+              "regionIds": [
+                "family-10783-region-90456",
+                "family-10783-region-90508",
+                "family-10783-region-91263",
+                "family-10783-region-90599",
+                "family-10783-region-90488",
+                "family-10783-region-90539",
+                "family-10783-region-90575",
+                "family-10783-region-91289",
+                "family-10783-region-351158",
+                "family-10783-region-408245",
+                "family-10783-region-334603",
+                "family-10783-region-340778",
+                "family-10783-region-344266",
+                "family-10783-region-344910",
+                "family-10783-region-350567",
+                "family-10783-region-351411",
+                "family-10783-region-351909",
+                "family-10783-region-352548",
+                "family-10783-region-377224",
+                "family-10783-region-377472",
+                "family-10783-region-378111",
+                "family-10783-region-378667",
+                "family-10783-region-387777",
+                "family-10783-region-404731"
+              ],
+              "perceptualDensity": 0.9389545974818772,
+              "totalSupport": 0.00639892578125,
+              "connectedSupport": 0.0009228515625,
+              "spatialCoverage": 1,
+              "concentration": 0.14421976344906523,
+              "prototypeDistance": 0,
+              "outlierScore": 0.06104540251812285,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              16,
+              13,
+              40
+            ],
+            "oklab": [
+              0.18102440237998962,
+              0.013608163222670555,
+              -0.05156007036566734
+            ],
+            "hex": "#100d28",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 235,
+                "y": 505
+              },
+              "anchorFamilyId": "family-1982",
+              "regionIds": [
+                "family-1982-region-307662",
+                "family-1982-region-326490",
+                "family-1982-region-323690",
+                "family-1982-region-331415",
+                "family-1982-region-311705",
+                "family-1982-region-339876",
+                "family-1982-region-304176",
+                "family-1982-region-327512",
+                "family-1982-region-347429",
+                "family-1982-region-372238",
+                "family-1982-region-313313",
+                "family-1982-region-320239",
+                "family-1982-region-324214",
+                "family-1982-region-352465",
+                "family-1982-region-332919",
+                "family-1982-region-325890",
+                "family-1982-region-381983",
+                "family-1982-region-353356",
+                "family-1982-region-350522",
+                "family-1982-region-382668",
+                "family-1982-region-337417",
+                "family-1982-region-328496",
+                "family-1982-region-372964",
+                "family-1982-region-386415",
+                "family-1982-region-357248"
+              ],
+              "perceptualDensity": 0.7073391724554515,
+              "totalSupport": 0.02425048828125,
+              "connectedSupport": 0.00348876953125,
+              "spatialCoverage": 0.5,
+              "concentration": 0.14386388804993455,
+              "prototypeDistance": 0,
+              "outlierScore": 0.2926608275445485,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-5489:family-4607",
+          "familyRoles": {
+            "background": "family-5489",
+            "surface": "family-4607",
+            "foreground": "family-10783",
+            "accent": "family-1982"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -83.18614196161143,
+                "absoluteLc": 83.18614196161143
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": 22.922363091605945,
+                "absoluteLc": 22.922363091605945
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -91.04779985653973,
+                "absoluteLc": 91.04779985653973
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": 14.399342779487217,
+                "absoluteLc": 14.399342779487217
+              }
+            ],
+            "minimumAbsoluteLc": 14.399342779487217,
+            "meanAbsoluteLc": 52.88891192231108
+          },
+          "scores": {
+            "fieldFidelity": 0.7538475668689071,
+            "surfaceFidelity": 0.5940586538158752,
+            "fieldStructure": 0.5810295239241319,
+            "fieldIdentity": 0.6923040044313831,
+            "treatmentFoundation": 0.7753948448403908,
+            "artworkIdentity": 0.8248889511065727,
+            "representativeness": 0.7191796875,
+            "uiUtility": 0.7666029515653119,
+            "foregroundUtility": 0.9726913204286086,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.738279981085785,
+            "accentUtility": 0.4694691733936233,
+            "coherence": 0.950931401571159,
+            "economy": 0.6661693174508301,
+            "generatorConfidence": 0.7845973639671308,
+            "foundation": 0.7659720684918266,
+            "balance": 0.6661693174508301,
+            "generatedPenalty": 0,
+            "rankingScore": 0.7833242944278541
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|16,13,40|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#44648b",
+              "nearestName": "Faded Sapphire",
+              "nearest": {
+                "name": "Faded Sapphire",
+                "tier": "srgb",
+                "referenceHex": "#476691",
+                "referenceOKLab": [
+                  0.5048,
+                  -0.0175,
+                  -0.0767
+                ],
+                "distance": 0.011450856515713132
+              }
+            },
+            "surface": {
+              "sourceHex": "#354f70",
+              "nearestName": "Denim Slate",
+              "nearest": {
+                "name": "Denim Slate",
+                "tier": "srgb",
+                "referenceHex": "#364d71",
+                "referenceOKLab": [
+                  0.4181,
+                  -0.0124,
+                  -0.065
+                ],
+                "distance": 0.006622718000156167
+              }
+            },
+            "foreground": {
+              "sourceHex": "#fbfcf7",
+              "nearestName": "Snow",
+              "nearest": {
+                "name": "Snow",
+                "tier": "p3",
+                "referenceHex": "#fffaf9",
+                "referenceOKLab": [
+                  0.9879,
+                  0.0071,
+                  0.0029
+                ],
+                "distance": 0.010504971012184875
+              }
+            },
+            "accent": {
+              "sourceHex": "#100d28",
+              "nearestName": "Night",
+              "nearest": {
+                "name": "Night",
+                "tier": "srgb",
+                "referenceHex": "#0d102b",
+                "referenceOKLab": [
+                  0.1877,
+                  0.0055,
+                  -0.0531
+                ],
+                "distance": 0.010614959968962428
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "sourcePath": "images/artofficial.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "collage",
+        "high-detail artwork",
+        "highly chromatic"
+      ],
+      "dimensions": {
+        "width": 1000,
+        "height": 1000
+      },
+      "winnerTreatmentId": "flat:family-3746:family-1540|49,48,92|4,3,37|245,229,12|253,237,159|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-3746:family-1540|49,48,92|4,3,37|245,229,12|253,237,159|flat",
+          "background": {
+            "rgb": [
+              49,
+              48,
+              92
+            ],
+            "oklab": [
+              0.3335449695587158,
+              0.0164591446518898,
+              -0.07435928285121918
+            ],
+            "hex": "#31305c",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 168,
+                "y": 580
+              },
+              "anchorFamilyId": "family-3746",
+              "regionIds": [
+                "family-3746-region-758985",
+                "family-3746-region-908484",
+                "family-3746-region-935692",
+                "family-3746-region-329854",
+                "family-3746-region-546933",
+                "family-3746-region-599916",
+                "family-3746-region-916854",
+                "family-3746-region-909899",
+                "family-3746-region-344846",
+                "family-3746-region-912183",
+                "family-3746-region-64021",
+                "family-3746-region-627900",
+                "family-3746-region-894171",
+                "family-3746-region-607798",
+                "family-3746-region-412897",
+                "family-3746-region-943820",
+                "family-3746-region-578166",
+                "family-3746-region-765193",
+                "family-3746-region-592119",
+                "family-3746-region-564883",
+                "family-3746-region-575158",
+                "family-3746-region-557139",
+                "family-3746-region-907945",
+                "family-3746-region-492920",
+                "family-3746-region-586134",
+                "family-3746-region-522856",
+                "family-3746-region-548875"
+              ],
+              "perceptualDensity": 0.8547312556458898,
+              "totalSupport": 0.053136,
+              "connectedSupport": 0.021525,
+              "spatialCoverage": 1,
+              "concentration": 0.4050925925925926,
+              "prototypeDistance": 0,
+              "outlierScore": 0.1452687443541102,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              4,
+              3,
+              37
+            ],
+            "oklab": [
+              0.13802047073841095,
+              0.005046452395617962,
+              -0.07084199786186218
+            ],
+            "hex": "#040325",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 235,
+                "y": 6
+              },
+              "anchorFamilyId": "family-1540",
+              "regionIds": [
+                "family-1540-region-566955",
+                "family-1540-region-222083",
+                "family-1540-region-6233",
+                "family-1540-region-588457",
+                "family-1540-region-90785",
+                "family-1540-region-122105",
+                "family-1540-region-452446",
+                "family-1540-region-547040",
+                "family-1540-region-253766",
+                "family-1540-region-237034",
+                "family-1540-region-774295",
+                "family-1540-region-168473",
+                "family-1540-region-162429",
+                "family-1540-region-390021",
+                "family-1540-region-626630",
+                "family-1540-region-301092",
+                "family-1540-region-217467",
+                "family-1540-region-155518",
+                "family-1540-region-500155",
+                "family-1540-region-270838",
+                "family-1540-region-149262",
+                "family-1540-region-948225",
+                "family-1540-region-576077",
+                "family-1540-region-968248",
+                "family-1540-region-279040",
+                "family-1540-region-912777",
+                "family-1540-region-109046",
+                "family-1540-region-720279",
+                "family-1540-region-970178",
+                "family-1540-region-47127",
+                "family-1540-region-142100"
+              ],
+              "perceptualDensity": 0.8401491088759485,
+              "totalSupport": 0.181344,
+              "connectedSupport": 0.096933,
+              "spatialCoverage": 1,
+              "concentration": 0.5345255426151403,
+              "prototypeDistance": 0,
+              "outlierScore": 0.1598508911240515,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              245,
+              229,
+              12
+            ],
+            "oklab": [
+              0.9060524702072144,
+              -0.047319985926151276,
+              0.18438154458999634
+            ],
+            "hex": "#f5e50c",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 302,
+                "y": 427
+              },
+              "anchorFamilyId": "family-9884",
+              "regionIds": [
+                "family-9884-region-769048",
+                "family-9884-region-709257",
+                "family-9884-region-687232",
+                "family-9884-region-704070",
+                "family-9884-region-692015",
+                "family-9884-region-665137",
+                "family-9884-region-683168",
+                "family-9884-region-687191",
+                "family-9884-region-718181",
+                "family-9884-region-748045",
+                "family-9884-region-773148",
+                "family-9884-region-816163",
+                "family-9884-region-275750",
+                "family-9884-region-751075",
+                "family-9884-region-938275",
+                "family-9884-region-816114",
+                "family-9884-region-636272",
+                "family-9884-region-789185",
+                "family-9884-region-742004",
+                "family-9884-region-532310",
+                "family-9884-region-885251",
+                "family-9884-region-767210",
+                "family-9884-region-682034",
+                "family-9884-region-888107",
+                "family-9884-region-288776"
+              ],
+              "perceptualDensity": 0.7676355108171493,
+              "totalSupport": 0.037949,
+              "connectedSupport": 0.00926,
+              "spatialCoverage": 1,
+              "concentration": 0.2440116999130412,
+              "prototypeDistance": 0,
+              "outlierScore": 0.2323644891828507,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              253,
+              237,
+              159
+            ],
+            "oklab": [
+              0.9414925575256348,
+              -0.01377785112708807,
+              0.09797153621912003
+            ],
+            "hex": "#fded9f",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 413,
+                "y": 108
+              },
+              "anchorFamilyId": "family-10344",
+              "regionIds": [
+                "family-10344-region-161280",
+                "family-10344-region-434838",
+                "family-10344-region-564772",
+                "family-10344-region-95435",
+                "family-10344-region-386824",
+                "family-10344-region-493693",
+                "family-10344-region-510737",
+                "family-10344-region-477715",
+                "family-10344-region-661611",
+                "family-10344-region-455231",
+                "family-10344-region-351333",
+                "family-10344-region-453733",
+                "family-10344-region-575622",
+                "family-10344-region-355350",
+                "family-10344-region-649625",
+                "family-10344-region-344796",
+                "family-10344-region-331795",
+                "family-10344-region-168356",
+                "family-10344-region-514640",
+                "family-10344-region-328782",
+                "family-10344-region-671594",
+                "family-10344-region-336285",
+                "family-10344-region-484670",
+                "family-10344-region-457680",
+                "family-10344-region-280197",
+                "family-10344-region-712565",
+                "family-10344-region-136651",
+                "family-10344-region-370773",
+                "family-10344-region-528616",
+                "family-10344-region-329771"
+              ],
+              "perceptualDensity": 0.8007927323996116,
+              "totalSupport": 0.075183,
+              "connectedSupport": 0.026008,
+              "spatialCoverage": 1,
+              "concentration": 0.3459292659244776,
+              "prototypeDistance": 0,
+              "outlierScore": 0.19920726760038843,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-3746:family-1540",
+          "familyRoles": {
+            "background": "family-3746",
+            "surface": "family-1540",
+            "foreground": "family-9884",
+            "accent": "family-10344"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -82.43760642613621,
+                "absoluteLc": 82.43760642613621
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -89.10134085650722,
+                "absoluteLc": 89.10134085650722
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -88.67464091553393,
+                "absoluteLc": 88.67464091553393
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -95.33837534590495,
+                "absoluteLc": 95.33837534590495
+              }
+            ],
+            "minimumAbsoluteLc": 82.43760642613621,
+            "meanAbsoluteLc": 88.88799088602059
+          },
+          "scores": {
+            "fieldFidelity": 0.5427868595302158,
+            "surfaceFidelity": 0.7264719425669705,
+            "fieldStructure": 0.46263527960638745,
+            "fieldIdentity": 0.6425342195365266,
+            "treatmentFoundation": 0.7360956805609588,
+            "artworkIdentity": 0.8923881110551459,
+            "representativeness": 0.8233544375,
+            "uiUtility": 0.9644489893666806,
+            "foregroundUtility": 0.9660737552271718,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.5846875604496868,
+            "accentUtility": 1,
+            "coherence": 0.9812359014806169,
+            "economy": 0.7167479326441724,
+            "generatorConfidence": 0.7006185624127421,
+            "foundation": 0.7528431360284539,
+            "balance": 0.5427868595302158,
+            "generatedPenalty": 0,
+            "rankingScore": 0.8103335385516417
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-3746:family-1540|49,48,92|4,3,37|245,229,12|253,237,159|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#31305c",
+              "nearestName": "Pāua",
+              "nearest": {
+                "name": "Pāua",
+                "tier": "srgb",
+                "referenceHex": "#2e2c55",
+                "referenceOKLab": [
+                  0.3171,
+                  0.0182,
+                  -0.0703
+                ],
+                "distance": 0.017027776432337667
+              }
+            },
+            "surface": {
+              "sourceHex": "#040325",
+              "nearestName": "Last Call",
+              "nearest": {
+                "name": "Last Call",
+                "tier": "srgb",
+                "referenceHex": "#060526",
+                "referenceOKLab": [
+                  0.1483,
+                  0.0074,
+                  -0.0658
+                ],
+                "distance": 0.0116888629690835
+              }
+            },
+            "foreground": {
+              "sourceHex": "#f5e50c",
+              "nearestName": "Post-it",
+              "nearest": {
+                "name": "Post-it",
+                "tier": "p3",
+                "referenceHex": "#ffe500",
+                "referenceOKLab": [
+                  0.9152,
+                  -0.0395,
+                  0.1995
+                ],
+                "distance": 0.019323496267462322
+              }
+            },
+            "accent": {
+              "sourceHex": "#fded9f",
+              "nearestName": "Cosmic Latte",
+              "nearest": {
+                "name": "Cosmic Latte",
+                "tier": "rec2020",
+                "referenceHex": "#ffedb7",
+                "referenceOKLab": [
+                  0.9473,
+                  -0.0034,
+                  0.1109
+                ],
+                "distance": 0.017566207835032124
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "sourcePath": "images/knuckles.jpg",
+      "cohort": "stress",
+      "structureTags": [
+        "compressed or noisy",
+        "photography",
+        "low source quality"
+      ],
+      "dimensions": {
+        "width": 350,
+        "height": 350
+      },
+      "winnerTreatmentId": "flat:family-8598:family-7715|190,178,198|155,155,189|28,0,49|216,203,221|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-8598:family-7715|190,178,198|155,155,189|28,0,49|216,203,221|flat",
+          "background": {
+            "rgb": [
+              190,
+              178,
+              198
+            ],
+            "oklab": [
+              0.7797650098800659,
+              0.02071481943130493,
+              -0.02295437455177307
+            ],
+            "hex": "#beb2c6",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 342,
+                "y": 45
+              },
+              "anchorFamilyId": "family-8598",
+              "regionIds": [
+                "family-8598-region-29003",
+                "family-8598-region-623",
+                "family-8598-region-34294",
+                "family-8598-region-17087",
+                "family-8598-region-57513",
+                "family-8598-region-5899",
+                "family-8598-region-14684",
+                "family-8598-region-24483",
+                "family-8598-region-38111",
+                "family-8598-region-67947",
+                "family-8598-region-218",
+                "family-8598-region-25513",
+                "family-8598-region-56496",
+                "family-8598-region-249",
+                "family-8598-region-17125",
+                "family-8598-region-11510",
+                "family-8598-region-40585",
+                "family-8598-region-84945",
+                "family-8598-region-59139",
+                "family-8598-region-86023",
+                "family-8598-region-63501",
+                "family-8598-region-67704",
+                "family-8598-region-67344",
+                "family-8598-region-51947"
+              ],
+              "perceptualDensity": 0.5692068429237948,
+              "totalSupport": 0.18896326530612245,
+              "connectedSupport": 0.0025387755102040817,
+              "spatialCoverage": 1,
+              "concentration": 0.01343528598583031,
+              "prototypeDistance": 0,
+              "outlierScore": 0.43079315707620525,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              155,
+              155,
+              189
+            ],
+            "oklab": [
+              0.7011719346046448,
+              0.012838203459978104,
+              -0.04773024469614029
+            ],
+            "hex": "#9b9bbd",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 72,
+                "y": 296
+              },
+              "anchorFamilyId": "family-7715",
+              "regionIds": [
+                "family-7715-region-87216",
+                "family-7715-region-58124",
+                "family-7715-region-96191",
+                "family-7715-region-68502",
+                "family-7715-region-106513",
+                "family-7715-region-4519",
+                "family-7715-region-55081",
+                "family-7715-region-107893",
+                "family-7715-region-100165",
+                "family-7715-region-111528",
+                "family-7715-region-69081",
+                "family-7715-region-115199",
+                "family-7715-region-106169",
+                "family-7715-region-61754",
+                "family-7715-region-102926",
+                "family-7715-region-101921",
+                "family-7715-region-116031",
+                "family-7715-region-116908",
+                "family-7715-region-72607",
+                "family-7715-region-118755",
+                "family-7715-region-56006",
+                "family-7715-region-92931",
+                "family-7715-region-45295",
+                "family-7715-region-96049"
+              ],
+              "perceptualDensity": 0.39709892660284307,
+              "totalSupport": 0.14069387755102042,
+              "connectedSupport": 0.0005469387755102041,
+              "spatialCoverage": 1,
+              "concentration": 0.0038874383521903103,
+              "prototypeDistance": 0,
+              "outlierScore": 0.6029010733971569,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              28,
+              0,
+              49
+            ],
+            "oklab": [
+              0.1801483929157257,
+              0.054355915635824203,
+              -0.07575757801532745
+            ],
+            "hex": "#1c0031",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 149,
+                "y": 272
+              },
+              "anchorFamilyId": "family-2003",
+              "regionIds": [
+                "family-2003-region-95349"
+              ],
+              "perceptualDensity": 1,
+              "totalSupport": 0.000008163265306122448,
+              "connectedSupport": 0.000008163265306122448,
+              "spatialCoverage": 0.25,
+              "concentration": 1,
+              "prototypeDistance": 0,
+              "outlierScore": 0,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              216,
+              203,
+              221
+            ],
+            "oklab": [
+              0.8580517172813416,
+              0.020587926730513573,
+              -0.019391652196645737
+            ],
+            "hex": "#d8cbdd",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 187,
+                "y": 281
+              },
+              "anchorFamilyId": "family-9480",
+              "regionIds": [
+                "family-9480-region-73032",
+                "family-9480-region-78641",
+                "family-9480-region-77876",
+                "family-9480-region-72280",
+                "family-9480-region-76879",
+                "family-9480-region-92237",
+                "family-9480-region-65544",
+                "family-9480-region-86539",
+                "family-9480-region-70942",
+                "family-9480-region-87619",
+                "family-9480-region-83508",
+                "family-9480-region-80705",
+                "family-9480-region-88045",
+                "family-9480-region-97462",
+                "family-9480-region-34446",
+                "family-9480-region-54465",
+                "family-9480-region-38298",
+                "family-9480-region-69819",
+                "family-9480-region-69890",
+                "family-9480-region-27054",
+                "family-9480-region-84812",
+                "family-9480-region-99227",
+                "family-9480-region-52731",
+                "family-9480-region-84863"
+              ],
+              "perceptualDensity": 0.7065877352762598,
+              "totalSupport": 0.0537795918367347,
+              "connectedSupport": 0.0008244897959183673,
+              "spatialCoverage": 1,
+              "concentration": 0.01533090467516697,
+              "prototypeDistance": 0,
+              "outlierScore": 0.29341226472374016,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-8598:family-7715",
+          "familyRoles": {
+            "background": "family-8598",
+            "surface": "family-7715",
+            "foreground": "family-2003",
+            "accent": "family-9480"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": 63.507610492487544,
+                "absoluteLc": 63.507610492487544
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -13.555952070251509,
+                "absoluteLc": 13.555952070251509
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": 50.78035620236609,
+                "absoluteLc": 50.78035620236609
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -27.089394640313873,
+                "absoluteLc": 27.089394640313873
+              }
+            ],
+            "minimumAbsoluteLc": 13.555952070251509,
+            "meanAbsoluteLc": 38.73332835135476
+          },
+          "scores": {
+            "fieldFidelity": 0.6017256823358208,
+            "surfaceFidelity": 0.5953878167972702,
+            "fieldStructure": 0.46429982488241,
+            "fieldIdentity": 0.5708468236976866,
+            "treatmentFoundation": 0.6319085161807874,
+            "artworkIdentity": 0.7018441073249759,
+            "representativeness": 0.6652668089080715,
+            "uiUtility": 0.5330231806391366,
+            "foregroundUtility": 0.7743252960904198,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.5139156297468054,
+            "accentUtility": 0.4752446768106874,
+            "coherence": 0.9207468841526311,
+            "economy": 0.5546517232720378,
+            "generatorConfidence": 0.6814152043422456,
+            "foundation": 0.6562788661896227,
+            "balance": 0.5546517232720378,
+            "generatedPenalty": 0,
+            "rankingScore": 0.6672763659536006
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-8598:family-7715|190,178,198|155,155,189|28,0,49|216,203,221|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#beb2c6",
+              "nearestName": "Nebulous",
+              "nearest": {
+                "name": "Nebulous",
+                "tier": "srgb",
+                "referenceHex": "#c6b5bf",
+                "referenceOKLab": [
+                  0.79,
+                  0.0238,
+                  -0.0084
+                ],
+                "distance": 0.018058316482368084
+              }
+            },
+            "surface": {
+              "sourceHex": "#9b9bbd",
+              "nearestName": "London Fog",
+              "nearest": {
+                "name": "London Fog",
+                "tier": "srgb",
+                "referenceHex": "#9c9fba",
+                "referenceOKLab": [
+                  0.7094,
+                  0.0071,
+                  -0.0379
+                ],
+                "distance": 0.014045003292601494
+              }
+            },
+            "foreground": {
+              "sourceHex": "#1c0031",
+              "nearestName": "Coal Mine",
+              "nearest": {
+                "name": "Coal Mine",
+                "tier": "srgb",
+                "referenceHex": "#1a052e",
+                "referenceOKLab": [
+                  0.1838,
+                  0.0434,
+                  -0.0665
+                ],
+                "distance": 0.01480098226441152
+              }
+            },
+            "accent": {
+              "sourceHex": "#d8cbdd",
+              "nearestName": "Pearl",
+              "nearest": {
+                "name": "Pearl",
+                "tier": "srgb",
+                "referenceHex": "#d9ced7",
+                "referenceOKLab": [
+                  0.8622,
+                  0.0146,
+                  -0.0079
+                ],
+                "distance": 0.013605935506888
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "sourcePath": "01/ab67616d0000b27300014f6d389bd4b028d8e28e.jpg",
+      "cohort": "dataset",
+      "structureTags": [
+        "dataset diversity probe"
+      ],
+      "dimensions": {
+        "width": 640,
+        "height": 640
+      },
+      "winnerTreatmentId": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+      "alternatives": [
+        {
+          "id": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+          "background": {
+            "rgb": [
+              223,
+              52,
+              167
+            ],
+            "oklab": [
+              0.6244553923606873,
+              0.22269712388515472,
+              -0.06057530269026756
+            ],
+            "hex": "#df34a7",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 9,
+                "y": 3
+              },
+              "anchorFamilyId": "family-6938",
+              "regionIds": [
+                "family-6938-region-420",
+                "family-6938-region-366577",
+                "family-6938-region-364976",
+                "family-6938-region-228221",
+                "family-6938-region-46907",
+                "family-6938-region-6789",
+                "family-6938-region-173752",
+                "family-6938-region-165595",
+                "family-6938-region-164021",
+                "family-6938-region-250538",
+                "family-6938-region-171850",
+                "family-6938-region-114615",
+                "family-6938-region-267811",
+                "family-6938-region-58476",
+                "family-6938-region-131767",
+                "family-6938-region-350475",
+                "family-6938-region-23",
+                "family-6938-region-85573",
+                "family-6938-region-214891",
+                "family-6938-region-65411",
+                "family-6938-region-250658",
+                "family-6938-region-338910",
+                "family-6938-region-388219",
+                "family-6938-region-234176",
+                "family-6938-region-355081",
+                "family-6938-region-353694",
+                "family-6938-region-144089",
+                "family-6938-region-340283",
+                "family-6938-region-353608",
+                "family-6938-region-359433",
+                "family-6938-region-338899",
+                "family-6938-region-140693"
+              ],
+              "perceptualDensity": 0.9522184685957042,
+              "totalSupport": 0.21608154296875,
+              "connectedSupport": 0.03481201171875,
+              "spatialCoverage": 1,
+              "concentration": 0.16110590122815144,
+              "prototypeDistance": 0,
+              "outlierScore": 0.04778153140429575,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              140,
+              28,
+              198
+            ],
+            "oklab": [
+              0.5030773878097534,
+              0.15082938969135284,
+              -0.18282873928546906
+            ],
+            "hex": "#8c1cc6",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 622,
+                "y": 90
+              },
+              "anchorFamilyId": "family-5570",
+              "regionIds": [
+                "family-5570-region-324760",
+                "family-5570-region-356248",
+                "family-5570-region-47353",
+                "family-5570-region-363261",
+                "family-5570-region-241242",
+                "family-5570-region-345941",
+                "family-5570-region-161939",
+                "family-5570-region-105579",
+                "family-5570-region-164545",
+                "family-5570-region-232382",
+                "family-5570-region-85832",
+                "family-5570-region-204813",
+                "family-5570-region-230405",
+                "family-5570-region-203558",
+                "family-5570-region-258001",
+                "family-5570-region-331895",
+                "family-5570-region-337679",
+                "family-5570-region-328006",
+                "family-5570-region-259899",
+                "family-5570-region-80730",
+                "family-5570-region-125678",
+                "family-5570-region-125190",
+                "family-5570-region-309447",
+                "family-5570-region-317764"
+              ],
+              "perceptualDensity": 0.6279788172992057,
+              "totalSupport": 0.055322265625,
+              "connectedSupport": 0.02083984375,
+              "spatialCoverage": 1,
+              "concentration": 0.3766990291262136,
+              "prototypeDistance": 0,
+              "outlierScore": 0.3720211827007943,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              239,
+              210,
+              238
+            ],
+            "oklab": [
+              0.8961819410324097,
+              0.04110264778137207,
+              -0.026653319597244263
+            ],
+            "hex": "#efd2ee",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 390,
+                "y": 3
+              },
+              "anchorFamilyId": "family-9942",
+              "regionIds": [
+                "family-9942-region-112",
+                "family-9942-region-130266",
+                "family-9942-region-286556",
+                "family-9942-region-281137",
+                "family-9942-region-228047",
+                "family-9942-region-314422",
+                "family-9942-region-229555",
+                "family-9942-region-40",
+                "family-9942-region-191040",
+                "family-9942-region-122027",
+                "family-9942-region-100288",
+                "family-9942-region-340",
+                "family-9942-region-258497",
+                "family-9942-region-277055",
+                "family-9942-region-1299",
+                "family-9942-region-263109",
+                "family-9942-region-249037",
+                "family-9942-region-220408",
+                "family-9942-region-127112",
+                "family-9942-region-123783",
+                "family-9942-region-160484",
+                "family-9942-region-338376",
+                "family-9942-region-358245",
+                "family-9942-region-130219",
+                "family-9942-region-114309",
+                "family-9942-region-184821",
+                "family-9942-region-249669",
+                "family-9942-region-186050"
+              ],
+              "perceptualDensity": 0.8960337436357159,
+              "totalSupport": 0.21242431640625,
+              "connectedSupport": 0.0457421875,
+              "spatialCoverage": 1,
+              "concentration": 0.21533404590329736,
+              "prototypeDistance": 0,
+              "outlierScore": 0.10396625636428414,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              233,
+              146,
+              53
+            ],
+            "oklab": [
+              0.7346962690353394,
+              0.06674091517925262,
+              0.13085538148880005
+            ],
+            "hex": "#e99235",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 590,
+                "y": 261
+              },
+              "anchorFamilyId": "family-8182",
+              "regionIds": [
+                "family-8182-region-166985",
+                "family-8182-region-178672",
+                "family-8182-region-175455",
+                "family-8182-region-202974",
+                "family-8182-region-271332",
+                "family-8182-region-283499",
+                "family-8182-region-256638",
+                "family-8182-region-260473",
+                "family-8182-region-264946",
+                "family-8182-region-265585",
+                "family-8182-region-266224",
+                "family-8182-region-267501",
+                "family-8182-region-277095",
+                "family-8182-region-286701",
+                "family-8182-region-287983",
+                "family-8182-region-288624",
+                "family-8182-region-290546",
+                "family-8182-region-293110",
+                "family-8182-region-295675",
+                "family-8182-region-296316",
+                "family-8182-region-298878",
+                "family-8182-region-299516",
+                "family-8182-region-301438",
+                "family-8182-region-339267"
+              ],
+              "perceptualDensity": 0.985493940506794,
+              "totalSupport": 0.0132958984375,
+              "connectedSupport": 0.0114892578125,
+              "spatialCoverage": 1,
+              "concentration": 0.8641204553800955,
+              "prototypeDistance": 0,
+              "outlierScore": 0.014506059493206047,
+              "synthesis": null
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "sourceFieldHypothesisId": "flat:family-6938:family-5570",
+          "familyRoles": {
+            "background": "family-6938",
+            "surface": "family-5570",
+            "foreground": "family-9942",
+            "accent": "family-8182"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -48.50347540097858,
+                "absoluteLc": 48.50347540097858
+              },
+              {
+                "role": "accent",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -18.330448709458544,
+                "absoluteLc": 18.330448709458544
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -63.631657268494536,
+                "absoluteLc": 63.631657268494536
+              },
+              {
+                "role": "accent",
+                "fieldRole": "surface",
+                "position": 1,
+                "signedLc": -33.45863057697451,
+                "absoluteLc": 33.45863057697451
+              }
+            ],
+            "minimumAbsoluteLc": 18.330448709458544,
+            "meanAbsoluteLc": 40.98105298897654
+          },
+          "scores": {
+            "fieldFidelity": 0.5863708080518291,
+            "surfaceFidelity": 0.6750338036817003,
+            "fieldStructure": 0.48176484077372805,
+            "fieldIdentity": 0.6511786178946425,
+            "treatmentFoundation": 0.6862619331523865,
+            "artworkIdentity": 0.8801671614768873,
+            "representativeness": 0.7947822570800781,
+            "uiUtility": 0.5452134786792342,
+            "foregroundUtility": 0.7622009130571047,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.8206309703266073,
+            "accentUtility": 0.5429855022783762,
+            "coherence": 1,
+            "economy": 0.7478323870041538,
+            "generatorConfidence": 0.7211995086985254,
+            "foundation": 0.7537734088695981,
+            "balance": 0.5863708080518291,
+            "generatedPenalty": 0,
+            "rankingScore": 0.7561045733730647
+          },
+          "gradientEvidence": null
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+          "roles": {
+            "background": {
+              "sourceHex": "#df34a7",
+              "nearestName": "Love Vessel",
+              "nearest": {
+                "name": "Love Vessel",
+                "tier": "srgb",
+                "referenceHex": "#e637a6",
+                "referenceOKLab": [
+                  0.6372,
+                  0.2254,
+                  -0.0529
+                ],
+                "distance": 0.015120878827037228
+              }
+            },
+            "surface": {
+              "sourceHex": "#8c1cc6",
+              "nearestName": "Van de Graaff",
+              "nearest": {
+                "name": "Van de Graaff",
+                "tier": "srgb",
+                "referenceHex": "#8d27cd",
+                "referenceOKLab": [
+                  0.5172,
+                  0.1427,
+                  -0.1865
+                ],
+                "distance": 0.016703675879521332
+              }
+            },
+            "foreground": {
+              "sourceHex": "#efd2ee",
+              "nearestName": "Kefir",
+              "nearest": {
+                "name": "Kefir",
+                "tier": "srgb",
+                "referenceHex": "#e6ceea",
+                "referenceOKLab": [
+                  0.8805,
+                  0.0355,
+                  -0.0287
+                ],
+                "distance": 0.016778026416154217
+              }
+            },
+            "accent": {
+              "sourceHex": "#e99235",
+              "nearestName": "Monarch",
+              "nearest": {
+                "name": "Monarch",
+                "tier": "srgb",
+                "referenceHex": "#ed963e",
+                "referenceOKLab": [
+                  0.7474,
+                  0.0677,
+                  0.1281
+                ],
+                "distance": 0.013034473354629521
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "sourcePath": "06/ab67616d00001e020006b33fb3c112e2ae60ab29",
+      "cohort": "dataset",
+      "structureTags": [
+        "dataset diversity probe"
+      ],
+      "dimensions": {
+        "width": 300,
+        "height": 300
+      },
+      "winnerTreatmentId": "gradient:field-domain-0:linear:diagonal-down:family-8599:family-6835:#cdcac5:#8e8b86|205,202,197|142,139,134|8,8,8|57,54,49|gradient",
+      "alternatives": [
+        {
+          "id": "gradient:field-domain-0:linear:diagonal-down:family-8599:family-6835:#cdcac5:#8e8b86|205,202,197|142,139,134|8,8,8|57,54,49|gradient",
+          "background": {
+            "rgb": [
+              205,
+              202,
+              197
+            ],
+            "oklab": [
+              0.8399786353111267,
+              0.0012332339538261294,
+              0.007546563167124987
+            ],
+            "hex": "#cdcac5",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 24,
+                "y": 0
+              },
+              "anchorFamilyId": "family-8599",
+              "regionIds": [
+                "family-8599-region-0",
+                "family-8599-region-3569",
+                "family-8599-region-31433",
+                "family-8599-region-39537",
+                "family-8599-region-46201",
+                "family-8599-region-21068",
+                "family-8599-region-16534",
+                "family-8599-region-26587",
+                "family-8599-region-37624",
+                "family-8599-region-44872",
+                "family-8599-region-26534",
+                "family-8599-region-17339",
+                "family-8599-region-35842",
+                "family-8599-region-42329",
+                "family-8599-region-41376",
+                "family-8599-region-43848",
+                "family-8599-region-28161",
+                "family-8599-region-38751",
+                "family-8599-region-34543",
+                "family-8599-region-47448",
+                "family-8599-region-49544",
+                "family-8599-region-17607",
+                "family-8599-region-28385",
+                "family-8599-region-29336",
+                "family-8599-region-29320",
+                "family-8599-region-48404"
+              ],
+              "perceptualDensity": 0.6803124632914366,
+              "totalSupport": 0.18917777777777778,
+              "connectedSupport": 0.10318888888888889,
+              "spatialCoverage": 1,
+              "concentration": 0.5454598848819453,
+              "prototypeDistance": 0.03231048859626396,
+              "outlierScore": 0.3196875367085634,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              142,
+              139,
+              134
+            ],
+            "oklab": [
+              0.6378132700920105,
+              0.0013205274008214474,
+              0.008075147867202759
+            ],
+            "hex": "#8e8b86",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 222,
+                "y": 138
+              },
+              "anchorFamilyId": "family-6835",
+              "regionIds": [
+                "family-6835-region-43198",
+                "family-6835-region-22770",
+                "family-6835-region-27758",
+                "family-6835-region-34392",
+                "family-6835-region-37767",
+                "family-6835-region-47976",
+                "family-6835-region-32383",
+                "family-6835-region-28018",
+                "family-6835-region-29755",
+                "family-6835-region-30254",
+                "family-6835-region-37686",
+                "family-6835-region-28425",
+                "family-6835-region-29039",
+                "family-6835-region-35455",
+                "family-6835-region-34851",
+                "family-6835-region-49362",
+                "family-6835-region-40784",
+                "family-6835-region-37154",
+                "family-6835-region-44555",
+                "family-6835-region-40263",
+                "family-6835-region-52532",
+                "family-6835-region-29500",
+                "family-6835-region-41743",
+                "family-6835-region-35012"
+              ],
+              "perceptualDensity": 0.5154298310066128,
+              "totalSupport": 0.06048888888888889,
+              "connectedSupport": 0.012277777777777778,
+              "spatialCoverage": 1,
+              "concentration": 0.20297575312270388,
+              "prototypeDistance": 0.0016136686290847762,
+              "outlierScore": 0.48457016899338723,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              8,
+              8,
+              8
+            ],
+            "oklab": [
+              0.13440923392772675,
+              1.0880803202883982e-11,
+              5.009957337875903e-9
+            ],
+            "hex": "#080808",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 97,
+                "y": 60
+              },
+              "anchorFamilyId": "family-1543",
+              "regionIds": [
+                "family-1543-region-71792",
+                "family-1543-region-44213",
+                "family-1543-region-67429",
+                "family-1543-region-16590",
+                "family-1543-region-66677",
+                "family-1543-region-68889",
+                "family-1543-region-85444",
+                "family-1543-region-86695",
+                "family-1543-region-49188",
+                "family-1543-region-58621",
+                "family-1543-region-53153",
+                "family-1543-region-72745",
+                "family-1543-region-72911",
+                "family-1543-region-68212",
+                "family-1543-region-50768",
+                "family-1543-region-55264",
+                "family-1543-region-68135",
+                "family-1543-region-61948",
+                "family-1543-region-21685",
+                "family-1543-region-52271",
+                "family-1543-region-59854",
+                "family-1543-region-72410",
+                "family-1543-region-75509",
+                "family-1543-region-74748",
+                "family-1543-region-62520",
+                "family-1543-region-53071"
+              ],
+              "perceptualDensity": 0.7105467582910069,
+              "totalSupport": 0.18594444444444444,
+              "connectedSupport": 0.07735555555555555,
+              "spatialCoverage": 0.75,
+              "concentration": 0.4160143412010756,
+              "prototypeDistance": 0,
+              "outlierScore": 0.2894532417089931,
+              "synthesis": null
+            }
+          },
+          "accent": {
+            "rgb": [
+              57,
+              54,
+              49
+            ],
+            "oklab": [
+              0.3342263400554657,
+              0.0015509133227169514,
+              0.00943928025662899
+            ],
+            "hex": "#393631",
+            "generated": false,
+            "strategy": "nearest-prototype",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 86,
+                "y": 66
+              },
+              "anchorFamilyId": "family-3748",
+              "regionIds": [
+                "family-3748-region-52390",
+                "family-3748-region-32204",
+                "family-3748-region-60946",
+                "family-3748-region-80693",
+                "family-3748-region-61888",
+                "family-3748-region-82765",
+                "family-3748-region-64616",
+                "family-3748-region-18086",
+                "family-3748-region-56256",
+                "family-3748-region-36074",
+                "family-3748-region-67956",
+                "family-3748-region-65275",
+                "family-3748-region-61252",
+                "family-3748-region-67638",
+                "family-3748-region-78858",
+                "family-3748-region-81547",
+                "family-3748-region-63371",
+                "family-3748-region-80035",
+                "family-3748-region-58216",
+                "family-3748-region-46024",
+                "family-3748-region-74480",
+                "family-3748-region-52427",
+                "family-3748-region-72885",
+                "family-3748-region-42436",
+                "family-3748-region-31880"
+              ],
+              "perceptualDensity": 0.7131946273373716,
+              "totalSupport": 0.12656666666666666,
+              "connectedSupport": 0.05457777777777778,
+              "spatialCoverage": 1,
+              "concentration": 0.43121762795189184,
+              "prototypeDistance": 0,
+              "outlierScore": 0.2868053726626284,
+              "synthesis": null
+            }
+          },
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "sourceFieldHypothesisId": "gradient:field-domain-0:linear:diagonal-down:family-8599:family-6835:#cdcac5:#8e8b86",
+          "familyRoles": {
+            "background": "family-8599",
+            "surface": "family-6835",
+            "foreground": "family-1543",
+            "accent": "family-3748"
+          },
+          "cardinality": 4,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0,
+                "signedLc": 75.43693132653678,
+                "absoluteLc": 75.43693132653678
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0,
+                "signedLc": 67.06345717769683,
+                "absoluteLc": 67.06345717769683
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.25,
+                "signedLc": 66.68297694473915,
+                "absoluteLc": 66.68297694473915
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.25,
+                "signedLc": 58.30950279589921,
+                "absoluteLc": 58.30950279589921
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.5,
+                "signedLc": 58.18422172990088,
+                "absoluteLc": 58.18422172990088
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.5,
+                "signedLc": 49.81074758106092,
+                "absoluteLc": 49.81074758106092
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 0.75,
+                "signedLc": 49.956200368110004,
+                "absoluteLc": 49.956200368110004
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 0.75,
+                "signedLc": 41.58272621927006,
+                "absoluteLc": 41.58272621927006
+              },
+              {
+                "role": "foreground",
+                "fieldRole": "gradient-sample",
+                "position": 1,
+                "signedLc": 42.50442777755906,
+                "absoluteLc": 42.50442777755906
+              },
+              {
+                "role": "accent",
+                "fieldRole": "gradient-sample",
+                "position": 1,
+                "signedLc": 34.13095362871911,
+                "absoluteLc": 34.13095362871911
+              }
+            ],
+            "minimumAbsoluteLc": 34.13095362871911,
+            "meanAbsoluteLc": 54.366214554949195
+          },
+          "scores": {
+            "fieldFidelity": 0.8116032334015355,
+            "surfaceFidelity": 0.7374011247940138,
+            "fieldStructure": 0.6969404419789236,
+            "fieldIdentity": 0.7684723515921148,
+            "treatmentFoundation": 0.7620230105010579,
+            "artworkIdentity": 0.8473460852475168,
+            "representativeness": 0.8937691713873257,
+            "uiUtility": 0.6557603289622624,
+            "foregroundUtility": 0.7492862507707223,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 0.7277769349698259,
+            "accentUtility": 0.7497129722289206,
+            "coherence": 1,
+            "economy": 0.7325890298819198,
+            "generatorConfidence": 0.8698240712176759,
+            "foundation": 0.8509061633454594,
+            "balance": 0.7325890298819198,
+            "generatedPenalty": 0,
+            "rankingScore": 0.8313137403003135
+          },
+          "gradientEvidence": {
+            "topology": "linear",
+            "direction": "diagonal-down",
+            "endpointBands": [
+              0.2,
+              0.8
+            ],
+            "progression": 0.6363636363636364,
+            "modeProgression": 0.8181818181818182,
+            "monotonicity": 0.9090909090909091,
+            "residual": 0.07854196061630046,
+            "span": 0.2916858867721408,
+            "texture": 0.05145398238700353,
+            "bandDispersion": 0.31775819382576587,
+            "edgeContinuity": 0.6467812823664347,
+            "coverage": 0.730731022040652,
+            "supportingFamilyIds": [
+              "family-8599",
+              "family-6835"
+            ],
+            "supportingEndpointHexes": [
+              "#cdcac5",
+              "#8e8b86"
+            ],
+            "backgroundTopologyEndpoint": "low",
+            "roleAssignment": {
+              "backgroundFamilyId": "family-8599",
+              "surfaceFamilyId": "family-6835",
+              "backgroundProfile": {
+                "frameCoverage": 0.263435732276312,
+                "peripheralCoverage": 0.4869423400360599,
+                "connectedCoverage": 0.48427522931364997,
+                "fieldScore": 0.6049187788020127,
+                "populationCoverage": 0.7882407407407408,
+                "evidenceLevels": [
+                  6,
+                  12,
+                  12,
+                  15,
+                  19
+                ]
+              },
+              "surfaceProfile": {
+                "frameCoverage": 0.017743713613278828,
+                "peripheralCoverage": 0.3044958090755192,
+                "connectedCoverage": 0.10190050685017964,
+                "fieldScore": 0.29631963500217023,
+                "populationCoverage": 0.25203703703703706,
+                "evidenceLevels": [
+                  0,
+                  7,
+                  2,
+                  7,
+                  6
+                ]
+              },
+              "decisiveCriterion": "frameCoverage",
+              "confidence": 0.24
+            },
+            "fieldDomainId": "field-domain-0",
+            "fieldDomainPopulationFraction": 0.4906111111111111,
+            "fieldDomainBorderCoverage": 0.5275919732441472,
+            "fieldDomainOwnedCornerCount": 2,
+            "supportingComponentIds": [
+              "family-10342-region-105",
+              "family-10342-region-12531",
+              "family-10342-region-12901",
+              "family-10342-region-13997",
+              "family-10342-region-17291",
+              "family-10342-region-17301",
+              "family-10342-region-17882",
+              "family-10342-region-18679",
+              "family-10342-region-32104",
+              "family-10342-region-36041",
+              "family-10342-region-39600",
+              "family-10342-region-43202",
+              "family-10342-region-45038",
+              "family-10342-region-4634",
+              "family-10342-region-49229",
+              "family-10342-region-7324",
+              "family-10342-region-82",
+              "family-10342-region-8929",
+              "family-10342-region-9194",
+              "family-10342-region-9209",
+              "family-10342-region-9216",
+              "family-4630-region-31305",
+              "family-4630-region-32211",
+              "family-4630-region-32766",
+              "family-4630-region-34874",
+              "family-4630-region-36798",
+              "family-4630-region-39717",
+              "family-4630-region-39876",
+              "family-4630-region-45591",
+              "family-5953-region-26943",
+              "family-5953-region-27295",
+              "family-5953-region-28442",
+              "family-5953-region-30365",
+              "family-5953-region-32161",
+              "family-5953-region-32212",
+              "family-5953-region-33055",
+              "family-5953-region-33756",
+              "family-5953-region-35755",
+              "family-5953-region-35886",
+              "family-5953-region-35910",
+              "family-5953-region-36061",
+              "family-5953-region-36201",
+              "family-5953-region-38460",
+              "family-5953-region-39278",
+              "family-5953-region-41450",
+              "family-5953-region-44384",
+              "family-5953-region-49428",
+              "family-5953-region-49746",
+              "family-6835-region-22770",
+              "family-6835-region-27758",
+              "family-6835-region-28018",
+              "family-6835-region-29039",
+              "family-6835-region-29500",
+              "family-6835-region-29755",
+              "family-6835-region-30254",
+              "family-6835-region-32383",
+              "family-6835-region-34392",
+              "family-6835-region-34851",
+              "family-6835-region-35012",
+              "family-6835-region-35455",
+              "family-6835-region-37154",
+              "family-6835-region-37686",
+              "family-6835-region-37767",
+              "family-6835-region-40263",
+              "family-6835-region-40784",
+              "family-6835-region-41743",
+              "family-6835-region-43198",
+              "family-6835-region-44555",
+              "family-6835-region-47976",
+              "family-6835-region-49362",
+              "family-7717-region-13794",
+              "family-7717-region-19145",
+              "family-7717-region-24285",
+              "family-7717-region-28378",
+              "family-7717-region-29156",
+              "family-7717-region-29172",
+              "family-7717-region-29890",
+              "family-7717-region-30797",
+              "family-7717-region-31134",
+              "family-7717-region-31140",
+              "family-7717-region-31749",
+              "family-7717-region-32918",
+              "family-7717-region-33575",
+              "family-7717-region-33951",
+              "family-7717-region-34198",
+              "family-7717-region-34422",
+              "family-7717-region-37253",
+              "family-7717-region-37470",
+              "family-7717-region-38772",
+              "family-7717-region-41824",
+              "family-7717-region-42353",
+              "family-7717-region-46547",
+              "family-7717-region-47266",
+              "family-7717-region-47445",
+              "family-7717-region-50247",
+              "family-8599-region-0",
+              "family-8599-region-16534",
+              "family-8599-region-17339",
+              "family-8599-region-21068",
+              "family-8599-region-26534",
+              "family-8599-region-26587",
+              "family-8599-region-28385",
+              "family-8599-region-31433",
+              "family-8599-region-34543",
+              "family-8599-region-3569",
+              "family-8599-region-35842",
+              "family-8599-region-37624",
+              "family-8599-region-38751",
+              "family-8599-region-39537",
+              "family-8599-region-41376",
+              "family-8599-region-42329",
+              "family-8599-region-43848",
+              "family-8599-region-44872",
+              "family-8599-region-46201",
+              "family-8599-region-47448",
+              "family-9481-region-12000",
+              "family-9481-region-13117",
+              "family-9481-region-14295",
+              "family-9481-region-16970",
+              "family-9481-region-17000",
+              "family-9481-region-17018",
+              "family-9481-region-17305",
+              "family-9481-region-17326",
+              "family-9481-region-18556",
+              "family-9481-region-18847",
+              "family-9481-region-19279",
+              "family-9481-region-25",
+              "family-9481-region-26400",
+              "family-9481-region-2750",
+              "family-9481-region-28084",
+              "family-9481-region-30334",
+              "family-9481-region-34131",
+              "family-9481-region-35148",
+              "family-9481-region-36732",
+              "family-9481-region-42056",
+              "family-9481-region-44751",
+              "family-9481-region-49228",
+              "family-9481-region-9792",
+              "family-9481-region-9797"
+            ]
+          }
+        }
+      ],
+      "presentations": [
+        {
+          "treatmentId": "gradient:field-domain-0:linear:diagonal-down:family-8599:family-6835:#cdcac5:#8e8b86|205,202,197|142,139,134|8,8,8|57,54,49|gradient",
+          "roles": {
+            "background": {
+              "sourceHex": "#cdcac5",
+              "nearestName": "Beige",
+              "nearest": {
+                "name": "Beige",
+                "tier": "srgb",
+                "referenceHex": "#d3cabd",
+                "referenceOKLab": [
+                  0.8436,
+                  0.004,
+                  0.0203
+                ],
+                "distance": 0.013543244078541183
+              }
+            },
+            "surface": {
+              "sourceHex": "#8e8b86",
+              "nearestName": "Pebble",
+              "nearest": {
+                "name": "Pebble",
+                "tier": "srgb",
+                "referenceHex": "#878a86",
+                "referenceOKLab": [
+                  0.6296,
+                  -0.0048,
+                  0.0047
+                ],
+                "distance": 0.010784734615577744
+              }
+            },
+            "foreground": {
+              "sourceHex": "#080808",
+              "nearestName": "Blackout",
+              "nearest": {
+                "name": "Blackout",
+                "tier": "srgb",
+                "referenceHex": "#060708",
+                "referenceOKLab": [
+                  0.1262,
+                  -0.0013,
+                  -0.0036
+                ],
+                "distance": 0.009057676401427421
+              }
+            },
+            "accent": {
+              "sourceHex": "#393631",
+              "nearestName": "Tamahagane",
+              "nearest": {
+                "name": "Tamahagane",
+                "tier": "srgb",
+                "referenceHex": "#2e3739",
+                "referenceOKLab": [
+                  0.3298,
+                  -0.0105,
+                  -0.0059
+                ],
+                "distance": 0.020002760908687366
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "manifestId": "c394705632021d0423d4e6a65e86410d0315d432637f642f30e8d19ae8ad8aa7"
+}

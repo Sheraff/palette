@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-foreground-availability-review-v8",
+  "manifestId": "219d539b2c93fc965e7ceeeb44789312c35cdd95b4b01777750e430608368e52",
+  "entries": [
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "preferredOptionId": "B",
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T22:30:53.908Z"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "validOptionIds": [
+        "A",
+        "C",
+        "D"
+      ],
+      "preferredOptionId": "A",
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "strong preference for option A",
+      "submittedAt": "2026-07-26T22:31:36.732Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T22:32:07.870Z"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "freezeVersion": "album-artwork-palette-v2-candidate-freeze-v2",
+  "candidateVersion": "album-artwork-first-principles-0.6.0",
+  "implementationHash": "3f25579340ec3dea5efaa0d8aeeceb35483610b7519fa8892a5b99a96261f315",
+  "implementationHashMethod": "development-evaluator-runtime-and-declared-files-v1",
+  "runtime": {
+    "node": "v25.8.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "implementationFiles": [
+    {
+      "path": "research/evaluate-album-artwork-palette-v2-development.ts",
+      "sha256": "047936c48cfe130b3d808862403374fe12d11e63176f26bfdae1748905c174d2",
+      "byteCount": 14696
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2.ts",
+      "sha256": "fa6cf935036a454b8404e2352cd375cacb0e751bee125f90cbb50f8db6ea932c",
+      "byteCount": 128102
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-protocol.ts",
+      "sha256": "74257f57c50e31802410ad50ca511349d8026a3f8a89f695e8ff4c23deda1108",
+      "byteCount": 1885
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-future-sample.ts",
+      "sha256": "65f4cb11d9f93c895ddacb010da643536a983fbf15dde6e755bb8aadb8e9efb3",
+      "byteCount": 32112
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-future-sample-03.ts",
+      "sha256": "7cb4a714ae057e642ea3652341d60e60a5226aa9f50b67e170eac81c65a4eded",
+      "byteCount": 19848
+    },
+    {
+      "path": "research/src/source-provenance-inventory.ts",
+      "sha256": "13d18358e69ec9eb77dd44357593da5b05aadf28dd1b20db06fa28814364d79a",
+      "byteCount": 24639
+    },
+    {
+      "path": "research/src/color.ts",
+      "sha256": "14aae7dfd90b4589b81d2061fda4c05e1a5513bb98ab864b25ce81a520139033",
+      "byteCount": 3934
+    },
+    {
+      "path": "research/src/color-name.ts",
+      "sha256": "dbb16263c8debbc7965eab73d35c20e2d2acedde8407cff6294e4c382649156c",
+      "byteCount": 2544
+    },
+    {
+      "path": "research/src/native-resolution-image.ts",
+      "sha256": "0fed2b94aec333b144088f41d7eaa9165097cf001d0e253c664255f4bb300bb2",
+      "byteCount": 2174
+    },
+    {
+      "path": "research/src/types.ts",
+      "sha256": "dc50d7091d42eb9a93c84c13aba9c3961f707e33efb3af2a443da39254febaeb",
+      "byteCount": 1679
+    },
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_6_0.md",
+      "sha256": "1f433d97aa34d7b08961588be00c921827ffab2db0b59100f48dd9dd54f335e0",
+      "byteCount": 7296
+    },
+    {
+      "path": "research/analyze-album-artwork-palette-v2-0.6.0-development.ts",
+      "sha256": "6bc6e3e5dca88cc2e7a3b2df383798a4c7fcd8b8dc6e19392a46527cced85341",
+      "byteCount": 12302
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2.test.ts",
+      "sha256": "c839f4e7d6bbd2c2de6dd9b95722591c28f2f8183d50a2bb3c14040c3ecfc859",
+      "byteCount": 38455
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2-future-sample.test.ts",
+      "sha256": "78fb30bab03059d609a8c26db576afc164226300c63edd7679929d94bf416943",
+      "byteCount": 7590
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2-future-sample-03.test.ts",
+      "sha256": "b0f9d06d8bdb96a03418d7543b235c8038b9e3503cf3b198e14a45d1432b662d",
+      "byteCount": 5781
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+      "sha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3",
+      "byteCount": 4553
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-future-sample-02.sealed.json",
+      "sha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c",
+      "byteCount": 11107
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-future-sample-03.sealed.json",
+      "sha256": "690e85ace6377fd154db1124754dfb7d876c64a3c063f8b567e0e219d88f0183",
+      "byteCount": 9506
+    },
+    {
+      "path": "research/album-artwork-palette-v2-development-child.ts",
+      "sha256": "167930f4a9934aea48fd3abae38ba4b7f32f5e8371b973f13b05929f7f08c864",
+      "byteCount": 5940
+    },
+    {
+      "path": "package.json",
+      "sha256": "6d01b7ca68aae4015b98c3cc560c0dfaf774d0020348271d302b62322ce27ff3",
+      "byteCount": 2431
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "a858afe1d3946e113b58fc0c7bea25ed6a418d8190ce57951b6a4d0fe3af6058",
+      "byteCount": 28092
+    }
+  ],
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "developmentSourceCount": 28,
+  "scientificSha256": "f0437a4ab86f321d3723e30527ff455222ed6e5590e891e3f590ab1b920e7d52",
+  "developmentAnalysisId": "42a4c5f0721311d20bfc763e58fc64c871df1802ea23728a346841de3ea9e76d",
+  "humanReviewAnalysisId": "3e18186f2c721959b680aca5dadda5702e5c0aea32b5a699f9b8bb854647e2dc",
+  "inputHashes": {
+    "aggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "developmentAnalysisSha256": "90cc15f24bc822b5db59cceb5296abe821543c3162f5a5cf1c013a0575fdf8c8",
+    "reviewManifestSha256": "6570800748ec89cb19de90a9221267149fb07a0d12961aa33e5b76741bac7e08",
+    "reviewPreparationSha256": "8aa7dbbc8c7419e6e274e6cd4d70a6d2ac7e5129fff1672536a2952e8790f00f",
+    "reviewFeedbackSha256": "e81771c40e988970feb606818cf3b1ae99460b3571654141e909daa034dabc6c",
+    "reviewAnalysisSha256": "0a6bb2a13f16bb390e5ec8c0dc21cec1746c2d425734f12e62f55ec59bd1f796",
+    "protocolSha256": "1f433d97aa34d7b08961588be00c921827ffab2db0b59100f48dd9dd54f335e0",
+    "futureSampleSealSha256": "690e85ace6377fd154db1124754dfb7d876c64a3c063f8b567e0e219d88f0183"
+  },
+  "gates": {
+    "mechanism": true,
+    "exactTwoCaseHumanDelta": true
+  },
+  "futureSample": {
+    "manifestId": "bee665792a4ddfaeb3541aa5e58181c8f3a0685836b13475643d9deccace4060",
+    "sealCommitment": "139d9c9fe72838c9618f0cb575cda34d1b7b54c8e83a9d1446034c76b35b75ba",
+    "opened": false
+  },
+  "authorization": {
+    "futureSample03OneWayExecutionEligible": true,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "freezeId": "d2a06b035931ffe70186c27f8436c0f8f68e14f8245638f741146b8d78a0d843"
+}

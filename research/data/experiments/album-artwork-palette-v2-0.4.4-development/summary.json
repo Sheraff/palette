@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.4.4",
+  "implementationHash": "d41bd338a39fbd89bcdc1f200cbbb36c30ead374e5b53ce8e6fb9e3bcc624754",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "workerCount": 6,
+  "sourceCount": 28,
+  "reusedSourceArtifacts": 0,
+  "scientificSha256": "be484fa948c0a625cc1e7f56b698bcea3b8652296e7408871d582932cf87dbd3",
+  "fieldHypothesisCoverage": {
+    "oneField": 28,
+    "separateFlatFields": 26,
+    "gradientField": 12
+  },
+  "emergencyEligibleCount": 2,
+  "connectedFieldDomainCoverage": 23,
+  "completeCandidateCount": 32404,
+  "paretoFrontierCandidateCount": 3455,
+  "dominatedCandidateCount": 28949,
+  "retainedTreatmentCount": 210,
+  "runtime": {
+    "wallMs": 8097.483292,
+    "totalCpuUserMicros": 45265894,
+    "totalCpuSystemMicros": 796206,
+    "maximumSourceWallMs": 5285.395292
+  }
+}

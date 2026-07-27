@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v3",
+  "manifestId": "e329ce05616b67b1379137200357417a2b6e12f2551b6072e492462e3b5dbfa7",
+  "entries": [
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [
+        "B"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T18:38:29.733Z"
+    },
+    {
+      "caseId": "development-08",
+      "sourceSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "validOptionIds": [
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T18:39:32.886Z"
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "validOptionIds": [
+        "A",
+        "B",
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "option C would be the best option if accent was visible over the background",
+      "submittedAt": "2026-07-26T18:40:37.409Z"
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "validOptionIds": [
+        "A"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "option A is almost very good, but missing gradient",
+      "submittedAt": "2026-07-26T18:41:22.035Z"
+    }
+  ]
+}

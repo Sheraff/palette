@@ -214,7 +214,10 @@ export function analyzeRegions(image: RawImage): RegionAnalysis {
 	const labs = toLabBuffer(data)
 	const edges = computeEdges(labs, width, height)
 	const labels = slic(labs, edges, width, height)
-	const rawCount = Math.max(...labels) + 1
+	let maximumLabel = -1
+	for (const label of labels) maximumLabel = Math.max(maximumLabel, label)
+	const rawCount = maximumLabel + 1
+	if (rawCount <= 0) throw new Error("Region analysis produced no assigned labels")
 	const counts = new Int32Array(rawCount)
 	for (const label of labels) counts[label]++
 	const remap = new Int32Array(rawCount).fill(-1)

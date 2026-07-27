@@ -1,0 +1,3180 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-4-future-02-review-v1",
+  "generatedAt": "2026-07-27T09:51:04.521Z",
+  "protocolId": "71ef0088f8b95c2a52fb73dc17683bb366e4bd3811a640f09c8ba74214a74a46",
+  "futureSampleManifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+  "futureSampleSealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+  "caseCount": 12,
+  "publicOptionPolicy": "method-identities-omitted-from-publicSafe-options",
+  "hashes": {
+    "protocolSha256": "ae08dad6055bf0180c095543ea15d366a8d23a1f83bf63ca6317ebc2b6c7c7bb",
+    "candidateCompleteSha256": "d9327074774108deb08d48ceff52a387198ec37273b9311ece4acaa10ffb2107",
+    "candidateArtifactsSha256": "65ba5bcac11a3f994b7f066011ee789abd5663c13ed8693a80d3733118ce89bb",
+    "baselineArtifactsSha256": "b8c796dcc80a26f5c0041d743ea0700f982a4f72d693d7fe4172ec4d0674c310"
+  },
+  "runtime": {
+    "candidate": {
+      "workerCount": 6,
+      "wallMs": 1643.415458,
+      "totalChildWallMs": 5990.067415,
+      "totalCpuUserMicros": 8647414,
+      "totalCpuSystemMicros": 198061
+    },
+    "baseline": {
+      "mode": "sequential-stop-on-first-error",
+      "wallMs": 8460.777791,
+      "totalChildWallMs": 7151.224709000001,
+      "totalCpuUserMicros": 9439891,
+      "totalCpuSystemMicros": 145103
+    },
+    "totalWallMs": 10258.587
+  },
+  "cases": [
+    {
+      "reviewCaseId": "future02-01-028db36d5d35",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  105,
+                  122,
+                  104
+                ],
+                "hex": "#697a68",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#697a68",
+                  "nearestName": "Sage",
+                  "nearest": {
+                    "name": "Sage",
+                    "tier": "srgb",
+                    "referenceHex": "#6b7660",
+                    "referenceOKLab": [
+                      0.5492,
+                      -0.0222,
+                      0.0267
+                    ],
+                    "distance": 0.013767337096838264
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  142,
+                  155,
+                  161
+                ],
+                "hex": "#8e9ba1",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#8e9ba1",
+                  "nearestName": "Cool Grey",
+                  "nearest": {
+                    "name": "Cool Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#929ea3",
+                    "referenceOKLab": [
+                      0.6908,
+                      -0.0101,
+                      -0.0116
+                    ],
+                    "distance": 0.009989745173288529
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  252,
+                  254,
+                  251
+                ],
+                "hex": "#fcfefb",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fcfefb",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.012289200242049067
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  76,
+                  94,
+                  78
+                ],
+                "hex": "#4c5e4e",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#4c5e4e",
+                  "nearestName": "Croupier",
+                  "nearest": {
+                    "name": "Croupier",
+                    "tier": "srgb",
+                    "referenceHex": "#3c5f4e",
+                    "referenceOKLab": [
+                      0.4543,
+                      -0.0481,
+                      0.0148
+                    ],
+                    "distance": 0.021013095278751705
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  103,
+                  118,
+                  104
+                ],
+                "hex": "#677668",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#677668",
+                  "nearestName": "Sage",
+                  "nearest": {
+                    "name": "Sage",
+                    "tier": "srgb",
+                    "referenceHex": "#6b7660",
+                    "referenceOKLab": [
+                      0.5492,
+                      -0.0222,
+                      0.0267
+                    ],
+                    "distance": 0.01158079208911256
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  62,
+                  85,
+                  66
+                ],
+                "hex": "#3e5542",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#3e5542",
+                  "nearestName": "Rosemary",
+                  "nearest": {
+                    "name": "Rosemary",
+                    "tier": "srgb",
+                    "referenceHex": "#3d5336",
+                    "referenceOKLab": [
+                      0.4146,
+                      -0.0396,
+                      0.036
+                    ],
+                    "distance": 0.01809307386961257
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  251,
+                  252,
+                  249
+                ],
+                "hex": "#fbfcf9",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fbfcf9",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.009386443825237751
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  129,
+                  144,
+                  132
+                ],
+                "hex": "#819084",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#819084",
+                  "nearestName": "Gryphon",
+                  "nearest": {
+                    "name": "Gryphon",
+                    "tier": "srgb",
+                    "referenceHex": "#819590",
+                    "referenceOKLab": [
+                      0.6529,
+                      -0.0244,
+                      0.0006
+                    ],
+                    "distance": 0.019136781877091346
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-03",
+        "source": {
+          "caseId": "future-02-03",
+          "path": "10/ab67616d00001e020010d93ffdbae82b6d7d6884",
+          "sha256": "5aa11b8c6418cf94d25ade2fe03094ecb52ebb832f0016024ac7c03ff09fe8da",
+          "byteCount": 25898,
+          "artworkId": "0010d93ffdbae82b6d7d6884",
+          "selectionKey": "030196d793cb19e4269d8ae40e5937134123c2f9d01c6e15ee741f57acee90bd",
+          "familyCommitment": "77f850b8cb4f4c4a782e173c46a737d7417d0c2560f4434aa3bbff6f6ce2bccb"
+        },
+        "assignmentKey": "028db36d5d35abd23c396218f1064cc62b95175749e0e71bb5ef7a24a7700f2e",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-03.json",
+          "artifactSha256": "d8d7ca2296593953c60cd07af1f3c716e42f6ecf17e44154a3778b005fda3c5d",
+          "presentationSha256": "8065c317cf66d2e112ee8969aff69797219b2da80f5d6891e59cd16b64cdecd5",
+          "scientificSha256": "2bc20284445ae7b2a3ec51aeda8e628cdc7e197f6e7bd5cae7a479740c831462",
+          "runtime": {
+            "wallMs": 329.488792,
+            "cpuUserMicros": 505870,
+            "cpuSystemMicros": 12016
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-03.json",
+          "artifactSha256": "98d06bffae879aaa7316b1e3564089ac2b71b75e55b4786c099b1455871d6eee",
+          "presentationSha256": "86cedddcbdb27791f014008b292db2c344679bf95c0a2cf90e843de94c283041",
+          "scientificSha256": "304a9dbb7746f4b01b958f37934e474e23ad3beb5c1a79cbca75c6ca93240b2f",
+          "runtime": {
+            "wallMs": 426.61970799999995,
+            "cpuUserMicros": 600022,
+            "cpuSystemMicros": 9931
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-02-0431ed4c317d",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  14,
+                  15,
+                  1
+                ],
+                "hex": "#0e0f01",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#0e0f01",
+                  "nearestName": "Black Moss",
+                  "nearest": {
+                    "name": "Black Moss",
+                    "tier": "srgb",
+                    "referenceHex": "#090f00",
+                    "referenceOKLab": [
+                      0.1579,
+                      -0.0213,
+                      0.0317
+                    ],
+                    "distance": 0.009971474266276916
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  4,
+                  4,
+                  0
+                ],
+                "hex": "#040400",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#040400",
+                  "nearestName": "Jet Black",
+                  "nearest": {
+                    "name": "Jet Black",
+                    "tier": "srgb",
+                    "referenceHex": "#030402",
+                    "referenceOKLab": [
+                      0.0995,
+                      -0.0053,
+                      0.0071
+                    ],
+                    "distance": 0.014760602506568403
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  210,
+                  209,
+                  205
+                ],
+                "hex": "#d2d1cd",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#d2d1cd",
+                  "nearestName": "Zen",
+                  "nearest": {
+                    "name": "Zen",
+                    "tier": "srgb",
+                    "referenceHex": "#c9d2d4",
+                    "referenceOKLab": [
+                      0.857,
+                      -0.0085,
+                      -0.0062
+                    ],
+                    "distance": 0.014603507237564286
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  252,
+                  252,
+                  250
+                ],
+                "hex": "#fcfcfa",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fcfcfa",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.008278135162080112
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  14,
+                  15,
+                  1
+                ],
+                "hex": "#0e0f01",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#0e0f01",
+                  "nearestName": "Black Moss",
+                  "nearest": {
+                    "name": "Black Moss",
+                    "tier": "srgb",
+                    "referenceHex": "#090f00",
+                    "referenceOKLab": [
+                      0.1579,
+                      -0.0213,
+                      0.0317
+                    ],
+                    "distance": 0.009971474266276916
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  1,
+                  2,
+                  0
+                ],
+                "hex": "#010200",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#010200",
+                  "nearestName": "Melanite",
+                  "nearest": {
+                    "name": "Melanite",
+                    "tier": "rec2020",
+                    "referenceHex": "#000100",
+                    "referenceOKLab": [
+                      0.0567,
+                      -0.0197,
+                      0.0111
+                    ],
+                    "distance": 0.023147484916257725
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  250,
+                  252,
+                  252
+                ],
+                "hex": "#fafcfc",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fafcfc",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.009923578568373247
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  150,
+                  150,
+                  145
+                ],
+                "hex": "#969691",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#969691",
+                  "nearestName": "Grey",
+                  "nearest": {
+                    "name": "Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#8f9293",
+                    "referenceOKLab": [
+                      0.6578,
+                      -0.0031,
+                      -0.0032
+                    ],
+                    "distance": 0.01716709308231405
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-12",
+        "source": {
+          "caseId": "future-02-12",
+          "path": "10/ab67616d00001e020010a81b5035e2d00a9eb740",
+          "sha256": "7485cccc5c285c3e49a071803fd8820fb1c31cb4cb74c108a5962cbd7a23dbd2",
+          "byteCount": 23508,
+          "artworkId": "0010a81b5035e2d00a9eb740",
+          "selectionKey": "0712266dddc8dec5b2e83f90c04ff8a67b7eff3328cb4b42e569cd9589ac2ac1",
+          "familyCommitment": "f913b2d22cdcbea2c4a6b7512875c599bf6bb9e974abf42110bb4c77ec441457"
+        },
+        "assignmentKey": "0431ed4c317db69a28dad892f5e87c4ec14e14eb12c5e39bedf9f34cabe7579d",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-12.json",
+          "artifactSha256": "fe64fb86a7d4570a1b786ffe52640eb2846b23ccf2cbf61e831a6548027fbc68",
+          "presentationSha256": "f95bb2c233f04698088444ba8a509811799cc2b8d64087981195c59ca7949021",
+          "scientificSha256": "2133771553ee119f7556cb28e5d02d71903f73be6cde29716d3dac0bc4e52d8e",
+          "runtime": {
+            "wallMs": 375.627875,
+            "cpuUserMicros": 539353,
+            "cpuSystemMicros": 10249
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-12.json",
+          "artifactSha256": "c6b394c0e280ca9f86583ddbc378d7f4aa959ed15372769fd5acea4be32129ce",
+          "presentationSha256": "a28a439ccebdbb8caf5440e0ae9db7a929231c38d931808d87dcd917951da83a",
+          "scientificSha256": "d05d6604256df7f3998d4fbe7e8e3470a63877e196d94bb5ff9b915cc5df2b6e",
+          "runtime": {
+            "wallMs": 611.748042,
+            "cpuUserMicros": 784069,
+            "cpuSystemMicros": 12599
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-03-1931ef7793b2",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  62,
+                  64,
+                  76
+                ],
+                "hex": "#3e404c",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#3e404c",
+                  "nearestName": "Charcoal Grey",
+                  "nearest": {
+                    "name": "Charcoal Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#46434c",
+                    "referenceOKLab": [
+                      0.3888,
+                      0.008,
+                      -0.0131
+                    ],
+                    "distance": 0.017049854411930333
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  80,
+                  88,
+                  99
+                ],
+                "hex": "#505863",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#505863",
+                  "nearestName": "Iron Grey",
+                  "nearest": {
+                    "name": "Iron Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#51545b",
+                    "referenceOKLab": [
+                      0.4448,
+                      -0.0001,
+                      -0.0129
+                    ],
+                    "distance": 0.015246547966917866
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  248,
+                  249,
+                  251
+                ],
+                "hex": "#f8f9fb",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f8f9fb",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.011098008506180814
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  153,
+                  145,
+                  142
+                ],
+                "hex": "#99918e",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#99918e",
+                  "nearestName": "Grey",
+                  "nearest": {
+                    "name": "Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#8f9293",
+                    "referenceOKLab": [
+                      0.6578,
+                      -0.0031,
+                      -0.0032
+                    ],
+                    "distance": 0.01572246532281029
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  59,
+                  60,
+                  68
+                ],
+                "hex": "#3b3c44",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#3b3c44",
+                  "nearestName": "Graphite",
+                  "nearest": {
+                    "name": "Graphite",
+                    "tier": "srgb",
+                    "referenceHex": "#3c3b3d",
+                    "referenceOKLab": [
+                      0.3537,
+                      0.0029,
+                      -0.0025
+                    ],
+                    "distance": 0.012025504991730968
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  79,
+                  87,
+                  99
+                ],
+                "hex": "#4f5763",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#4f5763",
+                  "nearestName": "Iron Grey",
+                  "nearest": {
+                    "name": "Iron Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#51545b",
+                    "referenceOKLab": [
+                      0.4448,
+                      -0.0001,
+                      -0.0129
+                    ],
+                    "distance": 0.013548791242386204
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  244,
+                  239,
+                  232
+                ],
+                "hex": "#f4efe8",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f4efe8",
+                  "nearestName": "Linen",
+                  "nearest": {
+                    "name": "Linen",
+                    "tier": "srgb",
+                    "referenceHex": "#e9efea",
+                    "referenceOKLab": [
+                      0.9461,
+                      -0.0081,
+                      0.004
+                    ],
+                    "distance": 0.014765102934616702
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  109,
+                  112,
+                  117
+                ],
+                "hex": "#6d7075",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#6d7075",
+                  "nearestName": "Slate",
+                  "nearest": {
+                    "name": "Slate",
+                    "tier": "srgb",
+                    "referenceHex": "#6b6c75",
+                    "referenceOKLab": [
+                      0.5324,
+                      0.0033,
+                      -0.015
+                    ],
+                    "distance": 0.014303005844482528
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-01",
+        "source": {
+          "caseId": "future-02-01",
+          "path": "10/ab67616d00001e02001095f83999b17333ab1125",
+          "sha256": "3cccd4eca181bee52834681cec424a445628ed235367787f93dfa32f10254ae6",
+          "byteCount": 22650,
+          "artworkId": "001095f83999b17333ab1125",
+          "selectionKey": "003a84ef564ec116703362c24fa804a70c89bf8e3a1aff6ff67237c8f0cc42f7",
+          "familyCommitment": "9f745327a4a5d3ce2c365cf342694492deb0ca8d076d632767f64d6ba857ff07"
+        },
+        "assignmentKey": "1931ef7793b25d4b39884211c122fead176381376bae291acb1cb781639c13a9",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-01.json",
+          "artifactSha256": "c4ae6658407f3d099e4368a5393e534b709f8043a361f083487e105c1542762e",
+          "presentationSha256": "de2292f52a2b86a853a51ea909a8f1ec5acf21661308c9d0457cd9e472f6f843",
+          "scientificSha256": "8e10c974662413f85600f51e482bdd5901564150b6b65d3cf3661f3cc5387278",
+          "runtime": {
+            "wallMs": 392.319959,
+            "cpuUserMicros": 704822,
+            "cpuSystemMicros": 18695
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-01.json",
+          "artifactSha256": "3b496f1c2b39c78059dfecb171c81140dd60fb679ce97dc76118adf4ae28d609",
+          "presentationSha256": "2c422536fcbc58b0b49d603d97ece597fec85b6bb26669b3b2520bcf57d99737",
+          "scientificSha256": "39866e6be1852c934b03deba50fb3ee80da221a9b7ba1f42e07f764bb45b917b",
+          "runtime": {
+            "wallMs": 414.943791,
+            "cpuUserMicros": 593203,
+            "cpuSystemMicros": 9011
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-04-58f074ea96d7",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  231,
+                  230,
+                  228
+                ],
+                "hex": "#e7e6e4",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e7e6e4",
+                  "nearestName": "Mist",
+                  "nearest": {
+                    "name": "Mist",
+                    "tier": "srgb",
+                    "referenceHex": "#daeaeb",
+                    "referenceOKLab": [
+                      0.926,
+                      -0.0165,
+                      -0.0062
+                    ],
+                    "distance": 0.019097369446032637
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  231,
+                  230,
+                  228
+                ],
+                "hex": "#e7e6e4",
+                "generated": false,
+                "collapsedTo": "background",
+                "colorName": {
+                  "sourceHex": "#e7e6e4",
+                  "nearestName": "Mist",
+                  "nearest": {
+                    "name": "Mist",
+                    "tier": "srgb",
+                    "referenceHex": "#daeaeb",
+                    "referenceOKLab": [
+                      0.926,
+                      -0.0165,
+                      -0.0062
+                    ],
+                    "distance": 0.019097369446032637
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  1,
+                  1,
+                  1
+                ],
+                "hex": "#010101",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#010101",
+                  "nearestName": "Soot",
+                  "nearest": {
+                    "name": "Soot",
+                    "tier": "srgb",
+                    "referenceHex": "#040000",
+                    "referenceOKLab": [
+                      0.0707,
+                      0.0209,
+                      0.0093
+                    ],
+                    "distance": 0.02314125466928295
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  162,
+                  9,
+                  4
+                ],
+                "hex": "#a20904",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a20904",
+                  "nearestName": "Firebrick",
+                  "nearest": {
+                    "name": "Firebrick",
+                    "tier": "p3",
+                    "referenceHex": "#9b0007",
+                    "referenceOKLab": [
+                      0.433,
+                      0.1642,
+                      0.0877
+                    ],
+                    "distance": 0.018899652686981717
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  1,
+                  1,
+                  1
+                ],
+                "hex": "#010101",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#010101",
+                  "nearestName": "Soot",
+                  "nearest": {
+                    "name": "Soot",
+                    "tier": "srgb",
+                    "referenceHex": "#040000",
+                    "referenceOKLab": [
+                      0.0707,
+                      0.0209,
+                      0.0093
+                    ],
+                    "distance": 0.02314125466928295
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  1,
+                  1,
+                  1
+                ],
+                "hex": "#010101",
+                "generated": false,
+                "collapsedTo": "background",
+                "colorName": {
+                  "sourceHex": "#010101",
+                  "nearestName": "Soot",
+                  "nearest": {
+                    "name": "Soot",
+                    "tier": "srgb",
+                    "referenceHex": "#040000",
+                    "referenceOKLab": [
+                      0.0707,
+                      0.0209,
+                      0.0093
+                    ],
+                    "distance": 0.02314125466928295
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  240,
+                  241,
+                  241
+                ],
+                "hex": "#f0f1f1",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f0f1f1",
+                  "nearestName": "Linen",
+                  "nearest": {
+                    "name": "Linen",
+                    "tier": "srgb",
+                    "referenceHex": "#e9efea",
+                    "referenceOKLab": [
+                      0.9461,
+                      -0.0081,
+                      0.004
+                    ],
+                    "distance": 0.014000660108240037
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  163,
+                  7,
+                  4
+                ],
+                "hex": "#a30704",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a30704",
+                  "nearestName": "Firebrick",
+                  "nearest": {
+                    "name": "Firebrick",
+                    "tier": "p3",
+                    "referenceHex": "#9b0007",
+                    "referenceOKLab": [
+                      0.433,
+                      0.1642,
+                      0.0877
+                    ],
+                    "distance": 0.01965752992375159
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-11",
+        "source": {
+          "caseId": "future-02-11",
+          "path": "10/ab67616d0000b27300100a3952304245c7ba52d6",
+          "sha256": "7b05dc0d6ca58d7b2a97cae28be171508f0607cc00eccaa5a88a3b17e481e5fe",
+          "byteCount": 20203,
+          "artworkId": "00100a3952304245c7ba52d6",
+          "selectionKey": "0654363ede8a6ac4e7691326ed019954eb64189b3321f0dd0a427c63ae82c8db",
+          "familyCommitment": "ec654611fdc80c7e2939fc6fc5df3054911528fada074fb594b0a6624a9867da"
+        },
+        "assignmentKey": "58f074ea96d7f73002b3ff19ea1ae89441989a170a243257618401b12851101d",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-11.json",
+          "artifactSha256": "317526315ed4cb87a62a971086286a030f9e10c9c24fa31c48d8389c16e0cad2",
+          "presentationSha256": "cd17aeb79faa702aa5967c3659cfef1f8b9aeb777b4e5ec8a67f27499225f42d",
+          "scientificSha256": "71f62a3a66a78a389d23cec4eed433c99211cd7244b20f398e164122038253c3",
+          "runtime": {
+            "wallMs": 617.310416,
+            "cpuUserMicros": 844426,
+            "cpuSystemMicros": 14024
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-11.json",
+          "artifactSha256": "89110c45d80613d63e040cda7f1939c77e6f7ebc0361082c2fc380237978afd2",
+          "presentationSha256": "cd6cb6cc79acbf2ad69e58d257b083752becc369a8d34827160f224a15a4e4cc",
+          "scientificSha256": "5167b72ef7d519b16a041efdd55b99a47604ed2cca690b32030bb566bf5ca6de",
+          "runtime": {
+            "wallMs": 386.141625,
+            "cpuUserMicros": 589061,
+            "cpuSystemMicros": 9669
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-05-6810a9417c1b",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  108,
+                  45,
+                  14
+                ],
+                "hex": "#6c2d0e",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#6c2d0e",
+                  "nearestName": "Russet Brown",
+                  "nearest": {
+                    "name": "Russet Brown",
+                    "tier": "srgb",
+                    "referenceHex": "#6d2d15",
+                    "referenceOKLab": [
+                      0.3831,
+                      0.0751,
+                      0.0633
+                    ],
+                    "distance": 0.006459991027195131
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  135,
+                  68,
+                  16
+                ],
+                "hex": "#874410",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#874410",
+                  "nearestName": "Burnt Caramel",
+                  "nearest": {
+                    "name": "Burnt Caramel",
+                    "tier": "p3",
+                    "referenceHex": "#874100",
+                    "referenceOKLab": [
+                      0.4571,
+                      0.0706,
+                      0.0938
+                    ],
+                    "distance": 0.009728477572023959
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  250,
+                  250,
+                  248
+                ],
+                "hex": "#fafaf8",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fafaf8",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.008540667674330215
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  223,
+                  177,
+                  65
+                ],
+                "hex": "#dfb141",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#dfb141",
+                  "nearestName": "Mustard",
+                  "nearest": {
+                    "name": "Mustard",
+                    "tier": "srgb",
+                    "referenceHex": "#e7b245",
+                    "referenceOKLab": [
+                      0.7939,
+                      0.0183,
+                      0.1362
+                    ],
+                    "distance": 0.014256896520998666
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  93,
+                  29,
+                  15
+                ],
+                "hex": "#5d1d0f",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#5d1d0f",
+                  "nearestName": "Rust Shadow",
+                  "nearest": {
+                    "name": "Rust Shadow",
+                    "tier": "p3",
+                    "referenceHex": "#5f1900",
+                    "referenceOKLab": [
+                      0.327,
+                      0.0876,
+                      0.0684
+                    ],
+                    "distance": 0.016325212600422034
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  124,
+                  53,
+                  41
+                ],
+                "hex": "#7c3529",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#7c3529",
+                  "nearestName": "Rooibos",
+                  "nearest": {
+                    "name": "Rooibos",
+                    "tier": "srgb",
+                    "referenceHex": "#84361f",
+                    "referenceOKLab": [
+                      0.4352,
+                      0.0905,
+                      0.0682
+                    ],
+                    "distance": 0.019549256272727435
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  252,
+                  249,
+                  252
+                ],
+                "hex": "#fcf9fc",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fcf9fc",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.006978801444902628
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  230,
+                  196,
+                  59
+                ],
+                "hex": "#e6c43b",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e6c43b",
+                  "nearestName": "Gold",
+                  "nearest": {
+                    "name": "Gold",
+                    "tier": "srgb",
+                    "referenceHex": "#e3c326",
+                    "referenceOKLab": [
+                      0.8204,
+                      -0.0171,
+                      0.1598
+                    ],
+                    "distance": 0.011837426468279526
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-02",
+        "source": {
+          "caseId": "future-02-02",
+          "path": "10/ab67616d00001e020010d319b94bde4706b941f2",
+          "sha256": "33dfed6981e0933e4a62a49407b85df6d0d05e649d95851d1cb7eac8c7f2b99f",
+          "byteCount": 49356,
+          "artworkId": "0010d319b94bde4706b941f2",
+          "selectionKey": "02a9ed372671ff4f974c34e43bcb3ef7e4d3a16d098d35171973ca9cecc93e49",
+          "familyCommitment": "b6d40eb08fd134985681ce9cedacf61bcc366933ae2b630213ac13359d5475c3"
+        },
+        "assignmentKey": "6810a9417c1bdd1ea7346647bd18a1eaa3c5ffdd7aea3b6b9b48c58e1fff5825",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-02.json",
+          "artifactSha256": "80336590df382130398a1600cdb966b762be78bb3884986c615cfb7794f7e0ad",
+          "presentationSha256": "05b2b00bb78edc8f91bed9f461ca66899b7b4d1ebdd9733066995c047c73ea7d",
+          "scientificSha256": "776069ac075cbecb13b0ce4f2855e860b4ce67af746ffc3aabc9a96b471958f2",
+          "runtime": {
+            "wallMs": 220.28300000000002,
+            "cpuUserMicros": 358053,
+            "cpuSystemMicros": 15796
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-02.json",
+          "artifactSha256": "94a29ff40a9be3771543928c9e9fa6de6d3e8de9ce15055166b96a5d6ca36f5e",
+          "presentationSha256": "1b71e651790f13ab02cd1c130140c90ff9aaf8c60088c2501eb86ec916e1b10a",
+          "scientificSha256": "880dcade411603fe71a7d70a27a592ee99eda55cc9f26748036a08cc51988ba1",
+          "runtime": {
+            "wallMs": 587.16375,
+            "cpuUserMicros": 761473,
+            "cpuSystemMicros": 11523
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-06-69f982a25759",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  165,
+                  16,
+                  54
+                ],
+                "hex": "#a51036",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a51036",
+                  "nearestName": "Cardinal",
+                  "nearest": {
+                    "name": "Cardinal",
+                    "tier": "srgb",
+                    "referenceHex": "#a51b32",
+                    "referenceOKLab": [
+                      0.4697,
+                      0.1615,
+                      0.056
+                    ],
+                    "distance": 0.013003615078067347
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  165,
+                  16,
+                  54
+                ],
+                "hex": "#a51036",
+                "generated": false,
+                "collapsedTo": "background",
+                "colorName": {
+                  "sourceHex": "#a51036",
+                  "nearestName": "Cardinal",
+                  "nearest": {
+                    "name": "Cardinal",
+                    "tier": "srgb",
+                    "referenceHex": "#a51b32",
+                    "referenceOKLab": [
+                      0.4697,
+                      0.1615,
+                      0.056
+                    ],
+                    "distance": 0.013003615078067347
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  252,
+                  253,
+                  248
+                ],
+                "hex": "#fcfdf8",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fcfdf8",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.011194889388409771
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  204,
+                  194,
+                  192
+                ],
+                "hex": "#ccc2c0",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#ccc2c0",
+                  "nearestName": "Dim",
+                  "nearest": {
+                    "name": "Dim",
+                    "tier": "srgb",
+                    "referenceHex": "#c6c6c1",
+                    "referenceOKLab": [
+                      0.8242,
+                      -0.0013,
+                      0.0058
+                    ],
+                    "distance": 0.011545401509809027
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  6,
+                  19,
+                  12
+                ],
+                "hex": "#06130c",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#06130c",
+                  "nearestName": "Obsidian",
+                  "nearest": {
+                    "name": "Obsidian",
+                    "tier": "srgb",
+                    "referenceHex": "#080f0d",
+                    "referenceOKLab": [
+                      0.1618,
+                      -0.0124,
+                      0.0025
+                    ],
+                    "distance": 0.015434295602298437
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  20,
+                  33,
+                  22
+                ],
+                "hex": "#142116",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#142116",
+                  "nearestName": "Dark Forest",
+                  "nearest": {
+                    "name": "Dark Forest",
+                    "tier": "srgb",
+                    "referenceHex": "#121c16",
+                    "referenceOKLab": [
+                      0.2142,
+                      -0.018,
+                      0.0075
+                    ],
+                    "distance": 0.01970642519386055
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  212,
+                  196,
+                  194
+                ],
+                "hex": "#d4c4c2",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#d4c4c2",
+                  "nearestName": "Dim",
+                  "nearest": {
+                    "name": "Dim",
+                    "tier": "srgb",
+                    "referenceHex": "#c6c6c1",
+                    "referenceOKLab": [
+                      0.8242,
+                      -0.0013,
+                      0.0058
+                    ],
+                    "distance": 0.01989068180927569
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  165,
+                  13,
+                  54
+                ],
+                "hex": "#a50d36",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a50d36",
+                  "nearestName": "Cardinal",
+                  "nearest": {
+                    "name": "Cardinal",
+                    "tier": "srgb",
+                    "referenceHex": "#a51b32",
+                    "referenceOKLab": [
+                      0.4697,
+                      0.1615,
+                      0.056
+                    ],
+                    "distance": 0.014862332780747244
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-07",
+        "source": {
+          "caseId": "future-02-07",
+          "path": "10/ab67616d0000b2730010c72b0a6a2c7b073f4ff4",
+          "sha256": "461502fab6a71a7ce7a14f41cb4166dee74d8351dbc551bc925c092c70f0cd1a",
+          "byteCount": 118621,
+          "artworkId": "0010c72b0a6a2c7b073f4ff4",
+          "selectionKey": "04cc1b30c8cf6cdc643816bf55b583e34cc028948e04bd703544cc72cd6d5cc0",
+          "familyCommitment": "8ce8ada2080784b9dc8877eb105f3d39c532439b2f46f27c9d7e87bfa6f7174a"
+        },
+        "assignmentKey": "69f982a257593404592fc393de03b2ea92ca12e853f12cdb187455adf00ee8e0",
+        "candidateSide": "A",
+        "baselineSide": "B",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-07.json",
+          "artifactSha256": "1cd019336167a366bbbb908fc064256283629f206990c0434c6de59f0b7ecbd5",
+          "presentationSha256": "be7391d762d6c975c65e80b03eab00476c5935ff894fcec87e5c1496b18c1620",
+          "scientificSha256": "0d7e0b2a2694d13dfd601f7379b04983f9e177f007f60e8682cbbe99b47777b1",
+          "runtime": {
+            "wallMs": 657.598042,
+            "cpuUserMicros": 888058,
+            "cpuSystemMicros": 18649
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-07.json",
+          "artifactSha256": "4d895305c70cff92b621b605a12c41183347ff70643f035fed549a263427d11e",
+          "presentationSha256": "c601efe3fb8085fc3111a50d4f91ca9a70df5a5620d2b50dccec7344edd83484",
+          "scientificSha256": "2573e548bd5183b78fc6dd94b78f5ee642878ec7281dbe7326b3f8156cf15990",
+          "runtime": {
+            "wallMs": 490.79529199999996,
+            "cpuUserMicros": 678421,
+            "cpuSystemMicros": 10141
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-07-7352ccbbf459",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  37,
+                  37,
+                  37
+                ],
+                "hex": "#252525",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#252525",
+                  "nearestName": "Lead",
+                  "nearest": {
+                    "name": "Lead",
+                    "tier": "srgb",
+                    "referenceHex": "#242827",
+                    "referenceOKLab": [
+                      0.2723,
+                      -0.0057,
+                      -0.0009
+                    ],
+                    "distance": 0.009718928193070304
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  4,
+                  4,
+                  4
+                ],
+                "hex": "#040404",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#040404",
+                  "nearestName": "Jet Black",
+                  "nearest": {
+                    "name": "Jet Black",
+                    "tier": "srgb",
+                    "referenceHex": "#030402",
+                    "referenceOKLab": [
+                      0.0995,
+                      -0.0053,
+                      0.0071
+                    ],
+                    "distance": 0.011404475666005415
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  249,
+                  249,
+                  249
+                ],
+                "hex": "#f9f9f9",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f9f9f9",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.009604975424262582
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  178,
+                  178,
+                  178
+                ],
+                "hex": "#b2b2b2",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#b2b2b2",
+                  "nearestName": "Silver",
+                  "nearest": {
+                    "name": "Silver",
+                    "tier": "srgb",
+                    "referenceHex": "#afb6b3",
+                    "referenceOKLab": [
+                      0.7704,
+                      -0.0086,
+                      0.0014
+                    ],
+                    "distance": 0.011067559257394428
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  2,
+                  2,
+                  2
+                ],
+                "hex": "#020202",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#020202",
+                  "nearestName": "Jet Black",
+                  "nearest": {
+                    "name": "Jet Black",
+                    "tier": "srgb",
+                    "referenceHex": "#030402",
+                    "referenceOKLab": [
+                      0.0995,
+                      -0.0053,
+                      0.0071
+                    ],
+                    "distance": 0.017272939307279477
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  2,
+                  2,
+                  2
+                ],
+                "hex": "#020202",
+                "generated": false,
+                "collapsedTo": "background",
+                "colorName": {
+                  "sourceHex": "#020202",
+                  "nearestName": "Jet Black",
+                  "nearest": {
+                    "name": "Jet Black",
+                    "tier": "srgb",
+                    "referenceHex": "#030402",
+                    "referenceOKLab": [
+                      0.0995,
+                      -0.0053,
+                      0.0071
+                    ],
+                    "distance": 0.017272939307279477
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  223,
+                  223,
+                  223
+                ],
+                "hex": "#dfdfdf",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#dfdfdf",
+                  "nearestName": "Ivory",
+                  "nearest": {
+                    "name": "Ivory",
+                    "tier": "srgb",
+                    "referenceHex": "#e3e2d6",
+                    "referenceOKLab": [
+                      0.9101,
+                      -0.003,
+                      0.0155
+                    ],
+                    "distance": 0.017053615147013715
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  147,
+                  147,
+                  147
+                ],
+                "hex": "#939393",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#939393",
+                  "nearestName": "Grey",
+                  "nearest": {
+                    "name": "Grey",
+                    "tier": "srgb",
+                    "referenceHex": "#8f9293",
+                    "referenceOKLab": [
+                      0.6578,
+                      -0.0031,
+                      -0.0032
+                    ],
+                    "distance": 0.007043235238703956
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-10",
+        "source": {
+          "caseId": "future-02-10",
+          "path": "10/ab67616d00001e0200103500d883e207097ac96e",
+          "sha256": "01a0c88f5ab073cd2f11bc83f598c937d23710c9d5b69300112ae048ef4336b9",
+          "byteCount": 26942,
+          "artworkId": "00103500d883e207097ac96e",
+          "selectionKey": "063cb8cbf65e455e36b71d48054539b03b015588f7a4cca1423683d50d35e96e",
+          "familyCommitment": "fa1cf3853f9449d29fbb934d737c0312b4f5869df4cb3e38d2acbdf7a0eed7a9"
+        },
+        "assignmentKey": "7352ccbbf459be6e43dcf428d9785634501db6c22e078121cc0511b86ae5cd58",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-10.json",
+          "artifactSha256": "c285564d35c4064896ac051990b99eb7944f03ad31967d8df7225becd7edefe3",
+          "presentationSha256": "1e433980a013534ea188e00982c7f07a530251ba364e478efd196832830c4c41",
+          "scientificSha256": "03288ad0e08ef620f730f68bfa7a3448f6e2b3d136dde64a3cc374871a501733",
+          "runtime": {
+            "wallMs": 174.737292,
+            "cpuUserMicros": 282172,
+            "cpuSystemMicros": 11624
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-10.json",
+          "artifactSha256": "127d2bf003769b339b07ea3aad81ace531897d559049bd7b34273e87b739e2ec",
+          "presentationSha256": "0cb5738a3b15a65a5453a0b29ac61a2f1b52a9dbdd22700e362582c501dd1536",
+          "scientificSha256": "0ecf24b8cbb79cfc2dea868cf0f064e171e5d5a8af46afb53b2dda0c74ce228b",
+          "runtime": {
+            "wallMs": 715.774167,
+            "cpuUserMicros": 896872,
+            "cpuSystemMicros": 13775
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-08-aad655002487",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  40,
+                  26,
+                  13
+                ],
+                "hex": "#281a0d",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#281a0d",
+                  "nearestName": "Espresso",
+                  "nearest": {
+                    "name": "Espresso",
+                    "tier": "srgb",
+                    "referenceHex": "#271c11",
+                    "referenceOKLab": [
+                      0.2366,
+                      0.0118,
+                      0.0239
+                    ],
+                    "distance": 0.006864047065745855
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  88,
+                  64,
+                  38
+                ],
+                "hex": "#584026",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#584026",
+                  "nearestName": "Chocolate",
+                  "nearest": {
+                    "name": "Chocolate",
+                    "tier": "srgb",
+                    "referenceHex": "#5a4225",
+                    "referenceOKLab": [
+                      0.3978,
+                      0.0184,
+                      0.0512
+                    ],
+                    "distance": 0.00730576974678149
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  249,
+                  237,
+                  232
+                ],
+                "hex": "#f9ede8",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f9ede8",
+                  "nearestName": "Eggshell",
+                  "nearest": {
+                    "name": "Eggshell",
+                    "tier": "srgb",
+                    "referenceHex": "#f6e9df",
+                    "referenceOKLab": [
+                      0.9405,
+                      0.0099,
+                      0.0169
+                    ],
+                    "distance": 0.0152114861673169
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  229,
+                  1,
+                  10
+                ],
+                "hex": "#e5010a",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e5010a",
+                  "nearestName": "Alarm",
+                  "nearest": {
+                    "name": "Alarm",
+                    "tier": "p3",
+                    "referenceHex": "#e31f00",
+                    "referenceOKLab": [
+                      0.5846,
+                      0.1955,
+                      0.1177
+                    ],
+                    "distance": 0.01430125134621543
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  37,
+                  23,
+                  10
+                ],
+                "hex": "#25170a",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#25170a",
+                  "nearestName": "Espresso Martini",
+                  "nearest": {
+                    "name": "Espresso Martini",
+                    "tier": "srgb",
+                    "referenceHex": "#23150a",
+                    "referenceOKLab": [
+                      0.2117,
+                      0.0147,
+                      0.0266
+                    ],
+                    "distance": 0.007892861972627068
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  104,
+                  76,
+                  52
+                ],
+                "hex": "#684c34",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#684c34",
+                  "nearestName": "Walnut Brown",
+                  "nearest": {
+                    "name": "Walnut Brown",
+                    "tier": "srgb",
+                    "referenceHex": "#664c37",
+                    "referenceOKLab": [
+                      0.4398,
+                      0.0234,
+                      0.0417
+                    ],
+                    "distance": 0.004914011999361114
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  254,
+                  233,
+                  152
+                ],
+                "hex": "#fee998",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fee998",
+                  "nearestName": "Cosmic Latte",
+                  "nearest": {
+                    "name": "Cosmic Latte",
+                    "tier": "rec2020",
+                    "referenceHex": "#ffedb7",
+                    "referenceOKLab": [
+                      0.9473,
+                      -0.0034,
+                      0.1109
+                    ],
+                    "distance": 0.017415663648838942
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  222,
+                  154,
+                  91
+                ],
+                "hex": "#de9a5b",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#de9a5b",
+                  "nearestName": "Honey",
+                  "nearest": {
+                    "name": "Honey",
+                    "tier": "srgb",
+                    "referenceHex": "#e09c5d",
+                    "referenceOKLab": [
+                      0.7469,
+                      0.0529,
+                      0.1011
+                    ],
+                    "distance": 0.006774590045861612
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-04",
+        "source": {
+          "caseId": "future-02-04",
+          "path": "10/ab67616d0000b2730010f7adddbacef93dd045f8",
+          "sha256": "7d016feed4dff09e2cf274e27f9c319f31255fed60323689fff7a4e3bc673100",
+          "byteCount": 121291,
+          "artworkId": "0010f7adddbacef93dd045f8",
+          "selectionKey": "032654cb94dd0b32f203b3b3166dac6d00fc582606d2c45f0a067cdea8d6a4a6",
+          "familyCommitment": "69ebf1b46eb060f6570b4c444b3c144807f594142746d7c160743f30c435296a"
+        },
+        "assignmentKey": "aad655002487ad2c010cdeee84a600517b8569542b00dd3e3064ebb268f44839",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-04.json",
+          "artifactSha256": "bc32bb30c822276c56707a5bc72a4c95ce803e20d1e423454edb5f7ec43bee31",
+          "presentationSha256": "d985f1d82ef5e7931811ba3eb28520a680c89e33e714ee0d4763c3e18b7a81ad",
+          "scientificSha256": "94bdafd6d491b7c3b96efec4c261800e9fb0c5db83ed0617ff331c2910a253c0",
+          "runtime": {
+            "wallMs": 1255.057541,
+            "cpuUserMicros": 1611429,
+            "cpuSystemMicros": 24330
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-04.json",
+          "artifactSha256": "c77c8fd1d6d8910655bf9889778e1e20b239a90ceda7a5ff2d22d5ef24300b7b",
+          "presentationSha256": "47e30acde8e6d7f41459a7e61b8551d59dd02856672aa702470b2150ab282ed8",
+          "scientificSha256": "0c8f92963f352facf3318b60fd65fe0757f5de6af9234c4fe5b461695c61b345",
+          "runtime": {
+            "wallMs": 547.622208,
+            "cpuUserMicros": 734463,
+            "cpuSystemMicros": 11946
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-09-b6a4a78aab70",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  52,
+                  18,
+                  21
+                ],
+                "hex": "#341215",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#341215",
+                  "nearestName": "Soulless",
+                  "nearest": {
+                    "name": "Soulless",
+                    "tier": "srgb",
+                    "referenceHex": "#2e1517",
+                    "referenceOKLab": [
+                      0.2324,
+                      0.0392,
+                      0.0115
+                    ],
+                    "distance": 0.01471984740970148
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  11,
+                  13,
+                  33
+                ],
+                "hex": "#0b0d21",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#0b0d21",
+                  "nearestName": "Eigengrau",
+                  "nearest": {
+                    "name": "Eigengrau",
+                    "tier": "srgb",
+                    "referenceHex": "#100c1e",
+                    "referenceOKLab": [
+                      0.1688,
+                      0.0135,
+                      -0.034
+                    ],
+                    "distance": 0.01123362490974039
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  220,
+                  248,
+                  228
+                ],
+                "hex": "#dcf8e4",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#dcf8e4",
+                  "nearestName": "Morning Dew",
+                  "nearest": {
+                    "name": "Morning Dew",
+                    "tier": "srgb",
+                    "referenceHex": "#e0f4db",
+                    "referenceOKLab": [
+                      0.9448,
+                      -0.0291,
+                      0.0251
+                    ],
+                    "distance": 0.013510607189816252
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  244,
+                  224,
+                  10
+                ],
+                "hex": "#f4e00a",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f4e00a",
+                  "nearestName": "Yuzu",
+                  "nearest": {
+                    "name": "Yuzu",
+                    "tier": "srgb",
+                    "referenceHex": "#e8e126",
+                    "referenceOKLab": [
+                      0.8877,
+                      -0.0539,
+                      0.1749
+                    ],
+                    "distance": 0.015958729798486528
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  56,
+                  0,
+                  1
+                ],
+                "hex": "#380001",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#380001",
+                  "nearestName": "2AM Breakup",
+                  "nearest": {
+                    "name": "2AM Breakup",
+                    "tier": "p3",
+                    "referenceHex": "#380400",
+                    "referenceOKLab": [
+                      0.2196,
+                      0.0763,
+                      0.0478
+                    ],
+                    "distance": 0.00886427512323313
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  93,
+                  3,
+                  3
+                ],
+                "hex": "#5d0303",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#5d0303",
+                  "nearestName": "Dark Rust",
+                  "nearest": {
+                    "name": "Dark Rust",
+                    "tier": "p3",
+                    "referenceHex": "#541000",
+                    "referenceOKLab": [
+                      0.2948,
+                      0.0865,
+                      0.0613
+                    ],
+                    "distance": 0.02138995400789391
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  253,
+                  231,
+                  217
+                ],
+                "hex": "#fde7d9",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fde7d9",
+                  "nearestName": "Eggshell",
+                  "nearest": {
+                    "name": "Eggshell",
+                    "tier": "srgb",
+                    "referenceHex": "#f6e9df",
+                    "referenceOKLab": [
+                      0.9405,
+                      0.0099,
+                      0.0169
+                    ],
+                    "distance": 0.011280838404518937
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  250,
+                  243,
+                  17
+                ],
+                "hex": "#faf311",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#faf311",
+                  "nearestName": "Lemon",
+                  "nearest": {
+                    "name": "Lemon",
+                    "tier": "srgb",
+                    "referenceHex": "#f7f03e",
+                    "referenceOKLab": [
+                      0.9325,
+                      -0.0545,
+                      0.1756
+                    ],
+                    "distance": 0.01759438820847822
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-09",
+        "source": {
+          "caseId": "future-02-09",
+          "path": "10/ab67616d00001e0200104e29afcccd0253886c63",
+          "sha256": "bc6e1a0593a1353887593749a0f528052f05978c0ce6508e7f74ec651a7e6bbe",
+          "byteCount": 60061,
+          "artworkId": "00104e29afcccd0253886c63",
+          "selectionKey": "056fc578a7c2e1990ac92cfe12cab06d59bc5307f8ad818036384929951ae879",
+          "familyCommitment": "2b5859bca9cec5142d7eee93e95ad026814393c9a57fcb16f3f3a866d2aab7d3"
+        },
+        "assignmentKey": "b6a4a78aab7005541c841b8a529552018786b86b95a0ffc8020ca54c3e71e63f",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-09.json",
+          "artifactSha256": "0a62e67ba7dbe71afc5c9b6821948a0d75bdd9eae49ecd4cec436b9cc827eecc",
+          "presentationSha256": "3da934602dd0935ce80c2ebedbcdc06c6fd60dc551200f01a9cc694b94cd4480",
+          "scientificSha256": "655a84fc40911dc2c95fd0b5fb659960d2a7b6b6da54bc1fa1664e456711af86",
+          "runtime": {
+            "wallMs": 311.05816599999997,
+            "cpuUserMicros": 476205,
+            "cpuSystemMicros": 14843
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-09.json",
+          "artifactSha256": "f53052b2626b960ab7b2c666c0fa88545fcae303ea7c9e826a997d809bb5ce15",
+          "presentationSha256": "e5381fca44416380fd01ce106fbb03865e920b8eb4ee878b7506cb1536254e66",
+          "scientificSha256": "8ad668d6b08caf4133e05a3f85d621936931bbc96fe0e48a031115e59103744d",
+          "runtime": {
+            "wallMs": 1020.0856670000001,
+            "cpuUserMicros": 1233891,
+            "cpuSystemMicros": 16997
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-10-dbac5ebcfdc2",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "hex": "#000000",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#000000",
+                  "nearestName": "Pitch Black",
+                  "nearest": {
+                    "name": "Pitch Black",
+                    "tier": "srgb",
+                    "referenceHex": "#000000",
+                    "referenceOKLab": [
+                      0.0323,
+                      0.0047,
+                      0.004
+                    ],
+                    "distance": 0.032884342778897076
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "hex": "#000000",
+                "generated": false,
+                "collapsedTo": "background",
+                "colorName": {
+                  "sourceHex": "#000000",
+                  "nearestName": "Pitch Black",
+                  "nearest": {
+                    "name": "Pitch Black",
+                    "tier": "srgb",
+                    "referenceHex": "#000000",
+                    "referenceOKLab": [
+                      0.0323,
+                      0.0047,
+                      0.004
+                    ],
+                    "distance": 0.032884342778897076
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  250,
+                  249,
+                  255
+                ],
+                "hex": "#faf9ff",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#faf9ff",
+                  "nearestName": "Snow",
+                  "nearest": {
+                    "name": "Snow",
+                    "tier": "p3",
+                    "referenceHex": "#fffaf9",
+                    "referenceOKLab": [
+                      0.9879,
+                      0.0071,
+                      0.0029
+                    ],
+                    "distance": 0.011402893108966732
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  187,
+                  186,
+                  19
+                ],
+                "hex": "#bbba13",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#bbba13",
+                  "nearestName": "Wild Lime",
+                  "nearest": {
+                    "name": "Wild Lime",
+                    "tier": "srgb",
+                    "referenceHex": "#b3bf26",
+                    "referenceOKLab": [
+                      0.7706,
+                      -0.0673,
+                      0.1493
+                    ],
+                    "distance": 0.0152728383534505
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  0,
+                  0,
+                  0
+                ],
+                "hex": "#000000",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#000000",
+                  "nearestName": "Pitch Black",
+                  "nearest": {
+                    "name": "Pitch Black",
+                    "tier": "srgb",
+                    "referenceHex": "#000000",
+                    "referenceOKLab": [
+                      0.0323,
+                      0.0047,
+                      0.004
+                    ],
+                    "distance": 0.032884342778897076
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  17,
+                  16,
+                  22
+                ],
+                "hex": "#111016",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#111016",
+                  "nearestName": "Darkroom",
+                  "nearest": {
+                    "name": "Darkroom",
+                    "tier": "srgb",
+                    "referenceHex": "#0d1520",
+                    "referenceOKLab": [
+                      0.1938,
+                      -0.006,
+                      -0.0246
+                    ],
+                    "distance": 0.023861434914585013
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  204,
+                  209,
+                  213
+                ],
+                "hex": "#ccd1d5",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#ccd1d5",
+                  "nearestName": "Zen",
+                  "nearest": {
+                    "name": "Zen",
+                    "tier": "srgb",
+                    "referenceHex": "#c9d2d4",
+                    "referenceOKLab": [
+                      0.857,
+                      -0.0085,
+                      -0.0062
+                    ],
+                    "distance": 0.004945307673368079
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  252,
+                  252,
+                  4
+                ],
+                "hex": "#fcfc04",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#fcfc04",
+                  "nearestName": "Yellow",
+                  "nearest": {
+                    "name": "Yellow",
+                    "tier": "srgb",
+                    "referenceHex": "#faff17",
+                    "referenceOKLab": [
+                      0.9644,
+                      -0.0753,
+                      0.1953
+                    ],
+                    "distance": 0.0069852668877582545
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-06",
+        "source": {
+          "caseId": "future-02-06",
+          "path": "10/ab67616d00001e0200101f18d7394f8e6c78e5b1",
+          "sha256": "5a47b5e4fdfdf322e526c1fee5da51ed2cbf450cebb639c65914487ea589ce39",
+          "byteCount": 46721,
+          "artworkId": "00101f18d7394f8e6c78e5b1",
+          "selectionKey": "03846cd28b2853c4828c3553ece3a4644d60f4d5d599092504a87a3196d4af81",
+          "familyCommitment": "bafc78d4fec681addc30406195a349f5ca7437988d6ff483e6a9a5fd7d40e9a3"
+        },
+        "assignmentKey": "dbac5ebcfdc287696a684f7e8b08ebff42145de96950473441099c2efe8ef007",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-06.json",
+          "artifactSha256": "8ed0b48bd6490c76e0fafcf0cca6451b289fc2d9675cc4f9885f561cdc81bfb5",
+          "presentationSha256": "5bdb4ab538a6276056d724d9e3cdcd28973707dccbd22a160a8c25a6f7575a12",
+          "scientificSha256": "a30c3922f1cc23c250c968504156052fa9980498799244503fabe88d83aa787b",
+          "runtime": {
+            "wallMs": 272.539916,
+            "cpuUserMicros": 469071,
+            "cpuSystemMicros": 15834
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-06.json",
+          "artifactSha256": "e5b36053a1ae88dab263c6f364c6d1097389199aedb7f143b47e3124fe99a728",
+          "presentationSha256": "98b442ca6cc703b7ee4438c16d9cd95f0f8848c460bc0795a758187788ddde5b",
+          "scientificSha256": "786bedfe4a9fa5f1fde49f1c7718692eee7e4ca5b498e1528d18d663fca2510c",
+          "runtime": {
+            "wallMs": 729.488959,
+            "cpuUserMicros": 946276,
+            "cpuSystemMicros": 14563
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-11-e50fa5297f56",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  15,
+                  15,
+                  27
+                ],
+                "hex": "#0f0f1b",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#0f0f1b",
+                  "nearestName": "Eigengrau",
+                  "nearest": {
+                    "name": "Eigengrau",
+                    "tier": "srgb",
+                    "referenceHex": "#100c1e",
+                    "referenceOKLab": [
+                      0.1688,
+                      0.0135,
+                      -0.034
+                    ],
+                    "distance": 0.014045024876660643
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  31,
+                  27,
+                  41
+                ],
+                "hex": "#1f1b29",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#1f1b29",
+                  "nearestName": "Grackle",
+                  "nearest": {
+                    "name": "Grackle",
+                    "tier": "srgb",
+                    "referenceHex": "#221e2c",
+                    "referenceOKLab": [
+                      0.2474,
+                      0.012,
+                      -0.0241
+                    ],
+                    "distance": 0.014041083210033042
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  226,
+                  197,
+                  234
+                ],
+                "hex": "#e2c5ea",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e2c5ea",
+                  "nearestName": "Thistle",
+                  "nearest": {
+                    "name": "Thistle",
+                    "tier": "srgb",
+                    "referenceHex": "#dbc3e5",
+                    "referenceOKLab": [
+                      0.8483,
+                      0.0386,
+                      -0.0371
+                    ],
+                    "distance": 0.012690664475083708
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  168,
+                  136,
+                  181
+                ],
+                "hex": "#a888b5",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a888b5",
+                  "nearestName": "Mauve",
+                  "nearest": {
+                    "name": "Mauve",
+                    "tier": "srgb",
+                    "referenceHex": "#b18ab2",
+                    "referenceOKLab": [
+                      0.6822,
+                      0.06,
+                      -0.0418
+                    ],
+                    "distance": 0.01558674712623492
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  26,
+                  25,
+                  39
+                ],
+                "hex": "#1a1927",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#1a1927",
+                  "nearestName": "Evening Shadow",
+                  "nearest": {
+                    "name": "Evening Shadow",
+                    "tier": "srgb",
+                    "referenceHex": "#15172c",
+                    "referenceOKLab": [
+                      0.2138,
+                      0.0055,
+                      -0.0407
+                    ],
+                    "distance": 0.01686351146895953
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  53,
+                  66,
+                  98
+                ],
+                "hex": "#354262",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#354262",
+                  "nearestName": "Quarry",
+                  "nearest": {
+                    "name": "Quarry",
+                    "tier": "srgb",
+                    "referenceHex": "#3e4360",
+                    "referenceOKLab": [
+                      0.3925,
+                      0.0055,
+                      -0.0491
+                    ],
+                    "distance": 0.015663757132301493
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  248,
+                  227,
+                  246
+                ],
+                "hex": "#f8e3f6",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#f8e3f6",
+                  "nearestName": "Polar Bear in a Blizzard",
+                  "nearest": {
+                    "name": "Polar Bear in a Blizzard",
+                    "tier": "srgb",
+                    "referenceHex": "#f7def1",
+                    "referenceOKLab": [
+                      0.9265,
+                      0.0338,
+                      -0.0163
+                    ],
+                    "distance": 0.012745597503564436
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  144,
+                  127,
+                  172
+                ],
+                "hex": "#907fac",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#907fac",
+                  "nearestName": "Owl Feather",
+                  "nearest": {
+                    "name": "Owl Feather",
+                    "tier": "srgb",
+                    "referenceHex": "#8f7da8",
+                    "referenceOKLab": [
+                      0.6223,
+                      0.0373,
+                      -0.055
+                    ],
+                    "distance": 0.007104987645750408
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-05",
+        "source": {
+          "caseId": "future-02-05",
+          "path": "10/ab67616d00001e020010c625e2281b34caf4e3af",
+          "sha256": "d6c813af7f179795bae97d47addc7a9247a7a6a01531c04a952c31b4a1f1a5cc",
+          "byteCount": 46231,
+          "artworkId": "0010c625e2281b34caf4e3af",
+          "selectionKey": "033f435f660133d10ee5f28be488ab5506b93731c8ca9ae52efa66cee91ecf4e",
+          "familyCommitment": "965e99700ba189de8d844279189ee0d621894b60f5c74b763ae60c620d5e7f7a"
+        },
+        "assignmentKey": "e50fa5297f5652bb9ee5d2c471596b9da8a38b45fc71790c9b3b008b3af48c51",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-05.json",
+          "artifactSha256": "300d7b1317d6dc56092076affb6d8765880aa435c7ba354f9d9ba845b07f66fc",
+          "presentationSha256": "00f5ee41c18a9455a160e4db49e91b19b976938c26e7137ec5c3ffdb3e70c781",
+          "scientificSha256": "25936c7f97584da61b1fb5d57426cc2f7ce7ce32e476ef89242850f23aa0032c",
+          "runtime": {
+            "wallMs": 265.111958,
+            "cpuUserMicros": 436949,
+            "cpuSystemMicros": 15959
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-05.json",
+          "artifactSha256": "d1193366c621ea5cf8169121866df161bb78a5170b797715b08ba42f8e1c23ab",
+          "presentationSha256": "e7bd650dea771471b2cc6b0bb655666646c148b8895da415e032573172877fda",
+          "scientificSha256": "593ddcacce3e72ddd3799b0f68e71c8dc31edcbb14c9282c990c8954930e2475",
+          "runtime": {
+            "wallMs": 695.4327499999999,
+            "cpuUserMicros": 905491,
+            "cpuSystemMicros": 13525
+          }
+        }
+      }
+    },
+    {
+      "reviewCaseId": "future02-12-fb68a9f83e2f",
+      "publicSafe": {
+        "options": {
+          "A": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  224,
+                  217,
+                  217
+                ],
+                "hex": "#e0d9d9",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e0d9d9",
+                  "nearestName": "Fog",
+                  "nearest": {
+                    "name": "Fog",
+                    "tier": "srgb",
+                    "referenceHex": "#dcd6df",
+                    "referenceOKLab": [
+                      0.884,
+                      0.01,
+                      -0.0094
+                    ],
+                    "distance": 0.01380283248788723
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  178,
+                  177,
+                  180
+                ],
+                "hex": "#b2b1b4",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#b2b1b4",
+                  "nearestName": "Silver",
+                  "nearest": {
+                    "name": "Silver",
+                    "tier": "srgb",
+                    "referenceHex": "#afb6b3",
+                    "referenceOKLab": [
+                      0.7704,
+                      -0.0086,
+                      0.0014
+                    ],
+                    "distance": 0.014600971703781704
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  6,
+                  4,
+                  5
+                ],
+                "hex": "#060405",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#060405",
+                  "nearestName": "Ink",
+                  "nearest": {
+                    "name": "Ink",
+                    "tier": "srgb",
+                    "referenceHex": "#080308",
+                    "referenceOKLab": [
+                      0.1116,
+                      0.0189,
+                      -0.0111
+                    ],
+                    "distance": 0.015602435082983635
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  65,
+                  54,
+                  157
+                ],
+                "hex": "#41369d",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#41369d",
+                  "nearestName": "Dark Iris",
+                  "nearest": {
+                    "name": "Dark Iris",
+                    "tier": "srgb",
+                    "referenceHex": "#3a329f",
+                    "referenceOKLab": [
+                      0.3991,
+                      0.0258,
+                      -0.1673
+                    ],
+                    "distance": 0.01638211159295822
+                  }
+                }
+              }
+            },
+            "gradient": true,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          },
+          "B": {
+            "roles": {
+              "background": {
+                "rgb": [
+                  225,
+                  221,
+                  220
+                ],
+                "hex": "#e1dddc",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#e1dddc",
+                  "nearestName": "Ivory",
+                  "nearest": {
+                    "name": "Ivory",
+                    "tier": "srgb",
+                    "referenceHex": "#e3e2d6",
+                    "referenceOKLab": [
+                      0.9101,
+                      -0.003,
+                      0.0155
+                    ],
+                    "distance": 0.017520164858182637
+                  }
+                }
+              },
+              "surface": {
+                "rgb": [
+                  191,
+                  193,
+                  192
+                ],
+                "hex": "#bfc1c0",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#bfc1c0",
+                  "nearestName": "Dim",
+                  "nearest": {
+                    "name": "Dim",
+                    "tier": "srgb",
+                    "referenceHex": "#c6c6c1",
+                    "referenceOKLab": [
+                      0.8242,
+                      -0.0013,
+                      0.0058
+                    ],
+                    "distance": 0.01604046761600087
+                  }
+                }
+              },
+              "foreground": {
+                "rgb": [
+                  33,
+                  35,
+                  34
+                ],
+                "hex": "#212322",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#212322",
+                  "nearestName": "Dark Slate",
+                  "nearest": {
+                    "name": "Dark Slate",
+                    "tier": "srgb",
+                    "referenceHex": "#192422",
+                    "referenceOKLab": [
+                      0.2483,
+                      -0.0162,
+                      -0.0009
+                    ],
+                    "distance": 0.014041689647736715
+                  }
+                }
+              },
+              "accent": {
+                "rgb": [
+                  162,
+                  10,
+                  5
+                ],
+                "hex": "#a20a05",
+                "generated": false,
+                "collapsedTo": null,
+                "colorName": {
+                  "sourceHex": "#a20a05",
+                  "nearestName": "Firebrick",
+                  "nearest": {
+                    "name": "Firebrick",
+                    "tier": "p3",
+                    "referenceHex": "#9b0007",
+                    "referenceOKLab": [
+                      0.433,
+                      0.1642,
+                      0.0877
+                    ],
+                    "distance": 0.01933491018557111
+                  }
+                }
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "private": {
+        "futureCaseId": "future-02-08",
+        "source": {
+          "caseId": "future-02-08",
+          "path": "10/ab67616d0000b2730010082188524290151d5624",
+          "sha256": "6ce66cf4f0c42658031e0ce2fc73258dc072883dd719cd459969b47bdc4010a1",
+          "byteCount": 172532,
+          "artworkId": "0010082188524290151d5624",
+          "selectionKey": "0503c6f0dc2a7440cfa8a14421132e549e46c6b917bde712dc13f8124fa5e61a",
+          "familyCommitment": "154830968e8ed42f7e039e49416df8395ff5760d09fd101fee4632aef6b26d87"
+        },
+        "assignmentKey": "fb68a9f83e2fd4cfdfb6d6e46f83292d889933ffa767ed750e30d31be2ca5781",
+        "candidateSide": "B",
+        "baselineSide": "A",
+        "candidate": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/candidate/future-02-08.json",
+          "artifactSha256": "c8d71410e8b2fddd893809648308194a34c42b1e0725a789bec6d43884019cda",
+          "presentationSha256": "07dbeed899c98cf63697890f45651de5498e70d5191d001f01acd66ef1335ea1",
+          "scientificSha256": "f76bb6e41aa34a0b0db667a75111a1372934953140769a9d5762e9f2312c5d78",
+          "runtime": {
+            "wallMs": 1118.9344580000002,
+            "cpuUserMicros": 1531006,
+            "cpuSystemMicros": 26042
+          }
+        },
+        "baseline": {
+          "artifactPath": "research/data/experiments/album-artwork-palette-v2-0.5.2-phase-4-future-02/baseline/future-02-08.json",
+          "artifactSha256": "1f43df8603be974274217ac01915964c82687c2a787de03d18aee070160a7311",
+          "presentationSha256": "7ba719537da371e8843c59a69df8c3224009386c5d428d7128ff658b0b69476e",
+          "scientificSha256": "fa98aba2be8b03022e9621e5171a5d6d285448e7112ecd1212d786d2729d43a1",
+          "runtime": {
+            "wallMs": 525.4087499999999,
+            "cpuUserMicros": 716649,
+            "cpuSystemMicros": 11423
+          }
+        }
+      }
+    }
+  ],
+  "manifestId": "e650f39930ff1cc857aac5dfa2b43b23ab35da9a91ac8bd8e7da16ba5e8194ce"
+}

@@ -1,0 +1,15 @@
+@import url("/v1-styles.css");
+
+.named-color {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.color-sample {
+	display: inline-block;
+	flex: 0 0 13px;
+	width: 13px;
+	height: 13px;
+	border: 1px solid #fff;
+}

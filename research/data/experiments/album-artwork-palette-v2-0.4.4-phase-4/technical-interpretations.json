@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "caseId": "phase4-04-7cf39a15255b",
+      "commentSha256": "d88f337abfac0b1a976c512e6f553fe256e77c383c91b19c1a6d0833c6c4b39a",
+      "classes": [
+        "signature-color-ranking-underselection"
+      ],
+      "rationale": "The candidate is option A. Red and orange evidence was available rather than absent: complete candidate accents included the #8f392a and #f84e34 families, but the retained slate's accent families were all achromatic. The selected four-color treatment therefore lost the artwork's signature chroma during Pareto direction retention and winner ranking, after evidence discovery and complete generation. The same identity omission was observed on the baseline, but the class here describes the candidate mechanism only.",
+      "uncertain": false
+    },
+    {
+      "caseId": "phase4-05-8ce8b005da2c",
+      "commentSha256": "9656a790401a5ae9dff571e98f0e650e344c9ffea05b0c5497b1ca932b6db4e1",
+      "classes": [
+        "low-nonzero-gradient-role-contrast-admission"
+      ],
+      "rationale": "The candidate is option A. Its #effafc foreground shares the surface endpoint's source family and reaches only 10.14 absolute Lc at that endpoint. Its #50676f accent reaches only 8.26 and 8.91 absolute Lc at interior gradient samples. The frozen zero-dead-zone rule rejects literal APCA zero for a distinct accent, but these low nonzero crossings remain admissible and the utility ranking selected them. This directly explains both readability failures in the comment.",
+      "uncertain": false
+    },
+    {
+      "caseId": "phase4-06-8d6cb6d5290d",
+      "commentSha256": "65895f099bc87288033c08cdc5e856a9ec6a4bac5a01baa92246f2d9e95591bd",
+      "classes": [
+        "gradient-treatment-ranking-underselection",
+        "signature-color-ranking-underselection"
+      ],
+      "rationale": "The candidate is option A. It selected a white one-field treatment with the surface collapsed, while its retained slate already contained source-supported purple gradient treatments and a #fade18 yellow accent matching the identities named in the comment. This is a complete-treatment ranking failure, not a generation failure: the selector preferred the high-utility achromatic one-field result over the available chromatic gradient and signature color. The comment's extraneous-gradient criticism concerns baseline option B and is not assigned as a candidate class.",
+      "uncertain": false
+    },
+    {
+      "caseId": "phase4-07-aad2dd34c47d",
+      "commentSha256": "0a84045e1ef4e287ccc798c85cec94cd4d4a7cfa7d0a3f4d7ae497fa1e814a3c",
+      "classes": [
+        "gradient-treatment-ranking-underselection"
+      ],
+      "rationale": "The candidate is option B. It selected a collapsed one-field #b8a994 treatment even though its retained slate included a source-supported #8a7766-to-#b9a894 gradient treatment with a nearly equal ranking score. The requested background-to-surface variation was therefore available but lost during complete-treatment selection. The comment's weak red and achromatic observations concern baseline option A and are not assigned as candidate classes.",
+      "uncertain": false
+    },
+    {
+      "caseId": "phase4-11-daa1e5610dc4",
+      "commentSha256": "4655b4174cd0b016ec9ff7a7e053dac9e73a2a8900806f72b41b26fa4650add1",
+      "classes": [],
+      "rationale": "The comment expresses low confidence in the source artwork as a useful evaluation case but identifies no palette, role, gradient, evidence, generation, or ranking defect. Both options were rated acceptable and similarly valid, so no technical candidate mechanism can be inferred reliably from this response.",
+      "uncertain": true
+    }
+  ]
+}

@@ -1,0 +1,498 @@
+{
+  "schemaVersion": 1,
+  "method": "baseline",
+  "protocolId": "71ef0088f8b95c2a52fb73dc17683bb366e4bd3811a640f09c8ba74214a74a46",
+  "baselineVersion": "region-graph-0.19.0",
+  "baselineClosureSha256": "bfdfb7333a39b074da3e92f6f7027fbfed8182cf5b551a452ffdbf3e40f046db",
+  "futureSampleManifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+  "futureSampleSealCommitment": "9cfb3abb4719ba356539961d239408a25a91a2cb32e1a36fa803761a3e888846",
+  "source": {
+    "caseId": "future-02-06",
+    "path": "10/ab67616d00001e0200101f18d7394f8e6c78e5b1",
+    "sha256": "5a47b5e4fdfdf322e526c1fee5da51ed2cbf450cebb639c65914487ea589ce39",
+    "byteCount": 46721,
+    "artworkId": "00101f18d7394f8e6c78e5b1",
+    "selectionKey": "03846cd28b2853c4828c3553ece3a4644d60f4d5d599092504a87a3196d4af81",
+    "familyCommitment": "bafc78d4fec681addc30406195a349f5ca7437988d6ff483e6a9a5fd7d40e9a3"
+  },
+  "dimensions": {
+    "width": 224,
+    "height": 224
+  },
+  "extraction": {
+    "version": "region-graph-0.19.0",
+    "width": 224,
+    "height": 224,
+    "methods": {
+      "spatial": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            249,
+            255
+          ],
+          "hex": "#faf9ff",
+          "generated": false,
+          "sourceDistance": 0.008929304426747841
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "accent": {
+          "rgb": [
+            187,
+            186,
+            19
+          ],
+          "hex": "#bbba13",
+          "generated": false,
+          "sourceDistance": 0.037033296098056924
+        },
+        "gradient": {
+          "isGradient": false,
+          "confidence": 0.7655238182663539,
+          "coverage": 0.10869565217391304,
+          "continuity": 1,
+          "coherence": 0.471870197064888
+        },
+        "score": 0.7736166309910125,
+        "metrics": {
+          "foregroundContrast": 20.059071399447657,
+          "foregroundSurfaceContrast": 20.059071399447657,
+          "accentContrast": 10.145924790326767,
+          "accentSurfaceContrast": 10.145924790326767,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.01149065013120119,
+          "meanReconstructionError": 0.17563615779991792
+        }
+      },
+      "expressive": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            187,
+            186,
+            19
+          ],
+          "hex": "#bbba13",
+          "generated": false,
+          "sourceDistance": 0.037033296098056924
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "accent": {
+          "rgb": [
+            252,
+            248,
+            7
+          ],
+          "hex": "#fcf807",
+          "generated": false,
+          "sourceDistance": 0.00427661692536708
+        },
+        "gradient": {
+          "isGradient": false,
+          "confidence": 0.7655238182663539,
+          "coverage": 0.10869565217391304,
+          "continuity": 1,
+          "coherence": 0.471870197064888
+        },
+        "score": 0.7016346613617035,
+        "metrics": {
+          "foregroundContrast": 10.145924790326767,
+          "foregroundSurfaceContrast": 10.145924790326767,
+          "accentContrast": 18.56911808538539,
+          "accentSurfaceContrast": 18.56911808538539,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.010327478255856,
+          "meanReconstructionError": 0.16877208204025942
+        }
+      },
+      "quantized": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "sourceDistance": 0
+        },
+        "foreground": {
+          "rgb": [
+            252,
+            248,
+            7
+          ],
+          "hex": "#fcf807",
+          "generated": false,
+          "sourceDistance": 0.00427661692536708
+        },
+        "surface": {
+          "rgb": [
+            23,
+            21,
+            27
+          ],
+          "hex": "#17151b",
+          "generated": false,
+          "sourceDistance": 0.0056483973382541386
+        },
+        "accent": {
+          "rgb": [
+            252,
+            248,
+            7
+          ],
+          "hex": "#fcf807",
+          "generated": false,
+          "sourceDistance": 0.00427661692536708
+        },
+        "gradient": {
+          "isGradient": true,
+          "confidence": 1,
+          "coverage": 0.3741031568877551,
+          "continuity": 1,
+          "coherence": 0.28549262994569435
+        },
+        "score": 0,
+        "metrics": {
+          "foregroundContrast": 18.56911808538539,
+          "foregroundSurfaceContrast": 16.01442909243887,
+          "accentContrast": 18.56911808538539,
+          "accentSurfaceContrast": 16.01442909243887,
+          "minimumRoleDistance": 0,
+          "meanSourceDistance": 0.0035504077972470746,
+          "meanReconstructionError": 0.13620537845895775
+        }
+      }
+    },
+    "candidates": [
+      {
+        "hex": "#000000",
+        "rgb": [
+          0,
+          0,
+          0
+        ],
+        "population": 0.22423070790816327,
+        "background": 0.6903709220934018,
+        "saliency": 0.1281858626681525,
+        "text": 0.2575006999828756,
+        "chroma": 0
+      },
+      {
+        "hex": "#100f15",
+        "rgb": [
+          16,
+          15,
+          21
+        ],
+        "population": 0.1293845663265306,
+        "background": 0.25375855369067873,
+        "saliency": 0.2653990523639054,
+        "text": 0.39516306475972524,
+        "chroma": 0.012417978172165925
+      },
+      {
+        "hex": "#847771",
+        "rgb": [
+          132,
+          119,
+          113
+        ],
+        "population": 0.10138313137755103,
+        "background": 0.1812936952498163,
+        "saliency": 0.32143945886190733,
+        "text": 0.4871239940849629,
+        "chroma": 0.018554367940050533
+      },
+      {
+        "hex": "#61524c",
+        "rgb": [
+          97,
+          82,
+          76
+        ],
+        "population": 0.09171715561224493,
+        "background": 0.1622470954085851,
+        "saliency": 0.2820176778211278,
+        "text": 0.48913149052547844,
+        "chroma": 0.022265475912126447
+      },
+      {
+        "hex": "#36333b",
+        "rgb": [
+          54,
+          51,
+          59
+        ],
+        "population": 0.08822943239795915,
+        "background": 0.16410235442516347,
+        "saliency": 0.27481478123484776,
+        "text": 0.4492153339740826,
+        "chroma": 0.014505457101474075
+      },
+      {
+        "hex": "#aaa7b3",
+        "rgb": [
+          170,
+          167,
+          179
+        ],
+        "population": 0.08633609693877548,
+        "background": 0.14100113233442033,
+        "saliency": 0.4559724332734889,
+        "text": 0.4105777895450331,
+        "chroma": 0.017388624636035244
+      },
+      {
+        "hex": "#1f1d23",
+        "rgb": [
+          31,
+          29,
+          35
+        ],
+        "population": 0.0765904017857143,
+        "background": 0.2103536968432891,
+        "saliency": 0.28272916450714186,
+        "text": 0.41735099225704414,
+        "chroma": 0.011720051206372562
+      },
+      {
+        "hex": "#c6c5cf",
+        "rgb": [
+          198,
+          197,
+          207
+        ],
+        "population": 0.06702407525510204,
+        "background": 0.06890997440476003,
+        "saliency": 0.6255306547385118,
+        "text": 0.39628049531846565,
+        "chroma": 0.01386064890172708
+      },
+      {
+        "hex": "#fcf807",
+        "rgb": [
+          252,
+          248,
+          7
+        ],
+        "population": 0.06489158163265303,
+        "background": 0.046698884271707174,
+        "saliency": 0.9081920892711723,
+        "text": 0.677031008930442,
+        "chroma": 0.2050342311385178
+      },
+      {
+        "hex": "#030103",
+        "rgb": [
+          3,
+          1,
+          3
+        ],
+        "population": 0.04358657525510205,
+        "background": 0.3077024778781839,
+        "saliency": 0.2773003921095344,
+        "text": 0.40950953349693603,
+        "chroma": 0.01641148697826527
+      },
+      {
+        "hex": "#bbba13",
+        "rgb": [
+          187,
+          186,
+          19
+        ],
+        "population": 0.014987244897959195,
+        "background": 0.058522283347078444,
+        "saliency": 0.6919715318475882,
+        "text": 0.7053184410834588,
+        "chroma": 0.16288472274955426
+      },
+      {
+        "hex": "#faf9ff",
+        "rgb": [
+          250,
+          249,
+          255
+        ],
+        "population": 0.011639030612244897,
+        "background": 0.08354126377212179,
+        "saliency": 0.8418085242362799,
+        "text": 0.7260606122118762,
+        "chroma": 0.00798684607077624
+      },
+      {
+        "hex": "#53819b",
+        "rgb": [
+          83,
+          129,
+          155
+        ],
+        "population": 0.00562021683673469,
+        "background": 0.0540799840741348,
+        "saliency": 0.45077846822854917,
+        "text": 0.39512181668572033,
+        "chroma": 0.06425008730368904
+      }
+    ],
+    "diagnostics": {
+      "regionCount": 289,
+      "candidateCount": 13,
+      "processingMs": 726
+    }
+  },
+  "presentation": {
+    "roles": {
+      "background": {
+        "rgb": [
+          0,
+          0,
+          0
+        ],
+        "hex": "#000000",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#000000",
+          "nearestName": "Pitch Black",
+          "nearest": {
+            "name": "Pitch Black",
+            "tier": "srgb",
+            "referenceHex": "#000000",
+            "referenceOKLab": [
+              0.0323,
+              0.0047,
+              0.004
+            ],
+            "distance": 0.032884342778897076
+          }
+        }
+      },
+      "surface": {
+        "rgb": [
+          0,
+          0,
+          0
+        ],
+        "hex": "#000000",
+        "generated": false,
+        "collapsedTo": "background",
+        "colorName": {
+          "sourceHex": "#000000",
+          "nearestName": "Pitch Black",
+          "nearest": {
+            "name": "Pitch Black",
+            "tier": "srgb",
+            "referenceHex": "#000000",
+            "referenceOKLab": [
+              0.0323,
+              0.0047,
+              0.004
+            ],
+            "distance": 0.032884342778897076
+          }
+        }
+      },
+      "foreground": {
+        "rgb": [
+          250,
+          249,
+          255
+        ],
+        "hex": "#faf9ff",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#faf9ff",
+          "nearestName": "Snow",
+          "nearest": {
+            "name": "Snow",
+            "tier": "p3",
+            "referenceHex": "#fffaf9",
+            "referenceOKLab": [
+              0.9879,
+              0.0071,
+              0.0029
+            ],
+            "distance": 0.011402893108966732
+          }
+        }
+      },
+      "accent": {
+        "rgb": [
+          187,
+          186,
+          19
+        ],
+        "hex": "#bbba13",
+        "generated": false,
+        "collapsedTo": null,
+        "colorName": {
+          "sourceHex": "#bbba13",
+          "nearestName": "Wild Lime",
+          "nearest": {
+            "name": "Wild Lime",
+            "tier": "srgb",
+            "referenceHex": "#b3bf26",
+            "referenceOKLab": [
+              0.7706,
+              -0.0673,
+              0.1493
+            ],
+            "distance": 0.0152728383534505
+          }
+        }
+      }
+    },
+    "gradient": false,
+    "collapse": {
+      "surface": true,
+      "accent": false
+    }
+  },
+  "presentationSha256": "98b442ca6cc703b7ee4438c16d9cd95f0f8848c460bc0795a758187788ddde5b",
+  "scientificSha256": "786bedfe4a9fa5f1fde49f1c7718692eee7e4ca5b498e1528d18d663fca2510c",
+  "runtime": {
+    "wallMs": 729.488959,
+    "cpuUserMicros": 946276,
+    "cpuSystemMicros": 14563
+  }
+}

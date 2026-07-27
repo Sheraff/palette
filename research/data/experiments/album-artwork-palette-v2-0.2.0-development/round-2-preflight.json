@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "roundOne": {
+    "manifestId": "07d0574b5b7f10cf1f674cd05314ec28ec2f92dcfe4fa448736d693ab46c2045",
+    "scientificSha256": "bbb19328c6e7fd25e65fe9c46b0c779f78119f3efbd3e8cb61c5ecd315ca1d41",
+    "metrics": {
+      "caseCount": 28,
+      "retainedTreatmentCount": 213,
+      "winnerStructures": {
+        "two-colors": 2,
+        "three-colors-surface-collapsed": 25,
+        "four-colors": 1
+      },
+      "slateStructures": {
+        "two-colors": 40,
+        "three-colors-surface-collapsed": 115,
+        "four-colors": 32,
+        "three-colors-accent-collapsed": 26
+      },
+      "winnerSurfaceCollapsed": 27,
+      "slateSurfaceCollapsed": 155,
+      "winnerGradients": 0,
+      "slateGradients": 1,
+      "casesWithRetainedGradient": 1
+    }
+  },
+  "roundTwo": {
+    "manifestId": "3441b2946f0bdcea1102d0979ce76702e49e3010e2542392ca5c4f49a3bb1be0",
+    "scientificSha256": "962f292b784505af4cfae5e4055ae03902429227e79bf22ca1bcc9efb645a9a4",
+    "metrics": {
+      "caseCount": 28,
+      "retainedTreatmentCount": 210,
+      "winnerStructures": {
+        "two-colors": 2,
+        "three-colors-surface-collapsed": 10,
+        "four-colors": 16
+      },
+      "slateStructures": {
+        "two-colors": 23,
+        "three-colors-surface-collapsed": 63,
+        "four-colors": 106,
+        "three-colors-accent-collapsed": 18
+      },
+      "winnerSurfaceCollapsed": 12,
+      "slateSurfaceCollapsed": 86,
+      "winnerGradients": 8,
+      "slateGradients": 31,
+      "casesWithRetainedGradient": 13
+    }
+  },
+  "priorMissingGradientAvailability": [
+    {
+      "caseId": "development-03",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 2
+      }
+    },
+    {
+      "caseId": "development-04",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 3
+      }
+    },
+    {
+      "caseId": "development-06",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 1
+      }
+    },
+    {
+      "caseId": "development-07",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 2
+      }
+    },
+    {
+      "caseId": "development-15",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": false,
+        "retainedCount": 0
+      }
+    },
+    {
+      "caseId": "development-16",
+      "roundOne": {
+        "hypothesis": false,
+        "retainedCount": 0
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 2
+      }
+    },
+    {
+      "caseId": "development-26",
+      "roundOne": {
+        "hypothesis": true,
+        "retainedCount": 1
+      },
+      "roundTwo": {
+        "hypothesis": true,
+        "retainedCount": 3
+      }
+    }
+  ],
+  "gates": {
+    "freshSampleOpened": false,
+    "mechanismAndArtifactTestsRequired": true,
+    "humanQualityReviewPending": true,
+    "phaseFourAuthorized": false
+  },
+  "interpretation": [
+    "Round 2 corrects measured collapse and gradient-availability mechanisms; it does not prove improved human quality.",
+    "Round 1 selected treatments remain non-exclusive preferences, not target palettes or negative labels for other directions.",
+    "Round 2 requires a new bounded human review before any candidate freeze or fresh-sample access."
+  ],
+  "comparisonId": "d3464aea74d7613828baef0b8889a1433be2313ae191b6ec6cc0865b52060f32"
+}

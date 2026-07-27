@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.6.0-gradient-challenger-review-v1",
+  "presentationVersion": "album-artwork-palette-v2-phase-4-presentation-v1",
+  "cases": [
+    {
+      "caseId": "development-06",
+      "order": 0,
+      "source": {
+        "file": "images/infected.jpg",
+        "sha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+        "bytes": 146935
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#2f3788",
+              "nearestName": "Good Karma",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#2d2554",
+              "nearestName": "Nightshade",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#56d8fa",
+              "nearestName": "Splashing Wave",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#e24852",
+              "nearestName": "Hex Appeal",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#312f70",
+              "nearestName": "Nightfall",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#211845",
+              "nearestName": "Velvet Night",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#56d8fa",
+              "nearestName": "Splashing Wave",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#e24852",
+              "nearestName": "Hex Appeal",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "candidate",
+        "B": "baseline"
+      }
+    },
+    {
+      "caseId": "development-22",
+      "order": 1,
+      "source": {
+        "file": "02/ab67616d00001e02000225c634fe58c475965b3e.jpg",
+        "sha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+        "bytes": 40716
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#02102b",
+              "nearestName": "Logbook",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#030208",
+              "nearestName": "Octopus Ink",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#bed6e2",
+              "nearestName": "Cloudy Blue",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#539db8",
+              "nearestName": "Faded Pacific",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#030208",
+              "nearestName": "Octopus Ink",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#072442",
+              "nearestName": "Eclipse Elixir",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#bed6e2",
+              "nearestName": "Cloudy Blue",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#539db8",
+              "nearestName": "Faded Pacific",
+              "generated": false
+            }
+          },
+          "gradient": true,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      },
+      "assignment": {
+        "A": "baseline",
+        "B": "candidate"
+      }
+    }
+  ],
+  "manifestId": "1e9ceb7e2d682223808ef0fc0af8d2536275e9a9a9e8eba70a1dd51e840bf107"
+}

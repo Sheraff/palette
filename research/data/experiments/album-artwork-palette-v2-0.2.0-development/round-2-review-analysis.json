@@ -1,0 +1,682 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-phase-3-round-2-nonexclusive-review-3",
+  "manifestId": "3441b2946f0bdcea1102d0979ce76702e49e3010e2542392ca5c4f49a3bb1be0",
+  "feedbackSha256": "9ae764de91042f48be1c440a30cca5d1272a9b7c4668430a40197cbf93da36fc",
+  "reviewerSummaryVerbatim": [
+    "review done, it wasn't good, but i like that we have surfaces and gradients now.",
+    "i may have submitted multiple answers for the same artwork, if you received multiple, just keep the last one. The review UI was confusing."
+  ],
+  "reviewProcessFeedbackVerbatim": [
+    "the surface is too dominating in the mock UI. In real application most of the content is over the background, and only small sections of it will be over the surface. It is so dominating that it's hard to review the rest. When there is a gradient, the only part of the mock UI that is really background colored is the tiny corner on the top left and the text in the fake \"play treatment\" button, when in reality background will dominate... you can see how this biases the review",
+    "there are many questions per artwork, and 28 artworks, this makes the review quite tedious (especially when most palettes are not good, it's hard to go all the way to the end and not give up). Unless all of these informations are very useful to you, it might be beneficial to trim it down a little."
+  ],
+  "storeIntegrity": {
+    "manifestCaseCount": 28,
+    "storedEntryCount": 28,
+    "uniqueCaseCount": 28,
+    "lastWriteWins": true,
+    "lastWriteWinsMechanism": "serialized mutation removes every prior case entry, appends the latest successful submission, then atomically renames the store"
+  },
+  "counts": {
+    "quality": {
+      "acceptable": 11,
+      "strong": 10,
+      "unacceptable": 5,
+      "weak-fallback": 2
+    },
+    "tags": {
+      "extraneous gradient": 1,
+      "incomplete artwork identity": 10,
+      "missing gradient": 4
+    },
+    "commented": 11,
+    "winnerOverrides": 21,
+    "alsoValidMarks": 17,
+    "casesWithAlsoValidMarks": 10,
+    "winnerStructures": {
+      "four-colors": 16,
+      "three-colors-surface-collapsed": 10,
+      "two-colors": 2
+    },
+    "selectedStructures": {
+      "four-colors": 18,
+      "three-colors-accent-collapsed": 1,
+      "three-colors-surface-collapsed": 6,
+      "two-colors": 3
+    },
+    "alsoValidStructures": {
+      "four-colors": 16,
+      "three-colors-accent-collapsed": 1
+    },
+    "winnerGradients": 8,
+    "selectedGradients": 8,
+    "alsoValidGradients": 4,
+    "winnerSurfaceCollapsed": 12,
+    "selectedSurfaceCollapsed": 9
+  },
+  "presentationConfounds": [
+    {
+      "class": "surface-area-dominance",
+      "confidence": "high",
+      "effect": "cardinality, surface, and exact endpoint preferences are not clean quality evidence"
+    },
+    {
+      "class": "gradient-background-occlusion",
+      "confidence": "high",
+      "effect": "the solid surface panel obscured much of the gradient field and magnified endpoint errors"
+    },
+    {
+      "class": "review-fatigue",
+      "confidence": "high",
+      "effect": "later and multi-question responses may be less reliable; future broad reviews must be shorter"
+    }
+  ],
+  "generalInterpretations": [
+    {
+      "class": "mechanical-field-availability-improved",
+      "confidence": "high",
+      "trace": [
+        "reviewer summary",
+        "selected and also-valid distinct surfaces",
+        "selected gradients"
+      ]
+    },
+    {
+      "class": "complete-treatment-quality-still-insufficient",
+      "confidence": "high",
+      "trace": [
+        "reviewer summary",
+        "unacceptable and weak quality counts",
+        "identity tags"
+      ]
+    },
+    {
+      "class": "top-one-ranking-mismatch",
+      "confidence": "high",
+      "trace": [
+        "winner override count",
+        "non-exclusive positive marks"
+      ]
+    },
+    {
+      "class": "gradient-field-ownership-and-endpoint-quality",
+      "confidence": "medium",
+      "trace": [
+        "missing and extraneous gradient tags",
+        "gradient comments"
+      ]
+    }
+  ],
+  "responseInterpretations": [
+    {
+      "caseId": "development-01",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:55:16.399Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-02",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:55:30.197Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-03",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-6753|63,167,42|63,167,42|20,25,117|29,18,123|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "unacceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:57:17.874Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-04",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-6813:family-7695|105,135,135|142,163,164|17,19,18|19,21,20|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "unacceptable",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:57:42.418Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-recall-or-endpoint-quality",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-05",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-1543:family-4694|11,9,10|137,21,34|244,233,231|234,143,116|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:58:44.558Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-06",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:radial-center:center-out:family-4605:family-3745:#3e53ac:#372e65|43,67,157|50,46,107|203,204,206|73,183,246|gradient",
+        "alsoValidTreatmentIds": [],
+        "quality": "unacceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "",
+        "submittedAt": "2026-07-26T15:59:19.659Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-07",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:linear:diagonal-down:family-220:family-6349:#000000:#276fa1|0,0,0|0,130,190|237,246,251|134,209,238|gradient",
+        "alsoValidTreatmentIds": [
+          "flat:family-220:family-3724|0,0,0|2,54,112|237,246,251|242,250,253|flat"
+        ],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "surface is too bright. It does work, but it might be better if the surface was between that one (Blue Jay) and that of alternative 7 (Galaxea)",
+        "submittedAt": "2026-07-26T16:01:34.844Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "surface-representative-or-field-relation",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses surface quality"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-08",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-6792|87,144,153|87,144,153|252,253,209|2,40,51|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:01:59.594Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-09",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-4253|131,8,10|131,8,10|248,238,179|248,238,179|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "unacceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "missing black accent. We had it in the previous review batch",
+        "submittedAt": "2026-07-26T16:02:39.751Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-10",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-8560|199,191,54|199,191,54|2,12,3|252,253,245|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:02:59.236Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-11",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-7717:family-5513|181,158,142|128,90,51|237,235,210|221,20,52|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "same comment as in the previous batch: surface feels a bit too dark or too chromatic",
+        "submittedAt": "2026-07-26T16:04:26.408Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "surface-representative-or-field-relation",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses surface quality"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-12",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-1543|8,8,8|8,8,8|255,255,255|230,230,34|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "same comment as in the previous batch: fit would be better if background was white and foreground was white",
+        "submittedAt": "2026-07-26T16:05:29.980Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-13",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:radial-upper-center:center-out:family-9921:family-6393:#d7d6e4:#746578|221,221,231|129,116,134|7,0,4|7,0,4|gradient",
+        "alsoValidTreatmentIds": [
+          "gradient:radial-center:center-out:family-9921:family-6393:#e7eaf1:#726376|231,234,241|129,116,134|7,0,4|59,48,62|gradient",
+          "flat:family-6393:family-5511|128,115,135|104,91,109|221,221,231|216,216,228|flat"
+        ],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:06:55.211Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-14",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-220|0,0,0|0,0,0|87,87,87|86,86,86|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:07:25.677Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-15",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-2403:family-3285|21,25,34|36,47,65|176,229,255|178,187,194|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "weak-fallback",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "this blue foreground doesn't really fit, album text is more grey, less chromatic",
+        "submittedAt": "2026-07-26T16:08:39.682Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-recall-or-endpoint-quality",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-16",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-5489:family-4607|68,100,139|53,79,112|251,252,247|249,251,250|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "we should have an accent here",
+        "submittedAt": "2026-07-26T16:09:21.457Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-recall-or-endpoint-quality",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-17",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:linear:vertical:family-7761:family-5048:#e99454:#2b5774|225,130,74|43,87,116|241,233,187|238,208,118|gradient",
+        "alsoValidTreatmentIds": [
+          "flat:family-5048:family-7761|51,88,117|223,130,73|241,233,187|239,231,185|flat"
+        ],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "there is no Kiln orange to Inkjet blue gradient in the artwork. We *could* have a gradient here, but it would be between 2 shades of blue, or 2 shades of orange.",
+        "submittedAt": "2026-07-26T16:12:17.949Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-18",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-1540:family-3746|4,0,42|53,50,93|253,237,159|245,229,12|flat",
+        "alsoValidTreatmentIds": [
+          "flat:family-10344:family-9043|253,237,159|240,187,55|4,3,37|49,48,92|flat"
+        ],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:13:04.269Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-19",
+      "originalResponse": {
+        "selectedTreatmentId": "one:family-7715|156,153,196|156,153,196|28,0,49|191,178,196|flat",
+        "alsoValidTreatmentIds": [
+          "flat:family-8598:family-7715|191,178,196|156,153,196|41,25,25|28,0,49|flat"
+        ],
+        "quality": "acceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "same comments as in the previous batch, this dark foreground doesn't fit the vibe of the artwork that is made of pastel colors. And there are enough colors in the artwork to have both a background and a surface.",
+        "submittedAt": "2026-07-26T16:14:37.512Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "surface-representative-or-field-relation",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses surface quality"
+        },
+        {
+          "class": "foreground-region-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses foreground or artwork text"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-20",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:radial-center:center-out:family-1102:family-1102:#100c0d:#010000|7,3,2|1,0,0|250,250,250|181,181,181|gradient",
+        "alsoValidTreatmentIds": [
+          "flat:family-1102:family-1984|6,3,3|20,18,19|250,250,250|251,251,251|flat",
+          "flat:family-1102:family-1984|6,3,3|20,18,19|250,250,250|181,181,181|flat"
+        ],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:15:28.137Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-21",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|233,146,53|flat",
+        "alsoValidTreatmentIds": [
+          "flat:family-9942:family-7798|239,210,238|224,103,208|81,12,201|78,11,124|flat",
+          "flat:family-9942:family-7798|239,210,238|224,103,208|78,11,124|81,12,201|flat",
+          "flat:family-6938:family-5570|223,52,167|140,28,198|239,210,238|239,210,238|flat"
+        ],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:16:38.455Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-22",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-1101:family-220|3,2,8|0,0,0|190,214,226|108,186,208|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [
+          "missing gradient",
+          "incomplete artwork identity"
+        ],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:17:19.096Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-recall-or-endpoint-quality",
+          "confidence": "high",
+          "evidence": "reviewer tag: missing gradient"
+        },
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-23",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:linear:diagonal-up:family-2844:family-9021:#29372a:#d1aa71|20,44,46|209,170,113|235,227,180|219,198,131|gradient",
+        "alsoValidTreatmentIds": [
+          "gradient:linear:vertical:family-9021:family-2844:#bfb27b:#363227|191,178,123|20,44,46|235,227,180|219,198,131|gradient",
+          "flat:family-2844:family-5469|20,44,46|57,106,102|235,227,180|215,195,122|flat"
+        ],
+        "quality": "weak-fallback",
+        "tags": [
+          "extraneous gradient"
+        ],
+        "comment": "I *think* this might be the strongest candidate, but there should not be a gradient (at least not between these 2 colors) and the presence of the gradient hinders the review in this case",
+        "submittedAt": "2026-07-26T16:23:41.910Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "gradient-precision-or-field-ownership",
+          "confidence": "high",
+          "evidence": "reviewer tag: extraneous gradient"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-9043:family-7741|249,183,61|221,135,34|38,20,0|40,22,0|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "acceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:24:19.834Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-25",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-220:family-2005|0,0,0|41,1,2|247,180,138|253,11,237|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "unacceptable",
+        "tags": [
+          "incomplete artwork identity"
+        ],
+        "comment": "same comment as in the previous batch: this is pretty bad. The accent is good (good color, good role). The rest is pretty bad. Maybe the background is valid, but hard to tell the rest is so bad.",
+        "submittedAt": "2026-07-26T16:25:48.264Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "identity-role-availability-or-assignment",
+          "confidence": "medium",
+          "evidence": "reviewer tag: incomplete artwork identity"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-26",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:linear:vertical:family-8599:family-1543:#cac7c2:#0d0c0a|186,183,178|9,9,9|240,239,235|215,214,209|gradient",
+        "alsoValidTreatmentIds": [
+          "flat:family-8599:family-9481|186,183,178|210,207,202|8,8,8|57,54,49|flat",
+          "flat:family-8599:family-10342|186,183,178|235,234,230|8,8,8|57,54,49|flat",
+          "gradient:linear:diagonal-up:family-1543:family-8599:#0c0b09:#ccc9c2|9,9,9|186,183,178|240,239,235|215,214,209|gradient"
+        ],
+        "quality": "acceptable",
+        "tags": [],
+        "comment": "surface is too black, the ideal palette for this artwork would have the surface slightly darker than the background, and they form a gradient (basically swap accent and surface)",
+        "submittedAt": "2026-07-26T16:28:53.633Z"
+      },
+      "inferredClasses": [
+        {
+          "class": "surface-representative-or-field-relation",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses surface quality"
+        },
+        {
+          "class": "signature-accent-evidence-or-role-assignment",
+          "confidence": "medium",
+          "evidence": "verbatim comment discusses accent identity or necessity"
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "selectedTreatmentId": "gradient:radial-center:center-out:family-4630:family-3748:#5d5d5d:#292929|77,77,77|41,41,41|247,247,247|151,151,151|gradient",
+        "alsoValidTreatmentIds": [
+          "gradient:linear:diagonal-up:family-1543:family-3748:#151515:#474747|9,9,9|55,55,55|247,247,247|151,151,151|gradient"
+        ],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:30:02.596Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    },
+    {
+      "caseId": "development-28",
+      "originalResponse": {
+        "selectedTreatmentId": "flat:family-8157:family-7275|171,170,175|147,145,150|9,8,14|0,0,0|flat",
+        "alsoValidTreatmentIds": [],
+        "quality": "strong",
+        "tags": [],
+        "comment": "",
+        "submittedAt": "2026-07-26T16:30:46.381Z"
+      },
+      "inferredClasses": [],
+      "interpretationUncertain": true
+    }
+  ],
+  "gates": {
+    "freshSampleOpened": false,
+    "phaseFourAuthorized": false,
+    "algorithmFreezeAllowed": false,
+    "broadReviewQualityClaimAllowed": false
+  },
+  "analysisId": "cb0a09887fcf306d6ea6dfd08b82d86211a10c92554fa0918f18126aa4eedf38"
+}

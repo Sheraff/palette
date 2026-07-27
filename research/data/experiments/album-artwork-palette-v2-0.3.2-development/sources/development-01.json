@@ -1,0 +1,942 @@
+{
+  "schemaVersion": 1,
+  "implementationHash": "2a247ba041280f1de6a619714b239bfc8da996d97e3e63e104efc17567818153",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "freshSealManifestId": "3e85bab09130d0fb6c883ba1e4543fce841e1a94a6b63a6539aececb8f58cb91",
+  "source": {
+    "caseId": "development-01",
+    "path": "images/pureblack.jpg",
+    "sha256": "79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+    "byteCount": 1802,
+    "artworkId": "exact:79c0978816663e7f59002cd25147d89dfe8ecfad50f71e3411185517a929629b",
+    "cohort": "stress",
+    "structureTags": [
+      "genuinely one-color",
+      "emergency unsupported color"
+    ]
+  },
+  "dimensions": {
+    "width": 500,
+    "height": 500
+  },
+  "extraction": {
+    "version": "album-artwork-first-principles-0.3.2",
+    "protocol": "album-artwork-ui-palette-protocol-v2",
+    "width": 500,
+    "height": 500,
+    "winner": {
+      "id": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+      "background": {
+        "rgb": [
+          0,
+          0,
+          0
+        ],
+        "oklab": [
+          0,
+          0,
+          0
+        ],
+        "hex": "#000000",
+        "generated": false,
+        "strategy": "dense-exact",
+        "support": {
+          "exactSource": true,
+          "exemplar": {
+            "x": 0,
+            "y": 0
+          },
+          "anchorFamilyId": "family-220",
+          "regionIds": [
+            "family-220-region-0"
+          ],
+          "perceptualDensity": 1,
+          "totalSupport": 1,
+          "connectedSupport": 1,
+          "spatialCoverage": 1,
+          "concentration": 1,
+          "prototypeDistance": 0,
+          "outlierScore": 0,
+          "synthesis": null
+        }
+      },
+      "surface": {
+        "rgb": [
+          0,
+          0,
+          0
+        ],
+        "oklab": [
+          0,
+          0,
+          0
+        ],
+        "hex": "#000000",
+        "generated": false,
+        "strategy": "dense-exact",
+        "support": {
+          "exactSource": true,
+          "exemplar": {
+            "x": 0,
+            "y": 0
+          },
+          "anchorFamilyId": "family-220",
+          "regionIds": [
+            "family-220-region-0"
+          ],
+          "perceptualDensity": 1,
+          "totalSupport": 1,
+          "connectedSupport": 1,
+          "spatialCoverage": 1,
+          "concentration": 1,
+          "prototypeDistance": 0,
+          "outlierScore": 0,
+          "synthesis": null
+        }
+      },
+      "foreground": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "oklab": [
+          0.9999999934735462,
+          8.095285553011422e-11,
+          3.727390762708893e-8
+        ],
+        "hex": "#ffffff",
+        "generated": true,
+        "strategy": "generated-emergency",
+        "support": {
+          "generated": true,
+          "role": "foreground",
+          "reason": "degenerate-supported-domain",
+          "supportedPairCount": 0,
+          "maximumSupportedAbsoluteLc": 0,
+          "thresholdExclusive": 5,
+          "preferencePenalty": 0.18
+        }
+      },
+      "accent": {
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "oklab": [
+          0.9999999934735462,
+          8.095285553011422e-11,
+          3.727390762708893e-8
+        ],
+        "hex": "#ffffff",
+        "generated": true,
+        "strategy": "generated-emergency",
+        "support": {
+          "generated": true,
+          "role": "foreground",
+          "reason": "degenerate-supported-domain",
+          "supportedPairCount": 0,
+          "maximumSupportedAbsoluteLc": 0,
+          "thresholdExclusive": 5,
+          "preferencePenalty": 0.18
+        }
+      },
+      "gradient": false,
+      "fieldTreatment": "one-field",
+      "sourceFieldHypothesisId": "one:family-220",
+      "familyRoles": {
+        "background": "family-220",
+        "surface": "family-220",
+        "foreground": "generated",
+        "accent": "generated"
+      },
+      "cardinality": 2,
+      "collapse": {
+        "surface": true,
+        "accent": true
+      },
+      "contrast": {
+        "pairs": [
+          {
+            "role": "foreground",
+            "fieldRole": "background",
+            "position": 0,
+            "signedLc": -107.88473318309848,
+            "absoluteLc": 107.88473318309848
+          }
+        ],
+        "minimumAbsoluteLc": 107.88473318309848,
+        "meanAbsoluteLc": 107.88473318309848
+      },
+      "scores": {
+        "fieldFidelity": 1,
+        "artworkIdentity": 0.48,
+        "representativeness": 0.5,
+        "uiUtility": 1,
+        "foregroundUtility": 1,
+        "accentUtility": 1,
+        "coherence": 0.78,
+        "economy": 1,
+        "generatorConfidence": 0.8310000000000001,
+        "foundation": 0.66,
+        "balance": 0.48,
+        "generatedPenalty": 0.18,
+        "rankingScore": 0.60348
+      },
+      "gradientEvidence": null
+    },
+    "alternatives": [
+      {
+        "id": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "strategy": "dense-exact",
+          "support": {
+            "exactSource": true,
+            "exemplar": {
+              "x": 0,
+              "y": 0
+            },
+            "anchorFamilyId": "family-220",
+            "regionIds": [
+              "family-220-region-0"
+            ],
+            "perceptualDensity": 1,
+            "totalSupport": 1,
+            "connectedSupport": 1,
+            "spatialCoverage": 1,
+            "concentration": 1,
+            "prototypeDistance": 0,
+            "outlierScore": 0,
+            "synthesis": null
+          }
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "strategy": "dense-exact",
+          "support": {
+            "exactSource": true,
+            "exemplar": {
+              "x": 0,
+              "y": 0
+            },
+            "anchorFamilyId": "family-220",
+            "regionIds": [
+              "family-220-region-0"
+            ],
+            "perceptualDensity": 1,
+            "totalSupport": 1,
+            "connectedSupport": 1,
+            "spatialCoverage": 1,
+            "concentration": 1,
+            "prototypeDistance": 0,
+            "outlierScore": 0,
+            "synthesis": null
+          }
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "oklab": [
+            0.9999999934735462,
+            8.095285553011422e-11,
+            3.727390762708893e-8
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "strategy": "generated-emergency",
+          "support": {
+            "generated": true,
+            "role": "foreground",
+            "reason": "degenerate-supported-domain",
+            "supportedPairCount": 0,
+            "maximumSupportedAbsoluteLc": 0,
+            "thresholdExclusive": 5,
+            "preferencePenalty": 0.18
+          }
+        },
+        "accent": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "oklab": [
+            0.9999999934735462,
+            8.095285553011422e-11,
+            3.727390762708893e-8
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "strategy": "generated-emergency",
+          "support": {
+            "generated": true,
+            "role": "foreground",
+            "reason": "degenerate-supported-domain",
+            "supportedPairCount": 0,
+            "maximumSupportedAbsoluteLc": 0,
+            "thresholdExclusive": 5,
+            "preferencePenalty": 0.18
+          }
+        },
+        "gradient": false,
+        "fieldTreatment": "one-field",
+        "sourceFieldHypothesisId": "one:family-220",
+        "familyRoles": {
+          "background": "family-220",
+          "surface": "family-220",
+          "foreground": "generated",
+          "accent": "generated"
+        },
+        "cardinality": 2,
+        "collapse": {
+          "surface": true,
+          "accent": true
+        },
+        "contrast": {
+          "pairs": [
+            {
+              "role": "foreground",
+              "fieldRole": "background",
+              "position": 0,
+              "signedLc": -107.88473318309848,
+              "absoluteLc": 107.88473318309848
+            }
+          ],
+          "minimumAbsoluteLc": 107.88473318309848,
+          "meanAbsoluteLc": 107.88473318309848
+        },
+        "scores": {
+          "fieldFidelity": 1,
+          "artworkIdentity": 0.48,
+          "representativeness": 0.5,
+          "uiUtility": 1,
+          "foregroundUtility": 1,
+          "accentUtility": 1,
+          "coherence": 0.78,
+          "economy": 1,
+          "generatorConfidence": 0.8310000000000001,
+          "foundation": 0.66,
+          "balance": 0.48,
+          "generatedPenalty": 0.18,
+          "rankingScore": 0.60348
+        },
+        "gradientEvidence": null
+      }
+    ],
+    "diagnostics": {
+      "nativeDiscovery": true,
+      "preDiscoveryResize": false,
+      "familyCount": 1,
+      "retainedFamilyCount": 1,
+      "lanes": [
+        {
+          "name": "field",
+          "maximumFamilies": 12,
+          "familyIds": [
+            "family-220"
+          ]
+        },
+        {
+          "name": "signature",
+          "maximumFamilies": 16,
+          "familyIds": [
+            "family-220"
+          ]
+        },
+        {
+          "name": "foreground",
+          "maximumFamilies": 16,
+          "familyIds": [
+            "family-220"
+          ]
+        }
+      ],
+      "laneRetention": [
+        {
+          "name": "field",
+          "evaluatedFamilyCount": 1,
+          "candidates": [
+            {
+              "familyId": "family-220",
+              "familyScore": 1,
+              "regionScore": 0,
+              "combinedScore": 1,
+              "rank": 0,
+              "retained": true
+            }
+          ]
+        },
+        {
+          "name": "signature",
+          "evaluatedFamilyCount": 1,
+          "candidates": [
+            {
+              "familyId": "family-220",
+              "familyScore": 0.43,
+              "regionScore": 0.609878752,
+              "combinedScore": 0.5109454384000001,
+              "rank": 0,
+              "retained": true
+            }
+          ]
+        },
+        {
+          "name": "foreground",
+          "evaluatedFamilyCount": 1,
+          "candidates": [
+            {
+              "familyId": "family-220",
+              "familyScore": 0.67,
+              "regionScore": 0.552392224,
+              "combinedScore": 0.6229568896000001,
+              "rank": 0,
+              "retained": true
+            }
+          ]
+        }
+      ],
+      "families": [
+        {
+          "id": "family-220",
+          "prototype": [
+            0,
+            0,
+            0
+          ],
+          "population": 250000,
+          "populationFraction": 1,
+          "perceptualBinCount": 1,
+          "borderCoverage": 1,
+          "centerCoverage": 1,
+          "quadrantCoverage": 1,
+          "cornerCoverage": 1,
+          "centroid": [
+            0.5000000000000001,
+            0.5000000000000314
+          ],
+          "spatialSpread": 0.818131210353752,
+          "largestComponentFraction": 1,
+          "familyConcentration": 1,
+          "componentCount": 1,
+          "repeatedComponentCount": 1,
+          "edgeDensity": 0,
+          "localContrast": 0,
+          "chroma": 0,
+          "fieldScore": 1,
+          "signatureScore": 0.43,
+          "foregroundScore": 0.67,
+          "foregroundTypographyObservation": 0.552392224,
+          "signatureAccentObservation": 0.609878752,
+          "observedComponentCount": 1,
+          "components": [
+            {
+              "id": "family-220-region-0",
+              "startPixelIndex": 0,
+              "population": 250000,
+              "populationFraction": 1,
+              "minX": 0,
+              "minY": 0,
+              "maxX": 499,
+              "maxY": 499,
+              "borderPixels": 1996,
+              "retainedFor": [
+                "connected-support",
+                "role-observation"
+              ],
+              "observation": {
+                "widthFraction": 1,
+                "heightFraction": 1,
+                "boundsFraction": 1,
+                "elongation": 1,
+                "fill": 1,
+                "repetition": 0,
+                "localContrast": 0,
+                "borderContact": 0.007984,
+                "interiorMargin": 0,
+                "componentFamilyFraction": 1,
+                "foregroundTypography": {
+                  "geometry": 0,
+                  "fill": 0.5,
+                  "repetition": 0,
+                  "localContrast": 0,
+                  "borderInterior": 0.726048,
+                  "sourceSupport": 1,
+                  "score": 0.552392224
+                },
+                "signatureAccent": {
+                  "geometry": 0,
+                  "fill": 1,
+                  "repetition": 0,
+                  "localContrast": 0,
+                  "borderInterior": 0.726048,
+                  "sourceSupport": 1,
+                  "score": 0.609878752
+                }
+              }
+            }
+          ],
+          "representatives": [
+            {
+              "strategy": "dense-exact",
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-220",
+                "regionIds": [
+                  "family-220-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            }
+          ]
+        }
+      ],
+      "fieldDomains": [
+        {
+          "id": "field-domain-0",
+          "startPixelIndex": 0,
+          "population": 250000,
+          "populationFraction": 1,
+          "borderPixels": 1996,
+          "borderCoverage": 1,
+          "quadrantCoverage": 1,
+          "ownedCornerCount": 4,
+          "weightedFieldScore": 1,
+          "familyIds": [
+            "family-220"
+          ],
+          "componentIds": [
+            "family-220-region-0"
+          ],
+          "eligible": true,
+          "rejectionReasons": []
+        }
+      ],
+      "fieldHypotheses": [
+        {
+          "id": "one:family-220",
+          "kind": "one-field",
+          "backgroundFamilyId": "family-220",
+          "surfaceFamilyId": null,
+          "backgroundRepresentatives": [
+            {
+              "strategy": "dense-exact",
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-220",
+                "regionIds": [
+                  "family-220-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            }
+          ],
+          "surfaceRepresentatives": [
+            {
+              "strategy": "dense-exact",
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-220",
+                "regionIds": [
+                  "family-220-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            }
+          ],
+          "fieldFidelity": 1,
+          "surfaceContribution": 0,
+          "spatialRelation": null,
+          "gradientEvidence": null,
+          "pruningNotes": [
+            "surface collapsed because this hypothesis represents one broad field"
+          ]
+        }
+      ],
+      "gradientFits": [],
+      "completeCandidateCount": 2,
+      "candidateAvailability": {
+        "foregroundLaneFamilyIds": [
+          "family-220"
+        ],
+        "signatureLaneFamilyIds": [
+          "family-220"
+        ],
+        "fieldHypothesisFamilyIds": [
+          "family-220"
+        ],
+        "completeCandidateForegroundFamilyIds": [
+          "family-220"
+        ],
+        "completeCandidateAccentFamilyIds": [],
+        "slateForegroundFamilyIds": [],
+        "slateAccentFamilyIds": []
+      },
+      "paretoRanking": {
+        "rawCandidateCount": 2,
+        "uniqueCandidateCount": 2,
+        "dominatedCandidateCount": 1,
+        "frontierCandidateCount": 1,
+        "frontierDirectionCount": 1,
+        "retainedCount": 1,
+        "selectedTreatmentId": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+        "legacyScalarTopTreatmentId": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+        "differsFromLegacyScalar": false,
+        "omittedFrontierDirectionKeys": []
+      },
+      "legacyScalarTopTreatment": {
+        "id": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "strategy": "dense-exact",
+          "support": {
+            "exactSource": true,
+            "exemplar": {
+              "x": 0,
+              "y": 0
+            },
+            "anchorFamilyId": "family-220",
+            "regionIds": [
+              "family-220-region-0"
+            ],
+            "perceptualDensity": 1,
+            "totalSupport": 1,
+            "connectedSupport": 1,
+            "spatialCoverage": 1,
+            "concentration": 1,
+            "prototypeDistance": 0,
+            "outlierScore": 0,
+            "synthesis": null
+          }
+        },
+        "surface": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false,
+          "strategy": "dense-exact",
+          "support": {
+            "exactSource": true,
+            "exemplar": {
+              "x": 0,
+              "y": 0
+            },
+            "anchorFamilyId": "family-220",
+            "regionIds": [
+              "family-220-region-0"
+            ],
+            "perceptualDensity": 1,
+            "totalSupport": 1,
+            "connectedSupport": 1,
+            "spatialCoverage": 1,
+            "concentration": 1,
+            "prototypeDistance": 0,
+            "outlierScore": 0,
+            "synthesis": null
+          }
+        },
+        "foreground": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "oklab": [
+            0.9999999934735462,
+            8.095285553011422e-11,
+            3.727390762708893e-8
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "strategy": "generated-emergency",
+          "support": {
+            "generated": true,
+            "role": "foreground",
+            "reason": "degenerate-supported-domain",
+            "supportedPairCount": 0,
+            "maximumSupportedAbsoluteLc": 0,
+            "thresholdExclusive": 5,
+            "preferencePenalty": 0.18
+          }
+        },
+        "accent": {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "oklab": [
+            0.9999999934735462,
+            8.095285553011422e-11,
+            3.727390762708893e-8
+          ],
+          "hex": "#ffffff",
+          "generated": true,
+          "strategy": "generated-emergency",
+          "support": {
+            "generated": true,
+            "role": "foreground",
+            "reason": "degenerate-supported-domain",
+            "supportedPairCount": 0,
+            "maximumSupportedAbsoluteLc": 0,
+            "thresholdExclusive": 5,
+            "preferencePenalty": 0.18
+          }
+        },
+        "gradient": false,
+        "fieldTreatment": "one-field",
+        "sourceFieldHypothesisId": "one:family-220",
+        "familyRoles": {
+          "background": "family-220",
+          "surface": "family-220",
+          "foreground": "generated",
+          "accent": "generated"
+        },
+        "cardinality": 2,
+        "collapse": {
+          "surface": true,
+          "accent": true
+        },
+        "contrast": {
+          "pairs": [
+            {
+              "role": "foreground",
+              "fieldRole": "background",
+              "position": 0,
+              "signedLc": -107.88473318309848,
+              "absoluteLc": 107.88473318309848
+            }
+          ],
+          "minimumAbsoluteLc": 107.88473318309848,
+          "meanAbsoluteLc": 107.88473318309848
+        },
+        "scores": {
+          "fieldFidelity": 1,
+          "artworkIdentity": 0.48,
+          "representativeness": 0.5,
+          "uiUtility": 1,
+          "foregroundUtility": 1,
+          "accentUtility": 1,
+          "coherence": 0.78,
+          "economy": 1,
+          "generatorConfidence": 0.8310000000000001,
+          "foundation": 0.66,
+          "balance": 0.48,
+          "generatedPenalty": 0.18,
+          "rankingScore": 0.60348
+        },
+        "gradientEvidence": null
+      },
+      "emergency": {
+        "eligible": true,
+        "reason": "degenerate-supported-domain",
+        "supportedPairCount": 0,
+        "maximumSupportedAbsoluteLc": 0,
+        "thresholdExclusive": 5
+      },
+      "bounds": {
+        "retainedDiagnosticFamilies": 48,
+        "fieldFamilies": 12,
+        "signatureFamilies": 16,
+        "foregroundFamilies": 16,
+        "fieldHypotheses": 12,
+        "fieldDomains": 12,
+        "retainedDiagnosticFieldDomains": 48,
+        "largestComponentsPerFamily": 8,
+        "roleObservationComponentsPerFamily": 24,
+        "representativesPerRole": 2,
+        "foregroundsPerFieldVariant": 6,
+        "distinctAccentsPerForeground": 4,
+        "completeCandidates": 1500,
+        "retainedTreatments": 8,
+        "developmentWorkers": 6
+      }
+    }
+  },
+  "presentationPolicy": "colornames-oklab-0.6.0-presentation-only",
+  "presentations": [
+    {
+      "treatmentId": "one:family-220|0,0,0|0,0,0|255,255,255|255,255,255|flat",
+      "roles": {
+        "background": {
+          "sourceHex": "#000000",
+          "nearestName": "Pitch Black",
+          "nearest": {
+            "name": "Pitch Black",
+            "tier": "srgb",
+            "referenceHex": "#000000",
+            "referenceOKLab": [
+              0.0323,
+              0.0047,
+              0.004
+            ],
+            "distance": 0.032884342778897076
+          }
+        },
+        "surface": {
+          "sourceHex": "#000000",
+          "nearestName": "Pitch Black",
+          "nearest": {
+            "name": "Pitch Black",
+            "tier": "srgb",
+            "referenceHex": "#000000",
+            "referenceOKLab": [
+              0.0323,
+              0.0047,
+              0.004
+            ],
+            "distance": 0.032884342778897076
+          }
+        },
+        "foreground": {
+          "sourceHex": "#ffffff",
+          "nearestName": "Snow",
+          "nearest": {
+            "name": "Snow",
+            "tier": "p3",
+            "referenceHex": "#fffaf9",
+            "referenceOKLab": [
+              0.9879,
+              0.0071,
+              0.0029
+            ],
+            "distance": 0.0143258376621772
+          }
+        },
+        "accent": {
+          "sourceHex": "#ffffff",
+          "nearestName": "Snow",
+          "nearest": {
+            "name": "Snow",
+            "tier": "p3",
+            "referenceHex": "#fffaf9",
+            "referenceOKLab": [
+              0.9879,
+              0.0071,
+              0.0029
+            ],
+            "distance": 0.0143258376621772
+          }
+        }
+      }
+    }
+  ],
+  "scientificSha256": "de4196c761717a954635e476a333f3089204f628dc1009c34a0a472f03a09a6e",
+  "runtime": {
+    "workerCount": 1,
+    "wallMs": 105.881625,
+    "cpuUserMicros": 157200,
+    "cpuSystemMicros": 6335
+  }
+}

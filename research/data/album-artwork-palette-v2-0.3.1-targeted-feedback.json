@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-pareto-mechanism-review-v2",
+  "manifestId": "3f64aa9e6094b9cd250bdf64d32720d2b8964cbef9289c753a0941e5475d9dd1",
+  "entries": [
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "validOptionIds": [
+        "C"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T18:26:24.469Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T18:26:53.392Z"
+    },
+    {
+      "caseId": "development-14",
+      "sourceSha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+      "validOptionIds": [
+        "D"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T18:27:21.315Z"
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "validOptionIds": [
+        "A",
+        "B",
+        "C"
+      ],
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "option D is almost very good, but accent is almost invisible over background, otherwise it might be the best option of the 4",
+      "submittedAt": "2026-07-26T18:28:54.528Z"
+    }
+  ]
+}

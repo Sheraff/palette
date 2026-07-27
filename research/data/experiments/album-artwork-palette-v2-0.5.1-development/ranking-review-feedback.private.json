@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.5.1-ranking-review-v1",
+  "manifestId": "fd14081fa2d05660afde4a31093c1e450ca7bd0725b16f1d70aa5bdd3e13ec91",
+  "entries": [
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:51:51.942Z"
+    },
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:52:13.650Z"
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:52:47.486Z"
+    },
+    {
+      "caseId": "development-14",
+      "sourceSha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:53:07.929Z"
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "qualityA": "acceptable",
+      "qualityB": "acceptable",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "I'm not 100% sure so i'm not checking the boxes, but i think those 2 options are missing gradient and artwork identity",
+      "submittedAt": "2026-07-27T08:53:55.386Z"
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "qualityA": "weak-fallback",
+      "qualityB": "unacceptable",
+      "comparison": "neither-acceptable",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:54:56.654Z"
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:55:15.048Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:55:32.569Z"
+    },
+    {
+      "caseId": "development-11",
+      "sourceSha256": "b62f5cdd35099615d788a6548f62aa8edb0aea93661d336cb856f6c30ee9c9da",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "option A is missing the red accent\noptions B has a surface that is slightly too dark",
+      "submittedAt": "2026-07-27T08:56:11.087Z"
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "qualityA": "acceptable",
+      "qualityB": "weak-fallback",
+      "comparison": "a-stronger",
+      "tagsA": [
+        "missing gradient"
+      ],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:56:50.444Z"
+    },
+    {
+      "caseId": "development-08",
+      "sourceSha256": "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f",
+      "qualityA": "weak-fallback",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:57:13.631Z"
+    },
+    {
+      "caseId": "development-17",
+      "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:57:42.083Z"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "qualityA": "strong",
+      "qualityB": "strong",
+      "comparison": "similarly-valid",
+      "tagsA": [
+        "missing gradient"
+      ],
+      "tagsB": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:58:01.241Z"
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "qualityA": "strong",
+      "qualityB": "weak-fallback",
+      "comparison": "a-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:58:14.361Z"
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "qualityA": "weak-fallback",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [
+        "missing gradient",
+        "incomplete artwork identity"
+      ],
+      "tagsB": [
+        "missing gradient"
+      ],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:58:33.752Z"
+    },
+    {
+      "caseId": "development-13",
+      "sourceSha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+      "qualityA": "acceptable",
+      "qualityB": "acceptable",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T08:58:48.312Z"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "qualityA": "acceptable",
+      "qualityB": "acceptable",
+      "comparison": "similarly-valid",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "the Coal Mine foreground for both of these options is too dark, it does not feel like part of this artwork that is made of pastel colors. Option B would be nearly perfect with a Snow white foreground.",
+      "submittedAt": "2026-07-27T09:01:00.736Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "qualityA": "acceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T09:01:52.392Z"
+    },
+    {
+      "caseId": "development-09",
+      "sourceSha256": "67f6c4f58c00ac4299d5517ba541410eddd0901e34d753c2536229b2c13cd3c3",
+      "qualityA": "unacceptable",
+      "qualityB": "strong",
+      "comparison": "b-stronger",
+      "tagsA": [
+        "incomplete artwork identity"
+      ],
+      "tagsB": [],
+      "comment": "",
+      "submittedAt": "2026-07-27T09:02:17.177Z"
+    }
+  ]
+}

@@ -1,5 +1,12 @@
 import { contrastRatio, labAt, okDistance, rgbToOKLab, roleMinimumDistance } from "./color.ts"
 import type { Candidate } from "./candidates.ts"
+import {
+	resolveForegroundBackgroundRequirement,
+	resolveForegroundSurfaceRequirement,
+	resolveSourceForegroundPreferenceMinimum,
+	sourceForegroundIsPreferred,
+	type ForegroundContrastProfile,
+} from "./foreground-contrast.ts"
 import { detectGradient, minimumAccentBackgroundContrast, solvePalette } from "./palette.ts"
 import type { RegionAnalysis } from "./regions.ts"
 import type { GradientEvidence, Palette, PaletteMetrics, RGB, RoleColor, RoleName } from "./types.ts"
@@ -51,6 +58,7 @@ export type GuardedPaletteCertificate = {
 		accentBackgroundDistance: number
 		accentSurfaceDistance: number
 	}
+	foregroundContrastProfile?: ForegroundContrastProfile
 }
 
 type Admitted = GuardedPaletteCertificate["decision"]["alternatives"][number] & { candidate: Candidate }
@@ -127,22 +135,33 @@ function paletteMetrics(palette: Pick<Palette, RoleName>, analysis: RegionAnalys
 	}
 }
 
-function hasStrongTypographyEvidence(candidate: Candidate): boolean {
-	return candidate.population >= 0.1 && candidate.text >= 0.5 && candidate.saliency >= 0.55
+function foregroundRequirement(
+	candidate: Candidate | null,
+	generated: boolean,
+	profile?: ForegroundContrastProfile,
+): number {
+	return resolveForegroundBackgroundRequirement(candidate ?? {
+		generated,
+		population: 0,
+		text: 0,
+		saliency: 0,
+	}, profile)
 }
 
-function foregroundRequirement(candidate: Candidate | null, generated: boolean): number {
-	if (generated) return 4.5
-	return candidate && hasStrongTypographyEvidence(candidate) ? 3 : 4
-}
-
-function sourceForegroundPool(candidates: readonly Candidate[], background: Candidate): Candidate[] {
+function sourceForegroundPool(
+	candidates: readonly Candidate[],
+	background: Candidate,
+	profile?: ForegroundContrastProfile,
+): Candidate[] {
+	const preferenceMinimum = resolveSourceForegroundPreferenceMinimum(profile)
 	const standard = candidates.filter((candidate) => candidate.id !== background.id &&
-		contrastRatio(background.rgb, candidate.rgb) >= 4.5)
+		contrastRatio(background.rgb, candidate.rgb) >= preferenceMinimum)
 	const eligible = candidates.filter((candidate) => candidate.id !== background.id &&
-		contrastRatio(background.rgb, candidate.rgb) >= foregroundRequirement(candidate, false))
+		contrastRatio(background.rgb, candidate.rgb) >= foregroundRequirement(candidate, false, profile))
 	return standard.length > 0
-		? eligible.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= 4.5 || hasStrongTypographyEvidence(candidate))
+		? eligible.filter((candidate) => sourceForegroundIsPreferred(
+			candidate, contrastRatio(background.rgb, candidate.rgb), profile,
+		))
 		: eligible
 }
 
@@ -151,13 +170,17 @@ function foregroundSurfaceRequirement(
 	foregroundRole: RoleColor,
 	background: Candidate,
 	candidates: readonly Candidate[],
+	profile?: ForegroundContrastProfile,
 ): number {
-	if (foregroundRole.generated) return 4.5
 	const backgroundContrast = contrastRatio(foregroundRole.rgb, background.rgb)
 	const representative = candidates.filter((candidate) => !candidate.typographyOnly && candidate.id !== background.id &&
 		candidate.population >= 0.15 && candidate.background >= 0.4 && okDistance(candidate.lab, background.lab) >= 0.08).length >= 2
-	if (foreground && hasStrongTypographyEvidence(foreground) && backgroundContrast < 4.5) return 2.5
-	return backgroundContrast < 4.5 || representative ? 3 : 4.5
+	return resolveForegroundSurfaceRequirement(foreground ?? {
+		generated: foregroundRole.generated,
+		population: 0,
+		text: 0,
+		saliency: 0,
+	}, { foregroundBackgroundContrast: backgroundContrast, allowRepresentativeSurface: representative }, profile)
 }
 
 function backgroundHardGates(
@@ -165,18 +188,20 @@ function backgroundHardGates(
 	baseline: Palette,
 	candidates: readonly Candidate[],
 	analysis: RegionAnalysis,
+	profile?: ForegroundContrastProfile,
 ): boolean {
 	const foreground = candidateForRole(candidates, baseline.foreground)
 	const surface = candidateForRole(candidates, baseline.surface)
 	const accentLab = rgbToOKLab(baseline.accent.rgb)
-	const sourcePool = sourceForegroundPool(candidates, candidate)
+	const sourcePool = sourceForegroundPool(candidates, candidate, profile)
 	if (baseline.foreground.generated) {
 		if (sourcePool.length > 0) return false
 	} else if (!foreground || !sourcePool.includes(foreground)) return false
 	if (!surface || baseline.background.hex === baseline.surface.hex) return false
-	if (contrastRatio(candidate.rgb, baseline.foreground.rgb) < foregroundRequirement(foreground, baseline.foreground.generated)) return false
+	if (contrastRatio(candidate.rgb, baseline.foreground.rgb) <
+		foregroundRequirement(foreground, baseline.foreground.generated, profile)) return false
 	if (contrastRatio(surface.rgb, baseline.foreground.rgb) < foregroundSurfaceRequirement(
-		foreground, baseline.foreground, candidate, candidates,
+		foreground, baseline.foreground, candidate, candidates, profile,
 	)) return false
 	if (contrastRatio(candidate.rgb, baseline.accent.rgb) < minimumAccentBackgroundContrast) return false
 	if (okDistance(candidate.lab, accentLab) < 0.025 || okDistance(surface.lab, accentLab) < 0.025) return false
@@ -200,6 +225,7 @@ function backgroundAlternatives(
 	baseline: Palette,
 	candidates: readonly Candidate[],
 	analysis: RegionAnalysis,
+	profile?: ForegroundContrastProfile,
 ): { considered: number; feasible: number; alternatives: Admitted[] } {
 	const current = candidateForRole(candidates, baseline.background)
 	if (!current || current.spatial.population > 0.05 || current.spatial.frame < 0.7 ||
@@ -210,7 +236,7 @@ function backgroundAlternatives(
 	const alternatives: Admitted[] = []
 	for (const candidate of candidates) {
 		if (candidate.typographyOnly || candidate.id === current.id || okDistance(candidate.lab, current.lab) < 0.08) continue
-		if (!backgroundHardGates(candidate, baseline, candidates, analysis)) continue
+		if (!backgroundHardGates(candidate, baseline, candidates, analysis, profile)) continue
 		feasible++
 		const largest = Math.max(0, ...candidate.spatial.components.map((component) => component.population))
 		const canonicalSurface = sameRgb(candidate.rgb, baseline.surface.rgb)
@@ -319,8 +345,9 @@ export function applyGuardedCorrections(
 	baseline: Palette,
 	candidates: readonly Candidate[],
 	analysis: RegionAnalysis,
+	profile?: ForegroundContrastProfile,
 ): { palette: Palette; certificate: GuardedPaletteCertificate } {
-	const background = backgroundAlternatives(baseline, candidates, analysis)
+	const background = backgroundAlternatives(baseline, candidates, analysis, profile)
 	const accent = background.alternatives.length === 0 ? accentAlternatives(baseline, candidates) : null
 	const selected = background.alternatives[0] ?? accent?.alternatives[0] ?? null
 	let palette = baseline
@@ -363,6 +390,7 @@ export function applyGuardedCorrections(
 				alternatives: source.alternatives.map(({ candidate: _candidate, ...alternative }) => alternative),
 			},
 			gates: gateSummary(palette),
+			...(profile ? { foregroundContrastProfile: profile } : {}),
 		},
 	}
 }
@@ -370,6 +398,7 @@ export function applyGuardedCorrections(
 export function solveGuardedPalette(
 	candidates: Candidate[],
 	analysis: RegionAnalysis,
+	profile?: ForegroundContrastProfile,
 ): { palette: Palette; certificate: GuardedPaletteCertificate } {
-	return applyGuardedCorrections(solvePalette(candidates, analysis, "spatial"), candidates, analysis)
+	return applyGuardedCorrections(solvePalette(candidates, analysis, "spatial", profile), candidates, analysis, profile)
 }

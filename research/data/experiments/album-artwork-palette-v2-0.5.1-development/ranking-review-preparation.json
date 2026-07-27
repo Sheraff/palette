@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.5.1-ranking-review-v1",
+  "manifestId": "fd14081fa2d05660afde4a31093c1e450ca7bd0725b16f1d70aa5bdd3e13ec91",
+  "candidateVersion": "album-artwork-first-principles-0.5.1",
+  "implementationHash": "5589b85e5c2b9a1c57c15240dec3ad983c8193f13720bbceee3d5ccb7138cb3f",
+  "scientificSha256": "8ecbc6e61935cece60bd110a5d41ad7d160fd9ef1dd39109588a5542c2ec6fa5",
+  "predecessorVersion": "album-artwork-first-principles-0.5.0",
+  "predecessorImplementationHash": "e16910fef65ade0e85308378c37217f57cd1f2821055a9927fa5813253e7fcb4",
+  "predecessorScientificSha256": "49cc6e130bb9609ea19f9adb83c1b68e081ebb2a01eec2df8bc0622817445465",
+  "changedWinnerCaseIds": [
+    "development-03",
+    "development-04",
+    "development-06",
+    "development-07",
+    "development-08",
+    "development-09",
+    "development-11",
+    "development-13",
+    "development-14",
+    "development-15",
+    "development-16",
+    "development-17",
+    "development-19",
+    "development-21",
+    "development-22",
+    "development-23",
+    "development-24",
+    "development-25",
+    "development-27"
+  ],
+  "reviewCaseCount": 19,
+  "candidateSideCounts": {
+    "A": 10,
+    "B": 9
+  },
+  "inputHashes": {
+    "currentAggregateSha256": "15921ae1d183f56b0e10f8166355897dcd4b3e4527dd089e127bde1d7724b156",
+    "predecessorAggregateSha256": "11396af3e128a4404c4b4e26e687fc2216e51529411027c6187bddb8ee72cf6b",
+    "developmentAnalysisSha256": "ef1a0a3bd31026fe16dd0a5d93a9ce558f4837d8560993bff861875ba57fdc0f"
+  },
+  "futureSampleOpened": false,
+  "preparationId": "6a7eb6916ff555b2c8c3ab17f7caf0d368e52383aefb7d373547c92d7af6f278"
+}

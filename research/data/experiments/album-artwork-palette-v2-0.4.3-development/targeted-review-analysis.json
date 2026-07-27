@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-foreground-availability-review-v8",
+  "manifestId": "219d539b2c93fc965e7ceeeb44789312c35cdd95b4b01777750e430608368e52",
+  "candidateVersion": "album-artwork-first-principles-0.4.3",
+  "implementationHash": "311a4ea81a641880be60e78773e6fd887e27258ef245fae63ed6615582d50dba",
+  "scientificSha256": "1f037f94575f9dcaf3633b38799004da4ee9bd2d5a1048d96e748dd2f65fda85",
+  "inputHashes": {
+    "manifestSha256": "edd96e6b2f54646c82c164b369744feff0708e0f49304f7947175c0e7fcc4f35",
+    "feedbackSha256": "25412ddf630de68f1a4f09d083def6bd336b7f2fa3f7ef476438950ff73a84a6",
+    "developmentAnalysisSha256": "ce02cafc585210073d48ccec650596d97eeac87f33942c880842eb3d1d3d9582"
+  },
+  "storeIntegrity": {
+    "manifestCaseCount": 3,
+    "storedEntryCount": 3,
+    "uniqueCaseCount": 3,
+    "preferencesReferenceOnlyPositiveOptions": true
+  },
+  "interpretationPolicy": {
+    "selected": "independently usable positive direction, moderated by its verbatim comment",
+    "preferred": "explicit preference only among selected positives",
+    "unselected": "unlabeled, not a negative example",
+    "commentsEnterInference": false
+  },
+  "counts": {
+    "caseCount": 3,
+    "completedResponseCount": 3,
+    "currentTopPositiveCount": 2,
+    "predecessorTopPositiveCount": 3,
+    "totalPositiveMarks": 7,
+    "preferredResponseCount": 2,
+    "noneConfidentlyValidCount": 0,
+    "uncertainCount": 0
+  },
+  "mechanismSubGates": {
+    "foregroundAvailabilityRepair": {
+      "pass": true,
+      "reason": "The newly available foreground top on development-04 is independently valid and explicitly preferred."
+    },
+    "priorStrongTopOrdering": {
+      "pass": false,
+      "currentStillValid": true,
+      "reason": "The current development-19 top is valid, but the predecessor strong top receives an explicit strong preference."
+    },
+    "priorPositiveTopProtection": {
+      "pass": false,
+      "reason": "The development-24 current top is unselected while its predecessor top remains independently valid."
+    }
+  },
+  "mechanismGate": {
+    "pass": false,
+    "reasons": [
+      "The foreground proposal expansion repairs development-04.",
+      "Complete-treatment ordering under-ranks a previously strong direction on development-19.",
+      "Complete-treatment ordering selects an unvalidated direction over a prior-positive direction on development-24."
+    ]
+  },
+  "responseInterpretations": [
+    {
+      "caseId": "development-04",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "preferredOptionId": "B",
+      "comment": "",
+      "options": [
+        {
+          "optionId": "A",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": false,
+          "preferred": false
+        },
+        {
+          "optionId": "B",
+          "currentParetoTop": true,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": true
+        },
+        {
+          "optionId": "C",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": true,
+          "independentlyValid": false,
+          "preferred": false
+        },
+        {
+          "optionId": "D",
+          "currentParetoTop": false,
+          "predecessorParetoTop": true,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": false
+        }
+      ]
+    },
+    {
+      "caseId": "development-19",
+      "validOptionIds": [
+        "A",
+        "C",
+        "D"
+      ],
+      "preferredOptionId": "A",
+      "comment": "strong preference for option A",
+      "options": [
+        {
+          "optionId": "A",
+          "currentParetoTop": false,
+          "predecessorParetoTop": true,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": true
+        },
+        {
+          "optionId": "B",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": false,
+          "preferred": false
+        },
+        {
+          "optionId": "C",
+          "currentParetoTop": true,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": false
+        },
+        {
+          "optionId": "D",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": false
+        }
+      ]
+    },
+    {
+      "caseId": "development-24",
+      "validOptionIds": [
+        "B",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "comment": "",
+      "options": [
+        {
+          "optionId": "A",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": true,
+          "independentlyValid": false,
+          "preferred": false
+        },
+        {
+          "optionId": "B",
+          "currentParetoTop": false,
+          "predecessorParetoTop": true,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": false
+        },
+        {
+          "optionId": "C",
+          "currentParetoTop": true,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": false,
+          "preferred": false
+        },
+        {
+          "optionId": "D",
+          "currentParetoTop": false,
+          "predecessorParetoTop": false,
+          "currentLegacyScalarTop": false,
+          "independentlyValid": true,
+          "preferred": false
+        }
+      ]
+    }
+  ],
+  "phaseDisposition": "foreground-availability-repair-valid-complete-treatment-ordering-gate-failed",
+  "freshSampleOpened": false,
+  "nextStep": "Preserve budget-adaptive foreground availability, revise complete-treatment foundation to account for distinct-accent utility, and remain on bounded development data."
+}

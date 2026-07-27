@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-bounded-architecture-review-v7",
+  "manifestId": "e9acc805a6ccb7d503094467be4c910d8de9efaad73fe3afc90d496eaf8d8e7a",
+  "entries": [
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "validOptionIds": [
+        "B",
+        "C"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "- option C is valid, but should be gradient, and accent doesn't have the ideal color (see previous review of this artwork)\n- option B is valid, but should be gradient, and accent and foreground colors should switch roles",
+      "submittedAt": "2026-07-26T21:47:57.856Z"
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "validOptionIds": [
+        "B",
+        "C",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T21:48:23.856Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [
+        "A",
+        "B",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T21:48:41.697Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "validOptionIds": [
+        "A",
+        "B",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T21:49:27.309Z"
+    }
+  ]
+}

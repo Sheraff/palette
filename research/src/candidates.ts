@@ -52,7 +52,7 @@ export type Candidate = {
 	familySpatial: CandidateSpatialEvidence
 }
 
-type ColorBin = {
+export type ColorBin = {
 	id: number
 	key: number
 	count: number
@@ -78,9 +78,39 @@ type BinAccumulator = {
 	text: number
 }
 
-type BuiltBins = {
+export type BuiltBins = {
 	bins: ColorBin[]
 	pixelBinIds: Int32Array
+	representativePixelIndices: Int32Array
+}
+
+export type CandidatePerceptionRecord = {
+	candidateId: number
+	binIds: number[]
+	mask: Uint8Array
+	representativePixelIndex: number
+}
+
+export type ColorFamilyRecord = {
+	id: number
+	anchorCandidateId: number
+	memberCandidateIds: number[]
+	primaryCandidateIds: number[]
+	mask: Uint8Array
+	spatial: CandidateSpatialEvidence
+}
+
+export type CandidateContext = {
+	candidates: Candidate[]
+	bins: ColorBin[]
+	pixelBinIds: Int32Array
+	representativePixelIndices: Int32Array
+	candidateRecords: CandidatePerceptionRecord[]
+	families: ColorFamilyRecord[]
+}
+
+export type CandidateContextOptions = {
+	stableFamilyAnchors?: boolean
 }
 
 const clamp = (value: number, minimum: number, maximum: number): number => Math.max(minimum, Math.min(maximum, value))
@@ -92,7 +122,7 @@ function quantizedKey([lightness, a, b]: OKLab): number {
 	return (lightnessBin << 10) | (aBin << 5) | bBin
 }
 
-function buildBins(analysis: RegionAnalysis): BuiltBins {
+export function buildBins(analysis: RegionAnalysis): BuiltBins {
 	const accumulators = new Map<number, BinAccumulator>()
 	const total = analysis.width * analysis.height
 	const pixelKeys = new Int32Array(total)
@@ -142,6 +172,7 @@ function buildBins(analysis: RegionAnalysis): BuiltBins {
 	const binsByKey = new Map(bins.map((bin) => [bin.key, bin]))
 	const pixelBinIds = new Int32Array(total)
 	const representativeDistance = new Float32Array(bins.length).fill(Infinity)
+	const representativePixelIndices = new Int32Array(bins.length).fill(-1)
 	for (let pixel = 0; pixel < total; pixel++) {
 		const lab = labAt(analysis.labs, pixel)
 		const bin = binsByKey.get(pixelKeys[pixel])!
@@ -149,17 +180,18 @@ function buildBins(analysis: RegionAnalysis): BuiltBins {
 		const distance = okDistance(lab, bin.lab)
 		if (distance >= representativeDistance[bin.id]) continue
 		representativeDistance[bin.id] = distance
+		representativePixelIndices[bin.id] = pixel
 		const offset = pixel * 3
 		bin.rgb = [analysis.data[offset], analysis.data[offset + 1], analysis.data[offset + 2]]
 	}
-	return { bins, pixelBinIds }
+	return { bins, pixelBinIds, representativePixelIndices }
 }
 
 function sideCoverage(counts: [number, number, number, number], width: number, height: number): SideCoverage {
 	return [counts[0] / width, counts[1] / height, counts[2] / width, counts[3] / height]
 }
 
-function spatialEvidence(analysis: RegionAnalysis, mask: Uint8Array): CandidateSpatialEvidence {
+export function spatialEvidence(analysis: RegionAnalysis, mask: Uint8Array): CandidateSpatialEvidence {
 	const { width, height } = analysis
 	const total = width * height
 	if (total === 0) return emptyCandidateSpatialEvidence()
@@ -258,11 +290,23 @@ function attachColorFamilies(
 	candidates: Candidate[],
 	masks: Map<number, Uint8Array>,
 	analysis: RegionAnalysis,
-): void {
+	stableAnchors: boolean,
+): ColorFamilyRecord[] {
 	const radius = 0.055
 	const primary = candidates.filter((candidate) => !candidate.typographyOnly)
-		.sort((first, second) => second.population - first.population)
-	const families: Array<{ id: number; anchor: Candidate; members: Candidate[]; evidence?: CandidateSpatialEvidence }> = []
+		.sort((first, second) => {
+			const population = second.population - first.population
+			if (population !== 0 || !stableAnchors) return population
+			const color = first.hex < second.hex ? -1 : first.hex > second.hex ? 1 : 0
+			return color !== 0 ? color : first.id - second.id
+		})
+	const families: Array<{
+		id: number
+		anchor: Candidate
+		members: Candidate[]
+		evidence?: CandidateSpatialEvidence
+		mask?: Uint8Array
+	}> = []
 	for (const candidate of primary) {
 		let closest: (typeof families)[number] | undefined
 		let closestDistance = Infinity
@@ -288,6 +332,7 @@ function attachColorFamilies(
 			for (let pixel = 0; pixel < union.length; pixel++) union[pixel] |= mask[pixel]
 		}
 		family.evidence = spatialEvidence(analysis, union)
+		family.mask = union
 		for (const candidate of family.members) candidate.familySpatial = family.evidence
 	}
 
@@ -305,6 +350,16 @@ function attachColorFamilies(
 		candidate.familyId = closest.id
 		candidate.familySpatial = closest.evidence!
 	}
+
+	return families.map((family) => ({
+		id: family.id,
+		anchorCandidateId: family.anchor.id,
+		memberCandidateIds: candidates.filter((candidate) => candidate.familyId === family.id)
+			.map((candidate) => candidate.id).sort((first, second) => first - second),
+		primaryCandidateIds: family.members.map((candidate) => candidate.id).sort((first, second) => first - second),
+		mask: family.mask!,
+		spatial: family.evidence!,
+	}))
 }
 
 function bestBin(bins: ColorBin[], score: (bin: ColorBin) => number): number {
@@ -391,12 +446,13 @@ function updateCenters(bins: ColorBin[], groups: number[][], current: OKLab[], r
 	})
 }
 
-export function buildCandidates(
+export function buildCandidateContext(
 	analysis: RegionAnalysis,
 	count = 12,
 	roleAware = true,
-): Candidate[] {
-	const { bins, pixelBinIds } = buildBins(analysis)
+	options: CandidateContextOptions = {},
+): CandidateContext {
+	const { bins, pixelBinIds, representativePixelIndices } = buildBins(analysis)
 	let centers = initializeCenters(bins, count, roleAware)
 	let groups = assignBins(bins, centers)
 	for (let iteration = 0; iteration < 8; iteration++) {
@@ -419,6 +475,8 @@ export function buildCandidates(
 		const candidateId = binCandidateIds[pixelBinIds[pixel]]
 		masks.get(candidateId)![pixel] = 1
 	}
+	const candidateBinIds = new Map<number, number[]>()
+	const candidateRepresentativePixelIndices = new Map<number, number>()
 
 	const candidates = groups.map((group, id): Candidate | undefined => {
 		if (group.length === 0) return undefined
@@ -431,6 +489,8 @@ export function buildCandidates(
 		const rgb = bins[representative].rgb
 		const lab = rgbToOKLab(rgb)
 		const spatial = spatialEvidence(analysis, masks.get(id)!)
+		candidateBinIds.set(id, [...group])
+		candidateRepresentativePixelIndices.set(id, representativePixelIndices[representative])
 		return {
 			id,
 			rgb,
@@ -474,6 +534,8 @@ export function buildCandidates(
 			const id = nextCandidateId++
 			const spatial = spatialEvidence(analysis, mask)
 			masks.set(id, mask)
+			candidateBinIds.set(id, extremeBins.map((bin) => bin.id))
+			candidateRepresentativePixelIndices.set(id, representativePixelIndices[representative.id])
 			candidates.push({
 				id,
 				rgb: representative.rgb,
@@ -494,6 +556,27 @@ export function buildCandidates(
 		}
 	}
 
-	attachColorFamilies(candidates, masks, analysis)
-	return candidates.sort((first, second) => second.population - first.population)
+	const families = attachColorFamilies(candidates, masks, analysis, options.stableFamilyAnchors ?? false)
+	candidates.sort((first, second) => second.population - first.population)
+	return {
+		candidates,
+		bins,
+		pixelBinIds,
+		representativePixelIndices,
+		candidateRecords: candidates.map((candidate) => ({
+			candidateId: candidate.id,
+			binIds: candidateBinIds.get(candidate.id)!,
+			mask: masks.get(candidate.id)!,
+			representativePixelIndex: candidateRepresentativePixelIndices.get(candidate.id)!,
+		})),
+		families,
+	}
+}
+
+export function buildCandidates(
+	analysis: RegionAnalysis,
+	count = 12,
+	roleAware = true,
+): Candidate[] {
+	return buildCandidateContext(analysis, count, roleAware).candidates
 }

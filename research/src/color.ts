@@ -1,3 +1,4 @@
+import { APCAcontrast, sRGBtoY } from "apca-w3"
 import type { OKLab, RGB } from "./types.ts"
 
 const clamp = (value: number, min = 0, max = 1): number => Math.max(min, Math.min(max, value))
@@ -64,6 +65,11 @@ export function contrastRatio(first: RGB, second: RGB): number {
 	const lighter = Math.max(relativeLuminance(first), relativeLuminance(second))
 	const darker = Math.min(relativeLuminance(first), relativeLuminance(second))
 	return (lighter + 0.05) / (darker + 0.05)
+}
+
+/** Signed APCA Lc. The first color is foreground content and polarity is significant. */
+export function apcaContrast(foreground: RGB, background: RGB): number {
+	return APCAcontrast(sRGBtoY(foreground), sRGBtoY(background))
 }
 
 export function rgbToHex([red, green, blue]: RGB): string {

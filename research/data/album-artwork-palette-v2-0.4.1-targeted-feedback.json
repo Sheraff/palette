@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-gate-confirmation-review-v6",
+  "manifestId": "8e67a4c5e8cde55e874c55c164b623572f8765a24c5f15408da8e1ae47b183f0",
+  "entries": [
+    {
+      "caseId": "development-07",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "validOptionIds": [
+        "C",
+        "D"
+      ],
+      "preferredOptionId": "C",
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T20:45:10.869Z"
+    },
+    {
+      "caseId": "development-24",
+      "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+      "validOptionIds": [
+        "A",
+        "C",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T20:45:26.082Z"
+    },
+    {
+      "caseId": "development-27",
+      "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+      "validOptionIds": [
+        "A",
+        "C",
+        "D"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T20:45:50.579Z"
+    },
+    {
+      "caseId": "development-23",
+      "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+      "validOptionIds": [
+        "A",
+        "B",
+        "D"
+      ],
+      "preferredOptionId": "D",
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "",
+      "submittedAt": "2026-07-26T20:46:20.236Z"
+    }
+  ]
+}

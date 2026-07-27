@@ -8,6 +8,16 @@ import {
 	roleMinimumDistance,
 } from "./color.ts"
 import { emptyCandidateSpatialEvidence, type Candidate } from "./candidates.ts"
+import {
+	hasStrongTypographyEvidence,
+	resolveForegroundBackgroundRequirement,
+	resolveForegroundBackgroundScoringBreakpoint,
+	resolveForegroundSurfaceRequirement,
+	resolveForegroundSurfaceScoringBreakpoint,
+	resolveSourceForegroundPreferenceMinimum,
+	sourceForegroundIsPreferred,
+	type ForegroundContrastProfile,
+} from "./foreground-contrast.ts"
 import type { RegionAnalysis } from "./regions.ts"
 import type { GradientEvidence, OKLab, Palette, PaletteMetrics, RGB, RoleColor } from "./types.ts"
 
@@ -29,30 +39,38 @@ export const minimumForegroundBackgroundContrast = 3
 export const minimumForegroundSurfaceContrast = 2.5
 export const minimumAccentBackgroundContrast = 1.2
 
-function hasStrongTypographyEvidence(candidate: Candidate): boolean {
-	return !candidate.generated && candidate.population >= 0.1 && candidate.text >= 0.5 && candidate.saliency >= 0.55
+function foregroundBackgroundContrast(candidate: Candidate, profile?: ForegroundContrastProfile): number {
+	return resolveForegroundBackgroundRequirement(candidate, profile)
 }
 
-function foregroundBackgroundContrast(candidate: Candidate): number {
-	if (candidate.generated) return 4.5
-	return hasStrongTypographyEvidence(candidate) ? minimumForegroundBackgroundContrast : 4
-}
-
-function foregroundSurfaceContrast(candidate: Candidate, background: Candidate, allowRepresentativeSurface = false): number {
-	if (candidate.generated) return 4.5
+function foregroundSurfaceContrast(
+	candidate: Candidate,
+	background: Candidate,
+	allowRepresentativeSurface = false,
+	profile?: ForegroundContrastProfile,
+): number {
 	const backgroundContrast = contrastRatio(candidate.rgb, background.rgb)
-	if (hasStrongTypographyEvidence(candidate) && backgroundContrast < 4.5) return minimumForegroundSurfaceContrast
-	return backgroundContrast < 4.5 || allowRepresentativeSurface ? 3 : 4.5
+	return resolveForegroundSurfaceRequirement(candidate, {
+		foregroundBackgroundContrast: backgroundContrast,
+		allowRepresentativeSurface,
+	}, profile)
 }
 
-function sourceForegroundPool(candidates: Candidate[], background: Candidate): Candidate[] {
+function sourceForegroundPool(
+	candidates: Candidate[],
+	background: Candidate,
+	profile?: ForegroundContrastProfile,
+): Candidate[] {
+	const preferenceMinimum = resolveSourceForegroundPreferenceMinimum(profile)
 	const standard = candidates.filter((candidate) =>
-		candidate.id !== background.id && contrastRatio(background.rgb, candidate.rgb) >= 4.5)
+		candidate.id !== background.id && contrastRatio(background.rgb, candidate.rgb) >= preferenceMinimum)
 	const eligible = candidates.filter((candidate) =>
 		candidate.id !== background.id &&
-		contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate))
+		contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate, profile))
 	return standard.length > 0
-		? eligible.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= 4.5 || hasStrongTypographyEvidence(candidate))
+		? eligible.filter((candidate) => sourceForegroundIsPreferred(
+			candidate, contrastRatio(background.rgb, candidate.rgb), profile,
+		))
 		: eligible
 }
 
@@ -123,9 +141,10 @@ function foregroundScore(
 	maxPopulation: number,
 	mode: Mode,
 	preferChromaticTypography = false,
+	profile?: ForegroundContrastProfile,
 ): number {
 	const ratio = contrastRatio(background.rgb, candidate.rgb)
-	const minimumContrast = ratio >= 4.5 ? 4.5 : foregroundBackgroundContrast(candidate)
+	const minimumContrast = resolveForegroundBackgroundScoringBreakpoint(candidate, ratio, profile)
 	const contrast = clamp01((ratio - minimumContrast) / (10 - minimumContrast))
 	const population = Math.sqrt(candidate.population / Math.max(maxPopulation, 1e-9))
 	const source = candidate.generated ? 0 : 1
@@ -174,6 +193,7 @@ function surfaceScore(
 	smoothGradient: boolean,
 	backgroundFamilyCoverage: number,
 	allowRepresentativeSurface: boolean,
+	profile?: ForegroundContrastProfile,
 ): number {
 	if (candidate.id === background.id) {
 		if (smoothGradient) return 0.24
@@ -192,8 +212,10 @@ function surfaceScore(
 	if (smoothGradient) {
 		const population = Math.sqrt(candidate.population / Math.max(maxPopulation, 1e-9))
 		const ratio = contrastRatio(candidate.rgb, foreground.rgb)
-		const allowedContrast = foregroundSurfaceContrast(foreground, background, allowRepresentativeSurface)
-		const minimumContrast = ratio >= 4.5 ? 4.5 : allowedContrast
+		const minimumContrast = resolveForegroundSurfaceScoringBreakpoint(foreground, ratio, {
+			foregroundBackgroundContrast: contrastRatio(foreground.rgb, background.rgb),
+			allowRepresentativeSurface,
+		}, profile)
 		const contrast = clamp01((ratio - minimumContrast) / (10 - minimumContrast))
 		const separation = clamp01(distance / 0.32)
 		return candidate.background * 0.15 + population * 0.24 + separation * 0.34 +
@@ -203,8 +225,10 @@ function surfaceScore(
 	const affinity = Math.exp(-((distance - idealDistance) ** 2) / 0.018)
 	const population = Math.sqrt(candidate.population / Math.max(maxPopulation, 1e-9))
 	const ratio = contrastRatio(candidate.rgb, foreground.rgb)
-	const allowedContrast = foregroundSurfaceContrast(foreground, background, allowRepresentativeSurface)
-	const minimumContrast = ratio >= 4.5 ? 4.5 : allowedContrast
+	const minimumContrast = resolveForegroundSurfaceScoringBreakpoint(foreground, ratio, {
+		foregroundBackgroundContrast: contrastRatio(foreground.rgb, background.rgb),
+		allowRepresentativeSurface,
+	}, profile)
 	const contrast = clamp01((ratio - minimumContrast) / (10 - minimumContrast))
 	const gradientSeparation = smoothGradient ? clamp01(distance / 0.24) * 0.14 : 0
 	return candidate.background * 0.28 + population * 0.22 + affinity * 0.25 + contrast * 0.17 +
@@ -219,12 +243,13 @@ function hasDistinctSurfaceConfidence(
 	expectsGradient: boolean,
 	backgroundFamilyCoverage: number,
 	allowRepresentativeSurface: boolean,
+	profile?: ForegroundContrastProfile,
 ): boolean {
 	const candidateScore = surfaceScore(
-		candidate, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface,
+		candidate, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface, profile,
 	)
 	const collapsedScore = surfaceScore(
-		background, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface,
+		background, background, foreground, maxPopulation, expectsGradient, backgroundFamilyCoverage, allowRepresentativeSurface, profile,
 	)
 	return candidateScore >= collapsedScore + minimumDistinctSurfaceScoreGain
 }
@@ -483,7 +508,12 @@ function toPalette(selection: Selection, analysis: RegionAnalysis): Palette {
 	}
 }
 
-export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, mode: Mode): Palette {
+export function solvePalette(
+	candidates: Candidate[],
+	analysis: RegionAnalysis,
+	mode: Mode,
+	profile?: ForegroundContrastProfile,
+): Palette {
 	if (candidates.length === 0) throw new Error("Cannot solve a palette without color candidates")
 	const maxPopulation = Math.max(...candidates.map((candidate) => candidate.population))
 	const generated = [generatedCandidate([0, 0, 0], -1), generatedCandidate([255, 255, 255], -2)]
@@ -508,14 +538,14 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 	if (monochrome) {
 		const background = [...candidates]
 			.sort((first, second) => backgroundScore(second, maxPopulation) - backgroundScore(first, maxPopulation))[0]
-		const sourceForegrounds = sourceForegroundPool(candidates, background)
+		const sourceForegrounds = sourceForegroundPool(candidates, background, profile)
 		const foregroundPool = sourceForegrounds.length > 0 ? sourceForegrounds : generated
 		const foreground = foregroundPool
-			.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate))
+			.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate, profile))
 			.sort((first, second) =>
-				foregroundScore(second, background, maxPopulation, mode) +
+				foregroundScore(second, background, maxPopulation, mode, false, profile) +
 					Math.sqrt(second.population / Math.max(maxPopulation, 1e-9)) * 0.15 -
-				foregroundScore(first, background, maxPopulation, mode) -
+				foregroundScore(first, background, maxPopulation, mode, false, profile) -
 					Math.sqrt(first.population / Math.max(maxPopulation, 1e-9)) * 0.15,
 			)[0] || generated[0]
 		const sourceAccent = candidates
@@ -538,26 +568,27 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 		const darkChromaticGradient = background.lab[0] < 0.2 && chromaticCoverage >= 0.15 &&
 			smoothGradient.coverage >= 0.05 && smoothGradient.coherence >= 0.55
 		const expectsGradient = smoothGradient.isGradient || darkChromaticGradient
-		const sourceForegrounds = sourceForegroundPool(candidates, background)
+		const sourceForegrounds = sourceForegroundPool(candidates, background, profile)
 		const foregroundPool = sourceForegrounds.length > 0 ? sourceForegrounds : generated
 		const eligibleForegrounds = foregroundPool
-			.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate))
+			.filter((candidate) => contrastRatio(background.rgb, candidate.rgb) >= foregroundBackgroundContrast(candidate, profile))
 		const defaultForeground = [...eligibleForegrounds].sort((first, second) =>
-			foregroundScore(second, background, maxPopulation, mode) - foregroundScore(first, background, maxPopulation, mode),
+			foregroundScore(second, background, maxPopulation, mode, false, profile) -
+				foregroundScore(first, background, maxPopulation, mode, false, profile),
 		)[0]
 		const preferChromaticTypography = !!defaultForeground && !defaultForeground.generated && defaultForeground.chroma < 0.08 &&
 			candidates.filter(isChromaticTypography).length >= 3
 		const rankedForegrounds = eligibleForegrounds
 			.sort((first, second) =>
-				foregroundScore(second, background, maxPopulation, mode, preferChromaticTypography) -
-					foregroundScore(first, background, maxPopulation, mode, preferChromaticTypography),
+				foregroundScore(second, background, maxPopulation, mode, preferChromaticTypography, profile) -
+					foregroundScore(first, background, maxPopulation, mode, preferChromaticTypography, profile),
 			)
 		const bestForegroundScore = rankedForegrounds.length > 0
-			? foregroundScore(rankedForegrounds[0], background, maxPopulation, mode, preferChromaticTypography)
+			? foregroundScore(rankedForegrounds[0], background, maxPopulation, mode, preferChromaticTypography, profile)
 			: -Infinity
 		const foregrounds = rankedForegrounds
 			.filter((candidate) => foregroundScore(
-				candidate, background, maxPopulation, mode, preferChromaticTypography,
+				candidate, background, maxPopulation, mode, preferChromaticTypography, profile,
 			) >= bestForegroundScore - 0.08)
 			.slice(0, 6)
 		for (const foreground of foregrounds) {
@@ -575,25 +606,25 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 				okDistance(background.lab, candidate.lab) <= 0.38 &&
 				(!expectsGradient || chromaticCoverage < 0.15 || candidate.chroma >= 0.04) &&
 				contrastRatio(candidate.rgb, foreground.rgb) >= foregroundSurfaceContrast(
-					foreground, background, allowRepresentativeSurface,
+					foreground, background, allowRepresentativeSurface, profile,
 				) &&
 				hasDistinctSurfaceConfidence(
-					candidate, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface,
+					candidate, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface, profile,
 				),
 			)
 			const rankedSurfaces = [background, ...distinctSurfaces]
 				.sort((first, second) =>
-					surfaceScore(second, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface) -
-					surfaceScore(first, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface),
+					surfaceScore(second, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface, profile) -
+						surfaceScore(first, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface, profile),
 				)
 			const bestSurfaceScore = surfaceScore(
 				rankedSurfaces[0], background, foreground, maxPopulation, expectsGradient, familyCoverage,
-				allowRepresentativeSurface,
+				allowRepresentativeSurface, profile,
 			)
 			const surfaces = rankedSurfaces
 				.filter((candidate) => surfaceScore(
 					candidate, background, foreground, maxPopulation, expectsGradient, familyCoverage,
-					allowRepresentativeSurface,
+					allowRepresentativeSurface, profile,
 				) >= bestSurfaceScore - 0.08)
 				.slice(0, 5)
 			for (const surface of surfaces) {
@@ -625,9 +656,10 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 					const generatedPenalty = foreground.generated ? 0.12 : 0
 					const score = (
 						backgroundScore(background, maxPopulation) +
-						foregroundScore(foreground, background, maxPopulation, mode, preferChromaticTypography) +
+						foregroundScore(foreground, background, maxPopulation, mode, preferChromaticTypography, profile) +
 						surfaceScore(
 							surface, background, foreground, maxPopulation, expectsGradient, familyCoverage, allowRepresentativeSurface,
+							profile,
 						) +
 						accentScore(accent, foreground, background, maxPopulation, mode, preferVividMajorIdentity, analysis)
 					) / 4 - duplicatePenalty - generatedPenalty
@@ -655,9 +687,9 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 		const nearWhite = candidates.filter((candidate) =>
 			candidate.lab[0] > selected.foreground.lab[0] && candidate.chroma < 0.02 && candidate.population >= 0.01 &&
 			candidate.text >= 0.4 && candidate.saliency >= 0.65 &&
-			contrastRatio(candidate.rgb, selected.background.rgb) >= foregroundBackgroundContrast(candidate) &&
+			contrastRatio(candidate.rgb, selected.background.rgb) >= foregroundBackgroundContrast(candidate, profile) &&
 			contrastRatio(candidate.rgb, selected.surface.rgb) >= foregroundSurfaceContrast(
-				candidate, selected.background, allowRepresentativeSurface,
+				candidate, selected.background, allowRepresentativeSurface, profile,
 			),
 		).sort((first, second) => second.lab[0] - first.lab[0])[0]
 		if (nearWhite) selected = { ...selected, foreground: nearWhite }
@@ -678,12 +710,12 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 			okDistance(selected.background.lab, candidate.lab) <= 0.38 &&
 			(chromaticCoverage < 0.15 || candidate.chroma >= 0.04) &&
 			contrastRatio(candidate.rgb, selected.foreground.rgb) >= foregroundSurfaceContrast(
-				selected.foreground, selected.background, allowRepresentativeSurface,
+				selected.foreground, selected.background, allowRepresentativeSurface, profile,
 			) &&
 			okDistance(candidate.lab, selected.accent.lab) >= 0.06 && contrastRatio(candidate.rgb, selected.accent.rgb) >= 1.5,
 		).sort((first, second) =>
-			surfaceScore(second, selected.background, selected.foreground, maxPopulation, true, familyCoverage, allowRepresentativeSurface) -
-			surfaceScore(first, selected.background, selected.foreground, maxPopulation, true, familyCoverage, allowRepresentativeSurface),
+			surfaceScore(second, selected.background, selected.foreground, maxPopulation, true, familyCoverage, allowRepresentativeSurface, profile) -
+			surfaceScore(first, selected.background, selected.foreground, maxPopulation, true, familyCoverage, allowRepresentativeSurface, profile),
 		)
 		if (alternatives[0]) selected = { ...selected, surface: alternatives[0] }
 	}
@@ -698,7 +730,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 			okDistance(selected.background.lab, candidate.lab) >= 0.12 &&
 			okDistance(selected.background.lab, candidate.lab) <= 0.38 &&
 			contrastRatio(candidate.rgb, selected.foreground.rgb) >= foregroundSurfaceContrast(
-				selected.foreground, selected.background, allowRepresentativeSurface,
+				selected.foreground, selected.background, allowRepresentativeSurface, profile,
 			) &&
 			okDistance(candidate.lab, selected.accent.lab) >= 0.06,
 		).sort((first, second) =>
@@ -717,6 +749,7 @@ export function solvePalette(candidates: Candidate[], analysis: RegionAnalysis, 
 			selected.gradientHint || false,
 			familyCoverage,
 			allowRepresentativeSurface,
+			profile,
 		)) {
 			selected = { ...selected, surface: selected.background }
 		}

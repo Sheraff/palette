@@ -1,0 +1,261 @@
+{
+  "analysisVersion": "album-artwork-palette-v2-lightweight-analysis-v1",
+  "analyzedAt": "2026-07-26T21:09:09.026Z",
+  "implementationVersion": "album-artwork-first-principles-0.4.1",
+  "implementationHash": "9335ed4f754fd687ce456ed9492bbd8d4e8fd0d70c567902e10d2ff48592a26a",
+  "scientificConfigHash": "62a5e9ad25824ec8005f3f7159c1adbd5dd7a9fc89550cdf31de08a6046d5e05",
+  "manifestId": "e052f2814f83f0313d3732e779927e5f4a3fd29d7292ba49d5291537bbf9a7d1",
+  "reviewVersion": "album-artwork-palette-v2-lightweight-top-one-review-v4",
+  "reviewedAt": "2026-07-26T21:02:56.903Z",
+  "sourceClass": "bounded-development-only",
+  "freshSampleOpened": false,
+  "inputHashes": {
+    "manifestSha256": "57d173c4f39ccb421b940d6ab50545983945018615d8ea524042be301f3b86d5",
+    "feedbackSha256": "581083cff08c90885ea96b09471b10459350904f3ddf5d4ddc3231dee7864d9e",
+    "targetedAnalysisSha256": "11f01fe65b684e58c7eabf92a0548c3c8e4a50ad58210bad59943d880aa27099"
+  },
+  "validation": {
+    "valid": true,
+    "expectedCaseCount": 12,
+    "reviewedCaseCount": 12,
+    "uniqueCaseCount": 12,
+    "nonEmptyCommentCount": 9,
+    "optionalCommentsPreservedVerbatim": true,
+    "sourceIdentitiesMatchManifest": true,
+    "treatmentsMatchFrozenWinners": true
+  },
+  "distribution": {
+    "qualityCounts": {
+      "strong": 5,
+      "acceptable": 2,
+      "weak-fallback": 4,
+      "unacceptable": 1,
+      "uncertain": 0
+    },
+    "positiveCount": 7,
+    "weakOrWorseCount": 5,
+    "positiveShare": 0.5833333333333334,
+    "weakOrWorseShare": 0.4166666666666667
+  },
+  "prerequisiteTargetedGate": {
+    "pass": true,
+    "disposition": "targeted-mechanism-gate-passed-absolute-quality-review-authorized"
+  },
+  "failureClasses": [
+    {
+      "failureClass": "field-identity-and-gradient-availability",
+      "description": "The selected field can be too bland or omit a visually important chromatic progression.",
+      "caseIds": [
+        "development-03",
+        "development-06",
+        "development-15",
+        "development-16",
+        "development-22"
+      ],
+      "nextEvidenceNeed": "Improve chromatic field-identity and progression evidence without adding image-specific gradient rules.",
+      "caseCount": 5,
+      "weakOrWorseCount": 3,
+      "evidence": [
+        {
+          "caseId": "development-03",
+          "absoluteQuality": "unacceptable",
+          "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork"
+        },
+        {
+          "caseId": "development-06",
+          "absoluteQuality": "acceptable",
+          "comment": "almost very good, but should be gradient to match the artwork"
+        },
+        {
+          "caseId": "development-15",
+          "absoluteQuality": "weak-fallback",
+          "comment": "palette is a little more bland than the vibe of the artwork, but overall it fits"
+        },
+        {
+          "caseId": "development-16",
+          "absoluteQuality": "weak-fallback",
+          "comment": "- accent is okay, but there are better ones in the image (either bright yellow, orange, or red spots, or slightly lighter blue as the album title text)\n- surface should be a slightly darker and less chromatic shade than the background, and form a gradient (like the big background of the artwork suggests)"
+        },
+        {
+          "caseId": "development-22",
+          "absoluteQuality": "strong",
+          "comment": "would work better as a gradient, colors and roles are good"
+        }
+      ]
+    },
+    {
+      "failureClass": "foreground-polarity-and-typography-evidence",
+      "description": "The foreground role can choose the wrong light/dark polarity relative to prominent title or text evidence.",
+      "caseIds": [
+        "development-03",
+        "development-04",
+        "development-26"
+      ],
+      "nextEvidenceNeed": "Represent repeated high-contrast typography-like regions separately from generic contrast scoring.",
+      "caseCount": 3,
+      "weakOrWorseCount": 2,
+      "evidence": [
+        {
+          "caseId": "development-03",
+          "absoluteQuality": "unacceptable",
+          "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork"
+        },
+        {
+          "caseId": "development-04",
+          "absoluteQuality": "weak-fallback",
+          "comment": "artwork identity is still weak. foreground or accent (or both) should be white like the artwork's text. surface is okay, but there could be a better shade of that color on the top right corner of the image"
+        },
+        {
+          "caseId": "development-26",
+          "absoluteQuality": "acceptable",
+          "comment": "would work better with a foreground that is *lighter* than the background like the artwork does for its text"
+        }
+      ]
+    },
+    {
+      "failureClass": "optional-role-coverage-and-distinction",
+      "description": "Surface or accent roles can be omitted, collapsed, or insufficiently specific despite visible subordinate artwork structure.",
+      "caseIds": [
+        "development-04",
+        "development-16",
+        "development-18"
+      ],
+      "nextEvidenceNeed": "Strengthen earned optional-role evidence and role distinction while retaining collapse when no distinct region exists.",
+      "caseCount": 3,
+      "weakOrWorseCount": 3,
+      "evidence": [
+        {
+          "caseId": "development-04",
+          "absoluteQuality": "weak-fallback",
+          "comment": "artwork identity is still weak. foreground or accent (or both) should be white like the artwork's text. surface is okay, but there could be a better shade of that color on the top right corner of the image"
+        },
+        {
+          "caseId": "development-16",
+          "absoluteQuality": "weak-fallback",
+          "comment": "- accent is okay, but there are better ones in the image (either bright yellow, orange, or red spots, or slightly lighter blue as the album title text)\n- surface should be a slightly darker and less chromatic shade than the background, and form a gradient (like the big background of the artwork suggests)"
+        },
+        {
+          "caseId": "development-18",
+          "absoluteQuality": "weak-fallback",
+          "comment": "missing surface, there are plenty of colors to pick from in the artwork"
+        }
+      ]
+    }
+  ],
+  "caseResults": [
+    {
+      "caseId": "development-02",
+      "sourceSha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "treatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+      "absoluteQuality": "strong",
+      "submittedAt": "2026-07-26T20:53:12.840Z",
+      "comment": ""
+    },
+    {
+      "caseId": "development-03",
+      "sourceSha256": "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d",
+      "treatmentId": "gradient:field-domain-800:radial-upper-center:center-out:family-3302:family-5047:#1c026d:#22438a|28,2,109|34,67,138|224,205,199|208,41,129|gradient",
+      "absoluteQuality": "unacceptable",
+      "submittedAt": "2026-07-26T20:54:42.537Z",
+      "comment": "background-surface gradient is bland, the artwork uses highly chromatic gradients (e.g. green-to-cyan, orange-to-green)\nforeground color should be black, like the title text on the album artwork"
+    },
+    {
+      "caseId": "development-04",
+      "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+      "treatmentId": "gradient:field-domain-0:linear:diagonal-up:family-6813:family-7695:#607b76:#a0a39a|108,138,138|134,165,170|17,19,18|69,91,89|gradient",
+      "absoluteQuality": "weak-fallback",
+      "submittedAt": "2026-07-26T20:55:54.637Z",
+      "comment": "artwork identity is still weak. foreground or accent (or both) should be white like the artwork's text. surface is okay, but there could be a better shade of that color on the top right corner of the image"
+    },
+    {
+      "caseId": "development-06",
+      "sourceSha256": "32adb11856d3156c80defdaa3af4107fcc7cccb713d69d97f00bba1fc932bf44",
+      "treatmentId": "flat:family-3745:family-2863|49,47,112|33,24,69|73,183,246|226,72,82|flat",
+      "absoluteQuality": "acceptable",
+      "submittedAt": "2026-07-26T20:56:20.452Z",
+      "comment": "almost very good, but should be gradient to match the artwork"
+    },
+    {
+      "caseId": "development-15",
+      "sourceSha256": "69382d609c4c88a917e9151aeb07fd6c1b938ae732fe286de0e43cf038662b7d",
+      "treatmentId": "flat:family-2403:family-4167|20,27,37|54,68,79|178,187,194|80,94,107|flat",
+      "absoluteQuality": "weak-fallback",
+      "submittedAt": "2026-07-26T20:56:59.490Z",
+      "comment": "palette is a little more bland than the vibe of the artwork, but overall it fits"
+    },
+    {
+      "caseId": "development-16",
+      "sourceSha256": "92bfe9dd27931b1badc1b4ce5847c13c8852eacf8c49d6f38b6ff8ea58be7480",
+      "treatmentId": "one:family-5489|68,100,139|68,100,139|251,252,247|16,13,40|flat",
+      "absoluteQuality": "weak-fallback",
+      "submittedAt": "2026-07-26T20:59:13.951Z",
+      "comment": "- accent is okay, but there are better ones in the image (either bright yellow, orange, or red spots, or slightly lighter blue as the album title text)\n- surface should be a slightly darker and less chromatic shade than the background, and form a gradient (like the big background of the artwork suggests)"
+    },
+    {
+      "caseId": "development-18",
+      "sourceSha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+      "treatmentId": "one:family-1540|4,0,42|4,0,42|250,232,146|240,187,55|flat",
+      "absoluteQuality": "weak-fallback",
+      "submittedAt": "2026-07-26T20:59:37.796Z",
+      "comment": "missing surface, there are plenty of colors to pick from in the artwork"
+    },
+    {
+      "caseId": "development-19",
+      "sourceSha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+      "treatmentId": "flat:family-8598:family-7715|191,178,196|156,153,196|108,103,143|216,203,221|flat",
+      "absoluteQuality": "strong",
+      "submittedAt": "2026-07-26T20:59:47.339Z",
+      "comment": ""
+    },
+    {
+      "caseId": "development-21",
+      "sourceSha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+      "treatmentId": "one:family-9942|239,210,238|239,210,238|78,11,124|182,43,186|flat",
+      "absoluteQuality": "strong",
+      "submittedAt": "2026-07-26T21:00:30.934Z",
+      "comment": "this artwork is complex, there might be many valid palettes, but this one does work"
+    },
+    {
+      "caseId": "development-22",
+      "sourceSha256": "d2327de9e78c14d36f8d6deaa77567fd2fd7e07390c7c09dbf80d72a986221c0",
+      "treatmentId": "flat:family-1961:family-1101|2,16,43|3,2,8|190,214,226|83,157,184|flat",
+      "absoluteQuality": "strong",
+      "submittedAt": "2026-07-26T21:01:44.595Z",
+      "comment": "would work better as a gradient, colors and roles are good"
+    },
+    {
+      "caseId": "development-25",
+      "sourceSha256": "84513b2dc0966dd3a476a92ac99dfa788e6c0cd7da357234ffa790ff1e86dc28",
+      "treatmentId": "flat:family-220:family-1102|0,0,0|10,1,0|253,155,2|253,11,237|flat",
+      "absoluteQuality": "strong",
+      "submittedAt": "2026-07-26T21:02:04.941Z",
+      "comment": ""
+    },
+    {
+      "caseId": "development-26",
+      "sourceSha256": "c76ff144d9d609785ac09e18626a554b411fabcc76118469cdc857840bd5d096",
+      "treatmentId": "gradient:field-domain-0:radial-center:center-out:family-8599:family-7717:#cdcac5:#8f8c87|186,183,178|161,158,153|8,8,8|57,54,49|gradient",
+      "absoluteQuality": "acceptable",
+      "submittedAt": "2026-07-26T21:02:56.903Z",
+      "comment": "would work better with a foreground that is *lighter* than the background like the artwork does for its text"
+    }
+  ],
+  "decision": {
+    "phase3EvidenceCollectionComplete": true,
+    "completeTopTreatmentsCommonlyStrongOrAcceptable": true,
+    "freezeForPhase4": false,
+    "openFreshSample": false,
+    "disposition": "continue-bounded-development-do-not-open-fresh",
+    "rationale": [
+      "7/12 deterministic tops are strong or acceptable, demonstrating substantial product progress.",
+      "5/12 deterministic tops remain weak-fallback or unacceptable, so the broad top-one result is not yet reliable enough to freeze.",
+      "Verbatim comments expose repeated development-only failure classes in field identity, foreground polarity, and optional role coverage.",
+      "The sealed fresh sample should remain unopened until those classes receive a bounded architectural response and another targeted quality check."
+    ],
+    "nextBoundedWork": [
+      "Improve field identity and gradient availability from general chromatic progression evidence.",
+      "Add typography-sensitive evidence for foreground polarity without weakening contrast safety.",
+      "Improve earned surface and accent coverage while preserving justified role collapse."
+    ]
+  }
+}

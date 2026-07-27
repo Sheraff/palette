@@ -1,0 +1,369 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-architecture-review-v5",
+  "manifestId": "6d04042d4f28bb26ea6edd1495dfe89496059c21475b1e73442182d92333b8ab",
+  "manifestSha256": "d04835c184ca6cc6705ca784d9a95e695efb393f075f1dfdd6e6a31903396bf9",
+  "feedbackSha256": "28ee2a2fe166b887d078ca8c1dffbdb56f1f1ff53363efce492ce7112844ea68",
+  "storeIntegrity": {
+    "manifestCaseCount": 4,
+    "storedEntryCount": 4,
+    "uniqueCaseCount": 4,
+    "lastWriteWins": true,
+    "preferencesReferenceOnlyPositiveOptions": true
+  },
+  "reviewerInterpretationConstraintVerbatim": "valid palette does not mean perfect",
+  "interpretationPolicy": {
+    "selected": "independently usable positive direction, moderated by its verbatim comment",
+    "preferred": "explicit preference only among selected positives",
+    "unselected": "unlabeled, not a negative example",
+    "perfectOrProductionReadyInferredFromSelection": false
+  },
+  "counts": {
+    "caseCount": 4,
+    "completedResponseCount": 4,
+    "caseWithPositiveCount": 4,
+    "currentCandidatePositiveCaseCount": 4,
+    "totalPositiveMarks": 12,
+    "paretoTopPositiveCount": 3,
+    "legacyScalarTopPositiveCount": 2,
+    "paretoAlternativePositiveCount": 2,
+    "controlPositiveCount": 5,
+    "preferredResponseCount": 1,
+    "preferredParetoTopCount": 1,
+    "noneConfidentlyValidCount": 0,
+    "uncertainCount": 0
+  },
+  "mechanismSubGates": {
+    "gradientFieldRoleOrientation": {
+      "pass": true,
+      "reason": "The corrected development-07 top is independently valid and explicitly preferred."
+    },
+    "currentCandidateCoverage": {
+      "pass": true,
+      "reason": "A current candidate direction is positively marked on 4 of 4 cases."
+    },
+    "deterministicTopOne": {
+      "pass": false,
+      "reason": "Pareto top is positively marked on 3 of 4 cases."
+    },
+    "preferenceAlignment": {
+      "pass": true,
+      "reason": "Pareto top is preferred on 1 of 1 cases with an explicit preference."
+    }
+  },
+  "mechanismGate": {
+    "pass": false,
+    "reasons": [
+      "Gradient field-role orientation is repaired and preference-confirmed on development-07.",
+      "A current candidate direction is positively marked on all 4 cases.",
+      "Pareto top is positively marked on 3 of 4 cases; deterministic top-one still fails on development-23.",
+      "Development-23 supports a retained flat two-field direction but asks for greater within-hue foreground/accent separation."
+    ]
+  },
+  "nextGeneralChanges": [
+    "Keep broad and fresh review blocked until the remaining deterministic top-one failure is resolved.",
+    "Distinguish smooth gradients from discrete illustrated field bands using native edge-transition continuity rather than color-segment coverage alone.",
+    "For distinct accents, preserve signature hue identity while rewarding perceptual separation from foreground before representative-level tie breaking.",
+    "Preserve the repaired ownership assignment, evidence-level dominance, and family-distinct role constraints."
+  ],
+  "responseInterpretations": [
+    {
+      "caseId": "development-07",
+      "originalResponse": {
+        "caseId": "development-07",
+        "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+        "validOptionIds": [
+          "A",
+          "C",
+          "D"
+        ],
+        "preferredOptionId": "C",
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:15:50.163Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#10a4d4"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": false,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#000000",
+          "surfaceHex": "#0468a6",
+          "foregroundHex": "#f2fafd",
+          "accentHex": "#10a4d4"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": true,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#000000",
+          "surfaceHex": "#026faa",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#86d1ee"
+        },
+        {
+          "optionId": "D",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#026faa",
+          "surfaceHex": "#000000",
+          "foregroundHex": "#edf6fb",
+          "accentHex": "#0082be"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "gradient-field-role-orientation-repaired",
+          "confidence": "high",
+          "evidence": "The current black-background, blue-surface gradient top is both independently valid and explicitly preferred."
+        }
+      ],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-24",
+      "originalResponse": {
+        "caseId": "development-24",
+        "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "validOptionIds": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "preferredOptionId": null,
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:16:16.722Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#ed9f23",
+          "surfaceHex": "#c97c24",
+          "foregroundHex": "#261400",
+          "accentHex": "#1beb02"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#91760f",
+          "surfaceHex": "#b56317",
+          "foregroundHex": "#f9b73d",
+          "accentHex": "#1beb02"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-alternative",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#f7b642",
+          "surfaceHex": "#dc8524",
+          "foregroundHex": "#261400",
+          "accentHex": "#1beb02"
+        },
+        {
+          "optionId": "D",
+          "role": "legacy-scalar-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#f9b73d",
+          "surfaceHex": "#dd8722",
+          "foregroundHex": "#261400",
+          "accentHex": "#c82100"
+        }
+      ],
+      "inferredClasses": [],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-27",
+      "originalResponse": {
+        "caseId": "development-27",
+        "sourceSha256": "e1570094bf49de82ad9caaa4344f63854d4c3f0e16e0e0d21094bb3ae6eced7c",
+        "validOptionIds": [
+          "A",
+          "B",
+          "D"
+        ],
+        "preferredOptionId": null,
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "",
+        "submittedAt": "2026-07-26T20:16:49.333Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "legacy-scalar-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#292929",
+          "surfaceHex": "#585858",
+          "foregroundHex": "#979797",
+          "accentHex": "#090909"
+        },
+        {
+          "optionId": "B",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#4d4d4d",
+          "surfaceHex": "#090909",
+          "foregroundHex": "#979797",
+          "accentHex": "#808080"
+        },
+        {
+          "optionId": "C",
+          "role": "prior-positive-control",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#4d4d4d",
+          "surfaceHex": "#373737",
+          "foregroundHex": "#979797",
+          "accentHex": "#808080"
+        },
+        {
+          "optionId": "D",
+          "role": "pareto-top",
+          "positive": true,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#090909",
+          "surfaceHex": "#4d4d4d",
+          "foregroundHex": "#979797",
+          "accentHex": "#808080"
+        }
+      ],
+      "inferredClasses": [],
+      "interpretationUncertain": false
+    },
+    {
+      "caseId": "development-23",
+      "originalResponse": {
+        "caseId": "development-23",
+        "sourceSha256": "3a411a061dcc0f2c41db38e97666543fe903602a7ddcdbdc81c4f77b16e47773",
+        "validOptionIds": [
+          "A",
+          "D"
+        ],
+        "preferredOptionId": null,
+        "noneConfidentlyValid": false,
+        "uncertain": false,
+        "comment": "option A: accent could be more different from foreground (while still remaining in the beige-yellow tones). option D: good, but we have enough colors to find a surface.",
+        "submittedAt": "2026-07-26T20:18:46.990Z"
+      },
+      "optionRoles": [
+        {
+          "optionId": "A",
+          "role": "pareto-alternative",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "separate-flat-fields",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#396a66",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#baa35f"
+        },
+        {
+          "optionId": "B",
+          "role": "pareto-alternative",
+          "positive": false,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "one-field",
+          "backgroundHex": "#0e2328",
+          "surfaceHex": "#0e2328",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#baa35f"
+        },
+        {
+          "optionId": "C",
+          "role": "pareto-top",
+          "positive": false,
+          "preferred": false,
+          "gradient": true,
+          "fieldTreatment": "gradient-field",
+          "backgroundHex": "#0e2328",
+          "surfaceHex": "#93512f",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#baa35f"
+        },
+        {
+          "optionId": "D",
+          "role": "prior-positive-control",
+          "positive": true,
+          "preferred": false,
+          "gradient": false,
+          "fieldTreatment": "one-field",
+          "backgroundHex": "#142c2e",
+          "surfaceHex": "#142c2e",
+          "foregroundHex": "#dbc683",
+          "accentHex": "#5c9ba4"
+        }
+      ],
+      "inferredClasses": [
+        {
+          "class": "illustrated-field-gradient-ranking",
+          "confidence": "medium",
+          "evidence": "The current gradient top is not selected while the retained flat two-field option is selected; omissions remain unlabeled rather than negative."
+        },
+        {
+          "class": "accent-within-hue-separation",
+          "confidence": "high",
+          "evidence": "Reviewer verbatim: option A: accent could be more different from foreground (while still remaining in the beige-yellow tones). option D: good, but we have enough colors to find a surface."
+        },
+        {
+          "class": "surface-collapse-not-earned",
+          "confidence": "high",
+          "evidence": "Reviewer verbatim: option A: accent could be more different from foreground (while still remaining in the beige-yellow tones). option D: good, but we have enough colors to find a surface."
+        }
+      ],
+      "interpretationUncertain": true
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-distinct-accent-observability-review-v9",
+  "manifestId": "e916919776ada301b149eb6c4dd359d1a143709e9d7db76636b6767d23e172de",
+  "entries": [
+    {
+      "caseId": "development-14",
+      "sourceSha256": "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c",
+      "validOptionIds": [
+        "A",
+        "C"
+      ],
+      "preferredOptionId": null,
+      "noneConfidentlyValid": false,
+      "uncertain": false,
+      "comment": "Option D is not valid because the background and surface are different colors but cannot be visually distinguished, so they should be collapsed. However, because they cannot be visually distinguished, option D is visually valid ",
+      "submittedAt": "2026-07-26T23:31:02.981Z"
+    }
+  ]
+}
