@@ -2,7 +2,7 @@
 
 This directory is an independent research implementation. It does not import the legacy extractor, clustering, saliency, gradient, foreground, or packed color-space code.
 
-The current version is an inspectable classical research implementation intended to collect trustworthy preference data before introducing pretrained vision models. It is not a production API.
+The current canonical version is `region-graph-0.19.0`, an inspectable classical research implementation intended to collect trustworthy preference data before introducing pretrained vision models. It is not a production API.
 
 ## Review
 
@@ -57,7 +57,17 @@ The robustness tail is retained in `research/data/robustness.json`; it is not ro
 
 Selection is stored in `research/data/selection.json`, source decisions in `research/data/curation.json`, and absolute decisions in `research/data/absolute-feedback.json`. `research/data/holdout-results.json` remains the extraction and provenance input for both selection and the accepted spatial palettes.
 
-The initial 0.11 review screened 112 sources to fill the 100-source quotas, then marked 83 palettes shippable and 17 unshippable under a deliberately severe release-quality threshold. Versions 0.13 and 0.15 each repaired three rejected palettes. Version 0.16 added three reviewed guarded corrections, reaching 92/8. Version 0.17 replaced composable guards with complete incumbent-constrained joint-role search. Its 11-item blinded review kept all six changed accepted palettes shippable and repaired three of four changed rejected palettes, producing the current 95 shippable and 5 unshippable palettes. See `research/data/corpus-review-summary.md` for the frozen 0.11 review and the archives under `research/data/rounds/` for subsequent transitions.
+The initial 0.11 review screened 112 sources to fill the 100-source quotas, then marked 83 palettes shippable and 17 unshippable under a deliberately severe release-quality threshold. Versions 0.13 and 0.15 each repaired three rejected palettes. Version 0.16 added three reviewed guarded corrections, reaching 92/8. Version 0.17 replaced composable guards with complete incumbent-constrained joint-role search and reached 95/5. Version 0.19 promotes an exact bounded chromatic-role candidate after fresh validation; it changes three accepted and four unselected `00/` palettes and preserves the 95/5 labels. Those labels were migrated, not treated as a comprehensive 0.19 re-review. The completed `palette-role-00-audit-0.2.0-development` workflow uses a 30-case stratified sample for low-burden whole-palette triage; positive ratings are explicitly non-exclusive, and its 12 comments are interpreted qualitatively before any implementation change. See `research/data/corpus-review-summary.md` and the archives under `research/data/rounds/`.
+
+Foreground contrast can now be evaluated with an explicit `3.5:1` background / `3.0:1` surface profile and stronger typography relaxations. Two development candidates were rejected as canonical defaults because they changed 150 and 36 of 355 `00/` palettes respectively; the profile remains opt-in through `research/src/configured-extract.ts`, configured outputs carry a profile-hashed version, and canonical 0.19 is unchanged. New `10/` through `14/` sources are custody-sealed in `research/data/source-provenance-inventory-00-14.json` as source-inventoried/output-unseen reserves.
+
+A later candidate-generation trace found a bounded typography-specific salmon family that generic saliency and achromatic distance collapse had hidden. The diagnostic adds a source candidate on 7/355 `00/` palettes. Historical WCAG-bound role integration did not select the reviewed target, and a 144-pair constrained trace found no treatment under the old safety floor. Those stopped results remain historical evidence; palette cardinality stays capped at four and no fifth role is proposed.
+
+The product role contract identifies accent as meaningful UI used on both background and surface. The initial development contract used WCAG 2 `3:1`; its read-only audit found 147/355 `00/` palettes below the floor, including 47/95 accepted palettes, with seven cases lacking any source-safe accent when other roles were frozen. The current consumer contract instead uses signed APCA from `apca-w3` 0.1.9 and requires absolute `Lc 10` against both fields. This floor preserves the reviewed Thimbleberry and Obsidian identity accents; canonical 0.19 remains unchanged.
+
+The opt-in safety-first joint assignment is available through `research/src/configured-extract.ts` with `UI_ACCENT_CONTRAST_PROFILE`. The profile binds the APCA implementation and thresholds into the configured version, preserves incumbents that already pass, uses no more than four colors, and leaves expressive/quantized output unchanged. The earlier 147-correction and 208-preservation counts belong to the superseded WCAG 2 `3:1` POC; the APCA profile requires fresh broad evaluation before any default promotion.
+
+The explicit `typographyChromaticAccent: true` configured option reuses the frozen seven-source typography availability mechanism and requires the APCA profile. Complete required-accent search ranks role locality before minimax objective regret, then emits only accent-only treatments. Across 37 development and 355 `00/` entries, six treatments emit, one four-role counterfactual is rejected, one accepted palette changes, and no APCA, cardinality, source, gradient, or non-spatial gate fails. The salmon target emits exact-source `#e3bbbb` at `+15.5785 Lc` against both retained fields. Partial review found two treatments worse than baseline, including the accepted change, and one unjudgeable because the baseline palette itself does not fit the artwork; three remain pending. Global configured promotion is stopped and canonical 0.19 remains unchanged.
 
 A round transition with changed semantic results requires preserving or archiving the existing selection, curation, and absolute stores, then explicitly initializing a new review state. `pnpm research:archive` archives only generated results and pairwise feedback; it does not perform this corpus-review transition.
 
@@ -83,11 +93,12 @@ pnpm exec tsc -p research/tsconfig.json
 4. Blend region-graph background propagation with stable continuous border-band evidence.
 5. Estimate region distinctiveness, local contrast, saliency, and text-like structure.
 6. Independently quantize a stable OKLab histogram so minor region-boundary changes do not replace the candidate colors.
-7. Aggregate spatial evidence onto each color candidate.
-8. Jointly enumerate background, foreground, secondary surface, and accent assignments.
-9. Apply source foreground contrast tiers: normally 4.0:1 on background and 4.5:1 on surface, with evidence-gated floors of 3.0:1 and 2.5:1. Prefer an accessible chromatic foreground only when several substantial text-like colors support that identity. Generated black/white fallback retains 4.5:1.
-10. Require evidence for a distinct surface, allow role collapse when that evidence is weak, and reserve auxiliary typography candidates for foreground/accent use.
-11. Detect gradients using endpoint paths plus broad smooth low-frequency color variation.
+7. Aggregate spatial evidence onto each color candidate and append at most two supported missing chromatic hue-family representatives.
+8. Admit only minor, typography-supported supplements to the role solver, then jointly enumerate background, foreground, secondary surface, and accent assignments.
+9. Emit a supplemental treatment only when its selected role, accent visibility/identity/chroma, collapsed-background, and collateral-role-loss gates all pass.
+10. Apply source foreground contrast tiers: normally 4.0:1 on background and 4.5:1 on surface, with evidence-gated floors of 3.0:1 and 2.5:1. Prefer an accessible chromatic foreground only when several substantial text-like colors support that identity. Generated black/white fallback retains 4.5:1.
+11. Require evidence for a distinct surface, allow role collapse when that evidence is weak, and reserve auxiliary typography candidates for foreground/accent use.
+12. Detect gradients using endpoint paths plus broad smooth low-frequency color variation.
 
 Every extracted role color is an exact observed image pixel. Pure black or white is added only when no extracted candidate reaches its applicable foreground contrast tier against the selected background; once added, that fallback may also fill an otherwise absent accent role. Accent contrast remains below text and control requirements because the accent is treated as an identity/decorative color, but it now has a 1.2:1 visibility floor against background.
 

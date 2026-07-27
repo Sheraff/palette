@@ -4,6 +4,7 @@ import { contrastRatio, rgbToHex } from "../src/color.ts"
 import {
 	CandidateValidationError,
 	validateCandidateArtifacts,
+	validateCandidateHoldoutArtifacts,
 	validateCandidateSummaryVersions,
 } from "../src/candidate-validation.ts"
 import type { RGB } from "../src/types.ts"
@@ -167,6 +168,25 @@ test("valid candidate artifacts return hard-gate counts with zero violations", (
 	useValidGeneratedFallback(fixture.results.entries[0].extraction)
 	const generatedSummary = validateFixture(fixture)
 	assert.equal(generatedSummary.development.generatedForegrounds, 1)
+})
+
+test("validates a frozen holdout pair from an explicitly named reserve directory", () => {
+	const fixture = artifacts()
+	const candidateHoldout = {
+		...fixture.holdoutResults,
+		entries: fixture.holdoutResults.entries.slice(0, 4).map((value, index) => ({
+			...value,
+			file: `08/${index.toString().padStart(40, "0")}.jpg`,
+		})),
+	}
+	const baselineHoldout = {
+		...fixture.baselineHoldoutResults,
+		entries: candidateHoldout.entries.map((value) => ({ ...value })),
+	}
+	const summary = validateCandidateHoldoutArtifacts(candidateHoldout, baselineHoldout, "08")
+	assert.equal(summary.algorithmVersion, candidateVersion)
+	assert.equal(summary.holdout.entries, 4)
+	assert.equal(summary.violations, 0)
 })
 
 test("version, coverage, deduplication, and metadata violations are aggregated", () => {

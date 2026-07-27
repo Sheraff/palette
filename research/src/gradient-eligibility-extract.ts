@@ -1,4 +1,4 @@
-import { extractPaletteWithContext } from "./extract.ts"
+import { extractRegionGraph017PaletteWithContext } from "./region-graph-0.17-extract.ts"
 import {
 	analyzeGradientEligibility,
 	decideGradientEligibility,
@@ -33,7 +33,7 @@ function sameRgb(first: RGB, second: RGB): boolean {
 
 export function extractGradientEligiblePalette(image: RawImage): GradientEligibilityExtractionResult {
 	const startedAt = performance.now()
-	const { extraction: baseline, analysis, candidates } = extractPaletteWithContext(image)
+	const { extraction: baseline, analysis, candidates } = extractRegionGraph017PaletteWithContext(image)
 	const spatial = baseline.methods.spatial
 	let evidence: GradientEligibilityEvidence | null = null
 	let decision: GradientEligibilityCertificate["decision"] = { eligible: false, reason: "baseline-not-gradient" }

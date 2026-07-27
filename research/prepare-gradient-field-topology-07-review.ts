@@ -8,7 +8,6 @@ import { isMainThread, parentPort, Worker, workerData } from "node:worker_thread
 import sharp from "sharp"
 import { prepareOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
 import type { Candidate } from "./src/candidates.ts"
-import { ALGORITHM_VERSION, extractPaletteWithContext } from "./src/extract.ts"
 import {
 	analyzeGradientEligibility,
 	decideGradientEligibility,
@@ -26,6 +25,10 @@ import {
 	GRADIENT_FIELD_TOPOLOGY_EVIDENCE_VERSION,
 } from "./src/gradient-field-topology.ts"
 import { loadImage } from "./src/image.ts"
+import {
+	extractRegionGraph017PaletteWithContext as extractPaletteWithContext,
+	REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION,
+} from "./src/region-graph-0.17-extract.ts"
 import type { Palette, RGB, RoleColor } from "./src/types.ts"
 
 type Source = { file: string; sha256: string; width: number; height: number; bytes: number }
@@ -108,7 +111,7 @@ const workflowFiles = [
 const canonicalFiles = [
 	"src/candidates.ts",
 	"src/color.ts",
-	"src/extract.ts",
+	"src/region-graph-0.17-extract.ts",
 	"src/guarded-palette.ts",
 	"src/image.ts",
 	"src/joint-palette.ts",

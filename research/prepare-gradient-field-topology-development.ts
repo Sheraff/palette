@@ -9,7 +9,6 @@ import sharp from "sharp"
 import { buildCandidates, type Candidate } from "./src/candidates.ts"
 import { prepareOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
 import { rgbToHex } from "./src/color.ts"
-import { ALGORITHM_VERSION } from "./src/extract.ts"
 import {
 	analyzeGradientFieldTopology,
 	GRADIENT_FIELD_TOPOLOGY_CONSTANTS,
@@ -17,6 +16,7 @@ import {
 	type GradientFieldTopologyEvidence,
 } from "./src/gradient-field-topology.ts"
 import { loadImage } from "./src/image.ts"
+import { REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION } from "./src/region-graph-0.17-extract.ts"
 import { analyzeRegions } from "./src/regions.ts"
 import type { RGB } from "./src/types.ts"
 

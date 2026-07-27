@@ -2,7 +2,7 @@
 
 ## Status
 
-Gradient promotion work is paused. Canonical extraction remains `region-graph-0.17.0`; `src/extract.ts` still exports that version, and no topology or eligibility experiment changes canonical output.
+Gradient promotion work is paused. This checkpoint records the historical `region-graph-0.17.0` gradient baseline. Canonical role extraction is now `region-graph-0.19.0`, while the topology and eligibility experiments remain explicitly pinned to the preserved 0.17 extractor and still do not change canonical output.
 
 Branch context when this checkpoint was written:
 
@@ -360,9 +360,11 @@ The numbered `00/` through `0b/` batches are theoretically uniform temporal samp
 | `05/` | Independent negative evidence for 0.8.5; later development. |
 | `06/` | Independent negative evidence for 0.8.6; consumed. |
 | `07/` | Prediction-enriched validation for frozen topology v3; consumed. |
-| `08/`-`0b/` | Untouched reserves. |
+| `08/`-`0b/` | Untouched at this historical checkpoint; later consumed by chromatic-role development. |
 
 No future workflow may inspect a reserve before the candidate, protocol, source exclusions, rendering, runtime, and hashes are frozen.
+
+Current role-extraction work keeps gradient development paused. New `10/` through `14/` batches have only source-custody metadata recorded and are classified as source-inventoried/output-unseen; no image was decoded and no algorithm output was produced. Future validation must freeze against the source inventory before decoding one declared reserve.
 
 ## Resume After Role Extraction Improves
 

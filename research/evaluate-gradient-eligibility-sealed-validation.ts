@@ -6,7 +6,6 @@ import { fileURLToPath } from "node:url"
 import { isDeepStrictEqual } from "node:util"
 import { isMainThread, parentPort, Worker, workerData } from "node:worker_threads"
 import { writeJsonAtomic } from "./src/candidate-output.ts"
-import { ALGORITHM_VERSION } from "./src/extract.ts"
 import { extractGradientEligiblePalette, type GradientEligibilityCertificate } from "./src/gradient-eligibility-extract.ts"
 import {
 	GRADIENT_ELIGIBILITY_CANDIDATE_VERSION,
@@ -14,6 +13,7 @@ import {
 	GRADIENT_ELIGIBILITY_THRESHOLDS,
 } from "./src/gradient-eligibility.ts"
 import { loadImage } from "./src/image.ts"
+import { REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION } from "./src/region-graph-0.17-extract.ts"
 import type { Palette } from "./src/types.ts"
 
 type Source = { file: string; sha256: string; width: number; height: number; bytes: number }

@@ -2,7 +2,11 @@ import assert from "node:assert/strict"
 import { join } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
-import { extractPalette, extractPaletteWithContext } from "../src/extract.ts"
+import {
+	extractRegionGraph017Palette as extractPalette,
+	extractRegionGraph017PaletteWithContext as extractPaletteWithContext,
+	REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION,
+} from "../src/region-graph-0.17-extract.ts"
 import {
 	extractGradientFieldTopologyPalette,
 	GRADIENT_FIELD_TOPOLOGY_EXPERIMENT_VERSION,
@@ -55,7 +59,7 @@ test("topology wrapper never promotes a canonical flat palette", () => {
 	assert.deepEqual(result.certificate, {
 		schemaVersion: 1,
 		algorithmVersion: GRADIENT_FIELD_TOPOLOGY_EXPERIMENT_VERSION,
-		baselineAlgorithmVersion: "region-graph-0.17.0",
+		baselineAlgorithmVersion: ALGORITHM_VERSION,
 		baselineGradient: false,
 		directedEndpoints: null,
 		evidence: null,

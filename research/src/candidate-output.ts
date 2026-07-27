@@ -12,6 +12,10 @@ export type OutputFileName =
 	| "holdout-results.json"
 	| "robustness.json"
 	| "holdout-summary.json"
+	| "joint-certificates.json"
+	| "holdout-joint-certificates.json"
+	| "chromatic-role-certificates.json"
+	| "holdout-chromatic-role-certificates.json"
 
 export function resolveOutputTarget(
 	projectRoot: string,

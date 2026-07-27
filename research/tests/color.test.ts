@@ -1,6 +1,6 @@
 import assert from "node:assert/strict"
 import test from "node:test"
-import { contrastRatio, okDistance, oklabToRGB, rgbToOKLab } from "../src/color.ts"
+import { apcaContrast, contrastRatio, okDistance, oklabToRGB, rgbToOKLab } from "../src/color.ts"
 import type { RGB } from "../src/types.ts"
 
 test("OKLab conversion matches reference primaries", () => {
@@ -24,6 +24,14 @@ test("RGB and OKLab round-trip without packed-color loss", () => {
 test("WCAG contrast uses relative luminance", () => {
 	assert.equal(contrastRatio([0, 0, 0], [255, 255, 255]), 21)
 	assert.ok(Math.abs(contrastRatio([255, 0, 0], [0, 0, 0]) - 5.252) < 0.001)
+})
+
+test("APCA contrast preserves foreground-background polarity", () => {
+	const darkOnLight = apcaContrast([0, 0, 0], [255, 255, 255])
+	const lightOnDark = apcaContrast([255, 255, 255], [0, 0, 0])
+	assert.ok(Math.abs(darkOnLight - 106.0407) < 0.001)
+	assert.ok(Math.abs(lightOnDark + 107.8847) < 0.001)
+	assert.equal(apcaContrast([128, 128, 128], [128, 128, 128]), 0)
 })
 
 test("OKLab distance is symmetric", () => {

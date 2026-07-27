@@ -5,13 +5,16 @@ import { resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { isMainThread, parentPort, Worker, workerData } from "node:worker_threads"
 import { writeJsonAtomic } from "./src/candidate-output.ts"
-import { ALGORITHM_VERSION, extractPaletteWithContext } from "./src/extract.ts"
 import {
 	analyzeGradientEligibility,
 	GRADIENT_ELIGIBILITY_EXPERIMENT_VERSION,
 	type GradientEligibilityEvidence,
 } from "./src/gradient-eligibility.ts"
 import { loadImage } from "./src/image.ts"
+import {
+	extractRegionGraph017PaletteWithContext as extractPaletteWithContext,
+	REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION,
+} from "./src/region-graph-0.17-extract.ts"
 import type { Palette, RGB } from "./src/types.ts"
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url))

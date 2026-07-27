@@ -15,8 +15,11 @@ export function extractJointPalette(image: RawImage): JointExtractionResult {
 	const analysis = analyzeRegions(image)
 	const candidates = buildCandidates(analysis, 12, true)
 	const quantizedCandidates = buildCandidates(analysis, 7, false)
-	const incumbent = solveGuardedPalette(candidates, analysis).palette
-	const { palette: spatial, certificate } = solveJointPalette(candidates, analysis, incumbent)
+	const guarded = solveGuardedPalette(candidates, analysis).palette
+	const incumbent = solveJointPalette(candidates, analysis, guarded).palette
+	const { palette: spatial, certificate } = solveJointPalette(candidates, analysis, incumbent, {
+		enableGradientSurfaceRecovery: true,
+	})
 	const expressive = solvePalette(candidates, analysis, "expressive")
 	const quantized = quantizedBaseline(quantizedCandidates, analysis)
 	return {

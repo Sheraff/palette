@@ -227,6 +227,8 @@ test("review evidence uses only the explicit accepted archive allowlist", () => 
 		"region-graph-0.16.0.json",
 		"region-graph-0.16.0-corpus-review.json",
 		"region-graph-0.17.0.json",
+		"region-graph-0.17.0-corpus-review.json",
+		"region-graph-0.19.0.json",
 	])
 	assert.equal(reviewEvidenceInputPaths.includes("data/rounds/region-graph-0.14.0.json"), false)
 	assert.equal(reviewEvidenceInputPaths.some((path) => path.startsWith("data/candidates/")), false)
@@ -241,6 +243,15 @@ test("accepted archive metadata must agree with its allowlisted identity", () =>
 		algorithmVersion: "v1",
 		results: { algorithmVersion: "v1" },
 		acceptance: { decision: "accepted" },
+	}))
+	assert.doesNotThrow(() => validateAcceptedRoundArchive("archive.json", "v1", {
+		algorithmVersion: "v1",
+		acceptance: { decision: "accepted" },
+		reviewProvenance: {
+			algorithmVersion: "poc.1",
+			finalReserve: { candidateAlgorithmVersion: "poc.1", decision: { promotionEligible: true } },
+			evidence: { "analysis.json": "a".repeat(64) },
+		},
 	}))
 	assert.throws(() => validateAcceptedRoundArchive("archive.json", "v1", {
 		algorithmVersion: "v1",

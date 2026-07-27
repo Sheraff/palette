@@ -1,10 +1,13 @@
 import type { Candidate } from "./candidates.ts"
-import { ALGORITHM_VERSION, extractPaletteWithContext } from "./extract.ts"
 import { analyzeGradientFieldTopology, type GradientFieldTopologyEvidence } from "./gradient-field-topology.ts"
 import {
 	scoreGradientFieldTopologyEvidence,
 	type GradientFieldTopologyModelDecision,
 } from "./gradient-field-topology-model.ts"
+import {
+	extractRegionGraph017PaletteWithContext as extractPaletteWithContext,
+	REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION,
+} from "./region-graph-0.17-extract.ts"
 import type { ExtractionResult, RawImage, RGB } from "./types.ts"
 
 export const GRADIENT_FIELD_TOPOLOGY_EXPERIMENT_VERSION =

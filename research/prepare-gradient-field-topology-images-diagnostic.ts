@@ -4,11 +4,11 @@ import { basename, extname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import sharp from "sharp"
 import { prepareOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
-import { ALGORITHM_VERSION } from "./src/extract.ts"
 import { extractGradientFieldTopologyPalette, GRADIENT_FIELD_TOPOLOGY_EXPERIMENT_VERSION } from "./src/gradient-field-topology-extract.ts"
 import { GRADIENT_FIELD_TOPOLOGY_MODEL_IDENTITY } from "./src/gradient-field-topology-model.ts"
 import { GRADIENT_FIELD_TOPOLOGY_EVIDENCE_VERSION } from "./src/gradient-field-topology.ts"
 import { loadImage } from "./src/image.ts"
+import { REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION } from "./src/region-graph-0.17-extract.ts"
 import type { Palette, RGB, RoleColor } from "./src/types.ts"
 
 type Decision = "should-be-gradient" | "should-not-be-gradient" | "either-way" |
@@ -54,7 +54,7 @@ const toolingFiles = [
 	"serve-gradient-field-topology-images-diagnostic.ts",
 ] as const
 const implementationFiles = [
-	"src/extract.ts",
+	"src/region-graph-0.17-extract.ts",
 	"src/gradient-field-topology-extract.ts",
 	"src/gradient-field-topology-model.ts",
 	"src/gradient-field-topology.ts",

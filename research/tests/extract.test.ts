@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url"
 import { chroma, contrastRatio, okDistance, rgbToHex, rgbToOKLab } from "../src/color.ts"
 import { emptyCandidateSpatialEvidence, type Candidate } from "../src/candidates.ts"
 import { ALGORITHM_VERSION, extractPalette } from "../src/extract.ts"
+import { extractChromaticRolePalette } from "../src/chromatic-role-extract.ts"
 import { detectGradient, minimumAccentBackgroundContrast, solvePalette } from "../src/palette.ts"
 import type { RegionAnalysis } from "../src/regions.ts"
 import type { CorpusResult, Palette, RawImage, RGB } from "../src/types.ts"
@@ -117,8 +118,20 @@ function assertValidPalette(palette: Palette, allowRelaxedContrast = true): void
 	assert.ok(Number.isFinite(palette.metrics.meanReconstructionError))
 }
 
-test("reports the 0.17 algorithm version", () => {
-	assert.equal(ALGORITHM_VERSION, "region-graph-0.17.0")
+test("reports the 0.19 algorithm version", () => {
+	assert.equal(ALGORITHM_VERSION, "region-graph-0.19.0")
+})
+
+test("canonical promotion preserves the exact POC.10 scientific payload", async () => {
+	const image = await import("../src/image.ts").then(({ loadImage }) =>
+		loadImage(resolve(projectRoot, "00/ab67616d0000b273000064c47077c5d50085297f.jpg")))
+	const candidate = extractChromaticRolePalette(image).extraction
+	const canonical = extractPalette(image)
+
+	assert.deepEqual(canonical.methods, candidate.methods)
+	assert.deepEqual(canonical.candidates, candidate.candidates)
+	assert.equal(canonical.diagnostics.regionCount, candidate.diagnostics.regionCount)
+	assert.equal(canonical.diagnostics.candidateCount, candidate.diagnostics.candidateCount)
 })
 
 test("pair-only gradient evidence cannot use the global smooth fallback", () => {

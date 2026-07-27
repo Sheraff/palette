@@ -16,6 +16,11 @@ import {
 } from "./src/corpus-curation.ts"
 import { selectionTracks, validateSelectionManifest, type SelectionCandidate } from "./src/corpus-selection.ts"
 import { findCarriedReviews, hasSubmittedFeedback } from "./src/review-queue.ts"
+import {
+	buildReviewColorNames,
+	REVIEW_COLOR_NAME_POLICY,
+	REVIEW_PRESENTATION_VERSION,
+} from "./src/review-presentation.ts"
 import type { CorpusResult } from "./src/types.ts"
 
 type Preference = "left" | "right" | "tie"
@@ -24,7 +29,7 @@ type Feedback = {
 	id: string
 	timestamp: string
 	reviewSchema: 2
-	presentationVersion: 2
+	presentationVersion: 3
 	image: string
 	comparison: "iteration" | "baseline" | "variant"
 	leftMethod: "spatial" | "expressive" | "quantized" | "previous"
@@ -72,7 +77,7 @@ const absoluteFeedbackPath = join(researchRoot, "data", "absolute-feedback.json"
 const roundsRoot = join(researchRoot, "data", "rounds")
 const previousRoundPath = join(roundsRoot, "region-graph-0.13.0.json")
 const port = Number(process.env.PORT || 3100)
-const pairwisePresentationVersion = 2
+const pairwisePresentationVersion = REVIEW_PRESENTATION_VERSION
 const absolutePresentationVersion = 1
 
 const results = JSON.parse(await readFile(resultsPath, "utf8")) as CorpusResult
@@ -110,6 +115,7 @@ const galleryResults: CorpusResult = {
 }
 const previousRound = JSON.parse(await readFile(previousRoundPath, "utf8")) as { results: CorpusResult }
 const previousResults = previousRound.results
+const reviewColorNames = buildReviewColorNames(results, previousResults)
 const archivedResults = new Map<string, CorpusResult>()
 for (const file of await readdir(roundsRoot)) {
 	if (!file.endsWith(".json")) continue
@@ -380,7 +386,8 @@ await loadAbsoluteStore(await loadCurationStore())
 
 const staticFiles = new Map<string, readonly [string, string]>([
 	["/", ["index.html", "text/html; charset=utf-8"]],
-	["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
+	["/app.js", ["app-v2.js", "text/javascript; charset=utf-8"]],
+	["/app-v1.js", ["app.js", "text/javascript; charset=utf-8"]],
 	["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
 	["/gallery", ["gallery.html", "text/html; charset=utf-8"]],
 	["/gallery/", ["gallery.html", "text/html; charset=utf-8"]],
@@ -555,7 +562,15 @@ const server = createServer(async (request, response) => {
 				feedback.entries as Array<Record<string, unknown>>,
 				pairwisePresentationVersion,
 			)
-			json(response, 200, { results, previousResults, presentationVersion: pairwisePresentationVersion, feedback, carriedReviews })
+			json(response, 200, {
+				results,
+				previousResults,
+				presentationVersion: REVIEW_PRESENTATION_VERSION,
+				colorNamePolicy: REVIEW_COLOR_NAME_POLICY,
+				colorNames: reviewColorNames,
+				feedback,
+				carriedReviews,
+			})
 			return
 		}
 		if (request.method === "GET" && url.pathname === "/api/results") {

@@ -1,4 +1,12 @@
 import { contrastRatio, okDistance, rgbToHex, rgbToOKLab } from "./color.ts"
+import {
+	hasStrongTypographyEvidence,
+	resolveForegroundBackgroundRequirement,
+	resolveForegroundSurfaceRequirement,
+	resolveSourceForegroundPreferenceMinimum,
+	sourceForegroundIsPreferred,
+	type ForegroundContrastProfile,
+} from "./foreground-contrast.ts"
 import type { RGB } from "./types.ts"
 
 const methodNames = ["spatial", "expressive", "quantized"] as const
@@ -45,6 +53,16 @@ export type CandidateValidationSummary = {
 	development: CandidateCohortSummary
 	holdout: CandidateCohortSummary
 	violations: 0
+}
+
+export type CandidateHoldoutValidationSummary = {
+	algorithmVersion: string
+	holdout: CandidateCohortSummary
+	violations: 0
+}
+
+export type CandidateValidationOptions = {
+	foregroundContrastProfile?: ForegroundContrastProfile
 }
 
 export class CandidateValidationError extends Error {
@@ -180,12 +198,29 @@ function isBlackOrWhite(rgb: RGB): boolean {
 	return rgb.every((channel) => channel === 0) || rgb.every((channel) => channel === 255)
 }
 
-function hasStrongTypographyEvidence(candidate: ParsedCandidate): boolean {
-	return candidate.population >= 0.1 && candidate.text >= 0.5 && candidate.saliency >= 0.55
+function foregroundEvidence(candidate: ParsedCandidate) {
+	return { ...candidate, generated: false }
 }
 
-function sourceForegroundContrast(candidate: ParsedCandidate): number {
-	return hasStrongTypographyEvidence(candidate) ? 3 : 4
+function sourceForegroundContrast(candidate: ParsedCandidate, profile?: ForegroundContrastProfile): number {
+	return resolveForegroundBackgroundRequirement(foregroundEvidence(candidate), profile)
+}
+
+function sourceForegroundPool(
+	candidates: readonly ParsedCandidate[],
+	background: RGB,
+	profile: ForegroundContrastProfile,
+): ParsedCandidate[] {
+	const preference = resolveSourceForegroundPreferenceMinimum(profile)
+	const eligible = candidates.filter((candidate) => rgbKey(candidate.rgb) !== rgbKey(background) &&
+		contrastRatio(background, candidate.rgb) >= sourceForegroundContrast(candidate, profile))
+	const preferred = candidates.some((candidate) => rgbKey(candidate.rgb) !== rgbKey(background) &&
+		contrastRatio(background, candidate.rgb) >= preference)
+	return preferred
+		? eligible.filter((candidate) => sourceForegroundIsPreferred(
+			foregroundEvidence(candidate), contrastRatio(background, candidate.rgb), profile,
+		))
+		: eligible
 }
 
 function validatePaletteGates(
@@ -194,6 +229,7 @@ function validatePaletteGates(
 	candidates: ParsedCandidate[],
 	label: string,
 	context: Context,
+	profile?: ForegroundContrastProfile,
 ): void {
 	const backgroundContrast = contrastRatio(palette.background.rgb, palette.foreground.rgb)
 	const surfaceContrast = contrastRatio(palette.surface.rgb, palette.foreground.rgb)
@@ -209,9 +245,11 @@ function validatePaletteGates(
 			}
 		}
 		if (palette.foreground.generated) {
-			const eligibleSource = candidates.find((candidate) =>
-				rgbKey(candidate.rgb) !== rgbKey(palette.background.rgb) &&
-				contrastRatio(palette.background.rgb, candidate.rgb) + 1e-12 >= sourceForegroundContrast(candidate))
+			const eligibleSource = profile
+				? sourceForegroundPool(candidates, palette.background.rgb, profile)[0]
+				: candidates.find((candidate) =>
+					rgbKey(candidate.rgb) !== rgbKey(palette.background.rgb) &&
+					contrastRatio(palette.background.rgb, candidate.rgb) + 1e-12 >= sourceForegroundContrast(candidate))
 			if (eligibleSource) {
 				report(context, `${label}.foreground must not be generated because source candidate ${rgbToHex(eligibleSource.rgb)} ` +
 					`is eligible under the source foreground contrast rules`)
@@ -226,11 +264,40 @@ function validatePaletteGates(
 
 	if (palette.foreground.generated) {
 		if (!isBlackOrWhite(palette.foreground.rgb)) report(context, `${label}.foreground generated color must be black or white`)
-		if (backgroundContrast + 1e-12 < 4.5) report(context, `${label}.foreground generated background contrast is below 4.5`)
-		if (surfaceContrast + 1e-12 < 4.5) report(context, `${label}.foreground generated surface contrast is below 4.5`)
+		const generated = { generated: true, population: 0, text: 0, saliency: 0 }
+		const backgroundMinimum = profile ? resolveForegroundBackgroundRequirement(generated, profile) : 4.5
+		const surfaceMinimum = profile ? resolveForegroundSurfaceRequirement(generated, {
+			foregroundBackgroundContrast: backgroundContrast,
+			allowRepresentativeSurface: false,
+		}, profile) : 4.5
+		if (backgroundContrast + 1e-12 < backgroundMinimum) {
+			report(context, `${label}.foreground generated background contrast is below ${backgroundMinimum}`)
+		}
+		if (surfaceContrast + 1e-12 < surfaceMinimum) {
+			report(context, `${label}.foreground generated surface contrast is below ${surfaceMinimum}`)
+		}
 	} else if (method !== "quantized") {
-		if (backgroundContrast + 1e-12 < 3) report(context, `${label}.foreground source background contrast is below 3.0`)
-		if (surfaceContrast + 1e-12 < 2.5) report(context, `${label}.foreground source surface contrast is below 2.5`)
+		if (profile) {
+			const matching = candidates.filter((candidate) => rgbKey(candidate.rgb) === rgbKey(palette.foreground.rgb))
+			const foreground = matching.find((candidate) => hasStrongTypographyEvidence(foregroundEvidence(candidate))) ?? matching[0]
+			const evidence = foreground ? foregroundEvidence(foreground) : {
+				generated: false, population: 0, text: 0, saliency: 0,
+			}
+			const backgroundMinimum = resolveForegroundBackgroundRequirement(evidence, profile)
+			const surfaceMinimum = resolveForegroundSurfaceRequirement(evidence, {
+				foregroundBackgroundContrast: backgroundContrast,
+				allowRepresentativeSurface: false,
+			}, profile)
+			if (backgroundContrast + 1e-12 < backgroundMinimum) {
+				report(context, `${label}.foreground source background contrast is below ${backgroundMinimum}`)
+			}
+			if (surfaceContrast + 1e-12 < surfaceMinimum) {
+				report(context, `${label}.foreground source surface contrast is below ${surfaceMinimum}`)
+			}
+		} else {
+			if (backgroundContrast + 1e-12 < 3) report(context, `${label}.foreground source background contrast is below 3.0`)
+			if (surfaceContrast + 1e-12 < 2.5) report(context, `${label}.foreground source surface contrast is below 2.5`)
+		}
 	}
 
 	if (method === "quantized") {
@@ -262,6 +329,7 @@ function validatePalette(
 	candidates: ParsedCandidate[],
 	label: string,
 	context: Context,
+	profile?: ForegroundContrastProfile,
 ): ParsedPalette | null {
 	if (!isRecord(value)) {
 		report(context, `${label} must be a palette object`)
@@ -278,7 +346,7 @@ function validatePalette(
 	validateMetrics(value.metrics, roles, `${label}.metrics`, context)
 	if (roleNames.some((role) => !roles[role]) || gradient === null) return null
 	const completeRoles = roles as Record<RoleName, ParsedRole>
-	validatePaletteGates(completeRoles, method, candidates, label, context)
+	validatePaletteGates(completeRoles, method, candidates, label, context, profile)
 	return { ...completeRoles, gradient }
 }
 
@@ -312,6 +380,7 @@ function validateExtraction(
 	height: number | null,
 	label: string,
 	context: Context,
+	profile?: ForegroundContrastProfile,
 ): ParsedPalette | null {
 	if (!isRecord(value)) {
 		report(context, `${label} must be an extraction object`)
@@ -340,7 +409,10 @@ function validateExtraction(
 	} else {
 		requireExactKeys(value.methods, methodNames, `${label}.methods`, context)
 		for (const method of methodNames) {
-			const palette = validatePalette(value.methods[method], method, candidates, `${label}.methods.${method}`, context)
+			const palette = validatePalette(
+				value.methods[method], method, candidates, `${label}.methods.${method}`, context,
+				method === "spatial" ? profile : undefined,
+			)
 			if (method === "spatial") spatial = palette
 		}
 	}
@@ -400,6 +472,7 @@ function validateBaselineCorpus(
 	cohort: "development" | "holdout",
 	expectedCount: number,
 	context: Context,
+	holdoutDirectory = "00",
 ): { algorithmVersion: string | null; entries: CorpusMetadata[] } {
 	const label = cohort === "development" ? "Baseline development results" : "Baseline holdout results"
 	if (!isRecord(value)) {
@@ -433,8 +506,10 @@ function validateBaselineCorpus(
 		if (file === null) report(context, `${entryLabel}.file must be a non-empty string`)
 		else if (files.has(file)) report(context, `${entryLabel}.file duplicates ${file}`)
 		else files.add(file)
-		if (cohort === "holdout" && file !== null && !/^00\/[^/\\]+$/.test(file)) {
-			report(context, `${entryLabel}.file must name a single file directly under 00/`)
+		if (cohort === "holdout" && file !== null &&
+			(!file.startsWith(`${holdoutDirectory}/`) || file.slice(holdoutDirectory.length + 1).length === 0 ||
+				file.slice(holdoutDirectory.length + 1).includes("/") || file.includes("\\"))) {
+			report(context, `${entryLabel}.file must name a single file directly under ${holdoutDirectory}/`)
 		}
 		const kind = typeof entryValue.kind === "string" &&
 			["artwork", "synthetic", "diagnostic", "holdout"].includes(entryValue.kind) ? entryValue.kind : null
@@ -482,6 +557,8 @@ function validateCorpus(
 	cohort: "development" | "holdout",
 	expectedCount: number,
 	context: Context,
+	holdoutDirectory = "00",
+	profile?: ForegroundContrastProfile,
 ): { algorithmVersion: string | null; summary: CandidateCohortSummary; entries: CorpusMetadata[] } {
 	const summary = emptySummary(0)
 	const entries: CorpusMetadata[] = []
@@ -527,7 +604,10 @@ function validateCorpus(
 						report(context, `${entryLabel} metadata does not match development classification for ${file}`)
 					}
 				} else {
-					if (!/^00\/[^/\\]+$/.test(file)) report(context, `${entryLabel}.file must name a single file directly under 00/`)
+					if (!file.startsWith(`${holdoutDirectory}/`) || file.slice(holdoutDirectory.length + 1).length === 0 ||
+						file.slice(holdoutDirectory.length + 1).includes("/") || file.includes("\\")) {
+						report(context, `${entryLabel}.file must name a single file directly under ${holdoutDirectory}/`)
+					}
 					const id = holdoutArtworkId(file)
 				if (artworkIds.has(id)) report(context, `${entryLabel}.file duplicates holdout artwork ${id}`)
 				artworkIds.add(id)
@@ -540,7 +620,9 @@ function validateCorpus(
 		const height = Number.isInteger(entryValue.height) && (entryValue.height as number) > 0 ? entryValue.height as number : null
 		if (width === null) report(context, `${entryLabel}.width must be a positive integer`)
 		if (height === null) report(context, `${entryLabel}.height must be a positive integer`)
-		const spatial = validateExtraction(entryValue.extraction, algorithmVersion, width, height, `${entryLabel}.extraction`, context)
+		const spatial = validateExtraction(
+			entryValue.extraction, algorithmVersion, width, height, `${entryLabel}.extraction`, context, profile,
+		)
 		if (spatial) addPaletteSummary(summary, spatial)
 		if (file !== null && typeof entryValue.kind === "string" && typeof entryValue.review === "boolean" &&
 			width !== null && height !== null) {
@@ -569,11 +651,35 @@ export function validateCandidateSummaryVersions(
 	}
 }
 
+export function validateCandidateHoldoutArtifacts(
+	candidateValue: unknown,
+	baselineValue: unknown,
+	holdoutDirectory: string,
+	options: CandidateValidationOptions = {},
+): CandidateHoldoutValidationSummary {
+	if (!/^[a-z0-9][a-z0-9_-]*$/i.test(holdoutDirectory)) throw new Error("Holdout directory name is invalid")
+	const context: Context = { violations: [] }
+	const expectedCount = isRecord(baselineValue) && Array.isArray(baselineValue.entries) ? baselineValue.entries.length : 0
+	if (expectedCount === 0) report(context, "Baseline holdout must contain at least one entry")
+	const baseline = validateBaselineCorpus(baselineValue, "holdout", expectedCount, context, holdoutDirectory)
+	const candidate = validateCorpus(
+		candidateValue, "holdout", expectedCount, context, holdoutDirectory, options.foregroundContrastProfile,
+	)
+	validateBaselineCoverage(candidate.entries, baseline.entries, "Candidate holdout results", context)
+	if (candidate.algorithmVersion !== null && baseline.algorithmVersion !== null &&
+		candidate.algorithmVersion === baseline.algorithmVersion) {
+		report(context, `Candidate algorithmVersion ${candidate.algorithmVersion} must differ from baseline`)
+	}
+	if (context.violations.length > 0) throw new CandidateValidationError(context.violations)
+	return { algorithmVersion: candidate.algorithmVersion!, holdout: candidate.summary, violations: 0 }
+}
+
 export function validateCandidateArtifacts(
 	results: unknown,
 	holdoutResults: unknown,
 	baselineResultsOrVersion: unknown,
 	baselineHoldoutResults?: unknown,
+	options: CandidateValidationOptions = {},
 ): CandidateValidationSummary {
 	const context: Context = { violations: [] }
 	let baselineVersion: string | null = null
@@ -595,8 +701,8 @@ export function validateCandidateArtifacts(
 		}
 		baselineVersion = baselineDevelopment.algorithmVersion ?? baselineHoldout.algorithmVersion
 	}
-	const development = validateCorpus(results, "development", 37, context)
-	const holdout = validateCorpus(holdoutResults, "holdout", 355, context)
+	const development = validateCorpus(results, "development", 37, context, "00", options.foregroundContrastProfile)
+	const holdout = validateCorpus(holdoutResults, "holdout", 355, context, "00", options.foregroundContrastProfile)
 	if (baselineDevelopment && baselineHoldout) {
 		validateBaselineCoverage(development.entries, baselineDevelopment.entries, "Candidate development results", context)
 		validateBaselineCoverage(holdout.entries, baselineHoldout.entries, "Candidate holdout results", context)

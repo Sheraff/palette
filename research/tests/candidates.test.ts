@@ -1,6 +1,6 @@
 import assert from "node:assert/strict"
 import test from "node:test"
-import { buildCandidates, type Candidate } from "../src/candidates.ts"
+import { buildCandidateContext, buildCandidates, type Candidate } from "../src/candidates.ts"
 import { chroma, okDistance, rgbToHex, rgbToOKLab } from "../src/color.ts"
 import type { Region, RegionAnalysis } from "../src/regions.ts"
 import type { RGB } from "../src/types.ts"
@@ -167,4 +167,54 @@ test("candidate spatial and family evidence is deterministic", () => {
 	const colors: RGB[] = [[20, 30, 40], [100, 100, 100], [112, 112, 112], [245, 245, 245]]
 	const analysis = gridAnalysis(grid(8, 6, (x, y) => colors[(x * 3 + y * 5) % colors.length]))
 	assert.deepEqual(buildCandidates(analysis, 4, true), buildCandidates(analysis, 4, true))
+})
+
+test("candidate context conserves primary masks and exposes exact representatives", () => {
+	const colors: RGB[] = [[22, 38, 64], [218, 174, 72], [232, 232, 226], [156, 35, 80]]
+	const analysis = gridAnalysis(grid(8, 8, (x, y) => colors[(Math.floor(x / 2) + Math.floor(y / 2)) % colors.length]))
+	const context = buildCandidateContext(analysis, 4, true)
+	const candidates = new Map(context.candidates.map((candidate) => [candidate.id, candidate]))
+	const primaryRecords = context.candidateRecords.filter((record) => !candidates.get(record.candidateId)!.typographyOnly)
+
+	assert.equal(context.pixelBinIds.length, analysis.width * analysis.height)
+	for (let pixel = 0; pixel < context.pixelBinIds.length; pixel++) {
+		assert.ok(context.bins[context.pixelBinIds[pixel]])
+		assert.equal(primaryRecords.reduce((sum, record) => sum + record.mask[pixel], 0), 1)
+	}
+	for (const record of context.candidateRecords) {
+		const candidate = candidates.get(record.candidateId)!
+		const offset = record.representativePixelIndex * 3
+		assert.deepEqual(candidate.rgb, [analysis.data[offset], analysis.data[offset + 1], analysis.data[offset + 2]])
+		assert.ok(record.binIds.length > 0)
+	}
+	for (const family of context.families) {
+		const familyPrimary = family.primaryCandidateIds.map((id) =>
+			context.candidateRecords.find((record) => record.candidateId === id)!)
+		for (let pixel = 0; pixel < family.mask.length; pixel++) {
+			assert.equal(family.mask[pixel], familyPrimary.some((record) => record.mask[pixel] > 0) ? 1 : 0)
+		}
+		assert.ok(family.memberCandidateIds.includes(family.anchorCandidateId))
+	}
+})
+
+test("new-perception family anchors are stable for equal-population non-transitive chains", () => {
+	const first: RGB = [100, 100, 100]
+	const middle: RGB = [112, 112, 112]
+	const last: RGB = [124, 124, 124]
+	assert.ok(okDistance(rgbToOKLab(first), rgbToOKLab(middle)) < 0.055)
+	assert.ok(okDistance(rgbToOKLab(middle), rgbToOKLab(last)) < 0.055)
+	assert.ok(okDistance(rgbToOKLab(first), rgbToOKLab(last)) > 0.055)
+	const build = (colors: RGB[]) => buildCandidateContext(
+		gridAnalysis(grid(9, 3, (x) => colors[Math.floor(x / 3)])),
+		3,
+		false,
+		{ stableFamilyAnchors: true },
+	)
+	const familyColors = (context: ReturnType<typeof buildCandidateContext>): string[][] => {
+		const candidates = new Map(context.candidates.map((candidate) => [candidate.id, candidate.hex]))
+		return context.families.map((family) => family.primaryCandidateIds.map((id) => candidates.get(id)!).sort())
+			.sort((firstFamily, secondFamily) => firstFamily.join(",") < secondFamily.join(",") ? -1 : 1)
+	}
+
+	assert.deepEqual(familyColors(build([first, middle, last])), familyColors(build([last, middle, first])))
 })

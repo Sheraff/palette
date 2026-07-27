@@ -52,6 +52,8 @@ export const acceptedRoundArchives = Object.freeze([
 	{ file: "region-graph-0.16.0.json", algorithmVersion: "region-graph-0.16.0" },
 	{ file: "region-graph-0.16.0-corpus-review.json", algorithmVersion: "region-graph-0.16.0" },
 	{ file: "region-graph-0.17.0.json", algorithmVersion: "region-graph-0.17.0" },
+	{ file: "region-graph-0.17.0-corpus-review.json", algorithmVersion: "region-graph-0.17.0" },
+	{ file: "region-graph-0.19.0.json", algorithmVersion: "region-graph-0.19.0" },
 ] as const)
 
 export const reviewEvidenceInputPaths: readonly string[] = Object.freeze([
@@ -132,15 +134,27 @@ export function validateAcceptedRoundArchive(source: string, expectedVersion: st
 			throw new Error(`${source} review provenance is invalid`)
 		}
 		const reviewedVersion = value.reviewProvenance.algorithmVersion
-		for (const key of ["results", "holdoutResults"] as const) {
-			const record = value.reviewProvenance[key]
-			if (!isRecord(record) || record.algorithmVersion !== reviewedVersion) {
-				throw new Error(`${source} review provenance ${key} does not identify ${reviewedVersion}`)
+		const embeddedReview = value.reviewProvenance.results !== undefined ||
+			value.reviewProvenance.holdoutResults !== undefined || value.reviewProvenance.feedback !== undefined
+		if (embeddedReview) {
+			for (const key of ["results", "holdoutResults"] as const) {
+				const record = value.reviewProvenance[key]
+				if (!isRecord(record) || record.algorithmVersion !== reviewedVersion) {
+					throw new Error(`${source} review provenance ${key} does not identify ${reviewedVersion}`)
+				}
 			}
-		}
-		const feedback = value.reviewProvenance.feedback
-		if (!isRecord(feedback) || feedback.candidateAlgorithmVersion !== reviewedVersion) {
-			throw new Error(`${source} review provenance feedback does not identify ${reviewedVersion}`)
+			const feedback = value.reviewProvenance.feedback
+			if (!isRecord(feedback) || feedback.candidateAlgorithmVersion !== reviewedVersion) {
+				throw new Error(`${source} review provenance feedback does not identify ${reviewedVersion}`)
+			}
+		} else {
+			const finalReserve = value.reviewProvenance.finalReserve
+			const evidence = value.reviewProvenance.evidence
+			if (!isRecord(finalReserve) || finalReserve.candidateAlgorithmVersion !== reviewedVersion ||
+				!isRecord(finalReserve.decision) || finalReserve.decision.promotionEligible !== true || !isRecord(evidence) ||
+				Object.values(evidence).some((hash) => typeof hash !== "string" || !/^[a-f0-9]{64}$/.test(hash))) {
+				throw new Error(`${source} bound review provenance does not identify an accepted ${reviewedVersion}`)
+			}
 		}
 	}
 	return value

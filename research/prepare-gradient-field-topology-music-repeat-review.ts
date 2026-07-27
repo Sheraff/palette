@@ -5,13 +5,13 @@ import { fileURLToPath } from "node:url"
 import { isDeepStrictEqual } from "node:util"
 import sharp from "sharp"
 import { prepareOutputTarget, writeJsonAtomic } from "./src/candidate-output.ts"
-import { ALGORITHM_VERSION } from "./src/extract.ts"
 import { decideGradientEligibility, GRADIENT_ELIGIBILITY_CANDIDATE_VERSION } from "./src/gradient-eligibility.ts"
 import {
 	GRADIENT_FIELD_TOPOLOGY_MODEL_IDENTITY,
 	scoreGradientFieldTopologyEvidence,
 } from "./src/gradient-field-topology-model.ts"
 import { GRADIENT_FIELD_TOPOLOGY_EVIDENCE_VERSION, type GradientFieldTopologyEvidence } from "./src/gradient-field-topology.ts"
+import { REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION } from "./src/region-graph-0.17-extract.ts"
 import type { GradientEligibilityEvidence } from "./src/gradient-eligibility.ts"
 import type { Palette, RGB, RoleColor } from "./src/types.ts"
 
@@ -185,7 +185,7 @@ async function seal(): Promise<void> {
 		readFile(join(researchRoot, paletteSourceFile)),
 		readFile(join(researchRoot, "src/gradient-field-topology-model.ts")),
 		readFile(join(researchRoot, "src/gradient-field-topology.ts")),
-		readFile(join(researchRoot, "src/extract.ts")),
+		readFile(join(researchRoot, "src/region-graph-0.17-extract.ts")),
 		readFile(join(researchRoot, "src/gradient-eligibility.ts")),
 		readFile(resolve(projectRoot, "package.json")),
 		toolingHashes(),

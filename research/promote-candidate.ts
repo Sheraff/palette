@@ -17,7 +17,7 @@ import {
 	validateSelectionManifest,
 	type SelectionManifest,
 } from "./src/corpus-selection.ts"
-import { ALGORITHM_VERSION } from "./src/extract.ts"
+import { REGION_GRAPH_0_17_ALGORITHM_VERSION as ALGORITHM_VERSION } from "./src/region-graph-0.17-extract.ts"
 import type { CorpusResult } from "./src/types.ts"
 
 type ReviewMethod = "spatial" | "previous"
