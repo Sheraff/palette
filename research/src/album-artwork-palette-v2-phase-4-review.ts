@@ -15,6 +15,10 @@ export const ALBUM_ARTWORK_PALETTE_V2_0_6_0_GRADIENT_REVIEW_VERSION =
 	"album-artwork-palette-v2-0.6.0-gradient-challenger-review-v1" as const
 export const ALBUM_ARTWORK_PALETTE_V2_FUTURE_03_REVIEW_VERSION =
 	"album-artwork-palette-v2-phase-4-future-03-review-v1" as const
+export const ALBUM_ARTWORK_PALETTE_V2_0_7_0_IDENTITY_REVIEW_VERSION =
+	"album-artwork-palette-v2-0.7.0-identity-obligation-review-v1" as const
+export const ALBUM_ARTWORK_PALETTE_V2_0_7_1_QUALITY_GUARD_REVIEW_VERSION =
+	"album-artwork-palette-v2-0.7.1-quality-guard-review-v1" as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_4_PRESENTATION_VERSION =
 	"album-artwork-palette-v2-phase-4-presentation-v1" as const
 export const PHASE_4_REVIEW_CASE_COUNT = 12 as const
@@ -31,7 +35,9 @@ export type BlindedReviewVersion = typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_4_REVIE
 	typeof ALBUM_ARTWORK_PALETTE_V2_RANKING_REVIEW_VERSION |
 	typeof ALBUM_ARTWORK_PALETTE_V2_FUTURE_02_REVIEW_VERSION |
 	typeof ALBUM_ARTWORK_PALETTE_V2_0_6_0_GRADIENT_REVIEW_VERSION |
-	typeof ALBUM_ARTWORK_PALETTE_V2_FUTURE_03_REVIEW_VERSION
+	typeof ALBUM_ARTWORK_PALETTE_V2_FUTURE_03_REVIEW_VERSION |
+	typeof ALBUM_ARTWORK_PALETTE_V2_0_7_0_IDENTITY_REVIEW_VERSION |
+	typeof ALBUM_ARTWORK_PALETTE_V2_0_7_1_QUALITY_GUARD_REVIEW_VERSION
 export type Phase4ReviewSide = "A" | "B"
 export type Phase4ReviewRole = "background" | "surface" | "foreground" | "accent"
 
@@ -153,12 +159,16 @@ export function parsePhase4PrivateReviewManifest(value: unknown): Phase4PrivateR
 	const future02Review = value.reviewVersion === ALBUM_ARTWORK_PALETTE_V2_FUTURE_02_REVIEW_VERSION
 	const gradientReview = value.reviewVersion === ALBUM_ARTWORK_PALETTE_V2_0_6_0_GRADIENT_REVIEW_VERSION
 	const future03Review = value.reviewVersion === ALBUM_ARTWORK_PALETTE_V2_FUTURE_03_REVIEW_VERSION
-	if (value.schemaVersion !== 1 || (!phase4Review && !rankingReview && !future02Review && !gradientReview && !future03Review) ||
+	const identityReview = value.reviewVersion === ALBUM_ARTWORK_PALETTE_V2_0_7_0_IDENTITY_REVIEW_VERSION
+	const qualityGuardReview = value.reviewVersion === ALBUM_ARTWORK_PALETTE_V2_0_7_1_QUALITY_GUARD_REVIEW_VERSION
+	if (value.schemaVersion !== 1 || (!phase4Review && !rankingReview && !future02Review && !gradientReview && !future03Review &&
+		!identityReview && !qualityGuardReview) ||
 		value.presentationVersion !== ALBUM_ARTWORK_PALETTE_V2_PHASE_4_PRESENTATION_VERSION ||
 		!isSha256(value.manifestId) || !Array.isArray(value.cases) ||
-		(phase4Review || future02Review || future03Review
+		(phase4Review || future02Review || future03Review || identityReview
 			? value.cases.length !== PHASE_4_REVIEW_CASE_COUNT
-			: gradientReview ? value.cases.length !== 2 : value.cases.length < 1 || value.cases.length > 28)) {
+			: gradientReview ? value.cases.length !== 2
+				: qualityGuardReview ? value.cases.length !== 3 : value.cases.length < 1 || value.cases.length > 28)) {
 		throw new TypeError("Phase 4 private review manifest header is invalid")
 	}
 	const caseIds = new Set<string>()

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.0-identity-obligation-review-v1",
+  "manifestId": "56587cd633b8cc7995d96dcf56f71f71d6133ea618b0e3bd04d895edcf249d8d",
+  "entries": [
+    {
+      "caseId": "development-03",
+      "target": "candidate",
+      "classes": [
+        "identity-obligation-coverage-precedence-regression",
+        "field-treatment-regression-missing-gradient"
+      ],
+      "rationale": "The candidate was preferred for its role colors, but the comment requires a gradient that the identity-prioritized winner discarded.",
+      "uncertain": false,
+      "commentSha256": "02588b5c6b08b1e021bc288ad8288db5c512666826a954ca3c245a63bad984ea"
+    },
+    {
+      "caseId": "development-19",
+      "target": "candidate",
+      "classes": [
+        "identity-obligation-coverage-precedence-regression",
+        "field-treatment-regression-surface-collapse"
+      ],
+      "rationale": "The comment explicitly likes the candidate colors but says its collapsed surface omits supported pastel field structure.",
+      "uncertain": false,
+      "commentSha256": "85c8de44f13e756e5fede3683d39378a4bbe3f899b07eed43abe422736c98a90"
+    },
+    {
+      "caseId": "development-15",
+      "target": "candidate",
+      "classes": [
+        "identity-obligation-coverage-precedence-regression",
+        "accent-utility-regression"
+      ],
+      "rationale": "The comment likes the candidate colors but reports that the identity-bearing accent is difficult to distinguish over the background.",
+      "uncertain": false,
+      "commentSha256": "91e5f3e8c60d795f7e42b8fcb652ad35ed2eaa50a498af6d1e921da4dd5a6072"
+    },
+    {
+      "caseId": "development-12",
+      "target": "candidate",
+      "classes": [
+        "identity-obligation-coverage-precedence-regression",
+        "identity-complement-regression-missing-dark-anchor"
+      ],
+      "rationale": "The candidate carries bright yellow identity but omits the artwork's contrasting black identity, leaving neither reviewed option acceptable.",
+      "uncertain": false,
+      "commentSha256": "e487b02fa795ec376cd82f59cdfcd72d6c270f5398c1f0e691e883aabb5dda42"
+    },
+    {
+      "caseId": "development-26",
+      "target": "shared",
+      "classes": [
+        "foreground-polarity-misalignment"
+      ],
+      "rationale": "The comment applies to both options and asks for the artwork's light-foreground-over-darker-field polarity.",
+      "uncertain": false,
+      "commentSha256": "269400c88b9408fcb4793a24339d6aefe05e331715dfa68e5d52795fc1455086"
+    },
+    {
+      "caseId": "development-13",
+      "target": "shared",
+      "classes": [
+        "gradient-availability-shared"
+      ],
+      "rationale": "The optional slight-gradient request applies equally to both reviewed treatments.",
+      "uncertain": true,
+      "commentSha256": "acf653baa4dd39501e16b9aaa69c221cf5101d0c99e43e84cd243e1ac1e84e3b"
+    }
+  ],
+  "classCounts": {
+    "accent-utility-regression": 1,
+    "field-treatment-regression-missing-gradient": 1,
+    "field-treatment-regression-surface-collapse": 1,
+    "foreground-polarity-misalignment": 1,
+    "gradient-availability-shared": 1,
+    "identity-complement-regression-missing-dark-anchor": 1,
+    "identity-obligation-coverage-precedence-regression": 4
+  },
+  "repeatedNewSystemicClasses": [
+    "identity-obligation-coverage-precedence-regression"
+  ],
+  "interpretationId": "5512ad0a0e3227b438c413324ebf4d891a5057d8d65316921a2e96478c74bd2f"
+}

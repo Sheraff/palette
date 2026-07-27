@@ -1,0 +1,2909 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.7.3",
+  "protocolId": "album-artwork-ui-palette-protocol-v2-0.7.3",
+  "auditId": "album-artwork-palette-v2-0.7.3-candidate-recall-stage-custody-audit-v1",
+  "implementationSha256": "aab33ab1555b2348bb4ab5c8f7d6afeb2bea34a56f2cbcf0c6e759092e9ce9e0",
+  "executionManifestId": "0755804a06a31b6ff1472c08aa1961686f2ce0783fa32ca5f18a1316f5cd6f42",
+  "source": {
+    "caseId": "development-02",
+    "path": "images/purered.jpg",
+    "sha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+    "byteCount": 1806,
+    "artworkId": "exact:d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+    "cohort": "stress",
+    "structureTags": [
+      "genuinely one-color",
+      "exceptionally low supported contrast"
+    ]
+  },
+  "dimensions": {
+    "width": 500,
+    "height": 500
+  },
+  "control": {
+    "schemaVersion": 1,
+    "phase": "control",
+    "implementationSha256": "aab33ab1555b2348bb4ab5c8f7d6afeb2bea34a56f2cbcf0c6e759092e9ce9e0",
+    "executionManifestId": "0755804a06a31b6ff1472c08aa1961686f2ce0783fa32ca5f18a1316f5cd6f42",
+    "source": {
+      "caseId": "development-02",
+      "path": "images/purered.jpg",
+      "sha256": "d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "byteCount": 1806,
+      "artworkId": "exact:d29dc24562d2afb502385a41667267c93e4f8fc259f73aabcda9806e29fb57ef",
+      "cohort": "stress",
+      "structureTags": [
+        "genuinely one-color",
+        "exceptionally low supported contrast"
+      ]
+    },
+    "dimensions": {
+      "width": 500,
+      "height": 500
+    },
+    "control": {
+      "controlExtraction": {
+        "version": "album-artwork-first-principles-0.7.2",
+        "protocol": "album-artwork-ui-palette-protocol-v2",
+        "width": 500,
+        "height": 500,
+        "winner": {
+          "id": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+          "background": {
+            "rgb": [
+              254,
+              0,
+              0
+            ],
+            "oklab": [
+              0.6260873079299927,
+              0.22419413924217224,
+              0.12547193467617035
+            ],
+            "hex": "#fe0000",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 0,
+                "y": 0
+              },
+              "anchorFamilyId": "family-6943",
+              "regionIds": [
+                "family-6943-region-0"
+              ],
+              "perceptualDensity": 1,
+              "totalSupport": 1,
+              "connectedSupport": 1,
+              "spatialCoverage": 1,
+              "concentration": 1,
+              "prototypeDistance": 0,
+              "outlierScore": 0,
+              "synthesis": null
+            }
+          },
+          "surface": {
+            "rgb": [
+              254,
+              0,
+              0
+            ],
+            "oklab": [
+              0.6260873079299927,
+              0.22419413924217224,
+              0.12547193467617035
+            ],
+            "hex": "#fe0000",
+            "generated": false,
+            "strategy": "dense-exact",
+            "support": {
+              "exactSource": true,
+              "exemplar": {
+                "x": 0,
+                "y": 0
+              },
+              "anchorFamilyId": "family-6943",
+              "regionIds": [
+                "family-6943-region-0"
+              ],
+              "perceptualDensity": 1,
+              "totalSupport": 1,
+              "connectedSupport": 1,
+              "spatialCoverage": 1,
+              "concentration": 1,
+              "prototypeDistance": 0,
+              "outlierScore": 0,
+              "synthesis": null
+            }
+          },
+          "foreground": {
+            "rgb": [
+              255,
+              255,
+              255
+            ],
+            "oklab": [
+              0.9999999934735462,
+              8.095285553011422e-11,
+              3.727390762708893e-8
+            ],
+            "hex": "#ffffff",
+            "generated": true,
+            "strategy": "generated-emergency",
+            "support": {
+              "generated": true,
+              "role": "foreground",
+              "reason": "degenerate-supported-domain",
+              "supportedPairCount": 0,
+              "maximumSupportedAbsoluteLc": 0,
+              "thresholdExclusive": 5,
+              "preferencePenalty": 0.18
+            }
+          },
+          "accent": {
+            "rgb": [
+              255,
+              255,
+              255
+            ],
+            "oklab": [
+              0.9999999934735462,
+              8.095285553011422e-11,
+              3.727390762708893e-8
+            ],
+            "hex": "#ffffff",
+            "generated": true,
+            "strategy": "generated-emergency",
+            "support": {
+              "generated": true,
+              "role": "foreground",
+              "reason": "degenerate-supported-domain",
+              "supportedPairCount": 0,
+              "maximumSupportedAbsoluteLc": 0,
+              "thresholdExclusive": 5,
+              "preferencePenalty": 0.18
+            }
+          },
+          "gradient": false,
+          "fieldTreatment": "one-field",
+          "sourceFieldHypothesisId": "one:family-6943",
+          "familyRoles": {
+            "background": "family-6943",
+            "surface": "family-6943",
+            "foreground": "generated",
+            "accent": "generated"
+          },
+          "cardinality": 2,
+          "collapse": {
+            "surface": true,
+            "accent": true
+          },
+          "contrast": {
+            "pairs": [
+              {
+                "role": "foreground",
+                "fieldRole": "background",
+                "position": 0,
+                "signedLc": -69.87566042498838,
+                "absoluteLc": 69.87566042498838
+              }
+            ],
+            "minimumAbsoluteLc": 69.87566042498838,
+            "meanAbsoluteLc": 69.87566042498838
+          },
+          "scores": {
+            "fieldFidelity": 1,
+            "surfaceFidelity": 1,
+            "fieldStructure": 1,
+            "fieldIdentity": 0.6928203230275509,
+            "treatmentFoundation": 0.7506329916150992,
+            "activeRolePathObservability": 1,
+            "artworkIdentity": 0.48,
+            "representativeness": 0.5,
+            "uiUtility": 0.7763962269443152,
+            "foregroundUtility": 0.8811334898551497,
+            "foregroundPolarityAgreement": 1,
+            "accentFidelity": 1,
+            "accentUtility": 0.8811334898551497,
+            "coherence": 0.78,
+            "economy": 1,
+            "generatorConfidence": 0.8310000000000001,
+            "foundation": 0.66,
+            "balance": 0.48,
+            "generatedPenalty": 0.18,
+            "rankingScore": 0.5699394340416473
+          },
+          "gradientEvidence": null
+        },
+        "alternatives": [
+          {
+            "id": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "background": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "surface": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "foreground": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "accent": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "family-6943",
+              "surface": "family-6943",
+              "foreground": "generated",
+              "accent": "generated"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": -69.87566042498838,
+                  "absoluteLc": 69.87566042498838
+                }
+              ],
+              "minimumAbsoluteLc": 69.87566042498838,
+              "meanAbsoluteLc": 69.87566042498838
+            },
+            "scores": {
+              "fieldFidelity": 1,
+              "surfaceFidelity": 1,
+              "fieldStructure": 1,
+              "fieldIdentity": 0.6928203230275509,
+              "treatmentFoundation": 0.7506329916150992,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.48,
+              "representativeness": 0.5,
+              "uiUtility": 0.7763962269443152,
+              "foregroundUtility": 0.8811334898551497,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.8811334898551497,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.8310000000000001,
+              "foundation": 0.66,
+              "balance": 0.48,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.5699394340416473
+            },
+            "gradientEvidence": null
+          }
+        ],
+        "diagnostics": {
+          "nativeDiscovery": true,
+          "preDiscoveryResize": false,
+          "familyCount": 1,
+          "retainedFamilyCount": 1,
+          "lanes": [
+            {
+              "name": "field",
+              "maximumFamilies": 12,
+              "familyIds": [
+                "family-6943"
+              ]
+            },
+            {
+              "name": "signature",
+              "maximumFamilies": 16,
+              "familyIds": [
+                "family-6943"
+              ]
+            },
+            {
+              "name": "foreground",
+              "maximumFamilies": 16,
+              "familyIds": [
+                "family-6943"
+              ]
+            }
+          ],
+          "laneRetention": [
+            {
+              "name": "field",
+              "evaluatedFamilyCount": 1,
+              "candidates": [
+                {
+                  "familyId": "family-6943",
+                  "familyScore": 1,
+                  "regionScore": 0,
+                  "combinedScore": 1,
+                  "rank": 0,
+                  "retained": true
+                }
+              ]
+            },
+            {
+              "name": "signature",
+              "evaluatedFamilyCount": 1,
+              "candidates": [
+                {
+                  "familyId": "family-6943",
+                  "familyScore": 0.54,
+                  "regionScore": 0.609878752,
+                  "combinedScore": 0.5714454384000001,
+                  "rank": 0,
+                  "retained": true
+                }
+              ]
+            },
+            {
+              "name": "foreground",
+              "evaluatedFamilyCount": 1,
+              "candidates": [
+                {
+                  "familyId": "family-6943",
+                  "familyScore": 0.8,
+                  "regionScore": 0.552392224,
+                  "combinedScore": 0.7009568896,
+                  "rank": 0,
+                  "retained": true
+                }
+              ]
+            }
+          ],
+          "families": [
+            {
+              "id": "family-6943",
+              "prototype": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "population": 250000,
+              "populationFraction": 1,
+              "perceptualBinCount": 1,
+              "borderCoverage": 1,
+              "centerCoverage": 1,
+              "quadrantCoverage": 1,
+              "cornerCoverage": 1,
+              "centroid": [
+                0.5000000000000001,
+                0.5000000000000314
+              ],
+              "spatialSpread": 0.818131210353752,
+              "largestComponentFraction": 1,
+              "familyConcentration": 1,
+              "componentCount": 1,
+              "repeatedComponentCount": 1,
+              "edgeDensity": 0,
+              "localContrast": 0,
+              "chroma": 0.25691675395333735,
+              "fieldScore": 1,
+              "signatureScore": 0.54,
+              "foregroundScore": 0.8,
+              "foregroundTypographyObservation": 0.552392224,
+              "foregroundPolarityObservation": {
+                "polarity": 0,
+                "confidence": 0,
+                "componentIds": []
+              },
+              "signatureAccentObservation": 0.609878752,
+              "observedComponentCount": 1,
+              "components": [
+                {
+                  "id": "family-6943-region-0",
+                  "startPixelIndex": 0,
+                  "population": 250000,
+                  "populationFraction": 1,
+                  "minX": 0,
+                  "minY": 0,
+                  "maxX": 499,
+                  "maxY": 499,
+                  "borderPixels": 1996,
+                  "retainedFor": [
+                    "connected-support",
+                    "role-observation"
+                  ],
+                  "observation": {
+                    "widthFraction": 1,
+                    "heightFraction": 1,
+                    "boundsFraction": 1,
+                    "elongation": 1,
+                    "fill": 1,
+                    "repetition": 0,
+                    "localContrast": 0,
+                    "boundaryLightnessContrast": 0,
+                    "boundaryLightnessPolarity": 0,
+                    "borderContact": 0.007984,
+                    "interiorMargin": 0,
+                    "componentFamilyFraction": 1,
+                    "foregroundTypography": {
+                      "geometry": 0,
+                      "fill": 0.5,
+                      "repetition": 0,
+                      "localContrast": 0,
+                      "borderInterior": 0.726048,
+                      "sourceSupport": 1,
+                      "score": 0.552392224
+                    },
+                    "signatureAccent": {
+                      "geometry": 0,
+                      "fill": 1,
+                      "repetition": 0,
+                      "localContrast": 0,
+                      "borderInterior": 0.726048,
+                      "sourceSupport": 1,
+                      "score": 0.609878752
+                    }
+                  }
+                }
+              ],
+              "representatives": [
+                {
+                  "strategy": "dense-exact",
+                  "rgb": [
+                    254,
+                    0,
+                    0
+                  ],
+                  "oklab": [
+                    0.6260873079299927,
+                    0.22419413924217224,
+                    0.12547193467617035
+                  ],
+                  "hex": "#fe0000",
+                  "support": {
+                    "exactSource": true,
+                    "exemplar": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "anchorFamilyId": "family-6943",
+                    "regionIds": [
+                      "family-6943-region-0"
+                    ],
+                    "perceptualDensity": 1,
+                    "totalSupport": 1,
+                    "connectedSupport": 1,
+                    "spatialCoverage": 1,
+                    "concentration": 1,
+                    "prototypeDistance": 0,
+                    "outlierScore": 0,
+                    "synthesis": null
+                  }
+                }
+              ]
+            }
+          ],
+          "fieldDomains": [
+            {
+              "id": "field-domain-0",
+              "kind": "connected",
+              "sourceDomainIds": [],
+              "startPixelIndex": 0,
+              "population": 250000,
+              "populationFraction": 1,
+              "borderPixels": 1996,
+              "borderCoverage": 1,
+              "quadrantCoverage": 1,
+              "ownedCornerCount": 4,
+              "weightedFieldScore": 1,
+              "centroid": [
+                0.5000000000000272,
+                0.5000000000000273
+              ],
+              "meanColor": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "transitionFamilyCount": 0,
+              "transitionPopulationFraction": 0,
+              "transitionQuadrantCoverage": 0,
+              "familyIds": [
+                "family-6943"
+              ],
+              "componentIds": [
+                "family-6943-region-0"
+              ],
+              "eligible": true,
+              "rejectionReasons": []
+            }
+          ],
+          "fieldHypotheses": [
+            {
+              "id": "one:family-6943",
+              "kind": "one-field",
+              "backgroundFamilyId": "family-6943",
+              "surfaceFamilyId": null,
+              "backgroundRepresentatives": [
+                {
+                  "strategy": "dense-exact",
+                  "rgb": [
+                    254,
+                    0,
+                    0
+                  ],
+                  "oklab": [
+                    0.6260873079299927,
+                    0.22419413924217224,
+                    0.12547193467617035
+                  ],
+                  "hex": "#fe0000",
+                  "support": {
+                    "exactSource": true,
+                    "exemplar": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "anchorFamilyId": "family-6943",
+                    "regionIds": [
+                      "family-6943-region-0"
+                    ],
+                    "perceptualDensity": 1,
+                    "totalSupport": 1,
+                    "connectedSupport": 1,
+                    "spatialCoverage": 1,
+                    "concentration": 1,
+                    "prototypeDistance": 0,
+                    "outlierScore": 0,
+                    "synthesis": null
+                  }
+                }
+              ],
+              "surfaceRepresentatives": [
+                {
+                  "strategy": "dense-exact",
+                  "rgb": [
+                    254,
+                    0,
+                    0
+                  ],
+                  "oklab": [
+                    0.6260873079299927,
+                    0.22419413924217224,
+                    0.12547193467617035
+                  ],
+                  "hex": "#fe0000",
+                  "support": {
+                    "exactSource": true,
+                    "exemplar": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "anchorFamilyId": "family-6943",
+                    "regionIds": [
+                      "family-6943-region-0"
+                    ],
+                    "perceptualDensity": 1,
+                    "totalSupport": 1,
+                    "connectedSupport": 1,
+                    "spatialCoverage": 1,
+                    "concentration": 1,
+                    "prototypeDistance": 0,
+                    "outlierScore": 0,
+                    "synthesis": null
+                  }
+                }
+              ],
+              "fieldFidelity": 1,
+              "surfaceContribution": 0,
+              "spatialRelation": null,
+              "roleAssignment": null,
+              "gradientEvidence": null,
+              "pruningNotes": [
+                "surface collapsed because this hypothesis represents one broad field"
+              ]
+            }
+          ],
+          "gradientFits": [],
+          "completeCandidateCount": 4,
+          "candidateAvailability": {
+            "foregroundLaneFamilyIds": [
+              "family-6943"
+            ],
+            "signatureLaneFamilyIds": [
+              "family-6943"
+            ],
+            "fieldHypothesisFamilyIds": [
+              "family-6943"
+            ],
+            "foregroundsPerFieldVariantQuota": 1,
+            "emergencyCandidateReserve": 4,
+            "foregroundPeakUnobservableRejectedOptionCount": 0,
+            "distinctAccentPeakUnobservableRejectedOptionCount": 0,
+            "completeCandidateForegroundFamilyIds": [
+              "family-6943"
+            ],
+            "completeCandidateAccentFamilyIds": [],
+            "slateForegroundFamilyIds": [],
+            "slateAccentFamilyIds": []
+          },
+          "identityObligationGraph": {
+            "version": "identity-obligation-graph-v3",
+            "selection": {
+              "maximumObligations": 4,
+              "evaluatedSignatureFamilyIds": [
+                "family-6943"
+              ],
+              "fieldOwnedFamilyIds": [
+                "family-6943"
+              ],
+              "notSourceConnectedFamilyIds": [],
+              "notMateriallyDistinctFamilyIds": [],
+              "redundantDirectionFamilyIds": [],
+              "boundOmittedFamilyIds": []
+            },
+            "obligations": [],
+            "nodes": [],
+            "edges": [],
+            "winnerExplanation": {
+              "treatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+              "primaryTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+              "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+              "selectedIdentityChallengerTreatmentId": null,
+              "selectionReason": "no-feasible-identity-obligation",
+              "feasibleObligationIds": [],
+              "coveredObligationIds": [],
+              "deferredObligationIds": [],
+              "qualityDeferredObligationIds": [],
+              "priorityDeferredObligationIds": [],
+              "obligationDeferrals": [],
+              "maximumCompleteTreatmentCoverage": 0,
+              "eligibleIdentityChallengerCount": 0
+            }
+          },
+          "exactOverlayGradientChallenger": {
+            "triggerEligible": false,
+            "reason": "accent-collapsed",
+            "acceptedGradientVariantCount": 0,
+            "existingExactOverlayGradientCount": 0,
+            "projectedAttemptCount": 0,
+            "projectedLegalCount": 0,
+            "projectedUniqueCount": 0,
+            "selectedChallengerId": null,
+            "selectedSource": null,
+            "primaryFoundationEvidenceLevel": 14,
+            "challengerFoundationEvidenceLevel": null,
+            "replacedPrimaryWinner": false,
+            "qualityGuardRequired": false,
+            "qualityGuardRejectedCandidateCount": 0,
+            "selectedChallengerPassesQualityGuard": null,
+            "qualityGuardEvaluations": []
+          },
+          "paretoRanking": {
+            "version": "pareto-identity-winner-diagnostics-v3",
+            "qualityGuardVersion": "complete-quality-domain-non-inferiority-v1",
+            "evidenceResolution": 0.04,
+            "dominanceUsesEvidenceLevels": true,
+            "paretoBlocks": [
+              "fieldFidelity",
+              "surfaceFidelity",
+              "artworkIdentity",
+              "representativeness",
+              "foregroundUtility",
+              "accentFidelity",
+              "accentUtility",
+              "coherence",
+              "economy"
+            ],
+            "rankingPriorityBlocks": [
+              "treatmentFoundation",
+              "fieldIdentity",
+              "fieldFidelity",
+              "fieldStructure",
+              "accentFidelity",
+              "accentUtility",
+              "artworkIdentity",
+              "foregroundUtility",
+              "representativeness",
+              "coherence",
+              "economy"
+            ],
+            "rawCandidateCount": 4,
+            "uniqueCandidateCount": 4,
+            "dominatedCandidateCount": 3,
+            "frontierCandidateCount": 1,
+            "globalParetoFrontierTreatmentIds": [
+              "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+            ],
+            "frontierDirectionCount": 1,
+            "identityRetentionFrontierCandidateCount": 1,
+            "identityCarriedCandidateCount": 0,
+            "identityCoverageRequiresQualityNonInferiority": true,
+            "qualityGuardBlocks": [
+              "treatmentFoundation",
+              "fieldIdentity",
+              "fieldFidelity",
+              "fieldStructure",
+              "accentFidelity",
+              "accentUtility",
+              "artworkIdentity",
+              "foregroundUtility",
+              "representativeness",
+              "coherence",
+              "economy",
+              "surfaceFidelity"
+            ],
+            "globalParetoTopTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "identityChallengerCount": 0,
+            "eligibleIdentityChallengerCount": 0,
+            "selectedIdentityChallengerTreatmentId": null,
+            "selectedIdentityChallengerQualityGuard": null,
+            "identityChallengerQualityGuards": [],
+            "retainedCount": 1,
+            "selectedTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "primaryTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "legacyScalarTopTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "differsFromLegacyScalar": false,
+            "omittedFrontierDirectionKeys": []
+          },
+          "legacyScalarTopTreatment": {
+            "id": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "background": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "surface": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "foreground": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "accent": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "family-6943",
+              "surface": "family-6943",
+              "foreground": "generated",
+              "accent": "generated"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": -69.87566042498838,
+                  "absoluteLc": 69.87566042498838
+                }
+              ],
+              "minimumAbsoluteLc": 69.87566042498838,
+              "meanAbsoluteLc": 69.87566042498838
+            },
+            "scores": {
+              "fieldFidelity": 1,
+              "surfaceFidelity": 1,
+              "fieldStructure": 1,
+              "fieldIdentity": 0.6928203230275509,
+              "treatmentFoundation": 0.7506329916150992,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.48,
+              "representativeness": 0.5,
+              "uiUtility": 0.7763962269443152,
+              "foregroundUtility": 0.8811334898551497,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.8811334898551497,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.8310000000000001,
+              "foundation": 0.66,
+              "balance": 0.48,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.5699394340416473
+            },
+            "gradientEvidence": null
+          },
+          "emergency": {
+            "eligible": true,
+            "reason": "degenerate-supported-domain",
+            "supportedPairCount": 0,
+            "maximumSupportedAbsoluteLc": 0,
+            "thresholdExclusive": 5
+          },
+          "bounds": {
+            "retainedDiagnosticFamilies": 48,
+            "fieldFamilies": 12,
+            "signatureFamilies": 16,
+            "foregroundFamilies": 16,
+            "fieldHypotheses": 12,
+            "fieldDomains": 12,
+            "retainedDiagnosticFieldDomains": 48,
+            "largestComponentsPerFamily": 8,
+            "roleObservationComponentsPerFamily": 24,
+            "typographyPolarityRegions": 4,
+            "gradientEndpointFamiliesPerBand": 2,
+            "representativesPerRole": 2,
+            "foregroundsPerFieldVariant": 6,
+            "distinctAccentsPerForeground": 4,
+            "identityObligations": 4,
+            "completeCandidates": 1500,
+            "gradientChallengerProjections": 6,
+            "retainedTreatments": 8,
+            "developmentWorkers": 6
+          }
+        }
+      },
+      "control": {
+        "arm": "control-0.7.2",
+        "changedStages": [],
+        "rawCandidateCount": 4,
+        "materializedCandidateCount": 4,
+        "capacity": 1500,
+        "capacityReached": false,
+        "completeTreatments": [
+          {
+            "id": "one:family-6943|254,0,0|254,0,0|0,0,0|0,0,0|flat",
+            "background": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "surface": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "foreground": {
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "accent": {
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "family-6943",
+              "surface": "family-6943",
+              "foreground": "generated",
+              "accent": "generated"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": 39.69804756642051,
+                  "absoluteLc": 39.69804756642051
+                }
+              ],
+              "minimumAbsoluteLc": 39.69804756642051,
+              "meanAbsoluteLc": 39.69804756642051
+            },
+            "scores": {
+              "fieldFidelity": 1,
+              "surfaceFidelity": 1,
+              "fieldStructure": 1,
+              "fieldIdentity": 0.6928203230275509,
+              "treatmentFoundation": 0.6831271070583623,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.48,
+              "representativeness": 0.5,
+              "uiUtility": 0.4410894174046724,
+              "foregroundUtility": 0.6641456296661692,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.6641456296661692,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.8310000000000001,
+              "foundation": 0.66,
+              "balance": 0.48,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.5196434126107008
+            },
+            "gradientEvidence": null
+          },
+          {
+            "id": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "background": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "surface": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "foreground": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "accent": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "family-6943",
+              "surface": "family-6943",
+              "foreground": "generated",
+              "accent": "generated"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": -69.87566042498838,
+                  "absoluteLc": 69.87566042498838
+                }
+              ],
+              "minimumAbsoluteLc": 69.87566042498838,
+              "meanAbsoluteLc": 69.87566042498838
+            },
+            "scores": {
+              "fieldFidelity": 1,
+              "surfaceFidelity": 1,
+              "fieldStructure": 1,
+              "fieldIdentity": 0.6928203230275509,
+              "treatmentFoundation": 0.7506329916150992,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.48,
+              "representativeness": 0.5,
+              "uiUtility": 0.7763962269443152,
+              "foregroundUtility": 0.8811334898551497,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.8811334898551497,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.8310000000000001,
+              "foundation": 0.66,
+              "balance": 0.48,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.5699394340416473
+            },
+            "gradientEvidence": null
+          },
+          {
+            "id": "one:family-6943|0,0,0|0,0,0|254,0,0|254,0,0|flat",
+            "background": {
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "background",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "surface": {
+              "rgb": [
+                0,
+                0,
+                0
+              ],
+              "oklab": [
+                0,
+                0,
+                0
+              ],
+              "hex": "#000000",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "background",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "foreground": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "accent": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "generated",
+              "surface": "generated",
+              "foreground": "family-6943",
+              "accent": "family-6943"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": -37.29046646125444,
+                  "absoluteLc": 37.29046646125444
+                }
+              ],
+              "minimumAbsoluteLc": 37.29046646125444,
+              "meanAbsoluteLc": 37.29046646125444
+            },
+            "scores": {
+              "fieldFidelity": 0.35,
+              "surfaceFidelity": 1,
+              "fieldStructure": 0.35,
+              "fieldIdentity": 0.24765647142766126,
+              "treatmentFoundation": 0.3405067077673201,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.1752392224,
+              "representativeness": 0.5,
+              "uiUtility": 0.41433851623616047,
+              "foregroundUtility": 0.6436913206158371,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.6436913206158371,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.47350000000000003,
+              "foundation": 0.3417464074666667,
+              "balance": 0.1752392224,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.32790398116875746
+            },
+            "gradientEvidence": null
+          },
+          {
+            "id": "one:family-6943|255,255,255|255,255,255|254,0,0|254,0,0|flat",
+            "background": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "background",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "surface": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "background",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "foreground": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "accent": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "generated",
+              "surface": "generated",
+              "foreground": "family-6943",
+              "accent": "family-6943"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": 64.37910613486198,
+                  "absoluteLc": 64.37910613486198
+                }
+              ],
+              "minimumAbsoluteLc": 64.37910613486198,
+              "meanAbsoluteLc": 64.37910613486198
+            },
+            "scores": {
+              "fieldFidelity": 0.35,
+              "surfaceFidelity": 1,
+              "fieldStructure": 0.35,
+              "fieldIdentity": 0.24765647142766126,
+              "treatmentFoundation": 0.37294964041100875,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.1752392224,
+              "representativeness": 0.5,
+              "uiUtility": 0.7153234014984665,
+              "foregroundUtility": 0.8457679359602529,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.8457679359602529,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.47350000000000003,
+              "foundation": 0.3417464074666667,
+              "balance": 0.1752392224,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.3730517139581034
+            },
+            "gradientEvidence": null
+          }
+        ],
+        "completeTreatmentKeys": [
+          "#fe0000:#fe0000:#000000:#000000:flat",
+          "#fe0000:#fe0000:#ffffff:#ffffff:flat",
+          "#000000:#000000:#fe0000:#fe0000:flat",
+          "#ffffff:#ffffff:#fe0000:#fe0000:flat"
+        ],
+        "ordinaryParetoTreatmentKeys": [
+          "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+        ],
+        "publicSlate": [
+          {
+            "id": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat",
+            "background": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "surface": {
+              "rgb": [
+                254,
+                0,
+                0
+              ],
+              "oklab": [
+                0.6260873079299927,
+                0.22419413924217224,
+                0.12547193467617035
+              ],
+              "hex": "#fe0000",
+              "generated": false,
+              "strategy": "dense-exact",
+              "support": {
+                "exactSource": true,
+                "exemplar": {
+                  "x": 0,
+                  "y": 0
+                },
+                "anchorFamilyId": "family-6943",
+                "regionIds": [
+                  "family-6943-region-0"
+                ],
+                "perceptualDensity": 1,
+                "totalSupport": 1,
+                "connectedSupport": 1,
+                "spatialCoverage": 1,
+                "concentration": 1,
+                "prototypeDistance": 0,
+                "outlierScore": 0,
+                "synthesis": null
+              }
+            },
+            "foreground": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "accent": {
+              "rgb": [
+                255,
+                255,
+                255
+              ],
+              "oklab": [
+                0.9999999934735462,
+                8.095285553011422e-11,
+                3.727390762708893e-8
+              ],
+              "hex": "#ffffff",
+              "generated": true,
+              "strategy": "generated-emergency",
+              "support": {
+                "generated": true,
+                "role": "foreground",
+                "reason": "degenerate-supported-domain",
+                "supportedPairCount": 0,
+                "maximumSupportedAbsoluteLc": 0,
+                "thresholdExclusive": 5,
+                "preferencePenalty": 0.18
+              }
+            },
+            "gradient": false,
+            "fieldTreatment": "one-field",
+            "sourceFieldHypothesisId": "one:family-6943",
+            "familyRoles": {
+              "background": "family-6943",
+              "surface": "family-6943",
+              "foreground": "generated",
+              "accent": "generated"
+            },
+            "cardinality": 2,
+            "collapse": {
+              "surface": true,
+              "accent": true
+            },
+            "contrast": {
+              "pairs": [
+                {
+                  "role": "foreground",
+                  "fieldRole": "background",
+                  "position": 0,
+                  "signedLc": -69.87566042498838,
+                  "absoluteLc": 69.87566042498838
+                }
+              ],
+              "minimumAbsoluteLc": 69.87566042498838,
+              "meanAbsoluteLc": 69.87566042498838
+            },
+            "scores": {
+              "fieldFidelity": 1,
+              "surfaceFidelity": 1,
+              "fieldStructure": 1,
+              "fieldIdentity": 0.6928203230275509,
+              "treatmentFoundation": 0.7506329916150992,
+              "activeRolePathObservability": 1,
+              "artworkIdentity": 0.48,
+              "representativeness": 0.5,
+              "uiUtility": 0.7763962269443152,
+              "foregroundUtility": 0.8811334898551497,
+              "foregroundPolarityAgreement": 1,
+              "accentFidelity": 1,
+              "accentUtility": 0.8811334898551497,
+              "coherence": 0.78,
+              "economy": 1,
+              "generatorConfidence": 0.8310000000000001,
+              "foundation": 0.66,
+              "balance": 0.48,
+              "generatedPenalty": 0.18,
+              "rankingScore": 0.5699394340416473
+            },
+            "gradientEvidence": null
+          }
+        ],
+        "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+      }
+    },
+    "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+    "frozenControlExtractionSha256": "6a4f14ccbcf0cfa55864b9407446ddd14242413ba1204ddac35417f48842d8b7",
+    "run": {
+      "wallMs": [
+        284.955875,
+        265.174875
+      ],
+      "deterministicRepeatedRun": true,
+      "fullOutputSha256": "84b1f64db3d35a7e8cf9d766649aa9acada4f0af7ad2454240717cf81b0a1943",
+      "repeatFullOutputSha256": "84b1f64db3d35a7e8cf9d766649aa9acada4f0af7ad2454240717cf81b0a1943",
+      "scientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+      "repeatScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60"
+    }
+  },
+  "recallArms": [
+    {
+      "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+      "scientific": {
+        "arm": "all-existing-representative-strategies",
+        "changedStages": [
+          "representative-pairing"
+        ],
+        "domain": {
+          "rawCandidateCount": 4,
+          "materializedCandidateCount": 4,
+          "capacity": 1500,
+          "capacityReached": false,
+          "addedCompleteTreatmentKeys": [],
+          "ordinaryParetoAddedKeys": [],
+          "publicSlateKeys": [
+            "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+          ],
+          "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+        },
+        "additions": [],
+        "registry": {
+          "version": "album-artwork-palette-v2-recall-registry-0.7.3",
+          "families": [
+            {
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "representativeStrategies": [
+                "dense-exact"
+              ],
+              "laneRanks": {
+                "field": 0,
+                "signature": 0,
+                "foreground": 0
+              },
+              "controlRetainedLanes": [
+                "field",
+                "signature",
+                "foreground"
+              ],
+              "identityObligation": false
+            }
+          ],
+          "fieldHypotheses": [
+            {
+              "hypothesisId": "one:family-6943",
+              "kind": "one-field",
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true,
+              "controlProposed": true,
+              "controlRetained": true
+            }
+          ],
+          "fieldDirections": [
+            {
+              "key": "one-field:family-6943:=:flat",
+              "hypothesisIds": [
+                "one:family-6943"
+              ],
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true
+            }
+          ],
+          "roleDirections": [
+            {
+              "key": "accent:family-6943",
+              "role": "accent",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            },
+            {
+              "key": "foreground:family-6943",
+              "role": "foreground",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            }
+          ],
+          "identityObligationFamilyIds": []
+        },
+        "availability": {
+          "fieldDirectionKeys": [
+            "one-field:family-6943:=:flat"
+          ],
+          "roleDirectionKeys": [
+            "accent:family-6943",
+            "foreground:family-6943"
+          ],
+          "identityObligationRoleDirectionKeys": [],
+          "cellCount": 2,
+          "cellOrderedRoot": "7115ec19bdd21fbc1d4afeef8542beb3ba527cea34f9775641e178df5b3a52c3"
+        },
+        "custody": {
+          "cellCount": 2,
+          "fullCellOrderedRoot": "1cddc5d4311fca6d0b59e72796f76ff388045ccdc09c3dcc48e0cea005fb794e",
+          "stageNames": [
+            "discovered-family",
+            "lane-retention",
+            "field-hypothesis-proposal",
+            "field-hypothesis-retention",
+            "representative-pairing",
+            "field-conditional-role-eligibility",
+            "complete-treatment-construction",
+            "ordinary-pareto-membership",
+            "complete-domain-guard",
+            "public-slate-retention"
+          ],
+          "templates": [
+            {
+              "stages": [
+                {
+                  "stage": "discovered-family",
+                  "status": "available",
+                  "reason": "source-connected-field-and-role-families-discovered"
+                },
+                {
+                  "stage": "lane-retention",
+                  "status": "available",
+                  "reason": "field-and-role-directions-retained-by-arm-lanes"
+                },
+                {
+                  "stage": "field-hypothesis-proposal",
+                  "status": "available",
+                  "reason": "current-model-field-root-proposed"
+                },
+                {
+                  "stage": "field-hypothesis-retention",
+                  "status": "available",
+                  "reason": "field-root-retained-by-arm"
+                },
+                {
+                  "stage": "representative-pairing",
+                  "status": "available",
+                  "reason": "arm-produced-legal-field-representative-pair"
+                },
+                {
+                  "stage": "field-conditional-role-eligibility",
+                  "status": "unavailable",
+                  "reason": "role-root-is-not-eligible-on-field-direction"
+                },
+                {
+                  "stage": "complete-treatment-construction",
+                  "status": "unavailable",
+                  "reason": "no-legal-complete-treatment-constructed"
+                },
+                {
+                  "stage": "ordinary-pareto-membership",
+                  "status": "unavailable",
+                  "reason": "no-complete-treatment-for-pareto-evaluation"
+                },
+                {
+                  "stage": "complete-domain-guard",
+                  "status": "unavailable",
+                  "reason": "no-ordinary-frontier-or-complete-domain-non-inferior-treatment"
+                },
+                {
+                  "stage": "public-slate-retention",
+                  "status": "unavailable",
+                  "reason": "no-treatment-retained-in-public-slate"
+                }
+              ],
+              "firstLossStage": "field-conditional-role-eligibility",
+              "firstLossReason": "role-root-is-not-eligible-on-field-direction"
+            }
+          ],
+          "templateRuns": [
+            [
+              0,
+              2
+            ]
+          ]
+        }
+      },
+      "run": {
+        "wallMs": [
+          288.370125,
+          266.787625
+        ],
+        "deterministicRepeatedRun": true,
+        "fullOutputSha256": "5a5e4dc92f28cc2a18982dbd1f281213b1f3ea274008807f698d5f939450dbe4",
+        "repeatFullOutputSha256": "5a5e4dc92f28cc2a18982dbd1f281213b1f3ea274008807f698d5f939450dbe4",
+        "scientificSha256": "06d5eb4c17d8e5c09636cd327179d9aa9da4112d2e543fa4579439e963bf7013",
+        "repeatScientificSha256": "06d5eb4c17d8e5c09636cd327179d9aa9da4112d2e543fa4579439e963bf7013"
+      }
+    },
+    {
+      "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+      "scientific": {
+        "arm": "all-retained-representative-cross-pairs",
+        "changedStages": [
+          "representative-pairing"
+        ],
+        "domain": {
+          "rawCandidateCount": 4,
+          "materializedCandidateCount": 4,
+          "capacity": 1500,
+          "capacityReached": false,
+          "addedCompleteTreatmentKeys": [],
+          "ordinaryParetoAddedKeys": [],
+          "publicSlateKeys": [
+            "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+          ],
+          "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+        },
+        "additions": [],
+        "registry": {
+          "version": "album-artwork-palette-v2-recall-registry-0.7.3",
+          "families": [
+            {
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "representativeStrategies": [
+                "dense-exact"
+              ],
+              "laneRanks": {
+                "field": 0,
+                "signature": 0,
+                "foreground": 0
+              },
+              "controlRetainedLanes": [
+                "field",
+                "signature",
+                "foreground"
+              ],
+              "identityObligation": false
+            }
+          ],
+          "fieldHypotheses": [
+            {
+              "hypothesisId": "one:family-6943",
+              "kind": "one-field",
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true,
+              "controlProposed": true,
+              "controlRetained": true
+            }
+          ],
+          "fieldDirections": [
+            {
+              "key": "one-field:family-6943:=:flat",
+              "hypothesisIds": [
+                "one:family-6943"
+              ],
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true
+            }
+          ],
+          "roleDirections": [
+            {
+              "key": "accent:family-6943",
+              "role": "accent",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            },
+            {
+              "key": "foreground:family-6943",
+              "role": "foreground",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            }
+          ],
+          "identityObligationFamilyIds": []
+        },
+        "availability": {
+          "fieldDirectionKeys": [
+            "one-field:family-6943:=:flat"
+          ],
+          "roleDirectionKeys": [
+            "accent:family-6943",
+            "foreground:family-6943"
+          ],
+          "identityObligationRoleDirectionKeys": [],
+          "cellCount": 2,
+          "cellOrderedRoot": "7115ec19bdd21fbc1d4afeef8542beb3ba527cea34f9775641e178df5b3a52c3"
+        },
+        "custody": {
+          "cellCount": 2,
+          "fullCellOrderedRoot": "1cddc5d4311fca6d0b59e72796f76ff388045ccdc09c3dcc48e0cea005fb794e",
+          "stageNames": [
+            "discovered-family",
+            "lane-retention",
+            "field-hypothesis-proposal",
+            "field-hypothesis-retention",
+            "representative-pairing",
+            "field-conditional-role-eligibility",
+            "complete-treatment-construction",
+            "ordinary-pareto-membership",
+            "complete-domain-guard",
+            "public-slate-retention"
+          ],
+          "templates": [
+            {
+              "stages": [
+                {
+                  "stage": "discovered-family",
+                  "status": "available",
+                  "reason": "source-connected-field-and-role-families-discovered"
+                },
+                {
+                  "stage": "lane-retention",
+                  "status": "available",
+                  "reason": "field-and-role-directions-retained-by-arm-lanes"
+                },
+                {
+                  "stage": "field-hypothesis-proposal",
+                  "status": "available",
+                  "reason": "current-model-field-root-proposed"
+                },
+                {
+                  "stage": "field-hypothesis-retention",
+                  "status": "available",
+                  "reason": "field-root-retained-by-arm"
+                },
+                {
+                  "stage": "representative-pairing",
+                  "status": "available",
+                  "reason": "arm-produced-legal-field-representative-pair"
+                },
+                {
+                  "stage": "field-conditional-role-eligibility",
+                  "status": "unavailable",
+                  "reason": "role-root-is-not-eligible-on-field-direction"
+                },
+                {
+                  "stage": "complete-treatment-construction",
+                  "status": "unavailable",
+                  "reason": "no-legal-complete-treatment-constructed"
+                },
+                {
+                  "stage": "ordinary-pareto-membership",
+                  "status": "unavailable",
+                  "reason": "no-complete-treatment-for-pareto-evaluation"
+                },
+                {
+                  "stage": "complete-domain-guard",
+                  "status": "unavailable",
+                  "reason": "no-ordinary-frontier-or-complete-domain-non-inferior-treatment"
+                },
+                {
+                  "stage": "public-slate-retention",
+                  "status": "unavailable",
+                  "reason": "no-treatment-retained-in-public-slate"
+                }
+              ],
+              "firstLossStage": "field-conditional-role-eligibility",
+              "firstLossReason": "role-root-is-not-eligible-on-field-direction"
+            }
+          ],
+          "templateRuns": [
+            [
+              0,
+              2
+            ]
+          ]
+        }
+      },
+      "run": {
+        "wallMs": [
+          289.006791,
+          271.162958
+        ],
+        "deterministicRepeatedRun": true,
+        "fullOutputSha256": "51e86f5caad601f3d8ee8dde79bef28ff4879efb08f105b5e6cac97f365545d6",
+        "repeatFullOutputSha256": "51e86f5caad601f3d8ee8dde79bef28ff4879efb08f105b5e6cac97f365545d6",
+        "scientificSha256": "9f5558446006b38863fe425ab02479ed93c4c44eac586f37fb32ba77190c7262",
+        "repeatScientificSha256": "9f5558446006b38863fe425ab02479ed93c4c44eac586f37fb32ba77190c7262"
+      }
+    },
+    {
+      "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+      "scientific": {
+        "arm": "widened-field-hypothesis-retention",
+        "changedStages": [
+          "field-hypothesis-retention"
+        ],
+        "domain": {
+          "rawCandidateCount": 4,
+          "materializedCandidateCount": 4,
+          "capacity": 1500,
+          "capacityReached": false,
+          "addedCompleteTreatmentKeys": [],
+          "ordinaryParetoAddedKeys": [],
+          "publicSlateKeys": [
+            "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+          ],
+          "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+        },
+        "additions": [],
+        "registry": {
+          "version": "album-artwork-palette-v2-recall-registry-0.7.3",
+          "families": [
+            {
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "representativeStrategies": [
+                "dense-exact"
+              ],
+              "laneRanks": {
+                "field": 0,
+                "signature": 0,
+                "foreground": 0
+              },
+              "controlRetainedLanes": [
+                "field",
+                "signature",
+                "foreground"
+              ],
+              "identityObligation": false
+            }
+          ],
+          "fieldHypotheses": [
+            {
+              "hypothesisId": "one:family-6943",
+              "kind": "one-field",
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true,
+              "controlProposed": true,
+              "controlRetained": true
+            }
+          ],
+          "fieldDirections": [
+            {
+              "key": "one-field:family-6943:=:flat",
+              "hypothesisIds": [
+                "one:family-6943"
+              ],
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true
+            }
+          ],
+          "roleDirections": [
+            {
+              "key": "accent:family-6943",
+              "role": "accent",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            },
+            {
+              "key": "foreground:family-6943",
+              "role": "foreground",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            }
+          ],
+          "identityObligationFamilyIds": []
+        },
+        "availability": {
+          "fieldDirectionKeys": [
+            "one-field:family-6943:=:flat"
+          ],
+          "roleDirectionKeys": [
+            "accent:family-6943",
+            "foreground:family-6943"
+          ],
+          "identityObligationRoleDirectionKeys": [],
+          "cellCount": 2,
+          "cellOrderedRoot": "7115ec19bdd21fbc1d4afeef8542beb3ba527cea34f9775641e178df5b3a52c3"
+        },
+        "custody": {
+          "cellCount": 2,
+          "fullCellOrderedRoot": "1cddc5d4311fca6d0b59e72796f76ff388045ccdc09c3dcc48e0cea005fb794e",
+          "stageNames": [
+            "discovered-family",
+            "lane-retention",
+            "field-hypothesis-proposal",
+            "field-hypothesis-retention",
+            "representative-pairing",
+            "field-conditional-role-eligibility",
+            "complete-treatment-construction",
+            "ordinary-pareto-membership",
+            "complete-domain-guard",
+            "public-slate-retention"
+          ],
+          "templates": [
+            {
+              "stages": [
+                {
+                  "stage": "discovered-family",
+                  "status": "available",
+                  "reason": "source-connected-field-and-role-families-discovered"
+                },
+                {
+                  "stage": "lane-retention",
+                  "status": "available",
+                  "reason": "field-and-role-directions-retained-by-arm-lanes"
+                },
+                {
+                  "stage": "field-hypothesis-proposal",
+                  "status": "available",
+                  "reason": "current-model-field-root-proposed"
+                },
+                {
+                  "stage": "field-hypothesis-retention",
+                  "status": "available",
+                  "reason": "field-root-retained-by-arm"
+                },
+                {
+                  "stage": "representative-pairing",
+                  "status": "available",
+                  "reason": "arm-produced-legal-field-representative-pair"
+                },
+                {
+                  "stage": "field-conditional-role-eligibility",
+                  "status": "unavailable",
+                  "reason": "role-root-is-not-eligible-on-field-direction"
+                },
+                {
+                  "stage": "complete-treatment-construction",
+                  "status": "unavailable",
+                  "reason": "no-legal-complete-treatment-constructed"
+                },
+                {
+                  "stage": "ordinary-pareto-membership",
+                  "status": "unavailable",
+                  "reason": "no-complete-treatment-for-pareto-evaluation"
+                },
+                {
+                  "stage": "complete-domain-guard",
+                  "status": "unavailable",
+                  "reason": "no-ordinary-frontier-or-complete-domain-non-inferior-treatment"
+                },
+                {
+                  "stage": "public-slate-retention",
+                  "status": "unavailable",
+                  "reason": "no-treatment-retained-in-public-slate"
+                }
+              ],
+              "firstLossStage": "field-conditional-role-eligibility",
+              "firstLossReason": "role-root-is-not-eligible-on-field-direction"
+            }
+          ],
+          "templateRuns": [
+            [
+              0,
+              2
+            ]
+          ]
+        }
+      },
+      "run": {
+        "wallMs": [
+          233.46466699999996,
+          220.74537499999997
+        ],
+        "deterministicRepeatedRun": true,
+        "fullOutputSha256": "3c170f5e10e0188b954f6b148cc25133916d2579e25c69bfa42d1d9e7666a5ac",
+        "repeatFullOutputSha256": "3c170f5e10e0188b954f6b148cc25133916d2579e25c69bfa42d1d9e7666a5ac",
+        "scientificSha256": "da351210fab19e1807aaa00e8918eeb330d2b4264ba98ca2bd5ee4858fa6778c",
+        "repeatScientificSha256": "da351210fab19e1807aaa00e8918eeb330d2b4264ba98ca2bd5ee4858fa6778c"
+      }
+    },
+    {
+      "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+      "scientific": {
+        "arm": "widened-family-lane-retention",
+        "changedStages": [
+          "lane-retention"
+        ],
+        "domain": {
+          "rawCandidateCount": 4,
+          "materializedCandidateCount": 4,
+          "capacity": 1500,
+          "capacityReached": false,
+          "addedCompleteTreatmentKeys": [],
+          "ordinaryParetoAddedKeys": [],
+          "publicSlateKeys": [
+            "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+          ],
+          "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+        },
+        "additions": [],
+        "registry": {
+          "version": "album-artwork-palette-v2-recall-registry-0.7.3",
+          "families": [
+            {
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "representativeStrategies": [
+                "dense-exact"
+              ],
+              "laneRanks": {
+                "field": 0,
+                "signature": 0,
+                "foreground": 0
+              },
+              "controlRetainedLanes": [
+                "field",
+                "signature",
+                "foreground"
+              ],
+              "identityObligation": false
+            }
+          ],
+          "fieldHypotheses": [
+            {
+              "hypothesisId": "one:family-6943",
+              "kind": "one-field",
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true,
+              "controlProposed": true,
+              "controlRetained": true
+            }
+          ],
+          "fieldDirections": [
+            {
+              "key": "one-field:family-6943:=:flat",
+              "hypothesisIds": [
+                "one:family-6943"
+              ],
+              "familyIds": [
+                "family-6943"
+              ],
+              "sourceConnected": true
+            }
+          ],
+          "roleDirections": [
+            {
+              "key": "accent:family-6943",
+              "role": "accent",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            },
+            {
+              "key": "foreground:family-6943",
+              "role": "foreground",
+              "familyId": "family-6943",
+              "sourceConnected": true,
+              "identityObligation": false
+            }
+          ],
+          "identityObligationFamilyIds": []
+        },
+        "availability": {
+          "fieldDirectionKeys": [
+            "one-field:family-6943:=:flat"
+          ],
+          "roleDirectionKeys": [
+            "accent:family-6943",
+            "foreground:family-6943"
+          ],
+          "identityObligationRoleDirectionKeys": [],
+          "cellCount": 2,
+          "cellOrderedRoot": "7115ec19bdd21fbc1d4afeef8542beb3ba527cea34f9775641e178df5b3a52c3"
+        },
+        "custody": {
+          "cellCount": 2,
+          "fullCellOrderedRoot": "1cddc5d4311fca6d0b59e72796f76ff388045ccdc09c3dcc48e0cea005fb794e",
+          "stageNames": [
+            "discovered-family",
+            "lane-retention",
+            "field-hypothesis-proposal",
+            "field-hypothesis-retention",
+            "representative-pairing",
+            "field-conditional-role-eligibility",
+            "complete-treatment-construction",
+            "ordinary-pareto-membership",
+            "complete-domain-guard",
+            "public-slate-retention"
+          ],
+          "templates": [
+            {
+              "stages": [
+                {
+                  "stage": "discovered-family",
+                  "status": "available",
+                  "reason": "source-connected-field-and-role-families-discovered"
+                },
+                {
+                  "stage": "lane-retention",
+                  "status": "available",
+                  "reason": "field-and-role-directions-retained-by-arm-lanes"
+                },
+                {
+                  "stage": "field-hypothesis-proposal",
+                  "status": "available",
+                  "reason": "current-model-field-root-proposed"
+                },
+                {
+                  "stage": "field-hypothesis-retention",
+                  "status": "available",
+                  "reason": "field-root-retained-by-arm"
+                },
+                {
+                  "stage": "representative-pairing",
+                  "status": "available",
+                  "reason": "arm-produced-legal-field-representative-pair"
+                },
+                {
+                  "stage": "field-conditional-role-eligibility",
+                  "status": "unavailable",
+                  "reason": "role-root-is-not-eligible-on-field-direction"
+                },
+                {
+                  "stage": "complete-treatment-construction",
+                  "status": "unavailable",
+                  "reason": "no-legal-complete-treatment-constructed"
+                },
+                {
+                  "stage": "ordinary-pareto-membership",
+                  "status": "unavailable",
+                  "reason": "no-complete-treatment-for-pareto-evaluation"
+                },
+                {
+                  "stage": "complete-domain-guard",
+                  "status": "unavailable",
+                  "reason": "no-ordinary-frontier-or-complete-domain-non-inferior-treatment"
+                },
+                {
+                  "stage": "public-slate-retention",
+                  "status": "unavailable",
+                  "reason": "no-treatment-retained-in-public-slate"
+                }
+              ],
+              "firstLossStage": "field-conditional-role-eligibility",
+              "firstLossReason": "role-root-is-not-eligible-on-field-direction"
+            }
+          ],
+          "templateRuns": [
+            [
+              0,
+              2
+            ]
+          ]
+        }
+      },
+      "run": {
+        "wallMs": [
+          218.457042,
+          231.60783300000003
+        ],
+        "deterministicRepeatedRun": true,
+        "fullOutputSha256": "c862db26ea777894007a5fddbd498d7efc413273a7cc0d4ab4414356e27166e4",
+        "repeatFullOutputSha256": "c862db26ea777894007a5fddbd498d7efc413273a7cc0d4ab4414356e27166e4",
+        "scientificSha256": "e7bee0b06d10e77a5f045fe707a3afa9e9f720638318d56213d6933e18c509e4",
+        "repeatScientificSha256": "e7bee0b06d10e77a5f045fe707a3afa9e9f720638318d56213d6933e18c509e4"
+      }
+    }
+  ],
+  "diagnostic": {
+    "scientific": {
+      "arm": "diagnostic-joint-availability-matrix",
+      "selectionEligible": false,
+      "completedFromRecallArms": [
+        "all-existing-representative-strategies",
+        "all-retained-representative-cross-pairs",
+        "widened-field-hypothesis-retention",
+        "widened-family-lane-retention"
+      ],
+      "matrices": [
+        {
+          "arm": "all-existing-representative-strategies",
+          "fieldDirectionCount": 1,
+          "roleDirectionCount": 2,
+          "cellCount": 2,
+          "registrySha256": "fb6a8e0949f66b658a256658d90c3c84f0e701304d3bfef7a37eef7d3b819273",
+          "matrixSha256": "a434cc2d37cae4c13e8739b04fedcaaaaa0e5f3ac912fa02c499dc926e588292",
+          "custodySha256": "76224b983000a7a51e4bdff1393b422a1b5a6615852eddb1cbd1312f90846e58"
+        },
+        {
+          "arm": "all-retained-representative-cross-pairs",
+          "fieldDirectionCount": 1,
+          "roleDirectionCount": 2,
+          "cellCount": 2,
+          "registrySha256": "fb6a8e0949f66b658a256658d90c3c84f0e701304d3bfef7a37eef7d3b819273",
+          "matrixSha256": "a434cc2d37cae4c13e8739b04fedcaaaaa0e5f3ac912fa02c499dc926e588292",
+          "custodySha256": "76224b983000a7a51e4bdff1393b422a1b5a6615852eddb1cbd1312f90846e58"
+        },
+        {
+          "arm": "widened-field-hypothesis-retention",
+          "fieldDirectionCount": 1,
+          "roleDirectionCount": 2,
+          "cellCount": 2,
+          "registrySha256": "fb6a8e0949f66b658a256658d90c3c84f0e701304d3bfef7a37eef7d3b819273",
+          "matrixSha256": "a434cc2d37cae4c13e8739b04fedcaaaaa0e5f3ac912fa02c499dc926e588292",
+          "custodySha256": "76224b983000a7a51e4bdff1393b422a1b5a6615852eddb1cbd1312f90846e58"
+        },
+        {
+          "arm": "widened-family-lane-retention",
+          "fieldDirectionCount": 1,
+          "roleDirectionCount": 2,
+          "cellCount": 2,
+          "registrySha256": "fb6a8e0949f66b658a256658d90c3c84f0e701304d3bfef7a37eef7d3b819273",
+          "matrixSha256": "a434cc2d37cae4c13e8739b04fedcaaaaa0e5f3ac912fa02c499dc926e588292",
+          "custodySha256": "76224b983000a7a51e4bdff1393b422a1b5a6615852eddb1cbd1312f90846e58"
+        }
+      ]
+    },
+    "run": {
+      "wallMs": [
+        0.2890830000001188,
+        0.21774999999979627
+      ],
+      "deterministicRepeatedRun": true,
+      "fullOutputSha256": "b3ffb59f83fb812c3ca4188f5838242a6c49ee05da097a7dca39c4cc56a2515f",
+      "repeatFullOutputSha256": "b3ffb59f83fb812c3ca4188f5838242a6c49ee05da097a7dca39c4cc56a2515f",
+      "scientificSha256": "23151de8813ed6499f0dae6232a6e1dc4f3e3a127e0b488f5b4821f31602d30e",
+      "repeatScientificSha256": "23151de8813ed6499f0dae6232a6e1dc4f3e3a127e0b488f5b4821f31602d30e"
+    }
+  },
+  "factorized3000": {
+    "controlScientificSha256": "d7d5e78fdf1a4be53a01d664c7f6a11ffddf641649ce6b226135d7693535ee60",
+    "scientific": {
+      "arm": "factorized-pareto-3000",
+      "domain": {
+        "checkpoint": 3000,
+        "rawCandidateCount": 4,
+        "materializedCandidateCount": 4,
+        "capacity": 1500,
+        "capacityReached": false,
+        "addedCompleteTreatmentKeys": [],
+        "publicSlateKeys": [
+          "#fe0000:#fe0000:#ffffff:#ffffff:flat"
+        ],
+        "qualityIncumbentTreatmentId": "one:family-6943|254,0,0|254,0,0|255,255,255|255,255,255|flat"
+      },
+      "registry": {
+        "version": "album-artwork-palette-v2-recall-registry-0.7.3",
+        "families": [
+          {
+            "familyId": "family-6943",
+            "sourceConnected": true,
+            "representativeStrategies": [
+              "dense-exact"
+            ],
+            "laneRanks": {
+              "field": 0,
+              "signature": 0,
+              "foreground": 0
+            },
+            "controlRetainedLanes": [
+              "field",
+              "signature",
+              "foreground"
+            ],
+            "identityObligation": false
+          }
+        ],
+        "fieldHypotheses": [
+          {
+            "hypothesisId": "one:family-6943",
+            "kind": "one-field",
+            "familyIds": [
+              "family-6943"
+            ],
+            "sourceConnected": true,
+            "controlProposed": true,
+            "controlRetained": true
+          }
+        ],
+        "fieldDirections": [
+          {
+            "key": "one-field:family-6943:=:flat",
+            "hypothesisIds": [
+              "one:family-6943"
+            ],
+            "familyIds": [
+              "family-6943"
+            ],
+            "sourceConnected": true
+          }
+        ],
+        "roleDirections": [
+          {
+            "key": "accent:family-6943",
+            "role": "accent",
+            "familyId": "family-6943",
+            "sourceConnected": true,
+            "identityObligation": false
+          },
+          {
+            "key": "foreground:family-6943",
+            "role": "foreground",
+            "familyId": "family-6943",
+            "sourceConnected": true,
+            "identityObligation": false
+          }
+        ],
+        "identityObligationFamilyIds": []
+      },
+      "upstream": {
+        "changedStages": [
+          "complete-treatment-construction"
+        ],
+        "evidenceFamilyIds": [
+          "family-6943"
+        ],
+        "laneFamilyIds": {
+          "field": [
+            "family-6943"
+          ],
+          "signature": [
+            "family-6943"
+          ],
+          "foreground": [
+            "family-6943"
+          ]
+        },
+        "fieldHypothesisIds": [
+          "one:family-6943"
+        ],
+        "fieldVariantKeys": [
+          "one:family-6943:#fe0000:#fe0000:flat"
+        ],
+        "representativesPerRole": 2,
+        "fieldRepresentativePairing": "same-index"
+      },
+      "logical": {
+        "checkpoint": 3000,
+        "enumerableTupleCount": 0,
+        "attemptedTupleCount": 0,
+        "legalTupleCount": 0,
+        "duplicateLegalKeyCount": 0,
+        "uniqueCanonicalKeyCountBeforePareto": 0,
+        "checkpointReached": false,
+        "truncatedTupleCount": 0,
+        "ordinaryParetoKeyCount": 0,
+        "completeDomainGuardPassingKeyCount": 0,
+        "retainedUnionKeyCount": 0
+      },
+      "truncationWitnesses": {
+        "knownTreatmentKeys": [],
+        "knownCellKeys": [],
+        "otherwiseQualifyingTreatmentKeys": [],
+        "otherwiseQualifyingCellKeys": []
+      },
+      "additions": [],
+      "escalation": {
+        "version": "album-artwork-palette-v2-factorized-pareto-6000-trigger-v1",
+        "sourceBinding": "500x500:750000:703f2585",
+        "fromArm": "factorized-pareto-3000",
+        "checkpoint": 3000,
+        "trigger6000": false,
+        "exactCheckpointOnlyProof": false,
+        "reason": "logical-domain-exhausted-before-checkpoint",
+        "witnesses": {
+          "knownTreatmentKeys": [],
+          "knownCellKeys": [],
+          "otherwiseQualifyingTreatmentKeys": [],
+          "otherwiseQualifyingCellKeys": []
+        },
+        "verifiedTriggerToken": null
+      }
+    },
+    "run": {
+      "wallMs": [
+        224.338833,
+        239.40454200000005
+      ],
+      "deterministicRepeatedRun": true,
+      "fullOutputSha256": "ea1c70b0427dca3e55dee19eca243e1ce9be09edb418e7bab756214b768af06c",
+      "repeatFullOutputSha256": "ea1c70b0427dca3e55dee19eca243e1ce9be09edb418e7bab756214b768af06c",
+      "scientificSha256": "e989e1209115104465a9bd17176c25c03777f6cf3993dcb25d94d15e6f7d907a",
+      "repeatScientificSha256": "e989e1209115104465a9bd17176c25c03777f6cf3993dcb25d94d15e6f7d907a"
+    }
+  },
+  "factorized6000": null,
+  "scientificSha256": "7b195f894a8bb5900aa8b1006c5373bbb9038cdbc67dfd036d1564b25ad1845b"
+}

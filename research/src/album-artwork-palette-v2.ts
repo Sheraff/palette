@@ -12,16 +12,55 @@ import {
 } from "./color.ts"
 import { loadNativeImage } from "./native-resolution-image.ts"
 import {
+	ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS,
+	ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS,
 	ALBUM_ARTWORK_PALETTE_V2_POLICY,
 	ALBUM_ARTWORK_PALETTE_V2_PROTOCOL,
+	ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
 	ALBUM_ARTWORK_PALETTE_V2_VERSION,
 } from "./album-artwork-palette-v2-protocol.ts"
+import type { AlbumArtworkPaletteV2QualityBlock } from "./album-artwork-palette-v2-protocol.ts"
 import type { OKLab, RGB, RawImage } from "./types.ts"
 
 export type RepresentativeStrategy = "dense-exact" | "nearest-prototype" | "density-synthesized"
 export type FieldTreatmentKind = "one-field" | "separate-flat-fields" | "gradient-field"
 export type GradientTopology = "linear" | "radial-center" | "radial-upper-center"
 export type Role = "background" | "surface" | "foreground" | "accent"
+
+export const ALBUM_ARTWORK_PALETTE_V2_RECALL_AUDIT_ARMS = Object.freeze([
+	"control-0.7.2",
+	"all-existing-representative-strategies",
+	"all-retained-representative-cross-pairs",
+	"widened-field-hypothesis-retention",
+	"widened-family-lane-retention",
+] as const)
+
+export const ALBUM_ARTWORK_PALETTE_V2_FACTORIZED_PARETO_AUDIT_ARMS = Object.freeze([
+	"factorized-pareto-3000",
+	"factorized-pareto-6000",
+] as const)
+
+export type AlbumArtworkPaletteV2RecallAuditArm =
+	typeof ALBUM_ARTWORK_PALETTE_V2_RECALL_AUDIT_ARMS[number]
+
+export type AlbumArtworkPaletteV2FactorizedParetoAuditArm =
+	typeof ALBUM_ARTWORK_PALETTE_V2_FACTORIZED_PARETO_AUDIT_ARMS[number]
+
+export const ALBUM_ARTWORK_PALETTE_V2_RECALL_CUSTODY_STAGES = Object.freeze([
+	"discovered-family",
+	"lane-retention",
+	"field-hypothesis-proposal",
+	"field-hypothesis-retention",
+	"representative-pairing",
+	"field-conditional-role-eligibility",
+	"complete-treatment-construction",
+	"ordinary-pareto-membership",
+	"complete-domain-guard",
+	"public-slate-retention",
+] as const)
+
+export type AlbumArtworkPaletteV2RecallCustodyStage =
+	typeof ALBUM_ARTWORK_PALETTE_V2_RECALL_CUSTODY_STAGES[number]
 
 export type RegionRoleFactors = Readonly<{
 	geometry: number
@@ -372,30 +411,153 @@ export type CandidateAvailabilityTrace = Readonly<{
 	slateAccentFamilyIds: readonly string[]
 }>
 
+export type IdentityObligationStage =
+	"source-signature" | "role-availability" | "complete-treatment" |
+	"retention-frontier" | "retained-slate" | "winner-explanation"
+
+export type IdentityObligation = Readonly<{
+	id: string
+	familyId: string
+	priority: number
+	source: Readonly<{
+		regionIds: readonly string[]
+		connectedPopulationFraction: number
+		materialDistanceFromField: number
+		signatureRoleScore: number
+		signatureEvidenceLevel: number
+		regionEvidenceLevel: number
+	}>
+}>
+
+export type IdentityObligationNode = Readonly<{
+	id: string
+	obligationId: string
+	familyId: string
+	stage: IdentityObligationStage
+	status: "satisfied" | "blocked" | "deferred"
+	availableRoles: readonly ("foreground" | "accent")[]
+	treatmentCount: number
+	treatmentIds: readonly string[]
+	reason: string
+}>
+
+export type IdentityQualityGuardBlock = AlbumArtworkPaletteV2QualityBlock
+
+export type IdentityQualityGuardResolvedLoss = Readonly<{
+	block: IdentityQualityGuardBlock
+	incumbentEvidenceLevel: number
+	challengerEvidenceLevel: number
+	evidenceLevelLoss: number
+}>
+
+export type IdentityQualityGuardEvaluation = Readonly<{
+	incumbentTreatmentId: string
+	challengerTreatmentId: string
+	pass: boolean
+	blocks: ReadonlyArray<Readonly<{
+		block: IdentityQualityGuardBlock
+		incumbentEvidenceLevel: number
+		challengerEvidenceLevel: number
+		pass: boolean
+	}>>
+	resolvedLosses: readonly IdentityQualityGuardResolvedLoss[]
+}>
+
+export type IdentityObligationDeferral = Readonly<{
+	obligationId: string
+	reason: "all-complete-treatment-carriers-failed-quality-guard" |
+		"quality-eligible-carrier-deferred-by-higher-obligation-coverage-or-priority"
+	completeCarrierCount: number
+	qualityEligibleCarrierCount: number
+	bestCarrierTreatmentId: string
+	failedQualityGuardBlocks: readonly IdentityQualityGuardBlock[]
+}>
+
+export type IdentityWinnerSelectionReason =
+	"no-feasible-identity-obligation" |
+	"quality-incumbent-already-identity-optimal" |
+	"all-identity-challengers-failed-quality-guard" |
+	"quality-guarded-identity-challenger-selected"
+
+export type IdentityObligationGraph = Readonly<{
+	version: "identity-obligation-graph-v3"
+	selection: Readonly<{
+		maximumObligations: number
+		evaluatedSignatureFamilyIds: readonly string[]
+		fieldOwnedFamilyIds: readonly string[]
+		notSourceConnectedFamilyIds: readonly string[]
+		notMateriallyDistinctFamilyIds: readonly string[]
+		redundantDirectionFamilyIds: readonly string[]
+		boundOmittedFamilyIds: readonly string[]
+	}>
+	obligations: readonly IdentityObligation[]
+	nodes: readonly IdentityObligationNode[]
+	edges: ReadonlyArray<Readonly<{
+		from: string
+		to: string
+		carried: boolean
+	}>>
+	winnerExplanation: Readonly<{
+		treatmentId: string
+		primaryTreatmentId: string
+		qualityIncumbentTreatmentId: string
+		selectedIdentityChallengerTreatmentId: string | null
+		selectionReason: IdentityWinnerSelectionReason
+		feasibleObligationIds: readonly string[]
+		coveredObligationIds: readonly string[]
+		deferredObligationIds: readonly string[]
+		qualityDeferredObligationIds: readonly string[]
+		priorityDeferredObligationIds: readonly string[]
+		obligationDeferrals: readonly IdentityObligationDeferral[]
+		maximumCompleteTreatmentCoverage: number
+		eligibleIdentityChallengerCount: number
+	}>
+}>
+
 export type ExactOverlayGradientChallengerTrace = Readonly<{
 	triggerEligible: boolean
 	reason: "primary-winner-gradient" | "accent-collapsed" | "no-accepted-gradient-variant" |
-		"no-legal-exact-overlay-gradient" | "foundation-gap" | "challenger-selected"
+		"no-legal-exact-overlay-gradient" | "foundation-gap" | "quality-guard" | "challenger-selected"
 	acceptedGradientVariantCount: number
 	existingExactOverlayGradientCount: number
 	projectedAttemptCount: number
 	projectedLegalCount: number
+	projectedUniqueCount: number
 	selectedChallengerId: string | null
 	selectedSource: "existing-complete" | "supplemental-projection" | null
 	primaryFoundationEvidenceLevel: number
 	challengerFoundationEvidenceLevel: number | null
 	replacedPrimaryWinner: boolean
+	qualityGuardRequired: boolean
+	qualityGuardRejectedCandidateCount: number
+	selectedChallengerPassesQualityGuard: boolean | null
+	qualityGuardEvaluations: readonly IdentityQualityGuardEvaluation[]
 }>
 
 export type ParetoRankingTrace = Readonly<{
+	version: "pareto-identity-winner-diagnostics-v3"
+	qualityGuardVersion: "complete-quality-domain-non-inferiority-v1"
 	evidenceResolution: number
 	dominanceUsesEvidenceLevels: true
-	rankingPriorityBlocks: readonly string[]
+	paretoBlocks: readonly IdentityQualityGuardBlock[]
+	rankingPriorityBlocks: readonly IdentityQualityGuardBlock[]
 	rawCandidateCount: number
 	uniqueCandidateCount: number
 	dominatedCandidateCount: number
 	frontierCandidateCount: number
+	globalParetoFrontierTreatmentIds: readonly string[]
 	frontierDirectionCount: number
+	identityRetentionFrontierCandidateCount: number
+	identityCarriedCandidateCount: number
+	identityCoverageRequiresQualityNonInferiority: true
+	qualityGuardBlocks: readonly IdentityQualityGuardBlock[]
+	globalParetoTopTreatmentId: string
+	qualityIncumbentTreatmentId: string
+	identityChallengerCount: number
+	eligibleIdentityChallengerCount: number
+	selectedIdentityChallengerTreatmentId: string | null
+	selectedIdentityChallengerQualityGuard: IdentityQualityGuardEvaluation | null
+	identityChallengerQualityGuards: readonly IdentityQualityGuardEvaluation[]
 	retainedCount: number
 	selectedTreatmentId: string
 	primaryTreatmentId: string
@@ -424,12 +586,240 @@ export type AlbumArtworkPaletteV2Result = Readonly<{
 		gradientFits: readonly GradientFitDiagnostic[]
 		completeCandidateCount: number
 		candidateAvailability: CandidateAvailabilityTrace
+		identityObligationGraph: IdentityObligationGraph
 		exactOverlayGradientChallenger: ExactOverlayGradientChallengerTrace
 		paretoRanking: ParetoRankingTrace
 		legacyScalarTopTreatment: CompletePaletteTreatment
 		emergency: EmergencyEligibility
 		bounds: typeof ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds
 	}>
+}>
+
+export type RecallAuditFamilyRegistryEntry = Readonly<{
+	familyId: string
+	sourceConnected: boolean
+	representativeStrategies: readonly ColorRepresentative["strategy"][]
+	laneRanks: Readonly<Record<EvidenceLane["name"], number>>
+	controlRetainedLanes: readonly EvidenceLane["name"][]
+	identityObligation: boolean
+}>
+
+export type RecallAuditFieldHypothesisRegistryEntry = Readonly<{
+	hypothesisId: string
+	kind: FieldTreatmentKind
+	familyIds: readonly string[]
+	sourceConnected: boolean
+	controlProposed: boolean
+	controlRetained: boolean
+}>
+
+export type RecallAuditFieldDirectionRegistryEntry = Readonly<{
+	key: string
+	hypothesisIds: readonly string[]
+	familyIds: readonly string[]
+	sourceConnected: boolean
+}>
+
+export type RecallAuditRoleDirectionRegistryEntry = Readonly<{
+	key: string
+	role: "foreground" | "accent"
+	familyId: string
+	sourceConnected: boolean
+	identityObligation: boolean
+}>
+
+export type AlbumArtworkPaletteV2RecallRegistry = Readonly<{
+	version: "album-artwork-palette-v2-recall-registry-0.7.3"
+	families: readonly RecallAuditFamilyRegistryEntry[]
+	fieldHypotheses: readonly RecallAuditFieldHypothesisRegistryEntry[]
+	fieldDirections: readonly RecallAuditFieldDirectionRegistryEntry[]
+	roleDirections: readonly RecallAuditRoleDirectionRegistryEntry[]
+	identityObligationFamilyIds: readonly string[]
+}>
+
+export type RecallAuditAvailabilityCell = Readonly<{
+	key: string
+	fieldDirectionKey: string
+	roleDirectionKey: string
+	role: "foreground" | "accent"
+	familyId: string
+	identityObligation: boolean
+	controlTreatmentKeys: readonly string[]
+	armTreatmentKeys: readonly string[]
+	controlAvailable: boolean
+	armAvailable: boolean
+	newlyAvailable: boolean
+}>
+
+export type RecallAuditAvailabilityMatrix = Readonly<{
+	fieldDirectionKeys: readonly string[]
+	roleDirectionKeys: readonly string[]
+	identityObligationRoleDirectionKeys: readonly string[]
+	cells: readonly RecallAuditAvailabilityCell[]
+}>
+
+export type RecallAuditCustodyStageDiagnostic = Readonly<{
+	stage: AlbumArtworkPaletteV2RecallCustodyStage
+	status: "available" | "unavailable" | "bypassed"
+	reason: string
+	treatmentKeys: readonly string[]
+}>
+
+export type RecallAuditCustodyDiagnostic = Readonly<{
+	cellKey: string
+	fieldDirectionKey: string
+	roleDirectionKey: string
+	identityObligation: boolean
+	stages: readonly RecallAuditCustodyStageDiagnostic[]
+	firstLossStage: AlbumArtworkPaletteV2RecallCustodyStage | null
+	firstLossReason: string | null
+}>
+
+export type RecallAuditQualificationInput = Readonly<{
+	treatment: Pick<CompletePaletteTreatment, "background" | "surface" | "foreground" | "accent" | "gradient">
+	controlTreatmentKeys: ReadonlySet<string> | readonly string[]
+	sourceConnectedFullLineage: boolean
+	legalUnderUnchangedRules: boolean
+	ordinaryParetoMember: boolean
+	completeDomainGuardPass: boolean
+	fillsControlEmptyFieldRoleCell: boolean
+}>
+
+export type RecallAuditTreatmentQualification = Readonly<{
+	treatmentKey: string
+	absentFromControl: boolean
+	sourceConnectedFullLineage: boolean
+	legalUnderUnchangedRules: boolean
+	ordinaryParetoMember: boolean
+	completeDomainGuardPass: boolean
+	fillsControlEmptyFieldRoleCell: boolean
+	qualifies: boolean
+	reasons: readonly string[]
+}>
+
+export type RecallAuditTreatmentLineage = Readonly<{
+	fieldHypothesisId: string
+	fieldDirectionKey: string
+	roleDirectionKeys: readonly string[]
+	familyIds: readonly string[]
+	representatives: ReadonlyArray<Readonly<{
+		role: Role
+		familyId: string | "generated"
+		hex: string
+		strategy: ColorRepresentative["strategy"]
+		sourceConnected: boolean
+	}>>
+	sourceConnected: boolean
+}>
+
+export type RecallAuditNewTreatment = Readonly<{
+	treatment: CompletePaletteTreatment
+	key: string
+	lineage: RecallAuditTreatmentLineage
+	qualification: RecallAuditTreatmentQualification
+	qualityGuard: IdentityQualityGuardEvaluation
+}>
+
+export type RecallAuditDomain = Readonly<{
+	arm: AlbumArtworkPaletteV2RecallAuditArm
+	changedStages: readonly AlbumArtworkPaletteV2RecallCustodyStage[]
+	rawCandidateCount: number
+	materializedCandidateCount: number
+	capacity: number
+	capacityReached: boolean
+	completeTreatments: readonly CompletePaletteTreatment[]
+	completeTreatmentKeys: readonly string[]
+	ordinaryParetoTreatmentKeys: readonly string[]
+	publicSlate: readonly CompletePaletteTreatment[]
+	qualityIncumbentTreatmentId: string
+}>
+
+export type AlbumArtworkPaletteV2RecallAudit = Readonly<{
+	version: "album-artwork-palette-v2-recall-audit-0.7.3"
+	arm: AlbumArtworkPaletteV2RecallAuditArm
+	controlExtraction: AlbumArtworkPaletteV2Result
+	control: RecallAuditDomain
+	treatment: RecallAuditDomain
+	newTreatments: readonly RecallAuditNewTreatment[]
+	registry: AlbumArtworkPaletteV2RecallRegistry
+	availability: RecallAuditAvailabilityMatrix
+	custody: readonly RecallAuditCustodyDiagnostic[]
+}>
+
+export type FactorizedParetoLogicalCounts = Readonly<{
+	checkpoint: 3_000 | 6_000
+	enumerableTupleCount: number
+	attemptedTupleCount: number
+	legalTupleCount: number
+	duplicateLegalKeyCount: number
+	uniqueCanonicalKeyCountBeforePareto: number
+	checkpointReached: boolean
+	truncatedTupleCount: number
+	ordinaryParetoKeyCount: number
+	completeDomainGuardPassingKeyCount: number
+	retainedUnionKeyCount: number
+}>
+
+export type FactorizedParetoUpstreamCertificate = Readonly<{
+	changedStages: readonly ["complete-treatment-construction"]
+	evidenceFamilyIds: readonly string[]
+	laneFamilyIds: Readonly<Record<EvidenceLane["name"], readonly string[]>>
+	fieldHypothesisIds: readonly string[]
+	fieldVariantKeys: readonly string[]
+	representativesPerRole: number
+	fieldRepresentativePairing: "same-index"
+}>
+
+export type FactorizedParetoTruncationWitnesses = Readonly<{
+	knownTreatmentKeys: readonly string[]
+	knownCellKeys: readonly string[]
+	otherwiseQualifyingTreatmentKeys: readonly string[]
+	otherwiseQualifyingCellKeys: readonly string[]
+}>
+
+export type FactorizedParetoEscalationReason =
+	"logical-domain-exhausted-before-checkpoint" |
+	"no-post-checkpoint-tuples" |
+	"post-checkpoint-qualification-not-evaluated" |
+	"verified-otherwise-qualifying-lineage-excluded-solely-by-checkpoint"
+
+export type FactorizedPareto6000TriggerCertificate = Readonly<{
+	version: "album-artwork-palette-v2-factorized-pareto-6000-trigger-v1"
+	sourceBinding: string
+	fromArm: "factorized-pareto-3000"
+	checkpoint: 3_000
+	trigger6000: boolean
+	exactCheckpointOnlyProof: boolean
+	reason: FactorizedParetoEscalationReason
+	witnesses: FactorizedParetoTruncationWitnesses
+	verifiedTriggerToken: string | null
+}>
+
+export type FactorizedParetoAuditDomain = Readonly<{
+	arm: AlbumArtworkPaletteV2FactorizedParetoAuditArm
+	checkpoint: 3_000 | 6_000
+	rawCandidateCount: number
+	materializedCandidateCount: number
+	capacity: number
+	capacityReached: boolean
+	completeTreatments: readonly CompletePaletteTreatment[]
+	completeTreatmentKeys: readonly string[]
+	publicSlate: readonly CompletePaletteTreatment[]
+	qualityIncumbentTreatmentId: string
+}>
+
+export type AlbumArtworkPaletteV2FactorizedParetoAudit = Readonly<{
+	version: "album-artwork-palette-v2-factorized-pareto-audit-0.7.3"
+	arm: AlbumArtworkPaletteV2FactorizedParetoAuditArm
+	controlExtraction: AlbumArtworkPaletteV2Result
+	control: RecallAuditDomain
+	treatment: FactorizedParetoAuditDomain
+	registry: AlbumArtworkPaletteV2RecallRegistry
+	upstream: FactorizedParetoUpstreamCertificate
+	logical: FactorizedParetoLogicalCounts
+	truncationWitnesses: FactorizedParetoTruncationWitnesses
+	retainedAdditions: readonly RecallAuditNewTreatment[]
+	escalation: FactorizedPareto6000TriggerCertificate
 }>
 
 type PerceptualBin = {
@@ -528,6 +918,11 @@ type EvaluatedGradientFit = Readonly<{
 	low: BandEndpoint | null
 	high: BandEndpoint | null
 	rejectionReasons: readonly string[]
+}>
+
+type IdentityObligationSelection = Readonly<{
+	obligations: readonly IdentityObligation[]
+	trace: IdentityObligationGraph["selection"]
 }>
 
 type BackgroundFieldDomain = Readonly<{
@@ -879,6 +1274,21 @@ function foregroundRoleScore(family: ColorFamilyEvidence): number {
 
 function signatureRoleScore(family: ColorFamilyEvidence): number {
 	return clamp(0.55 * family.signatureScore + 0.45 * family.signatureAccentObservation)
+}
+
+function rankAllLaneFamilies(
+	families: readonly ColorFamilyEvidence[],
+	name: EvidenceLane["name"],
+): ColorFamilyEvidence[] {
+	const score = name === "field"
+		? (family: ColorFamilyEvidence): number => family.fieldScore
+		: name === "signature" ? signatureRoleScore : foregroundRoleScore
+	return families
+		.filter(({ population }) => population > 0)
+		.sort((first, second) =>
+			compareNumbersDescending(score(first), score(second)) ||
+			compareNumbersDescending(first.population, second.population) ||
+			compareAscii(first.id, second.id))
 }
 
 function distinctAccentFidelity(
@@ -1985,14 +2395,15 @@ export function diagnoseGradientFits(evidence: NativePaletteEvidence): GradientF
 	return gradientFitDiagnostics(evaluateGradientFits(evidence, domains))
 }
 
-function buildFieldHypothesesFromEvaluatedFits(
+function buildFieldHypothesisProposalsFromEvaluatedFits(
 	evidence: NativePaletteEvidence,
 	evaluatedGradientFits: readonly EvaluatedGradientFit[],
+	scope: "control" | "all",
 ): FieldHypothesis[] {
 	const fieldLaneIds = evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? []
 	const fieldFamilies = fieldLaneIds.map((id) => familyById(evidence, id))
 	const hypotheses: FieldHypothesis[] = []
-	for (const family of fieldFamilies.slice(0, 5)) {
+	for (const family of fieldFamilies.slice(0, scope === "control" ? 5 : fieldFamilies.length)) {
 		hypotheses.push({
 			id: `one:${family.id}`,
 			kind: "one-field",
@@ -2023,8 +2434,9 @@ function buildFieldHypothesesFromEvaluatedFits(
 			)
 		return clamp(Math.max(distributed, resolvedLayer))
 	}
-	for (let firstIndex = 0; firstIndex < Math.min(8, fieldFamilies.length); firstIndex++) {
-		for (let secondIndex = firstIndex + 1; secondIndex < Math.min(8, fieldFamilies.length); secondIndex++) {
+	const flatFamilyCount = scope === "control" ? Math.min(8, fieldFamilies.length) : fieldFamilies.length
+	for (let firstIndex = 0; firstIndex < flatFamilyCount; firstIndex++) {
+		for (let secondIndex = firstIndex + 1; secondIndex < flatFamilyCount; secondIndex++) {
 			const first = fieldFamilies[firstIndex]
 			const second = fieldFamilies[secondIndex]
 			const distance = okDistance(first.prototype, second.prototype)
@@ -2069,7 +2481,7 @@ function buildFieldHypothesesFromEvaluatedFits(
 		}
 	}
 	flatCandidates.sort((first, second) => compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.id, second.id))
-	hypotheses.push(...flatCandidates.slice(0, 4))
+	hypotheses.push(...flatCandidates)
 
 	const gradientCandidates: FieldHypothesis[] = []
 	for (const { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, rejectionReasons } of evaluatedGradientFits) {
@@ -2120,8 +2532,18 @@ function buildFieldHypothesesFromEvaluatedFits(
 		})
 	}
 	gradientCandidates.sort((first, second) => compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.id, second.id))
+	hypotheses.push(...gradientCandidates)
+	return hypotheses
+		.sort((first, second) => compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.id, second.id))
+}
+
+function retainFieldHypotheses(proposals: readonly FieldHypothesis[]): FieldHypothesis[] {
+	const hypotheses = [
+		...proposals.filter(({ kind }) => kind === "one-field").slice(0, 5),
+		...proposals.filter(({ kind }) => kind === "separate-flat-fields").slice(0, 4),
+	]
 	let retainedGradients = 0
-	for (const candidate of gradientCandidates) {
+	for (const candidate of proposals.filter(({ kind }) => kind === "gradient-field")) {
 		if (hypotheses.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.fieldHypotheses || retainedGradients >= 3) break
 		if (hypotheses.some(({ id }) => id === candidate.id)) continue
 		hypotheses.push(candidate)
@@ -2131,6 +2553,17 @@ function buildFieldHypothesesFromEvaluatedFits(
 	return hypotheses
 		.sort((first, second) => compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.id, second.id))
 		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.fieldHypotheses)
+}
+
+function buildFieldHypothesesFromEvaluatedFits(
+	evidence: NativePaletteEvidence,
+	evaluatedGradientFits: readonly EvaluatedGradientFit[],
+): FieldHypothesis[] {
+	return retainFieldHypotheses(buildFieldHypothesisProposalsFromEvaluatedFits(
+		evidence,
+		evaluatedGradientFits,
+		"control",
+	))
 }
 
 export function buildFieldHypotheses(evidence: NativePaletteEvidence): FieldHypothesis[] {
@@ -2150,16 +2583,39 @@ function preferredRepresentatives(representatives: readonly ColorRepresentative[
 		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.representativesPerRole)
 }
 
-function buildFieldVariants(hypotheses: readonly FieldHypothesis[]): FieldVariant[] {
+function allRepresentatives(representatives: readonly ColorRepresentative[]): ColorRepresentative[] {
+	const preferred = preferredRepresentatives(representatives)
+	return preferred.concat(representatives.filter((candidate) =>
+		!preferred.some(({ rgb }) => sameColor(rgb, candidate.rgb))))
+}
+
+type FieldVariantOptions = Readonly<{
+	representatives: "control" | "all"
+	pairing: "same-index" | "cross-pair"
+}>
+
+function buildFieldVariants(
+	hypotheses: readonly FieldHypothesis[],
+	options: FieldVariantOptions = { representatives: "control", pairing: "same-index" },
+): FieldVariant[] {
 	const variants: FieldVariant[] = []
 	for (const hypothesis of hypotheses) {
-		const backgrounds = preferredRepresentatives(hypothesis.backgroundRepresentatives)
+		const backgrounds = options.representatives === "all"
+			? allRepresentatives(hypothesis.backgroundRepresentatives)
+			: preferredRepresentatives(hypothesis.backgroundRepresentatives)
 		const surfaces = hypothesis.surfaceFamilyId === null
 			? backgrounds
-			: preferredRepresentatives(hypothesis.surfaceRepresentatives)
-		for (let strategyIndex = 0; strategyIndex < Math.min(backgrounds.length, surfaces.length, 2); strategyIndex++) {
-			const background = backgrounds[strategyIndex] ?? backgrounds[0]
-			const surface = surfaces[strategyIndex] ?? surfaces[0]
+			: options.representatives === "all"
+				? allRepresentatives(hypothesis.surfaceRepresentatives)
+				: preferredRepresentatives(hypothesis.surfaceRepresentatives)
+		const pairs: Array<readonly [ColorRepresentative | undefined, ColorRepresentative | undefined]> =
+			options.pairing === "cross-pair" && hypothesis.kind !== "one-field"
+				? backgrounds.flatMap((background) => surfaces.map((surface) => [background, surface] as const))
+				: Array.from(
+					{ length: Math.min(backgrounds.length, surfaces.length, options.representatives === "control" ? 2 : Infinity) },
+					(_value, strategyIndex) => [backgrounds[strategyIndex] ?? backgrounds[0], surfaces[strategyIndex] ?? surfaces[0]] as const,
+				)
+		for (const [background, surface] of pairs) {
 			if (!background || !surface) continue
 			if (hypothesis.kind !== "one-field" && sameColor(background.rgb, surface.rgb)) continue
 			if (hypothesis.kind === "gradient-field" && okDistance(background.oklab, surface.oklab) < 0.028) continue
@@ -2193,6 +2649,101 @@ function buildFieldVariants(hypotheses: readonly FieldHypothesis[]): FieldVarian
 	}
 	return [...unique.values()].sort((first, second) =>
 		compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.hypothesis.id, second.hypothesis.id))
+}
+
+function buildIdentityObligationSelection(
+	evidence: NativePaletteEvidence,
+	hypotheses: readonly FieldHypothesis[],
+): IdentityObligationSelection {
+	const evaluatedSignatureFamilyIds = evidence.lanes.find(({ name }) => name === "signature")?.familyIds ?? []
+	const fieldOwnedFamilyIds = new Set(evaluatedSignatureFamilyIds.filter((familyId) => {
+		const family = familyById(evidence, familyId)
+		return evidenceLevel(family.fieldScore) >= evidenceLevel(signatureRoleScore(family))
+	}))
+	const notSourceConnectedFamilyIds: string[] = []
+	const notMateriallyDistinctFamilyIds: string[] = []
+	const ranked: Array<Readonly<{
+		family: ColorFamilyEvidence
+		regionIds: readonly string[]
+		connectedPopulationFraction: number
+		materialDistanceFromField: number
+		regionEvidenceLevel: number
+	}>> = []
+	const fieldFamilies = [...fieldOwnedFamilyIds].map((id) => familyById(evidence, id))
+
+	for (const familyId of evaluatedSignatureFamilyIds) {
+		if (fieldOwnedFamilyIds.has(familyId)) continue
+		const family = familyById(evidence, familyId)
+		const connectedRegions = family.components
+			.filter(({ population, retainedFor }) => population > 1 && retainedFor.includes("role-observation"))
+			.sort((first, second) =>
+				compareNumbersDescending(first.observation.signatureAccent.score, second.observation.signatureAccent.score) ||
+				compareNumbersDescending(first.population, second.population) ||
+				first.startPixelIndex - second.startPixelIndex)
+		if (connectedRegions.length === 0) {
+			notSourceConnectedFamilyIds.push(family.id)
+			continue
+		}
+		const materialDistanceFromField = fieldFamilies.length === 0
+			? 1
+			: Math.min(...fieldFamilies.map((fieldFamily) => okDistance(family.prototype, fieldFamily.prototype)))
+		if (materialDistanceFromField < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance) {
+			notMateriallyDistinctFamilyIds.push(family.id)
+			continue
+		}
+		ranked.push({
+			family,
+			regionIds: connectedRegions.slice(0, 4).map(({ id }) => id),
+			connectedPopulationFraction: connectedRegions[0].populationFraction,
+			materialDistanceFromField,
+			regionEvidenceLevel: evidenceLevel(connectedRegions[0].observation.signatureAccent.score),
+		})
+	}
+	ranked.sort((first, second) =>
+		compareNumbersDescending(first.regionEvidenceLevel, second.regionEvidenceLevel) ||
+		compareNumbersDescending(evidenceLevel(signatureRoleScore(first.family)), evidenceLevel(signatureRoleScore(second.family))) ||
+		compareNumbersDescending(first.connectedPopulationFraction, second.connectedPopulationFraction) ||
+		compareAscii(first.family.id, second.family.id))
+
+	const selected: typeof ranked = []
+	const redundantDirectionFamilyIds: string[] = []
+	const boundOmittedFamilyIds: string[] = []
+	for (const candidate of ranked) {
+		if (selected.some(({ family }) =>
+			okDistance(family.prototype, candidate.family.prototype) < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance)) {
+			redundantDirectionFamilyIds.push(candidate.family.id)
+			continue
+		}
+		if (selected.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations) {
+			boundOmittedFamilyIds.push(candidate.family.id)
+			continue
+		}
+		selected.push(candidate)
+	}
+	return {
+		obligations: selected.map((candidate, priority): IdentityObligation => ({
+			id: `identity-obligation:${candidate.family.id}`,
+			familyId: candidate.family.id,
+			priority,
+			source: {
+				regionIds: candidate.regionIds,
+				connectedPopulationFraction: candidate.connectedPopulationFraction,
+				materialDistanceFromField: candidate.materialDistanceFromField,
+				signatureRoleScore: signatureRoleScore(candidate.family),
+				signatureEvidenceLevel: evidenceLevel(signatureRoleScore(candidate.family)),
+				regionEvidenceLevel: candidate.regionEvidenceLevel,
+			},
+		})),
+		trace: {
+			maximumObligations: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations,
+			evaluatedSignatureFamilyIds,
+			fieldOwnedFamilyIds: [...fieldOwnedFamilyIds].sort(compareAscii),
+			notSourceConnectedFamilyIds: notSourceConnectedFamilyIds.sort(compareAscii),
+			notMateriallyDistinctFamilyIds: notMateriallyDistinctFamilyIds.sort(compareAscii),
+			redundantDirectionFamilyIds: redundantDirectionFamilyIds.sort(compareAscii),
+			boundOmittedFamilyIds: boundOmittedFamilyIds.sort(compareAscii),
+		},
+	}
 }
 
 export function fieldSamples(variant: Readonly<{
@@ -2340,14 +2891,58 @@ function generatedRepresentative(
 	}
 }
 
-function treatmentKey(treatment: CompletePaletteTreatment): string {
+export function completeTreatmentKey(treatment: Pick<
+	CompletePaletteTreatment,
+	"background" | "surface" | "foreground" | "accent" | "gradient"
+>): string {
 	return [
-		treatment.background.hex,
-		treatment.surface.hex,
-		treatment.foreground.hex,
-		treatment.accent.hex,
-		treatment.gradient ? "1" : "0",
+		treatment.background.hex.toLowerCase(),
+		treatment.surface.hex.toLowerCase(),
+		treatment.foreground.hex.toLowerCase(),
+		treatment.accent.hex.toLowerCase(),
+		treatment.gradient ? "gradient" : "flat",
 	].join(":")
+}
+
+function treatmentKey(treatment: CompletePaletteTreatment): string {
+	return completeTreatmentKey(treatment)
+}
+
+export function roleDirectionKeys(treatment: CompletePaletteTreatment): string[] {
+	return [
+		`foreground:${treatment.familyRoles.foreground}`,
+		...treatment.collapse.accent ? [] : [`accent:${treatment.familyRoles.accent}`],
+	]
+}
+
+export function qualifyRecallAuditTreatment(
+	input: RecallAuditQualificationInput,
+): RecallAuditTreatmentQualification {
+	const treatmentKey = completeTreatmentKey(input.treatment)
+	const controlTreatmentKeys = input.controlTreatmentKeys instanceof Set
+		? input.controlTreatmentKeys
+		: new Set(input.controlTreatmentKeys)
+	const absentFromControl = !controlTreatmentKeys.has(treatmentKey)
+	const reasons = [
+		...absentFromControl ? [] : ["complete-treatment-key-present-in-control"],
+		...input.sourceConnectedFullLineage ? [] : ["lineage-is-not-fully-source-connected"],
+		...input.legalUnderUnchangedRules ? [] : ["fails-unchanged-treatment-legality"],
+		...input.ordinaryParetoMember || input.completeDomainGuardPass
+			? []
+			: ["neither-ordinary-pareto-member-nor-complete-domain-non-inferior"],
+		...input.fillsControlEmptyFieldRoleCell ? [] : ["does-not-fill-control-empty-field-role-cell"],
+	]
+	return {
+		treatmentKey,
+		absentFromControl,
+		sourceConnectedFullLineage: input.sourceConnectedFullLineage,
+		legalUnderUnchangedRules: input.legalUnderUnchangedRules,
+		ordinaryParetoMember: input.ordinaryParetoMember,
+		completeDomainGuardPass: input.completeDomainGuardPass,
+		fillsControlEmptyFieldRoleCell: input.fillsControlEmptyFieldRoleCell,
+		qualifies: reasons.length === 0,
+		reasons,
+	}
 }
 
 export function fieldDirectionKey(treatment: CompletePaletteTreatment): string {
@@ -2375,39 +2970,60 @@ export function visuallyNear(first: CompletePaletteTreatment, second: CompletePa
 		okDistance(first[role].oklab, second[role].oklab) < 0.025)
 }
 
-const PARETO_BLOCKS = [
-	"fieldFidelity",
-	"surfaceFidelity",
-	"artworkIdentity",
-	"representativeness",
-	"foregroundUtility",
-	"accentFidelity",
-	"accentUtility",
-	"coherence",
-	"economy",
-] as const
-
-const RANKING_PRIORITY_BLOCKS = [
-	"treatmentFoundation",
-	"fieldIdentity",
-	"fieldFidelity",
-	"fieldStructure",
-	"accentFidelity",
-	"accentUtility",
-	"artworkIdentity",
-	"foregroundUtility",
-	"representativeness",
-	"coherence",
-	"economy",
-] as const
-
 function effectiveBlock(treatment: CompletePaletteTreatment, block: keyof CompletePaletteScores): number {
 	return treatment.scores[block] - treatment.scores.generatedPenalty
 }
 
+export function evaluateIdentityQualityGuard(
+	incumbent: CompletePaletteTreatment,
+	challenger: CompletePaletteTreatment,
+): IdentityQualityGuardEvaluation {
+	const blocks = ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) => {
+		const incumbentEvidenceLevel = evidenceLevel(effectiveBlock(incumbent, block))
+		const challengerEvidenceLevel = evidenceLevel(effectiveBlock(challenger, block))
+		return {
+			block,
+			incumbentEvidenceLevel,
+			challengerEvidenceLevel,
+			pass: challengerEvidenceLevel >= incumbentEvidenceLevel,
+		}
+	})
+	const resolvedLosses = blocks.filter(({ pass }) => !pass).map(({
+		block,
+		incumbentEvidenceLevel,
+		challengerEvidenceLevel,
+	}) => ({
+		block,
+		incumbentEvidenceLevel,
+		challengerEvidenceLevel,
+		evidenceLevelLoss: incumbentEvidenceLevel - challengerEvidenceLevel,
+	}))
+	return {
+		incumbentTreatmentId: incumbent.id,
+		challengerTreatmentId: challenger.id,
+		pass: resolvedLosses.length === 0,
+		blocks,
+		resolvedLosses,
+	}
+}
+
+export function filterIdentityQualityGuardCandidates(
+	incumbent: CompletePaletteTreatment,
+	candidates: readonly CompletePaletteTreatment[],
+): Readonly<{
+	eligibleCandidates: readonly CompletePaletteTreatment[]
+	evaluations: readonly IdentityQualityGuardEvaluation[]
+}> {
+	const evaluations = candidates.map((candidate) => evaluateIdentityQualityGuard(incumbent, candidate))
+	return {
+		eligibleCandidates: candidates.filter((_candidate, index) => evaluations[index].pass),
+		evaluations,
+	}
+}
+
 export function paretoDominates(first: CompletePaletteTreatment, second: CompletePaletteTreatment): boolean {
 	let strictlyBetter = false
-	for (const block of PARETO_BLOCKS) {
+	for (const block of ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS) {
 		const firstValue = evidenceLevel(effectiveBlock(first, block))
 		const secondValue = evidenceLevel(effectiveBlock(second, block))
 		if (firstValue < secondValue) return false
@@ -2417,7 +3033,7 @@ export function paretoDominates(first: CompletePaletteTreatment, second: Complet
 }
 
 function compareParetoTreatments(first: CompletePaletteTreatment, second: CompletePaletteTreatment): number {
-	for (const block of RANKING_PRIORITY_BLOCKS) {
+	for (const block of ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS) {
 		const comparison = compareNumbersDescending(
 			evidenceLevel(effectiveBlock(first, block)),
 			evidenceLevel(effectiveBlock(second, block)),
@@ -2427,12 +3043,88 @@ function compareParetoTreatments(first: CompletePaletteTreatment, second: Comple
 	return compareAscii(first.id, second.id)
 }
 
+function treatmentCoversIdentityObligation(
+	treatment: CompletePaletteTreatment,
+	obligation: IdentityObligation,
+): boolean {
+	return treatment.familyRoles.foreground === obligation.familyId ||
+		(!treatment.collapse.accent && treatment.familyRoles.accent === obligation.familyId)
+}
+
+function coveredIdentityObligations(
+	treatment: CompletePaletteTreatment,
+	obligations: readonly IdentityObligation[],
+): IdentityObligation[] {
+	return obligations.filter((obligation) => treatmentCoversIdentityObligation(treatment, obligation))
+}
+
+function compareIdentityObligationCoverage(
+	first: CompletePaletteTreatment,
+	second: CompletePaletteTreatment,
+	obligations: readonly IdentityObligation[],
+): number {
+	const firstCovered = coveredIdentityObligations(first, obligations)
+	const secondCovered = coveredIdentityObligations(second, obligations)
+	const coverageComparison = compareNumbersDescending(firstCovered.length, secondCovered.length)
+	if (coverageComparison !== 0) return coverageComparison
+	for (const obligation of obligations) {
+		const firstHas = treatmentCoversIdentityObligation(first, obligation)
+		const secondHas = treatmentCoversIdentityObligation(second, obligation)
+		if (firstHas !== secondHas) return firstHas ? -1 : 1
+	}
+	return 0
+}
+
+function compareIdentityTreatments(
+	first: CompletePaletteTreatment,
+	second: CompletePaletteTreatment,
+	obligations: readonly IdentityObligation[],
+): number {
+	const identityComparison = compareIdentityObligationCoverage(first, second, obligations)
+	if (identityComparison !== 0) return identityComparison
+	return compareParetoTreatments(first, second)
+}
+
+export function selectQualityGuardedIdentityChallenger(
+	qualityIncumbent: CompletePaletteTreatment,
+	candidates: readonly CompletePaletteTreatment[],
+	obligations: readonly IdentityObligation[],
+): Readonly<{
+	identityChallengers: readonly CompletePaletteTreatment[]
+	eligibleIdentityChallengers: readonly CompletePaletteTreatment[]
+	selectedIdentityChallenger: CompletePaletteTreatment | null
+	qualityGuardEvaluations: readonly IdentityQualityGuardEvaluation[]
+}> {
+	const identityChallengers = candidates.filter((treatment) =>
+		compareIdentityObligationCoverage(treatment, qualityIncumbent, obligations) < 0)
+	const {
+		eligibleCandidates,
+		evaluations: qualityGuardEvaluations,
+	} = filterIdentityQualityGuardCandidates(qualityIncumbent, identityChallengers)
+	const eligibleIdentityChallengers = [...eligibleCandidates]
+		.sort((first, second) => compareIdentityTreatments(first, second, obligations))
+	return {
+		identityChallengers,
+		eligibleIdentityChallengers,
+		selectedIdentityChallenger: eligibleIdentityChallengers[0] ?? null,
+		qualityGuardEvaluations,
+	}
+}
+
 function retainRoleFamilyDirections<T extends Readonly<{ family: Readonly<{ id: string }> }>>(
 	options: readonly T[],
 	maximum: number,
+	obligationFamilyIds: readonly string[] = [],
 ): T[] {
 	const retained: T[] = []
 	const familyIds = new Set<string>()
+	for (const familyId of obligationFamilyIds) {
+		const option = options.find(({ family }) => family.id === familyId)
+		if (!option || familyIds.has(familyId)) continue
+		retained.push(option)
+		familyIds.add(familyId)
+		if (retained.length >= maximum) return retained
+	}
 	for (const option of options) {
 		if (familyIds.has(option.family.id)) continue
 		retained.push(option)
@@ -2444,10 +3136,14 @@ function retainRoleFamilyDirections<T extends Readonly<{ family: Readonly<{ id: 
 
 export function retainPeakObservableFamilyDirections<
 	T extends Readonly<{ family: Readonly<{ id: string }>; signedContrasts: readonly number[] }>,
->(options: readonly T[], maximum: number): Readonly<{ retained: readonly T[]; rejectedCount: number }> {
+>(
+	options: readonly T[],
+	maximum: number,
+	obligationFamilyIds: readonly string[] = [],
+): Readonly<{ retained: readonly T[]; rejectedCount: number }> {
 	const observable = options.filter(({ signedContrasts }) => hasPeakAPCAObservability(signedContrasts))
 	return {
-		retained: retainRoleFamilyDirections(observable, maximum),
+		retained: retainRoleFamilyDirections(observable, maximum, obligationFamilyIds),
 		rejectedCount: options.length - observable.length,
 	}
 }
@@ -2457,6 +3153,186 @@ export function paretoFrontier(treatments: readonly CompletePaletteTreatment[]):
 		.filter((candidate, candidateIndex) => !treatments.some((other, otherIndex) =>
 			otherIndex !== candidateIndex && paretoDominates(other, candidate)))
 		.sort(compareParetoTreatments)
+}
+
+function buildIdentityObligationGraph(
+	selection: IdentityObligationSelection,
+	availableRolesByFamily: ReadonlyMap<string, ReadonlySet<"foreground" | "accent">>,
+	completeTreatments: readonly CompletePaletteTreatment[],
+	retentionFrontier: readonly CompletePaletteTreatment[],
+	retainedSlate: readonly CompletePaletteTreatment[],
+	winner: CompletePaletteTreatment,
+	primaryWinner: CompletePaletteTreatment,
+	qualityIncumbent: CompletePaletteTreatment,
+	selectedIdentityChallenger: CompletePaletteTreatment | null,
+	eligibleIdentityChallengers: readonly CompletePaletteTreatment[],
+	selectionReason: IdentityWinnerSelectionReason,
+): IdentityObligationGraph {
+	const nodes: IdentityObligationNode[] = []
+	const edges: IdentityObligationGraph["edges"][number][] = []
+	const stages: readonly IdentityObligationStage[] = [
+		"source-signature",
+		"role-availability",
+		"complete-treatment",
+		"retention-frontier",
+		"retained-slate",
+		"winner-explanation",
+	]
+	const nodeId = (obligation: IdentityObligation, stage: IdentityObligationStage): string => `${obligation.id}:${stage}`
+	const stageTreatments = (
+		values: readonly CompletePaletteTreatment[],
+		obligation: IdentityObligation,
+	): CompletePaletteTreatment[] => values
+		.filter((treatment) => treatmentCoversIdentityObligation(treatment, obligation))
+		.sort((first, second) => compareIdentityTreatments(first, second, selection.obligations))
+	const feasibleObligations = selection.obligations.filter((obligation) =>
+		completeTreatments.some((treatment) => treatmentCoversIdentityObligation(treatment, obligation)))
+	const winnerCovered = coveredIdentityObligations(winner, selection.obligations)
+	const maximumCompleteTreatmentCoverage = completeTreatments.reduce((maximum, treatment) =>
+		Math.max(maximum, coveredIdentityObligations(treatment, selection.obligations).length), 0)
+	if (winnerCovered.length > maximumCompleteTreatmentCoverage) {
+		throw new Error("Identity-obligation winner exceeds complete-treatment coverage")
+	}
+	if (selectedIdentityChallenger && !evaluateIdentityQualityGuard(qualityIncumbent, selectedIdentityChallenger).pass) {
+		throw new Error("Selected identity challenger violates the quality guard")
+	}
+	if (selectedIdentityChallenger && !evaluateIdentityQualityGuard(qualityIncumbent, winner).pass) {
+		throw new Error("Final identity-selected winner violates the quality guard")
+	}
+	const obligationDeferrals: IdentityObligationDeferral[] = []
+
+	for (const obligation of selection.obligations) {
+		const availableRoles = [...(availableRolesByFamily.get(obligation.familyId) ?? [])]
+			.sort(compareAscii) as ("foreground" | "accent")[]
+		const complete = stageTreatments(completeTreatments, obligation)
+		const frontier = stageTreatments(retentionFrontier, obligation)
+		const slate = stageTreatments(retainedSlate, obligation)
+		if (availableRoles.length > 0 && complete.length === 0) {
+			throw new Error(`Identity obligation ${obligation.id} was lost during complete-treatment construction`)
+		}
+		if (complete.length > 0 && availableRoles.length === 0) {
+			throw new Error(`Identity obligation ${obligation.id} has a complete treatment without role availability`)
+		}
+		if (complete.length > 0 && frontier.length === 0) {
+			throw new Error(`Identity obligation ${obligation.id} was lost during frontier retention`)
+		}
+		if (frontier.length > 0 && slate.length === 0) {
+			throw new Error(`Identity obligation ${obligation.id} was lost during slate retention`)
+		}
+		const pushNode = (
+			stage: IdentityObligationStage,
+			status: IdentityObligationNode["status"],
+			treatments: readonly CompletePaletteTreatment[],
+			reason: string,
+		): void => {
+			nodes.push({
+				id: nodeId(obligation, stage),
+				obligationId: obligation.id,
+				familyId: obligation.familyId,
+				stage,
+				status,
+				availableRoles: stage === "role-availability" ? availableRoles : [],
+				treatmentCount: treatments.length,
+				treatmentIds: treatments.slice(0, 8).map(({ id }) => id),
+				reason,
+			})
+		}
+		pushNode("source-signature", "satisfied", [], "source-connected-materially-distinct-signature-evidence")
+		pushNode(
+			"role-availability",
+			availableRoles.length > 0 ? "satisfied" : "blocked",
+			[],
+			availableRoles.length > 0
+				? "peak-observable-obligation-role-available"
+				: "no-legal-peak-observable-foreground-or-distinct-accent-role",
+		)
+		pushNode(
+			"complete-treatment",
+			complete.length > 0 ? "satisfied" : "blocked",
+			complete,
+			complete.length > 0 ? "obligation-carried-by-complete-treatment" : "blocked-at-role-availability",
+		)
+		pushNode(
+			"retention-frontier",
+			frontier.length > 0 ? "satisfied" : "blocked",
+			frontier,
+			frontier.length > 0 ? "obligation-stratified-frontier-representative-retained" : "no-complete-treatment-to-retain",
+		)
+		pushNode(
+			"retained-slate",
+			slate.length > 0 ? "satisfied" : "blocked",
+			slate,
+			slate.length > 0 ? "obligation-reserved-in-retained-slate" : "no-frontier-representative-to-retain",
+		)
+		const winnerHasObligation = treatmentCoversIdentityObligation(winner, obligation)
+		const qualityEligibleCarriers = complete.filter((treatment) =>
+			evaluateIdentityQualityGuard(qualityIncumbent, treatment).pass)
+		const bestCarrier = complete.length === 0 ? null : [...complete].sort(compareParetoTreatments)[0]
+		const bestCarrierGuard = bestCarrier === null ? null : evaluateIdentityQualityGuard(qualityIncumbent, bestCarrier)
+		if (!winnerHasObligation && bestCarrier && bestCarrierGuard) {
+			obligationDeferrals.push({
+				obligationId: obligation.id,
+				reason: qualityEligibleCarriers.length === 0
+					? "all-complete-treatment-carriers-failed-quality-guard"
+					: "quality-eligible-carrier-deferred-by-higher-obligation-coverage-or-priority",
+				completeCarrierCount: complete.length,
+				qualityEligibleCarrierCount: qualityEligibleCarriers.length,
+				bestCarrierTreatmentId: bestCarrier.id,
+				failedQualityGuardBlocks: bestCarrierGuard.blocks
+					.filter(({ pass }) => !pass)
+					.map(({ block }) => block),
+			})
+		}
+		pushNode(
+			"winner-explanation",
+			winnerHasObligation ? "satisfied" : complete.length > 0 ? "deferred" : "blocked",
+			winnerHasObligation ? [winner] : [],
+			winnerHasObligation
+				? "selected-winner-covers-obligation"
+				: complete.length > 0
+					? qualityEligibleCarriers.length === 0
+						? "all-complete-treatment-carriers-failed-quality-guard"
+						: "quality-eligible-carrier-deferred-by-higher-obligation-coverage-or-priority"
+					: "obligation-infeasible-before-winner-selection",
+		)
+		for (let index = 1; index < stages.length; index++) {
+			const destination = nodes.find((node) => node.id === nodeId(obligation, stages[index]))!
+			edges.push({
+				from: nodeId(obligation, stages[index - 1]),
+				to: destination.id,
+				carried: destination.status === "satisfied",
+			})
+		}
+	}
+
+	return {
+		version: "identity-obligation-graph-v3",
+		selection: selection.trace,
+		obligations: selection.obligations,
+		nodes,
+		edges,
+		winnerExplanation: {
+			treatmentId: winner.id,
+			primaryTreatmentId: primaryWinner.id,
+			qualityIncumbentTreatmentId: qualityIncumbent.id,
+			selectedIdentityChallengerTreatmentId: selectedIdentityChallenger?.id ?? null,
+			selectionReason,
+			feasibleObligationIds: feasibleObligations.map(({ id }) => id),
+			coveredObligationIds: winnerCovered.map(({ id }) => id),
+			deferredObligationIds: feasibleObligations
+				.filter((obligation) => !treatmentCoversIdentityObligation(winner, obligation))
+				.map(({ id }) => id),
+			qualityDeferredObligationIds: obligationDeferrals
+				.filter(({ reason }) => reason === "all-complete-treatment-carriers-failed-quality-guard")
+				.map(({ obligationId }) => obligationId),
+			priorityDeferredObligationIds: obligationDeferrals
+				.filter(({ reason }) => reason === "quality-eligible-carrier-deferred-by-higher-obligation-coverage-or-priority")
+				.map(({ obligationId }) => obligationId),
+			obligationDeferrals,
+			maximumCompleteTreatmentCoverage,
+			eligibleIdentityChallengerCount: eligibleIdentityChallengers.length,
+		},
+	}
 }
 
 export function isExactOverlayGradientChallenger(
@@ -2687,15 +3563,27 @@ export function generateCompletePaletteTreatments(
 ): Readonly<{
 	winner: CompletePaletteTreatment
 	alternatives: readonly CompletePaletteTreatment[]
+	completeTreatments: readonly CompletePaletteTreatment[]
 	candidateCount: number
 	emergency: EmergencyEligibility
 	candidateAvailability: CandidateAvailabilityTrace
+	identityObligationGraph: IdentityObligationGraph
 	exactOverlayGradientChallenger: ExactOverlayGradientChallengerTrace
 	paretoRanking: ParetoRankingTrace
 	legacyScalarTopTreatment: CompletePaletteTreatment
 }> {
 	const fieldVariants = buildFieldVariants(hypotheses)
 	if (fieldVariants.length === 0) throw new Error("No field variants are available")
+	const identitySelection = buildIdentityObligationSelection(evidence, hypotheses)
+	const obligationFamilyIds = identitySelection.obligations.map(({ familyId }) => familyId)
+	const obligationFamilyIdSet = new Set(obligationFamilyIds)
+	const availableRolesByObligationFamily = new Map<string, Set<"foreground" | "accent">>()
+	const recordAvailableRole = (familyId: string, role: "foreground" | "accent"): void => {
+		if (!obligationFamilyIdSet.has(familyId)) return
+		const roles = availableRolesByObligationFamily.get(familyId) ?? new Set<"foreground" | "accent">()
+		roles.add(role)
+		availableRolesByObligationFamily.set(familyId, roles)
+	}
 	const foregroundLaneIds = evidence.lanes.find(({ name }) => name === "foreground")?.familyIds ?? []
 	const foregroundIds = new Set(foregroundLaneIds)
 	const foregroundFamilies = foregroundLaneIds.map((id) => familyById(evidence, id))
@@ -2753,7 +3641,11 @@ export function generateCompletePaletteTreatments(
 		const foregroundRetention = retainPeakObservableFamilyDirections(
 			rankedForegroundOptions,
 			foregroundsPerFieldVariantQuota,
+			obligationFamilyIds,
 		)
+		for (const option of rankedForegroundOptions) {
+			if (hasPeakAPCAObservability(option.signedContrasts)) recordAvailableRole(option.family.id, "foreground")
+		}
 		foregroundPeakUnobservableRejectedOptionCount += foregroundRetention.rejectedCount
 		const foregroundOptions = foregroundRetention.retained
 
@@ -2785,7 +3677,11 @@ export function generateCompletePaletteTreatments(
 			const accentRetention = retainPeakObservableFamilyDirections(
 				rankedAccents,
 				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
+				obligationFamilyIds,
 			)
+			for (const option of rankedAccents) {
+				if (hasPeakAPCAObservability(option.signedContrasts)) recordAvailableRole(option.family.id, "accent")
+			}
 			distinctAccentPeakUnobservableRejectedOptionCount += accentRetention.rejectedCount
 			const accents = accentRetention.retained
 			const accentOpportunity = accents[0]?.fidelity ?? 0
@@ -2855,8 +3751,12 @@ export function generateCompletePaletteTreatments(
 				fieldFidelity: clamp(sourceHypothesis.fieldFidelity * 0.35),
 				surfaceContribution: 0,
 			}
-			for (const option of supportedRepresentatives.slice(0, 8)) {
+			const emergencySourceOptions = retainRoleFamilyDirections(supportedRepresentatives, 8, obligationFamilyIds)
+			for (const option of emergencySourceOptions) {
 				if (sameColor(option.representative.rgb, background.rgb)) continue
+				const signedContrasts = fieldSamples(emergencyVariant).map((sample) =>
+					apcaContrast(option.representative.rgb, sample.rgb))
+				if (hasPeakAPCAObservability(signedContrasts)) recordAvailableRole(option.family.id, "foreground")
 				const treatment = createTreatment(
 					emergencyVariant,
 					option.representative,
@@ -2868,7 +3768,9 @@ export function generateCompletePaletteTreatments(
 					0,
 					0,
 				)
-				if (treatment) treatments.push(treatment)
+				if (treatment) {
+					treatments.push(treatment)
+				}
 			}
 		}
 	}
@@ -2884,30 +3786,73 @@ export function generateCompletePaletteTreatments(
 		compareNumbersDescending(first.scores.rankingScore, second.scores.rankingScore) ||
 		compareNumbersDescending(first.scores.balance, second.scores.balance) ||
 		compareAscii(first.id, second.id))[0]
-	const frontier = paretoFrontier(uniqueTreatments)
-	if (frontier.length === 0) throw new Error("Pareto frontier is empty")
+	const globalFrontier = paretoFrontier(uniqueTreatments)
+	if (globalFrontier.length === 0) throw new Error("Pareto frontier is empty")
+	const qualityIncumbent = globalFrontier[0]
+	const identityRanked = [...uniqueTreatments].sort((first, second) =>
+		compareIdentityTreatments(first, second, identitySelection.obligations))
+	const {
+		identityChallengers,
+		eligibleIdentityChallengers,
+		selectedIdentityChallenger,
+		qualityGuardEvaluations: identityChallengerQualityGuards,
+	} = selectQualityGuardedIdentityChallenger(qualityIncumbent, uniqueTreatments, identitySelection.obligations)
+	const primaryWinner = selectedIdentityChallenger ?? qualityIncumbent
+	const hasFeasibleObligation = identitySelection.obligations.some((obligation) =>
+		uniqueTreatments.some((treatment) => treatmentCoversIdentityObligation(treatment, obligation)))
+	const identitySelectionReason: IdentityWinnerSelectionReason = !hasFeasibleObligation
+		? "no-feasible-identity-obligation"
+		: identityChallengers.length === 0
+			? "quality-incumbent-already-identity-optimal"
+			: selectedIdentityChallenger === null
+				? "all-identity-challengers-failed-quality-guard"
+				: "quality-guarded-identity-challenger-selected"
+	const retentionByTreatment = new Map(globalFrontier.map((treatment) => [treatmentKey(treatment), treatment]))
+	const obligationFrontierRepresentative = new Map<string, CompletePaletteTreatment>()
+	for (const obligation of identitySelection.obligations) {
+		const carriers = uniqueTreatments.filter((treatment) => treatmentCoversIdentityObligation(treatment, obligation))
+		const representative = carriers.length === 0
+			? null
+			: paretoFrontier(carriers).sort((first, second) =>
+				compareIdentityTreatments(first, second, identitySelection.obligations))[0]
+		if (!representative) continue
+		obligationFrontierRepresentative.set(obligation.id, representative)
+		retentionByTreatment.set(treatmentKey(representative), representative)
+	}
+	const unrestrictedIdentityWinner = identityRanked[0]
+	retentionByTreatment.set(treatmentKey(unrestrictedIdentityWinner), unrestrictedIdentityWinner)
+	const frontier = [...retentionByTreatment.values()].sort((first, second) =>
+		compareIdentityTreatments(first, second, identitySelection.obligations))
 	const directional = new Map<string, CompletePaletteTreatment>()
 	for (const treatment of frontier) {
 		const key = completeDirectionKey(treatment)
 		if (!directional.has(key)) directional.set(key, treatment)
 	}
-	const directionalRanked = [...directional.values()].sort(compareParetoTreatments)
-	const selected: CompletePaletteTreatment[] = [frontier[0]]
-	const selectedKeys = new Set([treatmentKey(frontier[0])])
-	const selectedDirections = new Set([completeDirectionKey(frontier[0])])
-	const selectedFieldDirections = new Set([fieldDirectionKey(frontier[0])])
-	const selectedFieldTreatments = new Set([frontier[0].fieldTreatment])
+	const directionalRanked = [...directional.values()].sort((first, second) =>
+		compareIdentityTreatments(first, second, identitySelection.obligations))
+	const selected: CompletePaletteTreatment[] = [primaryWinner]
+	const selectedKeys = new Set([treatmentKey(primaryWinner)])
+	const selectedDirections = new Set([completeDirectionKey(primaryWinner)])
+	const selectedFieldDirections = new Set([fieldDirectionKey(primaryWinner)])
+	const selectedFieldTreatments = new Set([primaryWinner.fieldTreatment])
 	const maximumTreatments = ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.retainedTreatments
-	const addCandidate = (candidate: CompletePaletteTreatment): boolean => {
+	const addCandidate = (candidate: CompletePaletteTreatment, obligationRequired = false): boolean => {
 		const key = treatmentKey(candidate)
 		const direction = completeDirectionKey(candidate)
 		if (selected.length >= maximumTreatments || selectedKeys.has(key) || selectedDirections.has(direction)) return false
-		if (selected.some((incumbent) => visuallyNear(incumbent, candidate))) return false
+		if (!obligationRequired && selected.some((incumbent) => visuallyNear(incumbent, candidate))) return false
 		selected.push(candidate)
 		selectedKeys.add(key)
 		selectedDirections.add(direction)
 		selectedFieldDirections.add(fieldDirectionKey(candidate))
 		return true
+	}
+	for (const obligation of identitySelection.obligations) {
+		if (selected.some((treatment) => treatmentCoversIdentityObligation(treatment, obligation))) continue
+		const representative = obligationFrontierRepresentative.get(obligation.id)
+		if (representative && !addCandidate(representative, true)) {
+			throw new Error(`Identity obligation ${obligation.id} could not reserve a retained-slate direction`)
+		}
 	}
 	for (const candidate of directionalRanked) {
 		if (selected.length >= maximumTreatments) break
@@ -2923,17 +3868,26 @@ export function generateCompletePaletteTreatments(
 		if (selected.length >= maximumTreatments) break
 		addCandidate(candidate)
 	}
-	selected.sort(compareParetoTreatments)
-	const primaryWinner = frontier[0]
+	selected.sort((first, second) => compareIdentityTreatments(first, second, identitySelection.obligations))
 	const gradientVariants = fieldVariants.filter(({ gradient }) => gradient)
 	const primaryFoundationEvidenceLevel = evidenceLevel(effectiveBlock(primaryWinner, "treatmentFoundation"))
 	const existingExactOverlayGradients = uniqueTreatments.filter((candidate) =>
 		isExactOverlayGradientChallenger(primaryWinner, candidate))
-	let challenger = selectExactOverlayGradientChallenger(primaryWinner, existingExactOverlayGradients)
+	const qualityGuardRequired = selectedIdentityChallenger !== null
+	const overlayQualityGuardEvaluations: IdentityQualityGuardEvaluation[] = []
+	const qualityGuardEligibleOverlays = (candidates: readonly CompletePaletteTreatment[]): CompletePaletteTreatment[] => {
+		if (!qualityGuardRequired) return [...candidates]
+		const { eligibleCandidates, evaluations } = filterIdentityQualityGuardCandidates(qualityIncumbent, candidates)
+		overlayQualityGuardEvaluations.push(...evaluations)
+		return [...eligibleCandidates]
+	}
+	const existingEligibleExactOverlayGradients = qualityGuardEligibleOverlays(existingExactOverlayGradients)
+	let challenger = selectExactOverlayGradientChallenger(primaryWinner, existingEligibleExactOverlayGradients)
 	let selectedSource: ExactOverlayGradientChallengerTrace["selectedSource"] = challenger ? "existing-complete" : null
 	let projectedAttemptCount = 0
 	let projectedLegalCount = 0
 	const projected: CompletePaletteTreatment[] = []
+	let eligibleProjected: CompletePaletteTreatment[] = []
 	if (!challenger && !primaryWinner.gradient && !primaryWinner.collapse.accent && gradientVariants.length > 0 &&
 		primaryWinner.familyRoles.foreground !== "generated" && primaryWinner.familyRoles.accent !== "generated") {
 		const foregroundFamily = familyById(evidence, primaryWinner.familyRoles.foreground)
@@ -2953,13 +3907,17 @@ export function generateCompletePaletteTreatments(
 			)
 			if (!treatment || !isExactOverlayGradientChallenger(primaryWinner, treatment)) continue
 			projectedLegalCount += 1
-			if (!projected.some((candidate) => treatmentKey(candidate) === treatmentKey(treatment))) projected.push(treatment)
+			if (![...existingExactOverlayGradients, ...projected].some((candidate) =>
+				treatmentKey(candidate) === treatmentKey(treatment))) projected.push(treatment)
 		}
-		challenger = selectExactOverlayGradientChallenger(primaryWinner, projected)
+		eligibleProjected = qualityGuardEligibleOverlays(projected)
+		challenger = selectExactOverlayGradientChallenger(primaryWinner, eligibleProjected)
 		if (challenger) selectedSource = "supplemental-projection"
 	}
 	const triggerEligible = !primaryWinner.gradient && !primaryWinner.collapse.accent && gradientVariants.length > 0
 	const allExactOverlayGradients = [...existingExactOverlayGradients, ...projected]
+	const qualityGuardEligibleExactOverlayCount = existingEligibleExactOverlayGradients.length +
+		(qualityGuardRequired ? eligibleProjected.length : projected.length)
 	const challengerReason: ExactOverlayGradientChallengerTrace["reason"] = primaryWinner.gradient
 		? "primary-winner-gradient"
 		: primaryWinner.collapse.accent
@@ -2968,15 +3926,30 @@ export function generateCompletePaletteTreatments(
 				? "no-accepted-gradient-variant"
 				: challenger
 					? "challenger-selected"
+					: qualityGuardRequired && allExactOverlayGradients.length > 0 && qualityGuardEligibleExactOverlayCount === 0
+						? "quality-guard"
 					: allExactOverlayGradients.length > 0
 						? "foundation-gap"
 						: "no-legal-exact-overlay-gradient"
-	const finalSelected = challenger
-		? [challenger, primaryWinner, ...selected.filter((candidate) =>
-			treatmentKey(candidate) !== treatmentKey(challenger!) && treatmentKey(candidate) !== treatmentKey(primaryWinner))]
-			.slice(0, maximumTreatments)
-		: selected
 	const finalWinner = challenger ?? primaryWinner
+	const finalSelected: CompletePaletteTreatment[] = []
+	const addFinal = (candidate: CompletePaletteTreatment, required = false): void => {
+		if (finalSelected.some((existing) => treatmentKey(existing) === treatmentKey(candidate))) return
+		if (finalSelected.length >= maximumTreatments) {
+			if (required) throw new Error(`Required treatment ${candidate.id} could not be retained in the public slate`)
+			return
+		}
+		finalSelected.push(candidate)
+	}
+	addFinal(finalWinner, true)
+	if (challenger) addFinal(primaryWinner, true)
+	addFinal(qualityIncumbent, true)
+	for (const obligation of identitySelection.obligations) {
+		if (finalSelected.some((treatment) => treatmentCoversIdentityObligation(treatment, obligation))) continue
+		const representative = obligationFrontierRepresentative.get(obligation.id)
+		if (representative) addFinal(representative, true)
+	}
+	for (const candidate of selected) addFinal(candidate)
 	const challengerTrace: ExactOverlayGradientChallengerTrace = {
 		triggerEligible,
 		reason: challengerReason,
@@ -2984,6 +3957,7 @@ export function generateCompletePaletteTreatments(
 		existingExactOverlayGradientCount: existingExactOverlayGradients.length,
 		projectedAttemptCount,
 		projectedLegalCount,
+		projectedUniqueCount: projected.length,
 		selectedChallengerId: challenger?.id ?? null,
 		selectedSource,
 		primaryFoundationEvidenceLevel,
@@ -2991,15 +3965,37 @@ export function generateCompletePaletteTreatments(
 			? null
 			: evidenceLevel(effectiveBlock(challenger, "treatmentFoundation")),
 		replacedPrimaryWinner: challenger !== null,
+		qualityGuardRequired,
+		qualityGuardRejectedCandidateCount: overlayQualityGuardEvaluations.filter(({ pass }) => !pass).length,
+		selectedChallengerPassesQualityGuard: challenger === null || !qualityGuardRequired
+			? null
+			: evaluateIdentityQualityGuard(qualityIncumbent, challenger).pass,
+		qualityGuardEvaluations: overlayQualityGuardEvaluations,
 	}
 	const completeCandidateForegroundFamilyIds = [...new Set(uniqueTreatments.map(({ familyRoles }) => familyRoles.foreground)
 		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
 	const completeCandidateAccentFamilyIds = [...new Set(uniqueTreatments.filter(({ collapse }) => !collapse.accent).map(({ familyRoles }) => familyRoles.accent)
 		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
-	const omittedFrontierDirectionKeys = [...directional.keys()].filter((key) => !selectedDirections.has(key)).sort(compareAscii)
+	const globalFrontierDirectionKeys = new Set(globalFrontier.map(completeDirectionKey))
+	const finalSelectedDirections = new Set(finalSelected.map(completeDirectionKey))
+	const omittedFrontierDirectionKeys = [...globalFrontierDirectionKeys].filter((key) => !finalSelectedDirections.has(key)).sort(compareAscii)
+	const identityObligationGraph = buildIdentityObligationGraph(
+		identitySelection,
+		availableRolesByObligationFamily,
+		uniqueTreatments,
+		frontier,
+		finalSelected,
+		finalWinner,
+		primaryWinner,
+		qualityIncumbent,
+		selectedIdentityChallenger,
+		eligibleIdentityChallengers,
+		identitySelectionReason,
+	)
 	return {
 		winner: finalWinner,
 		alternatives: finalSelected,
+		completeTreatments: uniqueTreatments,
 		candidateCount: treatments.length,
 		emergency,
 		candidateAvailability: {
@@ -3018,16 +4014,35 @@ export function generateCompletePaletteTreatments(
 			slateAccentFamilyIds: [...new Set(finalSelected.filter(({ collapse }) => !collapse.accent).map(({ familyRoles }) => familyRoles.accent)
 				.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii),
 		},
+		identityObligationGraph,
 		exactOverlayGradientChallenger: challengerTrace,
 		paretoRanking: {
+			version: "pareto-identity-winner-diagnostics-v3",
+			qualityGuardVersion: "complete-quality-domain-non-inferiority-v1",
 			evidenceResolution: RANKING_EVIDENCE_RESOLUTION,
 			dominanceUsesEvidenceLevels: true,
-			rankingPriorityBlocks: RANKING_PRIORITY_BLOCKS,
+			paretoBlocks: ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS,
+			rankingPriorityBlocks: ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
 			rawCandidateCount: treatments.length,
 			uniqueCandidateCount: uniqueTreatments.length,
-			dominatedCandidateCount: uniqueTreatments.length - frontier.length,
-			frontierCandidateCount: frontier.length,
-			frontierDirectionCount: directional.size,
+			dominatedCandidateCount: uniqueTreatments.length - globalFrontier.length,
+			frontierCandidateCount: globalFrontier.length,
+			globalParetoFrontierTreatmentIds: globalFrontier.map(({ id }) => id),
+			frontierDirectionCount: globalFrontierDirectionKeys.size,
+			identityRetentionFrontierCandidateCount: frontier.length,
+			identityCarriedCandidateCount: frontier.filter((candidate) => !globalFrontier.some((global) =>
+				treatmentKey(global) === treatmentKey(candidate))).length,
+			identityCoverageRequiresQualityNonInferiority: true,
+			qualityGuardBlocks: ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS,
+			globalParetoTopTreatmentId: globalFrontier[0].id,
+			qualityIncumbentTreatmentId: qualityIncumbent.id,
+			identityChallengerCount: identityChallengers.length,
+			eligibleIdentityChallengerCount: eligibleIdentityChallengers.length,
+			selectedIdentityChallengerTreatmentId: selectedIdentityChallenger?.id ?? null,
+			selectedIdentityChallengerQualityGuard: selectedIdentityChallenger === null
+				? null
+				: evaluateIdentityQualityGuard(qualityIncumbent, selectedIdentityChallenger),
+			identityChallengerQualityGuards,
 			retainedCount: finalSelected.length,
 			selectedTreatmentId: finalWinner.id,
 			primaryTreatmentId: primaryWinner.id,
@@ -3038,6 +4053,1152 @@ export function generateCompletePaletteTreatments(
 		legacyScalarTopTreatment,
 	}
 }
+
+type RecallArmMechanics = Readonly<{
+	changedStages: readonly AlbumArtworkPaletteV2RecallCustodyStage[]
+	evidence: NativePaletteEvidence
+	proposals: readonly FieldHypothesis[]
+	hypotheses: readonly FieldHypothesis[]
+	fieldVariants: readonly FieldVariant[]
+	representatives: "control" | "all"
+}>
+
+type RecallArmGeneration = Readonly<{
+	additions: readonly CompletePaletteTreatment[]
+	conditionalCells: ReadonlySet<string>
+	capacityReached: boolean
+}>
+
+function recallCellKey(fieldKey: string, roleKey: string): string {
+	return `${fieldKey}=>${roleKey}`
+}
+
+function fieldVariantDirectionKey(variant: FieldVariant): string {
+	const backgroundFamily = "generated" in variant.background.support
+		? "generated"
+		: variant.background.support.anchorFamilyId
+	const surfaceFamily = "generated" in variant.surface.support
+		? "generated"
+		: variant.surface.support.anchorFamilyId
+	return [
+		variant.treatment,
+		backgroundFamily,
+		sameColor(variant.background.rgb, variant.surface.rgb) ? "=" : surfaceFamily,
+		variant.gradient ? "gradient" : "flat",
+	].join(":")
+}
+
+function sourceConnectedRepresentative(representative: ColorRepresentative): boolean {
+	return !("generated" in representative.support) &&
+		representative.support.anchorFamilyId.length > 0 &&
+		representative.support.regionIds.length > 0
+}
+
+function sourceConnectedFamily(family: ColorFamilyEvidence): boolean {
+	return family.population > 1 &&
+		family.components.some(({ population }) => population > 1) &&
+		family.representatives.some(sourceConnectedRepresentative)
+}
+
+function sourceConnectedHypothesis(
+	hypothesis: FieldHypothesis,
+	familiesById: ReadonlyMap<string, ColorFamilyEvidence>,
+): boolean {
+	const familyIds = [hypothesis.backgroundFamilyId, hypothesis.surfaceFamilyId]
+		.filter((familyId): familyId is string => familyId !== null)
+	return familyIds.every((familyId) => {
+		const family = familiesById.get(familyId)
+		return family !== undefined && sourceConnectedFamily(family)
+	}) && hypothesis.backgroundRepresentatives.some(sourceConnectedRepresentative) &&
+		hypothesis.surfaceRepresentatives.some(sourceConnectedRepresentative)
+}
+
+function evidenceWithAllRankedLanes(evidence: NativePaletteEvidence): NativePaletteEvidence {
+	return {
+		...evidence,
+		lanes: evidence.lanes.map((lane) => ({
+			...lane,
+			familyIds: rankAllLaneFamilies(evidence.families, lane.name).map(({ id }) => id),
+		})),
+	}
+}
+
+function fieldDirectionKeysForHypotheses(hypotheses: readonly FieldHypothesis[]): Set<string> {
+	return new Set(buildFieldVariants(hypotheses, { representatives: "all", pairing: "cross-pair" })
+		.map(fieldVariantDirectionKey))
+}
+
+function buildRecallRegistry(
+	evidence: NativePaletteEvidence,
+	controlProposals: readonly FieldHypothesis[],
+	controlHypotheses: readonly FieldHypothesis[],
+	allProposals: readonly FieldHypothesis[],
+	identityObligationFamilyIds: readonly string[],
+): AlbumArtworkPaletteV2RecallRegistry {
+	const familiesById = new Map(evidence.families.map((family) => [family.id, family]))
+	const controlProposalIds = new Set(controlProposals.map(({ id }) => id))
+	const controlHypothesisIds = new Set(controlHypotheses.map(({ id }) => id))
+	const identityIds = new Set(identityObligationFamilyIds)
+	const rankedByLane = new Map(evidence.lanes.map(({ name }) =>
+		[name, rankAllLaneFamilies(evidence.families, name)] as const))
+	const controlLaneIds = new Map(evidence.lanes.map(({ name, familyIds }) => [name, new Set(familyIds)] as const))
+	const families = evidence.families
+		.filter(sourceConnectedFamily)
+		.map((family): RecallAuditFamilyRegistryEntry => ({
+			familyId: family.id,
+			sourceConnected: true,
+			representativeStrategies: allRepresentatives(family.representatives).map(({ strategy }) => strategy),
+			laneRanks: Object.fromEntries((["field", "signature", "foreground"] as const).map((lane) => [
+				lane,
+				rankedByLane.get(lane)!.findIndex(({ id }) => id === family.id),
+			])) as Record<EvidenceLane["name"], number>,
+			controlRetainedLanes: (["field", "signature", "foreground"] as const)
+				.filter((lane) => controlLaneIds.get(lane)?.has(family.id)),
+			identityObligation: identityIds.has(family.id),
+		}))
+		.sort((first, second) => compareAscii(first.familyId, second.familyId))
+	const proposalById = new Map<string, FieldHypothesis>()
+	for (const proposal of [...controlProposals, ...allProposals]) {
+		if (!proposalById.has(proposal.id)) proposalById.set(proposal.id, proposal)
+	}
+	const fieldHypotheses = [...proposalById.values()]
+		.map((hypothesis): RecallAuditFieldHypothesisRegistryEntry => ({
+			hypothesisId: hypothesis.id,
+			kind: hypothesis.kind,
+			familyIds: [...new Set([hypothesis.backgroundFamilyId, hypothesis.surfaceFamilyId]
+				.filter((familyId): familyId is string => familyId !== null))].sort(compareAscii),
+			sourceConnected: sourceConnectedHypothesis(hypothesis, familiesById),
+			controlProposed: controlProposalIds.has(hypothesis.id),
+			controlRetained: controlHypothesisIds.has(hypothesis.id),
+		}))
+		.sort((first, second) => compareAscii(first.hypothesisId, second.hypothesisId))
+	const sourceHypothesisIds = new Set(fieldHypotheses
+		.filter(({ sourceConnected }) => sourceConnected)
+		.map(({ hypothesisId }) => hypothesisId))
+	const mutableFieldDirections = new Map<string, { hypothesisIds: Set<string>; familyIds: Set<string> }>()
+	for (const variant of buildFieldVariants([...proposalById.values()], {
+		representatives: "all",
+		pairing: "cross-pair",
+	})) {
+		if (!sourceHypothesisIds.has(variant.hypothesis.id)) continue
+		const key = fieldVariantDirectionKey(variant)
+		const entry = mutableFieldDirections.get(key) ?? { hypothesisIds: new Set<string>(), familyIds: new Set<string>() }
+		entry.hypothesisIds.add(variant.hypothesis.id)
+		entry.familyIds.add(variant.hypothesis.backgroundFamilyId)
+		if (variant.hypothesis.surfaceFamilyId) entry.familyIds.add(variant.hypothesis.surfaceFamilyId)
+		mutableFieldDirections.set(key, entry)
+	}
+	const fieldDirections = [...mutableFieldDirections.entries()]
+		.map(([key, entry]): RecallAuditFieldDirectionRegistryEntry => ({
+			key,
+			hypothesisIds: [...entry.hypothesisIds].sort(compareAscii),
+			familyIds: [...entry.familyIds].sort(compareAscii),
+			sourceConnected: true,
+		}))
+		.sort((first, second) => compareAscii(first.key, second.key))
+	const roleDirections = families.flatMap(({ familyId, identityObligation }) => ([
+		{
+			key: `foreground:${familyId}`,
+			role: "foreground" as const,
+			familyId,
+			sourceConnected: true,
+			identityObligation,
+		},
+		{
+			key: `accent:${familyId}`,
+			role: "accent" as const,
+			familyId,
+			sourceConnected: true,
+			identityObligation,
+		},
+	])).sort((first, second) => compareAscii(first.key, second.key))
+	return {
+		version: "album-artwork-palette-v2-recall-registry-0.7.3",
+		families,
+		fieldHypotheses,
+		fieldDirections,
+		roleDirections,
+		identityObligationFamilyIds: [...identityIds].sort(compareAscii),
+	}
+}
+
+function generateRecallArmAdditions(
+	mechanics: RecallArmMechanics,
+	controlTreatments: readonly CompletePaletteTreatment[],
+	controlCandidateCount: number,
+	registry: AlbumArtworkPaletteV2RecallRegistry,
+	obligationFamilyIds: readonly string[],
+): RecallArmGeneration {
+	const controlKeys = new Set(controlTreatments.map(completeTreatmentKey))
+	const additions = new Map<string, CompletePaletteTreatment>()
+	const conditionalCells = new Set<string>()
+	const maximum = ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates
+	let capacityReached = controlCandidateCount >= maximum
+	const roleRepresentatives = (family: ColorFamilyEvidence): ColorRepresentative[] =>
+		mechanics.representatives === "all"
+			? allRepresentatives(family.representatives)
+			: preferredRepresentatives(family.representatives)
+	const foregroundLaneIds = mechanics.evidence.lanes.find(({ name }) => name === "foreground")?.familyIds ?? []
+	const signatureLaneIds = mechanics.evidence.lanes.find(({ name }) => name === "signature")?.familyIds ?? []
+	const foregroundFamilies = foregroundLaneIds.map((id) => familyById(mechanics.evidence, id))
+	const signatureFamilies = signatureLaneIds.map((id) => familyById(mechanics.evidence, id))
+	const supportedRepresentatives = foregroundFamilies.flatMap((family) =>
+		roleRepresentatives(family).map((representative) => ({ family, representative })))
+	const treatmentsPerForeground = ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground + 1
+	const foregroundsPerFieldVariantQuota = Math.min(
+		foregroundFamilies.length,
+		Math.max(
+			ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.foregroundsPerFieldVariant,
+			Math.floor(maximum / Math.max(1, mechanics.fieldVariants.length * treatmentsPerForeground)),
+		),
+	)
+	const surfaceOpportunityByBackgroundFamily = new Map<string, number>()
+	for (const variant of mechanics.fieldVariants) {
+		if (sameColor(variant.background.rgb, variant.surface.rgb)) continue
+		const familyId = variant.hypothesis.backgroundFamilyId
+		surfaceOpportunityByBackgroundFamily.set(familyId, Math.max(
+			surfaceOpportunityByBackgroundFamily.get(familyId) ?? 0,
+			variant.surfaceContribution,
+		))
+	}
+	const append = (treatment: CompletePaletteTreatment | null): void => {
+		if (!treatment) return
+		const key = completeTreatmentKey(treatment)
+		if (controlKeys.has(key) || additions.has(key)) return
+		if (!recallTreatmentLineage(treatment, registry).sourceConnected) return
+		if (controlCandidateCount + additions.size >= maximum) {
+			capacityReached = true
+			return
+		}
+		additions.set(key, treatment)
+	}
+	const canMaterialize = (): boolean => {
+		if (controlCandidateCount + additions.size < maximum) return true
+		capacityReached = true
+		return false
+	}
+
+	for (const variant of mechanics.fieldVariants) {
+		const fieldKey = fieldVariantDirectionKey(variant)
+		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
+		const rankedForegroundOptions = supportedRepresentatives
+			.filter(({ representative }) =>
+				!sameColor(representative.rgb, variant.background.rgb) && !sameColor(representative.rgb, variant.surface.rgb))
+			.map((option) => {
+				const signedContrasts = fieldSamples(variant).map((sample) =>
+					apcaContrast(option.representative.rgb, sample.rgb))
+				return {
+					...option,
+					signedContrasts,
+					contrast: mean(signedContrasts.map(Math.abs)),
+					polarityAgreement: foregroundPolarityAgreement(option.family, signedContrasts),
+				}
+			})
+			.sort((first, second) =>
+				compareNumbersDescending(
+					0.68 * foregroundRoleScore(first.family) * first.polarityAgreement +
+						0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
+					0.68 * foregroundRoleScore(second.family) * second.polarityAgreement +
+						0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
+				) || compareAscii(
+					`${first.family.id}:${first.representative.hex}`,
+					`${second.family.id}:${second.representative.hex}`,
+				))
+		const observableForegrounds = rankedForegroundOptions.filter(({ signedContrasts }) =>
+			hasPeakAPCAObservability(signedContrasts))
+		for (const { family } of observableForegrounds) {
+			conditionalCells.add(recallCellKey(fieldKey, `foreground:${family.id}`))
+		}
+		const foregroundRetention = retainPeakObservableFamilyDirections(
+			rankedForegroundOptions,
+			foregroundsPerFieldVariantQuota,
+			obligationFamilyIds,
+		)
+		const retainedForegroundFamilyIds = new Set(foregroundRetention.retained.map(({ family }) => family.id))
+		const foregroundOptions = mechanics.representatives === "all"
+			? observableForegrounds.filter(({ family }) => retainedForegroundFamilyIds.has(family.id))
+			: foregroundRetention.retained
+
+		for (const foregroundOption of foregroundOptions) {
+			const rankedAccents = signatureFamilies
+				.flatMap((family) => roleRepresentatives(family).map((representative) => ({ family, representative })))
+				.filter(({ family, representative }) =>
+					family.id !== variant.hypothesis.backgroundFamilyId &&
+					family.id !== variant.hypothesis.surfaceFamilyId &&
+					family.id !== foregroundOption.family.id &&
+					!sameColor(representative.rgb, variant.background.rgb) &&
+					!sameColor(representative.rgb, variant.surface.rgb) &&
+					!sameColor(representative.rgb, foregroundOption.representative.rgb))
+				.map((option) => {
+					const signedContrasts = fieldSamples(variant).map((sample) =>
+						apcaContrast(option.representative.rgb, sample.rgb))
+					return {
+						...option,
+						signedContrasts,
+						utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
+						fidelity: distinctAccentFidelity(
+							option.family,
+							option.representative,
+							foregroundOption.representative,
+						),
+					}
+				})
+				.sort((first, second) =>
+					compareNumbersDescending(
+						0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
+						0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
+					) || compareAscii(
+						`${first.family.id}:${first.representative.hex}`,
+						`${second.family.id}:${second.representative.hex}`,
+					))
+			const observableAccents = rankedAccents.filter(({ signedContrasts }) =>
+				hasPeakAPCAObservability(signedContrasts))
+			for (const { family } of observableAccents) {
+				conditionalCells.add(recallCellKey(fieldKey, `accent:${family.id}`))
+			}
+			const accentRetention = retainPeakObservableFamilyDirections(
+				rankedAccents,
+				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
+				obligationFamilyIds,
+			)
+			const retainedAccentFamilyIds = new Set(accentRetention.retained.map(({ family }) => family.id))
+			const accents = mechanics.representatives === "all"
+				? observableAccents.filter(({ family }) => retainedAccentFamilyIds.has(family.id))
+				: accentRetention.retained
+			const accentOpportunity = accents[0]?.fidelity ?? 0
+			if (canMaterialize()) {
+				append(createTreatment(
+					variant,
+					foregroundOption.representative,
+					foregroundOption.representative,
+					foregroundOption.family.id,
+					foregroundOption.family.id,
+					foregroundOption.family,
+					foregroundOption.family,
+					accentOpportunity,
+					surfaceOpportunity,
+				))
+			}
+			for (const accentOption of accents) {
+				if (!canMaterialize()) break
+				append(createTreatment(
+					variant,
+					foregroundOption.representative,
+					accentOption.representative,
+					foregroundOption.family.id,
+					accentOption.family.id,
+					foregroundOption.family,
+					accentOption.family,
+					accentOpportunity,
+					surfaceOpportunity,
+				))
+			}
+		}
+	}
+	return { additions: [...additions.values()], conditionalCells, capacityReached }
+}
+
+type FactorizedTupleDescriptor = Readonly<{
+	variant: FieldVariant
+	foreground: ColorRepresentative
+	foregroundFamily: ColorFamilyEvidence
+	accent: ColorRepresentative
+	accentFamily: ColorFamilyEvidence
+	accentOpportunity: number
+	surfaceOpportunity: number
+	cellKeys: readonly string[]
+}>
+
+type FactorizedEnumeration = Readonly<{
+	treatments: readonly CompletePaletteTreatment[]
+	enumerableTupleCount: number
+	attemptedTupleCount: number
+	legalTupleCount: number
+	duplicateLegalKeyCount: number
+	checkpointReached: boolean
+	truncatedTupleCount: number
+	truncationWitnesses: FactorizedParetoTruncationWitnesses
+}>
+
+function factorizedDescriptorTreatmentKey(descriptor: FactorizedTupleDescriptor): string {
+	return completeTreatmentKey({
+		background: roleColor(descriptor.variant.background),
+		surface: roleColor(descriptor.variant.surface),
+		foreground: roleColor(descriptor.foreground),
+		accent: roleColor(descriptor.accent),
+		gradient: descriptor.variant.gradient,
+	})
+}
+
+function buildFactorizedTupleDescriptors(
+	evidence: NativePaletteEvidence,
+	fieldVariants: readonly FieldVariant[],
+): FactorizedTupleDescriptor[] {
+	const foregroundLaneIds = evidence.lanes.find(({ name }) => name === "foreground")?.familyIds ?? []
+	const signatureLaneIds = evidence.lanes.find(({ name }) => name === "signature")?.familyIds ?? []
+	const foregroundFamilies = foregroundLaneIds.map((id) => familyById(evidence, id))
+	const signatureFamilies = signatureLaneIds.map((id) => familyById(evidence, id))
+	const supportedForegrounds = foregroundFamilies.flatMap((family) =>
+		preferredRepresentatives(family.representatives).map((representative) => ({ family, representative })))
+	const surfaceOpportunityByBackgroundFamily = new Map<string, number>()
+	for (const variant of fieldVariants) {
+		if (sameColor(variant.background.rgb, variant.surface.rgb)) continue
+		const familyId = variant.hypothesis.backgroundFamilyId
+		surfaceOpportunityByBackgroundFamily.set(familyId, Math.max(
+			surfaceOpportunityByBackgroundFamily.get(familyId) ?? 0,
+			variant.surfaceContribution,
+		))
+	}
+	const descriptors: FactorizedTupleDescriptor[] = []
+	for (const variant of fieldVariants) {
+		const fieldKey = fieldVariantDirectionKey(variant)
+		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
+		const foregroundOptions = supportedForegrounds
+			.filter(({ representative }) =>
+				!sameColor(representative.rgb, variant.background.rgb) && !sameColor(representative.rgb, variant.surface.rgb))
+			.map((option) => {
+				const signedContrasts = fieldSamples(variant).map((sample) =>
+					apcaContrast(option.representative.rgb, sample.rgb))
+				return {
+					...option,
+					signedContrasts,
+					contrast: mean(signedContrasts.map(Math.abs)),
+					polarityAgreement: foregroundPolarityAgreement(option.family, signedContrasts),
+				}
+			})
+			.filter(({ signedContrasts }) => hasPeakAPCAObservability(signedContrasts))
+			.sort((first, second) =>
+				compareNumbersDescending(
+					0.68 * foregroundRoleScore(first.family) * first.polarityAgreement +
+						0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
+					0.68 * foregroundRoleScore(second.family) * second.polarityAgreement +
+						0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
+				) || compareAscii(
+					`${first.family.id}:${first.representative.hex}`,
+					`${second.family.id}:${second.representative.hex}`,
+				))
+		for (const foregroundOption of foregroundOptions) {
+			const accentOptions = signatureFamilies
+				.flatMap((family) => preferredRepresentatives(family.representatives)
+					.map((representative) => ({ family, representative })))
+				.filter(({ family, representative }) =>
+					family.id !== variant.hypothesis.backgroundFamilyId &&
+					family.id !== variant.hypothesis.surfaceFamilyId &&
+					family.id !== foregroundOption.family.id &&
+					!sameColor(representative.rgb, variant.background.rgb) &&
+					!sameColor(representative.rgb, variant.surface.rgb) &&
+					!sameColor(representative.rgb, foregroundOption.representative.rgb))
+				.map((option) => {
+					const signedContrasts = fieldSamples(variant).map((sample) =>
+						apcaContrast(option.representative.rgb, sample.rgb))
+					return {
+						...option,
+						signedContrasts,
+						utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
+						fidelity: distinctAccentFidelity(
+							option.family,
+							option.representative,
+							foregroundOption.representative,
+						),
+					}
+				})
+				.filter(({ signedContrasts }) => hasPeakAPCAObservability(signedContrasts))
+				.sort((first, second) =>
+					compareNumbersDescending(
+						0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
+						0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
+					) || compareAscii(
+						`${first.family.id}:${first.representative.hex}`,
+						`${second.family.id}:${second.representative.hex}`,
+					))
+			const accentOpportunity = accentOptions[0]?.fidelity ?? 0
+			descriptors.push({
+				variant,
+				foreground: foregroundOption.representative,
+				foregroundFamily: foregroundOption.family,
+				accent: foregroundOption.representative,
+				accentFamily: foregroundOption.family,
+				accentOpportunity,
+				surfaceOpportunity,
+				cellKeys: [recallCellKey(fieldKey, `foreground:${foregroundOption.family.id}`)],
+			})
+			for (const accentOption of accentOptions) {
+				descriptors.push({
+					variant,
+					foreground: foregroundOption.representative,
+					foregroundFamily: foregroundOption.family,
+					accent: accentOption.representative,
+					accentFamily: accentOption.family,
+					accentOpportunity,
+					surfaceOpportunity,
+					cellKeys: [
+						recallCellKey(fieldKey, `foreground:${foregroundOption.family.id}`),
+						recallCellKey(fieldKey, `accent:${accentOption.family.id}`),
+					],
+				})
+			}
+		}
+	}
+	return descriptors
+}
+
+function enumerateFactorizedTreatments(
+	descriptors: readonly FactorizedTupleDescriptor[],
+	checkpoint: 3_000 | 6_000,
+): FactorizedEnumeration {
+	const unique = new Map<string, CompletePaletteTreatment>()
+	let attemptedTupleCount = 0
+	let legalTupleCount = 0
+	for (const descriptor of descriptors) {
+		if (unique.size >= checkpoint) break
+		attemptedTupleCount += 1
+		const treatment = createTreatment(
+			descriptor.variant,
+			descriptor.foreground,
+			descriptor.accent,
+			descriptor.foregroundFamily.id,
+			descriptor.accentFamily.id,
+			descriptor.foregroundFamily,
+			descriptor.accentFamily,
+			descriptor.accentOpportunity,
+			descriptor.surfaceOpportunity,
+		)
+		if (!treatment) continue
+		legalTupleCount += 1
+		const key = completeTreatmentKey(treatment)
+		if (!unique.has(key)) unique.set(key, treatment)
+	}
+	const truncated = descriptors.slice(attemptedTupleCount)
+	const witnessDescriptors = truncated.slice(0, 8)
+	const truncationWitnesses: FactorizedParetoTruncationWitnesses = {
+		knownTreatmentKeys: [...new Set(witnessDescriptors.map(factorizedDescriptorTreatmentKey))].sort(compareAscii),
+		knownCellKeys: [...new Set(witnessDescriptors.flatMap(({ cellKeys }) => cellKeys))].sort(compareAscii),
+		otherwiseQualifyingTreatmentKeys: [],
+		otherwiseQualifyingCellKeys: [],
+	}
+	return {
+		treatments: [...unique.values()],
+		enumerableTupleCount: descriptors.length,
+		attemptedTupleCount,
+		legalTupleCount,
+		duplicateLegalKeyCount: legalTupleCount - unique.size,
+		checkpointReached: unique.size >= checkpoint,
+		truncatedTupleCount: descriptors.length - attemptedTupleCount,
+		truncationWitnesses,
+	}
+}
+
+function factorizedSourceBinding(image: RawImage): string {
+	let hash = 0x811c9dc5
+	for (const byte of image.data) {
+		hash ^= byte
+		hash = Math.imul(hash, 0x01000193) >>> 0
+	}
+	return `${image.width}x${image.height}:${image.data.length}:${hash.toString(16).padStart(8, "0")}`
+}
+
+function factorizedTriggerToken(certificate: Omit<FactorizedPareto6000TriggerCertificate, "verifiedTriggerToken">): string {
+	return [
+		"factorized-pareto-6000",
+		certificate.sourceBinding,
+		...certificate.witnesses.otherwiseQualifyingTreatmentKeys,
+		...certificate.witnesses.otherwiseQualifyingCellKeys,
+	].join(":")
+}
+
+const verifiedFactorized6000Certificates = new WeakSet<FactorizedPareto6000TriggerCertificate>()
+
+export function factorizedPareto6000TriggerPredicate(
+	certificate: FactorizedPareto6000TriggerCertificate,
+): boolean {
+	return verifiedFactorized6000Certificates.has(certificate) &&
+		certificate.fromArm === "factorized-pareto-3000" &&
+		certificate.checkpoint === 3_000 &&
+		certificate.trigger6000 &&
+		certificate.exactCheckpointOnlyProof &&
+		certificate.reason === "verified-otherwise-qualifying-lineage-excluded-solely-by-checkpoint" &&
+		certificate.witnesses.otherwiseQualifyingTreatmentKeys.length > 0 &&
+		certificate.witnesses.otherwiseQualifyingCellKeys.length > 0 &&
+		certificate.verifiedTriggerToken === factorizedTriggerToken(certificate)
+}
+
+function treatmentCells(
+	treatments: readonly CompletePaletteTreatment[],
+): Map<string, string[]> {
+	const cells = new Map<string, Set<string>>()
+	for (const treatment of treatments) {
+		const treatmentKey = completeTreatmentKey(treatment)
+		const fieldKey = fieldDirectionKey(treatment)
+		for (const roleKey of roleDirectionKeys(treatment)) {
+			const key = recallCellKey(fieldKey, roleKey)
+			const values = cells.get(key) ?? new Set<string>()
+			values.add(treatmentKey)
+			cells.set(key, values)
+		}
+	}
+	return new Map([...cells.entries()].map(([key, values]) => [key, [...values].sort(compareAscii)]))
+}
+
+function recallTreatmentLineage(
+	treatment: CompletePaletteTreatment,
+	registry: AlbumArtworkPaletteV2RecallRegistry,
+): RecallAuditTreatmentLineage {
+	const fieldRoot = registry.fieldHypotheses.find(({ hypothesisId }) =>
+		hypothesisId === treatment.sourceFieldHypothesisId)
+	const treatmentFieldDirectionKey = fieldDirectionKey(treatment)
+	const treatmentRoleDirectionKeys = roleDirectionKeys(treatment)
+	const fieldDirectionRoot = registry.fieldDirections.find(({ key }) => key === treatmentFieldDirectionKey)
+	const representatives = (["background", "surface", "foreground", "accent"] as const).map((role) => {
+		const color = treatment[role]
+		const familyId = treatment.familyRoles[role]
+		const sourceConnected = familyId !== "generated" && !("generated" in color.support) &&
+			color.support.anchorFamilyId === familyId && color.support.regionIds.length > 0
+		return { role, familyId, hex: color.hex, strategy: color.strategy, sourceConnected }
+	})
+	const familyIds = [...new Set(Object.values(treatment.familyRoles)
+		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
+	return {
+		fieldHypothesisId: treatment.sourceFieldHypothesisId,
+		fieldDirectionKey: treatmentFieldDirectionKey,
+		roleDirectionKeys: treatmentRoleDirectionKeys,
+		familyIds,
+		representatives,
+		sourceConnected: fieldRoot?.sourceConnected === true &&
+			fieldDirectionRoot?.sourceConnected === true &&
+			fieldDirectionRoot.hypothesisIds.includes(treatment.sourceFieldHypothesisId) &&
+			treatmentRoleDirectionKeys.every((key) => registry.roleDirections.some((direction) =>
+				direction.key === key && direction.sourceConnected)) &&
+			representatives.every(({ sourceConnected }) => sourceConnected) &&
+			familyIds.every((familyId) => registry.families.some((family) =>
+				family.familyId === familyId && family.sourceConnected)),
+	}
+}
+
+function changedStagesForRecallArm(
+	arm: AlbumArtworkPaletteV2RecallAuditArm,
+): readonly AlbumArtworkPaletteV2RecallCustodyStage[] {
+	if (arm === "control-0.7.2") return []
+	if (arm === "widened-field-hypothesis-retention") return ["field-hypothesis-retention"]
+	if (arm === "widened-family-lane-retention") return ["lane-retention"]
+	return ["representative-pairing"]
+}
+
+function buildRecallArmMechanics(
+	arm: AlbumArtworkPaletteV2RecallAuditArm,
+	controlEvidence: NativePaletteEvidence,
+	allLaneEvidence: NativePaletteEvidence,
+	controlProposals: readonly FieldHypothesis[],
+	allLaneProposals: readonly FieldHypothesis[],
+	controlHypotheses: readonly FieldHypothesis[],
+): RecallArmMechanics {
+	const laneArm = arm === "widened-family-lane-retention"
+	const proposalArm = arm === "widened-field-hypothesis-retention"
+	const evidence = laneArm ? allLaneEvidence : controlEvidence
+	const proposals = laneArm ? allLaneProposals : controlProposals
+	const hypotheses = proposalArm
+		? controlProposals
+		: laneArm ? retainFieldHypotheses(allLaneProposals) : controlHypotheses
+	const representatives = arm === "all-existing-representative-strategies" ? "all" : "control"
+	const pairing = arm === "all-retained-representative-cross-pairs" ? "cross-pair" : "same-index"
+	return {
+		changedStages: changedStagesForRecallArm(arm),
+		evidence,
+		proposals,
+		hypotheses,
+		fieldVariants: buildFieldVariants(hypotheses, { representatives, pairing }),
+		representatives,
+	}
+}
+
+export function auditAlbumArtworkPaletteV2Recall(
+	image: RawImage,
+	arm: AlbumArtworkPaletteV2RecallAuditArm = "control-0.7.2",
+): AlbumArtworkPaletteV2RecallAudit {
+	if (!ALBUM_ARTWORK_PALETTE_V2_RECALL_AUDIT_ARMS.includes(arm)) {
+		throw new RangeError(`Unknown album-artwork palette recall-audit arm ${arm}`)
+	}
+	const controlExtraction = extractAlbumArtworkPaletteV2(image)
+	const evidence = buildNativePaletteEvidence(image)
+	const fieldDomains = buildBackgroundFieldDomains(evidence)
+	const evaluatedGradientFits = evaluateGradientFits(evidence, fieldDomains)
+	const controlProposals = buildFieldHypothesisProposalsFromEvaluatedFits(evidence, evaluatedGradientFits, "all")
+	const controlHypotheses = buildFieldHypothesesFromEvaluatedFits(evidence, evaluatedGradientFits)
+	const controlGeneration = generateCompletePaletteTreatments(evidence, controlHypotheses)
+	const controlTreatments = controlGeneration.completeTreatments
+	const controlKeys = new Set(controlTreatments.map(completeTreatmentKey))
+	const allLaneEvidence = evidenceWithAllRankedLanes(evidence)
+	const allLaneDomains = buildBackgroundFieldDomains(allLaneEvidence)
+	const allLaneProposals = buildFieldHypothesisProposalsFromEvaluatedFits(
+		allLaneEvidence,
+		evaluateGradientFits(allLaneEvidence, allLaneDomains),
+		"all",
+	)
+	const obligationFamilyIds = controlGeneration.identityObligationGraph.obligations.map(({ familyId }) => familyId)
+	const registry = buildRecallRegistry(
+		evidence,
+		controlProposals,
+		controlHypotheses,
+		allLaneProposals,
+		obligationFamilyIds,
+	)
+	const controlMechanics = buildRecallArmMechanics(
+		"control-0.7.2",
+		evidence,
+		allLaneEvidence,
+		controlProposals,
+		allLaneProposals,
+		controlHypotheses,
+	)
+	const treatmentMechanics = buildRecallArmMechanics(
+		arm,
+		evidence,
+		allLaneEvidence,
+		controlProposals,
+		allLaneProposals,
+		controlHypotheses,
+	)
+	const controlTrace = generateRecallArmAdditions(
+		controlMechanics,
+		controlTreatments,
+		controlGeneration.candidateCount,
+		registry,
+		obligationFamilyIds,
+	)
+	const armGeneration = arm === "control-0.7.2"
+		? controlTrace
+		: generateRecallArmAdditions(
+			treatmentMechanics,
+			controlTreatments,
+			controlGeneration.candidateCount,
+			registry,
+			obligationFamilyIds,
+		)
+	const combinedTreatments = arm === "control-0.7.2"
+		? [...controlTreatments]
+		: [...controlTreatments, ...armGeneration.additions]
+	if (combinedTreatments.length > ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates) {
+		throw new Error("Recall-audit candidate domain exceeds the unchanged complete-treatment bound")
+	}
+	const qualityIncumbent = controlTreatments.find(({ id }) =>
+		id === controlGeneration.paretoRanking.qualityIncumbentTreatmentId)
+	if (!qualityIncumbent) throw new Error("Control quality incumbent is absent from the complete treatment domain")
+	const controlFrontier = paretoFrontier(controlTreatments)
+	const armFrontier = paretoFrontier(combinedTreatments)
+	const armFrontierKeys = new Set(armFrontier.map(completeTreatmentKey))
+	const controlCellTreatments = treatmentCells(controlTreatments)
+	const combinedCellTreatments = treatmentCells(combinedTreatments)
+	const guardPassingTreatments = combinedTreatments.filter((treatment) =>
+		evaluateIdentityQualityGuard(qualityIncumbent, treatment).pass)
+	const guardCellTreatments = treatmentCells(guardPassingTreatments)
+	const newTreatments = armGeneration.additions.map((treatment): RecallAuditNewTreatment => {
+		const key = completeTreatmentKey(treatment)
+		const lineage = recallTreatmentLineage(treatment, registry)
+		const fillsControlEmptyFieldRoleCell = roleDirectionKeys(treatment).some((roleKey) =>
+			!controlCellTreatments.has(recallCellKey(fieldDirectionKey(treatment), roleKey)))
+		const qualityGuard = evaluateIdentityQualityGuard(qualityIncumbent, treatment)
+		return {
+			treatment,
+			key,
+			lineage,
+			qualityGuard,
+			qualification: qualifyRecallAuditTreatment({
+				treatment,
+				controlTreatmentKeys: controlKeys,
+				sourceConnectedFullLineage: lineage.sourceConnected,
+				legalUnderUnchangedRules: true,
+				ordinaryParetoMember: armFrontierKeys.has(key),
+				completeDomainGuardPass: qualityGuard.pass,
+				fillsControlEmptyFieldRoleCell,
+			}),
+		}
+	})
+	const publicSlate = [...controlExtraction.alternatives]
+	for (const entry of [...newTreatments]
+		.filter(({ qualification }) => qualification.qualifies)
+		.sort((first, second) => compareParetoTreatments(first.treatment, second.treatment))) {
+		if (publicSlate.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.retainedTreatments) break
+		if (!publicSlate.some((treatment) => completeTreatmentKey(treatment) === entry.key)) publicSlate.push(entry.treatment)
+	}
+	const publicSlateCells = treatmentCells(publicSlate)
+	const fieldDirectionKeys = registry.fieldDirections.map(({ key }) => key)
+	const roleDirectionKeysFromRegistry = registry.roleDirections.map(({ key }) => key)
+	const availabilityCells: RecallAuditAvailabilityCell[] = []
+	const custody: RecallAuditCustodyDiagnostic[] = []
+	const armFieldLaneIds = new Set(treatmentMechanics.evidence.lanes
+		.find(({ name }) => name === "field")?.familyIds ?? [])
+	const armForegroundLaneIds = new Set(treatmentMechanics.evidence.lanes
+		.find(({ name }) => name === "foreground")?.familyIds ?? [])
+	const armSignatureLaneIds = new Set(treatmentMechanics.evidence.lanes
+		.find(({ name }) => name === "signature")?.familyIds ?? [])
+	const armProposalIds = new Set(treatmentMechanics.proposals.map(({ id }) => id))
+	const armProposalDirectionKeys = fieldDirectionKeysForHypotheses(treatmentMechanics.proposals)
+	const armRetainedDirectionKeys = fieldDirectionKeysForHypotheses(treatmentMechanics.hypotheses)
+	const armPairedDirectionKeys = new Set(treatmentMechanics.fieldVariants.map(fieldVariantDirectionKey))
+	const frontierCellTreatments = treatmentCells(armFrontier)
+
+	for (const fieldDirection of registry.fieldDirections) {
+		const laneRetainedFieldRoot = fieldDirection.hypothesisIds.some((hypothesisId) => {
+			const hypothesis = registry.fieldHypotheses.find((candidate) => candidate.hypothesisId === hypothesisId)
+			return hypothesis !== undefined && hypothesis.familyIds.every((familyId) => armFieldLaneIds.has(familyId))
+		})
+		const proposedFieldRoot = fieldDirection.hypothesisIds.some((id) => armProposalIds.has(id)) &&
+			armProposalDirectionKeys.has(fieldDirection.key)
+		for (const roleDirection of registry.roleDirections) {
+			const cellKey = recallCellKey(fieldDirection.key, roleDirection.key)
+			const controlTreatmentKeys = controlCellTreatments.get(cellKey) ?? []
+			const armTreatmentKeys = combinedCellTreatments.get(cellKey) ?? []
+			availabilityCells.push({
+				key: cellKey,
+				fieldDirectionKey: fieldDirection.key,
+				roleDirectionKey: roleDirection.key,
+				role: roleDirection.role,
+				familyId: roleDirection.familyId,
+				identityObligation: roleDirection.identityObligation,
+				controlTreatmentKeys,
+				armTreatmentKeys,
+				controlAvailable: controlTreatmentKeys.length > 0,
+				armAvailable: armTreatmentKeys.length > 0,
+				newlyAvailable: controlTreatmentKeys.length === 0 && armTreatmentKeys.length > 0,
+			})
+			const roleLaneRetained = roleDirection.role === "foreground"
+				? armForegroundLaneIds.has(roleDirection.familyId)
+				: armSignatureLaneIds.has(roleDirection.familyId)
+			const laneRetained = laneRetainedFieldRoot && roleLaneRetained
+			const proposalAvailable = laneRetained && proposedFieldRoot
+			const retentionAvailable = proposalAvailable && armRetainedDirectionKeys.has(fieldDirection.key)
+			const pairingAvailable = retentionAvailable && armPairedDirectionKeys.has(fieldDirection.key)
+			const conditionalAvailable = pairingAvailable && armGeneration.conditionalCells.has(cellKey)
+			const completeAvailable = armTreatmentKeys.length > 0
+			const frontierKeys = frontierCellTreatments.get(cellKey) ?? []
+			const guardKeys = guardCellTreatments.get(cellKey) ?? []
+			const guardAvailable = frontierKeys.length > 0 || guardKeys.length > 0
+			const slateKeys = publicSlateCells.get(cellKey) ?? []
+			const stages: RecallAuditCustodyStageDiagnostic[] = [
+				{
+					stage: "discovered-family",
+					status: "available",
+					reason: "source-connected-field-and-role-families-discovered",
+					treatmentKeys: [],
+				},
+				{
+					stage: "lane-retention",
+					status: laneRetained ? "available" : "unavailable",
+					reason: laneRetained ? "field-and-role-directions-retained-by-arm-lanes" : "field-or-role-direction-not-retained-by-arm-lanes",
+					treatmentKeys: [],
+				},
+				{
+					stage: "field-hypothesis-proposal",
+					status: proposalAvailable ? "available" : "unavailable",
+					reason: proposalAvailable ? "current-model-field-root-proposed" : "no-current-model-field-root-proposal",
+					treatmentKeys: [],
+				},
+				{
+					stage: "field-hypothesis-retention",
+					status: retentionAvailable ? "available" : "unavailable",
+					reason: retentionAvailable ? "field-root-retained-by-arm" : "field-root-not-retained-by-arm",
+					treatmentKeys: [],
+				},
+				{
+					stage: "representative-pairing",
+					status: pairingAvailable ? "available" : "unavailable",
+					reason: pairingAvailable ? "arm-produced-legal-field-representative-pair" : "no-legal-field-representative-pair-in-arm",
+					treatmentKeys: [],
+				},
+				{
+					stage: "field-conditional-role-eligibility",
+					status: conditionalAvailable ? "available" : "unavailable",
+					reason: conditionalAvailable ? "role-root-is-observable-on-field-direction" : "role-root-is-not-eligible-on-field-direction",
+					treatmentKeys: [],
+				},
+				{
+					stage: "complete-treatment-construction",
+					status: completeAvailable ? "available" : "unavailable",
+					reason: completeAvailable
+						? "at-least-one-legal-complete-treatment-constructed"
+						: conditionalAvailable && armGeneration.capacityReached
+							? "complete-treatment-capacity-exhausted"
+							: "no-legal-complete-treatment-constructed",
+					treatmentKeys: armTreatmentKeys,
+				},
+				{
+					stage: "ordinary-pareto-membership",
+					status: frontierKeys.length > 0 ? "available" : completeAvailable ? "bypassed" : "unavailable",
+					reason: frontierKeys.length > 0
+						? "ordinary-pareto-member-present"
+						: completeAvailable ? "ordinary-frontier-absent-guard-path-evaluated" : "no-complete-treatment-for-pareto-evaluation",
+					treatmentKeys: frontierKeys,
+				},
+				{
+					stage: "complete-domain-guard",
+					status: guardAvailable ? "available" : "unavailable",
+					reason: frontierKeys.length > 0
+						? "ordinary-pareto-path-satisfies-recall-ranking-clause"
+						: guardKeys.length > 0
+							? "complete-domain-non-inferior-treatment-present"
+							: "no-ordinary-frontier-or-complete-domain-non-inferior-treatment",
+					treatmentKeys: [...new Set([...frontierKeys, ...guardKeys])].sort(compareAscii),
+				},
+				{
+					stage: "public-slate-retention",
+					status: slateKeys.length > 0 ? "available" : "unavailable",
+					reason: slateKeys.length > 0 ? "treatment-retained-in-additive-public-slate" : "no-treatment-retained-in-public-slate",
+					treatmentKeys: slateKeys,
+				},
+			]
+			const firstLoss = stages.find(({ status }) => status === "unavailable") ?? null
+			custody.push({
+				cellKey,
+				fieldDirectionKey: fieldDirection.key,
+				roleDirectionKey: roleDirection.key,
+				identityObligation: roleDirection.identityObligation,
+				stages,
+				firstLossStage: firstLoss?.stage ?? null,
+				firstLossReason: firstLoss?.reason ?? null,
+			})
+		}
+	}
+	const controlDomain: RecallAuditDomain = {
+		arm: "control-0.7.2",
+		changedStages: [],
+		rawCandidateCount: controlGeneration.candidateCount,
+		materializedCandidateCount: controlTreatments.length,
+		capacity: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+		capacityReached: controlGeneration.candidateCount >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+		completeTreatments: controlTreatments,
+		completeTreatmentKeys: controlTreatments.map(completeTreatmentKey),
+		ordinaryParetoTreatmentKeys: controlFrontier.map(completeTreatmentKey),
+		publicSlate: controlExtraction.alternatives,
+		qualityIncumbentTreatmentId: qualityIncumbent.id,
+	}
+	const treatmentDomain: RecallAuditDomain = arm === "control-0.7.2" ? controlDomain : {
+		arm,
+		changedStages: treatmentMechanics.changedStages,
+		rawCandidateCount: controlGeneration.candidateCount + armGeneration.additions.length,
+		materializedCandidateCount: combinedTreatments.length,
+		capacity: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+		capacityReached: armGeneration.capacityReached,
+		completeTreatments: combinedTreatments,
+		completeTreatmentKeys: combinedTreatments.map(completeTreatmentKey),
+		ordinaryParetoTreatmentKeys: armFrontier.map(completeTreatmentKey),
+		publicSlate,
+		qualityIncumbentTreatmentId: qualityIncumbent.id,
+	}
+	return {
+		version: "album-artwork-palette-v2-recall-audit-0.7.3",
+		arm,
+		controlExtraction,
+		control: controlDomain,
+		treatment: treatmentDomain,
+		newTreatments: arm === "control-0.7.2" ? [] : newTreatments,
+		registry,
+		availability: {
+			fieldDirectionKeys,
+			roleDirectionKeys: roleDirectionKeysFromRegistry,
+			identityObligationRoleDirectionKeys: registry.roleDirections
+				.filter(({ identityObligation }) => identityObligation)
+				.map(({ key }) => key),
+			cells: availabilityCells,
+		},
+		custody,
+	}
+}
+
+export function auditAlbumArtworkPaletteV2FactorizedParetoRecall(
+	image: RawImage,
+	arm: AlbumArtworkPaletteV2FactorizedParetoAuditArm = "factorized-pareto-3000",
+	triggerCertificate?: FactorizedPareto6000TriggerCertificate,
+): AlbumArtworkPaletteV2FactorizedParetoAudit {
+	if (!ALBUM_ARTWORK_PALETTE_V2_FACTORIZED_PARETO_AUDIT_ARMS.includes(arm)) {
+		throw new RangeError(`Unknown album-artwork factorized Pareto audit arm ${arm}`)
+	}
+	const sourceBinding = factorizedSourceBinding(image)
+	if (arm === "factorized-pareto-6000" && (
+		!triggerCertificate ||
+		triggerCertificate.sourceBinding !== sourceBinding ||
+		!factorizedPareto6000TriggerPredicate(triggerCertificate)
+	)) {
+		throw new Error("factorized-pareto-6000 requires a source-bound verified 3000 trigger certificate")
+	}
+	const checkpoint = arm === "factorized-pareto-3000" ? 3_000 : 6_000
+	const controlExtraction = extractAlbumArtworkPaletteV2(image)
+	const evidence = buildNativePaletteEvidence(image)
+	const fieldDomains = buildBackgroundFieldDomains(evidence)
+	const evaluatedGradientFits = evaluateGradientFits(evidence, fieldDomains)
+	const controlProposals = buildFieldHypothesisProposalsFromEvaluatedFits(evidence, evaluatedGradientFits, "all")
+	const controlHypotheses = buildFieldHypothesesFromEvaluatedFits(evidence, evaluatedGradientFits)
+	const controlGeneration = generateCompletePaletteTreatments(evidence, controlHypotheses)
+	const controlTreatments = controlGeneration.completeTreatments
+	const controlKeys = new Set(controlTreatments.map(completeTreatmentKey))
+	const qualityIncumbent = controlTreatments.find(({ id }) =>
+		id === controlGeneration.paretoRanking.qualityIncumbentTreatmentId)
+	if (!qualityIncumbent) throw new Error("Control quality incumbent is absent from the factorized audit domain")
+	const obligationFamilyIds = controlGeneration.identityObligationGraph.obligations.map(({ familyId }) => familyId)
+	const registry = buildRecallRegistry(
+		evidence,
+		controlProposals,
+		controlHypotheses,
+		controlProposals,
+		obligationFamilyIds,
+	)
+	const fieldVariants = buildFieldVariants(controlHypotheses, {
+		representatives: "control",
+		pairing: "same-index",
+	})
+	const descriptors = buildFactorizedTupleDescriptors(evidence, fieldVariants)
+	const enumeration = enumerateFactorizedTreatments(descriptors, checkpoint)
+	const logicalTreatments = enumeration.treatments
+	const logicalKeys = new Set(logicalTreatments.map(completeTreatmentKey))
+	const combinedLogicalByKey = new Map(controlTreatments.map((treatment) =>
+		[completeTreatmentKey(treatment), treatment]))
+	for (const treatment of logicalTreatments) {
+		const key = completeTreatmentKey(treatment)
+		if (!combinedLogicalByKey.has(key)) combinedLogicalByKey.set(key, treatment)
+	}
+	const combinedLogicalTreatments = [...combinedLogicalByKey.values()]
+	const ordinaryFrontier = paretoFrontier(combinedLogicalTreatments)
+	const ordinaryFrontierKeys = new Set(ordinaryFrontier.map(completeTreatmentKey))
+	const guardByLogicalKey = new Map(logicalTreatments.map((treatment) => [
+		completeTreatmentKey(treatment),
+		evaluateIdentityQualityGuard(qualityIncumbent, treatment),
+	] as const))
+	const retainedLogicalTreatments = logicalTreatments
+		.filter((treatment) => {
+			const key = completeTreatmentKey(treatment)
+			return ordinaryFrontierKeys.has(key) || guardByLogicalKey.get(key)?.pass === true
+		})
+		.sort(compareParetoTreatments)
+	const retainedLogicalKeys = new Set(retainedLogicalTreatments.map(completeTreatmentKey))
+	const novelRetained = retainedLogicalTreatments.filter((treatment) => !controlKeys.has(completeTreatmentKey(treatment)))
+	const registeredNovelRetained = novelRetained.filter((treatment) =>
+		recallTreatmentLineage(treatment, registry).sourceConnected)
+	const availableMaterializationSlots = Math.max(
+		0,
+		ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates - controlGeneration.candidateCount,
+	)
+	const materializedAdditions = registeredNovelRetained.slice(0, availableMaterializationSlots)
+	const materializedTreatments = [...controlTreatments, ...materializedAdditions]
+	const controlCellTreatments = treatmentCells(controlTreatments)
+	const retainedAdditions = materializedAdditions.map((treatment): RecallAuditNewTreatment => {
+		const key = completeTreatmentKey(treatment)
+		const lineage = recallTreatmentLineage(treatment, registry)
+		const qualityGuard = guardByLogicalKey.get(key) ?? evaluateIdentityQualityGuard(qualityIncumbent, treatment)
+		const fillsControlEmptyFieldRoleCell = roleDirectionKeys(treatment).some((roleKey) =>
+			!controlCellTreatments.has(recallCellKey(fieldDirectionKey(treatment), roleKey)))
+		return {
+			treatment,
+			key,
+			lineage,
+			qualityGuard,
+			qualification: qualifyRecallAuditTreatment({
+				treatment,
+				controlTreatmentKeys: controlKeys,
+				sourceConnectedFullLineage: lineage.sourceConnected,
+				legalUnderUnchangedRules: true,
+				ordinaryParetoMember: ordinaryFrontierKeys.has(key),
+				completeDomainGuardPass: qualityGuard.pass,
+				fillsControlEmptyFieldRoleCell,
+			}),
+		}
+	})
+	const publicSlate = [...controlExtraction.alternatives]
+	for (const addition of retainedAdditions.filter(({ qualification }) => qualification.qualifies)) {
+		if (publicSlate.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.retainedTreatments) break
+		if (!publicSlate.some((treatment) => completeTreatmentKey(treatment) === addition.key)) {
+			publicSlate.push(addition.treatment)
+		}
+	}
+	const controlFrontier = paretoFrontier(controlTreatments)
+	const controlDomain: RecallAuditDomain = {
+		arm: "control-0.7.2",
+		changedStages: [],
+		rawCandidateCount: controlGeneration.candidateCount,
+		materializedCandidateCount: controlTreatments.length,
+		capacity: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+		capacityReached: controlGeneration.candidateCount >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+		completeTreatments: controlTreatments,
+		completeTreatmentKeys: controlTreatments.map(completeTreatmentKey),
+		ordinaryParetoTreatmentKeys: controlFrontier.map(completeTreatmentKey),
+		publicSlate: controlExtraction.alternatives,
+		qualityIncumbentTreatmentId: qualityIncumbent.id,
+	}
+	const truncated = enumeration.truncatedTupleCount > 0
+	const escalationReason: FactorizedParetoEscalationReason = !enumeration.checkpointReached
+		? "logical-domain-exhausted-before-checkpoint"
+		: !truncated
+			? "no-post-checkpoint-tuples"
+			: "post-checkpoint-qualification-not-evaluated"
+	const escalation: FactorizedPareto6000TriggerCertificate = arm === "factorized-pareto-6000"
+		? triggerCertificate!
+		: {
+			version: "album-artwork-palette-v2-factorized-pareto-6000-trigger-v1",
+			sourceBinding,
+			fromArm: "factorized-pareto-3000",
+			checkpoint: 3_000,
+			trigger6000: false,
+			exactCheckpointOnlyProof: false,
+			reason: escalationReason,
+			witnesses: enumeration.truncationWitnesses,
+			verifiedTriggerToken: null,
+		}
+	const laneFamilyIds: Record<EvidenceLane["name"], readonly string[]> = {
+		field: [...(evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? [])],
+		signature: [...(evidence.lanes.find(({ name }) => name === "signature")?.familyIds ?? [])],
+		foreground: [...(evidence.lanes.find(({ name }) => name === "foreground")?.familyIds ?? [])],
+	}
+	return {
+		version: "album-artwork-palette-v2-factorized-pareto-audit-0.7.3",
+		arm,
+		controlExtraction,
+		control: controlDomain,
+		registry,
+		treatment: {
+			arm,
+			checkpoint,
+			rawCandidateCount: controlGeneration.candidateCount + materializedAdditions.length,
+			materializedCandidateCount: materializedTreatments.length,
+			capacity: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates,
+			capacityReached: controlGeneration.candidateCount >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates ||
+				materializedAdditions.length < registeredNovelRetained.length,
+			completeTreatments: materializedTreatments,
+			completeTreatmentKeys: materializedTreatments.map(completeTreatmentKey),
+			publicSlate,
+			qualityIncumbentTreatmentId: qualityIncumbent.id,
+		},
+		upstream: {
+			changedStages: ["complete-treatment-construction"],
+			evidenceFamilyIds: evidence.families.map(({ id }) => id),
+			laneFamilyIds,
+			fieldHypothesisIds: controlHypotheses.map(({ id }) => id),
+			fieldVariantKeys: fieldVariants.map((variant) => [
+				variant.hypothesis.id,
+				variant.background.hex,
+				variant.surface.hex,
+				variant.gradient ? "gradient" : "flat",
+			].join(":")),
+			representativesPerRole: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.representativesPerRole,
+			fieldRepresentativePairing: "same-index",
+		},
+		logical: {
+			checkpoint,
+			enumerableTupleCount: enumeration.enumerableTupleCount,
+			attemptedTupleCount: enumeration.attemptedTupleCount,
+			legalTupleCount: enumeration.legalTupleCount,
+			duplicateLegalKeyCount: enumeration.duplicateLegalKeyCount,
+			uniqueCanonicalKeyCountBeforePareto: logicalKeys.size,
+			checkpointReached: enumeration.checkpointReached,
+			truncatedTupleCount: enumeration.truncatedTupleCount,
+			ordinaryParetoKeyCount: [...logicalKeys].filter((key) => ordinaryFrontierKeys.has(key)).length,
+			completeDomainGuardPassingKeyCount: [...guardByLogicalKey.values()].filter(({ pass }) => pass).length,
+			retainedUnionKeyCount: retainedLogicalKeys.size,
+		},
+		truncationWitnesses: enumeration.truncationWitnesses,
+		retainedAdditions,
+		escalation,
+	}
+}
+
+export const auditAlbumArtworkPaletteV2FactorizedPareto =
+	auditAlbumArtworkPaletteV2FactorizedParetoRecall
 
 export function extractAlbumArtworkPaletteV2(image: RawImage): AlbumArtworkPaletteV2Result {
 	const evidence = buildNativePaletteEvidence(image)
@@ -3070,6 +5231,7 @@ export function extractAlbumArtworkPaletteV2(image: RawImage): AlbumArtworkPalet
 			gradientFits,
 			completeCandidateCount: generation.candidateCount,
 			candidateAvailability: generation.candidateAvailability,
+			identityObligationGraph: generation.identityObligationGraph,
 			exactOverlayGradientChallenger: generation.exactOverlayGradientChallenger,
 			paretoRanking: generation.paretoRanking,
 			legacyScalarTopTreatment: generation.legacyScalarTopTreatment,

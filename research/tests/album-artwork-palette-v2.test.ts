@@ -4,8 +4,10 @@ import test from "node:test"
 import {
 	buildFieldHypotheses,
 	buildNativePaletteEvidence,
+	evaluateIdentityQualityGuard,
 	extractAlbumArtworkPaletteV2,
 	fieldSamples,
+	filterIdentityQualityGuardCandidates,
 	hasPeakAPCAObservability,
 	isExactOverlayGradientChallenger,
 	pathObservability,
@@ -13,10 +15,17 @@ import {
 	paretoFrontier,
 	retainPeakObservableFamilyDirections,
 	selectExactOverlayGradientChallenger,
+	selectQualityGuardedIdentityChallenger,
 	treatmentFoundation,
 } from "../src/album-artwork-palette-v2.ts"
-import type { CompletePaletteTreatment } from "../src/album-artwork-palette-v2.ts"
-import { ALBUM_ARTWORK_PALETTE_V2_POLICY } from "../src/album-artwork-palette-v2-protocol.ts"
+import type { CompletePaletteTreatment, IdentityObligation } from "../src/album-artwork-palette-v2.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS,
+	ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS,
+	ALBUM_ARTWORK_PALETTE_V2_POLICY,
+	ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
+	ALBUM_ARTWORK_PALETTE_V2_VERSION,
+} from "../src/album-artwork-palette-v2-protocol.ts"
 import { parseCaseFeedbackSubmission } from "../src/album-artwork-palette-v2-review.ts"
 import { parseLightweightReviewSubmission } from "../src/album-artwork-palette-v2-lightweight-review.ts"
 import { parseTargetedReviewSubmission } from "../src/album-artwork-palette-v2-targeted-review.ts"
@@ -71,8 +80,11 @@ function assertPaletteInvariants(result: ReturnType<typeof extractAlbumArtworkPa
 	const challenger = result.diagnostics.exactOverlayGradientChallenger
 	assert.ok(challenger.projectedAttemptCount <= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.gradientChallengerProjections)
 	assert.ok(challenger.projectedLegalCount <= challenger.projectedAttemptCount)
+	assert.ok(challenger.projectedUniqueCount <= challenger.projectedLegalCount)
 	assert.equal(challenger.replacedPrimaryWinner, challenger.selectedChallengerId !== null)
 	assert.equal(result.diagnostics.paretoRanking.selectedTreatmentId, result.winner.id)
+	assert.ok(result.alternatives.some(({ id }) =>
+		id === result.diagnostics.paretoRanking.globalParetoTopTreatmentId))
 	if (challenger.replacedPrimaryWinner) {
 		const primary = result.alternatives[1]
 		assert.ok(primary)
@@ -343,6 +355,132 @@ test("candidate availability closes foreground and accent proposals over their r
 	assert.equal(result.diagnostics.paretoRanking.selectedTreatmentId, result.winner.id)
 })
 
+test("identity obligations remain inspectable from connected source evidence through winner explanation", () => {
+	const image = fixture(96, 96, (x, y) => {
+		if (x > 12 && x < 22 && y > 12 && y < 78) return [245, 235, 210]
+		if ((x > 66 && x < 74 && y > 20 && y < 28) || (x > 72 && x < 80 && y > 62 && y < 70)) {
+			return [238, 50, 80]
+		}
+		return [30, 62, 105]
+	})
+	const result = extractAlbumArtworkPaletteV2(image)
+	const graph = result.diagnostics.identityObligationGraph
+
+	assert.deepEqual(result, extractAlbumArtworkPaletteV2(image))
+	assert.equal(result.version, "album-artwork-first-principles-0.7.2")
+	assert.equal(result.version, ALBUM_ARTWORK_PALETTE_V2_VERSION)
+	assert.equal(graph.version, "identity-obligation-graph-v3")
+	assert.equal(result.diagnostics.paretoRanking.version, "pareto-identity-winner-diagnostics-v3")
+	assert.equal(result.diagnostics.paretoRanking.qualityGuardVersion,
+		"complete-quality-domain-non-inferiority-v1")
+	assert.ok(graph.obligations.length >= 2)
+	assert.ok(graph.obligations.length <= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations)
+	assert.equal(graph.nodes.length, graph.obligations.length * 6)
+	assert.equal(graph.edges.length, graph.obligations.length * 5)
+	assert.ok(graph.obligations.every(({ source }) =>
+		source.regionIds.length > 0 &&
+		source.connectedPopulationFraction > 0 &&
+		source.materialDistanceFromField >= ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance))
+	for (const obligation of graph.obligations) {
+		const nodes = graph.nodes.filter(({ obligationId }) => obligationId === obligation.id)
+		assert.deepEqual(nodes.map(({ stage }) => stage), [
+			"source-signature",
+			"role-availability",
+			"complete-treatment",
+			"retention-frontier",
+			"retained-slate",
+			"winner-explanation",
+		])
+		const availability = nodes.find(({ stage }) => stage === "role-availability")!
+		if (availability.status === "satisfied") {
+			assert.ok(nodes.find(({ stage }) => stage === "complete-treatment")!.treatmentCount > 0)
+			assert.ok(nodes.find(({ stage }) => stage === "retention-frontier")!.treatmentCount > 0)
+			assert.ok(nodes.find(({ stage }) => stage === "retained-slate")!.treatmentCount > 0)
+		}
+	}
+	assert.equal(graph.winnerExplanation.treatmentId, result.winner.id)
+	assert.ok(graph.winnerExplanation.coveredObligationIds.length <=
+		graph.winnerExplanation.maximumCompleteTreatmentCoverage)
+	assert.deepEqual(
+		[...graph.winnerExplanation.coveredObligationIds, ...graph.winnerExplanation.deferredObligationIds].sort(),
+		[...graph.winnerExplanation.feasibleObligationIds].sort(),
+	)
+	assert.deepEqual(
+		[...graph.winnerExplanation.qualityDeferredObligationIds,
+			...graph.winnerExplanation.priorityDeferredObligationIds].sort(),
+		[...graph.winnerExplanation.deferredObligationIds].sort(),
+	)
+	assert.equal(result.diagnostics.paretoRanking.identityCoverageRequiresQualityNonInferiority, true)
+	assert.equal(result.diagnostics.paretoRanking.qualityIncumbentTreatmentId,
+		result.diagnostics.paretoRanking.globalParetoTopTreatmentId)
+	assert.ok(result.diagnostics.paretoRanking.identityRetentionFrontierCandidateCount >=
+		result.diagnostics.paretoRanking.frontierCandidateCount)
+	assert.ok(result.alternatives.some(({ id }) => id === result.diagnostics.paretoRanking.qualityIncumbentTreatmentId))
+	if (result.diagnostics.paretoRanking.selectedIdentityChallengerQualityGuard) {
+		assert.equal(result.diagnostics.paretoRanking.selectedIdentityChallengerQualityGuard.pass, true)
+	}
+})
+
+test("winner explanation defers mutually exclusive obligations to reserved slate alternatives", () => {
+	const signatures: RGB[] = [
+		[245, 235, 210],
+		[238, 50, 80],
+		[35, 220, 95],
+		[245, 190, 35],
+	]
+	const image = fixture(128, 112, (x, y) => {
+		for (let index = 0; index < signatures.length; index++) {
+			const originX = 12 + index * 28
+			if (
+				x >= originX && x < originX + 6 && y >= 18 && y < 28 ||
+				x >= originX + 5 && x < originX + 11 && y >= 72 && y < 82
+			) return signatures[index]
+		}
+		return [25, 50, 100]
+	})
+	const result = extractAlbumArtworkPaletteV2(image)
+	const graph = result.diagnostics.identityObligationGraph
+
+	assert.equal(graph.obligations.length, 4)
+	assert.equal(graph.winnerExplanation.feasibleObligationIds.length, 4)
+	assert.equal(graph.winnerExplanation.deferredObligationIds.length,
+		4 - graph.winnerExplanation.coveredObligationIds.length)
+	assert.equal(graph.winnerExplanation.selectionReason, "all-identity-challengers-failed-quality-guard")
+	assert.ok(graph.winnerExplanation.qualityDeferredObligationIds.length > 0)
+	assert.ok(graph.winnerExplanation.obligationDeferrals.every((deferral) =>
+		deferral.completeCarrierCount > 0 && deferral.bestCarrierTreatmentId.length > 0 &&
+		(deferral.reason === "all-complete-treatment-carriers-failed-quality-guard"
+			? deferral.qualityEligibleCarrierCount === 0 && deferral.failedQualityGuardBlocks.length > 0
+			: deferral.qualityEligibleCarrierCount > 0)))
+	for (const obligationId of graph.winnerExplanation.deferredObligationIds) {
+		const winnerNode = graph.nodes.find((node) =>
+			node.obligationId === obligationId && node.stage === "winner-explanation")
+		const slateNode = graph.nodes.find((node) =>
+			node.obligationId === obligationId && node.stage === "retained-slate")
+		assert.equal(winnerNode?.status, "deferred")
+		assert.equal(slateNode?.status, "satisfied")
+		assert.ok((slateNode?.treatmentCount ?? 0) > 0)
+	}
+})
+
+test("identity obligation roots reject isolated one-pixel signature noise", () => {
+	const coherent: RGB = [238, 40, 45]
+	const noise: RGB = [0, 255, 0]
+	const image = fixture(96, 96, (x, y) => {
+		if (x === 2 && y === 2) return noise
+		if ((x >= 14 && x < 21 && y >= 16 && y < 23) || (x >= 70 && x < 77 && y >= 68 && y < 75)) return coherent
+		return [32, 63, 126]
+	})
+	const evidence = buildNativePaletteEvidence(image)
+	const noiseFamilyId = nearestFamily(evidence, noise).id
+	const coherentFamilyId = nearestFamily(evidence, coherent).id
+	const graph = extractAlbumArtworkPaletteV2(image).diagnostics.identityObligationGraph
+
+	assert.ok(graph.selection.notSourceConnectedFamilyIds.includes(noiseFamilyId))
+	assert.equal(graph.obligations.some(({ familyId }) => familyId === noiseFamilyId), false)
+	assert.ok(graph.obligations.some(({ familyId }) => familyId === coherentFamilyId))
+})
+
 test("foreground availability uses spare complete-candidate capacity beyond six directions", () => {
 	const roleColors: RGB[] = [
 		[245, 245, 245],
@@ -405,6 +543,28 @@ test("peak observability uses APCA's literal dead-zone without a fitted positive
 		"at-least-one-sample-outside-apca-zero-dead-zone")
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.distinctAccentObservability,
 		"at-least-one-sample-outside-apca-zero-dead-zone")
+})
+
+test("emergency generated fields expose source identity role availability before construction", () => {
+	const image = fixture(96, 96, (x, y) => {
+		if ((x >= 15 && x < 24 && y >= 18 && y < 27) || (x >= 68 && x < 77 && y >= 68 && y < 77)) {
+			return [220, 40, 40]
+		}
+		return [40, 130, 70]
+	})
+	const result = extractAlbumArtworkPaletteV2(image)
+	const graph = result.diagnostics.identityObligationGraph
+	const obligation = graph.obligations[0]
+
+	assert.equal(result.diagnostics.emergency.eligible, true)
+	assert.ok(obligation)
+	assert.equal(graph.nodes.find((node) =>
+		node.obligationId === obligation.id && node.stage === "role-availability")?.status, "satisfied")
+	assert.equal(graph.nodes.find((node) =>
+		node.obligationId === obligation.id && node.stage === "complete-treatment")?.status, "satisfied")
+	assert.ok(result.alternatives.some((treatment) =>
+		treatment.familyRoles.foreground === obligation.familyId ||
+		(!treatment.collapse.accent && treatment.familyRoles.accent === obligation.familyId)))
 })
 
 test("contrast diagnostics cover complete flat and gradient field paths", () => {
@@ -512,6 +672,24 @@ test("exact-overlay gradient challengers preserve roles and stay within one evid
 	assert.equal(selectExactOverlayGradientChallenger(primary, [tooWeak, changedAccent, eligible])?.id, "eligible")
 	assert.equal(selectExactOverlayGradientChallenger(primary, [tooWeak, changedAccent]), null)
 	assert.equal(selectExactOverlayGradientChallenger(primary, [eligible, deterministicFirst])?.id, "a-eligible")
+	const completeGuardScores = Object.fromEntries(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) =>
+		[block, 0.61]))
+	const qualityIncumbent = treatmentWithScores(primary, "quality-incumbent", {
+		...completeGuardScores,
+		generatedPenalty: 0,
+	})
+	const blockedIdentityOverlay = treatmentWithScores(eligible, "blocked-identity-overlay", {
+		...Object.fromEntries(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) =>
+			[block, block === "surfaceFidelity" ? 0.59 : 0.99])),
+		generatedPenalty: 0,
+	})
+	assert.equal(isExactOverlayGradientChallenger(primary, blockedIdentityOverlay), true)
+	assert.deepEqual(evaluateIdentityQualityGuard(qualityIncumbent, blockedIdentityOverlay).resolvedLosses
+		.map(({ block }) => block), ["surfaceFidelity"])
+	const guardedOverlays = filterIdentityQualityGuardCandidates(qualityIncumbent, [blockedIdentityOverlay])
+	assert.equal(guardedOverlays.evaluations.length, 1)
+	assert.deepEqual(guardedOverlays.evaluations[0].resolvedLosses.map(({ block }) => block), ["surfaceFidelity"])
+	assert.equal(selectExactOverlayGradientChallenger(primary, guardedOverlays.eligibleCandidates), null)
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.gradientChallengerProjections, 6)
 })
 
@@ -598,6 +776,115 @@ test("evidence-level Pareto ignores raw differences below the declared score res
 	})
 	assert.equal(paretoDominates(resolvedGain, tinyRawLead), true)
 	assert.deepEqual(paretoFrontier([tinyRawLead, resolvedGain]).map(({ id }) => id), ["resolved-gain"])
+})
+
+test("complete quality-domain guard makes every Pareto and ordering block independently noncompensatory", () => {
+	const base = extractAlbumArtworkPaletteV2(fixture(64, 64, (x) =>
+		x < 32 ? [24, 45, 90] : [230, 210, 170])).winner
+	const guardScores: Partial<Record<keyof CompletePaletteTreatment["scores"], number>> = {
+		treatmentFoundation: 0.61,
+		fieldIdentity: 0.61,
+		fieldFidelity: 0.61,
+		surfaceFidelity: 0.61,
+		fieldStructure: 0.61,
+		accentFidelity: 0.61,
+		foregroundUtility: 0.61,
+		accentUtility: 0.61,
+		artworkIdentity: 0.61,
+		representativeness: 0.61,
+		coherence: 0.61,
+		economy: 0.61,
+		generatedPenalty: 0,
+	}
+	const incumbent = treatmentWithScores(base, "incumbent", guardScores)
+	const sameLevels = treatmentWithScores(base, "same-levels", {
+		...Object.fromEntries(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) => [block, 0.639])),
+		generatedPenalty: 0,
+	})
+	const generatedPenaltyLoss = treatmentWithScores(base, "generated-penalty-loss", {
+		...Object.fromEntries(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) => [block, 0.75])),
+		generatedPenalty: 0.18,
+	})
+
+	assert.equal(evaluateIdentityQualityGuard(incumbent, sameLevels).pass, true)
+	assert.deepEqual(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS, [
+		...new Set([...ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS, ...ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS]),
+	])
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.length, 12)
+	for (const lostBlock of ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS) {
+		const challenger = treatmentWithScores(base, `loss-${lostBlock}`, {
+			...Object.fromEntries(ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS.map((block) =>
+				[block, block === lostBlock ? 0.59 : 0.99])),
+			generatedPenalty: 0,
+		})
+		const failed = evaluateIdentityQualityGuard(incumbent, challenger)
+		assert.equal(failed.pass, false, lostBlock)
+		assert.deepEqual(failed.resolvedLosses, [{
+			block: lostBlock,
+			incumbentEvidenceLevel: 15,
+			challengerEvidenceLevel: 14,
+			evidenceLevelLoss: 1,
+		}])
+	}
+	assert.equal(evaluateIdentityQualityGuard(incumbent, generatedPenaltyLoss).pass, false)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.qualityGuard.version,
+		"complete-quality-domain-non-inferiority-v1")
+	assert.deepEqual(ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.qualityGuard.blocks,
+		ALBUM_ARTWORK_PALETTE_V2_COMPLETE_QUALITY_GUARD_BLOCKS)
+})
+
+test("identity changes top-one only for a strict challenger that passes every guard block", () => {
+	const base = extractAlbumArtworkPaletteV2(fixture(64, 64, (x) =>
+		x < 32 ? [24, 45, 90] : [230, 210, 170])).winner
+	const incumbent = treatmentWithScores({
+		...base,
+		familyRoles: { ...base.familyRoles, foreground: "ordinary", accent: "ordinary" },
+		collapse: { ...base.collapse, accent: true },
+	}, "incumbent", {
+		treatmentFoundation: 0.61,
+		fieldIdentity: 0.61,
+		foregroundUtility: 0.61,
+		accentUtility: 0.61,
+		coherence: 0.61,
+		economy: 0.61,
+		generatedPenalty: 0,
+	})
+	const passing = treatmentWithScores({
+		...incumbent,
+		familyRoles: { ...incumbent.familyRoles, foreground: "identity-a" },
+	}, "passing", {
+		treatmentFoundation: 0.61,
+		fieldIdentity: 0.61,
+		foregroundUtility: 0.61,
+		accentUtility: 0.61,
+		coherence: 0.61,
+		economy: 0.61,
+		generatedPenalty: 0,
+	})
+	const blocked = treatmentWithScores({ ...passing }, "blocked", { fieldIdentity: 0.59 })
+	const obligation: IdentityObligation = {
+		id: "identity-obligation:identity-a",
+		familyId: "identity-a",
+		priority: 0,
+		source: {
+			regionIds: ["region-a"],
+			connectedPopulationFraction: 0.1,
+			materialDistanceFromField: 0.1,
+			signatureRoleScore: 0.5,
+			signatureEvidenceLevel: 12,
+			regionEvidenceLevel: 12,
+		},
+	}
+
+	const selected = selectQualityGuardedIdentityChallenger(incumbent, [incumbent, blocked, passing], [obligation])
+	assert.deepEqual(selected.identityChallengers.map(({ id }) => id), ["blocked", "passing"])
+	assert.deepEqual(selected.eligibleIdentityChallengers.map(({ id }) => id), ["passing"])
+	assert.equal(selected.qualityGuardEvaluations.length, 2)
+	assert.deepEqual(selected.qualityGuardEvaluations[0].resolvedLosses.map(({ block }) => block), ["fieldIdentity"])
+	assert.deepEqual(selected.qualityGuardEvaluations[1].resolvedLosses, [])
+	assert.equal(selected.selectedIdentityChallenger?.id, "passing")
+	assert.equal(selectQualityGuardedIdentityChallenger(incumbent, [incumbent, blocked], [obligation])
+		.selectedIdentityChallenger, null)
 })
 
 test("uniform art uses the tightly gated generated emergency and remains deterministic", () => {

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.7.2",
+  "implementationHash": "6b29ebc3f6e88e170a3d283009d3e5868c8fa92e72efb350c5dc0abe6750e28e",
+  "scientificSha256": "fdc4207bd1e4d4d3431fd6c1ced031aa32d9593cabd33f6a6164938a610a72c8",
+  "developmentManifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+  "qualityBaselineVersion": "album-artwork-first-principles-0.6.0",
+  "failedPredecessorVersion": "album-artwork-first-principles-0.7.0",
+  "immediatePredecessorVersion": "album-artwork-first-principles-0.7.1",
+  "inputHashes": {
+    "currentAggregateSha256": "f0e8bb06accb8b7a7eb0c02955ddbf00e015655751b013581fb18454eb40d9d3",
+    "currentSummarySha256": "0974ef010e58fb1e4558748e07746e28a4d6cf7959dddac44c708d064036d636",
+    "predecessorAggregateSha256": "15d31bba183f9c645327ed6f204d9be08fd80cd16092626097fe39f5af16d702",
+    "failedAggregateSha256": "abccff26cb806cbaa01a6a5a2068919767b552ff3e6b1683db974746662281d9",
+    "baselineAggregateSha256": "44fc6ab503208e1be29f697cb5acb0477d2a88092bd192b0068d1f9fde1bdef1",
+    "protocolSha256": "07017658a2b3b0b702bb5ac73c43e5a4f931d5429be9898ae318b6341a34c7b0",
+    "postmortemSha256": "4c2db338cbffa73959c1455296fb258434be0ec557f70ff2e985e205f15072a5",
+    "qualityGuardReview": {
+      "manifestSha256": "0d10397551fab94bfa44763a9c808d319703ac7877a02cda72ed6f9b67ad0132",
+      "preparationSha256": "a6ae2c4db0e706ddc83b8dba8d4deaca57660e05f7738d9c65d67bcae2366722",
+      "feedbackSha256": "3f221d945f05e258c2bab95d2860d5fab2bfb9e610caa6d26e7a048637228be7",
+      "interpretationsSha256": "b25e7e0f123f24fe7ba3d4c7ca5600de42bd15a893f4e56c9ed2bc3961b928dc",
+      "analysisSha256": "3ecaa90543f6924402e96f9766f322d2a1d74f56d9e00f12634be2b6988651eb"
+    },
+    "identityReview": {
+      "manifestSha256": "02ba912a0f31c4f887daa96bcdee8415933ea078e4b7b1e3f233f5bc685fea5b",
+      "preparationSha256": "cc5afca23ca6d1d1a4ac964745698fb45d2dd40bfaa0697ae6bf4ea1b18bbb93",
+      "feedbackSha256": "70adcd339ec32578dbbac4b97ae3e3ed028b89c73ce637d729e5b762f1391b63",
+      "interpretationsSha256": "441e8f1b591207fd54aae5af78956150881e152ca8ee86a96a6b66840b73f35c",
+      "analysisSha256": "2afcf69982bdf9dc924462c43bd41bd8d24db10fe2c469319ae0c8488f1897aa"
+    }
+  },
+  "winnerComparisons": {
+    "qualityBaseline": {
+      "version": "album-artwork-first-principles-0.6.0",
+      "exactMatchCount": 25,
+      "changedCaseIds": [
+        "development-04",
+        "development-17",
+        "development-24"
+      ]
+    },
+    "failedPredecessor": {
+      "version": "album-artwork-first-principles-0.7.0",
+      "exactMatchCount": 11,
+      "changedCaseIds": [
+        "development-03",
+        "development-04",
+        "development-05",
+        "development-06",
+        "development-07",
+        "development-08",
+        "development-12",
+        "development-13",
+        "development-14",
+        "development-15",
+        "development-17",
+        "development-18",
+        "development-19",
+        "development-23",
+        "development-26",
+        "development-27",
+        "development-28"
+      ]
+    },
+    "immediatePredecessor": {
+      "version": "album-artwork-first-principles-0.7.1",
+      "exactMatchCount": 27,
+      "changedCaseIds": [
+        "development-03"
+      ]
+    },
+    "novelWinnerCaseIds": []
+  },
+  "mechanicalGate": {
+    "pass": true,
+    "totalObligations": 104,
+    "feasibleObligations": 104,
+    "winnerCoveredObligations": 39,
+    "deferredObligations": 65,
+    "qualityDeferredObligations": 65,
+    "priorityDeferredObligations": 0,
+    "blockedNodes": 0,
+    "globalParetoFrontierCandidates": 3045,
+    "identityRetentionFrontierCandidates": 3098,
+    "identityChallengers": 4949,
+    "eligibleIdentityChallengers": 0,
+    "rejectedIdentityChallengers": 4949,
+    "identityChallengerResolvedLosses": 44180,
+    "overlayQualityGuardEvaluations": 0,
+    "rejectedIdentityDescendedOverlays": 0,
+    "finalSlateTreatments": 210,
+    "winnerChangesFromPredecessor": [
+      "development-03"
+    ],
+    "failedCaseIds": []
+  },
+  "baselineDelta": {
+    "exactBaselineMatchCount": 25,
+    "changedFromBaselineCount": 3,
+    "transferredAssessmentCount": 3,
+    "freshReviewCaseCount": 0,
+    "freshCaseIds": [],
+    "transferredAssessments": [
+      {
+        "caseId": "development-04",
+        "sourceSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+        "candidateTreatmentKeySha256": "f75ce76b431a9dfbe265757cdc53aeffbd35c04946e00132bae79034741d5b0d",
+        "baselineTreatmentKeySha256": "ccb870f0e1afb488bd8b5c8658497331d301407a8f8ec590ad7002d2734cd4aa",
+        "candidateQuality": "strong",
+        "baselineQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateTags": [],
+        "baselineTags": [],
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "technicalInterpretationClasses": [],
+        "origin": {
+          "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+          "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+          "analysisId": "ec8b6d5249d840526aa4465a8a0f5eae219dacf25b27a559b4ec6f38cfe79f17"
+        }
+      },
+      {
+        "caseId": "development-17",
+        "sourceSha256": "1bb7af568a67cafdffddc9bf817a72ffb1e5dad739e23845d5c20c55c2acfdf8",
+        "candidateTreatmentKeySha256": "fc905117f5299c51a2da53d1bac4bd884d93bae12775131a5e1757c5f6a26928",
+        "baselineTreatmentKeySha256": "5a938c747b17a0478ba587b4b5710f12194944baa0c711491cc57ba4964e62f1",
+        "candidateQuality": "strong",
+        "baselineQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateTags": [],
+        "baselineTags": [],
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "technicalInterpretationClasses": [],
+        "origin": {
+          "reviewVersion": "album-artwork-palette-v2-0.7.1-quality-guard-review-v1",
+          "manifestId": "95de59de4b9b685f864770e0f74c1cd44b8408b9b6037fd763799343caac9ecf",
+          "analysisId": "ec8b6d5249d840526aa4465a8a0f5eae219dacf25b27a559b4ec6f38cfe79f17"
+        }
+      },
+      {
+        "caseId": "development-24",
+        "sourceSha256": "575c17f6df1962f5fd5e6398097c1510dda4c989a3d311b65c8cacba9b66c490",
+        "candidateTreatmentKeySha256": "1a31fa0d1bdf7b393377ab128b39ac4d3f05e2df3fba8f6f401abc27fdd34ecf",
+        "baselineTreatmentKeySha256": "d36c683c3745ddb505e7d2fa02e7254354da36805f766204c65d96ce9c9668ff",
+        "candidateQuality": "strong",
+        "baselineQuality": "strong",
+        "relativeOutcome": "similarly-valid",
+        "candidateTags": [],
+        "baselineTags": [],
+        "commentSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "technicalInterpretationClasses": [],
+        "origin": {
+          "reviewVersion": "album-artwork-palette-v2-0.7.0-identity-obligation-review-v1",
+          "manifestId": "56587cd633b8cc7995d96dcf56f71f71d6133ea618b0e3bd04d895edcf249d8d",
+          "analysisId": "d01d301c880fd2bc9b9fe6035dc6667f42ffa7af54a4c7c9f7c107f8fffa043a"
+        }
+      }
+    ]
+  },
+  "transferGate": {
+    "allBaselineDeltaTreatmentsExactlyAssessed": true,
+    "everyTransferredCandidateStrongOrAcceptable": true,
+    "noTransferredBaselineStronger": true,
+    "noTransferredCandidateFailureClass": true,
+    "noFreshReviewCases": true
+  },
+  "gatePass": true,
+  "disposition": "complete-quality-domain-development-gate-passed-no-novel-review-cases",
+  "authorization": {
+    "futureSample": false,
+    "phase5": false,
+    "promotion": false,
+    "persistence": false,
+    "fullRoster": false
+  },
+  "analysisId": "2efe6677cc127802dfc60c77f80b43abc6a41c8a0dbb82f70cb84823f9c1d792"
+}

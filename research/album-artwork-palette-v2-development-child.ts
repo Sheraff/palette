@@ -103,12 +103,16 @@ async function main(): Promise<void> {
 	const wallStart = performance.now()
 	const image = await loadNativeImage(bytes)
 	const extraction = extractAlbumArtworkPaletteV2(image)
+	const repeatedExtraction = extractAlbumArtworkPaletteV2(image)
+	if (JSON.stringify(extraction) !== JSON.stringify(repeatedExtraction)) {
+		throw new Error(`Repeated extraction is not byte-identical for ${caseId}`)
+	}
 	const wallMs = performance.now() - wallStart
 	const cpu = process.cpuUsage(cpuStart)
 	const presentations = extraction.alternatives.map(presentationFor)
 	const scientificSha256 = sha256(JSON.stringify({ extraction, presentations }))
 	const artifact = {
-		schemaVersion: 1,
+		schemaVersion: 3,
 		implementationHash,
 		developmentManifestId: development.manifestId,
 		openedFreshSealManifestId: openedFresh.manifestId,
@@ -119,6 +123,7 @@ async function main(): Promise<void> {
 		presentationPolicy: "colornames-oklab-0.6.0-presentation-only",
 		presentations,
 		scientificSha256,
+		deterministicRepeatedExtraction: true,
 		runtime: {
 			workerCount: 1,
 			wallMs,
