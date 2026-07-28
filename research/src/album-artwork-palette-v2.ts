@@ -28,7 +28,11 @@ import type { OKLab, RGB, RawImage } from "./types.ts"
 
 export type RepresentativeStrategy = "dense-exact" | "nearest-prototype" | "density-synthesized"
 export type FieldTreatmentKind = "one-field" | "separate-flat-fields" | "gradient-field"
-export type GradientTopology = "linear" | "radial-center" | "radial-upper-center"
+export type GradientTopology = "linear" | "radial-center" | "radial-upper-center" | "radial-offset"
+export type GradientDirection =
+	"horizontal" | "vertical" | "diagonal-down" | "diagonal-up" | "center-out" |
+	"angle-22.5" | "angle-67.5" | "angle-112.5" | "angle-157.5" |
+	"center-0.35-0.50" | "center-0.65-0.50" | "center-0.50-0.65"
 export type Role = "background" | "surface" | "foreground" | "accent"
 
 export { ALBUM_ARTWORK_PALETTE_V2_0_7_4_VERSION }
@@ -238,6 +242,8 @@ export type NativePaletteEvidence = Readonly<{
 	retainedFamilyIds: readonly string[]
 	lanes: readonly EvidenceLane[]
 	laneRetention: readonly LaneRetentionTrace[]
+	familyBinStep: number
+	familyAnchorRadius: number
 }>
 
 export type BackgroundFieldDomainEvidence = Readonly<{
@@ -265,7 +271,7 @@ export type BackgroundFieldDomainEvidence = Readonly<{
 
 export type GradientFieldEvidence = Readonly<{
 	topology: GradientTopology
-	direction: "horizontal" | "vertical" | "diagonal-down" | "diagonal-up" | "center-out"
+	direction: GradientDirection
 	endpointBands: readonly [number, number]
 	progression: number
 	modeProgression: number
@@ -771,6 +777,18 @@ export type AlbumArtworkPaletteV2074Details = Readonly<{
 	audit: AlbumArtworkPaletteV2074CoreAudit
 }>
 
+export type AlbumArtworkPaletteV2Phase3SupplementalTreatment = Readonly<{
+	treatment: CompletePaletteTreatment
+	fieldHypothesis: FieldHypothesis
+	lineage: RecallAuditTreatmentLineage
+}>
+
+export type AlbumArtworkPaletteV2Phase3SupplementalConstruction = Readonly<{
+	hypotheses: readonly FieldHypothesis[]
+	treatments: readonly AlbumArtworkPaletteV2Phase3SupplementalTreatment[]
+	constructedTreatmentCountByHypothesis: Readonly<Record<string, number>>
+}>
+
 export type RecallAuditNewTreatment = Readonly<{
 	treatment: CompletePaletteTreatment
 	key: string
@@ -996,6 +1014,22 @@ const MINIMUM_DISTINCT_DISTANCE = 0.018
 const GRID_SIZE = 12
 const RANKING_EVIDENCE_RESOLUTION = 0.04
 
+type NativeEvidenceOptions = Readonly<{
+	familyBinStep: number
+	familyAnchorRadius: number
+	largestComponentsPerFamily: number
+	roleObservationComponentsPerFamily: number
+	familyIdPrefix: string
+}>
+
+const DEFAULT_NATIVE_EVIDENCE_OPTIONS: NativeEvidenceOptions = Object.freeze({
+	familyBinStep: FAMILY_BIN_STEP,
+	familyAnchorRadius: FAMILY_ANCHOR_RADIUS,
+	largestComponentsPerFamily: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.largestComponentsPerFamily,
+	roleObservationComponentsPerFamily: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.roleObservationComponentsPerFamily,
+	familyIdPrefix: "",
+})
+
 function clamp(value: number, minimum = 0, maximum = 1): number {
 	return Math.max(minimum, Math.min(maximum, value))
 }
@@ -1021,28 +1055,41 @@ function mean(values: readonly number[]): number {
 	return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
-function quantizedKey([lightness, a, b]: OKLab): number {
-	const lightnessBin = Math.max(0, Math.min(25, Math.floor(lightness / FAMILY_BIN_STEP)))
-	const aBin = Math.max(0, Math.min(20, Math.floor((a + 0.4) / FAMILY_BIN_STEP)))
-	const bBin = Math.max(0, Math.min(20, Math.floor((b + 0.4) / FAMILY_BIN_STEP)))
-	return lightnessBin * 441 + aBin * 21 + bBin
+function quantizedKey([lightness, a, b]: OKLab, step = FAMILY_BIN_STEP): number {
+	if (step === FAMILY_BIN_STEP) {
+		const lightnessBin = Math.max(0, Math.min(25, Math.floor(lightness / FAMILY_BIN_STEP)))
+		const aBin = Math.max(0, Math.min(20, Math.floor((a + 0.4) / FAMILY_BIN_STEP)))
+		const bBin = Math.max(0, Math.min(20, Math.floor((b + 0.4) / FAMILY_BIN_STEP)))
+		return lightnessBin * 441 + aBin * 21 + bBin
+	}
+	const lightnessMaximum = Math.round(1 / step)
+	const channelMaximum = Math.round(0.8 / step)
+	const channelCount = channelMaximum + 1
+	const lightnessBin = Math.max(0, Math.min(lightnessMaximum, Math.floor(lightness / step)))
+	const aBin = Math.max(0, Math.min(channelMaximum, Math.floor((a + 0.4) / step)))
+	const bBin = Math.max(0, Math.min(channelMaximum, Math.floor((b + 0.4) / step)))
+	return lightnessBin * channelCount * channelCount + aBin * channelCount + bBin
 }
 
 function binPrototype(bin: PerceptualBin): OKLab {
 	return [bin.sumL / bin.population, bin.sumA / bin.population, bin.sumB / bin.population]
 }
 
-function insertComponent(components: MutableComponent[], component: MutableComponent): void {
+function insertComponent(
+	components: MutableComponent[],
+	component: MutableComponent,
+	options: NativeEvidenceOptions,
+): void {
 	const candidates = [...components, component]
 	const largest = [...candidates]
 		.sort((first, second) => compareNumbersDescending(first.population, second.population) || first.start - second.start)
-		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.largestComponentsPerFamily)
+		.slice(0, options.largestComponentsPerFamily)
 	const roleObserved = [...candidates]
 		.sort((first, second) =>
 			compareNumbersDescending(first.rolePreliminary, second.rolePreliminary) ||
 			compareNumbersDescending(first.population, second.population) ||
 			first.start - second.start)
-		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.roleObservationComponentsPerFamily)
+		.slice(0, options.roleObservationComponentsPerFamily)
 	const largestStarts = new Set(largest.map(({ start }) => start))
 	const roleStarts = new Set(roleObserved.map(({ start }) => start))
 	const retained = new Map<number, MutableComponent>()
@@ -1289,7 +1336,7 @@ function fieldRoleOwnershipProfile(family: ColorFamilyEvidence): FieldRoleOwners
 	}
 }
 
-function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamilyEvidence): FieldRoleAssignmentEvidence {
+export function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamilyEvidence): FieldRoleAssignmentEvidence {
 	const firstProfile = fieldRoleOwnershipProfile(first)
 	const secondProfile = fieldRoleOwnershipProfile(second)
 	let background = first
@@ -1359,7 +1406,10 @@ function distinctAccentFidelity(
 	return signatureRoleScore(family) * Math.sqrt(separation)
 }
 
-export function buildNativePaletteEvidence(image: RawImage): NativePaletteEvidence {
+export function buildNativePaletteEvidence(
+	image: RawImage,
+	options: NativeEvidenceOptions = DEFAULT_NATIVE_EVIDENCE_OPTIONS,
+): NativePaletteEvidence {
 	if (!Number.isSafeInteger(image.width) || !Number.isSafeInteger(image.height) || image.width <= 0 || image.height <= 0) {
 		throw new RangeError("Native image dimensions must be positive safe integers")
 	}
@@ -1369,11 +1419,11 @@ export function buildNativePaletteEvidence(image: RawImage): NativePaletteEviden
 	}
 
 	const labs = toLabBuffer(image.data)
-	const pixelBinKeys = new Uint16Array(pixelCount)
+	const pixelBinKeys = new Uint32Array(pixelCount)
 	const binsByKey = new Map<number, PerceptualBin>()
 	for (let pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++) {
 		const lab = labAt(labs, pixelIndex)
-		const key = quantizedKey(lab)
+		const key = quantizedKey(lab, options.familyBinStep)
 		pixelBinKeys[pixelIndex] = key
 		const existing = binsByKey.get(key)
 		if (existing) {
@@ -1404,7 +1454,7 @@ export function buildNativePaletteEvidence(image: RawImage): NativePaletteEviden
 		let nearestDistance = Infinity
 		for (let candidateIndex = 0; candidateIndex < mutableFamilies.length; candidateIndex++) {
 			const distance = okDistance(prototype, mutableFamilies[candidateIndex].anchor)
-			if (distance <= FAMILY_ANCHOR_RADIUS && distance < nearestDistance) {
+			if (distance <= options.familyAnchorRadius && distance < nearestDistance) {
 				familyIndex = candidateIndex
 				nearestDistance = distance
 			}
@@ -1412,7 +1462,7 @@ export function buildNativePaletteEvidence(image: RawImage): NativePaletteEviden
 		if (familyIndex < 0) {
 			familyIndex = mutableFamilies.length
 			mutableFamilies.push({
-				id: `family-${bin.key}`,
+				id: `${options.familyIdPrefix}family-${bin.key}`,
 				anchor: prototype,
 				binIndexes: [],
 				population: 0,
@@ -1592,7 +1642,7 @@ export function buildNativePaletteEvidence(image: RawImage): NativePaletteEviden
 		)
 		const family = mutableFamilies[familyIndex]
 		family.componentCount += 1
-		insertComponent(family.components, component)
+		insertComponent(family.components, component, options)
 	}
 
 	const preliminary = mutableFamilies.map((family): ColorFamilyEvidence => {
@@ -1839,13 +1889,15 @@ export function buildNativePaletteEvidence(image: RawImage): NativePaletteEviden
 		retainedFamilyIds,
 		lanes,
 		laneRetention,
+		familyBinStep: options.familyBinStep,
+		familyAnchorRadius: options.familyAnchorRadius,
 	}
 }
 
 function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): BackgroundFieldDomain[] {
 	const fieldIds = new Set(evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? [])
 	const smoothAdjacencies = new Set(evidence.adjacencies
-		.filter(({ meanContrast }) => meanContrast <= FAMILY_ANCHOR_RADIUS)
+		.filter(({ meanContrast }) => meanContrast <= evidence.familyAnchorRadius)
 		.map(({ firstFamilyId, secondFamilyId }) => [firstFamilyId, secondFamilyId].sort(compareAscii).join(":")))
 	const componentAtStart = new Map<number, string>()
 	for (const family of evidence.families) {
@@ -1908,7 +1960,7 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 				const adjacencyKey = [family.id, neighborFamily.id].sort(compareAscii).join(":")
 				if (!sameFamily && (
 					!smoothAdjacencies.has(adjacencyKey) ||
-					okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)) > FAMILY_ANCHOR_RADIUS
+					okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)) > evidence.familyAnchorRadius
 				)) continue
 				visited[neighbor] = 1
 				queue[queueLength++] = neighbor
@@ -5608,6 +5660,121 @@ export function extractAlbumArtworkPaletteV2074(image: RawImage): AlbumArtworkPa
 	return extractAlbumArtworkPaletteV2074Details(image).result
 }
 
+function phase3SourceSupportedTreatment(
+	treatment: CompletePaletteTreatment,
+	familiesById: ReadonlyMap<string, ColorFamilyEvidence>,
+): boolean {
+	return (["background", "surface", "foreground", "accent"] as const).every((role) => {
+		const color = treatment[role]
+		const familyId = treatment.familyRoles[role]
+		if (color.generated || familyId === "generated" || "generated" in color.support) return false
+		const family = familiesById.get(familyId)
+		return family !== undefined && sourceConnectedFamily(family) &&
+			color.support.anchorFamilyId === familyId && color.support.regionIds.length > 0
+	})
+}
+
+function phase3SupplementalLineage(treatment: CompletePaletteTreatment): RecallAuditTreatmentLineage {
+	const familyIds = [...new Set(Object.values(treatment.familyRoles)
+		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
+	const representatives = (["background", "surface", "foreground", "accent"] as const).map((role) => ({
+		role,
+		familyId: treatment.familyRoles[role],
+		hex: treatment[role].hex,
+		strategy: treatment[role].strategy,
+		sourceConnected: !treatment[role].generated && !("generated" in treatment[role].support) &&
+			treatment[role].support.anchorFamilyId.length > 0 && treatment[role].support.regionIds.length > 0,
+	}))
+	return {
+		fieldHypothesisId: treatment.sourceFieldHypothesisId,
+		fieldDirectionKey: fieldDirectionKey(treatment),
+		roleDirectionKeys: roleDirectionKeys(treatment),
+		familyIds,
+		representatives,
+		sourceConnected: representatives.every(({ sourceConnected }) => sourceConnected),
+	}
+}
+
+export function constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
+	evidence: NativePaletteEvidence,
+	hypotheses: readonly FieldHypothesis[],
+): AlbumArtworkPaletteV2Phase3SupplementalConstruction {
+	const uniqueHypotheses = new Map<string, FieldHypothesis>()
+	for (const hypothesis of hypotheses) {
+		const incumbent = uniqueHypotheses.get(hypothesis.id)
+		if (!incumbent || hypothesis.fieldFidelity > incumbent.fieldFidelity) {
+			uniqueHypotheses.set(hypothesis.id, hypothesis)
+		}
+	}
+	const orderedHypotheses = [...uniqueHypotheses.values()].sort((first, second) =>
+		compareNumbersDescending(first.fieldFidelity, second.fieldFidelity) || compareAscii(first.id, second.id))
+	if (orderedHypotheses.length === 0) {
+		return { hypotheses: [], treatments: [], constructedTreatmentCountByHypothesis: {} }
+	}
+
+	const familiesById = new Map(evidence.families.map((family) => [family.id, family]))
+	for (const hypothesis of orderedHypotheses) {
+		const gradient = hypothesis.gradientEvidence
+		const endpointFamilyIds = new Set([hypothesis.backgroundFamilyId, hypothesis.surfaceFamilyId]
+			.filter((familyId): familyId is string => familyId !== null))
+		const representativeGroups = [hypothesis.backgroundRepresentatives, hypothesis.surfaceRepresentatives]
+		const sourceSupportedEndpoints = representativeGroups.every((representatives) =>
+			representatives.length > 0 && representatives.every(sourceConnectedRepresentative) &&
+			representatives.some((representative) => !("generated" in representative.support) &&
+				representative.support.exactSource))
+		const supportedGeometry = gradient !== null && (
+			(gradient.topology === "linear" &&
+				["horizontal", "vertical", "diagonal-down", "diagonal-up"].includes(gradient.direction)) ||
+			((gradient.topology === "radial-center" || gradient.topology === "radial-upper-center") &&
+				gradient.direction === "center-out")
+		)
+		if (hypothesis.kind !== "gradient-field" || gradient === null || !supportedGeometry ||
+			gradient.supportingComponentIds.length === 0 ||
+			!gradient.supportingFamilyIds.every((familyId) => endpointFamilyIds.has(familyId)) ||
+			!sourceSupportedEndpoints || !sourceConnectedHypothesis(hypothesis, familiesById)) {
+			throw new Error(`Phase 3 supplemental field hypothesis ${hypothesis.id} lacks source-local endpoint support`)
+		}
+	}
+
+	const domain = buildCompletePaletteTreatmentDomain(evidence, orderedHypotheses)
+	const supported = domain.treatments.filter((treatment) =>
+		phase3SourceSupportedTreatment(treatment, familiesById))
+	const constructedByHypothesis = new Map<string, CompletePaletteTreatment[]>()
+	for (const hypothesis of orderedHypotheses) constructedByHypothesis.set(hypothesis.id, [])
+	for (const treatment of supported) constructedByHypothesis.get(treatment.sourceFieldHypothesisId)?.push(treatment)
+
+	// Variant canonicalization can merge equivalent hypotheses. Materialize one legal
+	// representative independently so every source-derived field enters the pre-cap union.
+	for (const hypothesis of orderedHypotheses) {
+		const existing = constructedByHypothesis.get(hypothesis.id)!
+		if (existing.length > 0) continue
+		const isolated = buildCompletePaletteTreatmentDomain(evidence, [hypothesis]).treatments
+			.filter((treatment) => phase3SourceSupportedTreatment(treatment, familiesById))
+			.sort((first, second) => compareParetoTreatments(first, second) ||
+				compareAscii(completeTreatmentKey(first), completeTreatmentKey(second)))
+		const representative = isolated[0]
+		if (representative) existing.push(representative)
+	}
+
+	const constructedHypotheses = orderedHypotheses.filter(({ id }) => constructedByHypothesis.get(id)!.length > 0)
+	const hypothesisById = new Map(constructedHypotheses.map((hypothesis) => [hypothesis.id, hypothesis]))
+	const treatments = [...constructedByHypothesis.values()].flat().map((treatment) => {
+		const fieldHypothesis = hypothesisById.get(treatment.sourceFieldHypothesisId)
+		if (!fieldHypothesis) throw new Error(`Unknown Phase 3 supplemental hypothesis ${treatment.sourceFieldHypothesisId}`)
+		const lineage = phase3SupplementalLineage(treatment)
+		if (!lineage.sourceConnected) throw new Error(`Phase 3 supplemental treatment ${treatment.id} lacks source lineage`)
+		return { treatment, fieldHypothesis, lineage }
+	})
+	return {
+		hypotheses: constructedHypotheses,
+		treatments,
+		constructedTreatmentCountByHypothesis: Object.fromEntries(constructedHypotheses.map(({ id }) => [
+			id,
+			constructedByHypothesis.get(id)!.length,
+		])),
+	}
+}
+
 export async function extractAlbumArtworkPaletteV2074FromSource(
 	source: string | Uint8Array,
 ): Promise<AlbumArtworkPaletteV2Result> {
@@ -5657,4 +5824,12 @@ export function extractAlbumArtworkPaletteV2(image: RawImage): AlbumArtworkPalet
 
 export async function extractAlbumArtworkPaletteV2FromSource(source: string | Uint8Array): Promise<AlbumArtworkPaletteV2Result> {
 	return extractAlbumArtworkPaletteV2(await loadNativeImage(source))
+}
+
+export function extractAlbumArtworkPaletteV2Phase3Live072(image: RawImage): AlbumArtworkPaletteV2Result {
+	return extractAlbumArtworkPaletteV2(image)
+}
+
+export function extractAlbumArtworkPaletteV2Phase3Closed074(image: RawImage): AlbumArtworkPaletteV2Result {
+	return extractAlbumArtworkPaletteV2074(image)
 }

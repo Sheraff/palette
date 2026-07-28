@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Complete-treatment review</title>
+	<link rel="stylesheet" href="/styles.css">
+	<script type="module" src="/app.js"></script>
+</head>
+<body>
+	<header class="masthead">
+		<div>
+			<p class="eyebrow">Complete-treatment review</p>
+			<h1 id="title">One artwork.<br>Complete judgment.</h1>
+		</div>
+		<div class="instructions">
+			<p id="instruction">Judge each complete artwork-driven interface treatment as one coupled role assignment.</p>
+			<p>Role names and hex values describe what is shown. Color names are presentation aids only.</p>
+		</div>
+	</header>
+	<nav class="review-navigation" aria-label="Review navigation">
+		<button id="previous" type="button" aria-keyshortcuts="ArrowLeft">Previous</button>
+		<div class="progress-block">
+			<meter id="meter" min="0" max="1" value="0"></meter>
+			<output id="progress" role="status" aria-live="polite">Loading review...</output>
+		</div>
+		<button id="next" type="button" aria-keyshortcuts="ArrowRight">Next</button>
+	</nav>
+	<main id="review" aria-live="polite"></main>
+</body>
+</html>

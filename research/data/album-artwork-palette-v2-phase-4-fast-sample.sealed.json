@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": "album-artwork-palette-v2-phase-4-fast-sample-v1",
+  "custody": {
+    "sealState": "closed",
+    "inputPolicy": "source-provenance-inventory-metadata-only",
+    "developmentExtractionProhibited": true,
+    "prohibition": "Development extraction is forbidden: do not read, decode, render, inspect, review, or run candidate or baseline extraction on the selected root-12 artwork bytes before an independently authorized Phase 4 opening."
+  },
+  "inventory": {
+    "path": "research/data/source-provenance-inventory-00-14.json",
+    "inventoryVersion": "source-provenance-inventory-00-14-v1",
+    "inventoryId": "3907c57f94cd7dfea992c5d1ce98da6de2165c720b75259b32f0250da1881c7f",
+    "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+  },
+  "selection": {
+    "root": "12",
+    "familyCount": 12,
+    "eligibleFamilyCount": 383,
+    "domain": "album-artwork-palette-v2-phase-4-fast-sample-source-selection-v1",
+    "policy": "first-12-eligible-distinct-root-12-families-by-domain-separated-source-sha256-and-byte-count-key",
+    "representativePolicy": "lowest-domain-separated-key-over-source-sha256-and-byte-count; path-text-never-ranks-sources",
+    "filenamePolicy": "paths-and-family-ids-are-bound-identifiers-only; filename text and meaning never affect eligibility, ranking, or representative choice",
+    "excludedSignals": [
+      "filename semantics",
+      "colors",
+      "candidate output",
+      "reviews"
+    ]
+  },
+  "selections": [
+    {
+      "caseId": "phase-4-fast-01",
+      "selectionKey": "00701629b97ae35bccc9f03c4f227572fda68040099858cdb921736d5e5366d9",
+      "familyCommitment": "3858c4829d1a7cd35ec541926413965069e48f1d27298201ec59e08d17ab31f7",
+      "familyId": "00128ae342a7abf16efba0ca",
+      "source": {
+        "path": "12/ab67616d0000b27300128ae342a7abf16efba0ca",
+        "sha256": "b396d00b6723d892bef7ea09f8412337898831ad2d7626d99d133390f3eb7ca9",
+        "byteCount": 46965
+      }
+    },
+    {
+      "caseId": "phase-4-fast-02",
+      "selectionKey": "01395de46c3070e8b152de9b7bba53fe946b27c563b8a1b4e9adfffc5d001efb",
+      "familyCommitment": "a585ca6aa297fc2127eb645bd46db9f88132402ff846f88430f3585899c9936c",
+      "familyId": "001257dc8adb74fa580c34fb",
+      "source": {
+        "path": "12/ab67616d00001e02001257dc8adb74fa580c34fb",
+        "sha256": "0f8e3e85daecd0e39932b1295e837d29a34773cc6821b3c8d126eec08c750f1b",
+        "byteCount": 44726
+      }
+    },
+    {
+      "caseId": "phase-4-fast-03",
+      "selectionKey": "021b954992cf8ae7b6bba088c94360c1fa911f2e21ba979c5aedda5f616159a1",
+      "familyCommitment": "a50c00e2b8b242700a6a53984538c2f6099945bef969e8be362a3253ef8098e8",
+      "familyId": "0012fca58c0689fdab5d3e7e",
+      "source": {
+        "path": "12/ab67616d00001e020012fca58c0689fdab5d3e7e",
+        "sha256": "0c3b123bb4ee93eef353561f21557048b8f659dc5807051beafbac09a159bf53",
+        "byteCount": 18856
+      }
+    },
+    {
+      "caseId": "phase-4-fast-04",
+      "selectionKey": "027add6d31a58dba9f65d538fc717d964e5df34e87b491e143e84fdd4e78996f",
+      "familyCommitment": "5dab23a17df13dd24cdfa9ecdd24d6d87262bcc6386b2f97854ed961f64084a0",
+      "familyId": "001294f1f9a7f41a5d02c8c1",
+      "source": {
+        "path": "12/ab67616d00001e02001294f1f9a7f41a5d02c8c1",
+        "sha256": "7b2853eb379f4db65e6d0ab4d8cfb443dab0ac499a1753b4a272e7f76cc87e57",
+        "byteCount": 36160
+      }
+    },
+    {
+      "caseId": "phase-4-fast-05",
+      "selectionKey": "02a90730732cb5ba8548e002fd1132fcb346e91236c25957ec5738624f1bbb6c",
+      "familyCommitment": "12515716351cbb4469be154c200c3faf909356d5d7b5b714fa839ec70830d758",
+      "familyId": "00122648a63d21a36660e005",
+      "source": {
+        "path": "12/ab67616d00001e0200122648a63d21a36660e005",
+        "sha256": "45164b54c77a85a45559162b7ee01e7ec34a861e958adcffa8e31cc1e744e839",
+        "byteCount": 36414
+      }
+    },
+    {
+      "caseId": "phase-4-fast-06",
+      "selectionKey": "03afa3ac3f2b89c1c09d35d064774e50b8dd0fe68cf39ad0a86ccf7e4264c8bf",
+      "familyCommitment": "1724f9ba400ac87b6f59625ad3bf82e46a0c91d233ba3d448dcd73d23a755271",
+      "familyId": "0012e7db0a23f574160e7250",
+      "source": {
+        "path": "12/ab67616d0000b2730012e7db0a23f574160e7250",
+        "sha256": "2854e6b1bed5df6ec788fae523ba5c6200e929a98504ec888c860fc8498f537d",
+        "byteCount": 84774
+      }
+    },
+    {
+      "caseId": "phase-4-fast-07",
+      "selectionKey": "049417e899c28a8439fec602862e2d56174b8c9ee3c0b1370514f8d1952cbe59",
+      "familyCommitment": "bec65f0e7df7ae71c11042fb7206cd3af5c18316ba2d2cfcbed70addb89a8e78",
+      "familyId": "0012d5e5bab66ad5a1d9717c",
+      "source": {
+        "path": "12/ab67616d0000b2730012d5e5bab66ad5a1d9717c",
+        "sha256": "26e17aedfaac63e914376e51d62211f1bbd15275038bd05b22fa4e77337598ff",
+        "byteCount": 85284
+      }
+    },
+    {
+      "caseId": "phase-4-fast-08",
+      "selectionKey": "049ffcdbe20e05ffcd635217bf805fa2b66ebbe57e7608261f18e7ed21ef2877",
+      "familyCommitment": "8bab77f63c8db843c2c7e7b4129ffc281890695136f9124aede7e02a5f187476",
+      "familyId": "0012974b23e6c77bffbbffd0",
+      "source": {
+        "path": "12/ab67616d00001e020012974b23e6c77bffbbffd0",
+        "sha256": "58623c29d83d54ff012123675bb494e6d0908e93f32f4ad7ace9adf3569138e7",
+        "byteCount": 34478
+      }
+    },
+    {
+      "caseId": "phase-4-fast-09",
+      "selectionKey": "056631b9d4df61d1b8b84e72296437a166461a5cfba27d11a4d3aca9b708bee8",
+      "familyCommitment": "51900a241eda48bdafbc4c0da591891dbf70a5ce7a6975b2ffc20cec8b1641f5",
+      "familyId": "0012d14ec6be8bf7398112ce",
+      "source": {
+        "path": "12/ab67616d0000b2730012d14ec6be8bf7398112ce",
+        "sha256": "3648cd0fa2ecf1a6018c9475e942349e0b87c5abb4eb597a055a7b38609dcfaf",
+        "byteCount": 130498
+      }
+    },
+    {
+      "caseId": "phase-4-fast-10",
+      "selectionKey": "05d25d48c961e1b5aa11dc19367d4e37a000b44b7d6122ba8025fb192c4b848c",
+      "familyCommitment": "91b13312438778bff72f3da5947ab54a6a95ca272fc11d15e34eb84d0a1722de",
+      "familyId": "0012ff2f000aa964e4a9f296",
+      "source": {
+        "path": "12/ab67616d0000b2730012ff2f000aa964e4a9f296",
+        "sha256": "11e3ce296936b2af10bcc2bc3624dd3c486d85037ab044fa40337d1254077457",
+        "byteCount": 233597
+      }
+    },
+    {
+      "caseId": "phase-4-fast-11",
+      "selectionKey": "05e3d957824d02e6d4b2d7b0999149bd1ceb7793c6db9027239f2f8ca9bfdad6",
+      "familyCommitment": "75756295499f03018e72ed461154ba7b17cfcb3e76a172af40e63bf7238017bf",
+      "familyId": "00125577fb06a6a8942d6547",
+      "source": {
+        "path": "12/ab67616d0000b27300125577fb06a6a8942d6547",
+        "sha256": "949654fbb7b33c3a1e1f42eaeb646ef99e6a6c1303bb3ed8cb698807dc84ee59",
+        "byteCount": 190814
+      }
+    },
+    {
+      "caseId": "phase-4-fast-12",
+      "selectionKey": "063383fdde66f57b13dd13cf62872d39b226a05b04714ffa455879dc4f32a6e4",
+      "familyCommitment": "cc8c0f3017b05a87cde0bfbec10ed25305de056f017e892ddb94412a5e1937f3",
+      "familyId": "0012750099e04883a67fcda4",
+      "source": {
+        "path": "12/ab67616d0000b2730012750099e04883a67fcda4",
+        "sha256": "8fa83a6b8112553f26ac8bba621710a7093f55170ac0a41b3731d673c091c631",
+        "byteCount": 149133
+      }
+    }
+  ],
+  "manifestId": "6e65a71b8bdd369e2b3800ad7401d23ada2a4e47bfd2633083896375782bde7e",
+  "sealCommitment": "29a8f75445ed294ae21647b2bc48caf306d6a4d45190cbe32dcc10dc27c62a1f"
+}
