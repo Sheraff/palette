@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "reviewVersion": "album-artwork-palette-v2-0.7.5-development-12-diagnostic-review-1.0.0",
+  "contentId": "65a45949bcf9e78052076ee00c4443e8ff0881868e5dc47cafd11d08e9bd299e",
+  "responses": [
+    {
+      "itemId": "389391629cdf5edd7bb413a8",
+      "qualityA": "unacceptable",
+      "qualityB": "acceptable",
+      "relativeOutcome": "candidate-stronger",
+      "issuesA": [
+        "incomplete artwork identity"
+      ],
+      "issuesB": [
+        "incomplete artwork identity"
+      ],
+      "comment": "option A is missing the yellow, option B is missing the black"
+    }
+  ],
+  "manifestRawSha256": "cb34718220eeff392241e2461d894be7899fe3f7e5907a0348a5796a3db8b19a",
+  "submittedAt": "2026-07-28T10:21:07.277Z",
+  "submissionId": "e1b09c4956c1fe62e159ae7609ef58490b4675a1e9ed9d3503f044e3fd5af818"
+}

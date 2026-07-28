@@ -76,6 +76,40 @@ export const ALBUM_ARTWORK_PALETTE_V2_0_7_4_IMPLEMENTATION_PATHS = Object.freeze
 	"research/tests/album-artwork-palette-v2.test.ts",
 ] as const)
 
+export const ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT = Object.freeze({
+	root: "research/data/experiments/album-artwork-palette-v2-0.7.4-development",
+	version: "album-artwork-first-principles-0.7.4",
+	implementationSha256: "b1139a62047bcb5d454c39c19b74e0c518de07145c49efa784d416305b8d2f3e",
+	scientificSha256: "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21",
+	executionManifest: Object.freeze({
+		path: "execution-manifest.json",
+		id: "a80f75b402a12516fb00f2afb3dd56e4c0fb8a4a5f7d8d5284e557eec87a3d09",
+		rawSha256: "4166864322673fb250a2ea9c7da23f5d324fde60c0a250c1a271ac70ce2fc549",
+	}),
+	results: Object.freeze({
+		path: "results.json",
+		id: "5b2526b05267bf7df7aea80e91fd8f7fad0aed27044fc8bfe5bdb4b7e9ef1a7a",
+		rawSha256: "aed8e386717a45020b8eccadf1362bc31157a47aef4804b4b3d8b8fb31a4a4b8",
+	}),
+	summary: Object.freeze({
+		path: "summary.json",
+		id: "02a2bc1987a84e5567ff95316b11847c68b0df399cea9d3bdb11d7ef8d9bef37",
+		rawSha256: "d7a5686d6127027dd0eabb3568dcd303ac3f92332d4af3eaf340d172efed0bc3",
+	}),
+	analysis: Object.freeze({
+		path: "analysis.json",
+		id: "b2d542377ec21b9861155216ddcff5003bf501ce08fc355f277cf9303a3d8576",
+		rawSha256: "b49cb58c1c6a3cdd1f66ab5a1689ec5da0676470c30f7e50cb46ba1b88c45bd8",
+	}),
+	manifest: Object.freeze({
+		path: "manifest.json",
+		id: "4f5278d454cfd7223fad9c1bd174a75892c0f17fdf40d04a3623d35f1f910aef",
+		rawSha256: "ea070636d10353d72e131c70638d792540ffddae894a0be568df2985bfdf80f4",
+		orderedRoot: "863290bfc38e96d7297353d7cf997e853baea511ccdedf71b8d768047664bd12",
+		sourceOrderedRoot: "afdae1de7c68c0311d40d39a769dba5e3accecf9d93c134ba15bb62195ef6cb2",
+	}),
+})
+
 export const ALBUM_ARTWORK_PALETTE_V2_0_7_4_FROZEN_BINDINGS = Object.freeze({
 	documents: ALBUM_ARTWORK_PALETTE_V2_0_7_4_DOCUMENT_BINDINGS,
 	developmentPanel: ALBUM_ARTWORK_PALETTE_V2_0_7_4_DEVELOPMENT_PANEL,
@@ -405,6 +439,21 @@ export type AlbumArtworkPaletteV2073ImmutableVerification = Readonly<{
 	fileCount: number
 }>
 
+export type AlbumArtworkPaletteV2074ImmutableVerification = Readonly<{
+	manifestId: string
+	orderedRoot: string
+	sourceOrderedRoot: string
+	executionManifestId: string
+	resultsId: string
+	summaryId: string
+	analysisId: string
+	implementationSha256: string
+	scientificSha256: string
+	mechanicalPass: true
+	dispositionAuthority: true
+	fileCount: number
+}>
+
 export type AlbumArtworkPaletteV2074FrozenInputs = Readonly<{
 	panel: AlbumArtworkPaletteV2074DevelopmentManifest
 	historical073Verification: AlbumArtworkPaletteV2073ImmutableVerification
@@ -621,6 +670,91 @@ export async function verifyImmutableAlbumArtworkPaletteV2073Artifact(
 		scientificSha256: binding.scientificSha256,
 		mechanicalPass: true,
 		selectedArm: "widened-field-hypothesis-retention",
+		fileCount: manifest.files.length,
+	}
+}
+
+export async function verifyImmutableAlbumArtworkPaletteV2074Artifact(
+	projectRoot: string,
+): Promise<AlbumArtworkPaletteV2074ImmutableVerification> {
+	const binding = ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT
+	const manifestPath = `${binding.root}/${binding.manifest.path}`
+	const manifest = await readBoundJson<HistoricalManifest>(projectRoot, manifestPath, binding.manifest.rawSha256)
+	invariant(manifest.schemaVersion === 1 && manifest.candidateVersion === binding.version,
+		"Immutable 0.7.4 manifest schema is invalid")
+	invariant(manifest.manifestId === binding.manifest.id &&
+		manifest.manifestId === albumArtworkPaletteV2074ContentId(manifest, "manifestId"),
+		"Immutable 0.7.4 manifest ID is invalid")
+	const paths = manifest.files.map(({ path }) => path)
+	invariant(new Set(paths).size === paths.length && JSON.stringify(paths) === JSON.stringify([...paths].sort()),
+		"Immutable 0.7.4 manifest paths are not unique and ordered")
+	const artifactRoot = resolve(projectRoot, binding.root)
+	for (const file of manifest.files) {
+		invariant(!file.path.startsWith("/") && !file.path.split("/").includes(".."),
+			`Unsafe immutable 0.7.4 path ${file.path}`)
+		const absolute = resolve(artifactRoot, file.path)
+		invariant(albumArtworkPaletteV2074PathInside(artifactRoot, absolute), `Immutable 0.7.4 path escaped: ${file.path}`)
+		const metadata = await stat(absolute)
+		invariant(metadata.isFile() && metadata.size === file.byteCount &&
+			await albumArtworkPaletteV2074FileSha256(absolute) === file.rawSha256,
+			`Immutable 0.7.4 file binding failed for ${file.path}`)
+	}
+	const orderedRoot = albumArtworkPaletteV2074OrderedFileRoot(
+		"album-artwork-palette-v2-0.7.4-artifact-root-v1",
+		manifest.files,
+	)
+	const sourceOrderedRoot = albumArtworkPaletteV2074OrderedFileRoot(
+		"album-artwork-palette-v2-0.7.4-artifact-root-v1",
+		manifest.files.filter(({ path }) => path.startsWith("sources/")),
+	)
+	invariant(orderedRoot === manifest.orderedRoot && orderedRoot === binding.manifest.orderedRoot &&
+		sourceOrderedRoot === binding.manifest.sourceOrderedRoot, "Immutable 0.7.4 ordered roots are invalid")
+
+	const readArtifact = async (entry: Readonly<{ path: string; rawSha256: string }>): Promise<Record<string, unknown>> =>
+		readBoundJson(projectRoot, `${binding.root}/${entry.path}`, entry.rawSha256)
+	const [execution, results, summary, analysis] = await Promise.all([
+		readArtifact(binding.executionManifest),
+		readArtifact(binding.results),
+		readArtifact(binding.summary),
+		readArtifact(binding.analysis),
+	])
+	invariant(execution.executionManifestId === binding.executionManifest.id &&
+		albumArtworkPaletteV2074ContentId(execution, "executionManifestId") === binding.executionManifest.id,
+		"Immutable 0.7.4 execution-manifest ID is invalid")
+	invariant(results.resultsId === binding.results.id &&
+		albumArtworkPaletteV2074ContentId(results, "resultsId") === binding.results.id,
+		"Immutable 0.7.4 results ID is invalid")
+	invariant(summary.summaryId === binding.summary.id &&
+		albumArtworkPaletteV2074ContentId(summary, "summaryId") === binding.summary.id,
+		"Immutable 0.7.4 summary ID is invalid")
+	invariant(analysis.analysisId === binding.analysis.id &&
+		albumArtworkPaletteV2074ContentId(analysis, "analysisId") === binding.analysis.id,
+		"Immutable 0.7.4 analysis ID is invalid")
+	invariant(execution.implementationSha256 === binding.implementationSha256 &&
+		results.implementationSha256 === binding.implementationSha256 &&
+		summary.implementationSha256 === binding.implementationSha256 &&
+		analysis.implementationSha256 === binding.implementationSha256,
+		"Immutable 0.7.4 implementation identity is invalid")
+	invariant(results.scientificSha256 === binding.scientificSha256 &&
+		summary.scientificSha256 === binding.scientificSha256 &&
+		analysis.scientificSha256 === binding.scientificSha256 &&
+		(results.mechanicalGate as Record<string, unknown>).pass === true &&
+		(summary.mechanicalGate as Record<string, unknown>).pass === true &&
+		analysis.mechanicalPass === true && results.dispositionAuthority === true &&
+		summary.dispositionAuthority === true && analysis.dispositionAuthority === true,
+		"Immutable 0.7.4 mechanical result is invalid")
+	return {
+		manifestId: binding.manifest.id,
+		orderedRoot,
+		sourceOrderedRoot,
+		executionManifestId: binding.executionManifest.id,
+		resultsId: binding.results.id,
+		summaryId: binding.summary.id,
+		analysisId: binding.analysis.id,
+		implementationSha256: binding.implementationSha256,
+		scientificSha256: binding.scientificSha256,
+		mechanicalPass: true,
+		dispositionAuthority: true,
 		fileCount: manifest.files.length,
 	}
 }

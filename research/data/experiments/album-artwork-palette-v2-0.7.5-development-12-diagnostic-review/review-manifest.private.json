@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "protocolId": "album-artwork-ui-palette-protocol-v2-0.7.5-development-12-diagnostic-review-1",
+  "reviewVersion": "album-artwork-palette-v2-0.7.5-development-12-diagnostic-review-1.0.0",
+  "presentationVersion": "album-artwork-palette-v2-complete-treatment-presentation-1",
+  "scope": {
+    "evidenceClass": "bounded-development-known-failure-diagnostic",
+    "purpose": "one-item-retained-alternative-quality-diagnosis",
+    "itemCount": 1,
+    "exactSourceCaseIds": [
+      "development-12"
+    ],
+    "protectedOrFreshArtworkRootsAccessed": 0
+  },
+  "authoritativeBindings": [
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_5_KNOWN_FAILURE_DIAGNOSTIC_POSTMORTEM.md",
+      "semanticIds": [
+        "album-artwork-ui-palette-v2-0.7.5-known-failure-diagnostic-postmortem-1"
+      ],
+      "byteCount": 9135,
+      "rawSha256": "3b6892ce36af983206119b650c3cc35e567e63fd530d9a10417f3a100a97d076"
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-0.7.5-known-bad-roster.json",
+      "semanticIds": [
+        "album-artwork-palette-v2-0.7.5-known-bad-roster-1.0.0",
+        "0ce0465834d82b1a72e931eab21e5a4b318eac14919c4bb07b59e5e7e5653c6f"
+      ],
+      "byteCount": 46362,
+      "rawSha256": "6ab3c41f60b35bc87a53ee8da887dc7daa1d76cba0774ff15bfb0a858b6248b3"
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-0.7.5-known-failure-audit.json",
+      "semanticIds": [
+        "album-artwork-palette-v2-0.7.5-known-failure-audit-1.0.0",
+        "1fb095ab8d331694eaf09ab5405532961ca3e4845142ddc92b14f88bc5f54ae1"
+      ],
+      "byteCount": 14175,
+      "rawSha256": "5a9302296c617512788d02edeac1a3f7d7ce1c183b11d7a98c6de9a277423cdf"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-12.json",
+      "semanticIds": [
+        "album-artwork-first-principles-0.7.4",
+        "album-artwork-ui-palette-protocol-v2-0.7.4",
+        "a80f75b402a12516fb00f2afb3dd56e4c0fb8a4a5f7d8d5284e557eec87a3d09",
+        "0a0bf7b95bc683882fada068d363fcab7e022420d0867261228aaab51ed68bd3"
+      ],
+      "byteCount": 1288076,
+      "rawSha256": "2fd1a63bca5838bbbc0fb6655700532955454fd21d201b06975903bf1d1e0ffd"
+    },
+    {
+      "path": "research/data/album-artwork-palette-v2-development-panel.json",
+      "semanticIds": [
+        "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305"
+      ],
+      "byteCount": 12058,
+      "rawSha256": "9258032b8ea2d40166d2be89767f5b15341145de314b007c09e766ffbaac75e4"
+    },
+    {
+      "path": "images/vvbrown.jpg",
+      "semanticIds": [
+        "development-12",
+        "exact:06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0"
+      ],
+      "byteCount": 57673,
+      "rawSha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0"
+    }
+  ],
+  "implementationBindings": [
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_5_DEVELOPMENT_12_DIAGNOSTIC_REVIEW.md",
+      "semanticIds": [
+        "album-artwork-ui-palette-protocol-v2-0.7.5-development-12-diagnostic-review-1"
+      ],
+      "byteCount": 8460,
+      "rawSha256": "882e82336dceae3e819da02b5bb8196056951d778cc42dbda5c8f9515f93624f"
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.ts",
+      "semanticIds": [
+        "17bee19b57c34145c964197cf2bc8c66a5bab1180a50c8289db2ca9294069852"
+      ],
+      "byteCount": 25160,
+      "rawSha256": "97936f3297a197af11b2a85ea12bac168c038f7a474137aaa44015763d5498b2"
+    },
+    {
+      "path": "research/prepare-album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.ts",
+      "semanticIds": [
+        "f27c6a27f1281d355805c40f3781d9d83ca03d895f86b9a63ca349fcdbc1c522"
+      ],
+      "byteCount": 12742,
+      "rawSha256": "3c05cf8c206f3d4142e4000f70952f002dc6cac8f16f994cc0e43923e8bb93b1"
+    },
+    {
+      "path": "research/verify-album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.ts",
+      "semanticIds": [
+        "0f9d2d3edd79c8d46f0c2160b5d82a53c72fc195462e2d52babd507465a0df63"
+      ],
+      "byteCount": 14541,
+      "rawSha256": "1c831e8fc4414533def82c75bf2b8dc34fff3c579fef07c9f736499baf20e08c"
+    },
+    {
+      "path": "research/serve-album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.ts",
+      "semanticIds": [
+        "abf5d1782d595ed5ee6d9d8daeeaa9732a22104d03833695f2ec9320100652e0"
+      ],
+      "byteCount": 7454,
+      "rawSha256": "27021e768838edb658a6c669ffb87ae26d256b1b3ddec1a41a77eaf35a072416"
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review.test.ts",
+      "semanticIds": [
+        "29c96a995a89ef0f3e50d6d914ac8c02c7bd12194ad3784bdc2fcc8c66466a7f"
+      ],
+      "byteCount": 5543,
+      "rawSha256": "4fcd39123f03c320bf3fe8c3b9d6ec9c1bf0eaa4a13082767dc175d84b465228"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/index.html",
+      "semanticIds": [
+        "b0be840486aeb03361c3219ac712841b29424469edee86c690a4d388500e8cd6"
+      ],
+      "byteCount": 927,
+      "rawSha256": "25c28b3e19beba6f784650505d7007722dfdd630b3f2c49c58ee008a264f7ca0"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/app.js",
+      "semanticIds": [
+        "11ba3d45f01809aaff60bbd308e1ed175b82104a4a0aa765d8b9bd242eff0abe"
+      ],
+      "byteCount": 10354,
+      "rawSha256": "f14cc8e5054a525a30c22c8a8a6c1a6ea04ee5c2eb827ed2ea882b99a5d693de"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/styles.css",
+      "semanticIds": [
+        "520f314f9a46a16f87e2e7b612f1c91f93512f7542ef9516433833718930fe2e"
+      ],
+      "byteCount": 6669,
+      "rawSha256": "2759ed5fddf459bad403d593d64620856005c552addd4bdeb61b94d14819e171"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/README.md",
+      "semanticIds": [
+        "50309d0d8d6b9820628a00ca5eb90de25974630f7b85ba3683411cfff0c59198"
+      ],
+      "byteCount": 578,
+      "rawSha256": "30ae09c43d8caebfed4c7667f0eac6906979d1a13661c6d67f6433df60af71a0"
+    },
+    {
+      "path": "package.json",
+      "semanticIds": [
+        "a772883985868ec9b12ef27d0552d7e27b40739c6b8559edded85f343efc2e6f"
+      ],
+      "byteCount": 5359,
+      "rawSha256": "bde051388f847162482aab4b38515e580b35339acd53c7f82a2d89a1065ed462"
+    }
+  ],
+  "presentation": {
+    "rendererId": "album-artwork-palette-v2-complete-treatment-renderer-1",
+    "rendererSourcePath": "research/album-artwork-palette-v2-0.7.5-development-12-diagnostic-review/app.js",
+    "rendererFunction": "renderTreatment",
+    "identicalRendererForAllSides": true,
+    "reviewCompleteRenderedTreatmentNotSwatchesOnly": true,
+    "gradientCss": "linear-gradient(135deg in oklab, background 0%, surface 100%)",
+    "colorNamePolicy": "colornames-oklab-0.6.0-nearest-oklab-presentation-only",
+    "colorNamesPresentationOnly": true
+  },
+  "responseSchema": {
+    "absoluteQuality": [
+      "strong",
+      "acceptable",
+      "weak-fallback",
+      "unacceptable",
+      "uncertain"
+    ],
+    "blindedRelativeInput": [
+      "a-stronger",
+      "b-stronger",
+      "similarly-valid",
+      "neither-acceptable",
+      "uncertain"
+    ],
+    "storedRelativeOutcome": [
+      "candidate-stronger",
+      "baseline-stronger",
+      "similarly-valid",
+      "neither-acceptable",
+      "uncertain"
+    ],
+    "candidateOutcomeMeans": "bound-alternative",
+    "baselineOutcomeMeans": "bound-control",
+    "issueTags": [
+      "missing gradient",
+      "extraneous gradient",
+      "incomplete artwork identity"
+    ],
+    "comment": {
+      "required": false,
+      "maximumUtf16CodeUnits": 2000,
+      "preserveVerbatim": true
+    },
+    "isolatedSwatchQuestions": false
+  },
+  "authorization": {
+    "diagnosticReviewPreparation": true,
+    "immutableReviewPackage": true,
+    "focusedVerification": true,
+    "serveOrOpenReview": false,
+    "inspectRenderedReview": false,
+    "humanReview": false,
+    "feedbackSubmission": false,
+    "feedbackAnalysis": false,
+    "responseAnalysis": false,
+    "protectedOrFreshArtworkAccess": false,
+    "otherArtworkAccess": false,
+    "otherTreatmentAccess": false,
+    "paletteInference": false,
+    "inferenceChange": false,
+    "candidateProtocol": false,
+    "candidateImplementation": false,
+    "candidateOutput": false,
+    "rankingChange": false,
+    "candidateSupport": false,
+    "candidateFreeze": false,
+    "promotion": false,
+    "persistence": false,
+    "defaultExtractorChange": false,
+    "productBaselineChange": false,
+    "productionReplacement": false,
+    "phase4": false,
+    "phase5": false,
+    "fullRoster": false,
+    "multiHourRun": false,
+    "fullRunGo": false,
+    "learnedModel": false,
+    "commentOrColorNameInInference": false
+  },
+  "items": [
+    {
+      "internalCaseId": "development-12",
+      "publicItemId": "389391629cdf5edd7bb413a8",
+      "mediaToken": "132221f4d7a6c6fca87e6f04f34c755d",
+      "order": 0,
+      "source": {
+        "file": "images/vvbrown.jpg",
+        "sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "byteCount": 57673,
+        "artworkId": "exact:06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
+        "cohort": "development"
+      },
+      "checkedArtifact": {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-12.json",
+        "rawSha256": "2fd1a63bca5838bbbc0fb6655700532955454fd21d201b06975903bf1d1e0ffd",
+        "candidateVersion": "album-artwork-first-principles-0.7.4",
+        "scientificSha256": "0a0bf7b95bc683882fada068d363fcab7e022420d0867261228aaab51ed68bd3"
+      },
+      "comparison": {
+        "control": {
+          "key": "#fffffe:#fffffe:#080808:#584c1c:flat",
+          "slateIndex": 0,
+          "reviewed": true,
+          "treatmentRecordSha256": "161b9cedb07b6e90d1432d2c9f755502c7343f05958e6f8c5823e7f8327d7477",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#fffffe",
+                "nearestName": "Snow",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#fffffe",
+                "nearestName": "Snow",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#080808",
+                "nearestName": "Blackout",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#584c1c",
+                "nearestName": "Pineapple",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          }
+        },
+        "alternative": {
+          "key": "#fffffe:#fffffe:#e6e622:#584c1c:flat",
+          "slateIndex": 1,
+          "reviewed": false,
+          "treatmentRecordSha256": "f28b498dc304b1d9d4641c50b6e2dba7540c05c3a8d4aeac93dc4f5781eb17c0",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#fffffe",
+                "nearestName": "Snow",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#fffffe",
+                "nearestName": "Snow",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#e6e622",
+                "nearestName": "Yuzu",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#584c1c",
+                "nearestName": "Pineapple",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": true,
+              "accent": false
+            }
+          }
+        }
+      },
+      "assignment": {
+        "digest": "bbdb121e847773829c41eafb429aa90c2000f853b7c841881fb1c53230f5b3b7",
+        "A": "control",
+        "B": "alternative"
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#080808",
+              "nearestName": "Blackout",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#584c1c",
+              "nearestName": "Pineapple",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#fffffe",
+              "nearestName": "Snow",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#e6e622",
+              "nearestName": "Yuzu",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#584c1c",
+              "nearestName": "Pineapple",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": true,
+            "accent": false
+          }
+        }
+      }
+    }
+  ],
+  "contentId": "65a45949bcf9e78052076ee00c4443e8ff0881868e5dc47cafd11d08e9bd299e"
+}

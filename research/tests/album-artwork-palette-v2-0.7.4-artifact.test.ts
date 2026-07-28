@@ -1,10 +1,9 @@
 import assert from "node:assert/strict"
-import { readFile, stat } from "node:fs/promises"
+import { readFile } from "node:fs/promises"
 import test from "node:test"
-import { verifyAlbumArtworkPaletteV2074Development } from
-	"../analyze-album-artwork-palette-v2-0.7.4-development.ts"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_0_7_4_IMPLEMENTATION_PATHS,
+	ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT,
 	albumArtworkPaletteV2074CanonicalJson,
 	albumArtworkPaletteV2074ContentId,
 	albumArtworkPaletteV2074FileSha256,
@@ -12,6 +11,7 @@ import {
 	albumArtworkPaletteV2074Sha256,
 	buildAlbumArtworkPaletteV2074ImplementationClosure,
 	verifyImmutableAlbumArtworkPaletteV2073Artifact,
+	verifyImmutableAlbumArtworkPaletteV2074Artifact,
 } from "../src/album-artwork-palette-v2-0.7.4-artifact.ts"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_0_7_4_DOCUMENT_BINDINGS,
@@ -20,11 +20,6 @@ import {
 } from "../src/album-artwork-palette-v2-0.7.4-protocol.ts"
 
 const projectRoot = new URL("../../", import.meta.url).pathname
-const finalExperiment = new URL(
-	"../data/experiments/album-artwork-palette-v2-0.7.4-development/",
-	import.meta.url,
-)
-
 function objectKeys(value: unknown): string[] {
 	if (value === null || typeof value !== "object") return []
 	if (Array.isArray(value)) return value.flatMap(objectKeys)
@@ -89,18 +84,12 @@ test("immutable 0.7.3 evidence verifies without a forward-checkout implementatio
 	assert.equal(evidence.mechanicalPass, true)
 })
 
-test("published 0.7.4 final artifact verifies dynamically when present", async (t) => {
-	try {
-		await stat(new URL("manifest.json", finalExperiment))
-	} catch (error) {
-		if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-			t.skip("Full 28-source 0.7.4 artifact has not been published yet")
-			return
-		}
-		throw error
-	}
-	const analysis = await verifyAlbumArtworkPaletteV2074Development(finalExperiment.pathname)
-	assert.equal(analysis.analysisId, albumArtworkPaletteV2074ContentId(analysis, "analysisId"))
-	assert.equal(analysis.mechanicalPass, true)
-	assert.equal(analysis.dispositionAuthority, true)
+test("published 0.7.4 final artifact verifies immutably under a forward checkout", async () => {
+	const evidence = await verifyImmutableAlbumArtworkPaletteV2074Artifact(projectRoot)
+	assert.equal(evidence.manifestId, ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT.manifest.id)
+	assert.equal(evidence.orderedRoot, ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT.manifest.orderedRoot)
+	assert.equal(evidence.sourceOrderedRoot,
+		ALBUM_ARTWORK_PALETTE_V2_0_7_4_PUBLISHED_ARTIFACT.manifest.sourceOrderedRoot)
+	assert.equal(evidence.mechanicalPass, true)
+	assert.equal(evidence.dispositionAuthority, true)
 })
