@@ -1,21 +1,23 @@
 import assert from "node:assert/strict"
 import { readFile, stat } from "node:fs/promises"
 import test from "node:test"
-import { verifyAlbumArtworkPaletteV2073Development } from
-	"../analyze-album-artwork-palette-v2-0.7.3-development.ts"
 import {
 	albumArtworkPaletteV2073CanonicalJson,
-	albumArtworkPaletteV2073ContentId,
 	albumArtworkPaletteV2073OrderedRoot,
 	albumArtworkPaletteV2073Sha256,
 } from "../src/album-artwork-palette-v2-0.7.3-artifact.ts"
+import { verifyImmutableAlbumArtworkPaletteV2073Artifact } from
+	"../src/album-artwork-palette-v2-0.7.4-artifact.ts"
 import { ALBUM_ARTWORK_PALETTE_V2_0_7_3_PROTOCOL } from
 	"../src/album-artwork-palette-v2-0.7.3-protocol.ts"
+import { ALBUM_ARTWORK_PALETTE_V2_0_7_4_SELECTION_EVIDENCE } from
+	"../src/album-artwork-palette-v2-0.7.4-protocol.ts"
 
 const experimentUrl = new URL(
 	"../data/experiments/album-artwork-palette-v2-0.7.3-development/",
 	import.meta.url,
 )
+const projectRoot = new URL("../../", import.meta.url).pathname
 
 function objectKeys(value: unknown): string[] {
 	if (value === null || typeof value !== "object") return []
@@ -49,7 +51,7 @@ test("0.7.3 protocol and harness define no resident-set or memory collection fie
 	assert.equal(new RegExp(`\\b${"rss"}\\s*[:=]`, "iu").test(harness), false)
 })
 
-test("checked 0.7.3 artifacts verify dynamically through their manifest", async (t) => {
+test("checked 0.7.3 artifacts verify immutably under a forward checkout", async (t) => {
 	try {
 		await stat(new URL("manifest.json", experimentUrl))
 	} catch (error) {
@@ -59,18 +61,10 @@ test("checked 0.7.3 artifacts verify dynamically through their manifest", async 
 		}
 		throw error
 	}
-	const analysis = await verifyAlbumArtworkPaletteV2073Development(experimentUrl.pathname)
-	assert.equal(analysis.analysisId, albumArtworkPaletteV2073ContentId(analysis, "analysisId"))
-	assert.equal(analysis.mechanicalPass, true)
-	const selection = analysis.selection as Readonly<{ pass: boolean; selectedArm: string | null }>
-	assert.equal(selection.pass, selection.selectedArm !== null)
-	assert.deepEqual(analysis.authorization, {
-		humanReview: false,
-		directionalSample: false,
-		phase5: false,
-		promotion: false,
-		persistence: false,
-		fullRoster: false,
-	})
-	if (!selection.pass) assert.equal(analysis.disposition, "next-research-unit-multi-hue-field-structure")
+	const evidence = await verifyImmutableAlbumArtworkPaletteV2073Artifact(projectRoot)
+	assert.equal(evidence.manifestId, ALBUM_ARTWORK_PALETTE_V2_0_7_4_SELECTION_EVIDENCE.artifactManifest.id)
+	assert.equal(evidence.analysisId, ALBUM_ARTWORK_PALETTE_V2_0_7_4_SELECTION_EVIDENCE.analysis.id)
+	assert.equal(evidence.resultsId, ALBUM_ARTWORK_PALETTE_V2_0_7_4_SELECTION_EVIDENCE.results.id)
+	assert.equal(evidence.mechanicalPass, true)
+	assert.equal(evidence.selectedArm, "widened-field-hypothesis-retention")
 })

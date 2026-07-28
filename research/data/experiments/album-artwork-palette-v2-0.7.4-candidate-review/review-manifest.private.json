@@ -1,0 +1,525 @@
+{
+  "schemaVersion": 1,
+  "protocolId": "album-artwork-ui-palette-protocol-v2-0.7.4-candidate-review-1",
+  "reviewVersion": "album-artwork-palette-v2-0.7.4-candidate-review-1.0.0",
+  "presentationVersion": "album-artwork-palette-v2-complete-treatment-presentation-1",
+  "scope": {
+    "evidenceClass": "bounded-development-final-winner-delta",
+    "itemCount": 2,
+    "exactSourceCaseIds": [
+      "development-18",
+      "development-21"
+    ],
+    "protectedOverlap": false,
+    "excludedNovelSlateAlternativeCount": 44,
+    "excludedAuditTreatmentCount": 639
+  },
+  "closure": {
+    "candidateVersion": "album-artwork-first-principles-0.7.4",
+    "controlVersion": "album-artwork-first-principles-0.7.2",
+    "productComparisonVersion": "album-artwork-first-principles-0.6.0",
+    "implementationSha256": "b1139a62047bcb5d454c39c19b74e0c518de07145c49efa784d416305b8d2f3e",
+    "scientificSha256": "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21",
+    "executionManifestId": "a80f75b402a12516fb00f2afb3dd56e4c0fb8a4a5f7d8d5284e557eec87a3d09",
+    "resultsId": "5b2526b05267bf7df7aea80e91fd8f7fad0aed27044fc8bfe5bdb4b7e9ef1a7a",
+    "summaryId": "02a2bc1987a84e5567ff95316b11847c68b0df399cea9d3bdb11d7ef8d9bef37",
+    "analysisId": "b2d542377ec21b9861155216ddcff5003bf501ce08fc355f277cf9303a3d8576",
+    "artifactManifestId": "4f5278d454cfd7223fad9c1bd174a75892c0f17fdf40d04a3623d35f1f910aef",
+    "artifactOrderedRoot": "863290bfc38e96d7297353d7cf997e853baea511ccdedf71b8d768047664bd12",
+    "inputBindings": [
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PLAN_V2.md",
+        "rawSha256": "cf43b640ab6c89bb64fffb7cd143a6b2486259a9dc252311684bd2b4dc317855"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_3_CANDIDATE_RECALL_POSTMORTEM.md",
+        "rawSha256": "09d1d3d8e32c3dc00bc2ed25ae41328af4882209a65182a415bf7a5452ae2160"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_4.md",
+        "rawSha256": "805bc221c18a4eddf99cb9f7a20bfa1a30a992caaae791d30d221d0e5bf05a86"
+      },
+      {
+        "path": "research/ALBUM_ARTWORK_UI_PALETTE_0_7_4_CANDIDATE_CLOSURE_POSTMORTEM.md",
+        "rawSha256": "f3a61a63b6adf35083487bf546b05737248ccdac202bf166c4c6bad197e78742"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-development-panel.json",
+        "rawSha256": "9258032b8ea2d40166d2be89767f5b15341145de314b007c09e766ffbaac75e4"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/execution-manifest.json",
+        "rawSha256": "4166864322673fb250a2ea9c7da23f5d324fde60c0a250c1a271ac70ce2fc549"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/results.json",
+        "rawSha256": "aed8e386717a45020b8eccadf1362bc31157a47aef4804b4b3d8b8fb31a4a4b8"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/summary.json",
+        "rawSha256": "d7a5686d6127027dd0eabb3568dcd303ac3f92332d4af3eaf340d172efed0bc3"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/analysis.json",
+        "rawSha256": "b49cb58c1c6a3cdd1f66ab5a1689ec5da0676470c30f7e50cb46ba1b88c45bd8"
+      },
+      {
+        "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/manifest.json",
+        "rawSha256": "ea070636d10353d72e131c70638d792540ffddae894a0be568df2985bfdf80f4"
+      }
+    ],
+    "protectedManifestBindings": [
+      {
+        "path": "research/data/album-artwork-palette-v2-fresh-sample.sealed.json",
+        "manifestId": "3e85bab09130d0fb6c883ba1e4543fce841e1a94a6b63a6539aececb8f58cb91",
+        "rawSha256": "6625aea0e38b93f6830a349468681a5dc6e93c99fe4bc3f38ca66ad23e0d16f3"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-future-sample-02.sealed.json",
+        "manifestId": "9ac421c0d4931b8fdd24ce8e628609dbac36652addc7c9dfdb65a814aaf20671",
+        "rawSha256": "2224603f5a4801cedf9f96375e86f2dd5624ed6895ab941fbcad5c6d8646fc8c"
+      },
+      {
+        "path": "research/data/album-artwork-palette-v2-future-sample-03.sealed.json",
+        "manifestId": "bee665792a4ddfaeb3541aa5e58181c8f3a0685836b13475643d9deccace4060",
+        "rawSha256": "690e85ace6377fd154db1124754dfb7d876c64a3c063f8b567e0e219d88f0183"
+      }
+    ]
+  },
+  "implementationBindings": [
+    {
+      "path": "research/ALBUM_ARTWORK_UI_PALETTE_PROTOCOL_V2_0_7_4_CANDIDATE_REVIEW.md",
+      "byteCount": 13206,
+      "rawSha256": "9ee26ea72dc1260a66ce5f28eaf0c667554f888890fa125831e8060649e7f60f"
+    },
+    {
+      "path": "research/src/album-artwork-palette-v2-0.7.4-candidate-review.ts",
+      "byteCount": 22020,
+      "rawSha256": "caa9b7d76b8f67155b75c357ef148baa9486201e7d9e8dac0a48003d54819fb2"
+    },
+    {
+      "path": "research/prepare-album-artwork-palette-v2-0.7.4-candidate-review.ts",
+      "byteCount": 14824,
+      "rawSha256": "968f89971859fa73fc4818a34597441214fae804b2efbfd13acb02bd1e4a2fbb"
+    },
+    {
+      "path": "research/verify-album-artwork-palette-v2-0.7.4-candidate-review.ts",
+      "byteCount": 16557,
+      "rawSha256": "72faedcb5e502e129612010d97fa1c74a217f99bdfc5ae3b8db1ec365ea534f7"
+    },
+    {
+      "path": "research/serve-album-artwork-palette-v2-0.7.4-candidate-review.ts",
+      "byteCount": 8178,
+      "rawSha256": "e96ba24616aa0c03ae3a753d9f4641caaa2cd04b6aa40f2b91b7316fff3c6556"
+    },
+    {
+      "path": "research/tests/album-artwork-palette-v2-0.7.4-candidate-review.test.ts",
+      "byteCount": 5348,
+      "rawSha256": "86f6f7793f22469697f87029d01540f9dda74c22d75e2e4a084bc2e5a9a2f8d9"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.4-candidate-review/index.html",
+      "byteCount": 903,
+      "rawSha256": "0eaf4684a6d5bbfdcfbc533e22aecb74c01baf48bf96a9aea6be8240a5bde68d"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.4-candidate-review/app.js",
+      "byteCount": 10433,
+      "rawSha256": "bd28fc43cee1e96604b727e56b45bf3e4ca275bf7ece7939be06677ccfdf6e4b"
+    },
+    {
+      "path": "research/album-artwork-palette-v2-0.7.4-candidate-review/styles.css",
+      "byteCount": 6876,
+      "rawSha256": "0879b76c470b0081bf1c3e5b4840ae0752de7bf9d1ff4c6f378dab6ee00ee7c4"
+    },
+    {
+      "path": "research/data/experiments/album-artwork-palette-v2-0.7.4-candidate-review/README.md",
+      "byteCount": 429,
+      "rawSha256": "b38f9f948a2761a2af4bde6610cdb002a43f88d871590e20d35d914640997639"
+    }
+  ],
+  "presentation": {
+    "rendererId": "album-artwork-palette-v2-complete-treatment-renderer-1",
+    "rendererSourcePath": "research/album-artwork-palette-v2-0.7.4-candidate-review/app.js",
+    "rendererFunction": "renderTreatment",
+    "identicalRendererForAllSides": true,
+    "gradientCss": "linear-gradient(135deg in oklab, background 0%, surface 100%)",
+    "colorNamePolicy": "colornames-oklab-0.6.0-nearest-oklab-presentation-only",
+    "colorNamesPresentationOnly": true
+  },
+  "responseSchema": {
+    "absoluteQuality": [
+      "strong",
+      "acceptable",
+      "weak-fallback",
+      "unacceptable",
+      "uncertain"
+    ],
+    "relativeSideValues": [
+      "a-stronger",
+      "b-stronger",
+      "similarly-valid",
+      "neither-acceptable",
+      "uncertain"
+    ],
+    "unblindedSemantics": [
+      "candidate-stronger",
+      "baseline-stronger",
+      "similarly-valid",
+      "neither-acceptable",
+      "uncertain"
+    ],
+    "issueTags": [
+      "missing gradient",
+      "extraneous gradient",
+      "incomplete artwork identity"
+    ],
+    "comment": {
+      "required": false,
+      "maximumUtf16CodeUnits": 2000,
+      "preserveVerbatim": true
+    },
+    "isolatedSwatchQuestions": false
+  },
+  "analysisPlan": {
+    "status": "predeclared-not-executed",
+    "descriptiveCountsOnly": true,
+    "commentsAnalyzedNow": false,
+    "technicalInterpretationsSeparate": true,
+    "candidateSupportAuthority": false,
+    "phase4Authority": false
+  },
+  "authorization": {
+    "boundedDevelopmentReview": true,
+    "reviewPreparation": true,
+    "localServing": true,
+    "oneBoundSubmission": true,
+    "protectedArtworkAccess": false,
+    "freshOrDirectionalSample": false,
+    "phase4": false,
+    "phase5": false,
+    "inferenceChange": false,
+    "rankingChange": false,
+    "candidateSupport": false,
+    "candidateFreeze": false,
+    "promotion": false,
+    "persistence": false,
+    "defaultExtractorChange": false,
+    "productBaselineChange": false,
+    "productionReplacement": false,
+    "fullRoster": false,
+    "multiHourRun": false,
+    "fullRunGo": false,
+    "learnedModel": false,
+    "commentOrColorNameInInference": false
+  },
+  "items": [
+    {
+      "internalCaseId": "development-18",
+      "publicItemId": "457da05d10fdad64c7fd816b",
+      "mediaToken": "ddb087a4d7e3f6618b2a6942084dcee9",
+      "order": 0,
+      "source": {
+        "file": "images/artofficial.jpg",
+        "sha256": "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda",
+        "byteCount": 1657931,
+        "cohort": "development"
+      },
+      "checkedArtifacts": {
+        "candidatePath": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-18.json",
+        "candidateRawSha256": "3a3ec504a48fcd3a8a90f72e7b743eb470f8a7a332a32ec670c27374f9df18f5",
+        "controlPath": "research/data/experiments/album-artwork-palette-v2-0.7.2-development/sources/development-18.json",
+        "controlRawSha256": "9f8d1318d77665cc2a4df5e747454401b00e7953930a6d628a419e01c4e0ac3a"
+      },
+      "comparison": {
+        "candidate": {
+          "version": "album-artwork-first-principles-0.7.4",
+          "key": "#04002a:#161439:#f5e50c:#fded9f:flat",
+          "treatmentRecordSha256": "8a7bfd620434ce165869d7d5496ba33f0a3c7132a2ac3b24d8b631a7eb442c71",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#04002a",
+                "nearestName": "Observatory",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#161439",
+                "nearestName": "Dark Knight",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#f5e50c",
+                "nearestName": "Post-it",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#fded9f",
+                "nearestName": "Cosmic Latte",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        },
+        "control": {
+          "version": "album-artwork-first-principles-0.7.2",
+          "key": "#31305c:#040325:#f5e50c:#fded9f:flat",
+          "treatmentRecordSha256": "050771d81b0ab662512033a3fad635a46efeaa9155b5dac0cf4e113354ea92f3",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#31305c",
+                "nearestName": "Pāua",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#040325",
+                "nearestName": "Last Call",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#f5e50c",
+                "nearestName": "Post-it",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#fded9f",
+                "nearestName": "Cosmic Latte",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "assignment": {
+        "digest": "2f720715c64fc7362ae0c5a1046c577102f17729bde849635f59874d34ce2800",
+        "A": "control",
+        "B": "candidate"
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#31305c",
+              "nearestName": "Pāua",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#040325",
+              "nearestName": "Last Call",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f5e50c",
+              "nearestName": "Post-it",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fded9f",
+              "nearestName": "Cosmic Latte",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#04002a",
+              "nearestName": "Observatory",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#161439",
+              "nearestName": "Dark Knight",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#f5e50c",
+              "nearestName": "Post-it",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#fded9f",
+              "nearestName": "Cosmic Latte",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      }
+    },
+    {
+      "internalCaseId": "development-21",
+      "publicItemId": "520b90747284256c4a1bec89",
+      "mediaToken": "ab5f8db8d9bef8bff143a74db2f1d155",
+      "order": 1,
+      "source": {
+        "file": "01/ab67616d0000b27300014f6d389bd4b028d8e28e.jpg",
+        "sha256": "f0156200040ddd42dbc872574dd5c47a70892999def6034e20154b9cd8ce66bd",
+        "byteCount": 141935,
+        "cohort": "development"
+      },
+      "checkedArtifacts": {
+        "candidatePath": "research/data/experiments/album-artwork-palette-v2-0.7.4-development/sources/development-21.json",
+        "candidateRawSha256": "2e84f6d8b8379e11ce4ac3fb02d3738547597655450e96a2502935c07a2c2880",
+        "controlPath": "research/data/experiments/album-artwork-palette-v2-0.7.2-development/sources/development-21.json",
+        "controlRawSha256": "87949559cabe373800b883b1bd149a26004c97780528d5e01ed192d5029c2748"
+      },
+      "comparison": {
+        "candidate": {
+          "version": "album-artwork-first-principles-0.7.4",
+          "key": "#eed0ec:#ed81b2:#510cc9:#b62bba:flat",
+          "treatmentRecordSha256": "2b5ead17630f0249a08e8f88d585b2a0951d10ea4662b785f1389550ad2179b6",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#eed0ec",
+                "nearestName": "Kefir",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#ed81b2",
+                "nearestName": "Arabesque",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#510cc9",
+                "nearestName": "Sea Serpent's Tears",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#b62bba",
+                "nearestName": "Masquerade",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        },
+        "control": {
+          "version": "album-artwork-first-principles-0.7.2",
+          "key": "#df34a7:#8c1cc6:#efd2ee:#e99235:flat",
+          "treatmentRecordSha256": "9ba09cd032a9f964765b1f01b42ac75badc7d27c970fb15a893a63da3d6834a6",
+          "palette": {
+            "roles": {
+              "background": {
+                "hex": "#df34a7",
+                "nearestName": "Love Vessel",
+                "generated": false
+              },
+              "surface": {
+                "hex": "#8c1cc6",
+                "nearestName": "Van de Graaff",
+                "generated": false
+              },
+              "foreground": {
+                "hex": "#efd2ee",
+                "nearestName": "Kefir",
+                "generated": false
+              },
+              "accent": {
+                "hex": "#e99235",
+                "nearestName": "Monarch",
+                "generated": false
+              }
+            },
+            "gradient": false,
+            "collapse": {
+              "surface": false,
+              "accent": false
+            }
+          }
+        }
+      },
+      "assignment": {
+        "digest": "02426f1e3b0ae2737fc8c7ecdd25542ca8d23bfefdfd8e6322274a396734b1ba",
+        "A": "candidate",
+        "B": "control"
+      },
+      "options": {
+        "A": {
+          "roles": {
+            "background": {
+              "hex": "#eed0ec",
+              "nearestName": "Kefir",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#ed81b2",
+              "nearestName": "Arabesque",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#510cc9",
+              "nearestName": "Sea Serpent's Tears",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#b62bba",
+              "nearestName": "Masquerade",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        },
+        "B": {
+          "roles": {
+            "background": {
+              "hex": "#df34a7",
+              "nearestName": "Love Vessel",
+              "generated": false
+            },
+            "surface": {
+              "hex": "#8c1cc6",
+              "nearestName": "Van de Graaff",
+              "generated": false
+            },
+            "foreground": {
+              "hex": "#efd2ee",
+              "nearestName": "Kefir",
+              "generated": false
+            },
+            "accent": {
+              "hex": "#e99235",
+              "nearestName": "Monarch",
+              "generated": false
+            }
+          },
+          "gradient": false,
+          "collapse": {
+            "surface": false,
+            "accent": false
+          }
+        }
+      }
+    }
+  ],
+  "contentId": "7fcabe477a5d4e9d05a5fee128ae7faea19b3cbc453f3b2a4d27df794eeec16e"
+}

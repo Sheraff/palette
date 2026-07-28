@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "candidateVersion": "album-artwork-first-principles-0.7.4",
+  "implementationSha256": "b1139a62047bcb5d454c39c19b74e0c518de07145c49efa784d416305b8d2f3e",
+  "executionManifestId": "a80f75b402a12516fb00f2afb3dd56e4c0fb8a4a5f7d8d5284e557eec87a3d09",
+  "mode": "full-28-source",
+  "fixedPanelSourceCount": 28,
+  "executedSourceCount": 28,
+  "scientificSha256": "3dd20b73f39ebca33ca6dd762f9a4d5db13867dc85e685aa15f8d4a17708cc21",
+  "counts": {
+    "exactWinnerMatches072": 26,
+    "exactWinnerChanges072": 2,
+    "exactWinnerMatches060": 23,
+    "exactWinnerChanges060": 5,
+    "novelFinalWinners": 2,
+    "novelRetainedSlateKeys": 46,
+    "changedWinnerGuardPasses": 0,
+    "changedWinnerGuardFailures": 2,
+    "resolvedCrossVersionLosses": 6,
+    "novelAlternativesReachingSlateWithoutTopOne": 44,
+    "candidateAdditions": 6673,
+    "frontierAdditions": 657
+  },
+  "mechanicalGate": {
+    "pass": true,
+    "failures": []
+  },
+  "dispositionAuthority": true,
+  "disposition": "novel-final-winner-delta-awaiting-separate-review-authorization",
+  "authorization": {
+    "humanReview": false,
+    "humanReviewSelection": false,
+    "reviewPreparation": false,
+    "protectedSampleArtworkAccess": false,
+    "directionalSample": false,
+    "phase4": false,
+    "phase5": false,
+    "promotion": false,
+    "defaultExtractorChange": false,
+    "productBaselineChange": false,
+    "persistence": false,
+    "cachePublication": false,
+    "fullRoster": false,
+    "multiHourRun": false,
+    "productionReplacement": false,
+    "combinedMechanism": false,
+    "rankingChange": false,
+    "learnedModel": false,
+    "factorized6000": false
+  },
+  "summaryId": "02a2bc1987a84e5567ff95316b11847c68b0df399cea9d3bdb11d7ef8d9bef37"
+}

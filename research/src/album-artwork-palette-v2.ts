@@ -19,6 +19,10 @@ import {
 	ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
 	ALBUM_ARTWORK_PALETTE_V2_VERSION,
 } from "./album-artwork-palette-v2-protocol.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_0_7_4_PROTOCOL_ID,
+	ALBUM_ARTWORK_PALETTE_V2_0_7_4_VERSION,
+} from "./album-artwork-palette-v2-0.7.4-protocol.ts"
 import type { AlbumArtworkPaletteV2QualityBlock } from "./album-artwork-palette-v2-protocol.ts"
 import type { OKLab, RGB, RawImage } from "./types.ts"
 
@@ -26,6 +30,9 @@ export type RepresentativeStrategy = "dense-exact" | "nearest-prototype" | "dens
 export type FieldTreatmentKind = "one-field" | "separate-flat-fields" | "gradient-field"
 export type GradientTopology = "linear" | "radial-center" | "radial-upper-center"
 export type Role = "background" | "surface" | "foreground" | "accent"
+
+export { ALBUM_ARTWORK_PALETTE_V2_0_7_4_VERSION }
+export const ALBUM_ARTWORK_PALETTE_V2_0_7_4_PROTOCOL = ALBUM_ARTWORK_PALETTE_V2_0_7_4_PROTOCOL_ID
 
 export const ALBUM_ARTWORK_PALETTE_V2_RECALL_AUDIT_ARMS = Object.freeze([
 	"control-0.7.2",
@@ -710,6 +717,58 @@ export type RecallAuditTreatmentLineage = Readonly<{
 		sourceConnected: boolean
 	}>>
 	sourceConnected: boolean
+}>
+
+export type AlbumArtworkPaletteV2074Registry = Readonly<
+	Omit<AlbumArtworkPaletteV2RecallRegistry, "version"> & {
+		version: "album-artwork-palette-v2-recall-registry-0.7.4"
+	}
+>
+
+export type AlbumArtworkPaletteV2074CoreAddition = Readonly<{
+	treatment: CompletePaletteTreatment
+	key: string
+	lineage: RecallAuditTreatmentLineage
+}>
+
+export type AlbumArtworkPaletteV2074CoreDomain = Readonly<{
+	changedStages: readonly AlbumArtworkPaletteV2RecallCustodyStage[]
+	rawCandidateCount: number
+	materializedCandidateCount: number
+	capacity: number
+	remainingCapacity: number
+	capacityReached: boolean
+	fieldHypothesisIds: readonly string[]
+	fieldVariantKeys: readonly string[]
+	availableIdentityRoles: ReadonlyArray<Readonly<{
+		familyId: string
+		roles: readonly ("foreground" | "accent")[]
+	}>>
+	completeTreatments: readonly CompletePaletteTreatment[]
+	completeTreatmentKeys: readonly string[]
+	result: AlbumArtworkPaletteV2Result
+}>
+
+export type AlbumArtworkPaletteV2074CoreAudit = Readonly<{
+	version: "album-artwork-palette-v2-0.7.4-core-audit-v1"
+	mechanism: "widened-field-hypothesis-retention"
+	changedStages: readonly ["field-hypothesis-retention"]
+	construction: Readonly<{
+		proposalScope: "all-existing-semantics-control-lanes"
+		representatives: "preferred"
+		fieldRepresentativePairing: "same-index"
+		materialization: "additive-control-prefix"
+	}>
+	controlPrefixLength: number
+	control: AlbumArtworkPaletteV2074CoreDomain
+	candidate: AlbumArtworkPaletteV2074CoreDomain
+	additions: readonly AlbumArtworkPaletteV2074CoreAddition[]
+	registry: AlbumArtworkPaletteV2074Registry
+}>
+
+export type AlbumArtworkPaletteV2074Details = Readonly<{
+	result: AlbumArtworkPaletteV2Result
+	audit: AlbumArtworkPaletteV2074CoreAudit
 }>
 
 export type RecallAuditNewTreatment = Readonly<{
@@ -3557,10 +3616,7 @@ function createTreatment(
 	return output
 }
 
-export function generateCompletePaletteTreatments(
-	evidence: NativePaletteEvidence,
-	hypotheses: readonly FieldHypothesis[],
-): Readonly<{
+type CompletePaletteTreatmentGeneration = Readonly<{
 	winner: CompletePaletteTreatment
 	alternatives: readonly CompletePaletteTreatment[]
 	completeTreatments: readonly CompletePaletteTreatment[]
@@ -3571,7 +3627,30 @@ export function generateCompletePaletteTreatments(
 	exactOverlayGradientChallenger: ExactOverlayGradientChallengerTrace
 	paretoRanking: ParetoRankingTrace
 	legacyScalarTopTreatment: CompletePaletteTreatment
-}> {
+}>
+
+type CompletePaletteTreatmentDomain = Readonly<{
+	evidence: NativePaletteEvidence
+	hypotheses: readonly FieldHypothesis[]
+	fieldVariants: readonly FieldVariant[]
+	identitySelection: IdentityObligationSelection
+	availableRolesByObligationFamily: ReadonlyMap<string, ReadonlySet<"foreground" | "accent">>
+	foregroundIds: ReadonlySet<string>
+	signatureIds: ReadonlySet<string>
+	treatments: readonly CompletePaletteTreatment[]
+	candidateCount: number
+	emergency: EmergencyEligibility
+	foregroundsPerFieldVariantQuota: number
+	emergencyCandidateReserve: number
+	foregroundPeakUnobservableRejectedOptionCount: number
+	distinctAccentPeakUnobservableRejectedOptionCount: number
+	surfaceOpportunityByBackgroundFamily: ReadonlyMap<string, number>
+}>
+
+function buildCompletePaletteTreatmentDomain(
+	evidence: NativePaletteEvidence,
+	hypotheses: readonly FieldHypothesis[],
+): CompletePaletteTreatmentDomain {
 	const fieldVariants = buildFieldVariants(hypotheses)
 	if (fieldVariants.length === 0) throw new Error("No field variants are available")
 	const identitySelection = buildIdentityObligationSelection(evidence, hypotheses)
@@ -3778,6 +3857,49 @@ export function generateCompletePaletteTreatments(
 	if (treatments.length === 0) throw new Error("No legal complete palette treatment could be generated")
 	if (treatments.length > ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates) {
 		throw new Error(`Complete candidate count ${treatments.length} exceeds the bound ${ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates}`)
+	}
+	return {
+		evidence,
+		hypotheses,
+		fieldVariants,
+		identitySelection,
+		availableRolesByObligationFamily,
+		foregroundIds,
+		signatureIds,
+		treatments,
+		candidateCount: treatments.length,
+		emergency,
+		foregroundsPerFieldVariantQuota,
+		emergencyCandidateReserve,
+		foregroundPeakUnobservableRejectedOptionCount,
+		distinctAccentPeakUnobservableRejectedOptionCount,
+		surfaceOpportunityByBackgroundFamily,
+	}
+}
+
+function selectCompletePaletteTreatmentDomain(
+	domain: CompletePaletteTreatmentDomain,
+): CompletePaletteTreatmentGeneration {
+	const {
+		evidence,
+		hypotheses,
+		fieldVariants,
+		identitySelection,
+		availableRolesByObligationFamily,
+		foregroundIds,
+		signatureIds,
+		treatments,
+		candidateCount,
+		emergency,
+		foregroundsPerFieldVariantQuota,
+		emergencyCandidateReserve,
+		foregroundPeakUnobservableRejectedOptionCount,
+		distinctAccentPeakUnobservableRejectedOptionCount,
+		surfaceOpportunityByBackgroundFamily,
+	} = domain
+	if (treatments.length === 0) throw new Error("No legal complete palette treatment could be selected")
+	if (candidateCount > ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates) {
+		throw new Error(`Complete candidate count ${candidateCount} exceeds the bound ${ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates}`)
 	}
 	const unique = new Map<string, CompletePaletteTreatment>()
 	for (const treatment of treatments) if (!unique.has(treatmentKey(treatment))) unique.set(treatmentKey(treatment), treatment)
@@ -3996,7 +4118,7 @@ export function generateCompletePaletteTreatments(
 		winner: finalWinner,
 		alternatives: finalSelected,
 		completeTreatments: uniqueTreatments,
-		candidateCount: treatments.length,
+		candidateCount,
 		emergency,
 		candidateAvailability: {
 			foregroundLaneFamilyIds: [...foregroundIds].sort(compareAscii),
@@ -4023,7 +4145,7 @@ export function generateCompletePaletteTreatments(
 			dominanceUsesEvidenceLevels: true,
 			paretoBlocks: ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS,
 			rankingPriorityBlocks: ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
-			rawCandidateCount: treatments.length,
+			rawCandidateCount: candidateCount,
 			uniqueCandidateCount: uniqueTreatments.length,
 			dominatedCandidateCount: uniqueTreatments.length - globalFrontier.length,
 			frontierCandidateCount: globalFrontier.length,
@@ -4054,6 +4176,13 @@ export function generateCompletePaletteTreatments(
 	}
 }
 
+export function generateCompletePaletteTreatments(
+	evidence: NativePaletteEvidence,
+	hypotheses: readonly FieldHypothesis[],
+): CompletePaletteTreatmentGeneration {
+	return selectCompletePaletteTreatmentDomain(buildCompletePaletteTreatmentDomain(evidence, hypotheses))
+}
+
 type RecallArmMechanics = Readonly<{
 	changedStages: readonly AlbumArtworkPaletteV2RecallCustodyStage[]
 	evidence: NativePaletteEvidence
@@ -4067,6 +4196,11 @@ type RecallArmGeneration = Readonly<{
 	additions: readonly CompletePaletteTreatment[]
 	conditionalCells: ReadonlySet<string>
 	capacityReached: boolean
+	availableRolesByObligationFamily: ReadonlyMap<string, ReadonlySet<"foreground" | "accent">>
+	foregroundsPerFieldVariantQuota: number
+	foregroundPeakUnobservableRejectedOptionCount: number
+	distinctAccentPeakUnobservableRejectedOptionCount: number
+	surfaceOpportunityByBackgroundFamily: ReadonlyMap<string, number>
 }>
 
 function recallCellKey(fieldKey: string, roleKey: string): string {
@@ -4234,6 +4368,16 @@ function generateRecallArmAdditions(
 	const conditionalCells = new Set<string>()
 	const maximum = ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates
 	let capacityReached = controlCandidateCount >= maximum
+	let foregroundPeakUnobservableRejectedOptionCount = 0
+	let distinctAccentPeakUnobservableRejectedOptionCount = 0
+	const obligationFamilyIdSet = new Set(obligationFamilyIds)
+	const availableRolesByObligationFamily = new Map<string, Set<"foreground" | "accent">>()
+	const recordAvailableRole = (familyId: string, role: "foreground" | "accent"): void => {
+		if (!obligationFamilyIdSet.has(familyId)) return
+		const roles = availableRolesByObligationFamily.get(familyId) ?? new Set<"foreground" | "accent">()
+		roles.add(role)
+		availableRolesByObligationFamily.set(familyId, roles)
+	}
 	const roleRepresentatives = (family: ColorFamilyEvidence): ColorRepresentative[] =>
 		mechanics.representatives === "all"
 			? allRepresentatives(family.representatives)
@@ -4308,7 +4452,9 @@ function generateRecallArmAdditions(
 			hasPeakAPCAObservability(signedContrasts))
 		for (const { family } of observableForegrounds) {
 			conditionalCells.add(recallCellKey(fieldKey, `foreground:${family.id}`))
+			recordAvailableRole(family.id, "foreground")
 		}
+		foregroundPeakUnobservableRejectedOptionCount += rankedForegroundOptions.length - observableForegrounds.length
 		const foregroundRetention = retainPeakObservableFamilyDirections(
 			rankedForegroundOptions,
 			foregroundsPerFieldVariantQuota,
@@ -4355,7 +4501,9 @@ function generateRecallArmAdditions(
 				hasPeakAPCAObservability(signedContrasts))
 			for (const { family } of observableAccents) {
 				conditionalCells.add(recallCellKey(fieldKey, `accent:${family.id}`))
+				recordAvailableRole(family.id, "accent")
 			}
+			distinctAccentPeakUnobservableRejectedOptionCount += rankedAccents.length - observableAccents.length
 			const accentRetention = retainPeakObservableFamilyDirections(
 				rankedAccents,
 				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
@@ -4395,7 +4543,16 @@ function generateRecallArmAdditions(
 			}
 		}
 	}
-	return { additions: [...additions.values()], conditionalCells, capacityReached }
+	return {
+		additions: [...additions.values()],
+		conditionalCells,
+		capacityReached,
+		availableRolesByObligationFamily,
+		foregroundsPerFieldVariantQuota,
+		foregroundPeakUnobservableRejectedOptionCount,
+		distinctAccentPeakUnobservableRejectedOptionCount,
+		surfaceOpportunityByBackgroundFamily,
+	}
 }
 
 type FactorizedTupleDescriptor = Readonly<{
@@ -5199,6 +5356,263 @@ export function auditAlbumArtworkPaletteV2FactorizedParetoRecall(
 
 export const auditAlbumArtworkPaletteV2FactorizedPareto =
 	auditAlbumArtworkPaletteV2FactorizedParetoRecall
+
+function assembleAlbumArtworkPaletteV2Result(
+	image: RawImage,
+	evidence: NativePaletteEvidence,
+	fieldDomains: readonly BackgroundFieldDomain[],
+	evaluatedGradientFits: readonly EvaluatedGradientFit[],
+	fieldHypotheses: readonly FieldHypothesis[],
+	generation: CompletePaletteTreatmentGeneration,
+	version: string,
+	protocol: string,
+): AlbumArtworkPaletteV2Result {
+	const retainedIds = new Set(evidence.retainedFamilyIds)
+	return {
+		version,
+		protocol,
+		width: image.width,
+		height: image.height,
+		winner: generation.winner,
+		alternatives: generation.alternatives,
+		diagnostics: {
+			nativeDiscovery: true,
+			preDiscoveryResize: false,
+			familyCount: evidence.families.length,
+			retainedFamilyCount: evidence.retainedFamilyIds.length,
+			lanes: evidence.lanes,
+			laneRetention: evidence.laneRetention,
+			families: evidence.families.filter(({ id }) => retainedIds.has(id)),
+			fieldDomains: fieldDomains
+				.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.retainedDiagnosticFieldDomains)
+				.map(({ evidence: domainEvidence }) => domainEvidence),
+			fieldHypotheses,
+			gradientFits: gradientFitDiagnostics(evaluatedGradientFits),
+			completeCandidateCount: generation.candidateCount,
+			candidateAvailability: generation.candidateAvailability,
+			identityObligationGraph: generation.identityObligationGraph,
+			exactOverlayGradientChallenger: generation.exactOverlayGradientChallenger,
+			paretoRanking: generation.paretoRanking,
+			legacyScalarTopTreatment: generation.legacyScalarTopTreatment,
+			emergency: generation.emergency,
+			bounds: ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds,
+		},
+	}
+}
+
+function mergeAvailableIdentityRoles(
+	...roleMaps: readonly ReadonlyMap<string, ReadonlySet<"foreground" | "accent">>[]
+): ReadonlyMap<string, ReadonlySet<"foreground" | "accent">> {
+	const merged = new Map<string, Set<"foreground" | "accent">>()
+	for (const roleMap of roleMaps) {
+		for (const [familyId, roles] of roleMap) {
+			const target = merged.get(familyId) ?? new Set<"foreground" | "accent">()
+			for (const role of roles) target.add(role)
+			merged.set(familyId, target)
+		}
+	}
+	return merged
+}
+
+function fieldVariantAuditKey(variant: FieldVariant): string {
+	return [
+		variant.hypothesis.id,
+		variant.background.hex,
+		variant.surface.hex,
+		variant.gradient ? "gradient" : "flat",
+	].join(":")
+}
+
+function albumArtworkPaletteV2074CoreDomain(
+	domain: CompletePaletteTreatmentDomain,
+	generation: CompletePaletteTreatmentGeneration,
+	result: AlbumArtworkPaletteV2Result,
+	changedStages: readonly AlbumArtworkPaletteV2RecallCustodyStage[],
+): AlbumArtworkPaletteV2074CoreDomain {
+	const capacity = ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates
+	return {
+		changedStages,
+		rawCandidateCount: generation.candidateCount,
+		materializedCandidateCount: generation.completeTreatments.length,
+		capacity,
+		remainingCapacity: capacity - generation.candidateCount,
+		capacityReached: generation.candidateCount >= capacity,
+		fieldHypothesisIds: domain.hypotheses.map(({ id }) => id),
+		fieldVariantKeys: domain.fieldVariants.map(fieldVariantAuditKey),
+		availableIdentityRoles: [...domain.availableRolesByObligationFamily]
+			.sort(([first], [second]) => compareAscii(first, second))
+			.map(([familyId, roles]) => ({
+				familyId,
+				roles: [...roles].sort(compareAscii) as ("foreground" | "accent")[],
+			})),
+		completeTreatments: generation.completeTreatments,
+		completeTreatmentKeys: generation.completeTreatments.map(completeTreatmentKey),
+		result,
+	}
+}
+
+export function extractAlbumArtworkPaletteV2074Details(
+	image: RawImage,
+): AlbumArtworkPaletteV2074Details {
+	const evidence = buildNativePaletteEvidence(image)
+	const fieldDomains = buildBackgroundFieldDomains(evidence)
+	const evaluatedGradientFits = evaluateGradientFits(evidence, fieldDomains)
+	const controlHypotheses = buildFieldHypothesesFromEvaluatedFits(evidence, evaluatedGradientFits)
+	if (controlHypotheses.length === 0) throw new Error("No defensible field hypothesis was found")
+
+	const controlDomain = buildCompletePaletteTreatmentDomain(evidence, controlHypotheses)
+	const controlGeneration = selectCompletePaletteTreatmentDomain(controlDomain)
+	const controlProposals = buildFieldHypothesisProposalsFromEvaluatedFits(
+		evidence,
+		evaluatedGradientFits,
+		"all",
+	)
+	const obligationFamilyIds = controlGeneration.identityObligationGraph.obligations.map(({ familyId }) => familyId)
+	// The immutable recall audit used the all-lane proposal set only to close its
+	// source registry. Candidate construction below remains on the control lanes.
+	const allLaneEvidence = evidenceWithAllRankedLanes(evidence)
+	const allLaneDomains = buildBackgroundFieldDomains(allLaneEvidence)
+	const allLaneProposals = buildFieldHypothesisProposalsFromEvaluatedFits(
+		allLaneEvidence,
+		evaluateGradientFits(allLaneEvidence, allLaneDomains),
+		"all",
+	)
+	const recallRegistry = buildRecallRegistry(
+		evidence,
+		controlProposals,
+		controlHypotheses,
+		allLaneProposals,
+		obligationFamilyIds,
+	)
+	const candidateMechanics = buildRecallArmMechanics(
+		"widened-field-hypothesis-retention",
+		evidence,
+		evidence,
+		controlProposals,
+		controlProposals,
+		controlHypotheses,
+	)
+	const controlHypothesisIds = new Set(controlHypotheses.map(({ id }) => id))
+	const sourceConnectedHypothesisIds = new Set(recallRegistry.fieldHypotheses
+		.filter(({ sourceConnected }) => sourceConnected)
+		.map(({ hypothesisId }) => hypothesisId))
+	const candidateHypotheses = candidateMechanics.hypotheses.filter(({ id }) =>
+		controlHypothesisIds.has(id) || sourceConnectedHypothesisIds.has(id))
+	const candidateFieldVariants = candidateMechanics.fieldVariants.filter((variant) => {
+		if (controlHypothesisIds.has(variant.hypothesis.id)) return true
+		return sourceConnectedHypothesisIds.has(variant.hypothesis.id) &&
+			sourceConnectedRepresentative(variant.background) &&
+			sourceConnectedRepresentative(variant.surface) &&
+			recallRegistry.fieldDirections.some((direction) =>
+				direction.key === fieldVariantDirectionKey(variant) &&
+				direction.sourceConnected &&
+				direction.hypothesisIds.includes(variant.hypothesis.id))
+	})
+	const candidateAdditions = generateRecallArmAdditions(
+		candidateMechanics,
+		controlGeneration.completeTreatments,
+		controlGeneration.candidateCount,
+		recallRegistry,
+		obligationFamilyIds,
+	)
+	const additions = candidateAdditions.additions.map((treatment): AlbumArtworkPaletteV2074CoreAddition => {
+		const key = completeTreatmentKey(treatment)
+		const lineage = recallTreatmentLineage(treatment, recallRegistry)
+		if (!lineage.sourceConnected) throw new Error(`0.7.4 addition ${key} lacks complete source lineage`)
+		return { treatment, key, lineage }
+	})
+	const candidateTreatments = [
+		...controlGeneration.completeTreatments,
+		...additions.map(({ treatment }) => treatment),
+	]
+	const candidateCount = controlGeneration.candidateCount + additions.length
+	if (candidateCount > ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.completeCandidates) {
+		throw new Error("0.7.4 candidate domain exceeds the unchanged complete-treatment bound")
+	}
+	const candidateDomain: CompletePaletteTreatmentDomain = {
+		...controlDomain,
+		hypotheses: candidateHypotheses,
+		fieldVariants: candidateFieldVariants,
+		identitySelection: buildIdentityObligationSelection(evidence, candidateHypotheses),
+		availableRolesByObligationFamily: mergeAvailableIdentityRoles(
+			controlDomain.availableRolesByObligationFamily,
+			candidateAdditions.availableRolesByObligationFamily,
+		),
+		treatments: candidateTreatments,
+		candidateCount,
+		foregroundsPerFieldVariantQuota: candidateAdditions.foregroundsPerFieldVariantQuota,
+		foregroundPeakUnobservableRejectedOptionCount:
+			candidateAdditions.foregroundPeakUnobservableRejectedOptionCount,
+		distinctAccentPeakUnobservableRejectedOptionCount:
+			candidateAdditions.distinctAccentPeakUnobservableRejectedOptionCount,
+		surfaceOpportunityByBackgroundFamily: candidateAdditions.surfaceOpportunityByBackgroundFamily,
+	}
+	const candidateGeneration = selectCompletePaletteTreatmentDomain(candidateDomain)
+	for (let index = 0; index < controlGeneration.completeTreatments.length; index++) {
+		if (candidateGeneration.completeTreatments[index] !== controlGeneration.completeTreatments[index]) {
+			throw new Error("0.7.4 candidate domain did not preserve the exact control prefix")
+		}
+	}
+	const controlResult = assembleAlbumArtworkPaletteV2Result(
+		image,
+		evidence,
+		fieldDomains,
+		evaluatedGradientFits,
+		controlHypotheses,
+		controlGeneration,
+		ALBUM_ARTWORK_PALETTE_V2_VERSION,
+		ALBUM_ARTWORK_PALETTE_V2_PROTOCOL,
+	)
+	const candidateResult = assembleAlbumArtworkPaletteV2Result(
+		image,
+		evidence,
+		fieldDomains,
+		evaluatedGradientFits,
+		candidateHypotheses,
+		candidateGeneration,
+		ALBUM_ARTWORK_PALETTE_V2_0_7_4_VERSION,
+		ALBUM_ARTWORK_PALETTE_V2_0_7_4_PROTOCOL,
+	)
+	const registry: AlbumArtworkPaletteV2074Registry = {
+		...recallRegistry,
+		version: "album-artwork-palette-v2-recall-registry-0.7.4",
+	}
+	const changedStages = ["field-hypothesis-retention"] as const
+	return {
+		result: candidateResult,
+		audit: {
+			version: "album-artwork-palette-v2-0.7.4-core-audit-v1",
+			mechanism: "widened-field-hypothesis-retention",
+			changedStages,
+			construction: {
+				proposalScope: "all-existing-semantics-control-lanes",
+				representatives: "preferred",
+				fieldRepresentativePairing: "same-index",
+				materialization: "additive-control-prefix",
+			},
+			controlPrefixLength: controlGeneration.completeTreatments.length,
+			control: albumArtworkPaletteV2074CoreDomain(controlDomain, controlGeneration, controlResult, []),
+			candidate: albumArtworkPaletteV2074CoreDomain(
+				candidateDomain,
+				candidateGeneration,
+				candidateResult,
+				changedStages,
+			),
+			additions,
+			registry,
+		},
+	}
+}
+
+export function extractAlbumArtworkPaletteV2074(image: RawImage): AlbumArtworkPaletteV2Result {
+	return extractAlbumArtworkPaletteV2074Details(image).result
+}
+
+export async function extractAlbumArtworkPaletteV2074FromSource(
+	source: string | Uint8Array,
+): Promise<AlbumArtworkPaletteV2Result> {
+	return extractAlbumArtworkPaletteV2074(await loadNativeImage(source))
+}
 
 export function extractAlbumArtworkPaletteV2(image: RawImage): AlbumArtworkPaletteV2Result {
 	const evidence = buildNativePaletteEvidence(image)
