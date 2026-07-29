@@ -20,9 +20,14 @@ import type {
 import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT_ID,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID,
+	applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority,
 	extractAlbumArtworkPaletteV2Phase3IntegratedCandidate,
 	selectAlbumArtworkPaletteV2Phase3IntegratedCandidate,
 } from "../src/album-artwork-palette-v2-phase-3-integrated-candidate.ts"
+import {
+	buildAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath,
+} from "../src/album-artwork-palette-v2-phase-3-arm-supported-gradient-path.ts"
 import type {
 	AlbumArtworkPaletteV2Phase3RecoveryV3MaterializedCandidate,
 } from "../src/album-artwork-palette-v2-phase-3-recovery-custody-v3.ts"
@@ -37,6 +42,7 @@ import type {
 	RoleSpecificIdentityObligation,
 } from "../src/album-artwork-palette-v2-phase-3-role-aware.ts"
 import type { RGB, RawImage } from "../src/types.ts"
+import { mixOKLab, oklabToRGB, rgbToOKLab } from "../src/color.ts"
 import { parseAlbumArtworkPaletteV2Phase3IterationArguments } from
 	"../run-album-artwork-palette-v2-phase-3-iteration.ts"
 
@@ -504,6 +510,271 @@ test("unchanged winner is an exact recovery-v3 custody no-op", () => {
 	assert.deepEqual(result.diagnostics.slateKeys, result.diagnostics.custodyKeys)
 })
 
+function raster(width: number, height: number, pixel: (x: number, y: number) => RGB): RawImage {
+	const data = new Uint8Array(width * height * 3)
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) data.set(pixel(x, y), (y * width + x) * 3)
+	}
+	return { width, height, data }
+}
+
+function clampByte(value: number): number {
+	return Math.max(0, Math.min(255, Math.round(value)))
+}
+
+function mixRgb(first: RGB, second: RGB, amount: number): RGB {
+	return [
+		clampByte(first[0] + (second[0] - first[0]) * amount),
+		clampByte(first[1] + (second[1] - first[1]) * amount),
+		clampByte(first[2] + (second[2] - first[2]) * amount),
+	]
+}
+
+function curvedSupportedField(): RawImage {
+	const first: RGB = [31, 52, 137]
+	const middle: RGB = [40, 174, 151]
+	const last: RGB = [221, 170, 58]
+	return raster(112, 68, (x, y) => {
+		const amount = Math.max(0, Math.min(1, x / 111 + 0.025 * Math.sin(Math.PI * y / 67)))
+		return amount < 0.5
+			? mixRgb(first, middle, amount * 2)
+			: mixRgb(middle, last, amount * 2 - 1)
+	})
+}
+
+function directSupportedField(first: RGB, second: RGB): RawImage {
+	const firstLab = rgbToOKLab(first)
+	const secondLab = rgbToOKLab(second)
+	return raster(112, 68, (x) => oklabToRGB(mixOKLab(firstLab, secondLab, x / 111)))
+}
+
+function promotedTransitionSelection(
+	hypothesisId: string,
+	exactFlatSourceConnected?: boolean,
+) {
+	const earned = { ...VALUES.earned, sourceFieldHypothesisId: hypothesisId }
+	const candidate = materialized(earned, "native-field-transition")
+	const exactFlat: CompletePaletteTreatment | null = exactFlatSourceConnected === undefined
+		? null
+		: {
+			...earned,
+			id: `flat-sibling:${earned.id}`,
+			gradient: false,
+			fieldTreatment: "separate-flat-fields",
+			gradientEvidence: null,
+		}
+	const exactCandidate = exactFlat === null
+		? null
+		: materialized(exactFlat, "native-field-transition", exactFlatSourceConnected)
+	const domain = [
+		MATERIALIZED[0],
+		MATERIALIZED[1],
+		MATERIALIZED[2],
+		candidate,
+		...exactCandidate === null ? [] : [exactCandidate],
+	]
+	const selection = selectAlbumArtworkPaletteV2Phase3IntegratedCandidate({
+		recoveryV2: recoverySelection(
+			VALUES.disconnected,
+			domain.map(({ treatment: value }) => value),
+			SELECTION_QUALITY,
+		),
+		materialized: domain,
+		roleObligations: [
+			obligation("ordinary-copy", VALUES.ordinary, "foreground"),
+			obligation("ordinary-mark", VALUES.ordinary, "accent"),
+			obligation("earned-copy", earned, "foreground"),
+		],
+		acceptedTransitionHypothesisIds: [hypothesisId],
+	})
+	assert.equal(selection.diagnostics.transitionPromoted, true)
+	assert.equal(selection.winner.sourceFieldHypothesisId, hypothesisId)
+	return { earned, candidate, exactFlat, exactCandidate, domain, selection }
+}
+
+test("reviewed three-stop authority retains exact midpoint custody without changing the public treatment", () => {
+	const arm = buildAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(curvedSupportedField())
+	assert.equal(arm.midpoint.kind, "source-supported-three-stop")
+	assert.ok(arm.hypothesis)
+	const promoted = promotedTransitionSelection(arm.hypothesis.id)
+	const applied = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: arm,
+	})
+
+	assert.equal(applied.selection, promoted.selection)
+	assert.equal(applied.diagnostics.strictVetoApplied, false)
+	assert.deepEqual(applied.diagnostics.midpoint, arm.midpoint)
+	assert.equal(applied.selection.winner.gradient, true)
+	assert.deepEqual(
+		(["background", "surface", "foreground", "accent"] as const).map((role) =>
+			applied.selection.winner[role]),
+		(["background", "surface", "foreground", "accent"] as const).map((role) =>
+			promoted.selection.winner[role]),
+	)
+})
+
+function rejectedSupportedGradientPath() {
+	const arm = buildAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(
+		directSupportedField([34, 52, 142], [212, 164, 48]),
+	)
+	const rejectedPath = arm.diagnostics.paths.find(({ strictTransitionEligible, eligible, hypothesisId }) =>
+		strictTransitionEligible && !eligible && hypothesisId !== null)
+	assert.ok(rejectedPath?.hypothesisId)
+	return { arm, hypothesisId: rejectedPath.hypothesisId }
+}
+
+test("strict flat veto accepts an exact sibling only with canonical source-connected complete lineage", () => {
+	const rejected = rejectedSupportedGradientPath()
+	const promoted = promotedTransitionSelection(rejected.hypothesisId, true)
+	assert.ok(promoted.exactFlat)
+	const exactKey = completeTreatmentKey(promoted.exactFlat)
+	const exactLineage = promoted.selection.completeLineage.eligibility.diagnostics.candidates
+		.find(({ key }) => key === exactKey)
+	assert.equal(exactLineage?.eligible, true)
+	assert.equal(exactLineage?.basis, "ordinary-complete-source-lineage")
+
+	const exact = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: rejected.arm,
+	})
+	assert.equal(exact.selection.winner, promoted.exactFlat)
+	assert.equal(exact.diagnostics.strictVetoApplied, true)
+	assert.equal(exact.diagnostics.projectedFlatSibling, false)
+	assert.equal(exact.diagnostics.flatCustody?.kind, "existing-exact-role-sibling")
+	assert.equal(exact.diagnostics.flatCustody?.sourceConnected, true)
+	assert.deepEqual(exact.diagnostics.flatCustody?.sourceTypes, ["native-field-transition"])
+	assert.equal(exact.selection.diagnostics.winnerLineageBasis, exactLineage?.basis)
+	assert.equal(exact.selection.diagnostics.winnerKey, exactKey)
+	assert.equal(exact.selection.diagnostics.slateKeys[0], exactKey)
+})
+
+test("strict flat veto rejects an unconnected ineligible exact sibling and projects from the gradient source", () => {
+	const rejected = rejectedSupportedGradientPath()
+	const promoted = promotedTransitionSelection(rejected.hypothesisId, false)
+	assert.ok(promoted.exactFlat)
+	const exactKey = completeTreatmentKey(promoted.exactFlat)
+	const exactLineage = promoted.selection.completeLineage.eligibility.diagnostics.candidates
+		.find(({ key }) => key === exactKey)
+	assert.equal(exactLineage?.eligible, false)
+	assert.equal(exactLineage?.basis, "ineligible")
+
+	const projected = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: rejected.arm,
+	})
+	assert.notEqual(projected.selection.winner, promoted.exactFlat)
+	assert.equal(projected.selection.winner.gradient, false)
+	assert.equal(projected.selection.winner.fieldTreatment, "separate-flat-fields")
+	assert.equal(projected.selection.winner.gradientEvidence, null)
+	assert.equal(projected.selection.winner.sourceFieldHypothesisId,
+		promoted.selection.winner.sourceFieldHypothesisId)
+	for (const role of ["background", "surface", "foreground", "accent"] as const) {
+		assert.equal(projected.selection.winner[role], promoted.selection.winner[role])
+	}
+	assert.equal(projected.diagnostics.projectedFlatSibling, true)
+	assert.deepEqual(projected.diagnostics.midpoint,
+		{ kind: "none", position: null, color: null, provenance: null })
+	assert.deepEqual(projected.diagnostics.flatCustody, {
+		kind: "source-connected-flat-projection",
+		sourceConnected: true,
+		sourceTypes: ["native-field-transition"],
+		sourceFieldHypothesisId: promoted.selection.winner.sourceFieldHypothesisId,
+		roleBinding: "same-four-roles",
+		hypothesisBinding: "same-source-field-hypothesis",
+	})
+	assert.equal(projected.selection.diagnostics.winnerLineageBasis,
+		promoted.selection.diagnostics.winnerLineageBasis)
+	assert.equal(projected.selection.diagnostics.slateKeys[0], projected.diagnostics.winnerKey)
+	assert.equal(projected.selection.slate.some(({ gradient, sourceFieldHypothesisId }) =>
+		gradient && sourceFieldHypothesisId === promoted.selection.winner.sourceFieldHypothesisId), false)
+})
+
+test("source-connected same-hypothesis flat projection has deterministic winner-first custody diagnostics", () => {
+	const rejected = rejectedSupportedGradientPath()
+	const promoted = promotedTransitionSelection(rejected.hypothesisId)
+	const apply = (materializedDomain: typeof promoted.domain) =>
+		applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+			selection: promoted.selection,
+			materialized: materializedDomain,
+			supportedGradientPath: rejected.arm,
+		})
+	const first = apply(promoted.domain)
+	const second = apply([...promoted.domain].reverse())
+	const slateKeys = first.selection.slate.map(completeTreatmentKey)
+
+	assert.deepEqual(first, second)
+	assert.deepEqual(slateKeys, first.selection.diagnostics.slateKeys)
+	assert.equal(slateKeys[0], first.diagnostics.winnerKey)
+	assert.equal(new Set(slateKeys).size, slateKeys.length)
+	assert.equal(slateKeys.includes(first.diagnostics.baselineWinnerKey), false)
+	assert.equal(first.diagnostics.projectedFlatSibling, true)
+	assert.equal(first.diagnostics.flatCustody?.sourceConnected, true)
+	assert.equal(first.diagnostics.flatCustody?.hypothesisBinding, "same-source-field-hypothesis")
+	assert.equal(first.diagnostics.flatCustody?.sourceFieldHypothesisId,
+		promoted.selection.winner.sourceFieldHypothesisId)
+})
+
+test("ordinary supported gradients and irrelevant selections are exact public no-ops", () => {
+	const ordinaryArm = buildAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(
+		directSupportedField([24, 54, 106], [113, 176, 230]),
+	)
+	assert.equal(ordinaryArm.midpoint.kind, "ordinary-two-stop")
+	assert.ok(ordinaryArm.hypothesis)
+	const promoted = promotedTransitionSelection(ordinaryArm.hypothesis.id)
+	const ordinary = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: ordinaryArm,
+	})
+	assert.equal(ordinary.selection, promoted.selection)
+	assert.equal(ordinary.diagnostics.midpoint.kind, "ordinary-two-stop")
+
+	const irrelevantSelection = selectAlbumArtworkPaletteV2Phase3IntegratedCandidate({
+		recoveryV2: recoverySelection(VALUES.lineage, [VALUES.lineage, VALUES.ordinary], SELECTION_QUALITY),
+		materialized: [MATERIALIZED[1], MATERIALIZED[2]],
+		roleObligations: [],
+		acceptedTransitionHypothesisIds: [],
+	})
+	const irrelevant = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: irrelevantSelection,
+		materialized: [MATERIALIZED[1], MATERIALIZED[2]],
+		supportedGradientPath: ordinaryArm,
+	})
+	assert.equal(irrelevant.selection, irrelevantSelection)
+	assert.equal(irrelevant.diagnostics.selectedTransitionGradient, false)
+	assert.deepEqual(irrelevant.diagnostics.midpoint,
+		{ kind: "none", position: null, color: null, provenance: null })
+})
+
+test("supported-gradient custody does not extend the public boolean and four-role contract", () => {
+	const arm = buildAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(curvedSupportedField())
+	assert.ok(arm.hypothesis)
+	const promoted = promotedTransitionSelection(arm.hypothesis.id)
+	const first = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: arm,
+	})
+	const second = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: promoted.selection,
+		materialized: promoted.domain,
+		supportedGradientPath: arm,
+	})
+	assert.equal(typeof first.selection.winner.gradient, "boolean")
+	assert.equal("midpoint" in first.selection.winner, false)
+	assert.deepEqual(Object.keys({
+		background: first.selection.winner.background,
+		surface: first.selection.winner.surface,
+		foreground: first.selection.winner.foreground,
+		accent: first.selection.winner.accent,
+	}), ["background", "surface", "foreground", "accent"])
+	assert.deepEqual(first, second)
+})
+
 function transitionField(): RawImage {
 	const width = 48
 	const height = 32
@@ -527,6 +798,7 @@ test("the separately registered attempt composes normalized transitions with bou
 	const diagnostics = first.diagnostics.phase3IntegratedCandidate
 
 	assert.equal(first.version, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT_ID)
+	assert.equal(first.protocol, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID)
 	assert.equal(completeTreatmentKey(first.alternatives[0]), completeTreatmentKey(first.winner))
 	assert.ok(first.alternatives.length >= 1 && first.alternatives.length <= 8)
 	assert.ok(diagnostics.transitionEnvelope.creditedHypothesisCount > 0)
@@ -536,6 +808,8 @@ test("the separately registered attempt composes normalized transitions with bou
 	assert.equal(JSON.stringify(first), JSON.stringify(second))
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId,
 		"phase-3-integrated-candidate")
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.configurationId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID)
 	assert.deepEqual(parseAlbumArtworkPaletteV2Phase3IterationArguments([
 		"--iteration", "integrated-candidate-test",
 		"--case", "development-03",

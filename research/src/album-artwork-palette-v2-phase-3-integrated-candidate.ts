@@ -13,12 +13,23 @@ import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID,
 	evaluateAlbumArtworkPaletteV2Phase3CompleteLineageDescriptor,
 } from "./album-artwork-palette-v2-phase-3-arm-complete-lineage-winner-eligibility.ts"
+import type {
+	AlbumArtworkPaletteV2Phase3CompleteLineageCandidateEligibility,
+} from "./album-artwork-palette-v2-phase-3-arm-complete-lineage-winner-eligibility.ts"
 import {
 	selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner,
 } from "./album-artwork-palette-v2-phase-3-arm-complete-lineage-winner.ts"
 import type {
 	AlbumArtworkPaletteV2Phase3CompleteLineageWinnerSelection,
 } from "./album-artwork-palette-v2-phase-3-arm-complete-lineage-winner.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_SUPPORTED_GRADIENT_PATH_ID,
+	evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath,
+} from "./album-artwork-palette-v2-phase-3-arm-supported-gradient-path.ts"
+import type {
+	AlbumArtworkPaletteV2Phase3ArmSupportedGradientPathResult,
+	AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor,
+} from "./album-artwork-palette-v2-phase-3-arm-supported-gradient-path.ts"
 import {
 	buildAlbumArtworkPaletteV2Phase3CommonBase,
 } from "./album-artwork-palette-v2-phase-3-common-base.ts"
@@ -75,11 +86,20 @@ import type { RawImage } from "./types.ts"
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT_ID =
 	"phase-3-integrated-candidate" as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID =
-	"normalized-accepted-transitions-earned-native-winner-complete-lineage-recovery-v3-custody-v1" as const
+	"normalized-accepted-transitions-earned-native-winner-complete-lineage-recovery-v3-custody-supported-gradient-v2" as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_SELECTOR_ID =
 	"album-artwork-palette-v2-phase-3-integrated-winner-v1" as const
+export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID =
+	"album-artwork-palette-v2-phase-3-integrated-supported-gradient-authority-v1" as const
 
 type MaterializedCandidate = AlbumArtworkPaletteV2Phase3RecoveryV3MaterializedCandidate
+
+const NO_SUPPORTED_GRADIENT_MIDPOINT = Object.freeze({
+	kind: "none" as const,
+	position: null,
+	color: null,
+	provenance: null,
+})
 
 type RankedTransitionCandidate = Readonly<{
 	evaluation: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Evaluation
@@ -116,14 +136,40 @@ export type AlbumArtworkPaletteV2Phase3IntegratedCandidateSelection = Readonly<{
 	diagnostics: AlbumArtworkPaletteV2Phase3IntegratedCandidateSelectionDiagnostics
 }>
 
+export type AlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthorityDiagnostics = Readonly<{
+	version: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID
+	authority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_SUPPORTED_GRADIENT_PATH_ID
+	selectedTransitionGradient: boolean
+	strictVetoApplied: boolean
+	projectedFlatSibling: boolean
+	baselineWinnerKey: string
+	winnerKey: string
+	correspondingPathIndex: number | null
+	midpoint: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor
+	flatCustody: null | Readonly<{
+		kind: "existing-exact-role-sibling" | "source-connected-flat-projection"
+		sourceConnected: true
+		sourceTypes: readonly AlbumArtworkPaletteV2Phase3FieldHypothesisSourceType[]
+		sourceFieldHypothesisId: string
+		roleBinding: "same-four-roles"
+		hypothesisBinding: "same-source-field-hypothesis" | "existing-flat-field-hypothesis"
+	}>
+}>
+
+export type AlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority = Readonly<{
+	selection: AlbumArtworkPaletteV2Phase3IntegratedCandidateSelection
+	diagnostics: AlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthorityDiagnostics
+}>
+
 export type AlbumArtworkPaletteV2Phase3IntegratedCandidateDiagnostics = Readonly<{
-	version: "album-artwork-palette-v2-phase-3-integrated-candidate-diagnostics-v1"
+	version: "album-artwork-palette-v2-phase-3-integrated-candidate-diagnostics-v2"
 	configurationId: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID
 	transitionNormalizationAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_TRANSITION_ENVELOPE_V4_ID
 	baseSelectionAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V2_ID
 	transitionPromotionAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V4_ID
 	lineageEligibilityAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID
 	custodyAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_CUSTODY_V3_ID
+	supportedGradientAuthority: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID
 	commonBase: AlbumArtworkPaletteV2Phase3CommonBaseDiagnostics
 	domain: Readonly<{
 		seedDescriptorCount: number
@@ -141,6 +187,8 @@ export type AlbumArtworkPaletteV2Phase3IntegratedCandidateDiagnostics = Readonly
 	transitionRescue: AlbumArtworkPaletteV2Phase3RecoveryV4SelectorDiagnostics
 	custody: AlbumArtworkPaletteV2Phase3RecoveryV3CustodyDiagnostics
 	selection: AlbumArtworkPaletteV2Phase3IntegratedCandidateSelectionDiagnostics
+	gradientAuthority: AlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthorityDiagnostics
+	supportedGradientPath: AlbumArtworkPaletteV2Phase3ArmSupportedGradientPathResult["diagnostics"]
 }>
 
 export type AlbumArtworkPaletteV2Phase3IntegratedCandidateResult =
@@ -174,6 +222,176 @@ function treatmentStructuralKey(treatment: CompletePaletteTreatment): string {
 			: "flat",
 		treatment.sourceFieldHypothesisId,
 	].join("\0")
+}
+
+function exactFlatRoleSibling(
+	materialized: readonly MaterializedCandidate[],
+	winner: CompletePaletteTreatment,
+): MaterializedCandidate | null {
+	return materialized.find(({ treatment }) =>
+		!treatment.gradient &&
+		(["background", "surface", "foreground", "accent"] as const).every((role) =>
+			treatment[role].hex === winner[role].hex && treatment[role].generated === winner[role].generated) &&
+		treatment.collapse.surface === winner.collapse.surface &&
+		treatment.collapse.accent === winner.collapse.accent) ?? null
+}
+
+function projectedFlatTreatment(winner: CompletePaletteTreatment): CompletePaletteTreatment {
+	return {
+		...winner,
+		id: `supported-gradient-path-flat:${winner.id}`,
+		gradient: false,
+		fieldTreatment: "separate-flat-fields",
+		gradientEvidence: null,
+	}
+}
+
+function sourceConnectedTypes(
+	candidate: MaterializedCandidate,
+	lineage: AlbumArtworkPaletteV2Phase3CompleteLineageCandidateEligibility | null,
+): AlbumArtworkPaletteV2Phase3FieldHypothesisSourceType[] {
+	if (!lineage?.eligible || lineage.basis === "ineligible" || lineage.key !== candidate.key) return []
+	const selectedStructure = treatmentStructuralKey(candidate.treatment)
+	const eligibilityByIdentity = new Map(lineage.descriptors.map((descriptor) =>
+		[descriptor.identity, descriptor]))
+	return [...new Set(candidate.descriptors
+		.filter((descriptor) => {
+			if (treatmentStructuralKey(descriptor.treatment) !== selectedStructure) return false
+			const evaluated = evaluateAlbumArtworkPaletteV2Phase3CompleteLineageDescriptor(
+				candidate.key,
+				descriptor,
+			)
+			const diagnostic = eligibilityByIdentity.get(evaluated.identity)
+			return lineage.basis === "ordinary-complete-source-lineage"
+				? evaluated.ordinaryEligible && diagnostic?.ordinaryEligible === true
+				: diagnostic?.normativeEmergencyEligible === true &&
+					diagnostic.canonicalTreatmentMatches && diagnostic.fieldConnectionComplete &&
+					diagnostic.lineageBindingsComplete
+		})
+		.map(({ sourceType }) => sourceType))].sort(compareAscii)
+}
+
+export function applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority(input: Readonly<{
+	selection: AlbumArtworkPaletteV2Phase3IntegratedCandidateSelection
+	materialized: readonly MaterializedCandidate[]
+	supportedGradientPath: AlbumArtworkPaletteV2Phase3ArmSupportedGradientPathResult
+}>): AlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority {
+	const baselineWinner = input.selection.winner
+	const baselineWinnerKey = completeTreatmentKey(baselineWinner)
+	const selectedTransitionGradient = input.selection.diagnostics.transitionPromoted && baselineWinner.gradient
+	const correspondingPath = selectedTransitionGradient
+		? input.supportedGradientPath.diagnostics.paths.find(({ hypothesisId }) =>
+			hypothesisId === baselineWinner.sourceFieldHypothesisId) ?? null
+		: null
+	const strictVetoApplied = selectedTransitionGradient && correspondingPath?.eligible !== true
+	const midpoint = selectedTransitionGradient && correspondingPath?.eligible === true
+		? correspondingPath.midpointCustody
+		: NO_SUPPORTED_GRADIENT_MIDPOINT
+	if (!strictVetoApplied) {
+		return {
+			selection: input.selection,
+			diagnostics: {
+				version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID,
+				authority: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_SUPPORTED_GRADIENT_PATH_ID,
+				selectedTransitionGradient,
+				strictVetoApplied: false,
+				projectedFlatSibling: false,
+				baselineWinnerKey,
+				winnerKey: baselineWinnerKey,
+				correspondingPathIndex: correspondingPath?.pathIndex ?? null,
+				midpoint,
+				flatCustody: null,
+			},
+		}
+	}
+
+	const sourceCandidate = input.materialized.find(({ key }) => key === baselineWinnerKey)
+	if (!sourceCandidate) throw new Error("Supported-gradient authority omitted its selected transition custody")
+	const lineageByKey = new Map(input.selection.completeLineage.eligibility.diagnostics.candidates.map((candidate) =>
+		[candidate.key, candidate]))
+	const sourceLineage = lineageByKey.get(sourceCandidate.key) ?? null
+	const exactFlatCandidate = exactFlatRoleSibling(input.materialized, baselineWinner)
+	const exactLineage = exactFlatCandidate === null ? null : lineageByKey.get(exactFlatCandidate.key) ?? null
+	const exactSourceTypes = exactFlatCandidate === null
+		? []
+		: sourceConnectedTypes(exactFlatCandidate, exactLineage)
+	const exactFlat = exactSourceTypes.length > 0 ? exactFlatCandidate : null
+	const winner = exactFlat?.treatment ?? projectedFlatTreatment(baselineWinner)
+	const winnerKey = completeTreatmentKey(winner)
+	const projected = exactFlat === null
+	const custodyCandidate = exactFlat ?? sourceCandidate
+	const custodyLineage = exactFlat === null ? sourceLineage : exactLineage
+	const sourceTypes = exactFlat === null
+		? sourceConnectedTypes(custodyCandidate, custodyLineage)
+		: exactSourceTypes
+	if (sourceTypes.length === 0 || !custodyLineage?.eligible || custodyLineage.basis === "ineligible") {
+		throw new Error("Supported-gradient flat custody lacks source-connected complete lineage")
+	}
+	const byKey = new Map<string, CompletePaletteTreatment>()
+	for (const treatment of [winner, ...input.selection.slate]) {
+		const key = completeTreatmentKey(treatment)
+		if (key !== baselineWinnerKey && key !== winnerKey && !byKey.has(key)) byKey.set(key, treatment)
+	}
+	const slate = [winner, ...byKey.values()].slice(
+		0,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V4_POLICY.maximumSlateTreatments,
+	)
+	const selection: AlbumArtworkPaletteV2Phase3IntegratedCandidateSelection = {
+		...input.selection,
+		winner,
+		slate,
+		diagnostics: {
+			...input.selection.diagnostics,
+			winnerKey,
+			winnerLineageBasis: custodyLineage.basis,
+			slateKeys: slate.map(completeTreatmentKey),
+		},
+	}
+	return {
+		selection,
+		diagnostics: {
+			version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID,
+			authority: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_SUPPORTED_GRADIENT_PATH_ID,
+			selectedTransitionGradient,
+			strictVetoApplied: true,
+			projectedFlatSibling: projected,
+			baselineWinnerKey,
+			winnerKey,
+			correspondingPathIndex: correspondingPath?.pathIndex ?? null,
+			midpoint,
+			flatCustody: {
+				kind: projected ? "source-connected-flat-projection" : "existing-exact-role-sibling",
+				sourceConnected: true,
+				sourceTypes,
+				sourceFieldHypothesisId: winner.sourceFieldHypothesisId,
+				roleBinding: "same-four-roles",
+				hypothesisBinding: projected
+					? "same-source-field-hypothesis"
+					: "existing-flat-field-hypothesis",
+			},
+		},
+	}
+}
+
+function selectorWithProjectedFlatCustody(
+	selector: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Explanation,
+	baselineWinnerKey: string,
+	winner: CompletePaletteTreatment,
+): AlbumArtworkPaletteV2Phase3RecoverySelectorV2Explanation {
+	const source = selector.evaluations.find(({ key }) => key === baselineWinnerKey)
+	if (!source) throw new Error("Supported-gradient flat projection omitted its source evaluation")
+	return {
+		...selector,
+		evaluations: [
+			...selector.evaluations,
+			{
+				...source,
+				key: completeTreatmentKey(winner),
+				gradientStatus: "not-applicable",
+				structuralKey: `${source.structuralKey}\0supported-gradient-path-projection`,
+			},
+		],
+	}
 }
 
 function compareTransitionCandidates(
@@ -358,7 +576,7 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 		treatment: candidate.treatment,
 		descriptors: candidate.descriptors as readonly AlbumArtworkPaletteV2Phase3LogicalDescriptor[],
 	}))
-	const selection = selectAlbumArtworkPaletteV2Phase3IntegratedCandidate({
+	const baseSelection = selectAlbumArtworkPaletteV2Phase3IntegratedCandidate({
 		recoveryV2,
 		materialized: custodyMaterialized,
 		roleObligations: roleEvidence.obligations,
@@ -366,11 +584,29 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 		identityObligations: common.seedAvailability.identityObligations,
 		emergency: closedDetails.result.diagnostics.emergency,
 	})
+	const supportedGradientPath = evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(
+		common.evidence.native,
+	)
+	const gradientAuthority = applyAlbumArtworkPaletteV2Phase3IntegratedSupportedGradientAuthority({
+		selection: baseSelection,
+		materialized: custodyMaterialized,
+		supportedGradientPath,
+	})
+	const selection = gradientAuthority.selection
 	const winnerKey = completeTreatmentKey(selection.winner)
-	const winnerSourceTypes = [...new Set(custodyMaterialized
-		.find(({ key }) => key === winnerKey)?.descriptors.map(({ sourceType }) => sourceType) ?? [])]
+	const winnerSourceTypes = [...new Set(
+		custodyMaterialized.find(({ key }) => key === winnerKey)?.descriptors.map(({ sourceType }) => sourceType) ??
+		gradientAuthority.diagnostics.flatCustody?.sourceTypes ?? [],
+	)]
 		.sort(compareAscii)
 	const selected = selection.slate
+	const selector = gradientAuthority.diagnostics.projectedFlatSibling
+		? selectorWithProjectedFlatCustody(
+			recoveryV2.explanation,
+			gradientAuthority.diagnostics.baselineWinnerKey,
+			selection.winner,
+		)
+		: recoveryV2.explanation
 	const baseDiagnostics = closedDetails.result.diagnostics
 	const slateForegroundFamilyIds = [...new Set(selected.map(({ familyRoles }) => familyRoles.foreground)
 		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
@@ -395,7 +631,7 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 				slateAccentFamilyIds,
 			},
 			phase3IntegratedCandidate: {
-				version: "album-artwork-palette-v2-phase-3-integrated-candidate-diagnostics-v1",
+				version: "album-artwork-palette-v2-phase-3-integrated-candidate-diagnostics-v2",
 				configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID,
 				transitionNormalizationAuthority: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_TRANSITION_ENVELOPE_V4_ID,
 				baseSelectionAuthority: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V2_ID,
@@ -403,6 +639,8 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 				lineageEligibilityAuthority:
 					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID,
 				custodyAuthority: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_CUSTODY_V3_ID,
+				supportedGradientAuthority:
+					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_SUPPORTED_GRADIENT_AUTHORITY_ID,
 				commonBase: common.diagnostics,
 				domain: {
 					seedDescriptorCount: common.seedAvailability.logicalDescriptors.length,
@@ -415,11 +653,13 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 				},
 				transitionEnvelope: transitionEnvelope.diagnostics,
 				materialization: materialization.diagnostics,
-				selector: recoveryV2.explanation,
+				selector,
 				lineageEligibility: selection.completeLineage.eligibility.diagnostics,
 				transitionRescue: selection.transitionRescue,
 				custody: selection.custody,
 				selection: selection.diagnostics,
+				gradientAuthority: gradientAuthority.diagnostics,
+				supportedGradientPath: supportedGradientPath.diagnostics,
 			},
 		},
 	}
@@ -435,6 +675,8 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 		recoveryV2,
 		roleEvidence,
 		custodyMaterialized,
+		supportedGradientPath,
+		gradientAuthority,
 		selection,
 	}
 }

@@ -18,6 +18,9 @@ import {
 import {
 	projectAlbumArtworkPaletteV2Phase3WinnerResearchRender,
 } from "./src/album-artwork-palette-v2-phase-3-review-render.ts"
+import {
+	readAndVerifyPhase3WorkingExpansionManifest,
+} from "./select-album-artwork-palette-v2-phase-3-working-expansion.ts"
 import type { CompletePaletteReviewResearchRender } from "./src/complete-palette-review-v2.ts"
 import { candidateTreatments } from "./tools/review-evidence/adapters.ts"
 import { minimalReviewNeed } from "./tools/review-evidence/reports.ts"
@@ -28,7 +31,14 @@ import {
 } from "./tools/review-evidence/warehouse.ts"
 
 const PHASE_3_CONTRACT_ID = "album-artwork-palette-v2-phase-3-attempt-contract-v1"
+const SOURCE_LIGHT_FOREGROUND_RESERVE_DIAGNOSTICS_VERSION =
+	"album-artwork-palette-v2-phase-3-source-light-foreground-reserve-diagnostics-v1"
+const SOURCE_LIGHT_FOREGROUND_RESERVE_VERSION =
+	"album-artwork-palette-v2-phase-3-source-light-foreground-reserve-v1"
+const EXACT_FOREGROUND_CARRIER_ID = "exact-current-slate-field-collapse-accent-carrier-v1"
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_REVIEW_DEFAULT_MAXIMUM_CASES = 16
+
+export type AlbumArtworkPaletteV2Phase3ReviewPairwiseSlateAnchor = "exact-foreground-carrier"
 
 type JsonObject = Record<string, unknown>
 
@@ -55,6 +65,11 @@ type LoadedCase = Readonly<{
 	candidate: NormalizedResult
 	addedAlternativeKeys: ReadonlySet<string>
 	winnerChanged: boolean
+	exactForegroundCarrier?: Readonly<{
+		candidate: NormalizedTreatment
+		carrier: NormalizedTreatment
+		slateIndex: number
+	}>
 }>
 
 type QueueTask = Readonly<{
@@ -87,6 +102,8 @@ export type AlbumArtworkPaletteV2Phase3ReviewArguments = Readonly<{
 	reviewCaseIds: readonly string[]
 	warehousePath?: string
 	minimalReviewReportPath?: string
+	workingExpansionManifestPath?: string
+	pairwiseSlateAnchor?: AlbumArtworkPaletteV2Phase3ReviewPairwiseSlateAnchor
 }>
 
 export type AlbumArtworkPaletteV2Phase3ReviewOptions = AlbumArtworkPaletteV2Phase3ReviewArguments & Readonly<{
@@ -194,7 +211,8 @@ export function parseAlbumArtworkPaletteV2Phase3ReviewArguments(
 		if (!rawName.startsWith("--")) throw new Error(`Unexpected positional argument ${rawName}`)
 		const name = aliases.get(rawName) ?? rawName
 		if (!["--iteration-directory", "--candidate-attempt", "--anchor", "--mode", "--output-directory",
-			"--warehouse", "--minimal-review-report", "--maximum-cases"].includes(name)) {
+			"--warehouse", "--minimal-review-report", "--maximum-cases", "--working-expansion-manifest",
+			"--pairwise-slate-anchor"].includes(name)) {
 			throw new Error(`Unknown argument ${rawName}`)
 		}
 		const value = args[++index]
@@ -209,6 +227,13 @@ export function parseAlbumArtworkPaletteV2Phase3ReviewArguments(
 	if (candidateAttemptId === anchorId) throw new Error("Candidate attempt ID and anchor ID must differ")
 	const mode = requiredOption(values, "--mode")
 	if (mode !== "absolute" && mode !== "pairwise") throw new Error("--mode must be absolute or pairwise")
+	const pairwiseSlateAnchor = values.get("--pairwise-slate-anchor")
+	if (pairwiseSlateAnchor !== undefined && pairwiseSlateAnchor !== "exact-foreground-carrier") {
+		throw new Error("--pairwise-slate-anchor must be exact-foreground-carrier")
+	}
+	if (pairwiseSlateAnchor !== undefined && mode !== "pairwise") {
+		throw new Error("--pairwise-slate-anchor is valid only in pairwise mode")
+	}
 	const maximumValue = values.get("--maximum-cases")
 	if (all && maximumValue !== undefined) throw new Error("--all and --maximum-cases cannot be combined")
 	if (all && reviewCaseIds.length > 0) throw new Error("--all and --review-case cannot be combined")
@@ -232,6 +257,10 @@ export function parseAlbumArtworkPaletteV2Phase3ReviewArguments(
 		...(values.get("--minimal-review-report")
 			? { minimalReviewReportPath: values.get("--minimal-review-report")! }
 			: {}),
+		...(values.get("--working-expansion-manifest")
+			? { workingExpansionManifestPath: values.get("--working-expansion-manifest")! }
+			: {}),
+		...(pairwiseSlateAnchor ? { pairwiseSlateAnchor } : {}),
 	}
 }
 
@@ -337,6 +366,219 @@ function normalizedResult(
 	}
 }
 
+function exactStringArray(value: unknown, label: string): string[] {
+	if (!Array.isArray(value) || !value.every((entry) => typeof entry === "string") ||
+		new Set(value).size !== value.length) {
+		throw new Error(`${label} must be a unique string array`)
+	}
+	return value as string[]
+}
+
+function exactArray(first: readonly string[], second: readonly string[]): boolean {
+	return completePaletteReviewCanonicalJson(first) === completePaletteReviewCanonicalJson(second)
+}
+
+function rawTreatmentEntry(value: unknown, label: string): Readonly<{ key: string; treatment: JsonObject }> {
+	if (!isObject(value) || !isObject(value.treatment)) throw new Error(`${label} is not a complete raw treatment`)
+	const key = stringField(value, "key", label)
+	const treatment = value.treatment
+	for (const role of ["background", "surface", "foreground", "accent"] as const) {
+		const color = treatment[role]
+		if (!isObject(color) || typeof color.hex !== "string" || !/^#[0-9a-f]{6}$/u.test(color.hex)) {
+			throw new Error(`${label}.${role} does not preserve a lowercase raw hex`)
+		}
+	}
+	if (typeof treatment.gradient !== "boolean") throw new Error(`${label}.gradient is invalid`)
+	const canonicalKey = `${(treatment.background as JsonObject).hex}:${(treatment.surface as JsonObject).hex}:` +
+		`${(treatment.foreground as JsonObject).hex}:${(treatment.accent as JsonObject).hex}:` +
+		`${treatment.gradient ? "gradient" : "flat"}`
+	if (key !== canonicalKey) throw new Error(`${label} key is stale relative to its complete raw treatment`)
+	return { key, treatment }
+}
+
+function rawFamily(treatment: JsonObject, role: "background" | "surface" | "foreground" | "accent",
+	label: string): string {
+	if (!isObject(treatment.familyRoles)) throw new Error(`${label}.familyRoles is missing`)
+	return stringField(treatment.familyRoles, role, `${label}.familyRoles`)
+}
+
+function rawHex(treatment: JsonObject, role: "background" | "surface" | "foreground" | "accent"): string {
+	return (treatment[role] as JsonObject).hex as string
+}
+
+function rawGradientIdentity(treatment: JsonObject, label: string): string {
+	if (treatment.gradient === false) return "flat"
+	if (!isObject(treatment.gradientEvidence)) throw new Error(`${label}.gradientEvidence is missing`)
+	return `${stringField(treatment.gradientEvidence, "topology", `${label}.gradientEvidence`)}\0` +
+		stringField(treatment.gradientEvidence, "direction", `${label}.gradientEvidence`)
+}
+
+function validateExactForegroundCarrierStructure(
+	candidate: JsonObject,
+	carrier: JsonObject,
+	label: string,
+): void {
+	for (const field of ["sourceFieldHypothesisId", "fieldTreatment"] as const) {
+		if (stringField(candidate, field, `${label} candidate`) !== stringField(carrier, field, `${label} carrier`)) {
+			throw new Error(`${label} candidate and carrier differ in ${field}`)
+		}
+	}
+	for (const role of ["background", "surface", "accent"] as const) {
+		if (rawFamily(candidate, role, `${label} candidate`) !== rawFamily(carrier, role, `${label} carrier`) ||
+			rawHex(candidate, role) !== rawHex(carrier, role)) {
+			throw new Error(`${label} candidate and carrier differ in ${role} family or hex`)
+		}
+	}
+	if (candidate.gradient !== carrier.gradient ||
+		rawGradientIdentity(candidate, `${label} candidate`) !== rawGradientIdentity(carrier, `${label} carrier`)) {
+		throw new Error(`${label} candidate and carrier differ in gradient topology or direction`)
+	}
+	if (!isObject(candidate.collapse) || !isObject(carrier.collapse) ||
+		typeof candidate.collapse.surface !== "boolean" || typeof candidate.collapse.accent !== "boolean" ||
+		typeof carrier.collapse.surface !== "boolean" || typeof carrier.collapse.accent !== "boolean" ||
+		candidate.collapse.surface !== carrier.collapse.surface || candidate.collapse.accent !== carrier.collapse.accent) {
+		throw new Error(`${label} candidate and carrier differ in collapse`)
+	}
+	if (rawFamily(candidate, "foreground", `${label} candidate`) ===
+			rawFamily(carrier, "foreground", `${label} carrier`) &&
+		rawHex(candidate, "foreground") === rawHex(carrier, "foreground")) {
+		throw new Error(`${label} candidate does not differ from its carrier in foreground family or hex`)
+	}
+}
+
+function exactForegroundCarrierBinding(
+	candidateRecord: JsonObject,
+	comparisonAnchorOutput: unknown,
+	candidate: NormalizedResult,
+	anchor: NormalizedResult,
+	configurationId: string,
+	caseId: string,
+): LoadedCase["exactForegroundCarrier"] {
+	const label = `Case ${caseId} exact-foreground-carrier diagnostics`
+	if (!isObject(candidateRecord.output) || !isObject(comparisonAnchorOutput)) {
+		throw new Error(`${label} cannot bind incomplete outputs`)
+	}
+	const candidateOutput = candidateRecord.output
+	if (!isObject(candidateOutput.diagnostics) ||
+		!isObject(candidateOutput.diagnostics.phase3SourceLightForegroundReserve)) {
+		throw new Error(`${label} are missing`)
+	}
+	const diagnostic = candidateOutput.diagnostics.phase3SourceLightForegroundReserve
+	if (diagnostic.version !== SOURCE_LIGHT_FOREGROUND_RESERVE_DIAGNOSTICS_VERSION ||
+		diagnostic.configurationId !== configurationId || !isObject(diagnostic.sourceLightForegroundReserve)) {
+		throw new Error(`${label} wrapper is stale or unsupported`)
+	}
+	const reserve = diagnostic.sourceLightForegroundReserve
+	if (reserve.version !== SOURCE_LIGHT_FOREGROUND_RESERVE_VERSION || !isObject(reserve.identities) ||
+		reserve.identities.canonicalTreatment !== "canonical-role-hex-and-gradient-v1" ||
+		reserve.identities.exactCarrier !== EXACT_FOREGROUND_CARRIER_ID || !isObject(reserve.policy) ||
+		reserve.policy.maximumReservedTreatments !== 1 ||
+		reserve.policy.baselineMutation !== "append-or-replace-last-only" || !isObject(reserve.baseline) ||
+		!isObject(reserve.outcome)) {
+		throw new Error(`${label} contract is stale or unsupported`)
+	}
+	if (!Array.isArray(candidateOutput.alternatives) || !Array.isArray(comparisonAnchorOutput.alternatives)) {
+		throw new Error(`${label} cannot bind incomplete slates`)
+	}
+	const rawCandidateEntries = candidateOutput.alternatives.map((entry, index) =>
+		rawTreatmentEntry(entry, `Case ${caseId} candidate output alternatives[${index}]`))
+	const rawAnchorEntries = comparisonAnchorOutput.alternatives.map((entry, index) =>
+		rawTreatmentEntry(entry, `Case ${caseId} comparison anchor output alternatives[${index}]`))
+	const candidateKeys = rawCandidateEntries.map(({ key }) => key)
+	const anchorKeys = rawAnchorEntries.map(({ key }) => key)
+	if (new Set(candidateKeys).size !== candidateKeys.length || new Set(anchorKeys).size !== anchorKeys.length) {
+		throw new Error(`${label} cannot bind duplicated slate keys`)
+	}
+	const baselineKeys = exactStringArray(reserve.baseline.slateKeys, `${label}.baseline.slateKeys`)
+	const outputKeys = exactStringArray(reserve.outcome.outputSlateKeys, `${label}.outcome.outputSlateKeys`)
+	if (!exactArray(baselineKeys, anchorKeys) || !exactArray(outputKeys, candidateKeys)) {
+		throw new Error(`${label} slate custody is stale for the compared outputs`)
+	}
+	const rawCandidateWinner = rawTreatmentEntry(candidateOutput.winner, `Case ${caseId} candidate output winner`)
+	const rawAnchorWinner = rawTreatmentEntry(comparisonAnchorOutput.winner, `Case ${caseId} comparison anchor output winner`)
+	if (candidate.winner.key !== anchor.winner.key || rawCandidateWinner.key !== rawAnchorWinner.key ||
+		reserve.baseline.winnerKey !== rawAnchorWinner.key || reserve.outcome.winnerKey !== rawCandidateWinner.key ||
+		reserve.outcome.winnerPreserved !== true) {
+		throw new Error(`${label} cannot use a winner change as a slate task`)
+	}
+	if (typeof reserve.outcome.exactNoOp !== "boolean") throw new Error(`${label}.outcome.exactNoOp is invalid`)
+	if (reserve.outcome.exactNoOp) {
+		if (reserve.outcome.reservedKey !== null || reserve.outcome.reservedCarrierKey !== null ||
+			reserve.outcome.reservedCarrierIndex !== null || reserve.outcome.replacedKey !== null ||
+			reserve.outcome.matchedCarrierPreserved !== null || !exactArray(candidateKeys, anchorKeys)) {
+			throw new Error(`${label} no-op outcome is stale or tampered`)
+		}
+		return undefined
+	}
+	const reservedKey = stringField(reserve.outcome, "reservedKey", `${label}.outcome`)
+	const reservedCarrierKey = stringField(reserve.outcome, "reservedCarrierKey", `${label}.outcome`)
+	const addedKeys = candidateKeys.filter((key) => !new Set(anchorKeys).has(key))
+	if (addedKeys.length !== 1 || addedKeys[0] !== reservedKey) {
+		throw new Error(`${label} must bind exactly one relevant added candidate`)
+	}
+	const carrierIndex = anchorKeys.indexOf(reservedCarrierKey)
+	if (carrierIndex < 0 || reserve.outcome.reservedCarrierIndex !== carrierIndex) {
+		throw new Error(`${label} carrier is absent from or stale for the comparison anchor slate`)
+	}
+	const replacedKey = reserve.outcome.replacedKey
+	if (replacedKey === null) {
+		if (!exactArray(candidateKeys, [...anchorKeys, reservedKey])) {
+			throw new Error(`${label} append mutation is stale or tampered`)
+		}
+	} else if (typeof replacedKey !== "string" || replacedKey !== anchorKeys.at(-1) ||
+		!exactArray(candidateKeys, [...anchorKeys.slice(0, -1), reservedKey])) {
+		throw new Error(`${label} replacement mutation is stale or tampered`)
+	}
+	if (reserve.outcome.baselinePrefixPreserved !== true || reserve.outcome.matchedCarrierPreserved !== true ||
+		!candidateKeys.includes(reservedCarrierKey)) {
+		throw new Error(`${label} does not preserve its baseline prefix and matched carrier`)
+	}
+	if (!Array.isArray(reserve.candidates) || !Array.isArray(reserve.eligibleReserveKeysInOrder)) {
+		throw new Error(`${label} candidate diagnostics are missing`)
+	}
+	const selectedDiagnostics = reserve.candidates.filter((entry) => isObject(entry) && entry.key === reservedKey)
+	const requiredGates = [
+		"materializedKeyCanonical",
+		"qualityEvaluationAvailable",
+		"completeLineageDiagnosticAvailable",
+		"fieldConditionalRoleEvidenceAvailable",
+		"foregroundFamilyEvidenceAvailable",
+		"rolePreferenceForeground",
+		"lightForegroundEvidenceAtLeastMinimum",
+		"familyConcentrationAtLeastMinimum",
+		"withinQualityLossMaximum",
+		"foregroundApcaSamplesAvailableAndFinite",
+		"foregroundApcaSamplesAllNonpositive",
+		"foregroundApcaHasNegativeSample",
+		"ordinaryCompleteLineageEligible",
+		"exactCurrentSlateCarrierAvailable",
+		"foregroundChangesRelativeToCarrier",
+		"candidateAbsentFromSlate",
+		"matchedCarrierPreservedByCapacityAction",
+	] as const
+	if (selectedDiagnostics.length !== 1 || !isObject(selectedDiagnostics[0]) ||
+		selectedDiagnostics[0].carrierKey !== reservedCarrierKey ||
+		selectedDiagnostics[0].carrierIndex !== carrierIndex || selectedDiagnostics[0].eligible !== true ||
+		!isObject(selectedDiagnostics[0].gates) ||
+		Object.keys(selectedDiagnostics[0].gates).length !== requiredGates.length ||
+		!requiredGates.every((gate) => selectedDiagnostics[0].gates[gate] === true) ||
+		!Array.isArray(selectedDiagnostics[0].rejectionReasons) || selectedDiagnostics[0].rejectionReasons.length !== 0 ||
+		reserve.eligibleReserveKeysInOrder[0] !== reservedKey) {
+		throw new Error(`${label} selected candidate diagnostic is stale or tampered`)
+	}
+	const rawCandidate = rawCandidateEntries.find(({ key }) => key === reservedKey)!
+	const rawCarrier = rawAnchorEntries[carrierIndex]
+	validateExactForegroundCarrierStructure(rawCandidate.treatment, rawCarrier.treatment, label)
+	const normalizedCandidate = candidate.alternatives.find(({ key }) => key === reservedKey)
+	const normalizedCarrier = anchor.alternatives.find(({ key }) => key === reservedCarrierKey)
+	if (!normalizedCandidate || !normalizedCarrier) throw new Error(`${label} normalized binding is stale`)
+	return {
+		candidate: normalizedCandidate,
+		carrier: normalizedCarrier,
+		slateIndex: candidateKeys.indexOf(reservedKey),
+	}
+}
+
 function visibleKey(treatment: CompletePaletteReviewTreatment): string {
 	return completePaletteReviewCanonicalJson(treatment)
 }
@@ -397,6 +639,7 @@ async function loadCase(
 	anchorId: string,
 	projectRoot: string,
 	panel: ReadonlyMap<string, SourceBinding>,
+	pairwiseSlateAnchor?: AlbumArtworkPaletteV2Phase3ReviewPairwiseSlateAnchor,
 ): Promise<LoadedCase> {
 	const value = await readJson(path, `Normalized case ${expectedCaseId}`)
 	if (!isObject(value) || value.schemaVersion !== 1 || value.contractId !== PHASE_3_CONTRACT_ID ||
@@ -456,6 +699,16 @@ async function loadCase(
 		throw new Error(`Case ${caseId} candidate alternative delta is stale`)
 	}
 	const comparisonAnchorAlternativeKeys = new Set(anchor.alternatives.map(({ key }) => key))
+	const exactForegroundCarrier = pairwiseSlateAnchor === "exact-foreground-carrier"
+		? exactForegroundCarrierBinding(
+			candidateRecord,
+			comparisonAnchorOutput,
+			candidate,
+			anchor,
+			candidateRecord.identity.configurationId,
+			caseId,
+		)
+		: undefined
 	return {
 		source: await sourceBinding(projectRoot, caseId, value.source, panel),
 		anchor,
@@ -463,6 +716,7 @@ async function loadCase(
 		addedAlternativeKeys: new Set(candidate.alternatives.map(({ key }) => key)
 			.filter((key) => !comparisonAnchorAlternativeKeys.has(key))),
 		winnerChanged: anchor.winner.key !== candidate.winner.key,
+		...(exactForegroundCarrier ? { exactForegroundCarrier } : {}),
 	}
 }
 
@@ -473,27 +727,63 @@ async function loadIterationCases(options: AlbumArtworkPaletteV2Phase3ReviewOpti
 		!Array.isArray(iteration.sources) || iteration.sources.length === 0) {
 		throw new Error("Phase 3 iteration manifest is invalid or empty")
 	}
-	const panelPath = options.developmentPanelPath ??
-		resolve(projectRoot, "research/data/album-artwork-palette-v2-development-panel.json")
-	const panel = await loadPanel(panelPath)
 	const entries = iteration.sources.map((entry, index) => {
 		if (!isObject(entry)) throw new Error(`Phase 3 iteration source ${index} is invalid`)
 		const caseId = stringField(entry, "caseId", `Phase 3 iteration source ${index}`)
 		const file = stringField(entry, "file", `Phase 3 iteration source ${index}`)
 		validId(caseId, "Phase 3 iteration case ID")
 		if (!/^[A-Za-z0-9._-]+\.json$/u.test(file)) throw new Error(`Unsafe normalized case file ${file}`)
-		return { caseId, file }
+		return { caseId, file, entry }
 	}).sort((first, second) => ascii(first.caseId, second.caseId) || ascii(first.file, second.file))
 	if (new Set(entries.map(({ caseId }) => caseId)).size !== entries.length) {
 		throw new Error("Phase 3 iteration contains duplicate case IDs")
 	}
-	return Promise.all(entries.map(({ caseId, file }) => loadCase(
+	let panel: ReadonlyMap<string, SourceBinding>
+	let selectedEntries = entries
+	if (options.workingExpansionManifestPath !== undefined) {
+		const manifest = await readAndVerifyPhase3WorkingExpansionManifest(options.workingExpansionManifestPath)
+		if (!isObject(iteration.sourceAuthorization) || iteration.sourceAuthorization.mode !== "working-expansion" ||
+			iteration.sourceAuthorization.manifestId !== manifest.manifestId) {
+			throw new Error("Phase 3 working-expansion iteration authorization does not match the verified manifest")
+		}
+		panel = new Map(manifest.expansionGroup.sources.map((source) => [source.caseId, {
+			caseId: source.caseId,
+			file: source.path,
+			sha256: source.sha256,
+			bytes: source.byteCount,
+		}]))
+		for (const { caseId, entry } of entries) {
+			const authorized = panel.get(caseId)
+			if (!authorized || entry.sourceSha256 !== authorized.sha256) {
+				throw new Error(`Case ${caseId} is not exactly bound to the verified working-expansion manifest`)
+			}
+		}
+		if (options.reviewCaseIds.length > 0) {
+			const requestedSources = new Set<string>()
+			for (const reviewCaseId of options.reviewCaseIds) {
+				const matches = entries.filter(({ caseId }) => reviewCaseId.startsWith(`${caseId}.`))
+				if (matches.length !== 1) throw new Error(`Explicit review case has no aligned working-expansion source: ${reviewCaseId}`)
+				requestedSources.add(matches[0].caseId)
+			}
+			selectedEntries = entries.filter(({ caseId }) => requestedSources.has(caseId))
+		}
+	} else {
+		if (iteration.sourceAuthorization !== undefined || entries.some(({ caseId }) =>
+			/^working-expansion-[0-9]{2}$/u.test(caseId))) {
+			throw new Error("Working-expansion review requires an explicit verified --working-expansion-manifest")
+		}
+		const panelPath = options.developmentPanelPath ??
+			resolve(projectRoot, "research/data/album-artwork-palette-v2-development-panel.json")
+		panel = await loadPanel(panelPath)
+	}
+	return Promise.all(selectedEntries.map(({ caseId, file }) => loadCase(
 		resolve(iterationDirectory, file),
 		caseId,
 		options.candidateAttemptId,
 		options.anchorId,
 		projectRoot,
 		panel,
+		options.pairwiseSlateAnchor,
 	)))
 }
 
@@ -504,11 +794,12 @@ function reviewCaseId(sourceCaseId: string, kind: QueueTask["kind"], slateIndex:
 	return value
 }
 
-function buildTasks(cases: readonly LoadedCase[], mode: CompletePaletteReviewMode): QueueTask[] {
+function buildTasks(cases: readonly LoadedCase[], mode: CompletePaletteReviewMode,
+	pairwiseSlateAnchor?: AlbumArtworkPaletteV2Phase3ReviewPairwiseSlateAnchor): QueueTask[] {
 	const grouped = new Map<string, Omit<QueueTask, "caseId">>()
 	const add = (entry: LoadedCase, candidate: CompletePaletteReviewTreatment, kind: QueueTask["kind"],
-		slateIndex: number | null): void => {
-		const anchor = entry.anchor.winner.treatment
+		slateIndex: number | null, exactAnchor?: CompletePaletteReviewTreatment): void => {
+		const anchor = exactAnchor ?? entry.anchor.winner.treatment
 		if (visibleKey(candidate) === visibleKey(anchor)) return
 		const groupingKey = `${entry.source.sha256}\0${visibleKey(candidate)}${mode === "pairwise" ? `\0${visibleKey(anchor)}` : ""}`
 		if (grouped.has(groupingKey)) return
@@ -520,6 +811,21 @@ function buildTasks(cases: readonly LoadedCase[], mode: CompletePaletteReviewMod
 			candidate,
 			anchor,
 		})
+	}
+	if (pairwiseSlateAnchor === "exact-foreground-carrier") {
+		for (const entry of cases) {
+			if (entry.exactForegroundCarrier) add(
+				entry,
+				entry.exactForegroundCarrier.candidate.treatment,
+				"slate",
+				entry.exactForegroundCarrier.slateIndex,
+				entry.exactForegroundCarrier.carrier.treatment,
+			)
+		}
+		return [...grouped.values()].map((task) => ({
+			...task,
+			caseId: reviewCaseId(task.sourceCaseId, task.kind, task.slateIndex),
+		}))
 	}
 	for (const entry of cases) {
 		if (entry.winnerChanged || visibleKey(entry.candidate.winner.treatment) !==
@@ -717,12 +1023,18 @@ export async function prepareAlbumArtworkPaletteV2Phase3Review(
 	validId(options.anchorId, "Anchor ID")
 	if (options.candidateAttemptId === options.anchorId) throw new Error("Candidate attempt ID and anchor ID must differ")
 	if (options.mode !== "absolute" && options.mode !== "pairwise") throw new Error("Review mode must be absolute or pairwise")
+	if (options.pairwiseSlateAnchor !== undefined && options.pairwiseSlateAnchor !== "exact-foreground-carrier") {
+		throw new Error("Pairwise slate anchor must be exact-foreground-carrier")
+	}
+	if (options.pairwiseSlateAnchor !== undefined && options.mode !== "pairwise") {
+		throw new Error("Pairwise slate anchor is valid only in pairwise mode")
+	}
 	if (!Number.isSafeInteger(options.maximumCases) || options.maximumCases < 1 || options.maximumCases > 100) {
 		throw new Error("Review maximum must be an integer from 1 through 100")
 	}
 	const projectRoot = resolve(options.projectRoot ?? fileURLToPath(new URL("..", import.meta.url)))
 	const loaded = await loadIterationCases(options, projectRoot)
-	const tasks = buildTasks(loaded, options.mode)
+	const tasks = buildTasks(loaded, options.mode, options.pairwiseSlateAnchor)
 	if (tasks.length === 0) throw new Error("No materially changed or novel complete treatments need review")
 	const candidates = evidenceCandidates(tasks)
 	const evidence = await evidenceReport(options, projectRoot, candidates)
@@ -782,6 +1094,9 @@ async function main(): Promise<void> {
 		...(parsed.warehousePath ? { warehousePath: resolve(cwd, parsed.warehousePath) } : {}),
 		...(parsed.minimalReviewReportPath
 			? { minimalReviewReportPath: resolve(cwd, parsed.minimalReviewReportPath) }
+			: {}),
+		...(parsed.workingExpansionManifestPath
+			? { workingExpansionManifestPath: resolve(cwd, parsed.workingExpansionManifestPath) }
 			: {}),
 	})
 	process.stdout.write(`${JSON.stringify({

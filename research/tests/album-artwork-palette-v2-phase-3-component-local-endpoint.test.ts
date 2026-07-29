@@ -2,7 +2,6 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import {
 	buildNativePaletteEvidence,
-	completeTreatmentKey,
 	diagnoseGradientFits,
 } from "../src/album-artwork-palette-v2.ts"
 import type {
@@ -14,12 +13,12 @@ import {
 	buildAlbumArtworkPaletteV2Phase3ComponentLocalEndpointArm,
 } from "../src/album-artwork-palette-v2-phase-3-arm-component-local-endpoint.ts"
 import {
-	extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails,
-} from "../src/album-artwork-palette-v2-phase-3-integrated-candidate.ts"
-import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY,
-	extractAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint,
+	decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation,
+} from "../src/album-artwork-palette-v2-phase-3-parallel-arms.ts"
+import type {
+	AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate,
 } from "../src/album-artwork-palette-v2-phase-3-parallel-arms.ts"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_POLICY,
@@ -47,16 +46,6 @@ function field(pattern: EndpointPattern): RawImage {
 		}
 	}
 	return { width, height, data }
-}
-
-function completeField(): RawImage {
-	const image = field("coherent")
-	for (let y = 40; y < 52; y++) {
-		for (let x = 60; x < 72; x++) {
-			image.data.set(oklabToRGB([0.92, 0.018, -0.025]), (y * image.width + x) * 3)
-		}
-	}
-	return image
 }
 
 function horizontalDiagnostic(evidence: NativePaletteEvidence): GradientFitDiagnostic {
@@ -193,63 +182,124 @@ test("refinable fits retain at most two additive families per endpoint band", ()
 			component.modeFraction === component.population / component.neighborhoodPopulation))))
 })
 
-test("endpoint custody is supplemental-only, winner-immutable, prefix-additive, and fully diagnosed", () => {
-	const image = completeField()
-	const baselineDetails = extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(image)
-	const baseline = baselineDetails.result
-	const first = extractAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(image)
-	const second = extractAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(image)
-	const diagnostics = first.diagnostics.phase3ComponentLocalEndpoint
-	const baselineDiagnostics = baseline.diagnostics.phase3IntegratedCandidate
-	const baselineKeys = baseline.alternatives.map(completeTreatmentKey)
-	const outputKeys = first.alternatives.map(completeTreatmentKey)
-	const winnerKey = completeTreatmentKey(baseline.winner)
+const BASELINE_SLATE = ["flat-winner", "baseline-middle", "baseline-tail"] as const
 
-	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID.endsWith("-v2"), true)
-	assert.equal(diagnostics.version.endsWith("-v2"), true)
-	assert.equal(completeTreatmentKey(first.winner), winnerKey)
-	assert.equal(diagnostics.endpointSlateReservation.baselineWinnerKey, winnerKey)
-	assert.equal(diagnostics.endpointSlateReservation.outputWinnerKey, winnerKey)
-	assert.equal(diagnostics.endpointSlateReservation.baselineWinnerUnchanged, true)
-	assert.equal(diagnostics.endpointSlateReservation.winnerAuthority, "integrated-baseline")
-	assert.equal(diagnostics.endpointSlateReservation.selectorAuthority, "evaluation-only")
-	assert.deepEqual(diagnostics.endpointSlateReservation.baselineSlateKeys, baselineKeys)
-	assert.deepEqual(diagnostics.endpointSlateReservation.outputSlateKeys, outputKeys)
-	assert.equal(outputKeys.length, baselineKeys.length)
-	assert.deepEqual(outputKeys.slice(0, -1), baselineKeys.slice(0, -1))
-	assert.equal(diagnostics.endpointSlateReservation.baselinePrefixPreserved, true)
-	assert.notEqual(diagnostics.endpointSlateReservation.candidateKey, null)
-	assert.equal(diagnostics.endpointSlateReservation.candidateCompleteLineageEligible, true)
-	assert.notEqual(diagnostics.endpointSlateReservation.reservedKey, null)
-	assert.ok(diagnostics.endpointSlateReservation.reservedKey === null ||
-		diagnostics.endpointSlateReservation.reservedKey === outputKeys.at(-1))
-	assert.ok(diagnostics.endpointSlateReservation.reservedKey === null ||
-		diagnostics.endpointSlateReservation.replacedBaselineKey === baselineKeys.at(-1))
-	assert.ok(diagnostics.endpointSlateReservation.reservedQualityLossFromBaselineWinner === null ||
-		diagnostics.endpointSlateReservation.reservedQualityLossFromBaselineWinner <=
-			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY.maximumQualityLoss + 1e-12)
-
-	assert.deepEqual(diagnostics.materialization.baselineCustody, baselineDiagnostics.materialization)
-	assert.equal(diagnostics.domain.baselineMaterializedTreatmentCount,
-		baselineDiagnostics.domain.materializedTreatmentCount)
-	assert.equal(diagnostics.domain.materializedTreatmentCount,
-		diagnostics.selector.domain.materializedTreatmentCount)
-	assert.equal(diagnostics.domain.materializedTreatmentCount,
-		diagnostics.domain.baselineMaterializedTreatmentCount +
-			diagnostics.domain.supplementalOnlyMaterializedTreatmentCount)
-	assert.equal(diagnostics.materialization.baselineCustody.capacity, 1_500)
-	assert.equal(diagnostics.materialization.supplementalOnly.capacity, 1_500)
-	assert.ok(diagnostics.materialization.baselineCustody.materializedTreatmentCount <= 1_500)
-	assert.ok(diagnostics.materialization.supplementalOnly.materializedTreatmentCount <= 1_500)
-	const evaluationKeys = new Set(diagnostics.selector.evaluations.map(({ key }: { key: string }) => key))
-	assert.ok(baselineDetails.custodyMaterialized.every(({ key }) => evaluationKeys.has(key)))
-	assert.ok(outputKeys.every((key) => evaluationKeys.has(key)))
-	if (diagnostics.endpointSlateReservation.reservedKey !== null) {
-		const eligibility = diagnostics.lineageEligibility.candidates.find(({ key }: { key: string }) =>
-			key === diagnostics.endpointSlateReservation.reservedKey)
-		assert.equal(eligibility?.eligible, true)
-		assert.equal(eligibility?.basis, "ordinary-complete-source-lineage")
-		assert.equal(diagnostics.endpointSlateReservation.reservedCompleteLineageEligible, true)
+function reservationCandidate(
+	values: Partial<AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate> = {},
+): AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate {
+	return {
+		key: "earned-endpoint-gradient",
+		gradient: true,
+		gradientStatus: "earned-rendered",
+		qualityUtility: 0.71,
+		completeLineageEligible: true,
+		...values,
 	}
-	assert.equal(JSON.stringify(first), JSON.stringify(second))
+}
+
+function reservationDecision(values: Partial<Parameters<
+	typeof decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation
+>[0]> = {}) {
+	return decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation({
+		baselineWinnerKey: BASELINE_SLATE[0],
+		baselineWinnerGradient: false,
+		baselineWinnerQualityUtility: 0.8,
+		baselineSlateKeys: BASELINE_SLATE,
+		candidates: [reservationCandidate()],
+		...values,
+	})
+}
+
+test("a flat incumbent reserves at most one earned complete-lineage gradient at the slate tail", () => {
+	const candidates = [
+		reservationCandidate(),
+		reservationCandidate({ key: "second-earned-gradient", qualityUtility: 0.72 }),
+	]
+	const first = reservationDecision({ candidates })
+	const second = reservationDecision({ candidates })
+
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID.endsWith("-v3"), true)
+	assert.equal(first.outputWinnerKey, BASELINE_SLATE[0])
+	assert.equal(first.baselineWinnerUnchanged, true)
+	assert.equal(first.reservedKey, candidates[0].key)
+	assert.equal(first.reservedTreatmentCount,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY.maximumReservedTreatments)
+	assert.deepEqual(first.outputSlateKeys, [BASELINE_SLATE[0], BASELINE_SLATE[1], candidates[0].key])
+	assert.deepEqual(first.outputSlateKeys.slice(0, -1), BASELINE_SLATE.slice(0, -1))
+	assert.equal(first.replacedBaselineKey, BASELINE_SLATE.at(-1))
+	assert.equal(first.baselinePrefixPreserved, true)
+	assert.equal(first.reservedCompleteLineageEligible, true)
+	assert.ok(first.reservedQualityLossFromBaselineWinner! <=
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY.maximumQualityLoss + 1e-12)
+	assert.deepEqual(first.rejectionReasons, [])
+	assert.deepEqual(first, second)
+})
+
+test("a gradient incumbent is an exact reservation no-op even with an otherwise eligible candidate", () => {
+	const baselineSlateKeys = [...BASELINE_SLATE]
+	const decision = reservationDecision({ baselineWinnerGradient: true, baselineSlateKeys })
+
+	assert.equal(decision.outputSlateKeys, baselineSlateKeys)
+	assert.equal(decision.reservedKey, null)
+	assert.equal(decision.reservedTreatmentCount, 0)
+	assert.equal(decision.replacedBaselineKey, null)
+	assert.equal(decision.gates.integratedIncumbentFlat, false)
+	assert.deepEqual(decision.rejectionReasons, ["integrated-incumbent-is-gradient"])
+	assert.ok(decision.candidateEvaluations.every(({ eligible, rejectionReasons }) =>
+		!eligible && rejectionReasons.includes("integrated-incumbent-is-gradient")))
+})
+
+test("a projected flat baseline can quality-bound additions without materialized winner lineage", () => {
+	const projectedWinnerKey = "source-connected-projected-flat"
+	let decision: ReturnType<typeof reservationDecision> | undefined
+	assert.doesNotThrow(() => {
+		decision = reservationDecision({
+			baselineWinnerKey: projectedWinnerKey,
+			baselineSlateKeys: [projectedWinnerKey, "baseline-tail"],
+			baselineWinnerQualityUtility: 0.79,
+			candidates: [reservationCandidate({ qualityUtility: 0.70 })],
+		})
+	})
+	assert.equal(decision?.reservedKey, "earned-endpoint-gradient")
+	assert.equal(decision?.gates.baselineWinnerQualityAvailable, true)
+	assert.equal(decision?.candidateEvaluations[0].gates.candidateCompleteLineageEligible, true)
+	assert.ok(Math.abs((decision?.candidateEvaluations[0].qualityLossFromBaselineWinner ?? 0) - 0.09) < 1e-12)
+})
+
+test("reservation fails closed for unavailable custody, lineage, winner, and candidate gates", () => {
+	const noQuality = reservationDecision({ baselineWinnerQualityUtility: null })
+	assert.equal(noQuality.reservedKey, null)
+	assert.deepEqual(noQuality.outputSlateKeys, BASELINE_SLATE)
+	assert.ok(noQuality.rejectionReasons.includes("baseline-winner-quality-unavailable"))
+
+	const noLineage = reservationDecision({
+		candidates: [reservationCandidate({ completeLineageEligible: false })],
+	})
+	assert.equal(noLineage.reservedKey, null)
+	assert.ok(noLineage.rejectionReasons.includes(
+		"endpoint-candidate-is-not-complete-lineage-eligible"))
+
+	const wrongWinner = reservationDecision({ baselineWinnerKey: "not-the-slate-head" })
+	assert.equal(wrongWinner.reservedKey, null)
+	assert.ok(wrongWinner.rejectionReasons.includes("integrated-winner-is-not-slate-head"))
+
+	const noTail = reservationDecision({ baselineSlateKeys: [BASELINE_SLATE[0]] })
+	assert.equal(noTail.reservedKey, null)
+	assert.ok(noTail.rejectionReasons.includes("baseline-slate-has-no-replaceable-tail"))
+
+	const rejected = reservationDecision({
+		candidates: [reservationCandidate({
+			key: BASELINE_SLATE[1],
+			gradient: false,
+			gradientStatus: "unearned",
+			qualityUtility: 0.5,
+		})],
+	})
+	assert.equal(rejected.reservedKey, null)
+	assert.deepEqual(rejected.candidateEvaluations[0].rejectionReasons, [
+		"endpoint-candidate-is-not-gradient",
+		"endpoint-candidate-gradient-is-not-earned",
+		"endpoint-candidate-exceeds-quality-loss-limit",
+		"endpoint-candidate-is-already-in-baseline-slate",
+	])
 })
