@@ -1,7 +1,7 @@
 # Standalone First-Principles Album Artwork UI Palette Plan
 
-Status: sole normative product-research and implementation direction as of 2026-07-28. This revision adds the
-authorized fast Phase 3 iteration mode, shared historical-review evidence, and shared review infrastructure.
+Status: sole normative product-research and implementation direction as of 2026-07-29. This revision binds the
+successful parallel-ablation, continuous evidence-reuse, and grouped-review Phase 3 strategy.
 
 This plan supersedes `research/ALBUM_ARTWORK_UI_PALETTE_PLAN.md`. The superseded file remains a
 historical artifact and must not be edited or deleted.
@@ -100,26 +100,30 @@ Custody.
 
 Phase 3 development must optimize for useful complete-treatment feedback, not procedural artifact production.
 Historical protocols and postmortems may explain prior results, but their one-factor restrictions, separate
-authorization boundaries, immutable handoffs, hash ceremonies, and stop rules do not govern new ordinary
+authorization boundaries, ceremonial handoffs, hash ceremonies, and stop rules do not govern new ordinary
 development iterations. This document is the sole current authority.
 
-The working unit is one mutable Phase 3 development candidate. Do not assign a new semantic version, create a
-new protocol, publish an immutable experiment namespace, hash every dependency, run multiple worker schedules,
-blind development output, or write a postmortem for each threshold, weight, quota, geometry, representative, or
-small implementation change.
+The integration target is one mutable Phase 3 development candidate. Develop multiple isolated algorithm changes
+and causal ablations in parallel, with exclusive file and output ownership for each active attempt. Do not assign
+a new semantic version, create a new protocol, hash every dependency, run multiple worker schedules, blind
+development output, or write a postmortem for each threshold, weight, quota, geometry, representative, or small
+implementation change.
 
 An ordinary iteration is:
 
-1. state the mechanism or product failure being addressed in a short scratch plan;
-2. implement the generic change;
+1. state the mechanism or product failure and the causal comparison being addressed in a short scratch plan;
+2. implement the generic change in an isolated attempt or ablation;
 3. run focused mechanism tests and contract tests;
-4. run only the development sources needed to answer the current question;
+4. run the cheapest mechanism-specific development subset that can answer the current question;
 5. emit normalized complete treatments and diagnostics into a replaceable scratch namespace;
-6. look up exact historical review evidence before requesting new feedback when the corresponding warehouse
-   adapter is available;
-7. inspect materially changed complete treatments in the shared review UI, or an existing compliant gallery
-   while the shared service is being bootstrapped; and
-8. keep, revise, combine, or discard the change based on visible product value and generic behavior.
+6. immediately join the output to the current warehouse and reuse all exactly compatible evaluation evidence;
+7. make grouped same-source comparisons against the anchor and relevant sibling attempts; and
+8. retain or discard the mechanism on that evidence, combining it only after it survives its isolated comparison.
+
+Once an attempt enters a grouped comparison, preserve its declared code/configuration identity and normalized
+outputs as immutable historical evidence; a revision is a new attempt. This preserves causal history without
+turning each attempt into a protocol or release. Human review is collected once at the end of the wave, not
+separately for every attempt arm.
 
 Ordinary iterations do not need to prove an independent scientific claim. One deterministic execution is
 normally enough. Repeat an execution when nondeterminism is suspected, when concurrency changes, or when a
@@ -154,12 +158,14 @@ Use three levels of rigor.
 - focused tests rather than the complete historical suite;
 - no protocol, implementation closure, raw-hash manifest, blind assignment, or postmortem;
 - direct comparison with the current Phase 3 anchor and exact historical evidence; and
-- immediate deletion or replacement of unhelpful generated scratch output is allowed.
+- deletion or replacement of unhelpful scratch output is allowed until that attempt enters a grouped comparison;
+  compared attempts remain immutable history.
 
 **Integration checkpoint** is used after one or more mechanisms show visible value:
 
 - one explicit candidate/configuration identity;
-- the 28-source development panel under one normal schedule;
+- the current working development panel under one normal schedule, initially the 28-source panel and expanded in
+  later waves as specified below;
 - exact changed-winner and changed-slate reporting against the current Phase 3 anchor;
 - the known-failure sources and known-strong controls called out explicitly in the report;
 - historical exact-treatment evidence joined after extraction;
@@ -182,9 +188,10 @@ make an already visibly poor treatment authoritative.
 
 ### Parallel Phase 3 development
 
-Use parallel agents for genuinely different work, not duplicate ceremony around one implementation. One
-integration owner controls shared core files. Attempt agents should work in isolated worktrees or own distinct
-new modules, fixtures, tests, and scratch namespaces so their changes can be evaluated independently and merged
+Use parallel agents for genuinely different algorithm changes or causal ablations, not duplicate ceremony around
+one implementation. One integration owner controls shared core files. Attempt agents must work in isolated
+worktrees or own mutually exclusive modules, fixtures, tests, and scratch namespaces; no file may have concurrent
+owners. This lets attempts be evaluated independently, retained as immutable history once compared, and merged
 without concurrent edits to the central extractor.
 
 Create one behavior-neutral Phase 3 attempt contract before the first attempt wave. It should expose read-only
@@ -227,11 +234,12 @@ questions and evaluate output. Their extraction modules may not read that metada
 architecture test must reject imports of review, warehouse, artifact, manifest, path, and filesystem modules
 from candidate-generation and ranking modules.
 
-Develop the tracks concurrently, then integrate based on product evidence. Candidate availability changes are
-normally integrated before selector changes so ranking does not hide a deficient domain, but an independently
-useful selector or slate fix may enter the working candidate while field research continues. Do not assume that
-every successful attempt belongs in the final combination. Compare the integrated candidate with and without a
-mechanism when its contribution is unclear.
+Develop the tracks concurrently. First use cheap mechanism-specific subsets, then compare the resulting arms on
+the same sources so differences remain causal, and only then combine mechanisms that survive. Candidate
+availability changes are normally integrated before selector changes so ranking does not hide a deficient domain,
+but an independently useful selector or slate fix may enter the working candidate while field research continues.
+Do not assume that every successful attempt belongs in the final combination. Compare the integrated candidate
+with and without a mechanism when its contribution is unclear.
 
 Use one global compute budget across concurrent attempts. Up to ten source workers may run in total; do not give
 each attempt its own ten-worker pool and oversubscribe the host. Prefer small diagnostic subsets while several
@@ -243,6 +251,11 @@ All historical review artifacts, including files previously marked private, prot
 authorized for development evidence recovery. Build one derived read-only SQLite warehouse at
 `research/.cache/palette-review-evidence/warehouse.sqlite`. Existing JSON and generated review artifacts remain
 the authoritative immutable inputs; the database is disposable and reproducible.
+
+Use the warehouse continuously after extraction, not only at integration checkpoints. For every attempt, refresh
+it from all current authoritative review artifacts, bind the newly extracted exact treatment identities, and
+produce coverage and conflict reports before considering new human review. This allows many algorithm iterations
+to be evaluated from existing compatible judgments without asking the reviewer to repeat work.
 
 The warehouse must preserve rather than flatten review semantics. Store absolute judgments, pairwise
 preferences, setwise valid-option judgments, gradient or field-state classifications, issue tags, and free-text
@@ -260,15 +273,19 @@ At minimum, normalize:
 - candidate version and configuration provenance;
 - review contract, presentation version, side assignment, and unblinded treatment mapping;
 - original structured response, issue tags, comment, and timestamp verbatim;
+- artwork-level requirements and comments linked as evaluation context rather than treatment judgments;
 - copied, transferred, repeated, superseded, and independent-judgment lineage; and
 - unresolved or conflicting bindings without guessing.
 
 Human evidence is directly reusable only when exact source bytes, exact visible treatment, compatible rendering,
-and compatible review question match. Perceptually related treatments, alternate source files, comments about a
-desired color, and same-artwork-family matches are diagnostic context only. Conflicting exact judgments remain
-conflicted and enter a review queue rather than being resolved by latest-write or majority shortcuts.
+and compatible judgment type and review question match. Exact absolute evidence does not satisfy a pairwise
+question, and exact pairwise evidence does not supply an absolute judgment. Perceptually related treatments,
+alternate source files, artwork-level requirements, comments about a desired color, and same-artwork-family
+matches are evaluation context only. Preserve and carry that context with the artwork, but do not use it to
+suppress an incompatible judgment. Conflicting exact judgments remain conflicted and enter a review queue rather
+than being resolved by latest-write or majority shortcuts.
 
-The warehouse should produce these practical reports for every integrated candidate:
+The warehouse should produce these practical reports for every attempt and integrated candidate:
 
 - exact absolute-quality coverage;
 - exact pairwise history;
@@ -281,7 +298,8 @@ The warehouse should produce these practical reports for every integrated candid
 The warehouse is evaluation infrastructure, never an inference input. Keep its tooling outside extractor modules,
 do not export warehouse readers from product research code, and add an architecture test that prevents candidate
 generation, scoring, ranking, or tie-breaking from importing SQLite, warehouse reports, feedback, comments, or
-review-derived labels.
+review-derived labels. Neither reusable judgments nor artwork-level evaluation context may enter extraction,
+candidate generation, scoring, ranking, slate construction, or tie-breaking.
 
 ### Shared complete-treatment review service
 
@@ -308,14 +326,24 @@ API for review, existing feedback, feedback updates, and artwork bytes.
 
 The shared queue builder should:
 
-1. group exact duplicate treatments across attempts;
-2. skip visually unchanged anchor comparisons;
-3. use exact historical evidence when compatible;
-4. queue conflicts, genuinely novel top-one changes, diagnosis-relevant alternatives, and the novel slate
+1. refresh the warehouse and bind all current-wave treatments before constructing the queue;
+2. group exact duplicate treatments across attempts;
+3. skip visually unchanged anchor comparisons only when the requested judgment already has exact compatible
+   coverage;
+4. suppress review separately by judgment type and render variant: absolute evidence is not pairwise evidence,
+   pairwise evidence is not absolute evidence, and conflicts are never suppressed;
+5. queue conflicts, genuinely novel top-one changes, diagnosis-relevant alternatives, and the novel slate
    treatments needed to evaluate representative strategy, collapse, cardinality, and candidate availability;
-5. compare novel groups with one declared anchor instead of creating every pairwise combination; and
-6. keep ordinary review waves short by default while allowing the reviewer to request or continue into more
+6. compare novel groups with one declared anchor instead of creating every pairwise combination;
+7. default to one treatment per artwork when that treatment answers the wave's question, but allow multiple
+   treatments for one artwork when they address materially different high-information questions; and
+8. keep ordinary review waves short by default while allowing the reviewer to request or continue into more
    items.
+
+Do not impose a hard one-treatment-per-artwork cap. It is an attention-saving default, not an evidence rule.
+Attempt arms do not receive separate review sessions: after machine comparisons and exact-evidence reuse, build
+one grouped human-review queue at the end of the wave. The prior redundant-review failure came from not ingesting
+and using the current warehouse evidence, not from showing multiple informative treatments for one artwork.
 
 Development review need not be blinded. Use blinded deterministic side assignment when selecting between major
 integrated candidates or performing Phase 4. Presentation-side assignment never enters scientific output.
@@ -344,13 +372,20 @@ using source-only metadata. Exclude that exact sample from development extractio
 queries. Keep roots `13/` and `14/` as later reserves unless a recorded checkpoint decision deliberately consumes
 them.
 
+The first algorithm wave retains the current diagnostic stress cases and known-strong controls. In later waves,
+expand the working development panel with source-only selected, non-reserve artworks from authorized development
+datasets so mechanisms see broader structure and source quality. Selection must not depend on candidate output or
+review outcome. Keep the diagnostic stress cases in the working coverage, and do not inspect the sealed Phase 4
+sample or consume reserve roots for this expansion.
+
 **Wave 1 runs the five algorithm attempts in parallel** after the minimal attempt contract is stable. Each attempt
 owns new modules and tests, uses a distinct scratch namespace, and compares against the same closed `0.7.4`
-anchor. The warehouse and shared review service may continue expanding during this wave. Attempt agents may
-request review through the shared queue or bootstrap gallery but may not implement new experiment-specific
-review infrastructure.
+anchor. The warehouse and shared review service may continue expanding during this wave. Attempt agents submit
+normalized outputs for warehouse reuse and grouped same-source comparison; they do not request separate per-arm
+review or implement experiment-specific review infrastructure. Review any remaining high-information questions
+in one grouped queue at the end of the wave.
 
-**Wave 2 integrates the strongest mechanisms:**
+**Wave 2 integrates only the mechanisms that survived their isolated comparisons:**
 
 1. preserve or improve candidate availability before relying on ranking;
 2. integrate field-transition and endpoint work through the common field contract;
@@ -358,13 +393,45 @@ review infrastructure.
 4. integrate factorized materialization and slate retention; and
 5. apply selector changes to the resulting complete domain.
 
-The integration owner uses small mechanism-specific subsets during merges, then runs one 28-source integration
-checkpoint. Review only unresolved materially changed treatments after exact historical lookup. Failed attempts
-remain ordinary development history and do not require postmortems.
+The integration owner uses small mechanism-specific subsets during merges, then grouped same-source comparisons,
+then one checkpoint over the current working development panel. Review only unresolved materially changed
+treatments in one end-of-wave queue after the warehouse has ingested all current evidence. Failed attempts remain
+immutable ordinary development history and do not require postmortems. Subsequent algorithm waves repeat this
+subset, grouped-comparison, survivor-only integration sequence on the expanded working coverage.
 
 **Wave 3 freezes only a visibly useful candidate.** Perform strict implementation closure, deterministic
-reproduction, bounded development review, and the complete Phase 3 gate once. If it fails visibly, return to the
-working candidate rather than creating a custody-only successor version.
+reproduction, one bounded grouped development review, and the complete Phase 3 gate once. If it fails visibly,
+return to the working candidate rather than creating a custody-only successor version.
+
+#### Current Phase 3 checkpoint
+
+The 2026-07-29 parallel checkpoint completed five isolated attempts over the eight-case diagnostic core. Balanced
+materialization and the earned-gradient challenger were exact output no-ops. Additive role construction exposed
+useful role alternatives but caused capacity regressions. Complete-lineage winner eligibility repaired one
+disconnected winner but its standalone slate policy caused broad churn. Recovery v4 uniquely exposed the requested
+source-connected native-transition treatment on one difficult diagnostic source, but unrestricted decisive-role
+promotion regressed another known control.
+
+The surviving integrated candidate therefore combines only:
+
+- normalized accepted native transitions;
+- winner-only complete-lineage eligibility;
+- promotion restricted to earned native-transition candidates with ordinary complete source lineage and no more
+  than the existing `0.12` quality loss from the unrestricted winner; and
+- unchanged recovery-v3 custody with a stable winner-only splice.
+
+On the diagnostic core it changes exactly two winners with one slate insertion/removal each, preserves the other
+six complete outputs exactly, retains the desired development gradient reserve, and emits no domain, gradient,
+role-coverage, or lineage safety flags. On the source-only 20-case expansion it preserves 19 complete outputs
+exactly and makes one additional bounded earned-transition promotion. Normative one-color emergencies remain exact
+control no-ops. Repeated expanded runs measured roughly `6-7%` aggregate wall-time overhead from the additional
+eligibility and transition work; this remains a profiling concern rather than a safety failure.
+
+Warehouse evaluation must always declare the exact review presentation version. Under
+`complete-palette-review-v2-presentation-1`, three changed treatments remain unresolved: two have no exact absolute
+evidence and one has a legacy strong judgment under an incompatible render variant. Those three treatments form
+the current bounded absolute-review queue. This checkpoint remains Phase 3 development evidence, not a candidate
+freeze or authorization to open the sealed Phase 4 sample.
 
 ### Parallel work
 
@@ -1148,6 +1215,9 @@ four cardinality structures when supported, without treating higher cardinality 
 
 Human checkpoint:
 
+- review attempt arms together at the end of a wave after exact warehouse reuse, not in separate per-arm rounds;
+- use one treatment per artwork as the default attention-saving policy, while including multiple treatments when
+  they answer materially different high-information questions;
 - label complete alternatives for absolute quality;
 - identify which representative strategy best preserves artwork identity;
 - verify that surface and accent collapse occur when a distinct role is not earned;
@@ -1314,7 +1384,9 @@ Runtime policy protects the feedback loop without turning early research into a 
   folder as an album-artwork-only benchmark or training population.
 - `00/` through `11/` are authorized development-facing test datasets. They contain only album artworks, with
   varied and sometimes low source quality, and may be used freely for development, bounded testing, galleries,
-  and evaluation.
+  and evaluation. Later Phase 3 waves should expand working coverage with source-only selected non-reserve
+  artworks from these and other authorized development datasets while retaining the current diagnostic stress
+  cases.
 - `12/` through `14/` are authorized candidate-output-unseen reserves. Wave 0 must seal a replacement Phase 4
   sample from `12/` using source-only metadata before Wave 1. Do not run development candidates on that sample.
   Preserve `13/` and `14/` for later checkpoints by default.

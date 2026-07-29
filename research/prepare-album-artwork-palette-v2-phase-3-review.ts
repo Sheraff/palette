@@ -557,9 +557,6 @@ function explicitlySelectedTasks(
 		if (!task) throw new Error(`Explicit review case is unavailable or already resolved: ${caseId}`)
 		return task
 	})
-	if (new Set(selected.map(({ source }) => source.sha256)).size !== selected.length) {
-		throw new Error("Explicit review cases must contain at most one treatment per source")
-	}
 	return selected
 }
 

@@ -201,9 +201,9 @@ test("CLI binds the iteration, candidate, anchor, mode, output, and bounded/all 
 	]).mode, "absolute")
 	assert.deepEqual(parseAlbumArtworkPaletteV2Phase3ReviewArguments([
 		"run", candidateId, anchorId, "pairwise", "review",
-		"--review-case", "development-02.slate-02",
+		"--review-case", "development-01.winner",
 		"--review-case", "development-01.slate-04",
-	]).reviewCaseIds, ["development-02.slate-02", "development-01.slate-04"])
+	]).reviewCaseIds, ["development-01.winner", "development-01.slate-04"])
 	assert.throws(() => parseAlbumArtworkPaletteV2Phase3ReviewArguments([
 		"run", candidateId, anchorId, "pairwise", "review", "--all",
 		"--review-case", "development-01.winner",
@@ -331,6 +331,15 @@ test("exact compatible minimal-review evidence avoids duplicate review and --all
 	}
 	assert.equal(boundedReport.candidateCount, 4)
 	assert.equal(boundedReport.entries.length, 4)
+	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "explicit-resolved"),
+		{
+			all: false,
+			reviewCaseIds: ["development-01.winner"],
+			minimalReviewReportPath: consumedReportPath,
+		},
+	)), /unavailable or already resolved/u)
 })
 
 test("absolute mode emits the candidate treatment without an anchor option", async (context) => {
@@ -347,25 +356,18 @@ test("absolute mode emits the candidate treatment without an anchor option", asy
 	assert.equal("options" in manifest.cases[0], false)
 })
 
-test("explicit review cases preserve requested order and reject duplicate artwork", async (context) => {
+test("explicit review cases accept multiple treatments per source and preserve requested order", async (context) => {
 	const input = await fixture(context)
 	const prepared = await prepareAlbumArtworkPaletteV2Phase3Review(options(input, join(input.root, "review", "explicit"), {
 		all: false,
-		reviewCaseIds: ["development-01.slate-04", "development-02.slate-02"],
+		reviewCaseIds: ["development-01.slate-04", "development-01.winner", "development-02.slate-02"],
 	}))
 	const manifest = await readManifest(prepared.manifestPath)
 	assert.deepEqual(manifest.cases.map(({ caseId }) => caseId), [
 		"development-01.slate-04",
+		"development-01.winner",
 		"development-02.slate-02",
 	])
-	assert.equal(prepared.queuedCount, 2)
+	assert.equal(prepared.queuedCount, 3)
 	assert.equal(new Set(manifest.cases.map(({ source }) => source.sha256)).size, 2)
-	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
-		input,
-		join(input.root, "review", "explicit-duplicate"),
-		{
-			all: false,
-			reviewCaseIds: ["development-01.winner", "development-01.slate-03"],
-		},
-	)), /at most one treatment per source/u)
 })
