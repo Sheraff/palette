@@ -25,9 +25,13 @@ import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_ENVELOPE_ERROR,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_NO_ELIGIBLE_ERROR,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_PRECOMPUTED_DOMAIN_ERROR,
 	extractAlbumArtworkPaletteV2Phase3CompleteLineageWinner,
 	selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner,
 } from "../src/album-artwork-palette-v2-phase-3-arm-complete-lineage-winner.ts"
+import {
+	selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2,
+} from "../src/album-artwork-palette-v2-phase-3-recovery-selector-v2.ts"
 import type { RGB, RawImage } from "../src/types.ts"
 
 const ROLES = ["background", "surface", "foreground", "accent"] as const
@@ -385,6 +389,54 @@ test("a connected replacement outside the quality envelope is rejected", () => {
 	}), new Error(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_ENVELOPE_ERROR))
 })
 
+test("a matching precomputed full-domain selection is exactly equivalent to standalone fallback", () => {
+	const disconnected = treatment("reuse-disconnected", { quality: 0.9 })
+	const connected = treatment("reuse-connected", {
+		quality: 0.84,
+		colors: ["#193161", "#714161", "#efefef", "#dfa121"],
+	})
+	const candidates = [
+		candidate(disconnected, [descriptor(disconnected, { lineageSourceConnected: false })]),
+		candidate(connected),
+	]
+	const precomputed = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
+		candidates.map(({ treatment }) => treatment),
+	)
+	const fallback = selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner({ materialized: candidates })
+	const reused = selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner({
+		materialized: candidates,
+		precomputedFullDomainRecoverySelection: precomputed,
+	})
+
+	assert.deepEqual(reused, fallback)
+	assert.equal(reused.fullDomainCustodySelection, precomputed)
+})
+
+test("precomputed full-domain selection rejects missing and stale evaluation key sets", () => {
+	const first = treatment("reuse-domain-first", { quality: 0.85 })
+	const second = treatment("reuse-domain-second", {
+		quality: 0.82,
+		colors: ["#503020", "#806040", "#f8e8d0", "#20a0b0"],
+	})
+	const stale = treatment("reuse-domain-stale", {
+		quality: 0.8,
+		colors: ["#203850", "#506878", "#f8f8e8", "#d09020"],
+	})
+	const candidates = [candidate(first), candidate(second)]
+	const matching = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2([first, second])
+	const missing = { ...matching, evaluations: matching.evaluations.slice(0, 1) }
+	const staleSelection = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2([first, stale])
+
+	for (const precomputedFullDomainRecoverySelection of [missing, staleSelection]) {
+		assert.throws(() => selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner({
+			materialized: candidates,
+			precomputedFullDomainRecoverySelection,
+		}), new Error(
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_PRECOMPUTED_DOMAIN_ERROR,
+		))
+	}
+})
+
 test("winner eligibility, selection, and public custody are permutation invariant", () => {
 	const first = treatment("permutation-first", { quality: 0.82 })
 	const second = treatment("permutation-second", {
@@ -410,8 +462,10 @@ test("winner eligibility, selection, and public custody are permutation invarian
 			...value,
 			descriptors: [...value.descriptors].reverse(),
 		})),
+		precomputedFullDomainRecoverySelection: forward.fullDomainCustodySelection,
 	})
 
+	assert.equal(reverse.fullDomainCustodySelection, forward.fullDomainCustodySelection)
 	assert.equal(forward.winner.key, reverse.winner.key)
 	assert.deepEqual(forward.slate.map(({ key }) => key), reverse.slate.map(({ key }) => key))
 	assert.deepEqual(forward.eligibility.diagnostics, reverse.eligibility.diagnostics)

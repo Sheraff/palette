@@ -353,13 +353,15 @@ const OBLIGATIONS = [
 ] as const
 
 test("winner composition rejects a stronger non-transition rescue and promotes only an earned complete-lineage transition", () => {
+	const recoveryV2 = recoverySelection(VALUES.disconnected, Object.values(VALUES), SELECTION_QUALITY)
 	const result = selectAlbumArtworkPaletteV2Phase3IntegratedCandidate({
-		recoveryV2: recoverySelection(VALUES.disconnected, Object.values(VALUES), SELECTION_QUALITY),
+		recoveryV2,
 		materialized: MATERIALIZED,
 		roleObligations: OBLIGATIONS,
 		acceptedTransitionHypothesisIds: [VALUES.earned.sourceFieldHypothesisId],
 	})
 
+	assert.equal(result.completeLineage.fullDomainCustodySelection, recoveryV2)
 	assert.equal(result.diagnostics.unrestrictedWinnerKey, completeTreatmentKey(VALUES.disconnected))
 	assert.equal(result.diagnostics.lineageWinnerKey, completeTreatmentKey(VALUES.lineage))
 	assert.equal(result.transitionRescue.winnerKey, completeTreatmentKey(VALUES.ordinary))

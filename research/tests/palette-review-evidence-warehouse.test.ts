@@ -309,6 +309,62 @@ test("expanded adapters preserve binary and scoped judgments while quarantining 
 	}
 })
 
+test("current complete-palette absolute reviews bind their sole treatment exactly", async (context) => {
+	const root = await mkdtemp(join(tmpdir(), "palette-review-absolute-"))
+	context.after(async () => rm(root, { recursive: true, force: true }))
+	const directory = join(root, "research", "data", "scratch", "album-artwork-palette-v2", "review", "current")
+	const feedbackPath = join(directory, "feedback.json")
+	const reviewed = treatment("reviewed", "#101010")
+	await json(join(directory, "manifest.json"), {
+		schemaVersion: 1,
+		reviewVersion: "complete-palette-review-v2",
+		presentationVersion: "complete-palette-review-v2-presentation-1",
+		manifestId: "current-absolute-manifest",
+		title: "Current absolute review",
+		mode: "absolute",
+		blinded: false,
+		cases: [{
+			caseId: "current.winner",
+			order: 0,
+			source: { file: "images/one.jpg", sha256: source, bytes: 100 },
+			treatment: reviewed,
+		}],
+	})
+	await json(feedbackPath, {
+		schemaVersion: 1,
+		reviewVersion: "complete-palette-review-v2",
+		manifestId: "current-absolute-manifest",
+		entries: [{
+			caseId: "current.winner",
+			sourceSha256: source,
+			quality: "strong",
+			issues: ["missing gradient"],
+			comment: "reviewed",
+			submittedAt: "2026-01-05T00:00:00.000Z",
+		}],
+	})
+	const databasePath = join(root, "warehouse.sqlite")
+	const stats = await buildWarehouse({ projectRoot: root, databasePath, currentReviewPaths: [feedbackPath] })
+	assert.equal(stats.unresolvedBindings, 0)
+	assert.equal(stats.absoluteJudgments, 1)
+	assert.equal(stats.issueTags, 1)
+	const normalized = normalizeTreatment(reviewed, {
+		presentationVersion: "complete-palette-review-v2-presentation-1",
+	})
+	const database = openWarehouse(databasePath)
+	try {
+		const lookup = exactTreatmentLookup(database, {
+			sourceSha256: source,
+			treatmentIdentity: normalized.treatmentIdentity,
+			renderVariantId: normalized.renderVariantId,
+		})
+		assert.deepEqual(lookup.absoluteQualities, ["strong"])
+		assert.deepEqual((lookup.issueTags as Array<{ tag: string }>).map(({ tag }) => tag), ["missing gradient"])
+	} finally {
+		database.close()
+	}
+})
+
 test("historical feedback inventory reconciles every store and sealed Phase 4 selection", async () => {
 	const root = join(import.meta.dirname, "..", "..")
 	const artifacts = await inventoryReviewArtifacts(root)

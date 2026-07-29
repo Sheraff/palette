@@ -328,8 +328,9 @@ function pairedOutcome(
 	}
 	if (!left || !right) return { unblinded, normalized: null }
 	if (preferred) {
-		const first = left.treatmentIdentity.localeCompare(right.treatmentIdentity) <= 0 ? left : right
-		return { unblinded, normalized: preferred.treatmentIdentity === first.treatmentIdentity ? "first-stronger" : "second-stronger" }
+		const exactKey = (option: NormalizedOption): string => `${option.treatmentIdentity}\0${option.renderVariantId}`
+		const first = exactKey(left).localeCompare(exactKey(right)) <= 0 ? left : right
+		return { unblinded, normalized: exactKey(preferred) === exactKey(first) ? "first-stronger" : "second-stronger" }
 	}
 	if (["similarly-valid", "neither-acceptable", "uncertain"].includes(rawOutcome)) return { unblinded, normalized: rawOutcome }
 	return { unblinded, normalized: null }
@@ -383,7 +384,10 @@ function addFeedbackJudgments(
 		}
 	}
 
-	if (typeof response.selectedTreatmentId === "string" && typeof response.quality === "string") {
+	if (feedback.artifact.adapterId === "complete-palette.absolute-feedback-v2" && typeof response.quality === "string") {
+		absolute("treatment", response.quality, `${responsePointer}/quality`)
+		issueTags("treatment", response.issues, `${responsePointer}/issues`)
+	} else if (typeof response.selectedTreatmentId === "string" && typeof response.quality === "string") {
 		absolute(response.selectedTreatmentId, response.quality, `${responsePointer}/selectedTreatmentId`)
 		issueTags(response.selectedTreatmentId, response.tags, `${responsePointer}/tags`)
 		if (Array.isArray(response.alsoValidTreatmentIds)) {

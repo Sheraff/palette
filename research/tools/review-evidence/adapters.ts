@@ -91,6 +91,9 @@ function feedbackAdapter(value: JsonObject, path: string): string | null {
 		if (/\/(?:next-palette-|joint-palette-|native-complete-palette-|chromatic-role)/.test(path)) return "complete-palette.ab-feedback-v1"
 		return "empty-feedback-v1"
 	}
+	if (value.reviewVersion === "complete-palette-review-v2" && typeof first.quality === "string" && Array.isArray(first.issues)) {
+		return "complete-palette.absolute-feedback-v2"
+	}
 	if (typeof first.selectedTreatmentId === "string") {
 		return Array.isArray(first.alsoValidTreatmentIds) ? "album-v2.selected-setwise-feedback-v3" : "album-v2.selected-feedback-v2"
 	}
@@ -124,6 +127,8 @@ function manifestAdapter(value: JsonObject): string | null {
 	if (!Array.isArray(value.cases)) return null
 	const first = value.cases.find(isObject)
 	if (!first) return "album-v2.empty-manifest-v1"
+	if (value.reviewVersion === "complete-palette-review-v2" && value.mode === "absolute" &&
+		isObject(first.source) && isObject(first.treatment)) return "complete-palette.absolute-manifest-v2"
 	if (isObject(first.source) && isObject(first.options)) return "album-v2.paired-manifest-v1"
 	if (typeof first.sourceSha256 === "string") return "album-v2.rich-manifest-v1"
 	return null
@@ -290,6 +295,30 @@ function pairedCases(manifest: LoadedArtifact): NormalizedCase[] {
 	})
 }
 
+function absoluteCases(manifest: LoadedArtifact): NormalizedCase[] {
+	const cases = manifest.value.cases as unknown[]
+	return cases.flatMap((caseValue, caseIndex) => {
+		if (!isObject(caseValue) || typeof caseValue.caseId !== "string" ||
+			!isObject(caseValue.source) || !isObject(caseValue.treatment)) return []
+		let option: NormalizedOption
+		try {
+			option = optionFrom(caseValue.treatment, "treatment", jsonPointer("cases", caseIndex, "treatment"),
+				"winner", manifest.value, null)
+		} catch {
+			return []
+		}
+		return [{
+			caseId: caseValue.caseId,
+			publicItemId: null,
+			sourceSha256: typeof caseValue.source.sha256 === "string" ? caseValue.source.sha256 : null,
+			sourcePath: typeof caseValue.source.file === "string" ? caseValue.source.file : null,
+			artworkFamilyId: typeof caseValue.source.artworkId === "string" ? caseValue.source.artworkId : null,
+			rawPointer: jsonPointer("cases", caseIndex),
+			options: [option],
+		}]
+	})
+}
+
 function itemCases(manifest: LoadedArtifact): NormalizedCase[] {
 	const items = manifest.value.items as unknown[]
 	return items.flatMap((itemValue, itemIndex) => {
@@ -387,8 +416,10 @@ export function normalizeManifest(artifact: LoadedArtifact): NormalizedManifest 
 		? richCases(artifact)
 		: artifact.adapterId === "album-v2.paired-manifest-v1"
 			? pairedCases(artifact)
-			: artifact.adapterId === "album-v2.item-manifest-v1"
-				? itemCases(artifact)
+			: artifact.adapterId === "complete-palette.absolute-manifest-v2"
+				? absoluteCases(artifact)
+				: artifact.adapterId === "album-v2.item-manifest-v1"
+					? itemCases(artifact)
 				: ["complete-palette.ab-manifest-v1", "palette-role.single-manifest-v1",
 					"palette-role.counterexample-manifest-v2", "gradient-topology.scope-manifest-v1",
 					"native-spatial.assignment-manifest-v1"].includes(artifact.adapterId)

@@ -15,6 +15,10 @@ import {
 	type CompletePaletteReviewSource,
 	type CompletePaletteReviewTreatment,
 } from "./src/complete-palette-review-v2.ts"
+import {
+	projectAlbumArtworkPaletteV2Phase3WinnerResearchRender,
+} from "./src/album-artwork-palette-v2-phase-3-review-render.ts"
+import type { CompletePaletteReviewResearchRender } from "./src/complete-palette-review-v2.ts"
 import { candidateTreatments } from "./tools/review-evidence/adapters.ts"
 import { minimalReviewNeed } from "./tools/review-evidence/reports.ts"
 import type { CandidateTreatment } from "./tools/review-evidence/types.ts"
@@ -274,7 +278,11 @@ function stringField(value: JsonObject, key: string, label: string): string {
 	return value[key] as string
 }
 
-function projectedTreatment(value: unknown, label: string): CompletePaletteReviewTreatment {
+function projectedTreatment(
+	value: unknown,
+	label: string,
+	researchRender?: CompletePaletteReviewResearchRender,
+): CompletePaletteReviewTreatment {
 	if (!isObject(value)) throw new Error(`${label} is not a complete treatment`)
 	const roleValues = isObject(value.roles) ? value.roles : value
 	const roleColor = (role: "background" | "surface" | "foreground" | "accent") => {
@@ -298,23 +306,34 @@ function projectedTreatment(value: unknown, label: string): CompletePaletteRevie
 		},
 		gradient: value.gradient,
 		collapse: { surface: value.collapse.surface, accent: value.collapse.accent },
+		...(researchRender ? { researchRender } : {}),
 	}
 }
 
-function normalizedTreatment(value: unknown, label: string): NormalizedTreatment {
+function normalizedTreatment(
+	value: unknown,
+	label: string,
+	researchRender?: CompletePaletteReviewResearchRender,
+): NormalizedTreatment {
 	if (!isObject(value)) throw new Error(`${label} is invalid`)
 	return {
 		key: stringField(value, "key", label),
-		treatment: projectedTreatment(value.treatment, `${label}.treatment`),
+		treatment: projectedTreatment(value.treatment, `${label}.treatment`, researchRender),
 	}
 }
 
-function normalizedResult(value: unknown, label: string): NormalizedResult {
+function normalizedResult(
+	value: unknown,
+	label: string,
+	winnerResearchRender?: CompletePaletteReviewResearchRender,
+): NormalizedResult {
 	if (!isObject(value) || !Array.isArray(value.alternatives)) throw new Error(`${label} is invalid`)
+	const winner = normalizedTreatment(value.winner, `${label}.winner`, winnerResearchRender)
 	return {
-		winner: normalizedTreatment(value.winner, `${label}.winner`),
+		winner,
 		alternatives: value.alternatives.map((entry, index) =>
-			normalizedTreatment(entry, `${label}.alternatives[${index}]`)),
+			normalizedTreatment(entry, `${label}.alternatives[${index}]`, isObject(entry) && entry.key === winner.key
+				? winnerResearchRender : undefined)),
 	}
 }
 
@@ -387,9 +406,6 @@ async function loadCase(
 	const caseId = stringField(value.source, "caseId", `Normalized case ${expectedCaseId} source`)
 	validId(caseId, "Normalized case ID")
 	if (caseId !== expectedCaseId) throw new Error(`Normalized case file for ${expectedCaseId} contains ${caseId}`)
-	if (!isObject(value.anchor.identity) || value.anchor.identity.anchorId !== anchorId) {
-		throw new Error(`Case ${caseId} does not contain anchor ${anchorId}`)
-	}
 	const matches = value.attempts.filter((attempt) => isObject(attempt) && isObject(attempt.identity) &&
 		attempt.identity.attemptId === candidateAttemptId)
 	if (matches.length !== 1 || !isObject(matches[0])) {
@@ -402,26 +418,51 @@ async function loadCase(
 		!candidateRecord.materialDelta.addedAlternativeKeys.every((key) => typeof key === "string")) {
 		throw new Error(`Case ${caseId} candidate material delta is invalid`)
 	}
-	const anchor = normalizedResult(value.anchor.output, `Case ${caseId} anchor output`)
-	const candidate = normalizedResult(candidateRecord.output, `Case ${caseId} candidate output`)
-	if (candidateRecord.materialDelta.winner.anchorKey !== anchor.winner.key ||
+	if (!isObject(value.anchor.identity) || typeof value.anchor.identity.anchorId !== "string") {
+		throw new Error(`Case ${caseId} closed anchor identity is invalid`)
+	}
+	const closedAnchor = normalizedResult(value.anchor.output, `Case ${caseId} closed anchor output`)
+	const comparisonAnchorOutput = value.anchor.identity.anchorId === anchorId
+		? value.anchor.output
+		: (() => {
+			const anchorMatches = value.attempts.filter((attempt) => isObject(attempt) &&
+				isObject(attempt.identity) && attempt.identity.attemptId === anchorId)
+			if (anchorMatches.length !== 1 || !isObject(anchorMatches[0])) {
+				throw new Error(`Case ${caseId} does not contain exactly one comparison anchor ${anchorId}`)
+			}
+			return anchorMatches[0].output
+		})()
+	const anchor = normalizedResult(comparisonAnchorOutput, `Case ${caseId} comparison anchor output`)
+	if (!isObject(candidateRecord.identity) || typeof candidateRecord.identity.configurationId !== "string") {
+		throw new Error(`Case ${caseId} candidate identity is invalid`)
+	}
+	const winnerResearchRender = projectAlbumArtworkPaletteV2Phase3WinnerResearchRender(
+		candidateRecord.output,
+		{ attemptId: candidateAttemptId, configurationId: candidateRecord.identity.configurationId },
+		`Case ${caseId} candidate output`,
+	)
+	const candidate = normalizedResult(candidateRecord.output, `Case ${caseId} candidate output`, winnerResearchRender)
+	if (candidateRecord.materialDelta.winner.anchorKey !== closedAnchor.winner.key ||
 		candidateRecord.materialDelta.winner.candidateKey !== candidate.winner.key ||
-		candidateRecord.materialDelta.winner.changed !== (anchor.winner.key !== candidate.winner.key)) {
+		candidateRecord.materialDelta.winner.changed !== (closedAnchor.winner.key !== candidate.winner.key)) {
 		throw new Error(`Case ${caseId} candidate winner delta is stale`)
 	}
-	const anchorAlternativeKeys = new Set(anchor.alternatives.map(({ key }) => key))
-	const expectedAddedKeys = candidate.alternatives.map(({ key }) => key).filter((key) => !anchorAlternativeKeys.has(key))
+	const closedAnchorAlternativeKeys = new Set(closedAnchor.alternatives.map(({ key }) => key))
+	const expectedAddedKeys = candidate.alternatives.map(({ key }) => key)
+		.filter((key) => !closedAnchorAlternativeKeys.has(key))
 	const addedKeys = candidateRecord.materialDelta.addedAlternativeKeys as string[]
 	if (new Set(addedKeys).size !== addedKeys.length || completePaletteReviewCanonicalJson(addedKeys) !==
 		completePaletteReviewCanonicalJson(expectedAddedKeys)) {
 		throw new Error(`Case ${caseId} candidate alternative delta is stale`)
 	}
+	const comparisonAnchorAlternativeKeys = new Set(anchor.alternatives.map(({ key }) => key))
 	return {
 		source: await sourceBinding(projectRoot, caseId, value.source, panel),
 		anchor,
 		candidate,
-		addedAlternativeKeys: new Set(addedKeys),
-		winnerChanged: candidateRecord.materialDelta.winner.changed,
+		addedAlternativeKeys: new Set(candidate.alternatives.map(({ key }) => key)
+			.filter((key) => !comparisonAnchorAlternativeKeys.has(key))),
+		winnerChanged: anchor.winner.key !== candidate.winner.key,
 	}
 }
 
@@ -481,7 +522,8 @@ function buildTasks(cases: readonly LoadedCase[], mode: CompletePaletteReviewMod
 		})
 	}
 	for (const entry of cases) {
-		if (entry.winnerChanged) add(entry, entry.candidate.winner.treatment, "winner", null)
+		if (entry.winnerChanged || visibleKey(entry.candidate.winner.treatment) !==
+			visibleKey(entry.anchor.winner.treatment)) add(entry, entry.candidate.winner.treatment, "winner", null)
 	}
 	const maximumSlateLength = Math.max(0, ...cases.map(({ candidate }) => candidate.alternatives.length))
 	for (let slateIndex = 0; slateIndex < maximumSlateLength; slateIndex++) {

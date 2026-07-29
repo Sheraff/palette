@@ -464,6 +464,83 @@ test("projects a winner overlay from a base selector and exact rescue diagnostic
 	assert.equal(flags.find(({ mechanism }) => mechanism === "lineage")!.safety, "pass")
 })
 
+test("separates a source-supported three-stop render from the same public two-stop treatment", async (context) => {
+	const root = await mkdtemp(join(tmpdir(), "phase-3-parallel-wave-midpoint-"))
+	context.after(async () => rm(root, { recursive: true, force: true }))
+	const supportedIdentity = {
+		attemptId: "phase-3-supported-gradient-path",
+		configurationId: "supported-gradient-render-test-v2",
+	}
+	const controlDirectory = await wave(root, "control-wave", [controlIdentity], [
+		attempt(controlIdentity, [gradientTreatment], 10),
+	])
+	const supportedAttempt = attempt(supportedIdentity, [gradientTreatment], 11)
+	const fixtureDiagnostics = supportedAttempt.output.diagnostics.phase3Fixture
+	const midpoint = {
+		kind: "source-supported-three-stop",
+		position: 0.5,
+		color: { rgb: [24, 128, 167], oklab: [0.5, 0, 0], hex: "#1880a7" },
+		provenance: {
+			exactSource: true,
+			familyId: "field-middle",
+			regionId: "region-middle",
+			pixelIndex: 304,
+			x: 4,
+			y: 3,
+			fieldDomainId: "field-domain-1",
+			stageIndex: 1,
+			spatialPosition: 0.5,
+			colorPosition: 0.5,
+			populationFraction: 0.12,
+		},
+	}
+	supportedAttempt.output.diagnostics = {
+		phase3SupportedGradientPath: {
+			version: "supported-gradient-fixture-v2",
+			configurationId: supportedIdentity.configurationId,
+			domain: fixtureDiagnostics.domain,
+			selector: fixtureDiagnostics.selector,
+			custody: fixtureDiagnostics.custody,
+			selection: { winnerLineageBasis: "ordinary-complete-source-lineage" },
+			gradientAuthority: {
+				strictVetoApplied: false,
+				projectedFlatSibling: false,
+				baselineWinnerKey: normalized(gradientTreatment).key,
+				winnerKey: normalized(gradientTreatment).key,
+				correspondingPathIndex: 0,
+				midpoint,
+			},
+			supportedGradientPath: {
+				paths: [{
+					eligible: true,
+					hypothesisId: gradientTreatment.sourceFieldHypothesisId,
+					midpointCustody: structuredClone(midpoint),
+				}],
+			},
+		},
+	}
+	const armDirectory = await wave(root, "supported-wave", [supportedIdentity], [supportedAttempt])
+	const report = await evaluateAlbumArtworkPaletteV2Phase3ParallelWave({
+		iterationDirectories: [controlDirectory, armDirectory],
+		controlAttempt: controlIdentity.attemptId,
+		attempts: [supportedIdentity.attemptId],
+	})
+	const result = (report.cases as Array<Record<string, unknown>>)[0]
+	assert.equal((result.exactOutputGroups as unknown[]).length, 2)
+	const treatmentGroups = result.exactTreatmentGroups as Array<Record<string, unknown>>
+	assert.equal(new Set(treatmentGroups.map(({ treatmentIdentity }) => treatmentIdentity)).size, 1)
+	assert.equal(new Set(treatmentGroups.map(({ renderVariantId }) => renderVariantId)).size, 2)
+	const candidate = (result.attempts as Array<Record<string, unknown>>)[0]
+	assert.equal((candidate.exactDelta as Record<string, unknown>).winnerChanged, true)
+	const gradientFlag = (candidate.mechanismFlags as Array<Record<string, unknown>>)
+		.find(({ mechanism }) => mechanism === "gradient-status")
+	assert.equal(gradientFlag?.safety, "pass")
+	const proposal = report.reviewProposal as Record<string, unknown>
+	const candidates = proposal.candidates as Array<Record<string, unknown>>
+	assert.equal(candidates.length, 1)
+	assert.ok((candidates[0].unresolvedMechanisms as string[]).includes("research-rendering"))
+})
+
 test("a declared normative one-color emergency is not reported as a lineage failure", async (context) => {
 	const root = await mkdtemp(join(tmpdir(), "phase-3-parallel-wave-emergency-"))
 	context.after(async () => rm(root, { recursive: true, force: true }))

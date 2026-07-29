@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": "album-artwork-palette-v2-phase-3-working-expansion-v1",
+  "custody": {
+    "mode": "source-only",
+    "developmentPanel": {
+      "path": "research/data/album-artwork-palette-v2-development-panel.json",
+      "manifestId": "bd7ad739ada8a35385018737c7ad8d9563b1b6619c695c0ccc0e2a5b87488305",
+      "rawSha256": "9258032b8ea2d40166d2be89767f5b15341145de314b007c09e766ffbaac75e4",
+      "sourceCount": 28
+    },
+    "priorContentInventory": {
+      "path": "research/data/source-provenance-inventory-00-14.json",
+      "inventoryVersion": "source-provenance-inventory-00-14-v1",
+      "inventoryId": "3907c57f94cd7dfea992c5d1ce98da6de2165c720b75259b32f0250da1881c7f",
+      "rawSha256": "80b53c77a025083ff0cfcb736bc425ec0917f70b9e325741899e8b8d92f4fac9"
+    },
+    "phase4Seal": {
+      "path": "research/data/album-artwork-palette-v2-phase-4-fast-sample.sealed.json",
+      "manifestId": "6e65a71b8bdd369e2b3800ad7401d23ada2a4e47bfd2633083896375782bde7e",
+      "sealCommitment": "29a8f75445ed294ae21647b2bc48caf306d6a4d45190cbe32dcc10dc27c62a1f",
+      "rawSha256": "305f3b75320a4bc9d9d5569a37986e4fa22d5a39221cbcc03eb188b555ba88df"
+    }
+  },
+  "selection": {
+    "policy": "select-12-distinct-prior-content-sources-outside-all-canonical-protected-reserve-and-sealed-phase-4-identities",
+    "rootPolicy": "cover-all-seven-prior-content-roots-absent-from-canonical-then-rank-five-represented-roots-by-domain-separated-root-key",
+    "stratumPolicy": "assign-root-key-order-round-robin-to-four-small-four-medium-four-large-byte-count-strata",
+    "sourcePolicy": "lowest-distinct-domain-separated-key-over-root-sha256-byte-count-and-inventoried-format-within-each-root-stratum",
+    "batchingPolicy": "domain-separated-source-key-order-round-robin-into-two-six-source-batches",
+    "additionCount": 12,
+    "rootCount": 12,
+    "maximumBatchSize": 8,
+    "batchSizes": [6, 6],
+    "eligibleSourceCount": 5696,
+    "roots": [
+      {
+        "datasetRoot": "00",
+        "canonicalPanelRepresented": true,
+        "rootSelectionKey": "83e6d40c4d1139e087c2764611bd1b5bdb24c9743f7f568e83ac1ebeff821a6b",
+        "stratumAssignmentKey": "b320f3ec32abac48ad2c3574577f59e9a52c642363a874993e05b8b60a6a6523",
+        "byteCountStratum": "small"
+      },
+      {
+        "datasetRoot": "04",
+        "canonicalPanelRepresented": true,
+        "rootSelectionKey": "80ab836193892b4344f3a07b6a2f5e867e49316a29f8991409a2bec0c2c36132",
+        "stratumAssignmentKey": "8997245d12942d7559cbc62cda9340bc44618c6584823b1186ca296836f4b7ce",
+        "byteCountStratum": "large"
+      },
+      {
+        "datasetRoot": "05",
+        "canonicalPanelRepresented": true,
+        "rootSelectionKey": "9061479647894af6f317adb3418a2fc4e9e98fda4f012905d2fa73172d0efe98",
+        "stratumAssignmentKey": "1c9f1703a8bc211f21fd38cc8cc7a723836d421e4df50a27c8c78de751952a34",
+        "byteCountStratum": "medium"
+      },
+      {
+        "datasetRoot": "07",
+        "canonicalPanelRepresented": true,
+        "rootSelectionKey": "60d0892b83cac338d03d25894c01a888e30a72de4fe74d966549cdd244fced59",
+        "stratumAssignmentKey": "65f411f64dfd3f942343c024edfafd36687ae1c50eeb847eb318ce697bb3cd03",
+        "byteCountStratum": "small"
+      },
+      {
+        "datasetRoot": "08",
+        "canonicalPanelRepresented": true,
+        "rootSelectionKey": "6abb4bb1980b68c9469597c9765089ff7306444a81d594ac90614c134f260415",
+        "stratumAssignmentKey": "fbf8c58f8a2834518ef687de3f7c1b1484c9e3b0e02a3d26373031625e0d18e8",
+        "byteCountStratum": "large"
+      },
+      {
+        "datasetRoot": "09",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "21590de039f63302223a485fd1ffeda5f4ebd0f0cecab786e54f6c5e49e81d2b",
+        "stratumAssignmentKey": "e4139341e7d53c76a1e4f38a198185ceab28549e136d3e6d0557ca216f5f4048",
+        "byteCountStratum": "medium"
+      },
+      {
+        "datasetRoot": "0a",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "7a554b00d9ffe87fb35cef49fc83f9b181356914b7b265bbe707fe54ebefaaf6",
+        "stratumAssignmentKey": "0a8485a800651ba3901d4a46c7800d08235b9a93fc63bd71e7d6a92b1f2854b5",
+        "byteCountStratum": "small"
+      },
+      {
+        "datasetRoot": "0b",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "ebc73d69cba1ccba0df0a90d013a762c59421259c371b790d09b25c889fbdef9",
+        "stratumAssignmentKey": "e270c2b3471b30bba8391131ee95f93883ceb8703a7e92331ae03974327c0e23",
+        "byteCountStratum": "small"
+      },
+      {
+        "datasetRoot": "0c",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "e2f231cb9aba72777ad42d6965a69b6aaed1f0e909cdca6af61bbcfd08dbe1f7",
+        "stratumAssignmentKey": "b99f81c057cd88303222a258a739914433ffa683ce5bc3ba050c29df32ddd0e6",
+        "byteCountStratum": "medium"
+      },
+      {
+        "datasetRoot": "0d",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "a84e57c0798e5c2a54e45c70a173c44eef8b3a4d2c9f7bbaa91977a54201b005",
+        "stratumAssignmentKey": "dc1e4551ce4d490b4c7753a0667e57a856973f3e7dd4bcdb6ae6210bd356fbe8",
+        "byteCountStratum": "large"
+      },
+      {
+        "datasetRoot": "0e",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "a17adee28efd50774dd17cbf8e38a9bd34d6892c93a8fa434c7605b3ebf3cfea",
+        "stratumAssignmentKey": "43c7efa05bdf42b5547fcc7a5e20bb28385a573cea81118d036b4954e6910f3f",
+        "byteCountStratum": "large"
+      },
+      {
+        "datasetRoot": "0f",
+        "canonicalPanelRepresented": false,
+        "rootSelectionKey": "430150c600cd64927cd9c8f6402822e154efaf337975ac7e59ac6e6337c98d68",
+        "stratumAssignmentKey": "7e10e694669903dfffccd8033b45eb7c5d13303a29ea6fda9c432fe6725654a4",
+        "byteCountStratum": "medium"
+      }
+    ],
+    "byteCountStrata": [
+      { "id": "small", "minimumByteCount": 1, "maximumByteCount": 65535, "selectedCount": 4 },
+      { "id": "medium", "minimumByteCount": 65536, "maximumByteCount": 163839, "selectedCount": 4 },
+      { "id": "large", "minimumByteCount": 163840, "maximumByteCount": null, "selectedCount": 4 }
+    ],
+    "dimensions": "not-in-inventory-and-not-decoded-for-selection",
+    "format": "jpeg-signature-metadata-from-bound-inventory",
+    "sourceMetadataUsed": [
+      "prior-content root and cohort",
+      "source SHA-256 and byte count",
+      "inventoried JPEG SOI/EOI format signatures",
+      "domain-separated deterministic keys",
+      "path/hash/family identities only for exact custody exclusion and binding"
+    ],
+    "excludedSignals": [
+      "filename or path semantics",
+      "image pixels or decoding",
+      "candidate or baseline outputs",
+      "reviews or known failures",
+      "desired colors"
+    ]
+  },
+  "expansionGroup": {
+    "groupId": "phase-3-working-expansion",
+    "runnerCaseIds": [
+      "working-expansion-01",
+      "working-expansion-02",
+      "working-expansion-03",
+      "working-expansion-04",
+      "working-expansion-05",
+      "working-expansion-06",
+      "working-expansion-07",
+      "working-expansion-08",
+      "working-expansion-09",
+      "working-expansion-10",
+      "working-expansion-11",
+      "working-expansion-12"
+    ],
+    "batchIds": ["phase-3-working-expansion-01", "phase-3-working-expansion-02"],
+    "sources": [
+      {
+        "caseId": "working-expansion-01",
+        "path": "0e/ab67616d0000b273000eae9e88edccb2daddd528",
+        "sha256": "76050912e1f07144c1e7f1ae3c0780ba39382869243bf5efaa872bc80778033e",
+        "byteCount": 166104,
+        "artworkId": "000eae9e88edccb2daddd528",
+        "cohort": "prior-content",
+        "datasetRoot": "0e",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "large",
+        "selectionKey": "004483b7820824141d269eb44b1a049185805431387e39e442ee39dbccc13135"
+      },
+      {
+        "caseId": "working-expansion-02",
+        "path": "0c/ab67616d0000b273000cd88511e80aca7106ce29",
+        "sha256": "ee8a6c3be56759117ee04206a7b7bbbff7c8029475889fe20e976c624f8886ae",
+        "byteCount": 76241,
+        "artworkId": "000cd88511e80aca7106ce29",
+        "cohort": "prior-content",
+        "datasetRoot": "0c",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "medium",
+        "selectionKey": "008709b422838428bf311dafe0b0c8432d3eb6ebe8baa8e3379f0d1680b8db97"
+      },
+      {
+        "caseId": "working-expansion-03",
+        "path": "09/ab67616d0000b273000962c09fc97fb33fe549ca",
+        "sha256": "055c9b98f311a712e8894722f98bb9081ae15987c47dce8ae0cb21e4ea1c68f6",
+        "byteCount": 106418,
+        "artworkId": "000962c09fc97fb33fe549ca",
+        "cohort": "prior-content",
+        "datasetRoot": "09",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "medium",
+        "selectionKey": "009b13b2bc3ecda0d74a4d7fc7b2bf523deab38c3ee39ed7e7bee3ce1cc3957d"
+      },
+      {
+        "caseId": "working-expansion-04",
+        "path": "0f/ab67616d0000b273000f1e6c504b45712e5ff3d1",
+        "sha256": "c15c299cbc928401ae99a30e1748d186454073c806cbe3f099e3169afaa816a6",
+        "byteCount": 81991,
+        "artworkId": "000f1e6c504b45712e5ff3d1",
+        "cohort": "prior-content",
+        "datasetRoot": "0f",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "medium",
+        "selectionKey": "00b5adf3e22c6c42c69075f529378dea162a9d146352bef1876dc2e5ccb8d316"
+      },
+      {
+        "caseId": "working-expansion-05",
+        "path": "08/ab67616d0000b2730008ca093a39eed514fb84e7",
+        "sha256": "bf2fbd483e1231c3ac7d9182b49a3ee52e9e4f2719ed20c5b6a34cc7c55cbbf8",
+        "byteCount": 167043,
+        "artworkId": "0008ca093a39eed514fb84e7",
+        "cohort": "prior-content",
+        "datasetRoot": "08",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "large",
+        "selectionKey": "02be3657d70015606104ced8b1f3bd7461d1d2230de1331a251fe1f65751b677"
+      },
+      {
+        "caseId": "working-expansion-06",
+        "path": "0a/ab67616d0000b273000a4e172a9845065bc11e26",
+        "sha256": "5ee0976293e265cd8b8b857737d191d91044f2c3f3957a8fa0dc5e5fcb372302",
+        "byteCount": 56022,
+        "artworkId": "000a4e172a9845065bc11e26",
+        "cohort": "prior-content",
+        "datasetRoot": "0a",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "small",
+        "selectionKey": "02edca8b4ab733f792f3b23bfe6459a0f043096ca229296d8441d44ce062f2ad"
+      },
+      {
+        "caseId": "working-expansion-07",
+        "path": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "sha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+        "byteCount": 52654,
+        "artworkId": "0000269ead63cf2376a6b67d",
+        "cohort": "prior-content",
+        "datasetRoot": "00",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "small",
+        "selectionKey": "0352c57a48db30db96a96b63badddfc19038e302609ffebf6f9844dcb04e4183"
+      },
+      {
+        "caseId": "working-expansion-08",
+        "path": "07/ab67616d00001e020007d7072ca1333240dcce61",
+        "sha256": "8eabd5d63d4c908577181cca447a82c69190704dcb8a05cd11d705a76e742d48",
+        "byteCount": 22343,
+        "artworkId": "0007d7072ca1333240dcce61",
+        "cohort": "prior-content",
+        "datasetRoot": "07",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "small",
+        "selectionKey": "038ccb174423585f62a97998e5736773ca52184507ded0e14f7b43feca0c6fc9"
+      },
+      {
+        "caseId": "working-expansion-09",
+        "path": "0b/ab67616d0000b273000bef81a266d4c9a1b81391",
+        "sha256": "fc7adf7b5c43571d8cfef4e4b6676627a529a794821932ca5f57976e56aab65d",
+        "byteCount": 65105,
+        "artworkId": "000bef81a266d4c9a1b81391",
+        "cohort": "prior-content",
+        "datasetRoot": "0b",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "small",
+        "selectionKey": "049aa1dba2e94870b8c93d66dc1f264bdb25693349cc289f6640070bbefc63f7"
+      },
+      {
+        "caseId": "working-expansion-10",
+        "path": "05/ab67616d0000b2730005478f00d26e406b8cf923",
+        "sha256": "ac51677a48ef8cfdadae86c1141ce8a1a0bb417ccfcb51bce8258989c63f1e96",
+        "byteCount": 133563,
+        "artworkId": "0005478f00d26e406b8cf923",
+        "cohort": "prior-content",
+        "datasetRoot": "05",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "medium",
+        "selectionKey": "04abcb8c7445710637346252821ff0f03dcc516d48abd2a4a790e1bc69852ad6"
+      },
+      {
+        "caseId": "working-expansion-11",
+        "path": "04/ab67616d0000b27300041272670218ce2846bb53",
+        "sha256": "8fb979d4794012b8b84e61f6680fb601ab043132ffe46391016f6bbb806dbf95",
+        "byteCount": 169766,
+        "artworkId": "00041272670218ce2846bb53",
+        "cohort": "prior-content",
+        "datasetRoot": "04",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "large",
+        "selectionKey": "082a36f3f442fd6dd81465897810bf21e29e45f3ccb9ef801cc92b7de67159bc"
+      },
+      {
+        "caseId": "working-expansion-12",
+        "path": "0d/ab67616d0000b273000dbb1fb86035bf18eda7cc",
+        "sha256": "528810cdffe13b925213ac5c501681e19d0077c77e86baa544ebb0ffb7d9f49f",
+        "byteCount": 179312,
+        "artworkId": "000dbb1fb86035bf18eda7cc",
+        "cohort": "prior-content",
+        "datasetRoot": "0d",
+        "format": "jpeg-inventory-signature",
+        "byteCountStratum": "large",
+        "selectionKey": "0b4ec75a3f9db20f6dcaaef61d98800714e0fab41eb0fec45d8f57ef54ed050e"
+      }
+    ]
+  },
+  "batches": [
+    {
+      "batchId": "phase-3-working-expansion-01",
+      "runnerCaseIds": [
+        "working-expansion-02",
+        "working-expansion-04",
+        "working-expansion-05",
+        "working-expansion-07",
+        "working-expansion-10",
+        "working-expansion-12"
+      ],
+      "datasetRoots": ["00", "05", "08", "0c", "0d", "0f"],
+      "byteCountStrata": ["large", "medium", "small"],
+      "sources": [
+        {
+          "caseId": "working-expansion-02",
+          "path": "0c/ab67616d0000b273000cd88511e80aca7106ce29",
+          "sha256": "ee8a6c3be56759117ee04206a7b7bbbff7c8029475889fe20e976c624f8886ae",
+          "byteCount": 76241,
+          "artworkId": "000cd88511e80aca7106ce29",
+          "cohort": "prior-content",
+          "datasetRoot": "0c",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "medium",
+          "selectionKey": "008709b422838428bf311dafe0b0c8432d3eb6ebe8baa8e3379f0d1680b8db97"
+        },
+        {
+          "caseId": "working-expansion-04",
+          "path": "0f/ab67616d0000b273000f1e6c504b45712e5ff3d1",
+          "sha256": "c15c299cbc928401ae99a30e1748d186454073c806cbe3f099e3169afaa816a6",
+          "byteCount": 81991,
+          "artworkId": "000f1e6c504b45712e5ff3d1",
+          "cohort": "prior-content",
+          "datasetRoot": "0f",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "medium",
+          "selectionKey": "00b5adf3e22c6c42c69075f529378dea162a9d146352bef1876dc2e5ccb8d316"
+        },
+        {
+          "caseId": "working-expansion-05",
+          "path": "08/ab67616d0000b2730008ca093a39eed514fb84e7",
+          "sha256": "bf2fbd483e1231c3ac7d9182b49a3ee52e9e4f2719ed20c5b6a34cc7c55cbbf8",
+          "byteCount": 167043,
+          "artworkId": "0008ca093a39eed514fb84e7",
+          "cohort": "prior-content",
+          "datasetRoot": "08",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "large",
+          "selectionKey": "02be3657d70015606104ced8b1f3bd7461d1d2230de1331a251fe1f65751b677"
+        },
+        {
+          "caseId": "working-expansion-07",
+          "path": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+          "sha256": "c775bbb468a271d4adda55d212606ccf2e06a4aff63176b9e31aaa4e651b02cc",
+          "byteCount": 52654,
+          "artworkId": "0000269ead63cf2376a6b67d",
+          "cohort": "prior-content",
+          "datasetRoot": "00",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "small",
+          "selectionKey": "0352c57a48db30db96a96b63badddfc19038e302609ffebf6f9844dcb04e4183"
+        },
+        {
+          "caseId": "working-expansion-10",
+          "path": "05/ab67616d0000b2730005478f00d26e406b8cf923",
+          "sha256": "ac51677a48ef8cfdadae86c1141ce8a1a0bb417ccfcb51bce8258989c63f1e96",
+          "byteCount": 133563,
+          "artworkId": "0005478f00d26e406b8cf923",
+          "cohort": "prior-content",
+          "datasetRoot": "05",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "medium",
+          "selectionKey": "04abcb8c7445710637346252821ff0f03dcc516d48abd2a4a790e1bc69852ad6"
+        },
+        {
+          "caseId": "working-expansion-12",
+          "path": "0d/ab67616d0000b273000dbb1fb86035bf18eda7cc",
+          "sha256": "528810cdffe13b925213ac5c501681e19d0077c77e86baa544ebb0ffb7d9f49f",
+          "byteCount": 179312,
+          "artworkId": "000dbb1fb86035bf18eda7cc",
+          "cohort": "prior-content",
+          "datasetRoot": "0d",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "large",
+          "selectionKey": "0b4ec75a3f9db20f6dcaaef61d98800714e0fab41eb0fec45d8f57ef54ed050e"
+        }
+      ]
+    },
+    {
+      "batchId": "phase-3-working-expansion-02",
+      "runnerCaseIds": [
+        "working-expansion-01",
+        "working-expansion-03",
+        "working-expansion-06",
+        "working-expansion-08",
+        "working-expansion-09",
+        "working-expansion-11"
+      ],
+      "datasetRoots": ["04", "07", "09", "0a", "0b", "0e"],
+      "byteCountStrata": ["large", "medium", "small"],
+      "sources": [
+        {
+          "caseId": "working-expansion-01",
+          "path": "0e/ab67616d0000b273000eae9e88edccb2daddd528",
+          "sha256": "76050912e1f07144c1e7f1ae3c0780ba39382869243bf5efaa872bc80778033e",
+          "byteCount": 166104,
+          "artworkId": "000eae9e88edccb2daddd528",
+          "cohort": "prior-content",
+          "datasetRoot": "0e",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "large",
+          "selectionKey": "004483b7820824141d269eb44b1a049185805431387e39e442ee39dbccc13135"
+        },
+        {
+          "caseId": "working-expansion-03",
+          "path": "09/ab67616d0000b273000962c09fc97fb33fe549ca",
+          "sha256": "055c9b98f311a712e8894722f98bb9081ae15987c47dce8ae0cb21e4ea1c68f6",
+          "byteCount": 106418,
+          "artworkId": "000962c09fc97fb33fe549ca",
+          "cohort": "prior-content",
+          "datasetRoot": "09",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "medium",
+          "selectionKey": "009b13b2bc3ecda0d74a4d7fc7b2bf523deab38c3ee39ed7e7bee3ce1cc3957d"
+        },
+        {
+          "caseId": "working-expansion-06",
+          "path": "0a/ab67616d0000b273000a4e172a9845065bc11e26",
+          "sha256": "5ee0976293e265cd8b8b857737d191d91044f2c3f3957a8fa0dc5e5fcb372302",
+          "byteCount": 56022,
+          "artworkId": "000a4e172a9845065bc11e26",
+          "cohort": "prior-content",
+          "datasetRoot": "0a",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "small",
+          "selectionKey": "02edca8b4ab733f792f3b23bfe6459a0f043096ca229296d8441d44ce062f2ad"
+        },
+        {
+          "caseId": "working-expansion-08",
+          "path": "07/ab67616d00001e020007d7072ca1333240dcce61",
+          "sha256": "8eabd5d63d4c908577181cca447a82c69190704dcb8a05cd11d705a76e742d48",
+          "byteCount": 22343,
+          "artworkId": "0007d7072ca1333240dcce61",
+          "cohort": "prior-content",
+          "datasetRoot": "07",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "small",
+          "selectionKey": "038ccb174423585f62a97998e5736773ca52184507ded0e14f7b43feca0c6fc9"
+        },
+        {
+          "caseId": "working-expansion-09",
+          "path": "0b/ab67616d0000b273000bef81a266d4c9a1b81391",
+          "sha256": "fc7adf7b5c43571d8cfef4e4b6676627a529a794821932ca5f57976e56aab65d",
+          "byteCount": 65105,
+          "artworkId": "000bef81a266d4c9a1b81391",
+          "cohort": "prior-content",
+          "datasetRoot": "0b",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "small",
+          "selectionKey": "049aa1dba2e94870b8c93d66dc1f264bdb25693349cc289f6640070bbefc63f7"
+        },
+        {
+          "caseId": "working-expansion-11",
+          "path": "04/ab67616d0000b27300041272670218ce2846bb53",
+          "sha256": "8fb979d4794012b8b84e61f6680fb601ab043132ffe46391016f6bbb806dbf95",
+          "byteCount": 169766,
+          "artworkId": "00041272670218ce2846bb53",
+          "cohort": "prior-content",
+          "datasetRoot": "04",
+          "format": "jpeg-inventory-signature",
+          "byteCountStratum": "large",
+          "selectionKey": "082a36f3f442fd6dd81465897810bf21e29e45f3ccb9ef801cc92b7de67159bc"
+        }
+      ]
+    }
+  ],
+  "manifestId": "c49d78e5f655b2c7b8580747505e655236c436d0c5d6c89c92f4cb6cb2fa7c02"
+}

@@ -90,13 +90,21 @@ function roleStatus(role, treatment) {
 	return values.join(" / ")
 }
 
+function treatmentFieldCss(treatment) {
+	if (!treatment.gradient) return treatment.roles.background.hex
+	const midpoint = treatment.researchRender?.field?.stops?.[1]
+	return midpoint?.kind === "source-supported-color"
+		? `linear-gradient(135deg in oklab, ${treatment.roles.background.hex} 0%, ${midpoint.hex} 50%, ${treatment.roles.surface.hex} 100%)`
+		: `linear-gradient(135deg in oklab, ${treatment.roles.background.hex} 0%, ${treatment.roles.surface.hex} 100%)`
+}
+
 function renderTreatment(reviewCase, treatment, headingText) {
 	const panel = create("article", { className: "option-panel", "aria-label": headingText })
 	const heading = create("header", { className: "option-heading" })
 	const cardinality = new Set(ROLES.map((role) => treatment.roles[role].hex)).size
 	heading.append(
 		create("strong", { text: headingText }),
-		create("span", { text: `${treatment.gradient ? "Gradient" : "Flat field"} / ${cardinality} distinct colors` }),
+		create("span", { text: `${treatment.researchRender ? "3-stop gradient" : treatment.gradient ? "Gradient" : "Flat field"} / ${cardinality} distinct role colors` }),
 	)
 	panel.append(heading)
 
@@ -105,9 +113,7 @@ function renderTreatment(reviewCase, treatment, headingText) {
 	preview.style.setProperty("--surface", treatment.roles.surface.hex)
 	preview.style.setProperty("--foreground", treatment.roles.foreground.hex)
 	preview.style.setProperty("--accent", treatment.roles.accent.hex)
-	preview.style.background = treatment.gradient
-		? `linear-gradient(135deg in oklab, ${treatment.roles.background.hex} 0%, ${treatment.roles.surface.hex} 100%)`
-		: treatment.roles.background.hex
+	preview.style.background = treatmentFieldCss(treatment)
 	preview.append(create("img", {
 		className: "artwork",
 		src: reviewCase.artworkUrl,
@@ -143,6 +149,21 @@ function renderTreatment(reviewCase, treatment, headingText) {
 		legend.append(entry)
 	}
 	panel.append(legend)
+	const midpoint = treatment.researchRender?.field?.stops?.[1]
+	if (midpoint?.kind === "source-supported-color") {
+		const custody = create("div", { className: "research-render-custody" })
+		const midpointSwatch = create("span", { className: "swatch", "aria-hidden": "true" })
+		midpointSwatch.style.backgroundColor = midpoint.hex
+		const midpointColor = create("span", { className: "research-render-color" })
+		midpointColor.append(create("strong", { text: midpoint.nearestName }), create("code", { text: midpoint.hex }))
+		custody.append(
+			midpointSwatch,
+			create("strong", { text: "Gradient midpoint (not a role)" }),
+			midpointColor,
+			create("span", { text: "50% / exact source-supported render" }),
+		)
+		panel.append(custody)
+	}
 	return panel
 }
 

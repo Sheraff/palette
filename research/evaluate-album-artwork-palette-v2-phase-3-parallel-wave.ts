@@ -2,12 +2,20 @@ import { lstat, readFile, writeFile } from "node:fs/promises"
 import { dirname, relative, resolve, sep } from "node:path"
 import { fileURLToPath } from "node:url"
 import {
+	PHASE_3_WORKING_EXPANSION_BOUND_IDENTITIES,
+	readAndVerifyPhase3WorkingExpansionManifest,
+} from "./select-album-artwork-palette-v2-phase-3-working-expansion.ts"
+import {
 	artworkHistoricalContext,
 	minimalReviewNeed,
 } from "./tools/review-evidence/reports.ts"
 import { canonicalJson, isObject, normalizeTreatment, sha256 } from "./tools/review-evidence/normalize.ts"
 import type { CandidateTreatment, JsonObject, NormalizedTreatment } from "./tools/review-evidence/types.ts"
 import { openWarehouse } from "./tools/review-evidence/warehouse.ts"
+import {
+	projectAlbumArtworkPaletteV2Phase3WinnerResearchRender,
+} from "./src/album-artwork-palette-v2-phase-3-review-render.ts"
+import type { CompletePaletteReviewResearchRender } from "./src/complete-palette-review-v2.ts"
 
 const CONTRACT_ID = "album-artwork-palette-v2-phase-3-attempt-contract-v1"
 const REPORT_ID = "album-artwork-palette-v2-phase-3-parallel-wave-causal-evaluation-v1"
@@ -103,6 +111,7 @@ export type AlbumArtworkPaletteV2Phase3ParallelWaveOptions = Readonly<{
 	attempts: readonly string[]
 	warehousePath?: string
 	presentationVersion?: string
+	workingExpansionManifestPath?: string
 }>
 
 export type AlbumArtworkPaletteV2Phase3ParallelWaveArguments =
@@ -192,13 +201,36 @@ function sourceIdentity(value: unknown, expectedCaseId: string): SourceIdentity 
 	}
 }
 
-async function authorizedDevelopmentSources(): Promise<ReadonlyMap<string, Readonly<{
+export async function loadAlbumArtworkPaletteV2Phase3ParallelWaveAuthorizedSources(
+	workingExpansionManifestPath?: string,
+): Promise<Readonly<{
+	sources: ReadonlyMap<string, Readonly<{
 	caseId: string
 	sha256: string
 	byteCount: number
 	artworkId: string
-}>>> {
-	const value = await regularJson(defaultDevelopmentPanelPath, "Phase 3 development panel")
+}>>
+	authorization: Readonly<{ mode: "canonical-development" | "working-expansion"; manifestId: string }>
+}>> {
+	if (workingExpansionManifestPath !== undefined) {
+		const manifest = await readAndVerifyPhase3WorkingExpansionManifest(workingExpansionManifestPath)
+		return {
+			sources: new Map(manifest.expansionGroup.sources.map((source) => [source.caseId, {
+				caseId: source.caseId,
+				sha256: source.sha256,
+				byteCount: source.byteCount,
+				artworkId: source.artworkId,
+			}])),
+			authorization: { mode: "working-expansion", manifestId: manifest.manifestId },
+		}
+	}
+	const panelStats = await lstat(defaultDevelopmentPanelPath)
+	invariant(panelStats.isFile() && !panelStats.isSymbolicLink(),
+		"Canonical Phase 3 development panel must be a regular non-symlink file")
+	const panelBytes = await readFile(defaultDevelopmentPanelPath)
+	invariant(sha256(panelBytes) === PHASE_3_WORKING_EXPANSION_BOUND_IDENTITIES.developmentPanel.rawSha256,
+		"Canonical Phase 3 development panel raw identity is invalid")
+	const value = JSON.parse(panelBytes.toString("utf8")) as unknown
 	invariant(isObject(value) && value.schemaVersion === 1 && Array.isArray(value.sources) &&
 		value.manifestId === DEVELOPMENT_PANEL_MANIFEST_ID && value.sourceCount === DEVELOPMENT_PANEL_SOURCE_COUNT &&
 		value.sourceCount === value.sources.length, "Canonical Phase 3 development panel identity is invalid")
@@ -219,10 +251,17 @@ async function authorizedDevelopmentSources(): Promise<ReadonlyMap<string, Reado
 			artworkId: stringField(entry, "artworkId", `Phase 3 development panel source ${caseId}`),
 		})
 	}
-	return result
+	return {
+		sources: result,
+		authorization: { mode: "canonical-development", manifestId: DEVELOPMENT_PANEL_MANIFEST_ID },
+	}
 }
 
-function compactTreatment(value: unknown, label: string): CompactTreatment {
+function compactTreatment(
+	value: unknown,
+	label: string,
+	researchRender?: CompletePaletteReviewResearchRender,
+): CompactTreatment {
 	invariant(isObject(value) && isObject(value.treatment), `${label} is invalid`)
 	const key = stringField(value, "key", label)
 	const treatment = value.treatment
@@ -260,6 +299,7 @@ function compactTreatment(value: unknown, label: string): CompactTreatment {
 		// The shared review presentation renders all gradients with its fixed public topology.
 		gradient: rawNormalized.visible.gradient.enabled,
 		collapse: rawNormalized.visible.collapse,
+		...(researchRender ? { researchRender } : {}),
 	}
 	const normalized = normalizeTreatment(evidenceInput)
 	return {
@@ -322,6 +362,10 @@ function selectedDiagnostic(root: JsonObject | null, treatment: CompactTreatment
 	const nestedRescue = isObject(root.transitionRescue) ? root.transitionRescue :
 		isObject(root.rescue) ? root.rescue : null
 	const custody = root.custody ?? nestedRescue?.custody
+	const rawRelation = isObject(root.rawRelationSlateComplement) &&
+		Array.isArray(root.rawRelationSlateComplement.candidates)
+		? root.rawRelationSlateComplement.candidates.find((entry) => isObject(entry) && entry.key === treatment.key)
+		: null
 	if (Array.isArray(custody)) {
 		const match = custody.find((entry) => isObject(entry) && (
 			entry.fieldHypothesisId === treatment.mechanism.sourceFieldHypothesisId ||
@@ -337,10 +381,53 @@ function selectedDiagnostic(root: JsonObject | null, treatment: CompactTreatment
 	const rescueCandidates = nestedRescue?.candidates
 	if (Array.isArray(rescueCandidates)) {
 		const exact = rescueCandidates.find((entry) => isObject(entry) && entry.key === treatment.key)
-		if (isObject(exact)) return exact
+		if (isObject(exact)) return isObject(rawRelation) ? {
+			...exact,
+			selectionKind: "raw-relation-slate-complement",
+			qualityLossFromWinner: rawRelation.qualityLossFromRecoveryV2Winner,
+		} : exact
+	}
+	const gradientAuthority = root.gradientAuthority
+	if (isObject(gradientAuthority) && gradientAuthority.projectedFlatSibling === true &&
+		gradientAuthority.winnerKey === treatment.key && isObject(custody) && Array.isArray(custody.selected)) {
+		const baseline = custody.selected.find((entry) => isObject(entry) && isObject(entry.recoveryV2) &&
+			entry.recoveryV2.key === gradientAuthority.baselineWinnerKey)
+		const rescuedBaseline = Array.isArray(rescueCandidates)
+			? rescueCandidates.find((entry) => isObject(entry) && entry.key === gradientAuthority.baselineWinnerKey)
+			: null
+		const source = isObject(baseline) ? baseline : isObject(rescuedBaseline) ? rescuedBaseline : null
+		if (source) return {
+			...source,
+			selectionKind: "strict-gradient-veto-projection",
+			...(isObject(source.recoveryV2)
+				? { recoveryV2: { ...source.recoveryV2, key: treatment.key } }
+				: { key: treatment.key }),
+		}
+	}
+	const lineageEligibility = root.lineageEligibility
+	if (isObject(lineageEligibility) && Array.isArray(lineageEligibility.candidates)) {
+		const lineage = lineageEligibility.candidates.find((entry) => isObject(entry) && entry.key === treatment.key)
+		if (isObject(lineage)) {
+			const endpoint = isObject(root.endpointSlateReservation) && root.endpointSlateReservation.reservedKey === treatment.key
+				? root.endpointSlateReservation : null
+			return {
+				sourceConnectedDescriptorLineage: lineage.eligible === true,
+				sourceConnected: lineage.eligible === true,
+				sourceTypes: endpoint ? ["field-proposal-v2"] : [],
+				novelDimensions: [],
+				...(endpoint ? {
+					selectionKind: "endpoint-slate-reserve",
+					qualityLossFromWinner: endpoint.reservedQualityLossFromBaselineWinner,
+				} : isObject(rawRelation) ? {
+					selectionKind: "raw-relation-slate-complement",
+					qualityLossFromWinner: rawRelation.qualityLossFromRecoveryV2Winner,
+				} : {}),
+			}
+		}
 	}
 	if (isObject(custody) && Array.isArray(custody.selected)) {
-		const indexed = custody.selected.find((entry) => isObject(entry) && entry.index === index)
+		const indexed = custody.selected.find((entry) => isObject(entry) && entry.index === index &&
+			(!isObject(entry.recoveryV2) || typeof entry.recoveryV2.key !== "string"))
 		if (isObject(indexed)) return indexed
 	}
 	return null
@@ -450,6 +537,10 @@ function buildStages(
 			winner: { enabled: winnerStage.gradientEnabled, status: winnerStage.gradientStatus },
 			slate: slate.map((entry) => ({ key: entry.key, enabled: entry.gradientEnabled, status: entry.gradientStatus })),
 		},
+		gradientAuthority: phase.root && isObject(phase.root.gradientAuthority)
+			? compactObject(phase.root.gradientAuthority, ["strictVetoApplied", "projectedFlatSibling",
+				"baselineWinnerKey", "winnerKey", "correspondingPathIndex"])
+			: null,
 		lineage: {
 			winner: winnerStage.lineage,
 			slate: slate.map((entry) => ({ key: entry.key, ...entry.lineage as JsonObject })),
@@ -463,8 +554,13 @@ function compactOutput(value: unknown, attemptIdentity: AttemptIdentity, attempt
 	const dimensions = value.dimensions
 	invariant(isObject(dimensions) && Number.isSafeInteger(dimensions.width) && Number.isSafeInteger(dimensions.height),
 		`${label} output dimensions are invalid`)
-	const winner = compactTreatment(value.winner, `${label} winner`)
-	const alternatives = value.alternatives.map((entry, index) => compactTreatment(entry, `${label} alternatives[${index}]`))
+	const winnerResearchRender = projectAlbumArtworkPaletteV2Phase3WinnerResearchRender(value, attemptIdentity, label)
+	const winner = compactTreatment(value.winner, `${label} winner`, winnerResearchRender)
+	const alternatives = value.alternatives.map((entry, index) => compactTreatment(
+		entry,
+		`${label} alternatives[${index}]`,
+		index === 0 ? winnerResearchRender : undefined,
+	))
 	invariant(alternatives.length > 0 && alternatives.length <= 8, `${label} output slate must contain 1 to 8 treatments`)
 	invariant(new Set(alternatives.map(({ key }) => key)).size === alternatives.length, `${label} output has duplicate slate keys`)
 	invariant(exactTreatmentKey(winner) === exactTreatmentKey(alternatives[0]),
@@ -711,6 +807,8 @@ function mechanismFlags(candidate: CompactOutput, control: CompactOutput): JsonO
 	const candidateCoverage = winnerCoverage(candidate.stages)
 	const controlGradient = winnerGradientStatus(control.stages)
 	const candidateGradient = winnerGradientStatus(candidate.stages)
+	const strictGradientVeto = isObject(candidate.stages.gradientAuthority) &&
+		candidate.stages.gradientAuthority.strictVetoApplied === true
 	const lineage = winnerLineage(candidate.stages)
 	const lineageBasis = winnerLineageBasis(candidate.stages)
 	const declaredNormativeEmergency = lineageBasis === "normative-one-color-emergency"
@@ -739,7 +837,7 @@ function mechanismFlags(candidate: CompactOutput, control: CompactOutput): JsonO
 	add("role-coverage", same(candidate.stages.roleCoverage, control.stages.roleCoverage),
 		coverageReasons.length > 0 ? "flag" : candidateCoverage === null || controlCoverage === null ? "not-assessed" : "pass",
 		coverageReasons)
-	const gradientReasons = (controlGradient === "earned-rendered" && candidateGradient !== "earned-rendered") ||
+	const gradientReasons = (!strictGradientVeto && controlGradient === "earned-rendered" && candidateGradient !== "earned-rendered") ||
 		(candidate.winner.normalized.visible.gradient.enabled && ["missing", "unearned"].includes(candidateGradient ?? ""))
 		? ["rendered-gradient-safety-regressed"] : []
 	add("gradient-status", same(candidate.stages.gradientStatus, control.stages.gradientStatus),
@@ -772,6 +870,8 @@ function treatmentMechanisms(candidate: CompactTreatment, baseline: CompactTreat
 		canonicalJson([baseline.mechanism.familyRoles.foreground, baseline.mechanism.familyRoles.accent])) {
 		result.add("role-assignment")
 	}
+	if (candidate.normalized.treatmentIdentity === baseline.normalized.treatmentIdentity &&
+		candidate.normalized.renderVariantId !== baseline.normalized.renderVariantId) result.add("research-rendering")
 	return [...result].sort(ascii)
 }
 
@@ -939,7 +1039,10 @@ export async function evaluateAlbumArtworkPaletteV2Phase3ParallelWave(
 		invariant(options.presentationVersion !== undefined,
 			"A warehouse evidence join requires an explicit presentation version")
 	}
-	const authorizedSources = await authorizedDevelopmentSources()
+	const sourceAuthorization = await loadAlbumArtworkPaletteV2Phase3ParallelWaveAuthorizedSources(
+		options.workingExpansionManifestPath,
+	)
+	const authorizedSources = sourceAuthorization.sources
 	const waves: LoadedWave[] = []
 	for (const directory of [...new Set(options.iterationDirectories)].sort(ascii)) waves.push(await loadWave(directory))
 	waves.sort((first, second) => ascii(first.iterationId, second.iterationId))
@@ -1047,6 +1150,8 @@ export async function evaluateAlbumArtworkPaletteV2Phase3ParallelWave(
 		schemaVersion: 1,
 		reportId: REPORT_ID,
 		contractId: CONTRACT_ID,
+		...(sourceAuthorization.authorization.mode === "working-expansion"
+			? { sourceAuthorization: sourceAuthorization.authorization } : {}),
 		causalComparison: {
 			control: controlIdentity,
 			attempts: selectedIdentities,
@@ -1094,7 +1199,7 @@ export function parseAlbumArtworkPaletteV2Phase3ParallelWaveArguments(
 		invariant(rawName.startsWith("--"), `Unexpected positional argument ${rawName}`)
 		const name = aliases.get(rawName) ?? rawName
 		invariant(["--iteration-directory", "--control", "--attempt", "--output", "--warehouse",
-			"--presentation-version"].includes(name), `Unknown argument ${rawName}`)
+			"--presentation-version", "--working-expansion-manifest"].includes(name), `Unknown argument ${rawName}`)
 		const value = args[++index]
 		invariant(value !== undefined && !value.startsWith("--"), `${rawName} requires a value`)
 		if (name === "--iteration-directory") iterationDirectories.push(value)
@@ -1113,6 +1218,8 @@ export function parseAlbumArtworkPaletteV2Phase3ParallelWaveArguments(
 		outputPath: required(values, "--output"),
 		...(values.get("--warehouse") ? { warehousePath: values.get("--warehouse")! } : {}),
 		...(values.get("--presentation-version") ? { presentationVersion: values.get("--presentation-version")! } : {}),
+		...(values.get("--working-expansion-manifest")
+			? { workingExpansionManifestPath: values.get("--working-expansion-manifest")! } : {}),
 	}
 }
 

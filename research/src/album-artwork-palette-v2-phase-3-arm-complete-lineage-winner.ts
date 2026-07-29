@@ -45,6 +45,8 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_NO_ELI
 	"Complete-lineage winner domain contains no eligible treatment" as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_ENVELOPE_ERROR =
 	"Complete-lineage winner replacement exceeds the 0.12 quality envelope" as const
+export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_PRECOMPUTED_DOMAIN_ERROR =
+	"Precomputed full-domain recovery selection does not exactly match the materialized treatment key set" as const
 
 type MaterializedCandidate = AlbumArtworkPaletteV2Phase3CompleteLineageMaterializedCandidate
 
@@ -105,19 +107,33 @@ export function selectAlbumArtworkPaletteV2Phase3CompleteLineageWinner<
 	materialized: readonly TCandidate[]
 	identityObligations?: readonly IdentityObligation[]
 	emergency?: EmergencyEligibility | null
+	precomputedFullDomainRecoverySelection?: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Selection
 }>): AlbumArtworkPaletteV2Phase3CompleteLineageWinnerSelection<TCandidate> {
 	const eligibility = filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain(
 		input.materialized,
 		{ emergency: input.emergency },
 	)
+	const precomputed = input.precomputedFullDomainRecoverySelection
+	if (precomputed) {
+		const materializedKeys = new Set(eligibility.allCandidates.map(({ key }) => key))
+		const evaluationKeys = new Set(precomputed.evaluations.map(({ key }) => key))
+		if (evaluationKeys.size !== precomputed.evaluations.length ||
+			evaluationKeys.size !== materializedKeys.size ||
+			[...materializedKeys].some((key) => !evaluationKeys.has(key))) {
+			throw new Error(
+				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_PRECOMPUTED_DOMAIN_ERROR,
+			)
+		}
+	}
 	if (eligibility.eligibleCandidates.length === 0) {
 		throw new Error(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_NO_ELIGIBLE_ERROR)
 	}
 	const identity = { obligations: input.identityObligations ?? [] }
-	const fullDomainCustodySelection = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
-		eligibility.allCandidates.map(({ treatment }) => treatment),
-		identity,
-	)
+	const fullDomainCustodySelection = precomputed ??
+		selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
+			eligibility.allCandidates.map(({ treatment }) => treatment),
+			identity,
+		)
 	const winnerSelection = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
 		eligibility.eligibleCandidates.map(({ treatment }) => treatment),
 		identity,

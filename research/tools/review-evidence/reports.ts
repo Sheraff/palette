@@ -219,10 +219,18 @@ export function conflictReport(database: DatabaseSync): JsonReport {
 		WHERE r.binding_status = 'bound' AND a.treatment_identity IS NOT NULL AND a.render_variant_id IS NOT NULL
 		ORDER BY r.source_sha256, a.treatment_identity, a.render_variant_id, r.submitted_at, a.id`)
 	const pairRows = rows(database, `SELECT r.source_sha256,
-		CASE WHEN p.left_treatment_identity < p.right_treatment_identity THEN p.left_treatment_identity ELSE p.right_treatment_identity END AS first_treatment_identity,
-		CASE WHEN p.left_treatment_identity < p.right_treatment_identity THEN p.left_render_variant_id ELSE p.right_render_variant_id END AS first_render_variant_id,
-		CASE WHEN p.left_treatment_identity < p.right_treatment_identity THEN p.right_treatment_identity ELSE p.left_treatment_identity END AS second_treatment_identity,
-		CASE WHEN p.left_treatment_identity < p.right_treatment_identity THEN p.right_render_variant_id ELSE p.left_render_variant_id END AS second_render_variant_id,
+		CASE WHEN p.left_treatment_identity < p.right_treatment_identity OR
+			(p.left_treatment_identity = p.right_treatment_identity AND p.left_render_variant_id <= p.right_render_variant_id)
+			THEN p.left_treatment_identity ELSE p.right_treatment_identity END AS first_treatment_identity,
+		CASE WHEN p.left_treatment_identity < p.right_treatment_identity OR
+			(p.left_treatment_identity = p.right_treatment_identity AND p.left_render_variant_id <= p.right_render_variant_id)
+			THEN p.left_render_variant_id ELSE p.right_render_variant_id END AS first_render_variant_id,
+		CASE WHEN p.left_treatment_identity < p.right_treatment_identity OR
+			(p.left_treatment_identity = p.right_treatment_identity AND p.left_render_variant_id <= p.right_render_variant_id)
+			THEN p.right_treatment_identity ELSE p.left_treatment_identity END AS second_treatment_identity,
+		CASE WHEN p.left_treatment_identity < p.right_treatment_identity OR
+			(p.left_treatment_identity = p.right_treatment_identity AND p.left_render_variant_id <= p.right_render_variant_id)
+			THEN p.right_render_variant_id ELSE p.left_render_variant_id END AS second_render_variant_id,
 		p.normalized_outcome, p.unblinded_outcome, p.raw_outcome, r.artifact_path, p.raw_pointer, r.submitted_at, r.raw_response_json
 		FROM pairwise_judgments p JOIN responses r ON r.id = p.response_id
 		WHERE r.binding_status = 'bound' AND p.left_treatment_identity IS NOT NULL AND p.right_treatment_identity IS NOT NULL

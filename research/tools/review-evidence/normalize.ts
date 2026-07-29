@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto"
+import { parseCompletePaletteReviewResearchRender } from "../../src/complete-palette-review-v2.ts"
 import type { JsonObject, NormalizedTreatment, VisibleRole, VisibleTreatment } from "./types.ts"
 
 export function isObject(value: unknown): value is JsonObject {
@@ -105,6 +106,9 @@ export function normalizeTreatment(
 	const rawTreatmentId = treatmentId(value, wrapper)
 	const explicitGradient = isObject(gradientValue) ? gradientValue : null
 	const presentation = isObject(context.presentation) ? context.presentation : null
+	const researchRender = value.researchRender === undefined
+		? null
+		: parseCompletePaletteReviewResearchRender(value.researchRender)
 	const renderVariant: JsonObject = {
 		schemaVersion: 1,
 		treatmentIdentity: sha256(canonicalJson(visible)),
@@ -118,6 +122,7 @@ export function normalizeTreatment(
 		presentationVersion: context.presentationVersion ?? null,
 		gradientCss: presentation && typeof presentation.gradientCss === "string" ? presentation.gradientCss : null,
 		typography: value.typography ?? wrapper.typography ?? presentation?.typography ?? null,
+		...(researchRender ? { researchRender } : {}),
 	}
 	return {
 		treatmentIdentity: renderVariant.treatmentIdentity as string,

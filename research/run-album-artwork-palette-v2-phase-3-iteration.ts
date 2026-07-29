@@ -4,19 +4,28 @@ import { dirname, isAbsolute, relative, resolve, sep } from "node:path"
 import { performance } from "node:perf_hooks"
 import { fileURLToPath } from "node:url"
 import {
+	PHASE_3_WORKING_EXPANSION_BOUND_IDENTITIES,
+	readAndVerifyPhase3WorkingExpansionManifest,
+	type Phase3WorkingExpansionManifest,
+} from "./select-album-artwork-palette-v2-phase-3-working-expansion.ts"
+import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_ADDITIVE_ROLE_DOMAIN_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_COMPLETE_LINEAGE_WINNER_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_EARNED_GRADIENT_CHALLENGER_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_BALANCED_MATERIALIZATION_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CLOSED_ANCHOR_ID,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CANDIDATE_V2_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRACT_ID,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_LIVE_072_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_V2_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_V3_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_V4_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SUPPORTED_GRADIENT_PATH_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_WORKING_ATTEMPT,
 	extractAlbumArtworkPaletteV2Phase3ClosedAnchor,
 	materialDeltaFromAlbumArtworkPaletteV2Phase3Anchor,
@@ -39,7 +48,7 @@ export type AlbumArtworkPaletteV2Phase3DevelopmentSource = Readonly<{
 	sha256: string
 	byteCount: number
 	artworkId: string
-	cohort: "stress" | "dataset"
+	cohort: "stress" | "dataset" | "prior-content"
 	structureTags: readonly string[]
 }>
 
@@ -47,6 +56,7 @@ type DevelopmentPanel = Readonly<{
 	schemaVersion: number
 	sourceCount: number
 	sources: readonly AlbumArtworkPaletteV2Phase3DevelopmentSource[]
+	manifestId?: string
 }>
 
 export type AlbumArtworkPaletteV2Phase3Runtime = Readonly<{
@@ -83,12 +93,14 @@ export type AlbumArtworkPaletteV2Phase3IterationArguments = Readonly<{
 	iterationId: string
 	caseIds: readonly string[]
 	attemptIds: readonly string[]
+	workingExpansionManifestPath?: string
 }>
 
 const moduleDirectory = dirname(fileURLToPath(import.meta.url))
 const projectRoot = resolve(moduleDirectory, "..")
 const scratchRoot = resolve(moduleDirectory, "data/scratch/album-artwork-palette-v2")
 const developmentPanelPath = resolve(moduleDirectory, "data/album-artwork-palette-v2-development-panel.json")
+const verifiedWorkingExpansionSources = new WeakSet<object>()
 const attemptRegistry = new Map([
 	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_LIVE_072_ATTEMPT.identity.attemptId,
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_LIVE_072_ATTEMPT],
@@ -106,6 +118,14 @@ const attemptRegistry = new Map([
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_V4_ATTEMPT],
 	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId,
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT],
+	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SUPPORTED_GRADIENT_PATH_ATTEMPT.identity.attemptId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SUPPORTED_GRADIENT_PATH_ATTEMPT],
+	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_ATTEMPT.identity.attemptId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_ATTEMPT],
+	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT.identity.attemptId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT],
+	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTEMPT.identity.attemptId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTEMPT],
 	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_ADDITIVE_ROLE_DOMAIN_ATTEMPT.identity.attemptId,
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_ADDITIVE_ROLE_DOMAIN_ATTEMPT],
 	[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_BALANCED_MATERIALIZATION_ATTEMPT.identity.attemptId,
@@ -136,12 +156,23 @@ function assertDevelopmentCaseId(caseId: string): void {
 	}
 }
 
+function assertWorkingExpansionCaseId(caseId: string): void {
+	if (!/^working-expansion-[0-9]{2}$/u.test(caseId)) {
+		throw new Error(`Protected, reserve, or non-working-expansion case ID is forbidden: ${caseId}`)
+	}
+}
+
+function isWorkingExpansionCaseId(caseId: string): boolean {
+	return /^working-expansion-[0-9]{2}$/u.test(caseId)
+}
+
 function assertDevelopmentSourcePath(path: string, caseId: string): void {
 	const parts = path.split(/[\\/]/u)
 	const root = parts[0]
-	const developmentDatasetRoot = /^(?:0[0-9]|1[01])$/u.test(root)
+	const workingExpansion = isWorkingExpansionCaseId(caseId)
+	const developmentDatasetRoot = workingExpansion ? /^0[0-9a-f]$/u.test(root) : /^0[0-8]$/u.test(root)
 	if (path.length === 0 || isAbsolute(path) || parts.includes("..") ||
-		(root !== "images" && root !== "music-artworks" && !developmentDatasetRoot)) {
+		((workingExpansion || (root !== "images" && root !== "music-artworks")) && !developmentDatasetRoot)) {
 		throw new Error(`Protected, reserve, or unsafe source path is forbidden for ${caseId}`)
 	}
 }
@@ -156,6 +187,7 @@ export function parseAlbumArtworkPaletteV2Phase3IterationArguments(
 	args: readonly string[],
 ): AlbumArtworkPaletteV2Phase3IterationArguments {
 	let iterationId: string | undefined
+	let workingExpansionManifestPath: string | undefined
 	const caseIds: string[] = []
 	const attemptIds: string[] = []
 	for (let index = 0; index < args.length; index++) {
@@ -171,6 +203,14 @@ export function parseAlbumArtworkPaletteV2Phase3IterationArguments(
 			const attemptId = args[++index]
 			if (attemptId === undefined) throw new Error("--attempt requires a value")
 			attemptIds.push(attemptId)
+		} else if (argument === "--working-expansion-manifest") {
+			if (workingExpansionManifestPath !== undefined) {
+				throw new Error("Duplicate --working-expansion-manifest is forbidden")
+			}
+			workingExpansionManifestPath = args[++index]
+			if (workingExpansionManifestPath === undefined) {
+				throw new Error("--working-expansion-manifest requires a value")
+			}
 		} else if (argument.startsWith("--")) {
 			throw new Error(`Unknown argument ${argument}`)
 		} else {
@@ -179,9 +219,18 @@ export function parseAlbumArtworkPaletteV2Phase3IterationArguments(
 	}
 	if (iterationId === undefined) throw new Error("An explicit --iteration ID is required")
 	assertIterationId(iterationId)
-	if (caseIds.length === 0) throw new Error("At least one explicit development case ID is required")
-	for (const caseId of caseIds) assertDevelopmentCaseId(caseId)
-	const uniqueCaseIds = uniqueValues(caseIds, "development case ID")
+	if (workingExpansionManifestPath !== undefined && !iterationId.startsWith("working-expansion-")) {
+		throw new Error("A working expansion requires a working-expansion-* iteration namespace")
+	}
+	if (caseIds.length === 0) throw new Error(workingExpansionManifestPath === undefined
+		? "At least one explicit development case ID is required"
+		: "At least one explicit working-expansion case ID is required")
+	for (const caseId of caseIds) {
+		if (workingExpansionManifestPath === undefined) assertDevelopmentCaseId(caseId)
+		else assertWorkingExpansionCaseId(caseId)
+	}
+	const uniqueCaseIds = uniqueValues(caseIds, workingExpansionManifestPath === undefined
+		? "development case ID" : "working-expansion case ID")
 	if (uniqueCaseIds.length > ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_CASES_PER_ITERATION) {
 		throw new Error(`Phase 3 scratch iterations are limited to ${ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_CASES_PER_ITERATION} cases`)
 	}
@@ -198,6 +247,7 @@ export function parseAlbumArtworkPaletteV2Phase3IterationArguments(
 		iterationId,
 		caseIds: uniqueCaseIds.sort(),
 		attemptIds: selectedAttemptIds,
+		...(workingExpansionManifestPath === undefined ? {} : { workingExpansionManifestPath }),
 	}
 }
 
@@ -225,6 +275,64 @@ export function selectAlbumArtworkPaletteV2Phase3DevelopmentSources(
 	})
 }
 
+function selectAlbumArtworkPaletteV2Phase3WorkingExpansionSources(
+	manifest: Phase3WorkingExpansionManifest,
+	caseIds: readonly string[],
+): AlbumArtworkPaletteV2Phase3DevelopmentSource[] {
+	if (manifest.expansionGroup.sources.length !== 12 || manifest.selection.maximumBatchSize !==
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_CASES_PER_ITERATION) {
+		throw new Error("The verified Phase 3 working-expansion source set is invalid")
+	}
+	if (caseIds.length === 0 || caseIds.length > ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_CASES_PER_ITERATION) {
+		throw new Error("The Phase 3 working-expansion source selection is empty or exceeds its bound")
+	}
+	const sourceByCaseId = new Map(manifest.expansionGroup.sources.map((source) => [source.caseId, source]))
+	return uniqueValues(caseIds, "working-expansion case ID").sort().map((caseId) => {
+		assertWorkingExpansionCaseId(caseId)
+		const source = sourceByCaseId.get(caseId)
+		if (!source) throw new Error(`Case ${caseId} is not in the verified working-expansion manifest`)
+		assertDevelopmentSourcePath(source.path, source.caseId)
+		return {
+			caseId: source.caseId,
+			path: source.path,
+			sha256: source.sha256,
+			byteCount: source.byteCount,
+			artworkId: source.artworkId,
+			cohort: source.cohort,
+			structureTags: [],
+		}
+	})
+}
+
+export async function loadAlbumArtworkPaletteV2Phase3IterationSources(
+	options: AlbumArtworkPaletteV2Phase3IterationArguments,
+): Promise<Readonly<{
+	sources: readonly AlbumArtworkPaletteV2Phase3DevelopmentSource[]
+	authorization: Readonly<{ mode: "canonical-development"; manifestId: string }> |
+		Readonly<{ mode: "working-expansion"; manifestId: string }>
+}>> {
+	if (options.workingExpansionManifestPath !== undefined) {
+		const manifest = await readAndVerifyPhase3WorkingExpansionManifest(options.workingExpansionManifestPath)
+		const sources = selectAlbumArtworkPaletteV2Phase3WorkingExpansionSources(manifest, options.caseIds)
+		for (const source of sources) verifiedWorkingExpansionSources.add(source)
+		return {
+			sources,
+			authorization: { mode: "working-expansion", manifestId: manifest.manifestId },
+		}
+	}
+	const panelBytes = await readFile(developmentPanelPath)
+	invariant(sha256(panelBytes) === PHASE_3_WORKING_EXPANSION_BOUND_IDENTITIES.developmentPanel.rawSha256,
+		"Canonical Phase 3 development panel raw identity is invalid")
+	const panel = JSON.parse(panelBytes.toString("utf8")) as DevelopmentPanel
+	invariant(panel.manifestId === PHASE_3_WORKING_EXPANSION_BOUND_IDENTITIES.developmentPanel.manifestId &&
+		panel.sourceCount === 28 && panel.sources.length === 28,
+		"Canonical Phase 3 development panel identity is invalid")
+	return {
+		sources: selectAlbumArtworkPaletteV2Phase3DevelopmentSources(panel, options.caseIds),
+		authorization: { mode: "canonical-development", manifestId: panel.manifestId },
+	}
+}
+
 function measure<T>(operation: () => T): Readonly<{ value: T; runtime: AlbumArtworkPaletteV2Phase3Runtime }> {
 	const cpuStarted = process.cpuUsage()
 	const wallStarted = performance.now()
@@ -245,7 +353,12 @@ export function executeAlbumArtworkPaletteV2Phase3Case(
 	image: RawImage,
 	adapters: readonly AlbumArtworkPaletteV2Phase3AttemptAdapter[],
 ): AlbumArtworkPaletteV2Phase3CaseArtifact {
-	assertDevelopmentCaseId(source.caseId)
+	if (isWorkingExpansionCaseId(source.caseId)) {
+		assertWorkingExpansionCaseId(source.caseId)
+		if (!verifiedWorkingExpansionSources.has(source)) {
+			throw new Error(`Working-expansion execution requires an explicit verified manifest for ${source.caseId}`)
+		}
+	} else assertDevelopmentCaseId(source.caseId)
 	assertDevelopmentSourcePath(source.path, source.caseId)
 	if (adapters.length === 0 || adapters.length > ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_ATTEMPTS_PER_ITERATION) {
 		throw new Error("The Phase 3 attempt selection is empty or exceeds its bound")
@@ -321,8 +434,11 @@ export async function runAlbumArtworkPaletteV2Phase3Iteration(
 	options: AlbumArtworkPaletteV2Phase3IterationArguments,
 ): Promise<Readonly<{ outputDirectory: string; caseCount: number; attemptCount: number }>> {
 	assertIterationId(options.iterationId)
-	const panel = JSON.parse(await readFile(developmentPanelPath, "utf8")) as DevelopmentPanel
-	const sources = selectAlbumArtworkPaletteV2Phase3DevelopmentSources(panel, options.caseIds)
+	if (options.workingExpansionManifestPath !== undefined && !options.iterationId.startsWith("working-expansion-")) {
+		throw new Error("A working expansion requires a working-expansion-* iteration namespace")
+	}
+	const sourceSelection = await loadAlbumArtworkPaletteV2Phase3IterationSources(options)
+	const sources = sourceSelection.sources
 	const adapters = options.attemptIds.map((attemptId) => {
 		const adapter = attemptRegistry.get(attemptId)
 		if (!adapter) throw new Error(`Unknown Phase 3 attempt ${attemptId}`)
@@ -350,6 +466,8 @@ export async function runAlbumArtworkPaletteV2Phase3Iteration(
 		schemaVersion: 1,
 		contractId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRACT_ID,
 		iterationId: options.iterationId,
+		...(sourceSelection.authorization.mode === "working-expansion"
+			? { sourceAuthorization: sourceSelection.authorization } : {}),
 		workerCount: 1,
 		caseIds: sources.map(({ caseId }) => caseId),
 		attempts: adapters.map(({ identity }) => identity),

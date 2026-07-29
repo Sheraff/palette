@@ -433,6 +433,30 @@ evidence and one has a legacy strong judgment under an incompatible render varia
 the current bounded absolute-review queue. This checkpoint remains Phase 3 development evidence, not a candidate
 freeze or authorization to open the sealed Phase 4 sample.
 
+#### Current parallel-arm checkpoint
+
+The subsequent 2026-07-29 causal wave tested four isolated mechanisms against the integrated candidate and added a
+deterministic 12-source working expansion drawn only from previously authorized source custody. The expansion does
+not change the canonical 28-source development panel and does not open the sealed Phase 4 sample.
+
+Human review retained strict supported-gradient authority. The exact source-supported three-stop treatment and its
+ordinary two-stop control were both strong, with the three-stop render preferred. On the known unsupported-gradient
+case, the strict flat projection improved an unacceptable gradient to a weak fallback; remaining failure is role
+identity rather than field topology. The 12-source working expansion produced no supported-gradient output changes.
+
+The contrastive role-assignment arm is discarded after role-coverage regressions and visibly incorrect assignments.
+The component-local endpoint generator remains useful, but its general automatic slate reservation is not retained:
+review produced one clear improvement, one neutral result, and two regressions. Follow-up may test only the narrower
+causal use case where an earned component-local gradient rescues a flat incumbent. The raw-relation slate complement
+is retained as a low-risk diversity mechanism after two strong, similarly valid development additions; its one
+working-expansion addition still requires exact review before integration.
+
+Across the 12-source working expansion, component-local endpoints changed three slates, raw relation changed one,
+and supported-gradient authority changed none. All 288 reported mechanism safety checks passed. These results are
+development evidence only. Fast follow-up waves must request review immediately after the smallest differential
+development run and must not place optional expansion, review infrastructure, or diagnostic repair on the critical
+path to human feedback.
+
 ### Parallel work
 
 When a repetitive compute-heavy operation is likely to take more than a few seconds serially,

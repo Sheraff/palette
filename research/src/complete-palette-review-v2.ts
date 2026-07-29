@@ -31,10 +31,25 @@ export type CompletePaletteReviewColor = Readonly<{
 	generated: boolean
 }>
 
+export type CompletePaletteReviewResearchRender = Readonly<{
+	schemaVersion: 1
+	field: Readonly<{
+		kind: "linear-gradient"
+		angleDegrees: 135
+		interpolation: "oklab"
+		stops: readonly [
+			Readonly<{ kind: "role"; role: "background"; position: 0 }>,
+			Readonly<{ kind: "source-supported-color"; hex: string; position: 0.5 }>,
+			Readonly<{ kind: "role"; role: "surface"; position: 1 }>,
+		]
+	}>
+}>
+
 export type CompletePaletteReviewTreatment = Readonly<{
 	roles: Readonly<Record<CompletePaletteReviewRole, CompletePaletteReviewColor>>
 	gradient: boolean
 	collapse: Readonly<{ surface: boolean; accent: boolean }>
+	researchRender?: CompletePaletteReviewResearchRender
 }>
 
 export type CompletePaletteReviewSource = Readonly<{
@@ -166,7 +181,7 @@ function parseTreatment(value: unknown, label: string): CompletePaletteReviewTre
 	if (!isRecord(value) || !isRecord(value.roles) || !isRecord(value.collapse)) {
 		throw new TypeError(`${label} must be a complete treatment`)
 	}
-	exactKeys(value, ["roles", "gradient", "collapse"], label)
+	exactKeys(value, ["roles", "gradient", "collapse", ...(value.researchRender === undefined ? [] : ["researchRender"])], label)
 	exactKeys(value.roles, completePaletteReviewRoles, `${label} roles`)
 	exactKeys(value.collapse, ["surface", "accent"], `${label} collapse`)
 	if (typeof value.gradient !== "boolean" || typeof value.collapse.surface !== "boolean" ||
@@ -197,7 +212,42 @@ function parseTreatment(value: unknown, label: string): CompletePaletteReviewTre
 	}
 	const cardinality = new Set(Object.values(hex)).size
 	if (cardinality < 2 || cardinality > 4) throw new TypeError(`${label} must use two through four colors`)
+	if (value.researchRender !== undefined) {
+		const render = parseCompletePaletteReviewResearchRender(value.researchRender, `${label} research render`)
+		const midpoint = render.field.stops[1].hex
+		if (!treatment.gradient || treatment.collapse.surface || midpoint === hex.background || midpoint === hex.surface) {
+			throw new TypeError(`${label} research render is incompatible with its treatment`)
+		}
+	}
 	return treatment
+}
+
+export function parseCompletePaletteReviewResearchRender(
+	value: unknown,
+	label = "Complete-palette research render",
+): CompletePaletteReviewResearchRender {
+	if (!isRecord(value) || !isRecord(value.field)) throw new TypeError(`${label} must be an object`)
+	exactKeys(value, ["schemaVersion", "field"], label)
+	exactKeys(value.field, ["kind", "angleDegrees", "interpolation", "stops"], `${label} field`)
+	if (value.schemaVersion !== 1 || value.field.kind !== "linear-gradient" || value.field.angleDegrees !== 135 ||
+		value.field.interpolation !== "oklab" || !Array.isArray(value.field.stops) || value.field.stops.length !== 3) {
+		throw new TypeError(`${label} field protocol is invalid`)
+	}
+	const [background, midpoint, surface] = value.field.stops
+	for (const [index, stop] of value.field.stops.entries()) {
+		if (!isRecord(stop)) throw new TypeError(`${label} stop ${index} is invalid`)
+	}
+	if (!isRecord(background) || !isRecord(midpoint) || !isRecord(surface)) {
+		throw new TypeError(`${label} stops are invalid`)
+	}
+	exactKeys(background, ["kind", "role", "position"], `${label} background stop`)
+	exactKeys(midpoint, ["kind", "hex", "position"], `${label} midpoint stop`)
+	exactKeys(surface, ["kind", "role", "position"], `${label} surface stop`)
+	if (background.kind !== "role" || background.role !== "background" || background.position !== 0 ||
+		midpoint.kind !== "source-supported-color" || typeof midpoint.hex !== "string" ||
+		!/^#[0-9a-f]{6}$/.test(midpoint.hex) || midpoint.position !== 0.5 || surface.kind !== "role" ||
+		surface.role !== "surface" || surface.position !== 1) throw new TypeError(`${label} stops are invalid`)
+	return value as unknown as CompletePaletteReviewResearchRender
 }
 
 export function parseCompletePaletteReviewManifest(value: unknown): CompletePaletteReviewManifest {
@@ -364,6 +414,17 @@ function presentTreatment(treatment: CompletePaletteReviewTreatment) {
 		}])) as Record<CompletePaletteReviewRole, CompletePaletteReviewColor & { nearestName: string }>,
 		gradient: treatment.gradient,
 		collapse: treatment.collapse,
+		...(treatment.researchRender ? {
+			researchRender: {
+				...treatment.researchRender,
+				field: {
+					...treatment.researchRender.field,
+					stops: treatment.researchRender.field.stops.map((stop) => stop.kind === "source-supported-color"
+						? { ...stop, nearestName: namePalette([rgb(stop.hex)])[0].nearestName }
+						: stop),
+				},
+			},
+		} : {}),
 	}
 }
 

@@ -18,6 +18,7 @@ import {
 	type CompletePaletteReviewManifest,
 	type CompletePaletteReviewTreatment,
 } from "../src/complete-palette-review-v2.ts"
+import { normalizeTreatment } from "../tools/review-evidence/normalize.ts"
 
 const hash = "a".repeat(64)
 
@@ -54,6 +55,22 @@ function manifest(mode: "absolute" | "pairwise", blinded = false): CompletePalet
 	}]
 	const identity = { ...base, cases } as Omit<CompletePaletteReviewManifest, "manifestId">
 	return { ...identity, manifestId: completePaletteReviewManifestId(identity) } as CompletePaletteReviewManifest
+}
+
+function sourceSupportedRender(hex = "#1880a7") {
+	return {
+		schemaVersion: 1 as const,
+		field: {
+			kind: "linear-gradient" as const,
+			angleDegrees: 135 as const,
+			interpolation: "oklab" as const,
+			stops: [
+				{ kind: "role" as const, role: "background" as const, position: 0 as const },
+				{ kind: "source-supported-color" as const, hex, position: 0.5 as const },
+				{ kind: "role" as const, role: "surface" as const, position: 1 as const },
+			] as const,
+		},
+	}
 }
 
 test("absolute and pairwise manifests bind legal complete treatments", () => {
@@ -103,6 +120,48 @@ test("public payload derives names and withholds blinded assignments", () => {
 	}
 })
 
+test("source-supported midpoint rendering is optional, strict, and render-identity-only", () => {
+	const ordinary = treatment(["#141975", "#3fa72a", "#030102", "#d02981"], true)
+	const threeStop: CompletePaletteReviewTreatment = { ...ordinary, researchRender: sourceSupportedRender() }
+	const base = manifest("absolute")
+	if (base.mode !== "absolute") throw new Error("Fixture mode changed")
+	const { manifestId: _manifestId, ...baseIdentity } = base
+	const identity = {
+		...baseIdentity,
+		cases: [{ ...base.cases[0], treatment: threeStop }],
+	}
+	const researchManifest = {
+		...identity,
+		manifestId: completePaletteReviewManifestId(identity),
+	} as CompletePaletteReviewManifest
+	assert.deepEqual(parseCompletePaletteReviewManifest(researchManifest), researchManifest)
+	const ordinaryIdentity = normalizeTreatment(ordinary, {
+		presentationVersion: COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION,
+	})
+	const threeStopIdentity = normalizeTreatment(threeStop, {
+		presentationVersion: COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION,
+	})
+	assert.equal(threeStopIdentity.treatmentIdentity, ordinaryIdentity.treatmentIdentity)
+	assert.notEqual(threeStopIdentity.renderVariantId, ordinaryIdentity.renderVariantId)
+	const payload = completePaletteReviewPublicPayload(researchManifest)
+	if (!("treatment" in payload.cases[0])) throw new Error("Absolute payload changed")
+	assert.equal(payload.cases[0].treatment.researchRender.field.stops[1].hex, "#1880a7")
+	assert.ok(payload.cases[0].treatment.researchRender.field.stops[1].nearestName.length > 0)
+	const invalidFlat = {
+		...researchManifest,
+		cases: [{ ...researchManifest.cases[0], treatment: { ...threeStop, gradient: false } }],
+	}
+	assert.throws(() => parseCompletePaletteReviewManifest(invalidFlat), /research render is incompatible/u)
+	const invalidStop = {
+		...researchManifest,
+		cases: [{
+			...researchManifest.cases[0],
+			treatment: { ...threeStop, researchRender: sourceSupportedRender("#ABCDEF") },
+		}],
+	}
+	assert.throws(() => parseCompletePaletteReviewManifest(invalidStop), /stops are invalid/u)
+})
+
 test("feedback is mode-specific, strict, resumable, and verbatim", () => {
 	const absolute = manifest("absolute")
 	const comment = "  preserve\nexactly  "
@@ -130,6 +189,10 @@ test("presentation retains exact V2 semantics and achromatic chrome", async () =
 		readFile(new URL("../complete-palette-review-v2/styles.css", import.meta.url), "utf8"),
 	])
 	assert.match(app, /linear-gradient\(135deg in oklab/)
+	assert.match(app, /3-stop gradient/)
+	assert.match(app, /Gradient midpoint/)
+	assert.match(app, /midpointSwatch\.style\.backgroundColor = midpoint\.hex/)
+	assert.match(app, /Gradient midpoint \(not a role\)/)
 	assert.match(app, /collapsed to background/)
 	assert.match(app, /generated\*/)
 	assert.match(app, /autoSaveTimer/)

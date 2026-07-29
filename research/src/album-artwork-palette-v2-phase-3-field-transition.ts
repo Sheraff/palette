@@ -1,4 +1,4 @@
-import { labAt, okDistance } from "./color.ts"
+import { labAt, okDistance, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts"
 import { buildNativePaletteEvidence } from "./album-artwork-palette-v2.ts"
 import type {
 	BackgroundFieldDomainEvidence,
@@ -14,6 +14,10 @@ import type { OKLab, RawImage } from "./types.ts"
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ATTEMPT_ID =
 	"native-field-transition-region-graph-v1" as const
+
+export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ENDPOINT_INTERVAL =
+	Object.freeze([0.15, 0.85] as const)
+export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_MINIMUM_POPULATION_FRACTION = 0.08
 
 export type FieldTransitionRegionEvidence = Readonly<{
 	id: string
@@ -59,6 +63,58 @@ export type NativeFieldTransitionDiscovery = Readonly<{
 	hypotheses: readonly FieldHypothesis[]
 }>
 
+export type FieldTransitionExactStageColor = Readonly<{
+	rgb: ColorRepresentative["rgb"]
+	oklab: OKLab
+	hex: string
+	provenance: Readonly<{
+		exactSource: true
+		familyId: string
+		regionId: string
+		pixelIndex: number
+		x: number
+		y: number
+	}>
+}>
+
+export type FieldTransitionPathStageEvidence = Readonly<{
+	stageIndex: number
+	familyId: string
+	regionId: string
+	spatialPosition: number
+	colorPosition: number
+	population: number
+	populationFraction: number
+	imagePopulationFraction: number
+	quadrantCoverage: number
+	prototype: OKLab
+	exactColor: FieldTransitionExactStageColor
+}>
+
+export type SupportedFieldTransitionPathEvidence = Readonly<{
+	fieldDomainId: string
+	topology: GradientTopology
+	direction: GradientDirection
+	spatialCenter: readonly [x: number, y: number] | null
+	endpointFamilyIds: readonly [string, string]
+	endpointInterval: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ENDPOINT_INTERVAL
+	stageFamilyIds: readonly string[]
+	stageRegionIds: readonly string[]
+	stagePositions: readonly number[]
+	stageColorPositions: readonly number[]
+	stagePopulationFractions: readonly number[]
+	stages: readonly FieldTransitionPathStageEvidence[]
+	acceptedIntermediateSupport: readonly FieldTransitionPathStageEvidence[]
+	transitionFamilyCount: number
+	transitionPopulationFraction: number
+	transitionQuadrantCoverage: number
+	connected: boolean
+	legacyEligible: boolean
+	eligible: boolean
+	rejectionReasons: readonly string[]
+	hypothesis: FieldHypothesis | null
+}>
+
 type RegionNode = {
 	index: number
 	id: string
@@ -99,6 +155,7 @@ type TransitionCandidate = Readonly<{
 	domain: BackgroundFieldDomainEvidence
 	trace: FieldTransitionTrace
 	path: readonly RegionNode[]
+	stageColorPositions: readonly number[]
 }>
 
 type TransitionGeometry = Readonly<{
@@ -654,7 +711,8 @@ function candidateForEndpoints(
 	if (colorProgression < 0.72) rejectionReasons.push("transition family sequence reverses perceptual progression")
 	if (colorDirectness < 0.45) rejectionReasons.push("transition family sequence is perceptually circuitous")
 	if (branching > MAXIMUM_BRANCHING) rejectionReasons.push("transition region graph branches into competing structures")
-	if (path.length > 0 && transitionPopulation / population < 0.08) {
+	if (path.length > 0 && transitionPopulation / population <
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_MINIMUM_POPULATION_FRACTION) {
 		rejectionReasons.push("intermediate families lack broad transition coverage")
 	}
 	const canonicalStarts = [first.start, second.start].sort((left, right) => left - right)
@@ -693,6 +751,7 @@ function candidateForEndpoints(
 	return {
 		domain,
 		path,
+		stageColorPositions: colorPositions,
 		trace: {
 			fieldDomainId: domainId,
 			topology: geometry.topology,
@@ -782,8 +841,7 @@ function hypothesisForCandidate(candidate: TransitionCandidate): FieldHypothesis
 	}
 }
 
-export function discoverNativeFieldTransitions(evidence: NativePaletteEvidence): NativeFieldTransitionDiscovery {
-	const graph = buildRegionGraph(evidence)
+function orderedTransitionCandidates(evidence: NativePaletteEvidence, graph: RegionGraph): TransitionCandidate[] {
 	const endpoints = graph.nodes.filter(({ endpointRejectionReasons }) => endpointRejectionReasons.length === 0)
 		.sort((first, second) => endpointScore(evidence, second) - endpointScore(evidence, first) || first.start - second.start)
 		.slice(0, MAXIMUM_ENDPOINT_REGIONS)
@@ -807,11 +865,110 @@ export function discoverNativeFieldTransitions(evidence: NativePaletteEvidence):
 			candidates.push(candidateForEndpoints(evidence, graph, center, outer, radialGeometry(regionCentroid(center))))
 		}
 	}
-	const ordered = candidates.sort((first, second) =>
+	return candidates.sort((first, second) =>
 		Number(second.domain.eligible) - Number(first.domain.eligible) ||
 		second.domain.populationFraction - first.domain.populationFraction ||
 		second.trace.colorDirectness - first.trace.colorDirectness ||
 		compareAscii(first.domain.id, second.domain.id))
+}
+
+function supportedPathEvidence(
+	evidence: NativePaletteEvidence,
+	candidate: TransitionCandidate,
+): SupportedFieldTransitionPathEvidence {
+	const domainPopulation = Math.max(1, candidate.domain.population)
+	const stages = candidate.path.map((node, stageIndex): FieldTransitionPathStageEvidence => {
+		const rgb = rgbAt(evidence.rgbData, node.start)
+		return {
+			stageIndex,
+			familyId: node.family.id,
+			regionId: node.id,
+			spatialPosition: candidate.trace.stagePositions[stageIndex],
+			colorPosition: candidate.stageColorPositions[stageIndex],
+			population: node.population,
+			populationFraction: node.population / domainPopulation,
+			imagePopulationFraction: node.population / evidence.pixelCount,
+			quadrantCoverage: quadrantCoverage(node.quadrants),
+			prototype: node.family.prototype,
+			exactColor: {
+				rgb,
+				oklab: rgbToOKLab(rgb),
+				hex: rgbToHex(rgb),
+				provenance: {
+					exactSource: true,
+					familyId: node.family.id,
+					regionId: node.id,
+					pixelIndex: node.start,
+					x: node.start % evidence.width,
+					y: Math.floor(node.start / evidence.width),
+				},
+			},
+		}
+	})
+	const [minimumColorPosition, maximumColorPosition] =
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ENDPOINT_INTERVAL
+	const acceptedNodes = candidate.path.slice(1, -1).filter((_, index) => {
+		const colorPosition = candidate.stageColorPositions[index + 1]
+		return colorPosition >= minimumColorPosition && colorPosition <= maximumColorPosition
+	})
+	const acceptedIndexes = new Set(acceptedNodes.map(({ index }) => index))
+	const acceptedIntermediateSupport = stages.slice(1, -1).filter((stage) =>
+		acceptedIndexes.has(candidate.path[stage.stageIndex].index))
+	const transitionPopulation = acceptedNodes.reduce((sum, node) => sum + node.population, 0)
+	const transitionPopulationFraction = transitionPopulation / domainPopulation
+	const transitionFamilyCount = new Set(acceptedNodes.map(({ familyIndex }) => familyIndex)).size
+	const transitionQuadrants = acceptedNodes.reduce((bits, node) => bits | node.quadrants, 0)
+	const rejectionReasons = candidate.trace.rejectionReasons.filter((reason) =>
+		reason !== "transition has no supported intermediate family" &&
+		reason !== "intermediate families lack broad transition coverage")
+	if (transitionFamilyCount === 0) {
+		rejectionReasons.push("transition has no color-intermediate family inside the endpoint interval")
+	}
+	if (candidate.path.length > 0 && transitionPopulationFraction <
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_MINIMUM_POPULATION_FRACTION) {
+		rejectionReasons.push("color-intermediate families lack broad transition coverage")
+	}
+	return {
+		fieldDomainId: candidate.domain.id,
+		topology: candidate.trace.topology,
+		direction: candidate.trace.direction,
+		spatialCenter: candidate.trace.spatialCenter,
+		endpointFamilyIds: candidate.trace.endpointFamilyIds,
+		endpointInterval: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ENDPOINT_INTERVAL,
+		stageFamilyIds: candidate.trace.stageFamilyIds,
+		stageRegionIds: candidate.trace.stageRegionIds,
+		stagePositions: candidate.trace.stagePositions,
+		stageColorPositions: candidate.stageColorPositions,
+		stagePopulationFractions: stages.map(({ populationFraction }) => populationFraction),
+		stages,
+		acceptedIntermediateSupport,
+		transitionFamilyCount,
+		transitionPopulationFraction,
+		transitionQuadrantCoverage: quadrantCoverage(transitionQuadrants),
+		connected: candidate.path.length >= 2,
+		legacyEligible: candidate.trace.eligible,
+		eligible: rejectionReasons.length === 0,
+		rejectionReasons,
+		hypothesis: hypothesisForCandidate(candidate),
+	}
+}
+
+export function discoverSupportedNativeFieldTransitionPaths(
+	evidence: NativePaletteEvidence,
+): readonly SupportedFieldTransitionPathEvidence[] {
+	const graph = buildRegionGraph(evidence)
+	return orderedTransitionCandidates(evidence, graph).map((candidate) => supportedPathEvidence(evidence, candidate))
+}
+
+export function buildSupportedNativeFieldTransitionPaths(
+	image: RawImage,
+): readonly SupportedFieldTransitionPathEvidence[] {
+	return discoverSupportedNativeFieldTransitionPaths(buildNativePaletteEvidence(image))
+}
+
+export function discoverNativeFieldTransitions(evidence: NativePaletteEvidence): NativeFieldTransitionDiscovery {
+	const graph = buildRegionGraph(evidence)
+	const ordered = orderedTransitionCandidates(evidence, graph)
 	const acceptedEndpointPairs = new Set<string>()
 	const hypotheses = ordered.flatMap((candidate): FieldHypothesis[] => {
 		if (!candidate.domain.eligible) return []

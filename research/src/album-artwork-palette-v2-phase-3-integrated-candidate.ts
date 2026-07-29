@@ -200,6 +200,7 @@ export function selectAlbumArtworkPaletteV2Phase3IntegratedCandidate(input: Read
 		materialized: input.materialized,
 		identityObligations: input.identityObligations,
 		emergency: input.emergency,
+		precomputedFullDomainRecoverySelection: input.recoveryV2,
 	})
 	const unrestrictedWinnerKey = completeTreatmentKey(input.recoveryV2.winner)
 	const lineageWinner = completeLineage.winner.treatment
@@ -305,9 +306,9 @@ export function selectAlbumArtworkPaletteV2Phase3IntegratedCandidate(input: Read
 	}
 }
 
-export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidate(
+export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(
 	image: RawImage,
-): AlbumArtworkPaletteV2Phase3IntegratedCandidateResult {
+) {
 	const closedDetails = extractAlbumArtworkPaletteV2074Details(image)
 	const common = buildAlbumArtworkPaletteV2Phase3CommonBase(image, {
 		closed074Details: closedDetails,
@@ -376,7 +377,7 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidate(
 	const slateAccentFamilyIds = [...new Set(selected.filter(({ collapse }) => !collapse.accent)
 		.map(({ familyRoles }) => familyRoles.accent)
 		.filter((familyId): familyId is string => familyId !== "generated"))].sort(compareAscii)
-	return {
+	const result: AlbumArtworkPaletteV2Phase3IntegratedCandidateResult = {
 		version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT_ID,
 		protocol: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_CONFIGURATION_ID,
 		width: image.width,
@@ -422,6 +423,26 @@ export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidate(
 			},
 		},
 	}
+	return {
+		result,
+		closedDetails,
+		common,
+		transitionEnvelope,
+		sourcedFields,
+		supplementalDescriptors,
+		logicalDescriptors,
+		materialization,
+		recoveryV2,
+		roleEvidence,
+		custodyMaterialized,
+		selection,
+	}
+}
+
+export function extractAlbumArtworkPaletteV2Phase3IntegratedCandidate(
+	image: RawImage,
+): AlbumArtworkPaletteV2Phase3IntegratedCandidateResult {
+	return extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(image).result
 }
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT = Object.freeze({

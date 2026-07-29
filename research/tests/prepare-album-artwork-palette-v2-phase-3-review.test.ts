@@ -17,6 +17,7 @@ import {
 const contractId = "album-artwork-palette-v2-phase-3-attempt-contract-v1"
 const anchorId = "closed-anchor"
 const candidateId = "candidate-attempt"
+const comparisonId = "comparison-attempt"
 
 type RawTreatment = Readonly<{
 	id: string
@@ -54,6 +55,7 @@ const novelGradient = treatment("novel-gradient", ["#101010", "#303030", "#f0f0f
 	gradient: true,
 })
 const secondNovel = treatment("second-novel", ["#181818", "#181818", "#eeeeee", "#3366cc"])
+const comparisonAnchor = treatment("comparison", ["#121212", "#121212", "#ededed", "#ededed"])
 
 function normalized(key: string, value: RawTreatment) {
 	return { key, treatment: value }
@@ -122,6 +124,13 @@ async function fixture(context: TestContext): Promise<Readonly<{
 					},
 					addedAlternativeKeys,
 				},
+			}, {
+				identity: { attemptId: comparisonId, configurationId: "synthetic-comparison" },
+				output: {
+					winner: normalized("comparison-key", comparisonAnchor),
+					alternatives: [normalized("comparison-key", comparisonAnchor)],
+				},
+				materialDelta: { identity: "unused-comparison-fixture" },
 			}],
 		}
 	}
@@ -354,6 +363,19 @@ test("absolute mode emits the candidate treatment without an anchor option", asy
 	if (manifest.mode !== "absolute") throw new Error("Expected absolute fixture")
 	assert.equal(manifest.cases[0].treatment.roles.accent.hex, "#d00000")
 	assert.equal("options" in manifest.cases[0], false)
+})
+
+test("pairwise mode can use another aligned attempt as its comparison anchor", async (context) => {
+	const input = await fixture(context)
+	const prepared = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "attempt-anchor"),
+		{ anchorId: comparisonId, all: false, maximumCases: 1 },
+	))
+	const manifest = await readManifest(prepared.manifestPath)
+	if (manifest.mode !== "pairwise") throw new Error("Expected pairwise fixture")
+	assert.equal(manifest.cases[0].options.B.roles.background.hex, "#121212")
+	assert.deepEqual(manifest.cases[0].assignment, { A: "candidate", B: "anchor" })
 })
 
 test("explicit review cases accept multiple treatments per source and preserve requested order", async (context) => {
