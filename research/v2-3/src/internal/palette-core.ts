@@ -205,6 +205,14 @@ export type NativePaletteEvidence = Readonly<{
 	retainedFamilyIds: readonly string[]
 	lanes: readonly EvidenceLane[]
 	laneRetention: readonly LaneRetentionTrace[]
+	/**
+	 * Families withdrawn from the field lane as optical mixtures of the two
+	 * dominant fields (`ALBUM_ARTWORK_PALETTE_V2_POLICY.fieldBlend`) — colours that
+	 * exist only because two fields meet, so they cannot be published as a field
+	 * colour. Diagnostic only elsewhere: every other consumer sees these families
+	 * unchanged.
+	 */
+	absorbedFieldFamilyIds: readonly string[]
 	familyBinStep: number
 	familyAnchorRadius: number
 }>
@@ -1145,6 +1153,97 @@ function rankAllLaneFamilies(
 			compareAscii(first.id, second.id))
 }
 
+/**
+ * Where `point` falls on the OKLab chord `[start, end]`: how far along it (`position`,
+ * in chord fractions, so `0` is `start` and `1` is `end`) and how far off it
+ * (`offset`, an absolute OKLab distance).
+ */
+function chordProjection(point: OKLab, start: OKLab, end: OKLab): Readonly<{ offset: number; position: number }> {
+	const axis: OKLab = [end[0] - start[0], end[1] - start[1], end[2] - start[2]]
+	const lengthSquared = axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]
+	if (lengthSquared === 0) return { offset: okDistance(point, start), position: 0 }
+	const delta: OKLab = [point[0] - start[0], point[1] - start[1], point[2] - start[2]]
+	const position = (delta[0] * axis[0] + delta[1] * axis[1] + delta[2] * axis[2]) / lengthSquared
+	return {
+		offset: okDistance(point, [
+			start[0] + axis[0] * position,
+			start[1] + axis[1] * position,
+			start[2] + axis[2] * position,
+		]),
+		position,
+	}
+}
+
+/**
+ * Families the quantizer sliced out of the optical mixture between the two
+ * dominant fields, rather than out of a material the artwork actually contains.
+ * See `ALBUM_ARTWORK_PALETTE_V2_POLICY.fieldBlend` for why this is measured the
+ * way it is. Returns the ids to withdraw from the field lane, ASCII-ordered.
+ */
+function opticalBlendFamilyIds(
+	families: readonly ColorFamilyEvidence[],
+	provisionalFieldFamilies: readonly ColorFamilyEvidence[],
+	adjacencies: readonly MutableAdjacency[],
+	familyIdByIndex: readonly string[],
+): Set<string> {
+	const policy = ALBUM_ARTWORK_PALETTE_V2_POLICY.fieldBlend
+	const absorbed = new Set<string>()
+	if (policy.maximumRelativeOffset <= 0) return absorbed
+	// The two dominant fields anchor the mixture. They are read off the field
+	// ranking the artwork already produced, by population, with explicit tie-breaks.
+	const anchors = [...provisionalFieldFamilies]
+		.sort((first, second) =>
+			compareNumbersDescending(first.population, second.population) ||
+			compareAscii(first.id, second.id))
+		.slice(0, 2)
+	if (anchors.length < 2) return absorbed
+	const [first, second] = anchors
+	const chordLength = okDistance(first.prototype, second.prototype)
+	if (chordLength < policy.minimumFieldSeparation) return absorbed
+
+	// Colour test: strictly between the two fields, and close enough to the chord
+	// that a linear mixture explains it.
+	const rungs: Array<Readonly<{ id: string; position: number }>> = []
+	for (const family of families) {
+		if (family.id === first.id || family.id === second.id) continue
+		const { offset, position } = chordProjection(family.prototype, first.prototype, second.prototype)
+		if (position <= policy.interiorMargin || position >= 1 - policy.interiorMargin) continue
+		if (offset / chordLength > policy.maximumRelativeOffset) continue
+		rungs.push({ id: family.id, position })
+	}
+	if (rungs.length === 0) return absorbed
+
+	// Continuum test: ordered along the chord and bounded by the two fields, the
+	// ramp must have no gap. A sliced continuum is present in full; coincidental
+	// colinearity is not.
+	rungs.sort((left, right) => left.position - right.position || compareAscii(left.id, right.id))
+	let previous = 0
+	for (const { position } of [...rungs, { id: "", position: 1 }]) {
+		if (position - previous > policy.maximumRungGap) return absorbed
+		previous = position
+	}
+	const mixture = new Set(rungs.map(({ id }) => id))
+
+	// Spatial test: the family never borders anything outside the mixture it
+	// belongs to (the two fields, or another mixture of the same pair).
+	const corridor = new Set<string>([first.id, second.id, ...mixture])
+	const total = new Map<string, number>()
+	const inside = new Map<string, number>()
+	for (const { firstFamilyIndex, secondFamilyIndex, boundaryEdges } of adjacencies) {
+		const firstId = familyIdByIndex[firstFamilyIndex]
+		const secondId = familyIdByIndex[secondFamilyIndex]
+		for (const [self, other] of [[firstId, secondId], [secondId, firstId]] as const) {
+			total.set(self, (total.get(self) ?? 0) + boundaryEdges)
+			if (corridor.has(other)) inside.set(self, (inside.get(self) ?? 0) + boundaryEdges)
+		}
+	}
+	for (const familyId of [...mixture].sort(compareAscii)) {
+		const closure = (inside.get(familyId) ?? 0) / Math.max(1, total.get(familyId) ?? 0)
+		if (closure >= policy.minimumCorridorClosure) absorbed.add(familyId)
+	}
+	return absorbed
+}
+
 function distinctAccentFidelity(
 	family: ColorFamilyEvidence,
 	accent: ColorRepresentative,
@@ -1590,9 +1689,10 @@ export function buildNativePaletteEvidence(
 		familyScore: (family: ColorFamilyEvidence) => number,
 		regionScore: (family: ColorFamilyEvidence) => number,
 		combinedScore: (family: ColorFamilyEvidence) => number,
+		withdrawn: ReadonlySet<string> = new Set(),
 	): Readonly<{ lane: EvidenceLane; trace: LaneRetentionTrace }> => {
 		const ranked = families
-			.filter(({ population }) => population > 0)
+			.filter(({ population, id }) => population > 0 && !withdrawn.has(id))
 			.sort((first, second) =>
 				compareNumbersDescending(combinedScore(first), combinedScore(second)) ||
 				compareNumbersDescending(first.population, second.population) ||
@@ -1613,8 +1713,22 @@ export function buildNativePaletteEvidence(
 			},
 		}
 	}
+	const fieldScoreOf = ({ fieldScore }: ColorFamilyEvidence): number => fieldScore
+	// The field lane is ranked twice: once to learn which two families dominate the
+	// artwork's field, then again with the optical mixtures between them withdrawn.
+	const provisionalField = rankLane("field", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.fieldFamilies, fieldScoreOf, () => 0, fieldScoreOf)
+	const familyIdByIndex = families.map(({ id }) => id)
+	const provisionalFieldIds = new Set(provisionalField.lane.familyIds)
+	const absorbedFieldFamilyIds = opticalBlendFamilyIds(
+		families,
+		families.filter(({ id }) => provisionalFieldIds.has(id)),
+		[...mutableAdjacencies.values()],
+		familyIdByIndex,
+	)
 	const laneResults = [
-		rankLane("field", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.fieldFamilies, ({ fieldScore }) => fieldScore, () => 0, ({ fieldScore }) => fieldScore),
+		absorbedFieldFamilyIds.size === 0
+			? provisionalField
+			: rankLane("field", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.fieldFamilies, fieldScoreOf, () => 0, fieldScoreOf, absorbedFieldFamilyIds),
 		rankLane("signature", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.signatureFamilies, ({ signatureScore }) => signatureScore, ({ signatureAccentObservation }) => signatureAccentObservation, signatureRoleScore),
 		rankLane("foreground", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.foregroundFamilies, ({ foregroundScore }) => foregroundScore, ({ foregroundTypographyObservation }) => foregroundTypographyObservation, foregroundRoleScore),
 	]
@@ -1652,6 +1766,7 @@ export function buildNativePaletteEvidence(
 		retainedFamilyIds,
 		lanes,
 		laneRetention,
+		absorbedFieldFamilyIds: [...absorbedFieldFamilyIds].sort(compareAscii),
 		familyBinStep: options.familyBinStep,
 		familyAnchorRadius: options.familyAnchorRadius,
 	}

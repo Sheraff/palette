@@ -114,6 +114,74 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		 */
 		substitution: 1,
 	}),
+	/**
+	 * Optical-blend absorption (segmentation granularity).
+	 *
+	 * Where two dominant fields meet, the image does not jump between them: soft
+	 * edges, shadow falloff, vignettes, semi-transparency and JPEG ringing all
+	 * produce pixels whose colour is a *linear mixture* of the two fields. The
+	 * perceptual quantizer has no way to know that, so it slices that mixture ramp
+	 * into ordinary families — and a fat slice of it then looks, on every signal
+	 * measured at ranking time (support, concentration, coverage, materiality),
+	 * exactly like a legitimate third region competing for the surface role.
+	 *
+	 * OKLab makes this markedly worse at the dark end: a single 8-bit code step at
+	 * the black point spans dL ≈ 0.067, more than the whole family anchor radius,
+	 * so the ramp out of a black field is sliced into many families rather than one.
+	 *
+	 * A family is treated as such a mixture — not a material — only when *all* of
+	 * these hold, so the rule stays a measurement rather than a preference:
+	 *
+	 *  - the two dominant field families are far enough apart that lying on the
+	 *    chord between them is informative at all (`minimumFieldSeparation`);
+	 *  - its prototype lies strictly *between* them (`interiorMargin`) and within
+	 *    `maximumRelativeOffset` of the chord, as a fraction of chord length — a
+	 *    colour that is an independent material essentially never lands that close
+	 *    to a long chord by chance;
+	 *  - the mixtures it belongs to actually form a *continuum*: ordered along the
+	 *    chord, and counting the two fields as its ends, no gap between successive
+	 *    colours exceeds `maximumRungGap`. This is the load-bearing test. Evidence
+	 *    that quantization sliced a continuous ramp is that the whole ramp is
+	 *    present as contiguous slices; two materials that merely happen to be
+	 *    colinear with the field pair appear as isolated colours with a gap, and
+	 *    are left alone. It is what separates a seam from an artwork whose field
+	 *    genuinely *is* a gradient — there the intermediate colours are the field.
+	 *  - spatially it never leaves the mixture: `minimumCorridorClosure` of its
+	 *    boundary is shared with the two fields or with other mixtures of the same
+	 *    pair. A region that exists in its own right touches things the mixture
+	 *    cannot explain.
+	 *
+	 * Absorption withdraws the family from the **field lane only**, so a mixture can
+	 * never be published as a background or surface colour. Nothing else changes:
+	 * the family keeps its evidence record, still competes in the signature and
+	 * foreground lanes, and whether its pixels join a field domain is still decided
+	 * by the existing composite rule, which is untouched. This deliberately does
+	 * *not* assign the mixture to either field's domain — a seam belongs to both.
+	 *
+	 * This is the interior counterpart of the diffuse-composite pass, and the two
+	 * are opposites on purpose. That pass merges *fragments of one field* whose
+	 * colours are legitimate field colours, so they must join the domain and stay
+	 * fully eligible. This one withdraws colours that exist only because two fields
+	 * meet — they are not a material the artwork contains, so they must not be
+	 * publishable, whatever domain their pixels end up in.
+	 *
+	 * Set `maximumRelativeOffset` to 0 to restore the previous behaviour exactly.
+	 */
+	fieldBlend: Object.freeze({
+		/** Minimum OKLab separation of the two dominant field families. */
+		minimumFieldSeparation: 0.3,
+		/** Perpendicular chord distance allowed, as a fraction of chord length. */
+		maximumRelativeOffset: 0.015,
+		/** How far inside the chord the prototype must sit, in chord fractions. */
+		interiorMargin: 0.03,
+		/**
+		 * Largest gap allowed between successive colours of the ramp (the two
+		 * fields included as its ends), in chord fractions.
+		 */
+		maximumRungGap: 0.25,
+		/** Share of the family's boundary that must stay inside the mixture. */
+		minimumCorridorClosure: 0.9,
+	}),
 	identity: Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",
