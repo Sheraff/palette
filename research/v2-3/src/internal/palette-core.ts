@@ -2,6 +2,10 @@ import { apcaContrast, chroma, labAt, mixOKLab, okDistance, oklabToRGB, rgbAt, r
 
 import { ALBUM_ARTWORK_PALETTE_V2_POLICY, ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS } from "./policy.ts";
 
+import { analyzeBandPopulation } from "./band-representative.ts";
+
+import type { BandRepresentativeSample } from "./band-representative.ts";
+
 import type { OKLab, RGB, RawImage } from "./types.ts";
 
 export type RepresentativeStrategy = "dense-exact" | "nearest-prototype" | "density-synthesized"
@@ -213,10 +217,41 @@ export type BackgroundFieldDomainEvidence = Readonly<{
 	rejectionReasons: readonly string[]
 }>
 
+/**
+ * The colour the field actually carries at the gradient's spatial midpoint.
+ *
+ * The public render is a two-stop background -> surface interpolation. That is only faithful
+ * when the artwork's field runs straight between its endpoints in OKLab. When the field bows
+ * away from that chord -- sweeping through an amber that neither end contains, say -- the
+ * two-stop render invents a colour the artwork does not have and omits one it does. This
+ * record carries the measured evidence needed to decide, at render time and against the
+ * endpoints actually selected, whether a third stop is earned.
+ */
+export type FieldMidpointEvidence = Readonly<{
+	rgb: RGB
+	oklab: OKLab
+	hex: string
+	/** Share of the domain lying in the sampled midpoint band. */
+	bandPopulationFraction: number
+	/** Share of that band occupied by this colour's own neighbourhood. */
+	occupancyShare: number
+	spatialSpreadRatio: number
+	provenance: Readonly<{
+		exactSource: true
+		familyId: string
+		fieldDomainId: string
+		pixelIndex: number
+		x: number
+		y: number
+	}>
+}>
+
 export type GradientFieldEvidence = Readonly<{
 	topology: GradientTopology
 	direction: GradientDirection
 	endpointBands: readonly [number, number]
+	/** Present only for fit-derived gradient fields; null when no representative colour qualified. */
+	fieldMidpoint: FieldMidpointEvidence | null
 	progression: number
 	modeProgression: number
 	monotonicity: number
@@ -585,6 +620,7 @@ type EvaluatedGradientFit = Readonly<{
 	edgeContinuity: number
 	low: BandEndpoint | null
 	high: BandEndpoint | null
+	fieldMidpoint: FieldMidpointEvidence | null
 	rejectionReasons: readonly string[]
 }>
 
@@ -2083,6 +2119,54 @@ function endpointBandRepresentatives(
 	})
 }
 
+const FIELD_MIDPOINT_BAND = Object.freeze([0.42, 0.58] as const)
+
+/**
+ * The representative colour of the field at the gradient's spatial midpoint.
+ *
+ * Same standard as the endpoints: the modal colour of the band's occupancy, snapped to an
+ * exact source pixel drawn from that mode, and required to be field material rather than an
+ * object standing in the band. Whether the colour is different enough from the endpoint
+ * chord to earn a third render stop is decided later, against the endpoints actually
+ * selected, because the two questions are independent.
+ */
+function fieldMidpointEvidence(
+	evidence: NativePaletteEvidence,
+	fit: GradientFit,
+): FieldMidpointEvidence | null {
+	const [minimumPosition, maximumPosition] = FIELD_MIDPOINT_BAND
+	const samples: BandRepresentativeSample[] = []
+	for (const pixelIndex of fit.domain.pixelIndexes) {
+		const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
+		const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
+		const position = fit.position(x, y)
+		if (position < minimumPosition || position > maximumPosition) continue
+		samples.push({ pixelIndex, lab: labAt(evidence.labs, pixelIndex) })
+	}
+	const population = analyzeBandPopulation(samples, evidence)
+	const representative = population.representative
+	if (representative === null || !representative.densitySupported) return null
+	const colorEvidence = population.evidenceFor(representative.lab)
+	if (!colorEvidence.fieldLike) return null
+	const rgb = rgbAt(evidence.rgbData, representative.pixelIndex)
+	return {
+		rgb,
+		oklab: representative.lab,
+		hex: rgbToHex(rgb),
+		bandPopulationFraction: samples.length / Math.max(1, fit.domain.pixelIndexes.length),
+		occupancyShare: colorEvidence.share,
+		spatialSpreadRatio: colorEvidence.spatialSpreadRatio,
+		provenance: {
+			exactSource: true,
+			familyId: evidence.families[evidence.familyAt[representative.pixelIndex]].id,
+			fieldDomainId: fit.domain.evidence.id,
+			pixelIndex: representative.pixelIndex,
+			x: representative.pixelIndex % evidence.width,
+			y: Math.floor(representative.pixelIndex / evidence.width),
+		},
+	}
+}
+
 function nativeBandEvidence(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
@@ -2175,6 +2259,7 @@ function evaluateGradientFits(
 		const edgeContinuity = nativeBands.edgeContinuity
 		const lows = endpointBandRepresentatives(evidence, fit, true)
 		const highs = endpointBandRepresentatives(evidence, fit, false)
+		const fieldMidpoint = fieldMidpointEvidence(evidence, fit)
 		const endpointPairs: Array<readonly [BandEndpoint | null, BandEndpoint | null]> = lows.length > 0 && highs.length > 0
 			? lows.flatMap((low) => highs.map((high) => [low, high] as const))
 			: [[lows[0] ?? null, highs[0] ?? null]]
@@ -2203,7 +2288,7 @@ function evaluateGradientFits(
 				sameColor(low.representative.rgb, high.representative.rgb) ||
 				okDistance(low.representative.oklab, high.representative.oklab) < 0.028
 			)) rejectionReasons.push("endpoint representatives are not materially distinct")
-			return { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, rejectionReasons }
+			return { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, fieldMidpoint, rejectionReasons }
 		})
 	})
 }
@@ -2324,7 +2409,7 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 	hypotheses.push(...flatCandidates)
 
 	const gradientCandidates: FieldHypothesis[] = []
-	for (const { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, rejectionReasons } of evaluatedGradientFits) {
+	for (const { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, fieldMidpoint, rejectionReasons } of evaluatedGradientFits) {
 		if (rejectionReasons.length > 0 || !low || !high) continue
 		const roleAssignment = assignFieldRoles(low.family, high.family)
 		const backgroundEndpoint = roleAssignment.backgroundFamilyId === low.family.id ? low : high
@@ -2333,6 +2418,7 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 			topology: fit.topology,
 			direction: fit.direction,
 			endpointBands: [0.2, 0.8],
+			fieldMidpoint,
 			progression,
 			modeProgression,
 			monotonicity: fit.monotonicity,

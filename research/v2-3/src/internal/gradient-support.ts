@@ -16,6 +16,41 @@ const POLICY = Object.freeze({
 	minimumDirectPathDifferenceInFamilyBinSteps: 1,
 })
 
+/**
+ * Where a three-stop midpoint colour came from, and the evidence that earned it.
+ *
+ * The two origins answer the same question by different routes and have genuinely different
+ * evidence to show for it, so they are separate members rather than one shape with holes in
+ * it. A transition-path stage knows its index and its position along a staged path; a field
+ * midpoint band has no stages at all, and instead knows how much of the domain it sampled and
+ * how far the colour sits off the endpoint chord.
+ */
+export type AlbumArtworkPaletteV2Phase3SupportedGradientMidpointProvenance =
+	FieldTransitionExactStageColor["provenance"] & Readonly<{
+		origin: "transition-path-stage"
+		fieldDomainId: string
+		stageIndex: number
+		spatialPosition: number
+		colorPosition: number
+		populationFraction: number
+	}> |
+	Readonly<{
+		origin: "field-midpoint-band"
+		exactSource: true
+		familyId: string
+		fieldDomainId: string
+		pixelIndex: number
+		x: number
+		y: number
+		/** Share of the field domain that fell inside the sampled midpoint band. */
+		bandPopulationFraction: number
+		/** Share of that band occupied by this colour's own neighbourhood. */
+		occupancyShare: number
+		spatialSpreadRatio: number
+		/** Distance from the straight interpolation between the rendered endpoints. */
+		chordDeviation: number
+	}>
+
 export type AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor =
 	Readonly<{
 		kind: "none"
@@ -37,13 +72,7 @@ export type AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor =
 			oklab: OKLab
 			hex: string
 		}>
-		provenance: FieldTransitionExactStageColor["provenance"] & Readonly<{
-			fieldDomainId: string
-			stageIndex: number
-			spatialPosition: number
-			colorPosition: number
-			populationFraction: number
-		}>
+		provenance: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointProvenance
 	}>
 
 export type SupportedGradientPath = Readonly<{
@@ -132,6 +161,7 @@ function midpointDescriptor(
 		},
 		provenance: {
 			...intermediate.exactColor.provenance,
+			origin: "transition-path-stage",
 			fieldDomainId: path.fieldDomainId,
 			stageIndex: intermediate.stageIndex,
 			spatialPosition: intermediate.spatialPosition,

@@ -826,6 +826,8 @@ function hypothesisForCandidate(candidate: TransitionCandidate): FieldHypothesis
 			topology: trace.topology,
 			direction: trace.direction,
 			endpointBands: [0.15, 0.85],
+			// Transition paths earn their midpoint through the supported-path evaluation instead.
+			fieldMidpoint: null,
 			progression,
 			modeProgression: clamp((candidate.path.length - 2) / 5),
 			monotonicity: (trace.spatialProgression + trace.colorProgression) / 2,

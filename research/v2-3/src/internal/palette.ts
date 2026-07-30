@@ -1,5 +1,7 @@
 import { completeTreatmentKey, constructAlbumArtworkPaletteV2Phase3SupplementalTreatments, buildPaletteSeedDomain } from "./palette-core.ts";
 
+import { mixOKLab, okDistance } from "./color.ts";
+
 import type { CompletePaletteTreatment, EmergencyEligibility, IdentityObligation } from "./palette-core.ts";
 
 import { evaluateAlbumArtworkPaletteV2Phase3CompleteLineageDescriptor } from "./source-eligibility.ts";
@@ -42,6 +44,13 @@ const NO_MIDPOINT = Object.freeze({
 	color: null,
 	provenance: null,
 })
+
+/**
+ * How far the field's midpoint colour must sit off the endpoint chord before a third stop is
+ * warranted, in family bin steps. One bin step is the same bar the transition-path route
+ * already applies to its own intermediate stages.
+ */
+const MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS = 1
 
 type WinnerSelection = Readonly<{
 	winner: CompletePaletteTreatment
@@ -187,10 +196,62 @@ function sourceConnectedTypes(
 		.map(({ sourceType }) => sourceType))].sort(compareAscii)
 }
 
+/**
+ * Whether the field's measured midpoint colour is far enough off the straight line between
+ * the rendered endpoints to earn a third stop.
+ *
+ * The existing three-stop route asks whether the endpoints differ in hue by at least 60
+ * degrees. That is a proxy: a large hue difference means the straight OKLab interpolation
+ * cuts a chord across the artwork's actual traversal, so the two-stop render invents colours
+ * the artwork never contains. The proxy misses every field that traverses the same hue
+ * non-linearly -- a deep orange rising through amber to cream stays within one hue the whole
+ * way, yet the chord still misses the amber entirely.
+ *
+ * Measuring the deviation directly subsumes the proxy and generalises it, and it is
+ * self-neutralising: a field that really does run straight between its endpoints measures
+ * near zero and earns nothing, which is correct, because for such a field the two-stop
+ * render is already exact.
+ */
+function earnedFieldMidpoint(
+	winner: CompletePaletteTreatment,
+	familyBinStep: number,
+): AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor {
+	const evidence = winner.gradientEvidence?.fieldMidpoint
+	if (!winner.gradient || !evidence) return NO_MIDPOINT
+	const chord = mixOKLab(winner.background.oklab, winner.surface.oklab, 0.5)
+	const chordDeviation = okDistance(evidence.oklab, chord)
+	if (chordDeviation < familyBinStep * MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS) return NO_MIDPOINT
+	// A midpoint that is merely one of the endpoints again carries no information and would
+	// render as the same two-stop ramp.
+	if (Math.min(
+		okDistance(evidence.oklab, winner.background.oklab),
+		okDistance(evidence.oklab, winner.surface.oklab),
+	) < familyBinStep) return NO_MIDPOINT
+	return {
+		kind: "source-supported-three-stop",
+		position: 0.5,
+		color: { rgb: evidence.rgb, oklab: evidence.oklab, hex: evidence.hex },
+		provenance: {
+			origin: "field-midpoint-band",
+			exactSource: true,
+			familyId: evidence.provenance.familyId,
+			fieldDomainId: evidence.provenance.fieldDomainId,
+			pixelIndex: evidence.provenance.pixelIndex,
+			x: evidence.provenance.x,
+			y: evidence.provenance.y,
+			bandPopulationFraction: evidence.bandPopulationFraction,
+			occupancyShare: evidence.occupancyShare,
+			spatialSpreadRatio: evidence.spatialSpreadRatio,
+			chordDeviation,
+		},
+	}
+}
+
 function applyGradientSupport(
 	selection: WinnerSelection,
 	materialized: readonly MaterializedCandidate[],
 	paths: AlbumArtworkPaletteV2Phase3ArmSupportedGradientPathResult,
+	familyBinStep: number,
 ): Readonly<{
 	winner: CompletePaletteTreatment
 	midpoint: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor
@@ -202,9 +263,12 @@ function applyGradientSupport(
 		? paths.paths.find(({ hypothesisId }) => hypothesisId === baseline.sourceFieldHypothesisId) ?? null
 		: null
 	if (!selectedGradient || path?.eligible === true) {
+		const transitionMidpoint = selectedGradient && path?.eligible === true ? path.midpoint : NO_MIDPOINT
 		return {
 			winner: baseline,
-			midpoint: selectedGradient && path?.eligible === true ? path.midpoint : NO_MIDPOINT,
+			midpoint: transitionMidpoint.kind === "source-supported-three-stop"
+				? transitionMidpoint
+				: earnedFieldMidpoint(baseline, familyBinStep),
 		}
 	}
 
@@ -305,6 +369,7 @@ export function extractPaletteDetails(image: RawImage): Readonly<{
 		selection,
 		materialized,
 		evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(common.evidence.native),
+		common.evidence.native.familyBinStep,
 	)
 	return { width: image.width, height: image.height, ...gradient }
 }

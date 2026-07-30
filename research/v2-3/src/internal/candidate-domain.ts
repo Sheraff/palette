@@ -111,6 +111,8 @@ function endpointHypothesis(
 			topology: refinement.fit.topology,
 			direction: refinement.fit.direction,
 			endpointBands: [0.2, 0.8],
+			// Band-local endpoint refinements carry no midpoint measurement of their own.
+			fieldMidpoint: null,
 			progression: refinement.fit.progression,
 			modeProgression: clamp(refinement.occupiedModeDistance / 0.12),
 			monotonicity: refinement.fit.monotonicity,
