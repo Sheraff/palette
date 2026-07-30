@@ -27,8 +27,15 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
 	accentIdentityCredit: 0.8,
 	roleMatchedIdentityCredit: 1,
 	roleMismatchedIdentityCredit: 0.35,
+	surfaceIdentityCredit: 0.6,
 	identityRoleSeparation: 0.12,
 	identityChromaticSeparation: 0.01,
+	identityDirectionChroma: 0.06,
+	identityDirectionFullChroma: 0.09,
+	identityDirectionHueDegrees: 40,
+	identityDirectionAuthorityTarget: 2,
+	identityForegroundClaimMargin: 0.04,
+	authorizedIdentityGain: 0.08,
 	qualityWeights: Object.freeze({
 		fieldFidelity: 0.16,
 		surfaceFidelity: 0.06,
@@ -54,6 +61,7 @@ export type AlbumArtworkPaletteV2Phase3IdentityRoleRequirement = Readonly<{
 	fieldHypothesisId: string
 	requiredRole: AlbumArtworkPaletteV2Phase3IdentityRole
 	confidence?: number
+	foregroundEvidence?: number
 }>
 
 export type AlbumArtworkPaletteV2Phase3IdentityInput = Readonly<{
@@ -76,10 +84,11 @@ export type AlbumArtworkPaletteV2Phase3SelectorEvaluation = Readonly<{
 	qualityUtility: number
 	identityCoverage: number
 	identityGain: number
+	identityAuthorizedGain: number
 	relationUtility: number
 	identityRoles: ReadonlyArray<Readonly<{
 		familyId: string
-		role: "foreground" | "accent"
+		role: "foreground" | "accent" | "surface"
 		credit: number
 	}>>
 	paretoMember: boolean
@@ -156,6 +165,7 @@ function qualityUtility(quality: AlbumArtworkPaletteV2Phase3SelectorQuality): nu
 type NormalizedRoleRequirement = Readonly<{
 	requiredRole: AlbumArtworkPaletteV2Phase3IdentityRole
 	confidence: number
+	foregroundEvidence: number
 }>
 
 type NormalizedIdentity = Readonly<{
@@ -175,12 +185,15 @@ function normalizedIdentity(identity: AlbumArtworkPaletteV2Phase3IdentityInput |
 	}
 	const requiredRoleByFamilyField = new Map<string, NormalizedRoleRequirement>()
 	for (const requirement of identity?.roleRequirements ?? []) {
-		if (!byFamily.has(requirement.familyId) || requirement.fieldHypothesisId.length === 0) continue
+		if (requirement.fieldHypothesisId.length === 0) continue
 		const key = requirementKey(requirement.familyId, requirement.fieldHypothesisId)
 		if (requiredRoleByFamilyField.has(key)) continue
 		requiredRoleByFamilyField.set(key, {
 			requiredRole: requirement.requiredRole,
 			confidence: clamp(Number.isFinite(requirement.confidence) ? requirement.confidence! : 1),
+			foregroundEvidence: clamp(Number.isFinite(requirement.foregroundEvidence)
+				? requirement.foregroundEvidence!
+				: 0),
 		})
 	}
 	return {
@@ -199,8 +212,16 @@ function normalizedIdentity(identity: AlbumArtworkPaletteV2Phase3IdentityInput |
 function placementCredit(
 	requirement: NormalizedRoleRequirement | undefined,
 	placedRole: "foreground" | "accent",
+	color: OKLab,
 ): number {
-	const baseline = placedRole === "foreground"
+	// The foreground is worth more identity credit than the accent because text is the most
+	// present role — but that premium belongs to a family whose own evidence says "typography".
+	// Without this gate the objective pays a chromatic family more for becoming the text than for
+	// becoming the accent, which is how a vivid family displaces the artwork's real foreground.
+	const chromaticWithoutForegroundEvidence = placedRole === "foreground" &&
+		chromaOf(color) >= ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma &&
+		requirement?.requiredRole !== "foreground"
+	const baseline = placedRole === "foreground" && !chromaticWithoutForegroundEvidence
 		? 1
 		: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.accentIdentityCredit
 	if (requirement === undefined || requirement.requiredRole === "ambiguous") return baseline
@@ -225,6 +246,43 @@ function chromaticDistance(first: OKLab, second: OKLab): number {
 	return Math.hypot(first[1] - second[1], first[2] - second[2])
 }
 
+function chromaOf([, a, b]: OKLab): number {
+	return Math.hypot(a, b)
+}
+
+function hueDifferenceDegrees(first: OKLab, second: OKLab): number {
+	const difference = Math.abs(Math.atan2(first[2], first[1]) - Math.atan2(second[2], second[1])) * 180 / Math.PI
+	return difference > 180 ? 360 - difference : difference
+}
+
+/**
+ * How much distinct chromatic identity a set of credited colors carries. A direction has to be
+ * chromatic — a neutral restates whatever the rest of the palette already says — and two colors of
+ * the same hue are one direction however differently they are mixed, so a treatment cannot spend
+ * two roles on one hue and be credited twice for it (the reviewer's `skap` note). Each surviving
+ * direction counts in proportion to how saturated it is, because a barely chromatic family is
+ * barely an identity direction.
+ */
+function identityDirections(
+	credited: ReadonlyArray<Readonly<{ color: OKLab; credit: number }>>,
+	established: readonly OKLab[],
+): Readonly<{ strength: number; credit: number }> {
+	const directions: OKLab[] = established.filter((color) =>
+		chromaOf(color) >= ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma)
+	let strength = 0
+	let credit = 0
+	for (const entry of credited) {
+		if (chromaOf(entry.color) < ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma) continue
+		if (directions.some((direction) => hueDifferenceDegrees(direction, entry.color) <
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionHueDegrees)) continue
+		directions.push(entry.color)
+		strength += clamp(chromaOf(entry.color) /
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionFullChroma)
+		credit += entry.credit
+	}
+	return { strength, credit }
+}
+
 /**
  * The greatest identity credit any one complete treatment could carry: a treatment owns two
  * identity-bearing roles (foreground and a distinct accent), so the two strongest obligations
@@ -246,6 +304,7 @@ function identityEvaluation(
 ): Readonly<{
 	coverage: number
 	gain: number
+	authorizedGain: number
 	roles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 }> {
 	const obligations = identity.obligations
@@ -257,32 +316,102 @@ function identityEvaluation(
 	// which reads as a redundant palette and, on genuinely two-color artwork, as a reason to
 	// break a correct collapse. Identity directions are chromatic: a second near-neutral, however
 	// much lighter or darker, restates the direction the foreground already carries.
-	const identityBearingAccent = !treatment.collapse.accent &&
-		okDistance(treatment.foreground.oklab, treatment.accent.oklab) >=
+	const distinctRoles = (first: OKLab, second: OKLab): boolean =>
+		okDistance(first, second) >=
 			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityRoleSeparation &&
-		chromaticDistance(treatment.foreground.oklab, treatment.accent.oklab) >=
+		chromaticDistance(first, second) >=
 			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityChromaticSeparation
+	const identityBearingAccent = !treatment.collapse.accent &&
+		distinctRoles(treatment.foreground.oklab, treatment.accent.oklab)
+	// A surface that is a real second field color carries identity exactly as an accent does: the
+	// artwork's family is on screen, in a role the treatment chose for it. The same distinctness
+	// gate applies against the background, so a surface that only restates the background earns
+	// nothing — that is the arrangement human review rejected on `meteora`.
+	// ...and only when the surface is a chromatic direction in its own right. A surface that is
+	// merely a lighter or darker shade of the field is a field variation, not a second identity the
+	// artwork shows, and crediting those overrides field-ranking decisions that are not this
+	// objective's to make.
+	const identityBearingSurface = !treatment.collapse.surface &&
+		distinctRoles(treatment.background.oklab, treatment.surface.oklab) &&
+		chromaOf(treatment.surface.oklab) >=
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma
+	// Moving a family out of the foreground is a foreground claim by whatever replaces it, and it
+	// has to be justified as one. Without this, a hue-novel family is worth more as an accent than
+	// as the foreground — an incentive to demote the artwork's own text out of the text role, which
+	// human review rejected on `krafty` ("the text of the artwork is Golden Mango, so the foreground
+	// of the palette should also be golden mango"). Authority is therefore withheld from a
+	// non-foreground placement whose family has materially stronger foreground evidence than the
+	// family the treatment actually made its foreground.
+	const foregroundEvidenceOf = (familyId: string): number => requiredRole(familyId)?.foregroundEvidence ?? 0
+	const placedForegroundEvidence = foregroundEvidenceOf(treatment.familyRoles.foreground)
+	const demotesBetterText = (familyId: string): boolean =>
+		foregroundEvidenceOf(familyId) > placedForegroundEvidence +
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityForegroundClaimMargin
 	let numerator = 0
-	const roles: Array<{ familyId: string; role: "foreground" | "accent"; credit: number }> = []
+	const credited: Array<{ color: OKLab; credit: number }> = []
+	const roles: Array<{ familyId: string; role: "foreground" | "accent" | "surface"; credit: number }> = []
+	const credit = (
+		familyId: string,
+		role: "foreground" | "accent" | "surface",
+		value: number,
+		color: OKLab,
+	): void => {
+		const weight = priorityWeight(obligations.find((obligation) => obligation.familyId === familyId)!.priority)
+		numerator += weight * value
+		// The foreground is the reading surface, not where an artwork's color identity lives: every
+		// treatment human review has preferred carries its chromatic identity in the field and the
+		// accent while the text stays near-neutral. A colored foreground therefore earns ordinary
+		// coverage but never authority.
+		if (role !== "foreground" && !demotesBetterText(familyId)) {
+			credited.push({ color, credit: weight * value })
+		}
+		roles.push({ familyId, role, credit: value })
+	}
 	for (const obligation of obligations) {
-		const weight = priorityWeight(obligation.priority)
+		const requirement = requiredRole(obligation.familyId)
 		if (treatment.familyRoles.foreground === obligation.familyId) {
-			const credit = placementCredit(requiredRole(obligation.familyId), "foreground")
-			numerator += weight * credit
-			roles.push({ familyId: obligation.familyId, role: "foreground", credit })
+			credit(obligation.familyId, "foreground",
+				placementCredit(requirement, "foreground", treatment.foreground.oklab),
+				treatment.foreground.oklab)
 		} else if (identityBearingAccent && treatment.familyRoles.accent === obligation.familyId) {
-			const credit = placementCredit(requiredRole(obligation.familyId), "accent")
-			numerator += weight * credit
-			roles.push({ familyId: obligation.familyId, role: "accent", credit })
+			credit(obligation.familyId, "accent",
+				placementCredit(requirement, "accent", treatment.accent.oklab),
+				treatment.accent.oklab)
+		} else if (identityBearingSurface && treatment.familyRoles.surface === obligation.familyId) {
+			credit(obligation.familyId, "surface",
+				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.surfaceIdentityCredit,
+				treatment.surface.oklab)
 		}
 	}
 	const coverage = denominator === 0 ? 0 : clamp(numerator / denominator)
+	// Authority is the only thing that lets the identity objective outweigh a larger quality
+	// margin, and it is earned by one thing only: carrying distinct, genuinely chromatic identity
+	// directions in the palette's roles. Coverage alone never earns it — a treatment that covers
+	// obligations with neutrals, or spends two roles on one hue, gets the ordinary gain. Role
+	// agreement deliberately does not grant authority: it is available to a palette that merely
+	// repeats one direction, which is how the two-near-white `johns` treatment used to win.
+	// Directions are counted against the whole palette, not just against each other: an accent that
+	// repeats the hue the field already shows adds no identity, it restates it. This is the
+	// reviewer's `skap` principle — two roles on one hue is paying twice for one direction.
+	const creditedColors = new Set(credited.map(({ color }) => color))
+	const established = ([
+		treatment.background.oklab,
+		treatment.surface.oklab,
+		treatment.accent.oklab,
+	] as const).filter((color) => !creditedColors.has(color))
+	const directions = identityDirections(credited, established)
+	const authority = clamp(directions.strength /
+		Math.max(1, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionAuthorityTarget))
+	// Only the coverage the chromatic directions themselves carry is authorized. Coverage earned by
+	// a neutral role standing beside one chromatic role is ordinary coverage: it must not lend its
+	// weight to the authority that lets identity overturn a quality margin.
+	const authorizedCoverage = denominator === 0 ? 0 : clamp(directions.credit / denominator)
+	const authorizedGain = authorizedCoverage *
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.authorizedIdentityGain * authority
 	return {
 		coverage,
-		gain: Math.min(
-			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain,
-			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain * coverage,
-		),
+		gain: coverage * ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain + authorizedGain,
+		authorizedGain,
 		roles,
 	}
 }
@@ -341,6 +470,7 @@ function evaluateTreatment(
 		qualityUtility: utility,
 		identityCoverage: identity.coverage,
 		identityGain: identity.gain,
+		identityAuthorizedGain: identity.authorizedGain,
 		relationUtility: utility + identity.gain,
 		identityRoles: identity.roles,
 		paretoMember: false,

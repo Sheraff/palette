@@ -43,6 +43,21 @@ export const WINNER_RANKING_HYPOTHESES = Object.freeze({
 	 */
 	identityAuthority: false,
 	/**
+	 * The same two defects as `identityAuthority`, but the authority is earned
+	 * rather than assumed. Raw coverage counts any obligation carried in any
+	 * role, so it is equally available to a treatment that covers two
+	 * near-neutral obligations, or spends two roles on one hue — measured to
+	 * produce a light-grey-on-near-white `johns` and to break `black`'s reviewed
+	 * two-colour collapse. `base-scoring.ts` therefore separates the *authorized*
+	 * part of the identity gain: the coverage carried by distinct, genuinely
+	 * chromatic identity directions, counted against the whole palette. Only
+	 * that part guards domination and decides the utility band here.
+	 *
+	 * Alternative to `identityAuthority`, not a companion: with both enabled the
+	 * looser rule would re-admit exactly what this one excludes.
+	 */
+	authorizedIdentity: true,
+	/**
 	 * A collapsed surface has no surface to be faithful about: its
 	 * `surfaceFidelity` is `1 - surfaceOpportunity`, a statement about the
 	 * distinct-surface alternatives available to its *background family*, not
@@ -312,6 +327,7 @@ export type WinnerEvaluation = Readonly<{
 	qualityUtility: number
 	identityCoverage: number
 	identityGain: number
+	identityAuthorizedGain: number
 	identityRoles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 	relationUtility: number
 	paretoMember: boolean
@@ -565,7 +581,8 @@ function evaluateTreatment(
 		) as Record<WinnerQualityAxis, number>,
 		qualityUtility: utility,
 		identityCoverage: wave1.identityCoverage,
-		identityGain: identityGain,
+		identityGain,
+		identityAuthorizedGain: wave1.identityAuthorizedGain,
 		identityRoles: wave1.identityRoles,
 		relationUtility: utility + identityGain,
 		paretoMember: false,
@@ -573,6 +590,17 @@ function evaluateTreatment(
 	}
 }
 
+/**
+ * Carried artwork identity is a dimension of the partial order, not a tiebreak inside it. Without
+ * this a treatment that carries a major identity direction can be dominated on the quality axes
+ * alone and never reach the frontier, so no amount of identity evidence can ever select it — the
+ * measured reason the reviewed `vvbrown` yellow accent could not win. The dimension is the
+ * authority-scaled identity gain, so only identity that is chromatic and hue-distinct protects a
+ * candidate from domination; coverage by neutrals or by one hue twice does not.
+ *
+ * This composes with quality-axis work: it adds a dimension beside the axes and changes none of
+ * them.
+ */
 function dominates(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
@@ -581,6 +609,12 @@ function dominates(
 	if (WINNER_RANKING_HYPOTHESES.identityAuthority) {
 		if (first.identityCoverage < second.identityCoverage) return false
 		if (first.identityCoverage > second.identityCoverage) strictlyBetter = true
+	}
+	if (WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
+		const authorized = (evaluation: WinnerEvaluation): number =>
+			utilityLevel(evaluation.identityAuthorizedGain)
+		if (authorized(first) < authorized(second)) return false
+		if (authorized(first) > authorized(second)) strictlyBetter = true
 	}
 	for (const axis of WINNER_QUALITY_AXES) {
 		if (first.evidenceLevels[axis] < second.evidenceLevels[axis]) return false
@@ -606,13 +640,24 @@ function compareEvaluations(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
 ): number {
-	let comparison = WINNER_RANKING_HYPOTHESES.identityAuthority
-		? compareDescending(utilityLevel(first.relationUtility), utilityLevel(second.relationUtility)) ||
-			compareDescending(first.identityCoverage, second.identityCoverage) ||
-			compareDescending(utilityLevel(first.qualityUtility), utilityLevel(second.qualityUtility))
-		: compareDescending(utilityLevel(first.relationUtility), utilityLevel(second.relationUtility)) ||
-			compareDescending(utilityLevel(first.qualityUtility), utilityLevel(second.qualityUtility)) ||
-			compareDescending(first.identityGain, second.identityGain)
+	// Inside one utility band the order otherwise falls back to `qualityUtility`, which excludes
+	// identity and therefore reverses the preference. `identityAuthority` makes raw coverage
+	// decide that band; `authorizedIdentity` makes only the authorized part decide it, so a
+	// treatment cannot win the band by covering obligations with neutrals or with one hue twice.
+	let comparison = compareDescending(utilityLevel(first.relationUtility), utilityLevel(second.relationUtility))
+	if (comparison === 0 && WINNER_RANKING_HYPOTHESES.identityAuthority) {
+		comparison = compareDescending(first.identityCoverage, second.identityCoverage)
+	}
+	if (comparison === 0 && WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
+		comparison = compareDescending(utilityLevel(first.identityAuthorizedGain),
+			utilityLevel(second.identityAuthorizedGain))
+	}
+	if (comparison === 0) {
+		comparison = compareDescending(utilityLevel(first.qualityUtility), utilityLevel(second.qualityUtility))
+	}
+	if (comparison === 0 && !WINNER_RANKING_HYPOTHESES.identityAuthority) {
+		comparison = compareDescending(first.identityGain, second.identityGain)
+	}
 	if (comparison !== 0) return comparison
 	if (BAND_TIE_BREAK === "raw-utility-first" ||
 		(BAND_TIE_BREAK === "same-family-raw-utility" && sameFamilyAssignment(first.treatment, second.treatment))) {

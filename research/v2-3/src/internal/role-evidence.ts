@@ -14,6 +14,10 @@ export type FamilyRoleRequirement = Readonly<{
 	fieldHypothesisId: string
 	requiredRole: FamilyRolePreference
 	confidence: number
+	/** The classifier's field-conditional foreground score: how much this family looks like the
+	 * artwork's text under this field. Carried for every family, not only obligation families,
+	 * because the identity objective has to compare a proposed foreground against the incumbent. */
+	foregroundEvidence: number
 }>
 
 export type RoleEvidence = Readonly<{
@@ -53,14 +57,16 @@ export function buildRoleEvidence(
 	const wanted = new Set(requirementFamilyIds)
 	const requirements = new Map<string, FamilyRoleRequirement>()
 	for (const candidate of classified) {
-		if (!wanted.has(candidate.familyId)) continue
 		const key = `${candidate.familyId}\0${candidate.fieldHypothesisId}`
 		if (requirements.has(key)) continue
 		requirements.set(key, {
 			familyId: candidate.familyId,
 			fieldHypothesisId: candidate.fieldHypothesisId,
-			requiredRole: candidate.fieldOwned ? "ambiguous" : candidate.preference,
-			confidence: candidate.confidence,
+			requiredRole: wanted.has(candidate.familyId) && !candidate.fieldOwned
+				? candidate.preference
+				: "ambiguous",
+			confidence: wanted.has(candidate.familyId) ? candidate.confidence : 0,
+			foregroundEvidence: candidate.foreground.score,
 		})
 	}
 	return {
