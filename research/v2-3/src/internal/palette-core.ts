@@ -192,7 +192,7 @@ export type NativePaletteEvidence = Readonly<{
 
 export type BackgroundFieldDomainEvidence = Readonly<{
 	id: string
-	kind: "connected" | "paired-corridor"
+	kind: "connected" | "paired-corridor" | "diffuse-composite"
 	sourceDomainIds: readonly string[]
 	startPixelIndex: number
 	population: number
@@ -582,6 +582,14 @@ const MINIMUM_DISTINCT_DISTANCE = 0.018
 const GRID_SIZE = 12
 
 const RANKING_EVIDENCE_RESOLUTION = 0.04
+
+// A diffuse or multiscale continuous field is shattered by grain, texture, and wide
+// progression into many perceptual families, most of which fall outside the ranked field
+// lane. A fragment of such a field is *embedded* in it: nearly its whole inter-family
+// boundary is a low-contrast adjacency to the field. A separate object, a stripe, or a
+// hard region is not, because it meets the field across a step the anchor radius rejects.
+// This fraction is the admission test for field-composite membership.
+const FIELD_COMPOSITE_EMBEDDED_BOUNDARY_FRACTION = 0.75
 
 type NativeEvidenceOptions = Readonly<{
 	familyBinStep: number
@@ -1475,6 +1483,37 @@ export function buildNativePaletteEvidence(
 	}
 }
 
+// Families that are field evidence for *domain membership only*: the ranked field lane
+// plus every family transitively reachable from it across low-contrast adjacencies that
+// carry the overwhelming majority of that family's boundary. This never enters lane
+// ranking, role assignment, or obligation selection — it only lets a continuous field
+// that fragmented below the lane cut-off be walked as one region.
+function fieldCompositeFamilyIds(evidence: NativePaletteEvidence): Set<string> {
+	const members = new Set(evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? [])
+	const totalBoundary = new Map<string, number>()
+	for (const { firstFamilyId, secondFamilyId, boundaryEdges } of evidence.adjacencies) {
+		totalBoundary.set(firstFamilyId, (totalBoundary.get(firstFamilyId) ?? 0) + boundaryEdges)
+		totalBoundary.set(secondFamilyId, (totalBoundary.get(secondFamilyId) ?? 0) + boundaryEdges)
+	}
+	const smooth = evidence.adjacencies.filter(({ meanContrast }) => meanContrast <= evidence.familyAnchorRadius)
+	for (;;) {
+		const memberBoundary = new Map<string, number>()
+		for (const { firstFamilyId, secondFamilyId, boundaryEdges } of smooth) {
+			for (const [inside, outside] of [[firstFamilyId, secondFamilyId], [secondFamilyId, firstFamilyId]] as const) {
+				if (!members.has(inside) || members.has(outside)) continue
+				memberBoundary.set(outside, (memberBoundary.get(outside) ?? 0) + boundaryEdges)
+			}
+		}
+		const additions = [...memberBoundary.entries()]
+			.filter(([familyId, edges]) =>
+				edges / Math.max(1, totalBoundary.get(familyId) ?? 0) >= FIELD_COMPOSITE_EMBEDDED_BOUNDARY_FRACTION)
+			.map(([familyId]) => familyId)
+			.sort(compareAscii)
+		if (additions.length === 0) return members
+		for (const familyId of additions) members.add(familyId)
+	}
+}
+
 function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): BackgroundFieldDomain[] {
 	const fieldIds = new Set(evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? [])
 	const smoothAdjacencies = new Set(evidence.adjacencies
@@ -1484,107 +1523,143 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 	for (const family of evidence.families) {
 		for (const component of family.components) componentAtStart.set(component.startPixelIndex, component.id)
 	}
-	const visited = new Uint8Array(evidence.pixelCount)
+	let visited = new Uint8Array(evidence.pixelCount)
 	const queue = new Int32Array(evidence.pixelCount)
 	const domains: BackgroundFieldDomain[] = []
 	const cornerWidth = Math.max(1, Math.ceil(evidence.width * 0.15))
 	const cornerHeight = Math.max(1, Math.ceil(evidence.height * 0.15))
 	const cornerPopulation = cornerWidth * cornerHeight
-	for (let start = 0; start < evidence.pixelCount; start++) {
-		const startFamily = evidence.families[evidence.familyAt[start]]
-		if (visited[start] || !fieldIds.has(startFamily.id)) continue
-		let queueRead = 0
-		let queueLength = 1
-		queue[0] = start
-		visited[start] = 1
-		let borderPixels = 0
-		let quadrants = 0
-		let sumX = 0
-		let sumY = 0
-		let sumL = 0
-		let sumA = 0
-		let sumB = 0
-		const cornerCounts = [0, 0, 0, 0]
-		const familyPopulations = new Map<string, number>()
-		const componentIds = new Set<string>()
-		while (queueRead < queueLength) {
-			const pixelIndex = queue[queueRead++]
-			const x = pixelIndex % evidence.width
-			const y = Math.floor(pixelIndex / evidence.width)
-			const family = evidence.families[evidence.familyAt[pixelIndex]]
-			const lab = labAt(evidence.labs, pixelIndex)
-			sumX += x / Math.max(1, evidence.width - 1)
-			sumY += y / Math.max(1, evidence.height - 1)
-			sumL += lab[0]
-			sumA += lab[1]
-			sumB += lab[2]
-			familyPopulations.set(family.id, (familyPopulations.get(family.id) ?? 0) + 1)
-			const componentId = componentAtStart.get(pixelIndex)
-			if (componentId) componentIds.add(componentId)
-			if (x === 0 || y === 0 || x === evidence.width - 1 || y === evidence.height - 1) borderPixels += 1
-			quadrants |= 1 << ((x >= evidence.width / 2 ? 1 : 0) + (y >= evidence.height / 2 ? 2 : 0))
-			if (x < cornerWidth && y < cornerHeight) cornerCounts[0] += 1
-			if (x >= evidence.width - cornerWidth && y < cornerHeight) cornerCounts[1] += 1
-			if (x < cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[2] += 1
-			if (x >= evidence.width - cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[3] += 1
-			const neighbors = [
-				x > 0 ? pixelIndex - 1 : -1,
-				x + 1 < evidence.width ? pixelIndex + 1 : -1,
-				y > 0 ? pixelIndex - evidence.width : -1,
-				y + 1 < evidence.height ? pixelIndex + evidence.width : -1,
-			]
-			for (const neighbor of neighbors) {
-				if (neighbor < 0 || visited[neighbor]) continue
-				const neighborFamily = evidence.families[evidence.familyAt[neighbor]]
-				if (!fieldIds.has(neighborFamily.id)) continue
-				const sameFamily = family.id === neighborFamily.id
-				const adjacencyKey = [family.id, neighborFamily.id].sort(compareAscii).join(":")
-				if (!sameFamily && (
-					!smoothAdjacencies.has(adjacencyKey) ||
-					okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)) > evidence.familyAnchorRadius
-				)) continue
-				visited[neighbor] = 1
-				queue[queueLength++] = neighbor
+	// Pass one walks the ranked field lane and is byte-identical to the single-pass
+	// behaviour. Pass two walks the field composite and only ever *adds* domains the lane
+	// walk could not reach; every lane domain is preserved unchanged.
+	const composite = fieldCompositeFamilyIds(evidence)
+	const passes: Array<Readonly<{ members: ReadonlySet<string>; kind: "connected" | "diffuse-composite"; prefix: string }>> = [
+		{ members: fieldIds, kind: "connected", prefix: "field-domain" },
+	]
+	if (composite.size > fieldIds.size) {
+		passes.push({ members: composite, kind: "diffuse-composite", prefix: "diffuse-field-domain" })
+	}
+	let laneDomainCount = 0
+	const laneShapes = new Set<string>()
+	// Pixels already covered by a field the lane walk proposes on its own. The composite
+	// walk exists to rescue fields that are otherwise unproposable, not to enlarge fields
+	// that are already proposed, so a composite region overlapping one of these is dropped.
+	const laneProposedAt = new Uint8Array(evidence.pixelCount)
+	for (const pass of passes) {
+		const memberIds = pass.members
+		if (pass.kind === "diffuse-composite") {
+			for (const { evidence: domain, pixelIndexes } of domains) {
+				if (!domain.eligible) continue
+				for (const pixelIndex of pixelIndexes) laneProposedAt[pixelIndex] = 1
+			}
+			visited = new Uint8Array(evidence.pixelCount)
+		}
+		for (let start = 0; start < evidence.pixelCount; start++) {
+			const startFamily = evidence.families[evidence.familyAt[start]]
+			if (visited[start] || !memberIds.has(startFamily.id)) continue
+			let queueRead = 0
+			let queueLength = 1
+			queue[0] = start
+			visited[start] = 1
+			let borderPixels = 0
+			let quadrants = 0
+			let sumX = 0
+			let sumY = 0
+			let sumL = 0
+			let sumA = 0
+			let sumB = 0
+			const cornerCounts = [0, 0, 0, 0]
+			const familyPopulations = new Map<string, number>()
+			const componentIds = new Set<string>()
+			let overlapsLaneProposal = false
+			while (queueRead < queueLength) {
+				const pixelIndex = queue[queueRead++]
+				if (laneProposedAt[pixelIndex]) overlapsLaneProposal = true
+				const x = pixelIndex % evidence.width
+				const y = Math.floor(pixelIndex / evidence.width)
+				const family = evidence.families[evidence.familyAt[pixelIndex]]
+				const lab = labAt(evidence.labs, pixelIndex)
+				sumX += x / Math.max(1, evidence.width - 1)
+				sumY += y / Math.max(1, evidence.height - 1)
+				sumL += lab[0]
+				sumA += lab[1]
+				sumB += lab[2]
+				familyPopulations.set(family.id, (familyPopulations.get(family.id) ?? 0) + 1)
+				const componentId = componentAtStart.get(pixelIndex)
+				if (componentId) componentIds.add(componentId)
+				if (x === 0 || y === 0 || x === evidence.width - 1 || y === evidence.height - 1) borderPixels += 1
+				quadrants |= 1 << ((x >= evidence.width / 2 ? 1 : 0) + (y >= evidence.height / 2 ? 2 : 0))
+				if (x < cornerWidth && y < cornerHeight) cornerCounts[0] += 1
+				if (x >= evidence.width - cornerWidth && y < cornerHeight) cornerCounts[1] += 1
+				if (x < cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[2] += 1
+				if (x >= evidence.width - cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[3] += 1
+				const neighbors = [
+					x > 0 ? pixelIndex - 1 : -1,
+					x + 1 < evidence.width ? pixelIndex + 1 : -1,
+					y > 0 ? pixelIndex - evidence.width : -1,
+					y + 1 < evidence.height ? pixelIndex + evidence.width : -1,
+				]
+				for (const neighbor of neighbors) {
+					if (neighbor < 0 || visited[neighbor]) continue
+					const neighborFamily = evidence.families[evidence.familyAt[neighbor]]
+					if (!memberIds.has(neighborFamily.id)) continue
+					const sameFamily = family.id === neighborFamily.id
+					const adjacencyKey = [family.id, neighborFamily.id].sort(compareAscii).join(":")
+					if (!sameFamily && (
+						!smoothAdjacencies.has(adjacencyKey) ||
+						okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)) > evidence.familyAnchorRadius
+					)) continue
+					visited[neighbor] = 1
+					queue[queueLength++] = neighbor
+				}
+			}
+			const populationFraction = queueLength / evidence.pixelCount
+			const ownedCornerCount = cornerCounts.filter((count) => count >= cornerPopulation * 0.5).length
+			const weightedFieldScore = [...familyPopulations.entries()].reduce((sum, [familyId, population]) =>
+				sum + familyById(evidence, familyId).fieldScore * population, 0) / queueLength
+			const rejectionReasons: string[] = []
+			if (populationFraction < 0.08) rejectionReasons.push("field domain population below 0.08")
+			if (ownedCornerCount < 2) rejectionReasons.push("field domain owns fewer than two native corner fields")
+			if (weightedFieldScore < 0.35) rejectionReasons.push("field domain weighted field score below 0.35")
+			const perimeter = Math.max(1, evidence.width * 2 + evidence.height * 2 - 4)
+			const quadrantCoverage = ((quadrants & 1 ? 1 : 0) + (quadrants & 2 ? 1 : 0) +
+				(quadrants & 4 ? 1 : 0) + (quadrants & 8 ? 1 : 0)) / 4
+			const domainEvidence: BackgroundFieldDomainEvidence = {
+				id: `${pass.prefix}-${start}`,
+				kind: pass.kind,
+				sourceDomainIds: [],
+				startPixelIndex: start,
+				population: queueLength,
+				populationFraction,
+				borderPixels,
+				borderCoverage: clamp(borderPixels / perimeter),
+				quadrantCoverage,
+				ownedCornerCount,
+				weightedFieldScore,
+				centroid: [sumX / queueLength, sumY / queueLength],
+				meanColor: [sumL / queueLength, sumA / queueLength, sumB / queueLength],
+				transitionFamilyCount: 0,
+				transitionPopulationFraction: 0,
+				transitionQuadrantCoverage: 0,
+				familyIds: [...familyPopulations.keys()].sort(compareAscii),
+				componentIds: [...componentIds].sort(compareAscii),
+				eligible: rejectionReasons.length === 0,
+				rejectionReasons,
+			}
+			const shape = `${start}:${queueLength}`
+			if (pass.kind === "connected") laneShapes.add(shape)
+			// A composite domain that reproduces a lane domain exactly, or that covers a field
+			// the lane walk already proposes, carries no new evidence.
+			const redundant = pass.kind === "diffuse-composite" && (laneShapes.has(shape) || overlapsLaneProposal)
+			if (componentIds.size > 0 && !redundant) {
+				domains.push({ evidence: domainEvidence, pixelIndexes: Uint32Array.from(queue.subarray(0, queueLength)) })
 			}
 		}
-		const populationFraction = queueLength / evidence.pixelCount
-		const ownedCornerCount = cornerCounts.filter((count) => count >= cornerPopulation * 0.5).length
-		const weightedFieldScore = [...familyPopulations.entries()].reduce((sum, [familyId, population]) =>
-			sum + familyById(evidence, familyId).fieldScore * population, 0) / queueLength
-		const rejectionReasons: string[] = []
-		if (populationFraction < 0.08) rejectionReasons.push("field domain population below 0.08")
-		if (ownedCornerCount < 2) rejectionReasons.push("field domain owns fewer than two native corner fields")
-		if (weightedFieldScore < 0.35) rejectionReasons.push("field domain weighted field score below 0.35")
-		const perimeter = Math.max(1, evidence.width * 2 + evidence.height * 2 - 4)
-		const quadrantCoverage = ((quadrants & 1 ? 1 : 0) + (quadrants & 2 ? 1 : 0) +
-			(quadrants & 4 ? 1 : 0) + (quadrants & 8 ? 1 : 0)) / 4
-		const domainEvidence: BackgroundFieldDomainEvidence = {
-			id: `field-domain-${start}`,
-			kind: "connected",
-			sourceDomainIds: [],
-			startPixelIndex: start,
-			population: queueLength,
-			populationFraction,
-			borderPixels,
-			borderCoverage: clamp(borderPixels / perimeter),
-			quadrantCoverage,
-			ownedCornerCount,
-			weightedFieldScore,
-			centroid: [sumX / queueLength, sumY / queueLength],
-			meanColor: [sumL / queueLength, sumA / queueLength, sumB / queueLength],
-			transitionFamilyCount: 0,
-			transitionPopulationFraction: 0,
-			transitionQuadrantCoverage: 0,
-			familyIds: [...familyPopulations.keys()].sort(compareAscii),
-			componentIds: [...componentIds].sort(compareAscii),
-			eligible: rejectionReasons.length === 0,
-			rejectionReasons,
-		}
-		if (componentIds.size > 0) {
-			domains.push({ evidence: domainEvidence, pixelIndexes: Uint32Array.from(queue.subarray(0, queueLength)) })
-		}
+		if (pass.kind === "connected") laneDomainCount = domains.length
 	}
-	const connectedDomains = [...domains]
+	// Paired corridors are seeded from the lane pass alone, so the corridor set is exactly
+	// what the single-pass build produced.
+	const connectedDomains = domains.slice(0, laneDomainCount)
 	const pairSeeds = connectedDomains
 		.filter(({ evidence: domain }) =>
 			domain.populationFraction >= 0.08 &&
