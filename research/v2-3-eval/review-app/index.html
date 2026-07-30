@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Blinded palette comparison</title>
+	<link rel="stylesheet" href="/styles.css">
+	<script type="module" src="/app.js"></script>
+</head>
+<body>
+	<header class="masthead">
+		<div>
+			<p class="eyebrow">v2-3 development review</p>
+			<h1>Two treatments.<br>One artwork.</h1>
+		</div>
+		<div class="instructions">
+			<p>Compare the complete artwork-driven interfaces. Algorithm identity is hidden.</p>
+			<p>All review chrome is monochrome. Color appears only inside each treatment.</p>
+		</div>
+	</header>
+	<div class="review-progress">
+		<span id="batch-name">Loading batch</span>
+		<output id="progress" role="status" aria-live="polite">Loading...</output>
+	</div>
+	<main id="review"></main>
+	<footer class="submission">
+		<button id="submit" type="button" disabled>Submit review</button>
+		<output id="submit-status" role="status" aria-live="polite">Answer every item to enable submission.</output>
+	</footer>
+</body>
+</html>
