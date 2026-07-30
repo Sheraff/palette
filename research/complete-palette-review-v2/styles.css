@@ -470,4 +470,13 @@ textarea {
 	.role-entry:nth-child(4) {
 		border-top: 1px solid #fff;
 	}
+
+	.research-render-custody {
+		grid-template-columns: 28px minmax(0, 1fr);
+	}
+
+	.research-render-color,
+	.research-render-custody > span:last-child {
+		grid-column: 2;
+	}
 }

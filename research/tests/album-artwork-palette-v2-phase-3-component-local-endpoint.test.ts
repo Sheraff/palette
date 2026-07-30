@@ -2,9 +2,11 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import {
 	buildNativePaletteEvidence,
+	completeTreatmentKey,
 	diagnoseGradientFits,
 } from "../src/album-artwork-palette-v2.ts"
 import type {
+	CompletePaletteTreatment,
 	GradientFitDiagnostic,
 	NativePaletteEvidence,
 } from "../src/album-artwork-palette-v2.ts"
@@ -15,7 +17,9 @@ import {
 import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY,
+	applyAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint,
 	decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation,
+	proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint,
 } from "../src/album-artwork-palette-v2-phase-3-parallel-arms.ts"
 import type {
 	AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate,
@@ -25,6 +29,9 @@ import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_REFINABLE_UPSTREAM_REASON,
 	buildBandLocalEndpointRefinements,
 } from "../src/album-artwork-palette-v2-phase-3-endpoint-refinement.ts"
+import {
+	extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails,
+} from "../src/album-artwork-palette-v2-phase-3-integrated-candidate.ts"
 import { oklabToRGB } from "../src/color.ts"
 import type { RawImage } from "../src/types.ts"
 
@@ -46,6 +53,66 @@ function field(pattern: EndpointPattern): RawImage {
 		}
 	}
 	return { width, height, data }
+}
+
+function transitionField(): RawImage {
+	const width = 48
+	const height = 32
+	const data = new Uint8Array(width * height * 3)
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const amount = x / (width - 1)
+			data.set([
+				Math.round(24 + 180 * amount),
+				Math.round(52 + 92 * amount),
+				Math.round(142 - 70 * amount),
+			], (y * width + x) * 3)
+		}
+	}
+	return { width, height, data }
+}
+
+function oneTreatmentFlatDetails() {
+	const details = extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(transitionField())
+	const sourceWinner = details.result.winner
+	const sourceKey = completeTreatmentKey(sourceWinner)
+	assert.equal(sourceWinner.gradient, true)
+	const winner: CompletePaletteTreatment = {
+		...sourceWinner,
+		id: `component-endpoint-proposal-test-flat:${sourceWinner.id}`,
+		gradient: false,
+		fieldTreatment: "separate-flat-fields",
+		gradientEvidence: null,
+	}
+	const winnerKey = completeTreatmentKey(winner)
+	const sourceEvaluation = details.result.diagnostics.phase3IntegratedCandidate.selector.evaluations
+		.find(({ key }) => key === sourceKey)
+	assert.ok(sourceEvaluation)
+	const selector = {
+		...details.result.diagnostics.phase3IntegratedCandidate.selector,
+		evaluations: [
+			...details.result.diagnostics.phase3IntegratedCandidate.selector.evaluations,
+			{
+				...sourceEvaluation,
+				key: winnerKey,
+				gradientStatus: "not-applicable" as const,
+				structuralKey: `${sourceEvaluation.structuralKey}\0component-endpoint-proposal-test-flat`,
+			},
+		],
+	}
+	const result = {
+		...details.result,
+		winner,
+		alternatives: [winner],
+		diagnostics: {
+			...details.result.diagnostics,
+			phase3IntegratedCandidate: {
+				...details.result.diagnostics.phase3IntegratedCandidate,
+				selector,
+			},
+		},
+	}
+	return { ...details, result } as typeof details
 }
 
 function horizontalDiagnostic(evidence: NativePaletteEvidence): GradientFitDiagnostic {
@@ -180,6 +247,109 @@ test("refinable fits retain at most two additive families per endpoint band", ()
 	assert.ok(report.fits.every(({ bands }) => bands.every(({ additiveFamilies }) =>
 		additiveFamilies.every(({ component }) => component.modeFraction >= 0 && component.modeFraction <= 1 &&
 			component.modeFraction === component.population / component.neighborhoodPopulation))))
+})
+
+test("proposal-only endpoint evaluation is independent of legacy tail capacity and leaves integrated custody untouched", () => {
+	const details = oneTreatmentFlatDetails()
+	const integratedWinner = details.result.winner
+	const integratedSlate = details.result.alternatives
+	const integratedWinnerBefore = structuredClone(integratedWinner)
+	const integratedSlateBefore = structuredClone(integratedSlate)
+	const standaloneBefore = applyAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details)
+
+	const result = proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details)
+	const standaloneAfter = applyAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details)
+	const reservation = standaloneAfter.diagnostics.phase3ComponentLocalEndpoint.endpointSlateReservation
+	const winnerKey = completeTreatmentKey(integratedWinner)
+
+	assert.equal(details.result.alternatives.length, 1)
+	assert.ok(result.proposals.length > 1)
+	assert.equal(result.report.additiveFamilyCount > 0, true)
+	assert.strictEqual(result.baseline.winner, integratedWinner)
+	assert.equal(result.baseline.winnerKey, winnerKey)
+	assert.ok(result.baseline.winnerQualityUtility !== null)
+	assert.ok(result.augmentedFamilies.length > details.common.evidence.augmentedNative.families.length)
+	assert.ok(result.augmentedFields.length > details.sourcedFields.length)
+	assert.ok(result.selector.evaluations.some(({ key }) => key === winnerKey))
+	assert.equal(result.domain.supplementalOnlyMaterializedTreatmentCount,
+		result.materialization.supplementalOnly?.materializedTreatmentCount)
+	assert.ok(result.domain.evaluationMaterializedTreatmentCount >=
+		result.domain.baselineMaterializedTreatmentCount)
+	assert.equal(result.lineageEligibility.materializedCandidateCount,
+		result.domain.evaluationMaterializedTreatmentCount)
+
+	assert.equal(reservation.reservedKey, null)
+	assert.deepEqual(reservation.rejectionReasons, ["baseline-slate-has-no-replaceable-tail"])
+	assert.deepEqual(standaloneAfter.winner, details.result.winner)
+	assert.deepEqual(standaloneAfter.alternatives, details.result.alternatives)
+	assert.equal(JSON.stringify(standaloneAfter), JSON.stringify(standaloneBefore))
+	assert.strictEqual(details.result.winner, integratedWinner)
+	assert.strictEqual(details.result.alternatives, integratedSlate)
+	assert.deepEqual(details.result.winner, integratedWinnerBefore)
+	assert.deepEqual(details.result.alternatives, integratedSlateBefore)
+})
+
+test("all endpoint proposals retain supplemental and expanded custody in deterministic recovery-v2 order", () => {
+	const details = oneTreatmentFlatDetails()
+	const first = proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details)
+	const baselineKeys = new Set(details.custodyMaterialized.map(({ key }) => key))
+	const eligibleDiagnosticKeys = first.candidateDiagnostics
+		.filter(({ eligible }) => eligible)
+		.map(({ key }) => key)
+
+	assert.deepEqual(first.proposals.map(({ key }) => key), eligibleDiagnosticKeys)
+	assert.ok(first.proposals.every((proposal) =>
+		proposal.key === completeTreatmentKey(proposal.treatment) &&
+		proposal.key === proposal.evaluation.key &&
+		proposal.key === proposal.candidateDiagnostic.key &&
+		proposal.key === proposal.custody.mechanism.key &&
+		proposal.key === proposal.custody.expandedDomain.key &&
+		proposal.treatment === proposal.evaluation.treatment &&
+		proposal.treatment.gradient &&
+		proposal.evaluation.gradientStatus === "earned-rendered" &&
+		proposal.candidateDiagnostic.completeLineageEligible &&
+		Object.values(proposal.candidateDiagnostic.gates).every(Boolean) &&
+		proposal.candidateDiagnostic.qualityLossFromBaselineWinner !== null &&
+		proposal.candidateDiagnostic.qualityLossFromBaselineWinner <=
+			first.policy.maximumQualityLoss + 1e-12 &&
+		proposal.provenance.supplementalOnlyMaterialized &&
+		proposal.provenance.canonicalBaselineKeyAbsent &&
+		proposal.provenance.componentLocalFieldHypothesisIds.length > 0 &&
+		proposal.custody.mechanism.descriptors.every(({ sourceType }) =>
+			sourceType === "field-proposal-v2") &&
+		!baselineKeys.has(proposal.key)))
+	assert.deepEqual(first.proposals.map(({ provenance }) => provenance.recoveryV2OrderIndex),
+		[...first.proposals.map(({ provenance }) => provenance.recoveryV2OrderIndex)]
+			.sort((left, right) => left - right))
+	assert.ok(first.candidateDiagnostics.some(({ eligible }) => !eligible))
+	assert.ok(first.candidateDiagnostics.some(({ rejectionReasons }) =>
+		rejectionReasons.includes("endpoint-candidate-is-in-canonical-baseline")))
+	assert.ok(first.candidateDiagnostics.every(({ eligible, key }) =>
+		eligible === first.proposals.some((proposal) => proposal.key === key)))
+
+	const permuted = {
+		...details,
+		sourcedFields: [...details.sourcedFields].reverse(),
+		custodyMaterialized: [...details.custodyMaterialized].reverse(),
+		common: {
+			...details.common,
+			seedAvailability: {
+				...details.common.seedAvailability,
+				identityObligations: [...details.common.seedAvailability.identityObligations].reverse(),
+			},
+		},
+	} as typeof details
+	const second = proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(permuted)
+	assert.deepEqual(second.candidateDiagnostics, first.candidateDiagnostics)
+	assert.deepEqual(second.proposals.map(({ key, provenance }) => ({
+		key,
+		recoveryV2OrderIndex: provenance.recoveryV2OrderIndex,
+		componentLocalFieldHypothesisIds: provenance.componentLocalFieldHypothesisIds,
+	})), first.proposals.map(({ key, provenance }) => ({
+		key,
+		recoveryV2OrderIndex: provenance.recoveryV2OrderIndex,
+		componentLocalFieldHypothesisIds: provenance.componentLocalFieldHypothesisIds,
+	})))
 })
 
 const BASELINE_SLATE = ["flat-winner", "baseline-middle", "baseline-tail"] as const

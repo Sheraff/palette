@@ -26,9 +26,6 @@ import {
 	reserveAlbumArtworkPaletteV2Phase3RawRelationSlateComplement,
 } from "./album-artwork-palette-v2-phase-3-arm-raw-relation-slate-complement.ts"
 import {
-	reserveAlbumArtworkPaletteV2Phase3SourceLightForeground,
-} from "./album-artwork-palette-v2-phase-3-arm-source-light-foreground-reserve.ts"
-import {
 	evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath,
 } from "./album-artwork-palette-v2-phase-3-arm-supported-gradient-path.ts"
 import type {
@@ -47,11 +44,15 @@ import {
 import {
 	materializeAlbumArtworkPaletteV2Phase3Descriptors,
 } from "./album-artwork-palette-v2-phase-3-materialization.ts"
+import type {
+	AlbumArtworkPaletteV2Phase3MaterializationDiagnostics,
+} from "./album-artwork-palette-v2-phase-3-materialization.ts"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V2_POLICY,
 	selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2,
 } from "./album-artwork-palette-v2-phase-3-recovery-selector-v2.ts"
 import type {
+	AlbumArtworkPaletteV2Phase3RecoverySelectorV2Evaluation,
 	AlbumArtworkPaletteV2Phase3RecoverySelectorV2Explanation,
 } from "./album-artwork-palette-v2-phase-3-recovery-selector-v2.ts"
 import type {
@@ -84,14 +85,20 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POL
 	candidateGradientRequirement: "earned-rendered",
 	candidateLineageRequirement: "complete-lineage-eligible",
 } as const)
+export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_PROPOSAL_POLICY = Object.freeze({
+	maximumQualityLoss:
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RECOVERY_SELECTOR_V2_POLICY.maximumSlateQualityLoss,
+	incumbentRequirement: "flat",
+	candidateGradientRequirement: "earned-rendered",
+	candidateLineageRequirement: "complete-lineage-eligible",
+	candidateProvenanceRequirement: "supplemental-component-local-endpoint",
+	canonicalBaselineRequirement: "absent",
+	ordering: "recovery-v2",
+} as const)
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTEMPT_ID =
 	"phase-3-raw-relation-slate-complement" as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_CONFIGURATION_ID =
 	"integrated-candidate-one-ordinary-raw-relation-complement-v1" as const
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID =
-	"phase-3-source-light-foreground-reserve" as const
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID =
-	"integrated-candidate-bounded-source-supported-light-foreground-reserve-v1" as const
 
 type IntegratedDetails = ReturnType<typeof extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails>
 
@@ -131,7 +138,7 @@ type ParallelArmOutput<TKey extends string, TRoot> = Omit<AlbumArtworkPaletteV2R
 	diagnostics: AlbumArtworkPaletteV2Result["diagnostics"] & Readonly<Record<TKey, TRoot>>
 }>
 
-function output<TKey extends string, TRoot>(
+export function buildAlbumArtworkPaletteV2Phase3ParallelArmOutput<TKey extends string, TRoot>(
 	details: IntegratedDetails,
 	identity: Readonly<{ attemptId: string; configurationId: string; diagnosticsKey: TKey }>,
 	winner: CompletePaletteTreatment,
@@ -238,7 +245,7 @@ export function extractAlbumArtworkPaletteV2Phase3SupportedGradientPath(image: R
 	const basis = strictVetoApplied && exactFlat !== null
 		? lineageBasis(details, winnerKey)
 		: details.selection.diagnostics.winnerLineageBasis
-	return output(details, {
+	return buildAlbumArtworkPaletteV2Phase3ParallelArmOutput(details, {
 		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SUPPORTED_GRADIENT_PATH_ATTEMPT_ID,
 		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SUPPORTED_GRADIENT_PATH_CONFIGURATION_ID,
 		diagnosticsKey: "phase3SupportedGradientPath",
@@ -286,7 +293,7 @@ export function applyAlbumArtworkPaletteV2Phase3ContrastiveRoleAssignment(detail
 	const incumbent = details.custodyMaterialized.find(({ key }) =>
 		key === completeTreatmentKey(details.result.winner))
 	if (!incumbent) {
-		return output(details, {
+		return buildAlbumArtworkPaletteV2Phase3ParallelArmOutput(details, {
 			attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_ATTEMPT_ID,
 			configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_CONFIGURATION_ID,
 			diagnosticsKey: "phase3ContrastiveRoleAssignment",
@@ -337,7 +344,7 @@ export function applyAlbumArtworkPaletteV2Phase3ContrastiveRoleAssignment(detail
 	const winner = selected?.treatment ?? details.result.winner
 	const winnerKey = completeTreatmentKey(winner)
 	const slate = winnerFirstSlate(winner, details.result.alternatives)
-	return output(details, {
+	return buildAlbumArtworkPaletteV2Phase3ParallelArmOutput(details, {
 		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_ATTEMPT_ID,
 		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_CONTRASTIVE_ROLE_ASSIGNMENT_CONFIGURATION_ID,
 		diagnosticsKey: "phase3ContrastiveRoleAssignment",
@@ -506,6 +513,112 @@ export type AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate = R
 	completeLineageEligible: boolean
 }>
 
+export type AlbumArtworkPaletteV2Phase3ComponentEndpointProposalRejectionReason =
+	"integrated-incumbent-is-gradient" |
+	"baseline-winner-quality-unavailable" |
+	"endpoint-candidate-is-not-gradient" |
+	"endpoint-candidate-gradient-is-not-earned" |
+	"endpoint-candidate-is-not-complete-lineage-eligible" |
+	"endpoint-candidate-exceeds-quality-loss-limit" |
+	"endpoint-candidate-lacks-supplemental-component-local-provenance" |
+	"endpoint-candidate-is-in-canonical-baseline"
+
+export type AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidate =
+	AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidate & Readonly<{
+		recoveryV2OrderIndex: number
+		supplementalComponentLocalProvenance: boolean
+		absentFromCanonicalBaseline: boolean
+	}>
+
+export type AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidateDiagnostic = Readonly<{
+	key: string
+	recoveryV2OrderIndex: number
+	gradient: boolean
+	gradientStatus: AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus
+	qualityUtility: number
+	completeLineageEligible: boolean
+	qualityLossFromBaselineWinner: number | null
+	gates: Readonly<{
+		integratedIncumbentFlat: boolean
+		baselineWinnerQualityAvailable: boolean
+		candidateIsGradient: boolean
+		candidateGradientIsEarned: boolean
+		candidateCompleteLineageEligible: boolean
+		candidateWithinQualityLossLimit: boolean
+		candidateHasSupplementalComponentLocalProvenance: boolean
+		candidateAbsentFromCanonicalBaseline: boolean
+	}>
+	eligible: boolean
+	rejectionReasons: readonly AlbumArtworkPaletteV2Phase3ComponentEndpointProposalRejectionReason[]
+}>
+
+export function decideAlbumArtworkPaletteV2Phase3ComponentEndpointProposalEligibility(input: Readonly<{
+	baselineWinnerGradient: boolean
+	baselineWinnerQualityUtility: number | null
+	candidates: readonly AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidate[]
+}>) {
+	const baselineWinnerQualityAvailable = input.baselineWinnerQualityUtility !== null &&
+		Number.isFinite(input.baselineWinnerQualityUtility)
+	const candidateEvaluations = input.candidates.map((candidate):
+		AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidateDiagnostic => {
+		const qualityLossFromBaselineWinner = baselineWinnerQualityAvailable
+			? Math.max(0, input.baselineWinnerQualityUtility! - candidate.qualityUtility)
+			: null
+		const gates = {
+			integratedIncumbentFlat: !input.baselineWinnerGradient,
+			baselineWinnerQualityAvailable,
+			candidateIsGradient: candidate.gradient,
+			candidateGradientIsEarned: candidate.gradientStatus === "earned-rendered",
+			candidateCompleteLineageEligible: candidate.completeLineageEligible,
+			candidateWithinQualityLossLimit: qualityLossFromBaselineWinner !== null &&
+				qualityLossFromBaselineWinner <=
+					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_PROPOSAL_POLICY
+						.maximumQualityLoss + 1e-12,
+			candidateHasSupplementalComponentLocalProvenance:
+				candidate.supplementalComponentLocalProvenance,
+			candidateAbsentFromCanonicalBaseline: candidate.absentFromCanonicalBaseline,
+		}
+		const rejectionReasons: AlbumArtworkPaletteV2Phase3ComponentEndpointProposalRejectionReason[] = []
+		if (!gates.integratedIncumbentFlat) rejectionReasons.push("integrated-incumbent-is-gradient")
+		if (!gates.baselineWinnerQualityAvailable) rejectionReasons.push("baseline-winner-quality-unavailable")
+		if (!gates.candidateIsGradient) rejectionReasons.push("endpoint-candidate-is-not-gradient")
+		if (!gates.candidateGradientIsEarned) {
+			rejectionReasons.push("endpoint-candidate-gradient-is-not-earned")
+		}
+		if (!gates.candidateCompleteLineageEligible) {
+			rejectionReasons.push("endpoint-candidate-is-not-complete-lineage-eligible")
+		}
+		if (gates.baselineWinnerQualityAvailable && !gates.candidateWithinQualityLossLimit) {
+			rejectionReasons.push("endpoint-candidate-exceeds-quality-loss-limit")
+		}
+		if (!gates.candidateHasSupplementalComponentLocalProvenance) {
+			rejectionReasons.push("endpoint-candidate-lacks-supplemental-component-local-provenance")
+		}
+		if (!gates.candidateAbsentFromCanonicalBaseline) {
+			rejectionReasons.push("endpoint-candidate-is-in-canonical-baseline")
+		}
+		return {
+			key: candidate.key,
+			recoveryV2OrderIndex: candidate.recoveryV2OrderIndex,
+			gradient: candidate.gradient,
+			gradientStatus: candidate.gradientStatus,
+			qualityUtility: candidate.qualityUtility,
+			completeLineageEligible: candidate.completeLineageEligible,
+			qualityLossFromBaselineWinner,
+			gates,
+			eligible: rejectionReasons.length === 0,
+			rejectionReasons,
+		}
+	})
+	return {
+		policy: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_PROPOSAL_POLICY,
+		candidateEvaluations,
+		eligibleCandidateKeysInOrder: candidateEvaluations
+			.filter(({ eligible }) => eligible)
+			.map(({ key }) => key),
+	}
+}
+
 export type AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidateDiagnostic = Readonly<{
 	key: string
 	gradientStatus: AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus
@@ -534,33 +647,33 @@ export function decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation(in
 	const baselineWinnerQualityAvailable = input.baselineWinnerQualityUtility !== null &&
 		Number.isFinite(input.baselineWinnerQualityUtility)
 	const baselineSlateKeys = new Set(input.baselineSlateKeys)
-	const candidateEvaluations = input.candidates.map((candidate):
+	const proposalEligibility = decideAlbumArtworkPaletteV2Phase3ComponentEndpointProposalEligibility({
+		baselineWinnerGradient: input.baselineWinnerGradient,
+		baselineWinnerQualityUtility: input.baselineWinnerQualityUtility,
+		candidates: input.candidates.map((candidate, recoveryV2OrderIndex) => ({
+			...candidate,
+			recoveryV2OrderIndex,
+			supplementalComponentLocalProvenance: true,
+			absentFromCanonicalBaseline: true,
+		})),
+	})
+	const candidateEvaluations = proposalEligibility.candidateEvaluations.map((proposal):
 		AlbumArtworkPaletteV2Phase3ComponentEndpointReservationCandidateDiagnostic => {
-		const qualityLossFromBaselineWinner = baselineWinnerQualityAvailable
-			? Math.max(0, input.baselineWinnerQualityUtility! - candidate.qualityUtility)
-			: null
 		const gates = {
-			integratedIncumbentFlat: !input.baselineWinnerGradient,
-			baselineWinnerQualityAvailable,
-			candidateIsGradient: candidate.gradient,
-			candidateGradientIsEarned: candidate.gradientStatus === "earned-rendered",
-			candidateCompleteLineageEligible: candidate.completeLineageEligible,
-			candidateWithinQualityLossLimit: qualityLossFromBaselineWinner !== null &&
-				qualityLossFromBaselineWinner <=
-					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_SLATE_POLICY.maximumQualityLoss + 1e-12,
+			integratedIncumbentFlat: proposal.gates.integratedIncumbentFlat,
+			baselineWinnerQualityAvailable: proposal.gates.baselineWinnerQualityAvailable,
+			candidateIsGradient: proposal.gates.candidateIsGradient,
+			candidateGradientIsEarned: proposal.gates.candidateGradientIsEarned,
+			candidateCompleteLineageEligible: proposal.gates.candidateCompleteLineageEligible,
+			candidateWithinQualityLossLimit: proposal.gates.candidateWithinQualityLossLimit,
 			baselineSlateHasReplaceableTail: input.baselineSlateKeys.length > 1,
-			candidateAbsentFromBaselineSlate: !baselineSlateKeys.has(candidate.key),
+			candidateAbsentFromBaselineSlate: !baselineSlateKeys.has(proposal.key),
 		}
 		const rejectionReasons: AlbumArtworkPaletteV2Phase3ComponentEndpointReservationRejectionReason[] = []
-		if (!gates.integratedIncumbentFlat) rejectionReasons.push("integrated-incumbent-is-gradient")
-		if (!gates.baselineWinnerQualityAvailable) rejectionReasons.push("baseline-winner-quality-unavailable")
-		if (!gates.candidateIsGradient) rejectionReasons.push("endpoint-candidate-is-not-gradient")
-		if (!gates.candidateGradientIsEarned) rejectionReasons.push("endpoint-candidate-gradient-is-not-earned")
-		if (!gates.candidateCompleteLineageEligible) {
-			rejectionReasons.push("endpoint-candidate-is-not-complete-lineage-eligible")
-		}
-		if (gates.baselineWinnerQualityAvailable && !gates.candidateWithinQualityLossLimit) {
-			rejectionReasons.push("endpoint-candidate-exceeds-quality-loss-limit")
+		for (const reason of proposal.rejectionReasons) {
+			if (reason === "endpoint-candidate-lacks-supplemental-component-local-provenance" ||
+				reason === "endpoint-candidate-is-in-canonical-baseline") continue
+			rejectionReasons.push(reason)
 		}
 		if (!gates.baselineSlateHasReplaceableTail) {
 			rejectionReasons.push("baseline-slate-has-no-replaceable-tail")
@@ -569,9 +682,9 @@ export function decideAlbumArtworkPaletteV2Phase3ComponentEndpointReservation(in
 			rejectionReasons.push("endpoint-candidate-is-already-in-baseline-slate")
 		}
 		return {
-			key: candidate.key,
-			gradientStatus: candidate.gradientStatus,
-			qualityLossFromBaselineWinner,
+			key: proposal.key,
+			gradientStatus: proposal.gradientStatus,
+			qualityLossFromBaselineWinner: proposal.qualityLossFromBaselineWinner,
 			gates,
 			eligible: rejectionReasons.length === 0,
 			rejectionReasons,
@@ -723,137 +836,285 @@ function componentEndpointDiagnosticRoot(
 	}
 }
 
-export function applyAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details: IntegratedDetails) {
+export type AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalCustody = Readonly<{
+	key: string
+	treatment: CompletePaletteTreatment
+	descriptors: readonly AlbumArtworkPaletteV2Phase3LogicalDescriptor[]
+}>
+
+export type AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposal = Readonly<{
+	key: string
+	treatment: CompletePaletteTreatment
+	evaluation: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Evaluation
+	candidateDiagnostic: AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidateDiagnostic
+	custody: Readonly<{
+		mechanism: AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalCustody
+		expandedDomain: AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalCustody
+	}>
+	provenance: Readonly<{
+		mechanismId: AlbumArtworkPaletteV2Phase3ComponentLocalEndpointReport["mechanismId"]
+		sourceType: "field-proposal-v2"
+		componentLocalFieldHypothesisIds: readonly string[]
+		recoveryV2OrderIndex: number
+		supplementalOnlyMaterialized: true
+		canonicalBaselineKeyAbsent: true
+	}>
+}>
+
+type ComponentEndpointLineageDiagnostics = ReturnType<
+	typeof filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain
+>["diagnostics"]
+
+export type AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalResult = Readonly<{
+	version: "album-artwork-palette-v2-phase-3-component-local-endpoint-proposals-v1"
+	configurationId: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID
+	policy: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_PROPOSAL_POLICY
+	report: AlbumArtworkPaletteV2Phase3ComponentLocalEndpointReport
+	baseline: Readonly<{
+		winner: CompletePaletteTreatment
+		winnerKey: string
+		winnerQualityUtility: number | null
+	}>
+	augmentedFamilies: readonly ColorFamilyEvidence[]
+	augmentedFields: readonly AlbumArtworkPaletteV2Phase3SourcedFieldHypothesis[]
+	domain: Readonly<{
+		componentLocalFieldHypothesisCount: number
+		componentLocalDescriptorCount: number
+		baselineMaterializedTreatmentCount: number
+		supplementalOnlyMaterializedTreatmentCount: number
+		evaluationMaterializedTreatmentCount: number
+	}>
+	materialization: Readonly<{
+		baseline: AlbumArtworkPaletteV2Phase3MaterializationDiagnostics
+		supplementalOnly: AlbumArtworkPaletteV2Phase3MaterializationDiagnostics | null
+	}>
+	selector: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Explanation
+	lineageEligibility: ComponentEndpointLineageDiagnostics
+	candidateDiagnostics: readonly AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidateDiagnostic[]
+	proposals: readonly AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposal[]
+}>
+
+function proposalCustody(
+	candidate: Readonly<{
+		key: string
+		treatment: CompletePaletteTreatment
+		descriptors: readonly AlbumArtworkPaletteV2Phase3LogicalDescriptor[]
+	}>,
+): AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalCustody {
+	return {
+		key: candidate.key,
+		treatment: candidate.treatment,
+		descriptors: candidate.descriptors,
+	}
+}
+
+export function proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(
+	details: IntegratedDetails,
+): AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalResult {
 	const report = buildAlbumArtworkPaletteV2Phase3ComponentLocalEndpointArm(
 		details.common.evidence.native,
 		details.common.evidence.gradientFits,
 	)
 	const additions = componentEndpointFields(details, report)
-	if (additions.fields.length === 0) {
-		const reservation = componentEndpointReservation(details, [])
-		return output(details, {
-			attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT_ID,
-			configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
-			diagnosticsKey: "phase3ComponentLocalEndpoint",
-		}, details.result.winner, details.result.alternatives, componentEndpointDiagnosticRoot(
-			details,
-			report,
-			{
-				componentLocalFieldHypothesisCount: 0,
-				componentLocalDescriptorCount: 0,
-				supplementalOnlyMaterialization: null,
-				selector: details.result.diagnostics.phase3IntegratedCandidate.selector,
-				lineageEligibility: details.selection.completeLineage.eligibility.diagnostics,
-				outputSlate: details.result.alternatives,
-				reservation,
-				evaluationMaterializedTreatmentCount: details.custodyMaterialized.length,
-			},
-		))
-	}
-	const evidence = augmentedEvidence(details.common.evidence.augmentedNative, additions.families)
-	const supplementalConstruction = constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
-		evidence,
-		additions.fields.map(({ hypothesis }) => hypothesis),
-	)
-	const supplementalDescriptors: AlbumArtworkPaletteV2Phase3LogicalDescriptor[] =
-		supplementalConstruction.treatments.map((descriptor) => ({
+	const evidence = additions.fields.length === 0
+		? details.common.evidence.augmentedNative
+		: augmentedEvidence(details.common.evidence.augmentedNative, additions.families)
+	const augmentedFields = [...details.sourcedFields, ...additions.fields]
+	const supplementalDescriptors: AlbumArtworkPaletteV2Phase3LogicalDescriptor[] = additions.fields.length === 0
+		? []
+		: constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
+			evidence,
+			additions.fields.map(({ hypothesis }) => hypothesis),
+		).treatments.map((descriptor) => ({
 			sourceType: "field-proposal-v2",
 			...descriptor,
 		}))
-	const sourcedFields = [...details.sourcedFields, ...additions.fields]
-	if (supplementalDescriptors.length === 0) {
-		const reservation = componentEndpointReservation(details, [])
-		return output(details, {
-			attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT_ID,
-			configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
-			diagnosticsKey: "phase3ComponentLocalEndpoint",
-		}, details.result.winner, details.result.alternatives, componentEndpointDiagnosticRoot(
-			details,
-			report,
-			{
-				componentLocalFieldHypothesisCount: additions.fields.length,
-				componentLocalDescriptorCount: 0,
-				supplementalOnlyMaterialization: null,
-				selector: details.result.diagnostics.phase3IntegratedCandidate.selector,
-				lineageEligibility: details.selection.completeLineage.eligibility.diagnostics,
-				outputSlate: details.result.alternatives,
-				reservation,
-				evaluationMaterializedTreatmentCount: details.custodyMaterialized.length,
-			},
-		), {
-			families: evidence.families,
-			fieldHypotheses: sourcedFields.map(({ hypothesis }) => hypothesis),
-			completeCandidateCount: details.custodyMaterialized.length,
+	let supplementalOnlyMaterializationDiagnostics: AlbumArtworkPaletteV2Phase3MaterializationDiagnostics | null = null
+	let evaluationMaterializedTreatmentCount = details.custodyMaterialized.length
+	let selector = selectorWithIntegratedWinnerEvaluation(
+		details,
+		details.result.diagnostics.phase3IntegratedCandidate.selector,
+	)
+	let lineageEligibility: ComponentEndpointLineageDiagnostics =
+		details.selection.completeLineage.eligibility.diagnostics
+	let candidateDiagnostics: readonly AlbumArtworkPaletteV2Phase3ComponentEndpointProposalCandidateDiagnostic[] = []
+	let proposals: readonly AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposal[] = []
+	if (supplementalDescriptors.length > 0) {
+		const supplementalOnlyMaterialization = materializeAlbumArtworkPaletteV2Phase3Descriptors(
+			supplementalDescriptors,
+			details.common.seedAvailability.identityObligations,
+		)
+		supplementalOnlyMaterializationDiagnostics = supplementalOnlyMaterialization.diagnostics
+		const evaluationMaterializedByKey = new Map(details.custodyMaterialized.map((candidate) =>
+			[candidate.key, candidate]))
+		const supplementalByKey = new Map<string, AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposalCustody>()
+		for (const candidate of supplementalOnlyMaterialization.materialized) {
+			const supplementalCandidate = {
+				key: candidate.key,
+				treatment: candidate.treatment,
+				descriptors: candidate.descriptors as readonly AlbumArtworkPaletteV2Phase3LogicalDescriptor[],
+			}
+			supplementalByKey.set(candidate.key, supplementalCandidate)
+			const baselineCandidate = evaluationMaterializedByKey.get(candidate.key)
+			evaluationMaterializedByKey.set(candidate.key, baselineCandidate === undefined
+				? supplementalCandidate
+				: {
+					...baselineCandidate,
+					descriptors: [...baselineCandidate.descriptors, ...supplementalCandidate.descriptors],
+				})
+		}
+		const evaluationMaterialized = [...evaluationMaterializedByKey.values()]
+			.sort((first, second) => compareAscii(first.key, second.key))
+		evaluationMaterializedTreatmentCount = evaluationMaterialized.length
+		const evaluationMaterializedByCanonicalKey = new Map(evaluationMaterialized.map((candidate) =>
+			[candidate.key, candidate]))
+		const evaluation = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
+			evaluationMaterialized.map(({ treatment }) => treatment),
+			{ obligations: details.common.seedAvailability.identityObligations },
+		)
+		const expandedLineageEligibility = filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain(
+			evaluationMaterialized,
+			{ emergency: details.closedDetails.result.diagnostics.emergency },
+		)
+		lineageEligibility = expandedLineageEligibility.diagnostics
+		const lineageByKey = new Map(lineageEligibility.candidates.map((candidate) =>
+			[candidate.key, candidate]))
+		const supplementalOnlyKeys = new Set(supplementalOnlyMaterialization.materialized.map(({ key }) => key))
+		const baselineKeys = new Set(details.custodyMaterialized.map(({ key }) => key))
+		const endpointEvaluations = evaluation.evaluations.filter(({ key }) =>
+			supplementalOnlyKeys.has(key))
+		selector = selectorWithIntegratedWinnerEvaluation(details, evaluation.explanation)
+		const baselineWinnerKey = completeTreatmentKey(details.result.winner)
+		const baselineWinnerQualityUtility = selector.evaluations
+			.find(({ key }) => key === baselineWinnerKey)?.qualityUtility ?? null
+		const componentLocalFieldIds = new Set(additions.fields.map(({ hypothesis }) => hypothesis.id))
+		const proposalEligibility = decideAlbumArtworkPaletteV2Phase3ComponentEndpointProposalEligibility({
+			baselineWinnerGradient: details.result.winner.gradient,
+			baselineWinnerQualityUtility,
+			candidates: endpointEvaluations.map((candidate) => {
+				const mechanism = supplementalByKey.get(candidate.key)
+				if (!mechanism) throw new Error("Component-local endpoint evaluation omitted mechanism custody")
+				const matchingDescriptors = mechanism.descriptors.filter((descriptor) =>
+					descriptor.sourceType === "field-proposal-v2" &&
+					componentLocalFieldIds.has(descriptor.fieldHypothesis.id))
+				return {
+					key: candidate.key,
+					gradient: candidate.treatment.gradient,
+					gradientStatus: candidate.gradientStatus,
+					qualityUtility: candidate.qualityUtility,
+					completeLineageEligible: lineageByKey.get(candidate.key)?.eligible === true,
+					recoveryV2OrderIndex: evaluation.evaluations.indexOf(candidate),
+					supplementalComponentLocalProvenance: matchingDescriptors.length > 0,
+					absentFromCanonicalBaseline: !baselineKeys.has(candidate.key),
+				}
+			}),
+		})
+		candidateDiagnostics = proposalEligibility.candidateEvaluations
+		const diagnosticByKey = new Map(candidateDiagnostics.map((diagnostic) =>
+			[diagnostic.key, diagnostic]))
+		proposals = endpointEvaluations.flatMap((evaluationCandidate):
+			AlbumArtworkPaletteV2Phase3ComponentLocalEndpointProposal[] => {
+			const candidateDiagnostic = diagnosticByKey.get(evaluationCandidate.key)
+			if (!candidateDiagnostic?.eligible) return []
+			const mechanism = supplementalByKey.get(evaluationCandidate.key)
+			const expandedDomain = evaluationMaterializedByCanonicalKey.get(evaluationCandidate.key)
+			if (!mechanism || !expandedDomain) {
+				throw new Error("Eligible component-local endpoint proposal omitted materialized custody")
+			}
+			const componentLocalFieldHypothesisIds = [...new Set(mechanism.descriptors
+				.filter((descriptor) => descriptor.sourceType === "field-proposal-v2" &&
+					componentLocalFieldIds.has(descriptor.fieldHypothesis.id))
+				.map(({ fieldHypothesis }) => fieldHypothesis.id))].sort(compareAscii)
+			return [{
+				key: evaluationCandidate.key,
+				treatment: evaluationCandidate.treatment,
+				evaluation: evaluationCandidate,
+				candidateDiagnostic,
+				custody: {
+					mechanism: proposalCustody(mechanism),
+					expandedDomain: proposalCustody(expandedDomain),
+				},
+				provenance: {
+					mechanismId: report.mechanismId,
+					sourceType: "field-proposal-v2",
+					componentLocalFieldHypothesisIds,
+					recoveryV2OrderIndex: candidateDiagnostic.recoveryV2OrderIndex,
+					supplementalOnlyMaterialized: true,
+					canonicalBaselineKeyAbsent: true,
+				},
+			}]
 		})
 	}
-	const supplementalOnlyMaterialization = materializeAlbumArtworkPaletteV2Phase3Descriptors(
-		supplementalDescriptors,
-		details.common.seedAvailability.identityObligations,
-	)
-	const evaluationMaterializedByKey = new Map(details.custodyMaterialized.map((candidate) =>
-		[candidate.key, candidate]))
-	for (const candidate of supplementalOnlyMaterialization.materialized) {
-		const supplementalCandidate = {
-			key: candidate.key,
-			treatment: candidate.treatment,
-			descriptors: candidate.descriptors as readonly AlbumArtworkPaletteV2Phase3LogicalDescriptor[],
-		}
-		const baselineCandidate = evaluationMaterializedByKey.get(candidate.key)
-		evaluationMaterializedByKey.set(candidate.key, baselineCandidate === undefined
-			? supplementalCandidate
-			: {
-				...baselineCandidate,
-				descriptors: [...baselineCandidate.descriptors, ...supplementalCandidate.descriptors],
-			})
+	return {
+		version: "album-artwork-palette-v2-phase-3-component-local-endpoint-proposals-v1",
+		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
+		policy: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_PROPOSAL_POLICY,
+		report,
+		baseline: {
+			winner: details.result.winner,
+			winnerKey: completeTreatmentKey(details.result.winner),
+			winnerQualityUtility: selector.evaluations.find(({ key }) =>
+				key === completeTreatmentKey(details.result.winner))?.qualityUtility ?? null,
+		},
+		augmentedFamilies: evidence.families,
+		augmentedFields,
+		domain: {
+			componentLocalFieldHypothesisCount: additions.fields.length,
+			componentLocalDescriptorCount: supplementalDescriptors.length,
+			baselineMaterializedTreatmentCount: details.custodyMaterialized.length,
+			supplementalOnlyMaterializedTreatmentCount:
+				supplementalOnlyMaterializationDiagnostics?.materializedTreatmentCount ?? 0,
+			evaluationMaterializedTreatmentCount,
+		},
+		materialization: {
+			baseline: details.materialization.diagnostics,
+			supplementalOnly: supplementalOnlyMaterializationDiagnostics,
+		},
+		selector,
+		lineageEligibility,
+		candidateDiagnostics,
+		proposals,
 	}
-	const evaluationMaterialized = [...evaluationMaterializedByKey.values()]
-		.sort((first, second) => compareAscii(first.key, second.key))
-	const evaluation = selectAlbumArtworkPaletteV2Phase3RecoveryTreatmentsV2(
-		evaluationMaterialized.map(({ treatment }) => treatment),
-		{ obligations: details.common.seedAvailability.identityObligations },
-	)
-	const lineageEligibility = filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain(
-		evaluationMaterialized,
-		{ emergency: details.closedDetails.result.diagnostics.emergency },
-	)
-	const lineageByKey = new Map(lineageEligibility.diagnostics.candidates.map((candidate) =>
-		[candidate.key, candidate]))
-	const supplementalOnlyKeys = new Set(supplementalOnlyMaterialization.materialized.map(({ key }) => key))
-	const baselineKeys = new Set(details.custodyMaterialized.map(({ key }) => key))
-	const endpointEvaluations = evaluation.evaluations.filter(({ key }) =>
-		supplementalOnlyKeys.has(key) && !baselineKeys.has(key))
-	const reservation = componentEndpointReservation(details, endpointEvaluations.map((candidate) => ({
-		key: candidate.key,
-		gradient: candidate.treatment.gradient,
-		gradientStatus: candidate.gradientStatus,
-		qualityUtility: candidate.qualityUtility,
-		completeLineageEligible: lineageByKey.get(candidate.key)?.eligible === true,
-	})))
+}
+
+export function applyAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details: IntegratedDetails) {
+	const proposal = proposeAlbumArtworkPaletteV2Phase3ComponentLocalEndpoint(details)
+	const reservation = componentEndpointReservation(details, proposal.candidateDiagnostics
+		.filter(({ gates }) => gates.candidateAbsentFromCanonicalBaseline)
+		.map((candidate) => ({
+			key: candidate.key,
+			gradient: candidate.gradient,
+			gradientStatus: candidate.gradientStatus,
+			qualityUtility: candidate.qualityUtility,
+			completeLineageEligible: candidate.completeLineageEligible,
+		})))
 	const reserved = reservation.reservedKey === null
 		? null
-		: endpointEvaluations.find(({ key }) => key === reservation.reservedKey) ?? null
+		: proposal.proposals.find(({ key }) => key === reservation.reservedKey) ?? null
 	const baselineSlate = details.result.alternatives
-	const canReserve = reserved !== null
-	const slate = canReserve
-		? [...baselineSlate.slice(0, -1), reserved.treatment]
-		: baselineSlate
-	return output(details, {
+	const slate = reserved === null
+		? baselineSlate
+		: [...baselineSlate.slice(0, -1), reserved.treatment]
+	const standaloneSelector = proposal.domain.componentLocalDescriptorCount === 0
+		? details.result.diagnostics.phase3IntegratedCandidate.selector
+		: proposal.selector
+	return buildAlbumArtworkPaletteV2Phase3ParallelArmOutput(details, {
 		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_ATTEMPT_ID,
 		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPONENT_LOCAL_ENDPOINT_CONFIGURATION_ID,
 		diagnosticsKey: "phase3ComponentLocalEndpoint",
-	}, details.result.winner, slate, componentEndpointDiagnosticRoot(details, report, {
-		componentLocalFieldHypothesisCount: additions.fields.length,
-		componentLocalDescriptorCount: supplementalDescriptors.length,
-		supplementalOnlyMaterialization: supplementalOnlyMaterialization.diagnostics,
-		selector: selectorWithIntegratedWinnerEvaluation(details, evaluation.explanation),
-		lineageEligibility: lineageEligibility.diagnostics,
+	}, details.result.winner, slate, componentEndpointDiagnosticRoot(details, proposal.report, {
+		componentLocalFieldHypothesisCount: proposal.domain.componentLocalFieldHypothesisCount,
+		componentLocalDescriptorCount: proposal.domain.componentLocalDescriptorCount,
+		supplementalOnlyMaterialization: proposal.materialization.supplementalOnly,
+		selector: standaloneSelector,
+		lineageEligibility: proposal.lineageEligibility,
 		outputSlate: slate,
 		reservation,
-		evaluationMaterializedTreatmentCount: evaluationMaterialized.length,
-	}), {
-		families: evidence.families,
-		fieldHypotheses: sourcedFields.map(({ hypothesis }) => hypothesis),
-		completeCandidateCount: evaluationMaterialized.length,
+		evaluationMaterializedTreatmentCount: proposal.domain.evaluationMaterializedTreatmentCount,
+	}), proposal.domain.componentLocalFieldHypothesisCount === 0 ? {} : {
+		families: proposal.augmentedFamilies,
+		fieldHypotheses: proposal.augmentedFields.map(({ hypothesis }) => hypothesis),
+		completeCandidateCount: proposal.domain.evaluationMaterializedTreatmentCount,
 	})
 }
 
@@ -870,7 +1131,7 @@ export function extractAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(ima
 		recoveryV2: details.recoveryV2,
 		completeLineageEligibility: details.selection.completeLineage.eligibility,
 	})
-	return output(details, {
+	return buildAlbumArtworkPaletteV2Phase3ParallelArmOutput(details, {
 		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTEMPT_ID,
 		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_CONFIGURATION_ID,
 		diagnosticsKey: "phase3RawRelationSlateComplement",
@@ -884,39 +1145,6 @@ export function extractAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(ima
 		custody: details.selection.custody,
 		selection: details.selection.diagnostics,
 		rawRelationSlateComplement: selection.diagnostics,
-	})
-}
-
-export function extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve(image: RawImage) {
-	const details = extractAlbumArtworkPaletteV2Phase3IntegratedCandidateDetails(image)
-	const reservation = reserveAlbumArtworkPaletteV2Phase3SourceLightForeground({
-		current: { winner: details.result.winner, slate: details.result.alternatives },
-		materialized: details.custodyMaterialized,
-		evaluations: details.recoveryV2.evaluations,
-		unrestrictedWinnerKey: details.selection.diagnostics.unrestrictedWinnerKey,
-		completeLineageEligibility: details.selection.completeLineage.eligibility,
-		roleEvidence: details.roleEvidence.evidence,
-		families: details.common.evidence.augmentedNative.families,
-	})
-	return output(details, {
-		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID,
-		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID,
-		diagnosticsKey: "phase3SourceLightForegroundReserve",
-	}, reservation.winner, reservation.slate, {
-		version: "album-artwork-palette-v2-phase-3-source-light-foreground-reserve-diagnostics-v1",
-		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID,
-		domain: details.result.diagnostics.phase3IntegratedCandidate.domain,
-		selector: details.result.diagnostics.phase3IntegratedCandidate.selector,
-		lineageEligibility: details.selection.completeLineage.eligibility.diagnostics,
-		transitionRescue: details.selection.transitionRescue,
-		custody: details.selection.custody,
-		gradientAuthority: details.gradientAuthority.diagnostics,
-		supportedGradientPath: details.supportedGradientPath.diagnostics,
-		selection: {
-			...details.selection.diagnostics,
-			slateKeys: reservation.slate.map(completeTreatmentKey),
-		},
-		sourceLightForegroundReserve: reservation.diagnostics,
 	})
 }
 
@@ -950,12 +1178,4 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_ATTE
 		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_RAW_RELATION_SLATE_COMPLEMENT_CONFIGURATION_ID,
 	}),
 	extract: extractAlbumArtworkPaletteV2Phase3RawRelationSlateComplement,
-})
-
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT = Object.freeze({
-	identity: Object.freeze({
-		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID,
-		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID,
-	}),
-	extract: extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve,
 })

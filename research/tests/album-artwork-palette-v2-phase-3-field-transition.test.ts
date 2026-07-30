@@ -4,8 +4,11 @@ import test from "node:test"
 import {
 	buildNativeFieldTransitionDiscovery,
 	buildNativeFieldTransitionHypotheses,
+	buildSupportedNativeFieldTransitionPaths,
 	discoverNativeFieldTransitions,
 } from "../src/album-artwork-palette-v2-phase-3-field-transition.ts"
+import { evaluateAlbumArtworkPaletteV2Phase3FieldRenderCandidates } from
+	"../src/album-artwork-palette-v2-phase-3-field-render-candidate.ts"
 import { buildNativePaletteEvidence } from "../src/album-artwork-palette-v2.ts"
 import type { RGB, RawImage } from "../src/types.ts"
 
@@ -50,6 +53,22 @@ function radialField(centerX = 0.5, centerY = 0.5): RawImage {
 		[32, 64, 126],
 		Math.min(1, Math.hypot(x / 107 - centerX, y / 107 - centerY) / maximumRadius),
 	))
+}
+
+function warpedLinearField(vertical: boolean, taper: boolean): RawImage {
+	const first: RGB = [31, 52, 137]
+	const middle: RGB = [61, 163, 143]
+	const last: RGB = [221, 170, 58]
+	return image(96, 72, (x, y) => {
+		const primary = vertical ? y / 71 : x / 95
+		const secondary = vertical ? x / 95 : y / 71
+		const amplitude = vertical ? 0.8 : 1
+		const amount = Math.max(0, Math.min(1,
+			primary + amplitude * (taper ? 1 - primary : 1) * Math.sin(2 * Math.PI * secondary + 0.5)))
+		return amount < 0.48
+			? mix(first, middle, amount / 0.48)
+			: mix(middle, last, (amount - 0.48) / 0.52)
+	})
 }
 
 function reflectHorizontal(value: RawImage): RawImage {
@@ -167,6 +186,75 @@ test("radial geometry follows rotation and translated centers", () => {
 		assert.equal(result.hypothesis.gradientEvidence?.direction, direction)
 		assert.ok(Math.abs(result.trace.spatialCenter![0] - centerX) < 0.02)
 		assert.ok(Math.abs(result.trace.spatialCenter![1] - centerY) < 0.02)
+	}
+})
+
+test("slight linear projection overshoot is clamped without changing endpoint or path identity", () => {
+	const fixture = warpedLinearField(true, false)
+	const evidence = buildNativePaletteEvidence(fixture)
+	const paths = buildSupportedNativeFieldTransitionPaths(fixture)
+	const path = paths.find(({ fieldDomainId }) => fieldDomainId === "field-transition-domain:6:39")
+	assert.ok(path)
+	assert.equal(path.legacyEligible, true)
+	assert.equal(path.eligible, true)
+	assert.ok(path.hypothesis)
+	assert.deepEqual(path.endpointFamilyIds, ["family-4164", "family-7676"])
+	assert.deepEqual(path.stageFamilyIds, [
+		"family-4164", "family-5047", "family-6351", "family-7213", "family-7676",
+	])
+	assert.deepEqual(path.stageRegionIds, [
+		"family-4164-transition-region-39",
+		"family-5047-transition-region-35",
+		"family-6351-transition-region-33",
+		"family-7213-transition-region-27",
+		"family-7676-transition-region-6",
+	])
+	assert.deepEqual(path.stageFamilyIds, path.stages.map(({ familyId }) => familyId))
+	assert.deepEqual(path.stageRegionIds, path.stages.map(({ regionId }) => regionId))
+	assert.deepEqual(path.stagePositions, path.stages.map(({ spatialPosition }) => spatialPosition))
+	assert.deepEqual(path.stages.map(({ stageIndex }) => stageIndex), [0, 1, 2, 3, 4])
+	assert.deepEqual(path.stagePositions.slice(0, 2), [0, 0])
+	assert.equal(path.stagePositions.at(-1), 1)
+	assert.ok(path.stagePositions.every((position) => position >= 0 && position <= 1))
+
+	const render = evaluateAlbumArtworkPaletteV2Phase3FieldRenderCandidates(
+		[path], evidence.familyBinStep)
+	assert.equal(render.bundles[0].eligible, true)
+	assert.deepEqual(render.bundles[0].rejectionReasons, [])
+})
+
+test("clamping does not conceal a genuine source-path reversal from the downstream gate", () => {
+	const fixture = warpedLinearField(false, true)
+	const evidence = buildNativePaletteEvidence(fixture)
+	const path = buildSupportedNativeFieldTransitionPaths(fixture).find(({ eligible }) => eligible)
+	assert.ok(path)
+	assert.ok(path.stagePositions.every((position) => position >= 0 && position <= 1))
+	assert.equal(path.stagePositions[0], 0)
+	assert.equal(path.stagePositions.at(-1), 1)
+	assert.ok(path.stagePositions.some((position, index, positions) =>
+		index > 0 && position < positions[index - 1]))
+
+	const render = evaluateAlbumArtworkPaletteV2Phase3FieldRenderCandidates(
+		[path], evidence.familyBinStep)
+	assert.equal(render.bundles[0].eligible, false)
+	assert.ok(render.bundles[0].rejectionReasons.includes(
+		"source-transition-path-has-invalid-stage-positions"))
+})
+
+test("published linear and radial stage coordinates are deterministic and endpoint-anchored", () => {
+	for (const [fixture, topology] of [
+		[warpedLinearField(true, false), "linear"],
+		[radialField(), "radial-center"],
+	] as const) {
+		const first = buildSupportedNativeFieldTransitionPaths(fixture)
+		const second = buildSupportedNativeFieldTransitionPaths(fixture)
+		assert.deepEqual(first, second)
+		const path = first.find((candidate) => candidate.topology === topology && candidate.eligible)
+		assert.ok(path)
+		assert.equal(path.stagePositions[0], 0)
+		assert.equal(path.stagePositions.at(-1), 1)
+		assert.ok(path.stagePositions.every((position) => position >= 0 && position <= 1))
+		assert.deepEqual(path.endpointFamilyIds, [path.stageFamilyIds[0], path.stageFamilyIds.at(-1)])
 	}
 })
 

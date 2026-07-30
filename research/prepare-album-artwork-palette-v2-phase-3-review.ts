@@ -1,7 +1,8 @@
 import { createHash, randomUUID } from "node:crypto"
-import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises"
+import { lstat, mkdir, readFile, realpath, rename, rm, writeFile } from "node:fs/promises"
 import { isAbsolute, relative, resolve, sep } from "node:path"
 import { fileURLToPath } from "node:url"
+import { isDeepStrictEqual } from "node:util"
 import {
 	COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION,
 	COMPLETE_PALETTE_REVIEW_VERSION,
@@ -16,8 +17,14 @@ import {
 	type CompletePaletteReviewTreatment,
 } from "./src/complete-palette-review-v2.ts"
 import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT,
+	normalizeAlbumArtworkPaletteV2Phase3Result,
+} from "./src/album-artwork-palette-v2-phase-3-contract.ts"
+import {
 	projectAlbumArtworkPaletteV2Phase3WinnerResearchRender,
 } from "./src/album-artwork-palette-v2-phase-3-review-render.ts"
+import { loadNativeImage } from "./src/native-resolution-image.ts"
 import {
 	readAndVerifyPhase3WorkingExpansionManifest,
 } from "./select-album-artwork-palette-v2-phase-3-working-expansion.ts"
@@ -36,6 +43,11 @@ const SOURCE_LIGHT_FOREGROUND_RESERVE_DIAGNOSTICS_VERSION =
 const SOURCE_LIGHT_FOREGROUND_RESERVE_VERSION =
 	"album-artwork-palette-v2-phase-3-source-light-foreground-reserve-v1"
 const EXACT_FOREGROUND_CARRIER_ID = "exact-current-slate-field-collapse-accent-carrier-v1"
+const PHASE_3_MAXIMUM_ITERATION_CASES = 8
+const SOURCE_BOUND_PUBLICATION_ATTEMPTS = [
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT,
+] as const
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_REVIEW_DEFAULT_MAXIMUM_CASES = 16
 
 export type AlbumArtworkPaletteV2Phase3ReviewPairwiseSlateAnchor = "exact-foreground-carrier"
@@ -52,11 +64,21 @@ type NormalizedResult = Readonly<{
 	alternatives: readonly NormalizedTreatment[]
 }>
 
+type NormalizedAttemptRecord = Readonly<{
+	identity: Readonly<{ attemptId: string; configurationId: string }>
+	output: unknown
+}>
+
 type SourceBinding = Readonly<{
 	caseId: string
 	file: string
 	sha256: string
 	bytes: number
+}>
+
+type SourceCustody = Readonly<{
+	binding: SourceBinding
+	bytes: Buffer
 }>
 
 type LoadedCase = Readonly<{
@@ -139,6 +161,83 @@ function ascii(first: string, second: string): number {
 
 function sha256(value: Uint8Array): string {
 	return createHash("sha256").update(value).digest("hex")
+}
+
+function jsonRoundTrip(value: unknown, label: string): unknown {
+	let serialized: string | undefined
+	try {
+		serialized = JSON.stringify(value)
+	} catch {
+		throw new Error(`${label} is not JSON-serializable`)
+	}
+	if (serialized === undefined) throw new Error(`${label} is not a JSON publication value`)
+	return JSON.parse(serialized) as unknown
+}
+
+function registeredAttemptLabel(attemptId: string): string {
+	if (attemptId === ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT.identity.attemptId) {
+		return "midpoint-aware"
+	}
+	if (attemptId === ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity.attemptId) {
+		return "final-candidate"
+	}
+	return attemptId
+}
+
+export function verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication(
+	reproducedOutput: unknown,
+	decodedDimensions: Readonly<{ width: number; height: number }>,
+	artifact: Readonly<{ source: unknown; identity: unknown; output: unknown }>,
+	registeredIdentity: Readonly<{ attemptId: string; configurationId: string }>,
+	label: string,
+): void {
+	const identity = jsonRoundTrip(artifact.identity, `${label} identity`)
+	const registeredIdentityPublication = jsonRoundTrip(
+		registeredIdentity,
+		`${label} registered identity`,
+	)
+	if (!isDeepStrictEqual(identity, registeredIdentityPublication) ||
+		completePaletteReviewCanonicalJson(identity) !==
+			completePaletteReviewCanonicalJson(registeredIdentityPublication)) {
+		throw new Error(`${label} does not use the registered ${registeredAttemptLabel(
+			registeredIdentity.attemptId)} attempt configuration identity`)
+	}
+	const source = artifact.source
+	if (!isObject(source) || !Number.isSafeInteger(source.width) || (source.width as number) < 1 ||
+		!Number.isSafeInteger(source.height) || (source.height as number) < 1 ||
+		decodedDimensions.width !== source.width || decodedDimensions.height !== source.height) {
+		throw new Error(`${label} decoded dimensions do not match the normalized artifact`)
+	}
+	const reproducedPublication = jsonRoundTrip(reproducedOutput, `${label} reproduced output`)
+	const artifactPublication = jsonRoundTrip(artifact.output, `${label} artifact output`)
+	if (!isObject(reproducedPublication) || !isObject(reproducedPublication.dimensions) ||
+		reproducedPublication.dimensions.width !== source.width ||
+		reproducedPublication.dimensions.height !== source.height ||
+		!isObject(artifactPublication) || !isObject(artifactPublication.dimensions) ||
+		artifactPublication.dimensions.width !== source.width ||
+		artifactPublication.dimensions.height !== source.height) {
+		throw new Error(`${label} publication dimensions do not match the normalized artifact`)
+	}
+	if (!isDeepStrictEqual(reproducedPublication, artifactPublication) ||
+		completePaletteReviewCanonicalJson(reproducedPublication) !==
+			completePaletteReviewCanonicalJson(artifactPublication)) {
+		throw new Error(`${label} output is not an exact source-bound reproduction of the registered attempt`)
+	}
+}
+
+export function verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication(
+	reproducedOutput: unknown,
+	decodedDimensions: Readonly<{ width: number; height: number }>,
+	artifact: Readonly<{ source: unknown; identity: unknown; output: unknown }>,
+	label: string,
+): void {
+	verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication(
+		reproducedOutput,
+		decodedDimensions,
+		artifact,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT.identity,
+		label,
+	)
 }
 
 function reviewTitle(mode: CompletePaletteReviewMode, candidateAttemptId: string, anchorId: string): string {
@@ -364,6 +463,30 @@ function normalizedResult(
 			normalizedTreatment(entry, `${label}.alternatives[${index}]`, isObject(entry) && entry.key === winner.key
 				? winnerResearchRender : undefined)),
 	}
+}
+
+function normalizedAttemptRecord(
+	value: unknown,
+	expectedAttemptId: string,
+	label: string,
+): NormalizedAttemptRecord {
+	if (!isObject(value) || !isObject(value.identity) || value.identity.attemptId !== expectedAttemptId ||
+		typeof value.identity.configurationId !== "string" || value.identity.configurationId.length === 0) {
+		throw new Error(`${label} identity is invalid`)
+	}
+	return {
+		identity: value.identity as { attemptId: string; configurationId: string },
+		output: value.output,
+	}
+}
+
+function normalizedAttemptResult(value: NormalizedAttemptRecord, label: string): NormalizedResult {
+	const researchRender = projectAlbumArtworkPaletteV2Phase3WinnerResearchRender(
+		value.output,
+		value.identity,
+		`${label} output`,
+	)
+	return normalizedResult(value.output, `${label} output`, researchRender)
 }
 
 function exactStringArray(value: unknown, label: string): string[] {
@@ -610,7 +733,7 @@ async function sourceBinding(
 	caseId: string,
 	source: JsonObject,
 	panel: ReadonlyMap<string, SourceBinding>,
-): Promise<SourceBinding> {
+): Promise<SourceCustody> {
 	const sourceSha256 = stringField(source, "sha256", `Case ${caseId} source`)
 	const bytesValue = source.bytes ?? source.byteCount
 	if (!/^[0-9a-f]{64}$/u.test(sourceSha256) || !Number.isSafeInteger(bytesValue) || (bytesValue as number) < 1) {
@@ -625,11 +748,19 @@ async function sourceBinding(
 		throw new Error(`Case ${caseId} conflicts with its development-panel source binding`)
 	}
 	const absolute = safeProjectFile(projectRoot, file, `Case ${caseId}`)
+	const realProjectRoot = await realpath(projectRoot)
+	const realSource = await realpath(absolute)
+	if (realProjectRoot !== projectRoot || realSource !== absolute) {
+		throw new Error(`Case ${caseId} artwork path must not contain project-root, ancestor, or terminal symlinks`)
+	}
 	const sourceBytes = await regularFileBytes(absolute, `Case ${caseId} artwork`)
 	if (sourceBytes.byteLength !== bytesValue || sha256(sourceBytes) !== sourceSha256) {
 		throw new Error(`Case ${caseId} artwork custody does not match the normalized artifact`)
 	}
-	return { caseId, file, sha256: sourceSha256, bytes: bytesValue as number }
+	return {
+		binding: { caseId, file, sha256: sourceSha256, bytes: bytesValue as number },
+		bytes: sourceBytes,
+	}
 }
 
 async function loadCase(
@@ -655,6 +786,7 @@ async function loadCase(
 		throw new Error(`Case ${caseId} must contain exactly one attempt ${candidateAttemptId}`)
 	}
 	const candidateRecord = matches[0]
+	const candidateAttempt = normalizedAttemptRecord(candidateRecord, candidateAttemptId, `Case ${caseId} candidate`)
 	if (!isObject(candidateRecord.materialDelta) || !isObject(candidateRecord.materialDelta.winner) ||
 		typeof candidateRecord.materialDelta.winner.changed !== "boolean" ||
 		!Array.isArray(candidateRecord.materialDelta.addedAlternativeKeys) ||
@@ -665,26 +797,36 @@ async function loadCase(
 		throw new Error(`Case ${caseId} closed anchor identity is invalid`)
 	}
 	const closedAnchor = normalizedResult(value.anchor.output, `Case ${caseId} closed anchor output`)
-	const comparisonAnchorOutput = value.anchor.identity.anchorId === anchorId
-		? value.anchor.output
+	const comparisonAnchorAttempt = value.anchor.identity.anchorId === anchorId
+		? undefined
 		: (() => {
 			const anchorMatches = value.attempts.filter((attempt) => isObject(attempt) &&
 				isObject(attempt.identity) && attempt.identity.attemptId === anchorId)
 			if (anchorMatches.length !== 1 || !isObject(anchorMatches[0])) {
 				throw new Error(`Case ${caseId} does not contain exactly one comparison anchor ${anchorId}`)
 			}
-			return anchorMatches[0].output
+			return normalizedAttemptRecord(anchorMatches[0], anchorId, `Case ${caseId} comparison anchor`)
 		})()
-	const anchor = normalizedResult(comparisonAnchorOutput, `Case ${caseId} comparison anchor output`)
-	if (!isObject(candidateRecord.identity) || typeof candidateRecord.identity.configurationId !== "string") {
-		throw new Error(`Case ${caseId} candidate identity is invalid`)
+	const comparisonAnchorOutput = comparisonAnchorAttempt?.output ?? value.anchor.output
+	const sourceCustody = await sourceBinding(projectRoot, caseId, value.source, panel)
+	const sourceBoundAttempt = SOURCE_BOUND_PUBLICATION_ATTEMPTS.find(({ identity }) =>
+		identity.attemptId === candidateAttemptId)
+	if (sourceBoundAttempt !== undefined) {
+		const image = await loadNativeImage(sourceCustody.bytes)
+		verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication(
+			normalizeAlbumArtworkPaletteV2Phase3Result(
+				sourceBoundAttempt.extract(image),
+			),
+			image,
+			{ source: value.source, identity: candidateAttempt.identity, output: candidateAttempt.output },
+			sourceBoundAttempt.identity,
+			`Case ${caseId} candidate`,
+		)
 	}
-	const winnerResearchRender = projectAlbumArtworkPaletteV2Phase3WinnerResearchRender(
-		candidateRecord.output,
-		{ attemptId: candidateAttemptId, configurationId: candidateRecord.identity.configurationId },
-		`Case ${caseId} candidate output`,
-	)
-	const candidate = normalizedResult(candidateRecord.output, `Case ${caseId} candidate output`, winnerResearchRender)
+	const candidate = normalizedAttemptResult(candidateAttempt, `Case ${caseId} candidate`)
+	const anchor = comparisonAnchorAttempt === undefined
+		? closedAnchor
+		: normalizedAttemptResult(comparisonAnchorAttempt, `Case ${caseId} comparison anchor`)
 	if (candidateRecord.materialDelta.winner.anchorKey !== closedAnchor.winner.key ||
 		candidateRecord.materialDelta.winner.candidateKey !== candidate.winner.key ||
 		candidateRecord.materialDelta.winner.changed !== (closedAnchor.winner.key !== candidate.winner.key)) {
@@ -705,12 +847,12 @@ async function loadCase(
 			comparisonAnchorOutput,
 			candidate,
 			anchor,
-			candidateRecord.identity.configurationId,
+			candidateAttempt.identity.configurationId,
 			caseId,
 		)
 		: undefined
 	return {
-		source: await sourceBinding(projectRoot, caseId, value.source, panel),
+		source: sourceCustody.binding,
 		anchor,
 		candidate,
 		addedAlternativeKeys: new Set(candidate.alternatives.map(({ key }) => key)
@@ -726,6 +868,9 @@ async function loadIterationCases(options: AlbumArtworkPaletteV2Phase3ReviewOpti
 	if (!isObject(iteration) || iteration.schemaVersion !== 1 || iteration.contractId !== PHASE_3_CONTRACT_ID ||
 		!Array.isArray(iteration.sources) || iteration.sources.length === 0) {
 		throw new Error("Phase 3 iteration manifest is invalid or empty")
+	}
+	if (iteration.sources.length > PHASE_3_MAXIMUM_ITERATION_CASES) {
+		throw new Error(`Phase 3 iteration manifest exceeds the runner maximum of ${PHASE_3_MAXIMUM_ITERATION_CASES} cases`)
 	}
 	const entries = iteration.sources.map((entry, index) => {
 		if (!isObject(entry)) throw new Error(`Phase 3 iteration source ${index} is invalid`)
@@ -776,15 +921,19 @@ async function loadIterationCases(options: AlbumArtworkPaletteV2Phase3ReviewOpti
 			resolve(projectRoot, "research/data/album-artwork-palette-v2-development-panel.json")
 		panel = await loadPanel(panelPath)
 	}
-	return Promise.all(selectedEntries.map(({ caseId, file }) => loadCase(
-		resolve(iterationDirectory, file),
-		caseId,
-		options.candidateAttemptId,
-		options.anchorId,
-		projectRoot,
-		panel,
-		options.pairwiseSlateAnchor,
-	)))
+	const loaded: LoadedCase[] = []
+	for (const { caseId, file } of selectedEntries) {
+		loaded.push(await loadCase(
+			resolve(iterationDirectory, file),
+			caseId,
+			options.candidateAttemptId,
+			options.anchorId,
+			projectRoot,
+			panel,
+			options.pairwiseSlateAnchor,
+		))
+	}
+	return loaded
 }
 
 function reviewCaseId(sourceCaseId: string, kind: QueueTask["kind"], slateIndex: number | null): string {

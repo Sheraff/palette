@@ -448,14 +448,156 @@ The contrastive role-assignment arm is discarded after role-coverage regressions
 The component-local endpoint generator remains useful, but its general automatic slate reservation is not retained:
 review produced one clear improvement, one neutral result, and two regressions. Follow-up may test only the narrower
 causal use case where an earned component-local gradient rescues a flat incumbent. The raw-relation slate complement
-is retained as a low-risk diversity mechanism after two strong, similarly valid development additions; its one
-working-expansion addition still requires exact review before integration.
+is retained as a low-risk supplemental diversity mechanism after two strong, similarly valid development additions.
+Its working-expansion addition is acceptable and preferred to an acceptable anchor, but both treatments remain
+identity-incomplete; this evidence does not authorize raw relation as winner authority or claim that it repairs role
+identity.
 
 Across the 12-source working expansion, component-local endpoints changed three slates, raw relation changed one,
 and supported-gradient authority changed none. All 288 reported mechanism safety checks passed. These results are
 development evidence only. Fast follow-up waves must request review immediately after the smallest differential
 development run and must not place optional expansion, review infrastructure, or diagnostic repair on the critical
 path to human feedback.
+
+#### Evidence-recorded follow-up decisions
+
+The completed 2026-07-29 follow-up reviews bind exact source bytes, visible treatments, and
+`complete-palette-review-v2-presentation-1`. The previously reviewed `development-16` endpoint comparison is also the
+exact pair emitted by the narrow endpoint-v3 rescue: candidate
+`#325376:#486a90:#fbfcf7:#100d28:gradient` versus anchor
+`#44648b:#919dcd:#fbfcf7:#100d28:flat`. Individual outcomes are:
+
+| Mechanism and case | Candidate quality | Anchor quality | Pairwise result and limitation |
+| --- | --- | --- | --- |
+| Narrow component-local endpoint v3, `development-16.slate-08` | strong | weak fallback | candidate stronger; the earned gradient repairs the flat field, while the reviewer still suggested a lighter blue accent |
+| Raw-relation supplement, `working-expansion-11.slate-02` | acceptable | acceptable | candidate stronger; both are incomplete in artwork identity because both remain exclusively blue despite non-blue artwork content |
+| Broad light-foreground reserve, `development-23.slate-08` | weak fallback | weak fallback | similarly valid; both retain the same extraneous gradient, so changing foreground does not repair the topology failure |
+| Broad light-foreground reserve, `development-26.slate-08` | strong | acceptable | candidate stronger; the anchor alone is marked incomplete in artwork identity |
+| Broad light-foreground reserve, `working-expansion-05.slate-08` | acceptable | strong | anchor stronger |
+| Broad light-foreground reserve, `working-expansion-11.slate-08` | acceptable | acceptable | candidate stronger; both remain identity-incomplete and exclusively blue |
+| Broad light-foreground reserve, `working-expansion-12.slate-08` | strong | strong | similarly valid; the remaining question is role assignment because the artwork's honey-colored text may be better carried by foreground than accent |
+
+Retain endpoint v3 only in its narrow causal form: reserve an earned component-local gradient when it rescues a flat
+incumbent, without restoring general endpoint slate reservation. Retain raw relation only as supplemental slate
+diversity. Reject the broad source-supported light-foreground reserve from final composition: its isolated wins do not
+overcome the regression and neutral results, and it leaves identity and topology failures untouched. The residual
+limitations are generic identity coverage beyond one hue family, foreground-versus-accent role attribution, and field
+topology; they must not become source-ID, filename, review-comment, literal-color, or named-case inference branches.
+
+The corrected midpoint-aware experiment completed before final composition. Its v3 implementation discovered bounded
+complete transition paths, jointly materialized endpoint-bound flat and gradient treatments, crossed every valid shared
+role binding with every flat, two-stop, and eligible three-stop render, compared complete rendered treatments, and
+derived the public `gradient` state only after selection. Independent source-bound replay and review-publication checks
+closed candidate-domain, baseline, component, stop-position, radial-center, and serialized-artifact custody.
+
+The targeted development run changed two outputs and preserved two controls exactly. The 12-source working expansion
+was an exact no-op against the integrated candidate. Presentation-2 pairwise review produced:
+
+| Case | Midpoint-aware candidate | Integrated anchor | Decision |
+| --- | --- | --- | --- |
+| `development-03.winner` | weak fallback; incomplete artwork identity | strong | anchor stronger; the candidate selected two stops and genuinely lost the cyan midpoint |
+| `development-23.winner` | unacceptable; extraneous gradient and incomplete artwork identity | unacceptable | neither acceptable; the candidate worsened field topology while the anchor retained separate role problems |
+
+The review artifact projected a research render only for the candidate side. It therefore omitted the integrated
+anchor's existing exact three-stop midpoint and is not a valid direct comparison of midpoint render authorities. Its
+judgments remain bound to the exact omitted-midpoint presentation variant and remain useful evidence that the combined
+v3 treatment regressed, but they must not be interpreted as rejection of midpoint rendering. Historical controlled
+evidence already compares the same roles and endpoints with and without the exact midpoint: both were strong and the
+midpoint-bearing render was preferred.
+
+Reject the combined v3 path-bound endpoint/treatment selector as automatic winner authority, not midpoint authority.
+The cyan midpoint passed every v3 gate except the new per-stage `0.5` quadrant-coverage requirement, where its measured
+coverage was `0.25`, so the three-stop candidate was never emitted. Conversely, the `development-23` gradient came from
+a strict-ineligible path admitted through legacy interval-only tolerance; its flat render had higher fidelity than the
+selected three-stop render. These are admission and authority-composition failures, not evidence against drawing exact
+source-supported midpoints.
+
+Retain the existing strict supported-gradient midpoint authority as the incumbent. It preserves the strong
+midpoint-bearing `development-03` treatment and correctly avoids adding a gradient to `development-23`, even though that
+case still needs generic role-identity improvement in future work. Any later render challenger must keep strict path
+admission, include the incumbent render, hold endpoint representatives and all four public roles fixed, and recompute
+quality and contrast for the actual render. Do not lower the quadrant threshold or tune another threshold from these
+named outcomes.
+
+Final survivor composition is therefore limited to:
+
+1. the existing strict supported-gradient midpoint authority;
+2. narrow component-local endpoint v3 only when an earned gradient rescues a flat incumbent;
+3. raw relation only as supplemental slate diversity; and
+4. an explicit non-displacement admission policy so the two supplemental mechanisms receive bounded tail slots and
+   cannot overwrite the winner, each other, or an already accepted reserve.
+
+Exclude the broad light-foreground reserve and the combined v3 path-bound winner authority. Pairwise review preparation
+now projects candidate and comparison-anchor attempts symmetrically, and omitted versus explicit midpoint
+presentations remain distinct evidence identities. Validate the composed candidate on the reviewed development cases
+and all 12 working-expansion sources before Phase 3 freeze. No result authorizes source-ID, filename, review-comment,
+literal-color, or named-case inference.
+
+#### Final Phase 3 composition and freeze
+
+The final candidate is `phase-3-final-candidate` with configuration
+`integrated-strict-midpoint-component-endpoint-raw-relation-non-displacement-v1`. It executes the integrated candidate
+once, preserves its winner and strict supported-gradient midpoint authority exactly, evaluates endpoint and raw-relation
+proposals independently against that baseline, and performs one fixed endpoint-then-raw admission pass. At capacity,
+admission may displace only the last retained integrated nonwinner. An accepted reserve cannot be displaced by the later
+mechanism. Canonical collisions and raw candidates that remain rendering-near after prospective tail displacement do
+not consume capacity.
+
+The final source graph does not load the rejected source-light reserve or the rejected combined v3 path-bound winner
+authority. Endpoint evaluation keeps the baseline and endpoint-supplemental materializers independently bounded at
+`1500` each and declares a maximum canonical union of `3000`; active counts and union arithmetic are checked before any
+endpoint admission. Final output independently reconciles selector, lineage, family-role, source-support, field, and
+render-projection custody for every public treatment.
+
+Validation against the aligned integrated candidate produced:
+
+- exact winner and gradient-state preservation on all six reviewed development cases and all 12 working-expansion
+  sources;
+- exact `development-03` strict three-stop custody with midpoint `#1880a7`;
+- exact strict flat-veto preservation on `development-23`, with no combined-v3 authority in the runtime graph;
+- the reviewed endpoint rescue only on `development-16`;
+- the reviewed raw-relation supplements on `development-07`, `development-18`, and `working-expansion-11`;
+- no other final treatment additions across the validation set;
+- no winner displacement, reserve collision, duplicate canonical key, capacity violation, integrated-order violation,
+  family-custody gap, selector/lineage gap, or combined-bound failure.
+
+The 2026-07-30 freeze audit regenerated the six reviewed development sources under current code as
+`phase-3-final-candidate-freeze-development-01` and retained the current expansion batches
+`working-expansion-final-candidate-01` and `working-expansion-final-candidate-02`. Exact source-bound publication
+replay passed for all 18 artifacts. All 18 preserved the aligned integrated winner and gradient state, every final
+composition, custody, and combined-bound check passed, and the only admitted reserves were the reviewed raw additions
+on `development-07`, `development-18`, and `working-expansion-11` plus the reviewed endpoint rescue on
+`development-16`.
+
+The final additions are not novel human-facing treatments. The two development raw supplements were previously strong
+and similarly valid to their anchors; the endpoint rescue was strong and preferred to a weak fallback; the expansion
+raw supplement was acceptable and preferred to an acceptable anchor while both remained identity-incomplete. Those
+judgments are retained under their exact presentation-1 identities. They are historical decision evidence, not falsely
+relabelled as presentation-2 warehouse reuse, and no redundant review is requested.
+
+Focused final, proposal, integrated, strict-gradient, contract, review-projection, review-preparation, and evidence
+tests pass `133/133`. Source-bound publication replay covers both the rejected v3 experiment and the final candidate.
+Legal collapsed one-field flat winners and exact three-stop winners both pass final review projection. This established
+a reproducible mechanical candidate for the individual-palette showcase, not broad product quality. The completed
+showcase review below supersedes the earlier Phase 3 product-freeze conclusion.
+
+#### Individual-palette showcase status
+
+The read-only loopback showcase lives under `research/album-artwork-palette-v2-phase-3-showcase/` with the server
+`research/serve-album-artwork-palette-v2-phase-3-showcase.ts`. It freezes the exact 34 unsuffixed supported base files
+under `images/`, rejects generated and scrambled variants, imports the final candidate directly, validates exact source
+bytes, projects final midpoint custody before reducing diagnostics, and reuses the shared presentation-2
+`colornames-oklab` treatment contract. The bounded `pureblack.jpg` preflight and four focused showcase tests pass; the
+combined freeze and showcase suite passes `137/137`.
+
+The complete 34-source showcase and absolute review subsequently completed. Its distribution was 20 strong, four
+acceptable, nine weak fallback, and one unacceptable: ten of 34 winners were below acceptable. Fixed-panel image
+sources were at least acceptable in 16 of 19 cases, versus eight of 15 other showcase sources. The candidate therefore
+failed the broad product-quality checkpoint and the exposure split is consistent with development-set overfitting.
+`phase-3-final-candidate` remains immutable as a reproducible failed checkpoint; Phase 3 is reopened under a future
+working identity, and Phase 4 remains closed. Full conclusions, segmentation findings, and stage diagnoses for all ten
+failures are recorded in
+`research/ALBUM_ARTWORK_UI_PALETTE_PHASE_3_FINAL_SHOWCASE_POSTMORTEM.md`.
 
 ### Parallel work
 

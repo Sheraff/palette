@@ -609,8 +609,10 @@ function candidateForEndpoints(
 		summarizedNodes.reduce((sum, node) => sum + node.cornerCounts[corner], 0))
 	const cornerPopulation = Math.max(1, Math.ceil(evidence.width * 0.15) * Math.ceil(evidence.height * 0.15))
 	const ownedCornerCount = cornerCounts.filter((count) => count >= cornerPopulation * 0.5).length
-	const stagePositions = path.map(position)
-	const spatialGaps = stagePositions.slice(1).map((value, index) => value - stagePositions[index])
+	const sourceStagePositions = path.map(position)
+	const stagePositions = sourceStagePositions.map((value, index) =>
+		index === 0 ? 0 : index === sourceStagePositions.length - 1 ? 1 : clamp(value))
+	const spatialGaps = sourceStagePositions.slice(1).map((value, index) => value - sourceStagePositions[index])
 	const maximumSpatialGap = spatialGaps.length > 0 ? Math.max(...spatialGaps.map(Math.abs)) : 1
 	let forwardSpatial = 0
 	let backwardSpatial = 0
@@ -622,7 +624,9 @@ function candidateForEndpoints(
 		? 0
 		: forwardSpatial / (forwardSpatial + backwardSpatial)
 	const spatialPathLength = path.slice(1).reduce((sum, node, index) => {
-		if (geometry.topology !== "linear") return sum + Math.abs(stagePositions[index + 1] - stagePositions[index])
+		if (geometry.topology !== "linear") {
+			return sum + Math.abs(sourceStagePositions[index + 1] - sourceStagePositions[index])
+		}
 		const previous = regionCentroid(path[index])
 		const current = regionCentroid(node)
 		return sum + Math.hypot(current[0] - previous[0], current[1] - previous[1])

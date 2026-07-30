@@ -5726,7 +5726,12 @@ export function constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
 			(gradient.topology === "linear" &&
 				["horizontal", "vertical", "diagonal-down", "diagonal-up"].includes(gradient.direction)) ||
 			((gradient.topology === "radial-center" || gradient.topology === "radial-upper-center") &&
-				gradient.direction === "center-out")
+				gradient.direction === "center-out") ||
+			(gradient.topology === "radial-offset" && [
+				"center-0.35-0.50",
+				"center-0.65-0.50",
+				"center-0.50-0.65",
+			].includes(gradient.direction))
 		)
 		if (hypothesis.kind !== "gradient-field" || gradient === null || !supportedGeometry ||
 			gradient.supportingComponentIds.length === 0 ||

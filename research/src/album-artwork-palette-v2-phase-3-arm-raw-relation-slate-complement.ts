@@ -80,7 +80,7 @@ export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementCandidateDiagno
 	rejectionReasons: readonly AlbumArtworkPaletteV2Phase3RawRelationSlateComplementRejectionReason[]
 }>
 
-export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementDiagnostics = Readonly<{
+export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposalDiagnostics = Readonly<{
 	version: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_ID
 	policy: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_POLICY
 	formulas: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_FORMULAS
@@ -100,6 +100,10 @@ export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementDiagnostics = R
 	}>
 	candidates: readonly AlbumArtworkPaletteV2Phase3RawRelationSlateComplementCandidateDiagnostic[]
 	eligibleComplementKeysInOrder: readonly string[]
+}>
+
+export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementDiagnostics =
+	AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposalDiagnostics & Readonly<{
 	outcome: Readonly<{
 		exactNoOp: boolean
 		reservedComplementKey: string | null
@@ -108,6 +112,18 @@ export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementDiagnostics = R
 		slateKeys: readonly string[]
 		displacedCurrentCustodyKeys: readonly string[]
 	}>
+}>
+
+export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposal = Readonly<{
+	key: string
+	evaluation: AlbumArtworkPaletteV2Phase3RecoverySelectorV2Evaluation
+	treatment: CompletePaletteTreatment
+	diagnostic: AlbumArtworkPaletteV2Phase3RawRelationSlateComplementCandidateDiagnostic
+}>
+
+export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposalResult = Readonly<{
+	proposals: readonly AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposal[]
+	diagnostics: AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposalDiagnostics
 }>
 
 export type AlbumArtworkPaletteV2Phase3RawRelationSlateComplementSelection = Readonly<{
@@ -151,7 +167,10 @@ function gradientRenderingKey(treatment: CompletePaletteTreatment): string {
 		: "flat"
 }
 
-function visuallyNear(first: CompletePaletteTreatment, second: CompletePaletteTreatment): boolean {
+export function areAlbumArtworkPaletteV2Phase3RawRelationRenderingsNear(
+	first: CompletePaletteTreatment,
+	second: CompletePaletteTreatment,
+): boolean {
 	if (gradientRenderingKey(first) !== gradientRenderingKey(second)) return false
 	return (["background", "surface", "foreground", "accent"] as const).every((role) =>
 		colorDistance(first[role], second[role]) <
@@ -178,9 +197,9 @@ function validateAndIndexEvaluations(
 	return evaluationsByKey
 }
 
-export function reserveAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(
+export function proposeAlbumArtworkPaletteV2Phase3RawRelationSlateComplements(
 	input: AlbumArtworkPaletteV2Phase3RawRelationSlateComplementInput,
-): AlbumArtworkPaletteV2Phase3RawRelationSlateComplementSelection {
+): AlbumArtworkPaletteV2Phase3RawRelationSlateComplementProposalResult {
 	const maximumSlateTreatments =
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_POLICY.maximumSlateTreatments
 	if (input.current.slate.length === 0 || input.current.slate.length > maximumSlateTreatments) {
@@ -249,34 +268,13 @@ export function reserveAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(
 		}
 	})
 	const eligible = evaluated.filter(({ diagnostic }) => diagnostic.eligible).sort(compareComplements)
-	const selected = eligible[0] ?? null
-	const selectedKey = selected?.evaluation.key ?? null
-	let slate: readonly CompletePaletteTreatment[] = input.current.slate
-	if (selected !== null) {
-		const composed: CompletePaletteTreatment[] = [input.current.winner, selected.evaluation.treatment]
-		const selectedKeys = new Set(composed.map(completeTreatmentKey))
-		for (const treatment of input.current.slate) {
-			if (composed.length >= maximumSlateTreatments) break
-			const key = completeTreatmentKey(treatment)
-			if (selectedKeys.has(key) || composed.some((existing) => visuallyNear(existing, treatment))) continue
-			composed.push(treatment)
-			selectedKeys.add(key)
-		}
-		slate = composed
-	}
-	const slateKeys = slate.map(completeTreatmentKey)
-	if (slateKeys[0] !== currentWinnerKey || slate.length > maximumSlateTreatments ||
-		completeTreatmentKey(input.current.winner) !== currentWinnerKey) {
-		throw new Error("Raw-relation slate complement violated immutable winner-first bounded custody")
-	}
-	const retainedCurrentKeys = new Set(slateKeys)
-	const displacedCurrentCustodyKeys = selected === null
-		? []
-		: currentCustodyKeys.filter((key, index) =>
-			index > 0 && !retainedCurrentKeys.has(key) && currentCustodyKeys.indexOf(key) === index)
 	return {
-		winner: input.current.winner,
-		slate,
+		proposals: eligible.map(({ evaluation, diagnostic }) => ({
+			key: evaluation.key,
+			evaluation,
+			treatment: evaluation.treatment,
+			diagnostic,
+		})),
 		diagnostics: {
 			version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_ID,
 			policy: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_POLICY,
@@ -301,9 +299,51 @@ export function reserveAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(
 			candidates: evaluated.map(({ diagnostic }) => diagnostic)
 				.sort((first, second) => compareAscii(first.key, second.key)),
 			eligibleComplementKeysInOrder: eligible.map(({ evaluation }) => evaluation.key),
+		},
+	}
+}
+
+export function reserveAlbumArtworkPaletteV2Phase3RawRelationSlateComplement(
+	input: AlbumArtworkPaletteV2Phase3RawRelationSlateComplementInput,
+): AlbumArtworkPaletteV2Phase3RawRelationSlateComplementSelection {
+	const maximumSlateTreatments =
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ARM_RAW_RELATION_SLATE_COMPLEMENT_POLICY.maximumSlateTreatments
+	const proposal = proposeAlbumArtworkPaletteV2Phase3RawRelationSlateComplements(input)
+	const selected = proposal.proposals[0] ?? null
+	const currentWinnerKey = proposal.diagnostics.baseline.currentWinnerKey
+	const currentCustodyKeys = proposal.diagnostics.baseline.currentCustodyKeys
+	let slate: readonly CompletePaletteTreatment[] = input.current.slate
+	if (selected !== null) {
+		const composed: CompletePaletteTreatment[] = [input.current.winner, selected.treatment]
+		const selectedKeys = new Set(composed.map(completeTreatmentKey))
+		for (const treatment of input.current.slate) {
+			if (composed.length >= maximumSlateTreatments) break
+			const key = completeTreatmentKey(treatment)
+			if (selectedKeys.has(key) || composed.some((existing) =>
+				areAlbumArtworkPaletteV2Phase3RawRelationRenderingsNear(existing, treatment))) continue
+			composed.push(treatment)
+			selectedKeys.add(key)
+		}
+		slate = composed
+	}
+	const slateKeys = slate.map(completeTreatmentKey)
+	if (slateKeys[0] !== currentWinnerKey || slate.length > maximumSlateTreatments ||
+		completeTreatmentKey(input.current.winner) !== currentWinnerKey) {
+		throw new Error("Raw-relation slate complement violated immutable winner-first bounded custody")
+	}
+	const retainedCurrentKeys = new Set(slateKeys)
+	const displacedCurrentCustodyKeys = selected === null
+		? []
+		: currentCustodyKeys.filter((key, index) =>
+			index > 0 && !retainedCurrentKeys.has(key) && currentCustodyKeys.indexOf(key) === index)
+	return {
+		winner: input.current.winner,
+		slate,
+		diagnostics: {
+			...proposal.diagnostics,
 			outcome: {
 				exactNoOp: selected === null,
-				reservedComplementKey: selectedKey,
+				reservedComplementKey: selected?.key ?? null,
 				winnerKey: currentWinnerKey,
 				winnerAuthorityChanged: false,
 				slateKeys,

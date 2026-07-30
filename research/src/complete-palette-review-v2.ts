@@ -4,7 +4,11 @@ import type { RGB } from "./types.ts"
 
 export const COMPLETE_PALETTE_REVIEW_VERSION = "complete-palette-review-v2" as const
 export const COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION =
-	"complete-palette-review-v2-presentation-1" as const
+	"complete-palette-review-v2-presentation-2" as const
+export const completePaletteReviewSupportedPresentationVersions = [
+	"complete-palette-review-v2-presentation-1",
+	COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION,
+] as const
 export const COMPLETE_PALETTE_REVIEW_COLOR_NAME_POLICY =
 	"colornames-oklab-0.6.0-nearest-oklab-presentation-only" as const
 export const completePaletteReviewRoles = ["background", "surface", "foreground", "accent"] as const
@@ -25,6 +29,8 @@ export type CompletePaletteReviewQuality = typeof completePaletteReviewQualities
 export type CompletePaletteReviewComparison = typeof completePaletteReviewComparisons[number]
 export type CompletePaletteReviewIssueTag = typeof completePaletteReviewIssueTags[number]
 export type CompletePaletteReviewSide = "A" | "B"
+export type CompletePaletteReviewPresentationVersion =
+	typeof completePaletteReviewSupportedPresentationVersions[number]
 
 export type CompletePaletteReviewColor = Readonly<{
 	hex: string
@@ -76,7 +82,7 @@ export type CompletePalettePairwiseReviewCase = CompletePaletteReviewCaseBase & 
 type CompletePaletteReviewManifestBase = Readonly<{
 	schemaVersion: 1
 	reviewVersion: typeof COMPLETE_PALETTE_REVIEW_VERSION
-	presentationVersion: typeof COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION
+	presentationVersion: CompletePaletteReviewPresentationVersion
 	manifestId: string
 	title: string
 	blinded: boolean
@@ -127,6 +133,11 @@ export type CompletePaletteReviewFeedbackStore = Readonly<{
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return value !== null && typeof value === "object" && !Array.isArray(value)
+}
+
+function isSupportedPresentationVersion(value: unknown): value is CompletePaletteReviewPresentationVersion {
+	return typeof value === "string" &&
+		(completePaletteReviewSupportedPresentationVersions as readonly string[]).includes(value)
 }
 
 function exactKeys(value: Record<string, unknown>, expected: readonly string[], label: string): void {
@@ -256,7 +267,7 @@ export function parseCompletePaletteReviewManifest(value: unknown): CompletePale
 		"schemaVersion", "reviewVersion", "presentationVersion", "manifestId", "title", "mode", "blinded", "cases",
 	], "Complete-palette review manifest")
 	if (value.schemaVersion !== 1 || value.reviewVersion !== COMPLETE_PALETTE_REVIEW_VERSION ||
-		value.presentationVersion !== COMPLETE_PALETTE_REVIEW_PRESENTATION_VERSION || !isSha256(value.manifestId) ||
+		!isSupportedPresentationVersion(value.presentationVersion) || !isSha256(value.manifestId) ||
 		typeof value.title !== "string" || value.title.trim().length < 1 || value.title.length > 200 ||
 		!completePaletteReviewModes.includes(value.mode as CompletePaletteReviewMode) ||
 		typeof value.blinded !== "boolean" || !Array.isArray(value.cases) ||

@@ -1,19 +1,31 @@
 import assert from "node:assert/strict"
 import { createHash } from "node:crypto"
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, readFile, realpath, rename, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import test, { type TestContext } from "node:test"
 import { fileURLToPath } from "node:url"
+import sharp from "sharp"
 import {
 	parseAlbumArtworkPaletteV2Phase3ReviewArguments,
 	prepareAlbumArtworkPaletteV2Phase3Review,
+	verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication,
+	verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication,
 } from "../prepare-album-artwork-palette-v2-phase-3-review.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT,
+	normalizeAlbumArtworkPaletteV2Phase3Result,
+} from "../src/album-artwork-palette-v2-phase-3-contract.ts"
+import { mixOKLab, oklabToRGB, rgbToOKLab } from "../src/color.ts"
 import {
 	parseCompletePaletteReviewFeedbackStore,
 	parseCompletePaletteReviewManifest,
 	type CompletePaletteReviewManifest,
 } from "../src/complete-palette-review-v2.ts"
+import { loadNativeImage } from "../src/native-resolution-image.ts"
+import type { RawImage } from "../src/types.ts"
 
 const contractId = "album-artwork-palette-v2-phase-3-attempt-contract-v1"
 const anchorId = "closed-anchor"
@@ -24,6 +36,105 @@ const workingExpansionManifestPath = fileURLToPath(new URL(
 	import.meta.url,
 ))
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url))
+
+function currentMidpointImage(): RawImage {
+	const width = 72
+	const height = 48
+	const data = new Uint8Array(width * height * 3)
+	const first = rgbToOKLab([34, 52, 142])
+	const middle = rgbToOKLab([80, 130, 120])
+	const second = rgbToOKLab([212, 164, 48])
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const amount = x / (width - 1)
+			let color = amount < 0.5
+				? oklabToRGB(mixOKLab(first, middle, amount * 2))
+				: oklabToRGB(mixOKLab(middle, second, amount * 2 - 1))
+			if (x >= 20 && x < 52 && (
+				(y >= 10 && y < 13) || (y >= 18 && y < 21) || (y >= 26 && y < 29)
+			)) color = [8, 8, 12]
+			if ((x >= 56 && x < 63 && y >= 34 && y < 41) ||
+				(x >= 9 && x < 14 && y >= 37 && y < 42)) color = [225, 30, 92]
+			data.set(color, (y * width + x) * 3)
+		}
+	}
+	return { width, height, data }
+}
+
+function publicationCopy<T>(value: T): T {
+	return JSON.parse(JSON.stringify(value)) as T
+}
+
+let currentMidpointPublication: Promise<Readonly<{
+	image: RawImage
+	sourceBytes: Buffer
+	reproducedOutput: ReturnType<typeof normalizeAlbumArtworkPaletteV2Phase3Result>
+	artifact: Readonly<{ source: unknown; identity: unknown; output: unknown }>
+}>> | undefined
+
+function genuineCurrentMidpointPublication() {
+	currentMidpointPublication ??= (async () => {
+		const source = currentMidpointImage()
+		const encoded = await sharp(source.data, {
+			raw: { width: source.width, height: source.height, channels: 3 },
+		}).png().toBuffer()
+		const image = await loadNativeImage(encoded)
+		const reproducedOutput = normalizeAlbumArtworkPaletteV2Phase3Result(
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT.extract(image),
+		)
+		return {
+			image,
+			sourceBytes: encoded,
+			reproducedOutput,
+			artifact: {
+				source: { width: image.width, height: image.height },
+				identity: publicationCopy(
+					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MIDPOINT_AWARE_RENDER_CANDIDATE_ATTEMPT.identity,
+				),
+				output: publicationCopy(reproducedOutput),
+			},
+		}
+	})()
+	return currentMidpointPublication
+}
+
+let currentFinalPublication: Promise<Readonly<{
+	image: RawImage
+	sourceBytes: Buffer
+	reproducedOutput: ReturnType<typeof normalizeAlbumArtworkPaletteV2Phase3Result>
+	artifact: Readonly<{ source: unknown; identity: unknown; output: unknown }>
+}>> | undefined
+
+function genuineCurrentFinalPublication() {
+	currentFinalPublication ??= (async () => {
+		const source = await genuineCurrentMidpointPublication()
+		const reproducedOutput = normalizeAlbumArtworkPaletteV2Phase3Result(
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.extract(source.image),
+		)
+		return {
+			image: source.image,
+			sourceBytes: source.sourceBytes,
+			reproducedOutput,
+			artifact: {
+				source: { width: source.image.width, height: source.image.height },
+				identity: publicationCopy(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity),
+				output: publicationCopy(reproducedOutput),
+			},
+		}
+	})()
+	return currentFinalPublication
+}
+
+let currentIntegratedThreeStopOutput: ReturnType<typeof normalizeAlbumArtworkPaletteV2Phase3Result> | undefined
+
+function genuineCurrentIntegratedThreeStopOutput() {
+	currentIntegratedThreeStopOutput ??= normalizeAlbumArtworkPaletteV2Phase3Result(
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.extract(currentMidpointImage()),
+	)
+	const root = (currentIntegratedThreeStopOutput.diagnostics as any).phase3IntegratedCandidate
+	assert.equal(root?.gradientAuthority.midpoint.kind, "source-supported-three-stop")
+	return publicationCopy(currentIntegratedThreeStopOutput)
+}
 
 type RawTreatment = Readonly<{
 	id: string
@@ -203,7 +314,7 @@ async function fixture(context: TestContext): Promise<Readonly<{
 	iterationDirectory: string
 	panelPath: string
 }>> {
-	const root = await mkdtemp(join(tmpdir(), "phase-3-review-bridge-"))
+	const root = await realpath(await mkdtemp(join(tmpdir(), "phase-3-review-bridge-")))
 	context.after(async () => rm(root, { recursive: true, force: true }))
 	const iterationDirectory = join(root, "research", "data", "scratch", "iteration")
 	const imageDirectory = join(root, "images")
@@ -250,6 +361,107 @@ async function fixture(context: TestContext): Promise<Readonly<{
 		})),
 	})
 	return { root, iterationDirectory, panelPath }
+}
+
+async function finalPublicationFixture(context: TestContext): Promise<Awaited<ReturnType<typeof fixture>> & Readonly<{
+	artifactPath: string
+	midpointHex: string
+}>> {
+	const publication = await genuineCurrentFinalPublication()
+	const output = publication.artifact.output as any
+	const root = await realpath(await mkdtemp(join(tmpdir(), "phase-3-final-publication-review-")))
+	context.after(async () => rm(root, { recursive: true, force: true }))
+	const iterationDirectory = join(root, "research", "data", "scratch", "iteration")
+	const panelPath = join(root, "research", "data", "album-artwork-palette-v2-development-panel.json")
+	const artifactPath = join(iterationDirectory, "development-01.json")
+	await mkdir(iterationDirectory, { recursive: true })
+	await mkdir(join(root, "images"), { recursive: true })
+	const file = "images/final.png"
+	await writeFile(join(root, file), publication.sourceBytes)
+	const source = {
+		caseId: "development-01",
+		path: file,
+		sha256: createHash("sha256").update(publication.sourceBytes).digest("hex"),
+		byteCount: publication.sourceBytes.byteLength,
+	}
+	await json(panelPath, { schemaVersion: 1, sourceCount: 1, sources: [source] })
+	const value = artifact(source, anchor, [normalized("anchor-key", anchor)]) as any
+	value.source.width = publication.image.width
+	value.source.height = publication.image.height
+	const closedKeys = new Set(value.anchor.output.alternatives.map(({ key }: any) => key))
+	value.attempts = [{
+		identity: publication.artifact.identity,
+		output,
+		materialDelta: {
+			identity: "canonical-role-hex-and-gradient-v1",
+			winner: {
+				anchorKey: value.anchor.output.winner.key,
+				candidateKey: output.winner.key,
+				changed: output.winner.key !== value.anchor.output.winner.key,
+			},
+			addedAlternativeKeys: output.alternatives.map(({ key }: any) => key)
+				.filter((key: string) => !closedKeys.has(key)),
+		},
+	}]
+	await json(artifactPath, value)
+	await json(join(iterationDirectory, "iteration.json"), {
+		schemaVersion: 1,
+		contractId,
+		iterationId: "final-publication",
+		sources: [{ caseId: source.caseId, file: "development-01.json" }],
+	})
+	const midpoint = output.diagnostics.phase3FinalCandidate.gradientAuthority.midpoint
+	assert.equal(midpoint.kind, "source-supported-three-stop")
+	return { root, iterationDirectory, panelPath, artifactPath, midpointHex: midpoint.color.hex }
+}
+
+async function symmetricRenderFixture(context: TestContext): Promise<Awaited<ReturnType<typeof fixture>> & Readonly<{
+	artifactPath: string
+	integratedMidpointHex: string
+}>> {
+	const input = await fixture(context)
+	const artifactPath = join(input.iterationDirectory, "development-01.json")
+	const value = JSON.parse(await readFile(artifactPath, "utf8")) as any
+	const ordinaryKey = treatmentKey(novelGradient)
+	const ordinaryEntry = normalized(ordinaryKey, novelGradient)
+	const ordinaryAttempt = value.attempts.find(({ identity }: any) => identity.attemptId === candidateId)
+	assert.ok(ordinaryAttempt)
+	ordinaryAttempt.output = { winner: ordinaryEntry, alternatives: [ordinaryEntry] }
+	ordinaryAttempt.materialDelta = {
+		identity: "canonical-role-hex-and-gradient-v1",
+		winner: { anchorKey: "anchor-key", candidateKey: ordinaryKey, changed: true },
+		addedAlternativeKeys: [ordinaryKey],
+	}
+	const integratedOutput = genuineCurrentIntegratedThreeStopOutput() as any
+	const closedKeys = new Set(["anchor-key", "old-key"])
+	value.attempts.push({
+		identity: publicationCopy(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity),
+		output: integratedOutput,
+		materialDelta: {
+			identity: "canonical-role-hex-and-gradient-v1",
+			winner: {
+				anchorKey: "anchor-key",
+				candidateKey: integratedOutput.winner.key,
+				changed: integratedOutput.winner.key !== "anchor-key",
+			},
+			addedAlternativeKeys: integratedOutput.alternatives
+				.map(({ key }: any) => key)
+				.filter((key: string) => !closedKeys.has(key)),
+		},
+	})
+	await json(artifactPath, value)
+	await json(join(input.iterationDirectory, "iteration.json"), {
+		schemaVersion: 1,
+		contractId,
+		iterationId: "symmetric-render",
+		sources: [{ caseId: "development-01", file: "development-01.json" }],
+	})
+	return {
+		...input,
+		artifactPath,
+		integratedMidpointHex:
+			integratedOutput.diagnostics.phase3IntegratedCandidate.gradientAuthority.midpoint.color.hex,
+	}
 }
 
 function exactCarrierDiagnostics(anchorKeys: readonly string[], outputKeys: readonly string[]) {
@@ -322,7 +534,7 @@ async function exactCarrierFixture(context: TestContext): Promise<Readonly<{
 	panelPath: string
 	artifactPath: string
 }>> {
-	const root = await mkdtemp(join(tmpdir(), "phase-3-exact-carrier-review-"))
+	const root = await realpath(await mkdtemp(join(tmpdir(), "phase-3-exact-carrier-review-")))
 	context.after(async () => rm(root, { recursive: true, force: true }))
 	const iterationDirectory = join(root, "research", "data", "scratch", "iteration")
 	const panelPath = join(root, "research", "data", "album-artwork-palette-v2-development-panel.json")
@@ -409,7 +621,7 @@ async function exactCarrierFixture(context: TestContext): Promise<Readonly<{
 }
 
 async function workingExpansionFixture(context: TestContext): Promise<Awaited<ReturnType<typeof fixture>>> {
-	const root = await mkdtemp(join(tmpdir(), "phase-3-working-expansion-review-"))
+	const root = await realpath(await mkdtemp(join(tmpdir(), "phase-3-working-expansion-review-")))
 	context.after(async () => rm(root, { recursive: true, force: true }))
 	const manifest = JSON.parse(await readFile(workingExpansionManifestPath, "utf8")) as {
 		manifestId: string
@@ -518,6 +730,258 @@ test("CLI binds the iteration, candidate, anchor, mode, output, and bounded/all 
 		"run", candidateId, anchorId, "pairwise", "review", "--all",
 		"--review-case", "development-01.winner",
 	]), /cannot be combined/u)
+})
+
+test("registered midpoint publication verification accepts the exact source reproduction and binds identity and dimensions",
+	async () => {
+		const value = await genuineCurrentMidpointPublication()
+		const output = value.artifact.output as any
+		assert.equal(output.diagnostics.phase3MidpointAwareRenderCandidate.applicable, true)
+		assert.doesNotThrow(() =>
+			verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication(
+				value.reproducedOutput,
+				value.image,
+				value.artifact,
+				"genuine current midpoint publication",
+			))
+
+		const staleIdentity = publicationCopy(value.artifact) as any
+		staleIdentity.identity.configurationId = "stale-configuration"
+		assert.throws(() => verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication(
+			value.reproducedOutput,
+			value.image,
+			staleIdentity,
+			"stale midpoint identity",
+		), /registered midpoint-aware attempt configuration identity/u)
+
+		const staleDimensions = publicationCopy(value.artifact) as any
+		staleDimensions.source.width++
+		assert.throws(() => verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication(
+			value.reproducedOutput,
+			value.image,
+			staleDimensions,
+			"stale midpoint dimensions",
+		), /decoded dimensions do not match/u)
+	})
+
+test("registered midpoint publication verification rejects serialized candidate-domain and custody tampering", async () => {
+	const value = await genuineCurrentMidpointPublication()
+	const reject = (label: string, mutate: (output: any) => void): void => {
+		const artifact = publicationCopy(value.artifact) as any
+		mutate(artifact.output)
+		assert.throws(() => verifyAlbumArtworkPaletteV2Phase3MidpointAwareRenderCandidatePublication(
+			value.reproducedOutput,
+			value.image,
+			artifact,
+			label,
+		), /exact source-bound reproduction/u, label)
+	}
+
+	reject("candidate reorder", (output) => {
+		const candidates = output.diagnostics.phase3MidpointAwareRenderCandidate
+			.pathBoundMaterialization.candidates
+		assert.ok(candidates.length > 1)
+		candidates.reverse()
+	})
+	reject("coordinated candidate and shared-binding truncation", (output) => {
+		const root = output.diagnostics.phase3MidpointAwareRenderCandidate
+		const materialization = root.pathBoundMaterialization
+		const diagnostics = materialization.diagnostics
+		let selected: { bundle: any; binding: any; removed: any[] } | undefined
+		for (const bundle of diagnostics.bundles) {
+			for (const binding of bundle.sharedRoleBindings) {
+				if (binding.selected) continue
+				const removed = materialization.candidates.filter((candidate: any) =>
+					candidate.bundleId === bundle.bundleId && candidate.roleBindingKey === binding.key)
+				if (removed.length > 0) {
+					selected = { bundle, binding, removed }
+					break
+				}
+			}
+			if (selected) break
+		}
+		assert.ok(selected)
+		const removedKeys = new Set(selected.removed.map(({ renderKey }) => renderKey))
+		const removedEligibleCount = selected.removed.filter(({ eligible }) => eligible).length
+		materialization.candidates = materialization.candidates.filter(({ renderKey }: any) =>
+			!removedKeys.has(renderKey))
+		materialization.eligibleCandidates = materialization.eligibleCandidates.filter(({ renderKey }: any) =>
+			!removedKeys.has(renderKey))
+		selected.bundle.sharedRoleBindings = selected.bundle.sharedRoleBindings.filter(({ key }: any) =>
+			key !== selected!.binding.key)
+		selected.bundle.sharedRoleBindingCount--
+		selected.bundle.completeCrossProductCount -= selected.removed.length
+		selected.bundle.completeRenderKeys = selected.bundle.completeRenderKeys.filter((key: string) =>
+			!removedKeys.has(key))
+		diagnostics.sharedRoleBindingCount--
+		diagnostics.completeCrossProductCount -= selected.removed.length
+		diagnostics.completeRenderCandidateCount -= selected.removed.length
+		diagnostics.qualityEligibleCompleteRenderCandidateCount -= removedEligibleCount
+		output.diagnostics.completeCandidateCount -= selected.removed.length
+	})
+	reject("baseline tampering", (output) => {
+		const baseline = output.diagnostics.phase3MidpointAwareRenderCandidate.authoritativeBaseline.evaluation
+		baseline.qualityUtility += 0.000001
+	})
+	reject("stale serialized spatial center in the core domain", (output) => {
+		const bundles = output.diagnostics.phase3MidpointAwareRenderCandidate.coreEvaluation.bundles
+		const bundle = bundles.find(({ path }: any) => path.spatialCenter !== null) ?? bundles[0]
+		assert.ok(bundle)
+		bundle.path.spatialCenter = bundle.path.spatialCenter === null
+			? [0.25, 0.75]
+			: [bundle.path.spatialCenter[0] === 0.25 ? 0.5 : 0.25, bundle.path.spatialCenter[1]]
+	})
+})
+
+test("registered final publication gate accepts an exact genuine extraction before symmetric projection", async (context) => {
+	const publication = await genuineCurrentFinalPublication()
+	assert.doesNotThrow(() => verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication(
+		publication.reproducedOutput,
+		publication.image,
+		publication.artifact,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity,
+		"genuine current final publication",
+	))
+	const input = await finalPublicationFixture(context)
+	const prepared = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "exact-final-publication"),
+		{
+			candidateAttemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity.attemptId,
+			all: false,
+			maximumCases: 1,
+		},
+	))
+	const manifest = await readManifest(prepared.manifestPath)
+	if (manifest.mode !== "pairwise") throw new Error("Expected pairwise final-publication fixture")
+	const render = manifest.cases[0].options.A.researchRender
+	assert.equal(render?.field.stops[1].kind, "source-supported-color")
+	assert.equal(render?.field.stops[1].kind === "source-supported-color"
+		? render.field.stops[1].hex : undefined, input.midpointHex)
+
+	const artifactValue = JSON.parse(await readFile(input.artifactPath, "utf8")) as any
+	artifactValue.attempts[0].output.alternatives.reverse()
+	await json(input.artifactPath, artifactValue)
+	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "reordered-final-publication"),
+		{
+			candidateAttemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity.attemptId,
+			all: false,
+			maximumCases: 1,
+		},
+	)), /exact source-bound reproduction/u)
+})
+
+test("registered final publication verification rejects identity, dimensions, tamper, reorder, domain, and authority drift",
+	async () => {
+		const publication = await genuineCurrentFinalPublication()
+		const reject = (
+			label: string,
+			mutate: (artifact: any) => void,
+			pattern: RegExp = /exact source-bound reproduction/u,
+		): void => {
+			const artifact = publicationCopy(publication.artifact) as any
+			mutate(artifact)
+			assert.throws(() => verifyAlbumArtworkPaletteV2Phase3RegisteredAttemptPublication(
+				publication.reproducedOutput,
+				publication.image,
+				artifact,
+				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity,
+				label,
+			), pattern, label)
+		}
+
+		reject("final identity", (artifact) => {
+			artifact.identity.configurationId = "stale"
+		}, /registered final-candidate attempt configuration identity/u)
+		reject("final dimensions", (artifact) => {
+			artifact.source.height++
+		}, /decoded dimensions do not match/u)
+		reject("final output tamper", (artifact) => {
+			artifact.output.diagnostics.phase3FinalCandidate.composition.checks.rawNeverWinner = false
+		})
+		reject("final coordinated slate reorder", (artifact) => {
+			const output = artifact.output
+			const root = output.diagnostics.phase3FinalCandidate
+			assert.ok(output.alternatives.length > 1)
+			output.alternatives.reverse()
+			root.selection.slateKeys.reverse()
+			root.composition.finalKeys.reverse()
+			root.finalSlateCustody.reverse()
+		})
+		reject("final selector domain truncation", (artifact) => {
+			const evaluations = artifact.output.diagnostics.phase3FinalCandidate.selector.evaluations
+			assert.ok(evaluations.length > 1)
+			evaluations.pop()
+		})
+		reject("final winner authority", (artifact) => {
+			artifact.output.diagnostics.phase3FinalCandidate.gradientAuthority.winnerKey = "stale"
+		})
+	})
+
+test("iteration loading rejects manifests above the runner's eight-case maximum", async (context) => {
+	const input = await fixture(context)
+	await json(join(input.iterationDirectory, "iteration.json"), {
+		schemaVersion: 1,
+		contractId,
+		iterationId: "oversized",
+		sources: Array.from({ length: 9 }, (_, index) => ({
+			caseId: `development-${String(index + 1).padStart(2, "0")}`,
+			file: `development-${String(index + 1).padStart(2, "0")}.json`,
+		})),
+	})
+	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "oversized"),
+	)), /runner maximum of 8 cases/u)
+})
+
+test("sequential iteration loading is deterministic across manifest source order", async (context) => {
+	const input = await fixture(context)
+	const first = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "order-first"),
+	))
+	const iterationPath = join(input.iterationDirectory, "iteration.json")
+	const iteration = JSON.parse(await readFile(iterationPath, "utf8")) as {
+		sources: Array<{ caseId: string; file: string }>
+	}
+	iteration.sources.reverse()
+	await json(iterationPath, iteration)
+	const second = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "order-second"),
+	))
+	const firstManifest = await readManifest(first.manifestPath)
+	const secondManifest = await readManifest(second.manifestPath)
+	assert.deepEqual(secondManifest, firstManifest)
+	assert.deepEqual(firstManifest.cases.map(({ caseId }) => caseId), [
+		"development-01.winner",
+		"development-02.slate-02",
+		"development-01.slate-03",
+		"development-01.slate-04",
+	])
+})
+
+test("source custody rejects a symlinked source ancestor where directory symlinks are available", async (context) => {
+	const input = await fixture(context)
+	const imageDirectory = join(input.root, "images")
+	const actualImageDirectory = join(input.root, "actual-images")
+	await rename(imageDirectory, actualImageDirectory)
+	try {
+		await symlink(actualImageDirectory, imageDirectory, process.platform === "win32" ? "junction" : "dir")
+	} catch (error) {
+		if (["EACCES", "ENOSYS", "EPERM"].includes((error as NodeJS.ErrnoException).code ?? "")) {
+			context.skip("Directory symlinks are unavailable in this environment")
+			return
+		}
+		throw error
+	}
+	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "symlinked-source-ancestor"),
+	)), /ancestor, or terminal symlinks/u)
 })
 
 test("working-expansion preparation requires explicit verified opt-in and preserves canonical defaults", async (context) => {
@@ -755,7 +1219,74 @@ test("pairwise mode can use another aligned attempt as its comparison anchor", a
 	const manifest = await readManifest(prepared.manifestPath)
 	if (manifest.mode !== "pairwise") throw new Error("Expected pairwise fixture")
 	assert.equal(manifest.cases[0].options.B.roles.background.hex, "#121212")
+	assert.equal(manifest.cases[0].options.A.researchRender, undefined)
+	assert.equal(manifest.cases[0].options.B.researchRender, undefined)
 	assert.deepEqual(manifest.cases[0].assignment, { A: "candidate", B: "anchor" })
+})
+
+test("pairwise projection keeps an ordinary candidate two-stop separate from an integrated three-stop anchor",
+	async (context) => {
+		const input = await symmetricRenderFixture(context)
+		const prepared = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+			input,
+			join(input.root, "review", "ordinary-vs-integrated"),
+			{
+				anchorId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId,
+				all: false,
+				maximumCases: 1,
+			},
+		))
+		const manifest = await readManifest(prepared.manifestPath)
+		if (manifest.mode !== "pairwise") throw new Error("Expected pairwise symmetric-render fixture")
+		const { A, B } = manifest.cases[0].options
+		assert.equal(A.gradient, true)
+		assert.equal(A.researchRender, undefined)
+		assert.equal(B.researchRender?.field.stops[1].kind, "source-supported-color")
+		assert.equal(B.researchRender?.field.stops[1].kind === "source-supported-color"
+			? B.researchRender.field.stops[1].hex : undefined, input.integratedMidpointHex)
+	})
+
+test("pairwise projection keeps an integrated candidate three-stop separate from an ordinary comparison two-stop",
+	async (context) => {
+		const input = await symmetricRenderFixture(context)
+		const prepared = await prepareAlbumArtworkPaletteV2Phase3Review(options(
+			input,
+			join(input.root, "review", "integrated-vs-ordinary"),
+			{
+				candidateAttemptId:
+					ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId,
+				anchorId: candidateId,
+				all: false,
+				maximumCases: 1,
+			},
+		))
+		const manifest = await readManifest(prepared.manifestPath)
+		if (manifest.mode !== "pairwise") throw new Error("Expected pairwise symmetric-render fixture")
+		const { A, B } = manifest.cases[0].options
+		assert.equal(A.researchRender?.field.stops[1].kind, "source-supported-color")
+		assert.equal(A.researchRender?.field.stops[1].kind === "source-supported-color"
+			? A.researchRender.field.stops[1].hex : undefined, input.integratedMidpointHex)
+		assert.equal(B.gradient, true)
+		assert.equal(B.researchRender, undefined)
+	})
+
+test("attempt-backed comparison projection fails closed on stale integrated anchor diagnostics", async (context) => {
+	const input = await symmetricRenderFixture(context)
+	const value = JSON.parse(await readFile(input.artifactPath, "utf8")) as any
+	const integrated = value.attempts.find(({ identity }: any) => identity.attemptId ===
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId)
+	assert.ok(integrated)
+	integrated.output.diagnostics.phase3IntegratedCandidate.configurationId = "stale-configuration"
+	await json(input.artifactPath, value)
+	await assert.rejects(() => prepareAlbumArtworkPaletteV2Phase3Review(options(
+		input,
+		join(input.root, "review", "stale-integrated-anchor"),
+		{
+			anchorId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_INTEGRATED_CANDIDATE_ATTEMPT.identity.attemptId,
+			all: false,
+			maximumCases: 1,
+		},
+	)), /integrated|configuration|identity/u)
 })
 
 test("exact-foreground-carrier is explicit and pairs the sole reserved slate addition with its carrier", async (context) => {

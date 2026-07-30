@@ -34,6 +34,31 @@ function treatment(id: string, background: string, foreground = "#ffffff") {
 	}
 }
 
+function gradientTreatment(midpoint?: string) {
+	const value = {
+		...treatment("gradient:linear:diagonal-down:family-a:family-b:#101010:#202020", "#101010"),
+		gradient: true,
+		collapse: { surface: false, accent: true },
+		...(midpoint ? {
+			researchRender: {
+				schemaVersion: 1,
+				field: {
+					kind: "linear-gradient",
+					angleDegrees: 135,
+					interpolation: "oklab",
+					stops: [
+						{ kind: "role", role: "background", position: 0 },
+						{ kind: "source-supported-color", hex: midpoint, position: 0.5 },
+						{ kind: "role", role: "surface", position: 1 },
+					],
+				},
+			},
+		} : {}),
+	}
+	value.roles.surface.hex = "#202020"
+	return value
+}
+
 async function json(path: string, value: unknown): Promise<void> {
 	await mkdir(join(path, ".."), { recursive: true })
 	await writeFile(path, `${JSON.stringify(value, null, 2)}\n`)
@@ -135,6 +160,136 @@ test("visible identity includes generated/collapse/gradient semantics while rend
 	assert.equal(normalized.treatmentIdentity, direction.treatmentIdentity)
 	assert.notEqual(normalized.renderVariantId, direction.renderVariantId)
 	assert.notEqual(normalized.treatmentIdentity, generatedNormalized.treatmentIdentity)
+})
+
+test("presentation-2 midpoint variants require their own exact absolute evidence while retaining pairwise context", async (context) => {
+	const root = await mkdtemp(join(tmpdir(), "palette-review-midpoint-evidence-"))
+	context.after(async () => rm(root, { recursive: true, force: true }))
+	const directory = join(root, "research", "data", "experiments", "album-artwork-palette-v2-midpoint-evidence")
+	const presentationVersion = "complete-palette-review-v2-presentation-2"
+	const omittedSource = "4".repeat(64)
+	const explicitSource = "5".repeat(64)
+	const omitted = gradientTreatment()
+	const explicit = gradientTreatment("#406080")
+	const differentExplicit = gradientTreatment("#806040")
+	const comparison = treatment("comparison", "#303030")
+	const normalizedOmitted = normalizeTreatment(omitted, { presentationVersion })
+	const normalizedExplicit = normalizeTreatment(explicit, { presentationVersion })
+	const normalizedDifferentExplicit = normalizeTreatment(differentExplicit, { presentationVersion })
+	const normalizedComparison = normalizeTreatment(comparison, { presentationVersion })
+
+	assert.equal(normalizedOmitted.treatmentIdentity, normalizedExplicit.treatmentIdentity)
+	assert.equal(normalizedOmitted.treatmentIdentity, normalizedDifferentExplicit.treatmentIdentity)
+	assert.notEqual(normalizedOmitted.renderVariantId, normalizedExplicit.renderVariantId)
+	assert.notEqual(normalizedOmitted.renderVariantId, normalizedDifferentExplicit.renderVariantId)
+	assert.notEqual(normalizedExplicit.renderVariantId, normalizedDifferentExplicit.renderVariantId)
+
+	await json(join(directory, "review-manifest.private.json"), {
+		schemaVersion: 1,
+		reviewVersion: "complete-palette-review-v2",
+		presentationVersion,
+		manifestId: "midpoint-evidence-manifest",
+		cases: [{
+			caseId: "omitted-reviewed",
+			source: { file: "images/omitted.jpg", sha256: omittedSource },
+			options: { A: omitted, B: comparison },
+			assignment: { A: "candidate", B: "anchor" },
+		}, {
+			caseId: "explicit-reviewed",
+			source: { file: "images/explicit.jpg", sha256: explicitSource },
+			options: { A: explicit, B: comparison },
+			assignment: { A: "candidate", B: "anchor" },
+		}],
+	})
+	await json(join(directory, "feedback.json"), {
+		schemaVersion: 1,
+		reviewVersion: "complete-palette-review-v2",
+		manifestId: "midpoint-evidence-manifest",
+		entries: [{
+			caseId: "omitted-reviewed",
+			sourceSha256: omittedSource,
+			qualityA: "strong",
+			qualityB: "acceptable",
+			comparison: "a-stronger",
+			issuesA: [],
+			issuesB: [],
+			comment: "omitted midpoint review",
+		}, {
+			caseId: "explicit-reviewed",
+			sourceSha256: explicitSource,
+			qualityA: "strong",
+			qualityB: "acceptable",
+			comparison: "a-stronger",
+			issuesA: [],
+			issuesB: [],
+			comment: "explicit midpoint review",
+		}],
+	})
+
+	const databasePath = join(root, "warehouse.sqlite")
+	await buildWarehouse({ projectRoot: root, databasePath })
+	const candidates = candidateTreatments({
+		presentationVersion,
+		candidates: [
+			{ caseId: "omitted-exact", sourceSha256: omittedSource, treatment: omitted },
+			{ caseId: "explicit-against-omitted", sourceSha256: omittedSource, treatment: explicit },
+			{ caseId: "explicit-exact", sourceSha256: explicitSource, treatment: explicit },
+			{ caseId: "omitted-against-explicit", sourceSha256: explicitSource, treatment: omitted },
+			{ caseId: "different-explicit", sourceSha256: explicitSource, treatment: differentExplicit },
+		],
+	})
+	const database = openWarehouse(databasePath)
+	try {
+		const report = minimalReviewNeed(database, candidates)
+		assert.equal(report.reviewNeededCount, 3)
+		assert.equal(report.reviewWorkAvoidedCount, 2)
+		assert.deepEqual((report.entries as Array<Record<string, unknown>>).map(({ status }) => status), [
+			"exact-evidence-reused",
+			"incompatible-render-variant",
+			"exact-evidence-reused",
+			"incompatible-render-variant",
+			"incompatible-render-variant",
+		])
+
+		for (const mismatch of [{
+			sourceSha256: omittedSource,
+			renderVariantId: normalizedExplicit.renderVariantId,
+			existingRenderVariantId: normalizedOmitted.renderVariantId,
+		}, {
+			sourceSha256: explicitSource,
+			renderVariantId: normalizedOmitted.renderVariantId,
+			existingRenderVariantId: normalizedExplicit.renderVariantId,
+		}, {
+			sourceSha256: explicitSource,
+			renderVariantId: normalizedDifferentExplicit.renderVariantId,
+			existingRenderVariantId: normalizedExplicit.renderVariantId,
+		}]) {
+			const lookup = exactTreatmentLookup(database, {
+				sourceSha256: mismatch.sourceSha256,
+				treatmentIdentity: normalizedOmitted.treatmentIdentity,
+				renderVariantId: mismatch.renderVariantId,
+			})
+			assert.deepEqual(lookup.absoluteJudgments, [])
+			const pairwise = lookup.pairwiseAppearances as Array<Record<string, unknown>>
+			assert.equal(pairwise.length, 1)
+			assert.equal(pairwise[0].left_render_variant_id, mismatch.existingRenderVariantId)
+		}
+
+		for (const [sourceSha256, renderVariantId] of [
+			[omittedSource, normalizedOmitted.renderVariantId],
+			[explicitSource, normalizedExplicit.renderVariantId],
+		] as const) {
+			const pair = exactPairHistory(database, {
+				sourceSha256,
+				firstTreatmentIdentity: normalizedOmitted.treatmentIdentity,
+				secondTreatmentIdentity: normalizedComparison.treatmentIdentity,
+			})
+			assert.equal(pair.judgmentCount, 1)
+			assert.equal((pair.history as Array<Record<string, unknown>>)[0].left_render_variant_id, renderVariantId)
+		}
+	} finally {
+		database.close()
+	}
 })
 
 test("warehouse preserves exact V2 judgment types, unblinds pairs, and reports conflicts without flattening", async (context) => {

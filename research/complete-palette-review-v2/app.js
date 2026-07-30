@@ -3,6 +3,7 @@ const SIDES = ["A", "B"]
 const QUALITY_VALUES = ["strong", "acceptable", "weak-fallback", "unacceptable", "uncertain"]
 const COMPARISON_VALUES = ["a-stronger", "b-stronger", "similarly-valid", "neither-acceptable", "uncertain"]
 const ISSUE_VALUES = ["missing gradient", "extraneous gradient", "incomplete artwork identity"]
+const BLINDED_RENDER_PRESENTATION_VERSION = "complete-palette-review-v2-presentation-2"
 
 const qualityText = {
 	strong: "Strong",
@@ -102,9 +103,14 @@ function renderTreatment(reviewCase, treatment, headingText) {
 	const panel = create("article", { className: "option-panel", "aria-label": headingText })
 	const heading = create("header", { className: "option-heading" })
 	const cardinality = new Set(ROLES.map((role) => treatment.roles[role].hex)).size
+	const renderModeBlinded = state.review.blinded &&
+		state.review.presentationVersion === BLINDED_RENDER_PRESENTATION_VERSION
+	const fieldLabel = renderModeBlinded
+		? "Rendered field"
+		: treatment.researchRender ? "3-stop gradient" : treatment.gradient ? "Gradient" : "Flat field"
 	heading.append(
 		create("strong", { text: headingText }),
-		create("span", { text: `${treatment.researchRender ? "3-stop gradient" : treatment.gradient ? "Gradient" : "Flat field"} / ${cardinality} distinct role colors` }),
+		create("span", { text: `${fieldLabel} / ${cardinality} distinct role colors` }),
 	)
 	panel.append(heading)
 
@@ -158,10 +164,12 @@ function renderTreatment(reviewCase, treatment, headingText) {
 		midpointColor.append(create("strong", { text: midpoint.nearestName }), create("code", { text: midpoint.hex }))
 		custody.append(
 			midpointSwatch,
-			create("strong", { text: "Gradient midpoint (not a role)" }),
+			create("strong", { text: renderModeBlinded
+				? "Additional field color (not a role)"
+				: "Gradient midpoint (not a role)" }),
 			midpointColor,
-			create("span", { text: "50% / exact source-supported render" }),
 		)
+		if (!renderModeBlinded) custody.append(create("span", { text: "50% / exact source-supported render" }))
 		panel.append(custody)
 	}
 	return panel

@@ -8,7 +8,12 @@ import {
 	extractAlbumArtworkPaletteV2Phase3Live072,
 } from "../src/album-artwork-palette-v2.ts"
 import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_LIVE_072_ATTEMPT,
+	extractAlbumArtworkPaletteV2Phase3FinalCandidate,
 	materialDeltaFromAlbumArtworkPaletteV2Phase3Anchor,
 	normalizeAlbumArtworkPaletteV2Phase3Result,
 } from "../src/album-artwork-palette-v2-phase-3-contract.ts"
@@ -17,6 +22,7 @@ import type {
 } from "../src/album-artwork-palette-v2-phase-3-contract.ts"
 import { loadNativeImage } from "../src/native-resolution-image.ts"
 import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_ATTEMPTS_PER_ITERATION,
 	executeAlbumArtworkPaletteV2Phase3Case,
 	parseAlbumArtworkPaletteV2Phase3IterationArguments,
 	selectAlbumArtworkPaletteV2Phase3DevelopmentSources,
@@ -113,7 +119,62 @@ test("bounded runner emits normalized source-bound attempts, runtime, and anchor
 	}
 })
 
+test("contract exports and bounded runner execute the exact final candidate", async () => {
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
+		"phase-3-final-candidate")
+	assert.deepEqual(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity, {
+		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
+		configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID,
+	})
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION.configurationId,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID)
+	assert.deepEqual(parseAlbumArtworkPaletteV2Phase3IterationArguments([
+		"--iteration", "final-candidate-contract-test",
+		"--case", "development-01",
+		"--attempt", ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
+	]), {
+		iterationId: "final-candidate-contract-test",
+		caseIds: ["development-01"],
+		attemptIds: [ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID],
+	})
+
+	const frozen = JSON.parse(await readFile(new URL(
+		"../data/experiments/album-artwork-palette-v2-0.7.2-development/sources/development-01.json",
+		import.meta.url,
+	), "utf8")) as Frozen072Source
+	const image = await loadNativeImage(await readFile(new URL(`../../${frozen.source.path}`, import.meta.url)))
+	const artifact = executeAlbumArtworkPaletteV2Phase3Case(
+		frozen.source,
+		image,
+		[ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT],
+	)
+	const direct = extractAlbumArtworkPaletteV2Phase3FinalCandidate(image)
+
+	assert.deepEqual(artifact.attempts[0].identity,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT.identity)
+	assert.equal(artifact.attempts[0].output.version,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID)
+	assert.equal(artifact.attempts[0].output.protocol,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID)
+	assert.equal(JSON.stringify(artifact.attempts[0].output),
+		JSON.stringify(normalizeAlbumArtworkPaletteV2Phase3Result(direct)))
+})
+
 test("runner requires explicit allowlisted development cases and rejects protected or reserve identities", () => {
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MAXIMUM_ATTEMPTS_PER_ITERATION, 5)
+	assert.throws(() => parseAlbumArtworkPaletteV2Phase3IterationArguments([
+		"--iteration", "custody-test", "--case", "development-01",
+		"--attempt", "phase-3-unknown",
+	]), /Unknown Phase 3 attempt phase-3-unknown/u)
+	assert.throws(() => parseAlbumArtworkPaletteV2Phase3IterationArguments([
+		"--iteration", "custody-test", "--case", "development-01",
+		"--attempt", "live-0.7.2",
+		"--attempt", "phase-3-working",
+		"--attempt", "phase-3-candidate-v2",
+		"--attempt", "phase-3-recovery",
+		"--attempt", "phase-3-recovery-v2",
+		"--attempt", ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
+	]), /limited to 5 attempts/u)
 	assert.throws(() => parseAlbumArtworkPaletteV2Phase3IterationArguments([
 		"--iteration", "custody-test", "--case", "fresh-12",
 	]), /forbidden/u)

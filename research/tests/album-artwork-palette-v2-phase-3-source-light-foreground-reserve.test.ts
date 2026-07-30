@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { createHash } from "node:crypto"
 import { readFile } from "node:fs/promises"
 import test from "node:test"
 import {
@@ -23,14 +24,21 @@ import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID,
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID,
-} from "../src/album-artwork-palette-v2-phase-3-parallel-arms.ts"
+	extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve,
+} from "../src/album-artwork-palette-v2-phase-3-source-light-foreground-reserve-attempt.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT as CONTRACT_SOURCE_LIGHT_ATTEMPT,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID as CONTRACT_SOURCE_LIGHT_ATTEMPT_ID,
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID as CONTRACT_SOURCE_LIGHT_CONFIGURATION_ID,
+	extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve as extractContractSourceLightForegroundReserve,
+} from "../src/album-artwork-palette-v2-phase-3-contract.ts"
 import type {
 	FieldConditionalRoleEvidence,
 } from "../src/album-artwork-palette-v2-phase-3-role-aware.ts"
 import {
 	parseAlbumArtworkPaletteV2Phase3IterationArguments,
 } from "../run-album-artwork-palette-v2-phase-3-iteration.ts"
-import type { RGB } from "../src/types.ts"
+import type { RGB, RawImage } from "../src/types.ts"
 
 const SCORES: CompletePaletteScores = Object.freeze({
 	fieldFidelity: 0.8,
@@ -159,6 +167,43 @@ function unrelated(label: string, seed: number): CompletePaletteTreatment {
 		foregroundFamily: `foreground:${label}`,
 		accentFamily: `accent:${label}`,
 	})
+}
+
+function historicalExtractionImage(): RawImage {
+	const width = 48
+	const height = 32
+	const data = new Uint8Array(width * height * 3)
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			const amount = x / (width - 1)
+			data.set([
+				Math.round(24 + 180 * amount),
+				Math.round(52 + 92 * amount),
+				Math.round(142 - 70 * amount),
+			], (y * width + x) * 3)
+		}
+	}
+	return { width, height, data }
+}
+
+async function staticTypeScriptDependencyGraph(entry: URL): Promise<ReadonlySet<string>> {
+	const visited = new Set<string>()
+	const pending = [entry]
+	while (pending.length > 0) {
+		const current = pending.pop()!
+		if (visited.has(current.href)) continue
+		visited.add(current.href)
+		const source = await readFile(current, "utf8")
+		const runtimeSource = source.replace(
+			/\b(?:import|export)\s+type\b[\s\S]*?\bfrom\s+["'][^"']+["']/gu,
+			"",
+		)
+		for (const match of runtimeSource.matchAll(/(?:from\s+|import\s*)["'](\.[^"']+)["']/gu)) {
+			const dependency = new URL(match[1], current)
+			if (dependency.pathname.endsWith(".ts") && !visited.has(dependency.href)) pending.push(dependency)
+		}
+	}
+	return visited
 }
 
 function evidence(
@@ -484,6 +529,13 @@ test("the bounded attempt identity is exported and registered by the iteration r
 	})
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID.endsWith("-v1"),
 		true)
+	assert.strictEqual(CONTRACT_SOURCE_LIGHT_ATTEMPT, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT)
+	assert.equal(CONTRACT_SOURCE_LIGHT_ATTEMPT_ID,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID)
+	assert.equal(CONTRACT_SOURCE_LIGHT_CONFIGURATION_ID,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_CONFIGURATION_ID)
+	assert.strictEqual(extractContractSourceLightForegroundReserve,
+		extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve)
 	assert.deepEqual(parseAlbumArtworkPaletteV2Phase3IterationArguments([
 		"--iteration", "source-light-reserve-test",
 		"--case", "development-03",
@@ -493,6 +545,41 @@ test("the bounded attempt identity is exported and registered by the iteration r
 		caseIds: ["development-03"],
 		attemptIds: [ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT_ID],
 	})
+})
+
+test("the dedicated attempt adapter preserves historical source-light extraction bytes", () => {
+	const result = extractAlbumArtworkPaletteV2Phase3SourceLightForegroundReserve(historicalExtractionImage())
+	const serialized = JSON.stringify(result)
+	assert.equal(createHash("sha256").update(serialized).digest("hex"),
+		"124e1ceaaf0a2a97588f537141fb97bc6808c047715fa9095ffc29acda284c1e")
+	assert.equal(Buffer.byteLength(serialized), 4_737_954)
+	assert.equal(JSON.stringify(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SOURCE_LIGHT_FOREGROUND_RESERVE_ATTEMPT
+		.extract(historicalExtractionImage())), serialized)
+})
+
+test("the final candidate static module graph excludes the rejected source-light mechanism", async () => {
+	const graph = await staticTypeScriptDependencyGraph(new URL(
+		"../src/album-artwork-palette-v2-phase-3-final-candidate.ts",
+		import.meta.url,
+	))
+	const parallelArms = new URL(
+		"../src/album-artwork-palette-v2-phase-3-parallel-arms.ts",
+		import.meta.url,
+	).href
+	const adapter = new URL(
+		"../src/album-artwork-palette-v2-phase-3-source-light-foreground-reserve-attempt.ts",
+		import.meta.url,
+	).href
+	const mechanism = new URL(
+		"../src/album-artwork-palette-v2-phase-3-arm-source-light-foreground-reserve.ts",
+		import.meta.url,
+	).href
+
+	assert.equal(graph.has(parallelArms), true)
+	assert.equal(graph.has(adapter), false)
+	assert.equal(graph.has(mechanism), false)
+	const parallelSource = await readFile(new URL(parallelArms), "utf8")
+	assert.doesNotMatch(parallelSource, /source-light-foreground-reserve/u)
 })
 
 test("inference closure contains only generic source evidence and existing materialized custody", async () => {
