@@ -612,6 +612,7 @@ function supportForRepresentative(
 		connectedSupport: largestConnected / evidence.pixelCount,
 		spatialCoverage: quadrantCoverage,
 		concentration: local.length === 0 ? 0 : largestConnected / local.length,
+		markSupport: 0,
 		prototypeDistance: okDistance(representativeLab, prototype),
 		outlierScore: 1 - local.length / samples.length,
 		synthesis: synthesized
@@ -714,6 +715,10 @@ function buildFamily(
 		foregroundTypographyObservation: 0,
 		foregroundPolarityObservation: { polarity: 0, confidence: 0, componentIds: [] },
 		signatureAccentObservation: 0,
+		// Refinement families describe a gradient endpoint — a field, by
+		// construction — so they carry no mark evidence, exactly as before.
+		markSupport: 0,
+		markComponentCount: 0,
 		observedComponentCount: 0,
 		components: components
 			.slice(0, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_POLICY.maximumRetainedComponents)

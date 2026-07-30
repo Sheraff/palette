@@ -1,3 +1,5 @@
+import { ALBUM_ARTWORK_PALETTE_V2_POLICY } from "./policy.ts";
+
 import type { CompletePaletteTreatment, PaletteRoleColor } from "./palette-core.ts";
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_V2_QUALITY_AXES = [
@@ -45,10 +47,16 @@ export function roleSourceSupport(color: PaletteRoleColor, declaredFamilyId: str
 	if (color.generated || "generated" in color.support || declaredFamilyId === "generated") return 0
 	const support = color.support
 	if (support.anchorFamilyId !== declaredFamilyId || support.regionIds.length === 0) return 0
+	// Same population-normalised support terms as `supportQuality`, and the same
+	// substitution: measured mark evidence stands in for a population fraction a
+	// deliberate small element cannot reach. See
+	// `ALBUM_ARTWORK_PALETTE_V2_POLICY.mark`.
+	const substituted = (populationTerm: number): number =>
+		Math.max(populationTerm, ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.substitution * support.markSupport)
 	return clamp(
 		0.26 * clamp(support.perceptualDensity / 0.5) +
-		0.20 * clamp(support.totalSupport / 0.08) +
-		0.20 * clamp(support.connectedSupport / 0.08) +
+		0.20 * substituted(clamp(support.totalSupport / 0.08)) +
+		0.20 * substituted(clamp(support.connectedSupport / 0.08)) +
 		0.14 * clamp(support.spatialCoverage) +
 		0.10 * clamp(support.concentration) +
 		0.10 * (1 - clamp(support.prototypeDistance / 0.06)),

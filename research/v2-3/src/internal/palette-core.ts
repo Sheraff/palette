@@ -78,6 +78,13 @@ export type SourceSupportRecord = Readonly<{
 	connectedSupport: number
 	spatialCoverage: number
 	concentration: number
+	/**
+	 * Region-observation evidence that the anchor family is a deliberate mark
+	 * (see `ALBUM_ARTWORK_PALETTE_V2_POLICY.mark`). Bounded to `[0, 1]` and
+	 * measured, never assumed: it substitutes for the population-normalised
+	 * support terms of a family too small to satisfy them.
+	 */
+	markSupport: number
 	prototypeDistance: number
 	outlierScore: number
 	synthesis: Readonly<{
@@ -129,6 +136,14 @@ export type ColorFamilyEvidence = Readonly<{
 	foregroundTypographyObservation: number
 	foregroundPolarityObservation: ForegroundPolarityObservation
 	signatureAccentObservation: number
+	/**
+	 * Bounded region-observation evidence that this family is a deliberate mark
+	 * — repeated, resolved, interior strokes materially separated from the
+	 * field — rather than a fraction of a percent of noise. See
+	 * `ALBUM_ARTWORK_PALETTE_V2_POLICY.mark`.
+	 */
+	markSupport: number
+	markComponentCount: number
 	observedComponentCount: number
 	components: readonly ComponentEvidence[]
 	representatives: readonly ColorRepresentative[]
@@ -889,12 +904,84 @@ function foregroundPolarityObservation(
 	}
 }
 
+const MARK = ALBUM_ARTWORK_PALETTE_V2_POLICY.mark
+
+/**
+ * Population-independent evidence that a family is a deliberate mark.
+ *
+ * The factors are multiplied, not averaged, so every one of them is a necessary
+ * condition: the family must have *several* qualifying components (never a bare
+ * pixel), they must *look like each other* (repetition), they must be *resolved*
+ * shapes rather than specks (geometry), the family must be *materially
+ * separated* from the families that own the field, and those components must
+ * account for essentially all of the family, by population and by count. A
+ * family that fails any one of them earns near zero and the rest of the
+ * algorithm is untouched.
+ *
+ * `fieldSeparation` is measured prototype-to-prototype rather than across the
+ * component boundary on purpose: a small element's perimeter is mostly
+ * anti-aliased blend, so pixel-adjacent boundary contrast under-reads it in
+ * proportion to how small it is — precisely the elements this evidence exists
+ * to recover.
+ */
+function markSupportOf(
+	family: Pick<ColorFamilyEvidence, "prototype" | "population" | "componentCount" | "components">,
+	pixelCount: number,
+	fieldPrototypes: readonly OKLab[],
+): Readonly<{ markSupport: number; markComponentCount: number }> {
+	if (MARK.substitution <= 0) return { markSupport: 0, markComponentCount: 0 }
+	const minimumPopulation = Math.max(MARK.minimumComponentPopulation, MARK.minimumComponentFraction * pixelCount)
+	const qualifying = family.components
+		.filter(({ population, retainedFor, observation }) =>
+			retainedFor.includes("role-observation") &&
+			population >= minimumPopulation &&
+			observation.repetition >= MARK.minimumRepetition &&
+			observation.borderContact <= MARK.maximumBorderContact &&
+			observation.fill >= MARK.minimumFill)
+		.sort((first, second) =>
+			compareNumbersDescending(first.observation.signatureAccent.score, second.observation.signatureAccent.score) ||
+			compareNumbersDescending(first.population, second.population) ||
+			first.startPixelIndex - second.startPixelIndex)
+	if (qualifying.length < MARK.minimumComponentCount) return { markSupport: 0, markComponentCount: qualifying.length }
+	const strokes = qualifying.slice(0, MARK.saturationComponentCount)
+	const plurality = clamp(
+		(qualifying.length - MARK.minimumComponentCount + 1) /
+		(MARK.saturationComponentCount - MARK.minimumComponentCount + 1))
+	const coherence = mean(strokes.map(({ observation }) => observation.repetition))
+	const resolution = mean(strokes.map(({ observation }) => observation.signatureAccent.geometry))
+	const separation = fieldPrototypes.length === 0
+		? 0
+		: clamp(Math.min(...fieldPrototypes.map((prototype) => okDistance(family.prototype, prototype))) / MARK.fieldSeparation)
+	// The family must *be* the mark, structurally and by population. A scattered
+	// texture also produces plenty of small, mutually similar, interior
+	// components, but they are a handful out of thousands and account for a sliver
+	// of the family; lettering is an enumerable set of strokes that accounts for
+	// nearly all of its own family on both counts. Because the retained component
+	// set is bounded, a family fragmented into thousands of pieces cannot reach
+	// `enumerability` even in principle — which is the intent.
+	const strokeCoverage = clamp(
+		qualifying.reduce((sum, { population }) => sum + population, 0) / Math.max(1, family.population))
+	const enumerability = clamp(qualifying.length / Math.max(1, family.componentCount))
+	return {
+		markSupport: clamp(plurality * coherence * resolution * separation * strokeCoverage * enumerability),
+		markComponentCount: qualifying.length,
+	}
+}
+
+/**
+ * The population-normalised support term a mark may stand in for, bounded by
+ * `MARK.substitution`.
+ */
+function markSubstituted(populationTerm: number, markSupport: number): number {
+	return Math.max(populationTerm, MARK.substitution * markSupport)
+}
+
 function sourceSupport(
 	representativeIndex: number | null,
 	representativeLab: OKLab,
 	strategy: RepresentativeStrategy,
 	family: MutableFamily,
-	familyEvidence: Pick<ColorFamilyEvidence, "id" | "populationFraction" | "largestComponentFraction" | "quadrantCoverage" | "familyConcentration">,
+	familyEvidence: Pick<ColorFamilyEvidence, "id" | "populationFraction" | "largestComponentFraction" | "quadrantCoverage" | "familyConcentration" | "markSupport">,
 	bins: readonly PerceptualBin[],
 	labs: Float32Array,
 	width: number,
@@ -923,6 +1010,7 @@ function sourceSupport(
 		connectedSupport: familyEvidence.largestComponentFraction,
 		spatialCoverage: familyEvidence.quadrantCoverage,
 		concentration: familyEvidence.familyConcentration,
+		markSupport: familyEvidence.markSupport,
 		prototypeDistance: exactDistance,
 		outlierScore: 1 - neighborhoodPopulation / Math.max(1, family.population),
 		synthesis: strategy === "density-synthesized"
@@ -936,8 +1024,8 @@ function supportQuality(representative: ColorRepresentative): number {
 	const support = representative.support
 	return clamp(
 		0.28 * clamp(support.perceptualDensity / 0.5) +
-		0.22 * clamp(support.totalSupport / 0.08) +
-		0.22 * clamp(support.connectedSupport / 0.08) +
+		0.22 * markSubstituted(clamp(support.totalSupport / 0.08), support.markSupport) +
+		0.22 * markSubstituted(clamp(support.connectedSupport / 0.08), support.markSupport) +
 		0.16 * support.spatialCoverage +
 		0.12 * (1 - clamp(support.prototypeDistance / 0.06)),
 	)
@@ -1030,6 +1118,14 @@ function foregroundRoleScore(family: ColorFamilyEvidence): number {
 	return clamp(0.60 * family.foregroundScore + 0.40 * family.foregroundTypographyObservation)
 }
 
+// `signatureScore` carries a population ratio of the same class as the support
+// terms (`coherentSupport = clamp(largestComponentFraction / 0.002)`, which a
+// word set in seven letters cannot satisfy in any one of them), and mark
+// evidence was substituted for it here in an earlier revision. Measured: it is
+// a no-op on all 38 sweep cases once the support substitution is in place, so
+// it is left out rather than carried as an unexercised path that would move
+// rankings on inputs no review has seen. It remains the obvious next site if
+// evidence for it ever appears.
 function signatureRoleScore(family: ColorFamilyEvidence): number {
 	return clamp(0.55 * family.signatureScore + 0.45 * family.signatureAccentObservation)
 }
@@ -1382,6 +1478,8 @@ export function buildNativePaletteEvidence(
 			foregroundTypographyObservation,
 			foregroundPolarityObservation: foregroundPolarity,
 			signatureAccentObservation,
+			markSupport: 0,
+			markComponentCount: 0,
 			observedComponentCount: family.components.filter(({ retainedFor }) => retainedFor.includes("role-observation")).length,
 			components: family.components.map((component) => ({
 				id: `${family.id}-region-${component.start}`,
@@ -1399,6 +1497,19 @@ export function buildNativePaletteEvidence(
 			representatives: [],
 		}
 	})
+
+	// Mark evidence is measured against the families that own the field, so it can
+	// only be computed once every family has been measured. It is folded into the
+	// same `ColorFamilyEvidence` records before any of them is consumed.
+	const fieldPrototypes = [...preliminary]
+		.sort((first, second) =>
+			compareNumbersDescending(first.fieldScore, second.fieldScore) ||
+			compareNumbersDescending(first.population, second.population) ||
+			compareAscii(first.id, second.id))
+		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.fieldReferenceFamilies)
+		.map(({ prototype }) => prototype)
+	const marked = preliminary.map((family): ColorFamilyEvidence =>
+		({ ...family, ...markSupportOf(family, pixelCount, fieldPrototypes) }))
 
 	const denseTargets = mutableFamilies.map((family) => {
 		const denseBinIndex = [...family.binIndexes].sort((first, second) =>
@@ -1425,7 +1536,7 @@ export function buildNativePaletteEvidence(
 		}
 	}
 
-	const families = preliminary.map((familyEvidence, familyIndex): ColorFamilyEvidence => {
+	const families = marked.map((familyEvidence, familyIndex): ColorFamilyEvidence => {
 		const mutable = mutableFamilies[familyIndex]
 		const representatives: ColorRepresentative[] = []
 		const addExact = (strategy: "dense-exact" | "nearest-prototype", pixelIndex: number): void => {
@@ -2639,6 +2750,20 @@ function buildIdentityObligationSelection(
 			regionIds: connectedRegions.slice(0, 4).map(({ id }) => id),
 			connectedPopulationFraction: connectedRegions[0].populationFraction,
 			materialDistanceFromField,
+			// Deliberately *not* mark-substituted. Mark evidence repairs a handicap
+			// in fair competition; it does not confer an entitlement. An identity
+			// obligation is the strongest claim in this system — it grants priority
+			// retention in the role shortlists over better-scoring alternatives and
+			// carries identity coverage into the winner objective — so it must keep
+			// being nominated by the artwork's own source-connected region evidence.
+			//
+			// Measured (reviewed batch 10): substituting here promoted one artwork's
+			// red lettering from being no identity direction at all to the top
+			// obligation, and the resulting red accent was rejected in favour of the
+			// incumbent dark accent, which reads better as a UI element against that
+			// artwork's chromatic field. Where the region evidence *already*
+			// nominates the mark, removing the support handicap alone is enough for
+			// it to win on its own merits — which is the outcome review preferred.
 			regionEvidenceLevel: evidenceLevel(connectedRegions[0].observation.signatureAccent.score),
 		})
 	}

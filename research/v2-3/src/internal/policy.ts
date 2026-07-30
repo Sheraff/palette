@@ -55,6 +55,65 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 	representatives: Object.freeze({
 		maximumSynthesizedOccupiedDistance: 0.025,
 	}),
+	/**
+	 * Salient-mark evidence.
+	 *
+	 * A small, vivid, repeated element — lettering, a logo, a stamp — carries
+	 * artwork identity that its population fraction cannot express. Every
+	 * support term in the algorithm normalises by a population fraction
+	 * (`totalSupport / 0.08`, `largestComponentFraction / 0.002`, …) that an
+	 * element covering 0.02 % of the artwork can never reach, so such an
+	 * element is filtered out before it can compete for the accent role.
+	 *
+	 * `markSupport` is a bounded, measured substitute for that population
+	 * support, derived entirely from the region observations the evidence pass
+	 * already computes. It is deliberately a *product* of independent
+	 * conditions, so a family only earns it when **all** of them hold — a bare
+	 * pixel, a JPEG aberration, or a single unrepeated blob earns nothing,
+	 * which is what the representativity rule requires.
+	 *
+	 * Set every threshold to a value no observation can meet (or
+	 * `substitution: 0`) to restore the previous behaviour exactly.
+	 */
+	mark: Object.freeze({
+		/**
+		 * Absolute pixel floor for a component to count as a mark stroke. Below
+		 * this a component cannot be distinguished from compression noise at any
+		 * resolution.
+		 */
+		minimumComponentPopulation: 12,
+		/**
+		 * Scale-relative floor for the same component, so the rule means the
+		 * same thing on a 350 px thumbnail and a 1400 px master.
+		 */
+		minimumComponentFraction: 0.000_02,
+		/** Mutual-similarity floor: a mark stroke looks like its siblings. */
+		minimumRepetition: 0.5,
+		/** A mark sits inside the frame; a field bleeds off the edge. */
+		maximumBorderContact: 0.25,
+		/** A mark stroke fills a usable share of its own bounding box. */
+		minimumFill: 0.08,
+		/** Fewest qualifying components before any mark credit is earned. */
+		minimumComponentCount: 3,
+		/** Component count at which the plurality term saturates. */
+		saturationComponentCount: 6,
+		/**
+		 * OKLab distance from the family prototype to the nearest field-owning
+		 * family at which the separation term saturates. Boundary contrast
+		 * measured pixel-adjacent systematically under-reads a small element,
+		 * because its perimeter is dominated by the anti-aliased blend into the
+		 * ground; the distance between the two prototypes is the same quantity
+		 * measured where anti-aliasing cannot reach it.
+		 */
+		fieldSeparation: 0.12,
+		/** Field-owning families the separation is measured against. */
+		fieldReferenceFamilies: 2,
+		/**
+		 * How much population support a fully-evidenced mark may substitute,
+		 * as a fraction of the term it replaces. `0` disables the mechanism.
+		 */
+		substitution: 1,
+	}),
 	identity: Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",
