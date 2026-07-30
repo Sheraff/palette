@@ -131,16 +131,34 @@ Collected per item:
 - **preference** — `A`, `B`, or `equal` (forced to `equal` and not asked for identical pairs);
 - **verdict** — absolute judgement of the preferred side: `strong`, `acceptable`, `weak-fallback`, `unacceptable`
   (when the preference is `equal` it applies to both sides);
-- **corrections** — optional per-role color chosen by clicking a named swatch chip. Swatches are sampled from the
-  image itself (4-bit-per-channel binning of a 128 px decode, greedy spread selection, deterministic), plus the
-  palette colors proposed by either option, shown with a dashed border. Each chip shows the color, its name, and
-  its hex. There is no hex input; the server rejects any correction that is not one of the swatches it served.
+- **corrections** — optional per-role color chosen by clicking a named swatch chip. Each chip shows the color,
+  its name, and its hex; there is no hex input, and the server rejects any correction that is not one of the
+  swatches it served. Chips come from the image itself (solid border) plus the palette colors proposed by either
+  option (dashed border). See *Swatch sampling* below.
 - **tags** — optional multi-select: `wrong-role`, `incomplete-identity`, `contrast`, `missing-gradient`,
   `extraneous-gradient`, `wrong-midpoint`, `other`;
 - **notes** — freeform text.
 
 Submitting posts the whole batch; the server un-blinds it with the key file and appends one record per item to
 the warehouse.
+
+### Swatch sampling
+
+`src/swatches.ts` builds the correction chips. It is deterministic, and every image swatch is an **exact pixel
+value** taken from the artwork — never a cluster mean, which would offer the reviewer a color the artwork does
+not contain.
+
+- **Native resolution.** Pixels are counted at the image's own resolution (fitted down only above 4,000,000
+  pixels). Downscaling blends thin strokes into their background, which is what previously turned bright red
+  cover text into a muddy averaged red.
+- **Population pass** (14 swatches): colors grouped into 4-bit-per-channel clusters, taken by population, each
+  represented by the most common exact color inside its cluster, greedily spread apart in OKLab.
+- **Salience pass** (8 swatches): the remaining clusters scored by `chroma × OKLab distance to everything already
+  chosen`, so small but vivid and perceptually isolated elements — logo text, credits, outlines — get picked even
+  though their population is tiny. A cluster is only eligible above a minimum representativity (0.02% of the
+  image and at least 48 pixels), so a stray pixel or a JPEG aberration can never become a swatch.
+- Everything is deduped perceptually in OKLab, so the strip stays around 22 image swatches plus the palette
+  colors under review.
 
 `review-app/index.html`, `styles.css`, and `app.js` are read into memory once at startup, so a running server
 keeps serving the front-end it started with: **restart `serve-review.ts` after editing anything in `review-app/`.**
