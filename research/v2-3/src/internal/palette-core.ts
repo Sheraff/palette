@@ -264,6 +264,13 @@ export type FieldHypothesis = Readonly<{
 	surfaceFamilyId: string | null
 	backgroundRepresentatives: readonly ColorRepresentative[]
 	surfaceRepresentatives: readonly ColorRepresentative[]
+	/**
+	 * For a gradient hypothesis, the RMS spatial extent inside the endpoint band
+	 * of each published representative, index-aligned with the arrays above.
+	 * Absent for flat hypotheses, which have no band.
+	 */
+	endpointBandSpread?: Readonly<{ background: readonly number[]; surface: readonly number[] }>
+
 	fieldFidelity: number
 	surfaceContribution: number
 	spatialRelation: Readonly<{
@@ -322,6 +329,11 @@ export type CompletePaletteScores = Readonly<{
 	balance: number
 	generatedPenalty: number
 	rankingScore: number
+	/**
+	 * Summed RMS spatial extent of the two field endpoints inside their bands.
+	 * Zero for every non-gradient treatment.
+	 */
+	endpointBandSpread: number
 }>
 
 export type CompletePaletteTreatment = Readonly<{
@@ -521,6 +533,13 @@ type FieldVariant = Readonly<{
 	treatment: FieldTreatmentKind
 	fieldFidelity: number
 	surfaceContribution: number
+	/**
+	 * Summed RMS spatial extent of the two endpoint representatives inside their
+	 * bands. Two variants of one gradient hypothesis differ only in which
+	 * representative carries each endpoint; this says which pair covers more of
+	 * the gradient's surface. Zero when the hypothesis publishes no band spread.
+	 */
+	endpointBandSpread: number
 }>
 
 type GradientFit = Readonly<{
@@ -549,6 +568,13 @@ type BandEndpoint = Readonly<{
 	family: ColorFamilyEvidence
 	representative: ColorRepresentative
 	bandShare: number
+	/**
+	 * RMS spatial extent, inside the endpoint band, of the pixels carrying each
+	 * occupied colour bin of this family. Keyed by `quantizedKey`. Lets endpoint
+	 * selection ask how much of the band's *surface* a candidate representative
+	 * actually covers, which colour distance alone cannot express.
+	 */
+	bandSpreadByBin: ReadonlyMap<number, number>
 }>
 
 type EvaluatedGradientFit = Readonly<{
@@ -2001,19 +2027,37 @@ function endpointBandRepresentatives(
 	return selected.flatMap(({ family, count }) => {
 		let exemplarIndex = -1
 		let exemplarDistance = Infinity
+		const bins = new Map<number, { count: number; sumX: number; sumY: number; sumXX: number; sumYY: number }>()
 		for (const pixelIndex of fit.domain.pixelIndexes) {
 			if (evidence.families[evidence.familyAt[pixelIndex]].id !== family.id) continue
 			const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
 			const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
 			const position = fit.position(x, y)
 			if (!((lowBand && position <= 0.2) || (!lowBand && position >= 0.8))) continue
-			const distance = okDistance(labAt(evidence.labs, pixelIndex), expected)
+			const lab = labAt(evidence.labs, pixelIndex)
+			const distance = okDistance(lab, expected)
 			if (distance < exemplarDistance) {
 				exemplarDistance = distance
 				exemplarIndex = pixelIndex
 			}
+			const binKey = quantizedKey(lab, evidence.familyBinStep)
+			const bin = bins.get(binKey) ?? { count: 0, sumX: 0, sumY: 0, sumXX: 0, sumYY: 0 }
+			bin.count += 1
+			bin.sumX += x
+			bin.sumY += y
+			bin.sumXX += x * x
+			bin.sumYY += y * y
+			bins.set(binKey, bin)
 		}
 		if (exemplarIndex < 0) return []
+		const bandSpreadByBin = new Map<number, number>()
+		for (const [binKey, bin] of bins) {
+			const meanX = bin.sumX / bin.count
+			const meanY = bin.sumY / bin.count
+			const varianceX = Math.max(0, bin.sumXX / bin.count - meanX * meanX)
+			const varianceY = Math.max(0, bin.sumYY / bin.count - meanY * meanY)
+			bandSpreadByBin.set(binKey, Math.sqrt(varianceX + varianceY))
+		}
 		const baseSupport = family.representatives.find(({ support }) => !("generated" in support))?.support
 		if (!baseSupport || "generated" in baseSupport) return []
 		const rgb = rgbAt(evidence.rgbData, exemplarIndex)
@@ -2021,6 +2065,7 @@ function endpointBandRepresentatives(
 		return [{
 			family,
 			bandShare: count / Math.max(1, bandPopulation),
+			bandSpreadByBin,
 			representative: {
 				strategy: "dense-exact" as const,
 				rgb,
@@ -2311,6 +2356,12 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 			.filter((representative, index, values) => values.findIndex(({ rgb }) => sameColor(rgb, representative.rgb)) === index)
 		const surfaceRepresentatives = [surfaceEndpoint.representative, ...surfaceEndpoint.family.representatives]
 			.filter((representative, index, values) => values.findIndex(({ rgb }) => sameColor(rgb, representative.rgb)) === index)
+		const bandSpreadOf = (endpoint: BandEndpoint) => (representative: ColorRepresentative): number =>
+			endpoint.bandSpreadByBin.get(quantizedKey(representative.oklab, evidence.familyBinStep)) ?? 0
+		const endpointBandSpread = {
+			background: backgroundRepresentatives.map(bandSpreadOf(backgroundEndpoint)),
+			surface: surfaceRepresentatives.map(bandSpreadOf(surfaceEndpoint)),
+		}
 		gradientCandidates.push({
 			id: `gradient:${fit.domain.evidence.id}:${fit.topology}:${fit.direction}:${backgroundEndpoint.family.id}:${surfaceEndpoint.family.id}:${backgroundEndpoint.representative.hex}:${surfaceEndpoint.representative.hex}`,
 			kind: "gradient-field",
@@ -2318,6 +2369,7 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 			surfaceFamilyId: surfaceEndpoint.family.id,
 			backgroundRepresentatives,
 			surfaceRepresentatives,
+			endpointBandSpread,
 			fieldFidelity: clamp(0.60 * fit.score + 0.30 * fit.domain.evidence.weightedFieldScore + 0.10 * Math.min(low.bandShare, high.bandShare) / 0.15),
 			surfaceContribution: clamp(0.5 * progression + 0.3 * (1 - fit.residual / fit.span) + 0.2 * clamp(fit.span / 0.2)),
 			spatialRelation: null,
@@ -2398,6 +2450,19 @@ function buildFieldVariants(
 			: options.representatives === "all"
 				? allRepresentatives(hypothesis.surfaceRepresentatives)
 				: preferredRepresentatives(hypothesis.surfaceRepresentatives)
+		/**
+		 * `preferredRepresentatives` re-sorts by strategy, so the published
+		 * spread array is matched by colour identity rather than by index.
+		 */
+		const bandSpreadOf = (role: "background" | "surface", representative: ColorRepresentative): number => {
+			const published = hypothesis.endpointBandSpread
+			if (!published) return 0
+			const representatives = role === "background"
+				? hypothesis.backgroundRepresentatives
+				: hypothesis.surfaceRepresentatives
+			const index = representatives.findIndex(({ rgb }) => sameColor(rgb, representative.rgb))
+			return index < 0 ? 0 : (role === "background" ? published.background : published.surface)[index] ?? 0
+		}
 		const pairs: Array<readonly [ColorRepresentative | undefined, ColorRepresentative | undefined]> =
 			options.pairing === "cross-pair" && hypothesis.kind !== "one-field"
 				? backgrounds.flatMap((background) => surfaces.map((surface) => [background, surface] as const))
@@ -2417,6 +2482,7 @@ function buildFieldVariants(
 				treatment: hypothesis.kind,
 				fieldFidelity: hypothesis.fieldFidelity,
 				surfaceContribution: hypothesis.surfaceContribution,
+				endpointBandSpread: bandSpreadOf("background", background) + bandSpreadOf("surface", surface),
 			})
 			if (hypothesis.kind !== "one-field") {
 				variants.push({
@@ -2427,6 +2493,7 @@ function buildFieldVariants(
 					treatment: "one-field",
 					fieldFidelity: clamp(hypothesis.fieldFidelity * (1 - hypothesis.surfaceContribution * 0.35)),
 					surfaceContribution: hypothesis.surfaceContribution,
+					endpointBandSpread: 0,
 				})
 			}
 		}
@@ -2978,6 +3045,7 @@ function createTreatment(
 			balance,
 			generatedPenalty,
 			rankingScore,
+			endpointBandSpread: variant.gradient ? variant.endpointBandSpread : 0,
 		},
 		gradientEvidence: variant.gradient ? variant.hypothesis.gradientEvidence : null,
 	}
@@ -3185,6 +3253,7 @@ function buildCompletePaletteTreatmentDomain(
 				treatment: "one-field",
 				fieldFidelity: clamp(sourceHypothesis.fieldFidelity * 0.35),
 				surfaceContribution: 0,
+				endpointBandSpread: 0,
 			}
 			const emergencySourceOptions = retainRoleFamilyDirections(supportedRepresentatives, 8, obligationFamilyIds)
 			for (const option of emergencySourceOptions) {

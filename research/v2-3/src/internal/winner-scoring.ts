@@ -220,8 +220,9 @@ export const TRANSITION_PROMOTION_ORDER: "coverage-first" | "quality-after-decis
  * structural vectors. It only ever acts inside one quantization band, where the
  * quantized comparison has already declared the two indistinguishable.
  */
-export const BAND_TIE_BREAK: "sorted-evidence-levels" | "raw-utility-first" | "same-family-raw-utility" =
-	"sorted-evidence-levels"
+export const BAND_TIE_BREAK:
+	"sorted-evidence-levels" | "raw-utility-first" | "same-family-raw-utility" | "same-family-band-extent" =
+		"same-family-band-extent"
 
 /**
  * Which utility the transition-promotion quality envelope compares.
@@ -606,6 +607,14 @@ function dominates(
 	second: WinnerEvaluation,
 ): boolean {
 	let strictlyBetter = false
+	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
+		sameFamilyAssignment(first.treatment, second.treatment) &&
+		second.treatment.scores.endpointBandSpread > first.treatment.scores.endpointBandSpread) {
+		// Covering more of the gradient's surface is evidence in its own right:
+		// a pair that spans more of the endpoint bands is not dominated by a
+		// narrower pair of the same families, however the other axes fall.
+		return false
+	}
 	if (WINNER_RANKING_HYPOTHESES.identityAuthority) {
 		if (first.identityCoverage < second.identityCoverage) return false
 		if (first.identityCoverage > second.identityCoverage) strictlyBetter = true
@@ -662,6 +671,14 @@ function compareEvaluations(
 	if (BAND_TIE_BREAK === "raw-utility-first" ||
 		(BAND_TIE_BREAK === "same-family-raw-utility" && sameFamilyAssignment(first.treatment, second.treatment))) {
 		comparison = compareDescending(first.relationUtility, second.relationUtility)
+		if (comparison !== 0) return comparison
+	}
+	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
+		sameFamilyAssignment(first.treatment, second.treatment)) {
+		comparison = compareDescending(
+			first.treatment.scores.endpointBandSpread,
+			second.treatment.scores.endpointBandSpread,
+		)
 		if (comparison !== 0) return comparison
 	}
 	const firstLevels = WINNER_QUALITY_AXES
