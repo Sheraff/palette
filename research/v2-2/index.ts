@@ -1,32 +1,28 @@
-import {
-	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
-	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID,
-	extractAlbumArtworkPaletteV2Phase3FinalCandidateDetails,
-} from "./src/internal/album-artwork-palette-v2-phase-3-final-candidate.ts"
-import {
-	loadNativeImage,
-} from "./src/internal/native-resolution-image.ts"
-import type {
-	AlbumArtworkPaletteV2Phase3FinalCandidateResult,
-} from "./src/internal/album-artwork-palette-v2-phase-3-final-candidate.ts"
-import type {
-	LoadNativeImageOptions,
-} from "./src/internal/native-resolution-image.ts"
-import type { RawImage } from "./src/internal/types.ts"
+import { extractPaletteDetails } from "./src/internal/palette.ts"
+import { loadNativeImage } from "./src/internal/native-resolution-image.ts"
+import type { LoadNativeImageOptions } from "./src/internal/native-resolution-image.ts"
+import type { OKLab, RawImage, RGB } from "./src/internal/types.ts"
 
 export type { RawImage } from "./src/internal/types.ts"
 export type { LoadNativeImageOptions } from "./src/internal/native-resolution-image.ts"
-export type {
-	AlbumArtworkPaletteV2Phase3FinalCandidateResult as PaletteResult,
-} from "./src/internal/album-artwork-palette-v2-phase-3-final-candidate.ts"
-export type {
-	CompletePaletteTreatment as PaletteTreatment,
-} from "./src/internal/album-artwork-palette-v2.ts"
 
-export const algorithmIdentity = Object.freeze({
-	attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_ATTEMPT_ID,
-	configurationId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FINAL_CANDIDATE_CONFIGURATION_ID,
-})
+export const algorithmIdentity = "v2-2" as const
+
+export type PaletteColor = Readonly<{
+	rgb: RGB
+	oklab: OKLab
+	hex: string
+	generated: boolean
+}>
+
+export type PaletteTreatment = Readonly<{
+	background: PaletteColor
+	surface: PaletteColor
+	foreground: PaletteColor
+	accent: PaletteColor
+	gradient: boolean
+	collapse: Readonly<{ surface: boolean; accent: boolean }>
+}>
 
 export type SourceSupportedMidpointRender = Readonly<{
 	schemaVersion: 1
@@ -42,37 +38,46 @@ export type SourceSupportedMidpointRender = Readonly<{
 	}>
 }>
 
-export type PaletteExtraction = AlbumArtworkPaletteV2Phase3FinalCandidateResult & Readonly<{
+export type PaletteExtraction = Readonly<{
 	algorithm: typeof algorithmIdentity
+	width: number
+	height: number
+	winner: PaletteTreatment
 	researchRender?: SourceSupportedMidpointRender
 }>
 
-function sourceSupportedMidpointRender(
-	details: ReturnType<typeof extractAlbumArtworkPaletteV2Phase3FinalCandidateDetails>,
-): SourceSupportedMidpointRender | undefined {
-	const midpoint = details.integratedDetails.gradientAuthority.diagnostics.midpoint
-	if (midpoint.kind !== "source-supported-three-stop") return undefined
-	return {
-		schemaVersion: 1,
-		field: {
-			kind: "linear-gradient",
-			angleDegrees: 135,
-			interpolation: "oklab",
-			stops: [
-				{ kind: "role", role: "background", position: 0 },
-				{ kind: "source-supported-color", hex: midpoint.color.hex, position: 0.5 },
-				{ kind: "role", role: "surface", position: 1 },
-			],
-		},
-	}
-}
-
 export function extractPalette(image: RawImage): PaletteExtraction {
-	const details = extractAlbumArtworkPaletteV2Phase3FinalCandidateDetails(image)
-	const researchRender = sourceSupportedMidpointRender(details)
+	const details = extractPaletteDetails(image)
+	const roles = ["background", "surface", "foreground", "accent"] as const
+	const colors = Object.fromEntries(roles.map((role) => {
+		const { rgb, oklab, hex, generated } = details.winner[role]
+		return [role, { rgb, oklab, hex, generated }]
+	})) as Record<typeof roles[number], PaletteColor>
+	const researchRender: SourceSupportedMidpointRender | undefined =
+		details.midpoint.kind === "source-supported-three-stop"
+			? {
+				schemaVersion: 1,
+				field: {
+					kind: "linear-gradient",
+					angleDegrees: 135,
+					interpolation: "oklab",
+					stops: [
+						{ kind: "role", role: "background", position: 0 },
+						{ kind: "source-supported-color", hex: details.midpoint.color.hex, position: 0.5 },
+						{ kind: "role", role: "surface", position: 1 },
+					],
+				},
+			}
+			: undefined
 	return {
-		...details.result,
 		algorithm: algorithmIdentity,
+		width: details.width,
+		height: details.height,
+		winner: {
+			...colors,
+			gradient: details.winner.gradient,
+			collapse: details.winner.collapse,
+		},
 		...(researchRender ? { researchRender } : {}),
 	}
 }

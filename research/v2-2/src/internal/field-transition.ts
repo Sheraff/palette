@@ -1,6 +1,6 @@
 import { labAt, okDistance, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts";
 
-import type { BackgroundFieldDomainEvidence, ColorFamilyEvidence, ColorRepresentative, FieldHypothesis, FieldRoleAssignmentEvidence, GradientDirection, GradientTopology, NativePaletteEvidence } from "./album-artwork-palette-v2.ts";
+import type { BackgroundFieldDomainEvidence, ColorFamilyEvidence, ColorRepresentative, FieldHypothesis, FieldRoleAssignmentEvidence, GradientDirection, GradientTopology, NativePaletteEvidence } from "./palette-core.ts";
 
 import type { OKLab } from "./types.ts";
 

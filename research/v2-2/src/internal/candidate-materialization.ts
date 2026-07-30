@@ -1,8 +1,8 @@
-import { completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./album-artwork-palette-v2.ts";
+import { completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./palette-core.ts";
 
-import type { CompletePaletteTreatment, FieldHypothesis, IdentityObligation, RecallAuditTreatmentLineage } from "./album-artwork-palette-v2.ts";
+import type { CompletePaletteTreatment, FieldHypothesis, IdentityObligation, TreatmentLineage } from "./palette-core.ts";
 
-import { ALBUM_ARTWORK_PALETTE_V2_0_7_4_RANKING_PRIORITY_BLOCKS } from "./album-artwork-palette-v2-0.7.4-protocol.ts";
+import { MATERIALIZATION_RANKING_BLOCKS } from "./ranking-policy.ts";
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MATERIALIZATION_CAPACITY = 1_500 as const
 
@@ -11,7 +11,7 @@ const EVIDENCE_RESOLUTION = 0.04
 export type AlbumArtworkPaletteV2Phase3LogicalDescriptor = Readonly<{
 	treatment: CompletePaletteTreatment
 	fieldHypothesis: FieldHypothesis
-	lineage: RecallAuditTreatmentLineage
+	lineage: TreatmentLineage
 }>
 
 export type AlbumArtworkPaletteV2Phase3DescriptorStratumKind =
@@ -33,35 +33,8 @@ export type AlbumArtworkPaletteV2Phase3MaterializedTreatment = Readonly<{
 	strata: readonly AlbumArtworkPaletteV2Phase3DescriptorStratum[]
 }>
 
-export type AlbumArtworkPaletteV2Phase3MaterializationDiagnostics = Readonly<{
-	version: "album-artwork-palette-v2-phase-3-factorized-materialization-v1"
-	inputDescriptorCount: number
-	uniqueDescriptorCount: number
-	duplicateDescriptorCount: number
-	uniqueCanonicalTreatmentCount: number
-	duplicateCanonicalTreatmentCount: number
-	capacity: number
-	materializedTreatmentCount: number
-	capacityReached: boolean
-	truncatedCanonicalTreatmentCount: number
-	rawCardinalityReward: false
-	strata: ReadonlyArray<Readonly<{
-		kind: AlbumArtworkPaletteV2Phase3DescriptorStratumKind
-		key: string
-		availableCanonicalTreatmentCount: number
-		materializedCanonicalTreatmentCount: number
-		strongestCanonicalTreatmentKey: string
-		strongestMaterialized: boolean
-	}>>
-	uncoveredStratumKeys: readonly string[]
-	failureSources: readonly (
-		"canonical-duplicates" | "capacity-truncation" | "uncovered-logical-strata"
-	)[]
-}>
-
 export type AlbumArtworkPaletteV2Phase3Materialization = Readonly<{
 	materialized: readonly AlbumArtworkPaletteV2Phase3MaterializedTreatment[]
-	diagnostics: AlbumArtworkPaletteV2Phase3MaterializationDiagnostics
 }>
 
 function compareAscii(first: string, second: string): number {
@@ -80,7 +53,7 @@ function evidenceLevel(value: number): number {
 
 function effectiveScore(
 	treatment: CompletePaletteTreatment,
-	block: typeof ALBUM_ARTWORK_PALETTE_V2_0_7_4_RANKING_PRIORITY_BLOCKS[number],
+	block: typeof MATERIALIZATION_RANKING_BLOCKS[number],
 ): number {
 	return treatment.scores[block] - treatment.scores.generatedPenalty
 }
@@ -89,7 +62,7 @@ function compareTreatmentQuality(
 	first: CompletePaletteTreatment,
 	second: CompletePaletteTreatment,
 ): number {
-	for (const block of ALBUM_ARTWORK_PALETTE_V2_0_7_4_RANKING_PRIORITY_BLOCKS) {
+	for (const block of MATERIALIZATION_RANKING_BLOCKS) {
 		const comparison = evidenceLevel(effectiveScore(second, block)) -
 			evidenceLevel(effectiveScore(first, block))
 		if (comparison !== 0) return comparison
@@ -98,7 +71,7 @@ function compareTreatmentQuality(
 		compareAscii(first.id, second.id)
 }
 
-function lineageIdentity(lineage: RecallAuditTreatmentLineage): string {
+function lineageIdentity(lineage: TreatmentLineage): string {
 	return [
 		lineage.fieldHypothesisId,
 		lineage.fieldDirectionKey,
@@ -253,10 +226,8 @@ export function materializeAlbumArtworkPaletteV2Phase3Descriptors(
 		compareTreatmentQuality(first.treatment, second.treatment) || compareAscii(first.key, second.key))
 
 	const canonicalByStratum = new Map<string, AlbumArtworkPaletteV2Phase3MaterializedTreatment[]>()
-	const stratumByKey = new Map<string, AlbumArtworkPaletteV2Phase3DescriptorStratum>()
 	for (const candidate of canonicalTreatments) {
 		for (const stratum of candidate.strata) {
-			stratumByKey.set(stratum.key, stratum)
 			const values = canonicalByStratum.get(stratum.key) ?? []
 			values.push(candidate)
 			canonicalByStratum.set(stratum.key, values)
@@ -296,49 +267,5 @@ export function materializeAlbumArtworkPaletteV2Phase3Descriptors(
 	for (const candidate of fairRanked) add(candidate)
 
 	const materialized = canonicalTreatments.filter(({ key }) => selectedKeys.has(key))
-	const diagnosticsStrata = [...canonicalByStratum.entries()]
-		.sort(([first], [second]) => compareAscii(first, second))
-		.map(([key, available]) => {
-			const selectedCount = available.filter((candidate) => selectedKeys.has(candidate.key)).length
-			return {
-				kind: stratumByKey.get(key)!.kind,
-				key,
-				availableCanonicalTreatmentCount: available.length,
-				materializedCanonicalTreatmentCount: selectedCount,
-				strongestCanonicalTreatmentKey: available[0].key,
-				strongestMaterialized: selectedKeys.has(available[0].key),
-			}
-		})
-	const uncoveredStratumKeys = diagnosticsStrata
-		.filter(({ materializedCanonicalTreatmentCount }) => materializedCanonicalTreatmentCount === 0)
-		.map(({ key }) => key)
-	const duplicateDescriptorCount = descriptors.length - uniqueDescriptors.size
-	const duplicateCanonicalTreatmentCount = uniqueDescriptors.size - canonicalTreatments.length
-	const truncatedCanonicalTreatmentCount = canonicalTreatments.length - materialized.length
-	const failureSources: AlbumArtworkPaletteV2Phase3MaterializationDiagnostics["failureSources"][number][] = []
-	if (duplicateDescriptorCount > 0 || duplicateCanonicalTreatmentCount > 0) {
-		failureSources.push("canonical-duplicates")
-	}
-	if (truncatedCanonicalTreatmentCount > 0) failureSources.push("capacity-truncation")
-	if (uncoveredStratumKeys.length > 0) failureSources.push("uncovered-logical-strata")
-
-	return {
-		materialized,
-		diagnostics: {
-			version: "album-artwork-palette-v2-phase-3-factorized-materialization-v1",
-			inputDescriptorCount: descriptors.length,
-			uniqueDescriptorCount: uniqueDescriptors.size,
-			duplicateDescriptorCount,
-			uniqueCanonicalTreatmentCount: canonicalTreatments.length,
-			duplicateCanonicalTreatmentCount,
-			capacity,
-			materializedTreatmentCount: materialized.length,
-			capacityReached: materialized.length >= capacity,
-			truncatedCanonicalTreatmentCount,
-			rawCardinalityReward: false,
-			strata: diagnosticsStrata,
-			uncoveredStratumKeys,
-			failureSources,
-		},
-	}
+	return { materialized }
 }

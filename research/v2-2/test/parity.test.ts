@@ -63,34 +63,24 @@ function solidImage(rgb: readonly [number, number, number], width = 24, height =
 	return { width, height, data }
 }
 
-function treatmentKey(extraction: PaletteExtraction, index: number): string {
-	const treatment = extraction.alternatives[index]
-	return [...roles.map((role) => treatment[role].hex), treatment.gradient ? "gradient" : "flat"].join(":")
-}
-
 function assertLegal(extraction: PaletteExtraction): void {
 	assert.equal(extraction.algorithm, algorithmIdentity)
 	assert.ok(Number.isSafeInteger(extraction.width) && extraction.width > 0)
 	assert.ok(Number.isSafeInteger(extraction.height) && extraction.height > 0)
-	assert.ok(extraction.alternatives.length >= 1 && extraction.alternatives.length <= 8)
-	assert.equal(extraction.winner, extraction.alternatives[0])
-	assert.equal(new Set(extraction.alternatives.map((_, index) => treatmentKey(extraction, index))).size,
-		extraction.alternatives.length)
-	for (const treatment of extraction.alternatives) {
-		for (const role of roles) {
-			const color = treatment[role]
-			assert.match(color.hex, /^#[0-9a-f]{6}$/u)
-			assert.equal(color.rgb.length, 3)
-			assert.ok(color.rgb.every((channel) => Number.isInteger(channel) && channel >= 0 && channel <= 255))
-			assert.equal(`#${color.rgb.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`,
-				color.hex)
-			assert.ok(color.oklab.every(Number.isFinite))
-			assert.equal(typeof color.generated, "boolean")
-		}
-		if (treatment.collapse.surface) assert.equal(treatment.surface.hex, treatment.background.hex)
-		if (treatment.collapse.accent) assert.equal(treatment.accent.hex, treatment.foreground.hex)
-		if (treatment.gradient) assert.equal(treatment.collapse.surface, false)
+	const treatment = extraction.winner
+	for (const role of roles) {
+		const color = treatment[role]
+		assert.match(color.hex, /^#[0-9a-f]{6}$/u)
+		assert.equal(color.rgb.length, 3)
+		assert.ok(color.rgb.every((channel) => Number.isInteger(channel) && channel >= 0 && channel <= 255))
+		assert.equal(`#${color.rgb.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`,
+			color.hex)
+		assert.ok(color.oklab.every(Number.isFinite))
+		assert.equal(typeof color.generated, "boolean")
 	}
+	if (treatment.collapse.surface) assert.equal(treatment.surface.hex, treatment.background.hex)
+	if (treatment.collapse.accent) assert.equal(treatment.accent.hex, treatment.foreground.hex)
+	if (treatment.gradient) assert.equal(treatment.collapse.surface, false)
 }
 
 test("standalone output exactly matches all 34 reviewed treatments and midpoint renders", { timeout: 1_800_000 },
@@ -125,10 +115,6 @@ test("one-color input uses the normative generated emergency", () => {
 	assert.equal(extraction.winner.gradient, false)
 })
 
-test("standalone identity is the reviewed final configuration", () => {
-	assert.deepEqual(algorithmIdentity, {
-		attemptId: "phase-3-final-candidate",
-		configurationId: "integrated-strict-midpoint-component-endpoint-raw-relation-non-displacement-v1",
-	})
-	assert.ok(Object.isFrozen(algorithmIdentity))
+test("standalone identity is v2-2", () => {
+	assert.equal(algorithmIdentity, "v2-2")
 })

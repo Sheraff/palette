@@ -1,7 +1,3 @@
-export const ALBUM_ARTWORK_PALETTE_V2_VERSION: string = "album-artwork-first-principles-0.7.2"
-
-export const ALBUM_ARTWORK_PALETTE_V2_PROTOCOL = "album-artwork-ui-palette-protocol-v2"
-
 export const ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS = Object.freeze([
 	"fieldFidelity",
 	"surfaceFidelity",

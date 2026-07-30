@@ -1,11 +1,8 @@
-import type { ColorFamilyEvidence, ColorRepresentative, ComponentEvidence, GradientDirection, GradientFitDiagnostic, GradientTopology, NativePaletteEvidence, RegionObservation, RegionRoleFactors, SourceSupportRecord } from "./album-artwork-palette-v2.ts";
+import type { ColorFamilyEvidence, ColorRepresentative, ComponentEvidence, GradientDirection, GradientFitDiagnostic, GradientTopology, NativePaletteEvidence, RegionObservation, RegionRoleFactors, SourceSupportRecord } from "./palette-core.ts";
 
 import { chroma, labAt, okDistance, oklabToRGB, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts";
 
 import type { OKLab, RGB } from "./types.ts";
-
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_ATTEMPT_ID =
-	"wave-1-band-local-endpoint-refinement" as const
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_POLICY = Object.freeze({
 	endpointBandFraction: 0.2,
@@ -83,43 +80,6 @@ export type BandLocalEndpointRefinement = Readonly<{
 	occupiedModeDistance: number
 	low: BandLocalEndpoint | null
 	high: BandLocalEndpoint | null
-}>
-
-export type BandLocalEndpointRefinementReport = Readonly<{
-	attemptId: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_ATTEMPT_ID
-	evaluatedFitCount: number
-	sameFamilyFitCount: number
-	acceptedCount: number
-	rejectedCount: number
-	refinements: readonly BandLocalEndpointRefinement[]
-}>
-
-export type BandLocalEndpointRepresentationMechanismEligibility = "accepted" | "refinable"
-
-export type BandLocalEndpointRepresentationMechanismBand = Readonly<{
-	position: "low" | "high"
-	spatialRange: readonly [number, number]
-	pixelIndexes: readonly number[]
-}>
-
-export type BandLocalEndpointRepresentationMechanismFit = Readonly<{
-	diagnostic: GradientFitDiagnostic
-	eligibility: BandLocalEndpointRepresentationMechanismEligibility
-	domainPopulation: number
-	bands: readonly [
-		BandLocalEndpointRepresentationMechanismBand,
-		BandLocalEndpointRepresentationMechanismBand,
-	]
-}>
-
-export type BandLocalEndpointRepresentationMechanismInput = Readonly<{
-	evidence: NativePaletteEvidence
-	fits: readonly BandLocalEndpointRepresentationMechanismFit[]
-}>
-
-export type BandLocalEndpointRepresentationMechanism<TResult> = Readonly<{
-	mechanismId: string
-	inspect: (input: BandLocalEndpointRepresentationMechanismInput) => TResult
 }>
 
 type Domain = Readonly<{
@@ -445,13 +405,6 @@ function distinctModes(modes: readonly LocalMode[]): LocalMode[] {
 	return retained.length > 0 ? retained : modes.slice(0, 1)
 }
 
-export function detectDistinctBandLocalEndpointModes(
-	samples: readonly BandLocalEndpointPixelSample[],
-): readonly BandLocalEndpointDetectedMode[] {
-	if (samples.length === 0) return []
-	return distinctModes(localModes(samples, robustPrototype(samples).prototype))
-}
-
 function nearestSample(samples: readonly Sample[], target: OKLab, allowed?: ReadonlySet<number>): Sample {
 	return [...samples]
 		.filter(({ pixelIndex }) => allowed === undefined || allowed.has(pixelIndex))
@@ -769,35 +722,6 @@ function buildFamily(
 	}
 }
 
-export function materializeComponentLocalEndpointFamily(
-	evidence: NativePaletteEvidence,
-	familyId: string,
-	pixelIndexes: readonly number[],
-	prototype: OKLab,
-): ColorFamilyEvidence | null {
-	const samples = pixelIndexes.map((pixelIndex): Sample => ({
-		pixelIndex,
-		lab: labAt(evidence.labs, pixelIndex),
-		rgb: rgbAt(evidence.rgbData, pixelIndex),
-	}))
-	if (samples.length === 0) return null
-	const measured = measureComponents(evidence, pixelIndexes, familyId)
-	const exemplar = nearestSample(samples, prototype)
-	const support = supportForRepresentative(
-		evidence,
-		samples,
-		measured.components,
-		measured.componentIdAt,
-		familyId,
-		prototype,
-		exemplar.lab,
-		exemplar.pixelIndex,
-		false,
-	)
-	const representative = exactRepresentative("dense-exact", exemplar, support)
-	return buildFamily(evidence, familyId, samples, prototype, measured.components, [representative])
-}
-
 function measureBand(
 	evidence: NativePaletteEvidence,
 	diagnostic: GradientFitDiagnostic,
@@ -966,7 +890,7 @@ function refineBandLocalGradientEndpointsWithDomain(
 	if (!domain) rejectionReasons.push("diagnosed field domain cannot be reconstructed from native evidence")
 	if (domain && Math.abs(domain.pixelIndexes.length / evidence.pixelCount -
 		diagnostic.fieldDomainPopulationFraction) > 1 / evidence.pixelCount + 1e-9) {
-		rejectionReasons.push("reconstructed field domain population differs from gradient diagnostics")
+		rejectionReasons.push("reconstructed field domain population differs from the gradient fit")
 	}
 	const parentFamilyIndex = lowFamilyId === null ? -1 : familyIndexById(evidence, lowFamilyId)
 	if (lowFamilyId !== null && parentFamilyIndex < 0) rejectionReasons.push("diagnosed parent family is absent from native evidence")
@@ -1023,62 +947,14 @@ function refineBandLocalGradientEndpointsWithDomain(
 	}
 }
 
-function representationMechanismEligibility(
-	diagnostic: GradientFitDiagnostic,
-): BandLocalEndpointRepresentationMechanismEligibility | null {
-	if (diagnostic.lowEndpointFamilyId === null || diagnostic.highEndpointFamilyId === null) return null
-	if (diagnostic.rejectionReasons.length === 0) return "accepted"
-	return diagnostic.rejectionReasons.every((reason) =>
-		reason === ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_REFINABLE_UPSTREAM_REASON)
-		? "refinable"
-		: null
-}
-
-export function runBandLocalEndpointRepresentationMechanism<TResult>(
-	evidence: NativePaletteEvidence,
-	diagnostics: readonly GradientFitDiagnostic[],
-	mechanism: BandLocalEndpointRepresentationMechanism<TResult>,
-): TResult {
-	const fraction = ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_POLICY.endpointBandFraction
-	const domains = new Map<string, Domain | null>()
-	const fits = diagnostics.flatMap((diagnostic): BandLocalEndpointRepresentationMechanismFit[] => {
-		const eligibility = representationMechanismEligibility(diagnostic)
-		if (eligibility === null) return []
-		if (!domains.has(diagnostic.fieldDomainId)) {
-			domains.set(diagnostic.fieldDomainId, reconstructDomain(evidence, diagnostic.fieldDomainId))
-		}
-		const domain = domains.get(diagnostic.fieldDomainId) ?? null
-		if (!domain || Math.abs(domain.pixelIndexes.length / evidence.pixelCount -
-			diagnostic.fieldDomainPopulationFraction) > 1 / evidence.pixelCount + 1e-9) return []
-		const positioned = positionedDomain(evidence, domain, diagnostic)
-		return [{
-			diagnostic,
-			eligibility,
-			domainPopulation: domain.pixelIndexes.length,
-			bands: [{
-				position: "low",
-				spatialRange: [0, fraction],
-				pixelIndexes: positioned.filter(({ position }) => position <= fraction)
-					.map(({ pixelIndex }) => pixelIndex),
-			}, {
-				position: "high",
-				spatialRange: [1 - fraction, 1],
-				pixelIndexes: positioned.filter(({ position }) => position >= 1 - fraction)
-					.map(({ pixelIndex }) => pixelIndex),
-			}],
-		}]
-	})
-	return mechanism.inspect({ evidence, fits })
-}
-
 export function buildBandLocalEndpointRefinements(
 	evidence: NativePaletteEvidence,
-	diagnostics: readonly GradientFitDiagnostic[],
-): BandLocalEndpointRefinementReport {
-	const sameFamilyDiagnostics = diagnostics.filter(({ lowEndpointFamilyId, highEndpointFamilyId }) =>
+	gradientFits: readonly GradientFitDiagnostic[],
+): readonly BandLocalEndpointRefinement[] {
+	const sameFamilyFits = gradientFits.filter(({ lowEndpointFamilyId, highEndpointFamilyId }) =>
 		lowEndpointFamilyId !== null && lowEndpointFamilyId === highEndpointFamilyId)
 	const domains = new Map<string, Domain | null>()
-	const refinements = sameFamilyDiagnostics.map((diagnostic) => {
+	return sameFamilyFits.map((diagnostic) => {
 		if (!domains.has(diagnostic.fieldDomainId)) {
 			domains.set(diagnostic.fieldDomainId, reconstructDomain(evidence, diagnostic.fieldDomainId))
 		}
@@ -1088,12 +964,4 @@ export function buildBandLocalEndpointRefinements(
 			domains.get(diagnostic.fieldDomainId) ?? null,
 		)
 	})
-	return {
-		attemptId: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_ATTEMPT_ID,
-		evaluatedFitCount: diagnostics.length,
-		sameFamilyFitCount: refinements.length,
-		acceptedCount: refinements.filter(({ accepted }) => accepted).length,
-		rejectedCount: refinements.filter(({ accepted }) => !accepted).length,
-		refinements,
-	}
 }

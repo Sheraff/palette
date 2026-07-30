@@ -1,16 +1,13 @@
-import { completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./album-artwork-palette-v2.ts";
+import { completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./palette-core.ts";
 
-import type { CompletePaletteTreatment, EmergencyEligibility, FieldHypothesis, RecallAuditTreatmentLineage, Role } from "./album-artwork-palette-v2.ts";
+import type { CompletePaletteTreatment, EmergencyEligibility, FieldHypothesis, Role, TreatmentLineage } from "./palette-core.ts";
 
-import { ALBUM_ARTWORK_PALETTE_V2_POLICY } from "./album-artwork-palette-v2-protocol.ts";
-
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID =
-	"album-artwork-palette-v2-phase-3-complete-lineage-winner-eligibility-v1" as const
+import { ALBUM_ARTWORK_PALETTE_V2_POLICY } from "./policy.ts";
 
 export type AlbumArtworkPaletteV2Phase3CompleteLineageDescriptor = Readonly<{
 	treatment: CompletePaletteTreatment
 	fieldHypothesis: FieldHypothesis
-	lineage: RecallAuditTreatmentLineage
+	lineage: TreatmentLineage
 }>
 
 export type AlbumArtworkPaletteV2Phase3CompleteLineageMaterializedCandidate<
@@ -49,16 +46,7 @@ export type AlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain<
 > = Readonly<{
 	allCandidates: readonly TCandidate[]
 	eligibleCandidates: readonly TCandidate[]
-	diagnostics: Readonly<{
-		version: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID
-		materializedCandidateCount: number
-		descriptorCount: number
-		eligibleCandidateCount: number
-		ineligibleCandidateCount: number
-		ordinaryEligibleCandidateCount: number
-		normativeEmergencyEligibleCandidateCount: number
-		candidates: readonly AlbumArtworkPaletteV2Phase3CompleteLineageCandidateEligibility[]
-	}>
+	candidates: readonly AlbumArtworkPaletteV2Phase3CompleteLineageCandidateEligibility[]
 }>
 
 const ROLES = ["background", "surface", "foreground", "accent"] as const
@@ -269,18 +257,6 @@ export function filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain<
 	return {
 		allCandidates: ordered,
 		eligibleCandidates,
-		diagnostics: {
-			version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_COMPLETE_LINEAGE_WINNER_ELIGIBILITY_ID,
-			materializedCandidateCount: ordered.length,
-			descriptorCount: candidateDiagnostics.reduce((sum, candidate) => sum + candidate.descriptorCount, 0),
-			eligibleCandidateCount: eligibleCandidates.length,
-			ineligibleCandidateCount: ordered.length - eligibleCandidates.length,
-			ordinaryEligibleCandidateCount: candidateDiagnostics
-				.filter(({ ordinaryEligibleDescriptorCount }) => ordinaryEligibleDescriptorCount > 0).length,
-			normativeEmergencyEligibleCandidateCount: candidateDiagnostics
-				.filter(({ ordinaryEligibleDescriptorCount, normativeEmergencyEligibleDescriptorCount }) =>
-					ordinaryEligibleDescriptorCount === 0 && normativeEmergencyEligibleDescriptorCount > 0).length,
-			candidates: candidateDiagnostics,
-		},
+		candidates: candidateDiagnostics,
 	}
 }

@@ -1,4 +1,4 @@
-import type { CompletePaletteTreatment, PaletteRoleColor } from "./album-artwork-palette-v2.ts";
+import type { CompletePaletteTreatment, PaletteRoleColor } from "./palette-core.ts";
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_V2_QUALITY_AXES = [
 	"fieldFidelity",

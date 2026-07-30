@@ -1,4 +1,4 @@
-import type { ColorFamilyEvidence, CompletePaletteTreatment, FieldHypothesis, ForegroundPolarityObservation, RegionObservation } from "./album-artwork-palette-v2.ts";
+import type { ColorFamilyEvidence, CompletePaletteTreatment, FieldHypothesis, ForegroundPolarityObservation, RegionObservation } from "./palette-core.ts";
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY = Object.freeze({
 	localContrastScale: 0.16,

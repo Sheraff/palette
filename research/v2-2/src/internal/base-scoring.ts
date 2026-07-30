@@ -1,9 +1,6 @@
-import { completeTreatmentKey } from "./album-artwork-palette-v2.ts";
+import { completeTreatmentKey } from "./palette-core.ts";
 
-import type { CompletePaletteTreatment } from "./album-artwork-palette-v2.ts";
-
-export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_VERSION =
-	"album-artwork-palette-v2-phase-3-relation-pareto-selector-wave-1" as const
+import type { CompletePaletteTreatment } from "./palette-core.ts";
 
 const QUALITY_AXES = [
 	"fieldFidelity",
@@ -24,8 +21,6 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
 	utilityResolution: 0.005,
 	maximumIdentityGain: 0.05,
 	accentIdentityCredit: 0.8,
-	maximumSlateDiversityGain: 0.03,
-	maximumSlateTreatments: 8,
 	qualityWeights: Object.freeze({
 		fieldFidelity: 0.16,
 		surfaceFidelity: 0.06,
@@ -68,53 +63,8 @@ export type AlbumArtworkPaletteV2Phase3SelectorEvaluation = Readonly<{
 	dominatedByKey: string | null
 }>
 
-export type AlbumArtworkPaletteV2Phase3SelectorSlateExplanation = Readonly<{
-	key: string
-	index: number
-	qualityUtility: number
-	identityGain: number
-	relationUtility: number
-	diversityGain: number
-	slateUtility: number
-	novelDimensions: readonly ("field" | "foreground" | "accent" | "structure" | "identity")[]
-}>
-
-export type AlbumArtworkPaletteV2Phase3SelectorExplanation = Readonly<{
-	version: typeof ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_VERSION
-	formulas: Readonly<{
-		dominance: string
-		foregroundPathUtility: string
-		accentPathUtility: string
-		qualityUtility: string
-		identityGain: string
-		ordering: string
-		slateUtility: string
-	}>
-	domain: Readonly<{
-		rawTreatmentCount: number
-		uniqueTreatmentCount: number
-		duplicateTreatmentCount: number
-		paretoTreatmentCount: number
-		dominatedTreatmentCount: number
-	}>
-	qualityAxes: readonly AlbumArtworkPaletteV2Phase3SelectorQualityAxis[]
-	paretoKeys: readonly string[]
-	winner: Readonly<{
-		key: string
-		qualityUtility: number
-		identityCoverage: number
-		identityGain: number
-		relationUtility: number
-		reasons: readonly string[]
-	}>
-	slate: readonly AlbumArtworkPaletteV2Phase3SelectorSlateExplanation[]
-}>
-
 export type AlbumArtworkPaletteV2Phase3SelectorSelection = Readonly<{
-	winner: CompletePaletteTreatment
-	slate: readonly CompletePaletteTreatment[]
 	evaluations: readonly AlbumArtworkPaletteV2Phase3SelectorEvaluation[]
-	explanation: AlbumArtworkPaletteV2Phase3SelectorExplanation
 }>
 
 function clamp(value: number): number {
@@ -290,110 +240,6 @@ function evaluateTreatment(
 	}
 }
 
-function colorDistance(
-	first: CompletePaletteTreatment,
-	second: CompletePaletteTreatment,
-	role: "background" | "surface" | "foreground" | "accent",
-): number {
-	return Math.hypot(
-		first[role].oklab[0] - second[role].oklab[0],
-		first[role].oklab[1] - second[role].oklab[1],
-		first[role].oklab[2] - second[role].oklab[2],
-	)
-}
-
-function visuallyNear(first: CompletePaletteTreatment, second: CompletePaletteTreatment): boolean {
-	return first.gradient === second.gradient &&
-		(["background", "surface", "foreground", "accent"] as const)
-			.every((role) => colorDistance(first, second, role) < 0.025)
-}
-
-function novelty(
-	candidate: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
-	selected: readonly AlbumArtworkPaletteV2Phase3SelectorEvaluation[],
-): Readonly<{
-	gain: number
-	dimensions: readonly ("field" | "foreground" | "accent" | "structure" | "identity")[]
-}> {
-	if (selected.length === 0) return { gain: 0, dimensions: [] }
-	const treatment = candidate.treatment
-	const field = `${treatment.background.hex}:${treatment.surface.hex}:${treatment.gradient ? "gradient" : "flat"}`
-	const accent = treatment.collapse.accent ? "=" : treatment.accent.hex
-	const structure = `${treatment.fieldTreatment}:${treatment.collapse.surface}:${treatment.collapse.accent}`
-	const dimensions: Array<"field" | "foreground" | "accent" | "structure" | "identity"> = []
-	if (!selected.some(({ treatment: value }) =>
-		`${value.background.hex}:${value.surface.hex}:${value.gradient ? "gradient" : "flat"}` === field)) {
-		dimensions.push("field")
-	}
-	if (!selected.some(({ treatment: value }) => value.foreground.hex === treatment.foreground.hex)) {
-		dimensions.push("foreground")
-	}
-	if (!selected.some(({ treatment: value }) => (value.collapse.accent ? "=" : value.accent.hex) === accent)) {
-		dimensions.push("accent")
-	}
-	if (!selected.some(({ treatment: value }) =>
-		`${value.fieldTreatment}:${value.collapse.surface}:${value.collapse.accent}` === structure)) {
-		dimensions.push("structure")
-	}
-	if (candidate.identityRoles.some(({ familyId, role }) => !selected.some((evaluation) =>
-		evaluation.identityRoles.some((existing) => existing.familyId === familyId && existing.role === role)))) {
-		dimensions.push("identity")
-	}
-	return {
-		gain: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumSlateDiversityGain *
-			dimensions.length / 5,
-		dimensions,
-	}
-}
-
-function selectSlate(
-	frontier: readonly AlbumArtworkPaletteV2Phase3SelectorEvaluation[],
-): Readonly<{
-	evaluations: readonly AlbumArtworkPaletteV2Phase3SelectorEvaluation[]
-	explanations: readonly AlbumArtworkPaletteV2Phase3SelectorSlateExplanation[]
-}> {
-	const selected = [frontier[0]]
-	const explanations: AlbumArtworkPaletteV2Phase3SelectorSlateExplanation[] = [{
-		key: frontier[0].key,
-		index: 0,
-		qualityUtility: frontier[0].qualityUtility,
-		identityGain: frontier[0].identityGain,
-		relationUtility: frontier[0].relationUtility,
-		diversityGain: 0,
-		slateUtility: frontier[0].relationUtility,
-		novelDimensions: [],
-	}]
-	const remaining = frontier.slice(1)
-	while (selected.length < ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumSlateTreatments) {
-		const candidates = remaining
-			.filter((candidate) => !selected.includes(candidate) &&
-				!selected.some(({ treatment }) => visuallyNear(treatment, candidate.treatment)))
-			.map((candidate) => {
-				const diversity = novelty(candidate, selected)
-				return { candidate, diversity, slateUtility: candidate.relationUtility + diversity.gain }
-			})
-			.sort((first, second) => compareDescending(
-				utilityLevel(first.slateUtility),
-				utilityLevel(second.slateUtility),
-			) ||
-				compareEvaluations(first.candidate, second.candidate))
-		const next = candidates[0]
-		if (!next) break
-		selected.push(next.candidate)
-		explanations.push({
-			key: next.candidate.key,
-			index: selected.length - 1,
-			qualityUtility: next.candidate.qualityUtility,
-			identityGain: next.candidate.identityGain,
-			relationUtility: next.candidate.relationUtility,
-			diversityGain: next.diversity.gain,
-			slateUtility: next.slateUtility,
-			novelDimensions: next.diversity.dimensions,
-		})
-	}
-	return { evaluations: selected, explanations }
-}
-
 export function selectAlbumArtworkPaletteV2Phase3Treatments(
 	treatments: readonly CompletePaletteTreatment[],
 	identity?: AlbumArtworkPaletteV2Phase3IdentityInput,
@@ -419,51 +265,5 @@ export function selectAlbumArtworkPaletteV2Phase3Treatments(
 	}).sort(compareEvaluations)
 	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compareEvaluations)
 	if (frontier.length === 0) throw new Error("The complete treatment Pareto frontier is empty")
-	const winner = frontier[0]
-	const relationTies = frontier.filter(({ relationUtility }) =>
-		utilityLevel(relationUtility) === utilityLevel(winner.relationUtility))
-	const reasons = [
-		"non-dominated-on-quantized-complete-quality-relation",
-		winner.identityGain > 0
-			? "maximized-quality-plus-bounded-source-role-identity"
-			: "maximized-complete-quality-utility",
-		...relationTies.length > 1 ? ["canonical-treatment-order-resolved-exact-relation-tie"] : [],
-	]
-	const slate = selectSlate(frontier)
-	const explanation: AlbumArtworkPaletteV2Phase3SelectorExplanation = {
-		version: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_VERSION,
-		formulas: {
-			dominance: "identity coverage and all nine generated-penalty-adjusted 0.04 quality levels >= and at least one >",
-			foregroundPathUtility: "sqrt(foregroundUtility * nonzeroForegroundPathFraction) - generatedPenalty",
-			accentPathUtility: "sqrt(accentUtility * nonzeroAccentPathFraction) - generatedPenalty; collapsed accent shares foreground path",
-			qualityUtility: "0.16*fieldFidelity + 0.06*surfaceFidelity + 0.12*artworkIdentity + 0.12*representativeness + 0.19*foregroundPathUtility + 0.07*accentFidelity + 0.10*accentPathUtility + 0.09*coherence + 0.09*economy",
-			identityGain: "min(0.05, 0.05*priorityWeightedRoleCoverage); foreground credit 1, distinct accent credit 0.8",
-			ordering: "descending 0.005 relation-utility level, quality-utility level, identity coverage, leximin quality levels, declared quality levels, canonical treatment order",
-			slateUtility: "relationUtility + at most 0.03 for new field, foreground, accent, structure, and source-role identity dimensions",
-		},
-		domain: {
-			rawTreatmentCount: treatments.length,
-			uniqueTreatmentCount: unique.length,
-			duplicateTreatmentCount: treatments.length - unique.length,
-			paretoTreatmentCount: frontier.length,
-			dominatedTreatmentCount: unique.length - frontier.length,
-		},
-		qualityAxes: QUALITY_AXES,
-		paretoKeys: frontier.map(({ key }) => key),
-		winner: {
-			key: winner.key,
-			qualityUtility: winner.qualityUtility,
-			identityCoverage: winner.identityCoverage,
-			identityGain: winner.identityGain,
-			relationUtility: winner.relationUtility,
-			reasons,
-		},
-		slate: slate.explanations,
-	}
-	return {
-		winner: winner.treatment,
-		slate: slate.evaluations.map(({ treatment }) => treatment),
-		evaluations,
-		explanation,
-	}
+	return { evaluations }
 }
