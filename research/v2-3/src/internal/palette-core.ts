@@ -445,6 +445,7 @@ type IdentitySelectionTrace = Readonly<{
 	notSourceConnectedFamilyIds: readonly string[]
 	notMateriallyDistinctFamilyIds: readonly string[]
 	redundantDirectionFamilyIds: readonly string[]
+	neutralQuotaOmittedFamilyIds: readonly string[]
 	boundOmittedFamilyIds: readonly string[]
 	reservedMajorFamilyIds: readonly string[]
 }>
@@ -2890,11 +2891,25 @@ function buildIdentityObligationSelection(
 
 	const selected: typeof ranked = []
 	const redundantDirectionFamilyIds: string[] = []
+	const neutralQuotaOmittedFamilyIds: string[] = []
 	const boundOmitted: typeof ranked = []
+	const isNeutral = (family: ColorFamilyEvidence): boolean =>
+		family.chroma < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.neutralObligationChroma
 	for (const candidate of ranked) {
 		if (selected.some(({ family }) =>
 			okDistance(family.prototype, candidate.family.prototype) < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance)) {
 			redundantDirectionFamilyIds.push(candidate.family.id)
+			continue
+		}
+		// Material distance separates two greys that differ only in lightness, so without a quota
+		// a neutral-heavy artwork spends every obligation slot restating one identity direction
+		// while chromatic directions that carry real region evidence are never nominated at all.
+		// This declines the redundant restatement; it does not promote anyone — the freed slots
+		// are filled by the next candidates in the artwork's own evidence order.
+		if (isNeutral(candidate.family) &&
+			selected.filter(({ family }) => isNeutral(family)).length >=
+				ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.maximumNeutralObligations) {
+			neutralQuotaOmittedFamilyIds.push(candidate.family.id)
 			continue
 		}
 		if (selected.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations) {
@@ -2942,6 +2957,7 @@ function buildIdentityObligationSelection(
 			notSourceConnectedFamilyIds: notSourceConnectedFamilyIds.sort(compareAscii),
 			notMateriallyDistinctFamilyIds: notMateriallyDistinctFamilyIds.sort(compareAscii),
 			redundantDirectionFamilyIds: redundantDirectionFamilyIds.sort(compareAscii),
+			neutralQuotaOmittedFamilyIds: neutralQuotaOmittedFamilyIds.sort(compareAscii),
 			boundOmittedFamilyIds: boundOmittedFamilyIds.sort(compareAscii),
 			reservedMajorFamilyIds: reservedFamilyIds.sort(compareAscii),
 		},

@@ -186,6 +186,22 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",
 		reservedMajorFamilyPopulationFraction: 0.06,
+		/**
+		 * Chroma at or above which a family counts as an identity *direction* rather than a
+		 * neutral. Matches `identityDirectionChroma` in the selector policy, which decides the
+		 * same question downstream when the winner objective counts carried directions.
+		 */
+		neutralObligationChroma: 0.06,
+		/**
+		 * How many of the identity-obligation slots may be spent on near-neutral families.
+		 *
+		 * The shortlist dedups by OKLab material distance, which two greys separated only by
+		 * lightness clear easily, so a neutral-heavy artwork can spend every slot restating one
+		 * direction while chromatic directions with real region evidence are never nominated.
+		 * Slots freed by this quota are filled from the *existing* evidence order: nothing is
+		 * promoted by fiat, the artwork's own region evidence still decides who fills them.
+		 */
+		maximumNeutralObligations: 2,
 		winnerPrecedence: "quality-incumbent-then-quality-guarded-obligation-coverage-and-priority",
 		qualityGuard: Object.freeze({
 			version: "complete-quality-domain-non-inferiority-v1",
