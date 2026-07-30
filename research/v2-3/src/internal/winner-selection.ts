@@ -10,6 +10,8 @@ import { scorePaletteCandidates, WINNER_SCORING_POLICY } from "./winner-scoring.
 
 import type { WinnerScoring } from "./winner-scoring.ts";
 
+import type { AlbumArtworkPaletteV2Phase3IdentityRoleRequirement } from "./base-scoring.ts";
+
 export type SourceEligibleWinner<TCandidate extends AlbumArtworkPaletteV2Phase3CompleteLineageMaterializedCandidate> =
 	Readonly<{
 		winner: TCandidate
@@ -21,6 +23,7 @@ export function selectSourceEligibleWinner<
 >(input: Readonly<{
 	materialized: readonly TCandidate[]
 	identityObligations?: readonly IdentityObligation[]
+	identityRoleRequirements?: readonly AlbumArtworkPaletteV2Phase3IdentityRoleRequirement[]
 	emergency?: EmergencyEligibility | null
 	fullDomainSelection: WinnerScoring
 }>): SourceEligibleWinner<TCandidate> {
@@ -31,7 +34,10 @@ export function selectSourceEligibleWinner<
 	if (eligibility.eligibleCandidates.length === 0) throw new Error("No source-eligible palette candidate")
 	const winnerSelection = scorePaletteCandidates(
 		eligibility.eligibleCandidates.map(({ treatment }) => treatment),
-		{ obligations: input.identityObligations ?? [] },
+		{
+			obligations: input.identityObligations ?? [],
+			roleRequirements: input.identityRoleRequirements ?? [],
+		},
 	)
 	const candidateByKey = new Map(eligibility.allCandidates.map((candidate) => [candidate.key, candidate]))
 	const evaluationByKey = new Map(input.fullDomainSelection.evaluations.map((evaluation) =>

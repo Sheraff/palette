@@ -1,6 +1,10 @@
 import { completeTreatmentKey } from "./palette-core.ts";
 
+import { okDistance } from "./color.ts";
+
 import type { CompletePaletteTreatment } from "./palette-core.ts";
+
+import type { OKLab } from "./types.ts";
 
 const QUALITY_AXES = [
 	"fieldFidelity",
@@ -21,6 +25,10 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
 	utilityResolution: 0.005,
 	maximumIdentityGain: 0.05,
 	accentIdentityCredit: 0.8,
+	roleMatchedIdentityCredit: 1,
+	roleMismatchedIdentityCredit: 0.35,
+	identityRoleSeparation: 0.12,
+	identityChromaticSeparation: 0.01,
 	qualityWeights: Object.freeze({
 		fieldFidelity: 0.16,
 		surfaceFidelity: 0.06,
@@ -34,11 +42,26 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
 	}),
 } as const)
 
+export type AlbumArtworkPaletteV2Phase3IdentityRole = "foreground" | "accent" | "ambiguous"
+
+/**
+ * A family's field-conditional role evidence. An obligation family only carries artwork
+ * identity when the treatment places it in a role its own evidence supports, so identity
+ * credit is graded by role agreement rather than by mere presence.
+ */
+export type AlbumArtworkPaletteV2Phase3IdentityRoleRequirement = Readonly<{
+	familyId: string
+	fieldHypothesisId: string
+	requiredRole: AlbumArtworkPaletteV2Phase3IdentityRole
+	confidence?: number
+}>
+
 export type AlbumArtworkPaletteV2Phase3IdentityInput = Readonly<{
 	obligations: ReadonlyArray<Readonly<{
 		familyId: string
 		priority: number
 	}>>
+	roleRequirements?: readonly AlbumArtworkPaletteV2Phase3IdentityRoleRequirement[]
 }>
 
 export type AlbumArtworkPaletteV2Phase3SelectorQuality = Readonly<
@@ -130,40 +153,125 @@ function qualityUtility(quality: AlbumArtworkPaletteV2Phase3SelectorQuality): nu
 		sum + ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights[axis] * quality[axis], 0)
 }
 
-function normalizedObligations(identity: AlbumArtworkPaletteV2Phase3IdentityInput | undefined): Array<{
-	familyId: string
-	priority: number
-}> {
+type NormalizedRoleRequirement = Readonly<{
+	requiredRole: AlbumArtworkPaletteV2Phase3IdentityRole
+	confidence: number
+}>
+
+type NormalizedIdentity = Readonly<{
+	obligations: ReadonlyArray<Readonly<{ familyId: string; priority: number }>>
+	requiredRoleByFamilyField: ReadonlyMap<string, NormalizedRoleRequirement>
+}>
+
+function requirementKey(familyId: string, fieldHypothesisId: string): string {
+	return `${familyId}\0${fieldHypothesisId}`
+}
+
+function normalizedIdentity(identity: AlbumArtworkPaletteV2Phase3IdentityInput | undefined): NormalizedIdentity {
 	const byFamily = new Map<string, number>()
 	for (const obligation of identity?.obligations ?? []) {
 		if (!Number.isFinite(obligation.priority) || obligation.familyId.length === 0) continue
 		byFamily.set(obligation.familyId, Math.min(byFamily.get(obligation.familyId) ?? Infinity, obligation.priority))
 	}
-	return [...byFamily].map(([familyId, priority]) => ({ familyId, priority }))
-		.sort((first, second) => first.priority - second.priority ||
-			compareAscii(first.familyId, second.familyId))
+	const requiredRoleByFamilyField = new Map<string, NormalizedRoleRequirement>()
+	for (const requirement of identity?.roleRequirements ?? []) {
+		if (!byFamily.has(requirement.familyId) || requirement.fieldHypothesisId.length === 0) continue
+		const key = requirementKey(requirement.familyId, requirement.fieldHypothesisId)
+		if (requiredRoleByFamilyField.has(key)) continue
+		requiredRoleByFamilyField.set(key, {
+			requiredRole: requirement.requiredRole,
+			confidence: clamp(Number.isFinite(requirement.confidence) ? requirement.confidence! : 1),
+		})
+	}
+	return {
+		obligations: [...byFamily].map(([familyId, priority]) => ({ familyId, priority }))
+			.sort((first, second) => first.priority - second.priority ||
+				compareAscii(first.familyId, second.familyId)),
+		requiredRoleByFamilyField,
+	}
+}
+
+/**
+ * Role-agnostic baseline credit, then a move toward the matched or mismatched credit in
+ * proportion to the classifier's own confidence. The field-conditional role classifier is
+ * evidence, not ground truth: a barely decided classification must barely move the credit.
+ */
+function placementCredit(
+	requirement: NormalizedRoleRequirement | undefined,
+	placedRole: "foreground" | "accent",
+): number {
+	const baseline = placedRole === "foreground"
+		? 1
+		: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.accentIdentityCredit
+	if (requirement === undefined || requirement.requiredRole === "ambiguous") return baseline
+	const target = requirement.requiredRole === placedRole
+		? ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.roleMatchedIdentityCredit
+		: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.roleMismatchedIdentityCredit
+	return baseline + (target - baseline) * requirement.confidence
+}
+
+/**
+ * Obligation priority weight. The reciprocal rank matches the weight the role-specific
+ * obligation system already uses, so both identity systems value priority identically, and
+ * unlike a rank-linear weight its ratios do not flatten as the obligation list grows: a
+ * lower-priority family can never quietly become as valuable as the strongest one.
+ */
+function priorityWeight(priority: number): number {
+	return 1 / (Math.max(0, priority) + 1)
+}
+
+/** Distance in the OKLab chroma plane: how different two colors are apart from lightness. */
+function chromaticDistance(first: OKLab, second: OKLab): number {
+	return Math.hypot(first[1] - second[1], first[2] - second[2])
+}
+
+/**
+ * The greatest identity credit any one complete treatment could carry: a treatment owns two
+ * identity-bearing roles (foreground and a distinct accent), so the two strongest obligations
+ * are the achievable ceiling. Normalizing coverage by this ceiling — rather than by the sum
+ * over every obligation — keeps an omitted family's cost visible instead of diluting every
+ * treatment's coverage as the obligation list grows.
+ */
+function achievableIdentityCredit(weights: readonly number[]): number {
+	const ranked = [...weights].sort(compareDescending)
+	if (ranked.length === 0) return 0
+	return ranked[0] + (ranked.length > 1
+		? ranked[1] * ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.accentIdentityCredit
+		: 0)
 }
 
 function identityEvaluation(
 	treatment: CompletePaletteTreatment,
-	obligations: readonly Readonly<{ familyId: string; priority: number }>[],
+	identity: NormalizedIdentity,
 ): Readonly<{
 	coverage: number
 	gain: number
 	roles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 }> {
-	const maximumPriority = Math.max(0, ...obligations.map(({ priority }) => priority))
-	const priorityWeight = (priority: number): number => Math.max(0, maximumPriority - priority + 1)
-	const denominator = obligations.reduce((sum, { priority }) => sum + priorityWeight(priority), 0)
+	const obligations = identity.obligations
+	const denominator = achievableIdentityCredit(obligations.map(({ priority }) => priorityWeight(priority)))
+	const requiredRole = (familyId: string): NormalizedRoleRequirement | undefined =>
+		identity.requiredRoleByFamilyField.get(requirementKey(familyId, treatment.sourceFieldHypothesisId))
+	// Two roles rendering nearly the same color do not carry two identity directions. Without
+	// this the objective can reward splitting one direction across foreground and accent —
+	// which reads as a redundant palette and, on genuinely two-color artwork, as a reason to
+	// break a correct collapse. Identity directions are chromatic: a second near-neutral, however
+	// much lighter or darker, restates the direction the foreground already carries.
+	const identityBearingAccent = !treatment.collapse.accent &&
+		okDistance(treatment.foreground.oklab, treatment.accent.oklab) >=
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityRoleSeparation &&
+		chromaticDistance(treatment.foreground.oklab, treatment.accent.oklab) >=
+			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityChromaticSeparation
 	let numerator = 0
 	const roles: Array<{ familyId: string; role: "foreground" | "accent"; credit: number }> = []
 	for (const obligation of obligations) {
 		const weight = priorityWeight(obligation.priority)
 		if (treatment.familyRoles.foreground === obligation.familyId) {
-			numerator += weight
-			roles.push({ familyId: obligation.familyId, role: "foreground", credit: 1 })
-		} else if (!treatment.collapse.accent && treatment.familyRoles.accent === obligation.familyId) {
-			const credit = ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.accentIdentityCredit
+			const credit = placementCredit(requiredRole(obligation.familyId), "foreground")
+			numerator += weight * credit
+			roles.push({ familyId: obligation.familyId, role: "foreground", credit })
+		} else if (identityBearingAccent && treatment.familyRoles.accent === obligation.familyId) {
+			const credit = placementCredit(requiredRole(obligation.familyId), "accent")
 			numerator += weight * credit
 			roles.push({ familyId: obligation.familyId, role: "accent", credit })
 		}
@@ -216,13 +324,13 @@ function compareEvaluations(
 
 function evaluateTreatment(
 	treatment: CompletePaletteTreatment,
-	obligations: readonly Readonly<{ familyId: string; priority: number }>[],
+	normalized: NormalizedIdentity,
 ): AlbumArtworkPaletteV2Phase3SelectorEvaluation {
 	const quality = albumArtworkPaletteV2Phase3SelectorQuality(treatment)
 	for (const axis of QUALITY_AXES) {
 		if (!Number.isFinite(quality[axis])) throw new TypeError(`Non-finite selector quality axis ${axis}`)
 	}
-	const identity = identityEvaluation(treatment, obligations)
+	const identity = identityEvaluation(treatment, normalized)
 	const utility = qualityUtility(quality)
 	return {
 		key: completeTreatmentKey(treatment),
@@ -245,8 +353,8 @@ export function selectAlbumArtworkPaletteV2Phase3Treatments(
 	identity?: AlbumArtworkPaletteV2Phase3IdentityInput,
 ): AlbumArtworkPaletteV2Phase3SelectorSelection {
 	if (treatments.length === 0) throw new RangeError("The complete treatment domain is empty")
-	const obligations = normalizedObligations(identity)
-	const allEvaluations = treatments.map((treatment) => evaluateTreatment(treatment, obligations))
+	const normalized = normalizedIdentity(identity)
+	const allEvaluations = treatments.map((treatment) => evaluateTreatment(treatment, normalized))
 		.sort(compareEvaluations)
 	const uniqueByKey = new Map<string, AlbumArtworkPaletteV2Phase3SelectorEvaluation>()
 	for (const evaluation of allEvaluations) {

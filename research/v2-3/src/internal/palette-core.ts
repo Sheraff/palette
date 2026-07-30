@@ -376,6 +376,7 @@ type IdentitySelectionTrace = Readonly<{
 	notMateriallyDistinctFamilyIds: readonly string[]
 	redundantDirectionFamilyIds: readonly string[]
 	boundOmittedFamilyIds: readonly string[]
+	reservedMajorFamilyIds: readonly string[]
 }>
 
 export type FamilyRegistryEntry = Readonly<{
@@ -2496,7 +2497,7 @@ function buildIdentityObligationSelection(
 
 	const selected: typeof ranked = []
 	const redundantDirectionFamilyIds: string[] = []
-	const boundOmittedFamilyIds: string[] = []
+	const boundOmitted: typeof ranked = []
 	for (const candidate of ranked) {
 		if (selected.some(({ family }) =>
 			okDistance(family.prototype, candidate.family.prototype) < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance)) {
@@ -2504,11 +2505,29 @@ function buildIdentityObligationSelection(
 			continue
 		}
 		if (selected.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations) {
-			boundOmittedFamilyIds.push(candidate.family.id)
+			boundOmitted.push(candidate)
 			continue
 		}
 		selected.push(candidate)
 	}
+	// The obligation shortlist ranks crisp local signature evidence, which can crowd out a
+	// family that covers a large share of the artwork. Reserve one place for the broadest
+	// otherwise-unrepresented family so a major identity direction is never silently erased
+	// by the capacity bound alone.
+	const reserved = boundOmitted
+		.filter(({ family }) => family.populationFraction >=
+			ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.reservedMajorFamilyPopulationFraction)
+		.sort((first, second) =>
+			compareNumbersDescending(first.family.populationFraction, second.family.populationFraction) ||
+			compareAscii(first.family.id, second.family.id))[0]
+	const reservedFamilyIds: string[] = []
+	if (reserved !== undefined) {
+		reservedFamilyIds.push(reserved.family.id)
+		selected.push(reserved)
+	}
+	const boundOmittedFamilyIds = boundOmitted
+		.filter((candidate) => candidate !== reserved)
+		.map(({ family }) => family.id)
 	return {
 		obligations: selected.map((candidate, priority): IdentityObligation => ({
 			id: `identity-obligation:${candidate.family.id}`,
@@ -2531,6 +2550,7 @@ function buildIdentityObligationSelection(
 			notMateriallyDistinctFamilyIds: notMateriallyDistinctFamilyIds.sort(compareAscii),
 			redundantDirectionFamilyIds: redundantDirectionFamilyIds.sort(compareAscii),
 			boundOmittedFamilyIds: boundOmittedFamilyIds.sort(compareAscii),
+			reservedMajorFamilyIds: reservedFamilyIds.sort(compareAscii),
 		},
 	}
 }

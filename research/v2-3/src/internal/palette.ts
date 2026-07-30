@@ -22,9 +22,11 @@ import type { WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
 
 import type { RoleSpecificIdentityObligation } from "./role-obligations.ts";
 
+import type { AlbumArtworkPaletteV2Phase3IdentityRoleRequirement as IdentityRoleRequirement } from "./base-scoring.ts";
+
 import { normalizeAlbumArtworkPaletteV2Phase3TransitionEnvelopeV4 } from "./transition-normalization.ts";
 
-import { buildRoleObligations } from "./role-evidence.ts";
+import { buildRoleEvidence } from "./role-evidence.ts";
 
 import { evaluateTransitionCandidates, MAXIMUM_WINNER_QUALITY_LOSS } from "./transition-promotion.ts";
 
@@ -91,11 +93,13 @@ function selectWinner(input: Readonly<{
 	roleObligations: readonly RoleSpecificIdentityObligation[]
 	acceptedTransitionHypothesisIds: readonly string[]
 	identityObligations: readonly IdentityObligation[]
+	identityRoleRequirements: readonly IdentityRoleRequirement[]
 	emergency: EmergencyEligibility | null
 }>): WinnerSelection {
 	const sourceEligible = selectSourceEligibleWinner({
 		materialized: input.materialized,
 		identityObligations: input.identityObligations,
+		identityRoleRequirements: input.identityRoleRequirements,
 		emergency: input.emergency,
 		fullDomainSelection: input.scored,
 	})
@@ -268,9 +272,17 @@ export function extractPaletteDetails(image: RawImage): Readonly<{
 		[...common.seedAvailability.logicalDescriptors, ...supplementalDescriptors],
 		common.seedAvailability.identityObligations,
 	)
+	const roleEvidence = buildRoleEvidence(
+		common.evidence.augmentedNative,
+		sourcedFields.map(({ hypothesis }) => hypothesis),
+		common.seedAvailability.identityObligations.map(({ familyId }) => familyId),
+	)
 	const scored = scorePaletteCandidates(
 		materialization.materialized.map(({ treatment }) => treatment),
-		{ obligations: common.seedAvailability.identityObligations },
+		{
+			obligations: common.seedAvailability.identityObligations,
+			roleRequirements: roleEvidence.requirements,
+		},
 	)
 	const materialized: MaterializedCandidate[] = materialization.materialized.map((candidate) => ({
 		key: candidate.key,
@@ -280,12 +292,10 @@ export function extractPaletteDetails(image: RawImage): Readonly<{
 	const selection = selectWinner({
 		scored,
 		materialized,
-		roleObligations: buildRoleObligations(
-			common.evidence.augmentedNative,
-			sourcedFields.map(({ hypothesis }) => hypothesis),
-		),
+		roleObligations: roleEvidence.obligations,
 		acceptedTransitionHypothesisIds: transitionEnvelope.creditedHypothesisIds,
 		identityObligations: common.seedAvailability.identityObligations,
+		identityRoleRequirements: roleEvidence.requirements,
 		emergency: seed.emergency,
 	})
 	const gradient = applyGradientSupport(

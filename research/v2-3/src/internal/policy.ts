@@ -58,6 +58,7 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 	identity: Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",
+		reservedMajorFamilyPopulationFraction: 0.06,
 		winnerPrecedence: "quality-incumbent-then-quality-guarded-obligation-coverage-and-priority",
 		qualityGuard: Object.freeze({
 			version: "complete-quality-domain-non-inferiority-v1",
