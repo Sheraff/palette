@@ -41,7 +41,7 @@ function colorDistance(first: PaletteRoleColor, second: PaletteRoleColor): numbe
 	)
 }
 
-function roleSourceSupport(color: PaletteRoleColor, declaredFamilyId: string): number {
+export function roleSourceSupport(color: PaletteRoleColor, declaredFamilyId: string): number {
 	if (color.generated || "generated" in color.support || declaredFamilyId === "generated") return 0
 	const support = color.support
 	if (support.anchorFamilyId !== declaredFamilyId || support.regionIds.length === 0) return 0
@@ -80,7 +80,7 @@ function rolePathFraction(
 	return path.filter(({ signedLc }) => Number.isFinite(signedLc) && signedLc !== 0).length / path.length
 }
 
-function gradientEvidenceStrength(treatment: CompletePaletteTreatment): number {
+export function gradientEvidenceStrength(treatment: CompletePaletteTreatment): number {
 	const evidence = treatment.gradientEvidence
 	if (!evidence) return 0
 	return mean([

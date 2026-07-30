@@ -16,7 +16,7 @@ import type { AlbumArtworkPaletteV2Phase3FieldHypothesisSourceType, AlbumArtwork
 
 import { materializeAlbumArtworkPaletteV2Phase3Descriptors } from "./candidate-materialization.ts";
 
-import { scorePaletteCandidates } from "./winner-scoring.ts";
+import { promotionEnvelopeUtility, scorePaletteCandidates, TRANSITION_PROMOTION_ORDER } from "./winner-scoring.ts";
 
 import type { WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
 
@@ -79,11 +79,14 @@ function compareTransitionCandidates(
 	first: Readonly<{ evaluation: WinnerEvaluation; candidate: TransitionCandidate }>,
 	second: Readonly<{ evaluation: WinnerEvaluation; candidate: TransitionCandidate }>,
 ): number {
-	return compareDescending(first.candidate.decisiveCoverage, second.candidate.decisiveCoverage) ||
-		compareDescending(first.candidate.totalObligationCoverage, second.candidate.totalObligationCoverage) ||
+	const decisive = compareDescending(first.candidate.decisiveCoverage, second.candidate.decisiveCoverage)
+	if (decisive !== 0) return decisive
+	const quality = compareDescending(first.candidate.baseQualityUtility, second.candidate.baseQualityUtility)
+	if (TRANSITION_PROMOTION_ORDER === "quality-after-decisive" && quality !== 0) return quality
+	return compareDescending(first.candidate.totalObligationCoverage, second.candidate.totalObligationCoverage) ||
 		compareDescending(first.candidate.existingFamilyIdentity, second.candidate.existingFamilyIdentity) ||
 		compareDescending(first.candidate.roleEvidence, second.candidate.roleEvidence) ||
-		compareDescending(first.candidate.baseQualityUtility, second.candidate.baseQualityUtility) ||
+		quality ||
 		compareAscii(first.evaluation.key, second.evaluation.key)
 }
 
@@ -136,8 +139,8 @@ function selectWinner(input: Readonly<{
 				evaluateAlbumArtworkPaletteV2Phase3CompleteLineageDescriptor(key, descriptor).ordinaryEligible) === true
 		})
 		.map((candidate) => ({ candidate, evaluation: evaluations.get(candidate.key)! }))
-		.filter(({ evaluation }) => evaluation.qualityUtility + 1e-12 >=
-			unrestrictedEvaluation.qualityUtility - MAXIMUM_WINNER_QUALITY_LOSS)
+		.filter(({ evaluation }) => promotionEnvelopeUtility(evaluation) + 1e-12 >=
+			promotionEnvelopeUtility(unrestrictedEvaluation) - MAXIMUM_WINNER_QUALITY_LOSS)
 		.sort(compareTransitionCandidates)
 	const winnerEvaluation = transitionCandidates[0]?.evaluation ?? sourceWinnerEvaluation
 	const winnerLineage = eligibilityByKey.get(winnerEvaluation.key)
