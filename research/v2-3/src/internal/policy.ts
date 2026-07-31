@@ -200,6 +200,49 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		/** Share of the family's boundary that must stay inside the mixture. */
 		minimumCorridorClosure: 0.9,
 	}),
+	/**
+	 * Mount (frame / matte) border credit.
+	 *
+	 * `fieldScore` rewards `borderCoverage` because bleeding off every edge is
+	 * evidence that a family is the artwork's *ground*: nothing lies behind
+	 * something that reaches all four edges. That inference has one systematic
+	 * exception. A frame or matte — a band pasted *around* the artwork — also
+	 * touches every edge, and what lies behind it is the artwork itself. The
+	 * evidence pass cannot tell the two apart, so the mount wins the field
+	 * whenever it is present.
+	 *
+	 * The tell is enclosure, and it is directly measurable: a mount owns the whole
+	 * border while a *larger* field family owns none of it. Ground never has that
+	 * shape — if a bigger region never reaches an edge, the thing at the edge is
+	 * framing it, not underlying it. So a family in that position keeps every other
+	 * piece of field evidence (breadth, coherence, quadrant reach, calm) and only
+	 * loses the border credit, which is the one term its shape does not earn.
+	 *
+	 * This is deliberately *not* border-stripping. Nothing is cropped, no family is
+	 * withdrawn, and a mount that is genuinely the artwork's dominant region — a
+	 * wide white matte, a dark field with a slightly darker edge — keeps its credit
+	 * in full, because nothing larger is enclosed by it.
+	 *
+	 * Set `borderCreditRetained` to 1 to restore the previous behaviour exactly.
+	 */
+	mount: Object.freeze({
+		/** Border share above which a family counts as owning the frame. */
+		minimumBorderCoverage: 0.9,
+		/** Border share below which a family counts as fully enclosed. */
+		maximumEnclosedBorderCoverage: 0.05,
+		/**
+		 * How much larger the enclosed field must be than the border-owning family
+		 * before the latter is read as a mount rather than as ground.
+		 *
+		 * Every artwork carrying a human verdict sits far from this value: the one
+		 * case review wants flipped measures 4.47, and the six framed artworks whose
+		 * frame-as-background review accepted measure 0.07 to 0.76. The threshold is
+		 * placed at the centre of that gap rather than at either edge.
+		 */
+		minimumEnclosedPopulationRatio: 2.5,
+		/** Fraction of the border credit a mount keeps. */
+		borderCreditRetained: 0,
+	}),
 	identity: Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",

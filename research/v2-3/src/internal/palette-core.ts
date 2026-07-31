@@ -1330,6 +1330,59 @@ function rankAllLaneFamilies(
 			compareAscii(first.id, second.id))
 }
 
+/** The terms `fieldScore` reads, so it can be recomputed with a discounted border credit. */
+type FieldScoreTerms = Readonly<{
+	populationFraction: number
+	borderCoverage: number
+	familyConcentration: number
+	quadrantCoverage: number
+	edgeDensity: number
+}>
+
+/**
+ * How much this family looks like the ground the artwork sits on: broad, reaching
+ * the edges and every quadrant, coherent rather than scattered, and calm.
+ *
+ * `borderCreditRetained` scales the border term alone. It is 1 for every family
+ * except a mount, whose border coverage is not evidence of ground — see
+ * `ALBUM_ARTWORK_PALETTE_V2_POLICY.mount`.
+ */
+function fieldScoreFrom(terms: FieldScoreTerms, borderCreditRetained = 1): number {
+	return clamp(
+		0.28 * clamp(terms.populationFraction / 0.24) +
+		0.22 * terms.borderCoverage * borderCreditRetained +
+		0.22 * clamp(terms.familyConcentration) +
+		0.13 * terms.quadrantCoverage +
+		0.15 * (1 - clamp(terms.edgeDensity / 0.7)),
+	)
+}
+
+/**
+ * Families whose border coverage is not evidence that they are the artwork's
+ * ground, because a materially larger field family is enclosed by them — a frame
+ * or matte rather than a background. See
+ * `ALBUM_ARTWORK_PALETTE_V2_POLICY.mount`. Returns ids, ASCII-ordered.
+ */
+function mountFamilyIds(families: readonly ColorFamilyEvidence[]): Set<string> {
+	const policy = ALBUM_ARTWORK_PALETTE_V2_POLICY.mount
+	const mounts = new Set<string>()
+	if (policy.borderCreditRetained >= 1) return mounts
+	const enclosed = families.filter(({ borderCoverage }) => borderCoverage <= policy.maximumEnclosedBorderCoverage)
+	if (enclosed.length === 0) return mounts
+	const largestEnclosed = enclosed.reduce((best, family) =>
+		family.populationFraction > best.populationFraction ||
+		(family.populationFraction === best.populationFraction && compareAscii(family.id, best.id) < 0)
+			? family
+			: best)
+	for (const family of families) {
+		if (family.borderCoverage < policy.minimumBorderCoverage) continue
+		if (family.id === largestEnclosed.id) continue
+		if (largestEnclosed.populationFraction < family.populationFraction * policy.minimumEnclosedPopulationRatio) continue
+		mounts.add(family.id)
+	}
+	return mounts
+}
+
 /**
  * Where `point` falls on the OKLab chord `[start, end]`: how far along it (`position`,
  * in chord fractions, so `0` is `start` and `1` is `end`) and how far off it
@@ -1699,16 +1752,14 @@ export function buildNativePaletteEvidence(
 		const foregroundPolarity = foregroundPolarityObservation(family.id, family.components, regionObservations)
 		const signatureAccentObservation = aggregateRegionScores(family.components.map(({ start }) =>
 			regionObservations.get(start)?.signatureAccent.score ?? 0))
-		const broadSupport = clamp(populationFraction / 0.24)
 		const componentCoherence = clamp(familyConcentration)
-		const textureCalm = 1 - clamp(edgeDensity / 0.7)
-		const fieldScore = clamp(
-			0.28 * broadSupport +
-			0.22 * borderCoverage +
-			0.22 * componentCoherence +
-			0.13 * quadrantCoverage +
-			0.15 * textureCalm,
-		)
+		const fieldScore = fieldScoreFrom({
+			populationFraction,
+			borderCoverage,
+			familyConcentration,
+			quadrantCoverage,
+			edgeDensity,
+		})
 		const coherentSupport = clamp(largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
 		const repeatCount = family.components.filter(({ population }) => population / pixelCount >= 0.00025).length
 		const repeatedSupport = clamp((repeatCount - 1) / 3)
@@ -1775,17 +1826,26 @@ export function buildNativePaletteEvidence(
 		}
 	})
 
+	// Enclosure can only be read once every family has been measured, so mounts are
+	// recognised here and their border credit withdrawn before any consumer — mark
+	// evidence included — reads a field score.
+	const mountIds = mountFamilyIds(preliminary)
+	const scored = mountIds.size === 0 ? preliminary : preliminary.map((family): ColorFamilyEvidence =>
+		mountIds.has(family.id)
+			? { ...family, fieldScore: fieldScoreFrom(family, ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.borderCreditRetained) }
+			: family)
+
 	// Mark evidence is measured against the families that own the field, so it can
 	// only be computed once every family has been measured. It is folded into the
 	// same `ColorFamilyEvidence` records before any of them is consumed.
-	const fieldPrototypes = [...preliminary]
+	const fieldPrototypes = [...scored]
 		.sort((first, second) =>
 			compareNumbersDescending(first.fieldScore, second.fieldScore) ||
 			compareNumbersDescending(first.population, second.population) ||
 			compareAscii(first.id, second.id))
 		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.fieldReferenceFamilies)
 		.map(({ prototype }) => prototype)
-	const marked = preliminary.map((family): ColorFamilyEvidence =>
+	const marked = scored.map((family): ColorFamilyEvidence =>
 		({ ...family, ...markSupportOf(family, pixelCount, fieldPrototypes) }))
 
 	const denseTargets = mutableFamilies.map((family) => {
