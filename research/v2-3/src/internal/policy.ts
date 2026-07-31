@@ -243,6 +243,57 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		/** Fraction of the border credit a mount keeps. */
 		borderCreditRetained: 0,
 	}),
+	/**
+	 * Accent candidacy in a two-colour artwork.
+	 *
+	 * `fieldBlend` withdraws optical mixtures from the field lane, because a colour
+	 * that exists only where two fields meet is not a material the artwork
+	 * contains. The same colours stay eligible as *accents*, which is usually
+	 * right — an anti-aliased edge tone can still be the most interesting thing in
+	 * a busy artwork, and stripping every such family would cost legitimate accents
+	 * across the corpus.
+	 *
+	 * There is one configuration where it is not right. When the family carrying the
+	 * background and the family carrying the foreground already own nearly every
+	 * pixel between them, the artwork has two materials and no more. Anything on the
+	 * chord between them is the edge where they meet — anti-aliasing, JPEG ringing,
+	 * a soft shadow. Publishing it as a fourth colour asserts a cardinality the
+	 * artwork does not have.
+	 *
+	 * **The coverage condition is what makes this safe.** Reviewed accents elsewhere
+	 * in the corpus sit *closer* to their own palette's chord (0.008, 0.007) than the
+	 * case this was built for (0.011), so proximity alone would strip them. What
+	 * separates them is coverage: their artworks' two published colours own about
+	 * 50 % and 32 % of the pixels, against 95 %. Those artworks have a third
+	 * material; that one does not.
+	 *
+	 * The rule deliberately does *not* require the surface to be collapsed. It is a
+	 * claim about the two materials the artwork is made of, and it has to apply the
+	 * same way to a treatment that reads the artwork the other way round (ink as
+	 * background, field as foreground) — otherwise a treatment can dodge it by
+	 * spending the same edge ramp on its surface instead.
+	 *
+	 * The effect is to zero the accent's *evidence*, not to remove it from
+	 * candidacy: an edge blend still competes, it simply has no identity of its own
+	 * to weigh, and it is no longer counted as an opportunity the collapsed
+	 * treatment gave up. Filtering candidacy outright was measured and rejected: it
+	 * perturbs `accentOpportunity`, which feeds foreground scoring, and moved a
+	 * reviewed foreground that had nothing to do with accents.
+	 *
+	 * The mixture geometry reuses `fieldBlend`'s thresholds rather than introducing
+	 * its own: "is this colour an optical mixture" should mean one thing here.
+	 *
+	 * Set `minimumTwoColourCoverage` above 1 to restore the previous behaviour.
+	 */
+	accentBlend: Object.freeze({
+		/**
+		 * Share of the artwork the background's family and the foreground's family
+		 * must own between them before the artwork counts as two-colour. Measured:
+		 * 0.95 on the reviewed case, at most 0.51 on every other artwork whose accent
+		 * is an interior chord blend.
+		 */
+		minimumTwoColourCoverage: 0.8,
+	}),
 	identity: Object.freeze({
 		materialDistance: 0.025,
 		selection: "source-connected-signature-evidence-levels",

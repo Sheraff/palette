@@ -1279,13 +1279,57 @@ function rankForegroundOptions(
  * is the call site's representative policy, which is the one thing the two generators legitimately
  * disagree about.
  */
+/**
+ * A two-colour artwork publishes one field colour and one ink colour which, between
+ * them, own nearly every pixel. A colour on the chord between those two is the edge
+ * where they meet — the anti-aliased boundary, JPEG ringing, a soft shadow — not a
+ * third material. Publishing it as an accent asserts a cardinality the artwork does
+ * not have.
+ *
+ * Returns a predicate over accent representatives. It answers `false` for every
+ * artwork that is not two-colour, which is nearly all of them: reviewed accents that
+ * sit *closer* to their own palette's chord than the case this was built for belong
+ * to artworks whose two published colours cover only about half the pixels.
+ *
+ * The mixture geometry is `fieldBlend`'s, deliberately — "is this an optical
+ * mixture" means one thing in this algorithm. See
+ * `ALBUM_ARTWORK_PALETTE_V2_POLICY.accentBlend`.
+ */
+function edgeOfTheOnlyTwoColours(
+	background: ColorRepresentative,
+	foreground: ColorRepresentative,
+	twoColourCoverage: number,
+): (accent: ColorRepresentative) => boolean {
+	const blend = ALBUM_ARTWORK_PALETTE_V2_POLICY.fieldBlend
+	const chordLength = okDistance(background.oklab, foreground.oklab)
+	const applies = twoColourCoverage >= ALBUM_ARTWORK_PALETTE_V2_POLICY.accentBlend.minimumTwoColourCoverage &&
+		chordLength >= blend.minimumFieldSeparation
+	if (!applies) return () => false
+	return (accent) => {
+		const { offset, position } = chordProjection(accent.oklab, background.oklab, foreground.oklab)
+		return position > blend.interiorMargin && position < 1 - blend.interiorMargin &&
+			offset / chordLength <= blend.maximumRelativeOffset
+	}
+}
+
 function rankAccentOptions(
 	variant: FieldVariant,
 	signatureFamilies: readonly ColorFamilyEvidence[],
 	foreground: Readonly<{ family: ColorFamilyEvidence; representative: ColorRepresentative }>,
 	representativesOf: (family: ColorFamilyEvidence) => readonly ColorRepresentative[],
+	fieldFamilyPopulationFraction = 0,
 ): RankedRoleOption<{ utility: number; fidelity: number }>[] {
 	const samples = fieldSamples(variant)
+	/**
+	 * The candidate is left in the slate — candidacy is not the question — but an
+	 * edge between the artwork's only two colours is not a distinct accent anyone
+	 * gave up by collapsing, so its fidelity is zero. That matters twice: it ranks
+	 * the mixture last, and it stops `accentOpportunity` from charging the
+	 * collapsed treatment for an accent the artwork does not actually offer.
+	 */
+	const isEdgeOfTheOnlyTwoColours = edgeOfTheOnlyTwoColours(
+		variant.background, foreground.representative,
+		fieldFamilyPopulationFraction + foreground.family.populationFraction)
 	return signatureFamilies
 		.flatMap((family) => representativesOf(family).map((representative) => ({ family, representative })))
 		.filter(({ family, representative }) =>
@@ -1301,7 +1345,9 @@ function rankAccentOptions(
 				...option,
 				signedContrasts,
 				utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
-				fidelity: distinctAccentFidelity(option.family, option.representative, foreground.representative),
+				fidelity: isEdgeOfTheOnlyTwoColours(option.representative)
+					? 0
+					: distinctAccentFidelity(option.family, option.representative, foreground.representative),
 			}
 		})
 		.sort((first, second) =>
@@ -3721,6 +3767,7 @@ function createTreatment(
 	accentOpportunity: number,
 	surfaceOpportunity: number,
 	hardMinimum: number,
+	fieldFamilyPopulationFraction = 0,
 ): CompletePaletteTreatment | null {
 	const background = variant.background
 	const surface = variant.surface
@@ -3744,12 +3791,19 @@ function createTreatment(
 	const fieldCoverage = surfaceCollapsed
 		? backgroundCoverage
 		: clamp(Math.max(backgroundCoverage, surfaceCoverage) + 0.25 * Math.min(backgroundCoverage, surfaceCoverage) * variant.surfaceContribution)
+	// An edge between the artwork's only two colours has no identity of its own to
+	// claim, so the three sites below read zero for it. See `edgeOfTheOnlyTwoColours`.
+	const accentIsEdge = !accentCollapsed && accentFamily !== null &&
+		edgeOfTheOnlyTwoColours(background, foreground,
+			fieldFamilyPopulationFraction + (foregroundFamily?.populationFraction ?? 0))(accent)
 	// The three sites where an accent's own evidence is scored, all reading the mark-repaired
 	// role score. See `signatureAccentRoleScore`: candidacy is decided upstream and unrepaired.
-	const accentIdentity = accentCollapsed || accentFamily === null ? 0 : signatureAccentRoleScore(accentFamily)
+	const accentRoleScore = (family: ColorFamilyEvidence): number =>
+		accentIsEdge ? 0 : signatureAccentRoleScore(family)
+	const accentIdentity = accentCollapsed || accentFamily === null ? 0 : accentRoleScore(accentFamily)
 	const accentFidelity = accentCollapsed
 		? clamp(1 - accentOpportunity)
-		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground, signatureAccentRoleScore)
+		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground, accentRoleScore)
 	const foregroundSignedContrasts = contrast.pairs
 		.filter(({ role }) => role === "foreground")
 		.map(({ signedLc }) => signedLc)
@@ -3796,7 +3850,7 @@ function createTreatment(
 		: variant.surfaceContribution
 	const accentEconomy = accentCollapsed
 		? 1 - accentOpportunity
-		: accentFamily === null ? 0 : signatureAccentRoleScore(accentFamily) * separation(accent, foreground)
+		: accentFamily === null ? 0 : accentRoleScore(accentFamily) * separation(accent, foreground)
 	const economy = clamp((surfaceFidelity + accentEconomy) / 2)
 	const fieldFidelity = variant.fieldFidelity
 	const fieldStructure = fieldFidelity * Math.sqrt(surfaceFidelity)
@@ -3931,6 +3985,7 @@ function buildCompletePaletteTreatmentDomain(
 
 	for (const variant of fieldVariants) {
 		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
+		const fieldFamilyPopulationFraction = familyById(evidence, variant.hypothesis.backgroundFamilyId).populationFraction
 		const rankedForegroundOptions = rankForegroundOptions(variant, supportedRepresentatives)
 		const foregroundRetention = retainPeakObservableFamilyDirections(
 			rankedForegroundOptions,
@@ -3946,7 +4001,7 @@ function buildCompletePaletteTreatmentDomain(
 
 		for (const foregroundOption of foregroundOptions) {
 			const rankedAccents = rankAccentOptions(variant, signatureFamilies, foregroundOption,
-				(family) => preferredRepresentatives(family.representatives))
+				(family) => preferredRepresentatives(family.representatives), fieldFamilyPopulationFraction)
 			const accentRetention = retainPeakObservableFamilyDirections(
 				rankedAccents,
 				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
@@ -3970,6 +4025,7 @@ function buildCompletePaletteTreatmentDomain(
 				accentOpportunity,
 				surfaceOpportunity,
 				hardMinimum,
+				fieldFamilyPopulationFraction,
 			)
 			if (collapsed) treatments.push(collapsed)
 			for (const accentOption of accents.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground)) {
@@ -3984,6 +4040,7 @@ function buildCompletePaletteTreatmentDomain(
 					accentOpportunity,
 					surfaceOpportunity,
 					hardMinimum,
+					fieldFamilyPopulationFraction,
 				)
 				if (treatment) treatments.push(treatment)
 			}
@@ -4285,6 +4342,7 @@ function generateSeedAdditions(
 
 	for (const variant of mechanics.fieldVariants) {
 		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
+		const fieldFamilyPopulationFraction = familyById(mechanics.evidence, variant.hypothesis.backgroundFamilyId).populationFraction
 		const rankedForegroundOptions = rankForegroundOptions(variant, supportedRepresentatives)
 		const observableForegrounds = rankedForegroundOptions.filter(({ signedContrasts }) =>
 			hasPeakAPCAObservability(signedContrasts, hardMinimum))
@@ -4301,7 +4359,7 @@ function generateSeedAdditions(
 
 		for (const foregroundOption of foregroundOptions) {
 			// The representative policy is the one thing the two generators legitimately differ on.
-			const rankedAccents = rankAccentOptions(variant, signatureFamilies, foregroundOption, roleRepresentatives)
+			const rankedAccents = rankAccentOptions(variant, signatureFamilies, foregroundOption, roleRepresentatives, fieldFamilyPopulationFraction)
 			const observableAccents = rankedAccents.filter(({ signedContrasts }) =>
 				hasPeakAPCAObservability(signedContrasts, hardMinimum))
 			const accentRetention = retainPeakObservableFamilyDirections(
@@ -4327,6 +4385,7 @@ function generateSeedAdditions(
 					accentOpportunity,
 					surfaceOpportunity,
 					hardMinimum,
+					fieldFamilyPopulationFraction,
 				))
 			}
 			for (const accentOption of accents) {
@@ -4342,6 +4401,7 @@ function generateSeedAdditions(
 					accentOpportunity,
 					surfaceOpportunity,
 					hardMinimum,
+					fieldFamilyPopulationFraction,
 				))
 			}
 		}
