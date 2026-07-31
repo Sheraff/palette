@@ -272,6 +272,10 @@ function warehouseRecord(submitted: SubmittedItem, item: LoadedItem, recordedAt:
 		verdict: submitted.verdict,
 		verdictApplies: preferredLabel === null ? item.labels : [preferredLabel],
 		corrections: submitted.corrections,
+		// Epistemology travels with the data: a correction is ONE palette this reviewer would endorse, not
+		// the unique correct answer, and an empty one is not disagreement. Mining must never treat it as an
+		// oracle - several palettes can be valid for the same artwork.
+		correctionsKind: "endorsed-sample",
 		tags: submitted.tags,
 		notes: submitted.notes,
 	}

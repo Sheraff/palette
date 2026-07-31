@@ -196,8 +196,15 @@ type Measurement = Readonly<{
 	winnerRank: number
 	firstAcceptableRank: number | null
 	roleAlignedWinnerCost: number
-	classification: "recall-failure" | "ranking-failure" | "match"
+	classification: Classification
 }>
+
+/**
+ * `unreachable`: no candidate comes within epsilon of any palette this reviewer endorsed - scoring work
+ * cannot fix it, the treatment was never built. `outranked`: an endorsed palette is reachable, but we
+ * publish something else. `match`: what we publish is within epsilon of an endorsed palette.
+ */
+type Classification = "unreachable" | "outranked" | "match"
 
 const measurements: Measurement[] = []
 const missingDumps = new Set<string>()
@@ -250,10 +257,49 @@ for (const target of targets) {
 		firstAcceptableRank,
 		roleAlignedWinnerCost: roleAligned,
 		classification: oracleCost > epsilon
-			? "recall-failure"
-			: winnerCost > epsilon ? "ranking-failure" : "match",
+			? "unreachable"
+			: winnerCost > epsilon ? "outranked" : "match",
 	})
 }
+
+/**
+ * Several palettes can be valid for one artwork, and reviewers say so explicitly. Every endorsed sample
+ * for an image is therefore treated as an *equally valid* target: the image's numbers take the best match
+ * over all of them, and headline figures are averaged per image so a much-reviewed artwork does not vote
+ * several times.
+ */
+type ImageAggregate = Readonly<{
+	image: string
+	targets: number
+	sources: readonly string[]
+	oracleCost: number
+	oracleRank: number
+	winnerCost: number
+	firstAcceptableRank: number | null
+	classification: Classification
+}>
+
+const aggregates: ImageAggregate[] = [...new Set(measurements.map((measurement) => measurement.target.image))]
+	.sort()
+	.map((image) => {
+		const forImage = measurements.filter((measurement) => measurement.target.image === image)
+		const best = forImage.reduce((a, b) => (b.oracleCost < a.oracleCost ? b : a))
+		const winnerCost = Math.min(...forImage.map((measurement) => measurement.winnerCost))
+		const acceptable = forImage
+			.map((measurement) => measurement.firstAcceptableRank)
+			.filter((rank): rank is number => rank !== null)
+		const oracleCost = best.oracleCost
+		return {
+			image,
+			targets: forImage.length,
+			sources: [...new Set(forImage.map((measurement) => measurement.target.source))].sort(),
+			oracleCost,
+			oracleRank: best.oracleRank,
+			winnerCost,
+			firstAcceptableRank: acceptable.length === 0 ? null : Math.min(...acceptable),
+			classification: oracleCost > epsilon ? "unreachable" : winnerCost > epsilon ? "outranked" : "match",
+		}
+	})
 
 function mean(values: readonly number[]): number {
 	return values.length === 0 ? Number.NaN : values.reduce((sum, value) => sum + value, 0) / values.length
@@ -268,9 +314,9 @@ function format(value: number, digits = 3): string {
 }
 
 /**
- * Human-agreement ceiling: how far apart two independent human answers for the same image are. This is
- * the bound on any algorithm's achievable agreement - we cannot be closer to "the" human answer than
- * humans are to each other.
+ * Spread between independent endorsed samples for the same image. It is NOT an error term: two valid
+ * palettes for one artwork are expected. It bounds interpretation in both directions - a published
+ * palette further from one sample than the samples are from each other has not necessarily failed.
  */
 const ceilingPairs: { image: string; cost: number; a: Target; b: Target }[] = []
 const byImage = new Map<string, Target[]>()
@@ -295,59 +341,61 @@ for (const [image, list] of [...byImage.entries()].sort()) {
 	}
 }
 
-const oracleCosts = measurements.map((measurement) => measurement.oracleCost)
-const winnerCosts = measurements.map((measurement) => measurement.winnerCost)
+const oracleCosts = aggregates.map((aggregate) => aggregate.oracleCost)
+const winnerCosts = aggregates.map((aggregate) => aggregate.winnerCost)
 const ceilingCosts = ceilingPairs.map((pair) => pair.cost)
 
 process.stdout.write(`Candidate domain "${values.candidates}" - ${dumps.size} image(s) exported, `
-	+ `${measurements.length} human answer(s) measured (${targets.filter((t) => t.source === "correction").length} `
-	+ `correction, ${targets.filter((t) => t.source === "endorsed").length} endorsed), epsilon ${epsilon}\n\n`)
+	+ `${aggregates.length} image(s) with human evidence, ${measurements.length} endorsed sample(s) `
+	+ `(${measurements.filter((m) => m.target.source === "correction").length} assembled by hand, `
+	+ `${measurements.filter((m) => m.target.source === "endorsed").length} graded strong), epsilon ${epsilon}\n`)
+process.stdout.write("Every sample is ONE palette a human would endorse, not the unique right answer. Where an image\n"
+	+ "has several, they are all treated as valid and the image scores against its best match.\n\n")
 
-process.stdout.write("HEADLINE (OKLab cost, lower is better; 1 JND = 0.02)\n")
-process.stdout.write(`  human-agreement ceiling   ${format(mean(ceilingCosts))}  `
+process.stdout.write("HEADLINE (OKLab cost per image, lower is better; 1 JND = 0.02)\n")
+process.stdout.write(`  spread between samples          ${format(mean(ceilingCosts))}  `
 	+ `(${ceilingPairs.length} independent pair(s), ${format(share(ceilingCosts, epsilon) * 100, 0)}% within epsilon)\n`)
-process.stdout.write(`  oracle over candidates    ${format(mean(oracleCosts))}  `
-	+ `(${format(share(oracleCosts, epsilon) * 100, 0)}% within epsilon - this is RECALL)\n`)
-process.stdout.write(`  our published ranking     ${format(mean(winnerCosts))}  `
-	+ `(${format(share(winnerCosts, epsilon) * 100, 0)}% within epsilon - this is RANKING)\n\n`)
+process.stdout.write(`  best reachable candidate        ${format(mean(oracleCosts))}  `
+	+ `(${format(share(oracleCosts, epsilon) * 100, 0)}% of images: an endorsed palette IS reachable - RECALL)\n`)
+process.stdout.write(`  the palette we publish          ${format(mean(winnerCosts))}  `
+	+ `(${format(share(winnerCosts, epsilon) * 100, 0)}% of images: we publish one - RANKING)\n`)
 
 const endorsedCount = measurements.filter((measurement) => measurement.target.source === "endorsed").length
 if (endorsedCount > 0) {
-	process.stdout.write(`  NOTE: ${endorsedCount} of ${measurements.length} answers are "endorsed" proxies - palettes this\n`
-		+ "  family of algorithms produced and a human graded strong. Recall against them is near-guaranteed and\n"
-		+ "  measures retention, not reach. Only \"correction\" answers are independent of what we already build.\n")
+	process.stdout.write(`\n  NOTE: ${endorsedCount} of ${measurements.length} samples are palettes this family of algorithms\n`
+		+ "  produced and a human graded strong. Reachability against them is near-guaranteed and measures retention,\n"
+		+ "  not reach. Only corrected samples are assembled independently of what we already build.\n")
 }
-process.stdout.write("\nRECALL by epsilon tier\n")
+process.stdout.write("\nREACHABILITY by epsilon tier (share of images)\n")
 for (const tier of epsilonTiers) {
 	process.stdout.write(`  <= ${tier.toFixed(2)} (${(tier / 0.02).toFixed(0)} JND)  `
-		+ `oracle ${format(share(oracleCosts, tier) * 100, 0).padStart(3)}%   `
+		+ `reachable ${format(share(oracleCosts, tier) * 100, 0).padStart(3)}%   `
 		+ `published ${format(share(winnerCosts, tier) * 100, 0).padStart(3)}%\n`)
 }
 
-const failures = measurements.filter((measurement) => measurement.classification !== "match")
-const recallFailures = failures.filter((measurement) => measurement.classification === "recall-failure")
-const rankingFailures = failures.filter((measurement) => measurement.classification === "ranking-failure")
-process.stdout.write(`\nFAILURE SPLIT at epsilon ${epsilon}: `
-	+ `${recallFailures.length} recall (answer absent from the domain), `
-	+ `${rankingFailures.length} ranking (answer present, we ranked another first), `
-	+ `${measurements.length - failures.length} match\n`)
+const failures = aggregates.filter((aggregate) => aggregate.classification !== "match")
+const recallFailures = failures.filter((aggregate) => aggregate.classification === "unreachable")
+const rankingFailures = failures.filter((aggregate) => aggregate.classification === "outranked")
+process.stdout.write(`\nSPLIT at epsilon ${epsilon}, over ${aggregates.length} image(s): `
+	+ `${recallFailures.length} unreachable (no candidate matches any endorsed sample), `
+	+ `${rankingFailures.length} outranked (one is reachable, we publish something else), `
+	+ `${aggregates.length - failures.length} match\n`)
 
-const rows = (values.verbose ? measurements : failures)
-	.sort((a, b) => b.oracleCost - a.oracleCost || (a.target.image < b.target.image ? -1 : 1))
+const rows = (values.verbose ? aggregates : failures)
+	.sort((a, b) => b.oracleCost - a.oracleCost || (a.image < b.image ? -1 : 1))
 if (rows.length > 0) {
-	const header = ["image", "src", "label", "oracle", "@rank", "1st ok", "published", "class"]
-	const table = [header, ...rows.map((measurement) => [
-		measurement.target.image,
-		measurement.target.source === "correction" ? "corr" : "endr",
-		measurement.target.label,
-		format(measurement.oracleCost),
-		String(measurement.oracleRank),
-		measurement.firstAcceptableRank === null ? "-" : String(measurement.firstAcceptableRank),
-		format(measurement.winnerCost),
-		measurement.classification,
+	const header = ["image", "samples", "best", "@rank", "1st ok", "published", "class"]
+	const table = [header, ...rows.map((aggregate) => [
+		aggregate.image,
+		`${aggregate.targets} ${aggregate.sources.join("+")}`,
+		format(aggregate.oracleCost),
+		String(aggregate.oracleRank),
+		aggregate.firstAcceptableRank === null ? "-" : String(aggregate.firstAcceptableRank),
+		format(aggregate.winnerCost),
+		aggregate.classification,
 	])]
 	const widths = header.map((_, column) => Math.max(...table.map((row) => row[column].length)))
-	process.stdout.write(`\n${values.verbose ? "ALL MEASUREMENTS" : "FAILURES"}\n`)
+	process.stdout.write(`\n${values.verbose ? "ALL IMAGES" : "IMAGES WHERE WE DO NOT PUBLISH AN ENDORSED PALETTE"}\n`)
 	for (const row of table) {
 		process.stdout.write(`  ${row.map((cell, column) => cell.padEnd(widths[column])).join("  ").trimEnd()}\n`)
 	}
@@ -364,16 +412,20 @@ if (values.json !== undefined) {
 		schemaVersion: 1,
 		candidateLabel: values.candidates,
 		epsilon,
+		evidence: "Each target is one palette a human would endorse, not the unique correct answer; images with "
+			+ "several are scored against their best match.",
+		images: aggregates.length,
 		headline: {
-			humanAgreementCeiling: { mean: mean(ceilingCosts), pairs: ceilingPairs.length, withinEpsilon: share(ceilingCosts, epsilon) },
-			oracleOverCandidates: { mean: mean(oracleCosts), withinEpsilon: share(oracleCosts, epsilon) },
-			ourRanking: { mean: mean(winnerCosts), withinEpsilon: share(winnerCosts, epsilon) },
+			spreadBetweenSamples: { mean: mean(ceilingCosts), pairs: ceilingPairs.length, withinEpsilon: share(ceilingCosts, epsilon) },
+			bestReachableCandidate: { mean: mean(oracleCosts), withinEpsilon: share(oracleCosts, epsilon) },
+			publishedPalette: { mean: mean(winnerCosts), withinEpsilon: share(winnerCosts, epsilon) },
 		},
-		failureSplit: {
-			recall: recallFailures.length,
-			ranking: rankingFailures.length,
-			match: measurements.length - failures.length,
+		split: {
+			unreachable: recallFailures.length,
+			outranked: rankingFailures.length,
+			match: aggregates.length - failures.length,
 		},
+		aggregates,
 		measurements: measurements.map((measurement) => ({ ...measurement, target: { ...measurement.target, oklab: undefined } })),
 		missingDumps: [...missingDumps].sort(),
 	})

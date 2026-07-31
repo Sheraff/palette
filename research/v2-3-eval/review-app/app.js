@@ -92,20 +92,14 @@ function renderMidpoint(palette) {
 	return custody
 }
 
-function renderTreatment(item, side) {
-	const palette = item[side]
-	const label = item.identical ? "Single palette" : `Option ${side}`
-	const panel = create("article", { className: "option-panel", "aria-label": label })
+function renderPalettePanel(item, palette, label, prefix, extraClass = "") {
+	const panel = create("article", { className: `option-panel${extraClass}`, "aria-label": label })
 	const heading = create("header", { className: "option-heading" })
 	const cardinality = new Set(payload.roles.map((role) => palette[role].hex)).size
 	const renderMode = palette.midpoint ? "3-stop gradient" : palette.gradient ? "Gradient" : "Flat field"
 	heading.append(
 		create("strong", { text: label }),
-		create("span", {
-			text: item.identical
-				? `Identical on both sides / ${renderMode} / ${cardinality} colors`
-				: `${renderMode} / ${cardinality} colors`,
-		}),
+		create("span", { text: `${prefix ? `${prefix} / ` : ""}${renderMode} / ${cardinality} colors` }),
 	)
 	panel.append(heading)
 
@@ -137,9 +131,20 @@ function renderTreatment(item, side) {
 	return panel
 }
 
-function control(label, node) {
+function renderTreatment(item, side) {
+	return renderPalettePanel(
+		item,
+		item[side],
+		item.identical ? "Single palette" : `Option ${side}`,
+		item.identical ? "Identical on both sides" : null,
+	)
+}
+
+function control(label, node, hint) {
 	const block = create("div", { className: "control" })
-	block.append(create("p", { className: "control-label", text: label }), node)
+	block.append(create("p", { className: "control-label", text: label }))
+	if (hint) block.append(create("p", { className: "control-hint", text: hint }))
+	block.append(node)
 	return block
 }
 
@@ -168,6 +173,32 @@ function correctedCount(index) {
 function seedCorrections(item, index, side) {
 	const palette = item[side]
 	for (const role of payload.roles) state[index].corrections[role] = palette[role].hex
+	state[index].seededFrom = side
+}
+
+/**
+ * The treatment the assembled palette is shown against: gradient shape and any role left unset come from
+ * the side the reviewer started from (or the side they prefer), so the preview is the item's own treatment
+ * with the chosen colors substituted rather than a new invention.
+ */
+function correctionBase(item, index) {
+	const side = state[index].seededFrom
+		?? (state[index].preference === "B" ? "B" : "A")
+	return item[item.identical ? "A" : side]
+}
+
+function assembledPalette(item, index) {
+	const base = correctionBase(item, index)
+	const palette = { gradient: base.gradient, midpoint: base.midpoint, collapse: base.collapse }
+	for (const role of payload.roles) {
+		const hex = state[index].corrections[role]
+		palette[role] = hex ? { hex, name: swatchName(item, hex), generated: false } : base[role]
+	}
+	return palette
+}
+
+function swatchName(item, hex) {
+	return item.swatches.find((swatch) => swatch.hex === hex)?.name ?? hex
 }
 
 function corrections(item, index) {
@@ -207,6 +238,31 @@ function corrections(item, index) {
 	shortcuts.append(summary)
 	block.append(shortcuts)
 
+	// Chips on the left, a live mock of the palette being assembled on the right: nothing gets endorsed
+	// without seeing it rendered, and a mis-click is visible immediately.
+	const workspace = create("div", { className: "correction-workspace" })
+	const rows = create("div", { className: "correction-rows" })
+	const previewColumn = create("div", { className: "correction-preview" })
+	if (count > 0) {
+		previewColumn.append(renderPalettePanel(
+			item,
+			assembledPalette(item, index),
+			"Your palette",
+			`${count} of ${payload.roles.length} roles yours`,
+			" preview-panel",
+		))
+		previewColumn.append(create("p", {
+			className: "correction-note role-status",
+			text: `Gradient shape and unset roles come from option ${state[index].seededFrom
+				?? (state[index].preference === "B" ? "B" : "A")}.`,
+		}))
+	} else {
+		previewColumn.append(create("p", {
+			className: "correction-note role-status",
+			text: "Set any role to preview the palette here before endorsing it.",
+		}))
+	}
+
 	for (const role of payload.roles) {
 		const row = create("div", { className: "correction" })
 		row.append(create("span", { className: "role-status", text: role }))
@@ -237,13 +293,15 @@ function corrections(item, index) {
 		})
 		strip.append(clear)
 		row.append(strip)
-		block.append(row)
+		rows.append(row)
 	}
-	block.append(create("p", {
+	rows.append(create("p", {
 		className: "correction-note role-status",
 		text: "Solid: sampled from the artwork / dashed: proposed by a treatment."
-			+ " If any role is wrong, set all four so the answer is a complete palette.",
+			+ " Several palettes may be equally valid — one you would ship is enough.",
 	}))
+	workspace.append(rows, previewColumn)
+	block.append(workspace)
 	return block
 }
 
@@ -268,9 +326,25 @@ function assessment(item, index) {
 		(value) => state[index].verdict === value,
 		(value) => { state[index].verdict = value },
 	)))
-	// Corrections come straight after the verdict: which four colors it should have been is the answer
-	// that separates a missing candidate from a mis-ranked one, and it is worth more than any tag.
-	section.append(control("What should the four role colors have been?", corrections(item, index)))
+	// Words first: what the reviewer says in their own terms outranks any structured field we invented.
+	const comment = create("textarea", {
+		className: "comment primary",
+		maxlength: "4000",
+		placeholder: "In your words: what works, what does not, and why. This is the most useful thing here.",
+	})
+	comment.value = state[index].notes
+	comment.addEventListener("input", () => { state[index].notes = comment.value })
+	section.append(control("Notes", comment))
+
+	// One endorsable palette, explicitly not "the" answer: several may be equally valid, and the point is
+	// to learn whether such a palette is reachable at all, not to fix a single ground truth.
+	section.append(control(
+		"One palette you'd endorse (optional — there may be several valid answers)",
+		corrections(item, index),
+		"A sample, not the answer. Pick one palette you would ship for this artwork; if two or three would all"
+			+ " work, any one of them is a useful answer. Leaving it empty is not disagreement.",
+	))
+
 	section.append(control("Error tags (optional)", decision(
 		payload.starterTags.map((tag) => [tag, tag]),
 		(value) => state[index].tags.includes(value),
@@ -281,17 +355,10 @@ function assessment(item, index) {
 		},
 	)))
 
-	const comment = create("textarea", {
-		className: "comment",
-		maxlength: "4000",
-		placeholder: "Optional notes",
-	})
-	comment.value = state[index].notes
-	comment.addEventListener("input", () => { state[index].notes = comment.value })
 	const corrected = correctedCount(index)
-	section.append(comment, create("p", {
+	section.append(create("p", {
 		className: "status",
-		text: `${answered ? "Answered" : "Not reviewed"} / corrected palette: `
+		text: `${answered ? "Answered" : "Not reviewed"} / endorsed palette: `
 			+ (corrected === 0 ? "skipped" : `${corrected} of ${payload.roles.length} roles`),
 	}))
 	return section
@@ -383,6 +450,7 @@ fetch("/api/batch", { cache: "no-store" })
 				preference: item.identical ? "equal" : null,
 				verdict: null,
 				corrections: {},
+				seededFrom: null,
 				tags: [],
 				notes: "",
 			})

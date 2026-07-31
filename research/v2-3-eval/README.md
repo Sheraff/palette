@@ -131,16 +131,21 @@ Collected per item:
 - **preference** — `A`, `B`, or `equal` (forced to `equal` and not asked for identical pairs);
 - **verdict** — absolute judgement of the preferred side: `strong`, `acceptable`, `weak-fallback`, `unacceptable`
   (when the preference is `equal` it applies to both sides);
-- **corrections** — *the corrected palette: what the four role colors should have been.* This is asked on every
-  item, directly under the verdict, because it is the only answer that distinguishes a candidate we never built
-  from one we built and mis-ranked. The reviewer clicks named swatch chips; **Start from A / Start from B** fills
-  all four roles from a treatment on screen so only the disputed roles have to be re-clicked, and **Clear all**
-  empties them. A live summary shows the palette being assembled and whether it is `skipped`, partial, or
-  `complete`. It stays skippable — submission is gated on preference and verdict only — but a partial answer is
-  still usable: the metrics compare only the roles that were actually set. Each chip shows the color, its name,
-  and its hex; there is no hex input, and the server rejects any correction that is not one of the swatches it
-  served. Chips come from the image itself (solid border) plus the palette colors proposed by either option
-  (dashed border). See *Swatch sampling* below.
+- **corrections** — *one palette the reviewer would endorse.* Presented as **"One palette you'd endorse (optional
+  — there may be several valid answers)"**, because it is a **sample from a possibly-multi-valid set, never an
+  oracle**: two or three palettes may be equally good for one artwork, reviewers can misclick, and an empty
+  answer is not disagreement. What it buys us is the distinction between a treatment we never built and one we
+  built and ranked below something else.
+  The reviewer clicks named swatch chips; **Start from A / Start from B** fills all four roles from a treatment
+  on screen so only disputed roles need re-clicking, **Clear all** empties them, and a **live preview** renders
+  the palette being assembled as a third mini treatment mock — same conventions as the A/B panels, gradient
+  shape and any unset role taken from the side that was seeded — so nothing is endorsed unseen and a misclick is
+  visible immediately. A summary strip shows `skipped` / `n of 4 roles set` / `complete`. It stays skippable
+  (submission is gated on preference and verdict only) and partial answers are usable: the metrics compare only
+  the roles actually set. Each chip shows the color, its name, and its hex; there is no hex input, and the server
+  rejects any correction that is not one of the swatches it served. Chips come from the image itself (solid
+  border) plus the palette colors proposed by either option (dashed border). See *Swatch sampling* below.
+  The **notes box comes first and is visually primary** — freeform words outrank any structured field.
 - **tags** — optional multi-select: `wrong-role`, `incomplete-identity`, `contrast`, `missing-gradient`,
   `extraneous-gradient`, `wrong-midpoint`, `other`;
 - **notes** — freeform text.
@@ -206,17 +211,29 @@ node --no-warnings --experimental-strip-types research/v2-3-eval/eval-metrics.ts
 ```
 
 The point of this tool is that **a missing candidate and a mis-ranked candidate are different bugs** and were
-previously debugged as the same one. For every human answer in the warehouse it reports:
+previously debugged as the same one.
 
-- **oracle over candidates (RECALL)** — the lowest cost achievable by *any* candidate in the ≤1500 domain. If
-  this is above epsilon, no amount of scoring work can fix the case: the answer was never built.
-- **our published ranking (RANKING)** — the cost of the treatment we actually publish. If the oracle is within
-  epsilon and this is not, the answer existed and we ranked something else first; `@rank` and `1st ok` show
-  where it sat.
-- **human-agreement ceiling** — mean cost between two *independent* human answers for the same image. We cannot
-  agree with "the" human answer more closely than humans agree with each other, so this bounds both numbers
-  above. (Lin & Hanrahan measured humans agreeing on about 2 of 5 swatches, so expect it to be well below
-  perfect.)
+**Epistemology, enforced in the wording.** Every human answer is *one palette a human would endorse*, not the
+correct palette — several can be valid for the same artwork. So the question is never "did we find the right
+answer" but **"is a human-endorsed palette reachable, and do we publish one"**. Where an image accumulated
+several endorsed samples over time, they are **all treated as valid targets** and the image is scored against
+its best match; headline figures average per image, so a much-reviewed artwork does not vote several times.
+
+Reported per image:
+
+- **best reachable candidate (RECALL)** — the lowest cost achievable by *any* candidate in the ≤1500 domain
+  against *any* endorsed sample. Above epsilon means `unreachable`: no scoring work can fix it, the treatment
+  was never built.
+- **the palette we publish (RANKING)** — the cost of what we actually publish. If something endorsed is
+  reachable and this is not within epsilon, the image is `outranked`; `@rank` and `1st ok` show where the
+  endorsed palette sat in our ordering.
+- **spread between samples** — mean cost between two *independent* endorsed samples for the same image. This is
+  not an error term: it is the width of the valid set, and it bounds interpretation in both directions. (Lin &
+  Hanrahan measured humans agreeing on about 2 of 5 swatches.)
+
+Samples graded `strong` but produced by the algorithms themselves measure *retention*, not *reach* — the tool
+says so in its own output whenever they are included, and `--source corrections` restricts to samples a human
+assembled independently.
 
 Cost is OKLab Euclidean, averaged per role, using **min-cost bipartite matching** between the two palettes —
 roles are a labelling humans disagree about, so the palettes are matched as sets (with four colors per side the
@@ -225,10 +242,12 @@ about 2 JND per role; the tier table also reports 1 and 3 JND.
 
 Two classes of human answer are read, never mixed silently:
 
-- `correction` — an explicitly corrected palette (the strong evidence; partial answers compare only the roles
-  that were set).
-- `endorsed` — a palette the reviewer graded `strong`, used as a proxy so the tool produces numbers before
-  enough corrections accumulate. A record's correction always supersedes its endorsed palette.
+- `correction` — a palette the reviewer assembled by hand (independent of what we build; partial answers compare
+  only the roles that were set).
+- `endorsed` — a palette the reviewer graded `strong`, used so the tool produces numbers before enough
+  hand-assembled samples accumulate. A record's correction always supersedes its endorsed palette.
+
+Each image is classified `unreachable`, `outranked`, or `match`.
 
 ## 7. Bradley-Terry scores — `bradley-terry.ts`
 
@@ -269,7 +288,8 @@ the batch, key, or result files that produced it.
 | `preference` | `{ side: "A" \| "B" \| null, label: string \| null }` | `null` when the reviewer answered `equal`, and always `null` when `comparison` is `"identical"` |
 | `verdict` | `"strong" \| "acceptable" \| "weak-fallback" \| "unacceptable"` | absolute judgement |
 | `verdictApplies` | array of labels | the preferred label, or both labels when the preference was `equal` |
-| `corrections` | `{ [role]: hex }` | the corrected palette — what the reviewer says the roles should have been. May be empty (skipped) or partial; a complete answer has all four roles. Every hex is one of the swatches the server offered for that image. |
+| `corrections` | `{ [role]: hex }` | **one palette the reviewer would endorse — a sample, not an oracle.** May be empty (skipped, which is *not* disagreement) or partial; a complete answer has all four roles. Every hex is one of the swatches the server offered for that image. |
+| `correctionsKind` | `"endorsed-sample"` | the epistemology, carried with the data so mining inherits it: several palettes can be valid for one artwork, so treat every sample for an image as an equally valid target and never as the unique right answer. Records written before this field carry the same meaning. |
 | `tags` | array of strings | deduplicated and sorted |
 | `notes` | string | freeform, may be empty |
 

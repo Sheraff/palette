@@ -24,6 +24,12 @@ export type VerdictRecord = Readonly<{
 	verdict: string | null
 	verdictApplies: readonly string[]
 	corrections: Readonly<Partial<Record<Role, string>>>
+	/**
+	 * What a correction means. `endorsed-sample`: one palette the reviewer would endorse, not the unique
+	 * correct answer — several palettes can be valid for one artwork, and an empty correction is not
+	 * disagreement. Records written before this field existed carry the same meaning.
+	 */
+	correctionsKind: "endorsed-sample"
 	tags: readonly string[]
 	notes: string
 	/** Zero-based position in the file, so a record can always be traced back. */
@@ -60,6 +66,7 @@ function normalize(value: Record<string, unknown>, line: number): VerdictRecord 
 		corrections: value.corrections !== null && typeof value.corrections === "object"
 			? value.corrections as Partial<Record<Role, string>>
 			: {},
+		correctionsKind: "endorsed-sample",
 		tags: Array.isArray(value.tags) ? value.tags.filter((tag): tag is string => typeof tag === "string") : [],
 		notes: typeof value.notes === "string" ? value.notes : "",
 		line,

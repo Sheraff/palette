@@ -2,26 +2,511 @@
   "schemaVersion": 1,
   "candidateLabel": "v2-3",
   "epsilon": 0.04,
+  "evidence": "Each target is one palette a human would endorse, not the unique correct answer; images with several are scored against their best match.",
+  "images": 40,
   "headline": {
-    "humanAgreementCeiling": {
+    "spreadBetweenSamples": {
       "mean": 0.06098876063276254,
       "pairs": 14,
       "withinEpsilon": 0.5714285714285714
     },
-    "oracleOverCandidates": {
-      "mean": 0.0003806878740871416,
+    "bestReachableCandidate": {
+      "mean": 0.00016941402353648093,
       "withinEpsilon": 1
     },
-    "ourRanking": {
-      "mean": 0.020976793216628747,
-      "withinEpsilon": 0.8235294117647058
+    "publishedPalette": {
+      "mean": 0.01503836852543026,
+      "withinEpsilon": 0.825
     }
   },
-  "failureSplit": {
-    "recall": 0,
-    "ranking": 9,
-    "match": 42
+  "split": {
+    "unreachable": 0,
+    "outranked": 7,
+    "match": 33
   },
+  "aggregates": [
+    {
+      "image": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "winnerCost": 0.020540792738871685,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e020002881a851f1e14c374562b.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "winnerCost": 0.06972949773085667,
+      "firstAcceptableRank": 3,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e020004ccf0ae91364130886c02",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 5,
+      "winnerCost": 0,
+      "firstAcceptableRank": 5,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e0200066a61bbcbeadd632f7f38",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d00001e0200079d5a7d92f2bff88570db",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 6,
+      "winnerCost": 0.11739437747944906,
+      "firstAcceptableRank": 5,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d00001e0200087b1314ac8e17bc1c6916",
+      "targets": 1,
+      "sources": [
+        "correction"
+      ],
+      "oracleCost": 0.0037553419607628965,
+      "oracleRank": 9,
+      "winnerCost": 0.04296927648018922,
+      "firstAcceptableRank": 9,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d00001e0200117a3fb2444ed7e04c4721",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b273000285d15c911a20ed2ce152.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 9,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b27300034b60105d8937440211da.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b273000442caec7ec8cb724bf265",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "winnerCost": 0.026026520173960784,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b2730005230fae1822525e5a5ff6",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 6,
+      "winnerCost": 0.008483763911034663,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b2730006c5d727b329e4477f4a81",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "winnerCost": 0.05207187070060681,
+      "firstAcceptableRank": 3,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d0000b2730007cc8b341c11227aa7b461",
+      "targets": 1,
+      "sources": [
+        "correction"
+      ],
+      "oracleCost": 0.0030212189806963405,
+      "oracleRank": 27,
+      "winnerCost": 0.11520153804664351,
+      "firstAcceptableRank": 27,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d0000b273000913b3e9ae2c7173d1a8b2",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "winnerCost": 0.005591225762603049,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+      "targets": 1,
+      "sources": [
+        "correction"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 102,
+      "winnerCost": 0.06226702673127852,
+      "firstAcceptableRank": 44,
+      "classification": "outranked"
+    },
+    {
+      "image": "ab67616d0000b27300099f4221cf6ed5f2440904",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "ab67616d0000b2730010bcd17e41331debec2bd5",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "birdsofprey.jpg",
+      "targets": 3,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 248,
+      "winnerCost": 0,
+      "firstAcceptableRank": 248,
+      "classification": "match"
+    },
+    {
+      "image": "disney.avif",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "doja.jpg",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "elephunk.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "greenday.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "havana.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 27,
+      "winnerCost": 0.06347950752766829,
+      "firstAcceptableRank": 13,
+      "classification": "outranked"
+    },
+    {
+      "image": "horsley.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "knuckles.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "krafty.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "loups.jpg",
+      "targets": 4,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "meteora.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "muse.jpg",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "once.jpg",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "orelsan.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 5,
+      "winnerCost": 0.017779343734048075,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "placebo.jpg",
+      "targets": 7,
+      "sources": [
+        "correction",
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "slim.jpg",
+      "targets": 2,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "slipknot.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "toxicity.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    },
+    {
+      "image": "vvbrown.jpg",
+      "targets": 1,
+      "sources": [
+        "endorsed"
+      ],
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "winnerCost": 0,
+      "firstAcceptableRank": 1,
+      "classification": "match"
+    }
+  ],
   "measurements": [
     {
       "target": {
@@ -157,7 +642,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 3,
       "roleAlignedWinnerCost": 0.06972949773085667,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -293,7 +778,41 @@
       "winnerRank": 1,
       "firstAcceptableRank": 5,
       "roleAlignedWinnerCost": 0.19805663222594821,
-      "classification": "ranking-failure"
+      "classification": "outranked"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e0200087b1314ac8e17bc1c6916",
+        "source": "correction",
+        "label": "v2-2",
+        "batch": "review-15-white-fg-fresh",
+        "line": 102,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#020401",
+          "#311f13",
+          "#f1e8df",
+          "#ff4e2a"
+        ],
+        "gradient": null,
+        "verdict": "acceptable"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0.0037553419607628965,
+      "oracleRank": 9,
+      "oracleKey": "#020401:#311f13:#f1e8df:#f94a2f:gradient",
+      "oracleGradientMatches": null,
+      "winnerCost": 0.04296927648018922,
+      "winnerKey": "#020401:#311f13:#f1e8df:#e7a680:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 9,
+      "roleAlignedWinnerCost": 0.04296927648018922,
+      "classification": "outranked"
     },
     {
       "target": {
@@ -359,6 +878,40 @@
       "winnerCost": 0,
       "winnerKey": "#060606:#262922:#f3f1e5:#98908d:gradient",
       "winnerRank": 9,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b27300034b60105d8937440211da.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-15-white-fg-fresh",
+        "line": 99,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#4b3027",
+          "#8a5438",
+          "#e6dbc9",
+          "#b39a72"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#4b3027:#8a5438:#e6dbc9:#b39a72:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#4b3027:#8a5438:#e6dbc9:#b39a72:flat",
+      "winnerRank": 1,
       "firstAcceptableRank": 1,
       "roleAlignedWinnerCost": 0,
       "classification": "match"
@@ -467,6 +1020,108 @@
     },
     {
       "target": {
+        "image": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+        "source": "endorsed",
+        "label": "trunk-h5",
+        "batch": "review-15-white-fg-fresh",
+        "line": 97,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#424436",
+          "#2f2e1c",
+          "#f6f5f1",
+          "#a57e57"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#424436:#2f2e1c:#f6f5f1:#a57e57:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#424436:#2f2e1c:#f6f5f1:#a57e57:gradient",
+      "winnerRank": 2,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b2730006c5d727b329e4477f4a81",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-15-white-fg-fresh",
+        "line": 101,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#0e0e28",
+          "#2a284d",
+          "#f3f5f4",
+          "#f5c982"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "oracleKey": "#0e0e28:#2a284d:#f3f5f4:#f5c982:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.05207187070060681,
+      "winnerKey": "#0e0e28:#2a284d:#f3f5f4:#c27f62:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 3,
+      "roleAlignedWinnerCost": 0.05207187070060681,
+      "classification": "outranked"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b2730007cc8b341c11227aa7b461",
+        "source": "correction",
+        "label": "trunk-h5",
+        "batch": "review-15-white-fg-fresh",
+        "line": 96,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#5d856b",
+          "#99bece",
+          "#fbfbfb",
+          "#f06d13"
+        ],
+        "gradient": null,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0.0030212189806963405,
+      "oracleRank": 27,
+      "oracleKey": "#5d856b:#99bece:#fbfbfb:#ee7326:gradient",
+      "oracleGradientMatches": null,
+      "winnerCost": 0.11520153804664351,
+      "winnerKey": "#5d856b:#99bece:#242426:#fbfbfb:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 27,
+      "roleAlignedWinnerCost": 0.2706432831020567,
+      "classification": "outranked"
+    },
+    {
+      "target": {
         "image": "ab67616d0000b273000913b3e9ae2c7173d1a8b2",
         "source": "endorsed",
         "label": "v2-2",
@@ -498,6 +1153,40 @@
       "firstAcceptableRank": 1,
       "roleAlignedWinnerCost": 0.005591225762603049,
       "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+        "source": "correction",
+        "label": "v2-2",
+        "batch": "review-15-white-fg-fresh",
+        "line": 103,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fbbb4d",
+          "#fbbb4d",
+          "#131313",
+          "#131313"
+        ],
+        "gradient": null,
+        "verdict": "acceptable"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 102,
+      "oracleKey": "#fbbb4d:#fbbb4d:#131313:#131313:flat",
+      "oracleGradientMatches": null,
+      "winnerCost": 0.06226702673127852,
+      "winnerKey": "#131313:#131313:#fbbb4d:#987734:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 44,
+      "roleAlignedWinnerCost": 0.5986657100577688,
+      "classification": "outranked"
     },
     {
       "target": {
@@ -701,7 +1390,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 4,
       "roleAlignedWinnerCost": 0.0787189217141745,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -905,7 +1594,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 13,
       "roleAlignedWinnerCost": 0.06347950752766829,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -1381,7 +2070,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 2,
       "roleAlignedWinnerCost": 0.1784933780224035,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -1415,7 +2104,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 2,
       "roleAlignedWinnerCost": 0.10173443297640818,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -1477,7 +2166,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 2,
       "roleAlignedWinnerCost": 0.10173443297640818,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -1511,7 +2200,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 2,
       "roleAlignedWinnerCost": 0.10173443297640818,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {
@@ -1545,7 +2234,7 @@
       "winnerRank": 1,
       "firstAcceptableRank": 2,
       "roleAlignedWinnerCost": 0.10173443297640818,
-      "classification": "ranking-failure"
+      "classification": "outranked"
     },
     {
       "target": {

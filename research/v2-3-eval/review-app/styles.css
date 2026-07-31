@@ -262,6 +262,20 @@ button:disabled {
 .control + .control { margin-top: 20px; }
 .control-label { margin: 0 0 10px; }
 
+.control-hint {
+	max-width: 78ch;
+	margin: -4px 0 12px;
+	color: #b4b4b4;
+	font-size: 13px;
+}
+
+.comment.primary {
+	min-height: 120px;
+	margin-top: 0;
+	border-width: 2px;
+	font-size: 15px;
+}
+
 .decision { display: flex; flex-wrap: wrap; gap: 9px; }
 
 .correction-shortcuts {
@@ -293,6 +307,35 @@ button:disabled {
 .correction-slot .swatch.empty {
 	background: repeating-linear-gradient(135deg, #000 0 3px, #fff 3px 4px);
 }
+
+.correction-workspace {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+	gap: 18px;
+	align-items: start;
+}
+
+.correction-preview {
+	position: sticky;
+	top: 56px;
+}
+
+/* The assembled palette is a preview, not a third option under review: same mock, smaller frame. */
+.preview-panel .palette-preview {
+	min-height: 300px;
+	padding: 18px;
+	grid-template-columns: minmax(90px, .7fr) minmax(120px, 1.3fr);
+	gap: 16px;
+}
+
+.preview-panel .background-copy { padding-top: 10px; }
+.preview-panel .background-copy h3 { font-size: clamp(22px, 2vw, 30px); }
+.preview-panel .background-copy > p:last-child { display: none; }
+.preview-panel .artwork { max-height: 170px; }
+.preview-panel .surface-card { width: min(52%, 150px); min-height: 66px; padding: 11px; }
+.preview-panel .role-legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.preview-panel .role-entry:nth-child(3) { border-top: 1px solid #fff; border-left: 0; }
+.preview-panel .role-entry:nth-child(4) { border-top: 1px solid #fff; }
 
 .correction {
 	display: grid;
@@ -350,6 +393,9 @@ button:disabled {
 @media (max-width: 1120px) {
 	.preview-pair { grid-template-columns: 1fr; }
 	.palette-preview { min-height: 520px; }
+	.correction-workspace { grid-template-columns: minmax(0, 1fr); }
+	.correction-preview { position: static; }
+	.preview-panel .palette-preview { min-height: 380px; }
 }
 
 @media (max-width: 760px) {
@@ -369,4 +415,6 @@ button:disabled {
 	.midpoint-custody { grid-template-columns: 28px minmax(0, 1fr); }
 	.midpoint-color, .midpoint-custody > span:last-child { grid-column: 2; }
 	.correction { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+	.correction-workspace { grid-template-columns: minmax(0, 1fr); }
+	.correction-preview { position: static; }
 }
