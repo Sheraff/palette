@@ -809,12 +809,46 @@ function binPrototype(bin: PerceptualBin): OKLab {
 	return [bin.sumL / bin.population, bin.sumA / bin.population, bin.sumB / bin.population]
 }
 
-function insertComponent(
-	components: MutableComponent[],
-	component: MutableComponent,
-	options: NativeEvidenceOptions,
-): void {
-	const candidates = [...components, component]
+/**
+ * How much a connected component looks like a deliberate element rather than a patch of field,
+ * before any family-level evidence exists. It is the key `retainFamilyComponents` ranks role
+ * observation by, so every producer of components has to compute it the same way.
+ */
+export function componentRolePreliminary(
+	component: Readonly<{
+		population: number; minX: number; minY: number; maxX: number; maxY: number
+		borderPixels: number; boundaryEdges: number; boundaryContrastSum: number
+	}>,
+	pixelCount: number,
+): number {
+	const width = component.maxX - component.minX + 1
+	const height = component.maxY - component.minY + 1
+	const bounds = width * height
+	const resolved = clamp(Math.log2(component.population + 1) / 8)
+	const nonField = 1 - clamp(bounds / pixelCount / 0.18)
+	const fill = component.population / Math.max(1, bounds)
+	const localContrast = component.boundaryContrastSum / Math.max(1, component.boundaryEdges)
+	const borderInterior = 1 - clamp(component.borderPixels / Math.max(1, component.population) / 0.25)
+	return clamp(
+		Math.sqrt(resolved * nonField) *
+		(0.35 + 0.25 * clamp(fill / 0.12) + 0.25 * clamp(localContrast / 0.16) + 0.15 * borderInterior),
+	)
+}
+
+/**
+ * The component-retention policy: a family keeps its largest components as connected support and
+ * its most element-like ones as role observation, and nothing else.
+ *
+ * Exported because the band-local endpoint families in `endpoint-refinement.ts` must earn their
+ * role evidence under exactly this rule rather than a second one written beside it. The native
+ * scan reaches it through `insertComponent`, one component at a time, because it cannot hold every
+ * component of every family at once; a producer that already has the whole set calls it directly.
+ * Both take the same ranking and the same bounds.
+ */
+export function retainFamilyComponents(
+	candidates: readonly MutableComponent[],
+	options: NativeEvidenceOptions = DEFAULT_NATIVE_EVIDENCE_OPTIONS,
+): MutableComponent[] {
 	const largest = [...candidates]
 		.sort((first, second) => compareNumbersDescending(first.population, second.population) || first.start - second.start)
 		.slice(0, options.largestComponentsPerFamily)
@@ -834,8 +868,16 @@ function insertComponent(
 		]
 		retained.set(candidate.start, candidate)
 	}
-	components.splice(0, components.length, ...[...retained.values()].sort((first, second) =>
-		compareNumbersDescending(first.population, second.population) || first.start - second.start))
+	return [...retained.values()].sort((first, second) =>
+		compareNumbersDescending(first.population, second.population) || first.start - second.start)
+}
+
+function insertComponent(
+	components: MutableComponent[],
+	component: MutableComponent,
+	options: NativeEvidenceOptions,
+): void {
+	components.splice(0, components.length, ...retainFamilyComponents([...components, component], options))
 }
 
 function componentSimilarity(first: MutableComponent, second: MutableComponent): number {
@@ -971,6 +1013,121 @@ function foregroundPolarityObservation(
 	}
 }
 
+/** The family-level facts the role scores read, apart from the components themselves. */
+export type FamilyRoleEvidenceInput = Readonly<{
+	familyId: string
+	/** Every component the family owns, unretained: `retainFamilyComponents` is applied here. */
+	components: readonly MutableComponent[]
+	population: number
+	pixelCount: number
+	width: number
+	height: number
+	populationFraction: number
+	largestComponentFraction: number
+	familyConcentration: number
+	localContrast: number
+	chroma: number
+	borderCoverage: number
+	centerCoverage: number
+}>
+
+export type FamilyRoleEvidence = Readonly<{
+	signatureScore: number
+	foregroundScore: number
+	foregroundTypographyObservation: number
+	foregroundPolarityObservation: ForegroundPolarityObservation
+	signatureAccentObservation: number
+	observedComponentCount: number
+	components: readonly ComponentEvidence[]
+}>
+
+/**
+ * Everything a colour family's *role* claim is made of: how much it looks like the artwork's
+ * signature, how much it looks like its text, the region observations behind both, and the
+ * polarity of its foreground claim.
+ *
+ * This is the single implementation. The native scan reaches it for every family it builds, and
+ * `endpoint-refinement.ts` reaches it for every band-local endpoint family, so a family measured
+ * inside a gradient band is judged by the same evidence as a family measured across the whole
+ * image. It used to be native-only, and the band-local constructor filled these fields with
+ * zeroes — which meant a band-local family could win a *field* but was structurally incapable of
+ * ever earning a role or an identity obligation, whatever its pixels showed.
+ *
+ * Mark support is deliberately *not* computed here: it is measured against the families that own
+ * the field, so it can only be known once every family exists (`markSupportOf`).
+ *
+ * `retainFamilyComponents` is applied here on the default bounds, which is why the native scan can
+ * hand its already-retained list straight in: incremental top-k retention by population and by
+ * `rolePreliminary` yields the exact top-k, so re-applying the same bounds to the result is the
+ * identity. `buildNativePaletteEvidence` has one call site and it takes the defaults; a caller that
+ * ever passes different bounds has to pass them here too.
+ */
+export function measureFamilyRoleEvidence(input: FamilyRoleEvidenceInput): FamilyRoleEvidence {
+	const components = retainFamilyComponents(input.components)
+	const observations = buildRegionObservations(
+		components, input.population, input.pixelCount, input.width, input.height)
+	const foregroundTypographyObservation = aggregateRegionScores(components.map(({ start }) =>
+		observations.get(start)?.foregroundTypography.score ?? 0))
+	const signatureAccentObservation = aggregateRegionScores(components.map(({ start }) =>
+		observations.get(start)?.signatureAccent.score ?? 0))
+	const componentCoherence = clamp(input.familyConcentration)
+	const coherentSupport = clamp(input.largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
+	const repeatCount = components.filter(({ population }) => population / input.pixelCount >= 0.00025).length
+	const repeatedSupport = clamp((repeatCount - 1) / 3)
+	const distinctive = clamp(input.localContrast / 0.16)
+	const chromatic = clamp(input.chroma / 0.18)
+	const notBroad = 1 - clamp((input.populationFraction - 0.18) / 0.35)
+	return {
+		signatureScore: clamp(
+			SIGNATURE_COHERENT_SUPPORT_WEIGHT * coherentSupport +
+			0.18 * componentCoherence +
+			0.16 * repeatedSupport +
+			0.22 * distinctive +
+			0.11 * chromatic +
+			0.08 * notBroad,
+		),
+		foregroundScore: clamp(
+			0.34 * clamp(input.populationFraction / 0.025) +
+			0.25 * componentCoherence +
+			0.20 * distinctive +
+			0.13 * chromatic +
+			0.08 * clamp((input.borderCoverage + input.centerCoverage) / 2),
+		),
+		foregroundTypographyObservation,
+		foregroundPolarityObservation: foregroundPolarityObservation(input.familyId, components, observations),
+		signatureAccentObservation,
+		observedComponentCount: components.filter(({ retainedFor }) => retainedFor.includes("role-observation")).length,
+		components: components.map((component) => ({
+			id: `${input.familyId}-region-${component.start}`,
+			startPixelIndex: component.start,
+			population: component.population,
+			populationFraction: component.population / input.pixelCount,
+			minX: component.minX,
+			minY: component.minY,
+			maxX: component.maxX,
+			maxY: component.maxY,
+			borderPixels: component.borderPixels,
+			retainedFor: component.retainedFor,
+			observation: observations.get(component.start)!,
+		})),
+	}
+}
+
+/**
+ * The field prototypes mark evidence measures separation against: the strongest field families of
+ * the image, in the algorithm's own ordering. Exported so a producer outside this module asks the
+ * same question of the same references.
+ */
+export function markFieldReferencePrototypes(families: readonly ColorFamilyEvidence[]): OKLab[] {
+	return [...families]
+		.sort((first, second) =>
+			compareNumbersDescending(first.fieldScore, second.fieldScore) ||
+			compareNumbersDescending(first.population, second.population) ||
+			compareAscii(first.id, second.id))
+		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.fieldReferenceFamilies)
+		.map(({ prototype }) => prototype)
+}
+
 const MARK = ALBUM_ARTWORK_PALETTE_V2_POLICY.mark
 
 /**
@@ -991,7 +1148,7 @@ const MARK = ALBUM_ARTWORK_PALETTE_V2_POLICY.mark
  * proportion to how small it is — precisely the elements this evidence exists
  * to recover.
  */
-function markSupportOf(
+export function markSupportOf(
 	family: Pick<ColorFamilyEvidence, "prototype" | "population" | "componentCount" | "components">,
 	pixelCount: number,
 	fieldPrototypes: readonly OKLab[],
@@ -1752,18 +1909,7 @@ export function buildNativePaletteEvidence(
 				}
 			}
 		}
-		const componentWidth = component.maxX - component.minX + 1
-		const componentHeight = component.maxY - component.minY + 1
-		const componentBounds = componentWidth * componentHeight
-		const resolved = clamp(Math.log2(component.population + 1) / 8)
-		const nonField = 1 - clamp(componentBounds / pixelCount / 0.18)
-		const fill = component.population / Math.max(1, componentBounds)
-		const localContrast = component.boundaryContrastSum / Math.max(1, component.boundaryEdges)
-		const borderInterior = 1 - clamp(component.borderPixels / Math.max(1, component.population) / 0.25)
-		component.rolePreliminary = clamp(
-			Math.sqrt(resolved * nonField) *
-			(0.35 + 0.25 * clamp(fill / 0.12) + 0.25 * clamp(localContrast / 0.16) + 0.15 * borderInterior),
-		)
+		component.rolePreliminary = componentRolePreliminary(component, pixelCount)
 		const family = mutableFamilies[familyIndex]
 		family.componentCount += 1
 		insertComponent(family.components, component, options)
@@ -1792,13 +1938,6 @@ export function buildNativePaletteEvidence(
 			(family.quadrants & 4 ? 1 : 0) + (family.quadrants & 8 ? 1 : 0)) / 4
 		const edgeDensity = clamp(family.boundaryEdges / Math.max(1, family.population * 2))
 		const localContrast = family.neighborDistanceSum / Math.max(1, family.neighborEdgeCount)
-		const regionObservations = buildRegionObservations(family.components, family.population, pixelCount, image.width, image.height)
-		const foregroundTypographyObservation = aggregateRegionScores(family.components.map(({ start }) =>
-			regionObservations.get(start)?.foregroundTypography.score ?? 0))
-		const foregroundPolarity = foregroundPolarityObservation(family.id, family.components, regionObservations)
-		const signatureAccentObservation = aggregateRegionScores(family.components.map(({ start }) =>
-			regionObservations.get(start)?.signatureAccent.score ?? 0))
-		const componentCoherence = clamp(familyConcentration)
 		const fieldScore = fieldScoreFrom({
 			populationFraction,
 			borderCoverage,
@@ -1806,27 +1945,22 @@ export function buildNativePaletteEvidence(
 			quadrantCoverage,
 			edgeDensity,
 		})
-		const coherentSupport = clamp(largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
 		const repeatCount = family.components.filter(({ population }) => population / pixelCount >= 0.00025).length
-		const repeatedSupport = clamp((repeatCount - 1) / 3)
-		const distinctive = clamp(localContrast / 0.16)
-		const chromatic = clamp(chroma(prototype) / 0.18)
-		const notBroad = 1 - clamp((populationFraction - 0.18) / 0.35)
-		const signatureScore = clamp(
-			SIGNATURE_COHERENT_SUPPORT_WEIGHT * coherentSupport +
-			0.18 * componentCoherence +
-			0.16 * repeatedSupport +
-			0.22 * distinctive +
-			0.11 * chromatic +
-			0.08 * notBroad,
-		)
-		const foregroundScore = clamp(
-			0.34 * clamp(populationFraction / 0.025) +
-			0.25 * componentCoherence +
-			0.20 * distinctive +
-			0.13 * chromatic +
-			0.08 * clamp((borderCoverage + centerCoverage) / 2),
-		)
+		const roleEvidence = measureFamilyRoleEvidence({
+			familyId: family.id,
+			components: family.components,
+			population: family.population,
+			pixelCount,
+			width: image.width,
+			height: image.height,
+			populationFraction,
+			largestComponentFraction,
+			familyConcentration,
+			localContrast,
+			chroma: chroma(prototype),
+			borderCoverage,
+			centerCoverage,
+		})
 		return {
 			id: family.id,
 			prototype,
@@ -1847,27 +1981,15 @@ export function buildNativePaletteEvidence(
 			localContrast,
 			chroma: chroma(prototype),
 			fieldScore,
-			signatureScore,
-			foregroundScore,
-			foregroundTypographyObservation,
-			foregroundPolarityObservation: foregroundPolarity,
-			signatureAccentObservation,
+			signatureScore: roleEvidence.signatureScore,
+			foregroundScore: roleEvidence.foregroundScore,
+			foregroundTypographyObservation: roleEvidence.foregroundTypographyObservation,
+			foregroundPolarityObservation: roleEvidence.foregroundPolarityObservation,
+			signatureAccentObservation: roleEvidence.signatureAccentObservation,
 			markSupport: 0,
 			markComponentCount: 0,
-			observedComponentCount: family.components.filter(({ retainedFor }) => retainedFor.includes("role-observation")).length,
-			components: family.components.map((component) => ({
-				id: `${family.id}-region-${component.start}`,
-				startPixelIndex: component.start,
-				population: component.population,
-				populationFraction: component.population / pixelCount,
-				minX: component.minX,
-				minY: component.minY,
-				maxX: component.maxX,
-				maxY: component.maxY,
-				borderPixels: component.borderPixels,
-				retainedFor: component.retainedFor,
-				observation: regionObservations.get(component.start)!,
-			})),
+			observedComponentCount: roleEvidence.observedComponentCount,
+			components: roleEvidence.components,
 			representatives: [],
 		}
 	})
@@ -1884,13 +2006,7 @@ export function buildNativePaletteEvidence(
 	// Mark evidence is measured against the families that own the field, so it can
 	// only be computed once every family has been measured. It is folded into the
 	// same `ColorFamilyEvidence` records before any of them is consumed.
-	const fieldPrototypes = [...scored]
-		.sort((first, second) =>
-			compareNumbersDescending(first.fieldScore, second.fieldScore) ||
-			compareNumbersDescending(first.population, second.population) ||
-			compareAscii(first.id, second.id))
-		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.fieldReferenceFamilies)
-		.map(({ prototype }) => prototype)
+	const fieldPrototypes = markFieldReferencePrototypes(scored)
 	const marked = scored.map((family): ColorFamilyEvidence =>
 		({ ...family, ...markSupportOf(family, pixelCount, fieldPrototypes) }))
 

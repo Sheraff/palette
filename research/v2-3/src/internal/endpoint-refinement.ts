@@ -1,6 +1,6 @@
-import { quantizedKey } from "./palette-core.ts";
+import { componentRolePreliminary, markFieldReferencePrototypes, markSupportOf, measureFamilyRoleEvidence, quantizedKey } from "./palette-core.ts";
 
-import type { ColorFamilyEvidence, ColorRepresentative, ComponentEvidence, GradientDirection, GradientFitDiagnostic, GradientTopology, NativePaletteEvidence, RegionObservation, RegionRoleFactors, SourceSupportRecord } from "./palette-core.ts";
+import type { ColorFamilyEvidence, ColorRepresentative, GradientDirection, GradientFitDiagnostic, GradientTopology, NativePaletteEvidence, SourceSupportRecord } from "./palette-core.ts";
 
 import { createBandSpatialSpreadAccumulator } from "./band-representative.ts";
 
@@ -507,75 +507,41 @@ function measureComponents(
 	}
 }
 
-function roleFactors(
-	geometry: number,
-	fill: number,
-	localContrast: number,
-	borderInterior: number,
-	sourceSupport: number,
-): RegionRoleFactors {
+/**
+ * A band-local component in the shape the shared role-evidence machinery reads.
+ *
+ * `rolePreliminary` is computed by the same function the native scan uses, so the retention
+ * ranking inside `measureFamilyRoleEvidence` sees the same quantity it would for a native family.
+ */
+function roleEvidenceComponent(component: MeasuredComponent, pixelCount: number): {
+	start: number
+	population: number
+	minX: number
+	minY: number
+	maxX: number
+	maxY: number
+	borderPixels: number
+	boundaryEdges: number
+	boundaryContrastSum: number
+	boundaryLightnessDeltaSum: number
+	boundaryAbsoluteLightnessDeltaSum: number
+	rolePreliminary: number
+	retainedFor: ("connected-support" | "role-observation")[]
+} {
 	return {
-		geometry,
-		fill,
-		repetition: 0,
-		localContrast,
-		borderInterior,
-		sourceSupport,
-		score: 0,
-	}
-}
-
-function componentEvidence(
-	component: MeasuredComponent,
-	familyPopulation: number,
-	evidence: NativePaletteEvidence,
-): ComponentEvidence {
-	const width = component.maxX - component.minX + 1
-	const height = component.maxY - component.minY + 1
-	const bounds = width * height
-	const fill = component.population / Math.max(1, bounds)
-	const boundsFraction = bounds / evidence.pixelCount
-	const localContrast = component.boundaryContrastSum / Math.max(1, component.boundaryEdges)
-	const contrastFactor = clamp(localContrast / 0.16)
-	const borderContact = component.borderPixels / component.population
-	const borderInterior = 1 - clamp(borderContact / 0.25)
-	const resolved = clamp(Math.log2(component.population + 1) / 8)
-	const geometry = Math.sqrt(resolved * (1 - clamp(boundsFraction / 0.18)))
-	const sourceSupport = clamp(component.population / evidence.pixelCount / 0.002)
-	const observation: RegionObservation = {
-		widthFraction: width / evidence.width,
-		heightFraction: height / evidence.height,
-		boundsFraction,
-		elongation: Math.max(width, height) / Math.max(1, Math.min(width, height)),
-		fill,
-		repetition: 0,
-		localContrast,
-		boundaryLightnessContrast: component.boundaryAbsoluteLightnessDeltaSum / Math.max(1, component.boundaryEdges),
-		boundaryLightnessPolarity: component.boundaryAbsoluteLightnessDeltaSum <= 1e-12
-			? 0 : component.boundaryLightnessDeltaSum / component.boundaryAbsoluteLightnessDeltaSum,
-		borderContact,
-		interiorMargin: Math.min(
-			component.minX / Math.max(1, evidence.width - 1),
-			component.minY / Math.max(1, evidence.height - 1),
-			(evidence.width - 1 - component.maxX) / Math.max(1, evidence.width - 1),
-			(evidence.height - 1 - component.maxY) / Math.max(1, evidence.height - 1),
-		),
-		componentFamilyFraction: component.population / familyPopulation,
-		foregroundTypography: roleFactors(geometry, clamp(fill / 0.12), contrastFactor, borderInterior, sourceSupport),
-		signatureAccent: roleFactors(geometry, clamp(fill / 0.12), contrastFactor, borderInterior, sourceSupport),
-	}
-	return {
-		id: component.id,
-		startPixelIndex: component.startPixelIndex,
+		start: component.startPixelIndex,
 		population: component.population,
-		populationFraction: component.population / evidence.pixelCount,
 		minX: component.minX,
 		minY: component.minY,
 		maxX: component.maxX,
 		maxY: component.maxY,
 		borderPixels: component.borderPixels,
-		retainedFor: ["connected-support"],
-		observation,
+		boundaryEdges: component.boundaryEdges,
+		boundaryContrastSum: component.boundaryContrastSum,
+		boundaryLightnessDeltaSum: component.boundaryLightnessDeltaSum,
+		boundaryAbsoluteLightnessDeltaSum: component.boundaryAbsoluteLightnessDeltaSum,
+		rolePreliminary: componentRolePreliminary(component, pixelCount),
+		retainedFor: [],
 	}
 }
 
@@ -701,6 +667,34 @@ function buildFamily(
 		0.28 * broadSupport + 0.22 * borderCoverage + 0.22 * familyConcentration +
 		0.13 * quadrantCoverage + 0.15 * textureCalm,
 	)
+	const localContrast = boundaryContrast / Math.max(1, boundaryEdges)
+	// The role evidence is measured, not stubbed. This family's pixels are as real as any native
+	// family's, so its signature, foreground, typography, accent and polarity claims come from the
+	// same measurement — otherwise a band-local family can win the *field* and is then structurally
+	// unable to hold any role or identity obligation, however clearly its own regions read as text
+	// or as a mark.
+	const roleEvidence = measureFamilyRoleEvidence({
+		familyId,
+		components: components.map((component) => roleEvidenceComponent(component, evidence.pixelCount)),
+		population,
+		pixelCount: evidence.pixelCount,
+		width: evidence.width,
+		height: evidence.height,
+		populationFraction,
+		largestComponentFraction: largestPopulation / evidence.pixelCount,
+		familyConcentration,
+		localContrast,
+		chroma: chroma(prototype),
+		borderCoverage,
+		centerCoverage,
+	})
+	// Mark evidence is separation from the families that own the *image's* field, so it is asked
+	// against the same references the native families were measured against.
+	const mark = markSupportOf(
+		{ prototype, population, componentCount: components.length, components: roleEvidence.components },
+		evidence.pixelCount,
+		markFieldReferencePrototypes(evidence.families),
+	)
 	return {
 		id: familyId,
 		prototype,
@@ -719,22 +713,18 @@ function buildFamily(
 		repeatedComponentCount: components.filter(({ population: componentPopulation }) =>
 			componentPopulation / evidence.pixelCount >= 0.00025).length,
 		edgeDensity,
-		localContrast: boundaryContrast / Math.max(1, boundaryEdges),
+		localContrast,
 		chroma: chroma(prototype),
 		fieldScore,
-		signatureScore: 0,
-		foregroundScore: 0,
-		foregroundTypographyObservation: 0,
-		foregroundPolarityObservation: { polarity: 0, confidence: 0, componentIds: [] },
-		signatureAccentObservation: 0,
-		// Refinement families describe a gradient endpoint — a field, by
-		// construction — so they carry no mark evidence, exactly as before.
-		markSupport: 0,
-		markComponentCount: 0,
-		observedComponentCount: 0,
-		components: components
-			.slice(0, ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_POLICY.maximumRetainedComponents)
-			.map((component) => componentEvidence(component, population, evidence)),
+		signatureScore: roleEvidence.signatureScore,
+		foregroundScore: roleEvidence.foregroundScore,
+		foregroundTypographyObservation: roleEvidence.foregroundTypographyObservation,
+		foregroundPolarityObservation: roleEvidence.foregroundPolarityObservation,
+		signatureAccentObservation: roleEvidence.signatureAccentObservation,
+		markSupport: mark.markSupport,
+		markComponentCount: mark.markComponentCount,
+		observedComponentCount: roleEvidence.observedComponentCount,
+		components: roleEvidence.components,
 		representatives,
 	}
 }
@@ -898,29 +888,75 @@ function measureBand(
 	}
 }
 
+/**
+ * Everything that can refuse a refinement without reading a single pixel.
+ *
+ * Both tests are answered by the gradient fit the caller already holds: the endpoints must be
+ * diagnosed against one parent family (a band-local refinement re-measures *within* a family, so
+ * two families is a different question), and the fit itself must carry no rejection reason other
+ * than the within-band dispersion this pass exists to resolve — a fit refused for its geometry,
+ * population or monotonicity is not made acceptable by sharpening its endpoints.
+ *
+ * Kept separate from the rest of the acceptance path because it is the only part that is free.
+ * `buildBandLocalEndpointRefinements` asks first and skips domain reconstruction and both band
+ * measurements when the answer is non-empty; measured over the reviewed corpus that is the
+ * majority of attempts, and it can never suppress an acceptance because an accepted refinement has
+ * no rejection reasons at all.
+ */
+function refusedBeforeDomain(diagnostic: GradientFitDiagnostic): readonly string[] {
+	const reasons: string[] = []
+	const lowFamilyId = diagnostic.lowEndpointFamilyId
+	const highFamilyId = diagnostic.highEndpointFamilyId
+	if (lowFamilyId === null || highFamilyId === null) reasons.push("diagnosed endpoint family is missing")
+	if (lowFamilyId !== highFamilyId) reasons.push("diagnosed endpoints do not share one parent family")
+	for (const reason of diagnostic.rejectionReasons) {
+		if (reason !== ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_REFINABLE_UPSTREAM_REASON) {
+			reasons.push(`upstream fit: ${reason}`)
+		}
+	}
+	return reasons
+}
+
+function refinementId(diagnostic: GradientFitDiagnostic): string {
+	return `band-local-refinement:${diagnostic.fieldDomainId}:${diagnostic.topology}:${diagnostic.direction}:${diagnostic.lowEndpointFamilyId ?? "missing"}`
+}
+
+function refusedRefinement(
+	diagnostic: GradientFitDiagnostic,
+	rejectionReasons: readonly string[],
+	domainPopulation: number,
+): BandLocalEndpointRefinement {
+	return {
+		id: refinementId(diagnostic),
+		fit: {
+			fieldDomainId: diagnostic.fieldDomainId,
+			topology: diagnostic.topology,
+			direction: diagnostic.direction,
+			span: diagnostic.span,
+			progression: diagnostic.progression,
+			monotonicity: diagnostic.monotonicity,
+			residual: diagnostic.residual,
+		},
+		parentFamilyId: diagnostic.lowEndpointFamilyId === diagnostic.highEndpointFamilyId
+			? diagnostic.lowEndpointFamilyId
+			: null,
+		accepted: false,
+		rejectionReasons,
+		domainPopulation,
+		endpointDistance: 0,
+		occupiedModeDistance: 0,
+		low: null,
+		high: null,
+	}
+}
+
 function refineBandLocalGradientEndpointsWithDomain(
 	evidence: NativePaletteEvidence,
 	diagnostic: GradientFitDiagnostic,
 	domain: Domain | null,
 ): BandLocalEndpointRefinement {
-	const id = `band-local-refinement:${diagnostic.fieldDomainId}:${diagnostic.topology}:${diagnostic.direction}:${diagnostic.lowEndpointFamilyId ?? "missing"}`
-	const fit = {
-		fieldDomainId: diagnostic.fieldDomainId,
-		topology: diagnostic.topology,
-		direction: diagnostic.direction,
-		span: diagnostic.span,
-		progression: diagnostic.progression,
-		monotonicity: diagnostic.monotonicity,
-		residual: diagnostic.residual,
-	}
-	const rejectionReasons: string[] = []
+	const rejectionReasons: string[] = [...refusedBeforeDomain(diagnostic)]
 	const lowFamilyId = diagnostic.lowEndpointFamilyId
-	const highFamilyId = diagnostic.highEndpointFamilyId
-	if (lowFamilyId === null || highFamilyId === null) rejectionReasons.push("diagnosed endpoint family is missing")
-	if (lowFamilyId !== highFamilyId) rejectionReasons.push("diagnosed endpoints do not share one parent family")
-	const independentReasons = diagnostic.rejectionReasons.filter((reason) =>
-		reason !== ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ENDPOINT_REFINEMENT_REFINABLE_UPSTREAM_REASON)
-	if (independentReasons.length > 0) rejectionReasons.push(...independentReasons.map((reason) => `upstream fit: ${reason}`))
 	if (!domain) rejectionReasons.push("diagnosed field domain cannot be reconstructed from native evidence")
 	if (domain && Math.abs(domain.pixelIndexes.length / evidence.pixelCount -
 		diagnostic.fieldDomainPopulationFraction) > 1 / evidence.pixelCount + 1e-9) {
@@ -928,19 +964,12 @@ function refineBandLocalGradientEndpointsWithDomain(
 	}
 	const parentFamilyIndex = lowFamilyId === null ? -1 : familyIndexById(evidence, lowFamilyId)
 	if (lowFamilyId !== null && parentFamilyIndex < 0) rejectionReasons.push("diagnosed parent family is absent from native evidence")
-	if (!domain || parentFamilyIndex < 0 || lowFamilyId !== highFamilyId) {
-		return {
-			id,
-			fit,
-			parentFamilyId: lowFamilyId === highFamilyId ? lowFamilyId : null,
-			accepted: false,
-			rejectionReasons,
-			domainPopulation: domain?.pixelIndexes.length ?? 0,
-			endpointDistance: 0,
-			occupiedModeDistance: 0,
-			low: null,
-			high: null,
-		}
+	// Both bands are measured only when the refinement is still able to be accepted. Every reason
+	// gathered above is already fatal — `accepted` is `rejectionReasons.length === 0` — so measuring
+	// them would only lengthen a list nothing reads: `candidate-domain.ts` consults a refinement's
+	// endpoints and reasons exclusively behind `accepted && low && high`.
+	if (!domain || parentFamilyIndex < 0 || rejectionReasons.length > 0) {
+		return refusedRefinement(diagnostic, rejectionReasons, domain?.pixelIndexes.length ?? 0)
 	}
 
 	const parent = evidence.families[parentFamilyIndex]
@@ -968,8 +997,16 @@ function refineBandLocalGradientEndpointsWithDomain(
 		low.endpoint.distribution.robustSpread + high.endpoint.distribution.robustSpread
 	)) rejectionReasons.push("band-local endpoint distributions overlap too strongly")
 	return {
-		id,
-		fit,
+		id: refinementId(diagnostic),
+		fit: {
+			fieldDomainId: diagnostic.fieldDomainId,
+			topology: diagnostic.topology,
+			direction: diagnostic.direction,
+			span: diagnostic.span,
+			progression: diagnostic.progression,
+			monotonicity: diagnostic.monotonicity,
+			residual: diagnostic.residual,
+		},
 		parentFamilyId: parent.id,
 		accepted: rejectionReasons.length === 0,
 		rejectionReasons,
@@ -989,6 +1026,11 @@ export function buildBandLocalEndpointRefinements(
 		lowEndpointFamilyId !== null && lowEndpointFamilyId === highEndpointFamilyId)
 	const domains = new Map<string, Domain | null>()
 	return sameFamilyFits.map((diagnostic) => {
+		// A domain reconstruction is a flood fill over the whole image, so it is only paid for a
+		// fit that could still be accepted. The memo stays keyed by domain id, so a domain a later
+		// live fit needs is still built exactly once and in the same order.
+		const refusedEarly = refusedBeforeDomain(diagnostic)
+		if (refusedEarly.length > 0) return refusedRefinement(diagnostic, refusedEarly, 0)
 		if (!domains.has(diagnostic.fieldDomainId)) {
 			domains.set(diagnostic.fieldDomainId, reconstructDomain(evidence, diagnostic.fieldDomainId))
 		}
