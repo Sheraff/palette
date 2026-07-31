@@ -220,6 +220,23 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		 * promoted by fiat, the artwork's own region evidence still decides who fills them.
 		 */
 		maximumNeutralObligations: 2,
+		/**
+		 * How well evidenced a family's foreground-polarity claim must be before the neutral
+		 * quota will treat it as an identity *direction* of its own.
+		 *
+		 * `maximumNeutralObligations` exists because material distance cannot separate two greys
+		 * that differ only in lightness. That is true of two mid-greys, and false of a near-white
+		 * and a near-black: hue-wise they are one direction, but as *foreground* claims they are
+		 * opposite ones — the artwork either sets light text or dark text, and only one of those
+		 * readings can be represented by whichever neutral holds an obligation slot. So a neutral
+		 * whose polarity claim is decisive and points against every neutral already selected is
+		 * not a redundant restatement, and the quota does not spend a rejection on it.
+		 *
+		 * The measure is `|polarity| * confidence` of `foregroundPolarityObservation` — the same
+		 * reliability-times-direction product `polarityAgreement` uses. It is required of *both*
+		 * sides: a weakly polarised incumbent gives no basis for calling anything its opposite.
+		 */
+		decisiveForegroundPolarity: 0.6,
 		winnerPrecedence: "quality-incumbent-then-quality-guarded-obligation-coverage-and-priority",
 		qualityGuard: Object.freeze({
 			version: "complete-quality-domain-non-inferiority-v1",

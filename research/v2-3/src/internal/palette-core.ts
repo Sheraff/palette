@@ -460,6 +460,10 @@ type IdentitySelectionTrace = Readonly<{
 	notMateriallyDistinctFamilyIds: readonly string[]
 	redundantDirectionFamilyIds: readonly string[]
 	neutralQuotaOmittedFamilyIds: readonly string[]
+	/** Neutrals the quota was full for, admitted because their polarity claim opposed every selected neutral's. */
+	polarityExemptFamilyIds: readonly string[]
+	/** Obligations whose priority moved when opposite-polarity neutrals were re-ordered by polarity decisiveness. */
+	polarityReorderedFamilyIds: readonly string[]
 	boundOmittedFamilyIds: readonly string[]
 	reservedMajorFamilyIds: readonly string[]
 }>
@@ -3148,9 +3152,25 @@ function buildIdentityObligationSelection(
 	const selected: typeof ranked = []
 	const redundantDirectionFamilyIds: string[] = []
 	const neutralQuotaOmittedFamilyIds: string[] = []
+	const polarityExemptFamilyIds: string[] = []
 	const boundOmitted: typeof ranked = []
 	const isNeutral = (family: ColorFamilyEvidence): boolean =>
 		family.chroma < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.neutralObligationChroma
+	// A neutral's foreground-polarity claim, signed: negative where the family is the lighter
+	// side of its own boundaries (light mark on darker ground), positive where it is the darker.
+	// Scaled by the observation's confidence so an unpolarised or thinly observed family reads
+	// as no claim at all rather than as a weak one.
+	const polarityClaim = (family: ColorFamilyEvidence): number =>
+		clamp(family.foregroundPolarityObservation.polarity, -1, 1) *
+		clamp(family.foregroundPolarityObservation.confidence)
+	const decisivelyOpposes = (candidate: ColorFamilyEvidence, incumbents: readonly ColorFamilyEvidence[]): boolean => {
+		const claim = polarityClaim(candidate)
+		const decisive = ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.decisiveForegroundPolarity
+		return Math.abs(claim) >= decisive && incumbents.every((incumbent) => {
+			const other = polarityClaim(incumbent)
+			return Math.abs(other) >= decisive && Math.sign(other) !== Math.sign(claim)
+		})
+	}
 	for (const candidate of ranked) {
 		if (selected.some(({ family }) =>
 			okDistance(family.prototype, candidate.family.prototype) < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.materialDistance)) {
@@ -3162,11 +3182,24 @@ function buildIdentityObligationSelection(
 		// while chromatic directions that carry real region evidence are never nominated at all.
 		// This declines the redundant restatement; it does not promote anyone — the freed slots
 		// are filled by the next candidates in the artwork's own evidence order.
-		if (isNeutral(candidate.family) &&
-			selected.filter(({ family }) => isNeutral(family)).length >=
-				ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.maximumNeutralObligations) {
-			neutralQuotaOmittedFamilyIds.push(candidate.family.id)
-			continue
+		//
+		// The exception is polarity. "One direction" is a claim about hue, and for neutrals the
+		// direction that decides a role is *lightness polarity*: a near-white and a near-black
+		// are opposite foreground claims, not one claim stated twice, so refusing the second is
+		// not declining a restatement — it is making the artwork's light text unrepresentable in
+		// any role. A candidate is let past the full quota only when its own polarity claim and
+		// every selected neutral's are decisive and point opposite ways. That is deliberately
+		// self-limiting: once both directions are represented no further neutral can oppose them
+		// all, so the quota still bites on the neutral-heavy artworks it was written for.
+		if (isNeutral(candidate.family)) {
+			const selectedNeutrals = selected.filter(({ family }) => isNeutral(family)).map(({ family }) => family)
+			if (selectedNeutrals.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.maximumNeutralObligations) {
+				if (!decisivelyOpposes(candidate.family, selectedNeutrals)) {
+					neutralQuotaOmittedFamilyIds.push(candidate.family.id)
+					continue
+				}
+				polarityExemptFamilyIds.push(candidate.family.id)
+			}
 		}
 		if (selected.length >= ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations) {
 			boundOmitted.push(candidate)
@@ -3192,8 +3225,54 @@ function buildIdentityObligationSelection(
 	const boundOmittedFamilyIds = boundOmitted
 		.filter((candidate) => candidate !== reserved)
 		.map(({ family }) => family.id)
+	// Ordering, for the same reason the quota now counts polarity. The shortlist's ordering key is
+	// the *best single region's* signature-accent score. Between two near-neutrals whose polarity
+	// claims oppose each other that is the wrong instrument twice over: it is accent-flavoured,
+	// while the question their opposition raises is which of them the artwork sets its text in;
+	// and it is a one-region measure, while polarity is observed across the family's regions. So
+	// where such a pair exists, the members are re-ordered among the slots they already hold, by
+	// how decisive their polarity claim is. Nothing enters or leaves the obligation set, no
+	// candidate is promoted past a family that is not its polarity opposite, and a pair that is
+	// not decisive on both sides is left exactly as the region evidence ranked it.
+	const polarityRanked = [...selected]
+	const decisiveNeutralIndexes = polarityRanked
+		.map((candidate, index) => ({ candidate, index }))
+		.filter(({ candidate }) => isNeutral(candidate.family) &&
+			Math.abs(polarityClaim(candidate.family)) >=
+				ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.decisiveForegroundPolarity)
+	const polarityReorderedFamilyIds: string[] = []
+	if (new Set(decisiveNeutralIndexes.map(({ candidate }) =>
+		Math.sign(polarityClaim(candidate.family)))).size > 1) {
+		const slots = decisiveNeutralIndexes.map(({ index }) => index)
+		// Overturning the region evidence has to be earned by a *material* difference in polarity,
+		// never by its last decimal: two families that are both perfectly polarised are equally
+		// good claims however their measurements round, and one artwork here separates them by
+		// 1.4e-4. So claims are banded at the same evidence resolution the rest of the shortlist
+		// is ranked at, and within a band the region evidence's order stands.
+		const byClaim = [...decisiveNeutralIndexes].sort((first, second) =>
+			compareNumbersDescending(
+				Math.abs(polarityClaim(first.candidate.family)),
+				Math.abs(polarityClaim(second.candidate.family))) ||
+			first.index - second.index)
+		let band = 0
+		let bandLeader = Math.abs(polarityClaim(byClaim[0].candidate.family))
+		const banded = byClaim.map((entry) => {
+			const claim = Math.abs(polarityClaim(entry.candidate.family))
+			if (bandLeader - claim > RANKING_EVIDENCE_RESOLUTION) {
+				band += 1
+				bandLeader = claim
+			}
+			return { ...entry, band }
+		})
+		const reordered = [...banded].sort((first, second) =>
+			first.band - second.band || first.index - second.index)
+		reordered.forEach(({ candidate }, position) => {
+			if (polarityRanked[slots[position]] !== candidate) polarityReorderedFamilyIds.push(candidate.family.id)
+			polarityRanked[slots[position]] = candidate
+		})
+	}
 	return {
-		obligations: selected.map((candidate, priority): IdentityObligation => ({
+		obligations: polarityRanked.map((candidate, priority): IdentityObligation => ({
 			id: `identity-obligation:${candidate.family.id}`,
 			familyId: candidate.family.id,
 			priority,
@@ -3214,6 +3293,8 @@ function buildIdentityObligationSelection(
 			notMateriallyDistinctFamilyIds: notMateriallyDistinctFamilyIds.sort(compareAscii),
 			redundantDirectionFamilyIds: redundantDirectionFamilyIds.sort(compareAscii),
 			neutralQuotaOmittedFamilyIds: neutralQuotaOmittedFamilyIds.sort(compareAscii),
+			polarityExemptFamilyIds: polarityExemptFamilyIds.sort(compareAscii),
+			polarityReorderedFamilyIds: polarityReorderedFamilyIds.sort(compareAscii),
 			boundOmittedFamilyIds: boundOmittedFamilyIds.sort(compareAscii),
 			reservedMajorFamilyIds: reservedFamilyIds.sort(compareAscii),
 		},
