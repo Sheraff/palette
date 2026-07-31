@@ -2783,6 +2783,44 @@ const ACCENT_OBSERVABILITY_ADEQUATE_LC = 9
 const ACCENT_CONTRAST_RANGE = 75
 
 /**
+ * The reference |Lc| the **foreground**'s contrast ramp divides by.
+ *
+ * `foregroundUtility` is `sqrt(0.5*clamp(mean|Lc|/S) + 0.5*clamp(min|Lc|/S))`, and it feeds
+ * `foregroundPath`, which carries weight 0.15 — the joint-largest in the winner objective. `S` was
+ * a bare literal `90`.
+ *
+ * **90 is an accessibility-grade target, and this library disclaims accessibility grading.** APCA's
+ * own guidance puts Lc 90 at body text in the smallest sizes; charter constraint 2 says the
+ * opposite in as many words — "APCA contrast is intentionally very low. This is not web
+ * accessibility; human review has judged Lc ≈ 9 outputs as good. APCA is one piece of evidence
+ * among others." The charter forbids introducing an accessibility-level *floor*; a ramp that keeps
+ * paying all the way to 90 on the objective's largest role axis is the same policy error written as
+ * a *reward*, and it is the one this codebase never audited because it is not a floor.
+ *
+ * The correction is not a new idea and not a new number. `ACCENT_OBSERVABILITY_ADEQUATE_LC` is the
+ * same question — "is this role adequately visible?" — already answered for the accent, and its
+ * rationale is precisely this argument: "the scale is wrong, not the blend. Saturating instead
+ * means candidates that are all adequately visible tie on this axis, and the decision falls through
+ * to the axes that should own it." That constant is where "review has repeatedly put the floor of
+ * 'clearly good'", with outcomes "stable anywhere in roughly 6..12, so this is a plateau rather
+ * than a tuned point". It was applied to the gradient accent only, and the reason recorded at the
+ * time was *blast radius*, not correctness: "only gradient accent contrast carries new evidence".
+ *
+ * The foreground is the one mark-bearing role that never got that treatment. Pointing it at the
+ * same constant makes one adequacy notion serve both mark-bearing roles instead of two references
+ * an order of magnitude apart, and it is emphatically not fitted to the cases that motivated it:
+ * both clear the plateau by a wide margin (`0cd48f`'s endorsed teal at |Lc| 24.3, `03e50500`'s
+ * endorsed band-name gold at 34.5–39.2, against 9). Any value at or below ~24 flips `0cd48f`; the
+ * value shipped is the reviewed one, chosen before the boundary was measured.
+ *
+ * `90` restores the previous behaviour exactly. The intermediate values were measured and are
+ * recorded in `research/v2-3-experiments/carrier-ranking/EXPERIMENT.md`: 75 (the flat accent's own
+ * range) and 40 both leave the reviewed outcome losing, so neither is a cheaper version of this
+ * change — they are just smaller numbers with no argument behind them.
+ */
+const FOREGROUND_CONTRAST_SCALE: number = 90
+
+/**
  * The population ratio inside `signatureScore`, and its weight there. Named because
  * `signatureAccentRoleScore` has to repair exactly this term with exactly these numbers — a
  * repair computed from different constants than the score it repairs would be a second scoring
@@ -3975,8 +4013,8 @@ function createTreatment(
 			.map(({ signedLc }) => signedLc), hardMinimum)
 	const activeRolePathObservability = Math.min(foregroundPathObservability, accentPathObservability)
 	const foregroundUtility = Math.sqrt(clamp(
-		0.5 * clamp(mean(foregroundContrast) / 90) +
-		0.5 * clamp(Math.min(...foregroundContrast) / 90),
+		0.5 * clamp(mean(foregroundContrast) / FOREGROUND_CONTRAST_SCALE) +
+		0.5 * clamp(Math.min(...foregroundContrast) / FOREGROUND_CONTRAST_SCALE),
 	))
 	const accentScale = variant.gradient ? ACCENT_OBSERVABILITY_ADEQUATE_LC : ACCENT_CONTRAST_RANGE
 	const accentUtility = accentContrast.length === 0

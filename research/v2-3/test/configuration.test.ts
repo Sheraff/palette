@@ -4,6 +4,7 @@ import test from "node:test"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY,
 	FOREGROUND_MARK_ADMISSION,
+	IDENTITY_COVERAGE_DIRECTIONS,
 	TEXT_DEMOTION_EVIDENCE,
 } from "../src/internal/base-scoring.ts"
 import {
@@ -115,6 +116,15 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// itself over `identityDirectionChroma`. The predicate is still computed and published on the
 	// selector evaluation, so re-measuring it costs one constant.
 	assert.equal(FOREGROUND_MARK_ADMISSION, "blanket")
+	// Carrier-ranking arm round 3: the reviewer's `skap` principle — "a treatment cannot spend two
+	// roles on one hue and be credited twice for it" — is stated by `identityDirections` and enforced
+	// only on the authorized half; `one-hue-one-direction` applies the same test with the same
+	// constant to ordinary coverage. Batch 30 (2026-08-01) served the complete four-artwork mover
+	// set and enabled it: every rule-side output graded strong, the one decisive grade applied to
+	// the rule side alone (000a8aa1 — predicted as a cost, judged a win), and the other three were
+	// accepted both-ways with weak leans split across the sides. Enabling gained one decisive
+	// endorsement and regressed nothing.
+	assert.equal(IDENTITY_COVERAGE_DIRECTIONS, "one-hue-one-direction")
 	// Track C round 3: raising the bound to 6 admitted `placebo`'s brown accent. The *reserve*, not
 	// the bound, was the mechanism that mattered.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations, 4)

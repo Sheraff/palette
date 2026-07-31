@@ -114,6 +114,46 @@ export const FOREGROUND_MARK_ADMISSION: "blanket" | "mark-bearing" = "blanket"
  */
 export const TEXT_DEMOTION_EVIDENCE: "raw-score" | "claimed" | "strongest-claim" = "strongest-claim"
 
+/**
+ * Whether ordinary identity coverage obeys the one-hue-one-direction rule the objective already
+ * states — the reviewer's `skap` principle.
+ *
+ * `identityDirections` puts it plainly: *"two colors of the same hue are one direction however
+ * differently they are mixed, so a treatment cannot spend two roles on one hue and be credited
+ * twice for it"*. That is a claim about what the palette **shows**, which is what coverage measures.
+ * It is enforced only on the *authorized* part: `identityDirections` skips a credited colour whose
+ * hue is within `identityDirectionHueDegrees` of one already carried, so the repeat lends nothing
+ * to authority — while `numerator` above adds the repeat's weight in full, so ordinary coverage
+ * still pays a palette twice for one hue.
+ *
+ * Measured instance (carrier-ranking arm): `0d5cdb` can publish a dark red foreground beside a red
+ * accent **1.0 degree of hue apart** — family-4694 at 23.5 deg and family-6039 at 24.5 deg — and
+ * score `identityCoverage` 0.7143 against 0.5714 for the arrangement human review endorsed. The two
+ * carry identical `identityAuthorizedGain`, which is the authority half of this rule already
+ * working; the coverage half is what pays for the second red.
+ *
+ * `one-hue-one-direction` applies the same test with the same constant. Neutrals are unaffected in
+ * both directions: `identityDirections` does not treat a colour below `identityDirectionChroma` as
+ * a direction at all, so a near-neutral can neither restate another colour nor be restated by one —
+ * which keeps two-colour and neutral-heavy artworks exactly where they are.
+ *
+ * The decision is deliberately made *after* both credit passes rather than greedily inside them.
+ * The passes do not run in priority order — pass one (the obligation's own family occupies a role)
+ * always precedes pass two (the palette shows the obligation's colour) — so a greedy rule lets a
+ * priority-3 obligation covered exactly displace a priority-0 one covered by equivalence. Measured
+ * on `0d5cdb`, greedily: `#92071a` beside `#cd1227` scored coverage 0.5714 while `#92071a` beside
+ * `#f22632` scored **0.1429**, two arrangements that show the same one red direction. Keeping the
+ * *strongest* claim for each direction makes both 0.5714 and removes the dependence on pass order;
+ * ties break on credit order, so the result is deterministic.
+ *
+ * `count-every-credit` restores the previous behaviour exactly.
+ *
+ * **Enabled by batch-30 review (2026-08-01)**: the complete four-artwork mover set was served; every
+ * rule-side output graded strong, the one decisive grade applied to the rule side alone, and the
+ * remaining three were accepted both-ways with weak text-noted leans split across the sides.
+ */
+export const IDENTITY_COVERAGE_DIRECTIONS: "count-every-credit" | "one-hue-one-direction" = "one-hue-one-direction"
+
 export type AlbumArtworkPaletteV2Phase3IdentityRole = "foreground" | "accent" | "ambiguous"
 
 /**
@@ -495,6 +535,14 @@ function identityEvaluation(
 	let numerator = 0
 	const credited: Array<{ color: OKLab; credit: number }> = []
 	const roles: Array<{ familyId: string; role: "foreground" | "accent" | "surface"; credit: number }> = []
+	// See `IDENTITY_COVERAGE_DIRECTIONS`. Every credit is recorded here and the numerator is summed
+	// after both passes, because the passes do NOT run in priority order: pass one (the obligation's
+	// own family occupies a role) always precedes pass two (the palette shows the colour), so
+	// crediting greedily would let a priority-3 obligation covered exactly displace a priority-0 one
+	// covered by equivalence. Deciding afterwards makes the rule independent of which pass reached a
+	// direction first, and it keeps the *strongest* claim the palette makes for that direction —
+	// which is what "credited once" should mean.
+	const contributions: Array<{ color: OKLab; amount: number }> = []
 	const credit = (
 		familyId: string,
 		role: "foreground" | "accent" | "surface",
@@ -502,7 +550,7 @@ function identityEvaluation(
 		color: OKLab,
 	): void => {
 		const weight = priorityWeight(obligations.find((obligation) => obligation.familyId === familyId)!.priority)
-		numerator += weight * value
+		contributions.push({ color, amount: weight * value })
 		// The foreground used to be refused here outright, on the premise that every treatment human
 		// review has preferred carries its chromatic identity in the field and the accent while the
 		// text stays near-neutral. `FOREGROUND_MARK_ADMISSION` records why that premise no longer
@@ -603,6 +651,35 @@ function identityEvaluation(
 		claimed.add(bestIndex)
 		const slot = slots[bestIndex]
 		credit(obligation.familyId, slot.role, slot.creditOf(requiredRole(obligation.familyId)), slot.color)
+	}
+	// One direction is credited once, at the strongest claim the palette makes for it. Contributions
+	// are considered in descending amount, ties broken by the order they were credited in, so the
+	// outcome does not depend on which pass reached a direction first. Neutrals never take part:
+	// `identityDirections` does not treat a colour below `identityDirectionChroma` as a direction, so
+	// a near-neutral can neither restate another colour nor be restated by one, and neutral-heavy or
+	// two-colour artworks are untouched.
+	// Which contributions survive is decided in descending-amount order; the numerator is then summed
+	// in the ORIGINAL credit order. Floating-point addition is not associative, so summing in the
+	// sorted order would perturb the last bits and could flip an `evidenceLevel` on an artwork this
+	// rule is not supposed to touch — `count-every-credit` has to be bit-identical, not merely equal.
+	const refused = new Set<number>()
+	if (IDENTITY_COVERAGE_DIRECTIONS === "one-hue-one-direction") {
+		const keptDirections: OKLab[] = []
+		const ordered = contributions.map((contribution, index) => ({ contribution, index }))
+			.sort((first, second) => second.contribution.amount - first.contribution.amount || first.index - second.index)
+		for (const { contribution, index } of ordered) {
+			if (chromaOf(contribution.color) <
+				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma) continue
+			if (keptDirections.some((direction) => hueDifferenceDegrees(direction, contribution.color) <
+				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionHueDegrees)) {
+				refused.add(index)
+				continue
+			}
+			keptDirections.push(contribution.color)
+		}
+	}
+	for (const [index, contribution] of contributions.entries()) {
+		if (!refused.has(index)) numerator += contribution.amount
 	}
 	const coverage = denominator === 0 ? 0 : clamp(numerator / denominator)
 	// Authority is the only thing that lets the identity objective outweigh a larger quality
