@@ -70,6 +70,12 @@ export type AlbumArtworkPaletteV2Phase3IdentityInput = Readonly<{
 	obligations: ReadonlyArray<Readonly<{
 		familyId: string
 		priority: number
+		/**
+		 * The colour direction the obligation stands for (its family's prototype). Optional: an
+		 * obligation without one can only ever be covered by its own family, which is the behaviour
+		 * that existed before coverage became direction-aware.
+		 */
+		direction?: OKLab
 	}>>
 	roleRequirements?: readonly AlbumArtworkPaletteV2Phase3IdentityRoleRequirement[]
 }>
@@ -169,7 +175,7 @@ type NormalizedRoleRequirement = Readonly<{
 }>
 
 type NormalizedIdentity = Readonly<{
-	obligations: ReadonlyArray<Readonly<{ familyId: string; priority: number }>>
+	obligations: ReadonlyArray<Readonly<{ familyId: string; priority: number; direction: OKLab | null }>>
 	requiredRoleByFamilyField: ReadonlyMap<string, NormalizedRoleRequirement>
 }>
 
@@ -177,11 +183,19 @@ function requirementKey(familyId: string, fieldHypothesisId: string): string {
 	return `${familyId}\0${fieldHypothesisId}`
 }
 
+function isOKLab(value: OKLab | undefined): value is OKLab {
+	return value !== undefined && value.length === 3 && value.every((component) => Number.isFinite(component))
+}
+
 function normalizedIdentity(identity: AlbumArtworkPaletteV2Phase3IdentityInput | undefined): NormalizedIdentity {
 	const byFamily = new Map<string, number>()
+	const directionByFamily = new Map<string, OKLab>()
 	for (const obligation of identity?.obligations ?? []) {
 		if (!Number.isFinite(obligation.priority) || obligation.familyId.length === 0) continue
 		byFamily.set(obligation.familyId, Math.min(byFamily.get(obligation.familyId) ?? Infinity, obligation.priority))
+		if (isOKLab(obligation.direction) && !directionByFamily.has(obligation.familyId)) {
+			directionByFamily.set(obligation.familyId, obligation.direction)
+		}
 	}
 	const requiredRoleByFamilyField = new Map<string, NormalizedRoleRequirement>()
 	for (const requirement of identity?.roleRequirements ?? []) {
@@ -197,7 +211,12 @@ function normalizedIdentity(identity: AlbumArtworkPaletteV2Phase3IdentityInput |
 		})
 	}
 	return {
-		obligations: [...byFamily].map(([familyId, priority]) => ({ familyId, priority }))
+		obligations: [...byFamily]
+			.map(([familyId, priority]) => ({
+				familyId,
+				priority,
+				direction: directionByFamily.get(familyId) ?? null,
+			}))
 			.sort((first, second) => first.priority - second.priority ||
 				compareAscii(first.familyId, second.familyId)),
 		requiredRoleByFamilyField,
@@ -229,6 +248,50 @@ function placementCredit(
 		? ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.roleMatchedIdentityCredit
 		: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.roleMismatchedIdentityCredit
 	return baseline + (target - baseline) * requirement.confidence
+}
+
+/**
+ * Whether a placed colour carries an obligation's identity direction.
+ *
+ * An obligation is a claim that the artwork shows a colour; the family that raised the claim is
+ * the evidence for it, not the claim itself. Colour families are formed by quantized OKLab
+ * proximity, so one visible direction routinely arrives as two neighbouring families — one red
+ * title can produce a core family and a brighter one. Testing coverage by family identity alone
+ * therefore pays a palette nothing for showing the obligation's own colour, purely because the
+ * pixels came from the neighbour, while paying in full for a colour this objective's *other*
+ * statement — `identityDirections` — would refuse to count as a second direction at all. Those two
+ * readings contradict each other, and this is the one that has never been argued for.
+ *
+ * Every condition below is a statement this objective already makes elsewhere, applied here for
+ * the same reason it is made there. There is no new constant.
+ *
+ * 1. **A direction is chromatic.** `identityDirections` skips any credited colour under
+ *    `identityDirectionChroma`, because "a neutral restates whatever the rest of the palette
+ *    already says", and the obligation selector's neutral quota exists because material distance
+ *    "cannot separate two greys that differ only in lightness". For a near-neutral obligation
+ *    there is no direction for a substitute to be equivalent *about* — what separates two
+ *    neutrals is lightness polarity, which the policy calls an *opposite* claim, not the same one.
+ *    So equivalence is available to chromatic obligations only; a neutral obligation keeps the
+ *    family test, which is the only evidence that can settle it.
+ * 2. **At least as strong a statement of it.** `identityDirections` scores a direction by how
+ *    saturated it is, "because a barely chromatic family is barely an identity direction". A
+ *    washed-out or greyed version of the artwork's colour is therefore not that direction carried
+ *    somewhere else, it is a weaker claim — measured on the corpus, this is what separates the
+ *    substitutions that read as the same colour from the ones that read as a different, duller one
+ *    (a pure grey standing in for gold, a pale yellow for a vivid one).
+ * 3. **The same hue**, within `identityDirectionHueDegrees` — the window inside which this
+ *    objective already refuses to count a second chromatic colour as its own direction.
+ * 4. **Close enough to be one colour**, within `identityRoleSeparation` — the separation below
+ *    which it already refuses to treat two roles as carrying distinct identity.
+ */
+function carriesIdentityDirection(color: OKLab, direction: OKLab): boolean {
+	const directionChroma = chromaOf(direction)
+	if (directionChroma < ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionChroma) return false
+	if (chromaOf(color) < directionChroma) return false
+	if (hueDifferenceDegrees(color, direction) >=
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityDirectionHueDegrees) return false
+	return okDistance(color, direction) <
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityRoleSeparation
 }
 
 /**
@@ -367,21 +430,92 @@ function identityEvaluation(
 		}
 		roles.push({ familyId, role, credit: value })
 	}
+	// The identity-bearing roles, in the order the objective has always preferred them: a family
+	// that holds two of them is credited once, for the foreground.
+	const slots: Array<Readonly<{
+		role: "foreground" | "accent" | "surface"
+		familyId: string
+		color: OKLab
+		creditOf: (requirement: NormalizedRoleRequirement | undefined) => number
+	}>> = [
+		{
+			role: "foreground",
+			familyId: treatment.familyRoles.foreground,
+			color: treatment.foreground.oklab,
+			creditOf: (requirement) => placementCredit(requirement, "foreground", treatment.foreground.oklab),
+		},
+		...identityBearingAccent
+			? [{
+				role: "accent" as const,
+				familyId: treatment.familyRoles.accent,
+				color: treatment.accent.oklab,
+				creditOf: (requirement: NormalizedRoleRequirement | undefined) =>
+					placementCredit(requirement, "accent", treatment.accent.oklab),
+			}]
+			: [],
+		...identityBearingSurface
+			? [{
+				role: "surface" as const,
+				familyId: treatment.familyRoles.surface,
+				color: treatment.surface.oklab,
+				creditOf: () => ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.surfaceIdentityCredit,
+			}]
+			: [],
+	]
+	const claimed = new Set<number>()
+	const uncovered: typeof obligations[number][] = []
+	// Pass one: the family that raised the obligation is occupying a role. This is the strongest
+	// possible evidence that the palette shows the obligation's colour — the pixels came from that
+	// family — so it is settled first and at full credit, exactly as before. Running it to
+	// completion before any direction match means an equivalence can never displace an exact one.
 	for (const obligation of obligations) {
-		const requirement = requiredRole(obligation.familyId)
-		if (treatment.familyRoles.foreground === obligation.familyId) {
-			credit(obligation.familyId, "foreground",
-				placementCredit(requirement, "foreground", treatment.foreground.oklab),
-				treatment.foreground.oklab)
-		} else if (identityBearingAccent && treatment.familyRoles.accent === obligation.familyId) {
-			credit(obligation.familyId, "accent",
-				placementCredit(requirement, "accent", treatment.accent.oklab),
-				treatment.accent.oklab)
-		} else if (identityBearingSurface && treatment.familyRoles.surface === obligation.familyId) {
-			credit(obligation.familyId, "surface",
-				ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.surfaceIdentityCredit,
-				treatment.surface.oklab)
+		const index = slots.findIndex((slot, position) =>
+			!claimed.has(position) && slot.familyId === obligation.familyId)
+		if (index < 0) {
+			uncovered.push(obligation)
+			continue
 		}
+		claimed.add(index)
+		const slot = slots[index]
+		credit(obligation.familyId, slot.role, slot.creditOf(requiredRole(obligation.familyId)), slot.color)
+	}
+	// Pass two: an obligation no family of its own covers is still covered if the palette shows its
+	// colour. The credit is the same credit the role would have earned for the obligation's own
+	// family — role agreement, the chromatic-foreground gate and the priority weight all still
+	// apply, because what changes here is only *which* colours count as showing the direction, not
+	// what showing it is worth. Nearest slot wins so that a palette holding the direction twice
+	// spends its closest role on it, and the role order breaks exact ties.
+	//
+	// The surface takes part in pass one and not in pass two. Pass one is a fact — the field
+	// endpoint IS the obligation's family — while pass two is an inference about a colour the
+	// endpoint does not own, and the surface is a *field* endpoint: allowing the inference there
+	// lets the identity objective choose the field, which is the failure the comment on
+	// `identityBearingSurface` already refuses ("crediting those overrides field-ranking decisions
+	// that are not this objective's to make"). Measured, and the reason this is stated as a rule
+	// rather than assumed: with the surface admitted, five of the eight moved artworks moved on a
+	// surface substitution, two of them contradicting a strong human verdict — a gradient review
+	// rejected as "pink and Bisque skin color which does not represent this artwork", and a
+	// foreground the same batch endorsed — and not one of the five was an improvement. The
+	// foreground and the accent are where an artwork's marks live, and a mark is what an obligation
+	// is evidence of.
+	for (const obligation of uncovered) {
+		if (obligation.direction === null) continue
+		const direction = obligation.direction
+		let bestIndex = -1
+		let bestDistance = Infinity
+		for (const [position, slot] of slots.entries()) {
+			if (claimed.has(position) || slot.role === "surface") continue
+			if (!carriesIdentityDirection(slot.color, direction)) continue
+			const distance = okDistance(slot.color, direction)
+			if (distance < bestDistance) {
+				bestDistance = distance
+				bestIndex = position
+			}
+		}
+		if (bestIndex < 0) continue
+		claimed.add(bestIndex)
+		const slot = slots[bestIndex]
+		credit(obligation.familyId, slot.role, slot.creditOf(requiredRole(obligation.familyId)), slot.color)
 	}
 	const coverage = denominator === 0 ? 0 : clamp(numerator / denominator)
 	// Authority is the only thing that lets the identity objective outweigh a larger quality

@@ -442,6 +442,15 @@ export type IdentityObligation = Readonly<{
 	id: string
 	familyId: string
 	priority: number
+	/**
+	 * The colour direction this obligation stands for: its family's OKLab prototype.
+	 *
+	 * An obligation is a claim that the artwork shows *this colour*. The family id records which
+	 * evidence made the claim; it is not the claim itself, and two families can carry one colour
+	 * direction. The identity objective needs the direction in order to say whether a palette shows
+	 * it, rather than only whether the palette drew its pixels from that particular family.
+	 */
+	direction: OKLab
 	source: Readonly<{
 		regionIds: readonly string[]
 		connectedPopulationFraction: number
@@ -3554,6 +3563,7 @@ function buildIdentityObligationSelection(
 			id: `identity-obligation:${candidate.family.id}`,
 			familyId: candidate.family.id,
 			priority,
+			direction: candidate.family.prototype,
 			source: {
 				regionIds: candidate.regionIds,
 				connectedPopulationFraction: candidate.connectedPopulationFraction,
