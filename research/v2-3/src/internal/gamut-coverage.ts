@@ -78,8 +78,16 @@ export const ARTWORK_GAMUT_POLICY = Object.freeze({
  * The counter-evidence is real and is recorded rather than hidden: one reviewed complaint asks for the
  * opposite ("the foreground is very close to a black when the artwork has many colors, so we are
  * missing some of its identity"). So this is a measured choice, not a derived one.
+ *
+ * `"mark-bearing"` is that recorded counter-evidence acted on, without giving back what the exclusion
+ * bought. The failure named above is specific — *a chromatic non-text region taking the role from the
+ * artwork's display type* — and the role classifier measures exactly that, so the distinction does not
+ * need a blanket rule. The foreground earns coverage when the artwork's own evidence says the colour
+ * standing in the text role is one of its marks, and earns nothing when the treatment is holding
+ * materially better text in another of its roles. The predicate is the identity objective's own
+ * `demotesBetterText`, computed once per treatment there; see `FOREGROUND_MARK_ADMISSION`.
  */
-export type GamutCoverageScope = "all-roles" | "field-and-accent"
+export type GamutCoverageScope = "all-roles" | "field-and-accent" | "mark-bearing"
 
 /**
  * Coverage at which the term stops paying.
@@ -298,14 +306,21 @@ export function normalizedGamutCoverage(
 	scope: GamutCoverageScope = "all-roles",
 	saturation: number = 1,
 	fieldShare: number = 1,
+	/**
+	 * Only read by `"mark-bearing"`, and defaulted to the conservative answer so the ~30 call sites
+	 * that predate the scope keep meaning what they meant. See `FOREGROUND_MARK_ADMISSION`.
+	 */
+	markBearingForeground: boolean = false,
 ): number {
 	if (gamut.totalMass <= 0 || gamut.ceiling <= 0) return 1
 	// The field guard: the background and surface earn coverage only in proportion to how faithful
 	// this treatment's field already is. Everything the non-field roles cover is earned outright; the
 	// *additional* coverage the field buys is shaded. See `fieldShare` at the call site.
-	const nonFieldRoles = scope === "field-and-accent"
-		? [treatment.accent.oklab]
-		: [treatment.foreground.oklab, treatment.accent.oklab]
+	const foregroundEarns = scope === "all-roles" ||
+		(scope === "mark-bearing" && markBearingForeground)
+	const nonFieldRoles = foregroundEarns
+		? [treatment.foreground.oklab, treatment.accent.oklab]
+		: [treatment.accent.oklab]
 	const withoutField = gamutCoverage(gamut, nonFieldRoles)
 	const withField = gamutCoverage(gamut, [
 		...nonFieldRoles,

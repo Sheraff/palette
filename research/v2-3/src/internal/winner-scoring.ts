@@ -558,6 +558,9 @@ function evaluateTreatment(
 			// background and surface could show would have to be imported from somewhere the field is not.
 			// When it does not fire the axis pays in full, which is what lets it replace a dull field.
 			(gamutScoring.fieldGuard ?? GAMUT_COVERAGE.fieldGuard) ? 0 : 1,
+			// Read only by the `"mark-bearing"` scope. Computed once, in the identity objective that
+			// owns the predicate, rather than recomputed here from a second copy of the rule.
+			wave1.markBearingForeground,
 		)
 	if (!Number.isFinite(coverage)) throw new TypeError("Non-finite gamut coverage")
 	const integration = gamutScoring?.integration ?? GAMUT_COVERAGE.integration

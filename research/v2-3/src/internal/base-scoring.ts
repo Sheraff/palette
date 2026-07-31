@@ -51,6 +51,69 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
 	}),
 } as const)
 
+/**
+ * When the foreground is admitted to the machinery that reads a palette's carried colour.
+ *
+ * Two places refuse the foreground outright: the identity objective never lets a foreground
+ * placement earn *authority* (`credit` below), and the gamut-coverage axis's `"field-and-accent"`
+ * scope never lets it earn *coverage*. Both refusals are written against the same failure and both
+ * say so — "the foreground is the reading surface, not where an artwork's color identity lives",
+ * and "rewarding it for being chromatic is a documented failure mode ... an artwork's black or
+ * white display type lost the role to a chromatic non-text region".
+ *
+ * The failure is real. The blanket refusal is not the only way to refuse it, and it is now
+ * contradicted by the evidence it was drawn from: the premise "every treatment human review has
+ * preferred carries its chromatic identity in the field and the accent while the text stays
+ * near-neutral" no longer holds, and the coverage axis already records the counter-evidence in its
+ * own comment rather than hiding it.
+ *
+ * `mark-bearing` replaces the blanket refusal with the test the objective already owns for exactly
+ * this question. A foreground is mark-bearing when the treatment is **not simultaneously holding
+ * materially better text in another of its roles** — `demotesBetterText`, the rule that withholds
+ * authority from a non-foreground placement that demoted the artwork's text, asked about the role
+ * that answers it. A chromatic non-text region that took the role from the artwork's display type
+ * fails it, which is the regression class both refusals were written for; the artwork's own mark
+ * colour passes it.
+ *
+ * `blanket` restores the previous behaviour exactly, in both consumers.
+ */
+export const FOREGROUND_MARK_ADMISSION: "blanket" | "mark-bearing" = "blanket"
+
+/**
+ * What counts as "better text" when `demotesBetterText` withholds a role's identity authority.
+ *
+ * The rule exists to stop the artwork's own text being moved out of the text role — the krafty
+ * case, "the text of the artwork is Golden Mango, so the foreground of the palette should also be
+ * golden mango". It implements that by comparing one family's `foregroundEvidence` against **the
+ * foreground this treatment happened to choose**, and withholding authority whenever the former
+ * wins by `identityForegroundClaimMargin`.
+ *
+ * Being better text than whatever a treatment chose is not the same as being the artwork's text.
+ * Where the artwork's strongest text claim belongs to a *third* family the treatment does not use,
+ * `raw-score` withholds authority from a family that would never have held the role under any
+ * arrangement — it is not protecting a demotion, it is charging one role for the other role's
+ * choice. Measured on `0d5cdb`: the red accent is the same colour, in the same role, with the same
+ * credit in both the grey-foreground and gold-foreground arrangements, and it is authorized in one
+ * and not the other; the family with the strongest text claim on that artwork is neither of them.
+ *
+ * `strongest-claim` keeps the whole rule and narrows what it protects to the claim it is about:
+ * the greatest `foregroundEvidence` among the artwork's own obligation families under this
+ * treatment's field. At most one claim can be the artwork's text, and a family that is not it
+ * cannot be demoted out of a role it never had. krafty is unaffected — the golden mango carries
+ * that artwork's strongest claim by a wide margin (0.9465, against 0.8132 for the next obligation),
+ * so the guard still fires on every arrangement that moves it out of the foreground.
+ *
+ * `claimed` — fire only where the classifier's `requiredRole` is `"foreground"` — was designed,
+ * implemented and **rejected on measurement**: it moved 10 of 141 artworks and reversed krafty
+ * outright, because that classifier is *confidently undecided* there (`requiredRole` `"ambiguous"`
+ * at confidence 0.902) while its foreground *score* is decisively the highest. `requiredRole` and
+ * `foregroundEvidence` are two different outputs, and the guard reads the one that answers its
+ * question. The option is kept rather than deleted so the measurement is reproducible.
+ *
+ * `raw-score` restores the previous behaviour exactly.
+ */
+export const TEXT_DEMOTION_EVIDENCE: "raw-score" | "claimed" | "strongest-claim" = "strongest-claim"
+
 export type AlbumArtworkPaletteV2Phase3IdentityRole = "foreground" | "accent" | "ambiguous"
 
 /**
@@ -94,6 +157,8 @@ export type AlbumArtworkPaletteV2Phase3SelectorEvaluation = Readonly<{
 	identityGain: number
 	identityAuthorizedGain: number
 	relationUtility: number
+	/** See `FOREGROUND_MARK_ADMISSION`: does the artwork's evidence say the text role holds a mark. */
+	markBearingForeground: boolean
 	identityRoles: ReadonlyArray<Readonly<{
 		familyId: string
 		role: "foreground" | "accent" | "surface"
@@ -368,6 +433,7 @@ function identityEvaluation(
 	coverage: number
 	gain: number
 	authorizedGain: number
+	markBearingForeground: boolean
 	roles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 }> {
 	const obligations = identity.obligations
@@ -407,9 +473,25 @@ function identityEvaluation(
 	// family the treatment actually made its foreground.
 	const foregroundEvidenceOf = (familyId: string): number => requiredRole(familyId)?.foregroundEvidence ?? 0
 	const placedForegroundEvidence = foregroundEvidenceOf(treatment.familyRoles.foreground)
-	const demotesBetterText = (familyId: string): boolean =>
-		foregroundEvidenceOf(familyId) > placedForegroundEvidence +
+	// The strongest text claim the artwork itself makes, under this treatment's field. See
+	// `TEXT_DEMOTION_EVIDENCE`: at most one obligation can be the artwork's text, and only that one
+	// can be demoted out of the text role.
+	const strongestTextClaim = obligations.reduce(
+		(strongest, { familyId }) => Math.max(strongest, foregroundEvidenceOf(familyId)), 0)
+	const demotesBetterText = (familyId: string): boolean => {
+		if (TEXT_DEMOTION_EVIDENCE === "claimed" && requiredRole(familyId)?.requiredRole !== "foreground") return false
+		if (TEXT_DEMOTION_EVIDENCE === "strongest-claim" && foregroundEvidenceOf(familyId) < strongestTextClaim) return false
+		return foregroundEvidenceOf(familyId) > placedForegroundEvidence +
 			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.identityForegroundClaimMargin
+	}
+	// See `FOREGROUND_MARK_ADMISSION`. The same question `demotesBetterText` asks of a credited
+	// non-foreground placement, asked of the role that answers it: is this treatment holding
+	// materially better text somewhere other than the text role? Every family the treatment places
+	// is asked, because the display type this guards can be sitting in any of them.
+	// The predicate is computed unconditionally and published on the evaluation; each consumer
+	// decides separately whether to read it, so the two admissions can be measured independently.
+	const markBearingForeground = !(["background", "surface", "accent"] as const)
+		.some((role) => demotesBetterText(treatment.familyRoles[role]))
 	let numerator = 0
 	const credited: Array<{ color: OKLab; credit: number }> = []
 	const roles: Array<{ familyId: string; role: "foreground" | "accent" | "surface"; credit: number }> = []
@@ -421,11 +503,16 @@ function identityEvaluation(
 	): void => {
 		const weight = priorityWeight(obligations.find((obligation) => obligation.familyId === familyId)!.priority)
 		numerator += weight * value
-		// The foreground is the reading surface, not where an artwork's color identity lives: every
-		// treatment human review has preferred carries its chromatic identity in the field and the
-		// accent while the text stays near-neutral. A colored foreground therefore earns ordinary
-		// coverage but never authority.
-		if (role !== "foreground" && !demotesBetterText(familyId)) {
+		// The foreground used to be refused here outright, on the premise that every treatment human
+		// review has preferred carries its chromatic identity in the field and the accent while the
+		// text stays near-neutral. `FOREGROUND_MARK_ADMISSION` records why that premise no longer
+		// holds and what replaces it: the foreground earns authority when the artwork's own evidence
+		// says the colour in the text role is one of its marks, and not when it displaced better text.
+		// Note the normalisation has always assumed otherwise — `achievableIdentityCredit` prices the
+		// ceiling as "foreground and a distinct accent", so excluding the foreground from the
+		// numerator left authority structurally at about half of what its own denominator expects.
+		if ((role !== "foreground" || (FOREGROUND_MARK_ADMISSION === "mark-bearing" && markBearingForeground)) &&
+			!demotesBetterText(familyId)) {
 			credited.push({ color, credit: weight * value })
 		}
 		roles.push({ familyId, role, credit: value })
@@ -546,6 +633,7 @@ function identityEvaluation(
 		coverage,
 		gain: coverage * ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain + authorizedGain,
 		authorizedGain,
+		markBearingForeground,
 		roles,
 	}
 }
@@ -592,6 +680,7 @@ function evaluateTreatment(
 		identityGain: identity.gain,
 		identityAuthorizedGain: identity.authorizedGain,
 		relationUtility: utility + identity.gain,
+		markBearingForeground: identity.markBearingForeground,
 		identityRoles: identity.roles,
 	}
 }

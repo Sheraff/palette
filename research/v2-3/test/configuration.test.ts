@@ -1,7 +1,11 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
-import { ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY } from "../src/internal/base-scoring.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY,
+	FOREGROUND_MARK_ADMISSION,
+	TEXT_DEMOTION_EVIDENCE,
+} from "../src/internal/base-scoring.ts"
 import {
 	ALBUM_ARTWORK_PALETTE_V2_POLICY,
 	ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
@@ -72,7 +76,11 @@ test("the reviewed gamut-coverage configuration is unchanged", () => {
 	// The largest weight at which no reviewed-strong artwork's field inverts (acceptance bound).
 	assert.equal(GAMUT_COVERAGE.weight, 0.05)
 	// Foreground excluded on measurement: with it included, an adjudicated incumbent flips on a
-	// foreground swap the reviewer had rejected.
+	// foreground swap the reviewer had rejected. The narrower `"mark-bearing"` scope — admit the
+	// foreground only where the artwork's own evidence says it holds a mark — was measured by the
+	// carrier-ranking arm against the exact complaint the axis records as its counter-evidence, and
+	// rejected: on `0cd48f` the *navy* foreground the complaint is about gains more coverage
+	// (0.3911 -> 0.6003) than the teal it asks for (0.4091 -> 0.5786), and no winner moves.
 	assert.equal(GAMUT_COVERAGE.scope, "field-and-accent")
 	// Both guards are independently load-bearing (each holds a white-ground artwork the other
 	// misses); the ablation is in the track record.
@@ -91,6 +99,22 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	assert.equal(selector.surfaceIdentityCredit, 0.6)
 	// Track C round 4c: a swap out of the foreground is a foreground claim.
 	assert.equal(selector.identityForegroundClaimMargin, 0.04)
+	// Carrier-ranking arm: the margin above protects the artwork's *strongest* text claim, not any
+	// family that merely out-scores the foreground a candidate happened to choose. Measured on
+	// `0d5cdb`: the red accent is the same colour in the same role in both the grey-foreground and
+	// gold-foreground arrangements, and `"raw-score"` authorized it in one and not the other on
+	// behalf of a third family that is not in either palette. `krafty` — the case the rule exists
+	// for — is unaffected, because its golden mango carries that artwork's strongest claim (0.9465
+	// against 0.8132 for the next obligation) and is byte-preserved by the arm's 141-set sweep.
+	// The rejected `"claimed"` variant (fire only on `requiredRole === "foreground"`) is kept as an
+	// option because it *reversed* krafty: that classifier is confidently undecided there
+	// (`"ambiguous"` at confidence 0.902) while its foreground score is decisively the highest.
+	assert.equal(TEXT_DEMOTION_EVIDENCE, "strongest-claim")
+	// Measured and rejected by the same arm: paying a chromatic foreground for identity *authority*
+	// moves `0cd48f` onto an unreviewed green-text arrangement, because the navy it replaces is
+	// itself over `identityDirectionChroma`. The predicate is still computed and published on the
+	// selector evaluation, so re-measuring it costs one constant.
+	assert.equal(FOREGROUND_MARK_ADMISSION, "blanket")
 	// Track C round 3: raising the bound to 6 admitted `placebo`'s brown accent. The *reserve*, not
 	// the bound, was the mechanism that mattered.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations, 4)
