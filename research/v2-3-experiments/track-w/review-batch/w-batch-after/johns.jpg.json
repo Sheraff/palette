@@ -1,0 +1,78 @@
+{
+ "schemaVersion": 1,
+ "label": "w-batch-after",
+ "algorithm": "v2-3",
+ "algorithmIdentity": "v2-3",
+ "image": "johns.jpg",
+ "imagePath": "images/johns.jpg",
+ "sourceSha256": "3c519a67314f999a0e52b005eef4b146a9e43ab70819ce00f6e197c62f01dac1",
+ "byteCount": 79960,
+ "extraction": {
+  "algorithm": "v2-3",
+  "width": 700,
+  "height": 700,
+  "winner": {
+   "background": {
+    "rgb": [
+     13,
+     24,
+     28
+    ],
+    "oklab": [
+     0.20046605169773102,
+     -0.013043807819485664,
+     -0.012039692141115665
+    ],
+    "hex": "#0d181c",
+    "generated": false
+   },
+   "surface": {
+    "rgb": [
+     49,
+     90,
+     146
+    ],
+    "oklab": [
+     0.46584340929985046,
+     -0.023614902049303055,
+     -0.09978887438774109
+    ],
+    "hex": "#315a92",
+    "generated": false
+   },
+   "foreground": {
+    "rgb": [
+     247,
+     248,
+     250
+    ],
+    "oklab": [
+     0.9789322018623352,
+     -0.000272517092525959,
+     -0.002852149773389101
+    ],
+    "hex": "#f7f8fa",
+    "generated": false
+   },
+   "accent": {
+    "rgb": [
+     255,
+     90,
+     98
+    ],
+    "oklab": [
+     0.6897339224815369,
+     0.18639808893203735,
+     0.07286790013313293
+    ],
+    "hex": "#ff5a62",
+    "generated": false
+   },
+   "gradient": false,
+   "collapse": {
+    "surface": false,
+    "accent": false
+   }
+  }
+ }
+}

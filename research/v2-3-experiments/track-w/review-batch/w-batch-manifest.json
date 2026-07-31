@@ -1,0 +1,123 @@
+{
+ "schemaVersion": 1,
+ "generatedBy": "research/v2-3-experiments/track-w/build-batch.ts",
+ "trunk": "979c245",
+ "candidate": "Track O's display-text grant + Track W's obligation-rank bound (branch worktree-agent-a2b36768e355862f0, commit 432f23c)",
+ "labels": { "before": "w-batch-before", "after": "w-batch-after" },
+ "question": "Track W bounded Track O's display-text foreground grant by the artwork's own identity ordering: a family may take the foreground over anything it already outranks, and over nothing it does not. That keeps 6/6 of the endorsed foreground flips, recovers birdsofprey (strong x4), and cuts blast radius from 30.7% to 23.6% of 140 cases. Items 1-4 ask whether the rule's remaining collateral survives review. Items 5-9 are separate standing questions this arm's sweep and bisection data can answer cheaply.",
+ "method": {
+  "before": "REAL extraction with the runtime checked out at 979c245. All eight records reproduce the independent 140-case `trunk-979c245` sweep exactly.",
+  "after": "Items 1-5 are REAL extractions with the candidate runtime, matching the `w-o-rank` sweep exactly. Items 6-8 are LEGAL on-slate treatments — arrangements the UNMODIFIED runtime materialized and scored for that artwork, selected by exact hex match and highest relationUtility, never hand-written.",
+  "corpus": "Unscrambled artworks read from the shared checkout via PALETTE_IMAGES_ROOT (charter, 'Corpus trap'). No scrambled decoy appears as a review item.",
+  "render": "Flat items carry no researchRender. The gradient items (1, 3, 4, 6) carry the two-role-stop descriptor; none has a source-supported midpoint.",
+  "selection": "Items 1-4 are drawn from the rank-bound's verdict-carrying movers AFTER re-mining the live warehouse (169 records, through review-24-coverage). That re-mine reclassified most of them — see `collateralReclassification` — so these four are the movers that genuinely remain undecided, not the largest ones. 08/...08601958 is excluded because review-24 has just adjudicated it."
+ },
+ "collateralReclassification": {
+  "finding": "Track W's EXPERIMENT.md reported '10 verdict-carrying artworks moved as collateral'. Re-mining the live warehouse against each mover's actual recorded correction shows that count is substantially overstated, and the correction favours the rule.",
+  "matchesARecordedCorrectionExactly": [
+   "02/...02f9f581 — review-19 correction asks for foreground #c5ab20 ('the main text is visibly yellow gold like turmeric, so we should use that as the foreground instead of the accent'). The rank bound produces exactly #c5ab20.",
+   "09/...09ee6f68 — review-22 correction asks for foreground #f8e0a0 / accent #f8aebf ('the main text is vanilla'). The rank bound produces exactly that swap.",
+   "04/...0442caec — review-8 gave STRONG to the collapsed-background arrangement #0d140d/#0d140d. Trunk currently emits the non-preferred #11110f/#112b10; the rank bound restores the endorsed one."
+  ],
+  "movesBetweenTwoEquallyEndorsedArrangements": [
+   "07/...075841f6 — review-6 gave STRONG to BOTH sides; trunk emits the `v2-2` side (fg #fdfdfd) and the rank bound emits the `trunk-d-c3` side (fg #d7b184). Both are already endorsed.",
+   "08/...083a2d45 — review-9 gave STRONG to both `v2-2` and `trunk-dca4`; the move goes from one to the other."
+  ],
+  "remainingUndecided": "The four items below, plus 08/...08601958 which review-24 has just taken.",
+  "consequence": "Of nine assessable collateral movers, three reproduce a recorded human correction hex-for-hex, two are already-endorsed-either-way, and four remain open. The integration question is therefore much narrower than the raw 23.6% rate suggests."
+ },
+ "cases": [
+  {
+   "item": 1,
+   "image": "ab67616d00001e0200087b1314ac8e17bc1c6916",
+   "imagePath": "08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+   "standingVerdict": "review-15-white-fg-fresh: acceptable (correction asks accent #ff4e2a); review-16-frames-accents: STRONG on accent #ff4e2a; review-17-vivid-series: STRONG on accent #f94a2f",
+   "moved": "foreground #f1e8df -> #e9a784; accent #e7a680 -> #f3eae1",
+   "decides": "Does the rank-bound foreground rule's collateral survive review? This is the sharpest negative case: review has three times endorsed the WHITE foreground #f1e8df and twice asked for a RED accent instead of the caramel #e7a680. The rule moves the caramel INTO the foreground and puts the near-white in the accent — the opposite of the recorded correction on both roles.",
+   "myRead": "REGRESSION, and the most confidently so in the batch."
+  },
+  {
+   "item": 2,
+   "image": "ab67616d00001e02000e229142cb6dbae156341c",
+   "imagePath": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+   "standingVerdict": "review-17-vivid-series: STRONG on `vivid-series-vivid` (fg #e8ebe2, accent #f5f652); the incumbent it beat also had fg #e8ebe2",
+   "moved": "foreground #e8ebe2 -> #ddc877; accent #d5c675 -> #e8ebe2",
+   "decides": "Same question, second instance. BOTH sides of review-17 carried the white foreground #e8ebe2, so the foreground was not the contested role — the accent was, and review wanted it MORE vivid (#f5f652). The rule instead demotes the endorsed white foreground into the accent.",
+   "myRead": "REGRESSION."
+  },
+  {
+   "item": 3,
+   "image": "havana.jpg",
+   "imagePath": "images/havana.jpg",
+   "standingVerdict": "review-2-gradients: STRONG on `track-b` (fg #f1e9bb, accent #eed076), preferred over `v2-2` (fg #e1824a)",
+   "moved": "foreground #e1824a -> #eed076; accent #eed076 -> #ee655f",
+   "decides": "Whether the rule helps or hurts a case where TRUNK IS ALREADY WRONG. Neither side of this pair is the endorsed arrangement: review preferred a cream foreground #f1e9bb, trunk currently emits the rejected orange #e1824a, and the rule moves to the gold #eed076. A verdict here separates 'the rule broke a good palette' from 'the rule moved a bad palette sideways'.",
+   "myRead": "UNCLEAR — deliberately included because trunk is not the endorsed baseline here."
+  },
+  {
+   "item": 4,
+   "image": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+   "imagePath": "06/ab67616d0000b273000637ffe82ad17bfa0f1073",
+   "standingVerdict": "review-9-fresh: STRONG on accent #99a192; review-14-b2: STRONG on accent #a57e57; review-15-white-fg-fresh: STRONG on accent #a57e57",
+   "moved": "accent #a57e57 -> #99a192 (foreground and field unchanged)",
+   "decides": "Whether the rule's ACCENT-only collateral matters. Both accents have carried a STRONG at some point; the two more recent reviews (14, 15) chose #a57e57, which is what trunk emits, and the rule reverts to the older #99a192. Under the recency rule that is a mild regression — but it is also the smallest move in the batch, so a verdict calibrates how much these low-magnitude reversions cost.",
+   "myRead": "MILD REGRESSION by recency; worth confirming rather than assuming."
+  },
+  {
+   "item": 5,
+   "image": "ab67616d00001e020004ccf0ae91364130886c02",
+   "imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+   "standingVerdict": "review-13-fresh: STRONG (fg #d1e4d0); review-23-fg-movers: STRONG on `o2-before` (fg #d1e4d0), i.e. the white caption was explicitly held against this same leaf-green alternative",
+   "moved": "foreground #d1e4d0 -> #35710f; surface #64a821 -> #77c124; accent #35710f -> #60a912",
+   "decides": "ROBUSTNESS RE-ASK. 'MUSICA AMBIENTE DE LLUVIA CAYENDO' is white letter-spaced caps; #d1e4d0 is that caption. The hold is real but it is FRAGILE: four independent mechanisms move it — Track O's display-text rule, Track W's rank-bound stack, Track W's resolution-relative `resolved`, and Track W's relative component floor — each landing on a different green. The reviewer's own recorded principle is that a strong stands only until a better palette is shown. Asking again with the strongest available challenger settles whether to keep protecting this foreground or release it.",
+   "myRead": "The caption IS the artwork's only lettering, so I expect the white to hold again — but four mechanisms colliding with one outcome is worth one more look."
+  },
+  {
+   "item": 6,
+   "image": "ab67616d0000b273000f815611cd5966187e2051",
+   "imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+   "standingVerdict": "review-19-fresh: weak-fallback, correction accent #f168a0; review-24-coverage: acceptable both sides, correction accent #f168a0 AGAIN",
+   "provenance": "LEGAL — on-slate, relationUtility 0.6771 of 1500 scored treatments",
+   "moved": "foreground #1d1a21 -> #f166a1; accent #bebcbf -> #f166a1 (accent collapsed onto foreground); background and surface unchanged",
+   "decides": "Whether the pink the reviewer has now asked for TWICE is reachable at all. #f166a1 is 0.0047 from the endorsed #f168a0, so the COLOUR exists on the slate — but every one of the treatments carrying it collapses the accent onto the foreground. There is NO on-slate arrangement that keeps the near-black foreground #1d1a21 and puts the pink in the accent, which is exactly what both corrections asked for. So this verdict decides between: (a) the collapsed pink arrangement is acceptable, or (b) the endorsement is unreachable and this is a candidate-generation gap, not a ranking failure — the same class Track O escalated for EL JOSI's red accent.",
+   "myRead": "I expect (b). Flagged as a role-availability defect."
+  },
+  {
+   "item": 7,
+   "image": "ab67616d00001e02000cd48fb26f462cd33760f6",
+   "imagePath": "0c/ab67616d00001e02000cd48fb26f462cd33760f6",
+   "standingVerdict": "review-19-fresh: acceptable, tagged `incomplete-identity`, correction fg #2b848c / accent #eb257d — 'the Night Violet foreground is very close to a black when the artwork has many colors, so we are missing some of its identity'",
+   "provenance": "LEGAL — on-slate, relationUtility 0.6903 of 1045 scored treatments",
+   "moved": "foreground #201f41 -> #e1317c; accent #a7dbd9 -> #e1317c (accent collapsed onto foreground); white field unchanged",
+   "decides": "The same reachability question, second artwork. The requested pink accent #e52f79-class exists on the slate but ONLY in accent-collapsed treatments; the exact #e52f79 carriers additionally abandon the artwork's white ground for a dark green or purple field, so this pair uses the highest-ranked pink-bearing treatment that preserves the white field (#e1317c, 0.0088 from #e52f79). Two artworks failing the same way makes it a class rather than an accident.",
+   "myRead": "Same defect as item 6: the objective cannot offer a chromatic accent alongside a near-neutral foreground on these artworks."
+  },
+  {
+   "item": 8,
+   "image": "johns.jpg",
+   "imagePath": "images/johns.jpg",
+   "standingVerdict": "review-4-ranking: acceptable ('much better with the dark blue surface. I wonder if it wouldn't be even better with a sailor blue surface'); review-5: weak-fallback ('still missing the sailor blue'); review-23-fg-movers: acceptable with correction surface #335c94 ('We are really missing the sailor blue surface')",
+   "provenance": "LEGAL — on-slate, relationUtility 0.7805 of 1407 scored treatments; the winner it lost to scores 0.7972",
+   "moved": "surface #0d181c -> #315a92 (collapse released); foreground #f7f8fa and accent #ff5a62 unchanged",
+   "decides": "The sailor blue has been asked for THREE times across three batches and never delivered. It is on the slate: #315a92 is the family the endorsement's #335c94 publishes, and this exact arrangement — endorsed white foreground, endorsed red accent, sailor blue surface — was materialized and scored, losing to the collapsed winner by 0.0167 of relationUtility. So this is not a candidate-generation gap like items 6-7; it is a RANKING preference for the collapsed surface. A verdict confirming the blue authorises a targeted look at that margin.",
+   "myRead": "WANTED — this is the cleanest available fix in the batch, and the only one where the endorsement is fully reachable."
+  },
+  {
+   "item": 9,
+   "image": "ab67616d0000b273000d5cdbc67ed815efc360ad",
+   "imagePath": "0d/ab67616d0000b273000d5cdbc67ed815efc360ad",
+   "standingVerdict": "review-19-fresh: STRONG on `v2-2` (bg #000000, sf #000000, fg #f7de67, accent #f22632) over `trunk-k2` (fg #c7c6c1, accent #cd1227). Trunk still emits the rejected palette today.",
+   "provenance": "LEGAL — on-slate, relationUtility 0.7463 of 1054 scored treatments",
+   "moved": "foreground #c7c6c1 -> #f7de67 (the endorsed yellow restored); accent #cd1227 -> #c7c6c1",
+   "decides": "Bisected to TWO independent regressions, and this pair asks whether fixing ONE of them is enough. Stage 1 `f0d7705` (Track A winner-ranking refinements) took the accent #f22632 -> #c7c6c1. Stage 2 `4cd3dee` (Track C authorized identity) then took the foreground #f7de67 -> #c7c6c1 and returned a darker red accent. Forcing `authorizedGain = 0` restores the endorsed YELLOW foreground but leaves a GREY accent — which is exactly this `after` side. So: if this palette is acceptable, a foreground-route fix to the authorized-identity term closes the case; if the reviewer still wants the bright red #f22632 they endorsed, the Track A accent stage needs a separate arm. The exact v2-2 palette is NOT re-asked here because review-19 already settled it STRONG.",
+   "myRead": "The yellow is the artwork's lettering and is clearly the important restoration; I expect the grey accent to be judged a weaker but acceptable palette. Reported as a two-mechanism regression either way."
+  }
+ ],
+ "whatAVerdictDecides": {
+  "items 1-4": "Whether the obligation-rank bound is integratable. If 1 and 2 are confirmed regressions, the rule still needs a guard for artworks whose endorsed foreground is a near-white the rule outranks; if they are accepted, the rule ships, because the reclassification above already shows three of its movers reproduce recorded corrections exactly.",
+  "item 5": "Whether MUSICA AMBIENTE's white caption is a robust hold worth protecting in every future arm, or a fragile incumbent that four independent mechanisms are right to move.",
+  "items 6-7": "Whether a twice-requested accent colour being unreachable as a DISTINCT accent is a defect worth a candidate-generation arm. Both artworks can show the colour only by collapsing it onto the foreground.",
+  "item 8": "Whether to spend a targeted look on the 0.0167 relationUtility margin that keeps johns' surface collapsed against three standing requests for the sailor blue.",
+  "item 9": "Whether repairing the authorized-identity route alone is enough for 0d/...0d5cdb, or whether the separate Track A accent regression also needs an arm."
+ }
+}
