@@ -2,9 +2,11 @@ import { apcaContrast, chroma, labAt, mixOKLab, okDistance, oklabToRGB, perceptu
 
 import { ALBUM_ARTWORK_PALETTE_V2_POLICY, ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
 
-import { analyzeBandPopulation } from "./band-representative.ts";
+import type { AlbumArtworkPaletteV2QualityBlock } from "./policy.ts";
 
-import type { BandRepresentativeSample } from "./band-representative.ts";
+import { analyzeBandPopulation, createBandSpatialSpreadAccumulator } from "./band-representative.ts";
+
+import type { BandRepresentativeSample, BandSpatialSpreadLookup } from "./band-representative.ts";
 
 import type { OKLab, RGB, RawImage } from "./types.ts";
 
@@ -329,11 +331,20 @@ export type FieldHypothesis = Readonly<{
 	backgroundRepresentatives: readonly ColorRepresentative[]
 	surfaceRepresentatives: readonly ColorRepresentative[]
 	/**
-	 * For a gradient hypothesis, the RMS spatial extent inside the endpoint band
-	 * of each published representative, index-aligned with the arrays above.
-	 * Absent for flat hypotheses, which have no band.
+	 * For a gradient hypothesis, the RMS spatial extent inside the endpoint band of each
+	 * published representative, index-aligned with the arrays above. Every gradient
+	 * producer supplies it — the seed fit, the band-local endpoint refinement, and the
+	 * native field transition — so a same-family pair from two different producers is
+	 * comparable on this axis instead of one of them silently reading as zero.
+	 *
+	 * Absent as a whole only for flat hypotheses, which have no band. A `null` *entry* is
+	 * a representative whose colour no band pixel carries: the statistic is not measured
+	 * for it, and comparators must treat that as incomparable rather than as zero.
 	 */
-	endpointBandSpread?: Readonly<{ background: readonly number[]; surface: readonly number[] }>
+	endpointBandSpread?: Readonly<{
+		background: readonly (number | null)[]
+		surface: readonly (number | null)[]
+	}>
 
 	fieldFidelity: number
 	surfaceContribution: number
@@ -390,9 +401,11 @@ export type CompletePaletteScores = Readonly<{
 	generatedPenalty: number
 	/**
 	 * Summed RMS spatial extent of the two field endpoints inside their bands.
-	 * Zero for every non-gradient treatment.
+	 * Zero for every non-gradient treatment, which has no band. `null` for a
+	 * gradient whose endpoint spread could not be measured — an axis this
+	 * candidate carries no evidence on, on which it can neither win nor lose.
 	 */
-	endpointBandSpread: number
+	endpointBandSpread: number | null
 }>
 
 export type CompletePaletteTreatment = Readonly<{
@@ -626,9 +639,10 @@ type FieldVariant = Readonly<{
 	 * Summed RMS spatial extent of the two endpoint representatives inside their
 	 * bands. Two variants of one gradient hypothesis differ only in which
 	 * representative carries each endpoint; this says which pair covers more of
-	 * the gradient's surface. Zero when the hypothesis publishes no band spread.
+	 * the gradient's surface. `null` when either endpoint's spread was not
+	 * measured, which is incomparable — never a substitute zero.
 	 */
-	endpointBandSpread: number
+	endpointBandSpread: number | null
 	/**
 	 * Midpoint evidence this variant's hypothesis carries, before the earn decision.
 	 * Present so contrast is measured against the ramp this variant would actually render.
@@ -663,12 +677,12 @@ type BandEndpoint = Readonly<{
 	representative: ColorRepresentative
 	bandShare: number
 	/**
-	 * RMS spatial extent, inside the endpoint band, of the pixels carrying each
-	 * occupied colour bin of this family. Keyed by `quantizedKey`. Lets endpoint
-	 * selection ask how much of the band's *surface* a candidate representative
-	 * actually covers, which colour distance alone cannot express.
+	 * RMS spatial extent, inside the endpoint band, of the pixels carrying a queried
+	 * colour's bin. Lets endpoint selection ask how much of the band's *surface* a
+	 * candidate representative actually covers, which colour distance alone cannot
+	 * express. `null` for a colour no band pixel carries — not measured, not zero.
 	 */
-	bandSpreadByBin: ReadonlyMap<number, number>
+	bandSpread: BandSpatialSpreadLookup
 }>
 
 type EvaluatedGradientFit = Readonly<{
@@ -766,7 +780,12 @@ function mean(values: readonly number[]): number {
 	return values.reduce((sum, value) => sum + value, 0) / values.length
 }
 
-function quantizedKey([lightness, a, b]: OKLab, step = FAMILY_BIN_STEP): number {
+/**
+ * Exported so the other producers of gradient field hypotheses
+ * (`endpoint-refinement.ts`, `field-transition.ts`) bin band colours into exactly the bins
+ * this module's evidence uses, instead of each growing its own quantisation.
+ */
+export function quantizedKey([lightness, a, b]: OKLab, step = FAMILY_BIN_STEP): number {
 	if (step === FAMILY_BIN_STEP) {
 		const lightnessBin = Math.max(0, Math.min(25, Math.floor(lightness / FAMILY_BIN_STEP)))
 		const aBin = Math.max(0, Math.min(20, Math.floor((a + 0.4) / FAMILY_BIN_STEP)))
@@ -2412,7 +2431,7 @@ function endpointBandRepresentatives(
 	return selected.flatMap(({ family, familyIndex, count }) => {
 		let exemplarIndex = -1
 		let exemplarDistance = Infinity
-		const bins = new Map<number, { count: number; sumX: number; sumY: number; sumXX: number; sumYY: number }>()
+		const spread = createBandSpatialSpreadAccumulator((lab) => quantizedKey(lab, evidence.familyBinStep))
 		for (const pixelIndex of fit.domain.pixelIndexes) {
 			// `familyAt` holds the index into `evidence.families`, and family ids are unique per
 			// index, so this is the same test as comparing `.id` — without the double indirection
@@ -2428,24 +2447,10 @@ function endpointBandRepresentatives(
 				exemplarDistance = distance
 				exemplarIndex = pixelIndex
 			}
-			const binKey = quantizedKey(lab, evidence.familyBinStep)
-			const bin = bins.get(binKey) ?? { count: 0, sumX: 0, sumY: 0, sumXX: 0, sumYY: 0 }
-			bin.count += 1
-			bin.sumX += x
-			bin.sumY += y
-			bin.sumXX += x * x
-			bin.sumYY += y * y
-			bins.set(binKey, bin)
+			spread.add(lab, x, y)
 		}
 		if (exemplarIndex < 0) return []
-		const bandSpreadByBin = new Map<number, number>()
-		for (const [binKey, bin] of bins) {
-			const meanX = bin.sumX / bin.count
-			const meanY = bin.sumY / bin.count
-			const varianceX = Math.max(0, bin.sumXX / bin.count - meanX * meanX)
-			const varianceY = Math.max(0, bin.sumYY / bin.count - meanY * meanY)
-			bandSpreadByBin.set(binKey, Math.sqrt(varianceX + varianceY))
-		}
+		const bandSpread = spread.finish()
 		const baseSupport = family.representatives.find(({ support }) => !("generated" in support))?.support
 		if (!baseSupport || "generated" in baseSupport) return []
 		const rgb = rgbAt(evidence.rgbData, exemplarIndex)
@@ -2453,7 +2458,7 @@ function endpointBandRepresentatives(
 		return [{
 			family,
 			bandShare: count / Math.max(1, bandPopulation),
-			bandSpreadByBin,
+			bandSpread,
 			representative: {
 				strategy: "dense-exact" as const,
 				rgb,
@@ -2909,8 +2914,8 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 			.filter((representative, index, values) => values.findIndex(({ rgb }) => sameColor(rgb, representative.rgb)) === index)
 		const surfaceRepresentatives = [surfaceEndpoint.representative, ...surfaceEndpoint.family.representatives]
 			.filter((representative, index, values) => values.findIndex(({ rgb }) => sameColor(rgb, representative.rgb)) === index)
-		const bandSpreadOf = (endpoint: BandEndpoint) => (representative: ColorRepresentative): number =>
-			endpoint.bandSpreadByBin.get(quantizedKey(representative.oklab, evidence.familyBinStep)) ?? 0
+		const bandSpreadOf = (endpoint: BandEndpoint) => (representative: ColorRepresentative): number | null =>
+			endpoint.bandSpread.spreadFor(representative.oklab)
 		const endpointBandSpread = {
 			background: backgroundRepresentatives.map(bandSpreadOf(backgroundEndpoint)),
 			surface: surfaceRepresentatives.map(bandSpreadOf(surfaceEndpoint)),
@@ -3006,15 +3011,24 @@ function buildFieldVariants(
 		/**
 		 * `preferredRepresentatives` re-sorts by strategy, so the published
 		 * spread array is matched by colour identity rather than by index.
+		 *
+		 * `null` is "not measured" and propagates: a pair is only comparable on band
+		 * extent when both of its endpoints were measured.
 		 */
-		const bandSpreadOf = (role: "background" | "surface", representative: ColorRepresentative): number => {
+		const bandSpreadOf = (role: "background" | "surface", representative: ColorRepresentative): number | null => {
 			const published = hypothesis.endpointBandSpread
-			if (!published) return 0
+			if (!published) return null
 			const representatives = role === "background"
 				? hypothesis.backgroundRepresentatives
 				: hypothesis.surfaceRepresentatives
 			const index = representatives.findIndex(({ rgb }) => sameColor(rgb, representative.rgb))
-			return index < 0 ? 0 : (role === "background" ? published.background : published.surface)[index] ?? 0
+			if (index < 0) return null
+			return (role === "background" ? published.background : published.surface)[index] ?? null
+		}
+		const pairBandSpread = (background: ColorRepresentative, surface: ColorRepresentative): number | null => {
+			const first = bandSpreadOf("background", background)
+			const second = bandSpreadOf("surface", surface)
+			return first === null || second === null ? null : first + second
 		}
 		const pairs: Array<readonly [ColorRepresentative | undefined, ColorRepresentative | undefined]> =
 			options.pairing === "cross-pair" && hypothesis.kind !== "one-field"
@@ -3035,7 +3049,7 @@ function buildFieldVariants(
 				treatment: hypothesis.kind,
 				fieldFidelity: hypothesis.fieldFidelity,
 				surfaceContribution: hypothesis.surfaceContribution,
-				endpointBandSpread: bandSpreadOf("background", background) + bandSpreadOf("surface", surface),
+				endpointBandSpread: pairBandSpread(background, surface),
 				fieldMidpoint: hypothesis.gradientEvidence?.fieldMidpoint ?? null,
 			})
 			if (hypothesis.kind !== "one-field") {
@@ -3412,7 +3426,12 @@ export function fieldDirectionKey(treatment: CompletePaletteTreatment): string {
 	].join(":")
 }
 
-function effectiveBlock(treatment: CompletePaletteTreatment, block: keyof CompletePaletteScores): number {
+/**
+ * Only the ranking blocks, never every score field: `endpointBandSpread` is a spatial
+ * extent that may not have been measured at all, so it is not a block one subtracts a
+ * penalty from and ranks by.
+ */
+function effectiveBlock(treatment: CompletePaletteTreatment, block: AlbumArtworkPaletteV2QualityBlock): number {
 	return treatment.scores[block] - treatment.scores.generatedPenalty
 }
 

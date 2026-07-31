@@ -98,6 +98,13 @@ function endpointHypothesis(
 		surfaceFamilyId: surface.family.id,
 		backgroundRepresentatives: background.family.representatives,
 		surfaceRepresentatives: surface.family.representatives,
+		// Same statistic, same binning, same normalisation as the seed gradient fit
+		// publishes, measured over this endpoint's own band population. Without it the
+		// band-extent dominance guard read every band-local candidate as spread zero.
+		endpointBandSpread: {
+			background: background.bandSpread,
+			surface: surface.bandSpread,
+		},
 		fieldFidelity,
 		surfaceContribution: clamp(
 			0.35 * refinement.fit.progression +

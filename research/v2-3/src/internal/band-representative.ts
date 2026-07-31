@@ -37,6 +37,76 @@ export type BandRepresentativeSample = Readonly<{ pixelIndex: number; lab: OKLab
 
 export type BandGeometry = Readonly<{ width: number; height: number }>
 
+/**
+ * How far across the band a given colour is spread, as the RMS spatial extent of the band
+ * pixels that share its colour bin. `null` means the bin is unoccupied in this band — the
+ * statistic is *not measured*, a different claim than a measurement whose value is zero.
+ * Comparators must not conflate the two: an unmeasured axis is incomparable, and a
+ * candidate that publishes nothing on it must neither win nor lose because of it.
+ */
+export type BandSpatialSpreadLookup = Readonly<{
+	spreadFor: (lab: OKLab) => number | null
+	occupiedBinCount: number
+}>
+
+export type BandSpatialSpreadAccumulator = Readonly<{
+	/** `x` and `y` are normalised to `[0, 1]` across the image, as everywhere else here. */
+	add: (lab: OKLab, x: number, y: number) => void
+	finish: () => BandSpatialSpreadLookup
+}>
+
+type SpreadBin = { count: number; sumX: number; sumY: number; sumXX: number; sumYY: number }
+
+const EMPTY_SPREAD: BandSpatialSpreadLookup = Object.freeze({
+	spreadFor: () => null,
+	occupiedBinCount: 0,
+})
+
+/**
+ * The single definition of the endpoint-band spatial-spread statistic, streamed so a caller
+ * never has to materialise a band's pixels. Every producer of a gradient field hypothesis
+ * measures it the same way — same binning, same normalisation — so the values from
+ * different producers are on one scale and a comparator may put them side by side.
+ *
+ * `binKeyOf` is the caller's own colour quantisation, passed in rather than duplicated, so
+ * the bins a band is grouped into are the same bins the rest of that caller's evidence uses.
+ */
+export function createBandSpatialSpreadAccumulator(
+	binKeyOf: (lab: OKLab) => number,
+): BandSpatialSpreadAccumulator {
+	const bins = new Map<number, SpreadBin>()
+	return {
+		add: (lab, x, y) => {
+			const key = binKeyOf(lab)
+			const bin = bins.get(key)
+			if (bin) {
+				bin.count += 1
+				bin.sumX += x
+				bin.sumY += y
+				bin.sumXX += x * x
+				bin.sumYY += y * y
+				return
+			}
+			bins.set(key, { count: 1, sumX: x, sumY: y, sumXX: x * x, sumYY: y * y })
+		},
+		finish: () => {
+			if (bins.size === 0) return EMPTY_SPREAD
+			const spreads = new Map<number, number>()
+			for (const [key, bin] of bins) {
+				const meanX = bin.sumX / bin.count
+				const meanY = bin.sumY / bin.count
+				const varianceX = Math.max(0, bin.sumXX / bin.count - meanX * meanX)
+				const varianceY = Math.max(0, bin.sumYY / bin.count - meanY * meanY)
+				spreads.set(key, Math.sqrt(varianceX + varianceY))
+			}
+			return {
+				spreadFor: (lab) => spreads.get(binKeyOf(lab)) ?? null,
+				occupiedBinCount: spreads.size,
+			}
+		},
+	}
+}
+
 export type BandRepresentative = Readonly<{
 	pixelIndex: number
 	lab: OKLab

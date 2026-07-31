@@ -1,5 +1,9 @@
 import { labAt, okDistance, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts";
 
+import { quantizedKey } from "./palette-core.ts";
+
+import { createBandSpatialSpreadAccumulator } from "./band-representative.ts";
+
 import type { BackgroundFieldDomainEvidence, ColorFamilyEvidence, ColorRepresentative, FieldHypothesis, FieldRoleAssignmentEvidence, GradientDirection, GradientTopology, NativePaletteEvidence } from "./palette-core.ts";
 
 import type { OKLab } from "./types.ts";
@@ -139,6 +143,9 @@ type RegionGraph = Readonly<{
 	nodes: readonly RegionNode[]
 	edges: readonly RegionEdge[]
 	edgesByNode: readonly (readonly RegionEdge[])[]
+	/** Region index per pixel. Already computed while flooding; published so the endpoint
+	 * bands can be walked without a second segmentation. */
+	regionAt: Int32Array
 }>
 
 type TransitionCandidate = Readonly<{
@@ -146,6 +153,12 @@ type TransitionCandidate = Readonly<{
 	trace: FieldTransitionTrace
 	path: readonly RegionNode[]
 	stageColorPositions: readonly number[]
+	/**
+	 * The candidate's own geometry evaluated at a pixel, in the same normalised
+	 * `[0, 1]` coordinates the node-level stage positions use. Lets the endpoint bands be
+	 * cut from the domain the same way the seed gradient fit cuts its own.
+	 */
+	pixelPosition: (x: number, y: number) => number
 }>
 
 type TransitionGeometry = Readonly<{
@@ -361,7 +374,7 @@ function buildRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
 		edgesByNode[edge.first].push(edge)
 		edgesByNode[edge.second].push(edge)
 	}
-	return { nodes, edges, edgesByNode }
+	return { nodes, edges, edgesByNode, regionAt }
 }
 
 function publicRegionEvidence(evidence: NativePaletteEvidence, node: RegionNode): FieldTransitionRegionEvidence {
@@ -547,6 +560,14 @@ function candidateForEndpoints(
 	const position = geometry.topology === "linear"
 		? linearPosition
 		: (node: RegionNode): number => radialSpan <= 1e-12 ? 0 : (radialExtent(node) - centerExtent) / radialSpan
+	// The same two geometries, evaluated at a pixel instead of at a region centroid.
+	const pixelPosition = geometry.topology === "linear"
+		? (x: number, y: number): number => axisLengthSquared <= 1e-12
+			? 0
+			: ((x - firstCentroid[0]) * axisX + (y - firstCentroid[1]) * axisY) / axisLengthSquared
+		: (x: number, y: number): number => geometry.center === null || radialSpan <= 1e-12
+			? 0
+			: (Math.hypot(x - geometry.center[0], y - geometry.center[1]) - centerExtent) / radialSpan
 	const colorPosition = (node: RegionNode): number => endpointDistance <= 1e-12 ? 0 : (
 		(node.family.prototype[0] - first.family.prototype[0]) * endpointDelta[0] +
 		(node.family.prototype[1] - first.family.prototype[1]) * endpointDelta[1] +
@@ -763,6 +784,7 @@ function candidateForEndpoints(
 		domain,
 		path,
 		stageColorPositions: colorPositions,
+		pixelPosition,
 		trace: {
 			fieldDomainId: domainId,
 			topology: geometry.topology,
@@ -785,7 +807,48 @@ function candidateForEndpoints(
 	}
 }
 
-function hypothesisForCandidate(candidate: TransitionCandidate): FieldHypothesis | null {
+/**
+ * The spatial spread, inside this transition's endpoint band, of each candidate
+ * representative's colour bin — the statistic the seed gradient fit publishes, measured
+ * over the transition's own domain and its own declared endpoint interval.
+ *
+ * The band is cut exactly as the seed fit cuts its: the path regions are the domain, the
+ * candidate's geometry gives each pixel a position, the declared endpoint interval gives
+ * the cut, and only pixels of the endpoint's own family count. Representatives are matched
+ * by colour, so a colour the band does not carry reports `null` — not measured — rather
+ * than a zero the comparators would read as a real, and losing, measurement.
+ */
+function endpointBandSpreads(
+	evidence: NativePaletteEvidence,
+	graph: RegionGraph,
+	candidate: TransitionCandidate,
+	node: RegionNode,
+	band: "low" | "high",
+	representatives: readonly ColorRepresentative[],
+): readonly (number | null)[] {
+	const [low, high] = ALBUM_ARTWORK_PALETTE_V2_PHASE_3_FIELD_TRANSITION_ENDPOINT_INTERVAL
+	const pathRegions = new Set(candidate.path.map(({ index }) => index))
+	const spread = createBandSpatialSpreadAccumulator((lab) => quantizedKey(lab, evidence.familyBinStep))
+	const widthDenominator = Math.max(1, evidence.width - 1)
+	const heightDenominator = Math.max(1, evidence.height - 1)
+	for (let pixelIndex = 0; pixelIndex < evidence.pixelCount; pixelIndex++) {
+		if (evidence.familyAt[pixelIndex] !== node.familyIndex) continue
+		if (!pathRegions.has(graph.regionAt[pixelIndex])) continue
+		const x = (pixelIndex % evidence.width) / widthDenominator
+		const y = Math.floor(pixelIndex / evidence.width) / heightDenominator
+		const position = candidate.pixelPosition(x, y)
+		if (band === "low" ? position > low : position < high) continue
+		spread.add(labAt(evidence.labs, pixelIndex), x, y)
+	}
+	const lookup = spread.finish()
+	return representatives.map(({ oklab }) => lookup.spreadFor(oklab))
+}
+
+function hypothesisForCandidate(
+	evidence: NativePaletteEvidence,
+	graph: RegionGraph,
+	candidate: TransitionCandidate,
+): FieldHypothesis | null {
 	if (!candidate.domain.eligible || candidate.path.length < 3) return null
 	const firstNode = candidate.path[0]
 	const secondNode = candidate.path.at(-1)!
@@ -815,6 +878,12 @@ function hypothesisForCandidate(candidate: TransitionCandidate): FieldHypothesis
 		surfaceFamilyId: surface.family.id,
 		backgroundRepresentatives,
 		surfaceRepresentatives,
+		endpointBandSpread: {
+			background: endpointBandSpreads(evidence, graph, candidate, background,
+				backgroundIsFirst ? "low" : "high", backgroundRepresentatives),
+			surface: endpointBandSpreads(evidence, graph, candidate, surface,
+				backgroundIsFirst ? "high" : "low", surfaceRepresentatives),
+		},
 		fieldFidelity,
 		surfaceContribution: clamp(
 			0.35 * progression + 0.25 * trace.colorDirectness +
@@ -887,6 +956,7 @@ function orderedTransitionCandidates(evidence: NativePaletteEvidence, graph: Reg
 
 function supportedPathEvidence(
 	evidence: NativePaletteEvidence,
+	graph: RegionGraph,
 	candidate: TransitionCandidate,
 ): SupportedFieldTransitionPathEvidence {
 	const domainPopulation = Math.max(1, candidate.domain.population)
@@ -962,7 +1032,7 @@ function supportedPathEvidence(
 		legacyEligible: candidate.trace.eligible,
 		eligible: rejectionReasons.length === 0,
 		rejectionReasons,
-		hypothesis: hypothesisForCandidate(candidate),
+		hypothesis: hypothesisForCandidate(evidence, graph, candidate),
 	}
 }
 
@@ -970,7 +1040,7 @@ export function discoverSupportedNativeFieldTransitionPaths(
 	evidence: NativePaletteEvidence,
 ): readonly SupportedFieldTransitionPathEvidence[] {
 	const graph = buildRegionGraph(evidence)
-	return orderedTransitionCandidates(evidence, graph).map((candidate) => supportedPathEvidence(evidence, candidate))
+	return orderedTransitionCandidates(evidence, graph).map((candidate) => supportedPathEvidence(evidence, graph, candidate))
 }
 
 export function discoverNativeFieldTransitions(evidence: NativePaletteEvidence): NativeFieldTransitionDiscovery {
@@ -983,7 +1053,7 @@ export function discoverNativeFieldTransitions(evidence: NativePaletteEvidence):
 			? [...candidate.trace.endpointFamilyIds].sort(compareAscii).join(":")
 			: `${candidate.trace.topology}:${candidate.trace.endpointFamilyIds[1]}`
 		if (acceptedEndpointPairs.has(endpointPair)) return []
-		const hypothesis = hypothesisForCandidate(candidate)
+		const hypothesis = hypothesisForCandidate(evidence, graph, candidate)
 		if (!hypothesis) return []
 		acceptedEndpointPairs.add(endpointPair)
 		return [hypothesis]

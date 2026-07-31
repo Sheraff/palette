@@ -508,7 +508,8 @@ function dominates(
 	let strictlyBetter = false
 	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
 		sameFamilyAssignment(first.treatment, second.treatment) &&
-		second.treatment.scores.endpointBandSpread > first.treatment.scores.endpointBandSpread) {
+		comparableBandSpread(first, second) &&
+		second.treatment.scores.endpointBandSpread! > first.treatment.scores.endpointBandSpread!) {
 		// Covering more of the gradient's surface is evidence in its own right:
 		// a pair that spans more of the endpoint bands is not dominated by a
 		// narrower pair of the same families, however the other axes fall.
@@ -525,6 +526,21 @@ function dominates(
 		if (first.evidenceLevels[axis] > second.evidenceLevels[axis]) strictlyBetter = true
 	}
 	return strictlyBetter
+}
+
+/**
+ * Whether the band-extent axis carries a measurement on *both* candidates.
+ *
+ * Not every gradient producer can measure a representative's spread inside its endpoint
+ * band — a density-synthesized colour may land in a bin no band pixel occupies. Absence is
+ * not a measured zero, and reading it as one is asymmetric: the candidate that published
+ * nothing could never block domination by a same-family candidate that did, while the
+ * reverse always blocked. When either side is unmeasured the axis is simply incomparable,
+ * so neither candidate wins or loses on it and the remaining axes decide.
+ */
+function comparableBandSpread(first: WinnerEvaluation, second: WinnerEvaluation): boolean {
+	return first.treatment.scores.endpointBandSpread !== null &&
+		second.treatment.scores.endpointBandSpread !== null
 }
 
 /**
@@ -566,10 +582,10 @@ function compareEvaluations(
 		if (comparison !== 0) return comparison
 	}
 	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
-		sameFamilyAssignment(first.treatment, second.treatment)) {
+		sameFamilyAssignment(first.treatment, second.treatment) && comparableBandSpread(first, second)) {
 		comparison = compareDescending(
-			first.treatment.scores.endpointBandSpread,
-			second.treatment.scores.endpointBandSpread,
+			first.treatment.scores.endpointBandSpread!,
+			second.treatment.scores.endpointBandSpread!,
 		)
 		if (comparison !== 0) return comparison
 	}

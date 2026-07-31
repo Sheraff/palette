@@ -1,4 +1,8 @@
+import { quantizedKey } from "./palette-core.ts";
+
 import type { ColorFamilyEvidence, ColorRepresentative, ComponentEvidence, GradientDirection, GradientFitDiagnostic, GradientTopology, NativePaletteEvidence, RegionObservation, RegionRoleFactors, SourceSupportRecord } from "./palette-core.ts";
+
+import { createBandSpatialSpreadAccumulator } from "./band-representative.ts";
 
 import { chroma, labAt, okDistance, oklabToRGB, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts";
 
@@ -59,6 +63,14 @@ export type BandLocalEndpoint = Readonly<{
 	family: ColorFamilyEvidence
 	distribution: BandLocalEndpointDistribution
 	representatives: BandLocalEndpointRepresentativeChoices
+	/**
+	 * RMS spatial extent inside this endpoint band of each entry of
+	 * `family.representatives`, index-aligned with it, measured by the same statistic the
+	 * seed gradient fit publishes so the two are comparable. `null` for a representative
+	 * whose colour bin no band pixel occupies — a density-synthesized colour can land
+	 * there — which means *not measured*, never zero.
+	 */
+	bandSpread: readonly (number | null)[]
 }>
 
 export type BandLocalEndpointRefinement = Readonly<{
@@ -829,6 +841,20 @@ function measureBand(
 	const family = buildFamily(
 		evidence, familyId, samples, robust.prototype, measuredComponents.components, representatives,
 	)
+	// `samples` is exactly this band's parent-family population, which is the same set the
+	// seed fit bins in `endpointBandRepresentatives`; binning it the same way makes the two
+	// producers' spreads one measurement rather than two.
+	const spread = createBandSpatialSpreadAccumulator((lab) => quantizedKey(lab, evidence.familyBinStep))
+	const widthDenominator = Math.max(1, evidence.width - 1)
+	const heightDenominator = Math.max(1, evidence.height - 1)
+	for (const sample of samples) {
+		spread.add(
+			sample.lab,
+			(sample.pixelIndex % evidence.width) / widthDenominator,
+			Math.floor(sample.pixelIndex / evidence.width) / heightDenominator,
+		)
+	}
+	const bandSpread = spread.finish()
 	const publicModes = retainedModes.map((mode): BandLocalEndpointMode => {
 		const exemplar = nearestSample(samples, mode.prototype, new Set(mode.pixelIndexes))
 		return {
@@ -864,6 +890,9 @@ function measureBand(
 				localModes: publicModes,
 			},
 			representatives: choices,
+			// `family.representatives` is the array `buildFamily` was handed, so this is
+			// aligned with it by construction; consumers still re-match by colour identity.
+			bandSpread: family.representatives.map(({ oklab }) => bandSpread.spreadFor(oklab)),
 		},
 		rejectionReasons,
 	}
