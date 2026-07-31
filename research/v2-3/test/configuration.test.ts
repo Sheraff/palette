@@ -16,7 +16,10 @@ import {
 	WINNER_SCORING_POLICY,
 } from "../src/internal/winner-scoring.ts"
 import { MAXIMUM_WINNER_QUALITY_LOSS } from "../src/internal/transition-promotion.ts"
-import { DEFAULT_PALETTE_EXTRACTION_OPTIONS } from "../src/internal/palette-core.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE,
+	DEFAULT_PALETTE_EXTRACTION_OPTIONS,
+} from "../src/internal/palette-core.ts"
 
 /**
  * The reviewed configuration, pinned.
@@ -83,6 +86,24 @@ test("charter rule 2: the APCA hard minimum defaults to zero", () => {
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum, 0)
 	assert.equal(DEFAULT_PALETTE_EXTRACTION_OPTIONS.contrastHardMinimum,
 		ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum)
+})
+
+test("the reviewed same-color bar is one number in three places", () => {
+	const distinctness = ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness
+	// Batch 12 (`muse`, `slim`): "we should consider them as the same color, in which case the same
+	// rule as before should apply". Six midpoint judgements bracket the bar — refused at 0.00, 1.00
+	// and 3.01, accepted at 3.64, 9.78, 19.75 and 62.59 — and batch 14 (`placebo`) is the recorded
+	// shadow-material caveat on it.
+	assert.equal(distinctness.sameColor, 3.3)
+	// Track Q: raise these together or the three rules stop meaning the same thing. They are
+	// separate fields only so a library user can raise one on its own.
+	assert.equal(distinctness.foregroundField, distinctness.sameColor)
+	assert.equal(distinctness.gradientEndpoints, distinctness.sameColor)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE, distinctness.sameColor)
+	// It is a same-color-or-not bar, not a contrast floor. `knuckles`, the closest reviewed
+	// foreground/background pair in the corpus, is ΔE 9.19 — so the two role rules cannot start
+	// competing with the APCA minimum, which stays zero and stays a caller parameter.
+	assert.ok(distinctness.foregroundField < 9.19)
 })
 
 test("the ranking quanta have a single source", () => {

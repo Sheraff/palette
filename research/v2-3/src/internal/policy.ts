@@ -70,6 +70,70 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		emergencyMaximumAbsoluteLc: 5,
 		emergencyGeneratedPenalty: 0.18,
 	}),
+	/**
+	 * When two rendered colours in one palette are *the same colour*.
+	 *
+	 * All three bars are the same number because they are the same question asked of three
+	 * different pairs, and human review settled that question once. Batch 12, `muse`: "a midpoint
+	 * cannot be the same color as either endpoint … the midpoint was pitch black and the background
+	 * was pitch black. We should consider that invalid". Batch 12, `slim`, on a pair that was
+	 * measurably distinct and still refused: "While the midpoint of option B is in fact different
+	 * from its background. I cannot visually distinguish them. They are too close, too black, both
+	 * of them … **so we should consider them as the same color**, in which case the same rule as
+	 * before should apply". Batch 14, `placebo`, is the shadow-material caveat recorded on
+	 * `ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE`.
+	 *
+	 * `slim` is why the ruler is CIE76 ΔE and not OKLab. The reviewer's refusal was of two
+	 * *near-black* colours, and OKLab's cube-root transfer has unbounded derivative at zero: one
+	 * 8-bit code step spans `okDistance` 0.0672 at level 0 but 0.0030 at level 254, a 22.6x swing,
+	 * so no single OKLab threshold can express "the same colour" across the tone range. See
+	 * `perceptualDifference` in `color.ts`.
+	 *
+	 * They are three separate fields rather than one shared constant so a library user can raise
+	 * one without the others, in the spirit of charter constraint 2. **None of them is a contrast
+	 * floor**: ΔE 3.3 is roughly one just-noticeable difference and says nothing about legibility.
+	 * The APCA hard minimum stays at `contrast.hardMinimum`, still zero, still a caller parameter.
+	 * The closest reviewed foreground/background pair in the corpus, `knuckles`, is ΔE 9.19 — three
+	 * times this bar.
+	 */
+	distinctness: Object.freeze({
+		/**
+		 * The bar itself, read off six human midpoint judgements rather than tuned: the refused
+		 * midpoints scored 0.00, 1.00 and 3.01, the accepted ones 3.64, 9.78, 19.75 and 62.59.
+		 */
+		sameColor: 3.3,
+		/**
+		 * A foreground perceptually identical to the field it is drawn on is not a foreground.
+		 *
+		 * Track Q measured this on 214 distinct non-scrambled artworks and found the distribution
+		 * sharply bimodal: two artworks below ΔE 1 — one rendering its text at ΔE 0.366 from its own
+		 * background, an APCA Lc of exactly 0.000 — and then nothing at all until ΔE 9.19. Any bar
+		 * in (1, 9) selects the same two artworks, so this one is not a tuned boundary; it is the
+		 * bar review already set, dropped into an empty band.
+		 *
+		 * Charter constraint 2 names this case: a contrast *pathology* is fair game, and "APCA sign
+		 * flips across gradient samples imply a zero-contrast crossing inside the gradient". The
+		 * measured artwork does not imply a crossing, it renders one, because the observability
+		 * guard is a maximum over ramp positions and passes on the far endpoint alone.
+		 */
+		foregroundField: 3.3,
+		/**
+		 * A gradient whose two endpoints are the same colour renders as flat, so claiming a
+		 * gradient is a false claim about the artwork. Charter rule 5 makes an incorrectly allowed
+		 * gradient exactly as bad as an incorrectly prevented one, and this is the allowed
+		 * direction of that error.
+		 *
+		 * The endpoint-level analogue of the midpoint rule, and `slim`'s reasoning applied one pair
+		 * over: two near-blacks the reviewer could not tell apart are one colour. It stands beside
+		 * the `okDistance` endpoint bar rather than replacing it — they refuse different things —
+		 * because that bar cannot see this case at all: the one artwork Track Q measured below this
+		 * threshold is a pair of near-blacks at ΔE 3.0 whose `okDistance` is 0.074, comfortably
+		 * clear of it, while the artwork an OKLab framing flags instead is `okDistance` 0.048 and
+		 * ΔE 5.2 — plainly visible, and admitted here. Of 96 measured gradient winners, one falls
+		 * below this bar.
+		 */
+		gradientEndpoints: 3.3,
+	}),
 	representatives: Object.freeze({
 		maximumSynthesizedOccupiedDistance: 0.025,
 	}),

@@ -1130,6 +1130,9 @@ export function markFieldReferencePrototypes(families: readonly ColorFamilyEvide
 
 const MARK = ALBUM_ARTWORK_PALETTE_V2_POLICY.mark
 
+/** The "same colour" bars. See `ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness`. */
+const DISTINCTNESS = ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness
+
 /**
  * Population-independent evidence that a family is a deliberate mark.
  *
@@ -2823,7 +2826,8 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  * `bandPopulationFraction`, `spatialSpreadRatio`) does not separate them either. Whatever
  * distinguishes field material from shadow material is not yet measured.
  */
-export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE = 3.3
+export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE =
+	ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness.sameColor
 
 /**
  * The midpoint a candidate would actually render, or null for a two-stop ramp.
@@ -3310,17 +3314,26 @@ function buildFieldVariants(
 			if (!background || !surface) continue
 			if (hypothesis.kind !== "one-field" && sameColor(background.rgb, surface.rgb)) continue
 			if (hypothesis.kind === "gradient-field" && okDistance(background.oklab, surface.oklab) < 0.028) continue
-			variants.push({
-				hypothesis,
-				background,
-				surface: hypothesis.kind === "one-field" ? background : surface,
-				gradient: hypothesis.kind === "gradient-field",
-				treatment: hypothesis.kind,
-				fieldFidelity: hypothesis.fieldFidelity,
-				surfaceContribution: hypothesis.surfaceContribution,
-				endpointBandSpread: pairBandSpread(background, surface),
-				fieldMidpoint: hypothesis.gradientEvidence?.fieldMidpoint ?? null,
-			})
+			// A ramp between two colours a viewer would call the same colour renders as flat, so
+			// the gradient claim is refused here while the pair's collapsed variant below is left
+			// standing: the honest treatment of two colours that are one colour is the one that
+			// says so. Measured in ΔE rather than in OKLab because the artworks this catches are
+			// near-black, where no single `okDistance` bar can express sameness — the guard on the
+			// line above admits them. See `distinctness.gradientEndpoints`.
+			if (hypothesis.kind !== "gradient-field" ||
+				perceptualDifference(background.rgb, surface.rgb) >= DISTINCTNESS.gradientEndpoints) {
+				variants.push({
+					hypothesis,
+					background,
+					surface: hypothesis.kind === "one-field" ? background : surface,
+					gradient: hypothesis.kind === "gradient-field",
+					treatment: hypothesis.kind,
+					fieldFidelity: hypothesis.fieldFidelity,
+					surfaceContribution: hypothesis.surfaceContribution,
+					endpointBandSpread: pairBandSpread(background, surface),
+					fieldMidpoint: hypothesis.gradientEvidence?.fieldMidpoint ?? null,
+				})
+			}
 			if (hypothesis.kind !== "one-field") {
 				variants.push({
 					hypothesis,
@@ -3845,8 +3858,14 @@ function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: num
 	if (!surfaceCollapsed && (
 		sameColor(treatment.surface.rgb, treatment.foreground.rgb) || sameColor(treatment.surface.rgb, treatment.accent.rgb)
 	)) throw new Error("Surface has an illegal role equality")
-	if (sameColor(treatment.background.rgb, treatment.foreground.rgb) || sameColor(treatment.background.rgb, treatment.accent.rgb)) {
+	if (sameColor(treatment.background.rgb, treatment.accent.rgb)) {
 		throw new Error("Background has an illegal role equality")
+	}
+	// The published form of the `distinctness.foregroundField` rule `createTreatment` filters on.
+	// Stated as an invariant rather than left implicit because "the text is a different colour from
+	// the field" is the kind of guarantee a caller is entitled to read off the output.
+	if (perceptualDifference(treatment.background.rgb, treatment.foreground.rgb) < DISTINCTNESS.foregroundField) {
+		throw new Error("Foreground is perceptually the same color as the background")
 	}
 	if (!accentCollapsed && sameColor(treatment.accent.rgb, treatment.surface.rgb)) throw new Error("Accent has an illegal role equality")
 	if (surfaceCollapsed && treatment.gradient) throw new Error("A collapsed surface cannot form a gradient")
@@ -3887,7 +3906,13 @@ function createTreatment(
 ): CompletePaletteTreatment | null {
 	const background = variant.background
 	const surface = variant.surface
-	if (sameColor(background.rgb, foreground.rgb) || sameColor(surface.rgb, foreground.rgb)) return null
+	if (sameColor(surface.rgb, foreground.rgb)) return null
+	// Role distinctness used to be byte equality on both sides of this test, which let a treatment
+	// render its text one 8-bit code value away from its own background. `perceptualDifference`
+	// subsumes `sameColor` — an identical pair is ΔE 0 — and refuses the near-identical pair too.
+	// See `distinctness.foregroundField`; this is not a contrast floor and does not touch
+	// `hardMinimum`.
+	if (perceptualDifference(background.rgb, foreground.rgb) < DISTINCTNESS.foregroundField) return null
 	const accentCollapsed = sameColor(accent.rgb, foreground.rgb)
 	if (!accentCollapsed && (
 		sameColor(accent.rgb, background.rgb) || sameColor(accent.rgb, surface.rgb)
