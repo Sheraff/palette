@@ -58,6 +58,56 @@ export function chroma([, a, b]: OKLab): number {
 	return Math.hypot(a, b)
 }
 
+const CIELAB_WHITE_POINT = Object.freeze([0.95047, 1, 1.08883] as const)
+const CIELAB_TOE_LIMIT = 216 / 24389
+const CIELAB_TOE_SLOPE = 841 / 108
+const CIELAB_TOE_OFFSET = 4 / 29
+
+function cielabTransfer(ratio: number): number {
+	return ratio > CIELAB_TOE_LIMIT ? Math.cbrt(ratio) : CIELAB_TOE_SLOPE * ratio + CIELAB_TOE_OFFSET
+}
+
+/**
+ * CIELAB (D65), used *only* as a same-colour-or-not ruler. See `perceptualDifference`.
+ */
+function rgbToCIELab([red, green, blue]: RGB): readonly [number, number, number] {
+	const r = srgbToLinear(red)
+	const g = srgbToLinear(green)
+	const b = srgbToLinear(blue)
+
+	const x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / CIELAB_WHITE_POINT[0]
+	const y = (0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / CIELAB_WHITE_POINT[1]
+	const z = (0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / CIELAB_WHITE_POINT[2]
+
+	const fx = cielabTransfer(x)
+	const fy = cielabTransfer(y)
+	const fz = cielabTransfer(z)
+
+	return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)]
+}
+
+/**
+ * CIE76 colour difference, in ΔE units, between two rendered sRGB colours.
+ *
+ * OKLab is this codebase's working space and stays that way: it is the better space for
+ * *interpolation* and for the family/neighbourhood geometry everything else is built on. But it
+ * is the wrong ruler for the single question "would a viewer call these the same colour?",
+ * because its cube-root transfer has unbounded derivative at zero and therefore inflates
+ * differences between near-black colours. Measured over neutral greys, one 8-bit code-value
+ * step spans `okDistance` 0.0672 at level 0 but only 0.0030 at level 254 — a 22.6x swing — so a
+ * single OKLab threshold is simultaneously far too strict in the shadows and too loose in the
+ * highlights. CIELAB's piecewise transfer has a linear toe below `CIELAB_TOE_LIMIT` precisely to
+ * bound that derivative; the same sweep moves only between ΔE 0.27 and 0.49.
+ *
+ * ΔE is also the scale the perceptual literature states just-noticeable differences on, which is
+ * what lets a threshold here be read off human judgements instead of tuned.
+ */
+export function perceptualDifference(first: RGB, second: RGB): number {
+	const a = rgbToCIELab(first)
+	const b = rgbToCIELab(second)
+	return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2])
+}
+
 export function apcaContrast(foreground: RGB, background: RGB): number {
 	return APCAcontrast(sRGBtoY(foreground), sRGBtoY(background))
 }

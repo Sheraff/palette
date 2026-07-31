@@ -1,4 +1,4 @@
-import { completeTreatmentKey, constructAlbumArtworkPaletteV2Phase3SupplementalTreatments, buildPaletteSeedDomain, DEFAULT_PALETTE_EXTRACTION_OPTIONS } from "./palette-core.ts";
+import { completeTreatmentKey, constructAlbumArtworkPaletteV2Phase3SupplementalTreatments, buildPaletteSeedDomain, DEFAULT_PALETTE_EXTRACTION_OPTIONS, earnedRenderMidpoint } from "./palette-core.ts";
 
 import type { PaletteExtractionOptions } from "./palette-core.ts";
 
@@ -46,13 +46,6 @@ const NO_MIDPOINT = Object.freeze({
 	color: null,
 	provenance: null,
 })
-
-/**
- * How far the field's midpoint colour must sit off the endpoint chord before a third stop is
- * warranted, in family bin steps. One bin step is the same bar the transition-path route
- * already applies to its own intermediate stages.
- */
-const MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS = 1
 
 type WinnerSelection = Readonly<{
 	winner: CompletePaletteTreatment
@@ -216,19 +209,28 @@ function sourceConnectedTypes(
  */
 function earnedFieldMidpoint(
 	winner: CompletePaletteTreatment,
-	familyBinStep: number,
 ): AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor {
-	const evidence = winner.gradientEvidence?.fieldMidpoint
-	if (!winner.gradient || !evidence) return NO_MIDPOINT
-	const chord = mixOKLab(winner.background.oklab, winner.surface.oklab, 0.5)
-	const chordDeviation = okDistance(evidence.oklab, chord)
-	if (chordDeviation < familyBinStep * MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS) return NO_MIDPOINT
-	// A midpoint that is merely one of the endpoints again carries no information and would
-	// render as the same two-stop ramp.
-	if (Math.min(
-		okDistance(evidence.oklab, winner.background.oklab),
-		okDistance(evidence.oklab, winner.surface.oklab),
-	) < familyBinStep) return NO_MIDPOINT
+	if (!winner.gradient) return NO_MIDPOINT
+	// Same call the contrast evidence makes, so the two can never disagree about what renders.
+	//
+	// A veto used to sit here in addition, refusing any midpoint within one bin step of an
+	// endpoint on the stated grounds that it "would render as the same two-stop ramp". That
+	// reason is false, and provably so: writing R3 and R2 for the three- and two-stop ramps,
+	// R3(t) - R2(t) = 2t * (M - chordMid) for t <= 0.5 and 2(1 - t) * (M - chordMid) for
+	// t >= 0.5, so max|R3 - R2| IS the chord deviation, for every triple, and where the midpoint
+	// sits relative to an endpoint has no bearing on how far the render moves. The chord test
+	// alone therefore already answers "does the third stop change the render".
+	//
+	// What that veto was *also* doing, by accident and in the wrong currency, was keeping the
+	// ramp from stopping at a colour it already shows — a real requirement, since a midpoint
+	// equal to an endpoint bends the render maximally while adding no colour. That requirement
+	// now lives in `earnedRenderMidpoint` as an explicit perceptual-distinctness test, measured
+	// in ΔE rather than in OKLab bin steps, because OKLab cannot express it: see
+	// ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE.
+	const evidence = earnedRenderMidpoint(winner.background, winner.surface, winner.gradientEvidence?.fieldMidpoint)
+	if (!evidence) return NO_MIDPOINT
+	const chordDeviation = okDistance(
+		evidence.oklab, mixOKLab(winner.background.oklab, winner.surface.oklab, 0.5))
 	return {
 		kind: "source-supported-three-stop",
 		position: 0.5,
@@ -253,7 +255,6 @@ function applyGradientSupport(
 	selection: WinnerSelection,
 	materialized: readonly MaterializedCandidate[],
 	paths: AlbumArtworkPaletteV2Phase3ArmSupportedGradientPathResult,
-	familyBinStep: number,
 ): Readonly<{
 	winner: CompletePaletteTreatment
 	midpoint: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor
@@ -270,7 +271,7 @@ function applyGradientSupport(
 			winner: baseline,
 			midpoint: transitionMidpoint.kind === "source-supported-three-stop"
 				? transitionMidpoint
-				: earnedFieldMidpoint(baseline, familyBinStep),
+				: earnedFieldMidpoint(baseline),
 		}
 	}
 
@@ -375,7 +376,6 @@ export function extractPaletteDetails(
 		selection,
 		materialized,
 		evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(common.evidence.native),
-		common.evidence.native.familyBinStep,
 	)
 	return { width: image.width, height: image.height, ...gradient }
 }

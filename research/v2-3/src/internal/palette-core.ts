@@ -1,4 +1,4 @@
-import { apcaContrast, chroma, labAt, mixOKLab, okDistance, oklabToRGB, rgbAt, rgbToHex, rgbToOKLab, toLabBuffer } from "./color.ts";
+import { apcaContrast, chroma, labAt, mixOKLab, okDistance, oklabToRGB, perceptualDifference, rgbAt, rgbToHex, rgbToOKLab, toLabBuffer } from "./color.ts";
 
 import { ALBUM_ARTWORK_PALETTE_V2_POLICY, ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
 
@@ -259,6 +259,12 @@ export type FieldMidpointEvidence = Readonly<{
 	/** Share of that band occupied by this colour's own neighbourhood. */
 	occupancyShare: number
 	spatialSpreadRatio: number
+	/**
+	 * How far off the endpoint chord this colour must sit before a third stop is earned.
+	 * Carried here so the earn rule is answerable from the evidence plus a candidate's own
+	 * endpoints, with no access to the family bin step.
+	 */
+	minimumChordDeviation: number
 	provenance: Readonly<{
 		exactSource: true
 		familyId: string
@@ -623,6 +629,11 @@ type FieldVariant = Readonly<{
 	 * the gradient's surface. Zero when the hypothesis publishes no band spread.
 	 */
 	endpointBandSpread: number
+	/**
+	 * Midpoint evidence this variant's hypothesis carries, before the earn decision.
+	 * Present so contrast is measured against the ramp this variant would actually render.
+	 */
+	fieldMidpoint: FieldMidpointEvidence | null
 }>
 
 type GradientFit = Readonly<{
@@ -2460,7 +2471,125 @@ function endpointBandRepresentatives(
 	})
 }
 
+/**
+ * The APCA |Lc| at which an accent *on a gradient* counts as fully observable, for ranking.
+ *
+ * The foreground normalizes its contrast against 90, a text-legibility scale: body copy has to
+ * be read, so more contrast really is better right up to the top of the range. The accent is not
+ * text. The recorded design rule is explicit — the accent is not used for text, it is used for
+ * icons or UI elements — and an icon only has to be findable. Past that point extra contrast
+ * buys nothing a viewer can use, so it must not buy ranking advantage either.
+ *
+ * Normalizing the accent against the full range made this axis monotone in raw contrast all the
+ * way up, which systematically favours whichever candidate accent is most *foreign* to the
+ * artwork: a colour the field does not contain contrasts against that field precisely because it
+ * is alien to it. Reviewed cases show the failure directly — an off-palette accent can beat the
+ * artwork's own on mean *and* minimum |Lc| simultaneously (20.8/15.5 against 15.9/7.8), so no
+ * re-mixing of mean against minimum can separate them. The scale is wrong, not the blend.
+ *
+ * Saturating instead means candidates that are all adequately visible tie on this axis, and the
+ * decision falls through to the axes that should own it — accent fidelity and artwork identity.
+ * The value is where human review has repeatedly put the floor of "clearly good": Lc ≈ 9 outputs
+ * have been judged good, and an accent holding |Lc| ≈ 8 across a gradient was described as
+ * remaining distinguishable over a large part of it. Outcomes are stable anywhere in roughly
+ * 6..12, so this is a plateau rather than a tuned point.
+ */
+const ACCENT_OBSERVABILITY_ADEQUATE_LC = 9
+
+/**
+ * The accent's contrast range on a flat field, unchanged from the reviewed behaviour.
+ *
+ * Only gradient sampling was made render-truthful, so only gradient accent contrast carries new
+ * evidence. A flat treatment's accent pairs are byte-identical to what review already judged;
+ * re-scaling them would move rankings on cases whose evidence did not change, which is exactly
+ * the blast radius a compensating change must not have.
+ */
+const ACCENT_CONTRAST_RANGE = 75
+
 const FIELD_MIDPOINT_BAND = Object.freeze([0.42, 0.58] as const)
+
+/**
+ * How far the field's midpoint colour must sit off the endpoint chord before a third stop is
+ * warranted, in family bin steps. One bin step is the same bar the transition-path route
+ * applies to its own intermediate stages, and — because the maximum difference between the
+ * three-stop and two-stop renders is exactly the chord deviation — it is also a direct bar on
+ * how much the third stop moves the render.
+ */
+export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS = 1
+
+/**
+ * How different, in ΔE, a midpoint colour must be from each endpoint to count as a different
+ * colour at all.
+ *
+ * The chord-deviation test above asks whether the third stop moves the *render*; it is silent on
+ * whether the stop is a colour distinct from the ones already on screen. Those come apart: a
+ * midpoint that equals the background exactly still bends the ramp maximally away from the
+ * chord, because it makes the gradient hold at one end and then run. Review rejected precisely
+ * that output — "a midpoint cannot be the same color as either endpoint", and, of a pair of
+ * near-blacks, "visually indistinguishable … too close, too black … consider them the same
+ * color". So distinctness is a second, independent requirement.
+ *
+ * The threshold is read off those judgements rather than chosen. Six anchors bracket it: the
+ * refused midpoints score 0.00 (identical to the background), 1.00, and 3.01, while the accepted
+ * ones score 3.64, 9.78, 19.75 and 62.59. The 3.01 case was declined on the grounds that the
+ * midpoint was drawn from *shadow* material — "this is not the vibe of the artwork" — which is a
+ * statement about what the colour is made of rather than how far away it is; it is included here
+ * because a bar in (3.01, 3.64) is the only currently available way to refuse it, not because
+ * distance is the right account of it. See the caveat below.
+ *
+ * Note this test is *not* expressible in OKLab: the 1.00 refusal and a 3.64 acceptance sit at
+ * OKLab distance 0.0101 and 0.0100 respectively — the wrong side of each other — which is the
+ * shadow-inflation `perceptualDifference` documents.
+ *
+ * CAVEAT. This bar is known to be over-strict by at least one case: a midpoint at 3.30's far side
+ * (ΔE 2.58) was carried by a *preferred* reviewed output. That preference bundled a midpoint with
+ * an accent change and left no note, so it does not cleanly endorse the midpoint, but it does mean
+ * distance alone cannot be the whole account — the declined case sits *further* from its endpoints
+ * than the preferred one. The band evidence already carried (`occupancyShare`,
+ * `bandPopulationFraction`, `spatialSpreadRatio`) does not separate them either. Whatever
+ * distinguishes field material from shadow material is not yet measured.
+ */
+export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE = 3.3
+
+/**
+ * The midpoint a candidate would actually render, or null for a two-stop ramp.
+ *
+ * The earn decision depends on the endpoints the candidate carries, not only on the measured
+ * band, so it cannot be settled when the evidence is built. Both the renderer and the contrast
+ * evidence ask through here so they can never disagree about what is on screen.
+ *
+ * Two independent things must hold: the third stop has to move the render (chord deviation),
+ * and it has to be a colour the ramp does not already show at an endpoint (perceptual
+ * distinctness).
+ */
+export function earnedRenderMidpoint(
+	background: Readonly<{ rgb: RGB; oklab: OKLab }>,
+	surface: Readonly<{ rgb: RGB; oklab: OKLab }>,
+	midpoint: FieldMidpointEvidence | null | undefined,
+): FieldMidpointEvidence | null {
+	if (!midpoint) return null
+	const chord = mixOKLab(background.oklab, surface.oklab, 0.5)
+	if (okDistance(midpoint.oklab, chord) < midpoint.minimumChordDeviation) return null
+	const endpointDifference = Math.min(
+		perceptualDifference(midpoint.rgb, background.rgb),
+		perceptualDifference(midpoint.rgb, surface.rgb),
+	)
+	if (endpointDifference < ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE) return null
+	return midpoint
+}
+
+/** The rendered field colour at `position`, for a two- or three-stop ramp. */
+export function renderedFieldColor(
+	background: OKLab,
+	surface: OKLab,
+	midpoint: FieldMidpointEvidence | null,
+	position: number,
+): OKLab {
+	if (midpoint === null) return mixOKLab(background, surface, position)
+	return position <= 0.5
+		? mixOKLab(background, midpoint.oklab, position / 0.5)
+		: mixOKLab(midpoint.oklab, surface, (position - 0.5) / 0.5)
+}
 
 /**
  * The representative colour of the field at the gradient's spatial midpoint.
@@ -2497,6 +2626,8 @@ function fieldMidpointEvidence(
 		bandPopulationFraction: samples.length / Math.max(1, fit.domain.pixelIndexes.length),
 		occupancyShare: colorEvidence.share,
 		spatialSpreadRatio: colorEvidence.spatialSpreadRatio,
+		minimumChordDeviation: evidence.familyBinStep *
+			ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEPS,
 		provenance: {
 			exactSource: true,
 			familyId: evidence.families[evidence.familyAt[representative.pixelIndex]].id,
@@ -2905,6 +3036,7 @@ function buildFieldVariants(
 				fieldFidelity: hypothesis.fieldFidelity,
 				surfaceContribution: hypothesis.surfaceContribution,
 				endpointBandSpread: bandSpreadOf("background", background) + bandSpreadOf("surface", surface),
+				fieldMidpoint: hypothesis.gradientEvidence?.fieldMidpoint ?? null,
 			})
 			if (hypothesis.kind !== "one-field") {
 				variants.push({
@@ -2916,6 +3048,7 @@ function buildFieldVariants(
 					fieldFidelity: clamp(hypothesis.fieldFidelity * (1 - hypothesis.surfaceContribution * 0.35)),
 					surfaceContribution: hypothesis.surfaceContribution,
 					endpointBandSpread: 0,
+					fieldMidpoint: null,
 				})
 			}
 		}
@@ -3073,16 +3206,33 @@ function buildIdentityObligationSelection(
 	}
 }
 
+/**
+ * The colours UI content will actually sit on.
+ *
+ * These samples feed every contrast judgement the algorithm makes — foreground utility, the
+ * hue-aware sign guard, accent salience — so they have to describe the *render*, which is what a
+ * reader's eye meets. That is neither the artwork's detected field nor an abstraction of it: the
+ * render contract is a fixed 135-degree ramp between the chosen endpoints, through an earned
+ * midpoint when there is one.
+ *
+ * Sampling a straight two-stop mix for a treatment that renders three stops measures a field
+ * that exists nowhere, and it is wrong in the direction that matters — the third stop is earned
+ * precisely when it moves the ramp furthest from the straight line, so the treatments whose
+ * contrast is most mis-measured are exactly the ones carrying a midpoint.
+ */
 export function fieldSamples(variant: Readonly<{
 	background: Readonly<{ rgb: RGB; oklab: OKLab }>
 	surface: Readonly<{ rgb: RGB; oklab: OKLab }>
 	gradient: boolean
+	fieldMidpoint?: FieldMidpointEvidence | null
 }>): Array<Readonly<{ role: PairContrast["fieldRole"]; position: number; rgb: RGB }>> {
 	if (variant.gradient) {
+		const midpoint = earnedRenderMidpoint(variant.background, variant.surface, variant.fieldMidpoint)
 		return ALBUM_ARTWORK_PALETTE_V2_POLICY.gradient.contrastSamplePositions.map((position) => ({
 			role: "gradient-sample" as const,
 			position,
-			rgb: oklabToRGB(mixOKLab(variant.background.oklab, variant.surface.oklab, position)),
+			rgb: oklabToRGB(renderedFieldColor(
+				variant.background.oklab, variant.surface.oklab, midpoint, position)),
 		}))
 	}
 	const samples: Array<Readonly<{ role: PairContrast["fieldRole"]; position: number; rgb: RGB }>> = [
@@ -3095,7 +3245,7 @@ export function fieldSamples(variant: Readonly<{
 }
 
 function measureContrast(
-	variant: Pick<FieldVariant, "background" | "surface" | "gradient">,
+	variant: Pick<FieldVariant, "background" | "surface" | "gradient" | "fieldMidpoint">,
 	foreground: ColorRepresentative,
 	accent: ColorRepresentative,
 ): ContrastDiagnostics {
@@ -3418,11 +3568,12 @@ function createTreatment(
 		0.5 * clamp(mean(foregroundContrast) / 90) +
 		0.5 * clamp(Math.min(...foregroundContrast) / 90),
 	))
+	const accentScale = variant.gradient ? ACCENT_OBSERVABILITY_ADEQUATE_LC : ACCENT_CONTRAST_RANGE
 	const accentUtility = accentContrast.length === 0
 		? foregroundUtility
 		: Math.sqrt(clamp(
-			0.5 * clamp(mean(accentContrast) / 75) +
-			0.5 * clamp(Math.min(...accentContrast) / 75),
+			0.5 * clamp(mean(accentContrast) / accentScale) +
+			0.5 * clamp(Math.min(...accentContrast) / accentScale),
 		))
 	const separation = (first: ColorRepresentative, second: ColorRepresentative): number =>
 		clamp((okDistance(first.oklab, second.oklab) - MINIMUM_DISTINCT_DISTANCE) / 0.1)
@@ -3672,6 +3823,7 @@ function buildCompletePaletteTreatmentDomain(
 				fieldFidelity: clamp(sourceHypothesis.fieldFidelity * 0.35),
 				surfaceContribution: 0,
 				endpointBandSpread: 0,
+				fieldMidpoint: null,
 			}
 			const emergencySourceOptions = retainRoleFamilyDirections(supportedRepresentatives, 8, obligationFamilyIds)
 			for (const option of emergencySourceOptions) {
