@@ -1197,6 +1197,38 @@ function signatureRoleScore(family: ColorFamilyEvidence): number {
 	return clamp(0.55 * family.signatureScore + 0.45 * family.signatureAccentObservation)
 }
 
+/**
+ * `signatureRoleScore` with its one population-normalised term repaired by mark evidence —
+ * for scoring an accent the treatment has **already** put on screen, never for deciding who
+ * gets to be a candidate.
+ *
+ * That division is the whole point. Track E's revision 2 established the rule this respects:
+ * *mark evidence repairs a handicap in fair competition, it does not confer an entitlement*.
+ * Review rejected substituting it into the identity-obligation shortlist, because that
+ * manufactures a claim ("this family must appear") out of a repaired measurement. Nothing here
+ * touches candidacy: lane ranking, obligation nomination and the accent shortlist all keep
+ * reading the unrepaired `signatureRoleScore`, so which families compete is decided exactly as
+ * before. What changes is that once a family has won its place on its own region evidence, the
+ * quality domain stops charging it for being small.
+ *
+ * The handicap is real and it is charged three times over. `signatureRoleScore` multiplies into
+ * `accentIdentity`, `accentFidelity` and `accentEconomy`, and 25 % of its `signatureScore` half
+ * is `coherentSupport = largestComponentFraction / 0.002` — a pure population ratio. Measured on
+ * an artwork whose album title is the accent human review asked for: the title's family scores
+ * `coherentSupport = 0.116` against the incumbent near-black's saturated `1.000`, though the
+ * title is nine qualifying marks of eleven components and carries the highest `markSupport` in
+ * the artwork. Track E measured this same substitution as a no-op on its 38-case sweep and left
+ * it out rather than carry an unexercised path, noting in this file that it "remains the obvious
+ * next site if evidence for it ever appears". The evidence appeared: human review has now named
+ * the wanted accent on six artworks of this class.
+ */
+function signatureAccentRoleScore(family: ColorFamilyEvidence): number {
+	const coherentSupport = clamp(family.largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
+	const repaired = clamp(family.signatureScore +
+		SIGNATURE_COHERENT_SUPPORT_WEIGHT * (Math.max(coherentSupport, family.markSupport) - coherentSupport))
+	return clamp(0.55 * repaired + 0.45 * family.signatureAccentObservation)
+}
+
 type RankedRoleOption<TExtra> = Readonly<{
 	family: ColorFamilyEvidence
 	representative: ColorRepresentative
@@ -1393,9 +1425,10 @@ function distinctAccentFidelity(
 	family: ColorFamilyEvidence,
 	accent: ColorRepresentative,
 	foreground: ColorRepresentative,
+	roleScore: (family: ColorFamilyEvidence) => number = signatureRoleScore,
 ): number {
 	const separation = clamp((okDistance(accent.oklab, foreground.oklab) - MINIMUM_DISTINCT_DISTANCE) / 0.18)
-	return signatureRoleScore(family) * Math.sqrt(separation)
+	return roleScore(family) * Math.sqrt(separation)
 }
 
 export function buildNativePaletteEvidence(
@@ -1676,14 +1709,14 @@ export function buildNativePaletteEvidence(
 			0.13 * quadrantCoverage +
 			0.15 * textureCalm,
 		)
-		const coherentSupport = clamp(largestComponentFraction / 0.002)
+		const coherentSupport = clamp(largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
 		const repeatCount = family.components.filter(({ population }) => population / pixelCount >= 0.00025).length
 		const repeatedSupport = clamp((repeatCount - 1) / 3)
 		const distinctive = clamp(localContrast / 0.16)
 		const chromatic = clamp(chroma(prototype) / 0.18)
 		const notBroad = 1 - clamp((populationFraction - 0.18) / 0.35)
 		const signatureScore = clamp(
-			0.25 * coherentSupport +
+			SIGNATURE_COHERENT_SUPPORT_WEIGHT * coherentSupport +
 			0.18 * componentCoherence +
 			0.16 * repeatedSupport +
 			0.22 * distinctive +
@@ -2514,6 +2547,16 @@ const ACCENT_OBSERVABILITY_ADEQUATE_LC = 9
  * the blast radius a compensating change must not have.
  */
 const ACCENT_CONTRAST_RANGE = 75
+
+/**
+ * The population ratio inside `signatureScore`, and its weight there. Named because
+ * `signatureAccentRoleScore` has to repair exactly this term with exactly these numbers — a
+ * repair computed from different constants than the score it repairs would be a second scoring
+ * rule wearing the first one's name.
+ */
+const SIGNATURE_COHERENT_SUPPORT_SCALE = 0.002
+
+const SIGNATURE_COHERENT_SUPPORT_WEIGHT = 0.25
 
 const FIELD_MIDPOINT_BAND = Object.freeze([0.42, 0.58] as const)
 
@@ -3641,10 +3684,12 @@ function createTreatment(
 	const fieldCoverage = surfaceCollapsed
 		? backgroundCoverage
 		: clamp(Math.max(backgroundCoverage, surfaceCoverage) + 0.25 * Math.min(backgroundCoverage, surfaceCoverage) * variant.surfaceContribution)
-	const accentIdentity = accentCollapsed || accentFamily === null ? 0 : signatureRoleScore(accentFamily)
+	// The three sites where an accent's own evidence is scored, all reading the mark-repaired
+	// role score. See `signatureAccentRoleScore`: candidacy is decided upstream and unrepaired.
+	const accentIdentity = accentCollapsed || accentFamily === null ? 0 : signatureAccentRoleScore(accentFamily)
 	const accentFidelity = accentCollapsed
 		? clamp(1 - accentOpportunity)
-		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground)
+		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground, signatureAccentRoleScore)
 	const foregroundSignedContrasts = contrast.pairs
 		.filter(({ role }) => role === "foreground")
 		.map(({ signedLc }) => signedLc)
@@ -3691,7 +3736,7 @@ function createTreatment(
 		: variant.surfaceContribution
 	const accentEconomy = accentCollapsed
 		? 1 - accentOpportunity
-		: accentFamily === null ? 0 : signatureRoleScore(accentFamily) * separation(accent, foreground)
+		: accentFamily === null ? 0 : signatureAccentRoleScore(accentFamily) * separation(accent, foreground)
 	const economy = clamp((surfaceFidelity + accentEconomy) / 2)
 	const fieldFidelity = variant.fieldFidelity
 	const fieldStructure = fieldFidelity * Math.sqrt(surfaceFidelity)
