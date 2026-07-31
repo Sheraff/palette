@@ -1,0 +1,292 @@
+{
+	"label": "a10-gain-006",
+	"deterministic": true,
+	"rows": [
+		{
+			"id": "johns",
+			"group": "target",
+			"background": "#0d181c",
+			"surface": "#0d181c",
+			"foreground": "#f7f8fa",
+			"accent": "#ff5a62",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "elephunk",
+			"group": "target",
+			"background": "#022833",
+			"surface": "#022833",
+			"foreground": "#f5fbd7",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "meteora",
+			"group": "target",
+			"background": "#a48f72",
+			"surface": "#a48f72",
+			"foreground": "#000000",
+			"accent": "#161109",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "skap",
+			"group": "target",
+			"background": "#ffffff",
+			"surface": "#5d763c",
+			"foreground": "#000103",
+			"accent": "#be814b",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "vvbrown",
+			"group": "target",
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#e6e622",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "slim",
+			"group": "target",
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "greenday",
+			"group": "target",
+			"background": "#fefefe",
+			"surface": "#fefefe",
+			"foreground": "#000211",
+			"accent": "#c13033",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "placebo",
+			"group": "target",
+			"background": "#607b76",
+			"surface": "#a0a39a",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "knuckles",
+			"group": "regression",
+			"background": "#beb2c6",
+			"surface": "#7b80a8",
+			"foreground": "#d8cbdd",
+			"accent": "#60aac5",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "disney",
+			"group": "regression",
+			"background": "#74c044",
+			"surface": "#2199d6",
+			"foreground": "#fbfdfc",
+			"accent": "#c72690",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "doja",
+			"group": "regression",
+			"background": "#fd75b5",
+			"surface": "#f79e80",
+			"foreground": "#fff6fc",
+			"accent": "#ce5e52",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "loups",
+			"group": "regression",
+			"background": "#fa7b34",
+			"surface": "#ebda8a",
+			"foreground": "#fde5d9",
+			"accent": "#fab14a",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "black",
+			"group": "regression",
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#575757",
+			"accent": "#575757",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A+"
+		},
+		{
+			"id": "orelsan",
+			"group": "regression",
+			"background": "#293949",
+			"surface": "#0c1222",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "krafty",
+			"group": "regression",
+			"background": "#050306",
+			"surface": "#680b3a",
+			"foreground": "#eb0a8a",
+			"accent": "#f7a223",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "nobs",
+			"group": "regression",
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "offpanel-09",
+			"group": "offpanel",
+			"background": "#000000",
+			"surface": "#21203f",
+			"foreground": "#f5f7f4",
+			"accent": "#15a6a9",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "offpanel-03",
+			"group": "offpanel",
+			"background": "#050a06",
+			"surface": "#121e10",
+			"foreground": "#cfd4c0",
+			"accent": "#51613a",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "offpanel-11",
+			"group": "offpanel",
+			"background": "#0e1317",
+			"surface": "#2d4a84",
+			"foreground": "#f5f9fa",
+			"accent": "#8d9fc3",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "offpanel-05",
+			"group": "offpanel",
+			"background": "#eff3f6",
+			"surface": "#d6d7dc",
+			"foreground": "#121117",
+			"accent": "#86858b",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "artofficial",
+			"group": "regression",
+			"background": "#31305c",
+			"surface": "#040325",
+			"foreground": "#bdc1ca",
+			"accent": "#f5e20c",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "slipknot",
+			"group": "regression",
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A+"
+		},
+		{
+			"id": "muse",
+			"group": "regression",
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#10a4d4",
+			"gradient": true,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "ybbb",
+			"group": "regression",
+			"background": "#83080a",
+			"surface": "#83080a",
+			"foreground": "#f8eeb3",
+			"accent": "#0d0b0e",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		},
+		{
+			"id": "toxicity",
+			"group": "regression",
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S-A-"
+		},
+		{
+			"id": "snarky",
+			"group": "regression",
+			"background": "#c7bf36",
+			"surface": "#c7bf36",
+			"foreground": "#020c03",
+			"accent": "#fcfdf5",
+			"gradient": false,
+			"midpoint": null,
+			"collapse": "S+A-"
+		}
+	]
+}

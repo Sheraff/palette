@@ -1,0 +1,39 @@
+Track M accent-vividness term — REJECTED, kept only so the calibration can be reproduced.
+
+Apply to research/v2-3/src/internal/palette-core.ts in `createTreatment`, at the three
+accent-quality sites, then run with TRACK_M_VIVIDNESS (strength, 0 = trunk) and
+TRACK_M_FULL_CHROMA (yardstick, default 0.09 = identityDirectionFullChroma).
+
+1. Add near `const ACCENT_CONTRAST_RANGE = 75`:
+
+	const TRACK_M_FULL_CHROMA = Number(process.env.TRACK_M_FULL_CHROMA ?? 0.09)
+
+2. Insert immediately before the "three sites" comment in `createTreatment`:
+
+	const vividnessStrength = Number(process.env.TRACK_M_VIVIDNESS ?? 0)
+	const accentVividness = vividnessStrength === 0
+		? 1
+		: 1 - vividnessStrength + vividnessStrength * clamp(chroma(accent.oklab) / TRACK_M_FULL_CHROMA)
+
+3. Multiply the three accent-quality terms by `accentVividness`:
+
+	const accentIdentity = accentCollapsed || accentFamily === null
+		? 0
+		: signatureAccentRoleScore(accentFamily) * accentVividness
+
+	const accentFidelity = accentCollapsed
+		? clamp(1 - accentOpportunity)
+		: accentFamily === null ? 0
+		: distinctAccentFidelity(accentFamily, accent, foreground, signatureAccentRoleScore) * accentVividness
+
+	const accentEconomy = accentCollapsed
+		? 1 - accentOpportunity
+		: accentFamily === null ? 0
+		: signatureAccentRoleScore(accentFamily) * separation(accent, foreground) * accentVividness
+
+With TRACK_M_VIVIDNESS unset the treatment scoring is byte-identical to trunk, which is how
+data/trunk-3cb2ecd.json was produced from the same working tree.
+
+Calibration result: the anchor flips only at TRACK_M_FULL_CHROMA=0.22 TRACK_M_VIVIDNESS=1.0,
+and that setting changes 52 of 109 cases and destroys 30 reviewed-and-applied palettes to gain
+one. Guardrail damage begins at TRACK_M_VIVIDNESS=0.3.

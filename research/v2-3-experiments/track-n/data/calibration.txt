@@ -1,0 +1,45 @@
+=== TRACK_N_VIVIDNESS = 0
+--- must FLIP to the vivid accent
+OK   08/ab67616d00001e0200087b1314ac8e17bc1c6916          #020401 #311f13 #f1e8df #e7a680 true false false -
+OK   06/ab67616d00001e020006eb2197bdb0a7b9392108          #361a05 #220b05 #bbba8a #8a7c33 false false false -
+OK   0e/ab67616d00001e02000e229142cb6dbae156341c          #101b15 #dd5839 #e8ebe2 #d5c675 false false false -
+OK   0a/ab67616d00001e02000a8aa1dafa651976a7bb44          #040301 #491600 #fa8a02 #8f3908 true false false -
+OK   0b/ab67616d00001e02000b87c4345d251dd50300f8          #efcf92 #cca467 #00093c #b68646 false false false -
+OK   0d/ab67616d00001e02000d457f4b8829a59481e78b          #fd524b #f9a94a #fdfcaa #fb8257 false false false -
+OK   02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg      #fefefe #fefefe #0a0919 #12356d false true false -
+--- must HOLD the incumbent accent
+OK   05/ab67616d0000b273000531830819a9db4885e928          #7c4a27 #e7962b #fbfbef #fcdc65 true false false #6f4221
+OK   0a/ab67616d0000b273000a392cb5a08d9801562845          #242424 #000000 #f7f7f5 #ffd800 false false false -
+OK   08/ab67616d0000b2730008601958194a047b8e75a3          #623c39 #623c39 #faf4e8 #fbb94b false true false -
+OK   05/ab67616d00001e020005a54a9ea60f48619788f1          #950303 #bc0002 #f9fef7 #6c0808 true false false -
+OK   01/ab67616d0000b27300014fb430dd1b693e653121.jpg      #11130e #23761e #f5f5f5 #fbd17f true false false -
+=== TRACK_N_VIVIDNESS = 1.0
+--- must FLIP to the vivid accent
+OK   08/ab67616d00001e0200087b1314ac8e17bc1c6916          #020401 #311f13 #f1e8df #e7a680 true false false -
+OK   06/ab67616d00001e020006eb2197bdb0a7b9392108          #361a05 #220b05 #bbba8a #8a7c33 false false false -
+OK   0e/ab67616d00001e02000e229142cb6dbae156341c          #111e14 #dc5738 #e8ebe2 #d5c675 false false false -
+OK   0a/ab67616d00001e02000a8aa1dafa651976a7bb44          #040301 #491600 #fa8a02 #8f3908 true false false -
+OK   0b/ab67616d00001e02000b87c4345d251dd50300f8          #efcf92 #cca467 #00093c #b68646 false false false -
+OK   0d/ab67616d00001e02000d457f4b8829a59481e78b          #fd524b #f9a94a #fdfcaa #fb8257 false false false -
+OK   02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg      #fefefe #fefefe #000000 #12356d false true false -
+--- must HOLD the incumbent accent
+OK   05/ab67616d0000b273000531830819a9db4885e928          #7c4a27 #e7962b #fbfbef #fcdc65 true false false #6f4221
+OK   0a/ab67616d0000b273000a392cb5a08d9801562845          #242424 #000000 #f7f7f5 #ffd800 false false false -
+OK   08/ab67616d0000b2730008601958194a047b8e75a3          #623c39 #623c39 #faf4e8 #fbb94b false true false -
+OK   05/ab67616d00001e020005a54a9ea60f48619788f1          #b20005 #780002 #f9fef7 #bc0203 true false false #ad060e
+OK   01/ab67616d0000b27300014fb430dd1b693e653121.jpg      #16070c #206316 #f5f5f5 #fbd17f true false false #111310
+=== TRACK_N_VIVIDNESS = 4.0
+--- must FLIP to the vivid accent
+OK   08/ab67616d00001e0200087b1314ac8e17bc1c6916          #020401 #311f13 #f1e8df #e7a680 true false false -
+OK   06/ab67616d00001e020006eb2197bdb0a7b9392108          #361a05 #220b05 #bbba8a #8a7c33 false false false -
+OK   0e/ab67616d00001e02000e229142cb6dbae156341c          #111e14 #dc5738 #e8ebe2 #d5c675 false false false -
+OK   0a/ab67616d00001e02000a8aa1dafa651976a7bb44          #040301 #491600 #fa8a02 #8f3908 true false false -
+OK   0b/ab67616d00001e02000b87c4345d251dd50300f8          #efcf92 #cca467 #00093c #b68646 false false false -
+OK   0d/ab67616d00001e02000d457f4b8829a59481e78b          #fd524b #f9a94a #fdfcaa #fb8257 false false false -
+OK   02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg      #fefefe #fefefe #000000 #12356d false true false -
+--- must HOLD the incumbent accent
+OK   05/ab67616d0000b273000531830819a9db4885e928          #7c4a27 #e7962b #fbfbef #fcdc65 true false false #6f4221
+OK   0a/ab67616d0000b273000a392cb5a08d9801562845          #242424 #000000 #f7f7f5 #ffd800 false false false -
+OK   08/ab67616d0000b2730008601958194a047b8e75a3          #623c39 #623c39 #faf4e8 #fbb94b false true false -
+OK   05/ab67616d00001e020005a54a9ea60f48619788f1          #b20005 #780002 #f9fef7 #bc0203 true false false #ad060e
+OK   01/ab67616d0000b27300014fb430dd1b693e653121.jpg      #16070c #206316 #f5f5f5 #fbd17f true false false #111310

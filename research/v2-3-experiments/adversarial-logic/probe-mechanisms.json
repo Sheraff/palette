@@ -1,0 +1,2670 @@
+[
+	{
+		"image": "artofficial-scrambled.jpg",
+		"timings": {
+			"evidence": 2540,
+			"seedTotal": 3678,
+			"diagnoseGradientFits": 139,
+			"discoverNativeFieldTransitions": 1002,
+			"discoverSupportedPaths": 921,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.014860969631095514,
+			"hexA": "#32315b,#040325,#bbb5c1,#f1e612",
+			"hexB": "#33325c,#04002a,#bbb5c1,#f1e612",
+			"relationUtilityDelta": 0.00013407903146966937
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0149,
+		"frontierSize": 77,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-3746:family-1540",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 4,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-8115",
+					"markSupport": 0.032,
+					"total": 0.063,
+					"connected": 0.017
+				},
+				{
+					"familyId": "family-6771",
+					"markSupport": 0.006,
+					"total": 0.049,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-5091",
+					"markSupport": 0.001,
+					"total": 0.027,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-6478",
+					"markSupport": 0.008,
+					"total": 0.011,
+					"connected": 0.004
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "birdsofprey-scrambled.jpg",
+		"timings": {
+			"evidence": 1083,
+			"seedTotal": 4509,
+			"diagnoseGradientFits": 241,
+			"discoverNativeFieldTransitions": 377,
+			"discoverSupportedPaths": 329,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.01022938596393856,
+			"hexA": "#181677,#181677,#40cbac,#bcddb0",
+			"hexB": "#1d127b,#1d127b,#40cbac,#bcddb0",
+			"relationUtilityDelta": 0.00009086822374482217
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0102,
+		"frontierSize": 152,
+		"domainKinds": {
+			"diffuse-composite": {
+				"total": 12,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 36,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "one:family-3302",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 21,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-8116",
+					"markSupport": 0.011,
+					"total": 0.045,
+					"connected": 0.005
+				},
+				{
+					"familyId": "family-4694",
+					"markSupport": 0.019,
+					"total": 0.057,
+					"connected": 0.009
+				},
+				{
+					"familyId": "family-9018",
+					"markSupport": 0.003,
+					"total": 0.017,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-3791",
+					"markSupport": 0.006,
+					"total": 0.035,
+					"connected": 0.003
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "black-scrambled.jpg",
+		"timings": {
+			"evidence": 199,
+			"seedTotal": 531,
+			"diagnoseGradientFits": 162,
+			"discoverNativeFieldTransitions": 70,
+			"discoverSupportedPaths": 52,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": false,
+			"sameGradient": true,
+			"maxRoleDistance": 0.08492368459701544,
+			"hexA": "#000000,#000000,#575757,#575757",
+			"hexB": "#000000,#000000,#6f6f6f,#565656",
+			"relationUtilityDelta": 0.004695766376823007
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 108,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-220",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 1,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-5953",
+					"markSupport": 0.065,
+					"total": 0.027,
+					"connected": 0.005
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "disney-scrambled.avif",
+		"timings": {
+			"evidence": 115,
+			"seedTotal": 268,
+			"diagnoseGradientFits": 99,
+			"discoverNativeFieldTransitions": 11,
+			"discoverSupportedPaths": 12,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.26705739099589776,
+			"hexA": "#74c044,#f68121,#fbfdf8,#c72690",
+			"hexB": "#2199d6,#c72690,#fbfdf8,#f68121",
+			"relationUtilityDelta": 0.014109947645832621
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 85,
+		"domainKinds": {
+			"diffuse-composite": {
+				"total": 10,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 38,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-8077:family-8203",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 9,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10783",
+					"markSupport": 0.977,
+					"total": 0.281,
+					"connected": 0.046
+				},
+				{
+					"familyId": "family-8623",
+					"markSupport": 0.08,
+					"total": 0.054,
+					"connected": 0.011
+				},
+				{
+					"familyId": "family-7342",
+					"markSupport": 0.333,
+					"total": 0.053,
+					"connected": 0.014
+				},
+				{
+					"familyId": "family-7194",
+					"markSupport": 0.154,
+					"total": 0.032,
+					"connected": 0.007
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "doja-scrambled.jpg",
+		"timings": {
+			"evidence": 241,
+			"seedTotal": 3116,
+			"diagnoseGradientFits": 1240,
+			"discoverNativeFieldTransitions": 71,
+			"discoverSupportedPaths": 118,
+			"endpointRefinements": 1621
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.08567745882697919,
+			"hexA": "#fd75b5,#f79e80,#7e091b,#f04d6a",
+			"hexB": "#fd75b5,#f79e80,#5b0504,#f04d6a",
+			"relationUtilityDelta": -0.001656477182300442
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 263,
+		"domainKinds": {
+			"connected": {
+				"total": 38,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 10,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-0:radial-center:center-out:family-8241:family-8642:#fe6faf:#f38c8d",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 8,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 8,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-9942",
+					"markSupport": 0.031,
+					"total": 0.196,
+					"connected": 0.029
+				},
+				{
+					"familyId": "family-9503",
+					"markSupport": 0.045,
+					"total": 0.091,
+					"connected": 0.013
+				},
+				{
+					"familyId": "family-10803",
+					"markSupport": 0.087,
+					"total": 0.119,
+					"connected": 0.034
+				},
+				{
+					"familyId": "family-5155",
+					"markSupport": 0.023,
+					"total": 0.056,
+					"connected": 0.021
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 330,
+			"chordPass": 330,
+			"bothPass": 330,
+			"killedByEndpointRule": 0,
+			"winnerMid": {
+				"chordDeviation": 0.0669,
+				"endpointDistance": 0.044,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "elephunk-scrambled.jpg",
+		"timings": {
+			"evidence": 257,
+			"seedTotal": 506,
+			"diagnoseGradientFits": 68,
+			"discoverNativeFieldTransitions": 95,
+			"discoverSupportedPaths": 123,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0036401068537363795,
+			"hexA": "#55919b,#55919b,#fbfcd0,#022833",
+			"hexB": "#579099,#579099,#fbfcd0,#022833",
+			"relationUtilityDelta": -0.000031045830728881896
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0036,
+		"frontierSize": 91,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "one:family-6792",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 3,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-8600",
+					"markSupport": 0.041,
+					"total": 0.196,
+					"connected": 0.026
+				},
+				{
+					"familyId": "family-7739",
+					"markSupport": 0.024,
+					"total": 0.132,
+					"connected": 0.013
+				},
+				{
+					"familyId": "family-5975",
+					"markSupport": 0.03,
+					"total": 0.062,
+					"connected": 0.005
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "franz-scrambled.jpg",
+		"timings": {
+			"evidence": 126,
+			"seedTotal": 1788,
+			"diagnoseGradientFits": 824,
+			"discoverNativeFieldTransitions": 52,
+			"discoverSupportedPaths": 30,
+			"endpointRefinements": 1521
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.23140706412963283,
+			"hexA": "#020612,#020612,#f8ecc4,#d99a29",
+			"hexB": "#020612,#020612,#d99a29,#f8ecc4",
+			"relationUtilityDelta": 0.030260723836217363
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 63,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-1521",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 1,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10343",
+					"markSupport": 0.4,
+					"total": 1,
+					"connected": 0.355
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "greenday-scrambled.jpg",
+		"timings": {
+			"evidence": 186,
+			"seedTotal": 1375,
+			"diagnoseGradientFits": 547,
+			"discoverNativeFieldTransitions": 57,
+			"discoverSupportedPaths": 48,
+			"endpointRefinements": 947
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.4929516859219508,
+			"hexA": "#000211,#000211,#fefefe,#c23033",
+			"hexB": "#000211,#000211,#c23033,#fefefe",
+			"relationUtilityDelta": 0.05204298296722287
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 55,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-1079",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 10,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-6038",
+					"markSupport": 0.172,
+					"total": 1,
+					"connected": 0.087
+				},
+				{
+					"familyId": "family-220",
+					"markSupport": 0.003,
+					"total": 0.059,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-5135",
+					"markSupport": 0.002,
+					"total": 0.053,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-3349",
+					"markSupport": 0.002,
+					"total": 0.055,
+					"connected": 0.002
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "havana-scrambled.jpg",
+		"timings": {
+			"evidence": 522,
+			"seedTotal": 9553,
+			"diagnoseGradientFits": 4370,
+			"discoverNativeFieldTransitions": 209,
+			"discoverSupportedPaths": 159,
+			"endpointRefinements": 5532
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.013844626067379115,
+			"hexA": "#355c79,#2a3d4e,#f3a445,#f1e9bb",
+			"hexB": "#355a75,#293f56,#f3a445,#f1e9bb",
+			"relationUtilityDelta": 0.0011614741909021786
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 221,
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 1
+			},
+			"connected": {
+				"total": 42,
+				"eligible": 2
+			},
+			"diffuse-composite": {
+				"total": 5,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-89283:radial-center:center-out:family-5048:family-3726:#355a75:#293f56",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 23,
+			"accepted": 1
+		},
+		"supplementalBySource": {
+			"band-local-endpoint": 1
+		},
+		"supplementalTreatments": 270,
+		"mark": {
+			"markBinds": 3,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-6017",
+					"markSupport": 0.013,
+					"total": 0.02,
+					"connected": 0.004
+				},
+				{
+					"familyId": "family-7234",
+					"markSupport": 0.008,
+					"total": 0.029,
+					"connected": 0.004
+				},
+				{
+					"familyId": "family-6374",
+					"markSupport": 0.002,
+					"total": 0.022,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 361,
+			"chordPass": 361,
+			"bothPass": 94,
+			"killedByEndpointRule": 267,
+			"winnerMid": {
+				"chordDeviation": 0.0422,
+				"endpointDistance": 0.0149,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "horrorwood-scrambled.jpg",
+		"timings": {
+			"evidence": 851,
+			"seedTotal": 7430,
+			"diagnoseGradientFits": 3150,
+			"discoverNativeFieldTransitions": 310,
+			"discoverSupportedPaths": 245,
+			"endpointRefinements": 5068
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.07781823136945872,
+			"hexA": "#141b25,#36444f,#e7ecf2,#808b91",
+			"hexB": "#141b25,#36444f,#ccd3d9,#808b91",
+			"relationUtilityDelta": 0.0032824746826740636
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 217,
+		"domainKinds": {
+			"connected": {
+				"total": 35,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 13,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-2403:family-4167",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 12,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 9,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-2005",
+					"markSupport": 0.028,
+					"total": 0.023,
+					"connected": 0.004
+				},
+				{
+					"familyId": "family-5047",
+					"markSupport": 0.107,
+					"total": 0.026,
+					"connected": 0.008
+				},
+				{
+					"familyId": "family-4650",
+					"markSupport": 0.014,
+					"total": 0.015,
+					"connected": 0.003
+				},
+				{
+					"familyId": "family-5929",
+					"markSupport": 0.103,
+					"total": 0.01,
+					"connected": 0.002
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "horsley-scrambled.jpg",
+		"timings": {
+			"evidence": 379,
+			"seedTotal": 4448,
+			"diagnoseGradientFits": 848,
+			"discoverNativeFieldTransitions": 112,
+			"discoverSupportedPaths": 92,
+			"endpointRefinements": 341
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0138827474451208,
+			"hexA": "#b87143,#cdab63,#0f0f0f,#f1edc0",
+			"hexB": "#b56c41,#ceaa56,#0f0f0f,#f1edc0",
+			"relationUtilityDelta": 0.014630567976076536
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 108,
+		"domainKinds": {
+			"connected": {
+				"total": 41,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 7,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-15:linear:horizontal:family-6858:family-7719:#b87143:#cdab63",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 3,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 5,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-9461",
+					"markSupport": 0.001,
+					"total": 0.039,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-9062",
+					"markSupport": 0.003,
+					"total": 0.036,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-10782",
+					"markSupport": 0.004,
+					"total": 0.015,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-9922",
+					"markSupport": 0,
+					"total": 0.01,
+					"connected": 0
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 345,
+			"chordPass": 150,
+			"bothPass": 95,
+			"killedByEndpointRule": 55,
+			"winnerMid": {
+				"chordDeviation": 0.0439,
+				"endpointDistance": 0.0427,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "infected-scrambled.jpg",
+		"timings": {
+			"evidence": 270,
+			"seedTotal": 2638,
+			"diagnoseGradientFits": 821,
+			"discoverNativeFieldTransitions": 106,
+			"discoverSupportedPaths": 100,
+			"endpointRefinements": 1381
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.04735598012174882,
+			"hexA": "#2f2760,#273985,#4db7f5,#d4585a",
+			"hexB": "#322e6b,#2b439d,#4db7f5,#d4585a",
+			"relationUtilityDelta": 0.001897175009925478
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 166,
+		"domainKinds": {
+			"connected": {
+				"total": 34,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 14,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-0:radial-center:center-out:family-3745:family-4605:#2f2760:#273985",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 10,
+			"accepted": 1
+		},
+		"supplementalBySource": {
+			"band-local-endpoint": 1
+		},
+		"supplementalTreatments": 265,
+		"mark": {
+			"markBinds": 21,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-5065",
+					"markSupport": 0.028,
+					"total": 0.177,
+					"connected": 0.019
+				},
+				{
+					"familyId": "family-8974",
+					"markSupport": 0.053,
+					"total": 0.109,
+					"connected": 0.029
+				},
+				{
+					"familyId": "family-6899",
+					"markSupport": 0.106,
+					"total": 0.184,
+					"connected": 0.016
+				},
+				{
+					"familyId": "family-5528",
+					"markSupport": 0.013,
+					"total": 0.126,
+					"connected": 0.012
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 295,
+			"chordPass": 51,
+			"bothPass": 51,
+			"killedByEndpointRule": 0,
+			"winnerMid": {
+				"chordDeviation": 0.0313,
+				"endpointDistance": 0.0137,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "johns-scrambled.jpg",
+		"timings": {
+			"evidence": 369,
+			"seedTotal": 1558,
+			"diagnoseGradientFits": 623,
+			"discoverNativeFieldTransitions": 88,
+			"discoverSupportedPaths": 77,
+			"endpointRefinements": 1179
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.36548945928936083,
+			"hexA": "#0d181c,#284265,#cdd4da,#f5fdff",
+			"hexB": "#0d181c,#284265,#f4f8f9,#fe5a61",
+			"relationUtilityDelta": 0.005591435232647712
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 83,
+		"domainKinds": {
+			"connected": {
+				"total": 47,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 1,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-2403:family-4166",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 6,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-6899",
+					"markSupport": 0.003,
+					"total": 0.052,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-2887",
+					"markSupport": 0.002,
+					"total": 0.033,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-3769",
+					"markSupport": 0.005,
+					"total": 0.031,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-5113",
+					"markSupport": 0.004,
+					"total": 0.026,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "knuckles-scrambled.jpg",
+		"timings": {
+			"evidence": 356,
+			"seedTotal": 558,
+			"diagnoseGradientFits": 41,
+			"discoverNativeFieldTransitions": 82,
+			"discoverSupportedPaths": 83,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.01582982385078134,
+			"hexA": "#84a1c1,#6c89ab,#eafcff,#beb3c4",
+			"hexB": "#8da2bd,#7685a6,#eafcff,#beb3c4",
+			"relationUtilityDelta": -0.00024017814936383441
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0158,
+		"frontierSize": 193,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-7694:family-6812",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 1,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10782",
+					"markSupport": 0.016,
+					"total": 0.066,
+					"connected": 0.003
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "krafty-scrambled.jpg",
+		"timings": {
+			"evidence": 310,
+			"seedTotal": 580,
+			"diagnoseGradientFits": 103,
+			"discoverNativeFieldTransitions": 86,
+			"discoverSupportedPaths": 81,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.00867281249002079,
+			"hexA": "#050306,#680b3a,#f9a126,#b01f6a",
+			"hexB": "#060407,#651039,#f9a126,#b01f6a",
+			"relationUtilityDelta": -0.00034214452946357277
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0087,
+		"frontierSize": 124,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-1101:family-3810",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 6,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-6918",
+					"markSupport": 0.002,
+					"total": 0.054,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-7380",
+					"markSupport": 0.029,
+					"total": 0.049,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-6417",
+					"markSupport": 0.009,
+					"total": 0.07,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-5975",
+					"markSupport": 0.011,
+					"total": 0.041,
+					"connected": 0.002
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "loups-scrambled.jpg",
+		"timings": {
+			"evidence": 71,
+			"seedTotal": 1314,
+			"diagnoseGradientFits": 572,
+			"discoverNativeFieldTransitions": 34,
+			"discoverSupportedPaths": 30,
+			"endpointRefinements": 543
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": false,
+			"maxRoleDistance": 0.338783513770248,
+			"hexA": "#fdb151,#fdd98d,#fc4a0e,#f98c37",
+			"hexB": "#fc4a0e,#fdb151,#fde5db,#f5d027",
+			"relationUtilityDelta": 0.006486945390781762
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 209,
+		"domainKinds": {
+			"connected": {
+				"total": 33,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 15,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-13:radial-center:center-out:family-9064:family-9924:#f8c05f:#f6bf7f",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 9,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 3,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-8620",
+					"markSupport": 0.084,
+					"total": 0.068,
+					"connected": 0.034
+				},
+				{
+					"familyId": "family-10785",
+					"markSupport": 0.003,
+					"total": 0.007,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-7361",
+					"markSupport": 0.046,
+					"total": 0.013,
+					"connected": 0.002
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 330,
+			"chordPass": 275,
+			"bothPass": 165,
+			"killedByEndpointRule": 110,
+			"winnerMid": {
+				"chordDeviation": 0.0308,
+				"endpointDistance": 0.0203,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "maroon5-scrambled.jpg",
+		"timings": {
+			"evidence": 421,
+			"seedTotal": 3027,
+			"diagnoseGradientFits": 1378,
+			"discoverNativeFieldTransitions": 169,
+			"discoverSupportedPaths": 127,
+			"endpointRefinements": 1979
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.008118209028937033,
+			"hexA": "#0a0a0a,#4a0d14,#f4eae8,#ea8f74",
+			"hexB": "#0b090a,#4d0e16,#f4eae8,#ea8f74",
+			"relationUtilityDelta": 0.0000850846450015652
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0081,
+		"frontierSize": 148,
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 1,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 36,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 11,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-1543:family-2908",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 11,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 4,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10363",
+					"markSupport": 0.013,
+					"total": 0.048,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-9481",
+					"markSupport": 0.005,
+					"total": 0.027,
+					"connected": 0.002
+				},
+				{
+					"familyId": "family-11245",
+					"markSupport": 0.002,
+					"total": 0.014,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-6501",
+					"markSupport": 0.014,
+					"total": 0.011,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "meteora-scrambled.jpg",
+		"timings": {
+			"evidence": 209,
+			"seedTotal": 512,
+			"diagnoseGradientFits": 103,
+			"discoverNativeFieldTransitions": 118,
+			"discoverSupportedPaths": 88,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": false,
+			"sameGradient": true,
+			"maxRoleDistance": 0.1805196891966775,
+			"hexA": "#000000,#171008,#f9f9f7,#a59073",
+			"hexB": "#000000,#000000,#f9f9f7,#a59073",
+			"relationUtilityDelta": 0.009561522545957546
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 66,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "flat:family-220:family-1984",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 2,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10783",
+					"markSupport": 0.146,
+					"total": 0.185,
+					"connected": 0.011
+				},
+				{
+					"familyId": "family-8158",
+					"markSupport": 0.001,
+					"total": 0.04,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "muse-scrambled.jpg",
+		"timings": {
+			"evidence": 172,
+			"seedTotal": 4115,
+			"diagnoseGradientFits": 1925,
+			"discoverNativeFieldTransitions": 87,
+			"discoverSupportedPaths": 48,
+			"endpointRefinements": 1538
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.08683613543219165,
+			"hexA": "#000000,#0370ab,#ecf7fd,#1ba2d2",
+			"hexB": "#000000,#0370ab,#ecf7fd,#4ebee4",
+			"relationUtilityDelta": 0.0009965556056854563
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 102,
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 2,
+				"eligible": 2
+			},
+			"diffuse-composite": {
+				"total": 1,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 45,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:paired-field-domain:field-domain-0+field-domain-45728:radial-center:center-out:family-220:family-6349:#000000:#0370ab",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 12,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 10,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-10782",
+					"markSupport": 0.313,
+					"total": 0.467,
+					"connected": 0.105
+				},
+				{
+					"familyId": "family-9900",
+					"markSupport": 0.011,
+					"total": 0.095,
+					"connected": 0.008
+				},
+				{
+					"familyId": "family-9437",
+					"markSupport": 0.027,
+					"total": 0.12,
+					"connected": 0.023
+				},
+				{
+					"familyId": "family-4145",
+					"markSupport": 0.009,
+					"total": 0.074,
+					"connected": 0.006
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 270,
+			"chordPass": 270,
+			"bothPass": 120,
+			"killedByEndpointRule": 150,
+			"winnerMid": {
+				"chordDeviation": 0.2689,
+				"endpointDistance": 0,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "nada-scrambled.jpg",
+		"timings": {
+			"evidence": 323,
+			"seedTotal": 2402,
+			"diagnoseGradientFits": 777,
+			"discoverNativeFieldTransitions": 164,
+			"discoverSupportedPaths": 113,
+			"endpointRefinements": 1762
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.003468783355274163,
+			"hexA": "#44648b,#44648b,#f4fcfe,#0f0c29",
+			"hexB": "#45658c,#45658c,#f4fcfe,#0f0c29",
+			"relationUtilityDelta": -0.00009424645596767256
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0035,
+		"frontierSize": 112,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-5489",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 12,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 23,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-5598",
+					"markSupport": 0.027,
+					"total": 0.174,
+					"connected": 0.004
+				},
+				{
+					"familyId": "family-8602",
+					"markSupport": 0.014,
+					"total": 0.185,
+					"connected": 0.003
+				},
+				{
+					"familyId": "family-6459",
+					"markSupport": 0.01,
+					"total": 0.186,
+					"connected": 0.003
+				},
+				{
+					"familyId": "family-10782",
+					"markSupport": 0.05,
+					"total": 0.084,
+					"connected": 0.011
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "nobs-scrambled.jpg",
+		"timings": {
+			"evidence": 1065,
+			"seedTotal": 5549,
+			"diagnoseGradientFits": 1853,
+			"discoverNativeFieldTransitions": 307,
+			"discoverSupportedPaths": 281,
+			"endpointRefinements": 3760
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0025779927656222985,
+			"hexA": "#f7feff,#f7feff,#900f21,#1695f6",
+			"hexB": "#f7ffff,#f7ffff,#900f21,#1695f6",
+			"relationUtilityDelta": -0.0003248757070062336
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0026,
+		"frontierSize": 72,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-10782",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 15,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-6942",
+					"markSupport": 0.043,
+					"total": 0.2,
+					"connected": 0.032
+				},
+				{
+					"familyId": "family-7229",
+					"markSupport": 0.099,
+					"total": 0.112,
+					"connected": 0.025
+				},
+				{
+					"familyId": "family-7334",
+					"markSupport": 0.048,
+					"total": 0.114,
+					"connected": 0.031
+				},
+				{
+					"familyId": "family-10320",
+					"markSupport": 0.044,
+					"total": 0.045,
+					"connected": 0.004
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "once-scrambled.jpg",
+		"timings": {
+			"evidence": 354,
+			"seedTotal": 4744,
+			"diagnoseGradientFits": 2146,
+			"discoverNativeFieldTransitions": 111,
+			"discoverSupportedPaths": 95,
+			"endpointRefinements": 2676
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.22300297336388084,
+			"hexA": "#817486,#dddde7,#3b303e,#6c5f71",
+			"hexB": "#726376,#d9dbea,#0a0106,#3b303e",
+			"relationUtilityDelta": 0.010338103126737774
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 263,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-0:radial-center:center-out:family-6393:family-9921:#746578:#e7e9f6",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 5,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 1,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-2865",
+					"markSupport": 0.01,
+					"total": 0.019,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 360,
+			"chordPass": 360,
+			"bothPass": 140,
+			"killedByEndpointRule": 220,
+			"winnerMid": {
+				"chordDeviation": 0.1502,
+				"endpointDistance": 0.0134,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "orelsan-scrambled.jpg",
+		"timings": {
+			"evidence": 76,
+			"seedTotal": 733,
+			"diagnoseGradientFits": 300,
+			"discoverNativeFieldTransitions": 42,
+			"discoverSupportedPaths": 17,
+			"endpointRefinements": 243
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.01129036137790592,
+			"hexA": "#263646,#0e1424,#d7c19c,#e9deca",
+			"hexB": "#293948,#0c1222,#d7c19c,#e9deca",
+			"relationUtilityDelta": 0.0003091553573667527
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0113,
+		"frontierSize": 150,
+		"domainKinds": {
+			"connected": {
+				"total": 38,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 10,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-3726:family-1962",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 8,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 2,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-4189",
+					"markSupport": 0.015,
+					"total": 0.129,
+					"connected": 0.01
+				},
+				{
+					"familyId": "family-6395",
+					"markSupport": 0.032,
+					"total": 0.129,
+					"connected": 0.011
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "placebo-scrambled.jpg",
+		"timings": {
+			"evidence": 983,
+			"seedTotal": 7904,
+			"diagnoseGradientFits": 3061,
+			"discoverNativeFieldTransitions": 322,
+			"discoverSupportedPaths": 324,
+			"endpointRefinements": 3648
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.19948868561370872,
+			"hexA": "#6c8a8a,#e0bd9f,#111312,#513e2d",
+			"hexB": "#6c8a8a,#e0bd9f,#503d2c,#111312",
+			"relationUtilityDelta": 0.011651279349378929
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 157,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-0:radial-upper-center:center-out:family-6813:family-9041:#618384:#bfaf96",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 5,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 3,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-10783",
+					"markSupport": 0.447,
+					"total": 0.091,
+					"connected": 0.006
+				},
+				{
+					"familyId": "family-6039",
+					"markSupport": 0.998,
+					"total": 0.026,
+					"connected": 0.005
+				},
+				{
+					"familyId": "family-5135",
+					"markSupport": 0.166,
+					"total": 0.012,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 330,
+			"chordPass": 275,
+			"bothPass": 0,
+			"killedByEndpointRule": 275,
+			"winnerMid": {
+				"chordDeviation": 0.1251,
+				"endpointDistance": 0.0177,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "pureblack-scrambled.jpg",
+		"timings": {
+			"evidence": 25,
+			"seedTotal": 168,
+			"diagnoseGradientFits": 54,
+			"discoverNativeFieldTransitions": 33,
+			"discoverSupportedPaths": 7,
+			"endpointRefinements": 0
+		},
+		"tie": null,
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 1,
+		"domainKinds": {
+			"connected": {
+				"total": 1,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-220",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 0,
+			"markBindsWinner": 0,
+			"markDetail": []
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "purered-scrambled.jpg",
+		"timings": {
+			"evidence": 32,
+			"seedTotal": 127,
+			"diagnoseGradientFits": 42,
+			"discoverNativeFieldTransitions": 7,
+			"discoverSupportedPaths": 8,
+			"endpointRefinements": 0
+		},
+		"tie": null,
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 1,
+		"domainKinds": {
+			"connected": {
+				"total": 1,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-6943",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 0,
+			"markBindsWinner": 0,
+			"markDetail": []
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "purewhite-scrambled.jpg",
+		"timings": {
+			"evidence": 42,
+			"seedTotal": 113,
+			"diagnoseGradientFits": 40,
+			"discoverNativeFieldTransitions": 8,
+			"discoverSupportedPaths": 8,
+			"endpointRefinements": 0
+		},
+		"tie": null,
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 1,
+		"domainKinds": {
+			"connected": {
+				"total": 1,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-11245",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 0,
+			"markBindsWinner": 0,
+			"markDetail": []
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "skap-scrambled.jpg",
+		"timings": {
+			"evidence": 1036,
+			"seedTotal": 1678,
+			"diagnoseGradientFits": 246,
+			"discoverNativeFieldTransitions": 416,
+			"discoverSupportedPaths": 330,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.008931100368499761,
+			"hexA": "#fcfcfc,#fcfcfc,#000103,#c27d44",
+			"hexB": "#ffffff,#ffffff,#000103,#c27d44",
+			"relationUtilityDelta": -0.0005703074340190906
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0089,
+		"frontierSize": 112,
+		"domainKinds": {
+			"connected": {
+				"total": 41,
+				"eligible": 0
+			},
+			"diffuse-composite": {
+				"total": 7,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "one:family-11245",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 12,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-6017",
+					"markSupport": 0.197,
+					"total": 0.476,
+					"connected": 0.096
+				},
+				{
+					"familyId": "family-5972",
+					"markSupport": 0.065,
+					"total": 0.089,
+					"connected": 0.024
+				},
+				{
+					"familyId": "family-6500",
+					"markSupport": 0.031,
+					"total": 0.062,
+					"connected": 0.003
+				},
+				{
+					"familyId": "family-9458",
+					"markSupport": 0.133,
+					"total": 0.048,
+					"connected": 0.021
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "slim-scrambled.jpg",
+		"timings": {
+			"evidence": 586,
+			"seedTotal": 6955,
+			"diagnoseGradientFits": 2964,
+			"discoverNativeFieldTransitions": 182,
+			"discoverSupportedPaths": 171,
+			"endpointRefinements": 5433
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.01194610078006611,
+			"hexA": "#01040b,#140e18,#3ebee3,#db2a30",
+			"hexB": "#02050e,#170b15,#3ebee3,#db2a30",
+			"relationUtilityDelta": 0.0009371824052559763
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0119,
+		"frontierSize": 172,
+		"domainKinds": {
+			"connected": {
+				"total": 37,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 11,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "gradient:field-domain-0:radial-center:center-out:family-1080:family-1983:#02050e:#170b15",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 12,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 7,
+			"markBindsWinner": 2,
+			"markDetail": [
+				{
+					"familyId": "family-3768",
+					"markSupport": 0.026,
+					"total": 0.043,
+					"connected": 0.009
+				},
+				{
+					"familyId": "family-6480",
+					"markSupport": 0.74,
+					"total": 0.051,
+					"connected": 0.007
+				},
+				{
+					"familyId": "family-5026",
+					"markSupport": 0.02,
+					"total": 0.065,
+					"connected": 0.02
+				},
+				{
+					"familyId": "family-5931",
+					"markSupport": 0.009,
+					"total": 0.039,
+					"connected": 0.005
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 120,
+			"chordPass": 120,
+			"bothPass": 0,
+			"killedByEndpointRule": 120,
+			"winnerMid": {
+				"chordDeviation": 0.0421,
+				"endpointDistance": 0.0101,
+				"binStep": 0.04
+			}
+		}
+	},
+	{
+		"image": "slipknot-scrambled.jpg",
+		"timings": {
+			"evidence": 53,
+			"seedTotal": 186,
+			"diagnoseGradientFits": 51,
+			"discoverNativeFieldTransitions": 81,
+			"discoverSupportedPaths": 31,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": false,
+			"sameCollapse": false,
+			"sameGradient": true,
+			"maxRoleDistance": 0.20490785503347264,
+			"hexA": "#000000,#000000,#fbfbfb,#fbfbfb",
+			"hexB": "#000000,#000000,#b8b8ba,#fbfbfb",
+			"relationUtilityDelta": 0.03772516773772938
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 68,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-220",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 0,
+			"markBindsWinner": 0,
+			"markDetail": []
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "snarky-scrambled.jpg",
+		"timings": {
+			"evidence": 93,
+			"seedTotal": 1609,
+			"diagnoseGradientFits": 738,
+			"discoverNativeFieldTransitions": 18,
+			"discoverSupportedPaths": 17,
+			"endpointRefinements": 1429
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0005972449712925512,
+			"hexA": "#c7bf36,#c7bf36,#0a0a00,#fcfded",
+			"hexB": "#c7bf37,#c7bf37,#0a0a00,#fcfded",
+			"relationUtilityDelta": 0.00006943096201350585
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0006,
+		"frontierSize": 114,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 1
+			}
+		},
+		"winnerHypothesis": "one:family-8560",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 3,
+			"markBindsWinner": 2,
+			"markDetail": [
+				{
+					"familyId": "family-10783",
+					"markSupport": 0.337,
+					"total": 0.176,
+					"connected": 0.016
+				},
+				{
+					"familyId": "family-1522",
+					"markSupport": 0.034,
+					"total": 0.051,
+					"connected": 0.003
+				},
+				{
+					"familyId": "family-10343",
+					"markSupport": 0.002,
+					"total": 0.04,
+					"connected": 0.001
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "toxicity-scrambled.jpg",
+		"timings": {
+			"evidence": 344,
+			"seedTotal": 815,
+			"diagnoseGradientFits": 164,
+			"discoverNativeFieldTransitions": 135,
+			"discoverSupportedPaths": 128,
+			"endpointRefinements": 0
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.006462623523734177,
+			"hexA": "#b49d8d,#805a32,#ececd2,#c91d37",
+			"hexB": "#b29b8b,#805a33,#ececd2,#c91d37",
+			"relationUtilityDelta": -0.0000376744013931285
+		},
+		"tieGroupSize": 1,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0,
+		"frontierSize": 124,
+		"domainKinds": {
+			"connected": {
+				"total": 48,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "flat:family-7717:family-5513",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 0,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 2,
+			"markBindsWinner": 2,
+			"markDetail": [
+				{
+					"familyId": "family-10342",
+					"markSupport": 0.226,
+					"total": 0.684,
+					"connected": 0.079
+				},
+				{
+					"familyId": "family-6038",
+					"markSupport": 0.545,
+					"total": 0.154,
+					"connected": 0.039
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "vvbrown-scrambled.jpg",
+		"timings": {
+			"evidence": 334,
+			"seedTotal": 6366,
+			"diagnoseGradientFits": 3854,
+			"discoverNativeFieldTransitions": 108,
+			"discoverSupportedPaths": 115,
+			"endpointRefinements": 5825
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0013430379369721696,
+			"hexA": "#fffffe,#fffffe,#080808,#403519",
+			"hexB": "#ffffff,#ffffff,#080808,#403519",
+			"relationUtilityDelta": -0.00013803445463334008
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0013,
+		"frontierSize": 50,
+		"domainKinds": {
+			"paired-corridor": {
+				"total": 2,
+				"eligible": 2
+			},
+			"diffuse-composite": {
+				"total": 3,
+				"eligible": 0
+			},
+			"connected": {
+				"total": 43,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "one:family-11245",
+		"transitions": {
+			"traceCount": 1,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 1,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {
+				"no source-connected low-step spatial progression joins the endpoints": 1,
+				"transition path owns fewer than two corner fields": 1,
+				"transition stages leave a large spatial discontinuity": 1,
+				"transition family sequence reverses perceptual progression": 1,
+				"transition family sequence is perceptually circuitous": 1
+			}
+		},
+		"refinements": {
+			"total": 20,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 1,
+			"markBindsWinner": 0,
+			"markDetail": [
+				{
+					"familyId": "family-9462",
+					"markSupport": 0.002,
+					"total": 0.064,
+					"connected": 0.002
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	},
+	{
+		"image": "ybbb-scrambled.jpg",
+		"timings": {
+			"evidence": 90,
+			"seedTotal": 2047,
+			"diagnoseGradientFits": 998,
+			"discoverNativeFieldTransitions": 38,
+			"discoverSupportedPaths": 18,
+			"endpointRefinements": 2086
+		},
+		"tie": {
+			"sameFamilies": true,
+			"sameCollapse": true,
+			"sameGradient": true,
+			"maxRoleDistance": 0.0007828822509788967,
+			"hexA": "#83080a,#83080a,#0c0a0d,#fbdaad",
+			"hexB": "#83090b,#83090b,#0c0a0d,#fbdaad",
+			"relationUtilityDelta": 0.000021195891507064246
+		},
+		"tieGroupSize": 2,
+		"tieGroupDistinctFamilies": 1,
+		"tieGroupMaxSpread": 0.0008,
+		"frontierSize": 56,
+		"domainKinds": {
+			"connected": {
+				"total": 44,
+				"eligible": 1
+			},
+			"diffuse-composite": {
+				"total": 4,
+				"eligible": 0
+			}
+		},
+		"winnerHypothesis": "one:family-4253",
+		"transitions": {
+			"traceCount": 0,
+			"eligibleTraces": 0,
+			"hypotheses": 0,
+			"credited": 0,
+			"pathCount": 0,
+			"eligiblePaths": 0,
+			"rejectionHistogram": {}
+		},
+		"refinements": {
+			"total": 6,
+			"accepted": 0
+		},
+		"supplementalBySource": {},
+		"supplementalTreatments": 0,
+		"mark": {
+			"markBinds": 5,
+			"markBindsWinner": 1,
+			"markDetail": [
+				{
+					"familyId": "family-5135",
+					"markSupport": 0.04,
+					"total": 0.042,
+					"connected": 0.009
+				},
+				{
+					"familyId": "family-3350",
+					"markSupport": 0.007,
+					"total": 0.039,
+					"connected": 0.001
+				},
+				{
+					"familyId": "family-9923",
+					"markSupport": 0.573,
+					"total": 0.039,
+					"connected": 0.008
+				},
+				{
+					"familyId": "family-6017",
+					"markSupport": 0.041,
+					"total": 0.031,
+					"connected": 0.011
+				}
+			]
+		},
+		"midpoint": {
+			"gradientCandidatesWithEvidence": 0,
+			"chordPass": 0,
+			"bothPass": 0,
+			"killedByEndpointRule": 0,
+			"winnerMid": null
+		}
+	}
+]

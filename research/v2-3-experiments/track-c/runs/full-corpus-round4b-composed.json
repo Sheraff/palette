@@ -1,0 +1,151 @@
+{
+	"changedCount": 5,
+	"total": 34,
+	"changes": [
+		{
+			"caseId": "disney.avif",
+			"expected": {
+				"roles": [
+					"#74c044",
+					"#f68121",
+					"#fbfdfc",
+					"#c72690"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#74c044",
+					"#2199d6",
+					"#fbfdfc",
+					"#c72690"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "krafty.jpg",
+			"expected": {
+				"roles": [
+					"#050306",
+					"#680b3a",
+					"#f7a223",
+					"#eb0a8a"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#050306",
+					"#680b3a",
+					"#eb0a8a",
+					"#f7a223"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "nobs.jpg",
+			"expected": {
+				"roles": [
+					"#f6ffff",
+					"#f6ffff",
+					"#a1162d",
+					"#0695fd"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#f6ffff",
+					"#f2f626",
+					"#a1162d",
+					"#0695fd"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "skap.jpg",
+			"expected": {
+				"roles": [
+					"#ffffff",
+					"#ffffff",
+					"#000103",
+					"#5d763c"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#ffffff",
+					"#5d763c",
+					"#000103",
+					"#be814b"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "vvbrown.jpg",
+			"expected": {
+				"roles": [
+					"#fffffe",
+					"#fffffe",
+					"#080808",
+					"#584c1c"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#ffffff",
+					"#ffffff",
+					"#080808",
+					"#e6e622"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			}
+		}
+	]
+}

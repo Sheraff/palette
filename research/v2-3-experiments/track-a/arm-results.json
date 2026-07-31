@@ -1,0 +1,734 @@
+{
+	"baseline": {
+		"greenday.jpg": {
+			"background": "#fefefe",
+			"surface": "#fefefe",
+			"foreground": "#000211",
+			"accent": "#c13033",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#a48f72",
+			"surface": "#a48f72",
+			"foreground": "#000000",
+			"accent": "#161109",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#022833",
+			"surface": "#022833",
+			"foreground": "#f5fbd7",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#ffffff",
+			"surface": "#ffffff",
+			"foreground": "#000103",
+			"accent": "#5d763c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#584c1c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#f79e80",
+			"foreground": "#fff6fc",
+			"accent": "#ce5e52",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#607b76",
+			"surface": "#a0a39a",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#82d1ef",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#293949",
+			"surface": "#0c1222",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	},
+	"h1-identity-authority": {
+		"greenday.jpg": {
+			"background": "#000211",
+			"surface": "#000211",
+			"foreground": "#fefefe",
+			"accent": "#c13131",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#000000",
+			"surface": "#151108",
+			"foreground": "#fafafa",
+			"accent": "#a59073",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#022833",
+			"surface": "#022833",
+			"foreground": "#f5fbd7",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#fdfdfd",
+			"surface": "#fdfdfd",
+			"foreground": "#000103",
+			"accent": "#c27d44",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#9e961a",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#f79e80",
+			"foreground": "#fff6fc",
+			"accent": "#ce5e52",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#607b76",
+			"surface": "#a0a39a",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#b75dfb",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#10a4d4",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#293949",
+			"surface": "#0c1222",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	},
+	"h2-field-ownership": {
+		"greenday.jpg": {
+			"background": "#000211",
+			"surface": "#000211",
+			"foreground": "#fefefe",
+			"accent": "#c13131",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fafafa",
+			"accent": "#a59073",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#55919b",
+			"surface": "#55919b",
+			"foreground": "#fcfdd1",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#ffffff",
+			"surface": "#ffffff",
+			"foreground": "#000103",
+			"accent": "#5d763c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#584c1c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#f3b641",
+			"accent": "#494e51",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#f79e80",
+			"foreground": "#fff6fc",
+			"accent": "#ce5e52",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#a0a39a",
+			"surface": "#587674",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#10a4d4",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#293949",
+			"surface": "#0c1222",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	},
+	"h3-gradient-claim": {
+		"greenday.jpg": {
+			"background": "#fefefe",
+			"surface": "#fefefe",
+			"foreground": "#000211",
+			"accent": "#c13033",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#a48f72",
+			"surface": "#a48f72",
+			"foreground": "#000000",
+			"accent": "#161109",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#022833",
+			"surface": "#022833",
+			"foreground": "#f5fbd7",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#ffffff",
+			"surface": "#ffffff",
+			"foreground": "#000103",
+			"accent": "#5d763c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#584c1c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#fd3d86",
+			"foreground": "#fff6fc",
+			"accent": "#fda8cf",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#6c8a8a",
+			"surface": "#86a5aa",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#10a4d4",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#2a2f42",
+			"surface": "#111a2b",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	},
+	"h1+h2+h3": {
+		"greenday.jpg": {
+			"background": "#000211",
+			"surface": "#000211",
+			"foreground": "#fefefe",
+			"accent": "#c13131",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fafafa",
+			"accent": "#a59073",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#55919b",
+			"surface": "#fcfdd1",
+			"foreground": "#0f4b55",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#ffffff",
+			"surface": "#ffffff",
+			"foreground": "#000103",
+			"accent": "#c27d44",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#080808",
+			"surface": "#080808",
+			"foreground": "#ffffff",
+			"accent": "#e6e622",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#f79e80",
+			"foreground": "#fff6fc",
+			"accent": "#ce5e52",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#6c8a8a",
+			"surface": "#86a5aa",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#10a4d4",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#2a2f42",
+			"surface": "#111a2b",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	},
+	"h2+h3-adopted": {
+		"greenday.jpg": {
+			"background": "#000211",
+			"surface": "#000211",
+			"foreground": "#fefefe",
+			"accent": "#c13131",
+			"gradient": false,
+			"midpoint": null
+		},
+		"meteora.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fafafa",
+			"accent": "#a59073",
+			"gradient": false,
+			"midpoint": null
+		},
+		"elephunk.jpg": {
+			"background": "#55919b",
+			"surface": "#55919b",
+			"foreground": "#fcfdd1",
+			"accent": "#a5c7c8",
+			"gradient": false,
+			"midpoint": null
+		},
+		"skap.jpg": {
+			"background": "#ffffff",
+			"surface": "#ffffff",
+			"foreground": "#000103",
+			"accent": "#5d763c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"vvbrown.jpg": {
+			"background": "#fffffe",
+			"surface": "#fffffe",
+			"foreground": "#080808",
+			"accent": "#584c1c",
+			"gradient": false,
+			"midpoint": null
+		},
+		"slim.jpg": {
+			"background": "#01040b",
+			"surface": "#140e18",
+			"foreground": "#37c2eb",
+			"accent": "#56676f",
+			"gradient": true,
+			"midpoint": null
+		},
+		"doja.jpg": {
+			"background": "#fd75b5",
+			"surface": "#fd3d86",
+			"foreground": "#fff6fc",
+			"accent": "#fda8cf",
+			"gradient": true,
+			"midpoint": null
+		},
+		"placebo.jpg": {
+			"background": "#6c8a8a",
+			"surface": "#86a5aa",
+			"foreground": "#fbfdfa",
+			"accent": "#111312",
+			"gradient": true,
+			"midpoint": null
+		},
+		"slipknot.jpg": {
+			"background": "#000000",
+			"surface": "#000000",
+			"foreground": "#fbfbfd",
+			"accent": "#fbfbfd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"franz.jpg": {
+			"background": "#020612",
+			"surface": "#020612",
+			"foreground": "#f9ebc4",
+			"accent": "#da9925",
+			"gradient": false,
+			"midpoint": null
+		},
+		"nobs.jpg": {
+			"background": "#f6ffff",
+			"surface": "#f6ffff",
+			"foreground": "#a1162d",
+			"accent": "#0695fd",
+			"gradient": false,
+			"midpoint": null
+		},
+		"horrorwood.jpg": {
+			"background": "#141b25",
+			"surface": "#36444f",
+			"foreground": "#ccd3d9",
+			"accent": "#808b91",
+			"gradient": false,
+			"midpoint": null
+		},
+		"toxicity.jpg": {
+			"background": "#b59e8e",
+			"surface": "#805a33",
+			"foreground": "#edebd2",
+			"accent": "#dd1434",
+			"gradient": false,
+			"midpoint": null
+		},
+		"muse.jpg": {
+			"background": "#000000",
+			"surface": "#026faa",
+			"foreground": "#edf6fb",
+			"accent": "#82d1ef",
+			"gradient": true,
+			"midpoint": null
+		},
+		"orelsan.jpg": {
+			"background": "#2a2f42",
+			"surface": "#111a2b",
+			"foreground": "#e9dec8",
+			"accent": "#6c5f57",
+			"gradient": true,
+			"midpoint": null
+		}
+	}
+}

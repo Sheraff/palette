@@ -1,0 +1,40 @@
+{
+	"sample": "150 artworks sampled deterministically across roots 00..14, none of them in the 104-case verdict corpus",
+	"corpus": "PALETTE_IMAGES_ROOT=/Users/Flo/GitHub/palette/images — real artwork, not the -scrambled decoys",
+	"shippedThreshold": { "minimumEnclosedPopulationRatio": 2.5 },
+	"firing": 3,
+	"firingCases": [
+		{
+			"case": "0a/ab67616d0000b273000ac38d7b5fa68b661fff83",
+			"ratio": 44.51,
+			"mount": "#e3ded6 (1.66% of pixels, borderCoverage 0.998)",
+			"enclosed": "#fffffe (73.76%, concentration 0.994)",
+			"outputChange": "none",
+			"note": "a hairline off-white edge around a white field; discounting its border credit cannot matter"
+		},
+		{
+			"case": "0f/ab67616d00001e02000ff5f54d53ff0993da6215",
+			"ratio": 5.5,
+			"mount": "#fefefe (5.54%, borderCoverage 1.000)",
+			"enclosed": "#929099 (30.51%, concentration 0.434)",
+			"outputChange": "none"
+		},
+		{
+			"case": "0f/ab67616d0000b273000f301bcd9e154a197a425c",
+			"ratio": 2.72,
+			"mount": "#fefefb (13.61%, borderCoverage 0.922)",
+			"enclosed": "#070303 (37.03%, concentration 0.412)",
+			"outputChange": "none"
+		}
+	],
+	"atRejectedLooserThreshold": {
+		"minimumEnclosedPopulationRatio": 1.5,
+		"firing": 6,
+		"additionalCases": [
+			{ "case": "03/ab67616d0000b2730003fd11257f3f428953c7bc.jpg", "ratio": 1.56, "outputChange": "none" },
+			{ "case": "05/ab67616d00001e020005f686595af6ad9328b489", "ratio": 2.15, "outputChange": "CHANGES" },
+			{ "case": "08/ab67616d00001e020008a664f4ace1e45911c0a8", "ratio": 1.93, "outputChange": "CHANGES" }
+		],
+		"why": "both changing cases are mattes around photographic interiors — the elephunk/nobs class human review accepted as frame-as-background — and neither change is defensible as an improvement"
+	}
+}

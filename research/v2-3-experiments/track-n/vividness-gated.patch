@@ -1,0 +1,44 @@
+Track N part 2 — evidence-gated accent vividness. REJECTED; kept so the calibration is
+reproducible.
+
+1. `policy.ts`, inside `identity`:
+
+		/** Calibrated on 12 decisive verdicts (batches 17-18): the seven vivid-preferred rivals
+		 *  carry 8, 8, 11, 15, 16, 24, 24 qualifying mark components; four of the five
+		 *  incumbent-preferred carry 0, 2, 3, 6. Above `mark.minimumComponentCount` (3) on
+		 *  purpose: three strokes make a mark candidate, eight make a substantial element. */
+		accentVividnessMarkComponents: 8,
+		/** Where the vividness credit saturates. Above identityDirectionFullChroma (0.09)
+		 *  because every incumbent in the calibration set already clears that, so a yardstick
+		 *  there cannot separate them at all — Track M measured exactly that no-op. */
+		accentVividnessFullChroma: 0.18,
+
+2. `palette-core.ts`, in `createTreatment`, replacing the `accentRoleScore` definition:
+
+	const vividnessStrength = Number(process.env.TRACK_N_VIVIDNESS ?? 0)
+	const accentVividness = (family: ColorFamilyEvidence): number => {
+		if (vividnessStrength <= 0) return 0
+		if (family.markComponentCount < ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.accentVividnessMarkComponents) return 0
+		const floor = ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.neutralObligationChroma
+		return clamp(vividnessStrength) * clamp(
+			(chroma(accent.oklab) - floor) /
+			(ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.accentVividnessFullChroma - floor))
+	}
+	const accentRoleScore = (family: ColorFamilyEvidence): number => {
+		if (accentIsEdge) return 0
+		const base = signatureAccentRoleScore(family)
+		return base + accentVividness(family) * (1 - base)
+	}
+
+With TRACK_N_VIVIDNESS unset the scoring is byte-identical to trunk, which is how
+data/trunk-c2366d2.json was produced from the same working tree.
+
+DO NOT use a multiplicative form (`base * (1 + strength * vividness)`). It is clamped at 1, so
+above a modest strength every qualifying accent saturates and the ordering between them
+disappears — measured, strengths 1.0 and 4.0 gave identical winners corpus-wide.
+
+RESULT at strength 1.0 (the mechanism's ceiling; higher strengths are inert):
+  - the prototype's QUALITY margin flips sign, +0.0086 -> -0.0091, as designed
+  - the RELATION margin only closes 0.0472 -> 0.0295, because 82% of it is identity gain
+    from obligation priority (p3 vs p1), which these sites cannot reach
+  - full sweep: 17 of 108 change, 10 reviewed palettes destroyed, 2 gained, 0 of 7 anchors flip

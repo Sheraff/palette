@@ -1,0 +1,209 @@
+{
+	"changedCount": 7,
+	"total": 34,
+	"changes": [
+		{
+			"caseId": "artofficial.jpg",
+			"expected": {
+				"roles": [
+					"#31305c",
+					"#040325",
+					"#bdc1ca",
+					"#fded9f"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#31305c",
+					"#040325",
+					"#bdc1ca",
+					"#f5e20c"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "disney.avif",
+			"expected": {
+				"roles": [
+					"#c72690",
+					"#c72690",
+					"#fbfdfc",
+					"#f68121"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#c72690",
+					"#c72690",
+					"#fbfdfc",
+					"#2199d6"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "knuckles.jpg",
+			"expected": {
+				"roles": [
+					"#bfb2c4",
+					"#9c99c4",
+					"#6c678f",
+					"#d8cbdd"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#beb2c6",
+					"#7b80a8",
+					"#d8cbdd",
+					"#60aac5"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "loups.jpg",
+			"expected": {
+				"roles": [
+					"#fdd98d",
+					"#fdd98d",
+					"#fd490c",
+					"#fab14a"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#fcd884",
+					"#fcd884",
+					"#fd490c",
+					"#fab14a"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "meteora.jpg",
+			"expected": {
+				"roles": [
+					"#a48f72",
+					"#a48f72",
+					"#000000",
+					"#161109"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#000000",
+					"#151108",
+					"#fafafa",
+					"#a59073"
+				],
+				"gradient": false,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "placebo.jpg",
+			"expected": {
+				"roles": [
+					"#607b76",
+					"#a0a39a",
+					"#fbfdfa",
+					"#111312"
+				],
+				"gradient": true,
+				"collapse": [
+					false,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#607b76",
+					"#a0a39a",
+					"#fbfdfa",
+					"#503d2c"
+				],
+				"gradient": true,
+				"collapse": [
+					false,
+					false
+				]
+			}
+		},
+		{
+			"caseId": "vvbrown.jpg",
+			"expected": {
+				"roles": [
+					"#fffffe",
+					"#fffffe",
+					"#080808",
+					"#584c1c"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			},
+			"actual": {
+				"roles": [
+					"#ffffff",
+					"#ffffff",
+					"#080808",
+					"#584c1c"
+				],
+				"gradient": false,
+				"collapse": [
+					true,
+					false
+				]
+			}
+		}
+	]
+}
