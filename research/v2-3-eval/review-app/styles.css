@@ -264,6 +264,36 @@ button:disabled {
 
 .decision { display: flex; flex-wrap: wrap; gap: 9px; }
 
+.correction-shortcuts {
+	align-items: center;
+	margin-bottom: 14px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid #fff;
+}
+
+.correction-summary {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	margin-left: auto;
+}
+
+.correction-slot {
+	display: inline-flex;
+	gap: 6px;
+	align-items: center;
+	font: 750 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+}
+
+.correction-slot .swatch { width: 18px; height: 18px; }
+
+.correction-slot .swatch.empty {
+	background: repeating-linear-gradient(135deg, #000 0 3px, #fff 3px 4px);
+}
+
 .correction {
 	display: grid;
 	grid-template-columns: 110px minmax(0, 1fr);

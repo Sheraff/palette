@@ -1,0 +1,1756 @@
+{
+  "schemaVersion": 1,
+  "candidateLabel": "v2-3",
+  "epsilon": 0.04,
+  "headline": {
+    "humanAgreementCeiling": {
+      "mean": 0.06098876063276254,
+      "pairs": 14,
+      "withinEpsilon": 0.5714285714285714
+    },
+    "oracleOverCandidates": {
+      "mean": 0.0003806878740871416,
+      "withinEpsilon": 1
+    },
+    "ourRanking": {
+      "mean": 0.020976793216628747,
+      "withinEpsilon": 0.8235294117647058
+    }
+  },
+  "failureSplit": {
+    "recall": 0,
+    "ranking": 9,
+    "match": 42
+  },
+  "measurements": [
+    {
+      "target": {
+        "image": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-6-fresh",
+        "line": 34,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fcd000",
+          "#f9faf4",
+          "#010400",
+          "#fc0402"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1450,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#fcd000:#f9faf4:#010400:#fc0402:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#fcd000:#f9faf4:#010400:#fc0402:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-8-fresh",
+        "line": 48,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#0a0710",
+          "#250d25",
+          "#9f022f",
+          "#9f022f"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 246,
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "oracleKey": "#0a0710:#250d25:#9f022f:#9f022f:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.020540792738871685,
+      "winnerKey": "#0a0710:#250d25:#9f022f:#78172b:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.020540792738871685,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-6-fresh",
+        "line": 35,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#7b7b71",
+          "#c1c3c0",
+          "#000b14",
+          "#61625a"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#7b7b71:#c1c3c0:#000b14:#61625a:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#7b7b71:#c1c3c0:#000b14:#61625a:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e020002881a851f1e14c374562b.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-8-fresh",
+        "line": 49,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#262340",
+          "#54495a",
+          "#fbfdfa",
+          "#f1c153"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 3,
+      "oracleKey": "#262340:#54495a:#fbfdfa:#f1c153:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.06972949773085667,
+      "winnerKey": "#262340:#54495a:#fbfdfa:#23a4ba:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 3,
+      "roleAlignedWinnerCost": 0.06972949773085667,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+        "source": "endorsed",
+        "label": "trunk-dca4",
+        "batch": "review-9-fresh",
+        "line": 57,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#06679a",
+          "#06679a",
+          "#f8e1d9",
+          "#241f19"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1200,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#06679a:#06679a:#f8e1d9:#241f19:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#06679a:#06679a:#f8e1d9:#241f19:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e020004ccf0ae91364130886c02",
+        "source": "endorsed",
+        "label": "trunk-h",
+        "batch": "review-13-fresh",
+        "line": 85,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#4d8a15",
+          "#64a821",
+          "#d1e4d0",
+          "#35710f"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 5,
+      "oracleKey": "#4d8a15:#64a821:#d1e4d0:#35710f:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#4d8a15:#64a821:#d1e4d0:#35710f:flat",
+      "winnerRank": 5,
+      "firstAcceptableRank": 5,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e0200066a61bbcbeadd632f7f38",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-8-fresh",
+        "line": 51,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#d32b80",
+          "#ee4c9f",
+          "#fef9fd",
+          "#51cadf"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#d32b80:#ee4c9f:#fef9fd:#51cadf:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#d32b80:#ee4c9f:#fef9fd:#51cadf:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e0200079d5a7d92f2bff88570db",
+        "source": "endorsed",
+        "label": "trunk-dca4",
+        "batch": "review-9-fresh",
+        "line": 60,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#e8e8e8",
+          "#aeadab",
+          "#160f17",
+          "#face13"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 6,
+      "oracleKey": "#e8e8e8:#aeadab:#160f17:#face13:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.11739437747944906,
+      "winnerKey": "#e8e8e8:#fbcd1f:#030303:#6a2f11:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 5,
+      "roleAlignedWinnerCost": 0.19805663222594821,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "ab67616d00001e0200117a3fb2444ed7e04c4721",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-8-fresh",
+        "line": 55,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#07395c",
+          "#095f5c",
+          "#eeebf2",
+          "#178e92"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#07395c:#095f5c:#eeebf2:#178e92:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#07395c:#095f5c:#eeebf2:#178e92:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b273000285d15c911a20ed2ce152.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-13-fresh",
+        "line": 84,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#060606",
+          "#262922",
+          "#f3f1e5",
+          "#98908d"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 9,
+      "oracleKey": "#060606:#262922:#f3f1e5:#98908d:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#060606:#262922:#f3f1e5:#98908d:gradient",
+      "winnerRank": 9,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b273000442caec7ec8cb724bf265",
+        "source": "endorsed",
+        "label": "trunk-dca4",
+        "batch": "review-8-fresh",
+        "line": 50,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#0d140d",
+          "#0d140d",
+          "#cafb6e",
+          "#3fcc28"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#0d140d:#0d140d:#cafb6e:#3fcc28:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.026026520173960784,
+      "winnerKey": "#11110f:#112b10:#cafb6e:#3fcc28:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.026026520173960784,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b2730005230fae1822525e5a5ff6",
+        "source": "endorsed",
+        "label": "trunk-c5",
+        "batch": "review-11-seams-diversity",
+        "line": 73,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#eff3f6",
+          "#d6d7dc",
+          "#121117",
+          "#ee231f"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 6,
+      "oracleKey": "#eff3f6:#d6d7dc:#121117:#ee231f:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.008483763911034663,
+      "winnerKey": "#e8ebf0:#d1d4d9:#121117:#ee231f:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.008483763911034663,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+        "source": "endorsed",
+        "label": "trunk-b7",
+        "batch": "review-14-b2",
+        "line": 95,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#424436",
+          "#2f2e1c",
+          "#f6f5f1",
+          "#a57e57"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#424436:#2f2e1c:#f6f5f1:#a57e57:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#424436:#2f2e1c:#f6f5f1:#a57e57:gradient",
+      "winnerRank": 2,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b273000913b3e9ae2c7173d1a8b2",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-8-fresh",
+        "line": 53,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#481232",
+          "#51454f",
+          "#fbb6ef",
+          "#cd4fa1"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#481232:#51454f:#fbb6ef:#cd4fa1:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.005591225762603049,
+      "winnerKey": "#491734:#514249:#fbb6ef:#cd4fa1:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.005591225762603049,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b27300099f4221cf6ed5f2440904",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-9-fresh",
+        "line": 62,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c5d58",
+          "#4b3631",
+          "#8ba3bd",
+          "#0e0906"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#6c5d58:#4b3631:#8ba3bd:#0e0906:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#6c5d58:#4b3631:#8ba3bd:#0e0906:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "ab67616d0000b2730010bcd17e41331debec2bd5",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-13-fresh",
+        "line": 89,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#ffffff",
+          "#ffffff",
+          "#030303",
+          "#cc282f"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#ffffff:#ffffff:#030303:#cc282f:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#ffffff:#ffffff:#030303:#cc282f:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "birdsofprey.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-1-track-d",
+        "line": 3,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#141975",
+          "#3fa72a",
+          "#030102",
+          "#d02981"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 248,
+      "oracleKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "winnerRank": 248,
+      "firstAcceptableRank": 248,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "birdsofprey.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-2-gradients",
+        "line": 10,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#141975",
+          "#3fa72a",
+          "#030102",
+          "#d02981"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 248,
+      "oracleKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "winnerRank": 248,
+      "firstAcceptableRank": 248,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "birdsofprey.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-4-ranking",
+        "line": 23,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#141975",
+          "#3fa72a",
+          "#030102",
+          "#d02981"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 248,
+      "oracleKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#141975:#3fa72a:#030102:#d02981:gradient",
+      "winnerRank": 248,
+      "firstAcceptableRank": 248,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "disney.avif",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-4-ranking",
+        "line": 22,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#74c044",
+          "#f68121",
+          "#fbfdfc",
+          "#c72690"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "oracleKey": "#74c044:#f68121:#fbfdfc:#c72690:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.0787189217141745,
+      "winnerKey": "#74c044:#2199d6:#fbfdfc:#c72690:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 4,
+      "roleAlignedWinnerCost": 0.0787189217141745,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "disney.avif",
+        "source": "endorsed",
+        "label": "c-alt-r4",
+        "batch": "review-5-midpoints-alternatives",
+        "line": 31,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#74c044",
+          "#2199d6",
+          "#fbfdfc",
+          "#c72690"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#74c044:#2199d6:#fbfdfc:#c72690:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#74c044:#2199d6:#fbfdfc:#c72690:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "doja.jpg",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-4-ranking",
+        "line": 20,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fd75b5",
+          "#fd3d86",
+          "#fff6fc",
+          "#fda8cf"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#fd75b5:#fd3d86:#fff6fc:#fda8cf:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#fd75b5:#fd3d86:#fff6fc:#fda8cf:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "doja.jpg",
+        "source": "endorsed",
+        "label": "trunk-b6",
+        "batch": "review-12-midpoints",
+        "line": 81,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fd75b5",
+          "#fd3d86",
+          "#fff6fc",
+          "#fda8cf"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#fd75b5:#fd3d86:#fff6fc:#fda8cf:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#fd75b5:#fd3d86:#fff6fc:#fda8cf:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "elephunk.jpg",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-4-ranking",
+        "line": 19,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#55919b",
+          "#022833",
+          "#fcfdd1",
+          "#a5c7c8"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#55919b:#022833:#fcfdd1:#a5c7c8:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#55919b:#022833:#fcfdd1:#a5c7c8:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "greenday.jpg",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-4-ranking",
+        "line": 18,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#000211",
+          "#000211",
+          "#fefefe",
+          "#c13131"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#000211:#000211:#fefefe:#c13131:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#000211:#000211:#fefefe:#c13131:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "havana.jpg",
+        "source": "endorsed",
+        "label": "track-b",
+        "batch": "review-2-gradients",
+        "line": 8,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#375c77",
+          "#243a51",
+          "#f1e9bb",
+          "#eed076"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 27,
+      "oracleKey": "#375c77:#243a51:#eed076:#f1e9bb:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.06347950752766829,
+      "winnerKey": "#375c77:#243a51:#e1824a:#eed076:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 13,
+      "roleAlignedWinnerCost": 0.06347950752766829,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "horsley.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-7-identity-confirm",
+        "line": 46,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#bd7042",
+          "#d6a944",
+          "#0f0f0f",
+          "#f2eec1"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#bd7042:#d6a944:#0f0f0f:#f2eec1:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#bd7042:#d6a944:#0f0f0f:#f2eec1:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "knuckles.jpg",
+        "source": "endorsed",
+        "label": "track-c",
+        "batch": "review-3-identity",
+        "line": 14,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#beb2c6",
+          "#7b80a8",
+          "#d8cbdd",
+          "#60aac5"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1229,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#beb2c6:#7b80a8:#d8cbdd:#60aac5:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#beb2c6:#7b80a8:#d8cbdd:#60aac5:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "krafty.jpg",
+        "source": "endorsed",
+        "label": "trunk-dca4",
+        "batch": "review-7-identity-confirm",
+        "line": 43,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#050306",
+          "#680b3a",
+          "#f7a223",
+          "#eb0a8a"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#050306:#680b3a:#f7a223:#eb0a8a:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#050306:#680b3a:#f7a223:#eb0a8a:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "loups.jpg",
+        "source": "endorsed",
+        "label": "track-d-h1only",
+        "batch": "review-1-track-d",
+        "line": 0,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fa7b34",
+          "#ebda8a",
+          "#fde5d9",
+          "#fab14a"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "oracleKey": "#fa7b34:#ebda8a:#fde5d9:#fab14a:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.022896993774063342,
+      "winnerKey": "#fa7b34:#ebda8a:#fde5d9:#fc8831:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.022896993774063342,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "loups.jpg",
+        "source": "endorsed",
+        "label": "track-d",
+        "batch": "review-2-gradients",
+        "line": 6,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fa7b34",
+          "#ebda8a",
+          "#fde5d9",
+          "#fab14a"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "oracleKey": "#fa7b34:#ebda8a:#fde5d9:#fab14a:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.022896993774063342,
+      "winnerKey": "#fa7b34:#ebda8a:#fde5d9:#fc8831:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.022896993774063342,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "loups.jpg",
+        "source": "endorsed",
+        "label": "trunk-dc-b2",
+        "batch": "review-5-midpoints-alternatives",
+        "line": 27,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fa7b34",
+          "#ebda8a",
+          "#fde5d9",
+          "#fab14a"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 4,
+      "oracleKey": "#fa7b34:#ebda8a:#fde5d9:#fab14a:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.022896993774063342,
+      "winnerKey": "#fa7b34:#ebda8a:#fde5d9:#fc8831:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.022896993774063342,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "loups.jpg",
+        "source": "endorsed",
+        "label": "trunk-b6t2",
+        "batch": "review-12-midpoints",
+        "line": 82,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#fa7b34",
+          "#ebda8a",
+          "#fde5d9",
+          "#fc8831"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#fa7b34:#ebda8a:#fde5d9:#fc8831:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#fa7b34:#ebda8a:#fde5d9:#fc8831:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "meteora.jpg",
+        "source": "endorsed",
+        "label": "trunk-f",
+        "batch": "review-11-seams-diversity",
+        "line": 72,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#000000",
+          "#000000",
+          "#fafafa",
+          "#a59073"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#000000:#000000:#fafafa:#a59073:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#000000:#000000:#fafafa:#a59073:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "muse.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-1-track-d",
+        "line": 2,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#000000",
+          "#026faa",
+          "#edf6fb",
+          "#82d1ef"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#000000:#026faa:#edf6fb:#82d1ef:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.038532358558567674,
+      "winnerKey": "#000000:#026faa:#edf6fb:#10a4d4:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.038532358558567674,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "muse.jpg",
+        "source": "endorsed",
+        "label": "trunk-f",
+        "batch": "review-12-midpoints",
+        "line": 77,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#000000",
+          "#026faa",
+          "#edf6fb",
+          "#10a4d4"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#000000:#026faa:#edf6fb:#10a4d4:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#000000:#026faa:#edf6fb:#10a4d4:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "once.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-2-gradients",
+        "line": 12,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#817486",
+          "#dddde7",
+          "#3b303e",
+          "#6c5f71"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#817486:#dddde7:#3b303e:#6c5f71:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#817486:#dddde7:#3b303e:#6c5f71:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "once.jpg",
+        "source": "endorsed",
+        "label": "trunk-e2",
+        "batch": "review-11-seams-diversity",
+        "line": 75,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#817486",
+          "#dddde7",
+          "#3b303e",
+          "#6c5f71"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#817486:#dddde7:#3b303e:#6c5f71:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#817486:#dddde7:#3b303e:#6c5f71:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "orelsan.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-7-identity-confirm",
+        "line": 47,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#293949",
+          "#0c1222",
+          "#e9dec8",
+          "#6c5f57"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 5,
+      "oracleKey": "#293949:#0c1222:#e9dec8:#6c5f57:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.017779343734048075,
+      "winnerKey": "#172737:#0c1222:#e9dec8:#6c5f57:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.017779343734048075,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "track-b",
+        "batch": "review-2-gradients",
+        "line": 7,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#8fabaf",
+          "#4d6b6b",
+          "#fbfdfa",
+          "#111312"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0.011082995758064863,
+      "oracleRank": 182,
+      "oracleKey": "#8ea3a4:#537171:#fbfdfa:#111312:flat",
+      "oracleGradientMatches": false,
+      "winnerCost": 0.1335800774527487,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 2,
+      "roleAlignedWinnerCost": 0.1784933780224035,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-4-ranking",
+        "line": 21,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c8a8a",
+          "#86a5aa",
+          "#fbfdfa",
+          "#111312"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#6c8a8a:#86a5aa:#fbfdfa:#111312:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.10173443297640818,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 2,
+      "roleAlignedWinnerCost": 0.10173443297640818,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "correction",
+        "label": "trunk-d-a2",
+        "batch": "conversational",
+        "line": 26,
+        "roles": [
+          "accent"
+        ],
+        "hexes": [
+          "#d01510"
+        ],
+        "gradient": null,
+        "verdict": null
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0.008332085820379358,
+      "oracleRank": 96,
+      "oracleKey": "#6c8a8a:#86a5aa:#81654d:#cc150f:gradient",
+      "oracleGradientMatches": null,
+      "winnerCost": 0.014331354036260293,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0.014331354036260293,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "trunk-d-a2",
+        "batch": "review-5-midpoints-alternatives",
+        "line": 29,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c8a8a",
+          "#86a5aa",
+          "#fbfdfa",
+          "#111312"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#6c8a8a:#86a5aa:#fbfdfa:#111312:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.10173443297640818,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 2,
+      "roleAlignedWinnerCost": 0.10173443297640818,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "trunk-a5",
+        "batch": "review-10-marks-midpoints",
+        "line": 64,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c8a8a",
+          "#86a5aa",
+          "#fbfdfa",
+          "#111312"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#6c8a8a:#86a5aa:#fbfdfa:#111312:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.10173443297640818,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 2,
+      "roleAlignedWinnerCost": 0.10173443297640818,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "trunk-f",
+        "batch": "review-12-midpoints",
+        "line": 79,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c8a8a",
+          "#86a5aa",
+          "#fbfdfa",
+          "#111312"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 2,
+      "oracleKey": "#6c8a8a:#86a5aa:#fbfdfa:#111312:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0.10173443297640818,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 2,
+      "roleAlignedWinnerCost": 0.10173443297640818,
+      "classification": "ranking-failure"
+    },
+    {
+      "target": {
+        "image": "placebo.jpg",
+        "source": "endorsed",
+        "label": "trunk-b7",
+        "batch": "review-14-b2",
+        "line": 91,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#6c8a8a",
+          "#86a5aa",
+          "#fbfdfa",
+          "#c91611"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "slim.jpg",
+        "source": "endorsed",
+        "label": "trunk-e",
+        "batch": "review-10-marks-midpoints",
+        "line": 65,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#01040b",
+          "#140e18",
+          "#56676f",
+          "#df2a33"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#01040b:#140e18:#56676f:#df2a33:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#01040b:#140e18:#56676f:#df2a33:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "slim.jpg",
+        "source": "endorsed",
+        "label": "trunk-f",
+        "batch": "review-12-midpoints",
+        "line": 80,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#01040b",
+          "#140e18",
+          "#56676f",
+          "#df2a33"
+        ],
+        "gradient": true,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#01040b:#140e18:#56676f:#df2a33:gradient",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#01040b:#140e18:#56676f:#df2a33:gradient",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "slipknot.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-1-track-d",
+        "line": 4,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#000000",
+          "#000000",
+          "#fbfbfd",
+          "#fbfbfd"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 145,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#000000:#000000:#fbfbfd:#fbfbfd:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#000000:#000000:#fbfbfd:#fbfbfd:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "toxicity.jpg",
+        "source": "endorsed",
+        "label": "v2-2",
+        "batch": "review-1-track-d",
+        "line": 5,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#b59e8e",
+          "#805a33",
+          "#edebd2",
+          "#dd1434"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#b59e8e:#805a33:#edebd2:#dd1434:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#b59e8e:#805a33:#edebd2:#dd1434:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    },
+    {
+      "target": {
+        "image": "vvbrown.jpg",
+        "source": "endorsed",
+        "label": "c-alt-r4",
+        "batch": "review-5-midpoints-alternatives",
+        "line": 32,
+        "roles": [
+          "background",
+          "surface",
+          "foreground",
+          "accent"
+        ],
+        "hexes": [
+          "#ffffff",
+          "#ffffff",
+          "#080808",
+          "#e6e622"
+        ],
+        "gradient": false,
+        "verdict": "strong"
+      },
+      "candidateCount": 1500,
+      "oracleCost": 0,
+      "oracleRank": 1,
+      "oracleKey": "#ffffff:#ffffff:#080808:#e6e622:flat",
+      "oracleGradientMatches": true,
+      "winnerCost": 0,
+      "winnerKey": "#ffffff:#ffffff:#080808:#e6e622:flat",
+      "winnerRank": 1,
+      "firstAcceptableRank": 1,
+      "roleAlignedWinnerCost": 0,
+      "classification": "match"
+    }
+  ],
+  "missingDumps": []
+}

@@ -160,8 +160,53 @@ function decision(options, isSelected, onSelect) {
 	return row
 }
 
+function correctedCount(index) {
+	return payload.roles.filter((role) => typeof state[index].corrections[role] === "string").length
+}
+
+/** Fill every role from one of the treatments on screen, so the reviewer only re-clicks what they disagree with. */
+function seedCorrections(item, index, side) {
+	const palette = item[side]
+	for (const role of payload.roles) state[index].corrections[role] = palette[role].hex
+}
+
 function corrections(item, index) {
 	const block = create("div")
+
+	const shortcuts = create("div", { className: "decision correction-shortcuts" })
+	const seeds = item.identical ? [["A", "Start from this palette"]] : [["A", "Start from A"], ["B", "Start from B"]]
+	for (const [side, text] of seeds) {
+		const button = create("button", { type: "button", text })
+		button.addEventListener("click", () => {
+			seedCorrections(item, index, side)
+			render()
+		})
+		shortcuts.append(button)
+	}
+	const clearAll = create("button", { type: "button", text: "Clear all" })
+	clearAll.addEventListener("click", () => {
+		state[index].corrections = {}
+		render()
+	})
+	shortcuts.append(clearAll)
+
+	const summary = create("div", { className: "correction-summary" })
+	const count = correctedCount(index)
+	for (const role of payload.roles) {
+		const hex = state[index].corrections[role]
+		const entry = create("span", { className: "correction-slot", title: `${role}: ${hex ?? "not set"}` })
+		const chip = create("span", { className: `swatch${hex ? "" : " empty"}`, "aria-hidden": "true" })
+		if (hex) chip.style.backgroundColor = hex
+		entry.append(chip, create("code", { text: hex ?? "-" }))
+		summary.append(entry)
+	}
+	summary.append(create("span", {
+		className: "role-status",
+		text: count === 0 ? "skipped" : count === payload.roles.length ? "complete" : `${count} of ${payload.roles.length} roles set`,
+	}))
+	shortcuts.append(summary)
+	block.append(shortcuts)
+
 	for (const role of payload.roles) {
 		const row = create("div", { className: "correction" })
 		row.append(create("span", { className: "role-status", text: role }))
@@ -196,7 +241,8 @@ function corrections(item, index) {
 	}
 	block.append(create("p", {
 		className: "correction-note role-status",
-		text: "Solid: sampled from the artwork / dashed: proposed by a treatment",
+		text: "Solid: sampled from the artwork / dashed: proposed by a treatment."
+			+ " If any role is wrong, set all four so the answer is a complete palette.",
 	}))
 	return block
 }
@@ -222,6 +268,9 @@ function assessment(item, index) {
 		(value) => state[index].verdict === value,
 		(value) => { state[index].verdict = value },
 	)))
+	// Corrections come straight after the verdict: which four colors it should have been is the answer
+	// that separates a missing candidate from a mis-ranked one, and it is worth more than any tag.
+	section.append(control("What should the four role colors have been?", corrections(item, index)))
 	section.append(control("Error tags (optional)", decision(
 		payload.starterTags.map((tag) => [tag, tag]),
 		(value) => state[index].tags.includes(value),
@@ -231,7 +280,6 @@ function assessment(item, index) {
 				: [...state[index].tags, value]
 		},
 	)))
-	section.append(control("Role corrections (optional)", corrections(item, index)))
 
 	const comment = create("textarea", {
 		className: "comment",
@@ -240,7 +288,12 @@ function assessment(item, index) {
 	})
 	comment.value = state[index].notes
 	comment.addEventListener("input", () => { state[index].notes = comment.value })
-	section.append(comment, create("p", { className: "status", text: answered ? "Answered" : "Not reviewed" }))
+	const corrected = correctedCount(index)
+	section.append(comment, create("p", {
+		className: "status",
+		text: `${answered ? "Answered" : "Not reviewed"} / corrected palette: `
+			+ (corrected === 0 ? "skipped" : `${corrected} of ${payload.roles.length} roles`),
+	}))
 	return section
 }
 

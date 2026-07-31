@@ -131,10 +131,16 @@ Collected per item:
 - **preference** — `A`, `B`, or `equal` (forced to `equal` and not asked for identical pairs);
 - **verdict** — absolute judgement of the preferred side: `strong`, `acceptable`, `weak-fallback`, `unacceptable`
   (when the preference is `equal` it applies to both sides);
-- **corrections** — optional per-role color chosen by clicking a named swatch chip. Each chip shows the color,
-  its name, and its hex; there is no hex input, and the server rejects any correction that is not one of the
-  swatches it served. Chips come from the image itself (solid border) plus the palette colors proposed by either
-  option (dashed border). See *Swatch sampling* below.
+- **corrections** — *the corrected palette: what the four role colors should have been.* This is asked on every
+  item, directly under the verdict, because it is the only answer that distinguishes a candidate we never built
+  from one we built and mis-ranked. The reviewer clicks named swatch chips; **Start from A / Start from B** fills
+  all four roles from a treatment on screen so only the disputed roles have to be re-clicked, and **Clear all**
+  empties them. A live summary shows the palette being assembled and whether it is `skipped`, partial, or
+  `complete`. It stays skippable — submission is gated on preference and verdict only — but a partial answer is
+  still usable: the metrics compare only the roles that were actually set. Each chip shows the color, its name,
+  and its hex; there is no hex input, and the server rejects any correction that is not one of the swatches it
+  served. Chips come from the image itself (solid border) plus the palette colors proposed by either option
+  (dashed border). See *Swatch sampling* below.
 - **tags** — optional multi-select: `wrong-role`, `incomplete-identity`, `contrast`, `missing-gradient`,
   `extraneous-gradient`, `wrong-midpoint`, `other`;
 - **notes** — freeform text.
@@ -163,6 +169,87 @@ not contain.
 `review-app/index.html`, `styles.css`, and `app.js` are read into memory once at startup, so a running server
 keeps serving the front-end it started with: **restart `serve-review.ts` after editing anything in `review-app/`.**
 
+## 5. Export the candidate domain
+
+```sh
+node --no-warnings --experimental-strip-types research/v2-3-eval/export-candidates.ts \
+  [--images <glob-or-list> | --from-warehouse] [--label <name>] [--force]
+```
+
+The algorithms publish only their winner, so measuring recall means replaying the internal candidate
+construction. This script imports `research/v2-3/src/internal/*` **directly and read-only** and repeats exactly
+the sequence `extractPaletteDetails` runs — seed domain, common base, transition normalization, supplemental
+treatments, materialization, role evidence, `scorePaletteCandidates` — then also calls `extractPaletteDetails`
+to record the published winner. Nothing under `research/v2-3/` is modified; its architecture test constrains
+imports *inside* that folder, and this tooling lives outside it.
+
+`--from-warehouse` selects every image that appears in the warehouse, resolving paths from the batch files
+(reviewed artwork is not always in `images/`). Output goes to `data/candidates/<label>/<image>.json`, cached on
+the image sha256 like `run-corpus.ts`:
+
+```json
+{
+  "candidateCount": 1500,
+  "publishedWinnerKey": "#6c8a8a:#86a5aa:#fbfdfa:#c91611:gradient",
+  "topRankedKey": "…",
+  "candidates": [{ "rank": 1, "key": "bg:surface:fg:accent:gradient|flat", "pareto": true, "qualityUtility": 0.83, "relationUtility": 0.88 }]
+}
+```
+
+The canonical `key` carries all four role hexes and the gradient flag, which is everything the metrics need.
+
+## 6. Recall vs ranking — `eval-metrics.ts`
+
+```sh
+node --no-warnings --experimental-strip-types research/v2-3-eval/eval-metrics.ts \
+  [--candidates <label>] [--epsilon 0.04] [--source all|corrections|endorsed] [--verbose] [--json <path>]
+```
+
+The point of this tool is that **a missing candidate and a mis-ranked candidate are different bugs** and were
+previously debugged as the same one. For every human answer in the warehouse it reports:
+
+- **oracle over candidates (RECALL)** — the lowest cost achievable by *any* candidate in the ≤1500 domain. If
+  this is above epsilon, no amount of scoring work can fix the case: the answer was never built.
+- **our published ranking (RANKING)** — the cost of the treatment we actually publish. If the oracle is within
+  epsilon and this is not, the answer existed and we ranked something else first; `@rank` and `1st ok` show
+  where it sat.
+- **human-agreement ceiling** — mean cost between two *independent* human answers for the same image. We cannot
+  agree with "the" human answer more closely than humans agree with each other, so this bounds both numbers
+  above. (Lin & Hanrahan measured humans agreeing on about 2 of 5 swatches, so expect it to be well below
+  perfect.)
+
+Cost is OKLab Euclidean, averaged per role, using **min-cost bipartite matching** between the two palettes —
+roles are a labelling humans disagree about, so the palettes are matched as sets (with four colors per side the
+assignment problem is 24 permutations, enumerated exactly). 1 JND ≈ 0.02, so the default epsilon of 0.04 is
+about 2 JND per role; the tier table also reports 1 and 3 JND.
+
+Two classes of human answer are read, never mixed silently:
+
+- `correction` — an explicitly corrected palette (the strong evidence; partial answers compare only the roles
+  that were set).
+- `endorsed` — a palette the reviewer graded `strong`, used as a proxy so the tool produces numbers before
+  enough corrections accumulate. A record's correction always supersedes its endorsed palette.
+
+## 7. Bradley-Terry scores — `bradley-terry.ts`
+
+```sh
+node --no-warnings --experimental-strip-types research/v2-3-eval/bradley-terry.ts \
+  [--anchor <label>] [--bootstrap 2000] [--prior 1] [--json <path>]
+```
+
+Every round produces preferences against whatever label it happened to face, so raw win counts are not
+comparable across rounds. Bradley-Terry fits one latent quality per label over all pairwise preferences at once,
+which makes two labels comparable even when they never met, as long as the comparison graph connects them.
+
+- Fitted by minorization-maximization (Hunter 2004) to a fixed point, with a weak conjugate prior (`--prior`
+  virtual comparisons against a reference of strength 1) so an undefeated or winless label stays finite.
+- Ties (`preference: equal` on a real A/B item) count as half a win each way. `identical` records are excluded —
+  they are not comparisons.
+- Scores are log-odds, anchored at `v2-2` (score 0) by default: +0.69 means roughly 2:1 preferred over the
+  anchor. `P(beat anchor)` is the same number as a probability.
+- 95% intervals come from a seeded bootstrap over whole records, so the output is deterministic. Labels with
+  fewer than three records are flagged: read their intervals, not their scores.
+
 ## Warehouse schema — `research/v2-3-eval/data/verdicts.jsonl`
 
 Append-only JSON Lines, one record per reviewed item. Each record is self-contained: it can be mined without
@@ -182,12 +269,18 @@ the batch, key, or result files that produced it.
 | `preference` | `{ side: "A" \| "B" \| null, label: string \| null }` | `null` when the reviewer answered `equal`, and always `null` when `comparison` is `"identical"` |
 | `verdict` | `"strong" \| "acceptable" \| "weak-fallback" \| "unacceptable"` | absolute judgement |
 | `verdictApplies` | array of labels | the preferred label, or both labels when the preference was `equal` |
-| `corrections` | `{ [role]: hex }` | optional; roles are `background`/`surface`/`foreground`/`accent` |
+| `corrections` | `{ [role]: hex }` | the corrected palette — what the reviewer says the roles should have been. May be empty (skipped) or partial; a complete answer has all four roles. Every hex is one of the swatches the server offered for that image. |
 | `tags` | array of strings | deduplicated and sorted |
 | `notes` | string | freeform, may be empty |
 
 A `palette` is `{ background, surface, foreground, accent, gradient, collapse, midpoint, width, height }`,
 each role being `{ rgb, oklab, hex, generated }` and `midpoint` a hex string or `null`.
+
+The file is also where hand-recorded human evidence lands — for example a `"comparison": "correction-only"`
+record carrying a corrected role from a conversation, with a single label, no preference, and a `null` verdict.
+`src/warehouse.ts` is the reader every mining tool uses: it normalizes optional fields so such records parse
+without special-casing, and keeps each record's line number for traceability. Treat the shape as *observed*
+rather than guaranteed, and never assume `comparison` is only `ab`/`identical`.
 
 ## Typecheck
 
