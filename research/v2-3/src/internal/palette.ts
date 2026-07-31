@@ -1,4 +1,6 @@
-import { completeTreatmentKey, constructAlbumArtworkPaletteV2Phase3SupplementalTreatments, buildPaletteSeedDomain } from "./palette-core.ts";
+import { completeTreatmentKey, constructAlbumArtworkPaletteV2Phase3SupplementalTreatments, buildPaletteSeedDomain, DEFAULT_PALETTE_EXTRACTION_OPTIONS } from "./palette-core.ts";
+
+import type { PaletteExtractionOptions } from "./palette-core.ts";
 
 import { mixOKLab, okDistance } from "./color.ts";
 
@@ -298,13 +300,16 @@ function applyGradientSupport(
 	}
 }
 
-export function extractPaletteDetails(image: RawImage): Readonly<{
+export function extractPaletteDetails(
+	image: RawImage,
+	options: PaletteExtractionOptions = DEFAULT_PALETTE_EXTRACTION_OPTIONS,
+): Readonly<{
 	width: number
 	height: number
 	winner: CompletePaletteTreatment
 	midpoint: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor
 }> {
-	const seed = buildPaletteSeedDomain(image)
+	const seed = buildPaletteSeedDomain(image, options)
 	const common = buildAlbumArtworkPaletteV2Phase3CommonBase(seed)
 	const transitionEnvelope = normalizeAlbumArtworkPaletteV2Phase3TransitionEnvelopeV4(
 		common.evidence.nativeFieldTransitions,
@@ -321,6 +326,7 @@ export function extractPaletteDetails(image: RawImage): Readonly<{
 	const supplemental = constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
 		common.evidence.augmentedNative,
 		supplementalFields.map(({ hypothesis }) => hypothesis),
+		options,
 	)
 	const sourcedFields: AlbumArtworkPaletteV2Phase3SourcedFieldHypothesis[] = [
 		...common.seedAvailability.fieldHypotheses,

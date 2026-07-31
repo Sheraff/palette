@@ -6,7 +6,6 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_V2_QUALITY_AXES = [
 	"fieldFidelity",
 	"representativeness",
 	"sourceSupport",
-	"renderedGradientSalience",
 	"foregroundPath",
 	"accentPath",
 	"coherence",
@@ -100,7 +99,16 @@ export function gradientEvidenceStrength(treatment: CompletePaletteTreatment): n
 	].map(clamp))
 }
 
-function earnedGradientClaim(treatment: CompletePaletteTreatment): boolean {
+/**
+ * Whether the treatment's rendered gradient claim is backed by its own evidence.
+ *
+ * Exported because `scorePaletteCandidates` needs only this predicate to decide which field
+ * claims are earned. It used to obtain it by running a second full
+ * `albumArtworkPaletteV2Phase3SelectorV2Quality` over every candidate (up to 1,500) and reading
+ * `gradientStatus === "earned-rendered"`; the predicate does not depend on `gradientExpected`,
+ * so the extra pass computed ten other axes to answer a question this function answers directly.
+ */
+export function earnedGradientClaim(treatment: CompletePaletteTreatment): boolean {
 	const evidence = treatment.gradientEvidence
 	if (!treatment.gradient || treatment.fieldTreatment !== "gradient-field" ||
 		treatment.collapse.surface || evidence === null) return false
@@ -123,16 +131,6 @@ function gradientStatus(
 	return "not-applicable"
 }
 
-function renderedGradientSalience(
-	treatment: CompletePaletteTreatment,
-	status: AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus,
-): number {
-	if (status === "not-applicable") return 1
-	if (status !== "earned-rendered") return 0
-	const endpointSalience = clamp(colorDistance(treatment.background, treatment.surface) / 0.18)
-	return Math.sqrt(endpointSalience * gradientEvidenceStrength(treatment))
-}
-
 export function albumArtworkPaletteV2Phase3SelectorV2Quality(
 	treatment: CompletePaletteTreatment,
 	gradientExpected = false,
@@ -153,7 +151,6 @@ export function albumArtworkPaletteV2Phase3SelectorV2Quality(
 				: adjustedScore(treatment, treatment.scores.fieldFidelity),
 			representativeness: adjustedScore(treatment, treatment.scores.representativeness),
 			sourceSupport: treatmentSourceSupport(treatment),
-			renderedGradientSalience: renderedGradientSalience(treatment, status),
 			foregroundPath: adjustedScore(treatment, foregroundPath),
 			accentPath: adjustedScore(treatment, accentPath),
 			coherence: adjustedScore(treatment, treatment.scores.coherence),

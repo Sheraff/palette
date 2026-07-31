@@ -1,10 +1,13 @@
 import { extractPaletteDetails } from "./src/internal/palette.ts"
 import { loadNativeImage } from "./src/internal/native-resolution-image.ts"
 import type { LoadNativeImageOptions } from "./src/internal/native-resolution-image.ts"
+import type { PaletteExtractionOptions } from "./src/internal/palette-core.ts"
 import type { OKLab, RawImage, RGB } from "./src/internal/types.ts"
 
 export type { RawImage } from "./src/internal/types.ts"
 export type { LoadNativeImageOptions } from "./src/internal/native-resolution-image.ts"
+export type { PaletteExtractionOptions } from "./src/internal/palette-core.ts"
+export { DEFAULT_PALETTE_EXTRACTION_OPTIONS } from "./src/internal/palette-core.ts"
 
 export const algorithmIdentity = "v2-3" as const
 
@@ -46,8 +49,14 @@ export type PaletteExtraction = Readonly<{
 	researchRender?: SourceSupportedMidpointRender
 }>
 
-export function extractPalette(image: RawImage): PaletteExtraction {
-	const details = extractPaletteDetails(image)
+/**
+ * `options` is optional and every field defaults to the reviewed behaviour. The only parameter
+ * today is `contrastHardMinimum` (charter rule 2): the APCA |Lc| a role must exceed somewhere
+ * along the field to count as observable. It defaults to `0` — this library deliberately allows
+ * very low contrast, and raising the floor is the caller's decision, never the algorithm's.
+ */
+export function extractPalette(image: RawImage, options?: PaletteExtractionOptions): PaletteExtraction {
+	const details = extractPaletteDetails(image, options)
 	const roles = ["background", "surface", "foreground", "accent"] as const
 	const colors = Object.fromEntries(roles.map((role) => {
 		const { rgb, oklab, hex, generated } = details.winner[role]
@@ -84,7 +93,10 @@ export function extractPalette(image: RawImage): PaletteExtraction {
 
 export async function extractPaletteFromBytes(
 	source: string | Uint8Array,
-	options?: LoadNativeImageOptions,
+	options?: LoadNativeImageOptions & Partial<PaletteExtractionOptions>,
 ): Promise<PaletteExtraction> {
-	return extractPalette(await loadNativeImage(source, options))
+	const image = await loadNativeImage(source, options)
+	return extractPalette(image, options?.contrastHardMinimum === undefined
+		? undefined
+		: { contrastHardMinimum: options.contrastHardMinimum })
 }

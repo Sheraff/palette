@@ -2,11 +2,13 @@ import { completeTreatmentKey } from "./palette-core.ts";
 
 import type { CompletePaletteTreatment } from "./palette-core.ts";
 
+import { ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
+
 import { ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY, selectAlbumArtworkPaletteV2Phase3Treatments } from "./base-scoring.ts";
 
 import type { AlbumArtworkPaletteV2Phase3IdentityInput, AlbumArtworkPaletteV2Phase3SelectorEvaluation } from "./base-scoring.ts";
 
-import { albumArtworkPaletteV2Phase3SelectorV2Quality, gradientEvidenceStrength, roleSourceSupport } from "./palette-quality.ts";
+import { albumArtworkPaletteV2Phase3SelectorV2Quality, earnedGradientClaim, gradientEvidenceStrength, roleSourceSupport } from "./palette-quality.ts";
 
 import type { AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus } from "./palette-quality.ts";
 
@@ -16,7 +18,7 @@ export const WINNER_QUALITY_AXES = [
 	"artworkIdentity",
 	"representativeness",
 	"sourceSupport",
-	"renderedGradientSalience",
+	"renderedFieldClaim",
 	"foregroundPath",
 	"accentFidelity",
 	"accentPath",
@@ -38,23 +40,19 @@ export const WINNER_RANKING_HYPOTHESES = Object.freeze({
 	 * identity-superior treatment can be pruned off the frontier by a treatment
 	 * that omits a major family) nor survives the utility quantum (inside one
 	 * `utilityResolution` band the order falls back to `qualityUtility`, which
-	 * excludes identity and therefore reverses the preference). Make coverage
-	 * authoritative in both places and give it a usable amplitude.
-	 */
-	identityAuthority: false,
-	/**
-	 * The same two defects as `identityAuthority`, but the authority is earned
-	 * rather than assumed. Raw coverage counts any obligation carried in any
-	 * role, so it is equally available to a treatment that covers two
-	 * near-neutral obligations, or spends two roles on one hue — measured to
-	 * produce a light-grey-on-near-white `johns` and to break `black`'s reviewed
-	 * two-colour collapse. `base-scoring.ts` therefore separates the *authorized*
-	 * part of the identity gain: the coverage carried by distinct, genuinely
-	 * chromatic identity directions, counted against the whole palette. Only
-	 * that part guards domination and decides the utility band here.
+	 * excludes identity and therefore reverses the preference). This makes the
+	 * *authorized* part of the identity gain authoritative in both places: the
+	 * coverage carried by distinct, genuinely chromatic identity directions,
+	 * counted against the whole palette, as separated by `base-scoring.ts`.
 	 *
-	 * Alternative to `identityAuthority`, not a companion: with both enabled the
-	 * looser rule would re-admit exactly what this one excludes.
+	 * The looser variant that made **raw** coverage do this (`identityAuthority`,
+	 * with `maximumIdentityGain` 0.10) was measured and rejected: raw coverage is
+	 * equally available to a treatment that covers two near-neutral obligations or
+	 * spends two roles on one hue, which produced a light-grey-on-near-white
+	 * `johns` and broke `black`'s reviewed two-colour collapse. It was carried as
+	 * a permanently-`false` companion flag that would have re-admitted exactly
+	 * what this rule excludes if both were ever enabled; it is deleted rather
+	 * than left as a trap.
 	 */
 	authorizedIdentity: true,
 	/**
@@ -63,31 +61,23 @@ export const WINNER_RANKING_HYPOTHESES = Object.freeze({
 	 * distinct-surface alternatives available to its *background family*, not
 	 * about the rendered treatment. Comparing it across treatments with
 	 * different background families rewards choosing a background that had no
-	 * good partner, and the same term is counted twice because `economy` is
-	 * `(surfaceFidelity + accentEconomy) / 2`. Decorrelate `economy` and move
-	 * weight from collapse economy to source-derived field ownership.
+	 * good partner. Substitute a constant for the collapsed reading only.
 	 */
 	fieldOwnershipBeforeCollapseEconomy: true,
-	/**
-	 * The rendered field claim must be honest: an unearned gradient claim must
-	 * lose its field fidelity at winner level too (the wave-1 score it is read
-	 * from has no such rule), a legitimately earned gradient must not be
-	 * structurally out-scored on the claim axis by any flat, and a foreground or
-	 * accent whose APCA sign flips across the gradient samples crosses zero
-	 * contrast somewhere inside the rendered field.
-	 */
-	gradientClaimConsistency: true,
 })
 
-const IDENTITY_AUTHORITY = Object.freeze({
-	/**
-	 * Winner-level cap on the identity bonus added to `qualityUtility`. The
-	 * wave-1 cap (0.05) is smaller than the utility spread that collapse economy
-	 * and local role paths routinely produce, so full identity coverage cannot
-	 * overturn an omission of a major family.
-	 */
-	maximumIdentityGain: 0.10,
-})
+/**
+ * Gradient-claim consistency is unconditional, and was previously a permanently-`true`
+ * `gradientClaimConsistency` flag plus a `routeUnearnedFieldFidelity` sub-flag also permanently
+ * `true`. It states three things, all now inlined at their single use in `evaluateTreatment`:
+ * an unearned gradient claim loses its field fidelity at winner level too (the wave-1 score it
+ * used to be read from has no such rule); a legitimately earned gradient must not be structurally
+ * out-scored on the claim axis by any flat; and a foreground or accent whose APCA sign flips
+ * across the gradient samples crosses zero contrast somewhere inside the rendered field.
+ *
+ * The `false` branches were only reachable by editing the flag, and one of them depended on the
+ * wave-1 `renderedGradientSalience` value that is now deleted (see `renderedFieldClaimScore`).
+ */
 
 const FIELD_OWNERSHIP = Object.freeze({
 	/**
@@ -107,48 +97,19 @@ const FIELD_OWNERSHIP = Object.freeze({
 	 * reading with a constant, so collapsed treatments can no longer out-score
 	 * each other on the availability of alternatives, while a distinct surface
 	 * keeps its full, honestly-measured contribution.
+	 *
+	 * Three companion knobs were deleted as measured-inert, all of which had been
+	 * evaluated and rejected before integration and were left set to their
+	 * no-op values: `applyToEconomy` / `decorrelateEconomy` (both `false`, which
+	 * made the economy substitution the identity function) and `weightTransfer` /
+	 * `fieldFidelityWeightBoost` (both `0`, which made the weight vector exactly
+	 * `BASE_QUALITY_WEIGHTS`). Their rationale is preserved in
+	 * `research/v2-3-experiments/track-a/EXPERIMENT.md`.
 	 */
 	collapsedSurfaceFidelity: 0.45 as number | null,
-	/**
-	 * Apply the same substitution inside `economy`, which is
-	 * `(surfaceFidelity + accentEconomy) / 2` and therefore imports the same
-	 * contaminated term.
-	 */
-	applyToEconomy: false,
-	/**
-	 * `economy` restated without the `surfaceFidelity` term entirely:
-	 * `2 * economy - surfaceFidelity` is exactly the accent economy component.
-	 * Evaluated and rejected: it changed 6 of 34 base artworks and fixed none of
-	 * the reviewed ranking failures.
-	 */
-	decorrelateEconomy: false,
-	/**
-	 * Weight moved from the collapse-economy axis to the field-ownership axis.
-	 * Evaluated at 0.04: it fixes the reviewed cases but cuts the reward of a
-	 * *distinct* surface as well, which demoted reviewed-strong four-colour flats
-	 * to three-colour collapsed winners.
-	 */
-	weightTransfer: 0,
-	/**
-	 * Additional weight on `fieldFidelity`, funded proportionally from every
-	 * other axis so the utility scale is preserved. Unlike `weightTransfer` this
-	 * does not touch the reward a *distinct* surface earns.
-	 *
-	 * Rationale: postmortem item 5, "establish field ownership and polarity
-	 * before symmetric utility ranking". Where a distinct surface *degrades* the
-	 * field claim relative to collapsing the same background family, field
-	 * ownership should be able to say so.
-	 */
-	fieldFidelityWeightBoost: 0 as number,
 })
 
 const GRADIENT_CLAIM = Object.freeze({
-	/**
-	 * Read `fieldFidelity` from the gradient-aware quality (which zeroes it for
-	 * an unearned gradient claim) instead of the wave-1 score, which has no such
-	 * rule and silently dropped the penalty at the only stage that picks a winner.
-	 */
-	routeUnearnedFieldFidelity: true,
 	/**
 	 * Score the claim axis as pure honesty of the rendered field claim: an
 	 * unearned gradient claim scores 0, every honest claim scores 1.
@@ -162,14 +123,7 @@ const GRADIENT_CLAIM = Object.freeze({
 	 * (`earned-only`) leaves a net pro-gradient push, which is what promoted a
 	 * reviewed-strong flat to a gradient.
 	 */
-	claimAxis: "evidence-strength" as "endpoint-source-fidelity" | "evidence-strength" | "honest-claims-only" | "earned-only" | "legacy-salience",
-	/**
-	 * Lower bound on |sum(sign)| / count of the signed APCA samples of one role
-	 * across the rendered gradient. Below 1 the role crosses zero contrast
-	 * somewhere inside the field; the role path is discounted by the observed
-	 * agreement. Flat treatments have no gradient samples and are unaffected.
-	 */
-	signAgreementFloor: 0,
+	claimAxis: "evidence-strength" as "endpoint-source-fidelity" | "evidence-strength" | "honest-claims-only" | "earned-only",
 	/**
 	 * Chromatic separation at which a sign flip stops being a defect.
 	 *
@@ -247,7 +201,7 @@ export const PROMOTION_ENVELOPE: "quality-utility" | "field-claim-neutral" | "fi
  * field, so these are the axes it is entitled to change; the envelope should
  * gate it on what it is not entitled to damage — the roles.
  */
-const FIELD_CLAIM_AXES: readonly WinnerQualityAxis[] = ["fieldFidelity", "surfaceFidelity", "renderedGradientSalience"]
+const FIELD_CLAIM_AXES: readonly WinnerQualityAxis[] = ["fieldFidelity", "surfaceFidelity", "renderedFieldClaim"]
 
 /**
  * Quality utility as the promotion envelope compares it. Subtracting weighted
@@ -259,7 +213,7 @@ export function promotionEnvelopeUtility(evaluation: Readonly<{
 }>): number {
 	if (PROMOTION_ENVELOPE === "quality-utility") return evaluation.qualityUtility
 	const excluded: readonly WinnerQualityAxis[] = PROMOTION_ENVELOPE === "field-claim-neutral"
-		? ["renderedGradientSalience"]
+		? ["renderedFieldClaim"]
 		: FIELD_CLAIM_AXES
 	return excluded.reduce((utility, axis) =>
 		utility - WINNER_SCORING_POLICY.qualityWeights[axis] * evaluation.quality[axis], evaluation.qualityUtility)
@@ -271,7 +225,7 @@ const BASE_QUALITY_WEIGHTS = Object.freeze({
 	artworkIdentity: 0.11,
 	representativeness: 0.10,
 	sourceSupport: 0.10,
-	renderedGradientSalience: 0.08,
+	renderedFieldClaim: 0.08,
 	foregroundPath: 0.15,
 	accentFidelity: 0.06,
 	accentPath: 0.08,
@@ -279,39 +233,17 @@ const BASE_QUALITY_WEIGHTS = Object.freeze({
 	economy: 0.05,
 })
 
-/**
- * Winner quality weights. `weightTransfer` moves weight from the
- * collapse-economy axis to the field-ownership axis; `fieldFidelityWeightBoost`
- * raises the field-ownership axis and funds it proportionally from every other
- * axis, so the total stays 1 and the utility scale (and therefore
- * `maximumQualityLoss`) is unchanged.
- */
-function fieldOwnershipWeights(): Record<WinnerQualityAxis, number> {
-	if (!WINNER_RANKING_HYPOTHESES.fieldOwnershipBeforeCollapseEconomy) return { ...BASE_QUALITY_WEIGHTS }
-	const transferred: Record<WinnerQualityAxis, number> = {
-		...BASE_QUALITY_WEIGHTS,
-		fieldFidelity: BASE_QUALITY_WEIGHTS.fieldFidelity + FIELD_OWNERSHIP.weightTransfer,
-		surfaceFidelity: BASE_QUALITY_WEIGHTS.surfaceFidelity - FIELD_OWNERSHIP.weightTransfer,
-	}
-	const boost = FIELD_OWNERSHIP.fieldFidelityWeightBoost
-	if (boost === 0) return transferred
-	const remainder = 1 - transferred.fieldFidelity
-	if (remainder <= boost) throw new RangeError("The field-ownership weight boost exhausts the other axes")
-	const scale = (remainder - boost) / remainder
-	return Object.fromEntries(WINNER_QUALITY_AXES.map((axis) => [
-		axis,
-		axis === "fieldFidelity" ? transferred.fieldFidelity + boost : transferred[axis] * scale,
-	])) as Record<WinnerQualityAxis, number>
-}
-
 export const WINNER_SCORING_POLICY = Object.freeze({
-	evidenceResolution: 0.04,
-	utilityResolution: 0.005,
-	maximumIdentityGain: WINNER_RANKING_HYPOTHESES.identityAuthority
-		? IDENTITY_AUTHORITY.maximumIdentityGain
-		: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain,
+	evidenceResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence,
+	utilityResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility,
+	maximumIdentityGain: ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain,
+	/**
+	 * How far below the unrestricted winner a source-eligible or transition-promoted winner may
+	 * fall. Read by `winner-selection.ts` for the source-eligibility envelope and, via
+	 * `transition-promotion.ts`'s re-export, by both promotion gates.
+	 */
 	maximumQualityLoss: 0.12,
-	qualityWeights: Object.freeze(fieldOwnershipWeights()),
+	qualityWeights: BASE_QUALITY_WEIGHTS,
 } as const)
 
 export type WinnerQuality = Readonly<
@@ -332,7 +264,6 @@ export type WinnerEvaluation = Readonly<{
 	identityRoles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 	relationUtility: number
 	paretoMember: boolean
-	dominatedByKey: string | null
 }>
 
 export type WinnerScoring = Readonly<{
@@ -400,16 +331,6 @@ function clamp(value: number): number {
 }
 
 /**
- * `economy` restated without the collapse-economy term it shares with the
- * `surfaceFidelity` axis. `economy` is `(surfaceFidelity + accentEconomy) / 2`,
- * so the accent component is recoverable exactly.
- */
-function decorrelatedEconomy(treatment: CompletePaletteTreatment): number {
-	return clamp(2 * treatment.scores.economy - treatment.scores.surfaceFidelity -
-		treatment.scores.generatedPenalty)
-}
-
-/**
  * `surfaceFidelity` with the collapsed reading replaced by a constant, so a
  * collapsed treatment no longer carries a statement about the distinct-surface
  * alternatives available to its background family.
@@ -422,22 +343,6 @@ function fieldOwnershipSurfaceFidelity(
 	if (!WINNER_RANKING_HYPOTHESES.fieldOwnershipBeforeCollapseEconomy ||
 		collapsed === null || !treatment.collapse.surface) return waveOne
 	return clamp(collapsed - treatment.scores.generatedPenalty)
-}
-
-/**
- * `economy` is `(surfaceFidelity + accentEconomy) / 2`, so it imports the same
- * contaminated collapsed reading. Substitute it consistently.
- */
-function fieldOwnershipEconomy(
-	treatment: CompletePaletteTreatment,
-	waveOne: number,
-): number {
-	if (!WINNER_RANKING_HYPOTHESES.fieldOwnershipBeforeCollapseEconomy) return waveOne
-	if (FIELD_OWNERSHIP.decorrelateEconomy) return decorrelatedEconomy(treatment)
-	const collapsed = FIELD_OWNERSHIP.collapsedSurfaceFidelity
-	if (!FIELD_OWNERSHIP.applyToEconomy || collapsed === null || !treatment.collapse.surface) return waveOne
-	return clamp(treatment.scores.economy - 0.5 * treatment.scores.surfaceFidelity +
-		0.5 * collapsed - treatment.scores.generatedPenalty)
 }
 
 /**
@@ -490,38 +395,40 @@ function gradientSignAgreement(
 	const chromaticCarry = GRADIENT_CLAIM.chromaticCarryFull <= 0
 		? 1
 		: clamp(chromaticSeparationFromField(treatment, activeRole) / GRADIENT_CLAIM.chromaticCarryFull)
-	const relaxed = agreement + (1 - agreement) * chromaticCarry
-	return Math.max(GRADIENT_CLAIM.signAgreementFloor, relaxed)
+	// `agreement` and `chromaticCarry` are both in [0, 1], so the result is too; the former
+	// `Math.max(signAgreementFloor, …)` clamp with `signAgreementFloor = 0` could never bind.
+	return agreement + (1 - agreement) * chromaticCarry
 }
 
 /**
  * Score of the rendered field claim.
  *
- * `legacy-salience` is the previous behaviour: `sqrt(endpointSalience *
- * evidenceStrength)` for an earned gradient and 0 for everything else,
- * including every flat. (Note that `palette-quality.ts` returns 1 for a
- * not-applicable flat, but winner scoring has always overridden that to 0, so
- * at winner level the axis is a *pro-gradient* bonus, not an anti-gradient
- * handicap.) Its defect is that `endpointSalience` is the OKLab distance
- * between the endpoints, so a fitted endpoint pair wins over exact dense
- * family representatives purely for being further apart.
+ * **This axis is not the wave-1 `renderedGradientSalience` it used to be named after.** That
+ * function returned 1 for a not-applicable flat, while winner scoring has always overridden the
+ * value to 0 for everything that is not an earned gradient — so at winner level the axis is a
+ * *pro-gradient bonus*, not an anti-gradient handicap. Two different quantities under one name
+ * cost Track A a full measured, reviewed and then retracted round (its revision note records
+ * verifying the standalone function and not the override). The wave-1 function is deleted and the
+ * winner axis is now named `renderedFieldClaim` after what it actually scores.
  *
- * `earned-only` gives every earned gradient 1, which removes that abstract
- * salience advantage but doubles the pro-gradient bonus.
+ * The deleted `legacy-salience` option was the only consumer of that wave-1 value:
+ * `sqrt(endpointSalience * evidenceStrength)`, whose defect is that `endpointSalience` is just the
+ * OKLab distance between the endpoints, so a fitted endpoint pair beat exact dense family
+ * representatives purely for being further apart. It is the behaviour the reviewed
+ * `evidence-strength` axis was integrated to replace.
  *
- * `honest-claims-only` additionally scores `missing` 1. Measured: it demotes
- * three reviewed gradients to flats, so `missing -> 0` is load-bearing and the
- * axis is not a simple honesty indicator.
+ * `earned-only` gives every earned gradient 1, which removes that abstract salience advantage but
+ * doubles the pro-gradient bonus.
+ *
+ * `honest-claims-only` additionally scores `missing` 1. Measured: it demotes three reviewed
+ * gradients to flats, so `missing -> 0` is load-bearing and the axis is not a simple honesty
+ * indicator. (This is why `gradientExpected` is still computed: it is what distinguishes `missing`
+ * from `not-applicable`.)
  */
 function renderedFieldClaimScore(
 	treatment: CompletePaletteTreatment,
 	status: AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus,
-	salience: number,
-	claimConsistency: boolean,
 ): number {
-	if (!claimConsistency || GRADIENT_CLAIM.claimAxis === "legacy-salience") {
-		return status === "earned-rendered" ? salience : 0
-	}
 	if (GRADIENT_CLAIM.claimAxis === "evidence-strength") {
 		return status === "earned-rendered" ? gradientEvidenceStrength(treatment) : 0
 	}
@@ -542,34 +449,27 @@ function evaluateTreatment(
 	gradientExpected: boolean,
 ): WinnerEvaluation {
 	const reusable = albumArtworkPaletteV2Phase3SelectorV2Quality(wave1.treatment, gradientExpected)
-	const claimConsistency = WINNER_RANKING_HYPOTHESES.gradientClaimConsistency
 	const quality: WinnerQuality = {
-		fieldFidelity: claimConsistency && GRADIENT_CLAIM.routeUnearnedFieldFidelity
-			? reusable.quality.fieldFidelity
-			: wave1.quality.fieldFidelity,
+		// Read from the gradient-aware quality, which zeroes the axis for an unearned gradient
+		// claim. The wave-1 score has no such rule, so reading it here silently dropped the
+		// penalty at the only stage that picks a winner.
+		fieldFidelity: reusable.quality.fieldFidelity,
 		surfaceFidelity: fieldOwnershipSurfaceFidelity(wave1.treatment, wave1.quality.surfaceFidelity),
 		artworkIdentity: wave1.quality.artworkIdentity,
 		representativeness: wave1.quality.representativeness,
 		sourceSupport: reusable.quality.sourceSupport,
-		renderedGradientSalience: renderedFieldClaimScore(wave1.treatment, reusable.gradientStatus,
-			reusable.quality.renderedGradientSalience, claimConsistency),
-		foregroundPath: claimConsistency
-			? reusable.quality.foregroundPath * gradientSignAgreement(wave1.treatment, "foreground")
-			: reusable.quality.foregroundPath,
+		renderedFieldClaim: renderedFieldClaimScore(wave1.treatment, reusable.gradientStatus),
+		foregroundPath: reusable.quality.foregroundPath * gradientSignAgreement(wave1.treatment, "foreground"),
 		accentFidelity: wave1.quality.accentFidelity,
-		accentPath: claimConsistency
-			? reusable.quality.accentPath * gradientSignAgreement(wave1.treatment, "accent")
-			: reusable.quality.accentPath,
+		accentPath: reusable.quality.accentPath * gradientSignAgreement(wave1.treatment, "accent"),
 		coherence: wave1.quality.coherence,
-		economy: fieldOwnershipEconomy(wave1.treatment, wave1.quality.economy),
+		economy: wave1.quality.economy,
 	}
 	for (const axis of WINNER_QUALITY_AXES) {
 		if (!Number.isFinite(quality[axis])) throw new TypeError(`Non-finite winner quality axis ${axis}`)
 	}
 	const utility = qualityUtility(quality)
-	const identityGain = WINNER_RANKING_HYPOTHESES.identityAuthority
-		? WINNER_SCORING_POLICY.maximumIdentityGain * clamp(wave1.identityCoverage)
-		: wave1.identityGain
+	const identityGain = wave1.identityGain
 	return {
 		key: wave1.key,
 		structuralKey: treatmentStructuralKey(wave1.treatment),
@@ -587,7 +487,6 @@ function evaluateTreatment(
 		identityRoles: wave1.identityRoles,
 		relationUtility: utility + identityGain,
 		paretoMember: false,
-		dominatedByKey: null,
 	}
 }
 
@@ -614,10 +513,6 @@ function dominates(
 		// a pair that spans more of the endpoint bands is not dominated by a
 		// narrower pair of the same families, however the other axes fall.
 		return false
-	}
-	if (WINNER_RANKING_HYPOTHESES.identityAuthority) {
-		if (first.identityCoverage < second.identityCoverage) return false
-		if (first.identityCoverage > second.identityCoverage) strictlyBetter = true
 	}
 	if (WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
 		const authorized = (evaluation: WinnerEvaluation): number =>
@@ -650,13 +545,10 @@ function compareEvaluations(
 	second: WinnerEvaluation,
 ): number {
 	// Inside one utility band the order otherwise falls back to `qualityUtility`, which excludes
-	// identity and therefore reverses the preference. `identityAuthority` makes raw coverage
-	// decide that band; `authorizedIdentity` makes only the authorized part decide it, so a
-	// treatment cannot win the band by covering obligations with neutrals or with one hue twice.
+	// identity and therefore reverses the preference. `authorizedIdentity` makes the authorized
+	// part decide the band, so a treatment cannot win it by covering obligations with neutrals or
+	// with one hue twice.
 	let comparison = compareDescending(utilityLevel(first.relationUtility), utilityLevel(second.relationUtility))
-	if (comparison === 0 && WINNER_RANKING_HYPOTHESES.identityAuthority) {
-		comparison = compareDescending(first.identityCoverage, second.identityCoverage)
-	}
 	if (comparison === 0 && WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
 		comparison = compareDescending(utilityLevel(first.identityAuthorizedGain),
 			utilityLevel(second.identityAuthorizedGain))
@@ -664,7 +556,7 @@ function compareEvaluations(
 	if (comparison === 0) {
 		comparison = compareDescending(utilityLevel(first.qualityUtility), utilityLevel(second.qualityUtility))
 	}
-	if (comparison === 0 && !WINNER_RANKING_HYPOTHESES.identityAuthority) {
+	if (comparison === 0) {
 		comparison = compareDescending(first.identityGain, second.identityGain)
 	}
 	if (comparison !== 0) return comparison
@@ -704,23 +596,20 @@ export function scorePaletteCandidates(
 	const orderedTreatments = [...treatments].sort((first, second) =>
 		compareAscii(treatmentStructuralKey(first), treatmentStructuralKey(second)))
 	const wave1 = selectAlbumArtworkPaletteV2Phase3Treatments(orderedTreatments, identity)
-	const earnedGradientClaims = new Set(orderedTreatments.filter((treatment) =>
-		albumArtworkPaletteV2Phase3SelectorV2Quality(treatment).gradientStatus === "earned-rendered")
+	const earnedGradientClaims = new Set(orderedTreatments.filter(earnedGradientClaim)
 		.map(renderedFieldClaimKey))
 	const rawEvaluations = wave1.evaluations.map((evaluation) => evaluateTreatment(
 		evaluation,
 		earnedGradientClaims.has(renderedFieldClaimKey(evaluation.treatment)),
 	)).sort(compareEvaluations)
-	const evaluations = rawEvaluations.map((evaluation):
-		WinnerEvaluation => {
-		const dominators = rawEvaluations.filter((candidate) =>
-			candidate !== evaluation && dominates(candidate, evaluation)).sort(compareEvaluations)
-		return {
-			...evaluation,
-			paretoMember: dominators.length === 0,
-			dominatedByKey: dominators[0]?.key ?? null,
-		}
-	}).sort(compareEvaluations)
+	// `some` short-circuits on the first dominator, where the previous `filter(...).sort(...)`
+	// scanned every candidate and then sorted the whole dominator list to read `[0].key` — a value
+	// nothing consumed. Only `paretoMember` is used, and it is unchanged.
+	const evaluations = rawEvaluations.map((evaluation): WinnerEvaluation => ({
+		...evaluation,
+		paretoMember: !rawEvaluations.some((candidate) =>
+			candidate !== evaluation && dominates(candidate, evaluation)),
+	})).sort(compareEvaluations)
 	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compareEvaluations)
 	if (frontier.length === 0) throw new Error("The palette quality frontier is empty")
 	const winner = frontier[0]

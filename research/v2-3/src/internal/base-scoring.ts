@@ -2,6 +2,8 @@ import { completeTreatmentKey } from "./palette-core.ts";
 
 import { okDistance } from "./color.ts";
 
+import { ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
+
 import type { CompletePaletteTreatment } from "./palette-core.ts";
 
 import type { OKLab } from "./types.ts";
@@ -21,8 +23,8 @@ const QUALITY_AXES = [
 export type AlbumArtworkPaletteV2Phase3SelectorQualityAxis = typeof QUALITY_AXES[number]
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY = Object.freeze({
-	evidenceResolution: 0.04,
-	utilityResolution: 0.005,
+	evidenceResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence,
+	utilityResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility,
 	maximumIdentityGain: 0.05,
 	accentIdentityCredit: 0.8,
 	roleMatchedIdentityCredit: 1,
@@ -91,8 +93,6 @@ export type AlbumArtworkPaletteV2Phase3SelectorEvaluation = Readonly<{
 		role: "foreground" | "accent" | "surface"
 		credit: number
 	}>>
-	paretoMember: boolean
-	dominatedByKey: string | null
 }>
 
 export type AlbumArtworkPaletteV2Phase3SelectorSelection = Readonly<{
@@ -416,20 +416,6 @@ function identityEvaluation(
 	}
 }
 
-function qualityDominates(
-	first: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
-	second: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
-): boolean {
-	let strictlyBetter = false
-	if (first.identityCoverage < second.identityCoverage) return false
-	if (first.identityCoverage > second.identityCoverage) strictlyBetter = true
-	for (const axis of QUALITY_AXES) {
-		if (first.evidenceLevels[axis] < second.evidenceLevels[axis]) return false
-		if (first.evidenceLevels[axis] > second.evidenceLevels[axis]) strictlyBetter = true
-	}
-	return strictlyBetter
-}
-
 function compareEvaluations(
 	first: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
 	second: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
@@ -473,8 +459,6 @@ function evaluateTreatment(
 		identityAuthorizedGain: identity.authorizedGain,
 		relationUtility: utility + identity.gain,
 		identityRoles: identity.roles,
-		paretoMember: false,
-		dominatedByKey: null,
 	}
 }
 
@@ -490,18 +474,17 @@ export function selectAlbumArtworkPaletteV2Phase3Treatments(
 	for (const evaluation of allEvaluations) {
 		if (!uniqueByKey.has(evaluation.key)) uniqueByKey.set(evaluation.key, evaluation)
 	}
-	const unique = [...uniqueByKey.values()]
-	const evaluations = unique.map((evaluation): AlbumArtworkPaletteV2Phase3SelectorEvaluation => {
-		const dominators = unique.filter((candidate) => candidate !== evaluation && qualityDominates(candidate, evaluation))
-			.sort((first, second) => compareDescending(first.qualityUtility, second.qualityUtility) ||
-				compareAscii(first.key, second.key))
-		return {
-			...evaluation,
-			paretoMember: dominators.length === 0,
-			dominatedByKey: dominators[0]?.key ?? null,
-		}
-	}).sort(compareEvaluations)
-	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compareEvaluations)
-	if (frontier.length === 0) throw new Error("The complete treatment Pareto frontier is empty")
+	/**
+	 * `unique` is already in `compareEvaluations` order, because `allEvaluations` was sorted
+	 * before de-duplication and first-wins preserves that order.
+	 *
+	 * This used to run an O(n²) quality-dominance pass (up to 1,500 unique evaluations, so ~2.2 M
+	 * comparisons over 9 axes) plus a sort of each candidate's dominator list, to populate
+	 * `paretoMember` / `dominatedByKey`. Neither field was ever read: `winner-scoring.ts` builds
+	 * its own frontier from its own 11-axis `dominates` and initialises both fields afresh. The
+	 * pass's only other effect was an assertion that the wave-1 frontier is non-empty, which has
+	 * never fired; the winner stage still asserts the same property on the frontier it actually uses.
+	 */
+	const evaluations = [...uniqueByKey.values()]
 	return { evaluations }
 }

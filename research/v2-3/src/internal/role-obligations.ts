@@ -1,5 +1,7 @@
 import type { ColorFamilyEvidence, CompletePaletteTreatment, FieldHypothesis, ForegroundPolarityObservation, RegionObservation } from "./palette-core.ts";
 
+import { ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
+
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY = Object.freeze({
 	localContrastScale: 0.16,
 	fieldLightnessContrastScale: 0.18,
@@ -13,7 +15,7 @@ export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY = Object.freeze(
 	simultaneousRoleMargin: 0.18,
 	decisiveRoleMargin: 0.11,
 	maximumObligationsPerField: 4,
-	orderingEvidenceResolution: 0.04,
+	orderingEvidenceResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence,
 } as const)
 
 export type FamilyRolePreference = "foreground" | "accent" | "ambiguous"

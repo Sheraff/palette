@@ -1,9 +1,7 @@
 import assert from "node:assert/strict"
 import { createHash } from "node:crypto"
 import { readFile } from "node:fs/promises"
-import { resolve } from "node:path"
 import test from "node:test"
-import { fileURLToPath } from "node:url"
 import {
 	algorithmIdentity,
 	extractPalette,
@@ -12,9 +10,9 @@ import {
 	type RawImage,
 } from "../index.ts"
 
+import { corpusPath } from "./corpus.ts"
 import { reviewFixtures, type ReviewFixture } from "./review-fixtures.ts"
 
-const packageRoot = fileURLToPath(new URL("../../..", import.meta.url))
 const roles = ["background", "surface", "foreground", "accent"] as const
 
 function reviewTreatment(extraction: PaletteExtraction) {
@@ -83,24 +81,71 @@ function assertLegal(extraction: PaletteExtraction): void {
 	if (treatment.gradient) assert.equal(treatment.collapse.surface, false)
 }
 
-test("standalone output exactly matches all 34 reviewed treatments and midpoint renders", { timeout: 1_800_000 },
-	async () => {
-		assert.equal(reviewFixtures.length, 34)
-		for (const reviewCase of reviewFixtures) {
-			const sourcePath = resolve(packageRoot, reviewCase.source.file)
-			const bytes = await readFile(sourcePath)
-			assert.equal(bytes.byteLength, reviewCase.source.bytes, `${reviewCase.caseId}: source byte count`)
-			assert.equal(createHash("sha256").update(bytes).digest("hex"), reviewCase.source.sha256,
-				`${reviewCase.caseId}: source hash`)
-			const extraction = await extractPaletteFromBytes(bytes)
-			assert.deepEqual(reviewTreatment(extraction), expectedTreatment(reviewCase), reviewCase.caseId)
-			assertLegal(extraction)
-		}
+function describeTreatment(value: ReturnType<typeof reviewTreatment>): string {
+	const palette = roles.map((role) => `${role}=${value.roles[role].hex}`
+		+ (value.roles[role].generated ? "(generated)" : "")).join(" ")
+	const midpoint = value.researchRender?.field.stops[1]
+	return `${palette} gradient=${value.gradient}`
+		+ ` collapse=${value.collapse.surface ? "S+" : "S-"}${value.collapse.accent ? "A+" : "A-"}`
+		+ ` midpoint=${midpoint && "hex" in midpoint ? midpoint.hex : "none"}`
+}
+
+assert.equal(reviewFixtures.length, 34)
+
+/**
+ * One subtest per fixture, so a change that moves six artworks reports six named failures instead
+ * of aborting on the first `deepEqual`. The failure message prints both complete palettes, because
+ * the thing a reviewer needs is the diff, not "expected object to equal object".
+ */
+for (const reviewCase of reviewFixtures) {
+	test(`parity: ${reviewCase.caseId}`, { timeout: 300_000 }, async () => {
+		const bytes = await readFile(corpusPath(reviewCase.source.file))
+		assert.equal(bytes.byteLength, reviewCase.source.bytes, `${reviewCase.caseId}: source byte count`)
+		assert.equal(createHash("sha256").update(bytes).digest("hex"), reviewCase.source.sha256,
+			`${reviewCase.caseId}: source hash`)
+		const extraction = await extractPaletteFromBytes(bytes)
+		const actual = reviewTreatment(extraction)
+		const expected = expectedTreatment(reviewCase)
+		assert.deepEqual(actual, expected,
+			`${reviewCase.caseId}\n  expected ${describeTreatment(expected as ReturnType<typeof reviewTreatment>)}`
+			+ `\n  actual   ${describeTreatment(actual)}`)
+		assertLegal(extraction)
 	})
+}
 
 test("decoded RawImage inference is deterministic", () => {
 	const image = solidImage([31, 79, 143])
 	assert.deepEqual(extractPalette(image), extractPalette(image))
+})
+
+/**
+ * The synthetic case above takes the generated-emergency path, so it exercises none of the
+ * quantization, family discovery, field-domain, gradient-fit, scoring or selection code where
+ * determinism could actually break — it completes in single-digit milliseconds against seconds for
+ * a real extraction. Charter rule 6 makes determinism a hard constraint, so one real artwork runs
+ * twice here. `orelsan.jpg` is the smallest fixture that still produces a gradient winner.
+ */
+test("a real artwork extracts identically twice", { timeout: 300_000 }, async () => {
+	const bytes = await readFile(corpusPath("images/orelsan.jpg"))
+	const first = await extractPaletteFromBytes(bytes)
+	const second = await extractPaletteFromBytes(bytes)
+	assert.deepEqual(first, second)
+	assert.equal(first.winner.gradient, true, "orelsan is the gradient-stratum determinism case")
+})
+
+/**
+ * The APCA hard minimum is a charter-mandated parameter (rule 2), and its default must reproduce
+ * the reviewed behaviour exactly. Raising it must be able to change the outcome, or it is not
+ * wired to anything — which is what it was before.
+ */
+test("the contrast hard minimum is a live parameter whose default is inert", async () => {
+	const bytes = await readFile(corpusPath("images/orelsan.jpg"))
+	const byDefault = await extractPaletteFromBytes(bytes)
+	const explicitZero = await extractPaletteFromBytes(bytes, { contrastHardMinimum: 0 })
+	assert.deepEqual(explicitZero, byDefault, "an explicit 0 must be the default")
+	const raised = await extractPaletteFromBytes(bytes, { contrastHardMinimum: 40 })
+	assertLegal(raised)
+	assert.notDeepEqual(raised, byDefault, "raising the floor must reach the observability gates")
 })
 
 test("one-color input uses the normative generated emergency", () => {

@@ -1,4 +1,4 @@
-import { assignFieldRoles, completeTreatmentKey, diagnoseGradientFits, fieldDirectionKey, roleDirectionKeys } from "./palette-core.ts";
+import { assignFieldRoles, completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./palette-core.ts";
 
 import type { BackgroundFieldDomainEvidence, ColorFamilyEvidence, CompletePaletteTreatment, FieldHypothesis, GradientFitDiagnostic, IdentityObligation, NativePaletteEvidence, PaletteSeedDomain, SourceRegistry, TreatmentLineage } from "./palette-core.ts";
 
@@ -244,7 +244,8 @@ export function buildAlbumArtworkPaletteV2Phase3CommonBase(
 	const native = seed.evidence
 	const nativeFieldTransitions = discoverNativeFieldTransitions(native)
 	const transitionHypotheses = nativeFieldTransitions.hypotheses.filter(supportedGeometry)
-	const gradientFits = diagnoseGradientFits(native)
+	// Computed once by `buildPaletteSeedDomain`; recomputing it here was ~20 % of every run.
+	const gradientFits = seed.gradientFitDiagnostics
 	const bandLocalEndpoints = buildBandLocalEndpointRefinements(native, gradientFits)
 	const fieldDomainById = new Map(seed.fieldDomains.map((domain) => [domain.id, domain]))
 	const endpointHypotheses = bandLocalEndpoints.flatMap((refinement): FieldHypothesis[] => {

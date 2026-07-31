@@ -1,3 +1,21 @@
+/**
+ * Quantization of the ranking evidence, shared by every stage that compares treatments.
+ *
+ * `evidence` is the width of one *score* band: two scores inside one band are treated as
+ * indistinguishable evidence. `utility` is the same for weighted utility sums. Both were
+ * previously re-declared per stage — `evidence` five times and `utility` twice — so a stage
+ * could silently quantize differently from the stage feeding it.
+ *
+ * Note that `evidence` is **not** the same quantity as `FAMILY_BIN_STEP` or
+ * `REPRESENTATIVE_DENSITY_RADIUS` in `palette-core.ts`, which are OKLab distances that merely
+ * happen to share the value 0.04. Do not unify them, and do not retune one by grepping for the
+ * literal.
+ */
+export const ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS = Object.freeze({
+	evidence: 0.04,
+	utility: 0.005,
+})
+
 export const ALBUM_ARTWORK_PALETTE_V2_PARETO_BLOCKS = Object.freeze([
 	"fieldFidelity",
 	"surfaceFidelity",

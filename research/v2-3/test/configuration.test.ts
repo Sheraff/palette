@@ -1,0 +1,112 @@
+import assert from "node:assert/strict"
+import test from "node:test"
+
+import { ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY } from "../src/internal/base-scoring.ts"
+import {
+	ALBUM_ARTWORK_PALETTE_V2_POLICY,
+	ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS,
+	ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS,
+} from "../src/internal/policy.ts"
+import {
+	BAND_TIE_BREAK,
+	PROMOTION_ENVELOPE,
+	TRANSITION_PROMOTION_ORDER,
+	WINNER_QUALITY_AXES,
+	WINNER_RANKING_HYPOTHESES,
+	WINNER_SCORING_POLICY,
+} from "../src/internal/winner-scoring.ts"
+import { MAXIMUM_WINNER_QUALITY_LOSS } from "../src/internal/transition-promotion.ts"
+import { DEFAULT_PALETTE_EXTRACTION_OPTIONS } from "../src/internal/palette-core.ts"
+
+/**
+ * The reviewed configuration, pinned.
+ *
+ * Every value here was derived by a measured experiment and confirmed by human review; several
+ * cost a whole arm to find (`collapsedSurfaceFidelity` took Track A four rounds, `chromaticCarryFull`
+ * was calibrated against seven measured sign flips, `BAND_TIE_BREAK` came out of Track A round 5).
+ * Nothing else in the suite notices if one of them is changed or reverted by a merge: `parity.test.ts`
+ * would fail, but as up to 34 opaque palette mismatches with no attribution.
+ *
+ * If you are changing a value here deliberately, update the expectation in the same commit and say
+ * in the message which review decided it.
+ */
+test("the reviewed winner-ranking configuration is unchanged", () => {
+	assert.deepEqual({ ...WINNER_RANKING_HYPOTHESES }, {
+		// Only the *authorized* part of the identity gain guards domination and decides the
+		// utility band. The looser raw-coverage variant was measured, rejected, and deleted.
+		authorizedIdentity: true,
+		// Substitutes a constant for a collapsed surface's fidelity so collapsed treatments cannot
+		// out-score each other on the availability of alternatives to a different treatment.
+		fieldOwnershipBeforeCollapseEconomy: true,
+	})
+	// Track A round 4: 0.25 tipped `johns` onto Track C's grey/near-white pair; 0.45 holds every
+	// reviewed win on the integrated trunk.
+	assert.equal(WINNER_SCORING_POLICY.qualityWeights.fieldFidelity, 0.15)
+	assert.equal(WINNER_SCORING_POLICY.maximumQualityLoss, 0.12)
+	assert.equal(MAXIMUM_WINNER_QUALITY_LOSS, WINNER_SCORING_POLICY.maximumQualityLoss)
+	assert.equal(WINNER_SCORING_POLICY.maximumIdentityGain,
+		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain)
+	// Track A round 5: the band-extent rule; `raw-utility-first` and `same-family-raw-utility` both
+	// cost more than they fixed.
+	assert.equal(BAND_TIE_BREAK, "same-family-band-extent")
+	// Track A round 4: promotion replaces the field, so gating it on the field axes is circular.
+	assert.equal(PROMOTION_ENVELOPE, "field-axis-neutral")
+	assert.equal(TRANSITION_PROMOTION_ORDER, "coverage-first")
+	assert.deepEqual([...WINNER_QUALITY_AXES], [
+		"fieldFidelity", "surfaceFidelity", "artworkIdentity", "representativeness", "sourceSupport",
+		"renderedFieldClaim", "foregroundPath", "accentFidelity", "accentPath", "coherence", "economy",
+	])
+})
+
+test("the reviewed identity and mark parameters are unchanged", () => {
+	const selector = ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY
+	assert.equal(selector.maximumIdentityGain, 0.05)
+	assert.equal(selector.authorizedIdentityGain, 0.08)
+	// Track C round 3: 0.05 broke `orelsan`; 0.01 separates the measured pathologies (<= 0.0043)
+	// from real pairings (>= 0.0174) and is an order of magnitude below the family anchor radius.
+	assert.equal(selector.identityChromaticSeparation, 0.01)
+	assert.equal(selector.identityRoleSeparation, 0.12)
+	assert.equal(selector.surfaceIdentityCredit, 0.6)
+	// Track C round 4c: a swap out of the foreground is a foreground claim.
+	assert.equal(selector.identityForegroundClaimMargin, 0.04)
+	// Track C round 3: raising the bound to 6 admitted `placebo`'s brown accent. The *reserve*, not
+	// the bound, was the mechanism that mattered.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations, 4)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.reservedMajorFamilyPopulationFraction, 0.06)
+	// Track E revision 2: mark evidence substitutes for population support and nothing else.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.substitution, 1)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.minimumComponentPopulation, 12)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.minimumComponentCount, 3)
+})
+
+test("charter rule 2: the APCA hard minimum defaults to zero", () => {
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum, 0)
+	assert.equal(DEFAULT_PALETTE_EXTRACTION_OPTIONS.contrastHardMinimum,
+		ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum)
+})
+
+test("the ranking quanta have a single source", () => {
+	assert.deepEqual({ ...ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS }, { evidence: 0.04, utility: 0.005 })
+	assert.equal(WINNER_SCORING_POLICY.evidenceResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
+	assert.equal(WINNER_SCORING_POLICY.utilityResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.evidenceResolution,
+		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.utilityResolution,
+		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)
+})
+
+test("the quality weights sum to one at both stages", () => {
+	const winner = Object.values(WINNER_SCORING_POLICY.qualityWeights)
+		.reduce((sum, weight) => sum + weight, 0)
+	const waveOne = Object.values(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.qualityWeights)
+		.reduce((sum, weight) => sum + weight, 0)
+	assert.ok(Math.abs(winner - 1) < 1e-9, `winner weights sum to ${winner}`)
+	assert.ok(Math.abs(waveOne - 1) < 1e-9, `wave-1 weights sum to ${waveOne}`)
+})
+
+test("the ranking block list is indexable into the treatment scores", () => {
+	// The list used to exist twice, verbatim, in two modules consumed by two different comparators.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length, 11)
+	assert.equal(new Set(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS).size,
+		ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length)
+})

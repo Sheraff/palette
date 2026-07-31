@@ -1,6 +1,6 @@
 import { apcaContrast, chroma, labAt, mixOKLab, okDistance, oklabToRGB, rgbAt, rgbToHex, rgbToOKLab, toLabBuffer } from "./color.ts";
 
-import { ALBUM_ARTWORK_PALETTE_V2_POLICY, ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS } from "./policy.ts";
+import { ALBUM_ARTWORK_PALETTE_V2_POLICY, ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
 
 import { analyzeBandPopulation } from "./band-representative.ts";
 
@@ -375,18 +375,13 @@ export type CompletePaletteScores = Readonly<{
 	activeRolePathObservability: number
 	artworkIdentity: number
 	representativeness: number
-	uiUtility: number
 	foregroundUtility: number
 	foregroundPolarityAgreement: number
 	accentFidelity: number
 	accentUtility: number
 	coherence: number
 	economy: number
-	generatorConfidence: number
-	foundation: number
-	balance: number
 	generatedPenalty: number
-	rankingScore: number
 	/**
 	 * Summed RMS spatial extent of the two field endpoints inside their bands.
 	 * Zero for every non-gradient treatment.
@@ -512,9 +507,38 @@ export type SeedAddition = Readonly<{
 	lineage: TreatmentLineage
 }>
 
+/**
+ * Extraction parameters a library user may set. Every field defaults to the value in
+ * `ALBUM_ARTWORK_PALETTE_V2_POLICY`, and the defaults reproduce the reviewed behaviour exactly.
+ */
+export type PaletteExtractionOptions = Readonly<{
+	/**
+	 * APCA |Lc| a role must exceed somewhere along the field to be considered observable at all.
+	 *
+	 * Charter rule 2: the contrast here is deliberately very low and this is **not** an
+	 * accessibility floor, so the default is `0` — a role only has to be outside APCA's exact
+	 * zero-contrast dead-zone. A library user who needs a stricter floor raises it; nothing in the
+	 * algorithm may raise it on their behalf.
+	 */
+	contrastHardMinimum: number
+}>
+
+export const DEFAULT_PALETTE_EXTRACTION_OPTIONS: PaletteExtractionOptions = Object.freeze({
+	contrastHardMinimum: ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum,
+})
+
 export type PaletteSeedDomain = Readonly<{
 	evidence: NativePaletteEvidence
 	fieldDomains: readonly BackgroundFieldDomainEvidence[]
+	/**
+	 * The gradient-fit diagnostics for `evidence`, computed once here.
+	 *
+	 * `buildAlbumArtworkPaletteV2Phase3CommonBase` needs exactly this, and used to recompute it
+	 * by calling `diagnoseGradientFits(seed.evidence)` — a second full `buildBackgroundFieldDomains`
+	 * plus `evaluateGradientFits` over the identical object, which is ~20 % of a run. Both are
+	 * deterministic functions of the evidence, so carrying the result is behaviour-identical.
+	 */
+	gradientFitDiagnostics: readonly GradientFitDiagnostic[]
 	fieldHypotheses: readonly FieldHypothesis[]
 	completeTreatments: readonly CompletePaletteTreatment[]
 	additions: readonly SeedAddition[]
@@ -668,7 +692,7 @@ const MINIMUM_DISTINCT_DISTANCE = 0.018
 
 const GRID_SIZE = 12
 
-const RANKING_EVIDENCE_RESOLUTION = 0.04
+const RANKING_EVIDENCE_RESOLUTION = ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence
 
 // A diffuse or multiscale continuous field is shattered by grain, texture, and wide
 // progression into many perceptual families, most of which fall outside the ranked field
@@ -855,7 +879,7 @@ function buildRegionObservations(
 			localContrast: contrast,
 			borderInterior,
 			sourceSupport,
-			score: clamp(sourceSupport * (0.45 + 0.55 * cues) * (role === "typography" ? 1 : 1)),
+			score: clamp(sourceSupport * (0.45 + 0.55 * cues)),
 		})
 		output.set(component.start, {
 			widthFraction,
@@ -1137,6 +1161,92 @@ function foregroundRoleScore(family: ColorFamilyEvidence): number {
 // evidence for it ever appears.
 function signatureRoleScore(family: ColorFamilyEvidence): number {
 	return clamp(0.55 * family.signatureScore + 0.45 * family.signatureAccentObservation)
+}
+
+type RankedRoleOption<TExtra> = Readonly<{
+	family: ColorFamilyEvidence
+	representative: ColorRepresentative
+	signedContrasts: readonly number[]
+}> & TExtra
+
+/**
+ * Rank the foreground candidates for one field variant.
+ *
+ * The control domain (`buildCompletePaletteTreatmentDomain`) and the seed-addition generator
+ * (`generateSeedAdditions`) both need exactly this ranking, and each carried its own verbatim copy
+ * of the formula and the tie-break. They differ only in what they do with the result — retention
+ * policy, treatment sink, and bookkeeping — which stays at each call site.
+ */
+function rankForegroundOptions(
+	variant: FieldVariant,
+	supportedRepresentatives: readonly Readonly<{ family: ColorFamilyEvidence; representative: ColorRepresentative }>[],
+): RankedRoleOption<{ contrast: number; polarityAgreement: number }>[] {
+	const samples = fieldSamples(variant)
+	return supportedRepresentatives
+		.filter(({ representative }) =>
+			!sameColor(representative.rgb, variant.background.rgb) &&
+			!sameColor(representative.rgb, variant.surface.rgb))
+		.map((option) => {
+			const signedContrasts = samples.map((sample) => apcaContrast(option.representative.rgb, sample.rgb))
+			return {
+				...option,
+				signedContrasts,
+				contrast: mean(signedContrasts.map(Math.abs)),
+				polarityAgreement: foregroundPolarityAgreement(option.family, signedContrasts),
+			}
+		})
+		.sort((first, second) =>
+			compareNumbersDescending(
+				0.68 * foregroundRoleScore(first.family) * first.polarityAgreement +
+					0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
+				0.68 * foregroundRoleScore(second.family) * second.polarityAgreement +
+					0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
+			) ||
+			compareAscii(
+				`${first.family.id}:${first.representative.hex}`,
+				`${second.family.id}:${second.representative.hex}`,
+			))
+}
+
+/**
+ * Rank the distinct-accent candidates for one field variant and foreground choice. `representativesOf`
+ * is the call site's representative policy, which is the one thing the two generators legitimately
+ * disagree about.
+ */
+function rankAccentOptions(
+	variant: FieldVariant,
+	signatureFamilies: readonly ColorFamilyEvidence[],
+	foreground: Readonly<{ family: ColorFamilyEvidence; representative: ColorRepresentative }>,
+	representativesOf: (family: ColorFamilyEvidence) => readonly ColorRepresentative[],
+): RankedRoleOption<{ utility: number; fidelity: number }>[] {
+	const samples = fieldSamples(variant)
+	return signatureFamilies
+		.flatMap((family) => representativesOf(family).map((representative) => ({ family, representative })))
+		.filter(({ family, representative }) =>
+			family.id !== variant.hypothesis.backgroundFamilyId &&
+			family.id !== variant.hypothesis.surfaceFamilyId &&
+			family.id !== foreground.family.id &&
+			!sameColor(representative.rgb, variant.background.rgb) &&
+			!sameColor(representative.rgb, variant.surface.rgb) &&
+			!sameColor(representative.rgb, foreground.representative.rgb))
+		.map((option) => {
+			const signedContrasts = samples.map((sample) => apcaContrast(option.representative.rgb, sample.rgb))
+			return {
+				...option,
+				signedContrasts,
+				utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
+				fidelity: distinctAccentFidelity(option.family, option.representative, foreground.representative),
+			}
+		})
+		.sort((first, second) =>
+			compareNumbersDescending(
+				0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
+				0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
+			) ||
+			compareAscii(
+				`${first.family.id}:${first.representative.hex}`,
+				`${second.family.id}:${second.representative.hex}`,
+			))
 }
 
 function rankAllLaneFamilies(
@@ -2276,6 +2386,7 @@ function endpointBandRepresentatives(
 	const selected = evidence.families
 		.map((family, index) => ({
 			family,
+			familyIndex: index,
 			score: 0.52 * clamp(counts[index] / Math.max(1, bandPopulation) / 0.18) +
 				0.28 * family.fieldScore +
 				0.20 * (1 - clamp(okDistance(family.prototype, expected) / 0.16)),
@@ -2287,12 +2398,15 @@ function endpointBandRepresentatives(
 			compareNumbersDescending(first.count, second.count) ||
 			compareAscii(first.family.id, second.family.id))
 		.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.gradientEndpointFamiliesPerBand)
-	return selected.flatMap(({ family, count }) => {
+	return selected.flatMap(({ family, familyIndex, count }) => {
 		let exemplarIndex = -1
 		let exemplarDistance = Infinity
 		const bins = new Map<number, { count: number; sumX: number; sumY: number; sumXX: number; sumYY: number }>()
 		for (const pixelIndex of fit.domain.pixelIndexes) {
-			if (evidence.families[evidence.familyAt[pixelIndex]].id !== family.id) continue
+			// `familyAt` holds the index into `evidence.families`, and family ids are unique per
+			// index, so this is the same test as comparing `.id` — without the double indirection
+			// and the string compare, per pixel, per family, per fit.
+			if (evidence.familyAt[pixelIndex] !== familyIndex) continue
 			const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
 			const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
 			const position = fit.position(x, y)
@@ -2540,11 +2654,6 @@ function gradientFitDiagnostics(evaluatedFits: readonly EvaluatedGradientFit[]):
 		fieldDomainPopulationFraction: fit.domain.evidence.populationFraction,
 		rejectionReasons,
 	}))
-}
-
-export function diagnoseGradientFits(evidence: NativePaletteEvidence): GradientFitDiagnostic[] {
-	const domains = buildBackgroundFieldDomains(evidence)
-	return gradientFitDiagnostics(evaluateGradientFits(evidence, domains))
 }
 
 function buildFieldHypothesisProposalsFromEvaluatedFits(
@@ -3020,13 +3129,24 @@ function measureContrast(
 	}
 }
 
-export function hasPeakAPCAObservability(values: readonly number[]): boolean {
-	return values.some((value) => Number.isFinite(value) && value !== 0)
+/**
+ * The APCA hard minimum a role must clear somewhere along the field to count as observable.
+ *
+ * Charter rule 2: APCA contrast is deliberately very low here — human review has judged Lc ≈ 9
+ * outputs as good — so this is **not** an accessibility floor and its default must stay `0`. But
+ * it must be a parameter a library user can raise. It previously existed only as the name
+ * `policy.contrast.hardMinimum`, which no code read; the gate was a hard-coded `value !== 0`.
+ *
+ * At the default `0`, `Math.abs(value) > 0` is exactly `value !== 0` for every finite value, so
+ * the default reproduces the previous behaviour bit-for-bit.
+ */
+export function hasPeakAPCAObservability(values: readonly number[], hardMinimum: number): boolean {
+	return values.some((value) => Number.isFinite(value) && Math.abs(value) > hardMinimum)
 }
 
-export function pathObservability(values: readonly number[]): number {
+export function pathObservability(values: readonly number[], hardMinimum: number): number {
 	if (values.length === 0) return 1
-	return values.filter((value) => Number.isFinite(value) && value !== 0).length / values.length
+	return values.filter((value) => Number.isFinite(value) && Math.abs(value) > hardMinimum).length / values.length
 }
 
 function signedContrastPolarity(values: readonly number[]): number {
@@ -3185,9 +3305,10 @@ export function retainPeakObservableFamilyDirections<
 >(
 	options: readonly T[],
 	maximum: number,
+	hardMinimum: number,
 	obligationFamilyIds: readonly string[] = [],
 ): Readonly<{ retained: readonly T[]; rejectedCount: number }> {
-	const observable = options.filter(({ signedContrasts }) => hasPeakAPCAObservability(signedContrasts))
+	const observable = options.filter(({ signedContrasts }) => hasPeakAPCAObservability(signedContrasts, hardMinimum))
 	return {
 		retained: retainRoleFamilyDirections(observable, maximum, obligationFamilyIds),
 		rejectedCount: options.length - observable.length,
@@ -3203,7 +3324,7 @@ export function treatmentFoundation(
 	return Math.cbrt(fieldStructure * artworkIdentity * foregroundUtility * activeRolePathObservability)
 }
 
-function validateTreatment(treatment: CompletePaletteTreatment): void {
+function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: number): void {
 	const surfaceCollapsed = sameColor(treatment.surface.rgb, treatment.background.rgb)
 	const accentCollapsed = sameColor(treatment.accent.rgb, treatment.foreground.rgb)
 	if (!surfaceCollapsed && (
@@ -3214,18 +3335,17 @@ function validateTreatment(treatment: CompletePaletteTreatment): void {
 	}
 	if (!accentCollapsed && sameColor(treatment.accent.rgb, treatment.surface.rgb)) throw new Error("Accent has an illegal role equality")
 	if (surfaceCollapsed && treatment.gradient) throw new Error("A collapsed surface cannot form a gradient")
-	if (treatment.gradient && surfaceCollapsed) throw new Error("Gradient requires a distinct surface")
 	if (surfaceCollapsed !== treatment.collapse.surface || accentCollapsed !== treatment.collapse.accent) {
 		throw new Error("Collapse state disagrees with canonical equality")
 	}
 	if (!hasPeakAPCAObservability(treatment.contrast.pairs
 		.filter(({ role }) => role === "foreground")
-		.map(({ signedLc }) => signedLc))) {
+		.map(({ signedLc }) => signedLc), hardMinimum)) {
 		throw new Error("The required foreground is never outside APCA's zero-contrast dead-zone")
 	}
 	if (!accentCollapsed && !hasPeakAPCAObservability(treatment.contrast.pairs
 		.filter(({ role }) => role === "accent")
-		.map(({ signedLc }) => signedLc))) {
+		.map(({ signedLc }) => signedLc), hardMinimum)) {
 		throw new Error("A distinct accent is never outside APCA's zero-contrast dead-zone")
 	}
 	const distinct = new Set([treatment.background.hex, treatment.surface.hex, treatment.foreground.hex, treatment.accent.hex]).size
@@ -3247,6 +3367,7 @@ function createTreatment(
 	accentFamily: ColorFamilyEvidence | null,
 	accentOpportunity: number,
 	surfaceOpportunity: number,
+	hardMinimum: number,
 ): CompletePaletteTreatment | null {
 	const background = variant.background
 	const surface = variant.surface
@@ -3259,10 +3380,10 @@ function createTreatment(
 	const contrast = measureContrast(variant, foreground, accent)
 	if (!hasPeakAPCAObservability(contrast.pairs
 		.filter(({ role }) => role === "foreground")
-		.map(({ signedLc }) => signedLc))) return null
+		.map(({ signedLc }) => signedLc), hardMinimum)) return null
 	if (!accentCollapsed && !hasPeakAPCAObservability(contrast.pairs
 		.filter(({ role }) => role === "accent")
-		.map(({ signedLc }) => signedLc))) return null
+		.map(({ signedLc }) => signedLc), hardMinimum)) return null
 	const backgroundFamily = "generated" in background.support ? null : background.support.anchorFamilyId
 	const surfaceFamily = "generated" in surface.support ? null : surface.support.anchorFamilyId
 	const backgroundCoverage = "generated" in background.support ? 0 : clamp(background.support.totalSupport / 0.2)
@@ -3287,10 +3408,11 @@ function createTreatment(
 	const representativeness = mean(representatives.map(supportQuality))
 	const foregroundContrast = contrast.pairs.filter(({ role }) => role === "foreground").map(({ absoluteLc }) => absoluteLc)
 	const accentContrast = contrast.pairs.filter(({ role }) => role === "accent").map(({ absoluteLc }) => absoluteLc)
-	const foregroundPathObservability = pathObservability(foregroundSignedContrasts)
+	const foregroundPathObservability = pathObservability(foregroundSignedContrasts, hardMinimum)
 	const accentPathObservability = accentContrast.length === 0
 		? foregroundPathObservability
-		: pathObservability(contrast.pairs.filter(({ role }) => role === "accent").map(({ signedLc }) => signedLc))
+		: pathObservability(contrast.pairs.filter(({ role }) => role === "accent")
+			.map(({ signedLc }) => signedLc), hardMinimum)
 	const activeRolePathObservability = Math.min(foregroundPathObservability, accentPathObservability)
 	const foregroundUtility = Math.sqrt(clamp(
 		0.5 * clamp(mean(foregroundContrast) / 90) +
@@ -3302,10 +3424,6 @@ function createTreatment(
 			0.5 * clamp(mean(accentContrast) / 75) +
 			0.5 * clamp(Math.min(...accentContrast) / 75),
 		))
-	const uiUtility = clamp(
-		0.72 * clamp(mean(foregroundContrast) / 90) +
-		0.28 * (accentContrast.length === 0 ? clamp(mean(foregroundContrast) / 90) : clamp(mean(accentContrast) / 75)),
-	)
 	const separation = (first: ColorRepresentative, second: ColorRepresentative): number =>
 		clamp((okDistance(first.oklab, second.oklab) - MINIMUM_DISTINCT_DISTANCE) / 0.1)
 	const fieldCoherence = surfaceCollapsed ? 0.6 : clamp(0.55 + 0.45 * separation(background, surface))
@@ -3333,13 +3451,9 @@ function createTreatment(
 		foregroundUtility,
 		activeRolePathObservability,
 	)
-	const generatorConfidence = clamp(0.55 * fieldFidelity + 0.25 * representativeness + 0.20 * coherence)
-	const foundation = mean([fieldFidelity, artworkIdentity, representativeness])
-	const balance = Math.min(fieldFidelity, artworkIdentity, representativeness, coherence, economy)
 	const generatedPenalty = representatives.some(({ support }) => "generated" in support)
 		? ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.emergencyGeneratedPenalty
 		: 0
-	const rankingScore = 0.50 * foundation + 0.15 * uiUtility + 0.15 * coherence + 0.12 * economy + 0.08 * generatorConfidence - generatedPenalty
 	const familyRoles = {
 		background: backgroundFamily ?? "generated",
 		surface: surfaceCollapsed ? backgroundFamily ?? "generated" : surfaceFamily ?? "generated",
@@ -3375,23 +3489,18 @@ function createTreatment(
 			activeRolePathObservability,
 			artworkIdentity,
 			representativeness,
-			uiUtility,
 			foregroundUtility,
 			foregroundPolarityAgreement: polarityAgreement,
 			accentFidelity,
 			accentUtility,
 			coherence,
 			economy,
-			generatorConfidence,
-			foundation,
-			balance,
 			generatedPenalty,
-			rankingScore,
 			endpointBandSpread: variant.gradient ? variant.endpointBandSpread : 0,
 		},
 		gradientEvidence: variant.gradient ? variant.hypothesis.gradientEvidence : null,
 	}
-	validateTreatment(output)
+	validateTreatment(output, hardMinimum)
 	return output
 }
 
@@ -3416,6 +3525,7 @@ type CompletePaletteTreatmentDomain = Readonly<{
 function buildCompletePaletteTreatmentDomain(
 	evidence: NativePaletteEvidence,
 	hypotheses: readonly FieldHypothesis[],
+	hardMinimum: number,
 ): CompletePaletteTreatmentDomain {
 	const fieldVariants = buildFieldVariants(hypotheses)
 	if (fieldVariants.length === 0) throw new Error("No field variants are available")
@@ -3465,67 +3575,30 @@ function buildCompletePaletteTreatmentDomain(
 
 	for (const variant of fieldVariants) {
 		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
-		const rankedForegroundOptions = supportedRepresentatives
-			.filter(({ representative }) =>
-				!sameColor(representative.rgb, variant.background.rgb) && !sameColor(representative.rgb, variant.surface.rgb))
-			.map((option) => {
-				const signedContrasts = fieldSamples(variant).map((sample) => apcaContrast(option.representative.rgb, sample.rgb))
-				return {
-					...option,
-					signedContrasts,
-					contrast: mean(signedContrasts.map(Math.abs)),
-					polarityAgreement: foregroundPolarityAgreement(option.family, signedContrasts),
-				}
-			})
-			.sort((first, second) =>
-				compareNumbersDescending(
-					0.68 * foregroundRoleScore(first.family) * first.polarityAgreement + 0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
-					0.68 * foregroundRoleScore(second.family) * second.polarityAgreement + 0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
-				) ||
-				compareAscii(`${first.family.id}:${first.representative.hex}`, `${second.family.id}:${second.representative.hex}`))
+		const rankedForegroundOptions = rankForegroundOptions(variant, supportedRepresentatives)
 		const foregroundRetention = retainPeakObservableFamilyDirections(
 			rankedForegroundOptions,
 			foregroundsPerFieldVariantQuota,
+			hardMinimum,
 			obligationFamilyIds,
 		)
 		for (const option of rankedForegroundOptions) {
-			if (hasPeakAPCAObservability(option.signedContrasts)) recordAvailableRole(option.family.id, "foreground")
+			if (hasPeakAPCAObservability(option.signedContrasts, hardMinimum)) recordAvailableRole(option.family.id, "foreground")
 		}
 		foregroundPeakUnobservableRejectedOptionCount += foregroundRetention.rejectedCount
 		const foregroundOptions = foregroundRetention.retained
 
 		for (const foregroundOption of foregroundOptions) {
-			const rankedAccents = signatureFamilies
-				.flatMap((family) => preferredRepresentatives(family.representatives).map((representative) => ({ family, representative })))
-				.filter(({ family, representative }) =>
-					family.id !== variant.hypothesis.backgroundFamilyId &&
-					family.id !== variant.hypothesis.surfaceFamilyId &&
-					family.id !== foregroundOption.family.id &&
-					!sameColor(representative.rgb, variant.background.rgb) &&
-					!sameColor(representative.rgb, variant.surface.rgb) &&
-					!sameColor(representative.rgb, foregroundOption.representative.rgb))
-				.map((option) => {
-					const signedContrasts = fieldSamples(variant).map((sample) => apcaContrast(option.representative.rgb, sample.rgb))
-					return {
-						...option,
-						signedContrasts,
-						utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
-						fidelity: distinctAccentFidelity(option.family, option.representative, foregroundOption.representative),
-					}
-				})
-				.sort((first, second) =>
-					compareNumbersDescending(
-						0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
-						0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
-					) ||
-					compareAscii(`${first.family.id}:${first.representative.hex}`, `${second.family.id}:${second.representative.hex}`))
+			const rankedAccents = rankAccentOptions(variant, signatureFamilies, foregroundOption,
+				(family) => preferredRepresentatives(family.representatives))
 			const accentRetention = retainPeakObservableFamilyDirections(
 				rankedAccents,
 				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
+				hardMinimum,
 				obligationFamilyIds,
 			)
 			for (const option of rankedAccents) {
-				if (hasPeakAPCAObservability(option.signedContrasts)) recordAvailableRole(option.family.id, "accent")
+				if (hasPeakAPCAObservability(option.signedContrasts, hardMinimum)) recordAvailableRole(option.family.id, "accent")
 			}
 			distinctAccentPeakUnobservableRejectedOptionCount += accentRetention.rejectedCount
 			const accents = accentRetention.retained
@@ -3540,6 +3613,7 @@ function buildCompletePaletteTreatmentDomain(
 				foregroundOption.family,
 				accentOpportunity,
 				surfaceOpportunity,
+				hardMinimum,
 			)
 			if (collapsed) treatments.push(collapsed)
 			for (const accentOption of accents.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground)) {
@@ -3553,6 +3627,7 @@ function buildCompletePaletteTreatmentDomain(
 					accentOption.family,
 					accentOpportunity,
 					surfaceOpportunity,
+					hardMinimum,
 				)
 				if (treatment) treatments.push(treatment)
 			}
@@ -3576,6 +3651,7 @@ function buildCompletePaletteTreatmentDomain(
 					null,
 					0,
 					surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0,
+					hardMinimum,
 				)
 				if (treatment) treatments.push(treatment)
 			}
@@ -3602,7 +3678,7 @@ function buildCompletePaletteTreatmentDomain(
 				if (sameColor(option.representative.rgb, background.rgb)) continue
 				const signedContrasts = fieldSamples(emergencyVariant).map((sample) =>
 					apcaContrast(option.representative.rgb, sample.rgb))
-				if (hasPeakAPCAObservability(signedContrasts)) recordAvailableRole(option.family.id, "foreground")
+				if (hasPeakAPCAObservability(signedContrasts, hardMinimum)) recordAvailableRole(option.family.id, "foreground")
 				const treatment = createTreatment(
 					emergencyVariant,
 					option.representative,
@@ -3613,6 +3689,7 @@ function buildCompletePaletteTreatmentDomain(
 					option.family,
 					0,
 					0,
+					hardMinimum,
 				)
 				if (treatment) {
 					treatments.push(treatment)
@@ -3695,21 +3772,21 @@ function sourceConnectedHypothesis(
 		hypothesis.surfaceRepresentatives.some(sourceConnectedRepresentative)
 }
 
-function evidenceWithAllRankedLanes(evidence: NativePaletteEvidence): NativePaletteEvidence {
-	return {
-		...evidence,
-		lanes: evidence.lanes.map((lane) => ({
-			...lane,
-			familyIds: rankAllLaneFamilies(evidence.families, lane.name).map(({ id }) => id),
-		})),
-	}
-}
-
+/**
+ * The registry a treatment's lineage is validated against.
+ *
+ * `proposals` used to be widened with a second set built from *all-ranked-lane* evidence — a full
+ * extra `buildBackgroundFieldDomains` + `evaluateGradientFits` pass (~20 % of a run). Measured over
+ * 71 artworks (`research/v2-3-experiments/adversarial-arch/registry-usage.ts`): that pass
+ * contributed 17,512 registry rows, of which **0** were referenced by any treatment and **0**
+ * changed any lineage resolution. First-wins de-duplication guaranteed a control proposal shadowed
+ * any identically-identified all-lane one, and no treatment can name a hypothesis id that no
+ * control proposal produced, so the extra rows were unreachable by construction.
+ */
 function buildSourceRegistry(
 	evidence: NativePaletteEvidence,
 	controlProposals: readonly FieldHypothesis[],
 	controlHypotheses: readonly FieldHypothesis[],
-	allProposals: readonly FieldHypothesis[],
 	identityObligationFamilyIds: readonly string[],
 ): SourceRegistry {
 	const familiesById = new Map(evidence.families.map((family) => [family.id, family]))
@@ -3735,7 +3812,7 @@ function buildSourceRegistry(
 		}))
 		.sort((first, second) => compareAscii(first.familyId, second.familyId))
 	const proposalById = new Map<string, FieldHypothesis>()
-	for (const proposal of [...controlProposals, ...allProposals]) {
+	for (const proposal of controlProposals) {
 		if (!proposalById.has(proposal.id)) proposalById.set(proposal.id, proposal)
 	}
 	const fieldHypotheses = [...proposalById.values()]
@@ -3804,6 +3881,7 @@ function generateSeedAdditions(
 	controlCandidateCount: number,
 	registry: SourceRegistry,
 	obligationFamilyIds: readonly string[],
+	hardMinimum: number,
 ): SeedAdditions {
 	const controlKeys = new Set(controlTreatments.map(completeTreatmentKey))
 	const additions = new Map<string, CompletePaletteTreatment>()
@@ -3850,34 +3928,13 @@ function generateSeedAdditions(
 
 	for (const variant of mechanics.fieldVariants) {
 		const surfaceOpportunity = surfaceOpportunityByBackgroundFamily.get(variant.hypothesis.backgroundFamilyId) ?? 0
-		const rankedForegroundOptions = supportedRepresentatives
-			.filter(({ representative }) =>
-				!sameColor(representative.rgb, variant.background.rgb) && !sameColor(representative.rgb, variant.surface.rgb))
-			.map((option) => {
-				const signedContrasts = fieldSamples(variant).map((sample) =>
-					apcaContrast(option.representative.rgb, sample.rgb))
-				return {
-					...option,
-					signedContrasts,
-					contrast: mean(signedContrasts.map(Math.abs)),
-					polarityAgreement: foregroundPolarityAgreement(option.family, signedContrasts),
-				}
-			})
-			.sort((first, second) =>
-				compareNumbersDescending(
-					0.68 * foregroundRoleScore(first.family) * first.polarityAgreement +
-						0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
-					0.68 * foregroundRoleScore(second.family) * second.polarityAgreement +
-						0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
-				) || compareAscii(
-					`${first.family.id}:${first.representative.hex}`,
-					`${second.family.id}:${second.representative.hex}`,
-				))
+		const rankedForegroundOptions = rankForegroundOptions(variant, supportedRepresentatives)
 		const observableForegrounds = rankedForegroundOptions.filter(({ signedContrasts }) =>
-			hasPeakAPCAObservability(signedContrasts))
+			hasPeakAPCAObservability(signedContrasts, hardMinimum))
 		const foregroundRetention = retainPeakObservableFamilyDirections(
 			rankedForegroundOptions,
 			foregroundsPerFieldVariantQuota,
+			hardMinimum,
 			obligationFamilyIds,
 		)
 		const retainedForegroundFamilyIds = new Set(foregroundRetention.retained.map(({ family }) => family.id))
@@ -3886,42 +3943,14 @@ function generateSeedAdditions(
 			: foregroundRetention.retained
 
 		for (const foregroundOption of foregroundOptions) {
-			const rankedAccents = signatureFamilies
-				.flatMap((family) => roleRepresentatives(family).map((representative) => ({ family, representative })))
-				.filter(({ family, representative }) =>
-					family.id !== variant.hypothesis.backgroundFamilyId &&
-					family.id !== variant.hypothesis.surfaceFamilyId &&
-					family.id !== foregroundOption.family.id &&
-					!sameColor(representative.rgb, variant.background.rgb) &&
-					!sameColor(representative.rgb, variant.surface.rgb) &&
-					!sameColor(representative.rgb, foregroundOption.representative.rgb))
-				.map((option) => {
-					const signedContrasts = fieldSamples(variant).map((sample) =>
-						apcaContrast(option.representative.rgb, sample.rgb))
-					return {
-						...option,
-						signedContrasts,
-						utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
-						fidelity: distinctAccentFidelity(
-							option.family,
-							option.representative,
-							foregroundOption.representative,
-						),
-					}
-				})
-				.sort((first, second) =>
-					compareNumbersDescending(
-						0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
-						0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
-					) || compareAscii(
-						`${first.family.id}:${first.representative.hex}`,
-						`${second.family.id}:${second.representative.hex}`,
-					))
+			// The representative policy is the one thing the two generators legitimately differ on.
+			const rankedAccents = rankAccentOptions(variant, signatureFamilies, foregroundOption, roleRepresentatives)
 			const observableAccents = rankedAccents.filter(({ signedContrasts }) =>
-				hasPeakAPCAObservability(signedContrasts))
+				hasPeakAPCAObservability(signedContrasts, hardMinimum))
 			const accentRetention = retainPeakObservableFamilyDirections(
 				rankedAccents,
 				ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.distinctAccentsPerForeground,
+				hardMinimum,
 				obligationFamilyIds,
 			)
 			const retainedAccentFamilyIds = new Set(accentRetention.retained.map(({ family }) => family.id))
@@ -3940,6 +3969,7 @@ function generateSeedAdditions(
 					foregroundOption.family,
 					accentOpportunity,
 					surfaceOpportunity,
+					hardMinimum,
 				))
 			}
 			for (const accentOption of accents) {
@@ -3954,6 +3984,7 @@ function generateSeedAdditions(
 					accentOption.family,
 					accentOpportunity,
 					surfaceOpportunity,
+					hardMinimum,
 				))
 			}
 		}
@@ -3998,14 +4029,16 @@ function treatmentLineage(
 
 export function buildPaletteSeedDomain(
 	image: RawImage,
+	options: PaletteExtractionOptions = DEFAULT_PALETTE_EXTRACTION_OPTIONS,
 ): PaletteSeedDomain {
+	const hardMinimum = options.contrastHardMinimum
 	const evidence = buildNativePaletteEvidence(image)
 	const fieldDomains = buildBackgroundFieldDomains(evidence)
 	const evaluatedGradientFits = evaluateGradientFits(evidence, fieldDomains)
 	const controlHypotheses = buildFieldHypothesesFromEvaluatedFits(evidence, evaluatedGradientFits)
 	if (controlHypotheses.length === 0) throw new Error("No defensible field hypothesis was found")
 
-	const controlDomain = buildCompletePaletteTreatmentDomain(evidence, controlHypotheses)
+	const controlDomain = buildCompletePaletteTreatmentDomain(evidence, controlHypotheses, hardMinimum)
 	const controlTreatments = [...new Map(controlDomain.treatments.map((treatment) =>
 		[treatmentKey(treatment), treatment])).values()]
 	const controlProposals = buildFieldHypothesisProposalsFromEvaluatedFits(
@@ -4015,18 +4048,10 @@ export function buildPaletteSeedDomain(
 	)
 	const identityObligations = controlDomain.identitySelection.obligations
 	const obligationFamilyIds = identityObligations.map(({ familyId }) => familyId)
-	const allLaneEvidence = evidenceWithAllRankedLanes(evidence)
-	const allLaneDomains = buildBackgroundFieldDomains(allLaneEvidence)
-	const allLaneProposals = buildFieldHypothesisProposalsFromEvaluatedFits(
-		allLaneEvidence,
-		evaluateGradientFits(allLaneEvidence, allLaneDomains),
-		"all",
-	)
 	const sourceRegistry = buildSourceRegistry(
 		evidence,
 		controlProposals,
 		controlHypotheses,
-		allLaneProposals,
 		obligationFamilyIds,
 	)
 	const candidateMechanics: SeedMechanics = {
@@ -4047,6 +4072,7 @@ export function buildPaletteSeedDomain(
 		controlDomain.candidateCount,
 		sourceRegistry,
 		obligationFamilyIds,
+		hardMinimum,
 	)
 	const additions = candidateAdditions.additions.map((treatment): SeedAddition => {
 		const key = completeTreatmentKey(treatment)
@@ -4067,6 +4093,7 @@ export function buildPaletteSeedDomain(
 		fieldDomains: fieldDomains
 			.slice(0, ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.retainedDiagnosticFieldDomains)
 			.map(({ evidence: domainEvidence }) => domainEvidence),
+		gradientFitDiagnostics: gradientFitDiagnostics(evaluatedGradientFits),
 		fieldHypotheses: candidateHypotheses,
 		completeTreatments: [...new Map(candidateTreatments.map((treatment) =>
 			[treatmentKey(treatment), treatment])).values()],
@@ -4115,7 +4142,9 @@ function phase3SupplementalLineage(treatment: CompletePaletteTreatment): Treatme
 export function constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
 	evidence: NativePaletteEvidence,
 	hypotheses: readonly FieldHypothesis[],
+	options: PaletteExtractionOptions = DEFAULT_PALETTE_EXTRACTION_OPTIONS,
 ): AlbumArtworkPaletteV2Phase3SupplementalConstruction {
+	const hardMinimum = options.contrastHardMinimum
 	const uniqueHypotheses = new Map<string, FieldHypothesis>()
 	for (const hypothesis of hypotheses) {
 		const incumbent = uniqueHypotheses.get(hypothesis.id)
@@ -4158,7 +4187,7 @@ export function constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
 		}
 	}
 
-	const domain = buildCompletePaletteTreatmentDomain(evidence, orderedHypotheses)
+	const domain = buildCompletePaletteTreatmentDomain(evidence, orderedHypotheses, hardMinimum)
 	const supported = domain.treatments.filter((treatment) =>
 		phase3SourceSupportedTreatment(treatment, familiesById))
 	const constructedByHypothesis = new Map<string, CompletePaletteTreatment[]>()
@@ -4170,7 +4199,7 @@ export function constructAlbumArtworkPaletteV2Phase3SupplementalTreatments(
 	for (const hypothesis of orderedHypotheses) {
 		const existing = constructedByHypothesis.get(hypothesis.id)!
 		if (existing.length > 0) continue
-		const isolated = buildCompletePaletteTreatmentDomain(evidence, [hypothesis]).treatments
+		const isolated = buildCompletePaletteTreatmentDomain(evidence, [hypothesis], hardMinimum).treatments
 			.filter((treatment) => phase3SourceSupportedTreatment(treatment, familiesById))
 			.sort((first, second) => compareParetoTreatments(first, second) ||
 				compareAscii(completeTreatmentKey(first), completeTreatmentKey(second)))

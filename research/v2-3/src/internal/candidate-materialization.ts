@@ -2,11 +2,11 @@ import { completeTreatmentKey, fieldDirectionKey, roleDirectionKeys } from "./pa
 
 import type { CompletePaletteTreatment, FieldHypothesis, IdentityObligation, TreatmentLineage } from "./palette-core.ts";
 
-import { MATERIALIZATION_RANKING_BLOCKS } from "./ranking-policy.ts";
+import { ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS } from "./policy.ts";
 
 export const ALBUM_ARTWORK_PALETTE_V2_PHASE_3_MATERIALIZATION_CAPACITY = 1_500 as const
 
-const EVIDENCE_RESOLUTION = 0.04
+const EVIDENCE_RESOLUTION = ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence
 
 export type AlbumArtworkPaletteV2Phase3LogicalDescriptor = Readonly<{
 	treatment: CompletePaletteTreatment
@@ -53,7 +53,7 @@ function evidenceLevel(value: number): number {
 
 function effectiveScore(
 	treatment: CompletePaletteTreatment,
-	block: typeof MATERIALIZATION_RANKING_BLOCKS[number],
+	block: typeof ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS[number],
 ): number {
 	return treatment.scores[block] - treatment.scores.generatedPenalty
 }
@@ -62,7 +62,7 @@ function compareTreatmentQuality(
 	first: CompletePaletteTreatment,
 	second: CompletePaletteTreatment,
 ): number {
-	for (const block of MATERIALIZATION_RANKING_BLOCKS) {
+	for (const block of ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS) {
 		const comparison = evidenceLevel(effectiveScore(second, block)) -
 			evidenceLevel(effectiveScore(first, block))
 		if (comparison !== 0) return comparison

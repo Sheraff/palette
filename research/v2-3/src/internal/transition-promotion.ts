@@ -4,7 +4,7 @@ import type { CompletePaletteTreatment } from "./palette-core.ts";
 
 import type { AlbumArtworkPaletteV2Phase3LogicalDescriptor } from "./candidate-domain.ts";
 
-import { promotionEnvelopeUtility } from "./winner-scoring.ts";
+import { promotionEnvelopeUtility, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
 
 import type { WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
 
@@ -12,7 +12,16 @@ import { roleSpecificObligationCoverage } from "./role-obligations.ts";
 
 import type { RoleSpecificIdentityObligation } from "./role-obligations.ts";
 
-export const MAXIMUM_WINNER_QUALITY_LOSS = 0.12
+/**
+ * Re-export of the single quality-loss budget, so the promotion gates and the source-eligibility
+ * envelope cannot drift apart. It was previously declared here as a second literal `0.12`.
+ *
+ * Note that the budget is applied at **two** gates against **two different baselines**: here,
+ * against the source-eligible winner (`evaluateTransitionCandidates`' `withinQualityBound`), and
+ * again in `palette.ts:selectWinner`, against the unrestricted full-domain winner. A candidate
+ * must clear both. Change one and you have changed only half the gate.
+ */
+export const MAXIMUM_WINNER_QUALITY_LOSS = WINNER_SCORING_POLICY.maximumQualityLoss
 
 export type MaterializedCandidate = Readonly<{
 	key: string

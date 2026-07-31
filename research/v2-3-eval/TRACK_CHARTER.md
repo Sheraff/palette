@@ -29,6 +29,11 @@ Improve the **accuracy** of the palette output. The output shape is fixed and co
 - Deliverable per experiment: an `EXPERIMENT.md` in your track folder containing: the hypothesis, what you changed (files + rationale), the before/after table, honest self-assessment (including uncertainty and regressions), and which cases you propose for the next 4–10-item human review batch.
 - Human reviews are small (4–10 items) and frequent. Design your outputs so the orchestrator can assemble a review batch directly from your `EXPERIMENT.md`.
 
+## Corpus trap and deletion claims (learned 2026-07-31)
+
+- **In a git worktree, `images/` checks out containing ONLY the `-scrambled` decoys** — the real artworks are gitignored. Scrambled images preserve color histograms but destroy spatial structure, so probes run on them make field/gradient/transition machinery look dead when it is not. Always read artwork from `/Users/Flo/GitHub/palette/images/` (the shared checkout) via the documented image-root env var, and state in your report which corpus every measurement used.
+- **"Safe to delete" claims require**: the unscrambled corpus, a fresh off-panel sample of ≥60 artworks, and a winner-diffing ablation (replay with the mechanism removed) — never a firing-rate count alone. A mechanism firing on 1 artwork in 118 is indistinguishable from a dead one on any small corpus; three of four zero-effect claims in the first adversarial review were corpus or sample-size artifacts.
+
 ## Integration
 
 Tracks do not merge themselves. The orchestrator integrates proven ideas into `research/v2-3/` sequentially after human review confirms them. Keep your diff minimal and focused so integration stays cheap.
