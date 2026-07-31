@@ -29,6 +29,10 @@ Improve the **accuracy** of the palette output. The output shape is fixed and co
 - Deliverable per experiment: an `EXPERIMENT.md` in your track folder containing: the hypothesis, what you changed (files + rationale), the before/after table, honest self-assessment (including uncertainty and regressions), and which cases you propose for the next 4–10-item human review batch.
 - Human reviews are small (4–10 items) and frequent. Design your outputs so the orchestrator can assemble a review batch directly from your `EXPERIMENT.md`.
 
+## Verdict recency (learned 2026-08-01)
+
+**The LATEST verdict per artwork is authoritative.** Guardrail/HOLD sets must be mined from the live `verdicts.jsonl` at arm start, not inherited from briefs or earlier EXPERIMENT.md files — three arms were found protecting outcomes that later batches reversed (the batch-20 foreground swaps superseded several long-standing "frozen" arrangements). A reviewed-strong outcome is frozen only until a newer verdict on the same artwork supersedes it.
+
 ## Machine budget (learned 2026-07-31)
 
 - **One corpus-scale sweep at a time, orchestrator-serialized.** Parallel heavy sweeps starved each other (load 20–66; one track's stability draw died incomplete because another's 11-worker sweep owned the machine).

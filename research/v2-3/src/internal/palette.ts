@@ -20,7 +20,13 @@ import type { AlbumArtworkPaletteV2Phase3FieldHypothesisSourceType, AlbumArtwork
 
 import { materializeAlbumArtworkPaletteV2Phase3Descriptors } from "./candidate-materialization.ts";
 
-import { promotionEnvelopeUtility, scorePaletteCandidates, TRANSITION_PROMOTION_ORDER } from "./winner-scoring.ts";
+import { GAMUT_COVERAGE, promotionEnvelopeUtility, scorePaletteCandidates, TRANSITION_PROMOTION_ORDER } from "./winner-scoring.ts";
+
+import type { GamutScoringInput } from "./winner-scoring.ts";
+
+import { buildArtworkGamut, isAchromaticField } from "./gamut-coverage.ts";
+
+import type { GamutCoverageScope } from "./gamut-coverage.ts";
 
 import type { WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
 
@@ -102,13 +108,19 @@ function selectWinner(input: Readonly<{
 	identityObligations: readonly IdentityObligation[]
 	identityRoleRequirements: readonly IdentityRoleRequirement[]
 	emergency: EmergencyEligibility | null
+	gamutScoring: GamutScoringInput | null
 }>): WinnerSelection {
+	// The source-eligible sub-domain must be ranked under the SAME objective as the full domain.
+	// `selectSourceEligibleWinner` compares the two winners against `maximumQualityLoss`, so ranking
+	// the subset without the gamut term while the full domain has it would compare two different
+	// utilities and could throw the envelope error on a perfectly legal winner.
 	const sourceEligible = selectSourceEligibleWinner({
 		materialized: input.materialized,
 		identityObligations: input.identityObligations,
 		identityRoleRequirements: input.identityRoleRequirements,
 		emergency: input.emergency,
 		fullDomainSelection: input.scored,
+		gamutScoring: input.gamutScoring,
 	})
 	const unrestrictedKey = completeTreatmentKey(input.scored.winner)
 	const sourceWinner = sourceEligible.winner.treatment
@@ -301,9 +313,22 @@ function applyGradientSupport(
 	}
 }
 
+/**
+ * `gamutOverride` exists so a research harness can sweep the coverage integration and weight over the
+ * *real* pipeline instead of a reimplementation of it. It is not part of the public `extractPalette`
+ * surface and omitting it is the reviewed behaviour; `PaletteExtractionOptions` stays a user-facing
+ * type carrying only parameters a library consumer is meant to set.
+ */
 export function extractPaletteDetails(
 	image: RawImage,
 	options: PaletteExtractionOptions = DEFAULT_PALETTE_EXTRACTION_OPTIONS,
+	gamutOverride?: Readonly<{
+		integration?: typeof GAMUT_COVERAGE.integration
+		weight?: number
+		scope?: GamutCoverageScope
+		saturation?: number
+		fieldGuard?: boolean
+	}>,
 ): Readonly<{
 	width: number
 	height: number
@@ -351,13 +376,33 @@ export function extractPaletteDetails(
 		sourcedFields.map(({ hypothesis }) => hypothesis),
 		common.seedAvailability.identityObligations.map(({ familyId }) => familyId),
 	)
-	const scored = scorePaletteCandidates(
-		materialization.materialized.map(({ treatment }) => treatment),
-		{
-			obligations: common.seedAvailability.identityObligations,
-			roleRequirements: roleEvidence.requirements,
-		},
-	)
+	const gamutIntegration = gamutOverride?.integration ?? GAMUT_COVERAGE.integration
+	const candidateTreatments = materialization.materialized.map(({ treatment }) => treatment)
+	const identityInput = {
+		obligations: common.seedAvailability.identityObligations,
+		roleRequirements: roleEvidence.requirements,
+	}
+	let gamutScoring: GamutScoringInput | null = null
+	if (gamutIntegration !== "off") {
+		// The guard is gated on the field the algorithm picks with NO coverage pressure at all — the
+		// reviewed axes' own answer to "what is this artwork's field". Asking it any other way lets the
+		// term bias the answer it is about to be judged against. It costs one extra ranking pass over an
+		// already-built domain, which is cheap next to constructing that domain.
+		const reference = scorePaletteCandidates(candidateTreatments, identityInput, null).winner
+		gamutScoring = {
+			// Built once from the OKLab buffer the native evidence already holds; shared by both rankings.
+			gamut: buildArtworkGamut(common.evidence.native),
+			integration: gamutIntegration,
+			weight: gamutOverride?.weight ?? GAMUT_COVERAGE.weight,
+			scope: gamutOverride?.scope ?? GAMUT_COVERAGE.scope,
+			saturation: gamutOverride?.saturation ?? GAMUT_COVERAGE.saturation,
+			// Shade the field ONLY when the artwork's own field is one you could not tell from grey.
+			// Otherwise the axis pays full, which is what keeps it able to replace a dull field.
+			fieldGuard: (gamutOverride?.fieldGuard ?? GAMUT_COVERAGE.fieldGuard)
+				&& isAchromaticField([reference.background.oklab, reference.surface.oklab]),
+		}
+	}
+	const scored = scorePaletteCandidates(candidateTreatments, identityInput, gamutScoring)
 	const materialized: MaterializedCandidate[] = materialization.materialized.map((candidate) => ({
 		key: candidate.key,
 		treatment: candidate.treatment,
@@ -371,6 +416,7 @@ export function extractPaletteDetails(
 		identityObligations: common.seedAvailability.identityObligations,
 		identityRoleRequirements: roleEvidence.requirements,
 		emergency: seed.emergency,
+		gamutScoring,
 	})
 	const gradient = applyGradientSupport(
 		selection,

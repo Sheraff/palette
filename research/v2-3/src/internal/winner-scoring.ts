@@ -12,6 +12,10 @@ import { albumArtworkPaletteV2Phase3SelectorV2Quality, earnedGradientClaim, grad
 
 import type { AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus } from "./palette-quality.ts";
 
+import { GAMUT_COVERAGE_FIELD_GUARD, GAMUT_COVERAGE_SATURATION, normalizedGamutCoverage } from "./gamut-coverage.ts";
+
+import type { ArtworkGamut, GamutCoverageScope } from "./gamut-coverage.ts";
+
 export const WINNER_QUALITY_AXES = [
 	"fieldFidelity",
 	"surfaceFidelity",
@@ -233,6 +237,70 @@ const BASE_QUALITY_WEIGHTS = Object.freeze({
 	economy: 0.05,
 })
 
+/**
+ * How much of the artwork's own colour the published palette stands for.
+ *
+ * The eleven weighted axes and the identity machinery all read a treatment against the *families the
+ * seed domain proposed*. None of them reads the **artwork's distribution of colour** and asks whether
+ * four published colours span it, which is why a palette could be dull, near-mono-hue, or drop an
+ * entire pink-and-purple splash and still rank first on every existing axis. Measured separation
+ * against the reviewed complaints is AUC 0.872, and a review batch preferred the higher-coverage
+ * alternative on four of five decidable pairs, with the fifth explained by a disclosed midpoint
+ * confound and three further pairs graded equal while the reviewer hand-assembled palettes that all
+ * covered more than the incumbent. See `research/v2-3-experiments/track-x/EXPERIMENT.md`.
+ *
+ * `integration` picks *where* the measurement acts, and the three settings are not interchangeable:
+ *
+ * - `"utility"` adds the normalised coverage to `qualityUtility` as a twelfth weighted term **without**
+ *   joining `WINNER_QUALITY_AXES`. The axis list drives domination and the sorted-level tiebreak, so
+ *   staying out of it means the Pareto frontier and every tiebreak keep exactly the shape they were
+ *   calibrated with, and only the scalar objective moves. This is the smallest blast radius that can
+ *   still change a winner.
+ * - `"axis"` makes it a full twelfth member of `WINNER_QUALITY_AXES`, so it also guards domination.
+ *   That enlarges the frontier on every image: a candidate poor on all eleven reviewed axes survives
+ *   pruning merely by covering more hue. Measured, and reported, as the wider option.
+ * - `"authority"` mirrors `authorizedIdentity` — a level guard in `dominates` plus a band tiebreak —
+ *   giving coverage lexicographic force inside a utility band rather than a weight.
+ *
+ * `weight` is only read by `"utility"` and `"axis"`. It is deliberately **not** folded into
+ * `BASE_QUALITY_WEIGHTS`: those eleven sum to 1 and are frozen, so coverage is an additive term on top
+ * rather than a redistribution of weight away from axes that were reviewed at their current values.
+ */
+export const GAMUT_COVERAGE = Object.freeze({
+	/**
+	 * **Enabled `"utility"` by batch-26 review (2026-07-31)** — the adjudication the term shipped
+	 * `"off"` to wait for. All eight movement pairs held or improved: the standing sailor-blue request
+	 * is granted and preferred outright, one other pair prefers the coverage side, five are equal-good,
+	 * and the previously adjudicated incumbent it trades away resolved as "both really work" with only
+	 * a slight tiebreak lean to the incumbent. Zero pairs regressed. The term stays in `qualityUtility`
+	 * only (`"utility"`), out of `WINNER_QUALITY_AXES`, so the Pareto frontier and every tiebreak keep
+	 * their reviewed shape.
+	 * See `research/v2-3-experiments/track-x/EXPERIMENT.md`.
+	 */
+	integration: "utility" as "off" | "utility" | "axis" | "authority",
+	/**
+	 * Set by the largest value at which no reviewed-strong artwork's field inverts. Above it the
+	 * white-ground failure returns; below it the term stops reaching the cases it exists for. It is an
+	 * acceptance bound, not a fit.
+	 */
+	weight: 0.05,
+	scope: "field-and-accent" as GamutCoverageScope,
+	/** See `GAMUT_COVERAGE_SATURATION`. `1` is the plain linear credit. */
+	saturation: GAMUT_COVERAGE_SATURATION,
+	/** See `GAMUT_COVERAGE_FIELD_GUARD`. `false` lets the field buy coverage unshaded. */
+	fieldGuard: GAMUT_COVERAGE_FIELD_GUARD,
+})
+
+export type GamutScoringInput = Readonly<{
+	gamut: ArtworkGamut
+	/** Research override. Absent means the reviewed policy above, which is what the library ships. */
+	integration?: typeof GAMUT_COVERAGE.integration
+	weight?: number
+	scope?: GamutCoverageScope
+	saturation?: number
+	fieldGuard?: boolean
+}>
+
 export const WINNER_SCORING_POLICY = Object.freeze({
 	evidenceResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence,
 	utilityResolution: ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility,
@@ -263,6 +331,12 @@ export type WinnerEvaluation = Readonly<{
 	identityAuthorizedGain: number
 	identityRoles: AlbumArtworkPaletteV2Phase3SelectorEvaluation["identityRoles"]
 	relationUtility: number
+	/**
+	 * Share of what four colours could possibly have covered of this artwork's chromatic mass, in
+	 * `[0, 1]`. `1` when no gamut was supplied or the artwork has no chromatic content — in both cases
+	 * the term is constant across candidates and cannot reorder them.
+	 */
+	gamutCoverage: number
 	paretoMember: boolean
 }>
 
@@ -447,6 +521,7 @@ function renderedFieldClaimScore(
 function evaluateTreatment(
 	wave1: AlbumArtworkPaletteV2Phase3SelectorEvaluation,
 	gradientExpected: boolean,
+	gamutScoring: GamutScoringInput | null,
 ): WinnerEvaluation {
 	const reusable = albumArtworkPaletteV2Phase3SelectorV2Quality(wave1.treatment, gradientExpected)
 	const quality: WinnerQuality = {
@@ -468,7 +543,27 @@ function evaluateTreatment(
 	for (const axis of WINNER_QUALITY_AXES) {
 		if (!Number.isFinite(quality[axis])) throw new TypeError(`Non-finite winner quality axis ${axis}`)
 	}
+	// `1` when no gamut is supplied: a constant across candidates cannot reorder them, and it keeps the
+	// `maximumQualityLoss` envelope comparing like with like, since that is a difference of utilities.
+	const coverage = gamutScoring === null
+		? 1
+		: normalizedGamutCoverage(
+			gamutScoring.gamut,
+			wave1.treatment,
+			gamutScoring.scope ?? GAMUT_COVERAGE.scope,
+			gamutScoring.saturation ?? GAMUT_COVERAGE.saturation,
+			// `fieldGuard` arrives already gated on the artwork's field being indistinguishable from grey
+			// (see `isAchromaticField`). When it fires the field earns **nothing**: on an artwork whose
+			// ground is genuinely neutral there is no colour there to represent, so any coverage the
+			// background and surface could show would have to be imported from somewhere the field is not.
+			// When it does not fire the axis pays in full, which is what lets it replace a dull field.
+			(gamutScoring.fieldGuard ?? GAMUT_COVERAGE.fieldGuard) ? 0 : 1,
+		)
+	if (!Number.isFinite(coverage)) throw new TypeError("Non-finite gamut coverage")
+	const integration = gamutScoring?.integration ?? GAMUT_COVERAGE.integration
+	const weight = gamutScoring?.weight ?? GAMUT_COVERAGE.weight
 	const utility = qualityUtility(quality)
+		+ (gamutScoring !== null && (integration === "utility" || integration === "axis") ? weight * coverage : 0)
 	const identityGain = wave1.identityGain
 	return {
 		key: wave1.key,
@@ -486,6 +581,7 @@ function evaluateTreatment(
 		identityAuthorizedGain: wave1.identityAuthorizedGain,
 		identityRoles: wave1.identityRoles,
 		relationUtility: utility + identityGain,
+		gamutCoverage: coverage,
 		paretoMember: false,
 	}
 }
@@ -504,6 +600,7 @@ function evaluateTreatment(
 function dominates(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
+	gamutMode: typeof GAMUT_COVERAGE.integration,
 ): boolean {
 	let strictlyBetter = false
 	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
@@ -520,6 +617,14 @@ function dominates(
 			utilityLevel(evaluation.identityAuthorizedGain)
 		if (authorized(first) < authorized(second)) return false
 		if (authorized(first) > authorized(second)) strictlyBetter = true
+	}
+	// Only the two wider integrations let coverage guard domination. Under `"utility"` the frontier
+	// keeps exactly the shape the eleven reviewed axes give it, and coverage acts on the objective
+	// alone — a candidate cannot survive pruning merely by covering more hue.
+	if (gamutMode === "axis" || gamutMode === "authority") {
+		const covered = (evaluation: WinnerEvaluation): number => evidenceLevel(evaluation.gamutCoverage)
+		if (covered(first) < covered(second)) return false
+		if (covered(first) > covered(second)) strictlyBetter = true
 	}
 	for (const axis of WINNER_QUALITY_AXES) {
 		if (first.evidenceLevels[axis] < second.evidenceLevels[axis]) return false
@@ -559,6 +664,7 @@ function sameFamilyAssignment(first: CompletePaletteTreatment, second: CompleteP
 function compareEvaluations(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
+	gamutMode: typeof GAMUT_COVERAGE.integration = "off",
 ): number {
 	// Inside one utility band the order otherwise falls back to `qualityUtility`, which excludes
 	// identity and therefore reverses the preference. `authorizedIdentity` makes the authorized
@@ -568,6 +674,12 @@ function compareEvaluations(
 	if (comparison === 0 && WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
 		comparison = compareDescending(utilityLevel(first.identityAuthorizedGain),
 			utilityLevel(second.identityAuthorizedGain))
+	}
+	// `"authority"` gives coverage lexicographic force inside a band instead of a weight — the shape
+	// `authorizedIdentity` uses. `"utility"` and `"axis"` have already spent their influence in
+	// `relationUtility`, so adding it again here would double-count it.
+	if (comparison === 0 && gamutMode === "authority") {
+		comparison = compareDescending(evidenceLevel(first.gamutCoverage), evidenceLevel(second.gamutCoverage))
 	}
 	if (comparison === 0) {
 		comparison = compareDescending(utilityLevel(first.qualityUtility), utilityLevel(second.qualityUtility))
@@ -604,11 +716,22 @@ function compareEvaluations(
 	return compareAscii(first.key, second.key) || compareAscii(first.structuralKey, second.structuralKey)
 }
 
+/**
+ * `gamutScoring` is optional and omitting it reproduces the pre-coverage ranking exactly: every
+ * candidate then carries `gamutCoverage: 1`, which adds the same constant to every utility and guards
+ * no domination. That is what keeps the ~30 two-argument call sites across the eval harness and the
+ * experiment tracks compiling and meaning what they meant.
+ */
 export function scorePaletteCandidates(
 	treatments: readonly CompletePaletteTreatment[],
 	identity?: AlbumArtworkPaletteV2Phase3IdentityInput,
+	gamutScoring?: GamutScoringInput | null,
 ): WinnerScoring {
 	if (treatments.length === 0) throw new RangeError("The palette candidate domain is empty")
+	const scoring = gamutScoring ?? null
+	const gamutMode = scoring === null ? "off" : scoring.integration ?? GAMUT_COVERAGE.integration
+	const compare = (first: WinnerEvaluation, second: WinnerEvaluation) =>
+		compareEvaluations(first, second, gamutMode)
 	const orderedTreatments = [...treatments].sort((first, second) =>
 		compareAscii(treatmentStructuralKey(first), treatmentStructuralKey(second)))
 	const wave1 = selectAlbumArtworkPaletteV2Phase3Treatments(orderedTreatments, identity)
@@ -617,16 +740,17 @@ export function scorePaletteCandidates(
 	const rawEvaluations = wave1.evaluations.map((evaluation) => evaluateTreatment(
 		evaluation,
 		earnedGradientClaims.has(renderedFieldClaimKey(evaluation.treatment)),
-	)).sort(compareEvaluations)
+		gamutMode === "off" ? null : scoring,
+	)).sort(compare)
 	// `some` short-circuits on the first dominator, where the previous `filter(...).sort(...)`
 	// scanned every candidate and then sorted the whole dominator list to read `[0].key` — a value
 	// nothing consumed. Only `paretoMember` is used, and it is unchanged.
 	const evaluations = rawEvaluations.map((evaluation): WinnerEvaluation => ({
 		...evaluation,
 		paretoMember: !rawEvaluations.some((candidate) =>
-			candidate !== evaluation && dominates(candidate, evaluation)),
-	})).sort(compareEvaluations)
-	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compareEvaluations)
+			candidate !== evaluation && dominates(candidate, evaluation, gamutMode)),
+	})).sort(compare)
+	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compare)
 	if (frontier.length === 0) throw new Error("The palette quality frontier is empty")
 	const winner = frontier[0]
 	return {

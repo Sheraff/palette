@@ -8,6 +8,8 @@ import type { AlbumArtworkPaletteV2Phase3CompleteLineageMaterializedCandidate, A
 
 import { scorePaletteCandidates, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
 
+import type { GamutScoringInput } from "./winner-scoring.ts";
+
 import type { WinnerScoring } from "./winner-scoring.ts";
 
 import type { AlbumArtworkPaletteV2Phase3IdentityRoleRequirement } from "./base-scoring.ts";
@@ -26,6 +28,8 @@ export function selectSourceEligibleWinner<
 	identityRoleRequirements?: readonly AlbumArtworkPaletteV2Phase3IdentityRoleRequirement[]
 	emergency?: EmergencyEligibility | null
 	fullDomainSelection: WinnerScoring
+	/** Must be the same input the full domain was ranked with; see the note at the call site. */
+	gamutScoring?: GamutScoringInput | null
 }>): SourceEligibleWinner<TCandidate> {
 	const eligibility = filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain(
 		input.materialized,
@@ -38,6 +42,7 @@ export function selectSourceEligibleWinner<
 			obligations: input.identityObligations ?? [],
 			roleRequirements: input.identityRoleRequirements ?? [],
 		},
+		input.gamutScoring ?? null,
 	)
 	const candidateByKey = new Map(eligibility.allCandidates.map((candidate) => [candidate.key, candidate]))
 	const evaluationByKey = new Map(input.fullDomainSelection.evaluations.map((evaluation) =>

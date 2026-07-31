@@ -9,6 +9,7 @@ import {
 } from "../src/internal/policy.ts"
 import {
 	BAND_TIE_BREAK,
+	GAMUT_COVERAGE,
 	PROMOTION_ENVELOPE,
 	TRANSITION_PROMOTION_ORDER,
 	WINNER_QUALITY_AXES,
@@ -59,6 +60,24 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 		"fieldFidelity", "surfaceFidelity", "artworkIdentity", "representativeness", "sourceSupport",
 		"renderedFieldClaim", "foregroundPath", "accentFidelity", "accentPath", "coherence", "economy",
 	])
+})
+
+test("the reviewed gamut-coverage configuration is unchanged", () => {
+	// Batch 26 (2026-07-31) adjudicated enablement: zero of eight movement pairs regressed, the
+	// sailor-blue control was preferred outright, and the one previously adjudicated incumbent the
+	// term trades away resolved as "both really work". Track X, four rounds; the operating point
+	// below is the one the batch saw. `"utility"` keeps the term out of `WINNER_QUALITY_AXES` (the
+	// eleven axes above are frozen), so it is additive on `qualityUtility` only.
+	assert.equal(GAMUT_COVERAGE.integration, "utility")
+	// The largest weight at which no reviewed-strong artwork's field inverts (acceptance bound).
+	assert.equal(GAMUT_COVERAGE.weight, 0.05)
+	// Foreground excluded on measurement: with it included, an adjudicated incumbent flips on a
+	// foreground swap the reviewer had rejected.
+	assert.equal(GAMUT_COVERAGE.scope, "field-and-accent")
+	// Both guards are independently load-bearing (each holds a white-ground artwork the other
+	// misses); the ablation is in the track record.
+	assert.equal(GAMUT_COVERAGE.saturation, 0.75)
+	assert.equal(GAMUT_COVERAGE.fieldGuard, true)
 })
 
 test("the reviewed identity and mark parameters are unchanged", () => {
