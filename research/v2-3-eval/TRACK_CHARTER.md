@@ -29,6 +29,12 @@ Improve the **accuracy** of the palette output. The output shape is fixed and co
 - Deliverable per experiment: an `EXPERIMENT.md` in your track folder containing: the hypothesis, what you changed (files + rationale), the before/after table, honest self-assessment (including uncertainty and regressions), and which cases you propose for the next 4–10-item human review batch.
 - Human reviews are small (4–10 items) and frequent. Design your outputs so the orchestrator can assemble a review batch directly from your `EXPERIMENT.md`.
 
+## Machine budget (learned 2026-07-31)
+
+- **One corpus-scale sweep at a time, orchestrator-serialized.** Parallel heavy sweeps starved each other (load 20–66; one track's stability draw died incomplete because another's 11-worker sweep owned the machine).
+- **Sweep workers: at most 4 processes**, and set `VIPS_CONCURRENCY=1` (or `sharp.concurrency(1)`) in worker processes — sharp otherwise spawns ~ncpu threads *per process*, which is how 11 workers became 100+ threads.
+- Long unattended sweeps must be checkpointed/resumable (write one result file per job) so the orchestrator can kill them at any time to free the machine for higher-priority arms.
+
 ## Corpus trap and deletion claims (learned 2026-07-31)
 
 - **In a git worktree, `images/` checks out containing ONLY the `-scrambled` decoys** — the real artworks are gitignored. Scrambled images preserve color histograms but destroy spatial structure, so probes run on them make field/gradient/transition machinery look dead when it is not. Always read artwork from `/Users/Flo/GitHub/palette/images/` (the shared checkout) via the documented image-root env var, and state in your report which corpus every measurement used.
