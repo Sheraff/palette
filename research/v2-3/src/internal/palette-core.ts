@@ -1038,6 +1038,94 @@ export const REGION_ROLE_SCORE_SUPPORT_BASE = 0.45
 
 export const REGION_ROLE_SCORE_CUE_SPAN = 0.55
 
+/**
+ * How big a component has to be before its size stops counting for anything, on a log2 pixel
+ * scale: `clamp(log2(population + 1) / SCALE)`. At 8 a component reaches full credit at 255
+ * pixels, and every component larger than that is treated the same.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): live on all 154
+ * artworks, and moving it to 7 or 9 moves 32 of them (21 %). It is an integer, so it was perturbed
+ * to the adjacent integers rather than scaled. It also carries the strongest over-fitting
+ * signature in that sweep — it moves unseen artwork 2.1x as often as reviewed artwork.
+ */
+export const REGION_RESOLVED_POPULATION_LOG2_SCALE = 8
+
+/**
+ * The boundary contrast at which a component counts as fully contrasting against its
+ * surroundings: `clamp(localContrast / FULL)`. Everything above this reads the same to the role
+ * cues, so this number decides what "high contrast" means for typography and signature detection
+ * alike.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): live on all 154
+ * artworks, +-20 % moves 43 of them (28 %). It is a scale divisor, not a weight — it does not
+ * belong to any vector and nothing renormalises when it moves.
+ */
+export const REGION_FULL_LOCAL_CONTRAST = 0.16
+
+/**
+ * The share of its own colour family that a single component must hold before it counts as fully
+ * representative of that family: `clamp(componentFamilyFraction / FULL)`. At 0.1 a component
+ * holding a tenth of its family's pixels already gets full credit.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): live on all 154
+ * artworks, +-20 % moves 36 of them (23 %). Also a scale divisor rather than a weight.
+ */
+export const REGION_FULL_COMPONENT_FAMILY_FRACTION = 0.1
+
+/**
+ * How much of "this component sits inside the frame rather than running off it" comes from each
+ * of the two ways of asking. `borderClearance` is how little of the component's outline touches
+ * the image border; `interiorMargin` is how far its bounding box keeps away from every edge. The
+ * two sum to 1.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the 0.75 term is live
+ * on all 154 artworks and +-20 % moves 44 of them (29 %). Perturbing one term breaks the sum —
+ * nothing renormalises downstream — so the vector is one decision, not two.
+ */
+export const REGION_BORDER_INTERIOR_WEIGHTS = Object.freeze({
+	borderClearance: 0.75,
+	interiorMargin: 0.25,
+} as const)
+
+/**
+ * How much of a component's claim to be a real mark, rather than noise, comes from each kind of
+ * size evidence: its own resolved pixel count, its share of the whole image, and its family's
+ * share of the image scaled by how much of that family the component itself is. The three sum
+ * to 1.
+ *
+ * PERVASIVE CLIFFS, all three (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): live on
+ * all 154 artworks, and +-20 % moves 64 (42 %), 44 (29 %) and 40 (26 %) respectively. The 0.55
+ * term is the largest single non-artifact cliff the tier-B sweep found.
+ */
+export const REGION_SOURCE_SUPPORT_WEIGHTS = Object.freeze({
+	resolvedPopulation: 0.55,
+	componentShare: 0.25,
+	familyShare: 0.20,
+} as const)
+
+/**
+ * How much of "this component looks like a logo, wordmark or other signature graphic" comes from
+ * each cue. The five sum to 1.
+ *
+ * The typography cues on the next line down are the same five cues with different weights
+ * (.24 / .14 / .22 / .24 / .16), and they are deliberately **not** lifted here: the tier-B sweep
+ * measured them as load-bearing but not cliffs (6, 5, 4, 4 and 2 flips against 40, 39, 36, 35 and
+ * 35 for these). Two structurally identical formulas ten lines apart differ 7-20x in blast radius,
+ * and nothing in the file says why.
+ *
+ * PERVASIVE CLIFFS, all five (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): each live
+ * on all 154 artworks. +-20 % moves 40 artworks (26 %) on `geometry`, 39 (25 %) on
+ * `localContrast`, 36 (23 %) on `borderInterior`, and 35 (23 %) on each of `fill` and
+ * `repetition`. Perturbing one term breaks the sum, so treat the vector as one decision.
+ */
+export const SIGNATURE_CUE_WEIGHTS = Object.freeze({
+	geometry: 0.20,
+	fill: 0.16,
+	repetition: 0.16,
+	localContrast: 0.30,
+	borderInterior: 0.18,
+} as const)
+
 function buildRegionObservations(
 	components: readonly MutableComponent[],
 	familyPopulation: number,
@@ -1073,20 +1161,26 @@ function buildRegionObservations(
 			.map((candidate) => componentSimilarity(component, candidate))
 			.sort(compareNumbersDescending)
 		const repetition = clamp(similarities.slice(0, 3).reduce((sum, similarity) => sum + similarity, 0) / 2)
-		const resolved = clamp(Math.log2(component.population + 1) / 8)
+		const resolved = clamp(Math.log2(component.population + 1) / REGION_RESOLVED_POPULATION_LOG2_SCALE)
 		const nonField = 1 - clamp(boundsFraction / 0.18)
 		const geometry = Math.sqrt(resolved * nonField) * (1 - 0.2 * clamp((elongation - 20) / 20))
 		const typographyFill = clamp(fill / 0.12) * (1 - 0.5 * clamp((fill - 0.82) / 0.18))
 		const signatureFill = clamp(fill / 0.12)
-		const contrast = clamp(localContrast / 0.16)
-		const borderInterior = 0.75 * (1 - clamp(borderContact / 0.25)) + 0.25 * clamp(interiorMargin / 0.08)
+		const contrast = clamp(localContrast / REGION_FULL_LOCAL_CONTRAST)
+		const borderInterior = REGION_BORDER_INTERIOR_WEIGHTS.borderClearance * (1 - clamp(borderContact / 0.25)) +
+			REGION_BORDER_INTERIOR_WEIGHTS.interiorMargin * clamp(interiorMargin / 0.08)
 		const sourceSupport = clamp(
-			0.55 * resolved +
-			0.25 * clamp(component.population / pixelCount / 0.001) +
-			0.20 * clamp(familyPopulation / pixelCount / 0.001) * clamp(componentFamilyFraction / 0.1),
+			REGION_SOURCE_SUPPORT_WEIGHTS.resolvedPopulation * resolved +
+			REGION_SOURCE_SUPPORT_WEIGHTS.componentShare * clamp(component.population / pixelCount / 0.001) +
+			REGION_SOURCE_SUPPORT_WEIGHTS.familyShare * clamp(familyPopulation / pixelCount / 0.001) *
+				clamp(componentFamilyFraction / REGION_FULL_COMPONENT_FAMILY_FRACTION),
 		)
 		const typographyCues = 0.24 * geometry + 0.14 * typographyFill + 0.22 * repetition + 0.24 * contrast + 0.16 * borderInterior
-		const signatureCues = 0.20 * geometry + 0.16 * signatureFill + 0.16 * repetition + 0.30 * contrast + 0.18 * borderInterior
+		const signatureCues = SIGNATURE_CUE_WEIGHTS.geometry * geometry +
+			SIGNATURE_CUE_WEIGHTS.fill * signatureFill +
+			SIGNATURE_CUE_WEIGHTS.repetition * repetition +
+			SIGNATURE_CUE_WEIGHTS.localContrast * contrast +
+			SIGNATURE_CUE_WEIGHTS.borderInterior * borderInterior
 		const factors = (
 			role: "typography" | "signature",
 			fillFactor: number,
@@ -1516,8 +1610,22 @@ export function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamily
 	}
 }
 
+/**
+ * How much of a family's claim to the foreground role comes from the family-level evidence versus
+ * from what the region observations actually saw of its typography. The two sum to 1.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the 0.40 observation
+ * term is live on all 154 artworks and +-20 % moves 31 of them (20 %). Perturbing one term breaks
+ * the sum; nothing renormalises.
+ */
+export const FOREGROUND_ROLE_SCORE_WEIGHTS = Object.freeze({
+	familyEvidence: 0.60,
+	typographyObservation: 0.40,
+} as const)
+
 function foregroundRoleScore(family: ColorFamilyEvidence): number {
-	return clamp(0.60 * family.foregroundScore + 0.40 * family.foregroundTypographyObservation)
+	return clamp(FOREGROUND_ROLE_SCORE_WEIGHTS.familyEvidence * family.foregroundScore +
+		FOREGROUND_ROLE_SCORE_WEIGHTS.typographyObservation * family.foregroundTypographyObservation)
 }
 
 // `signatureScore` carries a population ratio of the same class as the support
@@ -1901,6 +2009,23 @@ type FieldScoreTerms = Readonly<{
 }>
 
 /**
+ * How much of "this family looks like the ground the artwork sits on" comes from each piece of
+ * evidence: being broad, reaching the border, being one coherent mass rather than scattered,
+ * reaching every quadrant, and being calm rather than busy. The five sum to 1.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the 0.22
+ * `familyConcentration` term is live on all 154 artworks and +-20 % moves 35 of them (23 %).
+ * Perturbing one term breaks the sum; nothing renormalises.
+ */
+export const FIELD_SCORE_WEIGHTS = Object.freeze({
+	populationFraction: 0.28,
+	borderCoverage: 0.22,
+	familyConcentration: 0.22,
+	quadrantCoverage: 0.13,
+	edgeDensity: 0.15,
+} as const)
+
+/**
  * How much this family looks like the ground the artwork sits on: broad, reaching
  * the edges and every quadrant, coherent rather than scattered, and calm.
  *
@@ -1910,11 +2035,11 @@ type FieldScoreTerms = Readonly<{
  */
 function fieldScoreFrom(terms: FieldScoreTerms, borderCreditRetained = 1): number {
 	return clamp(
-		0.28 * clamp(terms.populationFraction / 0.24) +
-		0.22 * terms.borderCoverage * borderCreditRetained +
-		0.22 * clamp(terms.familyConcentration) +
-		0.13 * terms.quadrantCoverage +
-		0.15 * (1 - clamp(terms.edgeDensity / 0.7)),
+		FIELD_SCORE_WEIGHTS.populationFraction * clamp(terms.populationFraction / 0.24) +
+		FIELD_SCORE_WEIGHTS.borderCoverage * terms.borderCoverage * borderCreditRetained +
+		FIELD_SCORE_WEIGHTS.familyConcentration * clamp(terms.familyConcentration) +
+		FIELD_SCORE_WEIGHTS.quadrantCoverage * terms.quadrantCoverage +
+		FIELD_SCORE_WEIGHTS.edgeDensity * (1 - clamp(terms.edgeDensity / 0.7)),
 	)
 }
 
@@ -3178,6 +3303,23 @@ function domainPositions(evidence: NativePaletteEvidence, fit: GradientFit): Flo
 	return positions
 }
 
+/**
+ * Where along the fitted gradient each end band's expected colour is read off. The bands
+ * themselves are everything below position 0.2 and everything above 0.8; the colour a band's
+ * candidates are scored against is sampled one tenth in from each end rather than at the very
+ * extremes, so a fit that overshoots at its edges does not set the target.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the high position is
+ * live on 113 artworks and +-20 % moves 27 of them (24 %). It also carries the strongest
+ * over-fitting signature in that sweep alongside the region population scale — 2.1x more likely to
+ * move unseen artwork than reviewed artwork. The low position was a separate site and did not
+ * reach the top bucket; the pair is symmetric about 0.5 and should stay so.
+ */
+export const ENDPOINT_BAND_SAMPLE_POSITIONS = Object.freeze({
+	low: 0.1,
+	high: 0.9,
+} as const)
+
 function endpointBandRepresentatives(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
@@ -3194,7 +3336,7 @@ function endpointBandRepresentatives(
 			bandPopulation += 1
 		}
 	}
-	const endpointPosition = lowBand ? 0.1 : 0.9
+	const endpointPosition = lowBand ? ENDPOINT_BAND_SAMPLE_POSITIONS.low : ENDPOINT_BAND_SAMPLE_POSITIONS.high
 	const expected: OKLab = [
 		fit.intercept[0] + fit.slope[0] * endpointPosition,
 		fit.intercept[1] + fit.slope[1] * endpointPosition,

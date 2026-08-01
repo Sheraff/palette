@@ -165,6 +165,23 @@ function familyRepetition(family: ColorFamilyEvidence, observations: readonly Re
 	return clamp(0.65 * observed + 0.35 * repeatedComponents)
 }
 
+/**
+ * How much of "this family is present enough, and solidly enough, to carry a role" comes from
+ * each kind of evidence: the source support its own regions reported, its population crossed with
+ * how much of it hangs together as one connected mass, how concentrated it is, and how many
+ * regions it was observed in at all. The four sum to 1.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the 0.30
+ * population-x-connectivity term is live on all 154 artworks and +-20 % moves 32 of them (21 %).
+ * Perturbing one term breaks the sum; nothing renormalises.
+ */
+export const COHERENT_SUPPORT_WEIGHTS = Object.freeze({
+	regionSupport: 0.45,
+	populationConnectivity: 0.30,
+	familyConcentration: 0.15,
+	observationBreadth: 0.10,
+} as const)
+
 function coherentSupport(family: ColorFamilyEvidence, observations: readonly RegionObservation[]): number {
 	const regionSupport = aggregate(observations.map((observation) => Math.max(
 		observation.foregroundTypography.sourceSupport,
@@ -176,10 +193,10 @@ function coherentSupport(family: ColorFamilyEvidence, observations: readonly Reg
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY.connectedSupportFraction)
 	const observationBreadth = clamp(observations.length / 3)
 	return clamp(
-		0.45 * regionSupport +
-		0.30 * Math.sqrt(population * connected) +
-		0.15 * family.familyConcentration +
-		0.10 * observationBreadth,
+		COHERENT_SUPPORT_WEIGHTS.regionSupport * regionSupport +
+		COHERENT_SUPPORT_WEIGHTS.populationConnectivity * Math.sqrt(population * connected) +
+		COHERENT_SUPPORT_WEIGHTS.familyConcentration * family.familyConcentration +
+		COHERENT_SUPPORT_WEIGHTS.observationBreadth * observationBreadth,
 	)
 }
 
@@ -217,6 +234,23 @@ export type FamilyAccentRoleEvidence = Readonly<{
  *
  * Nothing here is chosen: the weights are the ones `accentRaw` has carried since Phase 3.
  */
+/**
+ * How much of a family's accent claim comes from each cue: how compact its regions are, how often
+ * the same shape recurs, how chromatic it is, how hard it contrasts against what surrounds it, and
+ * what the region observations made of it as a signature graphic. The five sum to 1.
+ *
+ * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): the 0.14
+ * `localContrast` term is live on all 154 artworks and +-20 % moves 36 of them (23 %). Perturbing
+ * one term breaks the sum; nothing renormalises.
+ */
+export const ACCENT_ROLE_EVIDENCE_WEIGHTS = Object.freeze({
+	compactness: 0.29,
+	repetition: 0.24,
+	chroma: 0.25,
+	localContrast: 0.14,
+	signatureObservation: 0.08,
+} as const)
+
 export function familyAccentRoleEvidence(family: ColorFamilyEvidence): FamilyAccentRoleEvidence {
 	const observations = roleObservations(family)
 	const repetition = familyRepetition(family, observations)
@@ -226,11 +260,11 @@ export function familyAccentRoleEvidence(family: ColorFamilyEvidence): FamilyAcc
 	const signatureObservation = aggregate(observations.map(({ signatureAccent }) => signatureAccent.score))
 	const chroma = clamp(family.chroma / ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY.chromaScale)
 	const raw = clamp(
-		0.29 * compact +
-		0.24 * repetition +
-		0.25 * chroma +
-		0.14 * localContrast +
-		0.08 * signatureObservation,
+		ACCENT_ROLE_EVIDENCE_WEIGHTS.compactness * compact +
+		ACCENT_ROLE_EVIDENCE_WEIGHTS.repetition * repetition +
+		ACCENT_ROLE_EVIDENCE_WEIGHTS.chroma * chroma +
+		ACCENT_ROLE_EVIDENCE_WEIGHTS.localContrast * localContrast +
+		ACCENT_ROLE_EVIDENCE_WEIGHTS.signatureObservation * signatureObservation,
 	)
 	return {
 		score: raw * (0.50 + 0.50 * support),
