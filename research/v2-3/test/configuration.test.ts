@@ -25,6 +25,7 @@ import {
 } from "../src/internal/winner-scoring.ts"
 import { MAXIMUM_WINNER_QUALITY_LOSS } from "../src/internal/transition-promotion.ts"
 import { TEXT_ROLE_RESTRICTION } from "../src/internal/text-role-restriction.ts"
+import { RAMP_EXCURSION_BAR, RAMP_MIDPOINT_INSERTION } from "../src/internal/ramp-midpoint.ts"
 import {
 	ACCENT_RANK_FIDELITY_WEIGHT,
 	ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE,
@@ -497,6 +498,29 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// Round 3 pairs the endorsed gold foreground with trunk's near-black instead — an arrangement no
 	// batch has seen. That is the price of refusing to re-source, and it is item 2 of the batch.
 	assert.equal(TEXT_ROLE_RESTRICTION, "decisive-claim")
+	// [REVIEWED] On by the rmi-batch adjudication (2026-08-01, four items). The mechanism adds a
+	// third gradient stop when the straight OKLab ramp between the endpoints strays further from
+	// every populated artwork colour than `RAMP_EXCURSION_BAR`, and the batch confirmed BOTH sides
+	// of that bar. Above it: Flo's endorsed `00093ce4` pair gained `#14272e` and was rated strong
+	// and preferred over the same pair without it — the palette Flo predicted would become
+	// "extremely good" — and the unasked-for `#8cb9fa` stop on `01c16db8` was rated strong and
+	// preferred. Below it: `0014adcd` (reviewed strong, excursion 7.86, the closest gradient under
+	// the bar) was preferred WITHOUT the stop a bar of 7.5 would give it, so the empty band under
+	// the bar is a reviewed boundary, not an artefact. On trunk's own endpoints for `00093ce4`
+	// (`#003e56` inserted) the pair drew — nothing regresses. Corpus blast radius at integration:
+	// exactly two artworks gain a midpoint; no role colour, gradient boolean, or existing midpoint
+	// moves. Composition caveat: excursions are measured against the CURRENT endpoints — if the
+	// endpoint-extension arm later moves endpoints, both firers must be re-verified.
+	assert.equal(RAMP_MIDPOINT_INSERTION, true)
+	// [MEASURED] Two and a half same-colour differences. On this trunk, over the 41 gradients that
+	// publish no third stop, every reviewed-strong ramp has an excursion at or below 7.86 and the
+	// one requested insertion sits at 9.19–9.28; nothing lies between 7.90 and 9.19, and the bar
+	// stands in that empty band. It is a cliff with one positive anchor (`00093ce4`) and one
+	// reviewed negative anchor (`0014adcd`, rmi-batch item 4): at −20% ten reviewed-strong
+	// gradients gain unwanted stops, at +20% the founding case stops firing. A scale-free variant
+	// (excursion as a share of endpoint span) was tried and refuted — its top five are dominated
+	// by reviewed-strong short ramps.
+	assert.equal(RAMP_EXCURSION_BAR, 2.5 * ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness.sameColor)
 	// [INHERITED] 4 is the frozen v2-2 value (`research/v2-2/src/internal/policy.ts:84`), reaching
 	// v2-3 in the scaffold commit `c9395ac`; nothing derives it. What Track C round 3 measured is a
 	// REVERT, not a finding: round 2's H2 had raised the bound to 6, which admitted `placebo`'s

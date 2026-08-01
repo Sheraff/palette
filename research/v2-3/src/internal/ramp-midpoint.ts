@@ -39,7 +39,7 @@ import type { OKLab, RGB } from "./types.ts";
  * Master switch. `false` is the shipped behaviour and makes every extraction byte-identical to a tree
  * without this file: `rampMidpointInsertion` returns `null` before reading a single pixel.
  */
-export const RAMP_MIDPOINT_INSERTION: boolean = false
+export const RAMP_MIDPOINT_INSERTION: boolean = true
 
 /**
  * How much of the artwork a quantised colour must occupy before the ramp is allowed to count it as
