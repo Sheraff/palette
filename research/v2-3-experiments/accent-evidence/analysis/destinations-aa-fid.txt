@@ -1,0 +1,64 @@
+destination adjudication: aa-off -> aa-fid
+warehouse: 367 records
+movers: 49
+
+CORRECTION     0003e50500c5d762da89643a offpanel        batch-28           strong         lands on the recorded correction for background
+CORRECTION     e50500c5d762da89643a.jpg verdict         batch-28           strong         lands on the recorded correction for background
+CORRECTION     0008c1c08433aa880aad7f30 verdict         review-24-coverage strong         lands on the recorded correction for background+surface
+ENDORSED       0000ff9a99b8761b17336fa2 offpanel        review-8-fresh     strong         every moved role (background+surface) matches the standing endorsement
+ENDORSED       ff9a99b8761b17336fa2.jpg verdict         review-8-fresh     strong         every moved role (background+surface) matches the standing endorsement
+ENDORSED       00060491ade88c8893373d9f offpanel-fresh  ae-batch           strong         every moved role (foreground+accent) matches the standing endorsement
+ENDORSED       000c4d52300a016ee65f1622 verdict         ae-batch           acceptable     every moved role (surface+accent) matches the standing endorsement
+ENDORSED       000e229142cb6dbae156341c verdict         batch-26           strong         surface matches the standing endorsement; background unspoken
+ENDORSED       00009f60aeb150a5db45b47b offpanel        rw-batch-vividness acceptable     every moved role (accent) matches the standing endorsement
+ENDORSED       9f60aeb150a5db45b47b.jpg verdict         rw-batch-vividness acceptable     every moved role (accent) matches the standing endorsement
+ENDORSED       000913b3e9ae2c7173d1a8b2 verdict         rw-batch-vividness strong         every moved role (background+surface) matches the standing endorsement
+ENDORSED       000e91d6c3b44e900d334a78 verdict         ae-batch           strong         every moved role (foreground+accent) matches the standing endorsement
+ENDORSED       00103a3729bf589e0dc913ab verdict         ae-batch           strong         every moved role (background+surface+foreground+accent) matches the standing endorsement
+KNOWN-BAD      0002881a851f1e14c374562b offpanel        review-24-coverage strong         surface lands on a hex a verdict rejected
+KNOWN-BAD      881a851f1e14c374562b.jpg verdict         review-24-coverage strong         surface lands on a hex a verdict rejected
+KNOWN-BAD      000d5cdbc67ed815efc360ad verdict         ae-batch           strong         foreground+accent lands on a hex a verdict rejected
+KNOWN-BAD      doja.jpg fixture         review-12-midpoints strong         surface+accent lands on a hex a verdict rejected
+REGRESSION-DECISIVE 0012eb9ade9c1bf4a5411c5d verdict         batch-26           acceptable     OFF holds surface, which a STATED preference decided; ON leaves it
+REGRESSION-SAMPLE 000a8aa1dafa651976a7bb44 verdict         batch-ma-revival   acceptable     OFF matches a one-sided endorsed sample on background+surface; ON's destination was never shown
+REGRESSION-SAMPLE 000dc6372be4c9ffc89fc9df verdict         calib-batch-1a     acceptable     OFF matches a one-sided endorsed sample on background+surface+accent; ON's destination was never shown
+REGRESSION-SAMPLE 001031d1e10290f8e446bd68 verdict         batch-26           strong         OFF matches a one-sided endorsed sample on foreground; ON's destination was never shown
+REGRESSION-SAMPLE 00106c3252a4c133c0abde36 verdict         calib-batch-1a     strong         OFF matches a one-sided endorsed sample on foreground; ON's destination was never shown
+REGRESSION-SAMPLE 0014adcd67767097b6fb42e0 verdict         review-19-fresh    strong         OFF matches a one-sided endorsed sample on background+surface; ON's destination was never shown
+REGRESSION-SAMPLE dc280ccc28cadb7d4ae4.jpg verdict         review-17-vivid-series strong         OFF matches a one-sided endorsed sample on background+surface+foreground; ON's destination was never shown
+REGRESSION-SAMPLE 00040defaf772cad7a1738ce verdict         calib-batch-1b     strong         OFF matches a one-sided endorsed sample on background+surface; ON's destination was never shown
+REGRESSION-SAMPLE 0005597105ba1e2d38f62cfc verdict         calib-batch-1b     strong         OFF matches a one-sided endorsed sample on foreground; ON's destination was never shown
+REGRESSION-SAMPLE 00083cc5b8d8d2e7ca7147cd verdict         calib-batch-2      strong         OFF matches a one-sided endorsed sample on foreground+accent; ON's destination was never shown
+REGRESSION-SAMPLE 00100a3e9c764acf01c16db8 verdict         review-9-fresh     acceptable     OFF matches a one-sided endorsed sample on accent; ON's destination was never shown
+REGRESSION-SAMPLE horrorwood.jpg fixture         review-11-seams-diversity acceptable     OFF matches a one-sided endorsed sample on background+surface+accent; ON's destination was never shown
+REGRESSION-SAMPLE orelsan.jpg fixture         review-10-marks-midpoints strong         OFF matches a one-sided endorsed sample on foreground; ON's destination was never shown
+TIED           000442caec7ec8cb724bf265 verdict         batch-30           strong         the latest record showed background+surface both ways and the reviewer chose neither
+TIED           0006c5d727b329e4477f4a81 verdict         batch-39-ordering  acceptable     the latest record showed accent both ways and the reviewer chose neither
+TIED           0009d178a401f9433fdddff2 verdict         ae-batch           acceptable     the latest record showed surface both ways and the reviewer chose neither
+UNADJUDICATED  d8786d4fe9913a2212307071 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  00010091b5e3a38f0fc3b579 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  0008013f3b58c9b3370f4580 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000907da0b4ac2cb272366e6 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000a011f399178d9cb53b53d offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000b06a2b81c62e456b88a56 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000d091cddc21168a481a1f7 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000e007955ee2f8b29f5b2b4 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  000f01fa3d5adcfdab4fc78f offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  001105a8a7d07e86b75359af offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  00110704f45a580d7fd6683d offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  001205216e977f1ac8c6280d offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  001305b683c1d2cd3fc91365 offpanel-fresh  -                  -              no warehouse record for this artwork
+UNADJUDICATED  0007960724fb77c8041c6c13 verdict         rw-batch-vividness acceptable     3 record(s), none speak to background+surface
+UNADJUDICATED  0007cc8b341c11227aa7b461 verdict         rw-batch-vividness strong         7 record(s), none speak to accent
+UNADJUDICATED  000a2927c0f27657e4a2aeaa verdict         conversational     -              4 record(s), none speak to background+surface+foreground+accent
+
+{
+ "CORRECTION": 3,
+ "ENDORSED": 10,
+ "KNOWN-BAD": 4,
+ "REGRESSION-DECISIVE": 1,
+ "REGRESSION-SAMPLE": 12,
+ "TIED": 3,
+ "UNADJUDICATED": 16
+}
+adjudicated destinations: 33/49; good (ENDORSED+CORRECTION) 13, bad-decisive (KNOWN-BAD+REGRESSION-DECISIVE) 5, bad-unseen (REGRESSION-SAMPLE) 12

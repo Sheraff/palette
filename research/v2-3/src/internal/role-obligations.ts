@@ -183,6 +183,67 @@ function coherentSupport(family: ColorFamilyEvidence, observations: readonly Reg
 	)
 }
 
+export type FamilyAccentRoleEvidence = Readonly<{
+	score: number
+	raw: number
+	support: number
+	compactness: number
+	repetition: number
+	chroma: number
+	observedLocalContrast: number
+	signatureObservation: number
+}>
+
+/**
+ * The **accent half** of `classifyFieldConditionalFamilyRole`, lifted verbatim so there is exactly
+ * one statement of what the accent role's evidence is.
+ *
+ * It is **field-independent by construction**, and that is not an accident of this refactor: none
+ * of `compactness`, `familyRepetition`, `chroma`, `observedLocalContrast` or `signatureAccent.score`
+ * reads the field hypothesis, and neither does `coherentSupport`. Only the *foreground* half does
+ * (it needs `fieldPolarity`). So the accent claim of a family is a property of the family and the
+ * artwork, and can be asked outside a field hypothesis without changing its meaning.
+ *
+ * Read this against `signatureScore` (`palette-core.ts::measureFamilyRoleEvidence`), which is what
+ * the accent path scores with today. The two disagree about the accent role in four places, and
+ * every disagreement is the classifier saying that an accent is allowed to be small:
+ *
+ * | property | `signatureScore` | this |
+ * |---|---|---|
+ * | population | `coherentSupport = largestComponentFraction / 0.002`, weight **0.25 additive** | no additive term; `support` is a **gate** `0.50 + 0.50 * support`, and that support is 45 % region source-support, 30 % population x connectivity, 15 % concentration, 10 % breadth |
+ * | region size | — | `compactness` rewards **small** bounds (`1 - boundsFraction / 0.08`) |
+ * | recurrence | `repeatedSupport = (repeatedComponentCount - 1) / 3`, weight **0.16** | `familyRepetition` = 0.65 observed-region repetition + 0.35 that same count, weight 0.24 -> the raw count carries **0.084** |
+ * | chroma | weight **0.11** | weight **0.25** |
+ *
+ * Nothing here is chosen: the weights are the ones `accentRaw` has carried since Phase 3.
+ */
+export function familyAccentRoleEvidence(family: ColorFamilyEvidence): FamilyAccentRoleEvidence {
+	const observations = roleObservations(family)
+	const repetition = familyRepetition(family, observations)
+	const support = coherentSupport(family, observations)
+	const compact = aggregate(observations.map(compactness))
+	const localContrast = aggregate(observations.map(observedLocalContrast))
+	const signatureObservation = aggregate(observations.map(({ signatureAccent }) => signatureAccent.score))
+	const chroma = clamp(family.chroma / ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY.chromaScale)
+	const raw = clamp(
+		0.29 * compact +
+		0.24 * repetition +
+		0.25 * chroma +
+		0.14 * localContrast +
+		0.08 * signatureObservation,
+	)
+	return {
+		score: raw * (0.50 + 0.50 * support),
+		raw,
+		support,
+		compactness: compact,
+		repetition,
+		chroma,
+		observedLocalContrast: localContrast,
+		signatureObservation,
+	}
+}
+
 function representativeLightnesses(field: FieldHypothesis): number[] {
 	const values = [
 		...field.backgroundRepresentatives.map(({ oklab }) => oklab[0]),
@@ -226,19 +287,20 @@ export function classifyFieldConditionalFamilyRole(
 	field: FieldHypothesis,
 ): FieldConditionalRoleEvidence {
 	const observations = roleObservations(family)
-	const repetition = familyRepetition(family, observations)
-	const support = coherentSupport(family, observations)
+	const accentEvidence = familyAccentRoleEvidence(family)
+	const repetition = accentEvidence.repetition
+	const support = accentEvidence.support
 	const geometry = aggregate(observations.map(typographyLikeGeometry))
-	const compact = aggregate(observations.map(compactness))
-	const localContrast = aggregate(observations.map(observedLocalContrast))
-	const signatureObservation = aggregate(observations.map(({ signatureAccent }) => signatureAccent.score))
+	const compact = accentEvidence.compactness
+	const localContrast = accentEvidence.observedLocalContrast
+	const signatureObservation = accentEvidence.signatureObservation
 	const polarity = fieldPolarity(family, field)
 	const polarityMatch = polarityAgreement(
 		family.foregroundPolarityObservation,
 		polarity.direction,
 		polarity.confidence,
 	)
-	const chroma = clamp(family.chroma / ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY.chromaScale)
+	const chroma = accentEvidence.chroma
 	const foregroundRaw = clamp(
 		0.30 * geometry +
 		0.22 * repetition +
@@ -246,15 +308,8 @@ export function classifyFieldConditionalFamilyRole(
 		0.16 * polarityMatch +
 		0.12 * polarity.lightnessContrast,
 	)
-	const accentRaw = clamp(
-		0.29 * compact +
-		0.24 * repetition +
-		0.25 * chroma +
-		0.14 * localContrast +
-		0.08 * signatureObservation,
-	)
 	const foregroundScore = foregroundRaw * (0.55 + 0.45 * support)
-	const accentScore = accentRaw * (0.50 + 0.50 * support)
+	const accentScore = accentEvidence.score
 	const fieldOwned = family.id === field.backgroundFamilyId || family.id === field.surfaceFamilyId
 	const strongest = Math.max(foregroundScore, accentScore)
 	const weakest = Math.min(foregroundScore, accentScore)

@@ -1,0 +1,202 @@
+compared 223 artworks; 63 moved (28.3%)
+  offpanel-fresh  22/70 moved (31.4%)
+  verdict         30/108 moved (27.8%)
+  offpanel        3/11 moved (27.3%)
+  fixture         8/34 moved (23.5%)
+  roles moved: {"foreground":21,"accent":41,"background":26,"surface":36}   gradient flips: 0   midpoint changes: 2
+  accent-only movers: 14
+  parity fixtures moved: 8
+
+image                                      grp       fx  verdict        roles
+doja.jpg                                   fixture   FX  -              surface,accent
+                                                                          surface: #fd3d86 -> #f79e80
+                                                                          accent: #fda8cf -> #ce5e52
+havana.jpg                                 fixture   FX  -              foreground,accent
+                                                                          foreground: #e1824a -> #eed076
+                                                                          accent: #eed076 -> #ee655f
+horrorwood.jpg                             fixture   FX  -              background,surface,accent
+                                                                          background: #141b25 -> #151922
+                                                                          surface: #36444f -> #667481
+                                                                          accent: #808b91 -> #27598e
+horsley.jpg                                fixture   FX  -              background,surface,foreground,accent
+                                                                          background: #bd7042 -> #c99242
+                                                                          surface: #d6a944 -> #cc615b
+                                                                          foreground: #0f0f0f -> #f2eec1
+                                                                          accent: #f2eec1 -> #daad46
+nada.jpg                                   fixture   FX  -              surface,accent
+                                                                          surface: #919dcd -> #354f70
+                                                                          accent: #100d28 -> #fcda3b
+nobs.jpg                                   fixture   FX  -              background,surface
+                                                                          background: #f6ffff -> #f7ffff
+                                                                          surface: #f2f626 -> #f7f61f
+vvbrown.jpg                                fixture   FX  -              background,surface
+                                                                          background: #ffffff -> #fffffe
+                                                                          surface: #ffffff -> #fffffe
+ybbb.jpg                                   fixture   FX  -              background,surface
+                                                                          background: #83080a -> #84080a
+                                                                          surface: #83080a -> #84080a
+ab67616d00001e0200010091b5e3a38f0fc3b579   offpanel-fresh     -              foreground,accent
+                                                                          foreground: #000000 -> #101c28
+                                                                          accent: #29265b -> #4e2e77
+ab67616d00001e02000200344e34f02b55e8292a   offpanel-fresh     -              accent
+                                                                          accent: #be8365 -> #e90c35
+ab67616d00001e020002881a851f1e14c374562b   offpanel      strong         background,surface,accent
+                                                                          background: #403b63 -> #262340
+                                                                          surface: #cd4269 -> #54495a
+                                                                          accent: #23a4ba -> #d0456e
+ab67616d00001e020002881a851f1e14c374562b.jpg verdict       -              background,surface,accent
+                                                                          background: #403b63 -> #262340
+                                                                          surface: #cd4269 -> #54495a
+                                                                          accent: #23a4ba -> #d0456e
+ab67616d00001e02000300752f338b6aedff856c   offpanel-fresh     -              background,surface,accent
+                                                                          background: #a3aea0 -> #1b1b13
+                                                                          surface: #537962 -> #a3aea0
+                                                                          accent: #1b1b13 -> #537962
+ab67616d00001e020003e50500c5d762da89643a   offpanel      strong         background,surface
+                                                                          background: #050a06 -> #060a06
+                                                                          surface: #121e10 -> #152312
+ab67616d00001e020003e50500c5d762da89643a.jpg verdict       -              background,surface
+                                                                          background: #050a06 -> #060a06
+                                                                          surface: #121e10 -> #152312
+ab67616d00001e02000406f07c9345e54b41963d   offpanel-fresh     -              surface
+                                                                          surface: #131a20 -> #6a747d
+ab67616d00001e0200044a28a45b7b23d4be2f79   verdict       strong         accent
+                                                                          accent: #cc9a8f -> #ac766a
+ab67616d00001e0200050353b3bcac744f0f4fa7   offpanel-fresh     -              background,surface
+                                                                          background: #f9f9f9 -> #f5f6f8
+                                                                          surface: #d9cfc3 -> #cfcdc1
+ab67616d00001e020006012cd9a7ec7703255ae1   offpanel-fresh     -              background,surface,foreground
+                                                                          background: #574e25 -> #554d26
+                                                                          surface: #574e25 -> #554d26
+                                                                          foreground: #fbfbfb -> #fafafa
+ab67616d00001e0200060491ade88c8893373d9f   offpanel-fresh     -              foreground,accent
+                                                                          foreground: #120f16 -> #c7c3c0
+                                                                          accent: #c7c3c0 -> #04e3d1
+ab67616d00001e020008013f3b58c9b3370f4580   offpanel-fresh     -              surface,accent
+                                                                          surface: #010a0f -> #1f303a
+                                                                          accent: #f1e4eb -> #be7ca0
+ab67616d00001e02000907da0b4ac2cb272366e6   offpanel-fresh     -              accent
+                                                                          accent: #baba98 -> #8c9fc0
+ab67616d00001e02000a011f399178d9cb53b53d   offpanel-fresh     -              background,surface
+                                                                          background: #000201 -> #010302
+                                                                          surface: #002d1b -> #022b19
+ab67616d00001e02000a8aa1dafa651976a7bb44   verdict       strong         background,surface
+                                                                          background: #100702 -> #040301
+                                                                          surface: #291107 -> #491600
+ab67616d00001e02000b096f0b03b7745c8e8aab   verdict       strong         accent
+                                                                          accent: #54995a -> #1eb721
+ab67616d00001e02000b5fe0db38c29686e103dc   verdict       weak-fallback  accent
+                                                                          accent: #010101 -> #0171bb
+ab67616d00001e02000b87c4345d251dd50300f8   verdict       acceptable     background,surface
+                                                                          background: #efcf92 -> #efcc8a
+                                                                          surface: #cca467 -> #cca363
+                                                                          note: There are some pretty nice hues around green and blue that could also work nicely as the f
+ab67616d00001e02000c002961d2886a15babc49   offpanel-fresh     -              accent
+                                                                          accent: #881d39 -> #b41d3e
+ab67616d00001e02000c02ecfed85ee171e8648b   offpanel-fresh     -              background,surface
+                                                                          background: #0b1315 -> #0d1716
+                                                                          surface: #052c1a -> #03a171
+ab67616d00001e02000c0405765bf8baa8792ac7   offpanel-fresh     -              background,surface,accent
+                                                                          background: #2a2d36 -> #292c33
+                                                                          surface: #171e0c -> #c11781
+                                                                          accent: #c21580 -> #99acd6
+ab67616d00001e02000c4d52300a016ee65f1622   verdict       strong         surface,accent
+                                                                          surface: #300c16 -> #481f25
+                                                                          accent: #b67161 -> #aa4483
+                                                                          note: This palette feels a bit muted compared to the artwork that contains very rich purples and
+ab67616d00001e02000d091cddc21168a481a1f7   offpanel-fresh     -              accent
+                                                                          accent: #6a3f49 -> #b86c79
+ab67616d00001e02000dc6372be4c9ffc89fc9df   verdict       acceptable     accent
+                                                                          accent: #988044 -> #cc141e
+                                                                          note: Main focus area of this artwork is a bright red title with black subtitle written on top o
+ab67616d00001e02000e007955ee2f8b29f5b2b4   offpanel-fresh     -              surface
+                                                                          surface: #69615f -> #3d4e60
+ab67616d00001e02000f01fa3d5adcfdab4fc78f   offpanel-fresh     -              background,surface
+                                                                          background: #00000a -> #010008
+                                                                          surface: #1d1725 -> #201823
+ab67616d00001e02000f0a78a1791248aec707e3   offpanel-fresh     -              background,surface,foreground,accent
+                                                                          background: #f3eb7c -> #110c09
+                                                                          surface: #fbfef7 -> #f3ec7c
+                                                                          foreground: #010101 -> #fbfef7
+                                                                          accent: #7c1608 -> #fa1903
+ab67616d00001e02000f723f36271de0ed3aa893   verdict       strong         accent
+                                                                          accent: #8b65b0 -> #8827c4
+ab67616d00001e02000f9f4ba3750dc73886b2ad   verdict       weak-fallback  background,surface,foreground,accent
+                                                                          background: #21356a -> #f1faf9
+                                                                          surface: #4d4b59 -> #eed32e
+                                                                          foreground: #f1faf9 -> #21356a
+                                                                          accent: #eed32e -> #040f2b
+                                                                          note: The surface doesn't feel like it comes from this artwork, i don't know where Liver grey is
+ab67616d00001e02001000ccca6b014c289b10fa   offpanel-fresh     -              background,surface mid #101010->null
+                                                                          background: #1a1a1a -> #131313
+                                                                          surface: #2d2d2d -> #292929
+ab67616d00001e02001031d1e10290f8e446bd68   verdict       strong         foreground,accent
+                                                                          foreground: #faf3ed -> #e7a37e
+                                                                          accent: #e48068 -> #b62d1a
+ab67616d00001e0200106c3252a4c133c0abde36   verdict       strong         foreground
+                                                                          foreground: #b6b6b6 -> #fbfbfb
+ab67616d00001e0200110187d1bb43f62b831aec   offpanel-fresh     -              accent
+                                                                          accent: #404040 -> #535353
+ab67616d00001e0200110704f45a580d7fd6683d   offpanel-fresh     -              surface,accent
+                                                                          surface: #554fef -> #0227b4
+                                                                          accent: #141736 -> #fc9afd
+ab67616d00001e02001205216e977f1ac8c6280d   offpanel-fresh     -              background,surface
+                                                                          background: #2e2e30 -> #2d2d2f
+                                                                          surface: #2b0303 -> #fc4f13
+ab67616d00001e02001305b683c1d2cd3fc91365   offpanel-fresh     -              foreground,accent
+                                                                          foreground: #961e4b -> #bd2e5c
+                                                                          accent: #e5738c -> #ea748c
+ab67616d0000b27300009f60aeb150a5db45b47b   offpanel      strong         accent
+                                                                          accent: #965f4b -> #f9b296
+ab67616d0000b27300009f60aeb150a5db45b47b.jpg verdict       -              accent
+                                                                          accent: #965f4b -> #f9b296
+ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg verdict       -              background,surface,foreground,accent
+                                                                          background: #fefefe -> #0b0715
+                                                                          surface: #fefefe -> #12356d
+                                                                          foreground: #0a0919 -> #fefefe
+                                                                          accent: #12356d -> #eb64c0
+ab67616d0000b273000323957b88112ca49b8ee0.jpg verdict       -              foreground,accent
+                                                                          foreground: #19100b -> #2b2118
+                                                                          accent: #2e2017 -> #895138
+ab67616d0000b27300040defaf772cad7a1738ce   verdict       strong         background,surface mid #231d2b->null
+                                                                          background: #1e1e28 -> #26202e
+                                                                          surface: #3f3148 -> #3b3247
+ab67616d0000b2730005597105ba1e2d38f62cfc   verdict       strong         foreground
+                                                                          foreground: #7e5b55 -> #ae785e
+ab67616d0000b2730005a91812c85db291ea5d85   verdict       strong         surface
+                                                                          surface: #123146 -> #0c5381
+ab67616d0000b2730007cc8b341c11227aa7b461   verdict       strong         accent
+                                                                          accent: #242426 -> #1f3a29
+ab67616d0000b27300083cc5b8d8d2e7ca7147cd   verdict       strong         foreground,accent
+                                                                          foreground: #371432 -> #180a21
+                                                                          accent: #180a21 -> #871b3f
+ab67616d0000b2730009d178a401f9433fdddff2   verdict       strong         surface
+                                                                          surface: #c42a42 -> #ed3358
+ab67616d0000b273000a2927c0f27657e4a2aeaa   verdict       -              background,surface,foreground,accent
+                                                                          background: #000102 -> #010101
+                                                                          surface: #380703 -> #1c0001
+                                                                          foreground: #d50306 -> #696363
+                                                                          accent: #7e0202 -> #d50306
+                                                                          note: Sharpening the Slate-accent sample: 'in this case Slate #706c6d almost acts as a true *acc
+ab67616d0000b273000d5cdbc67ed815efc360ad   verdict       strong         foreground,accent
+                                                                          foreground: #f7de67 -> #c7c6c1
+                                                                          accent: #f22632 -> #cd1227
+ab67616d0000b273000e91d6c3b44e900d334a78   verdict       strong         foreground,accent
+                                                                          foreground: #e1ddda -> #fbf072
+                                                                          accent: #fbf072 -> #f94d37
+ab67616d0000b27300100a3e9c764acf01c16db8   verdict       acceptable     accent
+                                                                          accent: #4c4859 -> #917a8e
+ab67616d0000b27300103a3729bf589e0dc913ab   verdict       acceptable     background,surface,foreground,accent
+                                                                          background: #1d2226 -> #1c252a
+                                                                          surface: #563e24 -> #553e1f
+                                                                          foreground: #c0b98b -> #d2d4d3
+                                                                          accent: #f9f9ef -> #fb870c
+ab67616d0000b273001102263870e8b11c13ec31   verdict       strong         foreground,accent
+                                                                          foreground: #081c23 -> #020a0d
+                                                                          accent: #6a5c5b -> #3f322c
+ab67616d0000b2730011c1dcb3a4a0cd92bdf203   verdict       acceptable     foreground,accent
+                                                                          foreground: #ecde95 -> #f7f7f7
+                                                                          accent: #f7f7f7 -> #db9885
+ab67616d0000b2730012eb9ade9c1bf4a5411c5d   verdict       acceptable     surface,foreground
+                                                                          surface: #20365f -> #60202e
+                                                                          foreground: #e9e9eb -> #eaeaea

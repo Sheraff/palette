@@ -8,6 +8,8 @@ import { analyzeBandPopulation, createBandSpatialSpreadAccumulator } from "./ban
 
 import type { BandRepresentativeSample, BandSpatialSpreadLookup } from "./band-representative.ts";
 
+import { familyAccentRoleEvidence } from "./role-obligations.ts";
+
 import type { OKLab, RGB, RawImage } from "./types.ts";
 
 export type RepresentativeStrategy = "dense-exact" | "nearest-prototype" | "density-synthesized"
@@ -1556,10 +1558,162 @@ function signatureRoleScore(family: ColorFamilyEvidence): number {
  * the wanted accent on six artworks of this class.
  */
 function signatureAccentRoleScore(family: ColorFamilyEvidence): number {
+	if (ACCENT_EVIDENCE_CHANNEL === "quality" || ACCENT_EVIDENCE_CHANNEL === "both") {
+		return accentEvidenceRoleScore(family)
+	}
 	const coherentSupport = clamp(family.largestComponentFraction / SIGNATURE_COHERENT_SUPPORT_SCALE)
 	const repaired = clamp(family.signatureScore +
 		SIGNATURE_COHERENT_SUPPORT_WEIGHT * (Math.max(coherentSupport, family.markSupport) - coherentSupport))
 	return clamp(0.55 * repaired + 0.45 * family.signatureAccentObservation)
+}
+
+/**
+ * THE ACCENT EVIDENCE CHANNEL — the accent role scored by the accent role's own description.
+ *
+ * `"off"` is trunk. `"quality"` swaps the score at the three winner axes that already read
+ * `signatureAccentRoleScore` (`accentIdentity`, `accentFidelity`, `accentEconomy`). `"both"` also
+ * swaps it in the *accent shortlist* (`rankAccentOptions`), which is the only candidacy gate that
+ * exists to rank accents specifically.
+ *
+ * The argument for the site, stated as a principle rather than a tuning:
+ *
+ * Every one of those sites asks "how good an accent does this family make", and every one of them
+ * answers with `signatureScore` — a score whose job is to find the artwork's *signature*: a big
+ * connected blob (`coherentSupport`, weight 0.25, a pure population ratio) that *recurs*
+ * (`repeatedSupport`, weight 0.16). Human review has adjudicated the opposite for this role: in the
+ * `sr-batch` A/B the reviewer preferred a small, vivid, single-occurrence mark as the accent on 5
+ * of 8 artworks it was shown on, and the accent's job (icons and UI chrome, never text) does not
+ * carry the readability stakes that make blob-and-recurrence the right question for the foreground.
+ *
+ * The algorithm already contains the right question. `classifyFieldConditionalFamilyRole` scores
+ * exactly this role with `accentRaw`, which has **no additive population term at all** — support is
+ * a gate with a 0.50 floor — rewards *small* bounds through `compactness`, discounts the raw
+ * component-repeat count to 0.084 of its weight, and weights chroma 0.25 against
+ * `signatureScore`'s 0.11. So the channel invents nothing: it calls
+ * `familyAccentRoleEvidence` (`role-obligations.ts`) and uses its score directly.
+ *
+ * Deliberately *no* `0.55 / 0.45` wrapper. That split exists because `signatureScore` carries no
+ * accent-region term whatsoever, so `signatureRoleScore` has to add `signatureAccentObservation`
+ * back at 0.45. `accentRaw` already carries `signatureObservation`, at its own weight of 0.08;
+ * re-adding it at 0.45 would weight the classifier's own term 5.6x more than the classifier does.
+ * Measured both ways (`analysis/accent-decompose.ts`, forms `H` and `H0`): the wrapper costs three
+ * of the adjudicated asks.
+ *
+ * Representativity (charter rule 4) is carried by the gate, not waived. `accentRaw`'s support is
+ * 45 % region source-support + 30 % sqrt(population x connectivity) + 15 % concentration + 10 %
+ * observation breadth, and it multiplies the whole claim between 0.50 and 1.00 — a bare pixel has
+ * no retained region observation at all and scores zero, while a reviewed-endorsed lettering accent
+ * covering 0.023 % of an artwork's pixels lands mid-gate rather than being excluded. That is the
+ * reviewed floor's order of magnitude, and it is the same standard `SourceSupportRecord` applies.
+ *
+ * `"fidelity"` is the **bounded** setting, and it exists because of a measured side-effect.
+ * `accentIdentity` and `accentEconomy` do not stay inside the accent: they multiply into
+ * `artworkIdentity` (0.12) and `economy` (0.09), which are whole-palette axes carrying the
+ * foreground's contribution too. So raising an accent's evidence there can pay for a *worse
+ * foreground* in the same candidate — the winner is a complete four-tuple and the accent shortlist
+ * is built per foreground, so a better accent available under foreground B can pull B's whole tuple
+ * past foreground A. That is exactly what review caught on one artwork: the arm swapped a
+ * four-times-endorsed gold foreground for a dim grey in order to reach a deeper red accent, and the
+ * reviewer's note was "both accents work, but the foreground is better on option B".
+ *
+ * `"fidelity"` confines the channel to `accentFidelity` — the one axis that is *only* about how good
+ * an accent a colour makes. Identity and economy keep trunk's score, so the channel can reorder
+ * accents but cannot buy a foreground swap with accent evidence.
+ */
+export const ACCENT_EVIDENCE_CHANNEL: "off" | "fidelity" | "quality" | "both" = "both"
+
+/**
+ * Memoised per family. `familyAccentRoleEvidence` aggregates over the family's retained region
+ * observations, and the accent sites ask for it once per scored candidate — thousands of times per
+ * artwork for the same handful of families. The cache is keyed on the family object itself and the
+ * function is pure, so this is a speed detail with no behavioural surface; determinism is
+ * unaffected because the value depends on nothing but the family.
+ */
+const accentEvidenceCache = new WeakMap<ColorFamilyEvidence, number>()
+
+function accentEvidenceRoleScore(family: ColorFamilyEvidence): number {
+	const cached = accentEvidenceCache.get(family)
+	if (cached !== undefined) return cached
+	const score = clamp(familyAccentRoleEvidence(family).score)
+	accentEvidenceCache.set(family, score)
+	return score
+}
+
+/**
+ * Where the chromatic-candidacy reservations apply. Shipped `"off"`, which is byte-for-byte the
+ * behaviour this file had before the reservations existed.
+ *
+ * INHERITED VERBATIM from the `accent-candidacy` arm (branch `worktree-agent-a5161402d51c76cf3`,
+ * commit `6f3ab16`), where it ships `"off"` and was measured on 223 artworks: it doubles the
+ * reach of the salient-accent class (5 -> 10 of 19 offered in an accent slot) at a 2.2 % winner
+ * footprint, and published nothing on its own. That arm could not justify the trade because no
+ * verdict spoke for the class; the `sr-batch` adjudication now does. It is reused rather than
+ * rebuilt, and the credit is the point: the reservations are its measurement, not this arm's.
+ *
+ * `"lane"` reserves one signature-lane seat, `"obligation"` reserves one identity-obligation
+ * place, `"both"` does both. Reverting is deleting this constant and the two functions below.
+ */
+export const CHROMATIC_CANDIDACY_RESERVATION: "off" | "lane" | "obligation" | "both" = "both"
+
+/** The highest chroma the artwork offers in any populated family — its chromatic ceiling. */
+function chromaticCeiling(families: readonly ColorFamilyEvidence[]): number {
+	return families.reduce((peak, family) => (family.population > 0 ? Math.max(peak, family.chroma) : peak), 0)
+}
+
+/**
+ * A family's *chromatic accent claim*: how vivid it is measured against the artwork's own
+ * chromatic ceiling, weighted by how strongly its own regions read as a signature accent.
+ *
+ * Both factors are measurements the evidence already carries and the product introduces no
+ * constant. Relative chroma alone is not usable as a selector — the artwork's raw chroma argmax is
+ * a handful of pixels on most artworks (`accent-candidacy` measured population fraction below 1e-4
+ * on 11 of 19 target artworks), so it selects noise, which charter rule 4 forbids outright.
+ */
+function chromaticAccentClaim(family: ColorFamilyEvidence, ceiling: number): number {
+	return (ceiling <= 0 ? 0 : family.chroma / ceiling) * family.signatureAccentObservation
+}
+
+/**
+ * Reserve one signature-lane seat for the artwork's strongest chromatic accent claim.
+ *
+ * The lane keeps the top `bounds.signatureFamilies` families by `signatureRoleScore`, which is
+ * 55 % `signatureScore` — a population-weighted measure. A small vivid mark therefore loses to
+ * sixteen larger duller families, and once out of the lane it is not a candidate for any role.
+ *
+ * The admission bar is not a new number. The challenger must beat **every family the lane already
+ * retained** on the reservation's own key — the lane's own weakest-retained-member standard,
+ * applied to the statistic the reservation exists to protect. So the seat is spent only when the
+ * bound cut the artwork's single best chromatic accent claim, and it costs exactly one seat.
+ */
+function reserveChromaticSignatureSeat(
+	result: Readonly<{ lane: EvidenceLane; trace: LaneRetentionTrace }>,
+	families: readonly ColorFamilyEvidence[],
+): Readonly<{ lane: EvidenceLane; trace: LaneRetentionTrace }> {
+	const retainedIds = result.lane.familyIds
+	if (retainedIds.length < result.lane.maximumFamilies) return result
+	const ceiling = chromaticCeiling(families)
+	const byId = new Map(families.map((family) => [family.id, family]))
+	const retained = retainedIds.map((id) => byId.get(id)).filter((family) => family !== undefined)
+	const bar = retained.reduce((peak, family) => Math.max(peak, chromaticAccentClaim(family, ceiling)), 0)
+	const challenger = families
+		.filter(({ id, population }) => population > 0 && !retainedIds.includes(id) &&
+			chromaticAccentClaim(byId.get(id)!, ceiling) > bar)
+		.sort((first, second) =>
+			compareNumbersDescending(chromaticAccentClaim(first, ceiling), chromaticAccentClaim(second, ceiling)) ||
+			compareNumbersDescending(first.population, second.population) ||
+			compareAscii(first.id, second.id))[0]
+	if (challenger === undefined) return result
+	const familyIds = [...retainedIds.slice(0, retainedIds.length - 1), challenger.id]
+	return {
+		lane: { ...result.lane, familyIds },
+		trace: {
+			...result.trace,
+			candidates: result.trace.candidates.map((candidate) => ({
+				...candidate,
+				retained: familyIds.includes(candidate.familyId),
+			})),
+		},
+	}
 }
 
 type RankedRoleOption<TExtra> = Readonly<{
@@ -1702,7 +1856,13 @@ function rankAccentOptions(
 				utility: clamp(mean(signedContrasts.map(Math.abs)) / 75),
 				fidelity: isEdgeOfTheOnlyTwoColours(option.representative)
 					? 0
-					: distinctAccentFidelity(option.family, option.representative, foreground.representative),
+					// The accent shortlist is the one candidacy gate whose entire job is to rank
+					// *accents*, so scoring it by the accent role's own evidence is role-conditional
+					// by construction: no other role's shortlist is touched, and which families
+					// reach this point is still decided upstream by the unrepaired
+					// `signatureRoleScore`. See `ACCENT_EVIDENCE_CHANNEL`.
+					: distinctAccentFidelity(option.family, option.representative, foreground.representative,
+						ACCENT_EVIDENCE_CHANNEL === "both" ? accentEvidenceRoleScore : signatureRoleScore),
 			}
 		})
 		.sort((first, second) =>
@@ -2397,6 +2557,9 @@ export function buildNativePaletteEvidence(
 		rankLane("signature", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.signatureFamilies, ({ signatureScore }) => signatureScore, ({ signatureAccentObservation }) => signatureAccentObservation, signatureRoleScore),
 		rankLane("foreground", ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.foregroundFamilies, ({ foregroundScore }) => foregroundScore, ({ foregroundTypographyObservation }) => foregroundTypographyObservation, foregroundRoleScore),
 	]
+	if (CHROMATIC_CANDIDACY_RESERVATION === "lane" || CHROMATIC_CANDIDACY_RESERVATION === "both") {
+		laneResults[1] = reserveChromaticSignatureSeat(laneResults[1], families)
+	}
 	const lanes = laneResults.map(({ lane }) => lane)
 	const laneRetention = laneResults.map(({ trace }) => trace)
 	const laneIds = new Set(lanes.flatMap(({ familyIds }) => familyIds))
@@ -4075,8 +4238,31 @@ function buildIdentityObligationSelection(
 		reservedFamilyIds.push(reserved.family.id)
 		selected.push(reserved)
 	}
+	// The same argument as `reserveChromaticSignatureSeat`, for the other axis the shortlist's
+	// ordering key is blind to. `regionEvidenceLevel` ranks the best single region's signature-accent
+	// score and nothing in it reads chroma, so on an artwork whose obligations are all spent on large
+	// dull directions the one vivid direction is cut by the capacity bound alone — measured by
+	// `accent-candidacy` on 5 of its 19 target artworks, and it costs candidacy twice over, because
+	// an obligation is also what buys priority retention against the per-foreground accent bound of 4.
+	const chromaticReservedFamilyIds: string[] = []
+	if (CHROMATIC_CANDIDACY_RESERVATION === "obligation" || CHROMATIC_CANDIDACY_RESERVATION === "both") {
+		const ceiling = chromaticCeiling(evidence.families)
+		const bar = selected.reduce((peak, { family }) => Math.max(peak, chromaticAccentClaim(family, ceiling)), 0)
+		const chromatic = boundOmitted
+			.filter((candidate) => candidate !== reserved &&
+				chromaticAccentClaim(candidate.family, ceiling) > bar)
+			.sort((first, second) =>
+				compareNumbersDescending(
+					chromaticAccentClaim(first.family, ceiling),
+					chromaticAccentClaim(second.family, ceiling)) ||
+				compareAscii(first.family.id, second.family.id))[0]
+		if (chromatic !== undefined) {
+			chromaticReservedFamilyIds.push(chromatic.family.id)
+			selected.push(chromatic)
+		}
+	}
 	const boundOmittedFamilyIds = boundOmitted
-		.filter((candidate) => candidate !== reserved)
+		.filter((candidate) => candidate !== reserved && !chromaticReservedFamilyIds.includes(candidate.family.id))
 		.map(({ family }) => family.id)
 	// Ordering, for the same reason the quota now counts polarity. The shortlist's ordering key is
 	// the *best single region's* signature-accent score. Between two near-neutrals whose polarity
@@ -4517,10 +4703,17 @@ function createTreatment(
 	// role score. See `signatureAccentRoleScore`: candidacy is decided upstream and unrepaired.
 	const accentRoleScore = (family: ColorFamilyEvidence): number =>
 		accentIsEdge ? 0 : signatureAccentRoleScore(family)
+	// `accentFidelity` is the only one of the three that is purely about the accent. The other two
+	// multiply into whole-palette axes, so the channel reaches them only above `"fidelity"`.
+	// See `ACCENT_EVIDENCE_CHANNEL`.
+	const accentFidelityRoleScore = (family: ColorFamilyEvidence): number =>
+		accentIsEdge ? 0 : ACCENT_EVIDENCE_CHANNEL === "off"
+			? signatureAccentRoleScore(family)
+			: accentEvidenceRoleScore(family)
 	const accentIdentity = accentCollapsed || accentFamily === null ? 0 : accentRoleScore(accentFamily)
 	const accentFidelity = accentCollapsed
 		? clamp(1 - accentOpportunity)
-		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground, accentRoleScore)
+		: accentFamily === null ? 0 : distinctAccentFidelity(accentFamily, accent, foreground, accentFidelityRoleScore)
 	const foregroundSignedContrasts = contrast.pairs
 		.filter(({ role }) => role === "foreground")
 		.map(({ signedLc }) => signedLc)
