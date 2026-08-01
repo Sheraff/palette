@@ -158,8 +158,20 @@ function binCoordinate(value: number, offset: number): number {
 	return Math.floor((value + offset) / modeBinStep)
 }
 
+/**
+ * The origin shift applied to the OKLab `a` and `b` axes before flooring them into bins, so that
+ * negative chroma coordinates land in non-negative bins. Lightness needs no shift and takes `0`.
+ *
+ * PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:302`): live on 113 artworks and +-20 % moves
+ * 27 of them (24 %) — the shift is not merely an encoding detail, because moving it re-phases every
+ * bin boundary relative to the data. Lifted out of `binKeyOf` below, where it appeared twice at the
+ * identical value, once per chroma axis; the two axes must always share it.
+ */
+export const CHROMA_BIN_ORIGIN_OFFSET = 0.5
+
 function binKeyOf(lab: OKLab): string {
-	return `${binCoordinate(lab[0], 0)},${binCoordinate(lab[1], 0.5)},${binCoordinate(lab[2], 0.5)}`
+	const chroma = CHROMA_BIN_ORIGIN_OFFSET
+	return `${binCoordinate(lab[0], 0)},${binCoordinate(lab[1], chroma)},${binCoordinate(lab[2], chroma)}`
 }
 
 const NO_COLOR_EVIDENCE: BandColorEvidence = Object.freeze({

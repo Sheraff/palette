@@ -720,11 +720,18 @@ type BackgroundFieldDomain = Readonly<{
 	pixelIndexes: Uint32Array
 }>
 
-const FAMILY_BIN_STEP = 0.04
+// PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:290`): +-20 % moves 150 of the 154 artworks
+// it is live on — 97 % of published palettes, the largest blast radius of any constant measured in
+// this algorithm. Exported only so `test/configuration.test.ts` can pin it; nothing else reads it
+// from outside. Treat any change as a full re-review.
+export const FAMILY_BIN_STEP = 0.04
 
 const FAMILY_ANCHOR_RADIUS = 0.058
 
-const REPRESENTATIVE_DENSITY_RADIUS = 0.04
+// PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:295`): +-20 % moves 51 of 154. Exported for
+// the pin in `test/configuration.test.ts`. NOT the same quantity as `FAMILY_BIN_STEP` above or
+// `RESOLUTIONS.evidence` (see `policy.ts:9-13`); they merely share the literal 0.04.
+export const REPRESENTATIVE_DENSITY_RADIUS = 0.04
 
 const MINIMUM_DISTINCT_DISTANCE = 0.018
 
@@ -913,6 +920,21 @@ function componentSimilarity(first: MutableComponent, second: MutableComponent):
 	)
 }
 
+/**
+ * The region role score is `sourceSupport` shaded by the role cues:
+ * `sourceSupport * (BASE + CUE_SPAN * cues)`. The two sum to 1, so a component with every cue
+ * saturated scores exactly its source support and one with no cue at all keeps `BASE` of it. That
+ * complementarity is the only thing on record about either number — it is one degree of freedom
+ * written as two literals, and nothing derives where in [0, 1] the split sits.
+ *
+ * PERVASIVE CLIFFS, both (Track P tier A, `track-p/LEDGER.md:296-297`): each is live on all 154
+ * artworks; +-20 % on the base moves 49 (32 %) and on the cue span moves 45 (29 %). Lifted from
+ * their single use site below, values unchanged.
+ */
+export const REGION_ROLE_SCORE_SUPPORT_BASE = 0.45
+
+export const REGION_ROLE_SCORE_CUE_SPAN = 0.55
+
 function buildRegionObservations(
 	components: readonly MutableComponent[],
 	familyPopulation: number,
@@ -973,7 +995,7 @@ function buildRegionObservations(
 			localContrast: contrast,
 			borderInterior,
 			sourceSupport,
-			score: clamp(sourceSupport * (0.45 + 0.55 * cues)),
+			score: clamp(sourceSupport * (REGION_ROLE_SCORE_SUPPORT_BASE + REGION_ROLE_SCORE_CUE_SPAN * cues)),
 		})
 		output.set(component.start, {
 			widthFraction,
@@ -1414,6 +1436,17 @@ type RankedRoleOption<TExtra> = Readonly<{
 }> & TExtra
 
 /**
+ * Weight on the role-evidence term of the foreground ranking score, against `0.16` each for
+ * support quality and contrast.
+ *
+ * PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:292`): live on all 154 artworks, +-20 %
+ * moves 88 of them (57 %). Lifted out of the comparator below — where it appeared twice, once per
+ * side, at the identical value — so that it can be pinned; the two sides must always carry the
+ * same weight, which is precisely what a shared constant states and two literals do not.
+ */
+export const FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT = 0.68
+
+/**
  * Rank the foreground candidates for one field variant.
  *
  * The control domain (`buildCompletePaletteTreatmentDomain`) and the seed-addition generator
@@ -1441,9 +1474,9 @@ function rankForegroundOptions(
 		})
 		.sort((first, second) =>
 			compareNumbersDescending(
-				0.68 * foregroundRoleScore(first.family) * first.polarityAgreement +
+				FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT * foregroundRoleScore(first.family) * first.polarityAgreement +
 					0.16 * supportQuality(first.representative) + 0.16 * clamp(first.contrast / 90),
-				0.68 * foregroundRoleScore(second.family) * second.polarityAgreement +
+				FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT * foregroundRoleScore(second.family) * second.polarityAgreement +
 					0.16 * supportQuality(second.representative) + 0.16 * clamp(second.contrast / 90),
 			) ||
 			compareAscii(
@@ -1490,6 +1523,17 @@ function edgeOfTheOnlyTwoColours(
 	}
 }
 
+/**
+ * Weight on the fidelity term of the accent ranking score, against `0.25` each for support quality
+ * and utility.
+ *
+ * PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:293`): live on 151 artworks, +-20 % moves 78
+ * of them (52 %). Lifted out of the comparator below, where it appeared twice at the identical
+ * value (written `0.50`), once per side. Same reasoning as
+ * `FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT`.
+ */
+export const ACCENT_RANK_FIDELITY_WEIGHT = 0.50
+
 function rankAccentOptions(
 	variant: FieldVariant,
 	signatureFamilies: readonly ColorFamilyEvidence[],
@@ -1530,8 +1574,8 @@ function rankAccentOptions(
 		})
 		.sort((first, second) =>
 			compareNumbersDescending(
-				0.50 * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
-				0.50 * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
+				ACCENT_RANK_FIDELITY_WEIGHT * first.fidelity + 0.25 * supportQuality(first.representative) + 0.25 * first.utility,
+				ACCENT_RANK_FIDELITY_WEIGHT * second.fidelity + 0.25 * supportQuality(second.representative) + 0.25 * second.utility,
 			) ||
 			compareAscii(
 				`${first.family.id}:${first.representative.hex}`,
@@ -2977,7 +3021,9 @@ const SIGNATURE_COHERENT_SUPPORT_SCALE = 0.002
 
 const SIGNATURE_COHERENT_SUPPORT_WEIGHT = 0.25
 
-const FIELD_MIDPOINT_BAND = Object.freeze([0.42, 0.58] as const)
+// PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:301`): the lower edge 0.42 is live on 113
+// artworks and +-20 % moves 28 of them. Exported for the pin in `test/configuration.test.ts`.
+export const FIELD_MIDPOINT_BAND = Object.freeze([0.42, 0.58] as const)
 
 /**
  * How far the field's midpoint colour must sit off the endpoint chord before a third stop is
@@ -3000,7 +3046,7 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  * near-blacks, "visually indistinguishable … too close, too black … consider them the same
  * color". So distinctness is a second, independent requirement.
  *
- * The threshold is read off those judgements rather than chosen. Six anchors bracket it: the
+ * The threshold is read off those judgements rather than chosen. Seven anchors bracket it: the
  * refused midpoints score 0.00 (identical to the background), 1.00, and 3.01, while the accepted
  * ones score 3.64, 9.78, 19.75 and 62.59. The 3.01 case was declined on the grounds that the
  * midpoint was drawn from *shadow* material — "this is not the vibe of the artwork" — which is a
@@ -3518,6 +3564,17 @@ type FieldVariantOptions = Readonly<{
 	pairing: "same-index" | "cross-pair"
 }>
 
+/**
+ * How many background/surface representative pairs the `"control"` representative policy walks
+ * when it is not cross-pairing. A pure search-truncation bound: raising it can only add candidate
+ * pairs, so every flip it produces is a candidate the search never saw, not a preference.
+ *
+ * PERVASIVE CLIFF (Track P tier A, `track-p/LEDGER.md:294`): live on all 154 artworks, and -20 %
+ * moves 60 of them (39 %) — one-sided, 0 flips upward at +20 % because 2 -> 2.4 truncates back to
+ * the same pair count. Lifted from its single use site below, value unchanged.
+ */
+export const CONTROL_FIELD_VARIANT_PAIRS = 2
+
 function buildFieldVariants(
 	hypotheses: readonly FieldHypothesis[],
 	options: FieldVariantOptions = { representatives: "control", pairing: "same-index" },
@@ -3558,7 +3615,7 @@ function buildFieldVariants(
 			options.pairing === "cross-pair" && hypothesis.kind !== "one-field"
 				? backgrounds.flatMap((background) => surfaces.map((surface) => [background, surface] as const))
 				: Array.from(
-					{ length: Math.min(backgrounds.length, surfaces.length, options.representatives === "control" ? 2 : Infinity) },
+					{ length: Math.min(backgrounds.length, surfaces.length, options.representatives === "control" ? CONTROL_FIELD_VARIANT_PAIRS : Infinity) },
 					(_value, strategyIndex) => [backgrounds[strategyIndex] ?? backgrounds[0], surfaces[strategyIndex] ?? surfaces[0]] as const,
 				)
 		for (const [background, surface] of pairs) {

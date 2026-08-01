@@ -103,6 +103,12 @@ field, transition or identity machinery is derived from a perceptual fact.**
 **CALIBRATED** — a cited human anchor set. Eleven constants qualify; n is small everywhere, and in
 most cases the artworks are not named.
 
+> **Tier A revises the risk on this whole table (§7).** These eleven are the constants that attracted
+> review attention, and they are almost all *inert*: `mount` 0 flips, `maximumQualityLoss` 0,
+> `chromaticCarryFull` 0, `accentBlend` 1, `decisiveForegroundPolarity` 2, `identityChromaticSeparation`
+> 3, the midpoint bar 4. Thin calibration on a constant that moves nothing is a documentation debt,
+> not a correctness risk. The correctness risk is in §7's thirteen undocumented cliffs.
+
 | constant | value | n | anchors | placement |
 |---|---|---:|---|---|
 | `mount.minimumEnclosedPopulationRatio` | 2.5 | 7 | 1 case to flip at 4.47; 6 accepted framed artworks at 0.07–0.76. **No artwork named.** | centre of the gap |
@@ -181,6 +187,11 @@ both weighted — `sourceSupport: 0.10`, `renderedFieldClaim: 0.08` — and `qua
 over all 11 `WINNER_QUALITY_AXES` with `qualityWeights[axis]`; the 11 weights sum to exactly 1.00.
 There is no unweighted axis in that map.
 
+This is confirmed behaviourally, not just by reading: perturbing `sourceSupport` by −20 % changes
+**24 of 154 palettes, the largest effect of any weight measured**, and `renderedFieldClaim` changes
+5. An axis that is genuinely unweighted cannot move a single output. Whatever Track M observed, it
+does not hold at this commit.
+
 The real computed-but-unweighted quantities are **`identityGain` and `identityAuthorizedGain`**.
 They are not in `WINNER_QUALITY_AXES`, never touch `qualityWeights`, and enter ranking on their own
 terms: `relationUtility = qualityUtility + identityGain` (winner-scoring.ts:488), and
@@ -215,65 +226,169 @@ none of its own.
 - Comment/anchor arithmetic disagrees in at least one calibrated constant (midpoint 3.3: "six
   anchors", seven values listed) and that same constant carries a documented counterexample
   (a preferred reviewed output whose midpoint sits at ΔE 2.58, below the bar).
+## 7. Perturbation sweep — TIER A COMPLETE
 
-## 7. Perturbation sweep — results so far
+**620 runs, 335 sites, 154 artworks, zero extraction errors.** Every swept site re-run over the full
+triage corpus at ±20 % (or to its documented opposite for 0/1 policy switches), with every published
+value diffed against baseline. Raw data: `data/fragility.json`, `data/perturbation-results.json`.
 
-Each swept site is re-run over the full 154-artwork triage corpus at ±20 %, and every published
-value (4 hexes, gradient flag, midpoint) is diffed against baseline. Partial; see §"Resuming" in
-`AGENDA.md`. Raw data: `data/perturbation-results.json`.
+Firing-conditioned denominators come from a per-artwork fingerprint pass over the same 154 artworks
+(`data/fingerprints.jsonl`): for each site, the number of artworks on which it was actually
+consulted. **Only a live case can flip**, so flips-per-live-case is the only comparable fragility
+number — "12 flips" means one thing if the constant was consulted on 150 artworks and something
+entirely different if it was consulted on 13.
 
-**Validation that the sweep can detect a flip at all:** `FAMILY_BIN_STEP` (0.04, the OKLab
-quantization step) at ×1.2 changes 3 of 4 spot-check artworks outright — `doja` loses its
-source-supported midpoint entirely, `birdsofprey` and `johns` change on every role. The instrument
-is live; zero-flip results below are real inertness, not a broken harness.
+**Harness validation:** `FAMILY_BIN_STEP` ×1.2 changes 3 of 4 spot-check artworks outright. Zero-flip
+results are real inertness, not a dead instrument.
 
-| constant | ±20 % flips / 154 | reading |
-|---|---|---|
-| `SELECTOR_POLICY.qualityWeights.fieldFidelity` 0.16 | 0 / 0 | inert |
-| `…surfaceFidelity` 0.06 | 0 / 0 | inert |
-| `…artworkIdentity` 0.12 | 0 / 0 | inert |
-| `…representativeness` 0.12 | 0 / 0 | inert |
-| `…foregroundPathUtility` 0.19 | 0 / 0 | inert |
-| `…accentFidelity` 0.07 | 0 (down) | inert |
+### Headline counts
 
-**The wave-1 selector's quality-weight map does not move any published output at ±20 %.** Six of its
-nine weights are measured so far, both directions, zero changes on 154 artworks — including its
-largest weight (0.19). This is the first direct evidence for AGENDA proposal 1: the weighted
-scalarization is being overridden by the Pareto frontier and the lexicographic priority blocks that
-run alongside it, at least at wave 1.
+| classification | sites | meaning |
+|---|---:|---|
+| no measured effect | 558 | ±20 % changes nothing on any of 154 artworks |
+| **load-bearing** | **125** | changes something, but narrowly |
+| safely-placed | 39 | consulted often, nothing moves, data keeps ≥20 % distance |
+| **pervasive cliff** | **13** | consulted on ≥100 artworks *and* flips ≥20 % of them |
+| **fragile fence** | **0** | — |
 
-This does *not* yet extend to the winner-stage `BASE_QUALITY_WEIGHTS`, which are queued next and are
-the map that decides the published palette. Treat the wave-1 result as bounded to wave 1 until those
-land.
+### The result that overturns my own triage call
 
-### Census evidence for the constants the audit was asked about
+**There are no fragile fences.** The profile I flagged provisionally from census margins —
+`decisiveForegroundPolarity` = 0.6, "rarely consulted, borderline when consulted" — **does not
+survive winner-level measurement**. It is live on 135 artworks and changes **2** of them (1 %).
 
-Reliable wherever `comparisons > 0`. A zero in that column means the constant is *aliased* before
-use (`const MARK = …POLICY.mark`) so the instrumentation cannot see the comparison — **it is not
-evidence of deadness**, and none of these are claimed dead.
+The census counted 57 *boolean* flips at ±20 % out of 300 comparisons and I read that as fragility.
+Tier A shows those boolean flips do not propagate to the published palette: downstream machinery
+absorbs them. **A boolean-flip margin is not evidence of output fragility**, and my provisional
+classification was wrong to treat it as one. Corrected here and in §3.
 
-| constant | value | comparisons | flips at ±20 % | nearest approach |
+The same correction applies across the reviewed-policy layer, which is far more inert than expected:
+
+| constant | live / 154 | flips | nearest approach |
+|---|---:|---:|---|
+| `mount.minimumEnclosedPopulationRatio` 2.5 | mechanism live on **2** | **0** | — |
+| `mount.borderCreditRetained` 0 → 1 (full disable) | 2 | **0** | — |
+| `maximumQualityLoss` 0.12 | 154 | **0** | — |
+| `fieldBlend.*` (5 thresholds) | — | 0–3 | — |
+| `mark.*` (10 fields) | — | 0–4 | — |
+| `mark.substitution` 1 → 0 (full disable) | 154 | 10 | — |
+| `accentBlend.minimumTwoColourCoverage` 0.8 | 151 | **1** | 0.0 % |
+| `identityChromaticSeparation` 0.01 | 151 | 3 | 0.1 % |
+| `decisiveForegroundPolarity` 0.6 | 135 | 2 | 0.1 % |
+| `MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE` 3.3 | 59 | 4 | 0.1 % |
+| `collapsedSurfaceFidelity` 0.45 | 154 | 9 | — |
+| `chromaticCarryFull` 0.15 | 32 | **0** | 100 % |
+
+Note `accentBlend` and `identityChromaticSeparation`: consulted on ~every artwork, sitting *directly
+on* the data (nearest approach 0.0–0.1 %), and still changing 1–3 outputs. Sitting on the data is not
+the same as deciding the output.
+
+### The 13 pervasive cliffs — where the algorithm actually is
+
+| flips / live | share | constant | value | documented? |
+|---:|---:|---|---|---|
+| 150 / 154 | **97 %** | `FAMILY_BIN_STEP` | 0.04 | no comment |
+| 125 / 154 | 81 % | `bounds.representativesPerRole` | 2 | no comment |
+| 88 / 154 | 57 % | `rankForegroundOptions` cut-off | 0.68 | no comment |
+| 78 / 151 | 52 % | `rankAccentOptions` cut-off | 0.5 | no comment |
+| 60 / 154 | 39 % | `buildFieldVariants` length bound | 2 | no comment |
+| 51 / 154 | 33 % | `REPRESENTATIVE_DENSITY_RADIUS` | 0.04 | no comment |
+| 49 / 154 | 32 % | `buildRegionObservations.score` | 0.45 | no comment |
+| 45 / 154 | 29 % | `buildRegionObservations.score` | 0.55 | no comment |
+| 41 / 118 | 35 % | `fitGradients.texture` switch | 0 → 1 | no comment |
+| 39 / 118 | 33 % | `fitGradients.texture` | 2 | no comment |
+| 35 / 154 | 23 % | `buildNativePaletteEvidence.population` | 0 → 1 | no comment |
+| 28 / 113 | 25 % | `FIELD_MIDPOINT_BAND` | 0.42 | no comment |
+| 27 / 113 | 24 % | `binKeyOf` bin centre | 0.5 | no comment |
+
+**All thirteen are undocumented. None of the thirteen is pinned** in `configuration.test.ts` — two
+(`FAMILY_BIN_STEP`, `REPRESENTATIVE_DENSITY_RADIUS`) appear there only inside a comment warning not
+to unify them with `RESOLUTIONS.evidence`.
+
+`FAMILY_BIN_STEP` = 0.04 changes **97 % of all published palettes** when moved 20 %. It is a bare
+literal with no comment, no pin, and no cited derivation. It is, by a wide margin, the most
+consequential number in this algorithm.
+
+### The answer to the campaign question
+
+The forcing is **not** where the review effort went. The carefully-argued policy constants — `mount`,
+`fieldBlend`, `accentBlend`, `mark`, the midpoint bar — are narrow mechanisms that between them move
+a handful of artworks. The constants that decide this algorithm's output are quantization steps,
+candidate-list bounds and ranking cut-offs that **nobody has ever written a sentence about**.
+
+Aggregated over all 262 flip-producing runs: **5.8 % of reviewed-fixture opportunities flip against
+9.3 % of unseen-corpus opportunities — a 1.61× asymmetry.** For the eleven `BASE_QUALITY_WEIGHTS`
+specifically it is **2.50×**. So the over-fitting signature is real, general, and strongest in the
+ranking weights.
+
+### All eleven `BASE_QUALITY_WEIGHTS` — measured
+
+Contrary to the note in `provenance-hygiene/REPORT.md` §"Value-level concerns" 2, these were **not**
+deferred to a later tier. They are tier-A constants and all eleven are measured:
+
+| weight | value | flips / 154 | fixtures | unseen |
 |---|---|---:|---:|---:|
-| `accentBlend.minimumTwoColourCoverage` | 0.8 | 328 984 | 21 933 | 0.0 % |
-| `identityChromaticSeparation` | 0.01 | 430 413 | 18 005 | 0.1 % |
-| `MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE` | 3.3 | 32 214 | 4 582 | 0.1 % |
-| `identity.decisiveForegroundPolarity` | 0.6 | 300 | 57 | 0.1 % |
-| `minimumFieldSpreadRatio` | 0.8 | 804 | 12 | 9.9 % |
-| `GRADIENT_CLAIM.chromaticCarryFull` | 0.15 | 9 207 | **0** | **100 %** |
-| `mark.*`, `fieldBlend.*`, `mount.*` | — | 0 (aliased) | — | — |
+| `accentPath` | 0.08 | 26 | 6 | 35 |
+| `sourceSupport` | 0.10 | 24 | 5 | 37 |
+| `fieldFidelity` | 0.15 | 23 | 4 | 40 |
+| `artworkIdentity` | 0.11 | 23 | 5 | 30 |
+| `foregroundPath` | 0.15 | 22 | 4 | 30 |
+| `surfaceFidelity` | 0.06 | 21 | 5 | 36 |
+| `coherence` | 0.06 | 21 | 5 | 35 |
+| `economy` | 0.05 | 20 | 4 | 33 |
+| `representativeness` | 0.10 | 19 | 2 | 33 |
+| `accentFidelity` | 0.06 | 17 | 4 | 28 |
+| `renderedFieldClaim` | 0.08 | 5 | 1 | 9 |
 
-Two readings stand out.
+Every one is load-bearing; every one flips unseen artwork more than reviewed artwork. By contrast
+**all nine wave-1 `SELECTOR_POLICY.qualityWeights` are inert** (0/154, both directions) — see the
+retention-cap caveat below before deleting them.
 
-`chromaticCarryFull` = 0.15 fires 9207 times and **never once comes within 100 % of its threshold** —
-no evaluation is closer than a factor of two. Its calibration gap (defective ≤0.087, readable 0.248)
-is genuinely wide, and on this corpus the constant separates nothing: any value in a broad band
-around 0.15 gives identical behaviour. That is the profile of a *safely* placed constant, and it is
-the only one in the table with that profile.
+## 7b. Scope: which trunk this measured
 
-`decisiveForegroundPolarity` = 0.6 is the opposite and is the clearest fence in the set: it is
-consulted only 300 times across 154 artworks, but 19 % of those evaluations flip under ±20 %. A rule
-that is almost never asked, and is nearly always borderline when it is, is a rule fitted to the cases
-that produced it — and it is also the constant for which **no anchor exists anywhere in the repo**.
+The instrumented mirror was built from **`c2366d2`**. Trunk has since taken the batch-26/27/28/30
+mechanism integrations, a new `gamut-coverage.ts` module, and a performance pass
+(`9063f6e`, byte-identical output — it cannot affect validity).
+
+Matched by identity and value against `research/palette-0.9-checkpoint`
+(`probe/trunk-delta.ts`, `data/trunk-delta.json`):
+
+- **318 of 335 measured sites carry forward unchanged** (same identity, same value).
+- 17 no longer resolve. Only **two of them had any measured flips**:
+  - `MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE` (4 flips) — **relocated, not changed**: it is now
+    `POLICY.distinctness.sameColor`, still `3.3`. The measurement carries forward under the new name.
+    (Trunk's comment there credits `track-p/LEDGER.md:109` for the six-vs-seven anchor arithmetic.)
+  - `field-transition:buildRegionGraph#29` = 0.25 (1 flip) — genuinely gone.
+- **Not measurable from this base:** everything introduced by the four integrations, including
+  `gamut-coverage.ts` in full and `GAMUT_COVERAGE.saturation = 0.75` (tagged `[UNCALIBRATED]` on
+  trunk). Those need a re-instrumented mirror; the pipeline rebuilds in ~3 minutes.
+
+So: **conclusions about the 318 carried-forward sites apply to today's trunk. Conclusions about the
+four integrated mechanisms do not exist in this data at all.**
+
+## 7c. Cross-reference: `provenance-hygiene/REPORT.md` @ `f53b209`
+
+Where tier A confirms or revises the trunk tags. Fragility and provenance are independent axes — a
+well-evidenced constant can be fragile and an unevidenced one inert — so the useful product is the
+cross-product.
+
+| pin | trunk tag | tier-A measurement | disposition |
+|---|---|---|---|
+| `qualityWeights.fieldFidelity` 0.15 | `[INHERITED]` | 23/154 flips, 4 fixtures vs 40 unseen | **CONFIRMS, elevate.** Unevidenced *and* load-bearing *and* over-fitted (10× unseen:reviewed). Highest-risk pin in the file. |
+| `maximumQualityLoss` 0.12 | `[INHERITED]`, report calls it "load-bearing and unevidenced; top calibration candidate" | live on 154, **0 flips at ±20 %** | **REVISES — downgrade.** It is a *bound* that rarely binds; unevidenced, but not fragile at this magnitude. Cheaper targets exist. Its known `birdsofprey` 0.0016 near-miss argues for measuring at ±5 %, not ±20 %. |
+| `mark.minimumComponentCount` 3 | `[n=1]` | 0 flips | **CONFIRMS low risk.** n=1 is honest; the value is also inert. Low priority. |
+| `mark.minimumComponentPopulation` 12 | `[INHERITED]` | 4 flips | **CONFIRMS mild risk.** |
+| `collapsedSurfaceFidelity` 0.45 (newly pinned) | `[MEASURED]` | 9/154 flips, live on 154 | **CONFIRMS the pin was right.** Load-bearing and now pinned; the sweep's recommendation was correct. |
+| `bounds.identityObligations` 4 | revert to inherited; report notes one-sided (3 and 5 never tried) | 18/154 flips (all on `up20`) | **CONFIRMS, elevate.** One-sided calibration on a constant that moves 18 artworks; the asymmetric flip profile (0 down, 18 up) says the bound binds in exactly one direction. |
+| `GAMUT_COVERAGE.saturation` 0.75 | `[UNCALIBRATED]` | **not measurable** — post-dates this mirror | Needs a re-instrumented sweep. |
+| `TRANSITION_PROMOTION_ORDER` | `[HELD]` | not swept (string-valued) | Out of scope for numeric perturbation. |
+| `RESOLUTIONS.evidence` 0.04 | pinned, JND provenance disputed | 44/154 flips | **Elevate.** The report is right that its "2 JND" justification rests on one uncited README line; tier A shows it moves 44 artworks. |
+
+**The report's biggest gap is one it could not have known:** pin coverage is thin not merely in count
+(~20 of 908) but in *targeting*. **Zero of the 13 pervasive cliffs are pinned.** The pinned set is
+drawn from constants that attracted review attention; the fragility ranking is almost disjoint from
+it. Pinning `FAMILY_BIN_STEP` (97 % of palettes) matters more than pinning anything currently in the
+file.
 
 ## 8. Known limitations of this ledger
 

@@ -23,7 +23,7 @@ non-comment diff under `research/v2-3/{src,test}` is empty; tsc clean; architect
 
 | pin | old claim | finding | new tag |
 |---|---|---|---|
-| `qualityWeights.fieldFidelity = 0.15` | "Track A round 4 … 0.45 holds every reviewed win" | Misattribution: that sentence describes `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45`. 0.15 is a bare literal from `3d3cea2`, one of eleven weights summing to 1; `track-p/LEDGER.md:194-203` and `AGENDA.md:181-186` had flagged it and it was never fixed | `[INHERITED]` |
+| `qualityWeights.fieldFidelity = 0.15` | "Track A round 4 … 0.45 holds every reviewed win" | Misattribution: that sentence describes `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45`. 0.15 is a bare literal from `3d3cea2`, one of eleven weights summing to 1; `track-p/LEDGER.md:207-215` and `AGENDA.md:276-280` had flagged it and it was never fixed | `[INHERITED]` |
 | `maximumQualityLoss = 0.12` | implied reviewed | No measurement in full history; `PLAN_V2.md:420`'s "the existing 0.12" landed in the commit that created it. Both facts on record are cautionary (3–6× headroom; the one time it bound it excluded `birdsofprey`'s reviewed-strong pink by 0.0016) | `[INHERITED]` |
 | `mark.minimumComponentCount = 3` | reviewed | One half-clause at `track-e/EXPERIMENT.md:76`; no sweep, no ablation; Track N's later mention validates 8, not 3 | `[n=1]` |
 | `mark.minimumComponentPopulation = 12` | reviewed | Track E disowns it; Track W measured the floor's *form* (absolute vs scale-relative), not its magnitude | `[INHERITED]` |
@@ -44,8 +44,46 @@ Further defects repaired beyond the reviewer's list: the "six midpoint judgement
 ## Value-level concerns (report only — nothing acted on)
 
 1. `maximumQualityLoss = 0.12` is load-bearing and unevidenced; top calibration candidate.
-2. All eleven `BASE_QUALITY_WEIGHTS` are underived; the off-trunk tier-B perturbation measurement
-   (`worktree-agent-a9652f5642a9e2b25`) is the natural import when the sweep completes.
+   **CORRECTED 2026-08-01 (tier A, `track-p/LEDGER.md:271, 378`).** "Load-bearing" was an
+   assumption, and it is wrong. The constant is consulted on all 154 artworks and ±20 % flips
+   **none** of them. It is a bound that rarely binds — still unevidenced, but not a calibration
+   priority, and cheaper targets exist. Its known `birdsofprey` 0.0016 near-miss argues for
+   re-measuring at ±5 %, where ±20 % says nothing. Downgraded.
+2. All eleven `BASE_QUALITY_WEIGHTS` are underived.
+   **CORRECTED 2026-08-01.** This entry said the measurement was "the off-trunk tier-B perturbation
+   … the natural import when the sweep completes". Both halves are wrong: the eleven are **tier-A**
+   constants, and the sweep had already completed (`track-p/LEDGER.md:324-345`, imported to this
+   tree per `track-p/IMPORTED.md`). All eleven are measured and **all eleven are load-bearing**,
+   5–26 flips of 154 each:
+
+   | weight | value | flips / 154 | fixtures | unseen |
+   |---|---|---:|---:|---:|
+   | `accentPath` | 0.08 | 26 | 6 | 35 |
+   | `sourceSupport` | 0.10 | 24 | 5 | 37 |
+   | `fieldFidelity` | 0.15 | 23 | 4 | 40 |
+   | `artworkIdentity` | 0.11 | 23 | 5 | 30 |
+   | `foregroundPath` | 0.15 | 22 | 4 | 30 |
+   | `surfaceFidelity` | 0.06 | 21 | 5 | 36 |
+   | `coherence` | 0.06 | 21 | 5 | 35 |
+   | `economy` | 0.05 | 20 | 4 | 33 |
+   | `representativeness` | 0.10 | 19 | 2 | 33 |
+   | `accentFidelity` | 0.06 | 17 | 4 | 28 |
+   | `renderedFieldClaim` | 0.08 | 5 | 1 | 9 |
+
+   Every one flips unseen artwork more often than reviewed artwork; the map's unseen:reviewed
+   asymmetry is **2.50×** against 1.61× for the algorithm at large, making it the sharpest
+   over-fitting signature measured anywhere. **`fieldFidelity = 0.15` is the highest-risk pin in
+   `configuration.test.ts`**: unevidenced *and* load-bearing *and* 10× unseen:reviewed (4 fixture
+   flip opportunities against 40 unseen). The pin now carries this escalation.
+
+   Two further tier-A results bear on this file's own claims. The report's §"Value-level concerns"
+   framing — that the pinned set's problem is thin *coverage* — understates it: the problem is
+   **targeting**. Zero of Track P's thirteen pervasive cliffs were pinned, because the pinned set
+   was drawn from constants that attracted review attention and the fragility ranking is almost
+   disjoint from it (`track-p/LEDGER.md:387-391`). Ten of the thirteen are now pinned; see
+   `track-p/PINNING.md`. Separately, all nine wave-1 `SELECTOR_POLICY.qualityWeights` are **inert**
+   (0/154, both directions) — read Track P's retention-cap caveat before concluding they are
+   removable.
 3. `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45` — the algorithm's most expensively-found
    constant — was pinned nowhere. **Addressed post-sweep by the orchestrator: pin added** (see
    configuration.test.ts, `[MEASURED]`, Track A round 4).

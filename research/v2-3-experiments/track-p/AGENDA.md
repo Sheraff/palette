@@ -7,24 +7,100 @@ continuous evidence, a derived quantity, or "more anchors needed".
 Ordering is by (degrees of freedom removed) × (evidence currently missing), not by ease.
 
 ---
+## STATUS: tier A complete — this agenda is reordered by measurement
 
-## The structural finding that frames everything below
+620 perturbation runs over 154 artworks, with firing-conditioned denominators. `LEDGER.md` §7 has the
+full result. Three things changed in this agenda as a consequence, and they are the point of having
+run it:
 
-The runtime carries **~880 fitted constants**. The entire human record available to justify them is
-**104 verdicts over 63 artworks**, plus the 34-artwork Phase 3 showcase.
+**1. The forcing is not where the review effort went.** Every constant that attracted human review —
+`mount`, `fieldBlend`, `accentBlend`, `mark`, the midpoint bar, `maximumQualityLoss` — turns out to be
+a narrow mechanism moving 0–4 artworks in 154. The constants that decide the output are thirteen
+**undocumented, unpinned** quantization steps, candidate bounds and ranking cut-offs. `FAMILY_BIN_STEP`
+= 0.04 alone changes **97 % of published palettes** at ±20 %.
 
-That is roughly **8.5 free parameters per human judgement**. No fitting procedure can be sound at
-that ratio, and no amount of per-constant care fixes it. The two ways out are structural: remove
-degrees of freedom (proposals 1–6), or generate evidence that does not need a human (proposals 4, 7).
+**2. My own "fragile fence" call was wrong, and the method that produced it is retired.** I flagged
+`decisiveForegroundPolarity` = 0.6 from census *boolean-flip margins*: rarely consulted, borderline
+whenever consulted. At winner level it moves **2 artworks in 135 live**. Boolean flips do not
+propagate — downstream machinery absorbs them. **A threshold sitting on its data is not evidence that
+it decides anything**, and nothing in this agenda should be prioritised on margin evidence again.
+Tier A found **zero fragile fences** by that definition.
 
-Everything in this agenda is one of those two moves.
+**3. Over-fitting is confirmed, quantified, and general.** Across all 262 flip-producing runs,
+perturbations flip **5.8 %** of reviewed-fixture opportunities against **9.3 %** of unseen-corpus
+opportunities — a **1.61× asymmetry**. For the eleven `BASE_QUALITY_WEIGHTS` it is **2.50×**. The
+algorithm is measurably more stable on the 37 artworks it was tuned against than on artwork nobody
+has looked at. That is the campaign question, answered: **yes, and the tuning is holding the reviewed
+set in place while the rest of the corpus moves.**
 
----
+### Ranked de-fitting targets, by measured consequence
 
-## 1. Retire the quality-weight scalarization in favour of the ordering the code already has
+| # | target | flips / live | evidence | action |
+|---|---|---|---|---|
+| 1 | `FAMILY_BIN_STEP` 0.04 | **150/154 (97 %)** | none, no pin, no comment | derive or pin + calibrate — see §0 |
+| 2 | `bounds.representativesPerRole` 2 | 125/154 (81 %) | none | §0 |
+| 3 | `rankForegroundOptions` 0.68 / `rankAccentOptions` 0.5 | 88 / 78 | none | §0 |
+| 4 | 11 × `BASE_QUALITY_WEIGHTS` | 5–26 each, **2.5× asymmetry** | none | §1 — derive |
+| 5 | `RESOLUTIONS.evidence` 0.04 | 44/154 | one uncited README line | §1 / §8 |
+| 6 | `bounds.identityObligations` 4 | 18/154, **one-sided** | one-sided calibration (trunk agrees) | §11 |
+| 7 | 9 × wave-1 `qualityWeights` | **0/154** | none | §1 — delete after cap check |
+| 8 | `mount`, `fieldBlend`, `mark`, `accentBlend`, midpoint bar | 0–4 each | thin but cited | **downgraded** — documentation debt, not correctness risk |
 
-**Constants removed: 20** (`BASE_QUALITY_WEIGHTS` ×11, `SELECTOR_POLICY.qualityWeights` ×9). None
-carries any justification; both sum to exactly 1.00 by hand.
+## §0 (NEW, now the top item). Pin and derive the thirteen pervasive cliffs
+
+**Constants addressed: 13. Currently documented: 0. Currently pinned: 0.**
+
+This item did not exist before tier A because nothing pointed at these constants: they have no
+comments to audit and no review history to cite, so every provenance pass — mine included — walked
+straight past them. They are:
+
+`FAMILY_BIN_STEP` 0.04 · `bounds.representativesPerRole` 2 · `rankForegroundOptions` 0.68 ·
+`rankAccentOptions` 0.5 · `buildFieldVariants` length 2 · `REPRESENTATIVE_DENSITY_RADIUS` 0.04 ·
+`buildRegionObservations.score` 0.45 and 0.55 · `fitGradients.texture` 0 and 2 ·
+`buildNativePaletteEvidence.population` 0 · `FIELD_MIDPOINT_BAND` 0.42 · `binKeyOf` bin centre 0.5
+
+**Immediate, cheap, no behaviour change: pin all thirteen** in `configuration.test.ts` with their
+measured fragility as the comment. A constant that moves 97 % of outputs and can be silently changed
+by a merge is the single largest process risk in the codebase, and the trunk provenance pass could
+not have caught it — it audited the pins that exist, and these were never pinned.
+
+**Then, by type:**
+
+- `FAMILY_BIN_STEP`, `REPRESENTATIVE_DENSITY_RADIUS`, `binKeyOf`'s 0.5 and `RESOLUTIONS.evidence` are
+  all **quantization grains**. They are the best candidates in the whole algorithm for genuine
+  derivation: a bin step should follow from a discriminability threshold in OKLab, and the codebase
+  already establishes the relevant hard fact (one 8-bit step spans `okDistance` 0.067 at the black
+  point vs 0.003 at white — a 22.6× swing). A single grain cannot be right at both ends; the honest
+  replacement is a **lightness-dependent grain**, which removes the constant and fixes a known
+  distortion at once. This is the highest-value derivation available.
+- `representativesPerRole` 2, `buildFieldVariants` 2, `bounds.fieldFamilies` 12 are **truncation
+  bounds**. Their flips are pure search-truncation artefacts: raising them can only add candidates.
+  Measure the bound at which output stops changing and set it there with the measurement recorded —
+  a bound justified by convergence is not a free parameter.
+- `rankForegroundOptions` 0.68, `rankAccentOptions` 0.5, `buildRegionObservations.score` 0.45/0.55
+  are **ranking cut-offs**, the same shape as §2's role gates and fixable the same way: express as a
+  separation in evidence quanta rather than an absolute level.
+
+## 1. Split the two quality-weight maps: delete one, derive the other
+
+**Measured, not conjectured** (`LEDGER.md` §7). The two maps look identical in the source and behave
+nothing alike:
+
+- **wave 1 (`SELECTOR_POLICY.qualityWeights`, 9 weights): inert.** All nine, both directions, zero
+  changes across 154 artworks. Nine free parameters that appear removable at zero behavioural cost.
+  **One check first** (`LEDGER.md` §7): this is live code, not dead — wave-1 ordering is a real
+  comparison key, it is simply invisible downstream unless a retention bound (`completeCandidates`
+  1500, `retainedTreatments` 8) actually binds. Construct or find artworks where a cap binds and
+  re-measure there before removing. If it still does not move, delete the nine.
+- **winner stage (`BASE_QUALITY_WEIGHTS`, 11 weights): load-bearing and over-fitted.** ±20 % on
+  `fieldFidelity` moves ~14 % of published palettes, and it moves them **2–3× more often on artwork
+  nobody reviewed** (17.9 %) than on the 37 reviewed fixtures (5.4 %). These cannot be deleted; they
+  must be *derived*, and the asymmetry is the reason it is urgent.
+
+The rest of this item is about the winner-stage eleven.
+
+**Constants addressed: 20** (9 deleted outright, 11 re-derived). None carries any justification; both
+maps sum to exactly 1.00 by hand.
 
 The algorithm already contains a *non-parametric* statement of the same preference:
 `ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS` (11 ordered blocks) and
@@ -38,9 +114,9 @@ them. This needs a small addition to `probe/instrument.ts` (counting outcomes in
 `compareEvaluations`, which the current transform does not instrument — it wraps constants, not
 comparators), but the mirror and the driver are reusable as they stand. Then:
 
-Track P's own sweep already supplies a first answer from the other direction: **the entire wave-1
-weight map is inert at ±20 %** (§7 of `LEDGER.md`), which is what "the scalar is being overridden by
-the ordering" looks like from outside.
+Track P's sweep already answers this for wave 1 from the outside — **the whole map is inert**, which
+is what "the scalar is being overridden by the ordering" looks like from the published output. Run
+the same question at the winner stage, where the scalar demonstrably *is* deciding.
 
 - if that fraction is small, delete the weighted sum and let the block ordering decide; an ordinal
   block order is something a human can actually review, and 20 reals are not;
@@ -93,7 +169,16 @@ function of evidence — reviewable, and with one threshold to calibrate against
 identifies which of the 55 currently bind on real artworks; the ones that never bind should be
 deleted rather than ported.
 
-## 4. Convert `fieldBlend`'s asserted geometry into a measured null distribution
+## 4. Convert `fieldBlend`'s asserted geometry into a measured null distribution — **DOWNGRADED, but still cheap**
+
+> **Measured:** the five `fieldBlend` thresholds flip 0–3 artworks each; `mark`'s ten flip 0–4, and
+> disabling `mark.substitution` entirely moves 10. Narrow mechanisms, not cliffs.
+>
+> Keep this item anyway, at low priority, for one reason: it is the only proposal here that
+> **manufactures evidence without a human**. The null distribution comes from the 7550-artwork corpus
+> and costs one measurement pass. Everything else on this list either removes a parameter or waits on
+> review capacity, which is the binding constraint. Cheap evidence is worth collecting even for a
+> mechanism that currently decides little.
 
 **Constants addressed: 5** (`minimumFieldSeparation` 0.3, `maximumRelativeOffset` 0.015,
 `interiorMargin` 0.03, `maximumRungGap` 0.25, `minimumCorridorClosure` 0.9) — plus `accentBlend`,
@@ -113,7 +198,17 @@ class of object from 0.015.
 The same method applies to `mark.*`'s thresholds, whose individual values (12, 0.5, 0.25, 0.08, 3, 6,
 0.12) currently have no per-value anchor at all.
 
-## 5. Make enclosure continuous instead of a cliff at 2.5
+## 5. Make enclosure continuous instead of a cliff at 2.5 — **DOWNGRADED by tier A**
+
+> **Measured:** the whole `mount` mechanism is live on **2 of 154 artworks**, and setting
+> `borderCreditRetained` back to 1 — a complete disable, the "restore previous behaviour" switch its
+> own comment documents — changes **nothing**. `minimumEnclosedPopulationRatio` = 2.5 flips nothing.
+>
+> The reasoning below stands (a 7-anchor gap-midpoint with a total 1→0 step is a fence, and the
+> continuous form is better architecture), but it buys almost no accuracy on this corpus. Do it when
+> touching that code, not as a priority. **Do not delete it on this evidence either** — 2 live cases
+> in 154 is exactly the sample size the charter warns is indistinguishable from dead; a deletion
+> claim needs the firing-conditioned corpus (`probe/build-firing-corpus.ts` sizes it).
 
 **Constant: `mount.minimumEnclosedPopulationRatio` = 2.5**, with `borderCreditRetained` flipping
 border credit from 1 to **0** across it.
@@ -240,6 +335,36 @@ Recommended review batches, 4–10 items each, drawn from that list rather than 
 today).
 
 ---
+
+## What tier B would cost, and whether it is worth it
+
+**Tier B is 740 jobs**: the anonymous inline literals — blend weights inside scoring functions,
+saturation divisors, normalisation constants — that carry no name and no comment. (It is *not* the
+`BASE_QUALITY_WEIGHTS`; those are tier A and all eleven are measured. `provenance-hygiene/REPORT.md`
+§"Value-level concerns" 2 records them as awaiting a tier-B import — they are ready now.)
+
+**Cost, from tier A's own throughput** (279 jobs in 26 378 s at 11 workers = 94.5 s/job):
+**≈ 19.5 hours wall** on a quiet 14-core machine, unattended and resumable. No human time beyond
+launching it.
+
+**Worth it, for one specific reason.** Tier A's headline is that the constants deciding this
+algorithm are the ones nobody documented. Tier B *is the rest of that population* — 740 undocumented
+literals, of which tier A's sample already surfaced several in the top 20
+(`buildRegionObservations.score` 0.45/0.55, `fitGradients.texture`, `buildFieldVariants` length). The
+expected yield is more pervasive cliffs, and they are exactly the constants no review has ever seen.
+
+**Two cheaper options if 19.5 h is not available:**
+
+1. **Census-pruned tier B.** `data/routing.json` already carries firing counts and flip margins for
+   all 740. Sweep only those consulted on ≥100 artworks — the pervasive-cliff precondition. That is
+   the population where every tier-A cliff came from, and it cuts the queue by roughly two thirds
+   (**≈ 6–7 h**) while keeping essentially all of the expected yield.
+2. **Fragility-first sampling.** Run the 740 at ±20 % over a 40-artwork subset first (**≈ 2 h**),
+   then re-run only the sites that moved anything over the full 154. Two-stage, same final numbers
+   for anything load-bearing, weaker only on constants that flip 1–2 artworks — which tier A shows
+   are not where the risk is.
+
+Recommendation: **option 1**. It is targeted at the finding tier A actually produced.
 
 ## Resuming the measurement
 

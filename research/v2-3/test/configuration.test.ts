@@ -24,9 +24,18 @@ import {
 } from "../src/internal/winner-scoring.ts"
 import { MAXIMUM_WINNER_QUALITY_LOSS } from "../src/internal/transition-promotion.ts"
 import {
+	ACCENT_RANK_FIDELITY_WEIGHT,
 	ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE,
+	CONTROL_FIELD_VARIANT_PAIRS,
 	DEFAULT_PALETTE_EXTRACTION_OPTIONS,
+	FAMILY_BIN_STEP,
+	FIELD_MIDPOINT_BAND,
+	FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT,
+	REGION_ROLE_SCORE_CUE_SPAN,
+	REGION_ROLE_SCORE_SUPPORT_BASE,
+	REPRESENTATIVE_DENSITY_RADIUS,
 } from "../src/internal/palette-core.ts"
+import { CHROMA_BIN_ORIGIN_OFFSET } from "../src/internal/band-representative.ts"
 
 /**
  * The shipped configuration, pinned — with each pin's provenance stated honestly.
@@ -62,6 +71,14 @@ import {
  * The hygiene sweep's one recommended addition — pinning
  * `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45`, the most expensively derived constant in the
  * algorithm (Track A, four rounds) — was applied by the orchestrator in the same integration.
+ *
+ * PERVASIVE CLIFFS (added 2026-08-01). The sweep above audited the pins that existed. Track P's
+ * tier-A perturbation measurement then showed that the pinned set was aimed at the wrong
+ * constants: the values that decide this algorithm's output are quantization grains, candidate
+ * bounds and ranking cut-offs that nobody had written a sentence about, and **zero of the thirteen
+ * worst were pinned**. See `test("the pervasive-cliff constants are unchanged")` below and the
+ * disposition table at `research/v2-3-experiments/track-p/PINNING.md`. Several pins above also
+ * carry a tier-A escalation, downgrade or retraction; those are marked in place.
  */
 test("the reviewed winner-ranking configuration is unchanged", () => {
 	assert.deepEqual({ ...WINNER_RANKING_HYPOTHESES }, {
@@ -86,22 +103,38 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 	// [INHERITED] One of eleven `BASE_QUALITY_WEIGHTS` (winner-scoring.ts:226-238) that sum to 1.
 	// Born as a bare literal in `3d3cea2` (2026-07-29) and unchanged since; copied through v2-2
 	// into v2-3 by the scaffold commit. No document derives it, and no per-weight justification
-	// exists for any of the eleven — `track-p/LEDGER.md:145-149` classes the whole map as
+	// exists for any of the eleven — `track-p/LEDGER.md:136-139` classes the whole map as
 	// FITTED / UNEVIDENCED, "the ranking spine ... neither carries a single word of per-weight
 	// justification".
+	//
+	// TIER-A ESCALATION (2026-08-01, `track-p/LEDGER.md:324-345`). This weight is no longer merely
+	// undocumented: it is the **highest-risk pin in this file**. Perturbing it +-20 % moves 23 of
+	// 154 published palettes, and it moves them ten times more often on artwork nobody has reviewed
+	// (40 unseen flip opportunities) than on the reviewed fixtures (4) — the sharpest over-fitting
+	// signature measured anywhere in the algorithm. All eleven `BASE_QUALITY_WEIGHTS` are
+	// load-bearing (5-26 flips each; `renderedFieldClaim` 0.08 is the mildest at 5) and the whole
+	// map carries a 2.50x unseen:reviewed asymmetry against 1.61x for the algorithm at large.
+	// Treat any change to any of the eleven as a full re-review, and note that they sum to 1 by
+	// hand, so changing one silently re-weights the other ten.
 	//
 	// This pin used to carry the comment "Track A round 4: 0.25 tipped `johns` onto Track C's
 	// grey/near-white pair; 0.45 holds every reviewed win on the integrated trunk." That sentence
 	// is real, but it describes a **different constant in a different object**:
 	// `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45` (winner-scoring.ts:113), whose sweep points
-	// are 0.25 and 0.45 (`track-a/EXPERIMENT.md:388, 391-392`). `track-p/LEDGER.md:194-203` and
-	// `track-p/AGENDA.md:181-186` both flagged the misattribution; this is the fix.
+	// are 0.25 and 0.45 (`track-a/EXPERIMENT.md:388, 391-392`). `track-p/LEDGER.md:207-215` and
+	// `track-p/AGENDA.md:276-280` both flagged the misattribution; this is the fix.
 	assert.equal(WINNER_SCORING_POLICY.qualityWeights.fieldFidelity, 0.15)
 	// [INHERITED] Also born in `3d3cea2` (2026-07-29) as a bare literal, alongside two sibling
 	// literals, with no comment and no cited experiment; carried verbatim through v2-2 into v2-3.
 	// No measurement, sweep, or human review justifies the magnitude anywhere in the repository or
-	// its full history — `track-p/LEDGER.md:147-148`: "applied at two gates against two different
+	// its full history — `track-p/LEDGER.md:153-154`: "applied at two gates against two different
 	// baselines. No cited derivation for the magnitude."
+	//
+	// TIER-A DOWNGRADE (2026-08-01, `track-p/LEDGER.md:271, 378`). The provenance sweep called this
+	// the "top calibration candidate"; measurement disagrees. It is consulted on all 154 artworks
+	// and +-20 % flips **none** of them. It is a bound that rarely binds, not a cliff — unevidenced,
+	// but cheap targets exist elsewhere. Track P's own caveat: the known `birdsofprey` 0.0016
+	// near-miss argues for re-measuring it at +-5 %, where +-20 % says nothing.
 	//
 	// The two empirical facts on record are both cautionary, not supporting: the envelope has 3-6x
 	// headroom and almost never binds (`adversarial-logic/REVIEW.md:485-488`,
@@ -124,7 +157,7 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 	// `birdsofprey`, restored byte-identically to its reviewed baseline. Because the output is
 	// byte-identical, no review batch ever adjudicated the change itself; the four `birdsofprey`
 	// verdicts on record all endorse the same treatment and none of them is about this flag.
-	// `track-p/LEDGER.md:113` records it as "1 named".
+	// `track-p/LEDGER.md:119` records it as "1 named".
 	assert.equal(PROMOTION_ENVELOPE, "field-axis-neutral")
 	// [HELD] The pre-existing ordering, never a decision — and this pin previously carried no
 	// comment at all inside a test named "the reviewed ... configuration".
@@ -140,7 +173,7 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 	//
 	// So this is an open question pinned for attribution, not a reviewed decision. It is also
 	// decisive where it fires (`adversarial-logic/VERDICTS.md:345`), which is why it is pinned.
-	// `track-p/AGENDA.md:188-190`: "Either the comment or the value is stale; both cannot be right."
+	// `track-p/AGENDA.md:283-285`: "Either the comment or the value is stale; both cannot be right."
 	assert.equal(TRANSITION_PROMOTION_ORDER, "coverage-first")
 	assert.deepEqual([...WINNER_QUALITY_AXES], [
 		"fieldFidelity", "surfaceFidelity", "artworkIdentity", "representativeness", "sourceSupport",
@@ -211,7 +244,7 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// no v2-3 document derives 0.05. What is measured is only that raising it is worse in two
 	// directions: 0.06 made `johns` worse and broke `black.jpg`'s reviewed collapse
 	// (`track-c/EXPERIMENT.md:138-142`), and 0.10 undid the `doja` fix and inverted `vvbrown`
-	// (`track-a/EXPERIMENT.md:71-73`). `track-p/LEDGER.md:191-194` flags the magnitude as
+	// (`track-a/EXPERIMENT.md:71-73`). `track-p/LEDGER.md:202-205` flags the magnitude as
 	// consequential and unexplained: it can move a candidate up to ten quantized utility bands.
 	assert.equal(selector.maximumIdentityGain, 0.05)
 	// [INHERITED] Introduced by Track C round 4 inside a bare parameter list with no derivation
@@ -224,8 +257,14 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// of these three separations has. Verified against the six-row measurement table at `:275-282`.
 	// Caveat in Track C's own words (`:235-239`): "values chosen from measured distances on this
 	// corpus, and the corpus is the development set ... should be re-checked on unseen sources."
-	// The perturbation sweep also puts it close to a boundary (`track-p/LEDGER.md:258`: 18,005 of
-	// 430,413 comparisons flip at +/-20 %).
+	// EVIDENCE RETRACTION (2026-08-01). This comment used to close: "The perturbation sweep also puts
+	// it close to a boundary (`track-p/LEDGER.md:258`: 18,005 of 430,413 comparisons flip at
+	// +/-20 %)." That figure was Track P's *census* boolean-flip count, and Track P has since retired
+	// the method that produced it — `track-p/LEDGER.md:260-263`: "A boolean-flip margin is not
+	// evidence of output fragility". Tier A measured the same constant at winner level: live on 151
+	// artworks, **3 flips** at +-20 % (`track-p/LEDGER.md:276`), while sitting directly on its data
+	// (nearest approach 0.1 %). Sitting on the data is not the same as deciding the output. The
+	// Track C corpus-fitting caveat above stands on its own; the fragility claim does not.
 	assert.equal(selector.identityChromaticSeparation, 0.01)
 	// [n=1] Introduced by Track C round 2 H3 as a bare parenthetical
 	// (`track-c/EXPERIMENT.md:144-149`). The single number bearing on the magnitude is that
@@ -316,6 +355,11 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// is unaffected (it is about the bound, not the accent), but do not read `placebo`'s state here
 	// as current. `adversarial-logic/REVIEW.md:133-145` separately measures this cap as saturated
 	// on all 31 non-degenerate artworks, with 52 % of obligation slots held by near-neutral families.
+	//
+	// TIER-A ESCALATION (2026-08-01, `track-p/LEDGER.md:382`). Live on all 154 artworks and moving
+	// **18 of them** at +-20 %, with a strictly one-sided flip profile — 0 down, 18 up — so the bound
+	// binds in exactly one direction, which is the direction Track C's revert came back from. A
+	// one-sided calibration on a constant that moves 18 artworks, with 3 and 5 still never tried.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations, 4)
 	// [INHERITED] Introduced by Track C round 2 H2 as a bare parenthetical with no derivation, no
 	// sweep, and no alternative tried (`track-c/EXPERIMENT.md:116-118`). Its effect is attributed —
@@ -343,7 +387,7 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// Track W later measured the floor's FORM and found it should be absolute rather than
 	// scale-relative (`track-w/EXPERIMENT.md:113-123`, `componentFloorExponent` left at 0). That
 	// is real evidence that 12 should not scale with image size. It is not evidence for 12: no
-	// sweep of 8 / 12 / 16 / 20 exists, and `track-p/LEDGER.md:117` still lists 12 among the
+	// sweep of 8 / 12 / 16 / 20 exists, and `track-p/LEDGER.md:123` still lists 12 among the
 	// `mark.*` values with "no per-value anchor".
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.minimumComponentPopulation, 12)
 	// [INHERITED] No justifying document exists. The number appears exactly once in the whole Track
@@ -351,7 +395,7 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// qualifying components (saturating at 6)" (`track-e/EXPERIMENT.md:76`) — and the paragraph
 	// that follows justifies the product form and the last two factors, never the 3. No threshold
 	// sweep, no component-count distribution, no ablation at 2 or 4 exists in Track E or anywhere
-	// else; Track E's own uncertainty list does not even flag it. `track-p/LEDGER.md:117`: the
+	// else; Track E's own uncertainty list does not even flag it. `track-p/LEDGER.md:123`: the
 	// individual `mark.*` thresholds "have **no per-value anchor**".
 	//
 	// The one later mention is not a validation: Track N uses 3 as a reference point for a
@@ -376,12 +420,13 @@ test("the reviewed same-color bar is one number in three places", () => {
 	// (`placebo`) is the recorded shadow-material caveat on it.
 	//
 	// This comment said "Six" while enumerating seven; so does the source comment it mirrors.
-	// `track-p/LEDGER.md:109` caught the arithmetic. No experiment file lists these anchors — they
+	// `track-p/LEDGER.md:115` caught the arithmetic. No experiment file lists these anchors — they
 	// exist only in these comments — so the enumeration is the record and the count is corrected to
-	// match it. No value moves. (Corrected in the same sweep at `policy.ts:101` and
-	// `palette-core.ts:2856`.)
+	// match it. No value moves. (Corrected in the same sweep at `policy.ts:101` and — only on
+	// 2026-08-01, by the pervasive-cliff pass; the sweep's claim to have fixed it was premature —
+	// `palette-core.ts:3049`.)
 	//
-	// Carry the counterexample with the bar: `palette-core.ts:2868-2874` records a midpoint at
+	// Carry the counterexample with the bar: `palette-core.ts:3061-3067` records a midpoint at
 	// ΔE 2.58 — below this bar — carried by a *preferred* reviewed output, so the bar is known
 	// over-strict by at least one case. `placebo`'s own verdict has also moved on since batch 12
 	// (review-12 -> review-14-b2, a different endorsed accent), which is exactly why batch 14 is
@@ -418,11 +463,21 @@ test("the ranking quanta have a single source", () => {
 	// What this test pins is therefore the single-source property, which is real, plus two
 	// magnitudes that nothing derives.
 	//
-	// Do not treat 0.04 as JND-derived. `track-p/LEDGER.md:208-213` traced every such claim to one
+	// Do not treat 0.04 as JND-derived. `track-p/LEDGER.md:219-224` traced every such claim to one
 	// uncited sentence in `research/v2-3-eval/README.md` ("1 JND ≈ 0.02"), and that sentence is
 	// about the eval diff epsilon, not about a ranking quantum. Note also `policy.ts:1-14`: this
 	// 0.04 is NOT the same quantity as `FAMILY_BIN_STEP` or `REPRESENTATIVE_DENSITY_RADIUS`, which
-	// merely share the literal — do not unify them or retune one by grepping.
+	// merely share the literal — do not unify them or retune one by grepping. Both of those are now
+	// pinned in their own right, below.
+	//
+	// MEASURED CLIFF (Track P tier A, `track-p/LEDGER.md:385`): +-20 % on `evidence` moves 44 of 154
+	// artworks and on `utility` moves 20. Neither appears in the pervasive-cliff block below only
+	// because the classifier needs a firing-conditioned denominator and could not get one: both are
+	// read through aliases and computed keys, which Track P's syntactic read instrumentation cannot
+	// see (`track-p/LEDGER.md:398-404` — firing counts are a lower bound, never an upper one). 44 of
+	// 154 published palettes is the pervasive-cliff *rate* whatever the denominator turns out to be.
+	// Track P ranks `evidence` fifth of all de-fitting targets (`track-p/AGENDA.md:44`) and groups it
+	// with the three quantization grains in the block below. Treat a change as a full re-review.
 	assert.deepEqual({ ...ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS }, { evidence: 0.04, utility: 0.005 })
 	assert.equal(WINNER_SCORING_POLICY.evidenceResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
 	assert.equal(WINNER_SCORING_POLICY.utilityResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)
@@ -430,6 +485,159 @@ test("the ranking quanta have a single source", () => {
 		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.utilityResolution,
 		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)
+})
+
+/**
+ * The pervasive cliffs — the constants that actually decide this algorithm's output.
+ *
+ * Track P's tier-A perturbation sweep (620 runs, 335 sites, 154 artworks, zero extraction errors;
+ * `research/v2-3-experiments/track-p/LEDGER.md` §7, imported to trunk by `track-p/IMPORTED.md`)
+ * re-ran every measurable constant at +-20 % over the full triage corpus and diffed every published
+ * value against baseline. Thirteen sites came out **consulted on >= 100 of the 154 artworks AND
+ * flipping the published palette on >= 20 % of them**. Every one of the thirteen was undocumented,
+ * and not one was pinned — the pinned set in this file was drawn from the constants that attracted
+ * human review, and the fragility ranking turns out to be almost disjoint from it
+ * (`track-p/LEDGER.md:387-391`).
+ *
+ * That is the finding this block exists to answer: `FAMILY_BIN_STEP` = 0.04 moves **97 % of all
+ * published palettes** at +-20 %, and until 2026-08-01 a merge could have changed it with nothing
+ * but 34 opaque parity mismatches to show for it.
+ *
+ * TAGS. All thirteen are `[INHERITED]`: not one has a derivation, a sweep, or a review anywhere in
+ * the repository or its history. What is `[MEASURED]` about them is their **blast radius**, not
+ * their value — so each pin below carries the measured-cliff warning rather than a provenance
+ * claim, and `[INHERITED]` is extended here to cover a constant that arrived as an undocumented
+ * bare literal in an integration commit whose review adjudicated the *mechanism* and never saw the
+ * number (that is `FIELD_MIDPOINT_BAND` and `CHROMA_BIN_ORIGIN_OFFSET`, both from `a864585`); the
+ * other eight named here predate v2-3 in the frozen v2-2 baseline.
+ *
+ * SCOPE. Track P's mirror was built at `c2366d2`; all thirteen sites carry forward to this trunk
+ * unchanged in identity and value (`track-p/LEDGER.md:347-367`, `probe/trunk-delta.ts`). Nothing
+ * introduced by the batch-26/27/28/30 integrations or by `gamut-coverage.ts` is measured here at
+ * all.
+ *
+ * TEN, NOT THIRTEEN. Three of Track P's thirteen are not pinned because they are not tunable
+ * constants — a variance-clamp floor, an exponent in a variance identity, and an accumulator
+ * initializer. Perturbing them measures arithmetic corruption, not tuning. The full disposition,
+ * with the reasoning for each, is `research/v2-3-experiments/track-p/PINNING.md`.
+ */
+test("the pervasive-cliff constants are unchanged", () => {
+	// [INHERITED] The perceptual-family quantization grain: OKLab lightness/a/b are floored onto a
+	// 0.04 grid to decide which pixels belong to the same colour family. Verbatim from the frozen
+	// v2-2 baseline (`research/v2-2/src/internal/palette-core.ts:574`); no document in the repo or
+	// its history derives it, and it carried no comment at all until this pin.
+	//
+	// MEASURED CLIFF, THE LARGEST IN THE ALGORITHM (`track-p/LEDGER.md:290`): live on all 154
+	// artworks, +-20 % moves **150 of them — 97 % of palettes** (150 down, 146 up). Treat any change
+	// as a full re-review; in practice a change here is a new algorithm, not a retune.
+	//
+	// Track P's harness validation used exactly this constant: x1.2 changes 3 of 4 spot-check
+	// artworks outright, which is how the sweep proved its zero-flip results were real inertness
+	// rather than a dead instrument (`track-p/LEDGER.md:241-242`).
+	//
+	// Do NOT unify with `RESOLUTIONS.evidence` or `REPRESENTATIVE_DENSITY_RADIUS` — three different
+	// quantities that merely share the literal 0.04 (`policy.ts:9-13`).
+	assert.equal(FAMILY_BIN_STEP, 0.04)
+	// [INHERITED] How many representatives each role may draw per family — a pure search-truncation
+	// bound. Verbatim from frozen v2-2 (`research/v2-2/src/internal/policy.ts:81`); nothing derives
+	// it and it carries no comment at its definition.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:291`): live on all 154 artworks, and -20 % moves **125 of
+	// them (81 %)** — the second-largest blast radius measured. Strictly one-sided: 125 flips
+	// downward, **0** upward, which is the signature of a truncation bound rather than a preference.
+	// Every flip it produces is a candidate the search never saw. Track P's recommended repair is to
+	// measure the bound at which output stops changing and set it there with the measurement
+	// recorded (`track-p/AGENDA.md:76-79`) — a bound justified by convergence is not a free
+	// parameter. Until then, treat any change as a full re-review.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.representativesPerRole, 2)
+	// [INHERITED] The weight on the role-evidence term of the foreground ranking score, against 0.16
+	// each for support quality and contrast. Verbatim from frozen v2-2
+	// (`research/v2-2/src/internal/palette-core.ts:2977-2978`, where the whole formula existed twice);
+	// no derivation anywhere.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:292`): live on all 154 artworks, +-20 % moves **88 (57 %)**
+	// — 88 up, 64 down. Track P classes it with `ACCENT_RANK_FIDELITY_WEIGHT` and the two region
+	// scores as *ranking cut-offs*, whose principled repair is to express the decision as a
+	// separation in evidence quanta rather than an absolute level (`track-p/AGENDA.md:80-82`).
+	// Treat any change as a full re-review.
+	//
+	// Lifted from a bare literal on 2026-08-01. It appeared twice, once per comparator side, at the
+	// identical value; the two sides must always carry the same weight, which a shared constant
+	// states and two literals do not. Byte-identical output verified on five artworks.
+	assert.equal(FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT, 0.68)
+	// [INHERITED] The weight on the fidelity term of the accent ranking score, against 0.25 each for
+	// support quality and utility. Verbatim from frozen v2-2
+	// (`research/v2-2/src/internal/palette-core.ts:3013`); no derivation anywhere.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:293`): live on 151 artworks, +-20 % moves **78 (52 %)** —
+	// 78 up, 66 down. Same class and same recommended repair as the foreground weight above. Treat
+	// any change as a full re-review.
+	//
+	// Lifted from a bare literal on 2026-08-01, written `0.50`, twice, once per comparator side.
+	assert.equal(ACCENT_RANK_FIDELITY_WEIGHT, 0.5)
+	// [INHERITED] How many background/surface representative pairs the `"control"` representative
+	// policy walks when it is not cross-pairing. Verbatim from frozen v2-2
+	// (`research/v2-2/src/internal/palette-core.ts:2329`); no derivation anywhere.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:294`): live on all 154 artworks, and -20 % moves **60 of
+	// them (39 %)**; 0 flips upward, because 2 -> 2.4 truncates back to the same pair count. The
+	// same truncation-bound shape as `bounds.representativesPerRole` above, and the same repair
+	// applies. Treat any change as a full re-review.
+	//
+	// Lifted from a bare literal on 2026-08-01 at its single use site.
+	assert.equal(CONTROL_FIELD_VARIANT_PAIRS, 2)
+	// [INHERITED] The OKLab radius within which neighbouring bins count toward a representative's
+	// density support. Verbatim from frozen v2-2 (`research/v2-2/src/internal/palette-core.ts:578`);
+	// no derivation, no comment until this pin.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:295`): live on all 154 artworks, +-20 % moves **51 (33 %)**
+	// — 51 down, 7 up. A quantization grain, and one of the four Track P names as the best
+	// derivation candidates in the whole algorithm: the codebase already establishes that one 8-bit
+	// step spans `okDistance` 0.067 at the black point against 0.003 at white, a 22.6x swing, so a
+	// single grain cannot be right at both ends (`track-p/AGENDA.md:69-75`). Treat any change as a
+	// full re-review.
+	assert.equal(REPRESENTATIVE_DENSITY_RADIUS, 0.04)
+	// [INHERITED] The region role score is `sourceSupport * (BASE + CUE_SPAN * cues)`. The two sum
+	// to 1, so a component with every role cue saturated scores exactly its source support and one
+	// with no cue at all keeps `BASE` of it — one degree of freedom written as two literals. Both
+	// verbatim from frozen v2-2 (`research/v2-2/src/internal/palette-core.ts:763`, where a
+	// `role === "typography" ? 1 : 1` no-op factor also survived); nothing derives where in [0, 1]
+	// the split sits.
+	//
+	// MEASURED CLIFFS, BOTH (`track-p/LEDGER.md:296-297`): each live on all 154 artworks; +-20 % on
+	// the base moves **49 (32 %)** and on the cue span moves **45 (29 %)**. Ranking cut-offs by
+	// Track P's classification (`track-p/AGENDA.md:80-82`). Treat any change as a full re-review —
+	// and note that changing one without the other also breaks the sum-to-1 property, which is the
+	// only statement on record about either number.
+	//
+	// Lifted from bare literals on 2026-08-01, each at its single use site.
+	assert.equal(REGION_ROLE_SCORE_SUPPORT_BASE, 0.45)
+	assert.equal(REGION_ROLE_SCORE_CUE_SPAN, 0.55)
+	assert.equal(REGION_ROLE_SCORE_SUPPORT_BASE + REGION_ROLE_SCORE_CUE_SPAN, 1)
+	// [INHERITED] The spatial band, in normalized gradient position, from which the field midpoint's
+	// representative colour is drawn. Introduced by the Track B H4 chord-deviation integration
+	// (`a864585`, 2026-07-31) as a bare `Object.freeze([0.42, 0.58])` with no comment. That commit
+	// was reviewed — but on its *mechanism* and its blast radius (`loups`, `doja`, one off-panel
+	// case); no reviewer saw these two numbers and no experiment file in the tree contains `0.42`.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:301`): the lower edge is live on 113 artworks and +-20 %
+	// moves **28 of them (25 %)** — 28 down, 25 up. Treat any change as a full re-review. The band
+	// is symmetric about 0.5 and should stay so; 0.58 was not separately swept.
+	assert.deepEqual([...FIELD_MIDPOINT_BAND], [0.42, 0.58])
+	// [INHERITED] The origin shift applied to the OKLab `a` and `b` axes before flooring them into
+	// mode bins, so that negative chroma coordinates land in non-negative bins; lightness needs no
+	// shift and takes 0. Introduced by the same `a864585` Track B H4 integration as a bare literal,
+	// twice on one line, with no comment.
+	//
+	// MEASURED CLIFF (`track-p/LEDGER.md:302`): live on 113 artworks and +-20 % moves **27 of them
+	// (24 %)**, symmetrically (27 up, 27 down). It reads as a mere encoding detail and is not one:
+	// moving the origin re-phases every bin boundary relative to the data, so it selects different
+	// modal representatives. Treat any change as a full re-review. It is NOT the same quantity as
+	// the `+ 0.4` offsets in `palette-core.ts`'s `quantizedKeyOf`, which serve the same purpose on a
+	// different grid.
+	//
+	// Lifted from bare literals on 2026-08-01; the two chroma axes must always share it.
+	assert.equal(CHROMA_BIN_ORIGIN_OFFSET, 0.5)
 })
 
 test("the quality weights sum to one at both stages", () => {
