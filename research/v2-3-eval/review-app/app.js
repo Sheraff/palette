@@ -17,6 +17,13 @@ const VERDICT_LABELS = {
 	"unacceptable": "Unacceptable",
 }
 
+const GRADIENT_VERDICT_LABELS = {
+	"as-preferred": "Right as shown (on my preferred side)",
+	"should-be-gradient": "Should be a gradient",
+	"should-be-flat": "Should be flat",
+	"either-works": "Either works here",
+}
+
 const root = document.querySelector("#review")
 const progress = document.querySelector("#progress")
 const batchName = document.querySelector("#batch-name")
@@ -326,6 +333,15 @@ function assessment(item, index) {
 		(value) => state[index].verdict === value,
 		(value) => { state[index].verdict = value },
 	)))
+	// The gradient decision has never had its own channel: every gradient opinion so far lives in
+	// free text, so the warehouse cannot distinguish "should be flat" from silence. Optional — skip
+	// it whenever the field treatment isn't what you're judging.
+	section.append(control("Field treatment (optional — the gradient/flat decision itself)", decision(
+		payload.gradientVerdicts.map((value) => [value, GRADIENT_VERDICT_LABELS[value] ?? value]),
+		(value) => state[index].gradientVerdict === value,
+		(value) => { state[index].gradientVerdict = state[index].gradientVerdict === value ? null : value },
+	)))
+
 	// Words first: what the reviewer says in their own terms outranks any structured field we invented.
 	const comment = create("textarea", {
 		className: "comment primary",
@@ -421,6 +437,7 @@ async function submit() {
 					image: item.image,
 					preference: state[index].preference,
 					verdict: state[index].verdict,
+					gradientVerdict: state[index].gradientVerdict,
 					corrections: state[index].corrections,
 					tags: state[index].tags,
 					notes: state[index].notes,
@@ -449,6 +466,7 @@ fetch("/api/batch", { cache: "no-store" })
 			state.push({
 				preference: item.identical ? "equal" : null,
 				verdict: null,
+				gradientVerdict: null,
 				corrections: {},
 				seededFrom: null,
 				tags: [],

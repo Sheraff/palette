@@ -42,6 +42,10 @@ const port = Number(values.port)
 invariant(Number.isSafeInteger(port) && port > 0 && port < 65_536, "--port must be a valid TCP port")
 
 export const verdicts = ["strong", "acceptable", "weak-fallback", "unacceptable"] as const
+// The gradient decision's own channel (2026-08-01): three arms were blocked because every gradient
+// opinion lived in free text — the warehouse could not distinguish "should be flat" from silence.
+// Optional per item; null means the reviewer was not judging the field treatment.
+export const gradientVerdicts = ["as-preferred", "should-be-gradient", "should-be-flat", "either-works"] as const
 export const starterTags = ["wrong-role", "incomplete-identity", "contrast", "missing-gradient",
 	"extraneous-gradient", "wrong-midpoint", "other"] as const
 const preferences = ["A", "B", "equal"] as const
@@ -139,6 +143,7 @@ function namedPalette(palette: BlindPalette) {
 const publicPayload = {
 	batch: batchName,
 	verdicts,
+	gradientVerdicts,
 	starterTags,
 	roles,
 	items: items.map((item, index) => ({
@@ -200,6 +205,7 @@ type SubmittedItem = Readonly<{
 	image: string
 	preference: typeof preferences[number]
 	verdict: typeof verdicts[number]
+	gradientVerdict: typeof gradientVerdicts[number] | null
 	corrections: Readonly<Record<string, string>>
 	tags: readonly string[]
 	notes: string
@@ -223,6 +229,11 @@ function parseSubmission(value: unknown): SubmittedItem[] {
 			`Item ${item.image} shows one identical palette on both sides and cannot carry a side preference`)
 		invariant(typeof entry.verdict === "string" && (verdicts as readonly string[]).includes(entry.verdict),
 			`Item ${item.image} needs a verdict of ${verdicts.join(" / ")}`)
+		const gradientVerdict = entry.gradientVerdict === undefined || entry.gradientVerdict === null
+			? null
+			: entry.gradientVerdict
+		invariant(gradientVerdict === null || (gradientVerdicts as readonly string[]).includes(gradientVerdict as string),
+			`Item ${item.image} gradient verdict must be one of ${gradientVerdicts.join(" / ")} or absent`)
 		const corrections: Record<string, string> = {}
 		if (entry.corrections !== undefined && entry.corrections !== null) {
 			invariant(typeof entry.corrections === "object", `Item ${item.image} corrections must be an object`)
@@ -245,6 +256,7 @@ function parseSubmission(value: unknown): SubmittedItem[] {
 			image: item.image,
 			preference: entry.preference as typeof preferences[number],
 			verdict: entry.verdict as typeof verdicts[number],
+			gradientVerdict: gradientVerdict as typeof gradientVerdicts[number] | null,
 			corrections,
 			tags: [...new Set(tags as string[])].sort(),
 			notes,
