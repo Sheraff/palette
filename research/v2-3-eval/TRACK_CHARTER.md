@@ -29,6 +29,16 @@ Improve the **accuracy** of the palette output. The output shape is fixed and co
 - Deliverable per experiment: an `EXPERIMENT.md` in your track folder containing: the hypothesis, what you changed (files + rationale), the before/after table, honest self-assessment (including uncertainty and regressions), and which cases you propose for the next 4–10-item human review batch.
 - Human reviews are small (4–10 items) and frequent. Design your outputs so the orchestrator can assemble a review batch directly from your `EXPERIMENT.md`.
 
+## Multiple valid palettes — guardrail semantics (Flo, 2026-08-02)
+
+**Moving an artwork off its reviewed-strong palette is not automatically a regression.** An artwork
+can have multiple valid palettes. A mover is a regression ONLY when the destination palette was
+itself reviewed negatively, or was previously compared inferior to the palette it replaces. A mover
+to an unadjudicated palette is *reviewable movement*: attribute it, put it in the batch, and let the
+verdict decide. Byte-preservation of reviewed-strong outcomes is therefore NOT the guardrail bar —
+the bar is "never move TO a known-worse palette." Arms should write their revert rules accordingly
+(auto-kill only on destination-known-bad; destination-unknown goes to review).
+
 ## Verdict recency (learned 2026-08-01)
 
 **The LATEST verdict per artwork is authoritative.** Guardrail/HOLD sets must be mined from the live `verdicts.jsonl` at arm start, not inherited from briefs or earlier EXPERIMENT.md files — three arms were found protecting outcomes that later batches reversed (the batch-20 foreground swaps superseded several long-standing "frozen" arrangements). A reviewed-strong outcome is frozen only until a newer verdict on the same artwork supersedes it.
