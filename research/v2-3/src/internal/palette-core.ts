@@ -870,39 +870,131 @@ export function componentRolePreliminary(
  * component of every family at once; a producer that already has the whole set calls it directly.
  * Both take the same ranking and the same bounds.
  */
+function compareComponentsByPopulation(first: MutableComponent, second: MutableComponent): number {
+	return compareNumbersDescending(first.population, second.population) || first.start - second.start
+}
+
+function compareComponentsByRoleObservation(first: MutableComponent, second: MutableComponent): number {
+	return compareNumbersDescending(first.rolePreliminary, second.rolePreliminary) ||
+		compareNumbersDescending(first.population, second.population) ||
+		first.start - second.start
+}
+
+/**
+ * The `limit` best candidates under `compare`, in `compare` order, written into `top`.
+ *
+ * Both retention rankings end in `first.start - second.start`, and a component's `start` is the
+ * pixel the flood entered it from, so no two components can tie: each comparator is a *total* order
+ * over the candidate set. That is what makes selection interchangeable with the sort it replaces —
+ * `sort(compare).slice(0, limit)` has exactly one possible answer when no two elements compare
+ * equal, so any correct top-`limit` produces the identical array, element for element.
+ */
+function selectTopComponents(
+	candidates: readonly MutableComponent[],
+	limit: number,
+	compare: (first: MutableComponent, second: MutableComponent) => number,
+	top: MutableComponent[],
+): void {
+	top.length = 0
+	if (limit <= 0) return
+	for (const candidate of candidates) {
+		let index = top.length
+		while (index > 0 && compare(candidate, top[index - 1]!) < 0) index -= 1
+		if (index >= limit) continue
+		for (let shift = Math.min(top.length, limit - 1); shift > index; shift -= 1) {
+			top[shift] = top[shift - 1]!
+		}
+		top[index] = candidate
+	}
+}
+
+/** Whether `components` holds the component that entered the flood at `start`. */
+function containsComponentStart(components: readonly MutableComponent[], start: number): boolean {
+	for (let index = 0; index < components.length; index++) {
+		if (components[index]!.start === start) return true
+	}
+	return false
+}
+
+/**
+ * Rewrite `retainedFor` only when the retention actually changed.
+ *
+ * A component keeps its list across inserts far more often than it changes it — the eight largest
+ * of a family are mostly stable once the family has a few hundred components — and the array's
+ * *contents* are all any consumer reads (`retainedFor.includes(...)`, and one field copy into the
+ * public record). Nothing observes its identity, so leaving an equal array in place is invisible.
+ */
+function applyComponentRetention(component: MutableComponent, support: boolean, role: boolean): void {
+	const existing = component.retainedFor
+	const expected = (support ? 1 : 0) + (role ? 1 : 0)
+	if (existing.length === expected &&
+		(!support || existing[0] === "connected-support") &&
+		(!role || existing[expected - 1] === "role-observation")) {
+		return
+	}
+	component.retainedFor = support
+		? (role ? ["connected-support", "role-observation"] : ["connected-support"])
+		: ["role-observation"]
+}
+
+/**
+ * Scratch for the two rankings. `retainInto` is a leaf — it calls only the two comparators and the
+ * helpers above, none of which re-enter it — so one pair of buffers serves every call and the
+ * ~325k retentions a ten-artwork run performs allocate nothing for them.
+ */
+const largestScratch: MutableComponent[] = []
+const roleObservedScratch: MutableComponent[] = []
+
+function retainInto(
+	candidates: readonly MutableComponent[],
+	options: NativeEvidenceOptions,
+	retained: MutableComponent[],
+): MutableComponent[] {
+	selectTopComponents(candidates, options.largestComponentsPerFamily,
+		compareComponentsByPopulation, largestScratch)
+	selectTopComponents(candidates, options.roleObservationComponentsPerFamily,
+		compareComponentsByRoleObservation, roleObservedScratch)
+	retained.length = 0
+	// The reference walked `[...largest, ...roleObserved]` into a `Map` keyed by `start`, which keeps
+	// each component once and in that order; the two loops below are that dedup written out. The
+	// final ordering is a total order over the union, so the intermediate order cannot show through.
+	for (const candidate of largestScratch) {
+		applyComponentRetention(candidate, true, containsComponentStart(roleObservedScratch, candidate.start))
+		retained.push(candidate)
+	}
+	for (const candidate of roleObservedScratch) {
+		if (containsComponentStart(largestScratch, candidate.start)) continue
+		applyComponentRetention(candidate, false, true)
+		retained.push(candidate)
+	}
+	return retained.sort(compareComponentsByPopulation)
+}
+
 export function retainFamilyComponents(
 	candidates: readonly MutableComponent[],
 	options: NativeEvidenceOptions = DEFAULT_NATIVE_EVIDENCE_OPTIONS,
 ): MutableComponent[] {
-	const largest = [...candidates]
-		.sort((first, second) => compareNumbersDescending(first.population, second.population) || first.start - second.start)
-		.slice(0, options.largestComponentsPerFamily)
-	const roleObserved = [...candidates]
-		.sort((first, second) =>
-			compareNumbersDescending(first.rolePreliminary, second.rolePreliminary) ||
-			compareNumbersDescending(first.population, second.population) ||
-			first.start - second.start)
-		.slice(0, options.roleObservationComponentsPerFamily)
-	const largestStarts = new Set(largest.map(({ start }) => start))
-	const roleStarts = new Set(roleObserved.map(({ start }) => start))
-	const retained = new Map<number, MutableComponent>()
-	for (const candidate of [...largest, ...roleObserved]) {
-		candidate.retainedFor = [
-			...(largestStarts.has(candidate.start) ? ["connected-support" as const] : []),
-			...(roleStarts.has(candidate.start) ? ["role-observation" as const] : []),
-		]
-		retained.set(candidate.start, candidate)
-	}
-	return [...retained.values()].sort((first, second) =>
-		compareNumbersDescending(first.population, second.population) || first.start - second.start)
+	return retainInto(candidates, options, [])
 }
+
+/**
+ * The flood calls this once per connected component — ~325k times over ten artworks, and ~100k on a
+ * single busy one. The reference spent roughly a hundred allocations on each of those calls: a
+ * concatenated candidate array, two full copies of it, two `slice`s, two `map`s, two `Set`s, a
+ * `Map`, another concatenation, three array literals per retained component for the `retainedFor`
+ * spread, and a spread into `splice`. None of that is the retention *policy*, which is unchanged.
+ */
+const insertScratch: MutableComponent[] = []
 
 function insertComponent(
 	components: MutableComponent[],
 	component: MutableComponent,
 	options: NativeEvidenceOptions,
 ): void {
-	components.splice(0, components.length, ...retainFamilyComponents([...components, component], options))
+	components.push(component)
+	retainInto(components, options, insertScratch)
+	components.length = 0
+	for (let index = 0; index < insertScratch.length; index++) components.push(insertScratch[index]!)
 }
 
 function componentSimilarity(first: MutableComponent, second: MutableComponent): number {
@@ -2347,9 +2439,17 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 		if (first === undefined || second === undefined) continue
 		smoothPairs.add(first < second ? first * familyCount + second : second * familyCount + first)
 	}
-	const componentAtStart = new Map<number, string>()
+	// The BFS below asks "does a component start at this pixel?" once per pixel per pass, which was a
+	// `Map<number, string>` lookup on a hash of every component in the artwork. Component ids are
+	// `${familyId}-region-${start}` and so never empty, which is what made the reference's truthiness
+	// test a membership test; the `+ 1` offset below carries the same meaning into a typed array.
+	const componentIdList: string[] = []
+	const componentAtStart = new Int32Array(evidence.pixelCount)
 	for (const family of evidence.families) {
-		for (const component of family.components) componentAtStart.set(component.startPixelIndex, component.id)
+		for (const component of family.components) {
+			componentAtStart[component.startPixelIndex] = componentIdList.length + 1
+			componentIdList.push(component.id)
+		}
 	}
 	let visited = new Uint8Array(evidence.pixelCount)
 	const queue = new Int32Array(evidence.pixelCount)
@@ -2390,6 +2490,14 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 	const lastY = height - 1
 	const rightCornerX = width - cornerWidth
 	const bottomCornerY = height - cornerHeight
+	// Per-domain tallies, hoisted out of the BFS and reset through their own order lists so a reset
+	// costs what the domain touched rather than what the artwork contains. `familyPopulationOrder`
+	// records first-encounter order, which is the `Map`'s insertion order — and `weightedFieldScore`
+	// sums in exactly that sequence, so it is load-bearing, not incidental.
+	const familyPopulationCounts = new Float64Array(familyCount)
+	const familyPopulationOrder: number[] = []
+	const componentSeen = new Uint8Array(componentIdList.length)
+	const domainComponentSlots: number[] = []
 	for (const pass of passes) {
 		const memberIds = pass.members
 		// Same predicate as `memberIds.has(family.id)`, resolved once per family instead of once
@@ -2423,8 +2531,14 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 			// Keyed by family *index* rather than id. The insertion sequence is unchanged (index
 			// and id are in bijection), so the `weightedFieldScore` sum below still accumulates in
 			// exactly the same order — reassociating it would move the low bits.
-			const familyPopulations = new Map<number, number>()
-			const componentIds = new Set<string>()
+			for (let index = 0; index < familyPopulationOrder.length; index++) {
+				familyPopulationCounts[familyPopulationOrder[index]!] = 0
+			}
+			familyPopulationOrder.length = 0
+			for (let index = 0; index < domainComponentSlots.length; index++) {
+				componentSeen[domainComponentSlots[index]!] = 0
+			}
+			domainComponentSlots.length = 0
 			let overlapsLaneProposal = false
 			while (queueRead < queueLength) {
 				const pixelIndex = queue[queueRead++]
@@ -2438,9 +2552,13 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 				sumL += labs[labOffset]
 				sumA += labs[labOffset + 1]
 				sumB += labs[labOffset + 2]
-				familyPopulations.set(familyIndex, (familyPopulations.get(familyIndex) ?? 0) + 1)
-				const componentId = componentAtStart.get(pixelIndex)
-				if (componentId) componentIds.add(componentId)
+				if (familyPopulationCounts[familyIndex] === 0) familyPopulationOrder.push(familyIndex)
+				familyPopulationCounts[familyIndex] += 1
+				const componentSlot = componentAtStart[pixelIndex]
+				if (componentSlot !== 0 && componentSeen[componentSlot - 1] === 0) {
+					componentSeen[componentSlot - 1] = 1
+					domainComponentSlots.push(componentSlot - 1)
+				}
 				if (x === 0 || y === 0 || x === lastX || y === lastY) borderPixels += 1
 				quadrants |= 1 << ((x >= halfWidth ? 1 : 0) + (y >= halfHeight ? 2 : 0))
 				if (x < cornerWidth && y < cornerHeight) cornerCounts[0] += 1
@@ -2479,8 +2597,8 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 			}
 			const populationFraction = queueLength / pixelCount
 			const ownedCornerCount = cornerCounts.filter((count) => count >= cornerPopulation * 0.5).length
-			const weightedFieldScore = [...familyPopulations.entries()].reduce((sum, [familyIndex, population]) =>
-				sum + families[familyIndex].fieldScore * population, 0) / queueLength
+			const weightedFieldScore = familyPopulationOrder.reduce((sum, familyIndex) =>
+				sum + families[familyIndex].fieldScore * familyPopulationCounts[familyIndex], 0) / queueLength
 			const rejectionReasons: string[] = []
 			if (populationFraction < 0.08) rejectionReasons.push("field domain population below 0.08")
 			if (ownedCornerCount < 2) rejectionReasons.push("field domain owns fewer than two native corner fields")
@@ -2505,8 +2623,8 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 				transitionFamilyCount: 0,
 				transitionPopulationFraction: 0,
 				transitionQuadrantCoverage: 0,
-				familyIds: [...familyPopulations.keys()].map((index) => families[index].id).sort(compareAscii),
-				componentIds: [...componentIds].sort(compareAscii),
+				familyIds: familyPopulationOrder.map((index) => families[index].id).sort(compareAscii),
+				componentIds: domainComponentSlots.map((slot) => componentIdList[slot]!).sort(compareAscii),
 				eligible: rejectionReasons.length === 0,
 				rejectionReasons,
 			}
@@ -2515,7 +2633,7 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 			// A composite domain that reproduces a lane domain exactly, or that covers a field
 			// the lane walk already proposes, carries no new evidence.
 			const redundant = pass.kind === "diffuse-composite" && (laneShapes.has(shape) || overlapsLaneProposal)
-			if (componentIds.size > 0 && !redundant) {
+			if (domainComponentSlots.length > 0 && !redundant) {
 				domains.push({ evidence: domainEvidence, pixelIndexes: Uint32Array.from(queue.subarray(0, queueLength)) })
 			}
 		}
@@ -3158,6 +3276,109 @@ function fieldMidpointEvidence(
 	}
 }
 
+/**
+ * The band mode histogram, as open addressing on typed arrays.
+ *
+ * `nativeBandEvidence`'s pixel loop ran one `Map.get` plus one `Map.set` for **every pixel of every
+ * field domain of every fit**. Ablating those two calls (and nothing else) from a ten-artwork run
+ * moved it from 9889ms to 9358ms of CPU: 531ms, 5.4% of total extraction time, spent hashing boxed
+ * numbers.
+ *
+ * Only one thing is ever read back — the argmax under `count desc || key asc`, which is a total
+ * order over distinct keys — so the table's slot order cannot show through, exactly as the `Map`'s
+ * insertion order could not. Slots hold `key + 1` so that `0` can mark "empty"; mode keys are
+ * `familyIndex * 131072 + quantizedKey` and therefore never negative.
+ */
+type BandModeTable = {
+	keys: Float64Array
+	counts: Float64Array
+	mask: number
+	size: number
+	growthLimit: number
+}
+
+const BAND_MODE_INITIAL_CAPACITY = 256
+
+function createBandModeTable(): BandModeTable {
+	return {
+		keys: new Float64Array(BAND_MODE_INITIAL_CAPACITY),
+		counts: new Float64Array(BAND_MODE_INITIAL_CAPACITY),
+		mask: BAND_MODE_INITIAL_CAPACITY - 1,
+		size: 0,
+		growthLimit: BAND_MODE_INITIAL_CAPACITY >> 1,
+	}
+}
+
+/**
+ * Deterministic and total: `>>> 0` reduces the stored key modulo 2^32 before mixing, so two keys
+ * that differ only above 2^32 would land in the same bucket. That costs a probe step and nothing
+ * else — the slot comparison below is on the full value.
+ */
+function bandModeBucket(table: BandModeTable, stored: number): number {
+	return (Math.imul(stored >>> 0, 0x9e37_79b1) >>> 0) & table.mask
+}
+
+function growBandModeTable(table: BandModeTable): void {
+	const previousKeys = table.keys
+	const previousCounts = table.counts
+	const capacity = previousKeys.length * 2
+	table.keys = new Float64Array(capacity)
+	table.counts = new Float64Array(capacity)
+	table.mask = capacity - 1
+	table.growthLimit = capacity >> 1
+	for (let slot = 0; slot < previousKeys.length; slot++) {
+		const stored = previousKeys[slot]!
+		if (stored === 0) continue
+		let probe = bandModeBucket(table, stored)
+		while (table.keys[probe] !== 0) probe = (probe + 1) & table.mask
+		table.keys[probe] = stored
+		table.counts[probe] = previousCounts[slot]!
+	}
+}
+
+function incrementBandMode(table: BandModeTable, key: number): void {
+	const stored = key + 1
+	let probe = bandModeBucket(table, stored)
+	for (;;) {
+		const found = table.keys[probe]!
+		if (found === stored) {
+			table.counts[probe] += 1
+			return
+		}
+		if (found === 0) {
+			table.keys[probe] = stored
+			table.counts[probe] = 1
+			table.size += 1
+			if (table.size > table.growthLimit) growBandModeTable(table)
+			return
+		}
+		probe = (probe + 1) & table.mask
+	}
+}
+
+/**
+ * The key with the highest count, ties broken by the smaller key; `-1` when the band is empty.
+ *
+ * That is `[...modes.entries()].sort(count desc || key asc)[0]?.[0] ?? -1` with the sort removed:
+ * the comparator is a total order over distinct keys, so a single scan holding the running best
+ * reaches the same element from any starting order.
+ */
+function dominantBandMode(table: BandModeTable): number {
+	let bestKey = -1
+	let bestCount = -1
+	for (let slot = 0; slot < table.keys.length; slot++) {
+		const stored = table.keys[slot]!
+		if (stored === 0) continue
+		const key = stored - 1
+		const count = table.counts[slot]!
+		if (count > bestCount || (count === bestCount && key < bestKey)) {
+			bestKey = key
+			bestCount = count
+		}
+	}
+	return bestKey
+}
+
 function nativeBandEvidence(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
@@ -3169,7 +3390,7 @@ function nativeBandEvidence(
 	dispersion: number
 	edgeContinuity: number
 }> {
-	const bands = Array.from({ length: bandCount }, () => ({ sum: 0, sumSquares: 0, count: 0, modes: new Map<number, number>() }))
+	const bands = Array.from({ length: bandCount }, () => ({ sum: 0, sumSquares: 0, count: 0, modes: createBandModeTable() }))
 	const unit: OKLab = [fit.slope[0] / fit.span, fit.slope[1] / fit.span, fit.slope[2] / fit.span]
 	const pixelIndexes = fit.domain.pixelIndexes
 	const width = evidence.width
@@ -3202,7 +3423,7 @@ function nativeBandEvidence(
 		band.sumSquares += projected * projected
 		band.count += 1
 		const modeKey = familyAt[pixelIndex] * 131_072 + quantizedKeyOf(labL, labA, labB, evidence.familyBinStep)
-		band.modes.set(modeKey, (band.modes.get(modeKey) ?? 0) + 1)
+		incrementBandMode(band.modes, modeKey)
 		const pixelX = pixelIndex % width
 		for (let direction = 0; direction < 2; direction++) {
 			const neighbor = direction === 0
@@ -3242,8 +3463,7 @@ function nativeBandEvidence(
 		const bandMean = band.sum / band.count
 		return sum + Math.max(0, band.sumSquares / band.count - bandMean * bandMean) * band.count
 	}, 0) / Math.max(1, populatedCount)
-	const dominantModes = bands.map(({ modes }) => [...modes.entries()]
-		.sort((first, second) => compareNumbersDescending(first[1], second[1]) || first[0] - second[0])[0]?.[0] ?? -1)
+	const dominantModes = bands.map(({ modes }) => dominantBandMode(modes))
 	let modeTransitions = 0
 	for (let index = 1; index < dominantModes.length; index++) {
 		if (dominantModes[index] >= 0 && dominantModes[index - 1] >= 0 && dominantModes[index] !== dominantModes[index - 1]) {

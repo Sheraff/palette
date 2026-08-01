@@ -609,17 +609,38 @@ function gradientRenderingKey(treatment: CompletePaletteTreatment): string {
 		: "flat"
 }
 
+/**
+ * Both keys below are pure functions of a `CompletePaletteTreatment`, which is deeply readonly, so
+ * memoising them per treatment object is invisible.
+ *
+ * It is worth doing because of *where* they are called. `treatmentStructuralKey` sits inside the
+ * comparator of `orderedTreatments`' sort, so it ran twice per comparison — `O(n log n)` string
+ * builds for `n` distinct answers, each an eleven-element array joined over a
+ * `completeTreatmentKey` — and then again once per evaluation for `structuralKey`. On top of that,
+ * `extractPaletteDetails` ranks the same candidate array twice (the coverage gate's no-coverage
+ * reference pass, then the real one) and `selectWinner` ranks a subset a third time, so every one
+ * of those builds was repeated across passes as well.
+ */
+const renderedFieldClaimKeys = new WeakMap<CompletePaletteTreatment, string>()
+const treatmentStructuralKeys = new WeakMap<CompletePaletteTreatment, string>()
+
 function renderedFieldClaimKey(treatment: CompletePaletteTreatment): string {
-	return [
+	const memoised = renderedFieldClaimKeys.get(treatment)
+	if (memoised !== undefined) return memoised
+	const key = [
 		treatment.familyRoles.background,
 		treatment.familyRoles.surface,
 		treatment.background.hex.toLowerCase(),
 		treatment.surface.hex.toLowerCase(),
 	].join("\0")
+	renderedFieldClaimKeys.set(treatment, key)
+	return key
 }
 
 function treatmentStructuralKey(treatment: CompletePaletteTreatment): string {
-	return [
+	const memoised = treatmentStructuralKeys.get(treatment)
+	if (memoised !== undefined) return memoised
+	const key = [
 		completeTreatmentKey(treatment),
 		treatment.fieldTreatment,
 		treatment.familyRoles.background,
@@ -632,6 +653,8 @@ function treatmentStructuralKey(treatment: CompletePaletteTreatment): string {
 		gradientRenderingKey(treatment),
 		treatment.sourceFieldHypothesisId,
 	].join("\0")
+	treatmentStructuralKeys.set(treatment, key)
+	return key
 }
 
 /**
@@ -863,51 +886,113 @@ function evaluateTreatment(
  * This composes with quality-axis work: it adds a dimension beside the axes and changes none of
  * them.
  */
-function dominates(
-	first: WinnerEvaluation,
-	second: WinnerEvaluation,
-	gamutMode: typeof GAMUT_COVERAGE.integration,
+/**
+ * Everything `dominates` reads about one candidate, gathered once per ranking pass.
+ *
+ * The Pareto check is `O(n^2)` in the candidate count — around 1.4M `dominates` calls on a busy
+ * artwork — and every one of those calls was re-deriving the same per-candidate quantities from
+ * scratch: two `utilityLevel`/`evidenceLevel` divisions, a four-element role array allocated inside
+ * `sameFamilyAssignment`, and up to eleven string-keyed reads into `evidenceLevels`. None of that
+ * depends on the *pair*, only on each side, so it is hoisted here.
+ *
+ * This is a pure re-association of *reads*, not of arithmetic: every quantized level is the same
+ * `Math.floor` of the same expression it was before, computed once instead of `2n` times, and the
+ * guard loop still walks the same terms in the same order with the same short-circuits. Nothing
+ * here can move a bit.
+ */
+type DominationFacts = Readonly<{
+	gradient: boolean
+	collapseSurface: boolean
+	collapseAccent: boolean
+	backgroundFamily: string
+	surfaceFamily: string
+	foregroundFamily: string
+	accentFamily: string
+	endpointBandSpread: number | null
+	authorizedLevel: number
+	coveredLevel: number
+	/**
+	 * The guarded levels in guard order — the `objectiveGuards` terms when the vocabulary declares
+	 * them, otherwise `WINNER_QUALITY_AXES` read out of `evidenceLevels`. The two former loops had
+	 * identical shape (walk, short-circuit on `<`, set `strictlyBetter` on `>`, then return it), so
+	 * one indexed loop over the right vector is the same predicate in both vocabularies.
+	 */
+	levels: Float64Array
+}>
+
+function dominationFacts(
+	evaluation: WinnerEvaluation,
 	objectiveGuards: readonly ObjectiveTerm[] | null,
+): DominationFacts {
+	const levels = new Float64Array(objectiveGuards !== null ? objectiveGuards.length : WINNER_QUALITY_AXES.length)
+	if (objectiveGuards !== null) {
+		for (let index = 0; index < objectiveGuards.length; index++) {
+			levels[index] = evaluation.objectiveLevels[objectiveGuards[index]!.term]
+		}
+	} else {
+		for (let index = 0; index < WINNER_QUALITY_AXES.length; index++) {
+			levels[index] = evaluation.evidenceLevels[WINNER_QUALITY_AXES[index]!]
+		}
+	}
+	const treatment = evaluation.treatment
+	return {
+		gradient: treatment.gradient,
+		collapseSurface: treatment.collapse.surface,
+		collapseAccent: treatment.collapse.accent,
+		backgroundFamily: treatment.familyRoles.background,
+		surfaceFamily: treatment.familyRoles.surface,
+		foregroundFamily: treatment.familyRoles.foreground,
+		accentFamily: treatment.familyRoles.accent,
+		endpointBandSpread: treatment.scores.endpointBandSpread,
+		authorizedLevel: utilityLevel(evaluation.identityAuthorizedGain),
+		coveredLevel: evidenceLevel(evaluation.gamutCoverage),
+		levels,
+	}
+}
+
+function dominates(
+	first: DominationFacts,
+	second: DominationFacts,
+	gamutMode: typeof GAMUT_COVERAGE.integration,
 ): boolean {
 	let strictlyBetter = false
-	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
-		sameFamilyAssignment(first.treatment, second.treatment) &&
-		comparableBandSpread(first, second) &&
-		second.treatment.scores.endpointBandSpread! > first.treatment.scores.endpointBandSpread!) {
+	// `sameFamilyAssignment`'s `first.gradient === second.gradient` is subsumed by the two gradient
+	// tests it sat behind, and `comparableBandSpread` is the two null tests. Same conjunction, same
+	// order, same short-circuit points — without the array literal `every` allocated per pair.
+	if (BAND_TIE_BREAK === "same-family-band-extent" && first.gradient && second.gradient &&
+		first.collapseSurface === second.collapseSurface &&
+		first.collapseAccent === second.collapseAccent &&
+		first.backgroundFamily === second.backgroundFamily &&
+		first.surfaceFamily === second.surfaceFamily &&
+		first.foregroundFamily === second.foregroundFamily &&
+		first.accentFamily === second.accentFamily &&
+		first.endpointBandSpread !== null && second.endpointBandSpread !== null &&
+		second.endpointBandSpread > first.endpointBandSpread) {
 		// Covering more of the gradient's surface is evidence in its own right:
 		// a pair that spans more of the endpoint bands is not dominated by a
 		// narrower pair of the same families, however the other axes fall.
 		return false
 	}
 	if (WINNER_RANKING_HYPOTHESES.authorizedIdentity) {
-		const authorized = (evaluation: WinnerEvaluation): number =>
-			utilityLevel(evaluation.identityAuthorizedGain)
-		if (authorized(first) < authorized(second)) return false
-		if (authorized(first) > authorized(second)) strictlyBetter = true
+		if (first.authorizedLevel < second.authorizedLevel) return false
+		if (first.authorizedLevel > second.authorizedLevel) strictlyBetter = true
 	}
 	// Only the two wider integrations let coverage guard domination. Under `"utility"` the frontier
 	// keeps exactly the shape the eleven reviewed axes give it, and coverage acts on the objective
 	// alone — a candidate cannot survive pruning merely by covering more hue.
 	if (gamutMode === "axis" || gamutMode === "authority") {
-		const covered = (evaluation: WinnerEvaluation): number => evidenceLevel(evaluation.gamutCoverage)
-		if (covered(first) < covered(second)) return false
-		if (covered(first) > covered(second)) strictlyBetter = true
+		if (first.coveredLevel < second.coveredLevel) return false
+		if (first.coveredLevel > second.coveredLevel) strictlyBetter = true
 	}
 	// The invariant: guard exactly the terms the objective sums, each at its own declared quantum.
-	// It subsumes the eleven-axis loop below — under `"axis"` it also re-states the coverage guard
-	// just above, which is the same predicate at the same quantum and therefore idempotent.
-	if (objectiveGuards !== null) {
-		for (const term of objectiveGuards) {
-			const firstLevel = first.objectiveLevels[term.term]
-			const secondLevel = second.objectiveLevels[term.term]
-			if (firstLevel < secondLevel) return false
-			if (firstLevel > secondLevel) strictlyBetter = true
-		}
-		return strictlyBetter
-	}
-	for (const axis of WINNER_QUALITY_AXES) {
-		if (first.evidenceLevels[axis] < second.evidenceLevels[axis]) return false
-		if (first.evidenceLevels[axis] > second.evidenceLevels[axis]) strictlyBetter = true
+	// Under `"objective-terms"` this vector *is* those terms; under `"declared-guards"` it is the
+	// eleven axes. Under `"axis"` the coverage term restates the guard just above, which is the same
+	// predicate at the same quantum and therefore idempotent.
+	const firstLevels = first.levels
+	const secondLevels = second.levels
+	for (let index = 0; index < firstLevels.length; index++) {
+		if (firstLevels[index]! < secondLevels[index]!) return false
+		if (firstLevels[index]! > secondLevels[index]!) strictlyBetter = true
 	}
 	return strictlyBetter
 }
@@ -1035,11 +1120,23 @@ export function scorePaletteCandidates(
 	// `some` short-circuits on the first dominator, where the previous `filter(...).sort(...)`
 	// scanned every candidate and then sorted the whole dominator list to read `[0].key` — a value
 	// nothing consumed. Only `paretoMember` is used, and it is unchanged.
-	const evaluations = rawEvaluations.map((evaluation): WinnerEvaluation => ({
-		...evaluation,
-		paretoMember: !rawEvaluations.some((candidate) =>
-			candidate !== evaluation && dominates(candidate, evaluation, gamutMode, objectiveGuards)),
-	})).sort(compare)
+	//
+	// The facts vector is built once per candidate and indexed in step with `rawEvaluations`. Every
+	// entry of that array is a distinct object (one fresh `evaluateTreatment` result each), so
+	// comparing indices is the same self-exclusion the reference comparison performed.
+	const facts = rawEvaluations.map((evaluation) => dominationFacts(evaluation, objectiveGuards))
+	const evaluations = rawEvaluations.map((evaluation, index): WinnerEvaluation => {
+		const evaluated = facts[index]!
+		let dominated = false
+		for (let candidate = 0; candidate < facts.length; candidate++) {
+			if (candidate === index) continue
+			if (dominates(facts[candidate]!, evaluated, gamutMode)) {
+				dominated = true
+				break
+			}
+		}
+		return { ...evaluation, paretoMember: !dominated }
+	}).sort(compare)
 	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compare)
 	if (frontier.length === 0) throw new Error("The palette quality frontier is empty")
 	const winner = frontier[0]
