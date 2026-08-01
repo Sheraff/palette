@@ -49,6 +49,29 @@ export type AlbumArtworkPaletteV2Phase3SupportedGradientMidpointProvenance =
 		spatialSpreadRatio: number
 		/** Distance from the straight interpolation between the rendered endpoints. */
 		chordDeviation: number
+	}> |
+	/**
+	 * A third stop nominated in colour space rather than in the field's geometry: see
+	 * `ramp-midpoint.ts`. It knows nothing about a field domain or a spatial band, because it was
+	 * not measured in one — it knows which populated colour of the artwork it is, and how much
+	 * closer to the artwork it puts the rendered ramp.
+	 */
+	Readonly<{
+		origin: "ramp-support"
+		exactSource: true
+		familyId: string
+		pixelIndex: number
+		x: number
+		y: number
+		/** Share of the artwork occupied by this colour's own quantisation cell. */
+		populationFraction: number
+		/** Distance from the straight interpolation between the rendered endpoints. */
+		chordDeviation: number
+		/** ΔE to the nearer of the two endpoints. */
+		endpointDifference: number
+		/** Worst ΔE from the ramp to the artwork before this stop, and after it. */
+		excursionBefore: number
+		excursionAfter: number
 	}>
 
 export type AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor =

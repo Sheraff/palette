@@ -46,6 +46,10 @@ import { selectSourceEligibleWinner } from "./winner-selection.ts";
 
 import { restrictTextRoleToStrongestClaim } from "./text-role-restriction.ts";
 
+import { rampMidpointInsertion } from "./ramp-midpoint.ts";
+
+import type { NativePaletteEvidence } from "./palette-core.ts";
+
 import type { RawImage } from "./types.ts";
 
 const NO_MIDPOINT = Object.freeze({
@@ -320,6 +324,35 @@ function applyGradientSupport(
 }
 
 /**
+ * The ramp-midpoint route, applied to the field the rest of the pipeline has already settled.
+ *
+ * Placed here, and only here, for gradient neutrality. Everything that decides *whether* a gradient
+ * publishes — winner selection, transition promotion, the supported-path flat fallback — has already
+ * run and returned; this reads the decision and can only add a third stop to a treatment whose
+ * `gradient` is already `true` and which has none. A flat winner is returned untouched, so the set of
+ * artworks that publish a gradient is provably the same with the flag on and off.
+ *
+ * With `RAMP_MIDPOINT_INSERTION` off, `rampMidpointInsertion` returns `null` before it reads a pixel
+ * and this function is the identity.
+ */
+function applyRampMidpoint(
+	evidence: NativePaletteEvidence,
+	gradient: Readonly<{
+		winner: CompletePaletteTreatment
+		midpoint: AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor
+	}>,
+): AlbumArtworkPaletteV2Phase3SupportedGradientMidpointDescriptor {
+	if (!gradient.winner.gradient) return gradient.midpoint
+	const decision = rampMidpointInsertion(
+		evidence,
+		gradient.winner.background,
+		gradient.winner.surface,
+		gradient.midpoint.kind === "source-supported-three-stop",
+	)
+	return decision?.descriptor ?? gradient.midpoint
+}
+
+/**
  * `gamutOverride` exists so a research harness can sweep the coverage integration and weight over the
  * *real* pipeline instead of a reimplementation of it. It is not part of the public `extractPalette`
  * surface and omitting it is the reviewed behaviour; `PaletteExtractionOptions` stays a user-facing
@@ -446,7 +479,7 @@ export function extractPaletteDetails(
 	return {
 		width: image.width,
 		height: image.height,
-		midpoint: gradient.midpoint,
+		midpoint: applyRampMidpoint(common.evidence.native, gradient),
 		winner: restrictTextRoleToStrongestClaim({
 			winner: gradient.winner,
 			identityObligations: common.seedAvailability.identityObligations,
