@@ -1047,6 +1047,11 @@ export const REGION_ROLE_SCORE_CUE_SPAN = 0.55
  * artworks, and moving it to 7 or 9 moves 32 of them (21 %). It is an integer, so it was perturbed
  * to the adjacent integers rather than scaled. It also carries the strongest over-fitting
  * signature in that sweep — it moves unseen artwork 2.1x as often as reviewed artwork.
+ *
+ * `componentRolePreliminary` computes the same expression from its own bare `8`. The sweep
+ * measured the two as independent sites and only this one reached the top bucket, so they are not
+ * unified here — whether they are one quantity or two that happen to agree is an open question,
+ * not something this lift decides.
  */
 export const REGION_RESOLVED_POPULATION_LOG2_SCALE = 8
 
@@ -1059,6 +1064,10 @@ export const REGION_RESOLVED_POPULATION_LOG2_SCALE = 8
  * PERVASIVE CLIFF (tier-B sweep 2026-08-01, cliff dossier, agent aa68beee): live on all 154
  * artworks, +-20 % moves 43 of them (28 %). It is a scale divisor, not a weight — it does not
  * belong to any vector and nothing renormalises when it moves.
+ *
+ * `componentRolePreliminary` and `distinctive` each divide a local contrast by their own bare
+ * `0.16`. Same caveat as the population scale above: three sites, measured independently, one of
+ * them a cliff, and nothing on record says whether they are one quantity or three.
  */
 export const REGION_FULL_LOCAL_CONTRAST = 0.16
 
