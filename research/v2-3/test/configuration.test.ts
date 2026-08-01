@@ -549,7 +549,7 @@ test("the reviewed same-color bar is one number in three places", () => {
 	const distinctness = ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness
 	// [REVIEWED] Batch 12 (`muse`, `slim`): "we should consider them as the same color, in which
 	// case the same rule as before should apply". SEVEN midpoint judgements bracket the bar —
-	// refused at 0.00, 1.00 and 3.01, accepted at 3.64, 9.78, 19.75 and 62.59 — and batch 14
+	// refused at 0.00, 1.00 and 3.01, accepted at 3.64, 9.78, 19.75 and 62.58 — and batch 14
 	// (`placebo`) is the recorded shadow-material caveat on it.
 	//
 	// This comment said "Six" while enumerating seven; so does the source comment it mirrors.
@@ -559,11 +559,11 @@ test("the reviewed same-color bar is one number in three places", () => {
 	// 2026-08-01, by the pervasive-cliff pass; the sweep's claim to have fixed it was premature —
 	// `palette-core.ts:3049`.)
 	//
-	// Carry the counterexample with the bar: `palette-core.ts:3061-3067` records a midpoint at
-	// ΔE 2.58 — below this bar — carried by a *preferred* reviewed output, so the bar is known
-	// over-strict by at least one case. `placebo`'s own verdict has also moved on since batch 12
-	// (review-12 -> review-14-b2, a different endorsed accent), which is exactly why batch 14 is
-	// cited here as the caveat rather than batch 12 as the last word.
+	// The former over-strict counterexample (a ΔE 2.58 midpoint on a preferred output) is REFUTED:
+	// its de-confounded rerun (`verdicts.jsonl:98`, four identical roles, only the midpoint
+	// differing) chose the NO-midpoint side, strong — the clean comparison endorses the bar. See
+	// `research/v2-3-experiments/midpoint-fidelity/EXPERIMENT.md` (2026-08-02), which also
+	// re-derived all seven midpoint anchors from named verdict records.
 	assert.equal(distinctness.sameColor, 3.3)
 	// [MEASURED] Track Q — `research/v2-3-experiments/track-q/EXPERIMENT.md`, imported to trunk by
 	// the 2026-08-01 provenance sweep; this citation previously resolved nowhere. Raise these

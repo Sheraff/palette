@@ -3166,7 +3166,7 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  *
  * The threshold is read off those judgements rather than chosen. Seven anchors bracket it: the
  * refused midpoints score 0.00 (identical to the background), 1.00, and 3.01, while the accepted
- * ones score 3.64, 9.78, 19.75 and 62.59. The 3.01 case was declined on the grounds that the
+ * ones score 3.64, 9.78, 19.75 and 62.58. The 3.01 case was declined on the grounds that the
  * midpoint was drawn from *shadow* material — "this is not the vibe of the artwork" — which is a
  * statement about what the colour is made of rather than how far away it is; it is included here
  * because a bar in (3.01, 3.64) is the only currently available way to refuse it, not because
@@ -3176,13 +3176,12 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  * OKLab distance 0.0101 and 0.0100 respectively — the wrong side of each other — which is the
  * shadow-inflation `perceptualDifference` documents.
  *
- * CAVEAT. This bar is known to be over-strict by at least one case: a midpoint at 3.30's far side
- * (ΔE 2.58) was carried by a *preferred* reviewed output. That preference bundled a midpoint with
- * an accent change and left no note, so it does not cleanly endorse the midpoint, but it does mean
- * distance alone cannot be the whole account — the declined case sits *further* from its endpoints
- * than the preferred one. The band evidence already carried (`occupancyShare`,
- * `bandPopulationFraction`, `spatialSpreadRatio`) does not separate them either. Whatever
- * distinguishes field material from shadow material is not yet measured.
+ * A former CAVEAT here claimed the bar was over-strict by one case (a ΔE 2.58 midpoint carried by
+ * a preferred output). REFUTED by the midpoint-fidelity arm (2026-08-02): that artwork
+ * (`000637ff`) has a later de-confounded rerun (`verdicts.jsonl:98`) where all four roles are
+ * identical and only the midpoint differs — and the reviewer chose the NO-midpoint side, strong.
+ * The original preference bundled an accent change; the clean comparison endorses the bar. The
+ * anchors' full provenance is in `research/v2-3-experiments/midpoint-fidelity/EXPERIMENT.md`.
  */
 export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE =
 	ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness.sameColor
