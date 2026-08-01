@@ -237,7 +237,31 @@ function radialCenterEligible(evidence: NativePaletteEvidence, node: RegionNode)
 		x >= 0.12 && x <= 0.88 && y >= 0.12 && y <= 0.88
 }
 
+/**
+ * One region graph per evidence object.
+ *
+ * `discoverNativeFieldTransitions` and `discoverSupportedNativeFieldTransitionPaths` are both
+ * called once per extraction on the *same* `NativePaletteEvidence` — `common.evidence.native` — and
+ * each of them opened by flooding the whole image into regions from scratch. The graph is a pure
+ * function of the evidence, and nothing outside `buildRegionGraph` writes to it: every consumer
+ * either reads, or copies before sorting (`[...graph.edgesByNode[i]].sort(...)`), and the graph
+ * never leaves this module. So the second build was doing identical work for an identical answer.
+ *
+ * A `WeakMap` keyed on the evidence object cannot affect determinism — it is never iterated, and a
+ * hit returns the very object the miss would have constructed — and it lets the graph be collected
+ * with the evidence rather than pinning it for the process lifetime.
+ */
+const regionGraphCache = new WeakMap<NativePaletteEvidence, RegionGraph>()
+
 function buildRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
+	const cached = regionGraphCache.get(evidence)
+	if (cached) return cached
+	const built = computeRegionGraph(evidence)
+	regionGraphCache.set(evidence, built)
+	return built
+}
+
+function computeRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
 	const regionAt = new Int32Array(evidence.pixelCount).fill(-1)
 	const queue = new Int32Array(evidence.pixelCount)
 	const nodes: RegionNode[] = []
@@ -246,6 +270,17 @@ function buildRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
 	const cornerWidth = Math.max(1, Math.ceil(evidence.width * 0.15))
 	const cornerHeight = Math.max(1, Math.ceil(evidence.height * 0.15))
 	const perimeter = Math.max(1, evidence.width * 2 + evidence.height * 2 - 4)
+	// Loop-invariant reads and comparisons, hoisted out of the two per-pixel loops below.
+	const width = evidence.width
+	const height = evidence.height
+	const labs = evidence.labs
+	const familyAt = evidence.familyAt
+	const lastX = width - 1
+	const lastY = height - 1
+	const halfWidth = width / 2
+	const halfHeight = height / 2
+	const rightCornerX = width - cornerWidth
+	const bottomCornerY = height - cornerHeight
 
 	for (let start = 0; start < evidence.pixelCount; start++) {
 		if (regionAt[start] >= 0) continue
@@ -275,39 +310,70 @@ function buildRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
 			sumB: 0,
 			endpointRejectionReasons: [],
 		}
+		// Accumulate into locals rather than through the node object: these are the innermost
+		// writes in the whole extraction, and `node` is a plain mutable record V8 must re-check
+		// on every store. Flushed back below in the same order they were summed.
+		let population = 0
+		let minX = node.minX
+		let minY = node.minY
+		let maxX = node.maxX
+		let maxY = node.maxY
+		let borderPixels = 0
+		let quadrants = 0
+		let sumX = 0
+		let sumY = 0
+		let sumL = 0
+		let sumA = 0
+		let sumB = 0
+		const cornerCounts = node.cornerCounts
 		while (queueRead < queueLength) {
 			const pixelIndex = queue[queueRead++]
-			const x = pixelIndex % evidence.width
-			const y = Math.floor(pixelIndex / evidence.width)
-			const lab = labAt(evidence.labs, pixelIndex)
-			node.population += 1
-			node.minX = Math.min(node.minX, x)
-			node.minY = Math.min(node.minY, y)
-			node.maxX = Math.max(node.maxX, x)
-			node.maxY = Math.max(node.maxY, y)
-			node.sumX += x / widthDenominator
-			node.sumY += y / heightDenominator
-			node.sumL += lab[0]
-			node.sumA += lab[1]
-			node.sumB += lab[2]
-			if (x === 0 || y === 0 || x === evidence.width - 1 || y === evidence.height - 1) node.borderPixels += 1
-			node.quadrants |= 1 << ((x >= evidence.width / 2 ? 1 : 0) + (y >= evidence.height / 2 ? 2 : 0))
-			if (x < cornerWidth && y < cornerHeight) node.cornerCounts[0] += 1
-			if (x >= evidence.width - cornerWidth && y < cornerHeight) node.cornerCounts[1] += 1
-			if (x < cornerWidth && y >= evidence.height - cornerHeight) node.cornerCounts[2] += 1
-			if (x >= evidence.width - cornerWidth && y >= evidence.height - cornerHeight) node.cornerCounts[3] += 1
-			const neighbors = [
-				x > 0 ? pixelIndex - 1 : -1,
-				x + 1 < evidence.width ? pixelIndex + 1 : -1,
-				y > 0 ? pixelIndex - evidence.width : -1,
-				y + 1 < evidence.height ? pixelIndex + evidence.width : -1,
-			]
-			for (const neighbor of neighbors) {
-				if (neighbor < 0 || regionAt[neighbor] >= 0 || evidence.familyAt[neighbor] !== familyIndex) continue
+			const x = pixelIndex % width
+			const y = (pixelIndex / width) | 0
+			const labOffset = pixelIndex * 3
+			population += 1
+			if (x < minX) minX = x
+			if (y < minY) minY = y
+			if (x > maxX) maxX = x
+			if (y > maxY) maxY = y
+			sumX += x / widthDenominator
+			sumY += y / heightDenominator
+			sumL += labs[labOffset]
+			sumA += labs[labOffset + 1]
+			sumB += labs[labOffset + 2]
+			if (x === 0 || y === 0 || x === lastX || y === lastY) borderPixels += 1
+			quadrants |= 1 << ((x >= halfWidth ? 1 : 0) + (y >= halfHeight ? 2 : 0))
+			if (x < cornerWidth && y < cornerHeight) cornerCounts[0] += 1
+			if (x >= rightCornerX && y < cornerHeight) cornerCounts[1] += 1
+			if (x < cornerWidth && y >= bottomCornerY) cornerCounts[2] += 1
+			if (x >= rightCornerX && y >= bottomCornerY) cornerCounts[3] += 1
+			// Unrolled in the original left/right/up/down order: visit order sets the queue order,
+			// which sets each region's `start` and therefore its id.
+			for (let direction = 0; direction < 4; direction++) {
+				const neighbor = direction === 0
+					? (x > 0 ? pixelIndex - 1 : -1)
+					: direction === 1
+						? (x < lastX ? pixelIndex + 1 : -1)
+						: direction === 2
+							? (y > 0 ? pixelIndex - width : -1)
+							: (y < lastY ? pixelIndex + width : -1)
+				if (neighbor < 0 || regionAt[neighbor] >= 0 || familyAt[neighbor] !== familyIndex) continue
 				regionAt[neighbor] = node.index
 				queue[queueLength++] = neighbor
 			}
 		}
+		node.population = population
+		node.minX = minX
+		node.minY = minY
+		node.maxX = maxX
+		node.maxY = maxY
+		node.borderPixels = borderPixels
+		node.quadrants = quadrants
+		node.sumX = sumX
+		node.sumY = sumY
+		node.sumL = sumL
+		node.sumA = sumA
+		node.sumB = sumB
 
 		const populationFraction = node.population / evidence.pixelCount
 		const componentFamilyFraction = node.population / node.family.population
@@ -335,35 +401,51 @@ function buildRegionGraph(evidence: NativePaletteEvidence): RegionGraph {
 		nodes.push(node)
 	}
 
-	type MutableEdge = { first: number; second: number; boundaryEdges: number; localStepSum: number }
-	const mutableEdges = new Map<string, MutableEdge>()
+	type MutableEdge = { key: string; first: number; second: number; boundaryEdges: number; localStepSum: number }
+	// Keyed on the packed region pair instead of `"first:second"`. The string key is still what the
+	// edge carries and still what the sort below orders on — it is just built once per distinct
+	// edge now, rather than once per boundary pixel pair, of which a busy artwork has millions.
+	const nodeCount = nodes.length
+	const mutableEdges = new Map<number, MutableEdge>()
 	const addEdge = (firstRegion: number, secondRegion: number, localStep: number): void => {
-		const first = Math.min(firstRegion, secondRegion)
-		const second = Math.max(firstRegion, secondRegion)
-		const key = `${first}:${second}`
-		const existing = mutableEdges.get(key)
+		const first = firstRegion < secondRegion ? firstRegion : secondRegion
+		const second = firstRegion < secondRegion ? secondRegion : firstRegion
+		const packed = first * nodeCount + second
+		const existing = mutableEdges.get(packed)
 		if (existing) {
 			existing.boundaryEdges += 1
 			existing.localStepSum += localStep
 		} else {
-			mutableEdges.set(key, { first, second, boundaryEdges: 1, localStepSum: localStep })
+			mutableEdges.set(packed, { key: `${first}:${second}`, first, second, boundaryEdges: 1, localStepSum: localStep })
 		}
 	}
-	for (let y = 0; y < evidence.height; y++) {
-		for (let x = 0; x < evidence.width; x++) {
-			const pixelIndex = y * evidence.width + x
-			for (const neighbor of [
-				x + 1 < evidence.width ? pixelIndex + 1 : -1,
-				y + 1 < evidence.height ? pixelIndex + evidence.width : -1,
-			]) {
-				if (neighbor < 0 || regionAt[pixelIndex] === regionAt[neighbor]) continue
-				addEdge(regionAt[pixelIndex], regionAt[neighbor],
-					okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)))
+	// Same raster scan, same right-then-down neighbour order: `localStepSum` accumulates in the
+	// original sequence, and re-associating a float sum would move the low bits of `meanLocalStep`.
+	for (let y = 0; y < height; y++) {
+		const rowOffset = y * width
+		for (let x = 0; x < width; x++) {
+			const pixelIndex = rowOffset + x
+			const region = regionAt[pixelIndex]
+			const labOffset = pixelIndex * 3
+			for (let direction = 0; direction < 2; direction++) {
+				const neighbor = direction === 0
+					? (x < lastX ? pixelIndex + 1 : -1)
+					: (y < lastY ? pixelIndex + width : -1)
+				if (neighbor < 0) continue
+				const neighborRegion = regionAt[neighbor]
+				if (region === neighborRegion) continue
+				const neighborOffset = neighbor * 3
+				// Same three subtractions in the same order as `okDistance(labAt(a), labAt(b))`.
+				addEdge(region, neighborRegion, Math.hypot(
+					labs[labOffset] - labs[neighborOffset],
+					labs[labOffset + 1] - labs[neighborOffset + 1],
+					labs[labOffset + 2] - labs[neighborOffset + 2],
+				))
 			}
 		}
 	}
-	const edges = [...mutableEdges.entries()].map(([key, edge]): RegionEdge => ({
-		key,
+	const edges = [...mutableEdges.values()].map((edge): RegionEdge => ({
+		key: edge.key,
 		first: edge.first,
 		second: edge.second,
 		boundaryEdges: edge.boundaryEdges,

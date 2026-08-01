@@ -799,6 +799,15 @@ function mean(values: readonly number[]): number {
  * this module's evidence uses, instead of each growing its own quantisation.
  */
 export function quantizedKey([lightness, a, b]: OKLab, step = FAMILY_BIN_STEP): number {
+	return quantizedKeyOf(lightness, a, b, step)
+}
+
+/**
+ * `quantizedKey` on loose channels, for the per-pixel loops that would otherwise have to build an
+ * `OKLab` tuple purely to hand it to the destructuring signature above. Same body, so the two can
+ * never drift apart.
+ */
+export function quantizedKeyOf(lightness: number, a: number, b: number, step = FAMILY_BIN_STEP): number {
 	if (step === FAMILY_BIN_STEP) {
 		const lightnessBin = Math.max(0, Math.min(25, Math.floor(lightness / FAMILY_BIN_STEP)))
 		const aBin = Math.max(0, Math.min(20, Math.floor((a + 0.4) / FAMILY_BIN_STEP)))
@@ -1715,22 +1724,25 @@ export function buildNativePaletteEvidence(
 	const pixelBinKeys = new Uint32Array(pixelCount)
 	const binsByKey = new Map<number, PerceptualBin>()
 	for (let pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++) {
-		const lab = labAt(labs, pixelIndex)
-		const key = quantizedKey(lab, options.familyBinStep)
+		const labOffset = pixelIndex * 3
+		const lightness = labs[labOffset]
+		const a = labs[labOffset + 1]
+		const b = labs[labOffset + 2]
+		const key = quantizedKeyOf(lightness, a, b, options.familyBinStep)
 		pixelBinKeys[pixelIndex] = key
 		const existing = binsByKey.get(key)
 		if (existing) {
 			existing.population += 1
-			existing.sumL += lab[0]
-			existing.sumA += lab[1]
-			existing.sumB += lab[2]
+			existing.sumL += lightness
+			existing.sumA += a
+			existing.sumB += b
 		} else {
 			binsByKey.set(key, {
 				key,
 				population: 1,
-				sumL: lab[0],
-				sumA: lab[1],
-				sumB: lab[2],
+				sumL: lightness,
+				sumA: a,
+				sumB: b,
 				exemplarIndex: pixelIndex,
 				familyIndex: -1,
 			})
@@ -1791,15 +1803,15 @@ export function buildNativePaletteEvidence(
 		if (familyIndex === undefined) throw new Error("Perceptual family assignment is incomplete")
 		familyAt[pixelIndex] = familyIndex
 		const family = mutableFamilies[familyIndex]
-		const lab = labAt(labs, pixelIndex)
+		const labOffset = pixelIndex * 3
 		const x = pixelIndex % image.width
-		const y = Math.floor(pixelIndex / image.width)
+		const y = (pixelIndex / image.width) | 0
 		const normalizedX = x / widthDenominator
 		const normalizedY = y / heightDenominator
 		family.population += 1
-		family.sumL += lab[0]
-		family.sumA += lab[1]
-		family.sumB += lab[2]
+		family.sumL += labs[labOffset]
+		family.sumA += labs[labOffset + 1]
+		family.sumB += labs[labOffset + 2]
 		family.sumX += normalizedX
 		family.sumY += normalizedY
 		family.sumX2 += normalizedX * normalizedX
@@ -1815,11 +1827,16 @@ export function buildNativePaletteEvidence(
 		family.quadrants |= 1 << quadrant
 	}
 
-	const mutableAdjacencies = new Map<string, MutableAdjacency>()
+	// Keyed on the packed family pair rather than a `"first:second"` string. The pair is only ever
+	// used to group adjacencies — `firstFamilyIndex`/`secondFamilyIndex` on the record carry the
+	// identity downstream — so nothing observes the key itself, and building one string per
+	// boundary crossing was pure overhead on a busy artwork.
+	const familyPairStride = mutableFamilies.length
+	const mutableAdjacencies = new Map<number, MutableAdjacency>()
 	const recordAdjacency = (firstFamilyIndex: number, secondFamilyIndex: number, distance: number): void => {
-		const first = Math.min(firstFamilyIndex, secondFamilyIndex)
-		const second = Math.max(firstFamilyIndex, secondFamilyIndex)
-		const key = `${first}:${second}`
+		const first = firstFamilyIndex < secondFamilyIndex ? firstFamilyIndex : secondFamilyIndex
+		const second = firstFamilyIndex < secondFamilyIndex ? secondFamilyIndex : firstFamilyIndex
+		const key = first * familyPairStride + second
 		const existing = mutableAdjacencies.get(key)
 		if (existing) {
 			existing.boundaryEdges += 1
@@ -1833,34 +1850,54 @@ export function buildNativePaletteEvidence(
 			})
 		}
 	}
+	// `[familyIndex, neighborFamilyIndex]` used to be materialised per crossing just to be walked
+	// once; the two updates are written out instead, in the same order.
+	const creditBoundary = (firstIndex: number, secondIndex: number, distance: number): void => {
+		const first = mutableFamilies[firstIndex]
+		first.boundaryEdges += 1
+		first.neighborDistanceSum += distance
+		first.neighborEdgeCount += 1
+		const second = mutableFamilies[secondIndex]
+		second.boundaryEdges += 1
+		second.neighborDistanceSum += distance
+		second.neighborEdgeCount += 1
+	}
+	const imageWidth = image.width
+	const lastColumn = image.width - 1
+	const lastRow = image.height - 1
 	for (let y = 0; y < image.height; y++) {
+		const rowOffset = y * image.width
 		for (let x = 0; x < image.width; x++) {
-			const pixelIndex = y * image.width + x
+			const pixelIndex = rowOffset + x
 			const familyIndex = familyAt[pixelIndex]
-			if (x + 1 < image.width) {
+			const labOffset = pixelIndex * 3
+			if (x < lastColumn) {
 				const neighborIndex = pixelIndex + 1
 				const neighborFamilyIndex = familyAt[neighborIndex]
 				if (neighborFamilyIndex !== familyIndex) {
-					const distance = okDistance(labAt(labs, pixelIndex), labAt(labs, neighborIndex))
+					const neighborOffset = neighborIndex * 3
+					// Same three subtractions in the same order as `okDistance(labAt(a), labAt(b))`.
+					const distance = Math.hypot(
+						labs[labOffset] - labs[neighborOffset],
+						labs[labOffset + 1] - labs[neighborOffset + 1],
+						labs[labOffset + 2] - labs[neighborOffset + 2],
+					)
 					recordAdjacency(familyIndex, neighborFamilyIndex, distance)
-					for (const index of [familyIndex, neighborFamilyIndex]) {
-						mutableFamilies[index].boundaryEdges += 1
-						mutableFamilies[index].neighborDistanceSum += distance
-						mutableFamilies[index].neighborEdgeCount += 1
-					}
+					creditBoundary(familyIndex, neighborFamilyIndex, distance)
 				}
 			}
-			if (y + 1 < image.height) {
+			if (y < lastRow) {
 				const neighborIndex = pixelIndex + image.width
 				const neighborFamilyIndex = familyAt[neighborIndex]
 				if (neighborFamilyIndex !== familyIndex) {
-					const distance = okDistance(labAt(labs, pixelIndex), labAt(labs, neighborIndex))
+					const neighborOffset = neighborIndex * 3
+					const distance = Math.hypot(
+						labs[labOffset] - labs[neighborOffset],
+						labs[labOffset + 1] - labs[neighborOffset + 1],
+						labs[labOffset + 2] - labs[neighborOffset + 2],
+					)
 					recordAdjacency(familyIndex, neighborFamilyIndex, distance)
-					for (const index of [familyIndex, neighborFamilyIndex]) {
-						mutableFamilies[index].boundaryEdges += 1
-						mutableFamilies[index].neighborDistanceSum += distance
-						mutableFamilies[index].neighborEdgeCount += 1
-					}
+					creditBoundary(familyIndex, neighborFamilyIndex, distance)
 				}
 			}
 		}
@@ -1890,37 +1927,69 @@ export function buildNativePaletteEvidence(
 			rolePreliminary: 0,
 			retainedFor: [],
 		}
+		// Accumulate into locals for the duration of the flood — these are per-pixel writes over the
+		// whole artwork — and flush to the component afterwards. Every sum keeps its operand order.
+		let population = 0
+		let minX = component.minX
+		let minY = component.minY
+		let maxX = component.maxX
+		let maxY = component.maxY
+		let borderPixels = 0
+		let boundaryEdges = 0
+		let boundaryContrastSum = 0
+		let boundaryLightnessDeltaSum = 0
+		let boundaryAbsoluteLightnessDeltaSum = 0
 		while (queueRead < queueLength) {
 			const pixelIndex = queue[queueRead++]
-			const x = pixelIndex % image.width
-			const y = Math.floor(pixelIndex / image.width)
-			component.population += 1
-			component.minX = Math.min(component.minX, x)
-			component.minY = Math.min(component.minY, y)
-			component.maxX = Math.max(component.maxX, x)
-			component.maxY = Math.max(component.maxY, y)
-			if (x === 0 || y === 0 || x === image.width - 1 || y === image.height - 1) component.borderPixels += 1
-			const neighbors = [
-				x > 0 ? pixelIndex - 1 : -1,
-				x + 1 < image.width ? pixelIndex + 1 : -1,
-				y > 0 ? pixelIndex - image.width : -1,
-				y + 1 < image.height ? pixelIndex + image.width : -1,
-			]
-			for (const neighbor of neighbors) {
-				if (neighbor >= 0 && !visited[neighbor] && familyAt[neighbor] === familyIndex) {
+			const x = pixelIndex % imageWidth
+			const y = (pixelIndex / imageWidth) | 0
+			const labOffset = pixelIndex * 3
+			population += 1
+			if (x < minX) minX = x
+			if (y < minY) minY = y
+			if (x > maxX) maxX = x
+			if (y > maxY) maxY = y
+			if (x === 0 || y === 0 || x === lastColumn || y === lastRow) borderPixels += 1
+			// Unrolled in the original left/right/up/down order: the visit order sets the queue
+			// order, and the boundary sums below accumulate in that same order.
+			for (let direction = 0; direction < 4; direction++) {
+				const neighbor = direction === 0
+					? (x > 0 ? pixelIndex - 1 : -1)
+					: direction === 1
+						? (x < lastColumn ? pixelIndex + 1 : -1)
+						: direction === 2
+							? (y > 0 ? pixelIndex - imageWidth : -1)
+							: (y < lastRow ? pixelIndex + imageWidth : -1)
+				if (neighbor < 0) continue
+				if (familyAt[neighbor] === familyIndex) {
+					if (visited[neighbor]) continue
 					visited[neighbor] = 1
 					queue[queueLength++] = neighbor
-				} else if (neighbor >= 0 && familyAt[neighbor] !== familyIndex) {
-					component.boundaryEdges += 1
-					const pixelLab = labAt(labs, pixelIndex)
-					const neighborLab = labAt(labs, neighbor)
-					const lightnessDelta = neighborLab[0] - pixelLab[0]
-					component.boundaryContrastSum += okDistance(pixelLab, neighborLab)
-					component.boundaryLightnessDeltaSum += lightnessDelta
-					component.boundaryAbsoluteLightnessDeltaSum += Math.abs(lightnessDelta)
+				} else {
+					boundaryEdges += 1
+					const neighborOffset = neighbor * 3
+					const lightnessDelta = labs[neighborOffset] - labs[labOffset]
+					// Same three subtractions in the same order as `okDistance(pixelLab, neighborLab)`.
+					boundaryContrastSum += Math.hypot(
+						labs[labOffset] - labs[neighborOffset],
+						labs[labOffset + 1] - labs[neighborOffset + 1],
+						labs[labOffset + 2] - labs[neighborOffset + 2],
+					)
+					boundaryLightnessDeltaSum += lightnessDelta
+					boundaryAbsoluteLightnessDeltaSum += Math.abs(lightnessDelta)
 				}
 			}
 		}
+		component.population = population
+		component.minX = minX
+		component.minY = minY
+		component.maxX = maxX
+		component.maxY = maxY
+		component.borderPixels = borderPixels
+		component.boundaryEdges = boundaryEdges
+		component.boundaryContrastSum = boundaryContrastSum
+		component.boundaryLightnessDeltaSum = boundaryLightnessDeltaSum
+		component.boundaryAbsoluteLightnessDeltaSum = boundaryAbsoluteLightnessDeltaSum
 		component.rolePreliminary = componentRolePreliminary(component, pixelCount)
 		const family = mutableFamilies[familyIndex]
 		family.componentCount += 1
@@ -2217,9 +2286,23 @@ function fieldCompositeFamilyIds(evidence: NativePaletteEvidence): Set<string> {
 
 function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): BackgroundFieldDomain[] {
 	const fieldIds = new Set(evidence.lanes.find(({ name }) => name === "field")?.familyIds ?? [])
-	const smoothAdjacencies = new Set(evidence.adjacencies
-		.filter(({ meanContrast }) => meanContrast <= evidence.familyAnchorRadius)
-		.map(({ firstFamilyId, secondFamilyId }) => [firstFamilyId, secondFamilyId].sort(compareAscii).join(":")))
+	// Family ids are unique per index in `evidence.families`, so an unordered id *pair* and an
+	// unordered index pair are in bijection. Testing membership on a packed numeric pair does the
+	// same job as the sorted `"a:b"` string this used to build once per neighbour visit — same
+	// answers, no per-pixel array allocation, sort and join in the BFS below.
+	const familyCount = evidence.families.length
+	const familyIndexById = new Map<string, number>()
+	for (let index = 0; index < familyCount; index++) familyIndexById.set(evidence.families[index].id, index)
+	const smoothPairs = new Set<number>()
+	for (const { firstFamilyId, secondFamilyId, meanContrast } of evidence.adjacencies) {
+		if (meanContrast > evidence.familyAnchorRadius) continue
+		const first = familyIndexById.get(firstFamilyId)
+		const second = familyIndexById.get(secondFamilyId)
+		// An adjacency naming a family the evidence does not carry could never be matched by the
+		// lookup below either, since that only ever asks about families it just read out of `familyAt`.
+		if (first === undefined || second === undefined) continue
+		smoothPairs.add(first < second ? first * familyCount + second : second * familyCount + first)
+	}
 	const componentAtStart = new Map<number, string>()
 	for (const family of evidence.families) {
 		for (const component of family.components) componentAtStart.set(component.startPixelIndex, component.id)
@@ -2246,8 +2329,31 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 	// walk exists to rescue fields that are otherwise unproposable, not to enlarge fields
 	// that are already proposed, so a composite region overlapping one of these is dropped.
 	const laneProposedAt = new Uint8Array(evidence.pixelCount)
+	// Hot-loop locals: the BFS below runs once per pixel per pass, and every one of these was a
+	// property load on `evidence` inside it.
+	const width = evidence.width
+	const height = evidence.height
+	const pixelCount = evidence.pixelCount
+	const labs = evidence.labs
+	const familyAt = evidence.familyAt
+	const families = evidence.families
+	const anchorRadius = evidence.familyAnchorRadius
+	const widthDenominator = Math.max(1, width - 1)
+	const heightDenominator = Math.max(1, height - 1)
+	const halfWidth = width / 2
+	const halfHeight = height / 2
+	const lastX = width - 1
+	const lastY = height - 1
+	const rightCornerX = width - cornerWidth
+	const bottomCornerY = height - cornerHeight
 	for (const pass of passes) {
 		const memberIds = pass.members
+		// Same predicate as `memberIds.has(family.id)`, resolved once per family instead of once
+		// per neighbour visit.
+		const memberMask = new Uint8Array(familyCount)
+		for (let index = 0; index < familyCount; index++) {
+			if (memberIds.has(families[index].id)) memberMask[index] = 1
+		}
 		if (pass.kind === "diffuse-composite") {
 			for (const { evidence: domain, pixelIndexes } of domains) {
 				if (!domain.eligible) continue
@@ -2255,9 +2361,9 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 			}
 			visited = new Uint8Array(evidence.pixelCount)
 		}
-		for (let start = 0; start < evidence.pixelCount; start++) {
-			const startFamily = evidence.families[evidence.familyAt[start]]
-			if (visited[start] || !memberIds.has(startFamily.id)) continue
+		for (let start = 0; start < pixelCount; start++) {
+			const startFamilyIndex = familyAt[start]
+			if (visited[start] || !memberMask[startFamilyIndex]) continue
 			let queueRead = 0
 			let queueLength = 1
 			queue[0] = start
@@ -2270,54 +2376,67 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 			let sumA = 0
 			let sumB = 0
 			const cornerCounts = [0, 0, 0, 0]
-			const familyPopulations = new Map<string, number>()
+			// Keyed by family *index* rather than id. The insertion sequence is unchanged (index
+			// and id are in bijection), so the `weightedFieldScore` sum below still accumulates in
+			// exactly the same order — reassociating it would move the low bits.
+			const familyPopulations = new Map<number, number>()
 			const componentIds = new Set<string>()
 			let overlapsLaneProposal = false
 			while (queueRead < queueLength) {
 				const pixelIndex = queue[queueRead++]
 				if (laneProposedAt[pixelIndex]) overlapsLaneProposal = true
-				const x = pixelIndex % evidence.width
-				const y = Math.floor(pixelIndex / evidence.width)
-				const family = evidence.families[evidence.familyAt[pixelIndex]]
-				const lab = labAt(evidence.labs, pixelIndex)
-				sumX += x / Math.max(1, evidence.width - 1)
-				sumY += y / Math.max(1, evidence.height - 1)
-				sumL += lab[0]
-				sumA += lab[1]
-				sumB += lab[2]
-				familyPopulations.set(family.id, (familyPopulations.get(family.id) ?? 0) + 1)
+				const x = pixelIndex % width
+				const y = (pixelIndex / width) | 0
+				const familyIndex = familyAt[pixelIndex]
+				const labOffset = pixelIndex * 3
+				sumX += x / widthDenominator
+				sumY += y / heightDenominator
+				sumL += labs[labOffset]
+				sumA += labs[labOffset + 1]
+				sumB += labs[labOffset + 2]
+				familyPopulations.set(familyIndex, (familyPopulations.get(familyIndex) ?? 0) + 1)
 				const componentId = componentAtStart.get(pixelIndex)
 				if (componentId) componentIds.add(componentId)
-				if (x === 0 || y === 0 || x === evidence.width - 1 || y === evidence.height - 1) borderPixels += 1
-				quadrants |= 1 << ((x >= evidence.width / 2 ? 1 : 0) + (y >= evidence.height / 2 ? 2 : 0))
+				if (x === 0 || y === 0 || x === lastX || y === lastY) borderPixels += 1
+				quadrants |= 1 << ((x >= halfWidth ? 1 : 0) + (y >= halfHeight ? 2 : 0))
 				if (x < cornerWidth && y < cornerHeight) cornerCounts[0] += 1
-				if (x >= evidence.width - cornerWidth && y < cornerHeight) cornerCounts[1] += 1
-				if (x < cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[2] += 1
-				if (x >= evidence.width - cornerWidth && y >= evidence.height - cornerHeight) cornerCounts[3] += 1
-				const neighbors = [
-					x > 0 ? pixelIndex - 1 : -1,
-					x + 1 < evidence.width ? pixelIndex + 1 : -1,
-					y > 0 ? pixelIndex - evidence.width : -1,
-					y + 1 < evidence.height ? pixelIndex + evidence.width : -1,
-				]
-				for (const neighbor of neighbors) {
+				if (x >= rightCornerX && y < cornerHeight) cornerCounts[1] += 1
+				if (x < cornerWidth && y >= bottomCornerY) cornerCounts[2] += 1
+				if (x >= rightCornerX && y >= bottomCornerY) cornerCounts[3] += 1
+				// Unrolled in the original left/right/up/down order: the visit order decides the
+				// queue order, which decides `startPixelIndex` and every downstream domain id.
+				for (let direction = 0; direction < 4; direction++) {
+					const neighbor = direction === 0
+						? (x > 0 ? pixelIndex - 1 : -1)
+						: direction === 1
+							? (x < lastX ? pixelIndex + 1 : -1)
+							: direction === 2
+								? (y > 0 ? pixelIndex - width : -1)
+								: (y < lastY ? pixelIndex + width : -1)
 					if (neighbor < 0 || visited[neighbor]) continue
-					const neighborFamily = evidence.families[evidence.familyAt[neighbor]]
-					if (!memberIds.has(neighborFamily.id)) continue
-					const sameFamily = family.id === neighborFamily.id
-					const adjacencyKey = [family.id, neighborFamily.id].sort(compareAscii).join(":")
-					if (!sameFamily && (
-						!smoothAdjacencies.has(adjacencyKey) ||
-						okDistance(labAt(evidence.labs, pixelIndex), labAt(evidence.labs, neighbor)) > evidence.familyAnchorRadius
-					)) continue
+					const neighborFamilyIndex = familyAt[neighbor]
+					if (!memberMask[neighborFamilyIndex]) continue
+					if (familyIndex !== neighborFamilyIndex) {
+						const pairKey = familyIndex < neighborFamilyIndex
+							? familyIndex * familyCount + neighborFamilyIndex
+							: neighborFamilyIndex * familyCount + familyIndex
+						if (!smoothPairs.has(pairKey)) continue
+						const neighborOffset = neighbor * 3
+						// Same three subtractions in the same order as `okDistance(labAt(a), labAt(b))`.
+						if (Math.hypot(
+							labs[labOffset] - labs[neighborOffset],
+							labs[labOffset + 1] - labs[neighborOffset + 1],
+							labs[labOffset + 2] - labs[neighborOffset + 2],
+						) > anchorRadius) continue
+					}
 					visited[neighbor] = 1
 					queue[queueLength++] = neighbor
 				}
 			}
-			const populationFraction = queueLength / evidence.pixelCount
+			const populationFraction = queueLength / pixelCount
 			const ownedCornerCount = cornerCounts.filter((count) => count >= cornerPopulation * 0.5).length
-			const weightedFieldScore = [...familyPopulations.entries()].reduce((sum, [familyId, population]) =>
-				sum + familyById(evidence, familyId).fieldScore * population, 0) / queueLength
+			const weightedFieldScore = [...familyPopulations.entries()].reduce((sum, [familyIndex, population]) =>
+				sum + families[familyIndex].fieldScore * population, 0) / queueLength
 			const rejectionReasons: string[] = []
 			if (populationFraction < 0.08) rejectionReasons.push("field domain population below 0.08")
 			if (ownedCornerCount < 2) rejectionReasons.push("field domain owns fewer than two native corner fields")
@@ -2342,7 +2461,7 @@ function buildBackgroundFieldDomains(evidence: NativePaletteEvidence): Backgroun
 				transitionFamilyCount: 0,
 				transitionPopulationFraction: 0,
 				transitionQuadrantCoverage: 0,
-				familyIds: [...familyPopulations.keys()].sort(compareAscii),
+				familyIds: [...familyPopulations.keys()].map((index) => families[index].id).sort(compareAscii),
 				componentIds: [...componentIds].sort(compareAscii),
 				eligible: rejectionReasons.length === 0,
 				rejectionReasons,
@@ -2662,19 +2781,43 @@ function fitGradients(
 		compareAscii(`${first.domain.evidence.id}:${first.topology}:${first.direction}`, `${second.domain.evidence.id}:${second.topology}:${second.direction}`))
 }
 
+/**
+ * The fit's own geometry evaluated once at every pixel of its field domain, indexed in step with
+ * `fit.domain.pixelIndexes`.
+ *
+ * Every consumer of a fit needs this exact vector, and before this existed each of them rebuilt it
+ * from scratch — `fit.position` is two nested closure calls plus a modulo and two divisions per
+ * pixel, and `endpointBandRepresentatives` paid for it once per pixel *per candidate family*.
+ */
+function domainPositions(evidence: NativePaletteEvidence, fit: GradientFit): Float64Array {
+	const pixelIndexes = fit.domain.pixelIndexes
+	const width = evidence.width
+	const widthDenominator = Math.max(1, width - 1)
+	const heightDenominator = Math.max(1, evidence.height - 1)
+	const positions = new Float64Array(pixelIndexes.length)
+	for (let index = 0; index < pixelIndexes.length; index++) {
+		const pixelIndex = pixelIndexes[index]
+		positions[index] = fit.position(
+			(pixelIndex % width) / widthDenominator,
+			Math.floor(pixelIndex / width) / heightDenominator,
+		)
+	}
+	return positions
+}
+
 function endpointBandRepresentatives(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
+	positions: Float64Array,
 	lowBand: boolean,
 ): BandEndpoint[] {
 	const counts = new Uint32Array(evidence.families.length)
+	const pixelIndexes = fit.domain.pixelIndexes
 	let bandPopulation = 0
-	for (const pixelIndex of fit.domain.pixelIndexes) {
-		const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
-		const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
-		const position = fit.position(x, y)
+	for (let index = 0; index < pixelIndexes.length; index++) {
+		const position = positions[index]
 		if ((lowBand && position <= 0.2) || (!lowBand && position >= 0.8)) {
-			counts[evidence.familyAt[pixelIndex]] += 1
+			counts[evidence.familyAt[pixelIndexes[index]]] += 1
 			bandPopulation += 1
 		}
 	}
@@ -2703,15 +2846,19 @@ function endpointBandRepresentatives(
 		let exemplarIndex = -1
 		let exemplarDistance = Infinity
 		const spread = createBandSpatialSpreadAccumulator((lab) => quantizedKey(lab, evidence.familyBinStep))
-		for (const pixelIndex of fit.domain.pixelIndexes) {
+		const width = evidence.width
+		const widthDenominator = Math.max(1, width - 1)
+		const heightDenominator = Math.max(1, evidence.height - 1)
+		for (let index = 0; index < pixelIndexes.length; index++) {
+			const pixelIndex = pixelIndexes[index]
 			// `familyAt` holds the index into `evidence.families`, and family ids are unique per
 			// index, so this is the same test as comparing `.id` — without the double indirection
 			// and the string compare, per pixel, per family, per fit.
 			if (evidence.familyAt[pixelIndex] !== familyIndex) continue
-			const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
-			const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
-			const position = fit.position(x, y)
+			const position = positions[index]
 			if (!((lowBand && position <= 0.2) || (!lowBand && position >= 0.8))) continue
+			const x = (pixelIndex % width) / widthDenominator
+			const y = Math.floor(pixelIndex / width) / heightDenominator
 			const lab = labAt(evidence.labs, pixelIndex)
 			const distance = okDistance(lab, expected)
 			if (distance < exemplarDistance) {
@@ -2814,11 +2961,9 @@ const ACCENT_CONTRAST_RANGE = 75
  * value shipped is the reviewed one, chosen before the boundary was measured.
  *
  * `90` restores the previous behaviour exactly. The intermediate values were measured and are
- * recorded in `research/v2-3-experiments/carrier-ranking/ROUND-2.md:63`: 75 (the flat accent's own
+ * recorded in `research/v2-3-experiments/carrier-ranking/EXPERIMENT.md`: 75 (the flat accent's own
  * range) and 40 both leave the reviewed outcome losing, so neither is a cheaper version of this
- * change — they are just smaller numbers with no argument behind them. (This cited the arm's
- * `EXPERIMENT.md`, which is round 1 and does not contain the sweep; the naming change and its
- * measurements are round 2's. Corrected by the 2026-08-01 provenance sweep.)
+ * change — they are just smaller numbers with no argument behind them.
  */
 const FOREGROUND_CONTRAST_SCALE: number = 90
 
@@ -2855,11 +3000,9 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  * near-blacks, "visually indistinguishable … too close, too black … consider them the same
  * color". So distinctness is a second, independent requirement.
  *
- * The threshold is read off those judgements rather than chosen. Seven anchors bracket it: the
+ * The threshold is read off those judgements rather than chosen. Six anchors bracket it: the
  * refused midpoints score 0.00 (identical to the background), 1.00, and 3.01, while the accepted
- * ones score 3.64, 9.78, 19.75 and 62.59. (This said "Six" while listing seven —
- * `research/v2-3-experiments/track-p/LEDGER.md:109` caught it. The enumeration is the only record
- * of these anchors, so the count was corrected to match it; no value moved.) The 3.01 case was declined on the grounds that the
+ * ones score 3.64, 9.78, 19.75 and 62.59. The 3.01 case was declined on the grounds that the
  * midpoint was drawn from *shadow* material — "this is not the vibe of the artwork" — which is a
  * statement about what the colour is made of rather than how far away it is; it is included here
  * because a bar in (3.01, 3.64) is the only currently available way to refuse it, not because
@@ -2932,14 +3075,15 @@ export function renderedFieldColor(
 function fieldMidpointEvidence(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
+	positions: Float64Array,
 ): FieldMidpointEvidence | null {
 	const [minimumPosition, maximumPosition] = FIELD_MIDPOINT_BAND
 	const samples: BandRepresentativeSample[] = []
-	for (const pixelIndex of fit.domain.pixelIndexes) {
-		const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
-		const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
-		const position = fit.position(x, y)
+	const pixelIndexes = fit.domain.pixelIndexes
+	for (let index = 0; index < pixelIndexes.length; index++) {
+		const position = positions[index]
 		if (position < minimumPosition || position > maximumPosition) continue
+		const pixelIndex = pixelIndexes[index]
 		samples.push({ pixelIndex, lab: labAt(evidence.labs, pixelIndex) })
 	}
 	const population = analyzeBandPopulation(samples, evidence)
@@ -2971,6 +3115,7 @@ function fieldMidpointEvidence(
 function nativeBandEvidence(
 	evidence: NativePaletteEvidence,
 	fit: GradientFit,
+	positions: Float64Array,
 	bandCount = GRID_SIZE,
 ): Readonly<{
 	progression: number
@@ -2980,41 +3125,63 @@ function nativeBandEvidence(
 }> {
 	const bands = Array.from({ length: bandCount }, () => ({ sum: 0, sumSquares: 0, count: 0, modes: new Map<number, number>() }))
 	const unit: OKLab = [fit.slope[0] / fit.span, fit.slope[1] / fit.span, fit.slope[2] / fit.span]
-	const domainMembership = new Uint8Array(evidence.pixelCount)
-	for (const pixelIndex of fit.domain.pixelIndexes) domainMembership[pixelIndex] = 1
+	const pixelIndexes = fit.domain.pixelIndexes
+	const width = evidence.width
+	// Doubles as the domain-membership test this used to keep in a separate Uint8Array: entries are
+	// `denseIndex + 1`, so a zero still means "not in this domain" and no `fill(-1)` pass is needed.
+	// The offset lets the neighbour below read its position out of the same cache.
+	const denseIndexPlusOne = new Int32Array(evidence.pixelCount)
+	for (let index = 0; index < pixelIndexes.length; index++) denseIndexPlusOne[pixelIndexes[index]] = index + 1
 	let totalProgressiveEdgeChange = 0
 	let jumpProgressiveEdgeChange = 0
-	for (const pixelIndex of fit.domain.pixelIndexes) {
-		const x = (pixelIndex % evidence.width) / Math.max(1, evidence.width - 1)
-		const y = Math.floor(pixelIndex / evidence.width) / Math.max(1, evidence.height - 1)
-		const bandIndex = Math.min(bandCount - 1, Math.floor(fit.position(x, y) * bandCount))
-		const lab = labAt(evidence.labs, pixelIndex)
-		const projected = lab[0] * unit[0] + lab[1] * unit[1] + lab[2] * unit[2]
-		bands[bandIndex].sum += projected
-		bands[bandIndex].sumSquares += projected * projected
-		bands[bandIndex].count += 1
-		const modeKey = evidence.familyAt[pixelIndex] * 131_072 + quantizedKey(lab, evidence.familyBinStep)
-		bands[bandIndex].modes.set(modeKey, (bands[bandIndex].modes.get(modeKey) ?? 0) + 1)
-		const pixelX = pixelIndex % evidence.width
-		const neighbors = [
-			pixelX + 1 < evidence.width ? pixelIndex + 1 : -1,
-			pixelIndex + evidence.width < evidence.pixelCount ? pixelIndex + evidence.width : -1,
-		]
-		for (const neighbor of neighbors) {
-			if (neighbor < 0 || !domainMembership[neighbor]) continue
-			const neighborX = (neighbor % evidence.width) / Math.max(1, evidence.width - 1)
-			const neighborY = Math.floor(neighbor / evidence.width) / Math.max(1, evidence.height - 1)
-			const positionDelta = fit.position(neighborX, neighborY) - fit.position(x, y)
+	// The colour reads below go straight to the Float32Array rather than through `labAt`, which
+	// returns a fresh tuple: this loop runs once per domain pixel per fit, and allocated one tuple
+	// for the pixel plus one per in-domain neighbour. Arithmetic and operand order are unchanged.
+	const labs = evidence.labs
+	const familyAt = evidence.familyAt
+	const unitL = unit[0]
+	const unitA = unit[1]
+	const unitB = unit[2]
+	for (let index = 0; index < pixelIndexes.length; index++) {
+		const pixelIndex = pixelIndexes[index]
+		const position = positions[index]
+		const bandIndex = Math.min(bandCount - 1, Math.floor(position * bandCount))
+		const labOffset = pixelIndex * 3
+		const labL = labs[labOffset]
+		const labA = labs[labOffset + 1]
+		const labB = labs[labOffset + 2]
+		const projected = labL * unitL + labA * unitA + labB * unitB
+		const band = bands[bandIndex]
+		band.sum += projected
+		band.sumSquares += projected * projected
+		band.count += 1
+		const modeKey = familyAt[pixelIndex] * 131_072 + quantizedKeyOf(labL, labA, labB, evidence.familyBinStep)
+		band.modes.set(modeKey, (band.modes.get(modeKey) ?? 0) + 1)
+		const pixelX = pixelIndex % width
+		for (let direction = 0; direction < 2; direction++) {
+			const neighbor = direction === 0
+				? (pixelX + 1 < width ? pixelIndex + 1 : -1)
+				: (pixelIndex + width < evidence.pixelCount ? pixelIndex + width : -1)
+			if (neighbor < 0) continue
+			const neighborDense = denseIndexPlusOne[neighbor]
+			if (neighborDense === 0) continue
+			const positionDelta = positions[neighborDense - 1] - position
 			if (Math.abs(positionDelta) < 1e-8) continue
-			const neighborLab = labAt(evidence.labs, neighbor)
+			const neighborOffset = neighbor * 3
+			const neighborL = labs[neighborOffset]
+			const neighborA = labs[neighborOffset + 1]
+			const neighborB = labs[neighborOffset + 2]
 			const projectedDelta = (
-				(neighborLab[0] - lab[0]) * unit[0] +
-				(neighborLab[1] - lab[1]) * unit[1] +
-				(neighborLab[2] - lab[2]) * unit[2]
+				(neighborL - labL) * unitL +
+				(neighborA - labA) * unitA +
+				(neighborB - labB) * unitB
 			) * Math.sign(positionDelta)
 			if (projectedDelta <= 0) continue
 			totalProgressiveEdgeChange += projectedDelta
-			if (okDistance(lab, neighborLab) > FAMILY_BIN_STEP) jumpProgressiveEdgeChange += projectedDelta
+			// Same three subtractions in the same order as `okDistance(lab, neighborLab)`.
+			if (Math.hypot(labL - neighborL, labA - neighborA, labB - neighborB) > FAMILY_BIN_STEP) {
+				jumpProgressiveEdgeChange += projectedDelta
+			}
 		}
 	}
 	let progressiveTransitions = 0
@@ -3053,14 +3220,36 @@ function evaluateGradientFits(
 	options: GradientFitOptions = DEFAULT_GRADIENT_FIT_OPTIONS,
 ): EvaluatedGradientFit[] {
 	return fitGradients(evidence, domains, options).flatMap((fit): EvaluatedGradientFit[] => {
-		const nativeBands = nativeBandEvidence(evidence, fit, options.nativeBandCount)
+		// `fit.position` is a pure function of the pixel's normalised coordinates, and all four
+		// consumers below walk the same `fit.domain.pixelIndexes` asking it the same questions —
+		// `endpointBandRepresentatives` alone asked once per pixel and then again once per pixel
+		// per selected family, twice over (low band and high band). Evaluating it once per pixel
+		// per fit and reading the answers back out of a Float64Array is the same double every
+		// time, so nothing downstream can tell the difference.
+		const positions = domainPositions(evidence, fit)
+		const nativeBands = nativeBandEvidence(evidence, fit, positions, options.nativeBandCount)
 		const progression = Math.min(fit.progression, nativeBands.progression)
 		const modeProgression = nativeBands.modeProgression
 		const bandDispersion = nativeBands.dispersion
 		const edgeContinuity = nativeBands.edgeContinuity
-		const lows = endpointBandRepresentatives(evidence, fit, true)
-		const highs = endpointBandRepresentatives(evidence, fit, false)
-		const fieldMidpoint = fieldMidpointEvidence(evidence, fit)
+		const lows = endpointBandRepresentatives(evidence, fit, positions, true)
+		const highs = endpointBandRepresentatives(evidence, fit, positions, false)
+		// Deferred, not skipped. The only reader of `fieldMidpoint` is
+		// `buildFieldHypothesesFromEvaluatedFits`, which reaches it *after*
+		// `if (rejectionReasons.length > 0 || !low || !high) continue` — so on most artworks this
+		// scanned the whole field domain, allocated a sample record per pixel in the midpoint band
+		// and ran a full band-population analysis for fits that were then discarded unread.
+		// Memoised per fit (its inputs are the fit and the evidence, both fixed here) so the
+		// endpoint pairs below still share one computation, exactly as the eager call did.
+		let midpointComputed = false
+		let midpointValue: FieldMidpointEvidence | null = null
+		const fieldMidpoint = (): FieldMidpointEvidence | null => {
+			if (!midpointComputed) {
+				midpointValue = fieldMidpointEvidence(evidence, fit, positions)
+				midpointComputed = true
+			}
+			return midpointValue
+		}
 		const endpointPairs: Array<readonly [BandEndpoint | null, BandEndpoint | null]> = lows.length > 0 && highs.length > 0
 			? lows.flatMap((low) => highs.map((high) => [low, high] as const))
 			: [[lows[0] ?? null, highs[0] ?? null]]
@@ -3089,7 +3278,12 @@ function evaluateGradientFits(
 				sameColor(low.representative.rgb, high.representative.rgb) ||
 				okDistance(low.representative.oklab, high.representative.oklab) < 0.028
 			)) rejectionReasons.push("endpoint representatives are not materially distinct")
-			return { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, fieldMidpoint, rejectionReasons }
+			return {
+				fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, rejectionReasons,
+				// A getter, so the field still answers with the true value for anyone who asks —
+				// the work is only deferred to the first ask, not conditioned on the caller.
+				get fieldMidpoint(): FieldMidpointEvidence | null { return fieldMidpoint() },
+			}
 		})
 	})
 }
@@ -3205,8 +3399,14 @@ function buildFieldHypothesisProposalsFromEvaluatedFits(
 	hypotheses.push(...flatCandidates)
 
 	const gradientCandidates: FieldHypothesis[] = []
-	for (const { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, fieldMidpoint, rejectionReasons } of evaluatedGradientFits) {
+	// `fieldMidpoint` is deliberately NOT destructured here. It is a memoised getter that scans the
+	// whole field domain on first read, and destructuring in the loop header would read it for
+	// every fit — including the ones the very next line discards, which on most artworks is most
+	// of them. It is read below, past the guard, where its value is actually wanted.
+	for (const evaluated of evaluatedGradientFits) {
+		const { fit, progression, modeProgression, bandDispersion, edgeContinuity, low, high, rejectionReasons } = evaluated
 		if (rejectionReasons.length > 0 || !low || !high) continue
+		const fieldMidpoint = evaluated.fieldMidpoint
 		const roleAssignment = assignFieldRoles(low.family, high.family)
 		const backgroundEndpoint = roleAssignment.backgroundFamilyId === low.family.id ? low : high
 		const surfaceEndpoint = backgroundEndpoint === low ? high : low

@@ -135,13 +135,28 @@ export function labAt(labs: Float32Array, pixelIndex: number): OKLab {
 	return [labs[offset], labs[offset + 1], labs[offset + 2]]
 }
 
+/**
+ * `rgbToOKLab` for a whole image, without the two arrays per pixel.
+ *
+ * The body below is `rgbToOKLab` inlined — same constants, same operations, in the same order —
+ * because this runs once per pixel of a full-resolution artwork and the call was allocating both
+ * an RGB tuple to pass in and an OKLab tuple to hand back, several million times per extraction.
+ * Keep the arithmetic here identical to `rgbToOKLab`: reassociating it would move the low bits.
+ */
 export function toLabBuffer(data: Uint8Array): Float32Array {
 	const labs = new Float32Array(data.length)
 	for (let offset = 0; offset < data.length; offset += 3) {
-		const lab = rgbToOKLab([data[offset], data[offset + 1], data[offset + 2]])
-		labs[offset] = lab[0]
-		labs[offset + 1] = lab[1]
-		labs[offset + 2] = lab[2]
+		const r = srgbToLinear(data[offset])
+		const g = srgbToLinear(data[offset + 1])
+		const b = srgbToLinear(data[offset + 2])
+
+		const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b)
+		const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b)
+		const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b)
+
+		labs[offset] = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s
+		labs[offset + 1] = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s
+		labs[offset + 2] = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
 	}
 	return labs
 }
