@@ -3,7 +3,7 @@ errors: 0
 
 === fg-surface ===
   movers: 23
-  repair levels: slate=20, repick=3, untouched=336
+  repair levels: slate=19, repick=4, untouched=336
   left alone WITH the defect still published (level 3): 0
 
 === fg-surface-accent-ok ===
@@ -13,12 +13,12 @@ errors: 0
 
 === fg-both ===
   movers: 47
-  repair levels: slate=36, repick=11, untouched=312
+  repair levels: slate=31, repick=16, untouched=312
   left alone WITH the defect still published (level 3): 0
 
 === fg-both-accent-ok ===
   movers: 47
-  repair levels: swap=32, slate=9, repick=6, untouched=312
+  repair levels: swap=32, slate=8, repick=7, untouched=312
   left alone WITH the defect still published (level 3): 0
 
 === accent-only ===
@@ -28,5 +28,5 @@ errors: 0
 
 === all-four ===
   movers: 359
-  repair levels: slate=326, repick=33, untouched=0
+  repair levels: slate=332, repick=27, untouched=0
   left alone WITH the defect still published (level 3): 0

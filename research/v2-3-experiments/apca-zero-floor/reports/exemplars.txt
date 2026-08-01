@@ -3,18 +3,18 @@
 07/ab67616d0000b2730007d4cb364e04df68f6e2c1
   trunk (defect)           bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient midpoint=#089be0
                            fg reads on surface: raw   2.68   on background: raw  47.43   on midpoint: raw    41.60
-  fg-surface               bg=#d3a334 surface=#cf7d0f fg=#171c1f accent=#fdbca0 gradient midpoint=none
-                           fg reads on surface: raw  46.18   on background: raw  59.17   on midpoint: raw      n/a   [repick]
+  fg-surface               bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
   fg-surface-accent-ok     bg=#058cde surface=#d2e0eb fg=#fbb89d accent=#fed700 gradient midpoint=#089be0
                            fg reads on surface: raw  13.18   on background: raw  36.27   on midpoint: raw    30.44   [swap]
-  fg-both                  bg=#d3a334 surface=#cf7d0f fg=#171c1f accent=#fdbca0 gradient midpoint=none
-                           fg reads on surface: raw  46.18   on background: raw  59.17   on midpoint: raw      n/a   [repick]
+  fg-both                  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
   fg-both-accent-ok        bg=#058cde surface=#d2e0eb fg=#fbb89d accent=#fed700 gradient midpoint=#089be0
                            fg reads on surface: raw  13.18   on background: raw  36.27   on midpoint: raw    30.44   [swap]
   accent-only              bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient midpoint=#089be0
                            fg reads on surface: raw   2.68   on background: raw  47.43   on midpoint: raw    41.60   [untouched]
-  all-four                 bg=#d3a334 surface=#cf7d0f fg=#171c1f accent=#fdbca0 gradient midpoint=none
-                           fg reads on surface: raw  46.18   on background: raw  59.17   on midpoint: raw      n/a   [repick]
+  all-four                 bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat midpoint=none
+                           fg reads on surface: raw  28.57   on background: raw  47.43   on midpoint: raw      n/a   [repick]
 
 099b3a — the save; review then caught the repaired fg matching the MIDPOINT
 09/ab67616d00001e0200099b3aaf316149051a4578

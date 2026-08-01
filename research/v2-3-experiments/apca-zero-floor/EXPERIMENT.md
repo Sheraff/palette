@@ -799,6 +799,79 @@ in every configuration.** The mechanism is still overwhelmingly the mark-role ti
 - **Relocation 0** in all six configurations.
 - Typecheck clean; 15 configuration and architecture assertions pass.
 
+## 16. Addendum — level 2b's ordering, settled by verdict
+
+Final verdicts: `099b3a`'s midpoint-protected repair (`#929292`) preferred; `0ed8ed` a wash; and on
+the founding artwork **Flo chose the blue-flat smallest-change palette over the ranking-ordered gold
+gradient**. §15.3 left that as the one open decision, and it now has an answer.
+
+### 16.1 The ordering, as shipped
+
+Level 2b takes the candidate **nearest the palette already published**, not the one the ranking likes
+best. "Nearest" counts the published role colours a candidate would change, **with the foreground
+weighted double**; ties break on the ranking's own order, then the candidate key, so the choice is
+total and deterministic.
+
+The foreground weight is not decoration. On the founding artwork **28 candidates tie at two role
+colours changed**, and a plain count cannot separate *keeps the artwork's yellow text, moves the
+accent* from *keeps the accent, replaces the text*. Both are in that tie. The verdict picked the one
+that kept the text, and everything else in this arm agrees with that ranking of the roles: the
+foreground is what the mechanism exists to protect, and review has said the accent is "not a huge
+deal". With the weight in place the founding artwork publishes exactly the reviewed palette:
+
+| | background | surface | foreground | accent | field |
+| --- | --- | --- | --- | --- | --- |
+| trunk (defect) | `#058cde` | `#d2e0eb` | `#fed700` | `#fbb89d` | gradient, raw 2.7 |
+| ranking order (before) | `#d3a334` | `#cf7d0f` | `#171c1f` | `#fdbca0` | gradient, raw 46.2 |
+| **nearest (shipped, reviewed)** | **`#058cde`** | **`#64b4e5`** | **`#fed700`** | `#fdbca0` | **flat, raw 28.6** |
+
+### 16.2 What moved, relative to the previous run
+
+**`fg-surface`: 4 of 359 artworks publish a different palette.** All four are 2b decisions; every
+mark-role repair is untouched, so **all four previously reviewed repairs are preserved** — `099b3a`
+still publishes `#929292`, and `0ed8ed`, `0a9ef1`, `020d4f` are unchanged in their tier.
+
+| artwork | was | now |
+| --- | --- | --- |
+| `07d4cb` *(the verdict)* | `#d3a334`/`#cf7d0f`/`#171c1f` gradient | **`#058cde`/`#64b4e5`/`#fed700` flat** |
+| `020d4f` | `#e6dbd9`/`#10120f`/`#6e4d3c` gradient | `#e6dbd9`/`#cfc0bb`/`#443427` flat |
+| `061f80` | `#362633`/`#e348d4`/`#8f42ce` gradient *(2a)* | `#362633`/`#573649`/`#c348d6` flat *(2b)* |
+| `0a9ef1` | `#828981`/`#080a05`/`#a19e8d` gradient | `#647273`/`#828981`/`#080a05` flat |
+
+`fg-both` moves 16 of 359 the same way; the full list is in `reports/ordering-diff.txt`.
+
+### 16.3 Blast radius and the tier split, after the flip
+
+| configuration | movers | swap | slate (2a) | repick (2b) | level 3 |
+| --- | --- | --- | --- | --- | --- |
+| **fg-surface** | **23** | 0 | **19** | **4** | 0 |
+| **fg-both** | **47** | 0 | **31** | **16** | 0 |
+
+Cascade **0** and relocation **0** in every configuration, re-verified over the full corpus. The
+mechanism is still overwhelmingly the mark-role tier — 2b decides 4 of 23 under `fg-surface`.
+
+### 16.4 The limitation this ordering carries, measured
+
+**Every single 2b repair comes out flat, and most lose a midpoint with it.**
+
+| configuration | tier | repairs | flat | surface collapsed | gradient lost | midpoint lost |
+| --- | --- | --- | --- | --- | --- | --- |
+| fg-surface | slate (2a) | 19 | 0 | 0 | **0** | **0** |
+| fg-surface | repick (2b) | 4 | **4** | 0 | **4** | **4** |
+| fg-both | slate (2a) | 31 | 0 | 0 | 0 | 1 |
+| fg-both | repick (2b) | 16 | **16** | 7 | **15** | **11** |
+
+The cause is structural: a role-colour count **cannot see the gradient claim**, so the flat sibling of
+a gradient winner — same four colours, one fewer field stop — scores distance 0 and wins outright.
+Charter rule 5 says a wrongly prevented gradient is exactly as bad as a wrongly allowed one, so I
+tried adding the gradient flag to the distance. **It moves the founding artwork off the palette
+review just chose**, back onto a different field entirely. The verdict outranks my inference, so the
+term is not in the code, and this is written down instead.
+
+The mark-role tier is untouched by any of it: 2a loses no gradients and no midpoints under
+`fg-surface`. So the exposure is confined to the 4 artworks 2b decides, and the honest next review
+question is narrow — **are those four better flat, or should 2b pay for dropping a gradient?**
+
 ## 9. Open questions
 
 1. **Should the rule reach the background side?** §4b: 23 artworks publish a foreground at exactly

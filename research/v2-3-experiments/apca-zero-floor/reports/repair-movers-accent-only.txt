@@ -474,11 +474,9 @@ errors: 0
     review: never reviewed
 
   03/ab67616d00001e020003cdbba19cbfd06f490085.jpg   [repick]
-    background  #162e30 -> #142c2e
-    surface     #a25a34 -> #9f5935
     accent      #20171c -> #5d9da6
     field       flat -> gradient
-    fg/surface  clamped -25.8 -> -26.5   raw 28.46 -> 29.16
+    fg/surface  clamped -25.8 -> -25.8   raw 28.46 -> 28.46
     review: never reviewed
 
   03/ab67616d0000b27300035857f020f38ea03fe169.jpg   [slate]

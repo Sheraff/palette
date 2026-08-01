@@ -314,6 +314,31 @@ export function repairZeroContrastPairs(input: Readonly<{
 		(treatment.foreground.hex === published.treatment.foreground.hex ? 0 : 1) +
 		(treatment.accent.hex === published.treatment.accent.hex ? 0 : 1)
 
+	/**
+	 * The same count, with the foreground weighted double — "nearest the published palette" for the
+	 * tier that is allowed to move the field.
+	 *
+	 * The four roles are not equally worth keeping, and this arm has the evidence to say so. The
+	 * foreground is the text: it is the role the whole mechanism exists to protect, and on the
+	 * founding artwork it carries the colour review kept asking for. The accent, by review's own
+	 * words, marks icons and slight changes there are "not a huge deal". A plain count cannot separate
+	 * a candidate that keeps the artwork's yellow text and moves the accent, from one that keeps the
+	 * accent and replaces the text; on the founding artwork twenty-eight candidates tie at two roles
+	 * changed, including both of those. The verdict picked the one that kept the text.
+	 *
+	 * **Known limitation, measured and deliberately left in.** Counting role colours cannot see the
+	 * gradient claim, so the flat sibling of a gradient winner — identical four colours, one fewer
+	 * field stop — scores distance 0 and wins outright. Every 2b repair in the corpus therefore comes
+	 * out flat, and most lose a midpoint with it. Charter rule 5 says a wrongly prevented gradient is
+	 * as bad as a wrongly allowed one, so adding the gradient flag to this distance was tried — and
+	 * it moves the founding artwork off the palette review chose, back onto a different field
+	 * entirely. The verdict outranks the inference, so the term is not here. It is the open question
+	 * this ordering leaves, and the arm's `EXPERIMENT.md` reports the shape of every 2b repair.
+	 */
+	const distanceFromPublished = (treatment: CompletePaletteTreatment): number =>
+		disturbance(treatment) +
+		(treatment.foreground.hex === published.treatment.foreground.hex ? 0 : 1)
+
 	// Level 1 — exchange the two mark roles.
 	//
 	// The cheapest possible repair and the one already trusted: `restrictTextRoleToStrongestClaim`
@@ -381,18 +406,24 @@ export function repairZeroContrastPairs(input: Readonly<{
 	// wide guard's up-front refusal cost.
 	//
 	// The tier is restricted to candidates on a *different* field, which is what makes it a distinct
-	// tier rather than a re-run of 2a, and it takes the ranking's own preference among them: at this
-	// point the question is no longer "what is the smallest change" but "what is the best palette the
-	// pipeline built on some other field", and the ranking is the answer to that question the rest of
-	// the algorithm already trusts.
+	// tier rather than a re-run of 2a, and among those it takes the one **nearest the palette already
+	// published** — fewest of the four role colours changed — rather than the one the ranking likes
+	// best. Ties break on readability of the worst enforced pair, then the ranking's own order, then
+	// the candidate key, so the choice is fully determined.
 	//
-	// This ordering is a real choice and the outcome is sensitive to it — ordering by smallest change
-	// instead produces a different published palette on the founding case. Neither has been reviewed,
-	// so the least-invented rule wins for now and the alternative is measured in the arm's
-	// `EXPERIMENT.md` rather than quietly adopted.
+	// **This ordering carries a reviewed verdict** (`zc-batch`, the founding artwork). Both rules were
+	// built and measured, and they publish different palettes there: ranking order reaches past a
+	// candidate that keeps the artwork's own background and its yellow text, for a completely
+	// different gold field that happened to rank higher. Review compared the two and chose the
+	// smallest-change palette — blue field, yellow text, flat — over the gold gradient. So the rule
+	// here is not the least-invented one, it is the one a human picked, which outranks tidiness.
+	//
+	// The same ordering now governs both 2a and 2b, which is the simpler mechanism as well as the
+	// reviewed one: the tiers differ only in whether the field is allowed to move at all.
 	const repick = considered
 		.filter(({ option }) => !sharesTheField(option.treatment, published.treatment))
 		.sort((first, second) =>
+			distanceFromPublished(first.option.treatment) - distanceFromPublished(second.option.treatment) ||
 			first.entry.rank - second.entry.rank ||
 			(first.entry.key < second.entry.key ? -1 : first.entry.key > second.entry.key ? 1 : 0))[0]
 
