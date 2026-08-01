@@ -1,0 +1,834 @@
+{
+  "schemaVersion": 1,
+  "name": "geeg-2",
+  "items": [
+    {
+      "image": "ab67616d00001e020013bebcaee941ebcc13437c",
+      "imagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+      "sourceSha256": "3d023fc37818de01e310b42f7879c68cb33d5a9c6283e833ebc54bbb598be171",
+      "byteCount": 29608,
+      "A": {
+        "background": {
+          "rgb": [
+            190,
+            194,
+            203
+          ],
+          "oklab": [
+            0.8136308789253235,
+            -0.0007728235214017332,
+            -0.013327444903552532
+          ],
+          "hex": "#bec2cb",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            80,
+            99,
+            129
+          ],
+          "oklab": [
+            0.49627116322517395,
+            -0.009864464402198792,
+            -0.052669890224933624
+          ],
+          "hex": "#506381",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            213,
+            196,
+            127
+          ],
+          "oklab": [
+            0.8188543319702148,
+            -0.009414711967110634,
+            0.09007713198661804
+          ],
+          "hex": "#d5c47f",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            25,
+            23,
+            28
+          ],
+          "oklab": [
+            0.2091311663389206,
+            0.005647347308695316,
+            -0.008484750054776669
+          ],
+          "hex": "#19171c",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#c7c7c7",
+        "width": 300,
+        "height": 300
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            200,
+            204,
+            213
+          ],
+          "oklab": [
+            0.8447880744934082,
+            -0.0007643777644261718,
+            -0.013200297951698303
+          ],
+          "hex": "#c8ccd5",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            79,
+            99,
+            126
+          ],
+          "oklab": [
+            0.494179904460907,
+            -0.012029824778437614,
+            -0.048375487327575684
+          ],
+          "hex": "#4f637e",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            213,
+            196,
+            127
+          ],
+          "oklab": [
+            0.8188543319702148,
+            -0.009414711967110634,
+            0.09007713198661804
+          ],
+          "hex": "#d5c47f",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            25,
+            23,
+            28
+          ],
+          "oklab": [
+            0.2091311663389206,
+            0.005647347308695316,
+            -0.008484750054776669
+          ],
+          "hex": "#19171c",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#c7c7c7",
+        "width": 300,
+        "height": 300
+      }
+    },
+    {
+      "image": "muse.jpg",
+      "imagePath": "images/muse.jpg",
+      "sourceSha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+      "byteCount": 113438,
+      "A": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            2,
+            142,
+            203
+          ],
+          "oklab": [
+            0.6137003898620605,
+            -0.07211395353078842,
+            -0.11425790935754776
+          ],
+          "hex": "#028ecb",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            237,
+            246,
+            251
+          ],
+          "oklab": [
+            0.9678354859352112,
+            -0.00725547643378377,
+            -0.00917084515094757
+          ],
+          "hex": "#edf6fb",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            16,
+            164,
+            212
+          ],
+          "oklab": [
+            0.6719816327095032,
+            -0.08577779680490494,
+            -0.0963129997253418
+          ],
+          "hex": "#10a4d4",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            0,
+            0,
+            0
+          ],
+          "oklab": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#000000",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            2,
+            111,
+            170
+          ],
+          "oklab": [
+            0.5200156569480896,
+            -0.057026371359825134,
+            -0.11063084751367569
+          ],
+          "hex": "#026faa",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            237,
+            246,
+            251
+          ],
+          "oklab": [
+            0.9678354859352112,
+            -0.00725547643378377,
+            -0.00917084515094757
+          ],
+          "hex": "#edf6fb",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            16,
+            164,
+            212
+          ],
+          "oklab": [
+            0.6719816327095032,
+            -0.08577779680490494,
+            -0.0963129997253418
+          ],
+          "hex": "#10a4d4",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      }
+    },
+    {
+      "image": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+      "imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+      "sourceSha256": "fee5aa90e94c19153ad90b2cc1e8a4442b5b8f5081748e1dbb0db535f5544383",
+      "byteCount": 138314,
+      "A": {
+        "background": {
+          "rgb": [
+            17,
+            19,
+            14
+          ],
+          "oklab": [
+            0.18254823982715607,
+            -0.006003949791193008,
+            0.008517123758792877
+          ],
+          "hex": "#11130e",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            35,
+            118,
+            30
+          ],
+          "oklab": [
+            0.4978538155555725,
+            -0.11527276039123535,
+            0.08917205780744553
+          ],
+          "hex": "#23761e",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            245,
+            245,
+            245
+          ],
+          "oklab": [
+            0.9701507687568665,
+            7.853667716162249e-11,
+            3.6161310390525614e-8
+          ],
+          "hex": "#f5f5f5",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            251,
+            209,
+            127
+          ],
+          "oklab": [
+            0.8796578645706177,
+            0.013371769338846207,
+            0.11039397865533829
+          ],
+          "hex": "#fbd17f",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            15,
+            15,
+            15
+          ],
+          "oklab": [
+            0.1684161275625229,
+            1.363380242036527e-11,
+            6.277526942710665e-9
+          ],
+          "hex": "#0f0f0f",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            36,
+            138,
+            28
+          ],
+          "oklab": [
+            0.5550139546394348,
+            -0.1343715935945511,
+            0.10476627945899963
+          ],
+          "hex": "#248a1c",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            245,
+            245,
+            245
+          ],
+          "oklab": [
+            0.9701507687568665,
+            7.853667716162249e-11,
+            3.6161310390525614e-8
+          ],
+          "hex": "#f5f5f5",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            251,
+            209,
+            127
+          ],
+          "oklab": [
+            0.8796578645706177,
+            0.013371769338846207,
+            0.11039397865533829
+          ],
+          "hex": "#fbd17f",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      }
+    },
+    {
+      "image": "ab67616d0000b273000d8049603d6ab7f5d759bb",
+      "imagePath": "0d/ab67616d0000b273000d8049603d6ab7f5d759bb",
+      "sourceSha256": "37a5ba436fd2b1246bd13286253e7cf83a8bd97ea879de28a2171ed1e21f3e66",
+      "byteCount": 82583,
+      "A": {
+        "background": {
+          "rgb": [
+            3,
+            3,
+            3
+          ],
+          "oklab": [
+            0.09692582488059998,
+            7.846438776493159e-12,
+            3.6128042779637326e-9
+          ],
+          "hex": "#030303",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            68,
+            40,
+            3
+          ],
+          "oklab": [
+            0.30555376410484314,
+            0.024063460528850555,
+            0.05936405435204506
+          ],
+          "hex": "#442803",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            252,
+            241
+          ],
+          "oklab": [
+            0.9865632057189941,
+            -0.006171953398734331,
+            0.0132188331335783
+          ],
+          "hex": "#fafcf1",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            119,
+            78,
+            12
+          ],
+          "oklab": [
+            0.4589821696281433,
+            0.028137102723121643,
+            0.08848249167203903
+          ],
+          "hex": "#774e0c",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            14,
+            7,
+            1
+          ],
+          "oklab": [
+            0.1361994445323944,
+            0.006176705006510019,
+            0.0232659000903368
+          ],
+          "hex": "#0e0701",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            48,
+            30,
+            8
+          ],
+          "oklab": [
+            0.2528999149799347,
+            0.015951979905366898,
+            0.041174836456775665
+          ],
+          "hex": "#301e08",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            250,
+            252,
+            241
+          ],
+          "oklab": [
+            0.9865632057189941,
+            -0.006171953398734331,
+            0.0132188331335783
+          ],
+          "hex": "#fafcf1",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            119,
+            78,
+            12
+          ],
+          "oklab": [
+            0.4589821696281433,
+            0.028137102723121643,
+            0.08848249167203903
+          ],
+          "hex": "#774e0c",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": null,
+        "width": 640,
+        "height": 640
+      }
+    },
+    {
+      "image": "ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+      "imagePath": "03/ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+      "sourceSha256": "d0221bcc5bdf885e29e2d10d7b6b57159dbc10047c4d1321b7de26af06dce39b",
+      "byteCount": 54589,
+      "A": {
+        "background": {
+          "rgb": [
+            225,
+            222,
+            213
+          ],
+          "oklab": [
+            0.9004514217376709,
+            -0.0003345486766193062,
+            0.012549000792205334
+          ],
+          "hex": "#e1ded5",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            102,
+            63,
+            48
+          ],
+          "oklab": [
+            0.4097035527229309,
+            0.04485538601875305,
+            0.0400354266166687
+          ],
+          "hex": "#663f30",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            43,
+            33,
+            24
+          ],
+          "oklab": [
+            0.25665590167045593,
+            0.009906972758471966,
+            0.019929081201553345
+          ],
+          "hex": "#2b2118",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            137,
+            81,
+            56
+          ],
+          "oklab": [
+            0.4939458668231964,
+            0.06011684238910675,
+            0.05890745669603348
+          ],
+          "hex": "#895138",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#d7d3c8",
+        "width": 640,
+        "height": 640
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            225,
+            222,
+            213
+          ],
+          "oklab": [
+            0.9004514217376709,
+            -0.0003345486766193062,
+            0.012549000792205334
+          ],
+          "hex": "#e1ded5",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            78,
+            36,
+            22
+          ],
+          "oklab": [
+            0.31555721163749695,
+            0.05263497307896614,
+            0.04256819561123848
+          ],
+          "hex": "#4e2416",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            43,
+            33,
+            24
+          ],
+          "oklab": [
+            0.25665590167045593,
+            0.009906972758471966,
+            0.019929081201553345
+          ],
+          "hex": "#2b2118",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            137,
+            81,
+            56
+          ],
+          "oklab": [
+            0.4939458668231964,
+            0.06011684238910675,
+            0.05890745669603348
+          ],
+          "hex": "#895138",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#d7d3c8",
+        "width": 640,
+        "height": 640
+      }
+    },
+    {
+      "image": "ab67616d0000b273000531830819a9db4885e928",
+      "imagePath": "05/ab67616d0000b273000531830819a9db4885e928",
+      "sourceSha256": "5577e93d0647e069dc3eff4c688029ad5cbd5a252e18e110651a1e0b9b6b11f0",
+      "byteCount": 127390,
+      "A": {
+        "background": {
+          "rgb": [
+            120,
+            74,
+            40
+          ],
+          "oklab": [
+            0.4548426568508148,
+            0.0446731299161911,
+            0.06527972221374512
+          ],
+          "hex": "#784a28",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            249,
+            174,
+            47
+          ],
+          "oklab": [
+            0.8033730983734131,
+            0.04093656316399574,
+            0.15121984481811523
+          ],
+          "hex": "#f9ae2f",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            251,
+            251,
+            239
+          ],
+          "oklab": [
+            0.9848366975784302,
+            -0.004524060059338808,
+            0.015093443915247917
+          ],
+          "hex": "#fbfbef",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            252,
+            220,
+            101
+          ],
+          "oklab": [
+            0.8989171385765076,
+            -0.010666172951459885,
+            0.14111466705799103
+          ],
+          "hex": "#fcdc65",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#6f4221",
+        "width": 640,
+        "height": 640
+      },
+      "B": {
+        "background": {
+          "rgb": [
+            124,
+            74,
+            39
+          ],
+          "oklab": [
+            0.46017295122146606,
+            0.04943256825208664,
+            0.06787829101085663
+          ],
+          "hex": "#7c4a27",
+          "generated": false
+        },
+        "surface": {
+          "rgb": [
+            231,
+            150,
+            43
+          ],
+          "oklab": [
+            0.7387223839759827,
+            0.055969707667827606,
+            0.13775251805782318
+          ],
+          "hex": "#e7962b",
+          "generated": false
+        },
+        "foreground": {
+          "rgb": [
+            251,
+            251,
+            239
+          ],
+          "oklab": [
+            0.9848366975784302,
+            -0.004524060059338808,
+            0.015093443915247917
+          ],
+          "hex": "#fbfbef",
+          "generated": false
+        },
+        "accent": {
+          "rgb": [
+            252,
+            220,
+            101
+          ],
+          "oklab": [
+            0.8989171385765076,
+            -0.010666172951459885,
+            0.14111466705799103
+          ],
+          "hex": "#fcdc65",
+          "generated": false
+        },
+        "gradient": true,
+        "collapse": {
+          "surface": false,
+          "accent": false
+        },
+        "midpoint": "#6f4221",
+        "width": 640,
+        "height": 640
+      }
+    }
+  ]
+}
