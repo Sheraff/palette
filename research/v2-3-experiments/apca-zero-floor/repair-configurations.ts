@@ -32,8 +32,26 @@ export const CONFIGURATIONS: Readonly<Record<string, RepairConfiguration>> = {
 export const PAIR_FIELD: Readonly<Record<ZeroContrastPair, string>> = {
 	"foreground-surface": "fgSurface",
 	"foreground-background": "fgBackground",
+	"foreground-midpoint": "fgMidpoint",
 	"accent-surface": "accentSurface",
 	"accent-background": "accentBackground",
+	"accent-midpoint": "accentMidpoint",
+}
+
+/**
+ * The midpoint pairs ride along with their mark role rather than being chosen separately — the same
+ * expansion the runtime applies, restated here so a report never counts a different population than
+ * the repair acts on. See `withMidpointPairs` in the runtime for why.
+ */
+export function enforcedWithMidpoint(pairs: readonly ZeroContrastPair[]): readonly ZeroContrastPair[] {
+	const expanded = new Set(pairs)
+	if (pairs.some((pair) => pair === "foreground-surface" || pair === "foreground-background")) {
+		expanded.add("foreground-midpoint")
+	}
+	if (pairs.some((pair) => pair === "accent-surface" || pair === "accent-background")) {
+		expanded.add("accent-midpoint")
+	}
+	return [...expanded]
 }
 
 /**
@@ -44,8 +62,10 @@ export const PAIR_FIELD: Readonly<Record<ZeroContrastPair, string>> = {
 export function pairApplies(
 	collapse: Readonly<{ surface: boolean; accent: boolean }>,
 	pair: ZeroContrastPair,
+	midpoint: string | null = null,
 ): boolean {
 	if (collapse.surface && (pair === "foreground-surface" || pair === "accent-surface")) return false
-	if (collapse.accent && (pair === "accent-surface" || pair === "accent-background")) return false
+	if (collapse.accent && pair.startsWith("accent-")) return false
+	if (pair.endsWith("-midpoint") && midpoint === null) return false
 	return true
 }

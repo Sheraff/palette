@@ -15,8 +15,11 @@ import { readdirSync, readFileSync } from "node:fs"
 import { resolve } from "node:path"
 import { parseArgs } from "node:util"
 
+import { rolePairIsUnreadable } from "../../v2-3/src/internal/palette-core.ts"
+import type { RGB } from "../../v2-3/src/internal/types.ts"
+
 import { loadCensus, type CensusRow } from "./analyse.ts"
-import { CONFIGURATIONS, PAIR_FIELD, pairApplies } from "./repair-configurations.ts"
+import { CONFIGURATIONS, PAIR_FIELD, enforcedWithMidpoint, pairApplies } from "./repair-configurations.ts"
 
 const { values } = parseArgs({
 	options: { repair: { type: "string" }, config: { type: "string", default: "all-four" } },
@@ -38,9 +41,25 @@ for (const file of readdirSync(repairRoot).sort()) {
 const trunk = new Map(loadCensus().map((row) => [row.path, row]))
 const key = (p: any) => [p.background, p.surface, p.foreground, p.accent, p.gradient ? "g" : "f", p.midpoint].join(":")
 
-/** Did this artwork's TRUNK palette carry a defect in an enforced pair? */
-const carriedDefect = (row: CensusRow): boolean => configuration.enforced.some((pair) =>
-	pairApplies(row.collapse, pair) && (row as unknown as Record<string, { lc: number }>)[PAIR_FIELD[pair]]!.lc === 0)
+const rgb = (hex: string): RGB =>
+	[parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]
+
+/**
+ * Did this artwork's TRUNK palette carry a defect in an enforced pair?
+ *
+ * The midpoint pairs are computed here rather than read from the census, because the census predates
+ * them — it stores the published midpoint hex, which is all that is needed. Leaving them out would
+ * report every midpoint-driven repair as a cascade, which is the opposite of the truth.
+ */
+const carriedDefect = (row: CensusRow): boolean =>
+	enforcedWithMidpoint(configuration.enforced).some((pair) => {
+		if (!pairApplies(row.collapse, pair, row.midpoint)) return false
+		if (pair.endsWith("-midpoint")) {
+			const mark = pair.startsWith("foreground") ? row.foreground : row.accent
+			return rolePairIsUnreadable(rgb(mark), rgb(row.midpoint!))
+		}
+		return (row as unknown as Record<string, { lc: number }>)[PAIR_FIELD[pair]]!.lc === 0
+	})
 
 let compared = 0
 let movers = 0

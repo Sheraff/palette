@@ -51,6 +51,7 @@ if (existsSync(outFile)) {
 function outcomeOf(id: string): string {
 	if (id.startsWith("zero-contrast-repair-swap:")) return "swap"
 	if (id.startsWith("zero-contrast-repair-slate:")) return "slate"
+	if (id.startsWith("zero-contrast-repair-repick:")) return "repick"
 	return "untouched"
 }
 
@@ -68,6 +69,15 @@ for (const path of jobs) {
 				lc: apcaContrast(winner[a].rgb, winner[b].rgb),
 				de: perceptualDifference(winner[a].rgb, winner[b].rgb),
 			})
+			// The midpoint is a published stop, so the mark roles are measured against it too — that is
+			// the pair review named on a repaired artwork ("white on white for a significant width").
+			const midpointColor = details.midpoint.kind === "source-supported-three-stop"
+				? details.midpoint.color
+				: null
+			const againstMidpoint = (role: "foreground" | "accent") => midpointColor === null ? null : {
+				lc: apcaContrast(winner[role].rgb, midpointColor.rgb),
+				de: perceptualDifference(winner[role].rgb, midpointColor.rgb),
+			}
 			perConfiguration[name] = {
 				background: winner.background.hex,
 				surface: winner.surface.hex,
@@ -75,13 +85,15 @@ for (const path of jobs) {
 				accent: winner.accent.hex,
 				gradient: winner.gradient,
 				collapse: winner.collapse,
-				midpoint: details.midpoint.kind === "source-supported-three-stop" ? details.midpoint.color.hex : null,
+				midpoint: midpointColor?.hex ?? null,
 				outcome: outcomeOf(winner.id),
 				id: winner.id,
 				fgSurface: pair("foreground", "surface"),
 				fgBackground: pair("foreground", "background"),
+				fgMidpoint: againstMidpoint("foreground"),
 				accentSurface: pair("accent", "surface"),
 				accentBackground: pair("accent", "background"),
+				accentMidpoint: againstMidpoint("accent"),
 			}
 		}
 		record = { path, configurations: perConfiguration }

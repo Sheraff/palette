@@ -48,7 +48,7 @@ import { restrictTextRoleToStrongestClaim } from "./text-role-restriction.ts";
 
 import { repairZeroContrastPairs } from "./zero-contrast-repair.ts";
 
-import type { ZeroContrastPair } from "./zero-contrast-repair.ts";
+import type { PublishedPalette, RepairSlateEntry, ZeroContrastPair } from "./zero-contrast-repair.ts";
 
 import type { RawImage } from "./types.ts";
 
@@ -354,6 +354,16 @@ export function extractPaletteDetails(
 	zeroContrastRepairPairs?: readonly ZeroContrastPair[] | null,
 	/** Research override for `ZERO_CONTRAST_PROTECTED_PAIRS`; see that constant. */
 	zeroContrastProtectedPairs?: readonly ZeroContrastPair[] | null,
+	/**
+	 * Research hook, same posture as the overrides above: it hands a harness the repair slate and the
+	 * palette that would be published before any repair, so questions like "was this palette even
+	 * reachable" can be answered against the real pipeline. It is read-only — nothing it receives is
+	 * consulted again — and omitting it changes nothing.
+	 */
+	observeRepairSlate?: ((observation: Readonly<{
+		slate: readonly RepairSlateEntry[]
+		published: PublishedPalette
+	}>) => void) | null,
 ): Readonly<{
 	width: number
 	height: number
@@ -446,11 +456,8 @@ export function extractPaletteDetails(
 		repairOverrides: repairOverrides ?? null,
 		repairs,
 	})
-	const gradient = applyGradientSupport(
-		selection,
-		materialized,
-		evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(common.evidence.native),
-	)
+	const gradientPaths = evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(common.evidence.native)
+	const gradient = applyGradientSupport(selection, materialized, gradientPaths)
 	// See `TEXT_ROLE_RESTRICTION`. Deliberately the LAST thing that happens: the field is fully
 	// decided by this point — including the flat fallback and the midpoint — and a swap of the two
 	// mark roles cannot reach any of it. Placing it earlier would let the exchanged roles feed
@@ -461,6 +468,37 @@ export function extractPaletteDetails(
 		identityObligations: common.seedAvailability.identityObligations,
 		identityRoleRequirements: roleEvidence.requirements,
 	})
+	/**
+	 * Run one candidate treatment through the same two downstream stages the winner just went
+	 * through, so a proposed repair is judged on what would actually be published for it.
+	 *
+	 * This exists because the midpoint is one of the things being checked, and the midpoint is not a
+	 * property of a treatment — it is derived from the field the treatment stands on. A repair that
+	 * re-picks the field therefore earns a different third stop, and reading the candidate's bare
+	 * role colours would miss it entirely.
+	 *
+	 * `transitionPromoted` is deliberately `false` for a replacement. Promotion is something the
+	 * selection stage confers on one specific candidate after weighing the transition envelope, and
+	 * it is not ours to hand out afterwards; the conservative reading gives a re-picked candidate the
+	 * midpoint it earns on its own field rather than one borrowed from a promotion it never won.
+	 */
+	const publishTreatment = (treatment: CompletePaletteTreatment): PublishedPalette => {
+		const field = treatment === selection.winner
+			? gradient
+			: applyGradientSupport(
+				{ winner: treatment, transitionPromoted: false, eligibility: selection.eligibility },
+				materialized,
+				gradientPaths,
+			)
+		return {
+			treatment: restrictTextRoleToStrongestClaim({
+				winner: field.winner,
+				identityObligations: common.seedAvailability.identityObligations,
+				identityRoleRequirements: roleEvidence.requirements,
+			}),
+			midpoint: field.midpoint,
+		}
+	}
 	// See `ZERO_CONTRAST_REPAIR_PAIRS`. Everything above — generation, materialization, ranking,
 	// selection, the flat fallback and the mark-role swap — has already run and is untouched, which is
 	// the whole point of doing this here rather than in `createTreatment`. The repair reads the winner
@@ -471,13 +509,16 @@ export function extractPaletteDetails(
 	// same eligibility the winner itself had to satisfy — a repair may only reach for something the
 	// pipeline was already willing to publish.
 	const rankByKey = new Map(scored.evaluations.map((evaluation, position) => [evaluation.key, position]))
+	const repairSlate: readonly RepairSlateEntry[] = selection.eligibility.eligibleCandidates.map((candidate) => ({
+		key: candidate.key,
+		rank: rankByKey.get(candidate.key) ?? Number.MAX_SAFE_INTEGER,
+		treatment: candidate.treatment,
+	}))
+	observeRepairSlate?.({ slate: repairSlate, published: { treatment: published, midpoint: gradient.midpoint } })
 	const repaired = repairZeroContrastPairs({
-		winner: published,
-		slate: selection.eligibility.eligibleCandidates.map((candidate) => ({
-			key: candidate.key,
-			rank: rankByKey.get(candidate.key) ?? Number.MAX_SAFE_INTEGER,
-			treatment: candidate.treatment,
-		})),
+		published: { treatment: published, midpoint: gradient.midpoint },
+		slate: repairSlate,
+		publish: publishTreatment,
 		...(zeroContrastRepairPairs ? { enforced: zeroContrastRepairPairs } : {}),
 		...(zeroContrastProtectedPairs ? { protect: zeroContrastProtectedPairs } : {}),
 	})
@@ -488,7 +529,7 @@ export function extractPaletteDetails(
 	return {
 		width: image.width,
 		height: image.height,
-		midpoint: gradient.midpoint,
-		winner: repaired.winner,
+		midpoint: repaired.published.midpoint,
+		winner: repaired.published.treatment,
 	}
 }

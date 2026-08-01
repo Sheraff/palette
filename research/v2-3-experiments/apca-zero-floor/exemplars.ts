@@ -21,8 +21,9 @@ import { loadCensus } from "./analyse.ts"
 const { values } = parseArgs({ options: { all: { type: "boolean" } }, strict: true })
 
 const NAMED: Record<string, string> = {
-	"0007d4cb364e04df68f6e2c1": "07d4cb — the founding case; the bar for a GOOD repair",
-	"00099b3aaf316149051a4578": "099b3a — near-black on near-black; the bar for a SAVE WORTH MAKING",
+	"0007d4cb364e04df68f6e2c1": "07d4cb — the founding case; review preferred the WIDE guard's answer here",
+	"00099b3aaf316149051a4578": "099b3a — the save; review then caught the repaired fg matching the MIDPOINT",
+	"000ed8ed3da0ab878ce10f4a": "0ed8ed — the milder midpoint case review flagged alongside it",
 }
 
 const rgb = (hex: string): RGB =>
@@ -47,8 +48,14 @@ const show = (label: string, palette: Readonly<{
 	process.stdout.write(`  ${label.padEnd(24)} bg=${palette.background} surface=${palette.surface}` +
 		` fg=${palette.foreground} accent=${palette.accent}` +
 		` ${palette.gradient ? "gradient" : "flat"} midpoint=${palette.midpoint ?? "none"}\n`)
+	// The midpoint is a published stop, so it is reported beside the two endpoints rather than
+	// treated as a place the ramp merely passes through.
+	const onMidpoint = palette.midpoint === null
+		? "     n/a"
+		: readability(palette.foreground, palette.midpoint).toFixed(2).padStart(8)
 	process.stdout.write(`  ${" ".repeat(24)} fg reads on surface: raw ${readability(palette.foreground, palette.surface).toFixed(2).padStart(6)}` +
-		`   on background: raw ${readability(palette.foreground, palette.background).toFixed(2).padStart(6)}${note}\n`)
+		`   on background: raw ${readability(palette.foreground, palette.background).toFixed(2).padStart(6)}` +
+		`   on midpoint: raw ${onMidpoint}${note}\n`)
 }
 
 const targets = values.all

@@ -57,6 +57,12 @@ resolved root.
     foreground-surface case is at truly identical lightness (smallest raw 1.19), and a floor stated
     at **raw 3** would catch 5 of 14 while keeping both artworks Flo named.
 
+> **Superseded in part by §15.** Review has since run the repair batch and preferred it on all four
+> items, so the rule is wanted. §15 records what changed after that: the midpoint joined the
+> protected set, a full-palette re-pick tier was added, and the blast radius was re-measured. The
+> recommendation immediately below is kept as written because it was made before that verdict; the
+> current one is at the end of §15.3 and §15.4.
+
 **My recommendation, in two parts.**
 
 **Do not turn the wide guard on.** It is correct about the pathology and its threshold is genuinely
@@ -670,6 +676,128 @@ and `03/…0003cdbb` (`bg=#162e30 fg=#20171c`, raw 3.79). Nothing on their field
 so nothing was forced. This is the tier working as intended, and given §14's quality findings I would
 weight it *more* heavily, not less: several of the fifteen `fg-surface` repairs would arguably be
 better left alone and reported.
+
+## 15. Addendum — after review preferred the repair (midpoint protection, and level 2b)
+
+Review ran the repair batch and **preferred it on all four items**: `099b3a` acceptable, `0ed8ed`
+acceptable, `0a9ef1` and `020d4f` weak-but-better — including the warmth-costing one, which still
+beat the unreadable original. On the founding case head-to-head review preferred the **wide guard's**
+palette over the narrow one, which is what §14 predicted. Two changes followed.
+
+### 15.1 The midpoint is a published stop, and it joins the protection
+
+Review's note on the repaired `099b3a`: *"it's now the midpoint that causes an APCA of 0 … this one
+feels particularly intense (it's white on white for a significant width)"* — the repaired foreground
+`#e1e1e1` was sitting on the published midpoint `#e0e0e0`. The same thing, milder, on `0ed8ed`.
+
+The principle now encoded, in `withMidpointPairs`:
+
+> A zero **crossing** mid-gradient is a thin line — contrast is zero at one position and recovers on
+> both sides — and stays exempt. A foreground matching a published **stop** is not a crossing: the
+> ramp flattens around each stop, so the text is unreadable across a significant width. So whenever a
+> mark role's pairs are checked at all, its midpoint pair is checked with them. It is not a separate
+> coverage choice a caller makes.
+
+**This is its own defect class, and trunk carries it today.** Measured over the corpus, before any
+repair: **8 artworks publish a foreground unreadable against their own midpoint**, and 37 an accent.
+None was visible to any earlier count, because nothing had ever measured that pair.
+
+**Both flagged artworks are now repaired, and a mark-role candidate cleared surface *and* midpoint on
+each — no field change was needed:**
+
+| | background | surface | midpoint | foreground | fg on surface | fg on midpoint |
+| --- | --- | --- | --- | --- | --- | --- |
+| `099b3a` trunk | `#b5b5b5` | `#151515` | `#e0e0e0` | `#000000` | **raw 1.4** | raw 90.5 |
+| `099b3a` previous repair | `#b5b5b5` | `#151515` | `#e0e0e0` | `#e1e1e1` | raw 90.4 | **raw ≈ 0** |
+| **`099b3a` now** | `#b5b5b5` | `#151515` | `#e0e0e0` | **`#929292`** | **raw 45.5** | **raw 42.6** |
+| `0ed8ed` trunk | `#f8f8fa` | `#282c2d` | `#f0eff5` | `#2b2f38` | **raw 1.9** | raw 93.4 |
+| `0ed8ed` previous repair | `#f8f8fa` | `#282c2d` | `#f0eff5` | `#dfdce3` | raw 48.2 | **raw ≈ 0** |
+| **`0ed8ed` now** | `#f8f8fa` | `#282c2d` | `#f0eff5` | **`#a29ca0`** | **raw 48.2** | **raw 45.9** |
+
+Both land on a mid-tone that reads against the dark surface and the light midpoint at once, which is
+what the extra constraint was always going to select for. No level-2b re-pick was required for either.
+
+### 15.2 Level 2b — full-palette re-pick
+
+Implemented, and the reasoning in the brief is right and worth restating in the code: **the wide
+guard's cascade came from running for everyone, not from changing fields.** The entry test is still
+the defect itself, so a tier that moves the field is exactly as cascade-free as one that does not.
+
+2b is restricted to candidates on a *different* field (which is what makes it a tier rather than a
+re-run of 2a) and takes the ranking's own best among them. It is tried when 2a finds nothing, or when
+2a's best is not decisive:
+
+> **A mark-role repair is decisive when its worst enforced pair clears raw 20 — twice the floor.**
+> Below that, 2b is consulted, and it wins only if it is strictly more readable. Ties go to the
+> smaller change.
+
+Twice the floor is stated as a multiple on purpose: the floor (raw 10, where APCA starts reporting
+anything at all) is the only non-arbitrary number on this scale, so the one bar that had to be picked
+is expressed in terms of it rather than invented.
+
+**A real bug turned up while wiring this.** The ordering was scoring the raw *candidate* while the
+cleanliness test judged the *published* result — and publishing can rearrange a palette, because the
+mark-role swap exchanges the two mark colours and the supported-gradient path can drop a gradient
+claim to flat. Both now read the published arrangement. It changed which palette several artworks
+land on.
+
+### 15.3 Does 2b reproduce the wide guard's founding-case answer? No — and it cannot
+
+**It does not, and the reason is reachability, not ranking.** The wide guard published
+`bg #058cde / surface #64b4e5` **as a gradient**. Trunk's source-eligible slate for that artwork is
+1,179 candidates, and that field appears in it **49 times — 0 of them as a gradient**. All 49 are
+flat. The wide guard's palette was *created* by the cascade: refusing candidates changed what
+materialization admitted, and a gradient variant on that field appeared that trunk never builds.
+
+So no re-pick tier can produce it. That is a structural limit of every narrow form, not a tuning miss.
+
+**But the closest reachable relative is genuinely close, and it is clean:**
+
+| | background | surface | foreground | accent | field | fg on surface |
+| --- | --- | --- | --- | --- | --- | --- |
+| wide guard (reviewed best, unreachable) | `#058cde` | `#64b4e5` | `#fed700` | `#fdbca0` | **gradient** | raw ≈ 28 |
+| **slate rank 95** (reachable) | `#058cde` | `#64b4e5` | `#fed700` | `#fdbca0` | **flat** | **raw 28.6** |
+| what 2b publishes (rank 7) | `#d3a334` | `#cf7d0f` | `#171c1f` | `#fdbca0` | gradient | raw 46.2 |
+
+Rank 95 is the reviewed answer minus its gradient claim: same field colours, the artwork's yellow
+still carrying the text. Every pair on it is clean (`reports/founding-case-reachability.txt` shows
+all four). It is not chosen only because it ranks 95th and the gold field ranks 7th.
+
+**So 2b's ordering is a live decision, and I have deliberately not made it.** Ordering by ranking
+publishes the gold gradient; ordering by *smallest change* publishes something much nearer the
+reviewed answer. Neither has been reviewed, so the code takes the least-invented rule — defer to the
+ranking the rest of the algorithm already trusts — and the alternative is written down here instead
+of quietly adopted. **This is the second thing worth putting in front of review**, and the cheapest
+way to settle it is a single A/B on this artwork: gold gradient versus blue flat with yellow text.
+
+### 15.4 Blast radius after both changes
+
+Full corpus re-run, widest configuration: **7,585 artworks compared, 359 movers, 0 cascade.** The
+mover count is *exactly* the number of artworks whose trunk palette carries a defect — the two sets
+are identical, which is the strongest form the claim can take. Level 3 no longer fires anywhere: 2b
+rescues every artwork the mark-role tier used to decline.
+
+| configuration | movers | swap | slate (2a) | repick (2b) | level 3 |
+| --- | --- | --- | --- | --- | --- |
+| **fg-surface** | **23** | 0 | 20 | 3 | **0** |
+| fg-surface-accent-ok | 23 | 16 | 5 | 2 | 0 |
+| **fg-both** | **47** | 0 | 36 | 11 | 0 |
+| fg-both-accent-ok | 47 | 32 | 9 | 6 | 0 |
+| accent-only *(separate tier)* | 326 | 0 | 325 | 1 | 0 |
+| all-four | 359 | 0 | 326 | 33 | 0 |
+
+`fg-surface` moves 23, up from 15, and the growth is entirely the midpoint pair — 8 artworks whose
+foreground is unreadable against their own midpoint were never counted before. **Relocation remains 0
+in every configuration.** The mechanism is still overwhelmingly the mark-role tier: 2b fires on 3 of
+23 under `fg-surface`.
+
+### 15.5 Verification after the changes
+
+- **`GATE PASS: 108/108 byte-identical`** with everything off, against the same pristine baseline.
+- **No cascade over the full 7,585**, midpoint pairs included in the check — an earlier version of
+  the checker would have mis-reported every midpoint-driven repair as a cascade.
+- **Relocation 0** in all six configurations.
+- Typecheck clean; 15 configuration and architecture assertions pass.
 
 ## 9. Open questions
 
