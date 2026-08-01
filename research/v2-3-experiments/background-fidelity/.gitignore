@@ -1,0 +1,5 @@
+# Per-artwork sweep outputs: one file per job, so a sweep stays resumable and killable.
+# The committed record is the collated `data/*.jsonl` (see collate.py); these are regenerable
+# by re-running sweep.sh.
+data/*/
+data/census-*.[0-9]*

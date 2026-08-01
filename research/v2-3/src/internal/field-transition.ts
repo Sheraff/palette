@@ -1,6 +1,6 @@
 import { labAt, okDistance, rgbAt, rgbToHex, rgbToOKLab } from "./color.ts";
 
-import { quantizedKey } from "./palette-core.ts";
+import { assignFieldRoles, quantizedKey } from "./palette-core.ts";
 
 import { createBandSpatialSpreadAccumulator } from "./band-representative.ts";
 
@@ -533,60 +533,13 @@ function radialGeometry(center: readonly [number, number]): TransitionGeometry {
 	return { topology: "radial-offset", direction: directions[0].direction, center }
 }
 
-function roleOwnershipProfile(family: ColorFamilyEvidence): FieldRoleAssignmentEvidence["backgroundProfile"] {
-	const frameCoverage = (family.borderCoverage + family.cornerCoverage) / 2
-	const peripheralCoverage = (family.borderCoverage + family.cornerCoverage + (1 - family.centerCoverage)) / 3
-	const connectedCoverage = Math.sqrt(clamp(family.largestComponentFraction / 0.24) * family.familyConcentration)
-	const populationCoverage = clamp(family.populationFraction / 0.24)
-	const values = [frameCoverage, peripheralCoverage, connectedCoverage, family.fieldScore, populationCoverage] as const
-	return {
-		frameCoverage,
-		peripheralCoverage,
-		connectedCoverage,
-		fieldScore: family.fieldScore,
-		populationCoverage,
-		evidenceLevels: values.map((value) => Math.floor((value + 1e-12) / 0.04)) as [number, number, number, number, number],
-	}
-}
-
-function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamilyEvidence): FieldRoleAssignmentEvidence {
-	const criteria = ["frameCoverage", "peripheralCoverage", "connectedCoverage", "fieldScore", "populationCoverage"] as const
-	const firstProfile = roleOwnershipProfile(first)
-	const secondProfile = roleOwnershipProfile(second)
-	let background = first
-	let surface = second
-	let backgroundProfile = firstProfile
-	let surfaceProfile = secondProfile
-	let decisiveCriterion: FieldRoleAssignmentEvidence["decisiveCriterion"] = "ascii-tie"
-	let confidence = 0
-	for (let index = 0; index < criteria.length; index++) {
-		const difference = firstProfile.evidenceLevels[index] - secondProfile.evidenceLevels[index]
-		if (difference === 0) continue
-		decisiveCriterion = criteria[index]
-		confidence = clamp(Math.abs(difference) * 0.04)
-		if (difference < 0) {
-			background = second
-			surface = first
-			backgroundProfile = secondProfile
-			surfaceProfile = firstProfile
-		}
-		break
-	}
-	if (decisiveCriterion === "ascii-tie" && compareAscii(first.id, second.id) > 0) {
-		background = second
-		surface = first
-		backgroundProfile = secondProfile
-		surfaceProfile = firstProfile
-	}
-	return {
-		backgroundFamilyId: background.id,
-		surfaceFamilyId: surface.id,
-		backgroundProfile,
-		surfaceProfile,
-		decisiveCriterion,
-		confidence,
-	}
-}
+// `roleOwnershipProfile` and `assignFieldRoles` used to exist here as a verbatim second copy of
+// `palette-core.ts`'s pair, differing only in writing `RANKING_EVIDENCE_RESOLUTION` as a bare
+// `0.04` twice. Two copies of the rule that decides which family is the background is a latent
+// divergence, and the background-fidelity arm made it a live one: a repair applied to one copy
+// would silently leave the transition path deciding the old way. The duplicate is deleted and the
+// export is imported instead; `clamp` and the resolution literal were identical, so this is
+// behaviour-preserving on its own.
 
 function exactRepresentatives(family: ColorFamilyEvidence): ColorRepresentative[] {
 	const strategyOrder: Record<ColorRepresentative["strategy"], number> = {

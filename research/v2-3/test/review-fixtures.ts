@@ -12,7 +12,12 @@ export const reviewFixtures: readonly ReviewFixture[] = [
 	{ caseId: "artofficial.jpg", source: { file: "images/artofficial.jpg", sha256: "c5b20159f95c11e27525fc9fb7801045e60e5c7d44b8bb69c94e5e120bffafda", bytes: 1657931 }, roles: ["#31305c", "#040325", "#bdc1ca", "#f5e20c"], gradient: false, collapse: [false, false] },
 	{ caseId: "birdsofprey.jpg", source: { file: "images/birdsofprey.jpg", sha256: "26b991b5d5b9c2a1a390bc5ec398a9b24231da0ce78e927e663aefd9ac1f5d9d", bytes: 136233 }, roles: ["#141975", "#3fa72a", "#030102", "#d02981"], gradient: true, collapse: [false, false], midpoint: "#1880a7" },
 	{ caseId: "black.jpg", source: { file: "images/black.jpg", sha256: "519b1020f1afdc49ee61cbcd7a094fb5169b2859a9f85c1e32db62de59c7633c", bytes: 38119 }, roles: ["#000000", "#000000", "#575757", "#575757"], gradient: false, collapse: [true, true] },
-	{ caseId: "disney.avif", source: { file: "images/disney.avif", sha256: "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b", bytes: 8996 }, roles: ["#74c044", "#2199d6", "#fbfdfc", "#c72690"], gradient: false, collapse: [false, false] },
+	// Surface and accent exchange under the background-fidelity integration (`BACKGROUND_FIDELITY`
+	// = "on"). `batch-bf-1` showed the reviewer both arrangements side by side and returned STRONG
+	// on both, with no preference — so this is a move between two endorsed palettes, which is
+	// exactly what the charter's "Multiple valid palettes" section says is not a regression. The
+	// background `#74c044` does not move. Sole parity change in the integration.
+	{ caseId: "disney.avif", source: { file: "images/disney.avif", sha256: "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b", bytes: 8996 }, roles: ["#74c044", "#c72690", "#fbfdfc", "#2199d6"], gradient: false, collapse: [false, false] },
 	{ caseId: "doja.jpg", source: { file: "images/doja.jpg", sha256: "6db5579b6d143c716ac1658937fe60587a47812251c13524fb8cd580512e54ef", bytes: 133578 }, roles: ["#fd75b5", "#fd3d86", "#fff6fc", "#fda8cf"], gradient: true, collapse: [false, false], midpoint: "#ff8cc6" },
 	{ caseId: "elephunk.jpg", source: { file: "images/elephunk.jpg", sha256: "cbff25964afd3e74e91506e47beeb855f41c602ac10556935eb3a95ec814954f", bytes: 70051 }, roles: ["#55919b", "#022833", "#fcfdd1", "#a5c7c8"], gradient: false, collapse: [false, false] },
 	{ caseId: "franz.jpg", source: { file: "images/franz.jpg", sha256: "634d27eb2a703963e7da87b1b6ebfb2a68a7b23f2a8c7445fe8c88b5daec774e", bytes: 50193 }, roles: ["#020612", "#020612", "#f9ebc4", "#da9925"], gradient: false, collapse: [true, false] },

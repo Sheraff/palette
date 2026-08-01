@@ -147,6 +147,15 @@ export type ColorFamilyEvidence = Readonly<{
 	markSupport: number
 	markComponentCount: number
 	observedComponentCount: number
+	/**
+	 * Set when `mountFamilyIds` reads this family as a frame or matte rather than ground — a
+	 * family that owns the border while a materially larger field family it encloses owns none
+	 * of it. Absent means "not measured as a mount"; see
+	 * `ALBUM_ARTWORK_PALETTE_V2_POLICY.mount`. It is recorded rather than recomputed because the
+	 * test needs every family at once, and both consumers (the `fieldScore` border credit and
+	 * the role-ownership peripheral credit) must agree on the answer.
+	 */
+	isMount?: boolean
 	components: readonly ComponentEvidence[]
 	representatives: readonly ColorRepresentative[]
 }>
@@ -1415,13 +1424,44 @@ const FIELD_ROLE_OWNERSHIP_CRITERIA = [
 	"populationCoverage",
 ] as const
 
+/**
+ * Background-fidelity switch. `"off"` is the shipped trunk behaviour, byte-for-byte: every
+ * `ALBUM_ARTWORK_PALETTE_V2_POLICY.backgroundFidelity` value is replaced by its incumbent at the
+ * use site. See that policy block, and
+ * `research/v2-3-experiments/background-fidelity/EXPERIMENT.md`.
+ */
+export const BACKGROUND_FIDELITY: "off" | "on" = "on"
+
+/** Levels of separation a role-ownership criterion needs before it may decide. */
+function fieldRoleMinimumEvidenceLevels(): number {
+	if (BACKGROUND_FIDELITY !== "on") return 1
+	return ALBUM_ARTWORK_PALETTE_V2_POLICY.backgroundFidelity.minimumRoleOwnershipEvidenceLevels
+}
+
+/** Enclosed-to-mount population ratio at which a border-owning family reads as a frame. */
+function mountMinimumEnclosedPopulationRatio(): number {
+	if (BACKGROUND_FIDELITY !== "on") return ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.minimumEnclosedPopulationRatio
+	return ALBUM_ARTWORK_PALETTE_V2_POLICY.backgroundFidelity.minimumEnclosedPopulationRatio
+}
+
+/**
+ * The share of its peripheral evidence `family` keeps in the role-ownership profile: withdrawn
+ * for a recognised mount, whose edge ownership the mount test has already explained as framing.
+ */
+function roleOwnershipPeripheralCredit(family: ColorFamilyEvidence): number {
+	if (BACKGROUND_FIDELITY !== "on" || family.isMount !== true) return 1
+	return ALBUM_ARTWORK_PALETTE_V2_POLICY.backgroundFidelity.mountRoleOwnershipBorderCredit
+}
+
 function evidenceLevel(value: number): number {
 	return Math.floor((value + 1e-12) / RANKING_EVIDENCE_RESOLUTION)
 }
 
 function fieldRoleOwnershipProfile(family: ColorFamilyEvidence): FieldRoleOwnershipProfile {
-	const frameCoverage = (family.borderCoverage + family.cornerCoverage) / 2
-	const peripheralCoverage = (family.borderCoverage + family.cornerCoverage + (1 - family.centerCoverage)) / 3
+	const credit = roleOwnershipPeripheralCredit(family)
+	const frameCoverage = ((family.borderCoverage + family.cornerCoverage) / 2) * credit
+	const peripheralCoverage =
+		((family.borderCoverage + family.cornerCoverage + (1 - family.centerCoverage)) / 3) * credit
 	const connectedCoverage = Math.sqrt(clamp(family.largestComponentFraction / 0.24) * family.familyConcentration)
 	const populationCoverage = clamp(family.populationFraction / 0.24)
 	const values = [frameCoverage, peripheralCoverage, connectedCoverage, family.fieldScore, populationCoverage] as const
@@ -1438,6 +1478,7 @@ function fieldRoleOwnershipProfile(family: ColorFamilyEvidence): FieldRoleOwners
 export function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamilyEvidence): FieldRoleAssignmentEvidence {
 	const firstProfile = fieldRoleOwnershipProfile(first)
 	const secondProfile = fieldRoleOwnershipProfile(second)
+	const minimumLevels = fieldRoleMinimumEvidenceLevels()
 	let background = first
 	let surface = second
 	let backgroundProfile = firstProfile
@@ -1446,7 +1487,7 @@ export function assignFieldRoles(first: ColorFamilyEvidence, second: ColorFamily
 	let confidence = 0
 	for (let index = 0; index < FIELD_ROLE_OWNERSHIP_CRITERIA.length; index++) {
 		const difference = firstProfile.evidenceLevels[index] - secondProfile.evidenceLevels[index]
-		if (difference === 0) continue
+		if (Math.abs(difference) < minimumLevels) continue
 		decisiveCriterion = FIELD_ROLE_OWNERSHIP_CRITERIA[index]
 		confidence = clamp(Math.abs(difference) * RANKING_EVIDENCE_RESOLUTION)
 		if (difference < 0) {
@@ -1737,7 +1778,7 @@ function mountFamilyIds(families: readonly ColorFamilyEvidence[]): Set<string> {
 	for (const family of families) {
 		if (family.borderCoverage < policy.minimumBorderCoverage) continue
 		if (family.id === largestEnclosed.id) continue
-		if (largestEnclosed.populationFraction < family.populationFraction * policy.minimumEnclosedPopulationRatio) continue
+		if (largestEnclosed.populationFraction < family.populationFraction * mountMinimumEnclosedPopulationRatio()) continue
 		mounts.add(family.id)
 	}
 	return mounts
@@ -2217,7 +2258,14 @@ export function buildNativePaletteEvidence(
 	const mountIds = mountFamilyIds(preliminary)
 	const scored = mountIds.size === 0 ? preliminary : preliminary.map((family): ColorFamilyEvidence =>
 		mountIds.has(family.id)
-			? { ...family, fieldScore: fieldScoreFrom(family, ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.borderCreditRetained) }
+			? {
+				...family,
+				fieldScore: fieldScoreFrom(family, ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.borderCreditRetained),
+				// Carried so the role-ownership profile can withdraw the same credit from the
+				// criteria that actually decide the background role — `fieldScore` is only the
+				// fourth of five, and the lexicographic scan almost never reaches it.
+				isMount: true,
+			}
 			: family)
 
 	// Mark evidence is measured against the families that own the field, so it can

@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "batch": "batch-bf-1",
+  "generatedBy": "research/v2-3-experiments/background-fidelity/mirror-batch.ts",
+  "arm": "research/v2-3-experiments/background-fidelity",
+  "trunk": "c77fabc",
+  "shipsOff": "research/v2-3/ carries the mechanism behind BACKGROUND_FIDELITY = \"off\" and is byte-identical to trunk in that state (34/34 parity, and 320/320 fresh artworks unchanged). Nothing is enabled by this batch.",
+  "labels": [
+    "bf-off",
+    "bf-on"
+  ],
+  "labelMeaning": {
+    "bf-off": "trunk's real unmodified published extraction (BACKGROUND_FIDELITY = \"off\")",
+    "bf-on": "the real published extraction with BACKGROUND_FIDELITY = \"on\" \u2014 a genuine re-run of the full algorithm, not a post-hoc edit of bf-off's colours"
+  },
+  "bothSidesAreReal": "Every palette on both sides is a real extraction of the real artwork, produced by mirror-batch.ts, which refuses to write a label whose name disagrees with the compiled switch. No flag was flipped after the fact and no colour was substituted.",
+  "theMechanismUnderTest": {
+    "summary": "Who wins the BACKGROUND role. assignFieldRoles is a strict lexicographic scan over five criteria; frameCoverage (border+corner ownership) is first and populationCoverage is last, so edge ownership pre-empts field mass outright. Two repairs, both gated by the same switch.",
+    "f1_quantizationBoundary": "evidenceLevel is a Math.floor and the comparison was `!== 0`, so two scores differing by an arbitrarily small amount decide the background whenever they straddle a bin boundary. ON requires two levels of separation \u2014 the smallest gap that guarantees a real difference wider than one RESOLUTIONS.evidence step. Derived from Math.floor, not tuned.",
+    "f2_mountReachesTheDecision": "The `mount` policy already identifies a frame/matte (owns the border while a materially larger family it encloses owns none) and withdraws its border credit \u2014 but only from fieldScore, the FOURTH criterion. The lexicographic scan decides at the FIRST. ON withdraws the same credit from the frame and peripheral criteria, so a positively-identified mount stops winning the background on the one signal it is guaranteed to dominate.",
+    "f3_mountRatio": "mount.minimumEnclosedPopulationRatio moved from 2.5 to 2.09. Needed before F2 can bite on 000ec4aa at all. The incumbent's comment describes a gap of [0.76, 4.47] with the bar at its centre; measuring 479 artworks shows that region is continuously occupied and no such gap exists. The real gap is [1.781, 2.399] \u2014 highest review-ACCEPTED frame (000844ca, calib-batch-1a) against lowest review-wants-FLIPPED (000ec4aa) \u2014 and 2.09 is its centre. It is also the minimal-blast-radius choice: 4 of 479 artworks are mounts at 2.5, 5 at 2.09, and the fifth is the one review asked for."
+  },
+  "whatIsNotUnderTest": "Nothing about gradients, foreground, accent, contrast, or midpoints was touched. Where those move in an item they moved because the field pair changed underneath them. Three of the six verdict-backed cases that motivated this arm turned out NOT to be background-selection failures at all (they are surface-representative and treatment-selection failures) and are deliberately absent \u2014 see EXPERIMENT.md \u00a7'Sub-classes'.",
+  "blastRadius": {
+    "measuredOn": "479 artworks from the UNSCRAMBLED corpus at /Users/Flo/GitHub/palette (159 verdict-carrying + 320 fresh random, drawn deterministically by sha256 of basename from the 7,315 artworks carrying neither a verdict nor a round-8 probe)",
+    "movers": "24 of 479 = 5.0%",
+    "verdictCarrying": "11 of 159 = 6.9%",
+    "offPanelFresh": "13 of 320 = 4.1%",
+    "moversToAKnownBadDestination": 0,
+    "moversOffAReviewedStrongPalette": 4,
+    "note": "Figures at the shipped F3 = 2.09. An earlier draft at F3 = 1.58 measured 25/479; the one extra mover exchanged #000000 and #010101."
+  },
+  "items": [
+    {
+      "image": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+      "shortId": "000390c0",
+      "role": "TARGET \u2014 the arm's primary case",
+      "priorVerdict": "batch-38, weak-fallback: 'i wouldn't have expected Snow to be the background when Peach seems to be the dominating field color in the artwork. These palettes feel wrong. An incorrect background makes it very hard to judge the rest of the palette'",
+      "change": "bf-off bg #fcfaed (Snow) / sf #f0b691 (Peach)  ->  bf-on bg #f0b691 / sf #fcfaed \u2014 a clean background/surface swap",
+      "attribution": "F1. bf-off decided the background on frameCoverage by exactly ONE evidence level (0.1929 vs 0.1531). Under ON that is not evidence, the scan falls through, and populationCoverage decides by two levels in the peach's favour.",
+      "destinationAdjudication": "UNADJUDICATED \u2014 the peach-as-background palette has never been shown to review. This is the outcome the batch-38 note asks for in words, but the reviewer has not seen it.",
+      "whatAVerdictWouldSettle": "Whether refusing a one-level frameCoverage decision produces the background the artwork actually has."
+    },
+    {
+      "image": "ab67616d0000b273000ec4aa76a94a5ba13c5946",
+      "shortId": "000ec4aa",
+      "role": "TARGET \u2014 the frame/enclosure case",
+      "priorVerdict": "batch-37, weak-fallback: background 'relied too much on the thin white frame around the outside, and completely failed to convey the real artwork's background which is likely closer to the Lava Stone purple'. Correction given: bg #483469, sf #be4f70, fg #ddd1c3, ac #48837f",
+      "change": "bf-off bg #f1f0ec (the white frame) / sf #483469  ->  bf-on bg #b1998d / sf #4a3472, and the white becomes the foreground",
+      "attribution": "F2+F3 together. The white family owns 99.9% of the border and 0% of the centre while holding 10.7% of the pixels; the purple holds 25.5% and touches no border. That is textbook mount geometry, but the ratio is 2.399 against a 2.5 bar so the mount was never recognised (F3), and even recognising it would have changed nothing because the correction lands on criterion four while the decision is made at criterion one (F2).",
+      "destinationAdjudication": "UNADJUDICATED, and PARTIAL \u2014 the complaint ('relied on the thin white frame') is resolved and the surface #4a3472 is essentially the requested background #483469, but the roles are not arranged as the correction asks and #b1998d was not requested by anyone.",
+      "whatAVerdictWouldSettle": "Whether removing the frame's claim is an improvement even when the replacement is not the corrected palette. A negative verdict here is informative and does NOT by itself condemn F1."
+    },
+    {
+      "image": "disney.avif",
+      "shortId": "disney",
+      "role": "GUARDRAIL \u2014 reviewed-strong mover (the only one of the 34 parity fixtures that moves)",
+      "priorVerdict": "review-7-identity-confirm, strong",
+      "change": "bf-off sf #2199d6 / ac #c72690  ->  bf-on sf #c72690 / ac #2199d6 \u2014 surface and accent exchange; the background #74c044 does not move",
+      "attribution": "F1, indirectly. The field pair was decided on fieldScore by one level in bf-off; under ON the scan reaches connectedCoverage instead, which re-orders the field pair and displaces the accent.",
+      "destinationAdjudication": "UNADJUDICATED. Per TRACK_CHARTER 'Multiple valid palettes', this is reviewable movement, not an automatic regression \u2014 but it is movement off a strong verdict on the arm's own initiative and it is the single most important item in the batch.",
+      "whatAVerdictWouldSettle": "Whether F1 costs a reviewed-strong outcome. If this comes back worse, F1 should be narrowed to frameCoverage only rather than applied to all five criteria."
+    },
+    {
+      "image": "ab67616d0000b27300034b60105d8937440211da.jpg",
+      "shortId": "00034b60",
+      "role": "GUARDRAIL \u2014 reviewed-strong mover, the riskiest structural change in the set",
+      "priorVerdict": "review-15-white-fg-fresh, strong",
+      "change": "bf-off bg #4b3027 / sf #8a5438 (two distinct colours)  ->  bf-on bg #4a3027 / sf #4a3027 \u2014 the SURFACE COLLAPSES, turning a four-colour palette into a three-colour one",
+      "attribution": "F1. This is the only mover in 479 artworks where the change alters palette cardinality rather than which colour holds which role.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "Whether F1 can destroy a legitimate second field colour. This is the failure mode most likely to justify killing or narrowing the rule."
+    },
+    {
+      "image": "ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+      "shortId": "00034b1c",
+      "role": "GUARDRAIL \u2014 reviewed-strong mover on a gradient",
+      "priorVerdict": "batch-33, strong",
+      "change": "bf-off bg #281832 (purple) / sf #273d77 (navy)  ->  bf-on bg #273d77 / sf #281832; gradient stays true, so the ramp reverses direction",
+      "attribution": "F1.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "Whether reversing a reviewed gradient's direction is neutral or a loss. Charter rule 5 makes both directions of gradient error equally bad, and this item is the ramp-orientation analogue."
+    },
+    {
+      "image": "ab67616d0000b27300039a97d604f239674f8d7b.jpg",
+      "shortId": "00039a97",
+      "role": "FRESH \u2014 the only off-panel artwork in the failure configuration that the fix moves",
+      "priorVerdict": "none \u2014 never reviewed",
+      "change": "bf-off bg #f8fdf7 (near-white) / sf #7cd459 (green)  ->  bf-on bg #060702 (near-black) / sf #7bd45c, white becomes the foreground",
+      "attribution": "F1, one-level frameCoverage. Detector-positive with massRatio 3.61 \u2014 a chromatic family holds 3.6x the background family's mass.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "Whether the fix generalises off-panel. Note it did NOT move the background to the chromatic green \u2014 it moved to a near-black \u2014 so this tests the mechanism honestly rather than confirming a hoped-for direction."
+    },
+    {
+      "image": "ab67616d0000b2730013095d1c1a5350d21f448d",
+      "shortId": "0013095d",
+      "role": "FRESH \u2014 DISCONFIRMING item, deliberately included",
+      "priorVerdict": "none \u2014 never reviewed",
+      "change": "bf-off bg #1f3835 (dark green) / sf #f2f3ee (near-white)  ->  bf-on bg #f2f3ee / sf #1f3835 \u2014 the background becomes the NEAR-WHITE",
+      "attribution": "F1. This moves in the OPPOSITE direction to the failure class the arm was chartered to fix: the rule is direction-neutral, it refuses knife-edge frame decisions without preferring chromatic grounds.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "Whether F1's neutrality is acceptable. If near-white-background outcomes like this are judged bad while 000390c0's swap is judged good, F1 is the wrong shape and the rule needs a mass-aware form instead."
+    },
+    {
+      "image": "ab67616d00001e02000c4fb7fc6c9f7ab6d6904c",
+      "shortId": "000c4fb7",
+      "role": "FRESH \u2014 gradient background/surface swap",
+      "priorVerdict": "none \u2014 never reviewed",
+      "change": "bf-off bg #1e4ece (blue) / sf #9953d8 (purple)  ->  bf-on bg #9953d8 / sf #1e4ece, gradient stays true",
+      "attribution": "F1, decided on connectedCoverage by one level in bf-off and by populationCoverage under ON.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "The unreviewed-gradient analogue of 00034b1c, without a strong verdict at stake."
+    },
+    {
+      "image": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+      "shortId": "0000cb59",
+      "role": "FRESH \u2014 surface change without a swap",
+      "priorVerdict": "none \u2014 never reviewed",
+      "change": "bf-off bg #505962 / sf #0d111c (near-black)  ->  bf-on bg #505962 / sf #9a9fa3 (light grey); the background does not move",
+      "attribution": "F1. Included because most movers are clean swaps and this one is not \u2014 it replaces the second field colour outright.",
+      "destinationAdjudication": "UNADJUDICATED.",
+      "whatAVerdictWouldSettle": "Whether the rule's non-swap movements are as safe as its swaps."
+    }
+  ],
+  "revertRules": {
+    "semantics": "TRACK_CHARTER.md 'Multiple valid palettes \u2014 guardrail semantics' (Flo, 2026-08-02): a mover is a regression only if the destination was itself reviewed negatively or previously compared inferior. Byte-preservation of reviewed-strong outcomes is NOT the bar. Every destination in this batch is unadjudicated, so nothing here auto-fails on arrival; the verdicts decide.",
+    "autoKill": [
+      "ANY item in this batch whose bf-on side is judged worse than its bf-off side AND whose bf-off side is a currently-reviewed-strong palette (disney, 00034b60, 00034b1c) -> that is a mover to a now-known-worse destination. Two or more of those three -> revert F1 entirely and keep only F2+F3.",
+      "00034b60's surface collapse judged worse -> F1 must not be applied to criteria other than frameCoverage; re-derive as a frameCoverage-only rule and re-measure.",
+      "0013095d judged worse while 000390c0 is judged better -> F1 is the wrong shape. Withdraw it and replace with an explicitly mass-aware arbitration; do not retune the level count."
+    ],
+    "keep": [
+      "000390c0 judged better AND no more than one of the three strong-movers judged worse -> F1 is carrying its weight; propose enabling F1 and re-run the full-corpus census before integration.",
+      "000ec4aa judged better -> F2+F3 are independent of F1's fate and can be proposed on their own; they touch only artworks with a positively-identified mount, of which there is 1 in 320 fresh artworks at the incumbent bar."
+    ],
+    "doNotConclude": [
+      "Do not read a negative verdict on 000ec4aa as evidence against F1, or vice versa. F1 and F2+F3 fire on disjoint artworks in this batch and can be enabled independently \u2014 the policy block and the switch were written so that either can be neutralised without touching the other.",
+      "Do not treat the 5.2% blast radius as the cost of F2+F3. Essentially all of it is F1: the mount test fires on 1 artwork in 320 fresh."
+    ]
+  },
+  "honestLimitations": [
+    "The fix repairs 1 of the 5 off-panel artworks that show the failure pattern (configuration AND massRatio >= 1.5). It is not a fix for the class; it is a fix for two named mechanisms inside the class.",
+    "The largest-mass-ratio artwork in the fresh sample (000bd117, massRatio 4.38, a near-white holding 10% of pixels and 75% of the border against a yellow holding 45%) is NOT moved, because its border coverage of 0.749 falls under the mount test's 0.9 bar and its frameCoverage margin is 8 levels. Partial mounts are the named next lead.",
+    "F3 is constrained by exactly one measured artwork on each side of its value (000844ca at 1.781, frame accepted; 000ec4aa at 2.399, flip wanted). It is the weakest-evidenced of the three changes; the only reason for confidence in it is that it moves 1 artwork in 479.",
+    "The incumbent policy comment for minimumEnclosedPopulationRatio misdescribes its own evidence \u2014 it claims a gap that the measured distribution does not contain. Anyone re-tuning that constant from the prose would place it inside an occupied region. The corrected distribution is now recorded in policy.ts.",
+    "The 'failure pattern' proxy (background family's field-mass share against the largest chromatic family's) is this arm's construction. It was chosen to match the batch-38 wording and has not itself been validated against review."
+  ]
+}

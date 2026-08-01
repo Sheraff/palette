@@ -28,6 +28,7 @@ import { TEXT_ROLE_RESTRICTION } from "../src/internal/text-role-restriction.ts"
 import {
 	ACCENT_RANK_FIDELITY_WEIGHT,
 	ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE,
+	BACKGROUND_FIDELITY,
 	CONTROL_FIELD_VARIANT_PAIRS,
 	DEFAULT_PALETTE_EXTRACTION_OPTIONS,
 	FAMILY_BIN_STEP,
@@ -618,6 +619,54 @@ test("the ranking quanta have a single source", () => {
 		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.utilityResolution,
 		ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)
+})
+
+test("the background-fidelity mechanism is enabled", () => {
+	// [REVIEWED] `batch-bf-1` (2026-08-01), 9 items: **4 for `bf-on`, 4 equal, 1 against**.
+	// Arm: `research/v2-3-experiments/background-fidelity/` (EXPERIMENT.md, INTEGRATION.md).
+	//
+	// Enabled on the batch verdicts plus a full-corpus census at this exact configuration: 7,587
+	// artworks extracted twice, 451 movers (5.94 %), every mover destination-adjudicated against
+	// the whole 376-record warehouse. The census surfaced **no new known-bad destination**, and the
+	// single regression is the one the batch already found (`00034b60`, below).
+	//
+	// Charter rule 5 (gradient neutrality) measured in both directions on the census: 2 gradient
+	// flips in 7,587 artworks, **1 gained and 1 lost**.
+	//
+	// THE KNOWN COST. `00034b60` is a mover to a destination review compared inferior — the arm's
+	// one loss, and it is accepted rather than repaired. Attribution (INTEGRATION.md §4): F1
+	// correctly refuses a one-level `frameCoverage` decision, and `peripheralCoverage` — the very
+	// next criterion — then flips the pair in favour of a family holding 8.4 % of the artwork while
+	// criteria 3, 4 and 5 favour the 34.9 % family by 13, 8 and 17 levels and are never consulted.
+	// The winner objective declines to publish that inversion and collapses instead, so the visible
+	// cost is a lost surface colour. It is NOT evidence that `peripheralCoverage` is broken:
+	// reviewed-strong `loups` and `orelsan` sit in the same configuration, and neither moves.
+	//
+	// Setting this back to `"off"` restores the previous behaviour exactly — verified, not argued:
+	// with the switch off, all 34 parity fixtures and all 320 fresh sweep artworks were
+	// byte-identical to the pre-arm trunk, which also covers the `field-transition.ts`
+	// de-duplication that landed with this work.
+	assert.equal(BACKGROUND_FIDELITY, "on")
+	assert.deepEqual({ ...ALBUM_ARTWORK_PALETTE_V2_POLICY.backgroundFidelity }, {
+		// Derived, not tuned: `evidenceLevel` is a `Math.floor`, so a one-level difference admits an
+		// arbitrarily small underlying one at a bin boundary. Only two levels guarantee a separation
+		// wider than one full `RESOLUTIONS.evidence` step. It cannot be any other number.
+		minimumRoleOwnershipEvidenceLevels: 2,
+		// The analogue of `mount.borderCreditRetained` (also 0) for the role-ownership profile,
+		// which is where the background role is actually decided.
+		mountRoleOwnershipBorderCredit: 0,
+		// [n=1 each side] `mount.minimumEnclosedPopulationRatio` re-derived on the measured ratio
+		// distribution (479 artworks, 85 with a border-owning family), which does NOT contain the
+		// [0.76, 4.47] gap the incumbent's comment remembers — that region is continuously
+		// occupied. The real gap is [1.781, 2.399]: highest review-accepted frame against lowest
+		// review-wants-flipped. Its centre is 2.09, and 2.09 admits exactly one artwork more than
+		// the incumbent 2.5 does across all 479. The artwork it admits is `000ec4aa`, whose
+		// resulting palette `batch-bf-1` judged acceptable and preferred over the incumbent.
+		minimumEnclosedPopulationRatio: 2.09,
+	})
+	// The incumbent it shadows is untouched, so `"off"` is a true no-op rather than a re-pointing.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.minimumEnclosedPopulationRatio, 2.5)
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mount.borderCreditRetained, 0)
 })
 
 /**

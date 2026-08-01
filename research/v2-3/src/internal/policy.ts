@@ -307,10 +307,99 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 		 * case review wants flipped measures 4.47, and the six framed artworks whose
 		 * frame-as-background review accepted measure 0.07 to 0.76. The threshold is
 		 * placed at the centre of that gap rather than at either edge.
+		 *
+		 * The gap has since narrowed. Batch 37's `000ec4aa` is a second artwork review
+		 * wants flipped ("relied too much on the thin white frame around the outside,
+		 * and completely failed to convey the real artwork's background") and it
+		 * measures **2.399** — inside the gap, below this bar, so the mount is not
+		 * recognised. See `backgroundFidelity.minimumEnclosedPopulationRatio`.
 		 */
 		minimumEnclosedPopulationRatio: 2.5,
 		/** Fraction of the border credit a mount keeps. */
 		borderCreditRetained: 0,
+	}),
+	/**
+	 * Background fidelity — repairs to who wins the *background* role, gated OFF.
+	 *
+	 * These values are live only when `BACKGROUND_FIDELITY` (`palette-core.ts`) is `"on"`.
+	 * Shipped OFF: with the switch at `"off"` every one of them is replaced by the incumbent
+	 * value at its use site, so the published output is byte-identical to the trunk.
+	 *
+	 * The arm that derived them: `research/v2-3-experiments/background-fidelity/EXPERIMENT.md`.
+	 * Two independent defects, both of which must be repaired before the reviewed frame case
+	 * moves at all — which is the evidence that they are one mechanism seen from two sides.
+	 */
+	backgroundFidelity: Object.freeze({
+		/**
+		 * How many quantization levels of separation `assignFieldRoles` requires before a
+		 * criterion is allowed to decide the background role.
+		 *
+		 * `evidenceLevel` is a **floor**, and the comparison is `!==`. Two scores that differ by
+		 * an arbitrarily small amount therefore decide the background role outright whenever they
+		 * happen to straddle a bin boundary — which is the exact opposite of what this file says
+		 * quantization is for ("two scores inside one band are treated as indistinguishable
+		 * evidence"). Only a separation of **two** levels guarantees the underlying difference
+		 * exceeds one full `RESOLUTIONS.evidence` step, so only that is evidence.
+		 *
+		 * This is a derived correction to a comparison, not a tuned threshold: the value follows
+		 * from `Math.floor` and cannot be anything but 2. `1` restores the previous behaviour
+		 * exactly.
+		 *
+		 * Measured on 320 fresh artworks: `frameCoverage` decides 70 % of all role assignments,
+		 * and **9.4 % of the corpus is decided by a single level of it** — the population this
+		 * touches. On `000390c0` (batch-38, "I wouldn't have expected Snow to be the background
+		 * when Peach seems to be the dominating field color") the background is decided by one
+		 * level of `frameCoverage` while `populationCoverage` favours the peach by two.
+		 */
+		minimumRoleOwnershipEvidenceLevels: 2,
+		/**
+		 * Fraction of its edge-ownership evidence a recognised mount keeps **in the role-ownership
+		 * profile**, as `mount.borderCreditRetained` is for `fieldScore`.
+		 *
+		 * The mount mechanism exists to stop a frame winning the field, and it does not work,
+		 * because it corrects the wrong term. `mount` rewrites `fieldScore` — which is
+		 * `fieldRoleOwnershipProfile`'s **fourth** criterion — while `assignFieldRoles` is strictly
+		 * lexicographic and decides at the **first**, `frameCoverage`, computed from the raw
+		 * `borderCoverage`/`cornerCoverage` the mount test just explained away. A mount that the
+		 * policy has positively identified as a frame therefore still wins the background role,
+		 * every time, on the one signal it is definitionally guaranteed to dominate.
+		 *
+		 * All three peripheral terms are withdrawn, not just the two border ones. A mount's
+		 * absence from the centre (`1 - centerCoverage`, the third term of `peripheralCoverage`)
+		 * is not independent evidence of ground either — it *is* the enclosure signature, the very
+		 * observation that identified the family as a mount. Crediting it would let the frame win
+		 * at criterion two exactly as it won at criterion one.
+		 *
+		 * `1` restores the previous behaviour exactly.
+		 */
+		mountRoleOwnershipBorderCredit: 0,
+		/**
+		 * `mount.minimumEnclosedPopulationRatio`, re-derived — on the ratio distribution as
+		 * actually measured, which does not match the one the incumbent's comment remembers.
+		 *
+		 * That comment describes a gap of [0.76, 4.47] with the threshold at its centre. The gap
+		 * is not there. Measuring every border-owning family (`borderCoverage >= 0.9`) across 479
+		 * artworks finds 85 of them and a ratio distribution that runs **continuously** through
+		 * the region the comment calls empty: 1.073, 1.088, 1.265, 1.266, 1.420, 1.550, 1.775,
+		 * 1.781, then 2.399, 2.938, 4.336, 4.473, 7.913. So "the centre of the gap" cannot be
+		 * applied to [0.76, 2.399]; there is no such gap.
+		 *
+		 * There is a real one, and it is narrow. The highest ratio whose frame-as-background
+		 * review **accepted** is `000844ca` at 1.781 (calib-batch-1a, acceptable). The lowest
+		 * review wants **flipped** is `000ec4aa` at 2.399. The incumbent's own placement rule,
+		 * applied to the measured gap [1.781, 2.399], gives its centre: **2.09**.
+		 *
+		 * This is also the minimal-blast-radius choice, which is the check that matters. Of 479
+		 * artworks, 4 are mounts at the incumbent 2.5; at 2.09 there are 5 — the one artwork
+		 * review asked for and nothing else. (1.58, an earlier draft of this value, admits three
+		 * more, including `000844ca` whose frame review accepted.)
+		 *
+		 * Honest weight: two artworks constrain this, one on each side, and one of them is the
+		 * artwork the value was derived from. The mechanism it governs fires on 1 artwork in 320
+		 * fresh and on 0 published backgrounds, so it is very nearly inert either way — which is
+		 * why `000ec4aa` reached review at all.
+		 */
+		minimumEnclosedPopulationRatio: 2.09,
 	}),
 	/**
 	 * Accent candidacy in a two-colour artwork.
