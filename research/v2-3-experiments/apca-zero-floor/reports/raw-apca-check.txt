@@ -1,0 +1,5 @@
+checked 65536 grey pairs
+  exact agreement outside the zero bucket: YES
+  pairs where APCA's deltaYmin early return differs from the raw form: 0
+    (all inside the zero bucket, so no decision can depend on them)
+  "clamped 0 exactly when |raw| < 10" holds: YES

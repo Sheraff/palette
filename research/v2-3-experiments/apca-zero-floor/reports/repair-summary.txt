@@ -1,0 +1,32 @@
+330 artwork file(s) measured, 6 configuration(s)
+errors: 0
+
+=== fg-surface ===
+  movers: 15
+  repair levels: slate=15, untouched=315
+  left alone WITH the defect still published (level 3): 0
+
+=== fg-surface-accent-ok ===
+  movers: 15
+  repair levels: swap=12, slate=3, untouched=315
+  left alone WITH the defect still published (level 3): 0
+
+=== fg-both ===
+  movers: 38
+  repair levels: slate=38, untouched=292
+  left alone WITH the defect still published (level 3): 2
+
+=== fg-both-accent-ok ===
+  movers: 39
+  repair levels: swap=31, slate=8, untouched=291
+  left alone WITH the defect still published (level 3): 1
+
+=== accent-only ===
+  movers: 297
+  repair levels: slate=297, untouched=33
+  left alone WITH the defect still published (level 3): 1
+
+=== all-four ===
+  movers: 327
+  repair levels: slate=327, untouched=3
+  left alone WITH the defect still published (level 3): 3

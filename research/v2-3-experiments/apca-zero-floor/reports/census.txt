@@ -1,12 +1,12 @@
 census rows: 7585 (0 failed to extract)
 distinct artworks after collapsing resolution variants: 6941
 
-foreground on SURFACE over 6941 artworks
-  |Lc| <  2:    14  (0.20%)
-  |Lc| <  5:    14  (0.20%)   +0 over the previous bar
-  |Lc| <  9:    29  (0.42%)   +15 over the previous bar
-  |Lc| < 15:   104  (1.50%)   +75 over the previous bar
-  exactly 0 :    14  (0.20%)
+foreground on SURFACE over 5504 artworks
+  |Lc| <  2:    14  (0.25%)
+  |Lc| <  5:    14  (0.25%)   +0 over the previous bar
+  |Lc| <  9:    27  (0.49%)   +13 over the previous bar
+  |Lc| < 15:    91  (1.65%)   +64 over the previous bar
+  exactly 0 :    14  (0.25%)
 
 foreground on BACKGROUND over 6941 artworks
   |Lc| <  2:    23  (0.33%)
@@ -15,12 +15,19 @@ foreground on BACKGROUND over 6941 artworks
   |Lc| < 15:   111  (1.60%)   +71 over the previous bar
   exactly 0 :    23  (0.33%)
 
-accent on SURFACE over 6941 artworks
-  |Lc| <  2:   144  (2.07%)
-  |Lc| <  5:   144  (2.07%)   +0 over the previous bar
-  |Lc| <  9:   346  (4.98%)   +202 over the previous bar
-  |Lc| < 15:  1070  (15.42%)   +724 over the previous bar
-  exactly 0 :   144  (2.07%)
+accent on SURFACE over 5442 artworks
+  |Lc| <  2:   144  (2.65%)
+  |Lc| <  5:   144  (2.65%)   +0 over the previous bar
+  |Lc| <  9:   322  (5.92%)   +178 over the previous bar
+  |Lc| < 15:   975  (17.92%)   +653 over the previous bar
+  exactly 0 :   144  (2.65%)
+
+accent on BACKGROUND over 6678 artworks
+  |Lc| <  2:   132  (1.98%)
+  |Lc| <  5:   132  (1.98%)   +0 over the previous bar
+  |Lc| <  9:   284  (4.25%)   +152 over the previous bar
+  |Lc| < 15:   845  (12.65%)   +561 over the previous bar
+  exactly 0 :   132  (1.98%)
 
 --- restricted to the 5504 artworks whose surface is a DISTINCT colour from the background ---
 

@@ -1,0 +1,615 @@
+330 artwork file(s) measured, 4 configuration(s)
+errors: 0
+
+=== fg-surface ===
+  movers: 15
+  repair levels: slate=15, untouched=315
+  left alone WITH the defect still published (level 3): 0
+
+  --- movers, trunk -> repaired ---
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [slate]
+    foreground  #202425 -> #f3f5f0
+    fg/surface  clamped 0.0 -> -95.0   raw 4.42 -> 97.65
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [slate]
+    foreground  #2d0e0c -> #f4ebe6
+    fg/surface  clamped 0.0 -> -95.8   raw 2.00 -> 98.53
+    review: never reviewed
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [slate]
+    foreground  #000000 -> #e1e1e1
+    fg/surface  clamped 0.0 -> -87.7   raw 1.43 -> 90.39
+    review: never reviewed
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [slate]
+    foreground  #382a27 -> #d6dbd5
+    fg/surface  clamped 0.0 -> -75.3   raw 5.36 -> 78.00
+    review: never reviewed
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [slate]
+    foreground  #443427 -> #50595e
+    fg/surface  clamped 0.0 -> -15.3   raw 6.46 -> 17.99
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [slate]
+    foreground  #fed700 -> #fdbca0
+    accent      #fbb89d -> #171c1f
+    fg/surface  clamped 0.0 -> 8.6   raw 2.68 -> 11.33
+    review: reviewed artwork, but this palette was never the graded side
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [slate]
+    foreground  #c348d6 -> #522baa
+    fg/surface  clamped 0.0 -> 27.8   raw 6.76 -> 30.50
+    review: never reviewed
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [slate]
+    foreground  #262418 -> #c7c7c7
+    fg/surface  clamped 0.0 -> -65.6   raw 5.86 -> 68.30
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [slate]
+    foreground  #5f3620 -> #f1dac8
+    fg/surface  clamped 0.0 -> -70.1   raw 7.84 -> 72.78
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [slate]
+    foreground  #080a05 -> #a19e8d
+    fg/surface  clamped 0.0 -> -48.6   raw 1.43 -> 51.30
+    review: never reviewed
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [slate]
+    foreground  #2b2f38 -> #dfdce3
+    fg/surface  clamped 0.0 -> -82.0   raw 1.85 -> 84.73
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [slate]
+    foreground  #7e8dce -> #fbfdf8
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #666666
+    fg/surface  clamped 0.0 -> 26.7   raw 1.19 -> 29.37
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [slate]
+    foreground  #0e100f -> #afb1b0
+    fg/surface  clamped 0.0 -> -55.6   raw 5.35 -> 58.26
+    review: never reviewed
+
+=== fg-surface-accent-ok ===
+  movers: 15
+  repair levels: swap=12, slate=3, untouched=315
+  left alone WITH the defect still published (level 3): 0
+
+  --- movers, trunk -> repaired ---
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [swap]
+    foreground  #202425 -> #6e6f6a
+    accent      #6e6f6a -> #202425
+    fg/surface  clamped 0.0 -> -20.9   raw 4.42 -> 23.57
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [swap]
+    foreground  #2d0e0c -> #c9662f
+    accent      #c9662f -> #2d0e0c
+    fg/surface  clamped 0.0 -> -36.0   raw 2.00 -> 38.66
+    review: never reviewed
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [swap]
+    foreground  #000000 -> #e1e1e1
+    accent      #e1e1e1 -> #000000
+    fg/surface  clamped 0.0 -> -87.7   raw 1.43 -> 90.39
+    review: never reviewed
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [swap]
+    foreground  #382a27 -> #a23b3e
+    accent      #a23b3e -> #382a27
+    fg/surface  clamped 0.0 -> -11.9   raw 5.36 -> 14.56
+    review: never reviewed
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [swap]
+    foreground  #443427 -> #73503c
+    accent      #73503c -> #443427
+    fg/surface  clamped 0.0 -> -15.5   raw 6.46 -> 18.18
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [swap]
+    foreground  #fed700 -> #fbb89d
+    accent      #fbb89d -> #fed700
+    fg/surface  clamped 0.0 -> 10.5   raw 2.68 -> 13.18
+    review: reviewed artwork, but this palette was never the graded side
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [swap]
+    foreground  #c348d6 -> #522baa
+    accent      #522baa -> #c348d6
+    fg/surface  clamped 0.0 -> 27.8   raw 6.76 -> 30.50
+    review: never reviewed
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [swap]
+    foreground  #262418 -> #9b815c
+    accent      #9b815c -> #262418
+    fg/surface  clamped 0.0 -> -30.1   raw 5.86 -> 32.79
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [swap]
+    foreground  #5f3620 -> #f1dac8
+    accent      #f1dac8 -> #5f3620
+    fg/surface  clamped 0.0 -> -70.1   raw 7.84 -> 72.78
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [slate]
+    foreground  #080a05 -> #a19e8d
+    fg/surface  clamped 0.0 -> -48.6   raw 1.43 -> 51.30
+    review: never reviewed
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [swap]
+    foreground  #2b2f38 -> #606658
+    accent      #606658 -> #2b2f38
+    fg/surface  clamped 0.0 -> -18.0   raw 1.85 -> 20.73
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [swap]
+    foreground  #7e8dce -> #fbfdf8
+    accent      #fbfdf8 -> #7e8dce
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #666666
+    fg/surface  clamped 0.0 -> 26.7   raw 1.19 -> 29.37
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [swap]
+    foreground  #0e100f -> #555756
+    accent      #555756 -> #0e100f
+    fg/surface  clamped 0.0 -> -12.4   raw 5.35 -> 15.14
+    review: never reviewed
+
+=== fg-both ===
+  movers: 38
+  repair levels: slate=38, untouched=292
+  left alone WITH the defect still published (level 3): 2
+
+  --- movers, trunk -> repaired ---
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [slate]
+    foreground  #202425 -> #92938e
+    fg/surface  clamped 0.0 -> -38.0   raw 4.42 -> 40.69
+    review: never reviewed
+
+  05/ab67616d0000b27300055f1cfc1722c14bdb0bcf   [slate]
+    foreground  #424242 -> #fafafa
+    fg/surface  clamped 59.9 -> -31.8   raw 62.65 -> 34.47
+    review: never reviewed
+
+  07/ab67616d00001e020007b85f56e5a3ac2aead4e6   [slate]
+    foreground  #2a2e31 -> #767a79
+    fg/surface  clamped 52.0 -> 21.8   raw 54.66 -> 24.54
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [slate]
+    foreground  #2d0e0c -> #f4ebe6
+    fg/surface  clamped 0.0 -> -95.8   raw 2.00 -> 98.53
+    review: never reviewed
+
+  08/ab67616d0000b2730008c9a0f64b618fa453d250   [slate]
+    foreground  #000000 -> #8d8d8d
+    fg/surface  clamped 90.7 -> 45.3   raw 93.40 -> 47.97
+    review: never reviewed
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [slate]
+    foreground  #000000 -> #7a7a7a
+    fg/surface  clamped 0.0 -> -31.1   raw 1.43 -> 33.82
+    review: never reviewed
+
+  09/ab67616d0000b27300097cb8763b185ae295157e   [slate]
+    foreground  #edf1f4 -> #b3a0a2
+    fg/surface  clamped -86.7 -> -41.6   raw 89.39 -> 44.32
+    review: never reviewed
+
+  0a/ab67616d0000b273000a012132aac2610037a06a   [slate]
+    foreground  #140502 -> #b1633c
+    fg/surface  clamped 57.2 -> 22.0   raw 59.93 -> 24.67
+    review: never reviewed
+
+  0d/ab67616d00001e02000d207eed6ccf3726207f79   [slate]
+    foreground  #e7ad4a -> #f1cc88
+    accent      #e7ad4a -> #f1cc88
+    fg/surface  clamped 30.8 -> 16.6   raw 33.47 -> 19.25
+    review: never reviewed
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [slate]
+    foreground  #382a27 -> #708c8f
+    fg/surface  clamped 0.0 -> -29.5   raw 5.36 -> 32.24
+    review: never reviewed
+
+  13/ab67616d0000b273001306d8ae920fdad6ebb495   [slate]
+    foreground  #1b1b13 -> #f3cb90
+    fg/surface  clamped 42.4 -> -36.1   raw 45.12 -> 38.81
+    review: never reviewed
+
+  13/ab67616d0000b2730013e24dd4e162fc480d9891   [slate]
+    foreground  #000000 -> #ffffff
+    fg/surface  clamped 70.8 -> -37.1   raw 73.52 -> 39.77
+    review: never reviewed
+
+  images/birdsofprey.jpg   [slate]
+    foreground  #030102 -> #bcddb0
+    fg/surface  clamped 46.5 -> -35.3   raw 49.19 -> 38.02
+    review: LEAVING strong (v2-2, review-1-track-d); strong (track-d-h1only, review-1-track-d); strong (v2-2, review-2-gradients); strong (v2-2, review-4-ranking); strong (o2-before, review-23-fg-movers); strong (showcase, showcase-2); strong (showcase-b, showcase-2)
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [slate]
+    foreground  #443427 -> #50595e
+    fg/surface  clamped 0.0 -> -15.3   raw 6.46 -> 17.99
+    review: never reviewed
+
+  07/ab67616d00001e0200076a5a05dfad9ad716d573   [slate]
+    foreground  #340307 -> #b04d0c
+    fg/surface  clamped 62.9 -> 34.9   raw 65.61 -> 37.57
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [slate]
+    foreground  #fed700 -> #fdbca0
+    accent      #fbb89d -> #171c1f
+    fg/surface  clamped 0.0 -> 8.6   raw 2.68 -> 11.33
+    review: reviewed artwork, but this palette was never the graded side
+
+  0b/ab67616d0000b273000bbaf2598060cff28678d3   [slate]
+    foreground  #000000 -> #8b7e6d
+    fg/surface  clamped 72.1 -> 33.1   raw 74.82 -> 35.75
+    review: never reviewed
+
+  0c/ab67616d00001e02000cc9913d9a58ea3771ba0f   [slate]
+    foreground  #670f1f -> #8d162a
+    fg/surface  clamped 15.4 -> 7.8   raw 18.15 -> 10.55
+    review: never reviewed
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  10/ab67616d00001e020010e138a4ef1fc6943974c1   [slate]
+    foreground  #081617 -> #004964
+    fg/surface  clamped 24.2 -> 11.4   raw 26.89 -> 14.15
+    review: never reviewed
+
+  10/ab67616d0000b27300108d4a81ce6ae77065105d   [slate]
+    foreground  #3a3f42 -> #d89f68
+    accent      #90624a -> #8e6249
+    fg/surface  clamped 89.8 -> 40.6   raw 92.55 -> 43.29
+    review: never reviewed
+
+  13/ab67616d0000b2730013095d1c1a5350d21f448d   [slate]
+    foreground  #fffef9 -> #a3adac
+    fg/surface  clamped -101.1 -> -50.6   raw 103.75 -> 53.34
+    review: LEAVING acceptable (bf-on, batch-bf-1)
+
+  02/ab67616d0000b2730002dae9b00c14643053fbe5.jpg   [slate]
+    foreground  #085a54 -> #d1d0d6
+    fg/surface  clamped 36.3 -> -24.9   raw 38.96 -> 27.61
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [slate]
+    foreground  #c348d6 -> #8f42ce
+    fg/surface  clamped 0.0 -> 14.0   raw 6.76 -> 16.73
+    review: never reviewed
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [slate]
+    foreground  #262418 -> #9b815c
+    fg/surface  clamped 0.0 -> -30.1   raw 5.86 -> 32.79
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [slate]
+    foreground  #5f3620 -> #f1dac8
+    fg/surface  clamped 0.0 -> -70.1   raw 7.84 -> 72.78
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [slate]
+    foreground  #080a05 -> #86421d
+    fg/surface  clamped 0.0 -> -15.6   raw 1.43 -> 18.27
+    review: never reviewed
+
+  0d/ab67616d0000b273000df9f3288d394ecf53318f   [slate]
+    foreground  #000000 -> #8c6800
+    fg/surface  clamped 80.3 -> 49.4   raw 82.99 -> 52.07
+    review: never reviewed
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [slate]
+    foreground  #2b2f38 -> #a29ca0
+    fg/surface  clamped 0.0 -> -45.5   raw 1.85 -> 48.20
+    review: never reviewed
+
+  0e/ab67616d0000b273000e5d7ec6a14710a4870244   [slate]
+    foreground  #ffffff -> #7f98c0
+    fg/surface  clamped -105.9 -> -44.0   raw 108.56 -> 46.69
+    review: never reviewed
+
+  0f/ab67616d0000b273000f31bf3a226768fcb37424   [slate]
+    foreground  #060c02 -> #9a744d
+    fg/surface  clamped 70.4 -> 33.6   raw 73.05 -> 36.26
+    review: never reviewed
+
+  10/ab67616d0000b2730010aacb93ebe80370afa59c   [slate]
+    foreground  #121923 -> #ca9629
+    fg/surface  clamped 104.5 -> 51.5   raw 107.16 -> 54.18
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [slate]
+    foreground  #7e8dce -> #fbfdf8
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  13/ab67616d0000b2730013c2c64a482ac7f91a40ea   [slate]
+    foreground  #1a2730 -> #ecbaa3
+    fg/surface  clamped 44.2 -> -24.8   raw 46.90 -> 27.49
+    review: never reviewed
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #7d7c7a
+    fg/surface  clamped 0.0 -> 16.7   raw 1.19 -> 19.37
+    review: never reviewed
+
+  0e/ab67616d0000b273000ece7847f3b5fdea732479   [slate]
+    foreground  #000000 -> #756a78
+    fg/surface  clamped 48.3 -> 17.6   raw 50.97 -> 20.34
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [slate]
+    foreground  #0e100f -> #949695
+    fg/surface  clamped 0.0 -> -41.1   raw 5.35 -> 43.83
+    review: never reviewed
+
+  10/ab67616d0000b2730010e138a4ef1fc6943974c1   [slate]
+    foreground  #081617 -> #004964
+    accent      #00374a -> #022833
+    fg/surface  clamped 25.0 -> 12.2   raw 27.68 -> 14.94
+    review: never reviewed
+
+=== fg-both-accent-ok ===
+  movers: 39
+  repair levels: swap=31, slate=8, untouched=291
+  left alone WITH the defect still published (level 3): 1
+
+  --- movers, trunk -> repaired ---
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [swap]
+    foreground  #202425 -> #6e6f6a
+    accent      #6e6f6a -> #202425
+    fg/surface  clamped 0.0 -> -20.9   raw 4.42 -> 23.57
+    review: never reviewed
+
+  05/ab67616d0000b27300055f1cfc1722c14bdb0bcf   [swap]
+    foreground  #424242 -> #fafafa
+    accent      #fafafa -> #424242
+    fg/surface  clamped 59.9 -> -31.8   raw 62.65 -> 34.47
+    review: never reviewed
+
+  07/ab67616d00001e020007b85f56e5a3ac2aead4e6   [swap]
+    foreground  #2a2e31 -> #c9cbbd
+    accent      #c9cbbd -> #2a2e31
+    fg/surface  clamped 52.0 -> -17.5   raw 54.66 -> 20.23
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [swap]
+    foreground  #2d0e0c -> #c9662f
+    accent      #c9662f -> #2d0e0c
+    fg/surface  clamped 0.0 -> -36.0   raw 2.00 -> 38.66
+    review: never reviewed
+
+  08/ab67616d0000b2730008c9a0f64b618fa453d250   [slate]
+    foreground  #000000 -> #8d8d8d
+    fg/surface  clamped 90.7 -> 45.3   raw 93.40 -> 47.97
+    review: never reviewed
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [swap]
+    foreground  #000000 -> #e1e1e1
+    accent      #e1e1e1 -> #000000
+    fg/surface  clamped 0.0 -> -87.7   raw 1.43 -> 90.39
+    review: never reviewed
+
+  09/ab67616d0000b27300097cb8763b185ae295157e   [swap]
+    foreground  #edf1f4 -> #83545c
+    accent      #83545c -> #edf1f4
+    fg/surface  clamped -86.7 -> -9.5   raw 89.39 -> 12.16
+    review: never reviewed
+
+  0a/ab67616d0000b273000a012132aac2610037a06a   [swap]
+    foreground  #140502 -> #a33619
+    accent      #a33619 -> #140502
+    fg/surface  clamped 57.2 -> 33.8   raw 59.93 -> 36.51
+    review: never reviewed
+
+  0d/ab67616d00001e02000d207eed6ccf3726207f79   [slate]
+    foreground  #e7ad4a -> #f1cc88
+    accent      #e7ad4a -> #f1cc88
+    fg/surface  clamped 30.8 -> 16.6   raw 33.47 -> 19.25
+    review: never reviewed
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [swap]
+    foreground  #382a27 -> #a23b3e
+    accent      #a23b3e -> #382a27
+    fg/surface  clamped 0.0 -> -11.9   raw 5.36 -> 14.56
+    review: never reviewed
+
+  13/ab67616d0000b273001306d8ae920fdad6ebb495   [swap]
+    foreground  #1b1b13 -> #f3cb90
+    accent      #f3cb90 -> #1b1b13
+    fg/surface  clamped 42.4 -> -36.1   raw 45.12 -> 38.81
+    review: never reviewed
+
+  13/ab67616d0000b2730013e24dd4e162fc480d9891   [slate]
+    foreground  #000000 -> #ffffff
+    fg/surface  clamped 70.8 -> -37.1   raw 73.52 -> 39.77
+    review: never reviewed
+
+  images/birdsofprey.jpg   [swap]
+    foreground  #030102 -> #d02981
+    accent      #d02981 -> #030102
+    fg/surface  clamped 46.5 -> 12.6   raw 49.19 -> 15.30
+    review: LEAVING strong (v2-2, review-1-track-d); strong (track-d-h1only, review-1-track-d); strong (v2-2, review-2-gradients); strong (v2-2, review-4-ranking); strong (o2-before, review-23-fg-movers); strong (showcase, showcase-2); strong (showcase-b, showcase-2)
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [swap]
+    foreground  #443427 -> #73503c
+    accent      #73503c -> #443427
+    fg/surface  clamped 0.0 -> -15.5   raw 6.46 -> 18.18
+    review: never reviewed
+
+  07/ab67616d00001e0200076a5a05dfad9ad716d573   [swap]
+    foreground  #340307 -> #f5d33e
+    accent      #f5d33e -> #340307
+    fg/surface  clamped 62.9 -> -16.7   raw 65.61 -> 19.45
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [swap]
+    foreground  #fed700 -> #fbb89d
+    accent      #fbb89d -> #fed700
+    fg/surface  clamped 0.0 -> 10.5   raw 2.68 -> 13.18
+    review: reviewed artwork, but this palette was never the graded side
+
+  0b/ab67616d0000b273000bbaf2598060cff28678d3   [swap]
+    foreground  #000000 -> #e9dbc8
+    accent      #e9dbc8 -> #000000
+    fg/surface  clamped 72.1 -> -13.7   raw 74.82 -> 16.36
+    review: never reviewed
+
+  0c/ab67616d00001e02000cc9913d9a58ea3771ba0f   [swap]
+    foreground  #670f1f -> #8d162a
+    accent      #8d162a -> #670f1f
+    fg/surface  clamped 15.4 -> 7.8   raw 18.15 -> 10.55
+    review: never reviewed
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  10/ab67616d00001e020010e138a4ef1fc6943974c1   [slate]
+    foreground  #081617 -> #004964
+    fg/surface  clamped 24.2 -> 11.4   raw 26.89 -> 14.15
+    review: never reviewed
+
+  10/ab67616d0000b27300108d4a81ce6ae77065105d   [swap]
+    foreground  #3a3f42 -> #90624a
+    accent      #90624a -> #3a3f42
+    fg/surface  clamped 89.8 -> 70.8   raw 92.55 -> 73.51
+    review: never reviewed
+
+  13/ab67616d0000b2730013095d1c1a5350d21f448d   [swap]
+    foreground  #fffef9 -> #a15852
+    accent      #a15852 -> #fffef9
+    fg/surface  clamped -101.1 -> -20.1   raw 103.75 -> 22.83
+    review: LEAVING acceptable (bf-on, batch-bf-1)
+
+  02/ab67616d0000b2730002dae9b00c14643053fbe5.jpg   [swap]
+    foreground  #085a54 -> #d1d0d6
+    accent      #d1d0d6 -> #085a54
+    fg/surface  clamped 36.3 -> -24.9   raw 38.96 -> 27.61
+    review: never reviewed
+
+  03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg   [swap]
+    foreground  #20171c -> #baa35f
+    accent      #baa35f -> #20171c
+    fg/surface  clamped 27.0 -> -26.3   raw 29.69 -> 28.99
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [swap]
+    foreground  #c348d6 -> #522baa
+    accent      #522baa -> #c348d6
+    fg/surface  clamped 0.0 -> 27.8   raw 6.76 -> 30.50
+    review: never reviewed
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [swap]
+    foreground  #262418 -> #9b815c
+    accent      #9b815c -> #262418
+    fg/surface  clamped 0.0 -> -30.1   raw 5.86 -> 32.79
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [swap]
+    foreground  #5f3620 -> #f1dac8
+    accent      #f1dac8 -> #5f3620
+    fg/surface  clamped 0.0 -> -70.1   raw 7.84 -> 72.78
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [slate]
+    foreground  #080a05 -> #86421d
+    fg/surface  clamped 0.0 -> -15.6   raw 1.43 -> 18.27
+    review: never reviewed
+
+  0d/ab67616d0000b273000df9f3288d394ecf53318f   [swap]
+    foreground  #000000 -> #fdef00
+    accent      #fdef00 -> #000000
+    fg/surface  clamped 80.3 -> -13.5   raw 82.99 -> 16.17
+    review: never reviewed
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [swap]
+    foreground  #2b2f38 -> #606658
+    accent      #606658 -> #2b2f38
+    fg/surface  clamped 0.0 -> -18.0   raw 1.85 -> 20.73
+    review: never reviewed
+
+  0e/ab67616d0000b273000e5d7ec6a14710a4870244   [swap]
+    foreground  #ffffff -> #f1671e
+    accent      #f1671e -> #ffffff
+    fg/surface  clamped -105.9 -> -42.2   raw 108.56 -> 44.87
+    review: never reviewed
+
+  0f/ab67616d0000b273000f31bf3a226768fcb37424   [swap]
+    foreground  #060c02 -> #faca00
+    accent      #faca00 -> #060c02
+    fg/surface  clamped 70.4 -> -7.4   raw 73.05 -> 10.07
+    review: never reviewed
+
+  10/ab67616d0000b2730010aacb93ebe80370afa59c   [swap]
+    foreground  #121923 -> #ca9629
+    accent      #ca9629 -> #121923
+    fg/surface  clamped 104.5 -> 51.5   raw 107.16 -> 54.18
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [swap]
+    foreground  #7e8dce -> #fbfdf8
+    accent      #fbfdf8 -> #7e8dce
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  13/ab67616d0000b2730013c2c64a482ac7f91a40ea   [swap]
+    foreground  #1a2730 -> #ecbaa3
+    accent      #ecbaa3 -> #1a2730
+    fg/surface  clamped 44.2 -> -24.8   raw 46.90 -> 27.49
+    review: never reviewed
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #7d7c7a
+    fg/surface  clamped 0.0 -> 16.7   raw 1.19 -> 19.37
+    review: never reviewed
+
+  0e/ab67616d0000b273000ece7847f3b5fdea732479   [swap]
+    foreground  #000000 -> #dfaa8b
+    accent      #dfaa8b -> #000000
+    fg/surface  clamped 48.3 -> -15.8   raw 50.97 -> 18.46
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [swap]
+    foreground  #0e100f -> #555756
+    accent      #555756 -> #0e100f
+    fg/surface  clamped 0.0 -> -12.4   raw 5.35 -> 15.14
+    review: never reviewed
+
+  10/ab67616d0000b2730010e138a4ef1fc6943974c1   [slate]
+    foreground  #081617 -> #004964
+    accent      #00374a -> #022833
+    fg/surface  clamped 25.0 -> 12.2   raw 27.68 -> 14.94
+    review: never reviewed

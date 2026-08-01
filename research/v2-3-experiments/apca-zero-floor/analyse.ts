@@ -85,9 +85,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 		process.stdout.write(`  exactly 0 : ${String(exactZero).padStart(5)}  (${(100 * exactZero / set.length).toFixed(2)}%)\n\n`)
 	}
 
-	report("foreground on SURFACE", (row) => row.fgSurface.lc, unique)
+	// All four pairs, at the same bars, so the coverage decision has one table behind it. A collapsed
+	// role is the role it collapsed onto, so its pairs are not distinct claims and are excluded —
+	// the same rule the repair applies, or the two would be counting different populations.
+	report("foreground on SURFACE", (row) => row.fgSurface.lc, unique.filter((row) => !row.collapse.surface))
 	report("foreground on BACKGROUND", (row) => row.fgBackground.lc, unique)
-	report("accent on SURFACE", (row) => row.accentSurface.lc, unique)
+	report("accent on SURFACE", (row) => row.accentSurface.lc,
+		unique.filter((row) => !row.collapse.surface && !row.collapse.accent))
+	report("accent on BACKGROUND", (row) => row.accentBackground.lc, unique.filter((row) => !row.collapse.accent))
 
 	// A collapsed surface is the background, so a zero there is a different (and larger) claim.
 	const distinctSurface = unique.filter((row) => !row.collapse.surface)

@@ -38,14 +38,45 @@ resolved root.
    which had the defect.** No destination is a known-worse palette (none has ever been shown), so by
    the charter this is reviewable movement rather than regression. It is still the price.
 
-**My recommendation: do not turn this on as it stands.** The rule is *correct* about the pathology
-and its threshold is genuinely un-tuned, but a 10:1 collateral-to-fix ratio that reaches two
-reviewed-strong palettes is a bad trade for 14 unreviewed artworks. The interesting finding is that
-the cost is almost entirely cascade, not the rule itself — so the question worth putting to review
-is whether a *narrower* intervention exists that repairs the winner without perturbing the candidate
-domain (e.g. refusing only at final winner selection, or repairing the surface endpoint in place).
-That was not built here and should not be assumed cheap. If the flag is turned on regardless, the
-three reviewed movers and the founding case belong in the next batch.
+7. **The narrow repair kills the cascade completely — verified, not derived.** Applying the same rule
+   *last*, to the finished winner, instead of *first*, to the candidate domain: over the full 7,585
+   artworks under the widest configuration, **327 move and 0 of them lacked the defect**. The
+   text-only configuration moves **15** — exactly the 15 that carry it, against the wide guard's 149
+   — and **disturbs no reviewed palette at all**.
+8. **But narrowness costs repair quality on exactly the case Flo cares most about.** The wide guard
+   fixes the founding artwork by deepening the *surface* so the yellow can stay as text, which is
+   Flo's stated bar. The narrow repair may not touch the field — that prohibition is *why* there is
+   no cascade — so it gives the yellow up and puts washed-out peach on pale blue at raw 11.3. It
+   rescues `099b3a` cleanly and 12 others like it; it is weak wherever the field is the thing that
+   is wrong.
+9. **The swap tier is dead, provably.** Once a repair may not relocate a zero onto the accent,
+   exchanging the two mark roles can never be valid — the accent inherits the offending colour on
+   the same field. `swap = 0` across 330 artworks and six configurations. The mechanism is entirely
+   new machinery, not the swap we already trust.
+10. **Raw APCA shrinks the problem.** The clamped zero bucket hides a continuous range: no
+    foreground-surface case is at truly identical lightness (smallest raw 1.19), and a floor stated
+    at **raw 3** would catch 5 of 14 while keeping both artworks Flo named.
+
+**My recommendation, in two parts.**
+
+**Do not turn the wide guard on.** It is correct about the pathology and its threshold is genuinely
+un-tuned, but a 10:1 collateral-to-fix ratio that reaches two reviewed-strong palettes is a bad trade
+for 14 unreviewed artworks.
+
+**Do not turn the narrow repair on yet either — but for a different and more tractable reason.** It
+solves the problem the wide guard had: no cascade, no reviewed palette touched, minimal disturbance
+(only the foreground moves on 13 of 15). What it has not yet earned is the *quality* bar, and Flo's
+own read of the wide-guard batches said quality is what decides this. On the evidence here the narrow
+repair produces a clear save on the unusable cases and a mediocre palette on the founding case. My
+honest read is that **the strongest configuration to put in front of review is `fg-surface` combined
+with a raw floor of about 3** — that is roughly 5 artworks, the ones that are genuinely unreadable
+rather than merely faint, which is where the saves are and where the mediocre repairs are not. The
+`fg-both` and accent tiers should wait for a verdict on that smaller set.
+
+The batch I would serve: `099b3a` (the save), `07d4cb` (the founding case, narrow vs wide side by
+side — they differ and Flo should pick), `0a9ef1` and `0ed8ed` (raw 1.4 and 1.9, the other genuinely
+invisible ones), and `02/20d4f` (raw 6.5, a faint case where the repair costs warmth — the argument
+against going wider).
 
 ---
 
@@ -377,6 +408,23 @@ is the reviewer's call whether it is worth paying.
 - **The guard achieves what it claims** — 0 published palettes remain at exactly zero
   foreground/surface contrast with it on (it took the third site, §5, to get there).
 
+### The narrow repair, verified separately
+
+- **Byte-identity with everything off — `GATE PASS: 108/108 byte-identical`**, run again against the
+  same pristine baseline after the repair, the pair-generic rewrite and the raw APCA addition. The
+  repair publishes no new field on the extraction for exactly this reason; its outcome is recorded in
+  the winner's `id` prefix, where trunk already records every post-ranking rearrangement.
+- **No cascade, measured over the whole corpus rather than argued from the entry test.** Full 7,585
+  artworks under the widest configuration (all four pairs): **327 movers, 0 of which lacked the
+  defect.** The wide guard's equivalent number was 134. `reports/no-cascade-check.txt`.
+- **No relocation.** 0 repaired artworks gain a new zero in a protected pair, in every one of the six
+  configurations. `reports/relocation-check.txt`.
+- **The raw form matches the vendored library** on all 65,536 8-bit grey pairs, with 0 disagreements
+  even at APCA's `deltaYmin` early return. Pinned in `configuration.test.ts` and reproduced in
+  `reports/raw-apca-check.txt`.
+- **0 extraction failures** across every configuration; the repair never strands an artwork.
+- **Level 3 publishes trunk unchanged** — verified byte-identical on all 3 declined artworks.
+
 ### Reproducing
 
 ```sh
@@ -402,6 +450,226 @@ anything at all:
 | `reports/blast-radius.txt` | **all 149 movers with their off→on role diffs and warehouse cross-reference** |
 | `reports/sibling-pathologies.txt` | the same defect in the three pairs the rule does not name |
 | `reports/apca-gap.txt`, `reports/apca-shape.txt` | the measurement of APCA's (0, 7.3) hole |
+| `reports/raw-zero-bucket.txt` | **what is inside the clamped zero bucket**, per pair, on the raw scale |
+| `reports/repair-summary.txt` | the narrow repair's blast radius and level distribution, all six configurations |
+| `reports/repair-movers-text.txt` | every text-pair mover, trunk → repaired, with raw before/after |
+| `reports/repair-movers-accent-only.txt` | the accent tier's 297 movers, kept separate |
+| `reports/exemplars.txt` | `07d4cb` and `099b3a` across trunk, wide guard and all six configurations |
+| `reports/level-three.txt` | the artworks the repair declined to force |
+| `reports/no-cascade-check.txt`, `reports/relocation-check.txt` | the two claims that had to be verified rather than derived |
+| `reports/raw-apca-check.txt` | the raw form checked against the vendored library |
+
+The narrow repair's sweeps are reproducible with:
+
+```sh
+node --experimental-strip-types research/v2-3-experiments/apca-zero-floor/affected-jobs.ts
+node --experimental-strip-types research/v2-3-experiments/apca-zero-floor/repair-run.ts \
+  --jobs research/v2-3-experiments/apca-zero-floor/data/affected-jobs.txt --out <dir>
+node --experimental-strip-types research/v2-3-experiments/apca-zero-floor/repair-run.ts \
+  --configs all-four --out <dir>        # the full-corpus no-cascade pass
+```
+
+## 10. The narrow repair — same rule, applied last instead of first
+
+The wide guard's cost is entirely cascade: it refuses candidates in `createTreatment`, upstream of a
+capacity-bounded materialization stage, so refusing a loser still changes what the winner is chosen
+from. The narrow form removes that by construction. Generation, materialization, ranking, selection,
+the flat fallback and the mark-role swap all run untouched and produce the same winner; the repair
+then inspects that winner and mends it only if it actually carries the defect.
+
+`research/v2-3/src/internal/zero-contrast-repair.ts`, configured by two sets:
+
+```ts
+export const ZERO_CONTRAST_REPAIR_PAIRS: readonly ZeroContrastPair[] = Object.freeze([])   // empty = off
+export const ZERO_CONTRAST_PROTECTED_PAIRS: readonly ZeroContrastPair[] = ZERO_CONTRAST_PAIRS
+```
+
+`enforced` is what triggers a repair and must come out clean. `protect` is what a repair may never
+*newly* break. Keeping them separate is what lets the accent's status be stated honestly rather than
+assumed — see §13.
+
+### The acceptance rule, and why the swap tier is dead
+
+Flo caught the flaw in a swap-first hierarchy: **exchanging the two mark roles does not remove a
+zero, it relocates it.** The accent inherits the exact colour that was unreadable against the
+surface. Checking only the pair that was broken accepts that; checking the whole palette refuses it.
+
+The first implementation checked only the *enforced* pairs, which is not enough, and the corpus said
+so immediately:
+
+| configuration | repairs made | that relocated the zero into an unprotected pair |
+| --- | --- | --- |
+| fg-surface | 15 | **13** |
+| fg-both | 39 | **31** |
+| accent-only | 298 | **290** — onto the *text* role |
+
+The accent-only row is the alarming one: the swap was systematically taking colours that could not
+be seen against the field and making them the foreground. The rule is now "clear every enforced pair
+**and** create no new zero in any protected pair", and relocation is **0 in every configuration**.
+
+The consequence is worth stating plainly, because it answers the question the brief asked — *is this
+mostly the swap we already trust, or mostly new machinery?*
+
+> **With all four pairs protected, the swap can never be a valid repair, and the answer is: entirely
+> new machinery.**
+
+That is provable, not merely measured. If the foreground is unreadable on the surface, the swap makes
+that same colour the accent — drawn on that same surface — so `accent-surface` becomes newly zero.
+The only escape is if `accent-surface` was already zero, in which case the incoming foreground cannot
+clear the surface either and the enforced check fails instead. Measured over 330 artworks and six
+configurations: `swap = 0` in every configuration that protects the accent. The tier is retained in
+the code because it becomes live and does most of the work the moment the accent is unprotected
+(§13), not as decoration.
+
+## 11. Looking inside the zero bucket — raw APCA
+
+Flo asked why APCA clamps small values away and observed the clamped interval could be useful. It
+is, and the clamping turns out to be the reason the defect class looked bigger than it is.
+
+`apcaRawContrast` (in `color.ts`, beside the clamped form and not replacing it) returns the
+continuous quantity APCA computes before it discards anything. The relationship is exact, and
+`configuration.test.ts` now pins it over all 65,536 8-bit grey pairs — putting the raw value back
+through APCA's own clip and offset reproduces `apcaContrast` to within 1e-9, everywhere:
+
+> **`apcaContrast` returns exactly 0 precisely when `|apcaRawContrast| < 10`**, and above that it
+> returns the raw value moved 2.7 toward zero. That is where the 7.3 floor comes from.
+
+So the "exactly zero" class is not one thing. Inside it, raw contrast varies continuously:
+
+| pair | in the bucket | raw < 1 | < 2 | < 3 | < 5 | < 7 | median |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| foreground-surface | 14 | **0** | 4 | 5 | 6 | 11 | 5.36 |
+| foreground-background | 23 | 2 | 5 | 7 | 16 | 18 | 3.63 |
+| accent-surface | 144 | 4 | 15 | 29 | 62 | 92 | 5.36 |
+| accent-background | 132 | 2 | 10 | 23 | 49 | 84 | 5.93 |
+
+**No foreground-surface case is at genuinely identical lightness** — the smallest is raw 1.19. The
+foreground-background bucket does contain true black-on-black (raw 0.469: `bg=#0f0704 fg=#000000`).
+
+This is a real option for Flo, and it is the one that shrinks the problem instead of growing the
+machinery. A floor stated on the *raw* scale rather than the clamped one would cut the class sharply
+while keeping both artworks Flo named:
+
+| raw floor | foreground-surface artworks caught | keeps 099b3a (raw 1.43)? | keeps 07d4cb (raw 2.68)? |
+| --- | --- | --- | --- |
+| clamped 0 (raw < 10) | 14 | yes | yes |
+| raw < 5 | 6 | yes | yes |
+| **raw < 3** | **5** | **yes** | **yes** |
+| raw < 2 | 4 | yes | no |
+
+**A raw floor of 3 keeps both exemplars and drops nine of the fourteen** — the faint-but-real cases
+at raw 5.4 to 8.8, which are the ones least likely to be worth disturbing. It is not offered as a
+recommendation because no human has judged those nine either way; it is offered because it is the
+lever that makes the intervention smaller rather than larger, and every other lever here makes it
+bigger.
+
+## 12. All four pairs, at the same bars
+
+Completing the census Flo asked for. Collapsed roles are excluded per pair, because a collapsed
+surface *is* the background and a collapsed accent *is* the foreground, so their pairs are not
+distinct claims — the same rule the repair applies.
+
+| bar | fg on surface (n=5,504) | fg on background (n=6,941) | accent on surface (n=5,442) | accent on background (n=6,678) |
+| --- | --- | --- | --- | --- |
+| `< 2` / `< 5` | 14 (0.25 %) | 23 (0.33 %) | 144 (2.65 %) | 132 (1.98 %) |
+| `< 9` | 27 (0.49 %) | 40 (0.58 %) | 322 (5.92 %) | 284 (4.25 %) |
+| `< 15` | 91 (1.65 %) | 111 (1.60 %) | 975 (17.92 %) | 845 (12.65 %) |
+| exactly 0 | **14** | **23** | **144** | **132** |
+
+The accent pairs carry the defect about ten times as often as the text pairs.
+
+## 13. Blast radius per configuration
+
+Measured over the 330 artwork files whose trunk palette carries any zero pair — which is the complete
+population the repair can reach, since its entry test is the defect — and diffed against trunk.
+
+| configuration | enforced | protected | movers | swap | slate | left alone (level 3) |
+| --- | --- | --- | --- | --- | --- | --- |
+| **fg-surface** | fg/surface | all four | **15** | 0 | 15 | 0 |
+| fg-surface-accent-ok | fg/surface | text only | 15 | **12** | 3 | 0 |
+| **fg-both** | both fg pairs | all four | **38** | 0 | 38 | 2 |
+| fg-both-accent-ok | both fg pairs | text only | 39 | **31** | 8 | 1 |
+| accent-only *(separate tier)* | both accent pairs | all four | 297 | 0 | 297 | 1 |
+| all-four | all four | all four | 327 | 0 | 327 | 3 |
+
+**The cascade is gone.** `fg-surface` moves exactly 15 artwork files — the 15 that carry the defect —
+against the wide guard's 149 for the same 15 fixes. Nothing else in the corpus moves.
+
+**And no reviewed palette is disturbed.** Of the 15 movers, 14 have never been reviewed at all, and
+the fifteenth is the founding artwork, whose trunk palette was the *losing* side of Flo's own A/B.
+Against the wide guard's two reviewed-strong and one reviewed-acceptable casualties, this is the
+whole point of the narrow form.
+
+**Disturbance is minimal**: on 13 of the 15, the only role that changes is the foreground.
+
+The `-accent-ok` rows are the price of Flo's own design constraint. Protecting only the text pairs
+revives the swap, which then does most of the work — but what the swap does is move the unreadable
+colour onto the accent. That is defensible exactly to the degree that "the accent is for icons, not
+text, and slight distinguishability loss is not a huge deal" is true, and not one bit further.
+
+### The accent tier, reported separately and not folded in
+
+`accent-only` moves **297** artwork files. It is a twentyfold larger intervention than `fg-surface`
+for a role review has explicitly said matters less. It is listed here for completeness and it is
+**not** part of any recommendation below. Its movers are in
+`reports/repair-movers-accent-only.txt`; none of them is a text-legibility fix, and they should be
+judged as a separate question if they are judged at all.
+
+## 14. Repair quality — the deciding question
+
+Counts do not decide this; Flo's read of the wide-guard batches was "mostly not very good, but they
+do save some unusable palettes". So here are the two named exemplars, across trunk, the wide guard,
+and the narrow configurations.
+
+### `099b3a` — the save worth making
+
+| | background | surface | foreground | accent | fg reads on surface |
+| --- | --- | --- | --- | --- | --- |
+| trunk | `#b5b5b5` | `#151515` | `#000000` | `#e1e1e1` | **raw 1.43** — black on near-black |
+| narrow `fg-surface` | `#b5b5b5` | `#151515` | **`#e1e1e1`** | `#e1e1e1` | raw 90.4 |
+| narrow `fg-both` | `#b5b5b5` | `#151515` | **`#7a7a7a`** | `#e1e1e1` | raw 33.8 |
+
+**The narrow repair makes the save.** It reaches for the light grey the artwork already contains and
+that the ranking already built, and the text becomes readable without the field moving at all. My
+read: `fg-surface` is a clean save, though it collapses foreground and accent onto one colour;
+`fg-both` at `#7a7a7a` is the better palette, balanced against both ends of the gradient.
+
+### `07d4cb` — the founding case, and the real cost of narrowness
+
+| | background | surface | foreground | accent | field | fg reads on surface |
+| --- | --- | --- | --- | --- | --- | --- |
+| trunk | `#058cde` | `#d2e0eb` | `#fed700` | `#fbb89d` | gradient + midpoint | **raw 2.68** |
+| **wide guard** | `#058cde` | **`#64b4e5`** | **`#fed700`** | `#fdbca0` | gradient | raw ≈ 28 |
+| narrow `fg-surface` | `#058cde` | `#d2e0eb` | **`#fdbca0`** | `#171c1f` | gradient + midpoint | raw 11.3 |
+| narrow `fg-surface-accent-ok` | `#058cde` | `#d2e0eb` | **`#fbb89d`** | `#fed700` | gradient + midpoint | raw 13.2 |
+
+**This is where narrowness loses, and it should be seen clearly.** Flo's stated bar for a good repair
+is "keep the gradient, deepen the surface, the yellow reads" — and that is exactly what the *wide*
+guard produces. The narrow repair cannot produce it, because deepening the surface is a change to the
+**field**, and the narrow form is forbidden from touching the field by the very constraint that
+kills the cascade.
+
+So it does the only thing it can: it gives up the yellow. Peach `#fdbca0` on pale blue `#d2e0eb` at
+raw 11.3 is barely over the floor, and it takes the artwork's most identifying colour out of the text
+role. My honest read: **this is a mediocre repair**, and it is worse than the wide guard's on the one
+artwork Flo has looked at hardest. The `-accent-ok` variant at least keeps the yellow visible as the
+accent, which I would rank above the plain `fg-surface` answer.
+
+The generalisation, and it is uncomfortable: the narrow repair is **good at rescuing palettes whose
+field is fine and whose text is simply the wrong colour** — which is 13 of the 15, mostly dark-on-dark
+flips like `#000000 → #e1e1e1`, big decisive wins. It is **weak exactly where the field is the thing
+that is wrong**, and the founding case is that kind. Two of the fifteen also trade a warm foreground
+for a desaturated one (`02/…20d4f`: `#443427 → #50595e` on a warm artwork), which is an identity loss
+a reviewer may well refuse.
+
+### Level 3 — declining to repair
+
+Level 3 fired on 2 artworks under `fg-both` and 3 under `all-four`, and in every case the published
+palette is byte-identical to trunk. Two examples: `0e/…00eb97d4` (`bg=#11648e fg=#186987`, raw 3.13)
+and `03/…0003cdbb` (`bg=#162e30 fg=#20171c`, raw 3.79). Nothing on their field could carry the roles,
+so nothing was forced. This is the tier working as intended, and given §14's quality findings I would
+weight it *more* heavily, not less: several of the fifteen `fg-surface` repairs would arguably be
+better left alone and reported.
 
 ## 9. Open questions
 
@@ -435,5 +703,27 @@ anything at all:
    a midpoint is a cost worth paying for readable text is a review question, not a measurable one.
 
 7. **Nothing here measures whether the destination palettes are *good*.** The census proves the
-   refused palettes have a defect and the movers table shows where they land. Only review can say
-   whether the landings are improvements, and for most movers the destination has never been seen.
+   refused palettes have a defect and the movers table shows where they land. §14 is my own read of
+   the two named exemplars and the fifteen text repairs; it is not a verdict, and for every mover the
+   destination has never been shown to anyone.
+
+8. **Should the floor be raw or clamped?** §11 is the strongest lever nobody has ruled on. A raw
+   floor of 3 cuts the foreground-surface class from 14 to 5 and keeps both artworks Flo named. It
+   would need its own review pass, and the nine it drops (raw 5.4–8.8) have never been judged either
+   way.
+
+9. **The narrow repair cannot move the field, and sometimes the field is what is wrong.** That is
+   structural, not an implementation gap: permitting a field change is precisely what reintroduces
+   the cascade. If the founding case's *wide* answer is the one review prefers, then neither
+   mechanism as built is right, and the honest next question is whether a field repair can be made
+   local — for instance re-picking only the surface endpoint from candidates on the same field
+   hypothesis. Not built, not measured, and not obviously cheap.
+
+10. **The `-accent-ok` variants are only as defensible as the claim behind them.** They work by
+    moving unreadable colours onto the accent, and they are cheap precisely because review said the
+    accent matters less. If that ever stops being true, those two rows become the worst options on
+    the table rather than the best.
+
+11. **Level 3 may deserve to fire more often.** It currently declines on 2–3 artworks. Given that
+    several of the fifteen text repairs look mediocre to me, a quality bar on the *replacement* —
+    not just a floor on the defect — might be the more honest mechanism, and it does not exist.
