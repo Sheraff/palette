@@ -20,9 +20,9 @@ import type { AlbumArtworkPaletteV2Phase3FieldHypothesisSourceType, AlbumArtwork
 
 import { materializeAlbumArtworkPaletteV2Phase3Descriptors } from "./candidate-materialization.ts";
 
-import { GAMUT_COVERAGE, promotionEnvelopeUtility, scorePaletteCandidates, TRANSITION_PROMOTION_ORDER } from "./winner-scoring.ts";
+import { GAMUT_COVERAGE, promotionEnvelopeUtility, resolveObjectiveRepairs, scorePaletteCandidates, TRANSITION_PROMOTION_ORDER } from "./winner-scoring.ts";
 
-import type { GamutScoringInput } from "./winner-scoring.ts";
+import type { GamutScoringInput, ObjectiveRepairOverrides, ObjectiveRepairPolicy } from "./winner-scoring.ts";
 
 import { buildArtworkGamut, isAchromaticField } from "./gamut-coverage.ts";
 
@@ -109,6 +109,8 @@ function selectWinner(input: Readonly<{
 	identityRoleRequirements: readonly IdentityRoleRequirement[]
 	emergency: EmergencyEligibility | null
 	gamutScoring: GamutScoringInput | null
+	repairOverrides: ObjectiveRepairOverrides | null
+	repairs: ObjectiveRepairPolicy
 }>): WinnerSelection {
 	// The source-eligible sub-domain must be ranked under the SAME objective as the full domain.
 	// `selectSourceEligibleWinner` compares the two winners against `maximumQualityLoss`, so ranking
@@ -121,6 +123,7 @@ function selectWinner(input: Readonly<{
 		emergency: input.emergency,
 		fullDomainSelection: input.scored,
 		gamutScoring: input.gamutScoring,
+		repairOverrides: input.repairOverrides,
 	})
 	const unrestrictedKey = completeTreatmentKey(input.scored.winner)
 	const sourceWinner = sourceEligible.winner.treatment
@@ -136,6 +139,7 @@ function selectWinner(input: Readonly<{
 		input.materialized,
 		input.roleObligations,
 		input.acceptedTransitionHypothesisIds,
+		input.repairs,
 	)
 	const eligibilityByKey = new Map(sourceEligible.eligibility.candidates.map((candidate) =>
 		[candidate.key, candidate]))
@@ -155,8 +159,8 @@ function selectWinner(input: Readonly<{
 				evaluateAlbumArtworkPaletteV2Phase3CompleteLineageDescriptor(key, descriptor).ordinaryEligible) === true
 		})
 		.map((candidate) => ({ candidate, evaluation: evaluations.get(candidate.key)! }))
-		.filter(({ evaluation }) => promotionEnvelopeUtility(evaluation) + 1e-12 >=
-			promotionEnvelopeUtility(unrestrictedEvaluation) - MAXIMUM_WINNER_QUALITY_LOSS)
+		.filter(({ evaluation }) => promotionEnvelopeUtility(evaluation, input.repairs) + 1e-12 >=
+			promotionEnvelopeUtility(unrestrictedEvaluation, input.repairs) - MAXIMUM_WINNER_QUALITY_LOSS)
 		.sort(compareTransitionCandidates)
 	const winnerEvaluation = transitionCandidates[0]?.evaluation ?? sourceWinnerEvaluation
 	const winnerLineage = eligibilityByKey.get(winnerEvaluation.key)
@@ -329,6 +333,12 @@ export function extractPaletteDetails(
 		saturation?: number
 		fieldGuard?: boolean
 	}>,
+	/**
+	 * Research override for `OBJECTIVE_REPAIRS`, same posture and same reason as `gamutOverride`:
+	 * it lets a harness measure each structural repair over the real pipeline. Omitting it is the
+	 * shipped behaviour.
+	 */
+	repairOverrides?: ObjectiveRepairOverrides | null,
 ): Readonly<{
 	width: number
 	height: number
@@ -376,6 +386,7 @@ export function extractPaletteDetails(
 		sourcedFields.map(({ hypothesis }) => hypothesis),
 		common.seedAvailability.identityObligations.map(({ familyId }) => familyId),
 	)
+	const repairs = resolveObjectiveRepairs(repairOverrides)
 	const gamutIntegration = gamutOverride?.integration ?? GAMUT_COVERAGE.integration
 	const candidateTreatments = materialization.materialized.map(({ treatment }) => treatment)
 	const identityInput = {
@@ -388,7 +399,7 @@ export function extractPaletteDetails(
 		// reviewed axes' own answer to "what is this artwork's field". Asking it any other way lets the
 		// term bias the answer it is about to be judged against. It costs one extra ranking pass over an
 		// already-built domain, which is cheap next to constructing that domain.
-		const reference = scorePaletteCandidates(candidateTreatments, identityInput, null).winner
+		const reference = scorePaletteCandidates(candidateTreatments, identityInput, null, repairOverrides).winner
 		gamutScoring = {
 			// Built once from the OKLab buffer the native evidence already holds; shared by both rankings.
 			gamut: buildArtworkGamut(common.evidence.native),
@@ -402,7 +413,7 @@ export function extractPaletteDetails(
 				&& isAchromaticField([reference.background.oklab, reference.surface.oklab]),
 		}
 	}
-	const scored = scorePaletteCandidates(candidateTreatments, identityInput, gamutScoring)
+	const scored = scorePaletteCandidates(candidateTreatments, identityInput, gamutScoring, repairOverrides)
 	const materialized: MaterializedCandidate[] = materialization.materialized.map((candidate) => ({
 		key: candidate.key,
 		treatment: candidate.treatment,
@@ -417,6 +428,8 @@ export function extractPaletteDetails(
 		identityRoleRequirements: roleEvidence.requirements,
 		emergency: seed.emergency,
 		gamutScoring,
+		repairOverrides: repairOverrides ?? null,
+		repairs,
 	})
 	const gradient = applyGradientSupport(
 		selection,

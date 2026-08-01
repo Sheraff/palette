@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+    "types": ["node"]
+  },
+  "include": ["./**/*.ts", "../../v2-3/src/apca-w3.d.ts"]
+}

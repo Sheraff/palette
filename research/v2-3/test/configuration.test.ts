@@ -16,6 +16,7 @@ import {
 	BAND_TIE_BREAK,
 	FIELD_OWNERSHIP,
 	GAMUT_COVERAGE,
+	OBJECTIVE_REPAIRS,
 	PROMOTION_ENVELOPE,
 	TRANSITION_PROMOTION_ORDER,
 	WINNER_QUALITY_AXES,
@@ -179,6 +180,92 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 		"fieldFidelity", "surfaceFidelity", "artworkIdentity", "representativeness", "sourceSupport",
 		"renderedFieldClaim", "foregroundPath", "accentFidelity", "accentPath", "coherence", "economy",
 	])
+})
+
+test("the objective-structure repairs are at their measured settings", () => {
+	// All three come from one arm: `research/v2-3-experiments/objective-repairs/EXPERIMENT.md`,
+	// measuring the three repairs the adversarial objective review proposed
+	// (`research/v2-3-experiments/adversarial-objective/REVIEW.md`, avenues A2, A1, A3). Corpus for
+	// every figure below: 171 images from the shared checkout — 129 verdict-carrying artworks, all
+	// 34 review fixtures, 34 `-scrambled` decoys and 37 off-panel — end to end, not at the ranking
+	// layer. Latest verdict per artwork authoritative.
+	//
+	// Read all three knowing the review's own tempering finding (T6): layer agreement does **not**
+	// predict verdict strength — the largest layer has lift −0.019 — so "the layers now agree" is
+	// not evidence for any of them. Each had to earn its setting on named reviewed outcomes.
+
+	// [MEASURED] Ships ON, and it is the only one of the three that does. It repairs a real aliasing
+	// defect: `WinnerEvaluation.qualityUtility` carries `0.05 * gamutCoverage`, so the
+	// `field-axis-neutral` promotion envelope — moved to that mode *specifically* to stop being
+	// "sensitive to the claim axis's scale rather than to treatment quality" — still contained
+	// field-derived credit, `GAMUT_COVERAGE.scope` being `"field-and-accent"`.
+	//
+	// The mechanism is measurably live: `envelope-probe.ts` finds 94 candidates on `birdsofprey`,
+	// 86 on `havana` and 102 on `loups` whose envelope ADMISSION flips when coverage is removed,
+	// with margin shifts up to 0.02262 — against the 0.0012 by which `birdsofprey`'s reviewed
+	// promotion is documented to clear (`track-a/EXPERIMENT.md:355-361`).
+	//
+	// And it moves **0 of 171** published winners. That is the review's own second decisive branch,
+	// verbatim: "no flip bounds the defect as real-but-inert and closes it". So this pin carries NO
+	// accuracy claim and no batch has adjudicated it — there was nothing to show a reviewer. Its
+	// case is correctness: the alias is removed, `axisUtility` and `qualityUtility` are now two
+	// named quantities, and every envelope consumer states which it wants. Reverting it is
+	// output-neutral today and re-arms the leak the moment `GAMUT_COVERAGE.weight` or `.scope`
+	// moves.
+	assert.equal(OBJECTIVE_REPAIRS.envelopeBasis, "coverage-free")
+
+	// [MEASURED] Ships OFF, against the review's explicit prediction, which this arm falsified.
+	//
+	// The invariant is right in principle — the objective sums 13 terms and `dominates` guards 12,
+	// and `OBJECTIVE_TERMS` now makes the coupling structural so the drift cannot recur silently.
+	// What is measured is that CLOSING the gap is the frontier redesign the review had already
+	// closed as A5 "do not pursue", reached by a different route.
+	//
+	// Predicted (A1): "the 5 attributed artworks move and <= 3 others; `havana`, `slim`, `johns`,
+	// `0d5cdb`, `000e91d6` are all unchanged". Measured: 21 movers, 16 verdict-carrying, and ALL
+	// FIVE named holds moved. 3 FIX / 8 REAL REG against the latest endorsed samples. The two
+	// guardrails break at the exact hexes and distances the review recorded for pure raw
+	// domination — `0d5cdb` onto the grey `#c7c6c1` batch 28 rejected (dOKLab 15.2), `johns` onto
+	// surface `#0e2340` / foreground `#cfd4d8` (dOKLab 21.4). The review's own reusable artifact
+	// applies and kills it: "any future frontier redesign should be tested against `havana` +
+	// `0d5cdb` first, as a two-artwork pre-filter".
+	//
+	// Why the prediction missed, since the review's method was validated at 0/119: its attribution
+	// asked which term caused the *compare-top's* prune. But guards only ever REMOVE domination
+	// edges, so the frontier grows and the winner becomes the compare-order best among every
+	// newly-admitted candidate — including candidates ranked between the old winner and the global
+	// compare-top, which no prune attribution examined. The bound was structurally under-counted,
+	// not mis-measured.
+	//
+	// Do not re-tune this to "pass". It was measured once, end to end, and the trade is worse than
+	// the one already settled.
+	assert.equal(OBJECTIVE_REPAIRS.dominationVocabulary, "declared-guards")
+
+	// [MEASURED] Ships OFF. Predicted (A3): "exactly the 4 artworks ... can move, and no others —
+	// the stage is unreachable elsewhere". Measured: 7 movers, and only ONE of the predicted four
+	// is among them; four verdict-carrying movers were unpredicted. Same structural reason as
+	// above — deleting a comparator stage changes the total order everywhere it is consulted,
+	// including the zero-coverage reference pass that sets `GAMUT_COVERAGE.fieldGuard` and the
+	// source-eligible sub-domain ranking, neither of which a winner-vs-runner-up analysis sees.
+	//
+	// The outcome is one-sided: 0 FIX / 3 REAL REG / 1 equal-cost on verdict-carrying movers. Three
+	// `strong` artworks move OFF an exactly-endorsed palette, `slim`'s foreground moves 26.5 dOKLab
+	// further from its endorsed `#56676f`, and the `nada` fixture collapses its surface. The review
+	// flagged the risk in advance — "the stage may be doing accidental good, exactly as
+	// `authorizedIdentity` was found to be accidentally protecting `slim`" — and that is what the
+	// measurement found, on `slim` again.
+	//
+	// The criticism stands: this stage is an egalitarian tiebreak nobody argued for, sitting between
+	// a utilitarian sum and a lexicographic order. It is retained because deleting it costs
+	// reviewed outcomes, which is not the same as it having been endorsed.
+	assert.equal(OBJECTIVE_REPAIRS.leximinFallback, "sorted-evidence-levels")
+
+	// The whole object, so a fourth repair cannot be added without a pin.
+	assert.deepEqual({ ...OBJECTIVE_REPAIRS }, {
+		envelopeBasis: "coverage-free",
+		dominationVocabulary: "declared-guards",
+		leximinFallback: "sorted-evidence-levels",
+	})
 })
 
 test("the reviewed gamut-coverage configuration is unchanged", () => {

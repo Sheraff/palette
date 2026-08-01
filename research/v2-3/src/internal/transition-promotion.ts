@@ -4,9 +4,9 @@ import type { CompletePaletteTreatment } from "./palette-core.ts";
 
 import type { AlbumArtworkPaletteV2Phase3LogicalDescriptor } from "./candidate-domain.ts";
 
-import { promotionEnvelopeUtility, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
+import { OBJECTIVE_REPAIRS, promotionEnvelopeUtility, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
 
-import type { WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
+import type { ObjectiveRepairPolicy, WinnerEvaluation, WinnerScoring } from "./winner-scoring.ts";
 
 import { roleSpecificObligationCoverage } from "./role-obligations.ts";
 
@@ -63,6 +63,7 @@ export function evaluateTransitionCandidates(
 	materialized: readonly MaterializedCandidate[],
 	roleObligations: readonly RoleSpecificIdentityObligation[],
 	acceptedTransitionHypothesisIds: readonly string[],
+	repairs: ObjectiveRepairPolicy = OBJECTIVE_REPAIRS,
 ): readonly TransitionCandidate[] {
 	const materializedByKey = new Map(materialized.map((candidate) => [candidate.key, candidate]))
 	const baselineKey = completeTreatmentKey(selection.winner)
@@ -91,8 +92,8 @@ export function evaluateTransitionCandidates(
 		const sourceConnected = sourceConnectedTreatment(evaluation.treatment) && connectedDescriptors.length > 0
 		const coverage = roleSpecificObligationCoverage(evaluation.treatment, roleObligations)
 		const decisiveCoverage = coverage.foregroundCoveredCount + coverage.accentCoveredCount
-		const withinQualityBound = promotionEnvelopeUtility(evaluation) + 1e-12 >=
-			promotionEnvelopeUtility(baselineEvaluation) - MAXIMUM_WINNER_QUALITY_LOSS
+		const withinQualityBound = promotionEnvelopeUtility(evaluation, repairs) + 1e-12 >=
+			promotionEnvelopeUtility(baselineEvaluation, repairs) - MAXIMUM_WINNER_QUALITY_LOSS
 		return {
 			key: evaluation.key,
 			earnedNativeTransition,

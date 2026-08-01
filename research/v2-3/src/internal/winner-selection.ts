@@ -6,9 +6,9 @@ import { filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain } from "./
 
 import type { AlbumArtworkPaletteV2Phase3CompleteLineageMaterializedCandidate, AlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain } from "./source-eligibility.ts";
 
-import { scorePaletteCandidates, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
+import { qualityLossEnvelopeUtility, resolveObjectiveRepairs, scorePaletteCandidates, WINNER_SCORING_POLICY } from "./winner-scoring.ts";
 
-import type { GamutScoringInput } from "./winner-scoring.ts";
+import type { GamutScoringInput, ObjectiveRepairOverrides } from "./winner-scoring.ts";
 
 import type { WinnerScoring } from "./winner-scoring.ts";
 
@@ -30,6 +30,8 @@ export function selectSourceEligibleWinner<
 	fullDomainSelection: WinnerScoring
 	/** Must be the same input the full domain was ranked with; see the note at the call site. */
 	gamutScoring?: GamutScoringInput | null
+	/** Likewise: the sub-domain must be ranked under the same objective as the full domain. */
+	repairOverrides?: ObjectiveRepairOverrides | null
 }>): SourceEligibleWinner<TCandidate> {
 	const eligibility = filterAlbumArtworkPaletteV2Phase3CompleteLineageWinnerDomain(
 		input.materialized,
@@ -43,7 +45,9 @@ export function selectSourceEligibleWinner<
 			roleRequirements: input.identityRoleRequirements ?? [],
 		},
 		input.gamutScoring ?? null,
+		input.repairOverrides ?? null,
 	)
+	const repairs = resolveObjectiveRepairs(input.repairOverrides)
 	const candidateByKey = new Map(eligibility.allCandidates.map((candidate) => [candidate.key, candidate]))
 	const evaluationByKey = new Map(input.fullDomainSelection.evaluations.map((evaluation) =>
 		[evaluation.key, evaluation]))
@@ -53,7 +57,8 @@ export function selectSourceEligibleWinner<
 	const unrestrictedEvaluation = evaluationByKey.get(unrestrictedKey)
 	const winnerEvaluation = evaluationByKey.get(winnerKey)
 	if (!winner || !unrestrictedEvaluation || !winnerEvaluation) throw new Error("Winner evaluation is missing")
-	if (unrestrictedEvaluation.qualityUtility - winnerEvaluation.qualityUtility >
+	if (qualityLossEnvelopeUtility(unrestrictedEvaluation, repairs) -
+		qualityLossEnvelopeUtility(winnerEvaluation, repairs) >
 		WINNER_SCORING_POLICY.maximumQualityLoss + 1e-12) {
 		throw new Error("Source-eligible winner exceeds the quality envelope")
 	}

@@ -213,6 +213,115 @@ export const PROMOTION_ENVELOPE: "quality-utility" | "field-claim-neutral" | "fi
 	"field-axis-neutral"
 
 /**
+ * Three independent repairs to the winner objective's *structure*, each isolating one defect the
+ * adversarial objective review located (`research/v2-3-experiments/adversarial-objective/REVIEW.md`,
+ * trunk `4a5c37d`; its `dominates` / `compareEvaluations` reimplementation validated at 0/119
+ * mismatches over ~170k evaluations before any conclusion was drawn).
+ *
+ * All three default to the *incumbent* value, so this object is inert until one is flipped. They are
+ * separate flags rather than one because the review's three predictions are separate, their mover
+ * sets are disjoint in mechanism, and the review's own tempering finding (T6: layer agreement does
+ * **not** predict verdict strength, largest layer lift −0.019) means each has to earn its place on
+ * named reviewed outcomes rather than on the coherence it restores.
+ */
+export const OBJECTIVE_REPAIRS = Object.freeze({
+	/**
+	 * Which utility the two quality envelopes compare — the coverage-carrying objective, or the
+	 * plain weighted-axis sum.
+	 *
+	 * `"coverage-inclusive"` is the incumbent, and it is an *aliasing accident* rather than a
+	 * decision. `WinnerEvaluation.qualityUtility` is not `qualityUtility(quality)`: it is assigned
+	 * the coverage-augmented `utility`, which carries `GAMUT_COVERAGE.weight * gamutCoverage`. Both
+	 * `promotionEnvelopeUtility` and the `maximumQualityLoss` check in `winner-selection.ts` read
+	 * that field, so a field-derived term survives the subtraction `promotionEnvelopeUtility` exists
+	 * to perform: `GAMUT_COVERAGE.scope` is `"field-and-accent"`, which credits background and
+	 * surface. `PROMOTION_ENVELOPE` was moved to `field-axis-neutral` *specifically because* the
+	 * envelope was "sensitive to the claim axis's scale rather than to treatment quality"; leaving a
+	 * 0.05-weighted field-carrying term inside it defeats that stated purpose.
+	 *
+	 * Sizing, from the review: weighted coverage spread across candidates has mean 0.043, median
+	 * 0.049, max 0.050, and the documented reviewed `birdsofprey` promotion cleared its envelope by
+	 * **0.0012** — so the leaked term's spread exceeds the clearing margin on 113/119 (95%) of
+	 * artworks.
+	 *
+	 * `"coverage-free"` makes both envelopes compare `axisUtility`, the eleven-axis weighted sum,
+	 * which is what "field-axis-neutral" was always meant to mean. It is the shipped setting, and it
+	 * moves **0 of 171** published winners — see the pin in `test/configuration.test.ts` for why a
+	 * change that moves nothing is still worth making, and for the measurement that shows the leak
+	 * itself is live (86–102 candidates per artwork change envelope admission).
+	 */
+	envelopeBasis: "coverage-free" as "coverage-inclusive" | "coverage-free",
+	/**
+	 * What `dominates` guards.
+	 *
+	 * `"declared-guards"` is the incumbent: the eleven axes at `evidenceResolution`, plus
+	 * `identityAuthorizedGain` at `utilityResolution`, plus the band-extent veto. The objective
+	 * `relationUtility` sums **thirteen** quantities; this guards **twelve**, and the two it cannot
+	 * see (`gamutCoverage` and the unauthorized part of `identityGain`) are precisely the two most
+	 * recently added criteria. The consequence is measured: a candidate can win the objective on a
+	 * term the frontier cannot see and then be pruned by it — 5/119 irreducible prunes, unreachable
+	 * by any change to the quantum.
+	 *
+	 * `"objective-terms"` states the invariant *"`dominates` guards exactly the terms
+	 * `relationUtility` sums"* and makes it structural: both the objective and the partial order
+	 * read `OBJECTIVE_TERMS`, so a term cannot be added to one without the other. Each term is
+	 * guarded at its own declared quantum — the axes at `evidenceResolution` as before,
+	 * `gamutCoverage` at `evidenceResolution` (the quantum `GAMUT_COVERAGE.integration = "axis"`
+	 * already uses for it), `identityGain` at `utilityResolution` (the quantum its authorized half
+	 * is already guarded at). No new constant is introduced.
+	 *
+	 * Adding guards only ever *removes* domination edges, so the frontier grows monotonically and
+	 * the winner — the compare-order top among frontier members — can only move **up** the compare
+	 * order. That is why the review could predict the mover set exactly.
+	 *
+	 * Note this is a strictly narrower change than `GAMUT_COVERAGE.integration = "axis"`, which
+	 * review has not endorsed: `"axis"` would also put coverage into `WINNER_QUALITY_AXES`, i.e.
+	 * into the sorted-level tiebreak and the per-axis lexicographic stage. This touches domination
+	 * only.
+	 */
+	dominationVocabulary: "declared-guards" as "declared-guards" | "objective-terms",
+	/**
+	 * Whether `compareEvaluations` keeps its leximin stage.
+	 *
+	 * `"sorted-evidence-levels"` is the incumbent: after the utility bands and the band-extent
+	 * tiebreak, the comparator compares the *ascending sorted multiset* of the eleven axis levels.
+	 * Sorting destroys axis identity, so this is an egalitarian criterion (better worst axis wins)
+	 * stacked underneath a utilitarian weighted sum and above a lexicographic per-axis comparison —
+	 * three mutually inconsistent aggregation philosophies, layered as fallbacks, with nothing in
+	 * the code choosing between them.
+	 *
+	 * Measured, it decides 4/119 winners (3.4%) — and unlike the ASCII stage below it (19.3% of
+	 * winners, 0/23 visibly), **all 4** have a visibly different runner-up (dOKLab 2.1, 4.6, 6.2,
+	 * 9.6) and on **2 of the 4** the stage's winner has *lower* raw `relationUtility` than the
+	 * candidate it beat. It fires rarely and costs something every time.
+	 *
+	 * `"retired"` deletes the stage and falls through to the per-axis lexicographic comparison,
+	 * which at least respects the frozen, reviewed axis order, and then to ASCII. This removes an
+	 * aggregation philosophy nobody argued for rather than tuning it.
+	 */
+	leximinFallback: "sorted-evidence-levels" as "sorted-evidence-levels" | "retired",
+})
+
+export type ObjectiveRepairPolicy = typeof OBJECTIVE_REPAIRS
+
+/**
+ * Research override for the three repairs above, mirroring `extractPaletteDetails`' `gamutOverride`
+ * and existing for the same reason: so a harness can measure each toggle over the *real* pipeline
+ * instead of a reimplementation of it. Omitting it is the shipped behaviour, and every field
+ * defaults to `OBJECTIVE_REPAIRS`.
+ */
+export type ObjectiveRepairOverrides = Partial<ObjectiveRepairPolicy>
+
+export function resolveObjectiveRepairs(overrides?: ObjectiveRepairOverrides | null): ObjectiveRepairPolicy {
+	if (!overrides) return OBJECTIVE_REPAIRS
+	return {
+		envelopeBasis: overrides.envelopeBasis ?? OBJECTIVE_REPAIRS.envelopeBasis,
+		dominationVocabulary: overrides.dominationVocabulary ?? OBJECTIVE_REPAIRS.dominationVocabulary,
+		leximinFallback: overrides.leximinFallback ?? OBJECTIVE_REPAIRS.leximinFallback,
+	}
+}
+
+/**
  * Axes that describe the *field claim itself*. Promotion exists to replace the
  * field, so these are the axes it is entitled to change; the envelope should
  * gate it on what it is not entitled to damage — the roles.
@@ -221,18 +330,35 @@ const FIELD_CLAIM_AXES: readonly WinnerQualityAxis[] = ["fieldFidelity", "surfac
 
 /**
  * Quality utility as the promotion envelope compares it. Subtracting weighted
- * axes from both sides is exact, because `qualityUtility` is a weighted sum.
+ * axes from both sides is exact, because both bases are weighted sums.
+ *
+ * The basis is named by the caller through `repairs` rather than assumed, which is the point of
+ * `OBJECTIVE_REPAIRS.envelopeBasis`: `qualityUtility` carries `weight * gamutCoverage` and
+ * `axisUtility` does not, and every consumer of "the quality utility" has to say which it means.
  */
 export function promotionEnvelopeUtility(evaluation: Readonly<{
+	axisUtility: number
 	qualityUtility: number
 	quality: WinnerQuality
-}>): number {
-	if (PROMOTION_ENVELOPE === "quality-utility") return evaluation.qualityUtility
+}>, repairs: ObjectiveRepairPolicy = OBJECTIVE_REPAIRS): number {
+	const base = repairs.envelopeBasis === "coverage-free" ? evaluation.axisUtility : evaluation.qualityUtility
+	if (PROMOTION_ENVELOPE === "quality-utility") return base
 	const excluded: readonly WinnerQualityAxis[] = PROMOTION_ENVELOPE === "field-claim-neutral"
 		? ["renderedFieldClaim"]
 		: FIELD_CLAIM_AXES
 	return excluded.reduce((utility, axis) =>
-		utility - WINNER_SCORING_POLICY.qualityWeights[axis] * evaluation.quality[axis], evaluation.qualityUtility)
+		utility - WINNER_SCORING_POLICY.qualityWeights[axis] * evaluation.quality[axis], base)
+}
+
+/**
+ * The utility the `maximumQualityLoss` envelopes compare — the source-eligibility check in
+ * `winner-selection.ts`. Same aliasing, same choice, named in one place.
+ */
+export function qualityLossEnvelopeUtility(evaluation: Readonly<{
+	axisUtility: number
+	qualityUtility: number
+}>, repairs: ObjectiveRepairPolicy = OBJECTIVE_REPAIRS): number {
+	return repairs.envelopeBasis === "coverage-free" ? evaluation.axisUtility : evaluation.qualityUtility
 }
 
 const BASE_QUALITY_WEIGHTS = Object.freeze({
@@ -330,6 +456,9 @@ export type WinnerQuality = Readonly<
 	Record<WinnerQualityAxis, number>
 >
 
+/** Every quantity `relationUtility` sums. See `OBJECTIVE_TERMS`. */
+export type ObjectiveTermName = WinnerQualityAxis | "gamutCoverage" | "identityGain"
+
 export type WinnerEvaluation = Readonly<{
 	key: string
 	structuralKey: string
@@ -337,6 +466,26 @@ export type WinnerEvaluation = Readonly<{
 	gradientStatus: AlbumArtworkPaletteV2Phase3SelectorV2GradientStatus
 	quality: WinnerQuality
 	evidenceLevels: Readonly<Record<WinnerQualityAxis, number>>
+	/** Quantized level of every objective term, at each term's own declared quantum. */
+	objectiveLevels: Readonly<Record<ObjectiveTermName, number>>
+	/**
+	 * The eleven-axis weighted sum, and nothing else.
+	 *
+	 * This is what `qualityUtility(quality)` returns and what the name `qualityUtility` reads like —
+	 * which is exactly why the field below needed a second name. Consumers that want "the quality of
+	 * the roles, with no coverage credit in it" want this one.
+	 */
+	axisUtility: number
+	/**
+	 * `axisUtility` **plus** the weighted `gamutCoverage` term, when coverage is integrated as
+	 * `"utility"` or `"axis"`.
+	 *
+	 * Despite the name this is *not* `qualityUtility(quality)`. It is the objective's quality half:
+	 * everything `relationUtility` sums except `identityGain`. Track A lost a full measured,
+	 * reviewed and retracted round to one instance of this "which utility is this?" confusion
+	 * (`renderedGradientSalience`); `axisUtility` above exists so the second instance cannot repeat
+	 * it silently.
+	 */
 	qualityUtility: number
 	identityCoverage: number
 	identityGain: number
@@ -375,6 +524,85 @@ function utilityLevel(value: number): number {
 		WINNER_SCORING_POLICY.utilityResolution)
 }
 
+/** The three quantities an objective term is read from, before a `WinnerEvaluation` exists. */
+type ObjectiveTermSource = Readonly<{
+	quality: WinnerQuality
+	gamutCoverage: number
+	identityGain: number
+}>
+
+type ObjectiveTerm = Readonly<{
+	term: ObjectiveTermName
+	/**
+	 * The widest of the three nested sums this term belongs to. The list is ordered by widening
+	 * scope, so each sum is a prefix of the next and all three fall out of one pass.
+	 */
+	scope: "axis" | "quality-utility" | "relation"
+	read: (source: ObjectiveTermSource) => number
+	/** Only the coverage weight varies per call (integration mode, plus the research override). */
+	weight: (coverageWeight: number) => number
+	/** The quantum `dominates` guards this term at. Each is the quantum the codebase already uses. */
+	level: (value: number) => number
+}>
+
+/**
+ * **The objective, as one list.** `relationUtility` is built from it and `dominates` guards from it
+ * (under `OBJECTIVE_REPAIRS.dominationVocabulary = "objective-terms"`), so the thirteen quantities
+ * the objective sums and the quantities the partial order can see cannot drift apart by accident.
+ *
+ * That drift is not hypothetical: it is what happened. `gamutCoverage` and `identityGain` were the
+ * two most recently added criteria, each entered through a different integration mode chosen
+ * case-by-case (`GAMUT_COVERAGE.integration` enumerates three), and neither reached `dominates`.
+ * A criterion added below now enters both places or neither.
+ *
+ * Order matters twice over: it is the summation order of `relationUtility` — the eleven axes in
+ * `WINNER_QUALITY_AXES` order, then coverage, then identity, exactly the order the three separate
+ * expressions used before — and it is the prefix structure the `scope` field indexes.
+ */
+const OBJECTIVE_TERMS: readonly ObjectiveTerm[] = Object.freeze([
+	...WINNER_QUALITY_AXES.map((axis): ObjectiveTerm => {
+		const weight = WINNER_SCORING_POLICY.qualityWeights[axis]
+		return {
+			term: axis,
+			scope: "axis",
+			read: ({ quality }) => quality[axis],
+			weight: () => weight,
+			level: evidenceLevel,
+		}
+	}),
+	{
+		term: "gamutCoverage",
+		scope: "quality-utility",
+		read: ({ gamutCoverage }) => gamutCoverage,
+		// Zero under `"off"` and `"authority"`, which is what makes it absent from the objective —
+		// and, through `guardedObjectiveTerms`, absent from the invariant's guards as well.
+		weight: (coverageWeight) => coverageWeight,
+		level: evidenceLevel,
+	},
+	{
+		term: "identityGain",
+		scope: "relation",
+		read: ({ identityGain }) => identityGain,
+		weight: () => 1,
+		level: utilityLevel,
+	},
+])
+
+/**
+ * The terms `dominates` guards, resolved once per ranking pass.
+ *
+ * `"declared-guards"` returns `null`, which selects the incumbent hot loop over
+ * `WINNER_QUALITY_AXES` unchanged. `"objective-terms"` returns every term the objective actually
+ * sums — a term carrying weight 0 is not summed, so guarding it would be guarding a constant.
+ */
+function guardedObjectiveTerms(
+	vocabulary: ObjectiveRepairPolicy["dominationVocabulary"],
+	coverageWeight: number,
+): readonly ObjectiveTerm[] | null {
+	if (vocabulary !== "objective-terms") return null
+	return OBJECTIVE_TERMS.filter((term) => term.weight(coverageWeight) !== 0)
+}
+
 function gradientRenderingKey(treatment: CompletePaletteTreatment): string {
 	return treatment.gradient
 		? `${treatment.gradientEvidence?.topology ?? "unsupported"}:${treatment.gradientEvidence?.direction ?? "unsupported"}`
@@ -406,10 +634,16 @@ function treatmentStructuralKey(treatment: CompletePaletteTreatment): string {
 	].join("\0")
 }
 
-function qualityUtility(quality: WinnerQuality): number {
-	return WINNER_QUALITY_AXES.reduce((sum, axis) =>
-		sum + WINNER_SCORING_POLICY.qualityWeights[axis] *
-			quality[axis], 0)
+/**
+ * Weight the `gamutCoverage` term carries in this ranking pass, which is `0` whenever the term is
+ * not part of the objective. Read by `evaluateTreatment` to build the objective and by
+ * `guardedObjectiveTerms` to decide whether the frontier guards it.
+ */
+function coverageTermWeight(gamutScoring: GamutScoringInput | null): number {
+	if (gamutScoring === null) return 0
+	const integration = gamutScoring.integration ?? GAMUT_COVERAGE.integration
+	if (integration !== "utility" && integration !== "axis") return 0
+	return gamutScoring.weight ?? GAMUT_COVERAGE.weight
 }
 
 function clamp(value: number): number {
@@ -575,27 +809,44 @@ function evaluateTreatment(
 			wave1.markBearingForeground,
 		)
 	if (!Number.isFinite(coverage)) throw new TypeError("Non-finite gamut coverage")
-	const integration = gamutScoring?.integration ?? GAMUT_COVERAGE.integration
-	const weight = gamutScoring?.weight ?? GAMUT_COVERAGE.weight
-	const utility = qualityUtility(quality)
-		+ (gamutScoring !== null && (integration === "utility" || integration === "axis") ? weight * coverage : 0)
+	// Weight 0 means the term is not in the objective at all — under `"off"`, `"authority"`, or no
+	// gamut input. `guardedObjectiveTerms` reads the same number, so the objective and the frontier
+	// agree about whether coverage exists.
+	const coverageWeight = coverageTermWeight(gamutScoring)
 	const identityGain = wave1.identityGain
+	const source: ObjectiveTermSource = { quality, gamutCoverage: coverage, identityGain }
+	// One pass over `OBJECTIVE_TERMS` yields all three nested sums, in the term list's order. That
+	// order is the eleven axes, then coverage, then identity — the same additions in the same
+	// sequence the three separate expressions performed, so the arithmetic is unchanged.
+	let sum = 0
+	let axisUtility = 0
+	let utility = 0
+	for (const term of OBJECTIVE_TERMS) {
+		sum += term.weight(coverageWeight) * term.read(source)
+		if (term.scope === "axis") axisUtility = sum
+		if (term.scope !== "relation") utility = sum
+	}
+	const objectiveLevels = Object.fromEntries(OBJECTIVE_TERMS.map((term) =>
+		[term.term, term.level(term.read(source))])) as Record<ObjectiveTermName, number>
 	return {
 		key: wave1.key,
 		structuralKey: treatmentStructuralKey(wave1.treatment),
 		treatment: wave1.treatment,
 		gradientStatus: reusable.gradientStatus,
 		quality,
+		// The axis view of the levels above, so the two can never disagree about a quantum.
 		evidenceLevels: Object.fromEntries(
 			WINNER_QUALITY_AXES.map((axis) =>
-				[axis, evidenceLevel(quality[axis])]),
+				[axis, objectiveLevels[axis]]),
 		) as Record<WinnerQualityAxis, number>,
+		objectiveLevels,
+		axisUtility,
 		qualityUtility: utility,
 		identityCoverage: wave1.identityCoverage,
 		identityGain,
 		identityAuthorizedGain: wave1.identityAuthorizedGain,
 		identityRoles: wave1.identityRoles,
-		relationUtility: utility + identityGain,
+		relationUtility: sum,
 		gamutCoverage: coverage,
 		paretoMember: false,
 	}
@@ -616,6 +867,7 @@ function dominates(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
 	gamutMode: typeof GAMUT_COVERAGE.integration,
+	objectiveGuards: readonly ObjectiveTerm[] | null,
 ): boolean {
 	let strictlyBetter = false
 	if (BAND_TIE_BREAK === "same-family-band-extent" && first.treatment.gradient && second.treatment.gradient &&
@@ -640,6 +892,18 @@ function dominates(
 		const covered = (evaluation: WinnerEvaluation): number => evidenceLevel(evaluation.gamutCoverage)
 		if (covered(first) < covered(second)) return false
 		if (covered(first) > covered(second)) strictlyBetter = true
+	}
+	// The invariant: guard exactly the terms the objective sums, each at its own declared quantum.
+	// It subsumes the eleven-axis loop below — under `"axis"` it also re-states the coverage guard
+	// just above, which is the same predicate at the same quantum and therefore idempotent.
+	if (objectiveGuards !== null) {
+		for (const term of objectiveGuards) {
+			const firstLevel = first.objectiveLevels[term.term]
+			const secondLevel = second.objectiveLevels[term.term]
+			if (firstLevel < secondLevel) return false
+			if (firstLevel > secondLevel) strictlyBetter = true
+		}
+		return strictlyBetter
 	}
 	for (const axis of WINNER_QUALITY_AXES) {
 		if (first.evidenceLevels[axis] < second.evidenceLevels[axis]) return false
@@ -680,6 +944,7 @@ function compareEvaluations(
 	first: WinnerEvaluation,
 	second: WinnerEvaluation,
 	gamutMode: typeof GAMUT_COVERAGE.integration = "off",
+	repairs: ObjectiveRepairPolicy = OBJECTIVE_REPAIRS,
 ): number {
 	// Inside one utility band the order otherwise falls back to `qualityUtility`, which excludes
 	// identity and therefore reverses the preference. `authorizedIdentity` makes the authorized
@@ -716,13 +981,18 @@ function compareEvaluations(
 		)
 		if (comparison !== 0) return comparison
 	}
-	const firstLevels = WINNER_QUALITY_AXES
-		.map((axis) => first.evidenceLevels[axis]).sort((left, right) => left - right)
-	const secondLevels = WINNER_QUALITY_AXES
-		.map((axis) => second.evidenceLevels[axis]).sort((left, right) => left - right)
-	for (let index = 0; index < firstLevels.length; index++) {
-		comparison = compareDescending(firstLevels[index], secondLevels[index])
-		if (comparison !== 0) return comparison
+	// Leximin over the sorted level multiset: an egalitarian criterion stacked between a
+	// utilitarian weighted sum above it and a lexicographic per-axis comparison below it. Sorting
+	// discards axis identity, so this compares "whose worst axis is least bad" and nothing else.
+	if (repairs.leximinFallback === "sorted-evidence-levels") {
+		const firstLevels = WINNER_QUALITY_AXES
+			.map((axis) => first.evidenceLevels[axis]).sort((left, right) => left - right)
+		const secondLevels = WINNER_QUALITY_AXES
+			.map((axis) => second.evidenceLevels[axis]).sort((left, right) => left - right)
+		for (let index = 0; index < firstLevels.length; index++) {
+			comparison = compareDescending(firstLevels[index], secondLevels[index])
+			if (comparison !== 0) return comparison
+		}
 	}
 	for (const axis of WINNER_QUALITY_AXES) {
 		comparison = compareDescending(first.evidenceLevels[axis], second.evidenceLevels[axis])
@@ -741,12 +1011,17 @@ export function scorePaletteCandidates(
 	treatments: readonly CompletePaletteTreatment[],
 	identity?: AlbumArtworkPaletteV2Phase3IdentityInput,
 	gamutScoring?: GamutScoringInput | null,
+	repairOverrides?: ObjectiveRepairOverrides | null,
 ): WinnerScoring {
 	if (treatments.length === 0) throw new RangeError("The palette candidate domain is empty")
 	const scoring = gamutScoring ?? null
 	const gamutMode = scoring === null ? "off" : scoring.integration ?? GAMUT_COVERAGE.integration
+	const repairs = resolveObjectiveRepairs(repairOverrides)
+	// Resolved once per pass rather than per candidate pair: the guarded set depends only on the
+	// vocabulary and on whether the coverage term carries weight at all.
+	const objectiveGuards = guardedObjectiveTerms(repairs.dominationVocabulary, coverageTermWeight(scoring))
 	const compare = (first: WinnerEvaluation, second: WinnerEvaluation) =>
-		compareEvaluations(first, second, gamutMode)
+		compareEvaluations(first, second, gamutMode, repairs)
 	const orderedTreatments = [...treatments].sort((first, second) =>
 		compareAscii(treatmentStructuralKey(first), treatmentStructuralKey(second)))
 	const wave1 = selectAlbumArtworkPaletteV2Phase3Treatments(orderedTreatments, identity)
@@ -763,7 +1038,7 @@ export function scorePaletteCandidates(
 	const evaluations = rawEvaluations.map((evaluation): WinnerEvaluation => ({
 		...evaluation,
 		paretoMember: !rawEvaluations.some((candidate) =>
-			candidate !== evaluation && dominates(candidate, evaluation, gamutMode)),
+			candidate !== evaluation && dominates(candidate, evaluation, gamutMode, objectiveGuards)),
 	})).sort(compare)
 	const frontier = evaluations.filter(({ paretoMember }) => paretoMember).sort(compare)
 	if (frontier.length === 0) throw new Error("The palette quality frontier is empty")
