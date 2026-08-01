@@ -66,7 +66,11 @@ const probe = (values.census || values["per-image"])
 for (const image of images) {
 	try {
 		const before = values["per-image"] && probe
-			? { evaluations: probe.evaluations.slice(), comparisons: probe.comparisons.slice() }
+			? {
+				evaluations: probe.evaluations.slice(),
+				reads: probe.reads.slice(),
+				comparisons: probe.comparisons.slice(),
+			}
 			: null
 		const bytes = readFileSync(image)
 		const result = await module.extractPaletteFromBytes(bytes)
@@ -78,8 +82,11 @@ for (const image of images) {
 			fired = []
 			compared = []
 			for (let index = 0; index < probe.evaluations.length; index += 1) {
+				// Both counters must be diffed against the snapshot: `reads` is cumulative across the
+				// whole worker, so testing it against zero marks every previously-read site as live on
+				// every subsequent artwork.
 				if (probe.evaluations[index]! > before.evaluations[index]!
-					|| probe.reads[index]! > 0) fired.push(index)
+					|| probe.reads[index]! > before.reads[index]!) fired.push(index)
 				if (probe.comparisons[index]! > before.comparisons[index]!) compared.push(index)
 			}
 		}
@@ -92,6 +99,7 @@ for (const image of images) {
 			g: winner.gradient,
 			m: result.researchRender?.field.stops[1]?.hex ?? null,
 			...(compared ? { compared } : {}),
+			...(fired ? { fired } : {}),
 		})}\n`)
 	} catch (error) {
 		process.stdout.write(`${JSON.stringify({
