@@ -4793,6 +4793,76 @@ export function treatmentFoundation(
 	return Math.cbrt(fieldStructure * artworkIdentity * foregroundUtility * activeRolePathObservability)
 }
 
+/**
+ * The foreground/surface zero-contrast guard.
+ *
+ * The surface is not merely the far end of the field. It is drawn as a panel with the foreground
+ * as text on top of it, so foreground-over-surface is a flat pair covering a large area, and a
+ * foreground that cannot be read there is unreadable everywhere it sits — there is no thin sliver
+ * of the ramp for the eye to recover it from, and no hue separation that excuses it, because the
+ * pair is the same two flat colours across the whole panel.
+ *
+ * Every existing gate misses it, for two independent reasons:
+ *
+ * 1. `hasPeakAPCAObservability` is a `some` over field samples — a maximum, never a minimum. A
+ *    foreground at no contrast against the surface passes on the strength of the background end
+ *    alone. `pathObservability` measures the *fraction* of samples that clear the bar, which would
+ *    see this, but it is only ever a score and never a gate.
+ * 2. The one perceptual field gate, `distinctness.foregroundField`, compares the foreground with
+ *    the **background** only, and it asks whether two colours are *the same colour* rather than
+ *    whether one can be read on the other.
+ *
+ * Those two rulers are independent, which is why this class survived the rule that fixed the
+ * background side. A foreground can sit at CIE76 ΔE 94 from the surface — nowhere near "the same
+ * colour", vividly different in hue — while matching its luminance closely enough that APCA
+ * reports no contrast whatsoever. Colour distance cannot see it and peak contrast cannot see it.
+ *
+ * Turning this on changes published output, so it stays off until human review has seen the
+ * movement it causes. `off` reproduces the previous behaviour exactly.
+ */
+export const FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD = false
+
+/**
+ * The bar for "essentially no contrast" — and it is not a tuned number.
+ *
+ * APCA's reported magnitude is discontinuous at the bottom. It clips small results to exactly
+ * zero, and the smallest non-zero magnitude it can return for *any* pair of colours is 7.30;
+ * measured exhaustively over sixteen million luminance pairs spanning the entire range, nothing is
+ * ever reported between 0 and 7.3. Every bar inside that open band therefore selects exactly the
+ * same treatments — the ones APCA itself calls contrastless — and no value inside it can change
+ * any outcome. This is the same argument `distinctness.foregroundField` makes from its own empty
+ * band, and the reason neither of them is a tuned threshold.
+ *
+ * **It is not an accessibility floor**, and charter constraint 2 is safe from it by construction:
+ * the bar sits below the smallest contrast APCA can express, so the deliberately low outputs this
+ * library exists to allow — human review has graded Lc ≈ 9 palettes good — are above it
+ * necessarily, not by luck. `contrast.hardMinimum` stays 0 and stays the caller's parameter; this
+ * refuses a pathology rather than raising a floor.
+ */
+export const MINIMUM_ROLE_PAIR_ABSOLUTE_LC = 1
+
+/**
+ * Is this mark colour unreadable on this field colour — i.e. is the pair below the smallest contrast
+ * APCA can express at all?
+ *
+ * Deliberately **not** gated on any flag, and deliberately not specific to one pair: this is the
+ * measurement. Two mechanisms ask it — the wide guard below, which refuses candidates, and the
+ * narrow repair in `zero-contrast-repair.ts`, which leaves candidates alone and mends the published
+ * winner — and the repair asks it of up to four role pairs. The question has to be one function so
+ * none of those callers can drift from the others.
+ *
+ * A collapsed surface needs no special case: it is the background, so this asks the same question
+ * the existing background-side observability gate already asks, and agrees with it.
+ */
+export function rolePairIsUnreadable(mark: RGB, field: RGB): boolean {
+	return Math.abs(apcaContrast(mark, field)) < MINIMUM_ROLE_PAIR_ABSOLUTE_LC
+}
+
+/** The wide guard's own test: the measurement above, on its one pair, only while the guard is on. */
+function wideGuardRefusesForeground(foreground: RGB, surface: RGB): boolean {
+	return FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD && rolePairIsUnreadable(foreground, surface)
+}
+
 function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: number): void {
 	const surfaceCollapsed = sameColor(treatment.surface.rgb, treatment.background.rgb)
 	const accentCollapsed = sameColor(treatment.accent.rgb, treatment.foreground.rgb)
@@ -4807,6 +4877,11 @@ function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: num
 	// the field" is the kind of guarantee a caller is entitled to read off the output.
 	if (perceptualDifference(treatment.background.rgb, treatment.foreground.rgb) < DISTINCTNESS.foregroundField) {
 		throw new Error("Foreground is perceptually the same color as the background")
+	}
+	// The published form of the rule `createTreatment` filters on, for the surface side of the same
+	// question. See `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`.
+	if (wideGuardRefusesForeground(treatment.foreground.rgb, treatment.surface.rgb)) {
+		throw new Error("Foreground has essentially no contrast against the surface")
 	}
 	if (!accentCollapsed && sameColor(treatment.accent.rgb, treatment.surface.rgb)) throw new Error("Accent has an illegal role equality")
 	if (surfaceCollapsed && treatment.gradient) throw new Error("A collapsed surface cannot form a gradient")
@@ -4848,6 +4923,10 @@ function createTreatment(
 	const background = variant.background
 	const surface = variant.surface
 	if (sameColor(surface.rgb, foreground.rgb)) return null
+	// The surface side of the distinctness question, asked with the contrast ruler rather than the
+	// colour-distance one because the two are independent and this pair defeats the second.
+	// See `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`.
+	if (wideGuardRefusesForeground(foreground.rgb, surface.rgb)) return null
 	// Role distinctness used to be byte equality on both sides of this test, which let a treatment
 	// render its text one 8-bit code value away from its own background. `perceptualDifference`
 	// subsumes `sameColor` — an identical pair is ΔE 0 — and refuses the near-identical pair too.

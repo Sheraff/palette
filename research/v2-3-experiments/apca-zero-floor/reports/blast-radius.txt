@@ -1,0 +1,1065 @@
+compared 7585 artworks present in both censuses
+movers: 149
+  direct  (old palette had the defect): 15
+  cascade (old palette was already fine): 134
+
+movers whose OLD palette carries a recorded verdict: 3
+  ab67616d0000b27300034b1c66ddd55a5337f66a.jpg: strong (bf-on, batch-bf-1); strong (showcase-b, showcase-1); strong (showcase, showcase-1)
+  ab67616d0000b27300081dec93652e6af2582192: strong (trunk-b7, review-14-b2)
+  ab67616d0000b27300113e357f86250837b99d13: acceptable (vivid-series-incumbent, review-17-vivid-series); acceptable (calib-4b, calib-batch-4); acceptable (calib-4, calib-batch-4)
+
+published palettes STILL at exactly zero foreground/surface contrast with the guard on: 0
+
+--- every mover, off -> on ---
+
+00/ab67616d0000b27300003e5774bd21a587b053b5.jpg
+  background  #9c6f50 -> #7d4836
+  surface     #3e211b -> #050505
+  foreground  #e2d1b7 -> #d5b292
+  accent      #cb9066 -> #ae7854
+  midpoint    #050505 -> none
+  fg/surface Lc -76.22 -> -64.18   (dE 69.3 -> 76.9)
+  review: this artwork has never been reviewed
+
+00/ab67616d0000b27300004bfec0e21c10a81762fb.jpg
+  background  #2d241f -> #2d2822
+  surface     #554432 -> #68573b
+  fg/surface Lc -92.44 -> -85.73   (dE 69.6 -> 63.2)
+  review: this artwork has never been reviewed
+
+00/ab67616d0000b2730000f53d39e19f07413917d2.jpg
+  background  #d1caba -> #e4ddc1
+  surface     #1e130f -> #817f80
+  foreground  #e6ddce -> #110705
+  accent      #4a210f -> #4a2515
+  midpoint    #160805 -> #eee1d0
+  fg/surface Lc -85.70 -> 36.74   (dE 81.7 -> 50.9)
+  review: this artwork has never been reviewed
+
+01/ab67616d00001e0200015b335a1b077859177670.jpg
+  background  #783232 -> #613333
+  surface     #ce5a33 -> #cb482c
+  accent      #de7033 -> #dd6f34
+  fg/surface Lc -36.93 -> -40.93   (dE 46.8 -> 54.3)
+  review: this artwork has never been reviewed
+
+01/ab67616d00001e0200015d5d4fc60f69da392ce8.jpg
+  background  #faa240 -> #faf6ea
+  surface     #fcc3a5 -> #fbc39e
+  accent      #661712 -> #d13529
+  fg/surface Lc 78.13 -> 77.77   (dE 84.7 -> 85.2)
+  review: this artwork has never been reviewed
+
+01/ab67616d00001e020001a143727a0e56694b2aa9.jpg
+  background  #fecffd -> #fdf1fd
+  accent      #d620d4 -> #f65df5
+  fg/surface Lc 71.65 -> 71.65   (dE 83.5 -> 83.5)
+  review: this artwork has never been reviewed
+
+01/ab67616d0000b27300011a5c50bd59a8f754eb5d.jpg
+  background  #080810 -> #070711
+  surface     #192f7a -> #1c3077
+  fg/surface Lc -88.55 -> -88.50   (dE 88.2 -> 86.5)
+  review: this artwork has never been reviewed
+
+01/ab67616d0000b27300015d5d4fc60f69da392ce8.jpg
+  background  #0f0704 -> #f08652
+  surface     #310e0c -> #fbc6a4
+  foreground  #fcf6ea -> #0f0704
+  fg/surface Lc -100.73 -> 79.05   (dE 89.9 -> 85.3)
+  review: this artwork has never been reviewed
+
+01/ab67616d0000b27300018bf51fe3b9e729cdcc81.jpg
+  background  #8e7f7a -> #5f5651
+  surface     #5b5351 -> #1a1b16
+  fg/surface Lc -84.58 -> -100.18   (dE 60.8 -> 87.2)
+  review: this artwork has never been reviewed
+
+02/ab67616d00001e0200025bc7f0da43337ac28f0d.jpg
+  background  #044378 -> #f3f8fc
+  surface     #4472a3 -> #aecde1
+  foreground  #f5f9fc -> #223fa5
+  accent      #aecde2 -> #4775a7
+  fg/surface Lc -75.58 -> 58.71   (dE 58.6 -> 74.9)
+  review: this artwork has never been reviewed
+
+02/ab67616d00001e020002ca6473b4678fb1e7678c.jpg
+  background  #3b4252 -> #0e0a09
+  surface     #171b24 -> #3b4252
+  accent      #d9bdaf -> #8a95a9
+  fg/surface Lc -99.11 -> -90.15   (dE 86.5 -> 68.6)
+  review: this artwork has never been reviewed
+
+02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg
+  foreground  #443427 -> #6e4d3c
+  accent      #73503c -> #b17a65
+  fg/surface Lc 0.00 -> -14.14   (dE 15.4 -> 30.2)
+  review: this artwork has never been reviewed
+
+02/ab67616d0000b27300029e0faf864830bfd01861.jpg
+  surface     #ca7c34 -> #14140c
+  accent      #a55522 -> #ca7c34
+  midpoint    none -> #9c491d
+  fg/surface Lc -63.92 -> -106.10   (dE 68.4 -> 93.4)
+  review: this artwork has never been reviewed
+
+02/ab67616d0000b2730002b225bf22e52cc94a52e3.jpg
+  surface     #664c3d -> #5c4235
+  fg/surface Lc 16.07 -> 12.20   (dE 34.2 -> 30.3)
+  review: this artwork has never been reviewed
+
+02/ab67616d0000b2730002db145985394f0c289af8.jpg
+  surface     #706257 -> #4d323b
+  fg/surface Lc -47.56 -> -62.95   (dE 41.5 -> 59.5)
+  review: this artwork has never been reviewed
+
+03/ab67616d00001e02000312a461ec5b70a3e8fd0e.jpg
+  background  #5f3536 -> #b3a8a4
+  surface     #392a27 -> #855450
+  foreground  #b3a8a4 -> #211917
+  accent      #3a91af -> #4192af
+  fg/surface Lc -51.74 -> 21.33   (dE 51.1 -> 36.3)
+  review: this artwork has never been reviewed
+
+03/ab67616d00001e020003f7b47694fa648058355a.jpg
+  background  #3d7a7f -> #6594a8
+  surface     #d7e3b3 -> #bcd4c7
+  accent      #295f77 -> #3d7a7f
+  midpoint    #97c6ce -> #91c2d1
+  fg/surface Lc 86.37 -> 77.77   (dE 91.5 -> 83.1)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b27300031ff646e2a1743fd1c0bf.jpg
+  surface     #25211e -> #453126
+  fg/surface Lc -94.69 -> -90.49   (dE 81.5 -> 72.6)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b27300033ce4cbeb59275d87f7ca.jpg
+  background  #0f282c -> #1d2729
+  surface     #bcbfb8 -> #1f3b46
+  midpoint    #1c2524 -> #202423
+  fg/surface Lc -9.89 -> -71.25   (dE 8.2 -> 62.7)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg
+  background  #273d77 -> #143471
+  surface     #281832 -> #03010c
+  midpoint    #0a0718 -> #2c0e26
+  fg/surface Lc -82.14 -> -84.11   (dE 81.9 -> 89.7)
+  review: reviewed artwork; latest verdict overall strong (batch gee-batch)
+    palette being LEFT: strong (bf-on, batch batch-bf-1, line 372); strong (showcase-b, batch showcase-1, line 433); strong (showcase, batch showcase-1, line 433)
+    palette ARRIVED AT: never shown to a reviewer
+
+03/ab67616d0000b273000351287fe5055ee53bb033.jpg
+  background  #412809 -> #3d2308
+  surface     #0a0100 -> #070302
+  fg/surface Lc -104.83 -> -104.84   (dE 97.7 -> 97.5)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b273000353c1ca3376ecaf7d9a7f.jpg
+  background  #3a3a3a -> #39373c
+  surface     #919191 -> #232522
+  fg/surface Lc -42.41 -> -83.43   (dE 28.1 -> 73.9)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b273000353e0bbc7635473078e14.jpg
+  background  #9c6640 -> #885635
+  surface     #291c13 -> #d99c65
+  foreground  #fde9c6 -> #fefcf0
+  accent      #d49f6b -> #1c0d08
+  midpoint    #845736 -> none
+  fg/surface Lc -93.01 -> -49.08   (dE 82.3 -> 47.0)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b27300037a90e97e33710581489f.jpg
+  background  #86581a -> #3e1805
+  surface     #1f0b04 -> #86581a
+  midpoint    #401c04 -> none
+  fg/surface Lc -62.93 -> -41.18   (dE 81.9 -> 34.8)
+  review: this artwork has never been reviewed
+
+03/ab67616d0000b2730003eaa4e0dbec5365518475.jpg
+  background  #59aac8 -> #010101
+  surface     #62626e -> #5f616d
+  fg/surface Lc -73.43 -> -74.01   (dE 103.9 -> 104.4)
+  review: this artwork has never been reviewed
+
+04/ab67616d00001e02000471034df00ae5864f2f91
+  surface     #c9c995 -> #fdfdfd
+  fg/surface Lc 42.70 -> 74.43   (dE 64.4 -> 60.9)
+  review: this artwork has never been reviewed
+
+04/ab67616d00001e020004d17e236e83ce08e1d094
+  background  #d38c4a -> #ae5a35
+  surface     #9a4026 -> #76200f
+  accent      #fdfe7f -> #faf97a
+  fg/surface Lc -85.29 -> -95.42   (dE 77.3 -> 86.8)
+  review: this artwork has never been reviewed
+
+04/ab67616d00001e020004ea89bc21964459fd3253
+  background  #856df5 -> #8565f6
+  surface     #69b4ed -> #5ecde8
+  midpoint    #8174f8 -> none
+  fg/surface Lc -47.56 -> -37.28   (dE 46.2 -> 39.8)
+  review: this artwork has never been reviewed
+
+04/ab67616d0000b27300040fa8c87afd0078dcaa15
+  surface     #752105 -> #903904
+  foreground  #fafaf0 -> #feb600
+  accent      #feb600 -> #f27700
+  fg/surface Lc -93.90 -> -53.21   (dE 86.5 -> 59.6)
+  review: this artwork has never been reviewed
+
+04/ab67616d0000b27300045749a25ecbb61ef37d46
+  background  #a6c8ee -> #2d3029
+  surface     #2d2f24 -> #ac9f75
+  accent      #f05962 -> #eee099
+  fg/surface Lc -101.82 -> -55.09   (dE 80.5 -> 39.5)
+  review: this artwork has never been reviewed
+
+04/ab67616d0000b27300049d4394e432425c49763d
+  background  #7d7e78 -> #666457
+  surface     #202014 -> #393a32
+  midpoint    none -> #23241c
+  fg/surface Lc -93.97 -> -88.33   (dE 81.9 -> 69.7)
+  review: this artwork has never been reviewed
+
+05/ab67616d00001e020005333ed69ba9c7df156a00
+  background  #99d8ab -> #3a4297
+  surface     #44529d -> #525d9d
+  foreground  #fed38e -> #b1ebb1
+  accent      #81ac9b -> #7eab94
+  midpoint    #414ba0 -> none
+  fg/surface Lc -65.45 -> -63.67   (dE 96.8 -> 86.4)
+  review: this artwork has never been reviewed
+
+05/ab67616d00001e02000562e32c95260d038337e6
+  background  #1e1c1f -> #4e3f3a
+  foreground  #f7d4ae -> #faeccf
+  fg/surface Lc -82.38 -> -94.57   (dE 80.5 -> 85.0)
+  review: this artwork has never been reviewed
+
+05/ab67616d00001e020005d80fcb3ddcb4a4ef84e4
+  background  #030303 -> #636363
+  foreground  #fcfcfc -> #030303
+  midpoint    #626262 -> none
+  fg/surface Lc -48.75 -> 58.14   (dE 29.4 -> 68.8)
+  review: this artwork has never been reviewed
+
+05/ab67616d0000b273000527ac7469703d3a23f678
+  surface     #31342d -> #dedfda
+  field       gradient -> flat
+  midpoint    #d3d0c9 -> none
+  fg/surface Lc 0.00 -> 83.50   (dE 9.2 -> 74.9)
+  review: this artwork has never been reviewed
+
+05/ab67616d0000b27300059bcda46d64f2dd92d937
+  background  #191919 -> #1a1a1a
+  surface     #7ce0e0 -> #24cecb
+  fg/surface Lc -26.57 -> -39.64   (dE 33.8 -> 47.2)
+  review: this artwork has never been reviewed
+
+06/ab67616d00001e0200061bf089621ca441409461
+  background  #cf130a -> #fbfdf2
+  surface     #5a0905 -> #fbdd6b
+  foreground  #fbfdf2 -> #570c06
+  accent      #f43509 -> #f61b00
+  fg/surface Lc -100.76 -> 80.97   (dE 91.8 -> 87.5)
+  review: this artwork has never been reviewed
+
+06/ab67616d00001e0200067a3aa177a1a18dd65b04
+  background  #ffffff -> #91908b
+  surface     #82786e -> #21302b
+  foreground  #21302b -> #ffffff
+  accent      #426135 -> #455f38
+  fg/surface Lc 28.48 -> -103.43   (dE 34.5 -> 81.9)
+  review: this artwork has never been reviewed
+
+06/ab67616d00001e0200068dcfd43f6862e6f01e4e
+  background  #e59b9a -> #735f6b
+  surface     #645969 -> #b07d82
+  midpoint    #ab8e93 -> #a5888c
+  fg/surface Lc -74.71 -> -54.27   (dE 55.3 -> 38.5)
+  review: this artwork has never been reviewed
+
+06/ab67616d0000b27300061f809b1e3d9c3b709362
+  foreground  #c348d6 -> #6f3aa4
+  accent      #522baa -> #c348d6
+  fg/surface Lc 0.00 -> 22.84   (dE 12.2 -> 37.9)
+  review: this artwork has never been reviewed
+
+06/ab67616d0000b27300065f294b0942db1dcf9f98
+  background  #f0f6f4 -> #f4d4bb
+  foreground  #33615f -> #840202
+  accent      #f41f3d -> #d4201f
+  fg/surface Lc 60.23 -> 68.37   (dE 101.5 -> 90.2)
+  review: this artwork has never been reviewed
+
+06/ab67616d0000b2730006886b38d047446e654597
+  background  #33080f -> #b32138
+  surface     #fc6076 -> #d53149
+  accent      #fba9ad -> #fc6076
+  midpoint    #fa526b -> none
+  fg/surface Lc -57.49 -> -74.12   (dE 74.1 -> 85.2)
+  review: this artwork has never been reviewed
+
+06/ab67616d0000b27300068a14c964619648ed8dfb
+  background  #607884 -> #5c7788
+  surface     #9daeb5 -> #a5a8b1
+  midpoint    #457b93 -> #3c6d7c
+  fg/surface Lc -20.57 -> -22.28   (dE 18.8 -> 17.8)
+  review: this artwork has never been reviewed
+
+07/ab67616d00001e0200072f74f8ca566c0f323190
+  background  #e1e5e4 -> #d8d8d6
+  surface     #373923 -> #535637
+  foreground  #262418 -> #e3e7e8
+  midpoint    none -> #795b41
+  fg/surface Lc 0.00 -> -75.19   (dE 11.1 -> 59.1)
+  review: this artwork has never been reviewed
+
+07/ab67616d00001e0200072fa13e3f577243058af1
+  background  #f88737 -> #1f0b04
+  surface     #a04111 -> #a1420c
+  foreground  #fdfbec -> #fdf8e4
+  fg/surface Lc -83.31 -> -81.22   (dE 79.8 -> 78.3)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b2730007308415d0aca130669557
+  background  #e1decd -> #bd0102
+  surface     #cfb384 -> #656c98
+  foreground  #093a97 -> #e1decd
+  accent      #bd0102 -> #faf61b
+  fg/surface Lc 51.69 -> -58.74   (dE 97.0 -> 54.4)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b273000754ead39160ce8be315a1
+  background  #15164c -> #232757
+  surface     #888a99 -> #8f8095
+  fg/surface Lc -37.64 -> -40.45   (dE 26.5 -> 31.0)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b2730007608c8063cc64e1bafc4d
+  surface     #eee607 -> #f9faec
+  fg/surface Lc 82.05 -> 96.15   (dE 122.0 -> 81.0)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b27300076c4e1b5dd2addf9e19bf
+  background  #174664 -> #9dacbf
+  surface     #5a7ea0 -> #3b678c
+  foreground  #9dacbf -> #0d0805
+  accent      #0d0805 -> #174664
+  fg/surface Lc -23.50 -> 24.09   (dE 21.4 -> 47.9)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b2730007752f56453423dc5ae617
+  background  #342b60 -> #392f64
+  surface     #683b90 -> #62358a
+  fg/surface Lc -35.10 -> -37.08   (dE 62.0 -> 63.6)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b2730007c9c070f7606fcce05079
+  background  #b5b5c1 -> #f6e8df
+  surface     #0b0100 -> #b5b5c1
+  midpoint    #fff3f2 -> none
+  fg/surface Lc 0.00 -> 62.73   (dE 16.4 -> 68.6)
+  review: this artwork has never been reviewed
+
+07/ab67616d0000b2730007d4cb364e04df68f6e2c1
+  surface     #d2e0eb -> #64b4e5
+  accent      #fbb89d -> #fdbca0
+  midpoint    #089be0 -> none
+  fg/surface Lc 0.00 -> -25.87   (dE 94.0 -> 120.5)
+  review: reviewed artwork; latest verdict overall acceptable (batch cs2-batch)
+    palette being LEFT: shown but never the graded side
+    palette ARRIVED AT: never shown to a reviewer
+
+08/ab67616d00001e020008dd85a47bd56f64b4506f
+  background  #4e5f73 -> #c5d3de
+  surface     #bfbdb0 -> #9e805e
+  foreground  #2f3a3e -> #446880
+  accent      #9e805e -> #4c8fac
+  midpoint    #d5dade -> #c2d3e7
+  fg/surface Lc 58.86 -> 13.28   (dE 54.0 -> 44.2)
+  review: this artwork has never been reviewed
+
+08/ab67616d0000b27300081dec93652e6af2582192
+  background  #6c7487 -> #56667f
+  surface     #c7b9b6 -> #a0acb8
+  fg/surface Lc -38.09 -> -48.06   (dE 23.3 -> 30.3)
+  review: reviewed artwork; latest verdict overall strong (batch review-14-b2)
+    palette being LEFT: strong (trunk-b7, batch review-14-b2, line 94)
+    palette ARRIVED AT: never shown to a reviewer
+
+08/ab67616d0000b273000825b6deae8f4e00bf8e34
+  background  #28260d -> #2f3010
+  surface     #72854d -> #607844
+  accent      #819055 -> #b89a5a
+  fg/surface Lc -58.55 -> -64.75   (dE 52.9 -> 56.3)
+  review: this artwork has never been reviewed
+
+08/ab67616d0000b2730008cd98f12184337beb2450
+  background  #dbe3d4 -> #d1d3c6
+  surface     #0f6677 -> #017f8d
+  foreground  #033051 -> #024764
+  midpoint    #d5d7cc -> none
+  fg/surface Lc 15.54 -> 18.51   (dE 27.9 -> 27.0)
+  review: this artwork has never been reviewed
+
+08/ab67616d0000b2730008dfd3663a999bc759f2c2
+  foreground  #5f3620 -> #f1dac8
+  accent      #f1dac8 -> #5f3620
+  fg/surface Lc 0.00 -> -70.08   (dE 9.9 -> 57.0)
+  review: this artwork has never been reviewed
+
+09/ab67616d00001e0200098f6f5e6d988af5b7cfd6
+  background  #3e3c3d -> #373536
+  surface     #a3a29e -> #a2a19d
+  foreground  #a2a19d -> #7d7c7a
+  fg/surface Lc 0.00 -> 16.16   (dE 0.4 -> 14.2)
+  review: this artwork has never been reviewed
+
+09/ab67616d00001e0200099b3aaf316149051a4578
+  background  #b5b5b5 -> #b1b1b1
+  surface     #151515 -> #000000
+  foreground  #000000 -> #e1e1e1
+  accent      #e1e1e1 -> #090909
+  midpoint    #e0e0e0 -> none
+  fg/surface Lc 0.00 -> -88.51   (dE 6.8 -> 89.5)
+  review: this artwork has never been reviewed
+
+09/ab67616d0000b273000905b27042595350afa5bc
+  background  #8113b0 -> #f33d94
+  surface     #f9c756 -> #b025a4
+  accent      #f44192 -> #fd7e77
+  midpoint    #f33d94 -> #e83996
+  fg/surface Lc -27.47 -> -80.68   (dE 63.9 -> 94.4)
+  review: this artwork has never been reviewed
+
+09/ab67616d0000b2730009c21fdc3123c13d33fca6
+  background  #fe3466 -> #01adef
+  surface     #cc0001 -> #9a0000
+  fg/surface Lc -81.87 -> -92.32   (dE 105.2 -> 98.9)
+  review: this artwork has never been reviewed
+
+09/ab67616d0000b2730009ea8d3a158fb9781566af
+  background  #ac9a96 -> #b09993
+  surface     #ecb978 -> #fdb054
+  midpoint    none -> #bfa38e
+  fg/surface Lc 69.13 -> 68.10   (dE 83.5 -> 94.7)
+  review: this artwork has never been reviewed
+
+0a/ab67616d00001e02000a5fb39fcebcce769aeb2f
+  background  #2b3029 -> #bdc9b3
+  surface     #bdc9b3 -> #9fb09d
+  foreground  #eceddb -> #1c1a1f
+  midpoint    none -> #d4d9c3
+  fg/surface Lc -22.37 -> 56.91   (dE 14.5 -> 62.5)
+  review: this artwork has never been reviewed
+
+0a/ab67616d00001e02000aab0dc24fd006fb828726
+  background  #1f485c -> #1d5f7f
+  surface     #288bb2 -> #1f77a7
+  accent      #82c6d1 -> #24474d
+  midpoint    none -> #0a88b0
+  fg/surface Lc -69.64 -> -77.54   (dE 55.1 -> 61.9)
+  review: this artwork has never been reviewed
+
+0a/ab67616d0000b273000a2def9fc53583ba51f30f
+  background  #957161 -> #321d1a
+  surface     #be9577 -> #957161
+  accent      #331b19 -> #be9577
+  fg/surface Lc -56.58 -> -74.58   (dE 42.1 -> 52.1)
+  review: this artwork has never been reviewed
+
+0a/ab67616d0000b273000a7c1eb08fdca0b2adc253
+  background  #b9bfb5 -> #b8baaf
+  surface     #b88e5e -> #d8b068
+  accent      #91643d -> #a18061
+  fg/surface Lc 34.86 -> 51.49   (dE 42.4 -> 56.8)
+  review: this artwork has never been reviewed
+
+0a/ab67616d0000b273000a9ef1cb958fbed62e6c33
+  background  #7b8181 -> #828981
+  surface     #231103 -> #080a05
+  foreground  #080a05 -> #a19e8d
+  midpoint    #8d9183 -> #627071
+  fg/surface Lc 0.00 -> -49.42   (dE 12.3 -> 62.9)
+  review: this artwork has never been reviewed
+
+0a/ab67616d0000b273000ad28ce5a40d6c03318df2
+  background  #474e54 -> #eceaed
+  foreground  #ebebeb -> #2e2f27
+  accent      #2e2f27 -> #975e4d
+  midpoint    #dab89f -> #daaf8f
+  fg/surface Lc -45.40 -> 44.82   (dE 42.7 -> 53.5)
+  review: this artwork has never been reviewed
+
+0b/ab67616d00001e02000b65ecd83cb8bd23bf3b8a
+  background  #2f1e26 -> #422a37
+  surface     #6a183e -> #301621
+  midpoint    #3d1925 -> none
+  fg/surface Lc -94.49 -> -100.94   (dE 82.9 -> 87.2)
+  review: this artwork has never been reviewed
+
+0b/ab67616d00001e02000b7dd8ca7aa47b45cab90d
+  background  #14192d -> #15182b
+  surface     #a27464 -> #966e6c
+  midpoint    #101624 -> #0e1122
+  fg/surface Lc -69.63 -> -72.82   (dE 50.6 -> 50.9)
+  review: this artwork has never been reviewed
+
+0b/ab67616d0000b273000b46c0cf9afa7837a4edac
+  background  #1cb5e1 -> #14bbe7
+  surface     #87d695 -> #94d488
+  foreground  #584a3d -> #fef9fd
+  midpoint    #28c7da -> none
+  fg/surface Lc 55.71 -> -32.53   (dE 64.1 -> 53.0)
+  review: this artwork has never been reviewed
+
+0b/ab67616d0000b273000be9061a11976b07dfd780
+  background  #272621 -> #232520
+  surface     #c35234 -> #995e3e
+  fg/surface Lc -18.60 -> -23.01   (dE 82.1 -> 59.6)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000c2109f694a70fee56d4c7
+  surface     #13130b -> #d0b194
+  foreground  #e2cdbc -> #13130b
+  accent      #b08b61 -> #e2cdbc
+  fg/surface Lc -77.81 -> 63.90   (dE 78.6 -> 70.6)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000c41dac72c5ff3c3c9514f
+  surface     #081466 -> #560a24
+  fg/surface Lc -91.91 -> -90.08   (dE 96.9 -> 87.2)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000c52085f7a9886a128c31b
+  background  #869ab2 -> #e1cdc2
+  surface     #f4c261 -> #fdf8ce
+  accent      #ca5d32 -> #f5a34d
+  midpoint    #f9f2c4 -> none
+  fg/surface Lc 71.69 -> 97.38   (dE 80.6 -> 87.4)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000c5258d797d8dd0b02e39f
+  accent      #73512e -> #0784ba
+  fg/surface Lc 61.24 -> 61.24   (dE 60.4 -> 60.4)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000c830b4a4f5a6d79f261e0
+  background  #efe1d6 -> #d6e0ec
+  surface     #d3cbc0 -> #c37e5d
+  foreground  #98234f -> #010101
+  accent      #c37e5d -> #98234f
+  midpoint    #c6c6c4 -> #c4c3bf
+  fg/surface Lc 56.33 -> 44.47   (dE 68.6 -> 69.7)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000cbfaf961150641489209a
+  background  #3e9cfe -> #b7f469
+  surface     #aad4fe -> #b0d6fd
+  fg/surface Lc 58.59 -> 59.91   (dE 120.8 -> 122.1)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000cc11659ef83009942f3cd
+  background  #3a2720 -> #311e1a
+  surface     #673325 -> #733a26
+  accent      #d85d31 -> #d3c74f
+  fg/surface Lc -84.23 -> -81.45   (dE 68.7 -> 66.4)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000cc8525b9fe2803009fda6
+  background  #291d41 -> #272322
+  surface     #4f3562 -> #542a2b
+  fg/surface Lc -96.62 -> -99.45   (dE 78.9 -> 79.4)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000cd1f7f4c6ead57a16292c
+  background  #2c2219 -> #b6a996
+  field       flat -> gradient
+  midpoint    none -> #3a2922
+  fg/surface Lc -83.32 -> -83.32   (dE 74.1 -> 74.1)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000cde3133d70ce180effdce
+  background  #0a0100 -> #070101
+  surface     #332b1e -> #322a1d
+  fg/surface Lc -74.29 -> -74.49   (dE 65.7 -> 66.2)
+  review: this artwork has never been reviewed
+
+0c/ab67616d0000b273000ce466ed05663b95a7e897
+  background  #718dcc -> #2a4071
+  surface     #283150 -> #6986c0
+  accent      #6986c0 -> #7e9cda
+  fg/surface Lc -100.95 -> -68.21   (dE 81.9 -> 56.6)
+  review: this artwork has never been reviewed
+
+0d/ab67616d00001e02000d1eb680ad80bc7d74c37d
+  background  #d0d1cc -> #67676f
+  surface     #62626a -> #cacbc5
+  accent      #efeeea -> #4c4c56
+  midpoint    #b6b6b4 -> #efeeec
+  fg/surface Lc 22.04 -> 73.80   (dE 32.8 -> 73.2)
+  review: this artwork has never been reviewed
+
+0d/ab67616d00001e02000db3d6ac2646f5cac53933
+  background  #dea8a8 -> #5e492a
+  surface     #5e492a -> #d88388
+  accent      #d57e87 -> #dea8a8
+  midpoint    #53535d -> #656469
+  fg/surface Lc -91.97 -> -56.95   (dE 69.7 -> 50.3)
+  review: this artwork has never been reviewed
+
+0d/ab67616d00001e02000dd1ffb1d2076ec3aef0ac
+  background  #034869 -> #0576ae
+  surface     #098ed9 -> #034869
+  midpoint    none -> #0771a3
+  fg/surface Lc -52.19 -> -80.63   (dE 63.0 -> 74.0)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000d02b7d1e29d1099da1829
+  background  #180c18 -> #100a18
+  surface     #442044 -> #541446
+  accent      #e77c74 -> #eea08c
+  fg/surface Lc -99.13 -> -98.42   (dE 84.0 -> 87.5)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000d03fe0f39b32c4a57a436
+  background  #fefefe -> #060303
+  surface     #fefefe -> #d3a162
+  foreground  #070302 -> #ffffff
+  accent      #ea5156 -> #ed5459
+  fg/surface Lc 105.41 -> -50.58   (dE 98.6 -> 51.2)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000d5bc894bdf9e82398404c
+  background  #2b2726 -> #1d1918
+  surface     #b2b1ac -> #9f9f97
+  fg/surface Lc -44.84 -> -55.00   (dE 26.8 -> 33.7)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000d8848408877866479cb38
+  background  #5a6851 -> #6c7a60
+  foreground  #aecea5 -> #fafcf7
+  accent      #2a2126 -> #aecea5
+  midpoint    #818e62 -> none
+  fg/surface Lc -24.20 -> -57.99   (dE 30.7 -> 45.9)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000d9c3f7eb321671401d1e0
+  background  #b0b4bf -> #b2b8c4
+  surface     #35383d -> #1f1f1f
+  foreground  #171008 -> #444b55
+  accent      #444b55 -> #222421
+  midpoint    #a3a9b7 -> #abafba
+  fg/surface Lc 0.00 -> -10.14   (dE 20.0 -> 21.0)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000dcb43d210e9f6e7274172
+  background  #43809d -> #5a9cb6
+  surface     #bccfcd -> #a4bdc2
+  fg/surface Lc 66.66 -> 56.51   (dE 60.2 -> 54.9)
+  review: this artwork has never been reviewed
+
+0d/ab67616d0000b273000dd4989fa7846fecd4bd19
+  background  #3e70ad -> #18100e
+  surface     #13427a -> #144379
+  foreground  #e4d27e -> #f4734b
+  accent      #f4734b -> #e4d27e
+  fg/surface Lc -68.24 -> -37.04   (dE 98.4 -> 96.9)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000e2967dfecbcd5469f8f2a
+  background  #363437 -> #424242
+  surface     #9fab97 -> #302e2f
+  foreground  #f9fafe -> #f8f9fe
+  midpoint    #414141 -> none
+  fg/surface Lc -49.04 -> -99.24   (dE 32.8 -> 78.8)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000e2fa94ca05cbebe0dc39c
+  background  #f2aa6f -> #f1bc7a
+  surface     #d46b65 -> #ec7557
+  midpoint    #eeb777 -> none
+  fg/surface Lc 17.39 -> 24.18   (dE 64.6 -> 78.8)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000e9c4fe02a86e6b3636cf2
+  background  #f0dbac -> #fafbe9
+  fg/surface Lc 61.67 -> 61.67   (dE 71.5 -> 71.5)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000ea7e1bfea40856f9f3be4
+  background  #1e0308 -> #290b0d
+  fg/surface Lc -55.67 -> -55.67   (dE 61.7 -> 61.7)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000ead3451e2164ecef7be66
+  background  #8c8384 -> #8d847d
+  surface     #131017 -> #9a2734
+  foreground  #f3f621 -> #111018
+  accent      #9a2734 -> #f3f621
+  fg/surface Lc -96.13 -> 17.67   (dE 130.2 -> 60.4)
+  review: this artwork has never been reviewed
+
+0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a
+  background  #f8f8fa -> #f5f4f9
+  surface     #282c2d -> #dfdce3
+  accent      #606658 -> #a09c9d
+  midpoint    #f0eff5 -> none
+  fg/surface Lc 0.00 -> 79.99   (dE 5.8 -> 68.9)
+  review: this artwork has never been reviewed
+
+0e/ab67616d0000b273000e5d7ec6a14710a4870244
+  background  #eff2f9 -> #0e180d
+  surface     #1f2018 -> #5f7db3
+  foreground  #ffffff -> #fefefc
+  fg/surface Lc -105.86 -> -73.15   (dE 88.3 -> 57.8)
+  review: this artwork has never been reviewed
+
+0e/ab67616d0000b273000e782f651771ca2ebc0ad5
+  background  #342c29 -> #49403b
+  surface     #916349 -> #805f5a
+  midpoint    #4a4541 -> #805147
+  fg/surface Lc -75.89 -> -78.80   (dE 58.8 -> 56.6)
+  review: this artwork has never been reviewed
+
+0e/ab67616d0000b273000e82da3c46ff8f49614dc3
+  foreground  #4a4036 -> #372a21
+  fg/surface Lc 73.35 -> 80.32   (dE 60.2 -> 69.8)
+  review: this artwork has never been reviewed
+
+0e/ab67616d0000b273000e8e2162144ae490079ea5
+  surface     #385d77 -> #4f748f
+  fg/surface Lc 18.40 -> 28.28   (dE 33.0 -> 41.6)
+  review: this artwork has never been reviewed
+
+0f/ab67616d00001e02000f2bd5889ba15b4207310b
+  background  #2a468f -> #803c0d
+  surface     #803c0d -> #274384
+  fg/surface Lc -91.75 -> -95.20   (dE 81.3 -> 81.4)
+  review: this artwork has never been reviewed
+
+0f/ab67616d00001e02000f61892bc865b1ffffff54
+  background  #495e73 -> #26211e
+  surface     #474a53 -> #495e73
+  fg/surface Lc -25.37 -> -18.73   (dE 30.2 -> 22.1)
+  review: this artwork has never been reviewed
+
+0f/ab67616d00001e02000f7d32b89a704351377fb7
+  background  #fff3c2 -> #fdfdcb
+  surface     #615b5d -> #dbae6d
+  foreground  #433b39 -> #494d50
+  midpoint    #fdfacf -> none
+  fg/surface Lc 10.46 -> 47.62   (dE 13.9 -> 59.5)
+  review: this artwork has never been reviewed
+
+0f/ab67616d0000b273000ff03239ed595debcc3b3e
+  background  #d2d4d3 -> #414342
+  surface     #292d2c -> #787a79
+  foreground  #0e100f -> #d2d4d3
+  accent      #555756 -> #0e100f
+  fg/surface Lc 0.00 -> -47.74   (dE 13.6 -> 33.7)
+  review: this artwork has never been reviewed
+
+10/ab67616d00001e020010b9395e3d458ff4a101ab
+  background  #b25711 -> #964f21
+  surface     #070b0e -> #020106
+  fg/surface Lc -103.55 -> -103.72   (dE 99.7 -> 102.1)
+  review: this artwork has never been reviewed
+
+10/ab67616d00001e020010c59eee1c182e94144ebd
+  background  #676636 -> #686434
+  surface     #da9c61 -> #b27d49
+  accent      #e7be80 -> #da9c61
+  midpoint    #897c48 -> none
+  fg/surface Lc 54.24 -> 37.77   (dE 64.6 -> 52.0)
+  review: this artwork has never been reviewed
+
+10/ab67616d0000b2730010023a0d9ce4a6cef11831
+  background  #462a29 -> #272322
+  surface     #3c201f -> #3f3430
+  midpoint    #2d2620 -> none
+  fg/surface Lc -88.76 -> -85.47   (dE 92.7 -> 82.0)
+  review: this artwork has never been reviewed
+
+10/ab67616d0000b27300102f8e3aebc3c6e6efba20
+  background  #c88155 -> #14aea2
+  surface     #e7e3b6 -> #1b0301
+  foreground  #190101 -> #fafce4
+  fg/surface Lc 88.04 -> -104.20   (dE 90.7 -> 96.7)
+  review: this artwork has never been reviewed
+
+10/ab67616d0000b27300103006cf4515c3976d308d
+  surface     #eaa773 -> #362b27
+  accent      #cc7c5b -> #eaa773
+  midpoint    #281b12 -> #181411
+  fg/surface Lc -23.82 -> -82.99   (dE 37.1 -> 70.6)
+  review: this artwork has never been reviewed
+
+11/ab67616d00001e0200110f7c695bb6d5bd26d0d3
+  background  #c9a7e4 -> #ae78ce
+  surface     #8e6ed3 -> #0c2961
+  foreground  #0c2961 -> #c6ade7
+  fg/surface Lc 31.57 -> -59.22   (dE 43.2 -> 58.0)
+  review: this artwork has never been reviewed
+
+11/ab67616d00001e020011848ee5ff3bc0b68064d3
+  background  #12384f -> #122b3f
+  surface     #545c80 -> #2b496d
+  accent      #4384a2 -> #63a0bc
+  midpoint    none -> #081d30
+  fg/surface Lc -61.47 -> -69.58   (dE 51.0 -> 58.6)
+  review: this artwork has never been reviewed
+
+11/ab67616d00001e020011b9d34515ae6f064e5913
+  background  #c85866 -> #d74d71
+  surface     #f7cba8 -> #fbd7b3
+  fg/surface Lc -24.40 -> -18.17   (dE 27.3 -> 23.5)
+  review: this artwork has never been reviewed
+
+11/ab67616d0000b2730011243f2e759fabe0b53e3a
+  background  #3a4549 -> #241711
+  surface     #241711 -> #66321c
+  accent      #ca843f -> #f8b801
+  fg/surface Lc -87.38 -> -78.49   (dE 81.3 -> 71.8)
+  review: this artwork has never been reviewed
+
+11/ab67616d0000b273001124cefa2fedced2617683
+  background  #23337e -> #524966
+  surface     #ba911b -> #e6b71f
+  foreground  #fafdf6 -> #182c83
+  accent      #e384e2 -> #0878ce
+  midpoint    #b38d3c -> #edc724
+  fg/surface Lc -58.86 -> 59.47   (dE 69.6 -> 138.1)
+  review: this artwork has never been reviewed
+
+11/ab67616d0000b27300113e357f86250837b99d13
+  background  #98aad2 -> #adbbd6
+  surface     #c8d1e0 -> #f6edac
+  accent      #e7e38c -> #da2723
+  midpoint    none -> #b5c4db
+  fg/surface Lc 75.36 -> 90.73   (dE 72.0 -> 82.8)
+  review: reviewed artwork; latest verdict overall acceptable (batch calib-batch-4)
+    palette being LEFT: acceptable (vivid-series-incumbent, batch review-17-vivid-series, line 114); acceptable (calib-4b, batch calib-batch-4, line 418); acceptable (calib-4, batch calib-batch-4, line 418)
+    palette ARRIVED AT: never shown to a reviewer
+
+11/ab67616d0000b2730011423a68a21dcabb73262e
+  background  #fbfbf3 -> #83694e
+  surface     #fbfbf3 -> #28231d
+  foreground  #28231d -> #fbfbf3
+  accent      #c6916f -> #c49979
+  field       flat -> gradient
+  midpoint    none -> #2b2318
+  fg/surface Lc 99.79 -> -102.15   (dE 84.4 -> 84.4)
+  review: this artwork has never been reviewed
+
+11/ab67616d0000b2730011800787149656eb62c15f
+  background  #97273d -> #b1354d
+  surface     #eaba70 -> #e2735f
+  accent      #d65156 -> #eaba70
+  fg/surface Lc -36.03 -> -61.54   (dE 47.4 -> 64.8)
+  review: this artwork has never been reviewed
+
+11/ab67616d0000b27300118c76c19f820a4a379eee
+  background  #f3f56d -> #dddcd7
+  surface     #f3f56d -> #f0f26d
+  fg/surface Lc 87.38 -> 85.68   (dE 91.7 -> 90.1)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e0200121e000430987e6c10ccef
+  surface     #7e979e -> #407a7e
+  midpoint    #adc0c4 -> #94abb1
+  fg/surface Lc 45.43 -> 29.54   (dE 55.8 -> 45.6)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e0200122000439927f31064c5ca
+  background  #26160f -> #5d565e
+  surface     #412821 -> #27160f
+  fg/surface Lc -92.15 -> -95.54   (dE 75.7 -> 85.0)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e02001260a2925a5a4be17c70f8
+  background  #0d0711 -> #09060f
+  surface     #34293a -> #322738
+  accent      #867fab -> #f4f446
+  fg/surface Lc -88.37 -> -88.78   (dE 74.6 -> 75.6)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e0200128a36cd3b1f1d1b9fedee
+  background  #190000 -> #4d4d4f
+  fg/surface Lc -97.93 -> -97.93   (dE 78.3 -> 78.3)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e020012bca358891e64f191a020
+  surface     #3193ae -> #0977aa
+  foreground  #6ab7bf -> #a5d3c9
+  accent      #d6e4d3 -> #3898b0
+  midpoint    #0481af -> #123b97
+  fg/surface Lc -17.27 -> -45.63   (dE 17.3 -> 49.4)
+  review: this artwork has never been reviewed
+
+12/ab67616d00001e020012ce1c89c72034c02f2968
+  surface     #046377 -> #f68483
+  accent      #f68483 -> #084b53
+  fg/surface Lc -65.99 -> -30.67   (dE 62.5 -> 43.4)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b2730012325598f3c041c0f2a65e
+  background  #d17992 -> #dacccb
+  surface     #f8e5e7 -> #f3fbfe
+  foreground  #f3fbfe -> #1c1922
+  accent      #3b181c -> #ed859e
+  fg/surface Lc -8.42 -> 100.94   (dE 11.2 -> 88.9)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b273001235b2ad3caf2f3f9b683a
+  background  #331e25 -> #281b25
+  surface     #3b4c44 -> #4d5143
+  foreground  #e4b9b0 -> #a2aca1
+  accent      #cb7254 -> #d57350
+  midpoint    #291723 -> #425f49
+  fg/surface Lc -57.65 -> -40.78   (dE 53.7 -> 35.8)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b2730012589bfb5b5069436e791a
+  background  #cfdadc -> #222618
+  surface     #1d1b06 -> #15110e
+  midpoint    #282c1d -> none
+  fg/surface Lc -91.81 -> -92.67   (dE 83.8 -> 87.0)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b27300126c1c0aa41c3c19edf10a
+  background  #b6bbb5 -> #b4b1a8
+  foreground  #382a27 -> #c5c5bd
+  accent      #a23b3e -> #c83c69
+  midpoint    #c4c1b2 -> #b17d4d
+  fg/surface Lc 0.00 -> -62.64   (dE 9.1 -> 55.5)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b27300127467679dffd20ad395bf
+  surface     #788990 -> #5e727d
+  foreground  #d4cfcc -> #edcda7
+  accent      #d48f6e -> #ce8d6f
+  fg/surface Lc -39.54 -> -51.58   (dE 29.1 -> 50.0)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b2730012c1c96c142fef52405844
+  background  #edfbfc -> #be4f60
+  foreground  #bc5060 -> #edfbfc
+  fg/surface Lc 32.28 -> -37.60   (dE 74.5 -> 88.2)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b2730012ce6b331c604b8869a34a
+  background  #e1e0e6 -> #d9d6dd
+  surface     #648aae -> #eee1c1
+  midpoint    #e4d4bb -> #f5f9fc
+  fg/surface Lc 40.26 -> 88.85   (dE 60.7 -> 91.5)
+  review: this artwork has never been reviewed
+
+12/ab67616d0000b2730012ecd1f764165d232f8614
+  background  #f7204c -> #00437c
+  surface     #befce7 -> #f7204c
+  foreground  #030504 -> #fbf384
+  accent      #251b72 -> #bffced
+  fg/surface Lc 96.57 -> -60.06   (dE 96.1 -> 99.8)
+  review: this artwork has never been reviewed
+
+13/ab67616d00001e0200130b6311a54a50dd8400db
+  field       flat -> gradient
+  fg/surface Lc -89.37 -> -89.37   (dE 74.4 -> 74.4)
+  review: this artwork has never been reviewed
+
+13/ab67616d00001e02001335cf135f6098abd9f3fe
+  surface     #dbc639 -> #6c532a
+  foreground  #e9e7ea -> #d8d0ce
+  accent      #de9777 -> #dbc639
+  midpoint    #251b1a -> #312728
+  fg/surface Lc -19.81 -> -61.03   (dE 71.6 -> 53.7)
+  review: this artwork has never been reviewed
+
+13/ab67616d00001e0200139a51e5a5b523d17868b0
+  background  #46824c -> #44834a
+  surface     #73b784 -> #70b586
+  accent      #191a1f -> #405141
+  midpoint    #4c9045 -> #56a75a
+  fg/surface Lc -39.28 -> -40.31   (dE 43.6 -> 42.8)
+  review: this artwork has never been reviewed
+
+13/ab67616d00001e020013b6ed3f67028b732e92d8
+  background  #cbc3b6 -> #262533
+  surface     #737e6e -> #477269
+  fg/surface Lc -61.26 -> -68.62   (dE 41.8 -> 51.0)
+  review: this artwork has never been reviewed
+
+13/ab67616d0000b27300130eed6eb68fa3b5ec93f7
+  surface     #79928e -> #899e95
+  fg/surface Lc 41.48 -> 47.60   (dE 49.8 -> 54.4)
+  review: this artwork has never been reviewed
+
+13/ab67616d0000b27300132a2df807a7690121b39e
+  background  #041e13 -> #032c1c
+  surface     #003e45 -> #005f7c
+  accent      #025f7e -> #c86426
+  fg/surface Lc -87.27 -> -76.19   (dE 73.6 -> 65.4)
+  review: this artwork has never been reviewed
+
+13/ab67616d0000b2730013715954240ec1eac72531
+  foreground  #7e8dce -> #fbfdf8
+  accent      #fbfdf8 -> #7e8dce
+  fg/surface Lc 0.00 -> -68.67   (dE 35.3 -> 55.1)
+  review: this artwork has never been reviewed
+
+13/ab67616d0000b2730013dcd937909650c7880dcd
+  background  #9fb7c1 -> #302b28
+  surface     #f2e7d3 -> #63565d
+  foreground  #322c2c -> #eee9e6
+  accent      #c48d86 -> #c69189
+  midpoint    #eae5e2 -> none
+  fg/surface Lc 86.70 -> -75.27   (dE 74.1 -> 55.1)
+  review: this artwork has never been reviewed
+
+14/ab67616d00001e020014cacebb2cfb5279f904f1
+  background  #65859c -> #7896b2
+  surface     #fff3e0 -> #eaddcd
+  accent      #46657a -> #587a93
+  fg/surface Lc 93.68 -> 81.11   (dE 78.4 -> 70.8)
+  review: this artwork has never been reviewed
+
+14/ab67616d0000b273001460a5371485438166bf80
+  background  #37555d -> #9ca18b
+  surface     #be9d7e -> #5c9282
+  foreground  #c8b597 -> #42313b
+  accent      #42313b -> #91725d
+  midpoint    #609082 -> none
+  fg/surface Lc -10.40 -> 32.53   (dE 9.9 -> 46.7)
+  review: this artwork has never been reviewed
+
+14/ab67616d0000b273001476792ab9a96469d8dcd7
+  background  #f6f2f1 -> #4f4d4e
+  surface     #4f4d4e -> #ee5047
+  foreground  #ebcf64 -> #f6f2f1
+  accent      #f45044 -> #ebcf64
+  fg/surface Lc -63.93 -> -59.68   (dE 75.6 -> 80.5)
+  review: this artwork has never been reviewed
+
+14/ab67616d0000b2730014a3a31c526bbbc2a1e810
+  surface     #673213 -> #1b0002
+  foreground  #e9e0d9 -> #c9c5bc
+  accent      #12575e -> #673213
+  fg/surface Lc -78.47 -> -71.34   (dE 69.9 -> 78.1)
+  review: this artwork has never been reviewed
+
+14/ab67616d0000b2730014d81911201f02b47ddd81
+  background  #505c4e -> #6a7265
+  surface     #9e8f88 -> #2e2017
+  fg/surface Lc -61.18 -> -102.86   (dE 38.8 -> 85.5)
+  review: this artwork has never been reviewed
+
+14/ab67616d0000b2730014e9948f94343f69ff85da
+  background  #0074c7 -> #0d921f
+  accent      #fded11 -> #fab710
+  fg/surface Lc -78.40 -> -78.40   (dE 72.9 -> 72.9)
+  review: this artwork has never been reviewed

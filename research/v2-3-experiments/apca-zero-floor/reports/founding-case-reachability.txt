@@ -1,0 +1,56 @@
+trunk publishes: bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient
+source-eligible slate: 1179 candidates
+
+candidates on the wide guard's field (#058cde -> #64b4e5):
+  total 49   as GRADIENT 0   as flat 49
+  NONE. The wide guard's palette is a gradient on this field, and trunk's slate
+  contains that field only as a FLAT treatment. It is unreachable by any re-pick.
+
+  ...of which carry the artwork's yellow as the foreground: 5
+    rank    95  flat accent=#fdbca0  fg/surface raw 28.6
+    rank   279  flat accent=#171c1f  fg/surface raw 28.6
+    rank   288  flat accent=#d2e0eb  fg/surface raw 28.6
+    rank   488  flat accent=#6d6f6a  fg/surface raw 28.6
+    rank   664  flat accent=#fed700  fg/surface raw 28.6
+
+candidates whose foreground clears the floor on their own surface: 1091
+best six by ranking — this is the ordering level 2b follows:
+  rank     2  bg=#0083dc surface=#aed1e7 fg=#d2e0eb accent=#fbb89d gradient
+  rank     3  bg=#0083dc surface=#aed1e7 fg=#d2e0eb accent=#fed700 gradient
+  rank     4  bg=#058cde surface=#d2e0eb fg=#fdbca0 accent=#fed700 gradient
+  rank     6  bg=#0083dc surface=#aed1e7 fg=#6d6f6a accent=#fdbca0 gradient
+  rank     7  bg=#d3a334 surface=#cf7d0f fg=#171c1f accent=#fdbca0 gradient
+  rank     8  bg=#d4a032 surface=#cd7d0c fg=#171c1f accent=#fdbca0 gradient
+trunk publishes bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d
+
+the wide guard's field, carrying the artwork's yellow as text: 5 candidate(s)
+
+  rank 95  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fdbca0 flat
+      foreground/surface     raw   28.57   clamped  -25.87
+      foreground/background  raw   47.43   clamped  -44.73
+      accent/surface         raw   19.38   clamped  -16.68
+      accent/background      raw   38.23   clamped  -35.53
+
+  rank 279  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#171c1f flat
+      foreground/surface     raw   28.57   clamped  -25.87
+      foreground/background  raw   47.43   clamped  -44.73
+      accent/surface         raw   59.89   clamped   57.19
+      accent/background      raw   41.77   clamped   39.07
+
+  rank 288  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#d2e0eb flat
+      foreground/surface     raw   28.57   clamped  -25.87
+      foreground/background  raw   47.43   clamped  -44.73
+      accent/surface         raw   31.10   clamped  -28.40
+      accent/background      raw   49.95   clamped  -47.25
+
+  rank 488  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#6d6f6a flat
+      foreground/surface     raw   28.57   clamped  -25.87
+      foreground/background  raw   47.43   clamped  -44.73
+      accent/surface         raw   30.92   clamped   28.22
+      accent/background      raw   12.80   clamped   10.10
+
+  rank 664  bg=#058cde surface=#64b4e5 fg=#fed700 accent=#fed700 flat
+      foreground/surface     raw   28.57   clamped  -25.87
+      foreground/background  raw   47.43   clamped  -44.73
+      accent/surface         raw   28.57   clamped  -25.87
+      accent/background      raw   47.43   clamped  -44.73

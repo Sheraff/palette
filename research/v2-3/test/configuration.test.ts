@@ -35,10 +35,22 @@ import {
 	FAMILY_BIN_STEP,
 	FIELD_MIDPOINT_BAND,
 	FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT,
+	FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD,
+	MINIMUM_ROLE_PAIR_ABSOLUTE_LC,
 	REGION_ROLE_SCORE_CUE_SPAN,
 	REGION_ROLE_SCORE_SUPPORT_BASE,
 	REPRESENTATIVE_DENSITY_RADIUS,
 } from "../src/internal/palette-core.ts"
+import { apcaClampRawContrast, apcaContrast, apcaRawContrast } from "../src/internal/color.ts"
+import {
+	DECISIVE_RAW,
+	EXPRESSIBLE_FLOOR_RAW,
+	ZERO_CONTRAST_PAIRS,
+	ZERO_CONTRAST_PROTECTED_PAIRS,
+	ZERO_CONTRAST_REPAIR_PAIRS,
+	withMidpointPairs,
+} from "../src/internal/zero-contrast-repair.ts"
+import type { RGB } from "../src/internal/types.ts"
 import {
 	ENDPOINT_BAND_SAMPLE_POSITIONS,
 	FIELD_SCORE_WEIGHTS,
@@ -1076,4 +1088,135 @@ test("the ranking block list is indexable into the treatment scores", () => {
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length, 11)
 	assert.equal(new Set(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS).size,
 		ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length)
+})
+
+test("the raw APCA form agrees with the vendored library, and both mechanisms ship off", () => {
+	// `apcaRawContrast` restates apca-w3's arithmetic up to the point the library discards
+	// information. That restatement is only safe while it stays in step, so this pins the agreement
+	// rather than trusting it: putting the raw value back through APCA's own clip and offset must
+	// reproduce `apcaContrast` for every 8-bit grey pair. A version bump that moved any SA98G
+	// constant fails here instead of quietly changing what "unreadable" means.
+	let compared = 0
+	for (let text = 0; text < 256; text += 1) {
+		for (let field = 0; field < 256; field += 1) {
+			const foreground: RGB = [text, text, text]
+			const background: RGB = [field, field, field]
+			const library = apcaContrast(foreground, background)
+			const rebuilt = apcaClampRawContrast(apcaRawContrast(foreground, background))
+			compared += 1
+			assert.ok(Math.abs(library - rebuilt) < 1e-9,
+				`grey ${text} on ${field}: library ${library}, rebuilt ${rebuilt}`)
+		}
+	}
+	assert.equal(compared, 65536)
+
+	// The documented relationship the whole zero-floor argument rests on: the clamped form reports
+	// exactly zero precisely when the raw magnitude is under 10, which is why no bar between 0 and
+	// 7.3 can select a different set of palettes.
+	assert.equal(apcaClampRawContrast(9.999), 0)
+	assert.ok(Math.abs(apcaClampRawContrast(10) - 7.3) < 1e-9)
+
+	// Both mechanisms ship inert. The wide guard refuses candidates; the narrow repair mends the
+	// published winner. Neither is on, and the repair's coverage set is empty.
+	assert.equal(FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD, false)
+	assert.deepEqual([...ZERO_CONTRAST_REPAIR_PAIRS], [])
+	// The bar sits inside APCA's unexpressible band, which is what keeps it from ever becoming an
+	// accessibility floor. Charter rule 2.
+	assert.ok(MINIMUM_ROLE_PAIR_ABSOLUTE_LC > 0 && MINIMUM_ROLE_PAIR_ABSOLUTE_LC <= 7.3)
+})
+
+test("the zero-contrast repair ships off, and its coverage is Flo's choice to make", () => {
+	// EMPTY MEANS OFF, and off is byte-identical to trunk (perf-pass-2 gate, 108/108). The repair
+	// mends a published palette carrying a role pair APCA cannot see at all; which pairs it watches
+	// is a product decision, not an algorithmic one, because the pairs cost very different amounts.
+	//
+	// MEASURED BLAST RADII, full corpus (7,585 artworks, 6,941 distinct), each diffed against trunk.
+	// Movers always equal the artworks carrying the defect exactly — the repair's entry test IS the
+	// defect, so it has no cascade, verified rather than derived:
+	//
+	//   fg-surface             23 movers   (20 mark-role, 3 whole-palette)
+	//   fg-both                47 movers   (36 mark-role, 11 whole-palette)
+	//   accent-only           326 movers   -- a separate question; the accent is not text
+	//   all-four              359 movers
+	//
+	// The `-accent-ok` variants protect only the text pairs, which lets a repair push an unreadable
+	// colour onto the accent. That is cheap and, by review's own account, nearly harmless -- but it is
+	// only as defensible as that account, so it is not the default.
+	//
+	// Review has run the repair and preferred it on all four items it saw. What remains open is the
+	// coverage set and the raw floor, and both belong to Flo.
+	assert.deepEqual([...ZERO_CONTRAST_REPAIR_PAIRS], [])
+	assert.deepEqual([...ZERO_CONTRAST_PROTECTED_PAIRS], [...ZERO_CONTRAST_PAIRS])
+})
+
+test("the unreadability bar sits inside APCA's dead band", () => {
+	// NOT A TUNED NUMBER, and it cannot become an accessibility floor.
+	//
+	// APCA clips small results to exactly zero and subtracts a constant from what survives, so its
+	// output is discontinuous: sweeping 16,008,001 luminance pairs across the whole range finds NO
+	// reported magnitude between 0 and 7.300001. Every bar inside that band therefore selects exactly
+	// the same palettes -- the ones APCA itself calls contrastless -- and the value chosen inside it
+	// cannot change an outcome. The same shape of argument `distinctness.foregroundField` makes.
+	//
+	// Charter rule 2 is safe from it by construction rather than by luck: the bar is below the
+	// smallest contrast APCA can express, so the deliberately low outputs this library exists to
+	// allow are above it necessarily. Measured: at a bar of 9 the first casualty is a reviewed-STRONG
+	// palette at Lc -8.44; at any bar <= 7.3 no reviewed palette is refused at all.
+	assert.equal(MINIMUM_ROLE_PAIR_ABSOLUTE_LC, 1)
+	assert.ok(MINIMUM_ROLE_PAIR_ABSOLUTE_LC > 0 && MINIMUM_ROLE_PAIR_ABSOLUTE_LC <= 7.3)
+	// `contrast.hardMinimum` is a different thing and stays the caller's parameter, at zero.
+	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.contrast.hardMinimum, 0)
+})
+
+test("a mark role's midpoint pair rides along with its other pairs", () => {
+	// FLO'S PLATEAU PRINCIPLE (review, on a repaired artwork): "it's now the midpoint that causes an
+	// APCA of 0 ... this one feels particularly intense (it's white on white for a significant
+	// width)".
+	//
+	// A zero CROSSING mid-gradient is a thin line -- contrast is zero at one position and recovers on
+	// both sides -- and stays exempt. A mark matching a published STOP is not a crossing: the ramp
+	// flattens around each stop, so the text is unreadable across a significant width of the field.
+	//
+	// So the midpoint pair is not a coverage choice a caller makes separately. Whenever a mark role's
+	// pairs are watched at all, its midpoint pair is watched with them. Measured on trunk before any
+	// repair: 8 artworks publish a foreground unreadable against their own midpoint, and 37 an accent
+	// -- a defect class nothing had counted, because nothing had measured that pair.
+	assert.deepEqual([...withMidpointPairs(["foreground-surface"])],
+		["foreground-surface", "foreground-midpoint"])
+	assert.deepEqual([...withMidpointPairs(["accent-background"])],
+		["accent-background", "accent-midpoint"])
+	assert.deepEqual([...withMidpointPairs(["foreground-surface", "accent-surface"])],
+		["foreground-surface", "accent-surface", "foreground-midpoint", "accent-midpoint"])
+	// Nothing to ride along with means nothing is added.
+	assert.deepEqual([...withMidpointPairs([])], [])
+})
+
+test("the whole-palette re-pick tier is ordered nearest-first, on a reviewed verdict", () => {
+	// The repair tries, in order: exchange the two mark roles; re-pick the mark roles from a candidate
+	// on the SAME field; re-pick the whole palette from a candidate on a DIFFERENT field; publish the
+	// defect. A mark-role repair ends it when its worst enforced pair clears DECISIVE_RAW.
+	//
+	// Twice the floor, stated as a multiple because the floor is the only non-arbitrary number on this
+	// scale -- a repair that clears it by less than its own width has bought very little, and that is
+	// where giving up the artwork's field is worth considering.
+	assert.equal(EXPRESSIBLE_FLOOR_RAW, 10)
+	assert.equal(DECISIVE_RAW, 2 * EXPRESSIBLE_FLOOR_RAW)
+
+	// THE ORDERING CARRIES A VERDICT (zc-batch, the founding artwork). Both rules were built and
+	// measured, and they publish different palettes there: ranking order reaches past a candidate
+	// keeping the artwork's own background and its yellow text, for a different field that ranked
+	// higher. Review compared the two and chose the smallest-change palette -- blue field, yellow
+	// text -- over the gold gradient. The rule is therefore the one a human picked, not the tidiest.
+	//
+	// "Smallest" counts the published role colours a candidate would change, with the FOREGROUND
+	// weighted double: twenty-eight candidates tie at two roles changed on that artwork, and a plain
+	// count cannot tell "keeps the yellow text, moves the accent" from "keeps the accent, replaces the
+	// text". Ties break on the ranking's own order, then the candidate key, so the choice is total.
+	//
+	// KNOWN LIMITATION, measured and left in deliberately: a role-colour count cannot see the gradient
+	// claim, so the flat sibling of a gradient winner scores zero distance and wins. Every 2b repair
+	// in the corpus comes out flat and most lose a midpoint. Adding the gradient flag to the distance
+	// was tried and moves the founding artwork off the palette review chose, so the verdict wins and
+	// this is the open question the ordering leaves.
+	assert.equal(TEXT_ROLE_RESTRICTION, "decisive-claim")
 })

@@ -4,6 +4,8 @@ import { ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY } from "./base-scoring
 
 import type { AlbumArtworkPaletteV2Phase3IdentityRoleRequirement } from "./base-scoring.ts";
 
+import { FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD, rolePairIsUnreadable } from "./palette-core.ts";
+
 import type { CompletePaletteTreatment, ContrastDiagnostics, IdentityObligation } from "./palette-core.ts";
 
 import type { OKLab } from "./types.ts";
@@ -126,7 +128,7 @@ function swapContrastRoles(contrast: ContrastDiagnostics): ContrastDiagnostics {
  * gradient treatment it was derived from. The `id` prefix records that a post-ranking rearrangement
  * happened, exactly as that fallback's `supported-gradient-path-flat:` prefix does.
  */
-function swapMarkRoles(treatment: CompletePaletteTreatment): CompletePaletteTreatment {
+export function swapMarkRoles(treatment: CompletePaletteTreatment): CompletePaletteTreatment {
 	return {
 		...treatment,
 		id: `text-role-swap:${treatment.id}`,
@@ -186,6 +188,20 @@ export function restrictTextRoleToStrongestClaim(input: Readonly<{
 	if (TEXT_ROLE_RESTRICTION === "decisive-claim" &&
 		scoreOf(claimFamily, "foregroundEvidence") - scoreOf(claimFamily, "accentEvidence") <
 			ALBUM_ARTWORK_PALETTE_V2_PHASE_3_ROLE_AWARE_POLICY.decisiveRoleMargin) return winner
+
+	// The swap is a post-ranking rearrangement, so no validity gate ever sees its result: the
+	// arrangement that passed every gate is the one *before* the exchange. It can therefore hand the
+	// text role a colour that cannot be read on the surface panel even though the validated
+	// arrangement could — measured on the corpus, one artwork reaches an unreadable published
+	// palette by exactly this route and by no other. Declining is the conservative repair, because
+	// the pre-swap arrangement is the one already known good. See
+	// `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`, which is also what makes this a no-op while off.
+	//
+	// This belongs to the WIDE guard only. The narrow repair deals with the same swap-created defect
+	// from the other end — it lets the swap happen and exchanges the roles back afterwards — so
+	// gating this here keeps the two mechanisms from both acting on one artwork.
+	if (FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD &&
+		rolePairIsUnreadable(winner.accent.rgb, winner.surface.rgb)) return winner
 
 	return swapMarkRoles(winner)
 }

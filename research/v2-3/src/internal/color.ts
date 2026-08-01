@@ -112,6 +112,66 @@ export function apcaContrast(foreground: RGB, background: RGB): number {
 	return APCAcontrast(sRGBtoY(foreground), sRGBtoY(background))
 }
 
+/**
+ * APCA's own constants, from the vendored `apca-w3@0.1.9` `SA98G` table.
+ *
+ * They are restated rather than imported because the package does not export them. `apcaRawContrast`
+ * below reproduces the library's arithmetic exactly up to the point where it discards information,
+ * and `test/configuration.test.ts` pins that agreement over every 8-bit grey pair, so a version bump
+ * that moved any of these would fail loudly rather than silently change what "unreadable" means.
+ */
+const APCA = {
+	blackThreshold: 0.022,
+	blackClamp: 1.414,
+	normalBackground: 0.56,
+	normalText: 0.57,
+	reverseText: 0.62,
+	reverseBackground: 0.65,
+	scale: 1.14,
+	lowClip: 0.1,
+	lowOffset: 0.027,
+} as const
+
+function softClampBlack(luminance: number): number {
+	return luminance > APCA.blackThreshold
+		? luminance
+		: luminance + Math.pow(APCA.blackThreshold - luminance, APCA.blackClamp)
+}
+
+/**
+ * The continuous contrast APCA computes *before* it throws the small values away.
+ *
+ * `apcaContrast` reports exactly `0` for everything below `lowClip`, and subtracts `lowOffset` from
+ * whatever survives, so its output jumps from 0 straight to 7.3 and every pair inside that band is
+ * indistinguishable through it. That is the right behaviour for grading a design against a
+ * threshold and the wrong behaviour for asking *how bad* an unreadable pair is: two colours at
+ * genuinely identical lightness and two colours a person can just barely separate both report 0.
+ *
+ * This function returns the underlying quantity on the same scale, with no clip and no offset, so
+ * the zero bucket can be looked inside. The relationship is exact and worth stating, because it is
+ * what makes the clamped floor interpretable: **`apcaContrast` returns 0 precisely when
+ * `|apcaRawContrast|` is below 10**, and above that it returns the raw value moved 2.7 toward zero.
+ *
+ * It is a measurement, not a policy. Nothing decides anything on it that `apcaContrast` decides
+ * today; it exists so the pathology can be graded instead of merely detected.
+ */
+export function apcaRawContrast(foreground: RGB, background: RGB): number {
+	const text = softClampBlack(sRGBtoY(foreground))
+	const field = softClampBlack(sRGBtoY(background))
+	if (!Number.isFinite(text) || !Number.isFinite(field)) return 0
+	const sapc = field > text
+		? (Math.pow(field, APCA.normalBackground) - Math.pow(text, APCA.normalText)) * APCA.scale
+		: (Math.pow(field, APCA.reverseBackground) - Math.pow(text, APCA.reverseText)) * APCA.scale
+	return sapc * 100
+}
+
+/** `apcaRawContrast` put back through APCA's clip and offset; must equal `apcaContrast` exactly. */
+export function apcaClampRawContrast(raw: number): number {
+	const sapc = raw / 100
+	if (sapc >= 0) return (sapc < APCA.lowClip ? 0 : sapc - APCA.lowOffset) * 100
+	return (sapc > -APCA.lowClip ? 0 : sapc + APCA.lowOffset) * 100
+}
+
 export function rgbToHex([red, green, blue]: RGB): string {
 	return `#${red.toString(16).padStart(2, "0")}${green.toString(16).padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`
 }

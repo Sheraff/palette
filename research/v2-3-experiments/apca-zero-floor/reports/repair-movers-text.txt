@@ -1,0 +1,416 @@
+359 artwork file(s) measured, 2 configuration(s)
+errors: 0
+
+=== fg-surface ===
+  movers: 23
+  repair levels: slate=19, repick=4, untouched=336
+  left alone WITH the defect still published (level 3): 0
+
+  --- movers, trunk -> repaired ---
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [slate]
+    foreground  #202425 -> #92938e
+    fg/surface  clamped 0.0 -> -38.0   raw 4.42 -> 40.69
+    review: never reviewed
+
+  07/ab67616d00001e0200076a5a05dfad9ad716d573   [slate]
+    foreground  #340307 -> #b04d0c
+    fg/surface  clamped 62.9 -> 34.9   raw 65.61 -> 37.57
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [slate]
+    foreground  #2d0e0c -> #e0cec2
+    fg/surface  clamped 0.0 -> -78.8   raw 2.00 -> 81.46
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [slate]
+    foreground  #5f3620 -> #f1dac8
+    fg/surface  clamped 0.0 -> -70.1   raw 7.84 -> 72.78
+    review: never reviewed
+
+  0c/ab67616d0000b273000cce6d1baa72a1ad42f529   [slate]
+    foreground  #fef00b -> #fdb306
+    fg/surface  clamped -50.2 -> -24.3   raw 52.93 -> 26.95
+    review: never reviewed
+
+  13/ab67616d00001e020013bebcaee941ebcc13437c   [slate]
+    foreground  #d5c47f -> #19171c
+    fg/surface  clamped -41.0 -> 30.1   raw 43.72 -> 32.83
+    review: LEAVING acceptable (ra3-on, batch-33)
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [slate]
+    foreground  #262418 -> #c7c7c7
+    fg/surface  clamped 0.0 -> -65.6   raw 5.86 -> 68.30
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [repick]
+    surface     #d2e0eb -> #64b4e5
+    accent      #fbb89d -> #fdbca0
+    field       gradient -> flat
+    midpoint    #089be0 -> none
+    fg/surface  clamped 0.0 -> -25.9   raw 2.68 -> 28.57
+    review: reviewed artwork, but this palette was never the graded side
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #666666
+    fg/surface  clamped 0.0 -> 26.7   raw 1.19 -> 29.37
+    review: never reviewed
+
+  0a/ab67616d0000b273000a1431e6ca84d562d7045f   [slate]
+    foreground  #ffffff -> #859fb8
+    fg/surface  clamped -107.8 -> -48.7   raw 110.48 -> 51.38
+    review: never reviewed
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [slate]
+    foreground  #7e8dce -> #fbfdf8
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [repick]
+    background  #ebd4ce -> #e6dbd9
+    surface     #1f1e1a -> #cfc0bb
+    field       gradient -> flat
+    midpoint    #e3cfce -> none
+    fg/surface  clamped 0.0 -> 62.7   raw 6.46 -> 65.41
+    review: reviewed artwork, but this palette was never the graded side
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [slate]
+    foreground  #000000 -> #929292
+    fg/surface  clamped 0.0 -> -42.8   raw 1.43 -> 45.48
+    review: reviewed artwork, but this palette was never the graded side
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [slate]
+    foreground  #2b2f38 -> #a29ca0
+    fg/surface  clamped 0.0 -> -45.5   raw 1.85 -> 48.20
+    review: reviewed artwork, but this palette was never the graded side
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [slate]
+    foreground  #382a27 -> #708c8f
+    fg/surface  clamped 0.0 -> -29.5   raw 5.36 -> 32.24
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [repick]
+    surface     #e348d4 -> #573649
+    accent      #522baa -> #8542cd
+    field       gradient -> flat
+    midpoint    #523440 -> none
+    fg/surface  clamped 0.0 -> -25.1   raw 6.76 -> 27.82
+    review: never reviewed
+
+  09/ab67616d0000b2730009585a293b7a3401d7cc35   [slate]
+    foreground  #f4ecea -> #69403e
+    fg/surface  clamped -16.2 -> 63.1   raw 18.93 -> 65.83
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [repick]
+    background  #7b8181 -> #647273
+    surface     #231103 -> #828981
+    field       gradient -> flat
+    midpoint    #8d9183 -> none
+    fg/surface  clamped 0.0 -> 40.4   raw 1.43 -> 43.06
+    review: reviewed artwork, but this palette was never the graded side
+
+  0b/ab67616d0000b273000b6e6c413c662d65655079   [slate]
+    foreground  #fdfdf1 -> #640aa7
+    fg/surface  clamped -18.0 -> 71.1   raw 20.72 -> 73.82
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [slate]
+    foreground  #0e100f -> #afb1b0
+    fg/surface  clamped 0.0 -> -55.6   raw 5.35 -> 58.26
+    review: never reviewed
+
+  10/ab67616d00001e02001061a8164ec9053aeff592   [slate]
+    foreground  #ded0c7 -> #aa9f99
+    fg/surface  clamped -57.2 -> -29.0   raw 59.85 -> 31.69
+    review: never reviewed
+
+  13/ab67616d0000b2730013732742a64dfb5e5c4eef   [slate]
+    foreground  #f8f8f8 -> #000000
+    fg/surface  clamped -31.1 -> 72.1   raw 33.76 -> 74.78
+    review: never reviewed
+
+=== fg-both ===
+  movers: 47
+  repair levels: slate=31, repick=16, untouched=312
+  left alone WITH the defect still published (level 3): 0
+
+  --- movers, trunk -> repaired ---
+
+  02/ab67616d0000b2730002dae9b00c14643053fbe5.jpg   [slate]
+    foreground  #085a54 -> #d1d0d6
+    fg/surface  clamped 36.3 -> -24.9   raw 38.96 -> 27.61
+    review: never reviewed
+
+  03/ab67616d0000b2730003cdbba19cbfd06f490085.jpg   [repick]
+    background  #162e30 -> #a25a34
+    fg/surface  clamped 27.0 -> 27.0   raw 29.69 -> 29.69
+    review: never reviewed
+
+  05/ab67616d0000b273000527ac7469703d3a23f678   [slate]
+    foreground  #202425 -> #92938e
+    fg/surface  clamped 0.0 -> -38.0   raw 4.42 -> 40.69
+    review: never reviewed
+
+  05/ab67616d0000b27300055f1cfc1722c14bdb0bcf   [slate]
+    foreground  #424242 -> #8b8b8b
+    fg/surface  clamped 59.9 -> 28.2   raw 62.65 -> 30.88
+    review: never reviewed
+
+  07/ab67616d00001e0200076a5a05dfad9ad716d573   [slate]
+    foreground  #340307 -> #b04d0c
+    fg/surface  clamped 62.9 -> 34.9   raw 65.61 -> 37.57
+    review: never reviewed
+
+  07/ab67616d0000b2730007c9c070f7606fcce05079   [repick]
+    surface     #0b0100 -> #b5b5c1
+    field       gradient -> flat
+    midpoint    #fff3f2 -> none
+    fg/surface  clamped 0.0 -> 62.7   raw 2.00 -> 65.43
+    review: never reviewed
+
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2   [repick]
+    surface     #794629 -> #bc5b31
+    field       gradient -> flat
+    fg/surface  clamped 0.0 -> 21.1   raw 7.84 -> 23.85
+    review: never reviewed
+
+  0a/ab67616d0000b273000a012132aac2610037a06a   [repick]
+    background  #5f2307 -> #d27647
+    field       gradient -> flat
+    midpoint    #d77945 -> none
+    fg/surface  clamped 57.2 -> 57.2   raw 59.93 -> 59.93
+    review: never reviewed
+
+  0c/ab67616d0000b273000cce6d1baa72a1ad42f529   [repick]
+    background  #ffd80e -> #fd230a
+    surface     #fd5b0a -> #fdb812
+    accent      #fd6909 -> #fe6a0a
+    field       gradient -> flat
+    midpoint    #fef00b -> none
+    fg/surface  clamped -50.2 -> -22.8   raw 52.93 -> 25.52
+    review: never reviewed
+
+  0e/ab67616d0000b273000eb97d43e8a375e41f6768   [repick]
+    background  #11648e -> #1a4553
+    surface     #0f2c4a -> #1a4553
+    field       gradient -> flat
+    fg/surface  clamped -17.3 -> -11.6   raw 20.00 -> 14.26
+    review: never reviewed
+
+  13/ab67616d00001e020013bebcaee941ebcc13437c   [slate]
+    foreground  #d5c47f -> #19171c
+    fg/surface  clamped -41.0 -> 30.1   raw 43.72 -> 32.83
+    review: LEAVING acceptable (ra3-on, batch-33)
+
+  13/ab67616d0000b2730013095d1c1a5350d21f448d   [slate]
+    foreground  #fffef9 -> #a3adac
+    fg/surface  clamped -101.1 -> -50.6   raw 103.75 -> 53.34
+    review: LEAVING acceptable (bf-on, batch-bf-1)
+
+  13/ab67616d0000b2730013e24dd4e162fc480d9891   [slate]
+    foreground  #000000 -> #b76f73
+    fg/surface  clamped 70.8 -> 30.0   raw 73.52 -> 32.74
+    review: never reviewed
+
+  07/ab67616d00001e0200072f74f8ca566c0f323190   [slate]
+    foreground  #262418 -> #9b815c
+    fg/surface  clamped 0.0 -> -30.1   raw 5.86 -> 32.79
+    review: never reviewed
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1   [repick]
+    surface     #d2e0eb -> #64b4e5
+    accent      #fbb89d -> #fdbca0
+    field       gradient -> flat
+    midpoint    #089be0 -> none
+    fg/surface  clamped 0.0 -> -25.9   raw 2.68 -> 28.57
+    review: reviewed artwork, but this palette was never the graded side
+
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6   [slate]
+    foreground  #a2a19d -> #7d7c7a
+    fg/surface  clamped 0.0 -> 16.7   raw 1.19 -> 19.37
+    review: never reviewed
+
+  0a/ab67616d0000b273000a1431e6ca84d562d7045f   [slate]
+    foreground  #ffffff -> #859fb8
+    fg/surface  clamped -107.8 -> -48.7   raw 110.48 -> 51.38
+    review: never reviewed
+
+  0c/ab67616d00001e02000cc9913d9a58ea3771ba0f   [repick]
+    background  #490510 -> #b6263f
+    field       gradient -> flat
+    fg/surface  clamped 15.4 -> 15.4   raw 18.15 -> 18.15
+    review: never reviewed
+
+  0d/ab67616d00001e02000d207eed6ccf3726207f79   [repick]
+    background  #e8b65f -> #fdecc1
+    surface     #fff1cc -> #f3ce8a
+    field       gradient -> flat
+    fg/surface  clamped 30.8 -> 13.0   raw 33.47 -> 15.74
+    review: never reviewed
+
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0   [slate]
+    foreground  #171008 -> #76808a
+    fg/surface  clamped 0.0 -> -26.9   raw 8.80 -> 29.64
+    review: never reviewed
+
+  10/ab67616d00001e020010e138a4ef1fc6943974c1   [repick]
+    background  #05232b -> #006083
+    surface     #026c93 -> #006083
+    field       gradient -> flat
+    midpoint    #015675 -> none
+    fg/surface  clamped 24.2 -> 19.4   raw 26.89 -> 22.05
+    review: never reviewed
+
+  10/ab67616d0000b27300108d4a81ce6ae77065105d   [slate]
+    foreground  #3a3f42 -> #c08354
+    accent      #90624a -> #8e6249
+    fg/surface  clamped 89.8 -> 53.8   raw 92.55 -> 56.52
+    review: never reviewed
+
+  13/ab67616d0000b2730013715954240ec1eac72531   [slate]
+    foreground  #7e8dce -> #fbfdf8
+    fg/surface  clamped 0.0 -> -68.7   raw 8.06 -> 71.37
+    review: never reviewed
+
+  images/birdsofprey.jpg   [slate]
+    foreground  #030102 -> #bcddb0
+    midpoint    #1880a7 -> none
+    fg/surface  clamped 46.5 -> -35.3   raw 49.19 -> 38.02
+    review: LEAVING strong (v2-2, review-1-track-d); strong (track-d-h1only, review-1-track-d); strong (v2-2, review-2-gradients); strong (v2-2, review-4-ranking); strong (o2-before, review-23-fg-movers); strong (showcase, showcase-2); strong (showcase-b, showcase-2)
+
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg   [repick]
+    background  #ebd4ce -> #e6dbd9
+    surface     #1f1e1a -> #cfc0bb
+    field       gradient -> flat
+    midpoint    #e3cfce -> none
+    fg/surface  clamped 0.0 -> 62.7   raw 6.46 -> 65.41
+    review: reviewed artwork, but this palette was never the graded side
+
+  08/ab67616d0000b2730008c9a0f64b618fa453d250   [slate]
+    foreground  #000000 -> #8d8d8d
+    fg/surface  clamped 90.7 -> 45.3   raw 93.40 -> 47.97
+    review: never reviewed
+
+  09/ab67616d00001e0200099b3aaf316149051a4578   [slate]
+    foreground  #000000 -> #7a7a7a
+    fg/surface  clamped 0.0 -> -31.1   raw 1.43 -> 33.82
+    review: reviewed artwork, but this palette was never the graded side
+
+  09/ab67616d0000b27300097cb8763b185ae295157e   [slate]
+    foreground  #edf1f4 -> #b3a0a2
+    fg/surface  clamped -86.7 -> -41.6   raw 89.39 -> 44.32
+    review: never reviewed
+
+  0d/ab67616d0000b273000df9f3288d394ecf53318f   [slate]
+    foreground  #000000 -> #8c6800
+    fg/surface  clamped 80.3 -> 49.4   raw 82.99 -> 52.07
+    review: never reviewed
+
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a   [slate]
+    foreground  #2b2f38 -> #a29ca0
+    fg/surface  clamped 0.0 -> -45.5   raw 1.85 -> 48.20
+    review: reviewed artwork, but this palette was never the graded side
+
+  0e/ab67616d0000b273000e5d7ec6a14710a4870244   [slate]
+    foreground  #ffffff -> #7f98c0
+    fg/surface  clamped -105.9 -> -44.0   raw 108.56 -> 46.69
+    review: never reviewed
+
+  0f/ab67616d0000b273000f31bf3a226768fcb37424   [slate]
+    foreground  #060c02 -> #9a744d
+    fg/surface  clamped 70.4 -> 33.6   raw 73.05 -> 36.26
+    review: never reviewed
+
+  10/ab67616d0000b2730010aacb93ebe80370afa59c   [slate]
+    foreground  #121923 -> #ca9629
+    fg/surface  clamped 104.5 -> 51.5   raw 107.16 -> 54.18
+    review: never reviewed
+
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a   [slate]
+    foreground  #382a27 -> #708c8f
+    fg/surface  clamped 0.0 -> -29.5   raw 5.36 -> 32.24
+    review: never reviewed
+
+  13/ab67616d0000b2730013c2c64a482ac7f91a40ea   [slate]
+    foreground  #1a2730 -> #ecbaa3
+    fg/surface  clamped 44.2 -> -24.8   raw 46.90 -> 27.49
+    review: never reviewed
+
+  06/ab67616d0000b27300061f809b1e3d9c3b709362   [repick]
+    surface     #e348d4 -> #573649
+    accent      #522baa -> #8542cd
+    field       gradient -> flat
+    midpoint    #523440 -> none
+    fg/surface  clamped 0.0 -> -25.1   raw 6.76 -> 27.82
+    review: never reviewed
+
+  07/ab67616d00001e020007b85f56e5a3ac2aead4e6   [slate]
+    foreground  #2a2e31 -> #606465
+    fg/surface  clamped 52.0 -> 31.7   raw 54.66 -> 34.35
+    review: never reviewed
+
+  09/ab67616d0000b2730009585a293b7a3401d7cc35   [slate]
+    foreground  #f4ecea -> #cb9f96
+    fg/surface  clamped -16.2 -> 19.6   raw 18.93 -> 22.32
+    review: never reviewed
+
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33   [repick]
+    background  #7b8181 -> #647273
+    surface     #231103 -> #828981
+    field       gradient -> flat
+    midpoint    #8d9183 -> none
+    fg/surface  clamped 0.0 -> 40.4   raw 1.43 -> 43.06
+    review: reviewed artwork, but this palette was never the graded side
+
+  0b/ab67616d0000b273000b6e6c413c662d65655079   [repick]
+    field       gradient -> flat
+    midpoint    #fdfdf3 -> none
+    fg/surface  clamped -18.0 -> -18.0   raw 20.72 -> 20.72
+    review: never reviewed
+
+  0b/ab67616d0000b273000bbaf2598060cff28678d3   [slate]
+    foreground  #000000 -> #8b7e6d
+    fg/surface  clamped 72.1 -> 33.1   raw 74.82 -> 35.75
+    review: never reviewed
+
+  0e/ab67616d0000b273000ece7847f3b5fdea732479   [repick]
+    background  #191512 -> #90838d
+    surface     #a69294 -> #90838d
+    field       gradient -> flat
+    midpoint    #77606a -> none
+    fg/surface  clamped 48.3 -> 40.4   raw 50.97 -> 43.06
+    review: never reviewed
+
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e   [slate]
+    foreground  #0e100f -> #949695
+    fg/surface  clamped 0.0 -> -41.1   raw 5.35 -> 43.83
+    review: never reviewed
+
+  10/ab67616d00001e02001061a8164ec9053aeff592   [slate]
+    foreground  #ded0c7 -> #aa9f99
+    fg/surface  clamped -57.2 -> -29.0   raw 59.85 -> 31.69
+    review: never reviewed
+
+  10/ab67616d0000b2730010e138a4ef1fc6943974c1   [repick]
+    background  #06232b -> #006083
+    surface     #046e95 -> #006083
+    field       gradient -> flat
+    midpoint    #025479 -> none
+    fg/surface  clamped 25.0 -> 19.4   raw 27.68 -> 22.05
+    review: never reviewed
+
+  13/ab67616d0000b273001306d8ae920fdad6ebb495   [slate]
+    foreground  #1b1b13 -> #f3cb90
+    fg/surface  clamped 42.4 -> -36.1   raw 45.12 -> 38.81
+    review: never reviewed
+
+  13/ab67616d0000b2730013732742a64dfb5e5c4eef   [slate]
+    foreground  #f8f8f8 -> #8c8c8c
+    fg/surface  clamped -31.1 -> 27.1   raw 33.76 -> 29.84
+    review: never reviewed
