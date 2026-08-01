@@ -1,0 +1,81 @@
+census rows: 7585 (0 failed to extract)
+distinct artworks after collapsing resolution variants: 6941
+
+foreground on SURFACE over 6941 artworks
+  |Lc| <  2:    14  (0.20%)
+  |Lc| <  5:    14  (0.20%)   +0 over the previous bar
+  |Lc| <  9:    29  (0.42%)   +15 over the previous bar
+  |Lc| < 15:   104  (1.50%)   +75 over the previous bar
+  exactly 0 :    14  (0.20%)
+
+foreground on BACKGROUND over 6941 artworks
+  |Lc| <  2:    23  (0.33%)
+  |Lc| <  5:    23  (0.33%)   +0 over the previous bar
+  |Lc| <  9:    40  (0.58%)   +17 over the previous bar
+  |Lc| < 15:   111  (1.60%)   +71 over the previous bar
+  exactly 0 :    23  (0.33%)
+
+accent on SURFACE over 6941 artworks
+  |Lc| <  2:   144  (2.07%)
+  |Lc| <  5:   144  (2.07%)   +0 over the previous bar
+  |Lc| <  9:   346  (4.98%)   +202 over the previous bar
+  |Lc| < 15:  1070  (15.42%)   +724 over the previous bar
+  exactly 0 :   144  (2.07%)
+
+--- restricted to the 5504 artworks whose surface is a DISTINCT colour from the background ---
+
+foreground on SURFACE (distinct surface only) over 5504 artworks
+  |Lc| <  2:    14  (0.25%)
+  |Lc| <  5:    14  (0.25%)   +0 over the previous bar
+  |Lc| <  9:    27  (0.49%)   +13 over the previous bar
+  |Lc| < 15:    91  (1.65%)   +64 over the previous bar
+  exactly 0 :    14  (0.25%)
+
+--- every artwork with an exactly-zero foreground/surface contrast (14) ---
+  the CIE76 dE column is what the existing distinctness rule (bar 3.3) sees
+
+  07/ab67616d0000b2730007d4cb364e04df68f6e2c1
+    bg=#058cde surface=#d2e0eb fg=#fed700 accent=#fbb89d gradient
+    fg/surface Lc=0.00 dE=94.0   fg/background Lc=-44.73   accent/surface Lc=10.48
+  13/ab67616d0000b2730013715954240ec1eac72531
+    bg=#0c223a surface=#038faa fg=#7e8dce accent=#fbfdf8 gradient
+    fg/surface Lc=0.00 dE=35.3   fg/background Lc=-40.33   accent/surface Lc=-68.67
+  0d/ab67616d0000b273000d9c3f7eb321671401d1e0
+    bg=#b0b4bf surface=#35383d fg=#171008 accent=#444b55 gradient
+    fg/surface Lc=0.00 dE=20.0   fg/background Lc=62.70   accent/surface Lc=0.00
+  02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg
+    bg=#ebd4ce surface=#1f1e1a fg=#443427 accent=#73503c gradient
+    fg/surface Lc=0.00 dE=15.4   fg/background Lc=74.88   accent/surface Lc=-15.48
+  0f/ab67616d0000b273000ff03239ed595debcc3b3e
+    bg=#d2d4d3 surface=#292d2c fg=#0e100f accent=#555756 gradient
+    fg/surface Lc=0.00 dE=13.6   fg/background Lc=80.15   accent/surface Lc=-12.44
+  0a/ab67616d0000b273000a9ef1cb958fbed62e6c33
+    bg=#7b8181 surface=#231103 fg=#080a05 accent=#4c1f0a gradient
+    fg/surface Lc=0.00 dE=12.3   fg/background Lc=36.90   accent/surface Lc=0.00
+  06/ab67616d0000b27300061f809b1e3d9c3b709362
+    bg=#362633 surface=#e348d4 fg=#c348d6 accent=#522baa gradient
+    fg/surface Lc=0.00 dE=12.2   fg/background Lc=-31.00   accent/surface Lc=27.80
+  07/ab67616d00001e0200072f74f8ca566c0f323190
+    bg=#e1e5e4 surface=#373923 fg=#262418 accent=#9b815c gradient
+    fg/surface Lc=0.00 dE=11.1   fg/background Lc=86.65   accent/surface Lc=-30.09
+  08/ab67616d0000b2730008dfd3663a999bc759f2c2
+    bg=#efb295 surface=#794629 fg=#5f3620 accent=#f1dac8 gradient
+    fg/surface Lc=0.00 dE=9.9   fg/background Lc=57.37   accent/surface Lc=-70.08
+  05/ab67616d0000b273000527ac7469703d3a23f678
+    bg=#dedfda surface=#31342d fg=#202425 accent=#6e6f6a gradient
+    fg/surface Lc=0.00 dE=9.2   fg/background Lc=83.50   accent/surface Lc=-20.87
+  12/ab67616d0000b27300126c1c0aa41c3c19edf10a
+    bg=#b6bbb5 surface=#4f362f fg=#382a27 accent=#a23b3e gradient
+    fg/surface Lc=0.00 dE=9.1   fg/background Lc=60.63   accent/surface Lc=-11.86
+  09/ab67616d00001e0200099b3aaf316149051a4578
+    bg=#b5b5b5 surface=#151515 fg=#000000 accent=#e1e1e1 gradient
+    fg/surface Lc=0.00 dE=6.8   fg/background Lc=63.96   accent/surface Lc=-87.69
+  0e/ab67616d00001e02000ed8ed3da0ab878ce10f4a
+    bg=#f8f8fa surface=#282c2d fg=#2b2f38 accent=#606658 gradient
+    fg/surface Lc=0.00 dE=5.8   fg/background Lc=95.75   accent/surface Lc=-18.03
+  09/ab67616d00001e0200098f6f5e6d988af5b7cfd6
+    bg=#3e3c3d surface=#a3a29e fg=#a2a19d accent=#4e4e4e gradient
+    fg/surface Lc=0.00 dE=0.4   fg/background Lc=-42.68   accent/surface Lc=36.67
+
+--- how many of the zero-contrast cases the existing dE 3.3 rule could already see ---
+  1 of 14 have CIE76 dE < 3.3; the other 13 are perceptually far apart and invisible to it

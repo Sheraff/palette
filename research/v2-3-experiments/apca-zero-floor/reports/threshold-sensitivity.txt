@@ -1,0 +1,107 @@
+6941 distinct artworks; 197 artworks have review records
+
+A bar at |Lc| refuses every artwork whose published foreground/surface contrast is below it.
+APCA cannot report any magnitude between 0 and 7.3, so bars of 1, 2, 5 and 7 are the SAME bar.
+
+  bar   artworks refused   of those, reviewed   strong  acceptable  weak-fallback  unacceptable
+    1                14                    1        0           0              0             0
+    2                14                    1        0           0              0             0
+    5                14                    1        0           0              0             0
+    7                14                    1        0           0              0             0
+    9                29                    2        1           0              0             0
+   12                68                    2        1           0              0             0
+   15               104                    2        1           0              0             0
+   20               186                    2        1           0              0             0
+   30               445                   10        7           1              1             0
+   45              1051                   29       18           7              2             1
+   60              1965                   45       30          10              2             1
+
+--- the reviewed palettes each bar would refuse, named ---
+
+bar 1: 0 reviewed palette(s) refused
+
+bar 9: 1 reviewed palette(s) refused
+  strong         Lc=  -8.44  loups.jpg
+                 bg=#fa7b34 surface=#ebda8a fg=#fde5d9 accent=#fc8831
+
+bar 15: 1 reviewed palette(s) refused
+  strong         Lc=  -8.44  loups.jpg
+                 bg=#fa7b34 surface=#ebda8a fg=#fde5d9 accent=#fc8831
+
+bar 30: 9 reviewed palette(s) refused
+  strong         Lc=  -8.44  loups.jpg
+                 bg=#fa7b34 surface=#ebda8a fg=#fde5d9 accent=#fc8831
+  acceptable     Lc= -21.97  ab67616d0000b273000a2927c0f27657e4a2aeaa
+                 bg=#010101 surface=#1c0001 fg=#696363 accent=#d50306
+  strong         Lc= -22.00  ab67616d0000b2730014cb7f2229ff8195e3ba04
+                 bg=#0f0f0f surface=#6b6f7a fg=#929fb2 accent=#572816
+  weak-fallback  Lc=  26.22  ab67616d00001e02000f58e77c6b56afa4666ad0
+                 bg=#f99c3d surface=#b7452b fg=#171c16 accent=#62478a
+  strong         Lc= -26.51  ab67616d0000b273000ba4a828abadcf3f4642f6
+                 bg=#3ab0be surface=#bcd9d4 fg=#ffffff accent=#062542
+  strong         Lc= -27.32  ab67616d0000b2730013e7782db25f28b59084ec
+                 bg=#18130f surface=#d5cebe fg=#fcfcfc accent=#fac751
+  strong         Lc= -27.37  ab67616d0000b273000aa22923f3a9064c0e525b
+                 bg=#09171a surface=#768572 fg=#ceb384 accent=#fafbf3
+  strong         Lc=  28.98  skap.jpg
+                 bg=#ffffff surface=#5d763c fg=#000103 accent=#be814b
+  strong         Lc=  30.00  ab67616d00001e0200018a1e2daf68a53f504cb9.jpg
+                 bg=#f4d3f0 surface=#d3b6c8 fg=#887b8d accent=#c399bd
+
+bar 45: 28 reviewed palette(s) refused
+  strong         Lc=  -8.44  loups.jpg
+                 bg=#fa7b34 surface=#ebda8a fg=#fde5d9 accent=#fc8831
+  acceptable     Lc= -21.97  ab67616d0000b273000a2927c0f27657e4a2aeaa
+                 bg=#010101 surface=#1c0001 fg=#696363 accent=#d50306
+  strong         Lc= -22.00  ab67616d0000b2730014cb7f2229ff8195e3ba04
+                 bg=#0f0f0f surface=#6b6f7a fg=#929fb2 accent=#572816
+  weak-fallback  Lc=  26.22  ab67616d00001e02000f58e77c6b56afa4666ad0
+                 bg=#f99c3d surface=#b7452b fg=#171c16 accent=#62478a
+  strong         Lc= -26.51  ab67616d0000b273000ba4a828abadcf3f4642f6
+                 bg=#3ab0be surface=#bcd9d4 fg=#ffffff accent=#062542
+  strong         Lc= -27.32  ab67616d0000b2730013e7782db25f28b59084ec
+                 bg=#18130f surface=#d5cebe fg=#fcfcfc accent=#fac751
+  strong         Lc= -27.37  ab67616d0000b273000aa22923f3a9064c0e525b
+                 bg=#09171a surface=#768572 fg=#ceb384 accent=#fafbf3
+  strong         Lc=  28.98  skap.jpg
+                 bg=#ffffff surface=#5d763c fg=#000103 accent=#be814b
+  strong         Lc=  30.00  ab67616d00001e0200018a1e2daf68a53f504cb9.jpg
+                 bg=#f4d3f0 surface=#d3b6c8 fg=#887b8d accent=#c399bd
+  acceptable     Lc=  34.26  ab67616d00001e0200148e0886d097d85fd41039
+                 bg=#f5d3ee surface=#e92296 fg=#1d271f accent=#224098
+  strong         Lc=  35.97  ab67616d00001e02000c5e69af1d6ce16e2b1a61
+                 bg=#bcb8b5 surface=#8a857f fg=#441207 accent=#020100
+  strong         Lc= -36.12  ab67616d0000b2730000cb591a0d52d8b88692d9.jpg
+                 bg=#505962 surface=#9a9fa3 fg=#dedfd9 accent=#5a2513
+  weak-fallback  Lc= -36.12  ab67616d0000b27300039a97d604f239674f8d7b.jpg
+                 bg=#060702 surface=#7bd45c fg=#f8fdf7 accent=#e30629
+  strong         Lc= -36.99  ab67616d0000b273001063830a2e597293293797
+                 bg=#090a0c surface=#273a48 fg=#7599a5 accent=#405c71
+  strong         Lc= -38.09  ab67616d0000b27300081dec93652e6af2582192
+                 bg=#6c7487 surface=#c7b9b6 fg=#fafcf9 accent=#a06d52
+  acceptable     Lc= -39.97  ab67616d0000b2730007cc8b341c11227aa7b461
+                 bg=#5d856b surface=#99bece fg=#fbfbfb accent=#1f3a29
+  strong         Lc= -40.03  ab67616d00001e020004ccf0ae91364130886c02
+                 bg=#4d8a15 surface=#64a821 fg=#d1e4d0 accent=#35710f
+  unacceptable   Lc= -40.32  doja.jpg
+                 bg=#fd75b5 surface=#f79e80 fg=#fff6fc accent=#ce5e52
+  strong         Lc= -40.93  knuckles.jpg
+                 bg=#beb2c6 surface=#7b80a8 fg=#d8cbdd accent=#60aac5
+  acceptable     Lc= -41.02  ab67616d00001e020013bebcaee941ebcc13437c
+                 bg=#a5b1c1 surface=#65758e fg=#d5c47f accent=#19171c
+  strong         Lc= -42.29  ab67616d00001e0200060491ade88c8893373d9f
+                 bg=#a07f5e surface=#6a770e fg=#c7c3c0 accent=#04e3d1
+  strong         Lc= -42.36  ab67616d00001e02000d457f4b8829a59481e78b
+                 bg=#fd514d surface=#f9a135 fg=#fcfdef accent=#faf43c
+  strong         Lc= -42.42  ab67616d0000b27300097e55f9a93ceb03afa4b2
+                 bg=#c03902 surface=#df5304 fg=#93dcfc accent=#020204
+  acceptable     Lc= -42.53  ab67616d00001e02000dc6372be4c9ffc89fc9df
+                 bg=#1a1303 surface=#6d5d2c fg=#c8b58b accent=#cc141e
+  strong         Lc= -42.89  ab67616d0000b27300099f4221cf6ed5f2440904
+                 bg=#6c5d58 surface=#4b3631 fg=#8ba3bd accent=#0e0906
+  acceptable     Lc= -42.94  ab67616d0000b2730009ee6f6835bed9a0e41752
+                 bg=#54a0c4 surface=#1b70b3 fg=#f8aebf accent=#f8e0a0
+  strong         Lc= -43.92  ab67616d0000b27300116380305ae5fd3607c43b
+                 bg=#bc0d0a surface=#d98d13 fg=#f1e9e6 accent=#17933b
+  acceptable     Lc= -44.10  ab67616d0000b2730013f0c1413596008703e3f3
+                 bg=#010101 surface=#fa95cf fg=#ffffff accent=#fdc53a
