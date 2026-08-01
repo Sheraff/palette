@@ -46,9 +46,12 @@ function create(tag, properties = {}) {
 
 function treatmentFieldCss(palette) {
 	if (!palette.gradient) return palette.background.hex
+	// Reviewer-specified stops (batch-34, 2026-08-01): the background stays pure longer so the
+	// gradient reads against a real ground — 35% pure background on a 2-stop, 10% on a 3-stop
+	// (whose midpoint lands at 55%).
 	return palette.midpoint
-		? `linear-gradient(135deg in oklab, ${palette.background.hex} 0%, ${palette.midpoint} 50%, ${palette.surface.hex} 100%)`
-		: `linear-gradient(135deg in oklab, ${palette.background.hex} 0%, ${palette.surface.hex} 100%)`
+		? `linear-gradient(135deg in oklab, ${palette.background.hex} 10%, ${palette.midpoint} 55%, ${palette.surface.hex} 100%)`
+		: `linear-gradient(135deg in oklab, ${palette.background.hex} 35%, ${palette.surface.hex} 100%)`
 }
 
 function roleStatus(role, palette) {
