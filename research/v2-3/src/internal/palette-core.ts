@@ -2814,9 +2814,11 @@ const ACCENT_CONTRAST_RANGE = 75
  * value shipped is the reviewed one, chosen before the boundary was measured.
  *
  * `90` restores the previous behaviour exactly. The intermediate values were measured and are
- * recorded in `research/v2-3-experiments/carrier-ranking/EXPERIMENT.md`: 75 (the flat accent's own
+ * recorded in `research/v2-3-experiments/carrier-ranking/ROUND-2.md:63`: 75 (the flat accent's own
  * range) and 40 both leave the reviewed outcome losing, so neither is a cheaper version of this
- * change — they are just smaller numbers with no argument behind them.
+ * change — they are just smaller numbers with no argument behind them. (This cited the arm's
+ * `EXPERIMENT.md`, which is round 1 and does not contain the sweep; the naming change and its
+ * measurements are round 2's. Corrected by the 2026-08-01 provenance sweep.)
  */
 const FOREGROUND_CONTRAST_SCALE: number = 90
 
@@ -2853,9 +2855,11 @@ export const ALBUM_ARTWORK_PALETTE_V2_MINIMUM_CHORD_DEVIATION_IN_FAMILY_BIN_STEP
  * near-blacks, "visually indistinguishable … too close, too black … consider them the same
  * color". So distinctness is a second, independent requirement.
  *
- * The threshold is read off those judgements rather than chosen. Six anchors bracket it: the
+ * The threshold is read off those judgements rather than chosen. Seven anchors bracket it: the
  * refused midpoints score 0.00 (identical to the background), 1.00, and 3.01, while the accepted
- * ones score 3.64, 9.78, 19.75 and 62.59. The 3.01 case was declined on the grounds that the
+ * ones score 3.64, 9.78, 19.75 and 62.59. (This said "Six" while listing seven —
+ * `research/v2-3-experiments/track-p/LEDGER.md:109` caught it. The enumeration is the only record
+ * of these anchors, so the count was corrected to match it; no value moved.) The 3.01 case was declined on the grounds that the
  * midpoint was drawn from *shadow* material — "this is not the vibe of the artwork" — which is a
  * statement about what the colour is made of rather than how far away it is; it is included here
  * because a bar in (3.01, 3.64) is the only currently available way to refuse it, not because

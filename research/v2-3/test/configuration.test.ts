@@ -14,6 +14,7 @@ import {
 } from "../src/internal/policy.ts"
 import {
 	BAND_TIE_BREAK,
+	FIELD_OWNERSHIP,
 	GAMUT_COVERAGE,
 	PROMOTION_ENVELOPE,
 	TRANSITION_PROMOTION_ORDER,
@@ -28,38 +29,118 @@ import {
 } from "../src/internal/palette-core.ts"
 
 /**
- * The reviewed configuration, pinned.
+ * The shipped configuration, pinned — with each pin's provenance stated honestly.
  *
- * Every value here was derived by a measured experiment and confirmed by human review; several
- * cost a whole arm to find (`collapsedSurfaceFidelity` took Track A four rounds, `chromaticCarryFull`
- * was calibrated against seven measured sign flips, `BAND_TIE_BREAK` came out of Track A round 5).
- * Nothing else in the suite notices if one of them is changed or reverted by a merge: `parity.test.ts`
- * would fail, but as up to 34 opaque palette mismatches with no attribution.
+ * Nothing else in the suite notices if one of these is changed or reverted by a merge:
+ * `parity.test.ts` would fail, but as up to 34 opaque palette mismatches with no attribution.
+ * That is what this file is for. It is *not* a claim that every value below is review-backed.
  *
- * If you are changing a value here deliberately, update the expectation in the same commit and say
- * in the message which review decided it.
+ * This file previously opened by asserting that "every value here was derived by a measured
+ * experiment and confirmed by human review". That was false, and the provenance sweep of
+ * 2026-08-01 (`research/v2-3-experiments/provenance-hygiene/REPORT.md`) replaced it with the
+ * per-pin tags below. Each pin carries exactly one:
+ *
+ * - `[REVIEWED]`  measured by a named arm **and** adjudicated by a named review batch.
+ * - `[MEASURED]`  measured by a named arm; no batch ruled on it directly.
+ * - `[n=1]`       real evidence, but one named artwork carries it.
+ * - `[INHERITED]` carried in from the frozen v2-2 baseline or earlier; never independently
+ *                 reviewed in the v2-3 line. Value unchanged since the commit named on the pin.
+ * - `[UNCALIBRATED]` the arm that set it says in its own words it could not derive it.
+ * - `[HELD]`      the incumbent, retained because the alternative was measured and lost — which
+ *                 is not the same as the incumbent having been endorsed.
+ *
+ * Two standing rules for anyone editing this file:
+ *
+ * 1. If you change a value, update the expectation in the same commit and say in the message
+ *    which review decided it — and re-tag the pin.
+ * 2. Charter "verdict recency" (`research/v2-3-eval/TRACK_CHARTER.md:32-34`) binds these comments
+ *    too. A pin that argues from a named artwork's verdict is stale the moment a later batch
+ *    supersedes that verdict. Two pins below were found reasoning from a `0cd48f` state that
+ *    batches 27 and 28 had already replaced; check `research/v2-3-eval/data/verdicts.jsonl`
+ *    (latest verdict per artwork wins) before trusting any artwork named here.
+ *
+ * The hygiene sweep's one recommended addition — pinning
+ * `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45`, the most expensively derived constant in the
+ * algorithm (Track A, four rounds) — was applied by the orchestrator in the same integration.
  */
 test("the reviewed winner-ranking configuration is unchanged", () => {
 	assert.deepEqual({ ...WINNER_RANKING_HYPOTHESES }, {
-		// Only the *authorized* part of the identity gain guards domination and decides the
-		// utility band. The looser raw-coverage variant was measured, rejected, and deleted.
+		// [REVIEWED] Track C round 4 (`track-c/EXPERIMENT.md:338-345`): only the *authorized* part
+		// of the identity gain guards domination and decides the utility band. The looser
+		// raw-coverage variant (Track A's `identityAuthority`) was measured, rejected on `johns`
+		// and `black` (`track-c/EXPERIMENT.md:408-413`), and deleted. Ablations confirm it is the
+		// most load-bearing of the added mechanisms (`adversarial-logic/VERDICTS.md:316-319`).
 		authorizedIdentity: true,
-		// Substitutes a constant for a collapsed surface's fidelity so collapsed treatments cannot
-		// out-score each other on the availability of alternatives to a different treatment.
+		// [MEASURED] Track A H2 (`track-a/EXPERIMENT.md:75-97`). Substitutes a constant for a
+		// collapsed surface's fidelity so collapsed treatments cannot out-score each other on the
+		// availability of alternatives to a different treatment. Its entire runtime effect is to
+		// substitute `FIELD_OWNERSHIP.collapsedSurfaceFidelity`, pinned below.
 		fieldOwnershipBeforeCollapseEconomy: true,
 	})
-	// Track A round 4: 0.25 tipped `johns` onto Track C's grey/near-white pair; 0.45 holds every
-	// reviewed win on the integrated trunk.
+	// [MEASURED] Track A round 4 (`track-a/EXPERIMENT.md:388, 391-392`): the algorithm's most
+	// expensively derived constant — four rounds. 0.25 tipped `johns` onto Track C's
+	// grey/near-white pair; 0.45 holds every reviewed win on the integrated trunk. Pinned on the
+	// provenance sweep's recommendation (2026-08-01); it previously appeared only in a comment
+	// misattached to `qualityWeights.fieldFidelity`.
+	assert.equal(FIELD_OWNERSHIP.collapsedSurfaceFidelity, 0.45)
+	// [INHERITED] One of eleven `BASE_QUALITY_WEIGHTS` (winner-scoring.ts:226-238) that sum to 1.
+	// Born as a bare literal in `3d3cea2` (2026-07-29) and unchanged since; copied through v2-2
+	// into v2-3 by the scaffold commit. No document derives it, and no per-weight justification
+	// exists for any of the eleven — `track-p/LEDGER.md:145-149` classes the whole map as
+	// FITTED / UNEVIDENCED, "the ranking spine ... neither carries a single word of per-weight
+	// justification".
+	//
+	// This pin used to carry the comment "Track A round 4: 0.25 tipped `johns` onto Track C's
+	// grey/near-white pair; 0.45 holds every reviewed win on the integrated trunk." That sentence
+	// is real, but it describes a **different constant in a different object**:
+	// `FIELD_OWNERSHIP.collapsedSurfaceFidelity = 0.45` (winner-scoring.ts:113), whose sweep points
+	// are 0.25 and 0.45 (`track-a/EXPERIMENT.md:388, 391-392`). `track-p/LEDGER.md:194-203` and
+	// `track-p/AGENDA.md:181-186` both flagged the misattribution; this is the fix.
 	assert.equal(WINNER_SCORING_POLICY.qualityWeights.fieldFidelity, 0.15)
+	// [INHERITED] Also born in `3d3cea2` (2026-07-29) as a bare literal, alongside two sibling
+	// literals, with no comment and no cited experiment; carried verbatim through v2-2 into v2-3.
+	// No measurement, sweep, or human review justifies the magnitude anywhere in the repository or
+	// its full history — `track-p/LEDGER.md:147-148`: "applied at two gates against two different
+	// baselines. No cited derivation for the magnitude."
+	//
+	// The two empirical facts on record are both cautionary, not supporting: the envelope has 3-6x
+	// headroom and almost never binds (`adversarial-logic/REVIEW.md:485-488`,
+	// `VERDICTS.md:246-257`), and the one time it did bind it bound wrongly — it excluded
+	// `birdsofprey`'s reviewed-strong pink accent by 0.0016, and the fix was to change what the
+	// envelope compares (`PROMOTION_ENVELOPE`, below) rather than to change 0.12
+	// (`track-a/EXPERIMENT.md:355-361`).
 	assert.equal(WINNER_SCORING_POLICY.maximumQualityLoss, 0.12)
 	assert.equal(MAXIMUM_WINNER_QUALITY_LOSS, WINNER_SCORING_POLICY.maximumQualityLoss)
 	assert.equal(WINNER_SCORING_POLICY.maximumIdentityGain,
 		ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY.maximumIdentityGain)
-	// Track A round 5: the band-extent rule; `raw-utility-first` and `same-family-raw-utility` both
-	// cost more than they fixed.
+	// [REVIEWED] Track A round 5 (`track-a/EXPERIMENT.md:447-524`): the band-extent rule, set from
+	// two batch-7 verdicts (`horsley` and `orelsan` re-picks both dispreferred). The cheap OKLab
+	// colour-span proxy was measured and rejected because it inverts on `orelsan` (`:458-472`);
+	// `raw-utility-first` and `same-family-raw-utility` both cost more than they fixed (`:405-409`).
+	// Neutrality evidence is the corpus sweep: only the two human-flagged cases move (`:505-524`).
 	assert.equal(BAND_TIE_BREAK, "same-family-band-extent")
-	// Track A round 4: promotion replaces the field, so gating it on the field axes is circular.
+	// [n=1] Track A round 4 (`track-a/EXPERIMENT.md:338-374`): promotion replaces the field, so
+	// gating it on the field axes is circular. Sound reasoning, but the evidence is one artwork —
+	// `birdsofprey`, restored byte-identically to its reviewed baseline. Because the output is
+	// byte-identical, no review batch ever adjudicated the change itself; the four `birdsofprey`
+	// verdicts on record all endorse the same treatment and none of them is about this flag.
+	// `track-p/LEDGER.md:113` records it as "1 named".
 	assert.equal(PROMOTION_ENVELOPE, "field-axis-neutral")
+	// [HELD] The pre-existing ordering, never a decision — and this pin previously carried no
+	// comment at all inside a test named "the reviewed ... configuration".
+	//
+	// Its own source comment (winner-scoring.ts:155-159) records the contrary evidence: "Human
+	// review of a gradient whose promoted accent had lower coverage but better readability
+	// contradicts that ordering" (`birdsofprey`'s pink, `track-a/EXPERIMENT.md:246`). It stands
+	// only because the alternative was measured and lost differently: `quality-after-decisive`
+	// lands on a *third* accent (`#e0cdc7`), not the preferred pink, so the reorder does not fix
+	// the case either (`track-a/EXPERIMENT.md:272-275`, rejected-options table at `:378-382`).
+	// Track A's conclusion is that the fix "is not a simple reorder, and it is not in winner
+	// scoring" — it belongs to whoever owns transition promotion.
+	//
+	// So this is an open question pinned for attribution, not a reviewed decision. It is also
+	// decisive where it fires (`adversarial-logic/VERDICTS.md:345`), which is why it is pinned.
+	// `track-p/AGENDA.md:188-190`: "Either the comment or the value is stale; both cannot be right."
 	assert.equal(TRANSITION_PROMOTION_ORDER, "coverage-first")
 	assert.deepEqual([...WINNER_QUALITY_AXES], [
 		"fieldFidelity", "surfaceFidelity", "artworkIdentity", "representativeness", "sourceSupport",
@@ -68,39 +149,114 @@ test("the reviewed winner-ranking configuration is unchanged", () => {
 })
 
 test("the reviewed gamut-coverage configuration is unchanged", () => {
-	// Batch 26 (2026-07-31) adjudicated enablement: zero of eight movement pairs regressed, the
-	// sailor-blue control was preferred outright, and the one previously adjudicated incumbent the
-	// term trades away resolved as "both really work". Track X, four rounds; the operating point
-	// below is the one the batch saw. `"utility"` keeps the term out of `WINNER_QUALITY_AXES` (the
-	// eleven axes above are frozen), so it is additive on `qualityUtility` only.
+	// [REVIEWED] Batch 26 (2026-07-31) adjudicated enablement: zero of eight movement pairs
+	// regressed, the sailor-blue control was preferred outright, and the one previously adjudicated
+	// incumbent the term trades away resolved as "both really work". `"utility"` keeps the term out
+	// of `WINNER_QUALITY_AXES` (the eleven axes above are frozen), so it is additive on
+	// `qualityUtility` only.
+	//
+	// Provenance: Track X, four rounds, `research/v2-3-experiments/track-x/EXPERIMENT.md` —
+	// operating point at `:403` and `:721-722`. Read that record knowing the arm itself shipped
+	// `integration: "off"` (`track-x/EXPERIMENT.md:759`), holding for exactly this adjudication;
+	// batch-26 supplied it and the orchestrator turned it on in `fb3e3aa`. The arm's own "off" is
+	// therefore the pre-batch state, not a contradiction of this pin.
 	assert.equal(GAMUT_COVERAGE.integration, "utility")
-	// The largest weight at which no reviewed-strong artwork's field inverts (acceptance bound).
+	// [MEASURED] The largest weight at which no reviewed-strong artwork's field inverts. An
+	// acceptance bound, not a fit: at 0.07 the white grounds break again
+	// (`track-x/EXPERIMENT.md:721-722`).
 	assert.equal(GAMUT_COVERAGE.weight, 0.05)
-	// Foreground excluded on measurement: with it included, an adjudicated incumbent flips on a
-	// foreground swap the reviewer had rejected. The narrower `"mark-bearing"` scope — admit the
-	// foreground only where the artwork's own evidence says it holds a mark — was measured by the
-	// carrier-ranking arm against the exact complaint the axis records as its counter-evidence, and
-	// rejected: on `0cd48f` the *navy* foreground the complaint is about gains more coverage
-	// (0.3911 -> 0.6003) than the teal it asks for (0.4091 -> 0.5786), and no winner moves.
+	// [HELD] Foreground excluded on measurement (`track-x/EXPERIMENT.md:387-391`): with it
+	// included, an adjudicated incumbent flips on a foreground swap the reviewer had rejected. The
+	// narrower `"mark-bearing"` scope — admit the foreground only where the artwork's own evidence
+	// says it holds a mark — was measured by the carrier-ranking arm and rejected
+	// (`carrier-ranking/EXPERIMENT.md:388-393`); it ships measured-OFF per batch-28 (`9983a1e`).
+	//
+	// RECENCY CORRECTION (2026-08-01). This comment used to close by arguing that "on `0cd48f` the
+	// *navy* foreground the complaint is about gains more coverage (0.3911 -> 0.6003) than the teal
+	// it asks for (0.4091 -> 0.5786), and no winner moves". The two coverage figures and the
+	// no-winner-moves result are still correct as measurements. The *argument built on them* is
+	// not: it was written against `0cd48f`'s batch-26 verdict, and batches 27 and 28 have since
+	// superseded it. Batch-27 resolved the teal question — "both teals strong, slight lean to
+	// #2b848c, 0cd48f is a pure ranking case" (`d11ac6c`) — and batch-28 graded the reachable teal
+	// foreground `#a7dbd9` STRONG **over** the trunk navy, grade applying to the teal side alone
+	// (`9983a1e`; warehouse chain review-19 acceptable -> review-25 acceptable -> batch-26
+	// acceptable -> batch-27 strong -> batch-28 strong).
+	//
+	// So the navy is no longer the endorsed treatment whose coverage advantage this pin was citing
+	// in its defence, and 0cd48f's teal foreground is now a verdict-mandated ranking target that
+	// neither this scope nor any mechanism yet built delivers (`carrier-ranking/ROUND-4.md`
+	// concludes a coverage domination guard cannot deliver it). `"field-and-accent"` stands because
+	// nothing measured beats it, not because 0cd48f is settled. It is not.
 	assert.equal(GAMUT_COVERAGE.scope, "field-and-accent")
-	// Both guards are independently load-bearing (each holds a white-ground artwork the other
-	// misses); the ablation is in the track record.
+	// [UNCALIBRATED] The arm that set it disowns the number in its own words —
+	// `track-x/EXPERIMENT.md:451-453`: "Saturation at 0.75 is the one number here I cannot derive.
+	// It is set above every complaint case's coverage and below `vvbrown`'s 99.1 %, which is a
+	// two-sided constraint from two data points. It wants a proper calibration once more verdicts
+	// exist." Track X also records that the white-ground failure mode is "not fixed, only masked at
+	// the top of the range" (`:509`). Batch-26 adjudicated the operating point as a whole; it did
+	// not rule on this coordinate.
 	assert.equal(GAMUT_COVERAGE.saturation, 0.75)
+	// [MEASURED] Not redundant with saturation: each mechanism catches an artwork the other misses
+	// — saturation reaches `vvbrown` (99.1 % coverage), the guard reaches `02dc28` (23.5 %, far
+	// below saturation) — ablation at `track-x/EXPERIMENT.md:574-576`. Note the shipped guard is
+	// round 4's achromatic-field gate, not the `fieldFidelity`-shaded guard of round 3, which was
+	// built, measured, cost three of four batch-24 mandate wins, and was discarded
+	// (`track-x/EXPERIMENT.md:595-616`, replacement at `:702-704`).
 	assert.equal(GAMUT_COVERAGE.fieldGuard, true)
 })
 
 test("the reviewed identity and mark parameters are unchanged", () => {
 	const selector = ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY
+	// [INHERITED] Carried from the frozen v2-2 baseline (`research/v2-2/src/internal/base-scoring.ts:22`);
+	// no v2-3 document derives 0.05. What is measured is only that raising it is worse in two
+	// directions: 0.06 made `johns` worse and broke `black.jpg`'s reviewed collapse
+	// (`track-c/EXPERIMENT.md:138-142`), and 0.10 undid the `doja` fix and inverted `vvbrown`
+	// (`track-a/EXPERIMENT.md:71-73`). `track-p/LEDGER.md:191-194` flags the magnitude as
+	// consequential and unexplained: it can move a candidate up to ten quantized utility bands.
 	assert.equal(selector.maximumIdentityGain, 0.05)
+	// [INHERITED] Introduced by Track C round 4 inside a bare parameter list with no derivation
+	// (`track-c/EXPERIMENT.md:357-359`). The only sensitivity datum is one-sided: lowering it to
+	// 0.06 does not recover `krafty` and loses `nobs` (`:380-381`). Never independently reviewed.
 	assert.equal(selector.authorizedIdentityGain, 0.08)
-	// Track C round 3: 0.05 broke `orelsan`; 0.01 separates the measured pathologies (<= 0.0043)
-	// from real pairings (>= 0.0174) and is an order of magnitude below the family anchor radius.
+	// [REVIEWED] Track C round 3 (`track-c/EXPERIMENT.md:275-289`): 0.05 broke `orelsan`; 0.01
+	// separates the measured pathologies (<= 0.0043) from real pairings (>= 0.0174) and is an order
+	// of magnitude below the family anchor radius (0.058), which is the one independent anchor any
+	// of these three separations has. Verified against the six-row measurement table at `:275-282`.
+	// Caveat in Track C's own words (`:235-239`): "values chosen from measured distances on this
+	// corpus, and the corpus is the development set ... should be re-checked on unseen sources."
+	// The perturbation sweep also puts it close to a boundary (`track-p/LEDGER.md:258`: 18,005 of
+	// 430,413 comparisons flip at +/-20 %).
 	assert.equal(selector.identityChromaticSeparation, 0.01)
+	// [n=1] Introduced by Track C round 2 H3 as a bare parenthetical
+	// (`track-c/EXPERIMENT.md:144-149`). The single number bearing on the magnitude is that
+	// `johns`' pathological white pair sits 0.113 apart, so 0.12 is set just above one observed
+	// pathology on one artwork — and round 3 records that this rule then missed that same case by
+	// 0.001 (`:271-272`), which is why the chromatic rule above was added. Self-declared
+	// corpus-fitted in the same overfitting paragraph (`:235-239`). NOT the `0.12` that Track E
+	// disowns — that is `mark.fieldSeparation` (policy.ts:190), a different constant.
 	assert.equal(selector.identityRoleSeparation, 0.12)
+	// [INHERITED] The *mechanism* is justified — the surface can carry identity, required for the
+	// reviewed `disney` and `skap` treatments and blocked on `meteora`'s rejected surface
+	// (`track-c/EXPERIMENT.md:346-348`) — but the *value* appears exactly once in the whole
+	// experiment tree, in the same bare parameter list as `authorizedIdentityGain` (`:357`), with
+	// no sweep and no anchor. It sits between the sibling credits `accentIdentityCredit` 0.8 and
+	// `roleMismatchedIdentityCredit` 0.35; nothing on record says that is why.
 	assert.equal(selector.surfaceIdentityCredit, 0.6)
-	// Track C round 4c: a swap out of the foreground is a foreground claim.
+	// [n=1] Track C round 4c, whose title is literally "a swap out of the foreground is a foreground
+	// claim" (`track-c/EXPERIMENT.md:465`). The rule's direction is well evidenced by one reviewer
+	// verdict on `krafty` — "The text of the artwork is Golden Mango, so the foreground of the
+	// palette should also be golden mango" (`:467-471`, review-7-identity-confirm, still the latest
+	// verdict on that artwork and not superseded).
+	//
+	// The MAGNITUDE is not evidenced by that case: `krafty`'s measured gap is 0.164 (golden 0.947
+	// vs pink 0.783, `:479-481`), so it would fire at any margin below ~0.164. 0.04 is justified
+	// only as "one evidence level" — i.e. reuse of `ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence`
+	// (`:492-498`). No sweep of 0.02 / 0.06 / 0.08 exists anywhere in the tree.
 	assert.equal(selector.identityForegroundClaimMargin, 0.04)
-	// Carrier-ranking arm: the margin above protects the artwork's *strongest* text claim, not any
+	// [REVIEWED] Carrier-ranking arm (`carrier-ranking/EXPERIMENT.md:242-246`), adjudicated by
+	// batch 28 (`9983a1e`): the target mover wins decisively — `0d5cdb` publishes the gold
+	// foreground `#f7de67` graded strong, the grade applying to the lever side alone.
+	// The margin above protects the artwork's *strongest* text claim, not any
 	// family that merely out-scores the foreground a candidate happened to choose. Measured on
 	// `0d5cdb`: the red accent is the same colour in the same role in both the grey-foreground and
 	// gold-foreground arrangements, and `"raw-score"` authorized it in one and not the other on
@@ -111,12 +267,33 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// option because it *reversed* krafty: that classifier is confidently undecided there
 	// (`"ambiguous"` at confidence 0.902) while its foreground score is decisively the highest.
 	assert.equal(TEXT_DEMOTION_EVIDENCE, "strongest-claim")
-	// Measured and rejected by the same arm: paying a chromatic foreground for identity *authority*
-	// moves `0cd48f` onto an unreviewed green-text arrangement, because the navy it replaces is
-	// itself over `identityDirectionChroma`. The predicate is still computed and published on the
-	// selector evaluation, so re-measuring it costs one constant.
+	// [HELD] The incumbent behaviour, retained: the alternative was measured and rejected by the
+	// carrier-ranking arm, and only the alternative was ever measured. `carrier-ranking/
+	// EXPERIMENT.md:427` records it plainly — "`"blanket"` ... (is the previous behaviour)". No
+	// batch has endorsed it; batch-28 ships it measured-OFF alongside the mark-bearing coverage
+	// scope (`9983a1e`). The predicate is still computed and published on the selector evaluation,
+	// so re-measuring it costs one constant.
+	//
+	// The rejection evidence (`carrier-ranking/EXPERIMENT.md:388-393`): paying a chromatic
+	// foreground for identity *authority* moves `0cd48f` onto a green foreground with a teal
+	// accent, because the navy `#201f41` it replaces has chroma 0.0645, itself just over
+	// `identityDirectionChroma`, which lifts rank 1's authority 0.01143 -> 0.03227. M2 pays *any*
+	// chromatic foreground, which is the failure the blanket exclusion was written for.
+	//
+	// RECENCY CORRECTION (2026-08-01). That passage called the resulting arrangement "unreviewed",
+	// and this comment repeated it. Narrowly it is still true — no batch has seen a *green-text*
+	// `0cd48f`. But the inference it invited, that chromatic foregrounds on `0cd48f` are unexplored
+	// territory, is superseded: batch-27 graded the teal `#2b848c` strong and batch-28 graded the
+	// teal `#a7dbd9` strong **over** the trunk navy (see the `GAMUT_COVERAGE.scope` note above for
+	// the full verdict chain). The navy this rule protects is the treatment the latest verdict
+	// declined. `"blanket"` is right about M2 and silent about what `0cd48f` actually needs.
 	assert.equal(FOREGROUND_MARK_ADMISSION, "blanket")
-	// Carrier-ranking arm round 3: the reviewer's `skap` principle — "a treatment cannot spend two
+	// [REVIEWED] Carrier-ranking arm round 3 (`carrier-ranking/ROUND-3.md:155-165`). Read that
+	// record knowing the arm shipped it OFF (`IDENTITY_COVERAGE_DIRECTIONS = "count-every-credit"`,
+	// `ROUND-3.md:155`), explicitly deferring to review: "Zero demonstrated benefit at trunk against
+	// four verdict-carrying movers is review's call, not an arm's." Batch 30 was that call and
+	// enabled it (`4a5c37d`); the arm's OFF is the pre-batch state, not a contradiction.
+	// The reviewer's `skap` principle — "a treatment cannot spend two
 	// roles on one hue and be credited twice for it" — is stated by `identityDirections` and enforced
 	// only on the authorized half; `one-hue-one-direction` applies the same test with the same
 	// constant to ordinary coverage. Batch 30 (2026-08-01) served the complete four-artwork mover
@@ -125,13 +302,63 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// accepted both-ways with weak leans split across the sides. Enabling gained one decisive
 	// endorsement and regressed nothing.
 	assert.equal(IDENTITY_COVERAGE_DIRECTIONS, "one-hue-one-direction")
-	// Track C round 3: raising the bound to 6 admitted `placebo`'s brown accent. The *reserve*, not
-	// the bound, was the mechanism that mattered.
+	// [INHERITED] 4 is the frozen v2-2 value (`research/v2-2/src/internal/policy.ts:84`), reaching
+	// v2-3 in the scaffold commit `c9395ac`; nothing derives it. What Track C round 3 measured is a
+	// REVERT, not a finding: round 2's H2 had raised the bound to 6, which admitted `placebo`'s
+	// brown accent at priority 4 and cost the dark accent by about one utility level, so the bound
+	// was put back (`track-c/EXPERIMENT.md:258-267`). The *reserve*, not the bound, was the
+	// mechanism that mattered for the `johns` capacity finding. This is one-sided evidence on two
+	// artworks — 3 and 5 were never tried.
+	//
+	// Recency note: `placebo`, the artwork this revert is argued from, has since moved. Its
+	// review-3-identity `weak-fallback` was superseded through review-4, review-10 and review-12 to
+	// review-14-b2, which endorses accent `#c91611` in place of `#111312`. The revert's conclusion
+	// is unaffected (it is about the bound, not the accent), but do not read `placebo`'s state here
+	// as current. `adversarial-logic/REVIEW.md:133-145` separately measures this cap as saturated
+	// on all 31 non-degenerate artworks, with 52 % of obligation slots held by near-neutral families.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.bounds.identityObligations, 4)
+	// [INHERITED] Introduced by Track C round 2 H2 as a bare parenthetical with no derivation, no
+	// sweep, and no alternative tried (`track-c/EXPERIMENT.md:116-118`). Its effect is attributed —
+	// `johns`' blue enters the obligation set through the reserve — but that is the mechanism
+	// firing, not the threshold being calibrated. Named by Track C itself as corpus-fitted and
+	// due a re-check on unseen sources (`:235-239`).
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.identity.reservedMajorFamilyPopulationFraction, 0.06)
-	// Track E revision 2: mark evidence substitutes for population support and nothing else.
+	// [REVIEWED] scope / [INHERITED] magnitude. Track E revision 2 states the scope claim verbatim
+	// (`track-e/EXPERIMENT.md:352-356`): mark evidence substitutes for the population-normalised
+	// support terms at two sites and nothing else — candidacy, lanes and obligations are untouched.
+	// Two of the four original substitution sites were removed with measurement (`:340-350`). The
+	// governing principle, set by review, is at `:320-330`: "Mark evidence repairs a handicap in
+	// fair competition. It does not confer an entitlement."
+	//
+	// The VALUE 1 is not calibrated. Only the endpoints are ever discussed — `substitution: 0`
+	// restores the previous behaviour exactly (`:60`) — and no intermediate (0.25 / 0.5 / 0.75) is
+	// swept anywhere. 1 is the full-substitution default implied by the design.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.substitution, 1)
+	// [INHERITED] Track E disowns this value in its own Uncertainty section
+	// (`track-e/EXPERIMENT.md:244-246`): the `fieldSeparation = 0.12` saturation and the
+	// "`minimumComponentPopulation = 12` floor are the two thresholds with the least evidence
+	// behind them ... neither is load-bearing for placebo or slim ... but both would matter for a
+	// borderline artwork the corpus does not contain."
+	//
+	// Track W later measured the floor's FORM and found it should be absolute rather than
+	// scale-relative (`track-w/EXPERIMENT.md:113-123`, `componentFloorExponent` left at 0). That
+	// is real evidence that 12 should not scale with image size. It is not evidence for 12: no
+	// sweep of 8 / 12 / 16 / 20 exists, and `track-p/LEDGER.md:117` still lists 12 among the
+	// `mark.*` values with "no per-value anchor".
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.minimumComponentPopulation, 12)
+	// [INHERITED] No justifying document exists. The number appears exactly once in the whole Track
+	// E record, as a half-clause inside the mechanism description — "with `plurality` requiring >= 3
+	// qualifying components (saturating at 6)" (`track-e/EXPERIMENT.md:76`) — and the paragraph
+	// that follows justifies the product form and the last two factors, never the 3. No threshold
+	// sweep, no component-count distribution, no ablation at 2 or 4 exists in Track E or anywhere
+	// else; Track E's own uncertainty list does not even flag it. `track-p/LEDGER.md:117`: the
+	// individual `mark.*` thresholds "have **no per-value anchor**".
+	//
+	// The one later mention is not a validation: Track N uses 3 as a reference point for a
+	// different, higher bar of 8 — "three strokes make a family a mark *candidate*, eight make it
+	// substantial" (`track-n/EXPERIMENT.md:224-227`) — and it is 8, not 3, that Track N measured.
+	//
+	// Value unchanged since `d5f2003` (2026-07-31), the Track E integration that introduced it.
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_POLICY.mark.minimumComponentCount, 3)
 })
 
@@ -143,23 +370,59 @@ test("charter rule 2: the APCA hard minimum defaults to zero", () => {
 
 test("the reviewed same-color bar is one number in three places", () => {
 	const distinctness = ALBUM_ARTWORK_PALETTE_V2_POLICY.distinctness
-	// Batch 12 (`muse`, `slim`): "we should consider them as the same color, in which case the same
-	// rule as before should apply". Six midpoint judgements bracket the bar — refused at 0.00, 1.00
-	// and 3.01, accepted at 3.64, 9.78, 19.75 and 62.59 — and batch 14 (`placebo`) is the recorded
-	// shadow-material caveat on it.
+	// [REVIEWED] Batch 12 (`muse`, `slim`): "we should consider them as the same color, in which
+	// case the same rule as before should apply". SEVEN midpoint judgements bracket the bar —
+	// refused at 0.00, 1.00 and 3.01, accepted at 3.64, 9.78, 19.75 and 62.59 — and batch 14
+	// (`placebo`) is the recorded shadow-material caveat on it.
+	//
+	// This comment said "Six" while enumerating seven; so does the source comment it mirrors.
+	// `track-p/LEDGER.md:109` caught the arithmetic. No experiment file lists these anchors — they
+	// exist only in these comments — so the enumeration is the record and the count is corrected to
+	// match it. No value moves. (Corrected in the same sweep at `policy.ts:101` and
+	// `palette-core.ts:2856`.)
+	//
+	// Carry the counterexample with the bar: `palette-core.ts:2868-2874` records a midpoint at
+	// ΔE 2.58 — below this bar — carried by a *preferred* reviewed output, so the bar is known
+	// over-strict by at least one case. `placebo`'s own verdict has also moved on since batch 12
+	// (review-12 -> review-14-b2, a different endorsed accent), which is exactly why batch 14 is
+	// cited here as the caveat rather than batch 12 as the last word.
 	assert.equal(distinctness.sameColor, 3.3)
-	// Track Q: raise these together or the three rules stop meaning the same thing. They are
-	// separate fields only so a library user can raise one on its own.
+	// [MEASURED] Track Q — `research/v2-3-experiments/track-q/EXPERIMENT.md`, imported to trunk by
+	// the 2026-08-01 provenance sweep; this citation previously resolved nowhere. Raise these
+	// together or the three rules stop meaning the same thing. They are separate fields only so a
+	// library user can raise one on its own.
+	//
+	// The reuse is licensed by a measurement, not by taste: on 214 distinct non-scrambled artworks
+	// the foreground-vs-field ΔE distribution is sharply bimodal, with one case at ΔE 0.356 and
+	// nothing at all between ΔE 1 and ΔE 9 (`track-q/EXPERIMENT.md:283-288`). Any threshold in
+	// (1, 9) therefore has identical blast radius — zero outside the degenerate cases — so 3.3 is
+	// "the bar review already set, dropped into an empty band" and not a tuned boundary
+	// (`:301-304`).
 	assert.equal(distinctness.foregroundField, distinctness.sameColor)
 	assert.equal(distinctness.gradientEndpoints, distinctness.sameColor)
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE, distinctness.sameColor)
 	// It is a same-color-or-not bar, not a contrast floor. `knuckles`, the closest reviewed
 	// foreground/background pair in the corpus, is ΔE 9.19 — so the two role rules cannot start
 	// competing with the APCA minimum, which stays zero and stays a caller parameter.
+	// Re-verified 2026-08-01 against `knuckles`' endorsed palette (review-3-identity, its only and
+	// therefore latest verdict): `perceptualDifference("#d8cbdd", "#beb2c6")` = 9.188.
 	assert.ok(distinctness.foregroundField < 9.19)
 })
 
 test("the ranking quanta have a single source", () => {
+	// [INHERITED] Both values come verbatim from the frozen v2-2 baseline
+	// (`research/v2-2/src/internal/base-scoring.ts:20-21`). The v2-3 contribution is a
+	// de-duplication, not a derivation: `evidence` had been re-declared five times and `utility`
+	// twice, so a stage could silently quantize differently from the stage feeding it
+	// (`adversarial-arch/HYGIENE.md:156`; the centralizing commit `c3ac156` is byte-identical).
+	// What this test pins is therefore the single-source property, which is real, plus two
+	// magnitudes that nothing derives.
+	//
+	// Do not treat 0.04 as JND-derived. `track-p/LEDGER.md:208-213` traced every such claim to one
+	// uncited sentence in `research/v2-3-eval/README.md` ("1 JND ≈ 0.02"), and that sentence is
+	// about the eval diff epsilon, not about a ranking quantum. Note also `policy.ts:1-14`: this
+	// 0.04 is NOT the same quantity as `FAMILY_BIN_STEP` or `REPRESENTATIVE_DENSITY_RADIUS`, which
+	// merely share the literal — do not unify them or retune one by grepping.
 	assert.deepEqual({ ...ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS }, { evidence: 0.04, utility: 0.005 })
 	assert.equal(WINNER_SCORING_POLICY.evidenceResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.evidence)
 	assert.equal(WINNER_SCORING_POLICY.utilityResolution, ALBUM_ARTWORK_PALETTE_V2_RESOLUTIONS.utility)

@@ -98,8 +98,13 @@ export const ALBUM_ARTWORK_PALETTE_V2_POLICY = Object.freeze({
 	 */
 	distinctness: Object.freeze({
 		/**
-		 * The bar itself, read off six human midpoint judgements rather than tuned: the refused
+		 * The bar itself, read off seven human midpoint judgements rather than tuned: the refused
 		 * midpoints scored 0.00, 1.00 and 3.01, the accepted ones 3.64, 9.78, 19.75 and 62.59.
+		 *
+		 * (This comment said "six" while enumerating seven; `research/v2-3-experiments/track-p/
+		 * LEDGER.md:109` caught the arithmetic. The enumeration is the record — no experiment file
+		 * lists these anchors, they exist only here and at `palette-core.ts`'s midpoint bar — so the
+		 * count is corrected to match it, and no value moves.)
 		 */
 		sameColor: 3.3,
 		/**

@@ -83,7 +83,7 @@ export const WINNER_RANKING_HYPOTHESES = Object.freeze({
  * wave-1 `renderedGradientSalience` value that is now deleted (see `renderedFieldClaimScore`).
  */
 
-const FIELD_OWNERSHIP = Object.freeze({
+export const FIELD_OWNERSHIP = Object.freeze({
 	/**
 	 * Value of the `surfaceFidelity` axis for a collapsed surface.
 	 *
@@ -161,6 +161,18 @@ const GRADIENT_CLAIM = Object.freeze({
  * `quality-after-decisive` keeps decisive coverage first — that is about whether
  * the transition is decisive at all — then compares quality utility before the
  * remaining coverage terms.
+ *
+ * Why the contradicted ordering still stands: the alternative was implemented and
+ * measured, and it does not fix the case either — `quality-after-decisive` lands
+ * on a *third* accent (`#e0cdc7`), not the preferred pink, because the pink was
+ * not in the eligible set at all. Track A's conclusion is that "the fix is not a
+ * simple reorder, and it is not in winner scoring"; it belongs to whoever owns
+ * transition promotion. See `research/v2-3-experiments/track-a/EXPERIMENT.md:272-275`
+ * and the rejected-options table at `:378-382`.
+ *
+ * So this is an open question, not a settled one. It is pinned in
+ * `test/configuration.test.ts` for merge attribution only, and it is decisive on
+ * the one image where it fires (`adversarial-logic/VERDICTS.md:345`).
  */
 export const TRANSITION_PROMOTION_ORDER: "coverage-first" | "quality-after-decisive" = "coverage-first"
 
