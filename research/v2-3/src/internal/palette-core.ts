@@ -4839,18 +4839,28 @@ export const FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD = false
  * necessarily, not by luck. `contrast.hardMinimum` stays 0 and stays the caller's parameter; this
  * refuses a pathology rather than raising a floor.
  */
-export const MINIMUM_FOREGROUND_SURFACE_ABSOLUTE_LC = 1
+export const MINIMUM_ROLE_PAIR_ABSOLUTE_LC = 1
 
 /**
- * Can the foreground be read on the surface panel at all? See
- * `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`, which is what makes this answerable.
+ * Is this mark colour unreadable on this field colour — i.e. is the pair below the smallest contrast
+ * APCA can express at all?
+ *
+ * Deliberately **not** gated on any flag, and deliberately not specific to one pair: this is the
+ * measurement. Two mechanisms ask it — the wide guard below, which refuses candidates, and the
+ * narrow repair in `zero-contrast-repair.ts`, which leaves candidates alone and mends the published
+ * winner — and the repair asks it of up to four role pairs. The question has to be one function so
+ * none of those callers can drift from the others.
  *
  * A collapsed surface needs no special case: it is the background, so this asks the same question
  * the existing background-side observability gate already asks, and agrees with it.
  */
-export function foregroundIsUnreadableOnSurface(foreground: RGB, surface: RGB): boolean {
-	if (!FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD) return false
-	return Math.abs(apcaContrast(foreground, surface)) < MINIMUM_FOREGROUND_SURFACE_ABSOLUTE_LC
+export function rolePairIsUnreadable(mark: RGB, field: RGB): boolean {
+	return Math.abs(apcaContrast(mark, field)) < MINIMUM_ROLE_PAIR_ABSOLUTE_LC
+}
+
+/** The wide guard's own test: the measurement above, on its one pair, only while the guard is on. */
+function wideGuardRefusesForeground(foreground: RGB, surface: RGB): boolean {
+	return FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD && rolePairIsUnreadable(foreground, surface)
 }
 
 function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: number): void {
@@ -4870,7 +4880,7 @@ function validateTreatment(treatment: CompletePaletteTreatment, hardMinimum: num
 	}
 	// The published form of the rule `createTreatment` filters on, for the surface side of the same
 	// question. See `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`.
-	if (foregroundIsUnreadableOnSurface(treatment.foreground.rgb, treatment.surface.rgb)) {
+	if (wideGuardRefusesForeground(treatment.foreground.rgb, treatment.surface.rgb)) {
 		throw new Error("Foreground has essentially no contrast against the surface")
 	}
 	if (!accentCollapsed && sameColor(treatment.accent.rgb, treatment.surface.rgb)) throw new Error("Accent has an illegal role equality")
@@ -4916,7 +4926,7 @@ function createTreatment(
 	// The surface side of the distinctness question, asked with the contrast ruler rather than the
 	// colour-distance one because the two are independent and this pair defeats the second.
 	// See `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`.
-	if (foregroundIsUnreadableOnSurface(foreground.rgb, surface.rgb)) return null
+	if (wideGuardRefusesForeground(foreground.rgb, surface.rgb)) return null
 	// Role distinctness used to be byte equality on both sides of this test, which let a treatment
 	// render its text one 8-bit code value away from its own background. `perceptualDifference`
 	// subsumes `sameColor` — an identical pair is ΔE 0 — and refuses the near-identical pair too.

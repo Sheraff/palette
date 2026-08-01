@@ -4,7 +4,7 @@ import { ALBUM_ARTWORK_PALETTE_V2_PHASE_3_SELECTOR_POLICY } from "./base-scoring
 
 import type { AlbumArtworkPaletteV2Phase3IdentityRoleRequirement } from "./base-scoring.ts";
 
-import { foregroundIsUnreadableOnSurface } from "./palette-core.ts";
+import { FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD, rolePairIsUnreadable } from "./palette-core.ts";
 
 import type { CompletePaletteTreatment, ContrastDiagnostics, IdentityObligation } from "./palette-core.ts";
 
@@ -128,7 +128,7 @@ function swapContrastRoles(contrast: ContrastDiagnostics): ContrastDiagnostics {
  * gradient treatment it was derived from. The `id` prefix records that a post-ranking rearrangement
  * happened, exactly as that fallback's `supported-gradient-path-flat:` prefix does.
  */
-function swapMarkRoles(treatment: CompletePaletteTreatment): CompletePaletteTreatment {
+export function swapMarkRoles(treatment: CompletePaletteTreatment): CompletePaletteTreatment {
 	return {
 		...treatment,
 		id: `text-role-swap:${treatment.id}`,
@@ -196,7 +196,12 @@ export function restrictTextRoleToStrongestClaim(input: Readonly<{
 	// palette by exactly this route and by no other. Declining is the conservative repair, because
 	// the pre-swap arrangement is the one already known good. See
 	// `FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD`, which is also what makes this a no-op while off.
-	if (foregroundIsUnreadableOnSurface(winner.accent.rgb, winner.surface.rgb)) return winner
+	//
+	// This belongs to the WIDE guard only. The narrow repair deals with the same swap-created defect
+	// from the other end — it lets the swap happen and exchanges the roles back afterwards — so
+	// gating this here keeps the two mechanisms from both acting on one artwork.
+	if (FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD &&
+		rolePairIsUnreadable(winner.accent.rgb, winner.surface.rgb)) return winner
 
 	return swapMarkRoles(winner)
 }

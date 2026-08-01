@@ -34,10 +34,15 @@ import {
 	FAMILY_BIN_STEP,
 	FIELD_MIDPOINT_BAND,
 	FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT,
+	FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD,
+	MINIMUM_ROLE_PAIR_ABSOLUTE_LC,
 	REGION_ROLE_SCORE_CUE_SPAN,
 	REGION_ROLE_SCORE_SUPPORT_BASE,
 	REPRESENTATIVE_DENSITY_RADIUS,
 } from "../src/internal/palette-core.ts"
+import { apcaClampRawContrast, apcaContrast, apcaRawContrast } from "../src/internal/color.ts"
+import { ZERO_CONTRAST_REPAIR_PAIRS } from "../src/internal/zero-contrast-repair.ts"
+import type { RGB } from "../src/internal/types.ts"
 import {
 	ENDPOINT_BAND_SAMPLE_POSITIONS,
 	FIELD_SCORE_WEIGHTS,
@@ -1052,4 +1057,39 @@ test("the ranking block list is indexable into the treatment scores", () => {
 	assert.equal(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length, 11)
 	assert.equal(new Set(ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS).size,
 		ALBUM_ARTWORK_PALETTE_V2_RANKING_PRIORITY_BLOCKS.length)
+})
+
+test("the raw APCA form agrees with the vendored library, and both mechanisms ship off", () => {
+	// `apcaRawContrast` restates apca-w3's arithmetic up to the point the library discards
+	// information. That restatement is only safe while it stays in step, so this pins the agreement
+	// rather than trusting it: putting the raw value back through APCA's own clip and offset must
+	// reproduce `apcaContrast` for every 8-bit grey pair. A version bump that moved any SA98G
+	// constant fails here instead of quietly changing what "unreadable" means.
+	let compared = 0
+	for (let text = 0; text < 256; text += 1) {
+		for (let field = 0; field < 256; field += 1) {
+			const foreground: RGB = [text, text, text]
+			const background: RGB = [field, field, field]
+			const library = apcaContrast(foreground, background)
+			const rebuilt = apcaClampRawContrast(apcaRawContrast(foreground, background))
+			compared += 1
+			assert.ok(Math.abs(library - rebuilt) < 1e-9,
+				`grey ${text} on ${field}: library ${library}, rebuilt ${rebuilt}`)
+		}
+	}
+	assert.equal(compared, 65536)
+
+	// The documented relationship the whole zero-floor argument rests on: the clamped form reports
+	// exactly zero precisely when the raw magnitude is under 10, which is why no bar between 0 and
+	// 7.3 can select a different set of palettes.
+	assert.equal(apcaClampRawContrast(9.999), 0)
+	assert.ok(Math.abs(apcaClampRawContrast(10) - 7.3) < 1e-9)
+
+	// Both mechanisms ship inert. The wide guard refuses candidates; the narrow repair mends the
+	// published winner. Neither is on, and the repair's coverage set is empty.
+	assert.equal(FOREGROUND_SURFACE_ZERO_CONTRAST_GUARD, false)
+	assert.deepEqual([...ZERO_CONTRAST_REPAIR_PAIRS], [])
+	// The bar sits inside APCA's unexpressible band, which is what keeps it from ever becoming an
+	// accessibility floor. Charter rule 2.
+	assert.ok(MINIMUM_ROLE_PAIR_ABSOLUTE_LC > 0 && MINIMUM_ROLE_PAIR_ABSOLUTE_LC <= 7.3)
 })
