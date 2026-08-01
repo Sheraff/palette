@@ -167,6 +167,9 @@ export type AlbumArtworkPaletteV2Phase3IdentityRoleRequirement = Readonly<{
 	requiredRole: AlbumArtworkPaletteV2Phase3IdentityRole
 	confidence?: number
 	foregroundEvidence?: number
+	/** The same classification's accent score. Nothing in this objective reads it — see
+	 * `TEXT_ROLE_RESTRICTION`, which is the only consumer of the two scores' difference. */
+	accentEvidence?: number
 }>
 
 export type AlbumArtworkPaletteV2Phase3IdentityInput = Readonly<{

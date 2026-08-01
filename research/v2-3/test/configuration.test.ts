@@ -24,6 +24,7 @@ import {
 	WINNER_SCORING_POLICY,
 } from "../src/internal/winner-scoring.ts"
 import { MAXIMUM_WINNER_QUALITY_LOSS } from "../src/internal/transition-promotion.ts"
+import { TEXT_ROLE_RESTRICTION } from "../src/internal/text-role-restriction.ts"
 import {
 	ACCENT_RANK_FIDELITY_WEIGHT,
 	ALBUM_ARTWORK_PALETTE_V2_MINIMUM_MIDPOINT_ENDPOINT_DIFFERENCE,
@@ -428,6 +429,51 @@ test("the reviewed identity and mark parameters are unchanged", () => {
 	// accepted both-ways with weak leans split across the sides. Enabling gained one decisive
 	// endorsement and regressed nothing.
 	assert.equal(IDENTITY_COVERAGE_DIRECTIONS, "one-hue-one-direction")
+	// [MEASURED, awaiting review — round 3]
+	// (`research/v2-3-experiments/role-assignment-2/EXPERIMENT.md`). Three shapes of this arm have
+	// now been reviewed, and each verdict removed a degree of freedom rather than a case:
+	//
+	// 1. batch-31 PARKED generation 1 (3 wins / 3 losses / 4 equal). It reached the endorsed
+	//    foreground on `0f58e77c` by *scoring*, which collapsed the whole field to `#171c16`.
+	//    Review endorsed the flip and declined the output. -> the field became untouchable.
+	// 2. batch-32 reverted round 2 on its own rule, and diagnosed why. Round 2 preserved the field
+	//    but re-ranked it with the text role restricted, which let the ranking pick a NEW accent.
+	//    On `034b1c66`: "I would actually prefer option A because its foreground color matches the
+	//    main text of the artwork, but I cannot rate it as high or higher than option B because it
+	//    uses a nutmeg accent that doesn't really fit this artwork, or at least I don't see where
+	//    it's coming from in the artwork. If the accent was Daguerreotype instead, then I think they
+	//    would at least be equally good, or maybe option A would be even better." -> the move became
+	//    a TRUE SWAP: the two mark roles exchange their colours and nothing else happens, so no
+	//    colour can enter the palette without provenance because no colour enters at all. Round 3
+	//    produces that counterfactual byte-for-byte (`#281832 #273d77 #9ae5fc #c3b0c6`).
+	// 3. The white-text boundary is settled by a measured margin, not a category — the claim
+	//    family's own `foregroundEvidence - accentEvidence` must reach `decisiveRoleMargin` (0.11).
+	//    Over the 10 boundary artworks whose accent holds their strongest text claim it is the ONLY
+	//    published quantity with a gap between the two sides: the three whose latest verdict holds
+	//    the incumbent foreground sit at -0.1465 (`nobs`), 0.0194 (`johns`, whose flip review-23 saw
+	//    and declined) and 0.0677 (`0f723f36`); the two the arm serves sit at 0.1104 and 0.1224.
+	//    Foreground-evidence gap, incumbent chroma, incumbent lean, polarity agreement, coherent
+	//    support and population all overlap across that boundary; this one does not. The gap is
+	//    0.043 wide and 0.11 was not chosen inside it — it is the threshold below which the
+	//    classifier itself refuses to name a role.
+	//
+	// Both gates are load-bearing and protect different things, by full sweep on this trunk: the
+	// chroma floor alone moves 25 non-scrambled winners and crosses `nobs` and `johns`; the margin
+	// alone moves 14 and regresses seven artworks, every one of them promoting a near-neutral.
+	//
+	// The cost of the bar is disclosed and large: `0f58e77c` (margin 0.0480), `havana` (0.0808),
+	// `0e91d6c3` (0.0493), `0a8aa1da` (0.0160) and `05a91812` (0.0059) all carry endorsed or
+	// preferred flips the arm does NOT produce, because no threshold reaches them without also
+	// crossing `johns`. Promoting a claim family that no role holds — which is what `10b864b2` and
+	// `9d178a` need — was measured and has no boundary at all: every threshold reaching `10b864b2`
+	// also reaches `9d178a`, `0d5cdb`, `slim` and `1031d1e1`, whose latest verdicts hold their
+	// incumbent foreground. That arm is not implemented.
+	//
+	// The true swap also has a cost of its own, and it is on the arm's best case: `13bebcae`'s
+	// thrice-endorsed blue accent `#035ba5` was never trunk's own colour, so a swap cannot reach it.
+	// Round 3 pairs the endorsed gold foreground with trunk's near-black instead — an arrangement no
+	// batch has seen. That is the price of refusing to re-source, and it is item 2 of the batch.
+	assert.equal(TEXT_ROLE_RESTRICTION, "decisive-claim")
 	// [INHERITED] 4 is the frozen v2-2 value (`research/v2-2/src/internal/policy.ts:84`), reaching
 	// v2-3 in the scaffold commit `c9395ac`; nothing derives it. What Track C round 3 measured is a
 	// REVERT, not a finding: round 2's H2 had raised the bound to 6, which admitted `placebo`'s

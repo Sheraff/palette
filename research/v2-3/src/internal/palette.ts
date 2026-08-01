@@ -44,6 +44,8 @@ import type { MaterializedCandidate, TransitionCandidate } from "./transition-pr
 
 import { selectSourceEligibleWinner } from "./winner-selection.ts";
 
+import { restrictTextRoleToStrongestClaim } from "./text-role-restriction.ts";
+
 import type { RawImage } from "./types.ts";
 
 const NO_MIDPOINT = Object.freeze({
@@ -436,5 +438,19 @@ export function extractPaletteDetails(
 		materialized,
 		evaluateAlbumArtworkPaletteV2Phase3ArmSupportedGradientPath(common.evidence.native),
 	)
-	return { width: image.width, height: image.height, ...gradient }
+	// See `TEXT_ROLE_RESTRICTION`. Deliberately the LAST thing that happens: the field is fully
+	// decided by this point — including the flat fallback and the midpoint — and a swap of the two
+	// mark roles cannot reach any of it. Placing it earlier would let the exchanged roles feed
+	// `exactFlatRoleSibling`, which matches on all four role colours, and a role move would silently
+	// become a field move. That is the failure batch-31 declined.
+	return {
+		width: image.width,
+		height: image.height,
+		midpoint: gradient.midpoint,
+		winner: restrictTextRoleToStrongestClaim({
+			winner: gradient.winner,
+			identityObligations: common.seedAvailability.identityObligations,
+			identityRoleRequirements: roleEvidence.requirements,
+		}),
+	}
 }

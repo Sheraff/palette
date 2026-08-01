@@ -18,6 +18,12 @@ export type FamilyRoleRequirement = Readonly<{
 	 * artwork's text under this field. Carried for every family, not only obligation families,
 	 * because the identity objective has to compare a proposed foreground against the incumbent. */
 	foregroundEvidence: number
+	/** The same classification's accent score, carried for the same reason and on the same terms.
+	 * Alone, `foregroundEvidence` says how text-like a family is; it cannot say whether that family
+	 * is *more* text-like than mark-like, which is the only question a role exchange asks. Both
+	 * scores come from one `classifyFieldConditionalFamilyRole` call, so carrying the second costs
+	 * nothing and keeps the two readings of one classification from drifting apart. */
+	accentEvidence: number
 }>
 
 export type RoleEvidence = Readonly<{
@@ -67,6 +73,7 @@ export function buildRoleEvidence(
 				: "ambiguous",
 			confidence: wanted.has(candidate.familyId) ? candidate.confidence : 0,
 			foregroundEvidence: candidate.foreground.score,
+			accentEvidence: candidate.accent.score,
 		})
 	}
 	return {
