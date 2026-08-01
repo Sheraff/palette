@@ -3992,6 +3992,16 @@ function allRepresentatives(representatives: readonly ColorRepresentative[]): Co
 type FieldVariantOptions = Readonly<{
 	representatives: "control" | "all"
 	pairing: "same-index" | "cross-pair"
+	/**
+	 * `"collapsed-only"` emits every pair as its degenerate single field — background only, no
+	 * gradient claim, no surface — and skips the distinctness guards, which exist to refuse a
+	 * *gradient* claim and have nothing to say about a field read as one colour.
+	 *
+	 * Omitted (the default) is the normal reading and is what every ordinary caller uses. The one
+	 * caller that passes it does so only after the normal reading returned nothing at all; see the
+	 * fallback in `buildCompletePaletteTreatmentDomain`.
+	 */
+	treatments?: "all" | "collapsed-only"
 }>
 
 /**
@@ -4050,6 +4060,24 @@ function buildFieldVariants(
 				)
 		for (const [background, surface] of pairs) {
 			if (!background || !surface) continue
+			if (options.treatments === "collapsed-only") {
+				// The collapsed reading of this pair, and nothing else. Identical in shape to the
+				// `one-field` push at the bottom of the ordinary path — the same discount, the same
+				// zero band spread, the same dropped midpoint — because it *is* that treatment,
+				// reached without first having to survive guards that only ever judge a gradient.
+				variants.push({
+					hypothesis,
+					background,
+					surface: background,
+					gradient: false,
+					treatment: "one-field",
+					fieldFidelity: clamp(hypothesis.fieldFidelity * (1 - hypothesis.surfaceContribution * 0.35)),
+					surfaceContribution: hypothesis.surfaceContribution,
+					endpointBandSpread: 0,
+					fieldMidpoint: null,
+				})
+				continue
+			}
 			if (hypothesis.kind !== "one-field" && sameColor(background.rgb, surface.rgb)) continue
 			if (hypothesis.kind === "gradient-field" && okDistance(background.oklab, surface.oklab) < 0.028) continue
 			// A ramp between two colours a viewer would call the same colour renders as flat, so
@@ -4847,7 +4875,30 @@ function buildCompletePaletteTreatmentDomain(
 	hypotheses: readonly FieldHypothesis[],
 	hardMinimum: number,
 ): CompletePaletteTreatmentDomain {
-	const fieldVariants = buildFieldVariants(hypotheses)
+	const proposedVariants = buildFieldVariants(hypotheses)
+	/**
+	 * `buildFieldVariants` can legitimately return nothing: every one of its guards refuses a
+	 * *gradient* claim, and a hypothesis list that has been narrowed to a single gradient-field
+	 * proposal — as endpoint refinement is entitled to do — can have that one proposal refused,
+	 * leaving the empty set. The pair is still two real colours and the artwork is still an artwork,
+	 * so the answer is the collapsed reading of those same hypotheses, not an exception. This is the
+	 * treatment the ordinary path already builds beside every pair it keeps; the gradient-endpoint
+	 * guard one line below the OKLab one says as much in its own comment ("the pair's collapsed
+	 * variant below is left standing"), and the OKLab guard's `continue` is the reason that
+	 * reasoning does not reach here.
+	 *
+	 * Deliberately a fallback rather than a repair of the OKLab guard: widening that guard to drop
+	 * only the gradient claim would add candidates wherever it fires *alongside* other surviving
+	 * pairs, which moves outputs and owes a sweep and a review. This branch can only be taken where
+	 * the previous code threw, so it changes nothing that ever produced a palette: the grain sweep's
+	 * shipped-configuration arm ran the whole 7,587-artwork corpus without once reaching it. See
+	 * `research/v2-3-experiments/zero-variant-fallback/FIX.md`.
+	 */
+	const fieldVariants = proposedVariants.length > 0
+		? proposedVariants
+		: buildFieldVariants(hypotheses, { representatives: "control", pairing: "same-index", treatments: "collapsed-only" })
+	// Still reachable, and still correct to refuse: with no hypothesis carrying a representative
+	// there is no colour to collapse to, and inventing one is not this function's business.
 	if (fieldVariants.length === 0) throw new Error("No field variants are available")
 	const identitySelection = buildIdentityObligationSelection(evidence, hypotheses)
 	const obligationFamilyIds = identitySelection.obligations.map(({ familyId }) => familyId)
