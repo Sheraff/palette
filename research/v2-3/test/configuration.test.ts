@@ -38,6 +38,21 @@ import {
 	REGION_ROLE_SCORE_SUPPORT_BASE,
 	REPRESENTATIVE_DENSITY_RADIUS,
 } from "../src/internal/palette-core.ts"
+import {
+	ENDPOINT_BAND_SAMPLE_POSITIONS,
+	FIELD_SCORE_WEIGHTS,
+	FOREGROUND_ROLE_SCORE_WEIGHTS,
+	REGION_BORDER_INTERIOR_WEIGHTS,
+	REGION_FULL_COMPONENT_FAMILY_FRACTION,
+	REGION_FULL_LOCAL_CONTRAST,
+	REGION_RESOLVED_POPULATION_LOG2_SCALE,
+	REGION_SOURCE_SUPPORT_WEIGHTS,
+	SIGNATURE_CUE_WEIGHTS,
+} from "../src/internal/palette-core.ts"
+import {
+	ACCENT_ROLE_EVIDENCE_WEIGHTS,
+	COHERENT_SUPPORT_WEIGHTS,
+} from "../src/internal/role-obligations.ts"
 import { CHROMA_BIN_ORIGIN_OFFSET } from "../src/internal/band-representative.ts"
 
 /**
@@ -82,6 +97,13 @@ import { CHROMA_BIN_ORIGIN_OFFSET } from "../src/internal/band-representative.ts
  * worst were pinned**. See `test("the pervasive-cliff constants are unchanged")` below and the
  * disposition table at `research/v2-3-experiments/track-p/PINNING.md`. Several pins above also
  * carry a tier-A escalation, downgrade or retraction; those are marked in place.
+ *
+ * TIER B (added 2026-08-01). The same measurement was then run over the *anonymous* half of the
+ * tuning surface — the bare numbers written inline in expressions, which no policy object names.
+ * It found twice as many pervasive cliffs in half as many sites. Seventeen of them survive every
+ * artifact test; they were lifted to named constants and are pinned in
+ * `test("the tier-B cliff constants are unchanged")` below, which also records what was
+ * deliberately left out and why.
  */
 test("the reviewed winner-ranking configuration is unchanged", () => {
 	assert.deepEqual({ ...WINNER_RANKING_HYPOTHESES }, {
@@ -820,6 +842,200 @@ test("the pervasive-cliff constants are unchanged", () => {
 	//
 	// Lifted from bare literals on 2026-08-01; the two chroma axes must always share it.
 	assert.equal(CHROMA_BIN_ORIGIN_OFFSET, 0.5)
+})
+
+/**
+ * The pervasive cliffs, second half — the anonymous inline literals.
+ *
+ * The block above measures the *named* half of the tuning surface: 735 constants and policy fields
+ * that something in the tree already gives a name to. The tier-B sweep (2026-08-01, agent
+ * aa68beee) did the same +-20 % measurement over the other half — the 343 bare numbers written
+ * inline in expressions, which no policy object names and no test could reference at all.
+ *
+ * The anonymous half turns out to be the more consequential one. Two thirds of the named
+ * constants move nothing at +-20 %; only just over a third of the inline ones are that inert. The
+ * inline half carries **twice as many pervasive cliffs in half as many sites** — 33 against 13, a
+ * rate five times higher.
+ *
+ * SEVENTEEN OF THIRTY-THREE. The other sixteen are excluded for two reasons, and neither is
+ * "small effect":
+ *
+ * - **Eight are colour-space definitions, not tunables.** `color.ts`'s `toLabBuffer` carries the
+ *   OKLab M2 matrix verbatim, and the sweep's registry drops colour-space constants by an
+ *   allowlist of enclosing function names that `toLabBuffer` is not on. Perturbing the definition
+ *   of the ruler by 20 % moved 64-98 % of artworks, which is what it should do and is not a
+ *   finding. They are derived, and derived numbers do not get pinned.
+ * - **Eight are one operand of a duplicated comparator, and their measurement is invalid.** The
+ *   foreground and accent ranking formulas are inlined on *both* sides of their `sort` comparator,
+ *   so the registry sees each copy of each weight as an independent site and the sweep perturbed
+ *   one side while leaving the other at its original value. That does not retune anything; it
+ *   makes the comparison asymmetric, scoring `a` by one formula and `b` by another. The signature
+ *   is visible in the data: the two copies of the same `0.16` returned 82 and 86 flips. **No
+ *   number from those eight is carried anywhere in this file**, and the correct measurement —
+ *   moving both copies together as one linked site — has not been made.
+ *
+ * A COVERAGE GAP THIS EXPOSES, and it is not fixed here. `track-p/PINNING.md` lifted and pinned
+ * `FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT` = 0.68 and `ACCENT_RANK_FIDELITY_WEIGHT` = 0.50 — the
+ * **leading term of each of those two ranking formulas** — and left every other term of the same
+ * expression a bare literal: `0.16 * supportQuality`, `0.16 * clamp(contrast / 90)` and the two
+ * `0.25` accent terms are still anonymous, still unpinned, and almost certainly load-bearing. The
+ * file above therefore documents one weight of a three-weight formula and is silent on the rest.
+ * That gap is the eight re-measure sites, and closing it needs the linked-site re-measurement
+ * first; it is deliberately out of scope for this block.
+ *
+ * TAGS. All `[MEASURED]`: the tier-B sweep is a named arm and no review batch ruled on any of
+ * these values directly. As in the block above, what is measured is the **blast radius**, not the
+ * value — every one of the seventeen is undocumented and nothing in the tree derives it.
+ *
+ * VECTORS, NOT TERMS. Thirteen of the seventeen are a single term of a blend vector summing to 1.
+ * Each such vector gets **one** pin, asserting every term and the sum, because perturbing one term
+ * breaks the sum and nothing renormalises downstream — the vector is one decision. Pinning them
+ * term by term would grow thirteen pins for seven choices and would let a merge rebalance a vector
+ * silently as long as it left the measured term alone.
+ */
+test("the tier-B cliff constants are unchanged", () => {
+	const sumsToOne = (weights: Readonly<Record<string, number>>, name: string): void => {
+		const sum = Object.values(weights).reduce((total, weight) => total + weight, 0)
+		assert.ok(Math.abs(sum - 1) < 1e-9, `${name} sums to ${sum}`)
+	}
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. The log2 pixel scale on
+	// which a connected component stops getting credit for being bigger:
+	// `clamp(log2(population + 1) / 8)`, so full credit at 255 pixels. An integer, and perturbed to
+	// the adjacent integers rather than scaled.
+	//
+	// MEASURED CLIFF: live on all 154 artworks, 7 or 9 moves **32 of them (21 %)**. It carries the
+	// strongest over-fitting signature in the whole tier-B sweep together with the endpoint sample
+	// position below — **2.1x** more likely to move unseen artwork than reviewed artwork, against
+	// 1.33x for the sweep at large. Treat any change as a full re-review, and note that this one
+	// specifically should be re-measured on artwork nobody has looked at before it is trusted.
+	assert.equal(REGION_RESOLVED_POPULATION_LOG2_SCALE, 8)
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. The boundary contrast at
+	// which a component counts as fully contrasting: `clamp(localContrast / 0.16)`. A scale
+	// divisor, not a weight — it belongs to no vector, and it is the definition of "high contrast"
+	// for the typography and signature cues alike.
+	//
+	// MEASURED CLIFF: live on all 154 artworks, +-20 % moves **43 (28 %)**.
+	assert.equal(REGION_FULL_LOCAL_CONTRAST, 0.16)
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. The share of its own
+	// colour family a single component must hold to count as fully representative of it:
+	// `clamp(componentFamilyFraction / 0.1)`. Also a scale divisor rather than a weight.
+	//
+	// MEASURED CLIFF: live on all 154 artworks, +-20 % moves **36 (23 %)**.
+	assert.equal(REGION_FULL_COMPONENT_FAMILY_FRACTION, 0.1)
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. The two ways of asking
+	// whether a component sits inside the frame rather than running off it. Sums to 1.
+	//
+	// MEASURED CLIFF: the `borderClearance` term is live on all 154 artworks and +-20 % moves
+	// **44 (29 %)**. The `interiorMargin` term is the remainder of the same degree of freedom.
+	assert.deepEqual({ ...REGION_BORDER_INTERIOR_WEIGHTS }, {
+		borderClearance: 0.75,
+		interiorMargin: 0.25,
+	})
+	sumsToOne(REGION_BORDER_INTERIOR_WEIGHTS, "REGION_BORDER_INTERIOR_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. Where a component's claim
+	// to be a real mark rather than noise comes from: its own resolved pixel count, its share of
+	// the image, and its family's share of the image scaled by how much of that family it is.
+	// Sums to 1.
+	//
+	// MEASURED CLIFFS, ALL THREE: each live on all 154 artworks; +-20 % moves **64 (42 %)** on
+	// `resolvedPopulation`, **44 (29 %)** on `componentShare` and **40 (26 %)** on `familyShare`.
+	// The 0.55 is the largest single non-artifact cliff the tier-B sweep found anywhere.
+	assert.deepEqual({ ...REGION_SOURCE_SUPPORT_WEIGHTS }, {
+		resolvedPopulation: 0.55,
+		componentShare: 0.25,
+		familyShare: 0.2,
+	})
+	sumsToOne(REGION_SOURCE_SUPPORT_WEIGHTS, "REGION_SOURCE_SUPPORT_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. How much of "this
+	// component looks like a logo or wordmark" comes from each of the five cues. Sums to 1.
+	//
+	// MEASURED CLIFFS, ALL FIVE — the densest concentration of them in the algorithm: each live on
+	// all 154 artworks, and +-20 % moves **40 (26 %)** on `geometry`, **39 (25 %)** on
+	// `localContrast`, **36 (23 %)** on `borderInterior`, and **35 (23 %)** on each of `fill` and
+	// `repetition`. Twelve of the seventeen tier-B pin candidates sit in the twenty lines of
+	// `buildRegionObservations` that hold this vector and the two above it.
+	//
+	// THE SHARPEST SINGLE RESULT OF THE TIER-B SWEEP. `typographyCues`, one line up, is the same
+	// five cues with weights .24 / .14 / .22 / .24 / .16 — and it flips 6, 5, 4, 4 and 2 artworks
+	// against these 40, 39, 36, 35 and 35. Two structurally identical formulas ten lines apart,
+	// differing 7-20x in blast radius, and no comment in the file distinguishes them. The
+	// typography weights are deliberately left as bare literals: they are load-bearing, not
+	// cliffs, and pinning them would imply a measurement that says more than it does.
+	assert.deepEqual({ ...SIGNATURE_CUE_WEIGHTS }, {
+		geometry: 0.2,
+		fill: 0.16,
+		repetition: 0.16,
+		localContrast: 0.3,
+		borderInterior: 0.18,
+	})
+	sumsToOne(SIGNATURE_CUE_WEIGHTS, "SIGNATURE_CUE_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. How much of a family's
+	// foreground claim comes from the family-level evidence versus from what the region
+	// observations actually saw of its typography. Sums to 1.
+	//
+	// MEASURED CLIFF: the `typographyObservation` term is live on all 154 artworks and +-20 %
+	// moves **31 (20 %)**. Distinct from `FOREGROUND_RANK_ROLE_EVIDENCE_WEIGHT` above, which
+	// weights this whole score against support quality and contrast one level further out.
+	assert.deepEqual({ ...FOREGROUND_ROLE_SCORE_WEIGHTS }, {
+		familyEvidence: 0.6,
+		typographyObservation: 0.4,
+	})
+	sumsToOne(FOREGROUND_ROLE_SCORE_WEIGHTS, "FOREGROUND_ROLE_SCORE_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. How much of "this family
+	// is the ground the artwork sits on" comes from each piece of evidence: breadth, reaching the
+	// border, being one coherent mass, reaching every quadrant, and being calm. Sums to 1.
+	//
+	// MEASURED CLIFF: the `familyConcentration` term is live on all 154 artworks and +-20 % moves
+	// **35 (23 %)**. `borderCoverage` carries the same 0.22 and was not separately in the top
+	// bucket; changing either without the other rebalances the field hypothesis.
+	assert.deepEqual({ ...FIELD_SCORE_WEIGHTS }, {
+		populationFraction: 0.28,
+		borderCoverage: 0.22,
+		familyConcentration: 0.22,
+		quadrantCoverage: 0.13,
+		edgeDensity: 0.15,
+	})
+	sumsToOne(FIELD_SCORE_WEIGHTS, "FIELD_SCORE_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. Where along the fitted
+	// gradient each end band's expected colour is read off — one tenth in from each extreme, so an
+	// overshooting fit does not set the target the band's candidates are scored against. Not a
+	// blend vector: a position, symmetric about 0.5, and it should stay symmetric.
+	//
+	// MEASURED CLIFF: the high position is live on 113 artworks and +-20 % moves **27 (24 %)**. It
+	// shares the strongest over-fitting signature in the sweep with the population scale above —
+	// **2.1x** unseen against reviewed. The low position was a separate site and did not reach the
+	// top bucket; it is pinned here because moving one without the other breaks the symmetry,
+	// which is the only property on record about either number.
+	assert.deepEqual({ ...ENDPOINT_BAND_SAMPLE_POSITIONS }, { low: 0.1, high: 0.9 })
+	assert.equal(ENDPOINT_BAND_SAMPLE_POSITIONS.low + ENDPOINT_BAND_SAMPLE_POSITIONS.high, 1)
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. How much of "this family
+	// is present enough, and solidly enough, to carry a role" comes from each kind of evidence.
+	// Sums to 1. `role-obligations.ts`, so it gates the accent evidence rather than the field.
+	//
+	// MEASURED CLIFF: the `populationConnectivity` term is live on all 154 artworks and +-20 %
+	// moves **32 (21 %)**.
+	assert.deepEqual({ ...COHERENT_SUPPORT_WEIGHTS }, {
+		regionSupport: 0.45,
+		populationConnectivity: 0.3,
+		familyConcentration: 0.15,
+		observationBreadth: 0.1,
+	})
+	sumsToOne(COHERENT_SUPPORT_WEIGHTS, "COHERENT_SUPPORT_WEIGHTS")
+	// [MEASURED] tier-B sweep 2026-08-01, cliff dossier, agent aa68beee. How much of a family's
+	// accent claim comes from each cue. Sums to 1. `familyAccentRoleEvidence`'s own doc comment
+	// says these weights are "the ones `accentRaw` has carried since Phase 3" — nothing chose
+	// them, and the measurement below is the first thing said about any of them.
+	//
+	// MEASURED CLIFF: the `localContrast` term is live on all 154 artworks and +-20 % moves
+	// **36 (23 %)**.
+	assert.deepEqual({ ...ACCENT_ROLE_EVIDENCE_WEIGHTS }, {
+		compactness: 0.29,
+		repetition: 0.24,
+		chroma: 0.25,
+		localContrast: 0.14,
+		signatureObservation: 0.08,
+	})
+	sumsToOne(ACCENT_ROLE_EVIDENCE_WEIGHTS, "ACCENT_ROLE_EVIDENCE_WEIGHTS")
 })
 
 test("the quality weights sum to one at both stages", () => {
