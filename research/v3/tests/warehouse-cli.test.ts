@@ -112,7 +112,7 @@ describe('cli status', () => {
 			[
 				'batch=b1 purpose=arm items=3 reviewed=2 pending=1 released=2026-08-02T10:04:00.000Z notes=1 endorsed=1 amended=1 last=2026-08-02T10:04:00.000Z',
 				'batch=b2 purpose=calibration items=2 reviewed=1 pending=1 released=no last=2026-08-02T10:05:00.000Z',
-				'batch=- purpose=- items=- reviewed=0 pending=- released=no vetoes=1 labels=1 last=2026-08-02T10:07:00.000Z',
+				'batch=- purpose=- items=- reviewed=1 pending=- released=no vetoes=1 labels=1 last=2026-08-02T10:07:00.000Z',
 				'total batches=2 open=1 records=9 verdicts=3 amendments=1 orphan-amendments=0',
 				'',
 			].join('\n'),

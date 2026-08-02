@@ -33,6 +33,7 @@ import {
 	resolve,
 	gradesByVariant,
 	preferredVariant,
+	supersededOracleLabelIds,
 	supersededVerdictIds,
 } from '../src/warehouse/warehouse.ts'
 import {
@@ -453,11 +454,110 @@ describe('batch status and completion', () => {
 		const options = det()
 		const batch = makeBatch({ id: 'b7', itemCount: 2 })
 		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'strong' }), options)
-		const final = append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
-		append(file, makeAmendment(final.id, {}, { retract: true, reason: 'wrong rendition shown' }), options)
+		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
 		const summary = batchSummaries(readAll(file))[0]!
-		assert.equal(summary.reviewed, 0, 'the surviving draft was superseded; the replacement was retracted')
+		assert.equal(summary.reviewed, 1)
+		assert.equal(summary.pending, 1)
+	})
+
+	it('leaves the earlier draft standing when its replacement is retracted', () => {
+		// A retracted record is never the position and never supersedes anything, so the
+		// reviewer's remaining un-retracted opinion still counts. Matches the review
+		// server, whose #verdicts map keeps the previous state when the latest retracts.
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'b8', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'strong' }), options)
+		const replacement = append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
+		append(file, makeAmendment(replacement.id, {}, { retract: true, reason: 'wrong rendition shown' }), options)
+
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1, 'the draft is the standing position again')
+		assert.equal(summary.pending, 1)
+		assert.equal(supersededVerdictIds(resolve(readAll(file))).size, 0, 'a retracted record supersedes nothing')
+	})
+
+	it('counts a labelled item as judged so a fully answered oracle round can release', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'ob1', purpose: 'oracle-validation', itemCount: 3 })
+		append(file, makeOracleLabel({ batch, imageId: 'pair-1', questionKey: 'same_color', answer: true }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'pair-2', questionKey: 'same_color', answer: false }), options)
+
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.labels, 2)
+		assert.equal(summary.reviewed, 2, 'labels are a judging channel, not a side note')
+		assert.equal(summary.pending, 1)
+		assert.equal(summary.verdicts, 0)
+	})
+
+	it('counts an undone-and-re-answered item once, not twice', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'ob2', purpose: 'oracle-validation', itemCount: 2 })
+		const first = append(file, makeOracleLabel({ batch, imageId: 'pair-1', questionKey: 'same_color', answer: true }), options)
+		const second = append(file, makeOracleLabel({ batch, imageId: 'pair-1', questionKey: 'same_color', answer: false }), options)
+
+		const entries = resolve(readAll(file))
+		assert.deepEqual([...supersededOracleLabelIds(entries)], [first.id], 'the undone answer is superseded')
+		assert.ok(!supersededOracleLabelIds(entries).has(second.id))
+
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.labels, 2, 'both records stay in the log')
+		assert.equal(summary.reviewed, 1, 'one item, answered once')
+		assert.equal(summary.pending, 1)
+	})
+
+	it('keeps labels for different questions and different items apart', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'ob3', purpose: 'oracle-validation', itemCount: 4 })
+		append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'has_text', answer: true }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'ground_type', answer: 'flat_field' }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'img-2', questionKey: 'has_text', answer: false }), options)
+
+		assert.equal(supersededOracleLabelIds(resolve(readAll(file))).size, 0, 'different questions never supersede')
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 2, 'reviewed counts items, and the image id is the item id')
+	})
+
+	it('puts a labelled item back in the queue when the answer is retracted', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'ob4', purpose: 'oracle-validation', itemCount: 2 })
+		const label = append(file, makeOracleLabel({ batch, imageId: 'pair-1', questionKey: 'same_color', answer: true }), options)
+		append(file, makeAmendment(label.id, {}, { retract: true, reason: 'mis-keyed' }), options)
+
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 0)
 		assert.equal(summary.pending, 2)
+	})
+
+	it('counts verdicts, vetoes and labels together in a mixed batch', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'mix1', purpose: 'mechanism', itemCount: 4 })
+		append(file, makeVerdict({ batch, itemId: 'i1' }), options)
+		append(file, makeVeto({ batch, itemId: 'i2', reason: 'disc scan' }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'i3', questionKey: 'has_text', answer: true }), options)
+
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.verdicts, 1)
+		assert.equal(summary.vetoes, 1)
+		assert.equal(summary.labels, 1)
+		assert.equal(summary.reviewed, 3, 'every judging channel counts toward release')
+		assert.equal(summary.pending, 1)
+	})
+
+	it('does not double-count an item that carries both a verdict and a label', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'mix2', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1' }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'i1', questionKey: 'has_text', answer: true }), options)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1)
+		assert.equal(summary.pending, 1)
 	})
 
 	it('groups batch-less records under the placeholder batch', () => {

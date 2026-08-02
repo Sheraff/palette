@@ -306,16 +306,56 @@ export function resolveById(records: Iterable<WarehouseRecord>): Map<string, Res
  * reviewer's process), but nothing downstream may count them twice.
  */
 export function supersededVerdictIds(entries: Resolved[]): Set<string> {
+	return supersededByKey(entries, (entry) =>
+		entry.record.type === 'verdict' ? `${entry.record.batch.id} ${entry.record.itemId}` : null,
+	)
+}
+
+/**
+ * Oracle labels that a later answer to the same question about the same item
+ * replaced.
+ *
+ * The by-question passes are keyboard-driven with undo (REVIEW_UI.md §6), so
+ * re-answering appends a second record; the earlier one is undo, not extra evidence.
+ * Keyed by batch + image + question, matching `analyze-bracketing.ts`
+ * `collectAnswers`. For these rounds the image id *is* the batch's item id (the
+ * review server writes the item id into `imageId`).
+ */
+export function supersededOracleLabelIds(entries: Resolved[]): Set<string> {
+	return supersededByKey(entries, (entry) =>
+		entry.record.type === 'oracle-label'
+			? `${entry.record.batch?.id ?? NO_BATCH} ${entry.record.imageId} ${entry.record.questionKey}`
+			: null,
+	)
+}
+
+/** Everything replaced by a later record on the same item — verdicts and oracle labels. */
+export function supersededIds(entries: Resolved[]): Set<string> {
+	return new Set([...supersededVerdictIds(entries), ...supersededOracleLabelIds(entries)])
+}
+
+/**
+ * The reviewer's standing position per item: for each key the latest non-retracted
+ * record wins, ties broken by append order.
+ *
+ * A retracted record is never the position and never supersedes anything —
+ * withdrawing a re-answer leaves the previous answer standing. This matches the
+ * review server (`server.ts` `#verdicts` / `#answers`, where a retracted record
+ * keeps the previous state as the position) and `analyze-bracketing.ts`
+ * `collectAnswers` (which drops retracted records before choosing the latest).
+ */
+function supersededByKey(entries: Resolved[], keyOf: (entry: Resolved) => string | null): Set<string> {
 	const latest = new Map<string, { id: string; ts: string; index: number }>()
 	const superseded = new Set<string>()
 	entries.forEach((entry, index) => {
-		const record = entry.record
-		if (record.type !== 'verdict') return
-		const key = `${record.batch.id} ${record.itemId}`
+		if (entry.retracted) return
+		const key = keyOf(entry)
+		if (key === null) return
+		const ts = entry.record.ts
 		const current = latest.get(key)
-		if (!current || current.ts < record.ts || (current.ts === record.ts && current.index < index)) {
+		if (!current || current.ts < ts || (current.ts === ts && current.index < index)) {
 			if (current) superseded.add(current.id)
-			latest.set(key, { id: entry.original.id, ts: record.ts, index })
+			latest.set(key, { id: entry.original.id, ts, index })
 		} else {
 			superseded.add(entry.original.id)
 		}
@@ -433,9 +473,11 @@ export interface BatchSummary {
 	/** Batch size declared at push time, or null when no record carried it. */
 	itemCount: number | null
 	/**
-	 * Distinct item ids that have been judged: a non-superseded, non-retracted verdict
-	 * OR a non-retracted veto. A vetoed item is judged — the reviewer ruled it out of
-	 * the corpus, which is a decision, not a skip — so it does not hold up release.
+	 * Distinct item ids that have been judged. An item counts when it carries the
+	 * reviewer's standing position in any judging channel: a verdict, a veto, or an
+	 * oracle label (bracketing and oracle-validation rounds produce labels, not
+	 * verdicts). Retracted and superseded records do not count — a vetoed item is
+	 * judged, because ruling an artwork out of the corpus is a decision, not a skip.
 	 */
 	reviewed: number
 	/** itemCount − reviewed, or null when itemCount is unknown. */
@@ -464,7 +506,7 @@ export const NO_BATCH = '-'
 export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary[] {
 	const all = [...records]
 	const entries = resolve(all)
-	const superseded = supersededVerdictIds(entries)
+	const superseded = supersededIds(entries)
 	const order: string[] = []
 	const summaries = new Map<string, BatchSummary>()
 	const reviewedItems = new Map<string, Set<string>>()
@@ -528,6 +570,11 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 				break
 			case 'oracle-label':
 				summary.labels++
+				// A labelled item is judged. Oracle-validation and bracketing rounds produce
+				// labels instead of verdicts, so without this a fully answered round would
+				// report every item as pending and never look releasable.
+				if (!entry.retracted && !superseded.has(entry.original.id))
+					reviewedItems.get(batchId)!.add(record.imageId)
 				if (record.batch && summary.purpose === null) summary.purpose = record.batch.purpose
 				if (record.batch && summary.itemCount === null) summary.itemCount = record.batch.itemCount
 				break

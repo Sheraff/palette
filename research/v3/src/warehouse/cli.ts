@@ -54,7 +54,7 @@ import {
 	readAll,
 	recheckFundedBy,
 	resolve,
-	supersededVerdictIds,
+	supersededIds,
 	NO_BATCH,
 	type FundedDecision,
 	type QueryFilter,
@@ -346,10 +346,11 @@ function cmdQuery(records: WarehouseRecord[], values: Values): CliResult {
 		excludeRetracted: Boolean(values['no-retracted']),
 	}
 
-	// Pre-release re-grades append a second verdict for the same item; the last one is
-	// the reviewer's position. Superseded drafts stay visible and flagged, never
-	// silently dropped, unless --latest asks for the position only.
-	const superseded = supersededVerdictIds(entries)
+	// Pre-release re-grades and undone label answers append a second record for the
+	// same item; the last one is the reviewer's position. Superseded records stay
+	// visible and flagged, never silently dropped, unless --latest asks for the
+	// position only.
+	const superseded = supersededIds(entries)
 	const kept = values.latest ? entries.filter((entry) => !superseded.has(entry.original.id)) : entries
 
 	const matched = filterResolved(kept, filter)
