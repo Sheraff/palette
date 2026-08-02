@@ -6,7 +6,10 @@ TypeScript 5.6 types only (no build step). Use the **root** `package.json` depen
 available: `sharp` (image decode/metadata, AVIF-capable), `apca-w3`, `colornames-oklab`,
 `colorjs.io`, `@types/node`. **Never install packages; never edit `package.json`** (the
 orchestrator reconciles scripts/deps at integration). Python only where local models require
-it, in a project-local venv, never system-wide.
+it, in a project-local venv, never system-wide. If the environment itself blocks you (system
+interpreter too old, wheel unavailable), stop and escalate with the exact failure — a
+user-local interpreter under your owned path is acceptable; any global change (including a
+global Python upgrade) is the reviewer's call, never an agent's or the orchestrator's.
 
 **Path ownership (Phase 0)** — work only inside your owned paths:
 

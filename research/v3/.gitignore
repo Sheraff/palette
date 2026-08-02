@@ -1,3 +1,6 @@
+# batches.jsonl holds the blinding keys (variant ids) of open review batches —
+# committing it would unblind them. The warehouse JSONL itself IS committed.
+**/batches.jsonl
 data/embeddings/*.npy
 data/embeddings/*.npz
 data/embeddings/shards/

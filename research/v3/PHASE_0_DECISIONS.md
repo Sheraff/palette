@@ -114,8 +114,10 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
 
 ### Invariants
 
-1. **Schema validity.** Four roles present, valid sRGB, stops 2–4 with ordered positions in
-   [0,1], collapse flags consistent, metadata block complete.
+1. **Schema validity.** Four roles present, valid sRGB, stops 2–4 with strictly increasing
+   positions spanning exactly [0,1] (first = 0, last = 1 — positions are normalized over the
+   ramp's own span; hard stops/plateaus are not expressible, consistent with
+   flattest-path-on-artwork), collapse flags consistent, metadata block complete.
 2. **Source support.** Every published color (roles and stops) is an exact pixel of the input,
    meeting the population floor and spatial-spread test (thresholds need provenance; shape
    settled).
@@ -136,7 +138,13 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
    **measured, not chosen** (from the distribution of raw values over corpus pairs).
    *Implementation note (2026-08-02):* this invariant is realized as the contrast parameters'
    **floor** — each parameter's default = minimum = its ε (§2), so the invariant is simply the
-   parameter at its lowest setting; there is no separate enforcement path. Open measurement question for the accent: text readability at equal luminance is
+   parameter at its lowest setting; there is no separate enforcement path.
+   *Measured constraint (2026-08-02):* identical colors do NOT produce raw APCA 0 — the
+   formula's reverse branch leaves a luminance-dependent residue peaking at **|raw| = 1.9815**
+   (`[MEASURED]`, exhaustive Y scan). Both ε values must exceed that ceiling or a literally
+   identical fg/bg pair passes; the corpus ε distribution starts there, not at 0.
+   *Scope note:* when `accentCollapsed` is set, the accent pairs are skipped — a collapsed
+   accent is the foreground and is validated as such; it has no independent existence. Open measurement question for the accent: text readability at equal luminance is
    luminance-driven, but chromatic icons at equal luminance can be visible — the accent floor
    may properly live in color distance (already enforced by distinctness) or at a lower
    luminance epsilon; the bracketing round shows flat equal-luminance chromatic accent pairs

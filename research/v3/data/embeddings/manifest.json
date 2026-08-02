@@ -1,0 +1,72 @@
+{
+  "stage": "oracle-stage-1-embeddings",
+  "spec": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md sections 2.1, 6",
+  "written_at": "2026-08-02T18:18:58Z",
+  "model": {
+    "open_clip_model_name": "ViT-SO400M-16-SigLIP2-384",
+    "open_clip_pretrained_tag": "webli",
+    "hf_repo": "timm/ViT-SO400M-16-SigLIP2-384",
+    "hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+    "observed_hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+    "weights_filename": "open_clip_model.safetensors",
+    "weights_sha256": "8ceec00df3c462d155d172933339cd9178a86bfab72f4458dbe84bd54f5ad026",
+    "weights_path_present": true
+  },
+  "versions": {
+    "python": "3.14.3",
+    "torch": "2.13.0",
+    "open_clip_torch": "3.3.0",
+    "pillow": "12.3.0",
+    "pillow_avif_plugin": "1.6.0",
+    "numpy": "2.5.1"
+  },
+  "embedding": {
+    "dim": 1152,
+    "dtype": "float32",
+    "l2_normalized": true,
+    "device": "mps",
+    "batch_size": 8,
+    "torch_dtype": "float32"
+  },
+  "preprocessing": {
+    "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then the transform open_clip ships with this checkpoint: bicubic resize to 384x384 (square, aspect ratio not preserved), to float tensor, normalize with mean 0.5 and std 0.5 per channel.",
+    "input_side_px": 384,
+    "aspect_ratio_preserved": false,
+    "resolution_cap_applied": null,
+    "alpha_flatten_background_rgb": [
+      255,
+      255,
+      255
+    ],
+    "exif_transpose": true
+  },
+  "determinism": {
+    "same_batch_composition": "bit-identical, both on repeat within one process and across two separate processes (measured 2026-08-02 with determinism_check.py on three images: JPEG, AVIF, large PNG)",
+    "different_batch_composition": "not bit-identical. Changing the batch size or an image's neighbours moves components by up to ~1e-6 absolute; cosine similarity to the batch-of-1 vector stays >= 0.9999999. Reproduced on the CPU device, so this is float reduction order in the batched matmul, not an MPS defect.",
+    "consequence": "neighbour rankings and any threshold on cosine similarity are unaffected. A byte-identical .npy requires one uninterrupted pass at a fixed batch size; a resumed run re-batches and will differ in the last ~6 decimal places for the files embedded after the restart."
+  },
+  "identity": {
+    "row_key": "file path relative to the repository root, plus sha256 of the file bytes",
+    "note": "one row per FILE, not per artwork; renditions of the same artwork each get their own row (spec section 6.1)"
+  },
+  "collections": {
+    "sharded": {
+      "root": "{00..09,0a..0f,10..14}/",
+      "files_enumerated": 7550,
+      "files_embedded": 0,
+      "files_failed": 0,
+      "npy": "sharded.npy",
+      "ids": "sharded.ids.jsonl",
+      "complete": false
+    },
+    "music_artworks": {
+      "root": "music-artworks/",
+      "files_enumerated": 8595,
+      "files_embedded": 0,
+      "files_failed": 0,
+      "npy": "music_artworks.npy",
+      "ids": "music_artworks.ids.jsonl",
+      "complete": false
+    }
+  }
+}
