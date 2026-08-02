@@ -56,11 +56,14 @@ chaotic → ~0.
   rendition + processed size. This is what keeps every verdict permanently scopable.
 - **The review-UI preview renderer is part of the contract** — gradient verdicts are verdicts
   about a rendered ramp; pin the renderer alongside the schema.
-- **Minimum-contrast user parameters**, all defaulting to none: `minTextContrast` (foreground
-  vs background, surface, and every published stop) and `minAccentContrast` (accent vs same —
-  accent is not text; its stakes are lower and it gets its own knob). Unit: APCA Lc, evaluated
-  internally on raw pre-clamp values (the public unit has a dead band in (0, 7.3); the
-  implementation must not). Along a gradient: the **indistinct fraction** (length of ramp below
+- **Minimum-contrast user parameters — always set, never "none":** `minTextContrast`
+  (foreground vs background, surface, and every published stop) and `minAccentContrast`
+  (accent vs same — accent is not text; its stakes are lower and it gets its own knob). Each
+  parameter's **default value = its minimum value = an experimentally determined ε** near
+  zero, expressed in raw pre-clamp APCA units, inside the range that Lc clamps to 0
+  (|raw| < ~10). Callers can raise the floor, never lower it below ε. API surface: the public
+  unit is Lc, evaluated internally as `max(requested_raw, ε_raw)` — necessary because the
+  default/minimum lives below Lc's expressible range (its dead band in (0, 7.3)). Along a gradient: the **indistinct fraction** (length of ramp below
   the bar, computed on raw values to avoid the zero-clamp phantom-flip artifact) — floor +
   max-fraction parameter shape; exact defaults open, pathology-census discussion.
 - **Where parameters act is deliberately NOT decided** — "winner-stage repair" presumes
@@ -130,7 +133,10 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
    threshold**. "Exact zero" is operationally a small interval `|raw APCA| < ε` on the **raw
    pre-clamp scale** — necessarily raw, because the public Lc scale clamps everything below
    ~7.3 to 0 and cannot distinguish "truly invisible" from "very low but real". Each ε is
-   **measured, not chosen** (from the distribution of raw values over corpus pairs). Open measurement question for the accent: text readability at equal luminance is
+   **measured, not chosen** (from the distribution of raw values over corpus pairs).
+   *Implementation note (2026-08-02):* this invariant is realized as the contrast parameters'
+   **floor** — each parameter's default = minimum = its ε (§2), so the invariant is simply the
+   parameter at its lowest setting; there is no separate enforcement path. Open measurement question for the accent: text readability at equal luminance is
    luminance-driven, but chromatic icons at equal luminance can be visible — the accent floor
    may properly live in color distance (already enforced by distinctness) or at a lower
    luminance epsilon; the bracketing round shows flat equal-luminance chromatic accent pairs
@@ -138,6 +144,14 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
 5. **Transparent input refused loudly** (§1), never silently flattened.
 
 ### Pathology census (counted per run; instances feed review batches)
+
+**The census is a development instrument, not runtime behavior.** It never modifies any
+published palette, for any caller, with or without parameters — it counts suspicious
+conditions over lab corpus runs and queues instances for review. When reviewing proves a
+condition genuinely always-bad, the fix lands in the algorithm itself or the condition is
+promoted to an invariant; that is how pathologies stop happening. A statistic may appear in
+both worlds (e.g. the indistinct fraction: runtime enforcement only under a caller's
+`minTextContrast`; census metric always, at a fixed internal reference bar).
 
 - **P1 — Off-artwork ramp:** rendered gradient's worst excursion from populated artwork colors
   above the excursion bar, after guide stops. Bar inherited (2.5× same-color) — recalibrate in
@@ -176,12 +190,39 @@ Gradient rate moved in either direction (neutrality census); collapse rates per 
 v2-3 corrections); mover-set composition (any mover without the targeted defect = cascade
 canary).
 
-## 5. Open items
+## 5. Corpus, holdout, and legacy data (discussed 2026-08-02)
+
+- **No holdout in the sharded corpus.** Upstream supply of fresh same-source folders is
+  effectively unlimited (per the reviewer) — never-seen evaluation comes from importing fresh
+  shards on demand; fresh-artwork rounds stay the idle-time default.
+- **Holdout in `music-artworks/`: yes.** It is complete (the reviewer's personal library — the
+  closest set to the deployment distribution, and no more where it came from). Reserve a
+  random ~15% of the ~3,097 album-artwork candidates, stratified by resolution band,
+  multi-rendition artworks kept whole on one side of the line; freeze the list in a committed
+  file. Excluded from review, dev batches, outlier mining, and tuning — touched only for
+  end-of-campaign claims. The resolution ladder draws from the non-holdout 85%.
+- **v2-3 verdicts are NOT imported into the v3 warehouse.** Their value is distilled into two
+  purpose-built fixture files consumed only by mechanical checks: **known-bad palettes** (feeds
+  the known-worse gate) and **endorsements** (feeds the concordance dashboard and reachability
+  diagnostics), each entry carrying scoping metadata (rendition, old contract version).
+  Rationale: the data's value flows through exactly the two sanctioned channels; nothing can
+  mistake them for current verdicts because they are not verdicts anywhere — and the v3
+  warehouse schema (dual grades, code fingerprints) structurally rejects old-format records.
+  Free-text lessons are already distilled in the field guide (adversarial checklist).
+- **Languages:** TypeScript for almost everything; Python/MLX only where local models require
+  it. **Long runs:** the orchestrator asks before starting or resuming any long run; the
+  reviewer gives the go-ahead and calls cool-downs.
+
+## 6. Open items
 
 - Same-color-bar bracketing round (ruler unit + threshold; §3) — now also carries: the accent
   flat-zero unit/epsilon question (§4 invariant 4), the excursion bar recalibration (P1), and
   flat equal-luminance chromatic accent pairs.
 - Foreground exact-zero epsilon: measurement-only (raw APCA distribution over corpus pairs).
-- ~~Contrast-parameter defaults~~ **Settled (2026-08-02):** with no parameters set, the
-  algorithm enforces the §4 invariants and nothing else. No hidden contrast opinions anywhere
-  ("no parameter means no behavior" — reviewer).
+- ~~Contrast-parameter defaults~~ **Settled (2026-08-02, after two rounds of relitigation):**
+  the contrast parameters are **always set** — default = minimum = the experimentally
+  determined ε of §4 invariant 4, in raw APCA units near zero. Callers can only raise the
+  floor. Runtime enforcement is therefore: (1) the algorithm's reviewer-calibrated judgment +
+  (2) the invariants (which include the parameters at their ε floors); anything above ε is
+  caller opt-in. The pathology census remains a lab-only instrument (see §4), always active
+  during development, never part of the shipped algorithm's runtime for any caller.
