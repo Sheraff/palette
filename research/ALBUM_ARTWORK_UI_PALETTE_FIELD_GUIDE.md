@@ -79,9 +79,13 @@ about forty experimental arms. This is what we'd tell ourselves at the start.
    prevented one. The goal is to represent what the artwork *is*. Enforce neutrality **by
    construction** — run gradient-color mechanisms *after* the gradient boolean is decided —
    not by measuring and hoping. Every mechanism we built this way was provably neutral;
-   the one we built inside candidate generation broke neutrality immediately. (A principled
-   alternative we never built: price the gradient claim symmetrically inside the fit itself
-   — see the MDL idea in §6.)
+   both mechanisms we built inside candidate generation broke neutrality. The sharpest
+   case: a generation-stage surface-supply mechanism looked perfectly neutral on a
+   63-artwork panel (zero gradient flips either way) and at corpus scale destroyed
+   **24 gradients against 1 allowed** while moving 17.6% of the corpus — **panel
+   neutrality is not corpus neutrality**; only a census settles it. (A principled
+   alternative we never built: price the gradient claim symmetrically inside the fit
+   itself — see the MDL idea in §6.)
 5. **A gradient means continuous shading within one physical surface** ("shadows on the same
    surface"), never a transition between two distinct areas ("the sky and the grass are just
    different areas"). This distinction is the single most important gradient decision and it
@@ -300,8 +304,9 @@ Signals that were tried and **refuted or corrected**:
   chromatic") — measured across 250 verdicts: endorsed accents sit *closer* in hue to the
   other roles (27.7°) than complained-about ones (37.2°); ~40% of endorsed palettes share
   the feature without complaint. Correct as a description of individual artworks, wrong as
-  a rule. The *real* accent signal in corrections is **artwork-salience match** (39% of
-  accent corrections).
+  a rule. The *real* accent signal in corrections is **artwork-salience match** — about
+  half of the accent-changing corrections on re-measurement (19/39; the first pass said
+  39%).
 - **"Corrections reveal ranking failures, not generation gaps" — a seductive early claim we
   later retracted.** The early audit found 7 of 7 checkable corrected accents already in
   the candidate pool. A later, deeper arm reversed it: the wanted accents mostly **never
@@ -336,9 +341,10 @@ What survived:
   target*, and our target was read at positions 0.1/0.9 — an uncommented literal whose
   "deliberate overshoot" rationale turned out to be written days after the fact, by the
   commit that named it. The true ramp extends beyond both endpoints. The fix that works:
-  walk each endpoint *outward* along the field's own local shading direction (principal
-  axis of the field domain's pixels — NOT the whole image; restricting to the field's own
-  pixels is what makes it sound), stepping while source support holds. Merely re-aiming
+  walk each endpoint *outward* along the field's own local shading direction (the principal
+  axis of the field domain's pixels' *OKLab colors* — a color-covariance axis, not a
+  spatial one — computed over the field's own pixels, NOT the whole image; restricting to
+  the field's pixels is what makes it sound), stepping while source support holds. Merely re-aiming
   the band read at 0.0/1.0 does ~nothing (−5.8% aggregate): the candidate pool, not the
   aim point, is the binding constraint. Final adjudicated record of our walk: 3 wins, 3
   losses, 6 ties among verdicts that transferred to the honestly-measured path, becoming
@@ -424,8 +430,9 @@ What survived:
   scale. (Caveat on the caveat: our reviewer calibrated on our own outputs, so some H-K
   bias may already be absorbed into the verdicts.)
 - **Pareto frontier + banded comparator** for ranking — works, with one caution: the
-  Pareto filter can veto the comparator's #1 choice (measured on real artworks). Know which
-  of the two is authoritative and test the disagreement case explicitly.
+  Pareto filter can veto the comparator's #1 choice (first pass measured 5 of 34 dev
+  artworks; a re-measurement put it at 1 of 34 — rare but real). Know which of the two is
+  authoritative and test the disagreement case explicitly.
 - **Power iteration** for principal axes (seeded deterministically — we seeded with the
   chord so ties resolve stably without an eigensolver).
 - **Sequential early stopping for parameter sweeps** — a per-direction stopping rule
@@ -628,8 +635,10 @@ Test set to build on day one (our recurring deciders):
   was recomputation** — a diagnostic call re-fitting gradients on an already-fitted
   object, and 88% of one module's attempts refusable by an already-computed free gate.
 - **Performance work only with byte-identical proof** from committed states, and honest
-  wall-clock measurement under controlled load — "don't keep performance attempts that
-  don't actually measure any real improvement." Re-profile after every pass (§8.16).
+  measurement — "don't keep performance attempts that don't actually measure any real
+  improvement." The method that worked: **process CPU time (user+system), never wall
+  clock, with A/B runs interleaved at process granularity** so machine-load drift charges
+  both sides equally. Re-profile after every pass (§8.16).
 - **Perf passes create hazards elsewhere**: one pass duplicated a color-conversion function
   and the parameter sweep later flagged the copy's matrix coefficients as "tunable
   constants". Keep derived-math exclusions keyed to something better than function names.
