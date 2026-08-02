@@ -40,10 +40,13 @@ import { append, readAll, resolve as resolveAmendments } from "../warehouse/ware
 import { BadRequest, blindSidePayload, materialize, parseBatch } from "./batch.ts"
 import { newAnswerToken, newBlindingSalt, sha256 } from "./blinding.ts"
 import {
+	BRACKETING_ACTIVE_BATCH_ID,
 	BRACKETING_FIXTURE_PATH,
 	BRACKETING_FIXTURE_VERSION,
 	type BracketingFixture,
 } from "./bracketing.ts"
+
+export { BRACKETING_ACTIVE_BATCH_ID }
 import { JsonlAppender, readJsonl } from "./store.ts"
 import {
 	isBracketingBatch,
@@ -394,16 +397,18 @@ export class ReviewService {
 	 * Push a bracketing round. The fixture carries the truth (real distances, controls, which items
 	 * are silent repeats); none of it is served.
 	 */
-	async pushBracketing(fixture: BracketingFixture, fundedBy: readonly string[] = []): Promise<{ batchId: string; itemCount: number }> {
+	async pushBracketing(
+		fixture: BracketingFixture,
+		fundedBy: readonly string[] = [],
+		batchId = fixture.batchId,
+	): Promise<{ batchId: string; itemCount: number }> {
 		if (fixture.fixtureVersion !== BRACKETING_FIXTURE_VERSION) {
 			throw new BadRequest(`Unknown bracketing fixture version ${fixture.fixtureVersion}`)
 		}
-		if (this.#batches.has(fixture.batchId) || this.#bracketing.has(fixture.batchId)) {
-			throw new Conflict(`Batch ${fixture.batchId} already exists`)
-		}
+		if (this.has(batchId)) throw new Conflict(`Batch ${batchId} already exists`)
 		const stored: StoredBracketingBatch = {
 			kind: "bracketing",
-			batchId: fixture.batchId,
+			batchId,
 			purpose: "calibration",
 			fundedBy: [...fundedBy],
 			pushedAt: new Date().toISOString(),
@@ -439,6 +444,10 @@ export class ReviewService {
 			pushedAt: stored.pushedAt,
 			released: release !== undefined,
 			releasedAt: release?.ts ?? null,
+			// The wording comes from the fixture, so the page cannot drift from what the answers were
+			// recorded under. A threshold only means something against the question that produced it.
+			prompts: stored.fixture.prompts,
+			criterion: stored.fixture.criterion,
 			items: stored.fixture.serveOrder.map((itemId) => {
 				const item = byId.get(itemId)!
 				const answered = this.#answers.get(itemKey(batchId, itemId))
@@ -870,11 +879,19 @@ export async function seedDemoBatch(service: ReviewService, fixturePath = DEMO_B
 	return pushed.batchId
 }
 
-/** Push the committed bracketing round if it is not in the queue yet. Idempotent by batch id. */
-export async function seedBracketingRound(service: ReviewService, fixturePath = BRACKETING_FIXTURE_PATH): Promise<string | null> {
+/** Push the active bracketing round if it is not in the queue yet. Idempotent by batch id. */
+export async function seedBracketingRound(
+	service: ReviewService,
+	fixturePath = BRACKETING_FIXTURE_PATH,
+	batchId = BRACKETING_ACTIVE_BATCH_ID,
+): Promise<string | null> {
 	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as BracketingFixture
-	if (service.has(fixture.batchId)) return null
-	const pushed = await service.pushBracketing(fixture, ["PHASE_0_DECISIONS.md §3 — the one ruler is [UNCALIBRATED]"])
+	if (service.has(batchId)) return null
+	const pushed = await service.pushBracketing(
+		fixture,
+		["PHASE_0_DECISIONS.md §3 — the one ruler is [UNCALIBRATED]", `criterion: ${fixture.criterion}`],
+		batchId,
+	)
 	return pushed.batchId
 }
 

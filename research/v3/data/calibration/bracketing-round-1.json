@@ -3,6 +3,17 @@
 	"batchId": "bracketing-round-1",
 	"seed": 20260802,
 	"generatedBy": "research/v3/src/review-server/bracketing.ts",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"prompts": {
+		"same-color": {
+			"question": "Same color?",
+			"instruction": "Answer whether they register as the same color — not whether you can detect any difference at the seam. If you have to hunt along the boundary to find it, they're the same color. If they'd read as two different colors in a UI, they're different."
+		},
+		"accent-visible": {
+			"question": "Can you clearly see the shapes?",
+			"instruction": "Would these icons work as UI elements? If you have to hunt for them or they strain, answer no."
+		}
+	},
 	"quadrantBoundaries": {
 		"lightness": 0.55,
 		"chroma": 0.05

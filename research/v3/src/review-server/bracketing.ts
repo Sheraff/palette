@@ -69,6 +69,50 @@ export const QUADRANT_LIGHTNESS_BOUNDARY = 0.55
  */
 export const QUADRANT_CHROMA_BOUNDARY = 0.05
 
+/**
+ * The criterion the reviewer is answering under.
+ *
+ * [REVIEWED] — clarified by the reviewer mid-session, 2026-08-02. The first pass was abandoned
+ * because it was being answered under a *detection* criterion ("can I see any difference at the
+ * seam") rather than the intended *identity* one ("do these register as the same colour"). Those
+ * are different thresholds — detection is far more sensitive — so the two passes must never be
+ * pooled. This string is stamped on the fixture and repeated in the analysis output; the round that
+ * collected the answers is identified by its batch id.
+ */
+export const BRACKETING_CRITERION =
+	"register-as-same, clarified 2026-08-02 after a false start under a detection criterion"
+
+/**
+ * The round currently in front of the reviewer.
+ *
+ * The fixture's own `batchId` names the *pairs*; this names the *pass* over them. The first pass
+ * (`bracketing-round-1`) was abandoned mid-session because it was being answered under a detection
+ * criterion, so it was re-pushed under this id with fresh tokens. Its answers stay in the warehouse
+ * — the log is append-only and they are evidence about what happened — and nothing pools the two:
+ * the analysis fits exactly one batch id.
+ * [REVIEWED] — reviewer, 2026-08-02.
+ */
+export const BRACKETING_ACTIVE_BATCH_ID = "bracketing-round-1-clarified"
+
+/**
+ * The reviewer-facing wording, verbatim. It lives in the fixture rather than in the page so that
+ * what was asked travels with the answers: a threshold is only meaningful against the question that
+ * produced it, and this round has already been re-run once for exactly that reason.
+ */
+export const PART_PROMPTS = {
+	"same-color": {
+		question: "Same color?",
+		instruction:
+			"Answer whether they register as the same color — not whether you can detect any difference at the seam. " +
+			"If you have to hunt along the boundary to find it, they're the same color. " +
+			"If they'd read as two different colors in a UI, they're different.",
+	},
+	"accent-visible": {
+		question: "Can you clearly see the shapes?",
+		instruction: "Would these icons work as UI elements? If you have to hunt for them or they strain, answer no.",
+	},
+} as const
+
 /** The four strata of §3, in fixed order. */
 export const QUADRANTS = ["dark-neutral", "dark-saturated", "light-neutral", "light-saturated"] as const
 export type Quadrant = (typeof QUADRANTS)[number]
@@ -167,6 +211,10 @@ export type BracketingFixture = Readonly<{
 	batchId: string
 	seed: number
 	generatedBy: string
+	/** What the reviewer was asked to judge. See `BRACKETING_CRITERION`. */
+	criterion: string
+	/** The exact wording shown on the page, per question. */
+	prompts: typeof PART_PROMPTS
 	quadrantBoundaries: Readonly<{ lightness: number; chroma: number }>
 	prior: Readonly<{ sameColorBar: number }>
 	items: readonly BracketingItem[]
@@ -468,6 +516,8 @@ export function generateBracketingFixture(batchId = "bracketing-round-1", seed =
 		batchId,
 		seed,
 		generatedBy: "research/v3/src/review-server/bracketing.ts",
+		criterion: BRACKETING_CRITERION,
+		prompts: PART_PROMPTS,
 		quadrantBoundaries: { lightness: QUADRANT_LIGHTNESS_BOUNDARY, chroma: QUADRANT_CHROMA_BOUNDARY },
 		prior: { sameColorBar: SAME_COLOR_BAR },
 		items,

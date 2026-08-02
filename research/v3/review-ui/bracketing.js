@@ -10,13 +10,14 @@
  * see which pair is the control is no longer measuring anything.
  */
 
-const QUESTIONS = {
-	"same-color": "same colour?",
-	"accent-visible": "can you clearly see the shapes?",
-}
-
+/*
+ * The wording is served with the batch, never hardcoded here: the reviewer's first pass was
+ * abandoned because the criterion was ambiguous on screen, and the fix only holds if the words on
+ * the page are the same words recorded alongside the answers.
+ */
 const nodes = {
 	question: document.querySelector("#question"),
+	instruction: document.querySelector("#instruction"),
 	progress: document.querySelector("#progress"),
 	stage: document.querySelector("#stage"),
 	status: document.querySelector("#status"),
@@ -76,6 +77,7 @@ function renderAccent(item) {
 function render() {
 	if (index >= batch.items.length) {
 		nodes.question.textContent = "every item answered"
+		nodes.instruction.textContent = ""
 		nodes.progress.textContent = `${batch.items.length} / ${batch.items.length}`
 		nodes.stage.replaceChildren(
 			el(
@@ -87,7 +89,9 @@ function render() {
 		return
 	}
 	const item = batch.items[index]
-	nodes.question.textContent = QUESTIONS[item.part] ?? item.part
+	const prompt = batch.prompts?.[item.part] ?? { question: item.part, instruction: "" }
+	nodes.question.textContent = prompt.question
+	nodes.instruction.textContent = prompt.instruction
 	const answered = batch.items.filter((entry) => entry.answer !== null).length
 	nodes.progress.textContent =
 		`${index + 1} / ${batch.items.length}` +
@@ -160,10 +164,15 @@ async function start() {
 	try {
 		const queue = await api("/api/queue")
 		const wanted = new URL(globalThis.location.href).searchParams.get("batch")
+		// The NEWEST unreleased round, not the first: an abandoned earlier pass must never be the one
+		// the reviewer lands on.
+		const rounds = queue.batches
+			.filter((entry) => entry.kind === "bracketing")
+			.sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1))
 		const chosen =
 			queue.batches.find((entry) => entry.batchId === wanted) ??
-			queue.batches.find((entry) => entry.kind === "bracketing" && !entry.released) ??
-			queue.batches.filter((entry) => entry.kind === "bracketing").at(-1)
+			rounds.filter((entry) => !entry.released).at(-1) ??
+			rounds.at(-1)
 		if (chosen === undefined) {
 			nodes.question.textContent = "no bracketing round in the queue"
 			status("push one to /api/bracketing")

@@ -165,6 +165,25 @@ what `PHASE_0_DECISIONS.md` §3 leaves `[UNCALIBRATED]`: the same-colour bar.
 Keyboard only: **y** yes · **n** no · **u** undo one · **r** release when finished. It auto-advances,
 resumes wherever you stopped, and is meant for ten-minute chunks. 72 items.
 
+**The criterion is on screen for every item**, and it is served from the fixture rather than written
+into the page, so the words the reviewer read are the words recorded beside the answers. Part 1 asks
+*"Same color?"* under: *answer whether they register as the same color — not whether you can detect
+any difference at the seam; if you have to hunt along the boundary to find it, they're the same
+color; if they'd read as two different colors in a UI, they're different.* Part 2 asks *"Can you
+clearly see the shapes?"* under: *would these icons work as UI elements? If you have to hunt for
+them or they strain, answer no.*
+
+**Rounds are passes, not pairs.** The fixture's `batchId` names the pairs; the batch id in the queue
+names the pass over them. The first pass (`bracketing-round-1`) was abandoned mid-session because it
+was being answered on a detection criterion, so the same pairs were re-pushed as
+`bracketing-round-1-clarified` (`BRACKETING_ACTIVE_BATCH_ID`) with fresh tokens and a clean start at
+item 1. The abandoned answers stay in the warehouse — the log is append-only and they are evidence
+about what happened — and **the analysis fits exactly one batch id**, defaulting to the active one.
+Pooling the two would have moved the threshold by a factor of three with nothing in the output
+looking wrong; a test asserts it cannot happen. Analyse an older pass with `--batch <id>`, which
+also prints a warning that the fixture's criterion line may not be the one that pass was answered
+under.
+
 - **Part 1, 60 items — "same colour?"** Two large flat fields, a thin black divider, nothing else on
   screen. 4 quadrants (dark/light × neutral/saturated, boundaries at OKLab lightness 0.55 and chroma
   0.05, both `[MEASURED]` against sRGB anchors in `bracketing.ts`) × 12 log-spaced distances from

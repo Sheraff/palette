@@ -34,6 +34,7 @@ import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
 import type { OracleLabelRecord, WarehouseRecord } from "../warehouse/records.ts"
 import { readAll, resolve } from "../warehouse/warehouse.ts"
 import {
+	BRACKETING_ACTIVE_BATCH_ID,
 	BRACKETING_FIXTURE_PATH,
 	PART2_STRATUM,
 	QUADRANTS,
@@ -175,6 +176,8 @@ export type BracketingAnalysis = Readonly<{
 	generatedAt: string
 	fixtureVersion: string
 	batchId: string
+	/** What the reviewer was asked to judge, copied from the fixture. */
+	criterion: string | null
 	warehousePath: string
 	fixturePath: string
 	skipped: SkipCounts
@@ -217,7 +220,11 @@ export type BracketingAnalysis = Readonly<{
  * appended. The earlier ones are undo and re-answer, not extra evidence, and must never be counted
  * twice.
  */
-export function collectAnswers(records: readonly WarehouseRecord[], fixture: BracketingFixture): AnswerCollection {
+export function collectAnswers(
+	records: readonly WarehouseRecord[],
+	fixture: BracketingFixture,
+	scopeBatchId: string = fixture.batchId,
+): AnswerCollection {
 	const itemsById = new Map(fixture.items.map((item) => [item.itemId, item]))
 	const skipped = {
 		otherLabelSchema: 0,
@@ -242,9 +249,12 @@ export function collectAnswers(records: readonly WarehouseRecord[], fixture: Bra
 			skipped.retracted++
 			return
 		}
-		// A record with no batch is accepted — the round is identified by its fixture version and its
-		// item ids — but a record stamped with a different batch belongs to a different round.
-		if (label.batch !== null && label.batch.id !== fixture.batchId) {
+		// A different batch is a different round, and rounds are never pooled. This is load-bearing:
+		// the first pass of round 1 was answered under a detection criterion and abandoned, its
+		// answers are still in the log, and mixing them into this fit would silently drag the
+		// threshold down. A record with no batch at all is accepted, since the round is otherwise
+		// identified by its fixture version and its item ids.
+		if (label.batch !== null && label.batch.id !== scopeBatchId) {
 			skipped.otherBatch++
 			return
 		}
@@ -605,10 +615,14 @@ function fmtPercent(fraction: number | null): string {
 export function analyzeBracketing(
 	fixture: BracketingFixture,
 	records: readonly WarehouseRecord[],
-	paths: { warehousePath: string; fixturePath: string },
+	paths: { warehousePath: string; fixturePath: string; batchId?: string },
 	now: () => Date = () => new Date(),
 ): BracketingAnalysis {
-	const { byItemId: answers, skipped } = collectAnswers(records, fixture)
+	// Which round this fit is about. Defaults to the fixture's own batch id; the CLI passes the
+	// round actually in the queue, because one fixture can be re-pushed as a fresh round under a
+	// clarified criterion, and the two must never be pooled.
+	const scopeBatchId = paths.batchId ?? fixture.batchId
+	const { byItemId: answers, skipped } = collectAnswers(records, fixture, scopeBatchId)
 
 	const part1Items = fixture.items.filter((item) => item.part === "same-color")
 	const part2Items = fixture.items.filter((item) => item.part === "accent-visible")
@@ -700,7 +714,17 @@ export function analyzeBracketing(
 	/* --- summary ------------------------------------------------------------------------------- */
 
 	const lines: string[] = []
-	lines.push(`Same-colour bracketing round — ${fixture.batchId}`)
+	lines.push(`Same-colour bracketing round — ${scopeBatchId}`)
+	lines.push(`Criterion: ${fixture.criterion ?? "unrecorded"}`)
+	if (scopeBatchId !== BRACKETING_ACTIVE_BATCH_ID) {
+		// The criterion above is the fixture's current one. An older pass over the same pairs may have
+		// been answered under a different one — that is why it is a different batch — so say so rather
+		// than let the line be read as a claim about these answers.
+		lines.push(
+			`Note: this is not the active round (${BRACKETING_ACTIVE_BATCH_ID}). The criterion line above is the ` +
+				`fixture's; what this pass was actually answered under may differ, which is why it is a separate batch.`,
+		)
+	}
 	lines.push(
 		`Answered: ${part1Answered} of ${part1Items.length} same-colour pairs, ` +
 			`${part2Answered} of ${part2Items.length} accent pairs.`,
@@ -804,7 +828,8 @@ export function analyzeBracketing(
 	return {
 		generatedAt: now().toISOString(),
 		fixtureVersion: fixture.fixtureVersion,
-		batchId: fixture.batchId,
+		batchId: scopeBatchId,
+		criterion: fixture.criterion ?? null,
 		warehousePath: paths.warehousePath,
 		fixturePath: paths.fixturePath,
 		skipped,
@@ -860,17 +885,22 @@ async function main(): Promise<void> {
 			warehouse: { type: "string" },
 			fixture: { type: "string" },
 			out: { type: "string" },
+			batch: { type: "string" },
 		},
 		strict: true,
 	})
 	const warehousePath = values.warehouse ?? DEFAULT_WAREHOUSE_PATH
 	const fixturePath = values.fixture ?? BRACKETING_FIXTURE_PATH
 	const outPath = values.out ?? BRACKETING_ANALYSIS_PATH
+	// One round at a time, and by default the round the reviewer is actually working through.
+	// Pooling two passes over the same pairs would be the worst kind of quiet error: the numbers
+	// would still look reasonable.
+	const batchId = values.batch ?? BRACKETING_ACTIVE_BATCH_ID
 
 	const fixture = await loadFixture(fixturePath)
 	// A missing warehouse reads as empty: a round nobody has started is a normal state, not an error.
 	const records = readAll(warehousePath)
-	const analysis = analyzeBracketing(fixture, records, { warehousePath, fixturePath })
+	const analysis = analyzeBracketing(fixture, records, { warehousePath, fixturePath, batchId })
 
 	await mkdir(dirname(outPath), { recursive: true })
 	await writeFile(outPath, `${JSON.stringify(analysis, null, "\t")}\n`)

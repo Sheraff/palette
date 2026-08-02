@@ -419,6 +419,26 @@ summary {
 	letter-spacing: 0.04em;
 }
 
+.bracket-head {
+	align-items: flex-start;
+}
+
+.bracket-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+/* The standing criterion. It stays on screen for every item: the reviewer's first pass was
+ * abandoned because the question was clear but the criterion was not. */
+.bracket-instruction {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
 .bracket-stage {
 	display: flex;
 	align-items: center;
