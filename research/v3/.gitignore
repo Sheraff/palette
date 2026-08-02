@@ -1,0 +1,5 @@
+data/embeddings/*.npy
+data/embeddings/*.npz
+data/embeddings/shards/
+oracle/**/.venv/
+oracle/**/__pycache__/
