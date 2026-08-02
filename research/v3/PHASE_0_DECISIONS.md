@@ -73,12 +73,22 @@ chaotic → ~0.
 
 ## 3. Metrics
 
-- **One ruler.** A single same-color bar used everywhere (agreement, movement, distinctness).
-  Proposed: Euclidean OKLab distance (same space as all other math; CIE76's known weaknesses
-  sit exactly in our dark/near-neutral range), threshold **empirically bracketed by the
-  reviewer** in one purpose-built round spanning dark/light × neutral/saturated pairs — also
-  testing whether one threshold survives all four quadrants. v2-3's 3.3 CIE76 is the prior,
-  not the answer.
+- **One ruler.** A single same-color *rule* used everywhere (agreement, movement,
+  distinctness), in Euclidean OKLab distance. **Calibrated 2026-08-02**
+  (bracketing-round-1-clarified, criterion "register-as-same", 72 items, controls clean,
+  repeat consistency 63%): **a single threshold was REFUTED** — dark-neutral pairs measure
+  0.00876 (CI 0.00575–0.01335), roughly half of dark-saturated 0.01764, light-neutral
+  0.01629, light-saturated 0.02687 (wide CI); dark-neutral's interval excludes the pooled
+  0.01582. The ruler is therefore **region-dependent** (quadrant boundaries L 0.55 / C 0.05),
+  `[REVIEWED]`, implemented as `sameColorBar(pair)` in the contract module. The reviewer's
+  eyes discriminate dark neutrals ~2× finer than OKLab distance predicts — v2-3's dark-toe
+  complaint, quantified. Full data: `research/v3/data/calibration/`.
+- **Accent visibility is two-dimensional** (same round, part 2): at equal luminance a
+  chromatic accent becomes functional at OKLab distance ≈0.0744 (CI 0.052–0.106) — hue
+  rescues, at ~5× the same-color bar. Invariant 4's accent clause is accordingly: violation
+  requires BOTH |raw APCA| < ε_accent AND color distance < 0.0744 `[REVIEWED]`. The
+  foreground clause is unchanged — text is luminance-driven, no color rescue (v2-3 reviewer
+  verdict).
 - **Gates** (binary, block integration): determinism (same buffer → byte-identical);
   invariance (relabeling, iteration order → zero changes); degenerate sweep (zero crashes);
   known-worse (zero outputs matching reviewed-bad palettes); contract-invariant validation

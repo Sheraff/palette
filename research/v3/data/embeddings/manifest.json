@@ -1,7 +1,7 @@
 {
   "stage": "oracle-stage-1-embeddings",
   "spec": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md sections 2.1, 6",
-  "written_at": "2026-08-02T20:36:44Z",
+  "written_at": "2026-08-02T21:44:58Z",
   "versions": {
     "python": "3.14.3",
     "torch": "2.13.0",
@@ -18,9 +18,10 @@
       "siglip2-so400m",
       "dinov2-vitl14",
       "pe-core-l14",
-      "dinov3-vitl16"
+      "dinov3-vitl16",
+      "dinov2-vitl14-392"
     ],
-    "resolution_confound": "arms run at their own pretraining resolutions (384/336/224), so a narrow loss may be resolution rather than architecture; ARM_DINOV2_HIRES exists to settle that case",
+    "resolution_confound": "settled 2026-08-02: raising DINOv2 from 224 px to 392 px LOWERED R@1 from 0.7892 to 0.7544 (McNemar p=2e-81, n=24648), so the arms' differing input resolutions do not explain the ranking; the lowest-resolution arm led",
     "dinov3_unavailable": {
       "repo": "facebook/dinov3-vitl16-pretrain-lvd1689m",
       "reason": "gated=manual; 401 GatedRepoError with no HF_TOKEN available",
@@ -232,24 +233,7 @@
           "files_failed": 0,
           "npy": "sharded.dinov2-vitl14-392.npy",
           "ids": "sharded.dinov2-vitl14-392.ids.jsonl",
-          "complete": true,
-          "last_run": {
-            "collection": "sharded",
-            "arm": "dinov2-vitl14-392",
-            "queued": 7550,
-            "embedded": 7550,
-            "failed": 0,
-            "decode_seconds": 10.815388713846914,
-            "encode_seconds": 1108.9863893820439,
-            "wall_seconds": 1121.0123206250137,
-            "remaining": 0,
-            "total_rows": 7550,
-            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/sharded.dinov2-vitl14-392.npy",
-            "npy_shape": [
-              7550,
-              1024
-            ]
-          }
+          "complete": true
         },
         "music_artworks": {
           "root": "music-artworks/",
@@ -258,24 +242,7 @@
           "files_failed": 0,
           "npy": "music_artworks.dinov2-vitl14-392.npy",
           "ids": "music_artworks.dinov2-vitl14-392.ids.jsonl",
-          "complete": true,
-          "last_run": {
-            "collection": "music_artworks",
-            "arm": "dinov2-vitl14-392",
-            "queued": 8595,
-            "embedded": 8595,
-            "failed": 0,
-            "decode_seconds": 30.434743014513515,
-            "encode_seconds": 1115.132825016859,
-            "wall_seconds": 1147.9760089579504,
-            "remaining": 0,
-            "total_rows": 8595,
-            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/music_artworks.dinov2-vitl14-392.npy",
-            "npy_shape": [
-              8595,
-              1024
-            ]
-          }
+          "complete": true
         }
       },
       "has_output": true
@@ -287,7 +254,7 @@
         "pretrained_tag": null,
         "hf_repo": "facebook/dinov3-vitl16-pretrain-lvd1689m",
         "hf_revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
-        "observed_hf_revision": null,
+        "observed_hf_revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
         "weights_filename": "model.safetensors",
         "weights_sha256": "dcb2e45127cccbf1601e5f42fef165eea275c8e5213197e8dcf3f48822718179",
         "weights_hash_pinned": true,
@@ -298,7 +265,7 @@
           "weights_cached": true,
           "hash_pinned": true,
           "revision_pinned": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
-          "revision_observed": null,
+          "revision_observed": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
           "revision_matches": true,
           "gated": true,
           "ready": true
@@ -345,6 +312,109 @@
           "npy": "music_artworks.dinov3-vitl16.npy",
           "ids": "music_artworks.dinov3-vitl16.ids.jsonl",
           "complete": true
+        }
+      },
+      "has_output": true
+    },
+    "dinov3-vith16plus": {
+      "model": {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
+        "pretrained_tag": null,
+        "hf_repo": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
+        "hf_revision": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+        "observed_hf_revision": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+        "weights_filename": "model.safetensors",
+        "weights_sha256": "3e1d4d18b9bfa9f28fad8e9de6a783f1313532d3460efa4cd0b12521d81d1a4d",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": true,
+        "readiness": {
+          "arm": "dinov3-vith16plus",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+          "revision_observed": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+          "revision_matches": true,
+          "gated": true,
+          "ready": true
+        },
+        "text_aligned": false
+      },
+      "embedding": {
+        "dim": 1280,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "CLS token"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then bicubic resize of the whole frame to 224x224 (no center crop -- deliberately unlike the stock DINOv2 processor, which would discard a border ring holding titles and badges), to float tensor, ImageNet mean/std normalize.",
+        "input_side_px": 224,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 7550,
+          "files_failed": 0,
+          "npy": "sharded.dinov3-vith16plus.npy",
+          "ids": "sharded.dinov3-vith16plus.ids.jsonl",
+          "complete": true,
+          "last_run": {
+            "collection": "sharded",
+            "arm": "dinov3-vith16plus",
+            "queued": 7550,
+            "embedded": 7550,
+            "failed": 0,
+            "decode_seconds": 15.312744117341936,
+            "encode_seconds": 1001.1060261453968,
+            "wall_seconds": 1018.1626123330789,
+            "remaining": 0,
+            "total_rows": 7550,
+            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/sharded.dinov3-vith16plus.npy",
+            "npy_shape": [
+              7550,
+              1280
+            ]
+          }
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 8595,
+          "files_failed": 0,
+          "npy": "music_artworks.dinov3-vith16plus.npy",
+          "ids": "music_artworks.dinov3-vith16plus.ids.jsonl",
+          "complete": true,
+          "last_run": {
+            "collection": "music_artworks",
+            "arm": "dinov3-vith16plus",
+            "queued": 8595,
+            "embedded": 8595,
+            "failed": 0,
+            "decode_seconds": 32.467843984253705,
+            "encode_seconds": 894.9029044733616,
+            "wall_seconds": 929.6476542920573,
+            "remaining": 0,
+            "total_rows": 8595,
+            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/music_artworks.dinov3-vith16plus.npy",
+            "npy_shape": [
+              8595,
+              1280
+            ]
+          }
         }
       },
       "has_output": true

@@ -1,0 +1,245 @@
+{
+	"generatedAt": "2026-08-02T21:46:13.157Z",
+	"fixtureVersion": "color-bracketing-1",
+	"batchId": "bracketing-round-1-clarified",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/calibration/bracketing-round-1.json",
+	"skipped": {
+		"otherLabelSchema": 0,
+		"otherBatch": 62,
+		"unknownItem": 0,
+		"questionKeyMismatch": 0,
+		"nonBooleanAnswer": 0,
+		"retracted": 0,
+		"superseded": 0
+	},
+	"part1": {
+		"question": "Are these two colours the same colour?",
+		"totalItems": 60,
+		"answered": 60,
+		"unanswered": 0,
+		"fittedPoints": 56,
+		"pooled": {
+			"n": 56,
+			"yesCount": 35,
+			"intercept": -11.791575701428394,
+			"slope": -2.8436105029517513,
+			"threshold": 0.015816658322227353,
+			"fittedThreshold": 0.015816658322227353,
+			"confidenceInterval": {
+				"low": 0.012354909685279329,
+				"high": 0.020248361732676474
+			},
+			"separated": false,
+			"separationInterval": null,
+			"converged": true,
+			"note": null
+		},
+		"quadrants": [
+			{
+				"n": 14,
+				"yesCount": 5,
+				"intercept": -18.16626179307492,
+				"slope": -3.8348323301014617,
+				"threshold": 0.008763390730673828,
+				"fittedThreshold": 0.008763390730673828,
+				"confidenceInterval": {
+					"low": 0.005753000681921316,
+					"high": 0.013349036675728718
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "dark-neutral",
+				"answered": 15,
+				"total": 15
+			},
+			{
+				"n": 14,
+				"yesCount": 10,
+				"intercept": -26.48865381987673,
+				"slope": -6.560675579994034,
+				"threshold": 0.017641719674776377,
+				"fittedThreshold": 0.017641719674776377,
+				"confidenceInterval": {
+					"low": 0.012740224246238042,
+					"high": 0.02442894780092216
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "dark-saturated",
+				"answered": 15,
+				"total": 15
+			},
+			{
+				"n": 14,
+				"yesCount": 9,
+				"intercept": -16.815622531885577,
+				"slope": -4.084389187616829,
+				"threshold": 0.01629255427303299,
+				"fittedThreshold": 0.01629255427303299,
+				"confidenceInterval": {
+					"low": 0.011155392548539684,
+					"high": 0.023795426614052633
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "light-neutral",
+				"answered": 15,
+				"total": 15
+			},
+			{
+				"n": 14,
+				"yesCount": 11,
+				"intercept": -7.960954175174447,
+				"slope": -2.201194375107299,
+				"threshold": 0.026872493505130837,
+				"fittedThreshold": 0.026872493505130837,
+				"confidenceInterval": {
+					"low": 0.011525689502568845,
+					"high": 0.06265403098203803
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "light-saturated",
+				"answered": 15,
+				"total": 15
+			}
+		],
+		"oneThresholdSurvives": false,
+		"oneThresholdSentence": "No: dark-neutral excludes the pooled threshold of 0.01582, so a single bar does not fit all four quadrants.",
+		"repeatConsistency": {
+			"repeats": 8,
+			"bothAnswered": 8,
+			"agreed": 5,
+			"agreement": 0.625
+		},
+		"controls": {
+			"total": 4,
+			"answered": 4,
+			"passed": 4,
+			"failures": [],
+			"checks": [
+				{
+					"itemId": "p1-dark-neutral-control-0",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "p1-dark-saturated-control-0",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "p1-light-neutral-control-0",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "p1-light-saturated-control-0",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				}
+			]
+		},
+		"prior": {
+			"sameColorBar": 0.012,
+			"measuredOverPrior": 1.3180548601856128
+		}
+	},
+	"part2": {
+		"question": "Are the icons clearly visible on this background?",
+		"totalItems": 12,
+		"answered": 12,
+		"unanswered": 0,
+		"fittedPoints": 10,
+		"fit": {
+			"n": 10,
+			"yesCount": 4,
+			"intercept": 44.096363060968514,
+			"slope": 16.953369558290195,
+			"threshold": 0.07444337734604764,
+			"fittedThreshold": 0.0741965020554952,
+			"confidenceInterval": {
+				"low": 0.05211016725037723,
+				"high": 0.10564389269411242
+			},
+			"separated": true,
+			"separationInterval": {
+				"low": 0.06300028320540825,
+				"high": 0.08796494473869766
+			},
+			"converged": true,
+			"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap"
+		},
+		"controls": {
+			"total": 2,
+			"answered": 2,
+			"passed": 2,
+			"failures": [],
+			"checks": [
+				{
+					"itemId": "p2-control-obvious",
+					"expected": true,
+					"answered": true,
+					"answer": true,
+					"passed": true
+				},
+				{
+					"itemId": "p2-control-identical",
+					"expected": false,
+					"answered": true,
+					"answer": false,
+					"passed": true
+				}
+			]
+		},
+		"finding": "Yes — a coloured accent at the same brightness as its background is visible, once the two colours are about 0.07444 apart in colour (0.05211 to 0.10564). Below that the reviewer stopped seeing it, even though nothing about the brightness changed. So the accent's floor can be stated as a colour distance, not only as a brightness difference."
+	},
+	"summaryLines": [
+		"Same-colour bracketing round — bracketing-round-1-clarified",
+		"Criterion: register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+		"Answered: 60 of 60 same-colour pairs, 12 of 12 accent pairs.",
+		"",
+		"PART 1 — where is the same-colour bar?",
+		"  Pooled threshold: 0.01582 (95% confidence interval 0.01235 to 0.02025), from 56 answers.",
+		"  Two colours closer than this were usually called the same; further apart, usually called different.",
+		"  The prior we came in with was 0.01200; the measured bar is 1.32 times that.",
+		"  One threshold for all four quadrants? No: dark-neutral excludes the pooled threshold of 0.01582, so a single bar does not fit all four quadrants.",
+		"",
+		"  Per quadrant:",
+		"    dark-neutral     15/15 answered  threshold 0.00876  interval 0.00575 to 0.01335",
+		"    dark-saturated   15/15 answered  threshold 0.01764  interval 0.01274 to 0.02443",
+		"    light-neutral    15/15 answered  threshold 0.01629  interval 0.01116 to 0.02380",
+		"    light-saturated  15/15 answered  threshold 0.02687  interval 0.01153 to 0.06265",
+		"",
+		"  Repeat consistency: 5 of 8 hidden repeats got the same answer as the first time (63%).",
+		"  That is the reviewer's own noise. No threshold can be sharper than this noise allows.",
+		"  Identical-colour controls: 4 of 4 answered correctly (\"same\").",
+		"",
+		"PART 2 — is a coloured accent visible at the same brightness?",
+		"  12 of 12 answered.",
+		"  Threshold: 0.07444 colour distance (95% confidence interval 0.05211 to 0.10564), from 10 answers.",
+		"  Note: every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap.",
+		"  Yes — a coloured accent at the same brightness as its background is visible, once the two colours are about 0.07444 apart in colour (0.05211 to 0.10564). Below that the reviewer stopped seeing it, even though nothing about the brightness changed. So the accent's floor can be stated as a colour distance, not only as a brightness difference.",
+		"  Controls: 2 of 2 answered as expected.",
+		"",
+		"Records read but not counted: otherBatch 62."
+	]
+}
