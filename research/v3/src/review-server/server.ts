@@ -28,6 +28,7 @@ import {
 	type Author,
 	type BatchCompleteRecord,
 	type Grade,
+	type OracleLabelRecord,
 	type Preference,
 	type RecordInput,
 	type VerdictRecord,
@@ -37,9 +38,24 @@ import {
 } from "../warehouse/records.ts"
 import { append, readAll, resolve as resolveAmendments } from "../warehouse/warehouse.ts"
 import { BadRequest, blindSidePayload, materialize, parseBatch } from "./batch.ts"
-import { newBlindingSalt, sha256 } from "./blinding.ts"
+import { newAnswerToken, newBlindingSalt, sha256 } from "./blinding.ts"
+import {
+	BRACKETING_FIXTURE_PATH,
+	BRACKETING_FIXTURE_VERSION,
+	type BracketingFixture,
+} from "./bracketing.ts"
 import { JsonlAppender, readJsonl } from "./store.ts"
-import { SIDES, type PushedBatch, type Side, type StoredBatch, type StoredItem, type VerdictInput } from "./types.ts"
+import {
+	isBracketingBatch,
+	SIDES,
+	type PushedBatch,
+	type Side,
+	type StoredAnyBatch,
+	type StoredBatch,
+	type StoredBracketingBatch,
+	type StoredItem,
+	type VerdictInput,
+} from "./types.ts"
 
 /** Largest accepted request body. A pushed batch is small; this is a sanity bound, not a policy. */
 const MAX_REQUEST_BYTES = 4 * 1024 * 1024
@@ -70,6 +86,7 @@ function itemKey(batchId: string, itemId: string): string {
 
 type VerdictState = { record: VerdictRecord; recordId: string; revision: number }
 type VetoState = { record: VetoRecord; recordId: string; active: boolean }
+type AnswerState = { record: OracleLabelRecord; recordId: string; revision: number }
 
 export type ReviewServiceOptions = Readonly<{
 	warehousePath?: string
@@ -89,8 +106,10 @@ export class ReviewService {
 	readonly author: Author
 	readonly imageRoots: readonly string[]
 	readonly #batches = new Map<string, StoredBatch>()
+	readonly #bracketing = new Map<string, StoredBracketingBatch>()
 	readonly #verdicts = new Map<string, VerdictState>()
 	readonly #vetoes = new Map<string, VetoState>()
+	readonly #answers = new Map<string, AnswerState>()
 	readonly #releases = new Map<string, BatchCompleteRecord>()
 
 	constructor(options: ReviewServiceOptions = {}) {
@@ -101,8 +120,9 @@ export class ReviewService {
 	}
 
 	async load(): Promise<void> {
-		for (const stored of await readJsonl<StoredBatch>(this.batchLog.path)) {
-			this.#batches.set(stored.batch.batchId, stored)
+		for (const stored of await readJsonl<StoredAnyBatch>(this.batchLog.path)) {
+			if (isBracketingBatch(stored)) this.#bracketing.set(stored.batchId, stored)
+			else this.#batches.set(stored.batch.batchId, stored)
 		}
 		// Amendments are applied first: a retracted veto must come back as "not vetoed", and an
 		// amended verdict must show its amended grades.
@@ -124,6 +144,15 @@ export class ReviewService {
 					recordId: entry.original.id,
 					active: !entry.retracted,
 				})
+			} else if (record.type === "oracle-label" && record.batch !== null) {
+				const key = itemKey(record.batch.id, record.imageId)
+				const previous = this.#answers.get(key)
+				const revision = (previous?.revision ?? 0) + 1
+				if (entry.retracted) {
+					if (previous !== undefined) this.#answers.set(key, { ...previous, revision })
+				} else {
+					this.#answers.set(key, { record, recordId: entry.original.id, revision })
+				}
 			} else if (record.type === "batch-complete") {
 				this.#releases.set(record.batchId, record)
 			}
@@ -135,7 +164,7 @@ export class ReviewService {
 	}
 
 	has(batchId: string): boolean {
-		return this.#batches.has(batchId)
+		return this.#batches.has(batchId) || this.#bracketing.has(batchId)
 	}
 
 	#batch(batchId: string): StoredBatch {
@@ -182,7 +211,21 @@ export class ReviewService {
 	}
 
 	queue() {
-		return [...this.#batches.values()].map((stored) => {
+		const bracketing = [...this.#bracketing.values()].map((stored) => {
+			const release = this.#releases.get(stored.batchId)
+			const judged = stored.fixture.items.filter((item) => this.#answers.has(itemKey(stored.batchId, item.itemId))).length
+			return {
+				batchId: stored.batchId,
+				kind: "bracketing" as const,
+				purpose: stored.purpose,
+				pushedAt: stored.pushedAt,
+				itemCount: stored.fixture.items.length,
+				judgedCount: judged,
+				released: release !== undefined,
+				releasedAt: release?.ts ?? null,
+			}
+		})
+		const pairwise = [...this.#batches.values()].map((stored) => {
 			const release = this.#releases.get(stored.batch.batchId)
 			let judged = 0
 			for (const item of stored.items) {
@@ -191,6 +234,7 @@ export class ReviewService {
 			}
 			return {
 				batchId: stored.batch.batchId,
+				kind: "pairwise" as const,
 				purpose: stored.batch.purpose,
 				pushedAt: stored.pushedAt,
 				itemCount: stored.items.length,
@@ -199,6 +243,7 @@ export class ReviewService {
 				releasedAt: release?.ts ?? null,
 			}
 		})
+		return [...pairwise, ...bracketing]
 	}
 
 	/** The blinded payload. Never contains a variant id, a fingerprint, or the blinding key. */
@@ -343,8 +388,123 @@ export class ReviewService {
 		return state
 	}
 
+	/* --- calibration: the same-colour-bar bracketing round (PHASE_0_DECISIONS.md §3) --------- */
+
+	/**
+	 * Push a bracketing round. The fixture carries the truth (real distances, controls, which items
+	 * are silent repeats); none of it is served.
+	 */
+	async pushBracketing(fixture: BracketingFixture, fundedBy: readonly string[] = []): Promise<{ batchId: string; itemCount: number }> {
+		if (fixture.fixtureVersion !== BRACKETING_FIXTURE_VERSION) {
+			throw new BadRequest(`Unknown bracketing fixture version ${fixture.fixtureVersion}`)
+		}
+		if (this.#batches.has(fixture.batchId) || this.#bracketing.has(fixture.batchId)) {
+			throw new Conflict(`Batch ${fixture.batchId} already exists`)
+		}
+		const stored: StoredBracketingBatch = {
+			kind: "bracketing",
+			batchId: fixture.batchId,
+			purpose: "calibration",
+			fundedBy: [...fundedBy],
+			pushedAt: new Date().toISOString(),
+			fixture,
+			answerTokens: Object.fromEntries(fixture.items.map((item) => [newAnswerToken(), item.itemId])),
+		}
+		await this.batchLog.append(stored)
+		this.#bracketing.set(stored.batchId, stored)
+		return { batchId: stored.batchId, itemCount: fixture.items.length }
+	}
+
+	#bracketingBatch(batchId: string): StoredBracketingBatch {
+		const stored = this.#bracketing.get(batchId)
+		if (stored === undefined) throw new NotFound(`Unknown bracketing batch ${batchId}`)
+		return stored
+	}
+
+	/**
+	 * What the browser may see: the two colours, in the seeded serve order, and nothing else.
+	 *
+	 * Deliberately absent — every one of these would corrupt the measurement: the true distance, the
+	 * target rung, the APCA numbers, the quadrant (it names the stratum being tested), `role` (it
+	 * would mark the controls), and `repeatOf` (the repeats have to be silent to measure noise).
+	 */
+	bracketingPayload(batchId: string) {
+		const stored = this.#bracketingBatch(batchId)
+		const byId = new Map(stored.fixture.items.map((item) => [item.itemId, item]))
+		const tokenFor = new Map(Object.entries(stored.answerTokens).map(([token, itemId]) => [itemId, token]))
+		const release = this.#releases.get(batchId)
+		return {
+			batchId,
+			purpose: stored.purpose,
+			pushedAt: stored.pushedAt,
+			released: release !== undefined,
+			releasedAt: release?.ts ?? null,
+			items: stored.fixture.serveOrder.map((itemId) => {
+				const item = byId.get(itemId)!
+				const answered = this.#answers.get(itemKey(batchId, itemId))
+				return {
+					token: tokenFor.get(itemId)!,
+					part: item.part,
+					first: item.firstHex,
+					second: item.secondHex,
+					answer: answered === undefined ? null : answered.record.answer,
+					revision: answered?.revision ?? 0,
+				}
+			}),
+		}
+	}
+
+	/**
+	 * Record one y/n answer.
+	 *
+	 * Borrowed record type: these are `oracle-label` records (REVIEW_UI.md §6), because a bracketing
+	 * answer is exactly what that type is for — one human answer to one closed-vocabulary question,
+	 * carried with its stratum for per-stratum analysis. Two fields are used off-label and it is
+	 * worth saying so plainly: `imageId` holds the *pair id* (there is no image — the stimulus is
+	 * two flat colours), and `stratum` holds the OKLab quadrant rather than an embedding cluster.
+	 * `labelSchemaVersion` is the bracketing fixture version, so these rows can never be confused
+	 * with the VLM oracle's own labels.
+	 */
+	async putBracketingAnswer(batchId: string, token: string, answer: boolean): Promise<{ recordId: string; revision: number }> {
+		const stored = this.#bracketingBatch(batchId)
+		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
+		const itemId = stored.answerTokens[token]
+		if (itemId === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
+		const item = stored.fixture.items.find((entry) => entry.itemId === itemId)
+		if (item === undefined) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
+		const key = itemKey(batchId, itemId)
+		const previous = this.#answers.get(key)
+		const record = append<OracleLabelRecord>(this.warehousePath, {
+			type: "oracle-label",
+			author: this.author,
+			imageId: item.itemId,
+			artwork: null,
+			labelSchemaVersion: stored.fixture.fixtureVersion,
+			questionKey: item.part,
+			answer,
+			confidence: null,
+			ambiguityNote: null,
+			stratum: item.stratum,
+			batch: {
+				id: batchId,
+				purpose: stored.purpose,
+				itemCount: stored.fixture.items.length,
+				fundedBy: [...stored.fundedBy],
+			},
+		} satisfies RecordInput<OracleLabelRecord>)
+		const state = { record, recordId: record.id, revision: (previous?.revision ?? 0) + 1 }
+		this.#answers.set(key, state)
+		return { recordId: record.id, revision: state.revision }
+	}
+
 	/** Items still missing a judgement. Release is refused while this is non-empty. */
 	pending(batchId: string): string[] {
+		const bracketing = this.#bracketing.get(batchId)
+		if (bracketing !== undefined) {
+			return bracketing.fixture.items
+				.filter((item) => !this.#answers.has(itemKey(batchId, item.itemId)))
+				.map((item) => item.itemId)
+		}
 		const stored = this.#batch(batchId)
 		return stored.items
 			.filter((item) => {
@@ -356,6 +516,8 @@ export class ReviewService {
 
 	/** Items judged without free text. Reported, never blocking — a forced comment is a corrupted channel. */
 	commentless(batchId: string): string[] {
+		// A bracketing round has no free-text channel: the question is y/n by design.
+		if (this.#bracketing.has(batchId)) return []
 		const stored = this.#batch(batchId)
 		return stored.items
 			.filter((item) => (this.#verdicts.get(itemKey(batchId, item.itemId))?.record.comment ?? "").trim().length === 0)
@@ -365,6 +527,12 @@ export class ReviewService {
 
 	/** The record ids this release stands on: the latest verdict per item, plus active vetoes. */
 	fundingRecordIds(batchId: string): string[] {
+		const bracketing = this.#bracketing.get(batchId)
+		if (bracketing !== undefined) {
+			return bracketing.fixture.items
+				.map((item) => this.#answers.get(itemKey(batchId, item.itemId))?.recordId)
+				.filter((id): id is string => id !== undefined)
+		}
 		const stored = this.#batch(batchId)
 		const ids: string[] = []
 		for (const item of stored.items) {
@@ -379,18 +547,26 @@ export class ReviewService {
 
 	/** The explicit reviewer action that completes a batch. Appends `batch-complete`. */
 	async release(batchId: string, note = ""): Promise<BatchCompleteRecord> {
-		const stored = this.#batch(batchId)
+		// One release flow for both kinds: the batch-complete record is what the watcher waits for,
+		// whatever the batch was made of.
+		const bracketing = this.#bracketing.get(batchId)
+		const stored = bracketing === undefined ? this.#batch(batchId) : null
 		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is already released`)
 		const pending = this.pending(batchId)
-		if (pending.length > 0) throw new Conflict(`Batch ${batchId} still has unjudged items: ${pending.join(", ")}`)
+		if (pending.length > 0) {
+			throw new Conflict(
+				`Batch ${batchId} still has unjudged items: ${pending.slice(0, 8).join(", ")}` +
+					(pending.length > 8 ? ` (+${pending.length - 8} more)` : ""),
+			)
+		}
 		const record = append<BatchCompleteRecord>(this.warehousePath, {
 			type: "batch-complete",
 			author: this.author,
 			batchId,
-			purpose: stored.batch.purpose,
-			itemCount: stored.items.length,
-			fundedBy: [...stored.batch.fundedBy],
-			releasedItemIds: stored.items.map((item) => item.itemId),
+			purpose: bracketing?.purpose ?? stored!.batch.purpose,
+			itemCount: bracketing?.fixture.items.length ?? stored!.items.length,
+			fundedBy: [...(bracketing?.fundedBy ?? stored!.batch.fundedBy)],
+			releasedItemIds: (bracketing?.fixture.items ?? stored!.items).map((item) => item.itemId),
 			note,
 		} satisfies RecordInput<BatchCompleteRecord>)
 		this.#releases.set(batchId, record)
@@ -509,6 +685,9 @@ const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
 	["/index.html", { file: "index.html", type: "text/html; charset=utf-8" }],
 	["/app.js", { file: "app.js", type: "text/javascript; charset=utf-8" }],
 	["/styles.css", { file: "styles.css", type: "text/css; charset=utf-8" }],
+	["/bracketing", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
+	["/bracketing.html", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
+	["/bracketing.js", { file: "bracketing.js", type: "text/javascript; charset=utf-8" }],
 ])
 
 export type ReviewServerOptions = ReviewServiceOptions & Readonly<{ uiRoot?: string }>
@@ -543,6 +722,39 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 			}
 			if (method === "POST" && path === "/api/batches") {
 				respondJson(response, 201, await service.pushBatch(await requestBody(request)))
+				return
+			}
+
+			if (method === "POST" && path === "/api/bracketing") {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				const fixture =
+					body.fixture === undefined
+						? ((JSON.parse(await readFile(BRACKETING_FIXTURE_PATH, "utf8")) as BracketingFixture))
+						: (body.fixture as BracketingFixture)
+				const fundedBy = Array.isArray(body.fundedBy) ? (body.fundedBy as string[]) : []
+				respondJson(response, 201, await service.pushBracketing(fixture, fundedBy))
+				return
+			}
+
+			const bracketingMatch = /^\/api\/bracketing\/([^/]+)$/u.exec(path)
+			if (method === "GET" && bracketingMatch) {
+				respondJson(response, 200, service.bracketingPayload(decodeURIComponent(bracketingMatch[1])))
+				return
+			}
+
+			const answerMatch = /^\/api\/bracketing\/([^/]+)\/items\/([^/]+)\/answer$/u.exec(path)
+			if (answerMatch && (method === "PUT" || method === "POST")) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				if (typeof body.answer !== "boolean") throw new BadRequest("answer must be true or false")
+				respondJson(
+					response,
+					200,
+					await service.putBracketingAnswer(
+						decodeURIComponent(answerMatch[1]),
+						decodeURIComponent(answerMatch[2]),
+						body.answer,
+					),
+				)
 				return
 			}
 
@@ -658,6 +870,14 @@ export async function seedDemoBatch(service: ReviewService, fixturePath = DEMO_B
 	return pushed.batchId
 }
 
+/** Push the committed bracketing round if it is not in the queue yet. Idempotent by batch id. */
+export async function seedBracketingRound(service: ReviewService, fixturePath = BRACKETING_FIXTURE_PATH): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as BracketingFixture
+	if (service.has(fixture.batchId)) return null
+	const pushed = await service.pushBracketing(fixture, ["PHASE_0_DECISIONS.md §3 — the one ruler is [UNCALIBRATED]"])
+	return pushed.batchId
+}
+
 async function main(): Promise<void> {
 	const { values } = parseArgs({
 		options: {
@@ -666,6 +886,7 @@ async function main(): Promise<void> {
 			batches: { type: "string" },
 			reviewer: { type: "string" },
 			"no-demo": { type: "boolean", default: false },
+			"no-bracketing": { type: "boolean", default: false },
 		},
 		strict: true,
 	})
@@ -680,6 +901,10 @@ async function main(): Promise<void> {
 	if (values["no-demo"] !== true) {
 		const seeded = await seedDemoBatch(handle.service)
 		if (seeded !== null) process.stdout.write(`seeded demo batch "${seeded}"\n`)
+	}
+	if (values["no-bracketing"] !== true) {
+		const seeded = await seedBracketingRound(handle.service)
+		if (seeded !== null) process.stdout.write(`seeded bracketing round "${seeded}" — http://127.0.0.1:${values.port}/bracketing\n`)
 	}
 	const actual = await handle.listen(port)
 	process.stdout.write(`v3 review server: http://127.0.0.1:${actual}/\n`)

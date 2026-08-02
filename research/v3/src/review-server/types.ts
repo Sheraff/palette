@@ -16,6 +16,7 @@ import type {
 	PaletteSnapshot,
 	Preference,
 } from "../warehouse/records.ts"
+import type { BracketingFixture } from "./bracketing.ts"
 
 export {
 	BATCH_PURPOSES,
@@ -70,6 +71,8 @@ export type PushedBatch = Readonly<{
 
 /** A pushed batch plus everything derived at push time. Server-side state; never served whole. */
 export type StoredBatch = Readonly<{
+	/** Absent on batches written before bracketing rounds existed; absent means pairwise. */
+	kind?: "pairwise"
 	batch: PushedBatch
 	pushedAt: string
 	/**
@@ -94,6 +97,35 @@ export type StoredItem = Readonly<{
 	/** Presentation-only nearest color names, keyed by lowercase hex. */
 	colorNames: Readonly<Record<string, string>>
 }>
+
+/**
+ * A calibration round sharing the queue with pairwise batches.
+ *
+ * The items are colour pairs, not palettes, so the whole generated fixture is stored as-is rather
+ * than materialized item by item. It lives in the same batch log for the same reason the pairwise
+ * batches do: it holds the truth (the real distances) that the reviewer must not see.
+ */
+export type StoredBracketingBatch = Readonly<{
+	kind: "bracketing"
+	batchId: string
+	purpose: BatchPurpose
+	fundedBy: readonly string[]
+	pushedAt: string
+	fixture: BracketingFixture
+	/**
+	 * Opaque per-item tokens, token → fixture itemId. The browser is given the token and never the
+	 * itemId, because the itemIds are readable: `p1-dark-neutral-04` names the stratum and the rung,
+	 * and `…-control-0` / `…-repeat-1` would announce the controls and the silent repeats outright.
+	 * Random per batch, so the committed fixture cannot be mapped back to them either.
+	 */
+	answerTokens: Readonly<Record<string, string>>
+}>
+
+export type StoredAnyBatch = StoredBatch | StoredBracketingBatch
+
+export function isBracketingBatch(stored: StoredAnyBatch): stored is StoredBracketingBatch {
+	return (stored as StoredBracketingBatch).kind === "bracketing"
+}
 
 /** What the browser submits for one item. */
 export type VerdictInput = Readonly<{

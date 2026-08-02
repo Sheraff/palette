@@ -41,6 +41,15 @@ export function newBlindingSalt(): string {
 	return randomBytes(BLINDING_SALT_BYTES).toString("hex")
 }
 
+/**
+ * An opaque handle for one bracketing item. Same idea, smaller stakes: the browser needs *a* name
+ * to answer with, and the fixture's own item ids are readable ("dark-neutral-04", "control-0").
+ * 8 random bytes is far more than 72 items need and cannot be guessed from the committed fixture.
+ */
+export function newAnswerToken(): string {
+	return randomBytes(8).toString("hex")
+}
+
 export type Blinding = Readonly<{ A: 0 | 1; B: 0 | 1 }>
 
 /**
