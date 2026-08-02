@@ -21,12 +21,15 @@
 import {
 	apcaRaw,
 	colorDistance,
+	colorRegion,
 	isHexColor,
 	isRgb8,
 	lcFloorToRawMagnitude,
 	rgbToHex,
+	sameColorBar,
 } from "./color.ts"
 import {
+	ACCENT_VISIBILITY_COLOR_DISTANCE,
 	CONTENT_HASH_PATTERN,
 	CONTRAST_FLOOR_TOLERANCE,
 	EPSILON_ACCENT_RAW,
@@ -36,7 +39,6 @@ import {
 	POSITION_MAX,
 	POSITION_MIN,
 	ROLE_NAMES,
-	SAME_COLOR_BAR,
 	SOURCE_POPULATION_FLOOR,
 } from "./constants.ts"
 import type {
@@ -532,8 +534,17 @@ function pairKey(first: string, second: string): string {
  * Near-identical-but-unequal is a violation like any other pair — the flag cannot launder it. The
  * "flag set but not exactly equal" and "exactly equal but flag clear" cases are reported by
  * invariant 1, which owns flag consistency.
+ *
+ * **The bar is per pair, not per palette.** The reviewer's bracketing round refuted a single
+ * threshold, so each cell of the matrix is judged against the bar for the region its two colours sit
+ * in — see `sameColorBar()` in `color.ts` for the regional values and for how a straddling pair is
+ * resolved. `barFor` overrides the measurement; supply `() => x` to force one bar across the whole
+ * matrix, which is what a future bracketing round sweeping the threshold would do.
  */
-export function validateDistinctness(palette: Palette, bar: number = SAME_COLOR_BAR): Violation[] {
+export function validateDistinctness(
+	palette: Palette,
+	barFor: (first: PaletteColor, second: PaletteColor) => number = sameColorBar,
+): Violation[] {
 	const violations: Violation[] = []
 	const colors = publishedColors(palette)
 
@@ -566,6 +577,7 @@ export function validateDistinctness(palette: Palette, bar: number = SAME_COLOR_
 			if (collapse?.satisfied) continue
 
 			const distance = colorDistance(a.color, b.color)
+			const bar = barFor(a.color, b.color)
 			if (distance >= bar) continue
 
 			violations.push(violation(
@@ -575,7 +587,12 @@ export function validateDistinctness(palette: Palette, bar: number = SAME_COLOR_
 					? `${a.path} (${a.color.hex}) and ${b.path} (${b.color.hex}) are the same color by the one ruler (OKLab distance ${distance.toFixed(5)} < ${bar})`
 					: `${a.path} (${a.color.hex}) and ${b.path} (${b.color.hex}) are the same color by the one ruler (OKLab distance ${distance.toFixed(5)} < ${bar}) and the collapse is not sanctioned: it must be exact hex equality with collapse.${collapse.flag} set`,
 				[a.path, b.path],
-				{ distance, bar },
+				{
+					distance,
+					bar,
+					firstRegion: colorRegion(a.color),
+					secondRegion: colorRegion(b.color),
+				},
 			))
 		}
 	}
@@ -599,10 +616,10 @@ export function validateDistinctness(palette: Palette, bar: number = SAME_COLOR_
  * module when that exists, not to this invariant.
  */
 const CONTRAST_FLOOR_PAIRS = [
-	{ text: "foreground", field: "background", floor: "minTextContrast" },
-	{ text: "foreground", field: "surface", floor: "minTextContrast" },
-	{ text: "accent", field: "background", floor: "minAccentContrast" },
-	{ text: "accent", field: "surface", floor: "minAccentContrast" },
+	{ text: "foreground", field: "background", floor: "minTextContrast", colorRescue: false },
+	{ text: "foreground", field: "surface", floor: "minTextContrast", colorRescue: false },
+	{ text: "accent", field: "background", floor: "minAccentContrast", colorRescue: true },
+	{ text: "accent", field: "surface", floor: "minAccentContrast", colorRescue: true },
 ] as const
 
 /**
@@ -618,8 +635,19 @@ const CONTRAST_FLOOR_PAIRS = [
  * parameter at its default and is higher when the caller raised it. That is why the same function
  * serves as both the invariant and the caller's opt-in floor.
  *
- * The accent's two pairs are skipped when the accent has genuinely collapsed onto the foreground —
- * see the note in the body.
+ * **The two roles are judged on different numbers of dimensions, and that asymmetry is measured.**
+ *
+ * - *Foreground:* luminance alone. A text pair at zero luminance contrast is invalid regardless of
+ *   hue. That is a standing reviewer verdict carried over from v2-3 and is not reopened here — there
+ *   is no colour rescue for text.
+ * - *Accent:* luminance **and** colour distance, both. An accent-versus-field pair violates only when
+ *   `|raw APCA| < ε` *and* the two colours are closer than `ACCENT_VISIBILITY_COLOR_DISTANCE`.
+ *   Bracketing round 1 part 2 put equal-luminance chromatic accent pairs in front of the reviewer and
+ *   the answer was that chroma alone carries visibility from about 0.074 OKLab apart. An accent is
+ *   icons, not prose; it can be read by hue in a way a paragraph cannot.
+ *
+ * The accent's two pairs are skipped entirely when the accent has genuinely collapsed onto the
+ * foreground — see the note in the body.
  */
 export function validateContrastFloors(palette: Palette): Violation[] {
 	const violations: Violation[] = []
@@ -665,21 +693,46 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			))
 			continue
 		}
-		if (Math.abs(raw) < floor) {
-			violations.push(violation(
-				"I4",
-				"I4.below-contrast-floor",
-				`roles.${pair.text} (${text.hex}) on roles.${pair.field} (${field.hex}) has |raw APCA| ${Math.abs(raw).toFixed(4)}, below the ${pair.floor} floor of ${floor}`,
-				[`roles.${pair.text}`, `roles.${pair.field}`],
-				{
-					raw,
-					floorRawMagnitude: floor,
-					parameter: pair.floor,
-					declaredRawMagnitude: declaredUsable ? declared : epsilon,
-					epsilon,
-				},
-			))
-		}
+		if (Math.abs(raw) >= floor) continue
+
+		// The accent's second dimension. Chroma rescues an accent that luminance alone condemns:
+		// bracketing round 1 part 2 showed the reviewer equal-luminance chromatic accent pairs and
+		// found them clearly visible from about 0.074 OKLab apart. The foreground gets no such rescue
+		// — text is luminance-driven, and that is a standing reviewer verdict, not an oversight here.
+		//
+		// The rescue applies **only at the epsilon**, never to a floor the caller raised. What the
+		// reviewer was asked is "can you see this accent at all?", at zero luminance contrast; the
+		// answer licenses chroma as a substitute for *visibility*. A caller asking for Lc 60 on the
+		// accent is asking for something else entirely, and "but it is a different hue" does not
+		// satisfy a request for luminance contrast. Above the epsilon the clause is one-dimensional
+		// again, which is also what keeps the caller's parameter meaning what it says.
+		const distance = colorDistance(text, field)
+		const rescueAvailable = pair.colorRescue && floor <= epsilon
+		if (rescueAvailable && distance >= ACCENT_VISIBILITY_COLOR_DISTANCE) continue
+
+		violations.push(violation(
+			"I4",
+			"I4.below-contrast-floor",
+			rescueAvailable
+				? `roles.${pair.text} (${text.hex}) on roles.${pair.field} (${field.hex}) has |raw APCA| ${
+					Math.abs(raw).toFixed(4)
+				}, below the ${pair.floor} floor of ${floor}, and is only ${
+					distance.toFixed(5)
+				} away in OKLab — under the ${ACCENT_VISIBILITY_COLOR_DISTANCE} at which colour alone makes an accent visible`
+				: `roles.${pair.text} (${text.hex}) on roles.${pair.field} (${field.hex}) has |raw APCA| ${
+					Math.abs(raw).toFixed(4)
+				}, below the ${pair.floor} floor of ${floor}`,
+			[`roles.${pair.text}`, `roles.${pair.field}`],
+			{
+				raw,
+				floorRawMagnitude: floor,
+				parameter: pair.floor,
+				declaredRawMagnitude: declaredUsable ? declared : epsilon,
+				epsilon,
+				colorDistance: distance,
+				...(rescueAvailable ? { visibilityDistance: ACCENT_VISIBILITY_COLOR_DISTANCE } : {}),
+			},
+		))
 	}
 
 	return violations
@@ -871,11 +924,11 @@ export type ValidatePaletteOptions = Readonly<{
 	/** The decoder's transparency report. Supplying it enables invariant 5. */
 	transparency?: TransparencyReport
 	/**
-	 * Override the same-colour bar. Exists for the reviewer's bracketing round
-	 * (`PHASE_0_DECISIONS.md` §6), which has to sweep the threshold without editing a constant that
-	 * other runs are reading. Defaults to `SAME_COLOR_BAR`.
+	 * Override the same-colour bar with a per-pair function. Exists so a future bracketing round can
+	 * sweep the threshold without editing constants other runs are reading. Defaults to the measured
+	 * regional bar, `sameColorBar` from `color.ts`; pass `() => x` to force a single bar.
 	 */
-	sameColorBar?: number
+	sameColorBar?: (first: PaletteColor, second: PaletteColor) => number
 	/**
 	 * Whether a transparent input throws. Defaults to `true`, which is the policy. Set `false` only
 	 * when deliberately collecting violations across a corpus rather than refusing one file.
@@ -904,7 +957,7 @@ export function validatePalette(palette: Palette, options: ValidatePaletteOption
 	}
 
 	violations.push(...validateSchema(palette))
-	violations.push(...validateDistinctness(palette, options.sameColorBar ?? SAME_COLOR_BAR))
+	violations.push(...validateDistinctness(palette, options.sameColorBar ?? sameColorBar))
 	violations.push(...validateContrastFloors(palette))
 
 	if (options.source !== undefined) {

@@ -44,41 +44,77 @@ export const MIN_GRADIENT_STOPS = 2
 export const MAX_GRADIENT_STOPS = 4
 
 /**
- * The one ruler: the same-colour bar, as a Euclidean distance in OKLab.
+ * The four colour regions the same-colour bar is measured per.
  *
- * `[UNCALIBRATED]` — v2-3's prior translated into the new unit. A starting point, not an answer.
- * v2-3 used CIE76 ΔE 3.3 (`research/v2-3/src/internal/policy.ts:109`, `distinctness.sameColor`,
- * measured through `perceptualDifference`: Euclidean distance in **D65** CIELab).
- * `PHASE_0_DECISIONS.md` §3 moves the ruler to Euclidean OKLab and says the threshold is to be
- * bracketed by the reviewer in a purpose-built round.
- *
- * **The exact protocol, because the answer depends on it.** Reproduce with
- * `calibration/same-color-bar-translation.ts` (seeded mulberry32, deterministic):
- *
- * - Ruler: CIE76 in D65 CIELab, white point [0.95047, 1, 1.08883], byte-identical to v2-3's
- *   `perceptualDifference`. Not `colorjs.io`'s `lab`, which is D50-adapted and answers a different
- *   question — an error in this constant's first derivation.
- * - Sampling (scheme B, "exact-ΔE ray", seed 555): draw a base colour uniformly over the
- *   *continuous* sRGB cube and a uniformly random direction; bisect along that ray for the point at
- *   exactly ΔE 3.3; discard pairs leaving the cube; accept within ΔE 3.3 ± 0.15. 30,000 pairs.
- * - Result: OKLab distance **median 0.01162**, p05 0.00784, p95 0.02434. Rounded to 0.012.
- *
- * **Why that scheme and not another.** The obvious alternative — perturb each 8-bit channel by a
- * random offset in [-radius, +radius] and keep pairs near ΔE 3.3 — has a free knob, and the answer
- * tracks it: median 0.00955 at radius ±3, 0.01235 at ±8, 0.01698 at ±48 (full sweep in the
- * calibration script). That is a factor of 1.8 across plausible protocols, far more than any
- * rounding. The exact-ΔE ray has no such knob: the step length is fixed by the ΔE constraint rather
- * than chosen. **This spread is the finding.** There is no single OKLab distance that "means" ΔE
- * 3.3, only a distribution, so a translated prior cannot substitute for the bracketing round — it
- * can only say where to start looking.
- *
- * **Four-quadrant check** (same scheme, seed 556): medians dark/neutral 0.01130, dark/saturated
- * 0.01186, light/neutral 0.01096, light/saturated 0.01163. The between-quadrant spread (0.0009) is
- * an order of magnitude smaller than the within-quadrant spread (p05→p95 ≈ 0.017), which is mildly
- * encouraging for §3's "does one threshold survive all four quadrants" question but does not settle
- * it — the reviewer's eyes do.
+ * `[REVIEWED]` — the strata of the bracketing round
+ * (`research/v3/data/calibration/bracketing-round-1.json`, `quadrantBoundaries`).
  */
-export const SAME_COLOR_BAR = 0.012
+export const COLOR_REGIONS = [
+	"dark-neutral",
+	"dark-saturated",
+	"light-neutral",
+	"light-saturated",
+] as const
+
+/**
+ * Where a colour's OKLab lightness and chroma put it among the four regions.
+ *
+ * `[REVIEWED]` — the boundaries the bracketing round's strata were built on and the reviewer judged
+ * against: `quadrantBoundaries` in `bracketing-round-1.json`, lightness 0.55, chroma 0.05. Below the
+ * lightness boundary is "dark", below the chroma boundary is "neutral".
+ */
+export const REGION_LIGHTNESS_BOUNDARY = 0.55
+export const REGION_CHROMA_BOUNDARY = 0.05
+
+/**
+ * **The one ruler, per region.** The same-colour bar as a Euclidean distance in OKLab.
+ *
+ * `[REVIEWED]` — reviewer bracketing round 1, batch `bracketing-round-1-clarified`, 2026-08-02,
+ * criterion **register-as-same** ("not whether you can detect any difference at the seam — if you
+ * have to hunt along the boundary to find it, they're the same colour"). Source of truth:
+ * `research/v3/data/calibration/bracketing-round-1-analysis.json`. 60 of 60 pairs answered; each
+ * threshold is a logistic fit over 14 fitted points per region, with the 95% confidence interval:
+ *
+ * | region           | bar     | 95% CI              |
+ * |------------------|---------|---------------------|
+ * | dark-neutral     | 0.00876 | 0.00575 – 0.01335   |
+ * | dark-saturated   | 0.01764 | 0.01274 – 0.02443   |
+ * | light-neutral    | 0.01629 | 0.01116 – 0.02380   |
+ * | light-saturated  | 0.02687 | 0.01153 – 0.06265   |
+ *
+ * **A single threshold was refuted by this measurement.** `oneThresholdSurvives: false` — the
+ * dark-neutral interval excludes the pooled threshold of 0.01582, so one bar does not fit all four
+ * regions. §3's proposal of a single ruler survives as *one ruler* (Euclidean OKLab, used
+ * everywhere); its *threshold* is regional. The spread is large and in the intuitive direction: the
+ * eye separates dark neutrals about three times more finely than light saturated colours.
+ *
+ * **How much to trust these.** Reviewer repeat consistency on this round was 63% (5 of 8 repeated
+ * items answered the same way both times) and all 4 identical-colour controls passed. So the
+ * ordering across regions is solid and each individual value carries real noise — which is what the
+ * confidence intervals say. `light-saturated`'s interval spans a factor of 5.4 (0.01153–0.06265);
+ * treat that bar as the least settled of the four, and prefer widening the round over trusting its
+ * third digit.
+ */
+export const SAME_COLOR_BAR_BY_REGION = {
+	"dark-neutral": 0.00876,
+	"dark-saturated": 0.01764,
+	"light-neutral": 0.01629,
+	"light-saturated": 0.02687,
+} as const
+
+/**
+ * The same-colour bar pooled across all four regions.
+ *
+ * `[REVIEWED]` — same round, `part1.pooled.threshold`: 0.01582 (95% CI 0.01235–0.02025) over 56
+ * fitted points.
+ *
+ * **Not for the distinctness invariant.** The measurement that produced it also refuted it as a
+ * single bar (dark-neutral's interval excludes it). It exists for the one legitimate use of a scalar
+ * here: corpus metrics and dashboards that need to reduce "how different are these palettes?" to one
+ * number comparable across runs — agreement rates, mover-set sizes, drift tracking. Any *per-pair*
+ * judgement uses `sameColorBar()` instead.
+ */
+export const POOLED_SAME_COLOR_BAR = 0.01582
 
 /**
  * Upper bound on |raw APCA| for two *exactly identical* colours.
@@ -117,14 +153,41 @@ export const EPSILON_TEXT_RAW = 2.5
  * Zero-contrast epsilon for the accent, in raw pre-clamp APCA units. Separate knob by design —
  * the accent is not text and its stakes are lower (`PHASE_0_DECISIONS.md` §2, §4 invariant 4).
  *
- * `[UNCALIBRATED]` — same status and same placeholder reasoning as `EPSILON_TEXT_RAW`, plus one
- * unresolved question carried by §6: a chromatic icon at equal luminance can be visible, so the
- * accent floor may properly live in colour distance (already enforced by invariant 3) rather than
- * in luminance at all. The bracketing round shows the reviewer flat equal-luminance chromatic
- * accent pairs and decides. Set equal to the text epsilon until then — deliberately *not* a claim
- * that they are equal.
+ * `[UNCALIBRATED]` — same status and same placeholder reasoning as `EPSILON_TEXT_RAW`; the corpus
+ * measurement of the raw-APCA distribution is still pending.
+ *
+ * What *is* settled is that this number is no longer the whole accent floor. §6's open question —
+ * "a chromatic icon at equal luminance can be visible, so the accent floor may properly live in
+ * colour distance" — was put to the reviewer in bracketing round 1 and answered yes. The accent
+ * clause of invariant 4 is now two-dimensional: this epsilon **and**
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` must both be undershot. So an imprecise value here is less
+ * dangerous than it was, because chroma now rescues the cases it would otherwise mis-flag.
  */
 export const EPSILON_ACCENT_RAW = 2.5
+
+/**
+ * How far apart in OKLab an accent and its field must be for the accent to be visible **on colour
+ * alone**, with no luminance difference at all.
+ *
+ * `[REVIEWED]` — reviewer bracketing round 1 part 2, batch `bracketing-round-1-clarified`,
+ * 2026-08-02. Question: "Are the icons clearly visible on this background?" over equal-luminance
+ * chromatic accent pairs (`accent-equal-luminance` stratum, 12 of 12 answered, 10 fitted points,
+ * both controls passed). Threshold **0.07444**, 95% CI 0.05211–0.10564.
+ *
+ * **Complete-separation caveat, from the analysis file:** every pair on one side of the gap was
+ * answered one way and every pair on the other side the other way, so the logistic curve alone
+ * cannot pin the threshold down. The reported value is the **middle of the gap**, which spans
+ * 0.06300–0.08796. The finding — that a chromatic accent at identical brightness becomes visible
+ * somewhere in that band — is solid; the exact number inside the band is not measured, only bracketed.
+ *
+ * The reviewer's own summary: "a coloured accent at the same brightness as its background is
+ * visible, once the two colours are about 0.07444 apart in colour. Below that the reviewer stopped
+ * seeing it, even though nothing about the brightness changed."
+ *
+ * Applies to the **accent only**. Text is luminance-driven and gets no colour rescue — that is a
+ * standing reviewer verdict from v2-3 and is not up for reinterpretation here.
+ */
+export const ACCENT_VISIBILITY_COLOR_DISTANCE = 0.07444
 
 /**
  * How far a palette's declared `effectiveRawMagnitude` may sit from the value its recorded

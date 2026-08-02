@@ -1,5 +1,11 @@
 /**
- * Reproduces the `SAME_COLOR_BAR` provenance measurement.
+ * Reproduces the translation that produced the same-colour bar's **superseded prior**.
+ *
+ * **Status: historical.** Reviewer bracketing round 1 (2026-08-02) measured the bar directly, per
+ * region, and refuted a single threshold — see `SAME_COLOR_BAR_BY_REGION` in `constants.ts`. This
+ * script is kept because its finding still stands and still matters: the translation from v2-3's
+ * CIE76 bar into OKLab has no single answer, which is why a translated prior could never have
+ * substituted for asking the reviewer. It is the argument for the round having been necessary.
  *
  * The question: v2-3's same-colour bar was CIE76 ΔE 3.3 (`research/v2-3/src/internal/policy.ts:109`,
  * measured by `perceptualDifference`, a Euclidean distance in **D65** CIELab). v3 moves the ruler to
@@ -19,7 +25,7 @@
  */
 
 import { okLabDistance, rgbToOkLab } from "../color.ts"
-import { SAME_COLOR_BAR } from "../constants.ts"
+import { POOLED_SAME_COLOR_BAR, SAME_COLOR_BAR_BY_REGION } from "../constants.ts"
 import type { Rgb8 } from "../types.ts"
 
 // ---------------------------------------------------------------------------------------------
@@ -248,7 +254,12 @@ function main(): void {
 		console.log(`  ${line(`  ${key}`, quadrants[key])}`)
 	}
 
-	console.log(`\nSAME_COLOR_BAR is currently ${SAME_COLOR_BAR}.`)
+	console.log(`\nSuperseded prior was 0.012 (the exact-\u0394E ray median, rounded).`)
+	console.log(`Measured bars, reviewer bracketing round 1:`)
+	for (const [region, bar] of Object.entries(SAME_COLOR_BAR_BY_REGION)) {
+		console.log(`  ${region.padEnd(16)} ${bar}`)
+	}
+	console.log(`  ${"pooled (reference)".padEnd(16)} ${POOLED_SAME_COLOR_BAR}`)
 }
 
 if (import.meta.filename === process.argv[1]) main()

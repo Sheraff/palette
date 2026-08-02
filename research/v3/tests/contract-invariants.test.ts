@@ -12,11 +12,19 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
-import { apcaLc, apcaRawBetween, colorDistance, colorFromHex } from "../src/contract/color.ts"
+import {
+	apcaLc,
+	apcaRawBetween,
+	colorDistance,
+	colorFromHex,
+	colorRegion,
+	sameColorBar,
+} from "../src/contract/color.ts"
 import {
 	EPSILON_ACCENT_RAW,
 	EPSILON_TEXT_RAW,
-	SAME_COLOR_BAR,
+	ACCENT_VISIBILITY_COLOR_DISTANCE,
+	SAME_COLOR_BAR_BY_REGION,
 	SOURCE_POPULATION_FLOOR,
 } from "../src/contract/constants.ts"
 import {
@@ -34,6 +42,8 @@ import {
 	validateSourceSupport,
 } from "../src/contract/invariants.ts"
 import {
+	accentInvisibleAtEqualLuminance,
+	accentRescuedByColor,
 	bandedSource,
 	collapsedAccentUnderRaisedFloor,
 	contrastFloorInconsistent,
@@ -51,6 +61,9 @@ import {
 	missingAccentSource,
 	opaqueJpegReport,
 	opaquePngReport,
+	regionalBarDistinctInDarkNeutral,
+	regionalBarSameInLightSaturated,
+	regionalBarStraddlingPair,
 	schemaBadMetadata,
 	schemaCollapseUnflagged,
 	schemaFlagWithoutEquality,
@@ -269,7 +282,7 @@ test("I1 rejects a declared contrast floor below its epsilon — invariant 4 mus
 	const background = contrastFloorSelfCertified.roles.background
 	assert.equal(foreground.hex, "#5a5a5a")
 	assert.equal(background.hex, "#002bff")
-	assert.ok(colorDistance(foreground, background) > SAME_COLOR_BAR * 20, "invariant 3 is content")
+	assert.ok(colorDistance(foreground, background) > sameColorBar(foreground, background) * 10, "invariant 3 is content")
 	assert.ok(Math.abs(apcaRawBetween(foreground, background)) < 1, "the pair really is at zero contrast")
 
 	const violations = validateSchema(contrastFloorSelfCertified)
@@ -380,7 +393,7 @@ test("I3 rejects a near-identical-but-unequal sanctioned collapse", () => {
 	assert.deepEqual(validateSchema(distinctnessNearCollapse), [])
 	const violations = validateDistinctness(distinctnessNearCollapse)
 	assert.ok(hasCode(violations, "I3.collapse-not-sanctioned"), codes(violations).join(", "))
-	assert.ok((violations[0].measured?.distance as number) < SAME_COLOR_BAR)
+	assert.ok((violations[0].measured?.distance as number) < SAME_COLOR_BAR_BY_REGION["dark-neutral"])
 })
 
 test("I3 rejects an exactly-equal collapse whose flag is clear, alongside I1", () => {
@@ -404,10 +417,48 @@ test("I3 rejects a black-on-black foreground/background", () => {
 	))
 })
 
-test("I3's bar is overridable, for the reviewer's bracketing round", () => {
-	// The near-collapse pair is 0.0113 apart. Under a bar of 0.005 it is distinct; under 0.02 it is not.
-	assert.deepEqual(validateDistinctness(distinctnessNearCollapse, 0.005), [])
-	assert.ok(validateDistinctness(distinctnessNearCollapse, 0.02).length > 0)
+test("I3 judges each pair against its own region's bar — one distance, two answers", () => {
+	// The same 0.0113 stop separation, in two regions. This is the finding that refuted a single
+	// threshold, expressed as two palettes that must validate differently.
+	assert.deepEqual(validateDistinctness(regionalBarDistinctInDarkNeutral), [])
+
+	const violations = validateDistinctness(regionalBarSameInLightSaturated)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I3.pair-not-distinct")
+	assert.equal(violations[0].measured?.firstRegion, "light-saturated")
+	assert.equal(violations[0].measured?.bar, SAME_COLOR_BAR_BY_REGION["light-saturated"])
+
+	// Same distance in both, to five decimal places.
+	const darkStops = regionalBarDistinctInDarkNeutral.gradient!.stops
+	const lightStops = regionalBarSameInLightSaturated.gradient!.stops
+	const darkDistance = colorDistance(darkStops[0].color, darkStops[1].color)
+	const lightDistance = colorDistance(lightStops[0].color, lightStops[1].color)
+	assert.ok(Math.abs(darkDistance - lightDistance) < 1e-5, `${darkDistance} vs ${lightDistance}`)
+})
+
+test("I3 resolves a straddling pair with the larger of the two bars", () => {
+	const stops = regionalBarStraddlingPair.gradient!.stops
+	assert.equal(colorRegion(stops[0].color), "dark-saturated")
+	assert.equal(colorRegion(stops[1].color), "dark-neutral")
+
+	const violations = validateDistinctness(regionalBarStraddlingPair)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].measured?.bar, SAME_COLOR_BAR_BY_REGION["dark-saturated"])
+	// The smaller bar would have called this pair distinct — the rule is what decides here.
+	const distance = violations[0].measured?.distance as number
+	assert.ok(distance > SAME_COLOR_BAR_BY_REGION["dark-neutral"])
+	assert.ok(distance < SAME_COLOR_BAR_BY_REGION["dark-saturated"])
+	assert.deepEqual(
+		validateDistinctness(regionalBarStraddlingPair, () => SAME_COLOR_BAR_BY_REGION["dark-neutral"]),
+		[],
+		"forcing the smaller bar flips the verdict, which is what makes the choice load-bearing",
+	)
+})
+
+test("I3's bar is overridable with a per-pair function, for a future sweep", () => {
+	// The near-collapse pair is 0.0075 apart. Forced to 0.005 it is distinct; forced to 0.02 it is not.
+	assert.deepEqual(validateDistinctness(distinctnessNearCollapse, () => 0.005), [])
+	assert.ok(validateDistinctness(distinctnessNearCollapse, () => 0.02).length > 0)
 })
 
 // ---------------------------------------------------------------------------------------------
@@ -423,7 +474,7 @@ test("I4 rejects a pair that the one ruler calls distinct and APCA calls invisib
 	const foreground = contrastFloorViolation.roles.foreground
 	const background = contrastFloorViolation.roles.background
 	assert.ok(
-		colorDistance(foreground, background) > SAME_COLOR_BAR * 20,
+		colorDistance(foreground, background) > sameColorBar(foreground, background) * 10,
 		"the pair must be emphatically distinct by the one ruler",
 	)
 	assert.equal(apcaLc(foreground.rgb, background.rgb), 0, "APCA's public scale reports nothing")
@@ -438,12 +489,13 @@ test("I4 rejects a pair that the one ruler calls distinct and APCA calls invisib
 })
 
 test("I4 covers all four pairs and uses the right epsilon for each", () => {
-	// A foreground and an accent both sitting at zero luminance contrast against both fields.
+	// A foreground and an accent both sitting at zero luminance contrast against both fields. The
+	// accent must also be chromatically close, or its second dimension would rescue it.
 	const palette = makePalette({
 		background: "#808080",
 		surface: "#808080",
 		foreground: "#ca00ff",
-		accent: "#e700a8",
+		accent: "#5e8876",
 		surfaceCollapsed: true,
 	})
 	const violations = validateContrastFloors(palette)
@@ -460,7 +512,8 @@ test("I4 covers all four pairs and uses the right epsilon for each", () => {
 
 test("I4 reads the palette's own recorded floor, so a caller-raised floor is enforced", () => {
 	// validFlat's accent sits at raw -38.4 against the background: fine at the epsilon, and a
-	// violation once a caller asks for Lc 60.
+	// violation once a caller asks for Lc 60. Note the colour rescue does not apply here — a raised
+	// floor is a request for luminance contrast, which chroma cannot satisfy.
 	assert.deepEqual(validateContrastFloors(validFlat), [])
 
 	const strict: Palette = {
@@ -560,6 +613,62 @@ test("I4 is sound standalone: a declared floor below the epsilon is raised to it
 test("I4 uses the epsilon when the contrast block is missing entirely", () => {
 	const noContrast = { ...contrastFloorViolation, contrast: undefined } as unknown as Palette
 	assert.ok(hasCode(validateContrastFloors(noContrast), "I4.below-contrast-floor"))
+})
+
+test("I4's accent clause is two-dimensional: chroma rescues an equal-luminance accent", () => {
+	// Bracketing round 1 part 2. The accent is at zero luminance contrast against the background and
+	// would have been a violation under the one-dimensional rule; it is 0.263 apart in OKLab, three
+	// and a half times the measured visibility distance, and the reviewer sees it plainly.
+	const accent = accentRescuedByColor.roles.accent
+	const background = accentRescuedByColor.roles.background
+	assert.ok(Math.abs(apcaRawBetween(accent, background)) < EPSILON_ACCENT_RAW, "luminance says invisible")
+	assert.ok(colorDistance(accent, background) >= ACCENT_VISIBILITY_COLOR_DISTANCE, "colour says visible")
+
+	assert.deepEqual(validateContrastFloors(accentRescuedByColor), [])
+	assert.deepEqual(validatePalette(accentRescuedByColor).violations, [])
+})
+
+test("I4's accent clause still fires when BOTH dimensions are undershot", () => {
+	const accent = accentInvisibleAtEqualLuminance.roles.accent
+	const background = accentInvisibleAtEqualLuminance.roles.background
+	assert.ok(Math.abs(apcaRawBetween(accent, background)) < EPSILON_ACCENT_RAW)
+	assert.ok(colorDistance(accent, background) < ACCENT_VISIBILITY_COLOR_DISTANCE)
+	// And it clears invariant 3's bar for this region, so the two invariants really are separate.
+	assert.ok(colorDistance(accent, background) > sameColorBar(accent, background))
+	assert.deepEqual(validateDistinctness(accentInvisibleAtEqualLuminance), [])
+
+	const violations = validateContrastFloors(accentInvisibleAtEqualLuminance)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I4.below-contrast-floor")
+	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
+	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
+})
+
+test("the foreground gets no colour rescue — text is luminance-driven", () => {
+	// contrastFloorViolation's foreground is 0.307 from its background, four times the accent's
+	// visibility distance, and still a violation. If the rescue ever leaked to text this would pass.
+	const foreground = contrastFloorViolation.roles.foreground
+	const background = contrastFloorViolation.roles.background
+	assert.ok(colorDistance(foreground, background) > ACCENT_VISIBILITY_COLOR_DISTANCE * 4)
+	const violations = validateContrastFloors(contrastFloorViolation)
+	assert.equal(violations.length, 1)
+	assert.equal(violations[0].measured?.parameter, "minTextContrast")
+	assert.equal(violations[0].measured?.visibilityDistance, undefined, "no rescue was offered to text")
+})
+
+test("the colour rescue applies at the epsilon only, never to a caller-raised floor", () => {
+	// The reviewer was asked "can you see this accent at all?" at zero luminance contrast. That
+	// licenses chroma as a substitute for visibility, not as a substitute for Lc 60.
+	assert.deepEqual(validateContrastFloors(accentRescuedByColor), [])
+
+	const strict: Palette = {
+		...accentRescuedByColor,
+		contrast: resolveContrastParameters({ minTextContrast: 0, minAccentContrast: 60 }),
+	}
+	const violations = validateContrastFloors(strict)
+	assert.ok(violations.length > 0, "a raised floor is a luminance request; chroma cannot satisfy it")
+	assert.ok(violations.every((entry) => entry.measured?.parameter === "minAccentContrast"))
+	assert.equal(violations[0].measured?.visibilityDistance, undefined)
 })
 
 test("I4 flags an exactly identical foreground/background pair", () => {
@@ -811,8 +920,10 @@ test("every violation carries a stable code, a message, and the paths it is abou
 test("the ruler used by invariant 3 is the one from color.ts, not a private copy", () => {
 	// If distinctness ever grew its own distance function this comparison would drift.
 	const a = colorFromHex("#2b3f57")
-	const b = colorFromHex("#2e425a")
+	const b = colorFromHex("#2d4159")
 	const violations = validateDistinctness(distinctnessNearCollapse)
 	assert.equal(violations[0].measured?.distance, colorDistance(a, b))
-	assert.equal(violations[0].measured?.bar, SAME_COLOR_BAR)
+	assert.equal(violations[0].measured?.bar, SAME_COLOR_BAR_BY_REGION["dark-neutral"])
+	assert.equal(violations[0].measured?.firstRegion, "dark-neutral")
+	assert.equal(violations[0].measured?.secondRegion, "dark-neutral")
 })

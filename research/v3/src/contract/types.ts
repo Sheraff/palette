@@ -12,7 +12,7 @@
  * decoder and algorithm that produced it.
  */
 
-import type { ROLE_NAMES } from "./constants.ts"
+import type { COLOR_REGIONS, ROLE_NAMES } from "./constants.ts"
 
 // ---------------------------------------------------------------------------------------------
 // Colour
@@ -34,6 +34,13 @@ export type Rgb8 = readonly [red: number, green: number, blue: number]
 
 /** A point in OKLab. The only space this contract measures distance in. */
 export type OkLab = readonly [lightness: number, a: number, b: number]
+
+/**
+ * One of the four regions the same-colour bar is measured per. The reviewer's bracketing round
+ * refuted a single threshold across them, so the bar a pair is judged against depends on where the
+ * pair sits — see `sameColorBar()` in `color.ts`.
+ */
+export type ColorRegion = (typeof COLOR_REGIONS)[number]
 
 /**
  * A published colour.

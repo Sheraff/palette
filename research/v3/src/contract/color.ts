@@ -22,9 +22,11 @@ import {
 	APCA_LC_TO_RAW_OFFSET,
 	HEX_COLOR_PATTERN,
 	LC_DEAD_BAND_CEILING,
-	SAME_COLOR_BAR,
+	REGION_CHROMA_BOUNDARY,
+	REGION_LIGHTNESS_BOUNDARY,
+	SAME_COLOR_BAR_BY_REGION,
 } from "./constants.ts"
-import type { HexColor, OkLab, PaletteColor, Rgb8 } from "./types.ts"
+import type { ColorRegion, HexColor, OkLab, PaletteColor, Rgb8 } from "./types.ts"
 
 // ---------------------------------------------------------------------------------------------
 // sRGB representation
@@ -175,11 +177,78 @@ export function colorDistance(first: PaletteColor, second: PaletteColor): number
 }
 
 /**
- * Are these two colours the same colour, by the one ruler at the same-colour bar?
- * `SAME_COLOR_BAR` is `[UNCALIBRATED]` — see `constants.ts`.
+ * Which of the four measured regions a colour falls in, by OKLab lightness and chroma.
+ *
+ * The boundaries are the bracketing round's own strata boundaries, so a colour is classified exactly
+ * as the reviewer's judgements were stratified.
  */
-export function sameColor(first: PaletteColor, second: PaletteColor, bar: number = SAME_COLOR_BAR): boolean {
-	return colorDistance(first, second) < bar
+export function colorRegion(color: PaletteColor): ColorRegion {
+	const [lightness, a, b] = okLabFromColor(color)
+	const chroma = Math.hypot(a, b)
+	const lightnessBand = lightness < REGION_LIGHTNESS_BOUNDARY ? "dark" : "light"
+	const chromaBand = chroma < REGION_CHROMA_BOUNDARY ? "neutral" : "saturated"
+	return `${lightnessBand}-${chromaBand}` as ColorRegion
+}
+
+/**
+ * **The same-colour bar for a specific pair.** Regional, because the reviewer's measurement refuted
+ * a single threshold (`SAME_COLOR_BAR_BY_REGION` in `constants.ts`).
+ *
+ * When both colours share a region the answer is that region's bar. When they straddle a boundary —
+ * **the larger of the two regions' bars.**
+ *
+ * ## Why the larger, and not the midpoint colour's region or the smaller
+ *
+ * The reviewer never judged a straddling pair: all 60 calibration pairs were generated with both
+ * members inside one stratum (verified — 0 of 60 straddle). So this rule is **not measured**; it is
+ * a reasoned default, chosen on two grounds and checked by measurement where measurement was
+ * possible.
+ *
+ * **1. The failure directions are not symmetric.** A larger bar calls more pairs "the same colour",
+ * so invariant 3 flags more palettes. A smaller bar flags fewer. Distinctness exists to stop a
+ * palette publishing two colours a user cannot tell apart — an invisible accent, white-on-white, a
+ * degenerate gradient. Its false negatives reach the corpus silently; its false positives get seen
+ * by the reviewer, and `PHASE_0_DECISIONS.md` §4 has an explicit remedy for them ("an invariant that
+ * ever blocks an endorsed palette is demoted — the reviewer outranks the rule"). There is no
+ * corresponding remedy for a violation nobody was told about. Where the rule is unmeasured, it
+ * should err toward being told.
+ *
+ * **2. It is also, measurably, the most stable of the three.** Over 40,000 seeded close pairs
+ * (OKLab distance 0.002–0.035, of which 2.75% straddle a region boundary), perturbed by ±1 LSB on
+ * each channel — the dither canary that moved all 114 of v2-3's palettes:
+ *
+ * | rule            | dither changes the bar | and flips the verdict |
+ * |-----------------|------------------------|-----------------------|
+ * | larger of two   | 0.205%                 | 0.0550%               |
+ * | midpoint colour | 0.228%                 | 0.0619%               |
+ * | smaller of two  | 0.242%                 | 0.0600%               |
+ *
+ * The margins are small, but they point the same way as the safety argument rather than against it,
+ * which is what settles it. Intuition said the midpoint would win (a midpoint moves half as far as a
+ * member); it does not, because the larger bar is pinned by whichever member sits in the more
+ * forgiving region and that assignment survives a member crossing the boundary.
+ *
+ * On the same sample the three rules flag 866, 664 and 481 of the 1,101 straddling pairs — so the
+ * choice is real, and confined to the 2.75% of close pairs that straddle at all.
+ *
+ * **Revisit this** if a bracketing round is ever run with deliberately straddling pairs. Until then
+ * it is a default with a reason, not a finding.
+ */
+export function sameColorBar(first: PaletteColor, second: PaletteColor): number {
+	return Math.max(
+		SAME_COLOR_BAR_BY_REGION[colorRegion(first)],
+		SAME_COLOR_BAR_BY_REGION[colorRegion(second)],
+	)
+}
+
+/**
+ * Are these two colours the same colour, by the one ruler at this pair's regional bar?
+ *
+ * Pass an explicit `bar` only to override the measurement — a future bracketing round sweeping the
+ * threshold, or a test pinning it.
+ */
+export function sameColor(first: PaletteColor, second: PaletteColor, bar?: number): boolean {
+	return colorDistance(first, second) < (bar ?? sameColorBar(first, second))
 }
 
 // ---------------------------------------------------------------------------------------------

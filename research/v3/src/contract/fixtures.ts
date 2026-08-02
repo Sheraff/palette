@@ -224,15 +224,19 @@ export const schemaHexRgbMismatch: Palette = {
 }
 
 /**
- * I3: two gradient stops the ruler cannot tell apart (OKLab distance 0.0113, under the 0.013 bar).
- * A degenerate ramp — the two stops render as one colour.
+ * I3: two gradient stops the ruler cannot tell apart. A degenerate ramp — the two stops render as
+ * one colour.
+ *
+ * Both stops are dark-neutral, where the reviewer's bar is the tightest of the four (0.00876); this
+ * pair sits at 0.00752. Under the pre-bracketing scalar bar of 0.012 the old fixture used a pair at
+ * 0.01127, which the measurement has since reclassified as genuinely *distinct* in this region.
  */
 export const distinctnessIndistinctStops: Palette = makePalette({
 	background: "#101820",
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#2b3f57", 0], ["#2e425a", 1]],
+	stops: [["#2b3f57", 0], ["#2d4159", 1]],
 })
 
 /**
@@ -265,10 +269,50 @@ export const distinctnessInvisibleAccent: Palette = makePalette({
  */
 export const distinctnessNearCollapse: Palette = makePalette({
 	background: "#2b3f57",
-	surface: "#2e425a",
+	surface: "#2d4159",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
 	surfaceCollapsed: false,
+})
+
+/**
+ * The regional bar, demonstrated: **the same OKLab distance, judged both ways.**
+ *
+ * Each of these palettes carries a stop pair 0.0120 ± 0.0002 apart. In dark-neutral, where the
+ * reviewer's bar is 0.00876, that is two distinct colours. In light-saturated, where the bar is
+ * 0.02687, it is one colour twice. A single threshold cannot produce both answers, which is exactly
+ * what the bracketing round measured and what `oneThresholdSurvives: false` records.
+ */
+export const regionalBarDistinctInDarkNeutral: Palette = makePalette({
+	background: "#101820",
+	surface: "#f2f5f7",
+	foreground: "#e0533a",
+	accent: "#4a6b8a",
+	stops: [["#2b3f57", 0], ["#2e425a", 1]],
+})
+
+export const regionalBarSameInLightSaturated: Palette = makePalette({
+	background: "#101820",
+	surface: "#f2f5f7",
+	foreground: "#4a6b8a",
+	accent: "#e0533a",
+	stops: [["#bc4758", 0], ["#c1495a", 1]],
+})
+
+/**
+ * A pair that straddles a region boundary, chosen so the rule actually decides the outcome.
+ *
+ * `#00081e` is dark-saturated (bar 0.01764) and `#020a20` is dark-neutral (bar 0.00876) — the chroma
+ * boundary runs between them. Their distance is 0.01145, which sits *between* the two bars. So the
+ * smaller-bar rule would call them distinct and the larger-bar rule calls them the same colour.
+ * `sameColorBar` takes the larger, so this is a violation; see that function for why.
+ */
+export const regionalBarStraddlingPair: Palette = makePalette({
+	background: "#f2f5f7",
+	surface: "#e0533a",
+	foreground: "#4a6b8a",
+	accent: "#9e7397",
+	stops: [["#00081e", 0], ["#020a20", 1]],
 })
 
 /**
@@ -313,9 +357,39 @@ export const lyingAccentCollapseFlag: Palette = makePalette({
 	background: "#808080",
 	surface: "#808080",
 	foreground: "#f2f5f7",
-	accent: "#e700a8",
+	accent: "#5e8876",
 	surfaceCollapsed: true,
 	accentCollapsed: true,
+})
+
+/**
+ * The accent's second dimension, in the direction that **rescues**.
+ *
+ * A vivid magenta accent on mid grey: |raw APCA| 2.378, under the epsilon, so luminance says
+ * invisible. But the two colours are 0.263 apart in OKLab — three and a half times
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` — and the reviewer's bracketing round says that is plainly
+ * visible. Valid palette. Under the pre-bracketing one-dimensional rule this was a violation.
+ */
+export const accentRescuedByColor: Palette = makePalette({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#e700a8",
+})
+
+/**
+ * The accent's second dimension, in the direction that still **condemns**.
+ *
+ * A muted green accent on mid grey: |raw APCA| 1.048 *and* only 0.055 apart in OKLab. Both
+ * dimensions are undershot, so the accent is genuinely invisible and invariant 4 fires. Note the
+ * distance clears invariant 3's bar for this region (0.02687) comfortably — the two invariants are
+ * asking different questions, and this fixture sits in the gap between them.
+ */
+export const accentInvisibleAtEqualLuminance: Palette = makePalette({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#5e8876",
 })
 
 /**

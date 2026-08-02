@@ -25,7 +25,10 @@ import {
 	EPSILON_ACCENT_RAW,
 	EPSILON_TEXT_RAW,
 	LC_DEAD_BAND_CEILING,
-	SAME_COLOR_BAR,
+	POOLED_SAME_COLOR_BAR,
+	REGION_CHROMA_BOUNDARY,
+	REGION_LIGHTNESS_BOUNDARY,
+	SAME_COLOR_BAR_BY_REGION,
 } from "../src/contract/constants.ts"
 import {
 	apcaLc,
@@ -38,11 +41,13 @@ import {
 	hexToRgb,
 	isHexColor,
 	isRgb8,
+	colorRegion,
 	lcFloorToRawMagnitude,
 	okLabDistance,
 	okLabToRgb,
 	resolveContrastFloor,
 	rgbToApcaY,
+	sameColorBar,
 	rgbToHex,
 	rgbToOkLab,
 	sameColor,
@@ -166,20 +171,69 @@ test("the one ruler is a metric: zero on identity, symmetric, and obeys the tria
 	}
 })
 
-test("sameColor uses the same-color bar, and the bar is where constants.ts says", () => {
-	// Measured pair: #2b3f57 and #2e425a are 0.01127 apart, just under the 0.012 bar.
-	assert.ok(colorDistance(colorFromHex("#2b3f57"), colorFromHex("#2e425a")) < SAME_COLOR_BAR)
-	assert.equal(sameColor(colorFromHex("#2b3f57"), colorFromHex("#2e425a")), true)
+test("colorRegion places colors by the bracketing round's own strata boundaries", () => {
+	assert.equal(colorRegion(colorFromHex("#101820")), "dark-neutral") // L 0.205, C 0.020
+	assert.equal(colorRegion(colorFromHex("#002bff")), "dark-saturated") // L 0.476, C 0.297
+	assert.equal(colorRegion(colorFromHex("#f2f5f7")), "light-neutral") // L 0.968, C 0.004
+	assert.equal(colorRegion(colorFromHex("#e0533a")), "light-saturated") // L 0.627, C 0.181
+	assert.equal(colorRegion(colorFromHex("#000000")), "dark-neutral")
+	assert.equal(colorRegion(colorFromHex("#ffffff")), "light-neutral")
 
-	// #2f435b is 0.01501 away, just over.
-	assert.ok(colorDistance(colorFromHex("#2b3f57"), colorFromHex("#2f435b")) >= SAME_COLOR_BAR)
-	assert.equal(sameColor(colorFromHex("#2b3f57"), colorFromHex("#2f435b")), false)
-
-	// The bar is overridable, which is what the reviewer's bracketing round needs.
-	assert.equal(sameColor(colorFromHex("#2b3f57"), colorFromHex("#2f435b"), 0.02), true)
+	// The boundaries are exactly the fixture's: below is dark/neutral, at-or-above is light/saturated.
+	assert.equal(REGION_LIGHTNESS_BOUNDARY, 0.55)
+	assert.equal(REGION_CHROMA_BOUNDARY, 0.05)
 })
 
-test("the SAME_COLOR_BAR provenance is reproducible from its recorded protocol", () => {
+test("sameColor uses this pair's regional bar, and the bars are the reviewer's measured values", () => {
+	// One distance, judged two ways — the finding that refuted a single threshold.
+	const darkNeutralPair = [colorFromHex("#2b3f57"), colorFromHex("#2e425a")] as const
+	const lightSaturatedPair = [colorFromHex("#bc4758"), colorFromHex("#c1495a")] as const
+	const distance = colorDistance(...darkNeutralPair)
+	assert.ok(Math.abs(distance - colorDistance(...lightSaturatedPair)) < 1e-5, "same distance")
+
+	assert.equal(sameColorBar(...darkNeutralPair), SAME_COLOR_BAR_BY_REGION["dark-neutral"])
+	assert.equal(sameColorBar(...lightSaturatedPair), SAME_COLOR_BAR_BY_REGION["light-saturated"])
+	assert.equal(sameColor(...darkNeutralPair), false, "0.0113 is distinct among dark neutrals")
+	assert.equal(sameColor(...lightSaturatedPair), true, "0.0113 is one color among light saturateds")
+
+	// Tighter in dark-neutral, and the ordering the reviewer produced across all four.
+	assert.ok(SAME_COLOR_BAR_BY_REGION["dark-neutral"] < SAME_COLOR_BAR_BY_REGION["light-neutral"])
+	assert.ok(SAME_COLOR_BAR_BY_REGION["light-neutral"] < SAME_COLOR_BAR_BY_REGION["dark-saturated"])
+	assert.ok(SAME_COLOR_BAR_BY_REGION["dark-saturated"] < SAME_COLOR_BAR_BY_REGION["light-saturated"])
+
+	// The bar is overridable, for a future sweep.
+	assert.equal(sameColor(...darkNeutralPair, 0.02), true)
+})
+
+test("a straddling pair takes the larger of the two regions' bars", () => {
+	// #00081e is dark-saturated (bar 0.01764), #020a20 dark-neutral (bar 0.00876); the chroma
+	// boundary runs between them. Their distance, 0.01145, sits between the two bars — so the rule
+	// decides the answer, and the documented choice is the larger.
+	const first = colorFromHex("#00081e")
+	const second = colorFromHex("#020a20")
+	assert.equal(colorRegion(first), "dark-saturated")
+	assert.equal(colorRegion(second), "dark-neutral")
+	const distance = colorDistance(first, second)
+	assert.ok(distance > SAME_COLOR_BAR_BY_REGION["dark-neutral"])
+	assert.ok(distance < SAME_COLOR_BAR_BY_REGION["dark-saturated"])
+
+	assert.equal(sameColorBar(first, second), SAME_COLOR_BAR_BY_REGION["dark-saturated"])
+	assert.equal(sameColor(first, second), true, "the larger bar calls them the same color")
+	// Symmetric: the order of the arguments cannot change the bar.
+	assert.equal(sameColorBar(second, first), sameColorBar(first, second))
+})
+
+test("the pooled bar is kept as a reference and is not what any pair is judged against", () => {
+	assert.equal(POOLED_SAME_COLOR_BAR, 0.01582)
+	// The measurement that produced it also refuted it: dark-neutral's CI (0.00575-0.01335) excludes it.
+	assert.ok(POOLED_SAME_COLOR_BAR > 0.01335, "pooled sits outside dark-neutral's confidence interval")
+	// No region's bar equals it, so nothing silently falls back to it.
+	for (const bar of Object.values(SAME_COLOR_BAR_BY_REGION)) {
+		assert.notEqual(bar, POOLED_SAME_COLOR_BAR)
+	}
+})
+
+test("the superseded translation prior is still reproducible from its recorded protocol", () => {
 	// The constant's comment records a specific, seeded protocol, because the answer depends on the
 	// protocol: the local-offset scheme's median moves from 0.0096 to 0.0170 across plausible radii.
 	// This test re-runs the knob-free scheme at a smaller sample and checks it still lands where the
@@ -190,7 +244,9 @@ test("the SAME_COLOR_BAR provenance is reproducible from its recorded protocol",
 		Math.abs(summary.median - 0.01162) < 0.0005,
 		`recorded median 0.01162, measured ${summary.median.toFixed(5)}`,
 	)
-	assert.ok(Math.abs(SAME_COLOR_BAR - summary.median) < 0.001, "the constant is the rounded median")
+	// The prior this produced (0.012) is superseded by the reviewer's measured regional bars; it is
+	// still within a whisker of the pooled measurement, which is a mild sanity check on both.
+	assert.ok(Math.abs(POOLED_SAME_COLOR_BAR - summary.median) < 0.005)
 
 	// And the CIE76 used for the translation really is v2-3's ruler, D65 and all. Blue against black
 	// is the discriminating pair: 137.65 under D65, 134.49 under D50. Getting this wrong is not
