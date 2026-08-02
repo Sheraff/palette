@@ -1,0 +1,199 @@
+{
+  "_comment": [
+    "Demo fixture batch for the v3 review server skeleton. Three items from the sharded corpus,",
+    "with hand-assembled palettes whose colors are all real pixels of their artwork (sampled by",
+    "decoding each file and reading exact pixel values; no invented colors).",
+    "Item demo-2 carries a 3-stop gradient, item demo-3 carries a 2-stop and a 3-stop, item demo-1",
+    "compares a flat field against a 2-stop gradient.",
+    "imagePath entries are repo-root-relative here so the fixture is portable; the seeder rewrites",
+    "them to absolute paths before pushing, because the push API requires absolute paths.",
+    "Palettes, fingerprints and purposes use the warehouse library shapes verbatim.",
+    "The side variantIds below are TRUE names: the server never serves them."
+  ],
+  "imagePathsRelativeTo": "repo-root",
+  "batchId": "demo-batch-0001",
+  "fundedBy": [
+    "review-server skeleton, Phase 0 — demo only, not evidence"
+  ],
+  "items": [
+    {
+      "itemId": "demo-1-light-illustration",
+      "imagePath": "00/ab67616d00001e02000027594d67b44c00995865.jpg",
+      "sides": [
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-alpha",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "0000000000000000000000000000000000000000",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#ffffff",
+            "surface": "#eef9f1",
+            "foreground": "#24415f",
+            "accent": "#3c628f",
+            "gradient": null,
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "variantId": "trunk-flat-field"
+        },
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-bravo",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "1111111111111111111111111111111111111111",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#ffffff",
+            "surface": "#dee5f5",
+            "foreground": "#2e4b69",
+            "accent": "#5c77a4",
+            "gradient": {
+              "stops": [
+                {
+                  "color": "#ffffff",
+                  "position": 0
+                },
+                {
+                  "color": "#dee5f5",
+                  "position": 1
+                }
+              ]
+            },
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "variantId": "candidate-two-stop-field"
+        }
+      ]
+    },
+    {
+      "itemId": "demo-2-dark-warm-photo",
+      "imagePath": "00/ab67616d00001e0200003a64886c352827bad270.jpg",
+      "sides": [
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-alpha",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "0000000000000000000000000000000000000000",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#1f151d",
+            "surface": "#684436",
+            "foreground": "#ffe6e4",
+            "accent": "#a94a2e",
+            "gradient": {
+              "stops": [
+                {
+                  "color": "#1f151d",
+                  "position": 0
+                },
+                {
+                  "color": "#442c20",
+                  "position": 0.46
+                },
+                {
+                  "color": "#684436",
+                  "position": 1
+                }
+              ]
+            },
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "variantId": "trunk-three-stop-field"
+        },
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-bravo",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "1111111111111111111111111111111111111111",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#2a1b18",
+            "surface": "#3d2a23",
+            "foreground": "#fff0fb",
+            "accent": "#fff0fb",
+            "gradient": null,
+            "surfaceCollapsed": false,
+            "accentCollapsed": true
+          },
+          "variantId": "candidate-collapsed-accent"
+        }
+      ]
+    },
+    {
+      "itemId": "demo-3-blue-cover",
+      "imagePath": "00/ab67616d00001e02000045168a00c9fa6fcc59da.jpg",
+      "sides": [
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-alpha",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "0000000000000000000000000000000000000000",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#05090c",
+            "surface": "#3571b0",
+            "foreground": "#fbffff",
+            "accent": "#4996f0",
+            "gradient": {
+              "stops": [
+                {
+                  "color": "#05090c",
+                  "position": 0
+                },
+                {
+                  "color": "#3571b0",
+                  "position": 1
+                }
+              ]
+            },
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "variantId": "trunk-two-stop-field"
+        },
+        {
+          "fingerprint": {
+            "algorithmVersion": "demo-fixture-bravo",
+            "preprocessingVersion": "demo-preprocessing-1",
+            "gitCommit": "1111111111111111111111111111111111111111",
+            "dirty": false
+          },
+          "palette": {
+            "background": "#010825",
+            "surface": "#4996f0",
+            "foreground": "#fbffff",
+            "accent": "#5499ff",
+            "gradient": {
+              "stops": [
+                {
+                  "color": "#010825",
+                  "position": 0
+                },
+                {
+                  "color": "#3979c0",
+                  "position": 0.62
+                },
+                {
+                  "color": "#4996f0",
+                  "position": 1
+                }
+              ]
+            },
+            "surfaceCollapsed": false,
+            "accentCollapsed": false
+          },
+          "variantId": "candidate-three-stop-field"
+        }
+      ]
+    }
+  ],
+  "purpose": "mechanism"
+}

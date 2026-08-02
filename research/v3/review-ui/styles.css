@@ -1,0 +1,387 @@
+/*
+ * Review chrome is strictly two colors: black and white (REVIEW_UI.md §3).
+ * Black background, flat, no shadows, no gradients, no greys — everywhere except the mock player
+ * UI and the swatches, which show palette colors. Selection is shown by inverting, never by tint.
+ */
+
+:root {
+	color-scheme: dark;
+	--ink: #ffffff;
+	--paper: #000000;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+}
+
+body {
+	font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+	margin: 0;
+}
+
+code {
+	font: inherit;
+}
+
+a {
+	color: var(--ink);
+}
+
+.bar {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.bar h1 {
+	font-size: 13px;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+	font-weight: 400;
+}
+
+button {
+	font: inherit;
+	color: var(--ink);
+	background: var(--paper);
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+button:hover {
+	text-decoration: underline;
+}
+
+button.selected {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+	outline: 2px dashed var(--ink);
+	outline-offset: 2px;
+}
+
+textarea,
+input[type="text"] {
+	font: inherit;
+	width: 100%;
+	color: var(--ink);
+	background: var(--paper);
+	border: 1px solid var(--ink);
+	border-radius: 0;
+	padding: 6px 8px;
+	resize: vertical;
+}
+
+input[type="checkbox"] {
+	accent-color: var(--ink);
+	width: 14px;
+	height: 14px;
+}
+
+.item-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.item-nav button {
+	padding: 3px 8px;
+}
+
+/* A judged item is marked with a leading marker, not a color — there are only two colors. */
+.item-nav button::before {
+	content: "· ";
+}
+
+.item-nav button.judged::before {
+	content: "× ";
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.artwork-block {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.artwork-block img {
+	display: block;
+	width: 180px;
+	height: auto;
+	border: 1px solid var(--ink);
+}
+
+.artwork-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+	word-break: break-all;
+}
+
+.sides {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+	gap: 12px;
+}
+
+.side {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.side h2 {
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.side-body {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(200px, 0.85fr);
+	gap: 10px;
+	align-items: start;
+}
+
+/* ---- mock player UI: palette colors only, borderless artwork, no shadows ---- */
+
+.mock {
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-width: 0;
+}
+
+.mock-art {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 0;
+}
+
+.mock-field-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.mock-title {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.mock-card {
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.mock-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.mock-row-text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.mock-track {
+	height: 4px;
+	width: 100%;
+}
+
+.mock-track-fill {
+	height: 100%;
+	width: 42%;
+}
+
+.mock-icons {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.icon {
+	display: block;
+}
+
+.icon-prev {
+	width: 13px;
+	height: 14px;
+	clip-path: polygon(0 0, 0 100%, 12% 100%, 12% 55%, 100% 100%, 100% 0, 12% 45%, 12% 0);
+}
+
+.icon-play {
+	width: 16px;
+	height: 18px;
+	clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.icon-next {
+	width: 13px;
+	height: 14px;
+	clip-path: polygon(100% 0, 100% 100%, 88% 100%, 88% 55%, 0 100%, 0 0, 88% 45%, 88% 0);
+}
+
+.icon-dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.icon-bars {
+	width: 14px;
+	height: 14px;
+	clip-path: polygon(0 60%, 20% 60%, 20% 100%, 0 100%, 0 60%, 40% 20%, 60% 20%, 60% 100%, 40% 100%, 40% 20%, 80% 0, 100% 0, 100% 100%, 80% 100%, 80% 0);
+}
+
+/* ---- swatches beside the mock ---- */
+
+.swatches {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.swatches li {
+	display: grid;
+	grid-template-columns: 26px minmax(0, 1fr);
+	gap: 8px;
+	align-items: start;
+}
+
+.chip {
+	width: 26px;
+	height: 26px;
+	border: 1px solid var(--ink);
+}
+
+.swatch-text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	word-break: break-word;
+}
+
+.swatch-role {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.swatch-sub {
+	border-top: 1px solid var(--ink);
+	margin-top: 6px;
+	padding-top: 6px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* ---- reviewer input ---- */
+
+.inputs {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.control {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.control-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.control-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+.confound {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.footer-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.keys {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+summary {
+	cursor: pointer;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.banner {
+	border: 1px solid var(--ink);
+	padding: 8px 10px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
