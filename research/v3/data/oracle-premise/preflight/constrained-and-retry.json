@@ -1,0 +1,36 @@
+{
+	"stage": "constrained-and-retry",
+	"at": "2026-08-02T21:25:31.122Z",
+	"constrained_decoding_available": true,
+	"constrained_attempt": {
+		"status": "ok",
+		"attempts": 1,
+		"parse_failed": false,
+		"parsed": {
+			"ground_type": "shaded_field",
+			"shading_geometry": "radial_or_vignette",
+			"field_texture": "one_textured_material",
+			"enclosure": "none",
+			"confidence": "high",
+			"ambiguity_note": ""
+		},
+		"raw_text": "{\"ground\": \"shaded_field\", \"shading\": \"radial_or_vignette\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}"
+	},
+	"unconstrained_attempt": {
+		"status": "failed",
+		"attempts": 3,
+		"parse_failed": true,
+		"parsed": null,
+		"raw_text": "{\"1. ground\": \"shaded_field\", \"2. shading\": \"radial_or_vignette\", \"3. texture\": \"one_textured_material\", \"4. enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
+		"note": "If this is also clean, the grammar is belt-and-braces rather than load-bearing \u2014 which is the comfortable place to be, not a reason to turn it off."
+	},
+	"forced_failure": {
+		"status": "failed",
+		"attempts": 3,
+		"parse_failed": true,
+		"error_class": "SchemaViolation",
+		"validator_invocations": 3,
+		"expected_attempts": 3,
+		"retry_cap_respected": true
+	}
+}

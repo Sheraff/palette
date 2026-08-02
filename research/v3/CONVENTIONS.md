@@ -38,5 +38,10 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
 - **Plain language** in docs, comments, reports. No cleverness.
 - Long-running scripts: JSONL/shard checkpoints flushed per record, resumable from output,
   deliberately killable.
+- **Known artifact — stray NUL bytes in generated source.** Three separate agent-written
+  files have contained literal NUL bytes where a space belonged (typically as separators
+  inside template literals). Signature: `grep` treats a text file as binary, or Edit cannot
+  match text you can plainly see. Check with `grep -rlP '\x00' <path>`, repair to a space,
+  and verify output hashes unchanged.
 - Read `V3_PLAN.md` and `PHASE_0_DECISIONS.md` before writing code; `REVIEW_UI.md` for
   anything reviewer-facing.

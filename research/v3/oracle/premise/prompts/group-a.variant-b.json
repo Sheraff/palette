@@ -1,0 +1,56 @@
+{
+	"schema_version": "group-a.v1",
+	"prompt_variant": "B",
+	"provenance": "[REVIEWED] Question set: research/v3/ORACLE_QUESTION_SET.md group A (ground structure). Same four questions and the same closed vocabularies as variant A; independently written stems and a different question order.",
+	"design_notes": [
+		"Question order is deliberately different from variant A: enclosure first, then texture, then the critical ground question third, then shading. With constrained decoding the JSON property order IS the generation order, so this genuinely changes what the model has already committed to when it answers `ground`.",
+		"Stems are rewritten rather than paraphrased: variant A describes the ground as 'made of' something and leads with a rule about one surface vs two things; variant B leads with a counting question ('how many separate areas') and reaches the same vocabulary from the other side.",
+		"The enum option lists are also in a different order inside each question, so first-listed-option bias cannot survive both variants.",
+		"Same schema_version as variant A: the two are two renderings of one question set, not two question sets."
+	],
+	"deviations": [
+		"Identical to variant A's deviations: `not_applicable` added to the shading vocabulary because a fixed schema cannot make a field conditional; `note` is `ambiguity_note`, HUMAN AUDIT ONLY, capped at 120 characters."
+	],
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Here is an album cover.\n\nFour questions, all of them about the BACKGROUND — the big areas the subject, lettering or figures sit on top of. Small details do not count. What the cover depicts does not matter. Whether you like it does not matter.\n\n1. enclosure — is there a frame, border or bar around the picture?\n   thick_frame_or_bars — a wide frame, or solid blocks of colour along an edge, big enough to count as an area in its own right\n   none — the picture goes right to the edges\n   thin_border — a thin line or narrow frame\n\n2. texture — where the background colour is not perfectly even, why is it uneven?\n   distinct_areas — because there are separate patches of different colour, not because of any material\n   one_textured_material — because of grain, film noise, paper, canvas, brush strokes, print dots: the same material everywhere\n   smooth — it is even; there is no visible texture\n\n3. background — count the separate areas that make up the background, then choose.\n   A surface lit from one side is still ONE area, even where it fades from bright to dark. Sky over a field is TWO areas, because they are different things sitting next to each other.\n   multiple_distinct_fields — two or more areas of different colour, meeting along an edge\n   shaded_field — a single surface whose colour fades or shifts across it\n   flat_field — a single area, one colour, evenly filled\n   pattern_or_texture — a repeated motif or a material filling the whole background\n   full_scene — a place with depth: an interior, a landscape, an environment\n   none_discernible — you cannot tell what is behind\n\n4. fade — if and only if you chose shaded_field, describe the fade.\n   radial_or_vignette — spreading from a centre outward, or darker toward the corners\n   not_applicable — you did not choose shaded_field\n   irregular — no regular geometry to it\n   linear — running straight across, from one side to the other\n\nFinally:\n   certainty — high, medium or low, over all four answers together\n   note — empty string if your certainty is high; otherwise one short sentence naming what is unclear\n\nAnswer in JSON and nothing else.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"enclosure": {
+				"type": "string",
+				"enum": ["thick_frame_or_bars", "none", "thin_border"]
+			},
+			"texture": {
+				"type": "string",
+				"enum": ["distinct_areas", "one_textured_material", "smooth"]
+			},
+			"background": {
+				"type": "string",
+				"enum": ["multiple_distinct_fields", "shaded_field", "flat_field", "pattern_or_texture", "full_scene", "none_discernible"]
+			},
+			"fade": {
+				"type": "string",
+				"enum": ["radial_or_vignette", "not_applicable", "irregular", "linear"]
+			},
+			"certainty": {
+				"type": "string",
+				"enum": ["high", "medium", "low"]
+			},
+			"note": {
+				"type": "string",
+				"maxLength": 120
+			}
+		},
+		"required": ["enclosure", "texture", "background", "fade", "certainty", "note"],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"background": "ground_type",
+		"fade": "shading_geometry",
+		"texture": "field_texture",
+		"enclosure": "enclosure",
+		"certainty": "confidence",
+		"note": "ambiguity_note"
+	},
+	"free_text_fields": ["note"]
+}

@@ -1,0 +1,57 @@
+{
+	"schema_version": "group-a.v1",
+	"prompt_variant": "A",
+	"provenance": "[REVIEWED] Question set: research/v3/ORACLE_QUESTION_SET.md group A (ground structure). Vocabularies copied verbatim from that table, plus the two additions documented in `deviations`.",
+	"design_notes": [
+		"Variant A asks the four structure questions in the order the question set lists them: ground_type first, then shading_geometry, field_texture, enclosure.",
+		"Variant B (group-a.variant-b.json) asks the same four questions in a different order with independently written stems, per ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md §3: a label that survives both wordings is robust to framing.",
+		"Greedy decoding, so prompt variation is the only source of a disagreement signal (pipeline §3).",
+		"Output keys are short and every answer is a closed-vocabulary token, per pipeline §10 lever 1 (decode length dominates cost)."
+	],
+	"deviations": [
+		"ORACLE_QUESTION_SET.md marks shading_geometry as '(when shaded)'. A fixed JSON schema cannot make a field conditional without a union, so the vocabulary gains `not_applicable` and the prompt says when to use it. The analysis treats `not_applicable` and a missing answer identically.",
+		"`note` is the question set's `ambiguity_note`. HUMAN AUDIT ONLY — never read by code (pipeline §0). It is required by the schema and capped at 120 characters so the decode cost is bounded; the prompt asks for an empty string when confidence is high."
+	],
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Look at this album cover.\n\nAnswer four questions about its GROUND — the large areas behind and around any subject, text or figures. Ignore small elements, ignore what the cover is \"about\", ignore whether it is attractive.\n\nThe distinction that matters most: a surface with light and shadow falling across it is ONE ground, even though its colour changes. A photograph of sky above grass is TWO grounds, because the sky and the grass are different things that happen to sit next to each other.\n\n1. ground — what is the ground made of?\n   flat_field — one area of essentially one colour, no shading\n   shaded_field — one surface whose colour changes smoothly across it (light, shadow, glow, fade)\n   multiple_distinct_fields — two or more separate areas of different colour meeting at a boundary\n   full_scene — a depicted space with depth: a room, a landscape, a street, a place\n   pattern_or_texture — a repeating motif or a material surface covering the whole ground\n   none_discernible — no ground can be made out\n\n2. shading — if you answered shaded_field, how is the shading arranged?\n   linear — the colour changes along one direction, edge to edge\n   radial_or_vignette — the colour changes outward from a centre, or darkens toward the corners\n   irregular — neither; the shading has no simple geometry\n   not_applicable — you did not answer shaded_field\n\n3. texture — does the ground's colour variation read as the grain of one material, or as separate coloured areas?\n   smooth — no visible grain or texture\n   one_textured_material — grain, paper, film noise, brush marks, halftone: one material throughout\n   distinct_areas — the variation is separate coloured areas, not the texture of a material\n\n4. enclosure — is the artwork enclosed by a border or bars?\n   none — the artwork runs to the edge\n   thin_border — a narrow frame or keyline\n   thick_frame_or_bars — a wide frame, or solid bars along one or more edges, large enough to be an area of its own\n\nThen:\n   confidence — high, medium, or low, for your answers taken together\n   note — leave this an empty string when confidence is high; otherwise at most one short sentence saying what is ambiguous\n\nReply with JSON only.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"ground": {
+				"type": "string",
+				"enum": ["flat_field", "shaded_field", "multiple_distinct_fields", "full_scene", "pattern_or_texture", "none_discernible"]
+			},
+			"shading": {
+				"type": "string",
+				"enum": ["linear", "radial_or_vignette", "irregular", "not_applicable"]
+			},
+			"texture": {
+				"type": "string",
+				"enum": ["smooth", "one_textured_material", "distinct_areas"]
+			},
+			"enclosure": {
+				"type": "string",
+				"enum": ["none", "thin_border", "thick_frame_or_bars"]
+			},
+			"confidence": {
+				"type": "string",
+				"enum": ["high", "medium", "low"]
+			},
+			"note": {
+				"type": "string",
+				"maxLength": 120
+			}
+		},
+		"required": ["ground", "shading", "texture", "enclosure", "confidence", "note"],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"ground": "ground_type",
+		"shading": "shading_geometry",
+		"texture": "field_texture",
+		"enclosure": "enclosure",
+		"confidence": "confidence",
+		"note": "ambiguity_note"
+	},
+	"free_text_fields": ["note"]
+}
