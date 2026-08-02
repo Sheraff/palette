@@ -106,3 +106,164 @@ MANIFEST_FILENAME = "manifest.json"
 # [MEASURED] float32 is 4 bytes; used to map row index to byte offset in the
 # append-only shard file.
 BYTES_PER_FLOAT32 = 4
+
+
+# ---------------------------------------------------------------------------
+# Model arms (the bake-off)
+# ---------------------------------------------------------------------------
+#
+# We never query these embeddings by text. The three uses — near-duplicate
+# detection, visual stratification, failure-class retrieval — are all
+# image-to-image, so a pure-vision encoder may beat a text-aligned one. Each arm
+# below produces the same contract: one L2-normalized vector per file, over both
+# collections, scored by eval_pairs.py against ground truth we own.
+#
+# Every arm keeps the *same framing* as the others: the whole image is squashed
+# to a square, never center-cropped. This matters because album art puts text
+# and badges at the edges, and because a framing difference between arms would
+# confound the bake-off. Resolution still differs per arm (each runs at or near
+# its pretraining size) and that IS a live confound — see ARM_RESOLUTION_CONFOUND.
+
+# [REVIEWED] Arm identifiers. These become filename infixes
+# (<collection>.<tag>.npy), so they are short, lowercase, and filesystem-safe.
+ARM_SIGLIP2 = "siglip2-so400m"
+ARM_DINOV2 = "dinov2-vitl14"
+ARM_DINOV2_HIRES = "dinov2-vitl14-392"
+ARM_PE_CORE = "pe-core-l14"
+ARM_DINOV3 = "dinov3-vitl16"
+
+# [MEASURED] DINOv3 is the reviewer's preferred pure-vision arm and access has
+# been requested. Re-probed 2026-08-02 after the request was filed: the repo
+# still reports gated="manual" and a download still returns 401 GatedRepoError,
+# with no token at ~/.cache/huggingface/token and no HF_TOKEN in the environment.
+# The arm below is therefore REGISTERED BUT UNVERIFIED — everything is pinned
+# except the weights hash, which cannot be computed until the bytes are readable.
+DINOV3_REPO_BLOCKED = "facebook/dinov3-vitl16-pretrain-lvd1689m"
+DINOV3_BLOCK_REASON = "gated=manual; 401 GatedRepoError with no HF_TOKEN available"
+
+# [REVIEWED] A weights_sha256 of None means "this arm is registered but its bytes
+# have never been seen here". load_arm() refuses --verify-weights for such an arm
+# and warns on every load; `embed.py --pin-arm-weights <tag>` fills it in.
+UNPINNED_WEIGHTS = None
+
+# [UNCALIBRATED] Known confound in the bake-off, recorded so no one reads the
+# result as purely architectural: the arms run at different input resolutions
+# (SigLIP2 384, PE-Core 336, DINOv2 224). If DINOv2 loses narrowly, run the
+# ARM_DINOV2_HIRES arm at 392 before concluding anything about the architecture.
+ARM_RESOLUTION_CONFOUND = (
+    "arms run at their own pretraining resolutions (384/336/224), so a narrow "
+    "loss may be resolution rather than architecture; ARM_DINOV2_HIRES exists to "
+    "settle that case"
+)
+
+# [INHERITED] ImageNet channel statistics, the normalization DINOv2 was trained
+# with (from facebook/dinov2-large preprocessor_config.json, read 2026-08-02).
+IMAGENET_MEAN = (0.485, 0.456, 0.406)
+IMAGENET_STD = (0.229, 0.224, 0.225)
+
+# [MEASURED] Every field below was read off the model config or the local
+# Hugging Face cache on 2026-08-02, and every weights hash was computed with
+# `shasum -a 256` against the file the loader actually opens.
+ARMS = {
+    ARM_SIGLIP2: {
+        "loader": "open_clip",
+        "model_id": MODEL_NAME,
+        "pretrained": PRETRAINED_TAG,
+        "hf_repo": MODEL_HF_REPO,
+        "hf_revision": MODEL_HF_REVISION,
+        "weights_filename": MODEL_WEIGHTS_FILENAME,
+        "weights_sha256": MODEL_WEIGHTS_SHA256,
+        "dim": EMBED_DIM,
+        "input_side_px": MODEL_INPUT_SIDE_PX,
+        "pooling": "attention-pool projection head (open_clip encode_image)",
+        "text_aligned": True,
+        "legacy_untagged_paths": True,  # the first run predates arm tagging
+    },
+    ARM_DINOV2: {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov2-large",
+        "pretrained": None,
+        "hf_repo": "facebook/dinov2-large",
+        "hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "weights_filename": "model.safetensors",
+        "weights_sha256": (
+            "399fba97a95f22c36834418bc69373364a99af3a1153da1c0fb31db567c92e23"
+        ),
+        "dim": 1024,
+        "input_side_px": 224,
+        "pooling": "CLS token",
+        "text_aligned": False,
+        "legacy_untagged_paths": False,
+    },
+    ARM_DINOV2_HIRES: {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov2-large",
+        "pretrained": None,
+        "hf_repo": "facebook/dinov2-large",
+        "hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "weights_filename": "model.safetensors",
+        "weights_sha256": (
+            "399fba97a95f22c36834418bc69373364a99af3a1153da1c0fb31db567c92e23"
+        ),
+        "dim": 1024,
+        # 392 = 28 x 14, the nearest multiple of the patch size to SigLIP2's 384.
+        # DINOv2 interpolates its position embeddings, so this is supported.
+        "input_side_px": 392,
+        "pooling": "CLS token",
+        "text_aligned": False,
+        "legacy_untagged_paths": False,
+    },
+    ARM_DINOV3: {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+        "pretrained": None,
+        "hf_repo": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+        # [MEASURED] Repo metadata stays readable while the weights are gated, so
+        # the revision could be pinned before access landed (probed 2026-08-02).
+        "hf_revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
+        "weights_filename": "model.safetensors",
+        # [MEASURED] Pinned by `embed.py --pin-arm-weights dinov3-vitl16` on
+        # 2026-08-02 after the reviewer's gated-access grant landed.
+        "weights_sha256": (
+            "dcb2e45127cccbf1601e5f42fef165eea275c8e5213197e8dcf3f48822718179"
+        ),
+        # [INHERITED] ViT-L/16 is 1024-wide, as its DINOv2 ViT-L/14 counterpart
+        # is. Asserted against the loaded model on first successful load.
+        "dim": 1024,
+        # [REVIEWED] 224 matches the DINOv2 arm exactly, so DINOv3-vs-DINOv2 is a
+        # clean architecture comparison with resolution held constant.
+        "input_side_px": 224,
+        # DINOv3 prepends register tokens after CLS; index 0 is still CLS, so the
+        # shared DINO encode path applies unchanged.
+        "pooling": "CLS token",
+        "text_aligned": False,
+        "legacy_untagged_paths": False,
+        "gated": True,
+    },
+    ARM_PE_CORE: {
+        "loader": "open_clip",
+        "model_id": "PE-Core-L-14-336",
+        "pretrained": "meta",
+        "hf_repo": "timm/PE-Core-L-14-336",
+        "hf_revision": "8eff41b3f687e50a323662c2dda5eb3588c6dd35",
+        "weights_filename": "open_clip_model.safetensors",
+        "weights_sha256": (
+            "b1fff7093c32a01d98a2d82098f9adf788b30f0efee639916520b3e4302f786b"
+        ),
+        "dim": 1024,
+        "input_side_px": 336,
+        "pooling": "attention-pool projection head (open_clip encode_image)",
+        "text_aligned": True,
+        "legacy_untagged_paths": False,
+    },
+}
+
+# [REVIEWED] The arm the pipeline runs when none is named. Keeps every existing
+# command, and the job currently in flight, behaving exactly as before.
+DEFAULT_ARM = ARM_SIGLIP2
+
+# [REVIEWED] Arms the bake-off compares by default. ARM_DINOV2_HIRES is excluded
+# because it is a tiebreaker, not a contender — enable it deliberately.
+BAKEOFF_ARMS = (ARM_SIGLIP2, ARM_DINOV2, ARM_PE_CORE, ARM_DINOV3)
+
+BAKEOFF_FILENAME = "bakeoff.json"

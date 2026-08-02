@@ -14,6 +14,7 @@ Three questions, because they have different answers and different consequences:
 Usage:
   .venv/bin/python determinism_check.py --image 00/<name> --image music-artworks/...
   .venv/bin/python determinism_check.py --emit /tmp/run-a.npy --image ...
+  .venv/bin/python determinism_check.py --arm dinov2-vitl14 --image ...
 """
 
 from __future__ import annotations
@@ -32,11 +33,14 @@ COMPOSITION_BATCH_SIZES = (1, 8, 32)
 
 def main() -> int:
     import numpy as np
-    import torch
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", action="append", required=True)
     parser.add_argument("--device", default="auto")
+    parser.add_argument(
+        "--arm", default=config.DEFAULT_ARM, choices=list(config.ARMS),
+        help="which model arm to check",
+    )
     parser.add_argument("--emit", help="write the batch-of-1 vectors here as .npy")
     parser.add_argument("--compare", help="compare against a previously emitted .npy")
     parser.add_argument(
@@ -46,7 +50,7 @@ def main() -> int:
     args = parser.parse_args()
 
     device = common.resolve_device(args.device)
-    model, preprocess = common.load_model(device)
+    arm = common.load_arm(args.arm, device)
 
     def to_abs(path_str: str) -> Path:
         path = Path(path_str)
@@ -56,14 +60,15 @@ def main() -> int:
     filler = common.decode_image(to_abs(args.filler or args.image[0])).rgb
 
     def encode(pil_images):
-        tensors = [preprocess(image) for image in pil_images]
-        batch = torch.stack(tensors).to(device)
-        with torch.no_grad():
-            vectors = model.encode_image(batch)
-            vectors = vectors / vectors.norm(dim=-1, keepdim=True)
-        return vectors.to("cpu").float().numpy()
+        return arm.encode(pil_images)
 
-    report: dict = {"device": device, "model": config.MODEL_NAME, "images": args.image}
+    report: dict = {
+        "device": device,
+        "arm": args.arm,
+        "model": arm.spec["model_id"],
+        "dim": arm.dim,
+        "images": args.image,
+    }
 
     # 1. Same process, batch of 1, twice.
     first = np.stack([encode([image])[0] for image in images])

@@ -9,7 +9,7 @@ Usage:
   .venv/bin/python query.py --file music-artworks/7/8/1/781....jpg \
       --search sharded music_artworks --k 10
   .venv/bin/python query.py --row 42 --collection sharded --k 5
-  .venv/bin/python query.py --stats
+  .venv/bin/python query.py --stats --arm dinov2-vitl14
 """
 
 from __future__ import annotations
@@ -22,7 +22,8 @@ import config
 import common
 
 
-def load_collection(out_dir: Path, collection: str):
+def load_collection(out_dir: Path, collection: str,
+                    arm_tag: str = config.DEFAULT_ARM):
     """Return (matrix, rows) where rows[i] describes matrix[i].
 
     Reads the finalized .npy when it exists and falls back to the append-only
@@ -30,7 +31,7 @@ def load_collection(out_dir: Path, collection: str):
     """
     import numpy as np
 
-    store = common.EmbeddingStore(out_dir, collection)
+    store = common.EmbeddingStore(out_dir, collection, arm_tag=arm_tag)
     rows = [
         record
         for record in common.read_jsonl(store.ids_path)
@@ -42,11 +43,12 @@ def load_collection(out_dir: Path, collection: str):
         matrix = np.load(store.npy_path)
     elif store.shard_path.exists():
         flat = np.fromfile(store.shard_path, dtype="<f4")
-        usable = (flat.size // config.EMBED_DIM) * config.EMBED_DIM
-        matrix = flat[:usable].reshape(-1, config.EMBED_DIM)
+        usable = (flat.size // store.dim) * store.dim
+        matrix = flat[:usable].reshape(-1, store.dim)
     else:
         raise FileNotFoundError(
-            f"no embeddings for {collection} under {out_dir}; run embed.py first"
+            f"no embeddings for {collection}/{arm_tag} under {out_dir}; "
+            "run embed.py first"
         )
 
     if matrix.shape[0] < len(rows):
@@ -57,21 +59,15 @@ def load_collection(out_dir: Path, collection: str):
     return matrix, rows
 
 
-def embed_one(path: Path, device: str = "auto"):
-    """Embed a file that is not in the corpus, using the pinned model."""
+def embed_one(path: Path, device: str = "auto",
+              arm_tag: str = config.DEFAULT_ARM):
+    """Embed a file that is not in the corpus, using the pinned arm."""
     import numpy as np
 
     resolved = common.resolve_device(device)
-    model, preprocess = common.load_model(resolved)
+    arm = common.load_arm(arm_tag, resolved)
     image = common.decode_image(path)
-
-    import torch
-
-    batch = preprocess(image.rgb).unsqueeze(0).to(resolved)
-    with torch.no_grad():
-        vector = model.encode_image(batch)
-        vector = vector / vector.norm(dim=-1, keepdim=True)
-    return np.asarray(vector.to("cpu").float().numpy()[0], dtype="float32")
+    return np.asarray(arm.encode([image.rgb])[0], dtype="float32")
 
 
 def main() -> int:
@@ -79,6 +75,10 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-dir", default=str(config.DATA_DIR))
+    parser.add_argument(
+        "--arm", default=config.DEFAULT_ARM, choices=list(config.ARMS),
+        help="which model arm's embeddings to search",
+    )
     parser.add_argument("--file", help="repo-relative (or absolute) path to query by")
     parser.add_argument("--row", type=int, help="query by row index instead of path")
     parser.add_argument(
@@ -100,22 +100,22 @@ def main() -> int:
     loaded = {}
     for collection in args.search:
         try:
-            loaded[collection] = load_collection(out_dir, collection)
+            loaded[collection] = load_collection(out_dir, collection, args.arm)
         except FileNotFoundError as exc:
             print(f"[query] {exc}")
 
     if args.stats or (args.file is None and args.row is None):
         for collection, (matrix, rows) in loaded.items():
             norms = np.linalg.norm(matrix, axis=1) if matrix.shape[0] else np.array([0.0])
+            store = common.EmbeddingStore(out_dir, collection, arm_tag=args.arm)
             failed = sum(
                 1
-                for record in common.read_jsonl(
-                    out_dir / f"{collection}.ids.jsonl"
-                )
+                for record in common.read_jsonl(store.ids_path)
                 if record.get("status") == "failed"
             )
             print(
-                f"{collection}: {matrix.shape[0]} vectors x {matrix.shape[1]} dims, "
+                f"{collection} [{args.arm}]: {matrix.shape[0]} vectors x "
+                f"{matrix.shape[1]} dims, "
                 f"{failed} failed rows, "
                 f"L2 norm min={norms.min():.6f} max={norms.max():.6f}"
             )
@@ -147,7 +147,7 @@ def main() -> int:
             if not candidate.exists():
                 parser.error(f"{target} is neither a stored row nor a readable file")
             print(f"[query] {target} is not in the store; embedding it now", flush=True)
-            query_vector = embed_one(candidate, args.device)
+            query_vector = embed_one(candidate, args.device, args.arm)
             query_label = f"(ad hoc) {target}"
 
     results = []

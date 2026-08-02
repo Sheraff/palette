@@ -1,72 +1,388 @@
 {
   "stage": "oracle-stage-1-embeddings",
   "spec": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md sections 2.1, 6",
-  "written_at": "2026-08-02T18:18:58Z",
-  "model": {
-    "open_clip_model_name": "ViT-SO400M-16-SigLIP2-384",
-    "open_clip_pretrained_tag": "webli",
-    "hf_repo": "timm/ViT-SO400M-16-SigLIP2-384",
-    "hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
-    "observed_hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
-    "weights_filename": "open_clip_model.safetensors",
-    "weights_sha256": "8ceec00df3c462d155d172933339cd9178a86bfab72f4458dbe84bd54f5ad026",
-    "weights_path_present": true
-  },
+  "written_at": "2026-08-02T19:54:00Z",
   "versions": {
     "python": "3.14.3",
     "torch": "2.13.0",
     "open_clip_torch": "3.3.0",
     "pillow": "12.3.0",
     "pillow_avif_plugin": "1.6.0",
-    "numpy": "2.5.1"
+    "numpy": "2.5.1",
+    "transformers": "5.14.1",
+    "torchvision": "0.28.0"
   },
-  "embedding": {
-    "dim": 1152,
-    "dtype": "float32",
-    "l2_normalized": true,
-    "device": "mps",
-    "batch_size": 8,
-    "torch_dtype": "float32"
-  },
-  "preprocessing": {
-    "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then the transform open_clip ships with this checkpoint: bicubic resize to 384x384 (square, aspect ratio not preserved), to float tensor, normalize with mean 0.5 and std 0.5 per channel.",
-    "input_side_px": 384,
-    "aspect_ratio_preserved": false,
-    "resolution_cap_applied": null,
-    "alpha_flatten_background_rgb": [
-      255,
-      255,
-      255
+  "bakeoff": {
+    "why": "near-dup detection, visual stratification and failure-class retrieval are all image-to-image; we never query by text, so a pure-vision arm may beat a text-aligned one",
+    "arms_compared_by_default": [
+      "siglip2-so400m",
+      "dinov2-vitl14",
+      "pe-core-l14",
+      "dinov3-vitl16"
     ],
-    "exif_transpose": true
+    "resolution_confound": "arms run at their own pretraining resolutions (384/336/224), so a narrow loss may be resolution rather than architecture; ARM_DINOV2_HIRES exists to settle that case",
+    "dinov3_unavailable": {
+      "repo": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+      "reason": "gated=manual; 401 GatedRepoError with no HF_TOKEN available",
+      "fallback": "dinov2-vitl14",
+      "unblock": "accept the licence on the model page and export HF_TOKEN, then add a dinov3 entry to config.ARMS"
+    }
   },
   "determinism": {
     "same_batch_composition": "bit-identical, both on repeat within one process and across two separate processes (measured 2026-08-02 with determinism_check.py on three images: JPEG, AVIF, large PNG)",
     "different_batch_composition": "not bit-identical. Changing the batch size or an image's neighbours moves components by up to ~1e-6 absolute; cosine similarity to the batch-of-1 vector stays >= 0.9999999. Reproduced on the CPU device, so this is float reduction order in the batched matmul, not an MPS defect.",
-    "consequence": "neighbour rankings and any threshold on cosine similarity are unaffected. A byte-identical .npy requires one uninterrupted pass at a fixed batch size; a resumed run re-batches and will differ in the last ~6 decimal places for the files embedded after the restart."
+    "consequence": "neighbour rankings and any threshold on cosine similarity are unaffected. A byte-identical .npy requires one uninterrupted pass at a fixed batch size; a resumed run re-batches and will differ in the last ~6 decimal places for the files embedded after the restart.",
+    "measured_on_arm": "siglip2-so400m"
   },
   "identity": {
     "row_key": "file path relative to the repository root, plus sha256 of the file bytes",
     "note": "one row per FILE, not per artwork; renditions of the same artwork each get their own row (spec section 6.1)"
   },
-  "collections": {
-    "sharded": {
-      "root": "{00..09,0a..0f,10..14}/",
-      "files_enumerated": 7550,
-      "files_embedded": 0,
-      "files_failed": 0,
-      "npy": "sharded.npy",
-      "ids": "sharded.ids.jsonl",
-      "complete": false
+  "arms": {
+    "siglip2-so400m": {
+      "model": {
+        "loader": "open_clip",
+        "model_id": "ViT-SO400M-16-SigLIP2-384",
+        "pretrained_tag": "webli",
+        "hf_repo": "timm/ViT-SO400M-16-SigLIP2-384",
+        "hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+        "observed_hf_revision": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+        "weights_filename": "open_clip_model.safetensors",
+        "weights_sha256": "8ceec00df3c462d155d172933339cd9178a86bfab72f4458dbe84bd54f5ad026",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": false,
+        "readiness": {
+          "arm": "siglip2-so400m",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+          "revision_observed": "fec784dabb3081a5f101fc74eefaf9d1ed08237b",
+          "revision_matches": true,
+          "gated": false,
+          "ready": true
+        },
+        "text_aligned": true
+      },
+      "embedding": {
+        "dim": 1152,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "attention-pool projection head (open_clip encode_image)"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then the transform open_clip ships with this checkpoint: resize to 384x384 in 'squash' mode (whole frame, aspect ratio not preserved, no crop), to float tensor, normalize with mean 0.5 and std 0.5 per channel.",
+        "input_side_px": 384,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 7550,
+          "files_failed": 0,
+          "npy": "sharded.siglip2-so400m.npy",
+          "ids": "sharded.siglip2-so400m.ids.jsonl",
+          "complete": true
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 8595,
+          "files_failed": 0,
+          "npy": "music_artworks.siglip2-so400m.npy",
+          "ids": "music_artworks.siglip2-so400m.ids.jsonl",
+          "complete": true
+        }
+      },
+      "has_output": true
     },
-    "music_artworks": {
-      "root": "music-artworks/",
-      "files_enumerated": 8595,
-      "files_embedded": 0,
-      "files_failed": 0,
-      "npy": "music_artworks.npy",
-      "ids": "music_artworks.ids.jsonl",
-      "complete": false
+    "dinov2-vitl14": {
+      "model": {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov2-large",
+        "pretrained_tag": null,
+        "hf_repo": "facebook/dinov2-large",
+        "hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "observed_hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "weights_filename": "model.safetensors",
+        "weights_sha256": "399fba97a95f22c36834418bc69373364a99af3a1153da1c0fb31db567c92e23",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": false,
+        "readiness": {
+          "arm": "dinov2-vitl14",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+          "revision_observed": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+          "revision_matches": true,
+          "gated": false,
+          "ready": true
+        },
+        "text_aligned": false
+      },
+      "embedding": {
+        "dim": 1024,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "CLS token"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then bicubic resize of the whole frame to 224x224 (no center crop -- deliberately unlike the stock DINOv2 processor, which would discard a border ring holding titles and badges), to float tensor, ImageNet mean/std normalize.",
+        "input_side_px": 224,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 7550,
+          "files_failed": 0,
+          "npy": "sharded.dinov2-vitl14.npy",
+          "ids": "sharded.dinov2-vitl14.ids.jsonl",
+          "complete": true
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 8595,
+          "files_failed": 0,
+          "npy": "music_artworks.dinov2-vitl14.npy",
+          "ids": "music_artworks.dinov2-vitl14.ids.jsonl",
+          "complete": true
+        }
+      },
+      "has_output": true
+    },
+    "dinov2-vitl14-392": {
+      "model": {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov2-large",
+        "pretrained_tag": null,
+        "hf_repo": "facebook/dinov2-large",
+        "hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "observed_hf_revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+        "weights_filename": "model.safetensors",
+        "weights_sha256": "399fba97a95f22c36834418bc69373364a99af3a1153da1c0fb31db567c92e23",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": false,
+        "readiness": {
+          "arm": "dinov2-vitl14-392",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+          "revision_observed": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+          "revision_matches": true,
+          "gated": false,
+          "ready": true
+        },
+        "text_aligned": false
+      },
+      "embedding": {
+        "dim": 1024,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "CLS token"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then bicubic resize of the whole frame to 392x392 (no center crop -- deliberately unlike the stock DINOv2 processor, which would discard a border ring holding titles and badges), to float tensor, ImageNet mean/std normalize.",
+        "input_side_px": 392,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 0,
+          "files_failed": 0,
+          "npy": "sharded.dinov2-vitl14-392.npy",
+          "ids": "sharded.dinov2-vitl14-392.ids.jsonl",
+          "complete": false
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 0,
+          "files_failed": 0,
+          "npy": "music_artworks.dinov2-vitl14-392.npy",
+          "ids": "music_artworks.dinov2-vitl14-392.ids.jsonl",
+          "complete": false
+        }
+      },
+      "has_output": false
+    },
+    "dinov3-vitl16": {
+      "model": {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+        "pretrained_tag": null,
+        "hf_repo": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+        "hf_revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
+        "observed_hf_revision": null,
+        "weights_filename": "model.safetensors",
+        "weights_sha256": "dcb2e45127cccbf1601e5f42fef165eea275c8e5213197e8dcf3f48822718179",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": true,
+        "readiness": {
+          "arm": "dinov3-vitl16",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
+          "revision_observed": null,
+          "revision_matches": true,
+          "gated": true,
+          "ready": true
+        },
+        "text_aligned": false
+      },
+      "embedding": {
+        "dim": 1024,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "CLS token"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then bicubic resize of the whole frame to 224x224 (no center crop -- deliberately unlike the stock DINOv2 processor, which would discard a border ring holding titles and badges), to float tensor, ImageNet mean/std normalize.",
+        "input_side_px": 224,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 7550,
+          "files_failed": 0,
+          "npy": "sharded.dinov3-vitl16.npy",
+          "ids": "sharded.dinov3-vitl16.ids.jsonl",
+          "complete": true
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 8595,
+          "files_failed": 0,
+          "npy": "music_artworks.dinov3-vitl16.npy",
+          "ids": "music_artworks.dinov3-vitl16.ids.jsonl",
+          "complete": true
+        }
+      },
+      "has_output": true
+    },
+    "pe-core-l14": {
+      "model": {
+        "loader": "open_clip",
+        "model_id": "PE-Core-L-14-336",
+        "pretrained_tag": "meta",
+        "hf_repo": "timm/PE-Core-L-14-336",
+        "hf_revision": "8eff41b3f687e50a323662c2dda5eb3588c6dd35",
+        "observed_hf_revision": "8eff41b3f687e50a323662c2dda5eb3588c6dd35",
+        "weights_filename": "open_clip_model.safetensors",
+        "weights_sha256": "b1fff7093c32a01d98a2d82098f9adf788b30f0efee639916520b3e4302f786b",
+        "weights_hash_pinned": true,
+        "weights_path_present": true,
+        "gated": false,
+        "readiness": {
+          "arm": "pe-core-l14",
+          "weights_cached": true,
+          "hash_pinned": true,
+          "revision_pinned": "8eff41b3f687e50a323662c2dda5eb3588c6dd35",
+          "revision_observed": "8eff41b3f687e50a323662c2dda5eb3588c6dd35",
+          "revision_matches": true,
+          "gated": false,
+          "ready": true
+        },
+        "text_aligned": true
+      },
+      "embedding": {
+        "dim": 1024,
+        "dtype": "float32",
+        "l2_normalized": true,
+        "device": "mps",
+        "batch_size": 8,
+        "torch_dtype": "float32",
+        "pooling": "attention-pool projection head (open_clip encode_image)"
+      },
+      "preprocessing": {
+        "description": "PIL open; EXIF orientation applied; images with an alpha channel composited onto [255, 255, 255] then converted to RGB, others converted directly to RGB; then the transform open_clip ships with this checkpoint: resize to 336x336 in 'squash' mode (whole frame, aspect ratio not preserved, no crop), to float tensor, normalize with mean 0.5 and std 0.5 per channel.",
+        "input_side_px": 336,
+        "aspect_ratio_preserved": false,
+        "center_cropped": false,
+        "resolution_cap_applied": null,
+        "alpha_flatten_background_rgb": [
+          255,
+          255,
+          255
+        ],
+        "exif_transpose": true
+      },
+      "collections": {
+        "sharded": {
+          "root": "{00..09,0a..0f,10..14}/",
+          "files_enumerated": 7550,
+          "files_embedded": 7550,
+          "files_failed": 0,
+          "npy": "sharded.pe-core-l14.npy",
+          "ids": "sharded.pe-core-l14.ids.jsonl",
+          "complete": true
+        },
+        "music_artworks": {
+          "root": "music-artworks/",
+          "files_enumerated": 8595,
+          "files_embedded": 8595,
+          "files_failed": 0,
+          "npy": "music_artworks.pe-core-l14.npy",
+          "ids": "music_artworks.pe-core-l14.ids.jsonl",
+          "complete": true
+        }
+      },
+      "has_output": true
     }
   }
 }

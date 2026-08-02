@@ -165,60 +165,212 @@ def resolve_device(requested: str) -> str:
     return "cpu"
 
 
-def load_model(device: str, verify_revision: bool = True):
-    """Load the pinned SigLIP 2 image tower and its preprocessing transform."""
-    import open_clip
-    import torch
-
-    model, _, preprocess = open_clip.create_model_and_transforms(
-        config.MODEL_NAME, pretrained=config.PRETRAINED_TAG
-    )
-    model.eval()
-    model.to(device)
-    for param in model.parameters():
-        param.requires_grad_(False)
-
-    embed_dim = open_clip.get_model_config(config.MODEL_NAME)["embed_dim"]
-    if embed_dim != config.EMBED_DIM:
-        raise RuntimeError(
-            f"embed_dim drifted: config says {config.EMBED_DIM}, model says {embed_dim}"
-        )
-
-    if verify_revision:
-        observed = observed_model_revision()
-        if observed is not None and observed != config.MODEL_HF_REVISION:
-            raise RuntimeError(
-                "model revision drift: config pins "
-                f"{config.MODEL_HF_REVISION}, hub cache holds {observed}. "
-                "Embeddings from different weights are not comparable; "
-                "re-pin config.py deliberately or clear the cache."
-            )
-
-    torch.set_grad_enabled(False)
-    return model, preprocess
-
-
-def observed_model_revision() -> str | None:
-    """Read the commit the local Hugging Face cache resolved the model repo to."""
+def observed_model_revision(repo: str | None = None) -> str | None:
+    """Read the commit the local Hugging Face cache resolved a model repo to."""
     from huggingface_hub import constants as hf_constants
 
+    repo = repo or config.MODEL_HF_REPO
     cache_dir = Path(hf_constants.HF_HUB_CACHE)
-    repo_dir = cache_dir / ("models--" + config.MODEL_HF_REPO.replace("/", "--"))
+    repo_dir = cache_dir / ("models--" + repo.replace("/", "--"))
     ref_file = repo_dir / "refs" / "main"
     if not ref_file.is_file():
         return None
     return ref_file.read_text().strip()
 
 
-def model_weights_path() -> Path | None:
+def model_weights_path(
+    repo: str | None = None, revision: str | None = None, filename: str | None = None
+) -> Path | None:
     from huggingface_hub import constants as hf_constants
 
+    repo = repo or config.MODEL_HF_REPO
+    revision = revision or config.MODEL_HF_REVISION
+    filename = filename or config.MODEL_WEIGHTS_FILENAME
     cache_dir = Path(hf_constants.HF_HUB_CACHE)
-    repo_dir = cache_dir / ("models--" + config.MODEL_HF_REPO.replace("/", "--"))
-    candidate = (
-        repo_dir / "snapshots" / config.MODEL_HF_REVISION / config.MODEL_WEIGHTS_FILENAME
-    )
+    repo_dir = cache_dir / ("models--" + repo.replace("/", "--"))
+    candidate = repo_dir / "snapshots" / revision / filename
     return candidate if candidate.exists() else None
+
+
+# --------------------------------------------------------------------------
+# Arms
+# --------------------------------------------------------------------------
+
+
+class ArmRuntime:
+    """One loaded model arm. Every arm exposes the same encode() contract."""
+
+    def __init__(self, tag: str, spec: dict, model, preprocess, device: str, encode_fn):
+        self.tag = tag
+        self.spec = spec
+        self.model = model
+        self.preprocess = preprocess
+        self.device = device
+        self.dim = spec["dim"]
+        self._encode_fn = encode_fn
+
+    def encode(self, pil_images: list):
+        """PIL images in, L2-normalized float32 (n, dim) numpy out."""
+        import torch
+
+        tensors = [self.preprocess(image) for image in pil_images]
+        batch = torch.stack(tensors).to(self.device)
+        with torch.no_grad():
+            vectors = self._encode_fn(self.model, batch)
+            vectors = vectors / vectors.norm(dim=-1, keepdim=True)
+        return vectors.to("cpu").float().numpy()
+
+
+def _dino_preprocess(side: int):
+    """Whole-image square resize + ImageNet normalize, deliberately no crop.
+
+    The stock DINOv2 processor resizes the short edge to 256 and center-crops to
+    224, which throws away a border ring. Album art puts titles, logos and
+    advisory badges at the edges, and the other arms in the bake-off squash the
+    whole frame, so cropping here would both lose content and confound the
+    comparison. Framing is therefore identical across arms; only resolution
+    differs (config.ARM_RESOLUTION_CONFOUND).
+    """
+    from torchvision import transforms
+
+    return transforms.Compose(
+        [
+            transforms.Resize(
+                (side, side),
+                interpolation=transforms.InterpolationMode.BICUBIC,
+                antialias=True,
+            ),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=config.IMAGENET_MEAN, std=config.IMAGENET_STD),
+        ]
+    )
+
+
+def _encode_open_clip(model, batch):
+    return model.encode_image(batch)
+
+
+def _encode_dino_cls(model, batch):
+    # CLS token: the standard DINOv2 global descriptor for instance retrieval.
+    return model(pixel_values=batch).last_hidden_state[:, 0]
+
+
+def load_arm(tag: str, device: str, verify_revision: bool = True,
+             verify_weights: bool = False) -> ArmRuntime:
+    """Load one bake-off arm by tag."""
+    import torch
+
+    if tag not in config.ARMS:
+        raise ValueError(f"unknown arm {tag!r}; known: {sorted(config.ARMS)}")
+    spec = config.ARMS[tag]
+
+    if verify_revision:
+        observed = observed_model_revision(spec["hf_repo"])
+        if observed is not None and observed != spec["hf_revision"]:
+            raise RuntimeError(
+                f"arm {tag}: revision drift. config pins {spec['hf_revision']}, "
+                f"hub cache holds {observed}. Embeddings from different weights "
+                "are not comparable; re-pin config.py deliberately."
+            )
+
+    if spec.get("weights_sha256") is None:
+        # Registered but never seen here. Say so on every load rather than
+        # letting an unpinned arm quietly produce a committed artifact.
+        print(
+            f"[warn] arm {tag} has no pinned weights hash. Its output is not "
+            f"reproducible from this repo alone. Run "
+            f"`embed.py --pin-arm-weights {tag}` once the weights are readable.",
+            flush=True,
+        )
+        if verify_weights:
+            raise RuntimeError(
+                f"arm {tag}: --verify-weights was requested but config pins no "
+                "hash for this arm. Pin it first with --pin-arm-weights."
+            )
+    elif verify_weights:
+        path = model_weights_path(
+            spec["hf_repo"], spec["hf_revision"], spec["weights_filename"]
+        )
+        if path is None:
+            raise RuntimeError(f"arm {tag}: weights not found in the hub cache")
+        actual = sha256_file(path)
+        if actual != spec["weights_sha256"]:
+            raise RuntimeError(
+                f"arm {tag}: weights hash mismatch. expected "
+                f"{spec['weights_sha256']}, got {actual}"
+            )
+
+    if spec["loader"] == "open_clip":
+        import open_clip
+
+        model, _, preprocess = open_clip.create_model_and_transforms(
+            spec["model_id"], pretrained=spec["pretrained"]
+        )
+        encode_fn = _encode_open_clip
+    elif spec["loader"] == "hf_dino":
+        from transformers import AutoModel
+
+        model = AutoModel.from_pretrained(
+            spec["model_id"], revision=spec["hf_revision"]
+        )
+        preprocess = _dino_preprocess(spec["input_side_px"])
+        encode_fn = _encode_dino_cls
+    else:
+        raise ValueError(f"arm {tag}: unknown loader {spec['loader']!r}")
+
+    model.eval()
+    model.to(device)
+    for param in model.parameters():
+        param.requires_grad_(False)
+    torch.set_grad_enabled(False)
+
+    return ArmRuntime(tag, spec, model, preprocess, device, encode_fn)
+
+
+def arm_readiness(tag: str) -> dict:
+    """Can this arm run right now, offline? Cheap, no network, no model load."""
+    spec = config.ARMS[tag]
+    weights = model_weights_path(
+        spec["hf_repo"], spec["hf_revision"], spec["weights_filename"]
+    )
+    observed = observed_model_revision(spec["hf_repo"])
+    return {
+        "arm": tag,
+        "weights_cached": weights is not None,
+        "hash_pinned": spec.get("weights_sha256") is not None,
+        "revision_pinned": spec["hf_revision"],
+        "revision_observed": observed,
+        "revision_matches": observed is None or observed == spec["hf_revision"],
+        "gated": bool(spec.get("gated")),
+        "ready": weights is not None and spec.get("weights_sha256") is not None,
+    }
+
+
+def pin_arm_weights(tag: str) -> dict:
+    """Download an arm's weights if needed and compute the hash to pin in config."""
+    from huggingface_hub import hf_hub_download
+
+    spec = config.ARMS[tag]
+    path = model_weights_path(
+        spec["hf_repo"], spec["hf_revision"], spec["weights_filename"]
+    )
+    if path is None:
+        path = Path(
+            hf_hub_download(
+                spec["hf_repo"],
+                spec["weights_filename"],
+                revision=spec["hf_revision"],
+            )
+        )
+    digest = sha256_file(path)
+    return {
+        "arm": tag,
+        "path": str(path),
+        "bytes": path.stat().st_size,
+        "sha256": digest,
+        "already_pinned": spec.get("weights_sha256"),
+        "matches_pin": spec.get("weights_sha256") == digest,
+    }
 
 
 def runtime_versions() -> dict[str, str]:
@@ -236,7 +388,7 @@ def runtime_versions() -> dict[str, str]:
     except Exception:
         avif_version = "unknown"
 
-    return {
+    versions = {
         "python": sys.version.split()[0],
         "torch": torch.__version__,
         "open_clip_torch": open_clip.__version__,
@@ -244,6 +396,12 @@ def runtime_versions() -> dict[str, str]:
         "pillow_avif_plugin": avif_version,
         "numpy": numpy.__version__,
     }
+    for optional in ("transformers", "torchvision"):
+        try:
+            versions[optional] = pkg_version(optional)
+        except Exception:
+            versions[optional] = "not installed"
+    return versions
 
 
 # --------------------------------------------------------------------------
@@ -251,21 +409,56 @@ def runtime_versions() -> dict[str, str]:
 # --------------------------------------------------------------------------
 
 
-class EmbeddingStore:
-    """Append-only, resumable, killable storage for one collection."""
+def has_legacy_untagged_output(out_dir: Path) -> bool:
+    """Did an earlier, pre-bake-off run write untagged filenames here?
 
-    def __init__(self, out_dir: Path, collection: str, dim: int = config.EMBED_DIM):
+    The first SigLIP2 run predates arm tagging and wrote `<collection>.ids.jsonl`.
+    That run must stay resumable, and the *whole* run has to agree on one naming
+    scheme — so the check looks across every collection, not just the one being
+    opened. Otherwise a job interrupted after `sharded` but before
+    `music_artworks` would resume writing half untagged and half tagged names.
+    """
+    shard_dir = out_dir / config.SHARD_SUBDIR_NAME
+    for collection in config.COLLECTIONS:
+        if (out_dir / f"{collection}.ids.jsonl").exists():
+            return True
+        if (shard_dir / f"{collection}.f32").exists():
+            return True
+    return False
+
+
+def resolve_store_stem(out_dir: Path, collection: str, arm_tag: str) -> str:
+    """Filename stem for one (collection, arm): tagged, unless legacy output exists."""
+    spec = config.ARMS.get(arm_tag, {})
+    if spec.get("legacy_untagged_paths") and has_legacy_untagged_output(out_dir):
+        return collection
+    return f"{collection}.{arm_tag}"
+
+
+class EmbeddingStore:
+    """Append-only, resumable, killable storage for one (collection, arm)."""
+
+    def __init__(
+        self,
+        out_dir: Path,
+        collection: str,
+        dim: int | None = None,
+        arm_tag: str = config.DEFAULT_ARM,
+    ):
         self.collection = collection
-        self.dim = dim
+        self.arm_tag = arm_tag
+        self.dim = dim if dim is not None else config.ARMS[arm_tag]["dim"]
         self.out_dir = out_dir
         self.shard_dir = out_dir / config.SHARD_SUBDIR_NAME
         self.shard_dir.mkdir(parents=True, exist_ok=True)
-        self.shard_path = self.shard_dir / f"{collection}.f32"
-        self.ids_path = out_dir / f"{collection}.ids.jsonl"
+
+        self.stem = resolve_store_stem(out_dir, collection, arm_tag)
+        self.shard_path = self.shard_dir / f"{self.stem}.f32"
+        self.ids_path = out_dir / f"{self.stem}.ids.jsonl"
         # Run-internal, not a deliverable, so it lives under the gitignored
         # shards/ directory rather than next to the committed id index.
-        self.attempts_path = self.shard_dir / f"{collection}.attempts.jsonl"
-        self.npy_path = out_dir / f"{collection}.npy"
+        self.attempts_path = self.shard_dir / f"{self.stem}.attempts.jsonl"
+        self.npy_path = out_dir / f"{self.stem}.npy"
 
         self._shard_handle = None
         self._ids_handle = None
@@ -278,8 +471,14 @@ class EmbeddingStore:
 
     # -- recovery -----------------------------------------------------------
 
-    def recover(self) -> dict:
-        """Read the output back, repair a torn write, and report what was found."""
+    def recover(self, read_only: bool = False) -> dict:
+        """Read the output back, repair a torn write, and report what was found.
+
+        `read_only=True` inspects without repairing. Anything that is not the
+        writer must pass it: a torn shard is indistinguishable from a shard that
+        a *live* writer has extended but not yet described in the id index, so
+        repairing from a second process would delete a running job's work.
+        """
         row_count = 0
         for record in read_jsonl(self.ids_path):
             path = record.get("path")
@@ -299,10 +498,12 @@ class EmbeddingStore:
         truncated_bytes = 0
         if actual_bytes > expected_bytes:
             # A kill between the vector write and its ids line. The vector is
-            # unreferenced; drop it and let the file be re-embedded.
+            # unreferenced; drop it and let the file be re-embedded. Only the
+            # writer may do this — see the read_only note above.
             truncated_bytes = actual_bytes - expected_bytes
-            with self.shard_path.open("r+b") as handle:
-                handle.truncate(expected_bytes)
+            if not read_only:
+                with self.shard_path.open("r+b") as handle:
+                    handle.truncate(expected_bytes)
         elif actual_bytes < expected_bytes:
             raise RuntimeError(
                 f"{self.shard_path} is shorter than {self.ids_path} implies "
