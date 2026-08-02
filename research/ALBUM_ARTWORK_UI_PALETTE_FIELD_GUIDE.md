@@ -7,11 +7,15 @@ more robust result faster. Everything in here is backed by either a human verdic
 measurement over the full corpus (~7,600 artworks), or a decisive null result — and where a
 claim is one of ours rather than a measurement, it says so.
 
-**Revision 2.** The first draft was written from the orchestrator's working memory; this
-revision was corrected against the primary records by two independent audits — a
-claim-by-claim fact-check against the pins, warehouse, and experiment records, and a full
-read of the raw session transcript (9,240 lines) that recovered findings the memory
-compression had flattened or inverted. Corrections of substance are marked inline.
+**Revision 3.** The first draft was written from the orchestrator's working memory; it was
+then corrected against the primary records by two independent audits — a claim-by-claim
+fact-check against the pins, warehouse, and experiment records (full verdict list:
+`research/v2-3-eval/FIELD_GUIDE_FACTCHECK.md`), and a full read of the raw session
+transcript (9,240 lines) that recovered findings the memory compression had flattened or
+inverted — followed by a residual pass over the corrected text. Epistemics note: numbers
+here are verified against primary records wherever such records exist; a few figures trace
+only to the session transcript (a secondary source) and are worded as recollections, not
+measurements.
 
 The campaign took the algorithm from 70.6% acceptable-or-better to a measured ~97%
 (n=60 unbiased calibration; see §12 for the noise band that number must carry) over roughly
@@ -55,8 +59,8 @@ about forty experimental arms. This is what we'd tell ourselves at the start.
   other. Decide your canonical-input policy on day one. (Two known partial causes worth
   fixing early: the quantization grid's origin sits exactly on the neutral axis, so every
   neutral color lives on a bin *boundary* — pure blacks/whites flap 50% of their pixels
-  under a one-bit dither; and the darkest bins are so coarse they each contain exactly one
-  representable grey.)
+  under a one-bit dither; and the darkest bins are so *fine* that each contains at most
+  one representable grey — fragmentation, not coarseness, is the dark-toe failure.)
 
 ## 2. Non-negotiable design constraints (learned the hard way, then confirmed repeatedly)
 
@@ -121,12 +125,14 @@ about forty experimental arms. This is what we'd tell ourselves at the start.
 The pipeline that works: **evidence → color families → field hypotheses → role obligations →
 candidate slate → ranking → winner → post-winner passes**.
 
-- **Families**: quantize in OKLab. Our bin step of 0.04 was assumed to be a bare guess and
-  then **derived from first principles late in the campaign**: it is exactly what the
-  colorimetric math produces across the range where ~95% of color decisions live (the dark
-  toe excepted) — de-fitting by validation. Sibling constants' derived counterparts landed
-  within 2.5% of inherited values. Derive yours instead of guessing; the sensitivity is
-  enormous (±20% moves ~97% of palettes).
+- **Families**: quantize in OKLab. Our bin step of 0.04 remains, honestly, an
+  `[INHERITED]` value: a late derivation arm recovered its *shape* from colorimetric math
+  (re-expressing the incumbent, valid over 99.18% of the sRGB cube and 88.2% of the
+  lightness range) but did not derive the magnitude independently, and the full
+  perceptually-uniform grain mechanism failed 4 of its 8 predictions at a 49.66% blast
+  radius and ships OFF. "Derive your quantization from perceptual math" is still the right
+  ambition — just don't mistake shape-validation for derivation, as our first draft did.
+  The sensitivity is enormous either way (±20% moves ~97% of palettes).
 - **Field hypotheses**: which family/families form the background field, flat or gradient,
   with domain reconstruction (which pixels belong to the field).
 - **Obligations**: evidence-driven claims that a family deserves a role ("this vivid red is
@@ -140,15 +146,15 @@ candidate slate → ranking → winner → post-winner passes**.
 **The one structural mistake to not repeat: policy enforced early.** Our obligation
 shortlist had **4 seats** ordered by a single heuristic, and over the campaign it accreted
 *three* reserved-seat patches, each added because a measurement showed the bound cutting a
-valid direction. A second capacity bound (`representativesPerRole = 2`) was named "the real
-blocker" by two independent arms and never relaxed. Worse, any rule enforced during
-candidate generation cascades: when we filtered zero-contrast candidates early, **~149
-artworks moved to fix 15** — 10:1 collateral on artworks that had no defect, because the
-capacity-bounded slate re-shuffled admissions. The same rule enforced at the **final-winner
+valid direction. A second capacity bound (`representativesPerRole = 2`) was blamed by one
+arm directly and implicated by another's "slot-bounded" diagnosis, and never relaxed.
+Worse, any rule enforced during candidate generation cascades: when we filtered
+zero-contrast candidates early, **148 artworks moved to fix 14** — 10:1 collateral on
+artworks that had no defect, because the capacity-bounded slate re-shuffled admissions. The same rule enforced at the **final-winner
 stage** moved *exactly* the defective artworks and zero others, verified over the full
 corpus. Caps cut both ways: *adding* candidates under a cap silently evicts existing ones
 (one mechanism cost five artworks 50–230 trunk candidates before the cap was raised to make
-it provably additive — "displacement is the sin our record punishes, not domain size").
+it provably additive — displacement, not domain size, is what the review record punishes).
 
 **The pattern to adopt from day one:** generation and ranking stay *generous and neutral*;
 every opinionated policy (contrast floors, pathology repairs, user parameters) runs as a
@@ -310,8 +316,10 @@ Signals that were tried and **refuted or corrected**:
 - **"Corrections reveal ranking failures, not generation gaps" — a seductive early claim we
   later retracted.** The early audit found 7 of 7 checkable corrected accents already in
   the candidate pool. A later, deeper arm reversed it: the wanted accents mostly **never
-  reach an accent slot at all — candidacy, not ranking; 0 of 19 publish under any
-  configuration**. Both facts are true: colors exist in the pool but structurally cannot
+  reach an accent slot at all — candidacy, not ranking; 0 of 19 published against a
+  standing ask under the four configurations tested** (one artwork did publish its
+  prescribed accent, discounted for a superseded correction; alternatives were not swept).
+  Both facts are true: colors exist in the pool but structurally cannot
   reach the role. Diagnose *reachability*, not just presence, before concluding "ranking".
 - **Vividness — two results, keep them apart.** The *direction* ("prefer the vivid
   candidate here") was endorsed 4:1 in its batch. The *implementation* had a structural
@@ -348,10 +356,12 @@ What survived:
   the band read at 0.0/1.0 does ~nothing (−5.8% aggregate): the candidate pool, not the
   aim point, is the binding constraint. Final adjudicated record of our walk: 3 wins, 3
   losses, 6 ties among verdicts that transferred to the honestly-measured path, becoming
-  4W/3L/7T after the two changed artworks were re-adjudicated — real but not decisive; the missing
-  refinement is a spatial-progression check (accept a step only when its support sits
-  *farther along* the shading direction than the current endpoint — one measured loss was
-  supported by a black suit in the middle of the frame, backward along the axis).
+  4W/3L/7T after the two changed artworks were re-adjudicated — real but not decisive. One candidate
+  refinement — a spatial-progression check (accept a step only when its support sits
+  *farther along* the shading direction than the current endpoint) — explains one measured
+  loss exactly (support from a black suit mid-frame, backward along the axis) but was
+  measured NOT to be the general discriminator: it fires on 1 of 3 losses and is
+  contradicted by the strongest one.
 - **Guard every extension against the published palette.** An endpoint walk that lands on
   the accent's color "found a real color and destroyed the palette" (reviewer: "we end up
   with black olive as both the surface and the accents"). Guard rule: no step may bring an
@@ -389,10 +399,10 @@ What survived:
   claims symmetrically (a principled neutrality mechanism); and it generalizes to
   multi-stop gradients — which the reviewer asked for repeatedly and our 3-stop-at-0.5
   contract could not express. Acceptance statistic: p95 per-pixel ΔE, not mean ("mean
-  hides a bad midpoint"). Note also: our detector *detected* radial geometry on 7 of 9
-  dev-set gradient winners and threw it away (fixed 135° linear render) — and the radial
-  detector itself was likely dead code due to a geometry bug. Decide deliberately how much
-  geometry your output contract keeps.
+  hides a bad midpoint"). Note also: our detector *detected* radial geometry on most
+  gradient winners (8 of 9 on the first dev panel; 6 of 11 on the larger re-measure) and
+  threw it away — the render hard-codes 135° linear. Decide deliberately how much geometry
+  your output contract keeps.
 - **Know your render.** Ours: 135° oklab linear-gradient; 2-stop = background 35% →
   surface 100%; 3-stop = background 10%, midpoint 55%, surface 100% (tuned by the reviewer
   to make the background visible in the preview UI).
@@ -507,8 +517,9 @@ Each of these bit us at least once; all are cheap to check:
    a *different algorithm under the same label*, inflating a win record. Fallbacks must be
    loud (refuse or rename), and reconstructions must self-check against the builder's own
    counts (that self-check found a second, shipped, 14%-of-the-image reconstruction bug).
-   Same family: a silent unconditional **white alpha-flatten** decided the field color of
-   every transparent artwork, undocumented and unreviewed, for the entire campaign.
+   Same family: an unconditional **white alpha-flatten** decided the field color of every
+   transparent artwork for the entire campaign — documented in one prose line, but never
+   reviewed and never conditional.
 6. **Sweep artifacts.** Three classes, all silent: perturbing one side of *duplicated*
    code (8 of 33 top "cliffs" were this); perturbing *non-tunable math* (a variance
    exponent, a clamp floor, an accumulator initializer — the same expression swept as
@@ -526,11 +537,12 @@ Each of these bit us at least once; all are cheap to check:
    guardrail turned out to have been reversed by a later batch), and agents will
    self-document rule-driven kills ("killing on the rule, not on judgment") — mine those
    notes routinely.
-9. **A founding measurement from a contaminated tree.** A four-arm architectural thread
-   was funded by a "loses on ranking" reading that came from a replay contaminated by
-   another arm's flag — the motivating pink accent *did not exist in the candidate pool*.
-   Re-derive any architecture-motivating measurement on a clean tree; replay tooling
-   inherits other arms' flags (and verify against the *configuration*, not the branch —
+9. **A founding measurement from stale tooling.** A four-arm architectural thread was
+   funded by a "loses on ranking" reading that came from a stale label cache with no code
+   fingerprint — the motivating pink accent *did not exist in the candidate pool*.
+   Fingerprint every cache with the code that produced it, and re-derive any
+   architecture-motivating measurement on a clean tree (and verify against the
+   *configuration*, not the branch —
    a branch shipping its lever OFF is byte-identical to trunk, and "verifying" it tests
    nothing).
 10. **Identifier ambiguity between image variants.** Every cover exists at multiple
@@ -630,8 +642,10 @@ Test set to build on day one (our recurring deciders):
 ## 11. Performance, sweeps, and hygiene
 
 - **Look for recomputation before micro-optimizing.** The single biggest finding across
-  four byte-identity-proven speedup passes (1.90× → 1.61× → 1.55× → 1.20×, ≈5.7×
-  cumulative, ~5 s → ~0.7 s median / 1.29 s mean per artwork): **~45% of every extraction
+  four byte-identity-proven speedup passes (1.90× → 1.61× → 1.55× → 1.20×; the ≈5.7×
+  product compounds different corpora and metrics, one a warm-cache upper bound — treat it
+  as an order of magnitude, not a measurement; end state ~0.7 s median / 1.29 s mean per
+  artwork): **~45% of every extraction
   was recomputation** — a diagnostic call re-fitting gradients on an already-fitted
   object, and 88% of one module's attempts refusable by an already-computed free gate.
 - **Performance work only with byte-identical proof** from committed states, and honest
@@ -658,7 +672,8 @@ Test set to build on day one (our recurring deciders):
 
 The campaign ends with: ~97% acceptable-or-better on n=60 unbiased calibration — a number
 that must be published with its measured noise band: only ~35% of calibration items were
-*clean* strongs (no note, no correction), the strong rate was ~62%, the reviewer's regrades
+*clean* strongs (no note, no correction) and the strong rate ~62% (both mid-campaign
+snapshots), the reviewer's regrades
 of identical palettes agree 88% of the time (so any single verdict carries a ~12% error
 bar), and every figure is scoped to the renditions reviewed (§1). Repeats held; drift was
 tail-only. Eight-plus mechanisms integrated verdict-gated, five mechanism classes closed by
