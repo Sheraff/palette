@@ -401,6 +401,65 @@ describe('batch status and completion', () => {
 		assert.ok(second.id)
 	})
 
+	it('counts a vetoed item as judged, and pending again once the veto is retracted', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'b4', itemCount: 3 })
+		append(file, makeVerdict({ batch, itemId: 'i1' }), options)
+
+		let summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1)
+		assert.equal(summary.pending, 2)
+
+		// The reviewer rules i2 out of the corpus instead of grading it.
+		const veto = append(file, makeVeto({ batch, itemId: 'i2', reason: 'disc scan, not artwork' }), options)
+		summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 2, 'a vetoed item is judged, not skipped')
+		assert.equal(summary.pending, 1)
+		assert.equal(summary.vetoes, 1)
+
+		// Withdrawing the veto puts the item back in the queue.
+		append(file, makeAmendment(veto.id, {}, { retract: true, reason: 'it is artwork after all' }), options)
+		summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1, 'a retracted veto judges nothing')
+		assert.equal(summary.pending, 2)
+	})
+
+	it('does not let a veto double-count an item that also has a verdict', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'b5', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1' }), options)
+		append(file, makeVeto({ batch, itemId: 'i1', reason: 'on reflection, out of corpus' }), options)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1)
+		assert.equal(summary.pending, 1)
+	})
+
+	it('ignores a veto that names no item when counting pending', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'b6', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1' }), options)
+		append(file, makeVeto({ batch, itemId: null, reason: 'corpus-level note' }), options)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 1)
+		assert.equal(summary.pending, 1)
+		assert.equal(summary.vetoes, 1)
+	})
+
+	it('does not count a superseded pre-release draft as a second reviewed item', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'b7', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'strong' }), options)
+		const final = append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
+		append(file, makeAmendment(final.id, {}, { retract: true, reason: 'wrong rendition shown' }), options)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 0, 'the surviving draft was superseded; the replacement was retracted')
+		assert.equal(summary.pending, 2)
+	})
+
 	it('groups batch-less records under the placeholder batch', () => {
 		const file = tempFile()
 		const options = det()

@@ -432,7 +432,11 @@ export interface BatchSummary {
 	purpose: BatchPurpose | null
 	/** Batch size declared at push time, or null when no record carried it. */
 	itemCount: number | null
-	/** Distinct item ids with a verdict (retracted verdicts do not count). */
+	/**
+	 * Distinct item ids that have been judged: a non-superseded, non-retracted verdict
+	 * OR a non-retracted veto. A vetoed item is judged — the reviewer ruled it out of
+	 * the corpus, which is a decision, not a skip — so it does not hold up release.
+	 */
 	reviewed: number
 	/** itemCount − reviewed, or null when itemCount is unknown. */
 	pending: number | null
@@ -460,6 +464,7 @@ export const NO_BATCH = '-'
 export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary[] {
 	const all = [...records]
 	const entries = resolve(all)
+	const superseded = supersededVerdictIds(entries)
 	const order: string[] = []
 	const summaries = new Map<string, BatchSummary>()
 	const reviewedItems = new Map<string, Set<string>>()
@@ -503,7 +508,8 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 		switch (record.type) {
 			case 'verdict': {
 				summary.verdicts++
-				if (!entry.retracted) reviewedItems.get(batchId)!.add(record.itemId)
+				if (!entry.retracted && !superseded.has(entry.original.id))
+					reviewedItems.get(batchId)!.add(record.itemId)
 				if (summary.purpose === null) summary.purpose = record.batch.purpose
 				if (summary.itemCount === null) summary.itemCount = record.batch.itemCount
 				break
@@ -516,6 +522,9 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 				break
 			case 'veto':
 				summary.vetoes++
+				// A vetoed item is judged: the reviewer ruled it out of the corpus, which
+				// is a decision, not a skip. It must not hold up the batch's release.
+				if (!entry.retracted && record.itemId) reviewedItems.get(batchId)!.add(record.itemId)
 				break
 			case 'oracle-label':
 				summary.labels++
