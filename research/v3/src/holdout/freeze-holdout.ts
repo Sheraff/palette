@@ -2,18 +2,25 @@
  * music-artworks holdout freeze (v3 Phase 0, PHASE_0_DECISIONS.md §5).
  *
  * Reserves a random ~15% of the album-artwork candidates in `music-artworks/`,
- * stratified by the resolution band of each artwork's best rendition, with every
- * rendition of a held-out artwork held out together. The result is frozen in
+ * stratified by resolution band. The result is frozen in
  * `research/v3/data/holdout/holdout.json` and summarised in `HOLDOUT.md`.
+ *
+ * VERSION 2 — the unit of selection is a NEAR-DUPLICATE COMPONENT, not an artwork.
+ * Version 1.0.0 drew on artwork ids and leaked: the embedding near-duplicate census
+ * (`research/v3/data/embeddings/near-dup-census.json`) found thousands of pairs of
+ * near-identical images carrying DIFFERENT artwork ids, and 224 of v1's 414 held-out
+ * artworks had a near-duplicate sitting in the working set. Nothing had consumed v1,
+ * so the reviewer authorised a clean redraw (2026-08-02). Version 2 builds the
+ * near-duplicate graph, takes connected components, and holds out whole components.
  *
  * Run:
  *   NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freeze-holdout.ts
  *   NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freeze-holdout.ts --verify
  *
  * The script is idempotent: every input to the output (seed, freeze date, script
- * version, file measurements) is either pinned in code or read from the image
- * headers, so a re-run produces byte-identical files. `--verify` re-derives the
- * selection and fails if the committed files disagree.
+ * version, file measurements, census) is either pinned in code or read from the data,
+ * so a re-run produces byte-identical files. `--verify` re-derives the selection and
+ * fails if the committed files disagree.
  *
  * Dimensions are ALWAYS read from image headers, never from the `_WxH` filename
  * suffix — 719 AVIFs in this collection disagree with their own header
@@ -31,22 +38,29 @@ import sharp from 'sharp'
 // Constants — every value named, every value with a provenance tag.
 // ---------------------------------------------------------------------------
 
-/** [HELD] Frozen once, 2026-08-02. Changing it re-rolls the holdout and voids
- *  every end-of-campaign claim made against the old list. Never change it. */
+/** [HELD] The project's music-artworks holdout seed. Frozen 2026-08-02.
+ *  The v1→v2 redraw came from changing the unit of selection (artwork → near-dup
+ *  component), not from changing this. Nothing had consumed v1, so no claim was
+ *  voided. Changing this value re-rolls the holdout and voids every end-of-campaign
+ *  claim made against the frozen list. Never change it. */
 const HOLDOUT_SEED = 0x5ea1_f00d
 
-/** [REVIEWED] PHASE_0_DECISIONS.md §5: "reserve a random ~15%". */
+/** [REVIEWED] PHASE_0_DECISIONS.md §5: "reserve a random ~15%". Measured on
+ *  ARTWORKS, achieved by drawing whole components until the artwork count lands. */
 const HOLDOUT_FRACTION = 0.15
 
 /** [HELD] Pinned so re-runs are byte-identical. The date the freeze was made. */
 const FREEZE_DATE = '2026-08-02'
 
-/** [HELD] Bumped only when the selection algorithm changes (which re-rolls the
- *  holdout). Formatting-only changes must not bump it. */
-const SCRIPT_VERSION = '1.0.0'
+/** [HELD] Bumped when the selection algorithm changes (which re-rolls the holdout).
+ *  Formatting-only changes must not bump it. */
+const SCRIPT_VERSION = '2.0.0'
+
+/** [HELD] The version this one replaces. */
+const SUPERSEDES_VERSION = '1.0.0'
 
 /** [HELD] Shape of holdout.json. Bumped when fields are added or renamed. */
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 2
 
 /** [MEASURED] Oracle pipeline §7.4.2: keep artworks whose best rendition
  *  satisfies |w/h − 1| ≤ 0.05. A strict w == h test drops ~208 legitimately
@@ -57,12 +71,17 @@ const SQUARE_ASPECT_TOLERANCE = 0.05
  *  147×147 AVIF) are derived thumbnails, not sources. Strictly greater than. */
 const MIN_BEST_LONG_EDGE_PX = 150
 
-/** [HELD] Resolution bands for stratification, on the best rendition's long
- *  edge. Orchestrator-chosen (not a reviewer decision): 400 and 640 are the
- *  CDN's common derived sizes, 1024 is the ceiling above which the oracle
- *  pipeline (§7.4) says the collection is too thin to conclude anything.
- *  Reviewer was offered a veto 2026-08-02 (quantile-based alternative declined
- *  by default). */
+/** [REVIEWED] Near-duplicate cosine threshold. The census is computed at 0.95 and
+ *  its pairs were validated as true duplicates. Leak prevention wants the
+ *  conservative graph, so we take the UNION over the three embedding arms — a pair
+ *  counts as an edge if ANY arm put it at >= 0.95. */
+const NEAR_DUP_COSINE_THRESHOLD = 0.95
+const NEAR_DUP_ARM_CRITERION = 'any_arm (union of dinov2-vitl14, pe-core-l14, dinov3-vitl16)'
+
+/** [REVIEWED] Resolution bands for stratification, on the long edge of the best
+ *  rendition in a component (max across its member artworks). 400 and 640 are the
+ *  CDN's common derived sizes; 1024 is the ceiling above which the oracle pipeline
+ *  (§7.4) says the collection is too thin to conclude anything. */
 const STRATUM_BANDS = [
 	{ name: '<=400', maxLongEdge: 400 },
 	{ name: '401-640', maxLongEdge: 640 },
@@ -77,7 +96,7 @@ type StratumName = (typeof STRATUM_BANDS)[number]['name']
  *  count outside this band means the enumeration or the aspect filter broke. */
 const SQUARE_CANDIDATE_PLAUSIBLE_RANGE = { min: 2900, max: 3300 }
 
-/** [MEASURED] Candidates after the ≤150 px tail and the 797-file real-transparency
+/** [MEASURED] Candidates after the <=150 px tail and the 797-file real-transparency
  *  exclusion are removed. Upper bound is the pre-exclusion measurement; the lower
  *  bound assumes the exclusion cannot plausibly remove more than ~25%. */
 const FINAL_CANDIDATE_PLAUSIBLE_RANGE = { min: 2300, max: 3097 }
@@ -90,11 +109,35 @@ const EXPECTED_ARTWORK_COUNT = 4088
  *  pixels (disc scans, press-photo cutouts) — not album artwork. */
 const EXPECTED_TRANSPARENCY_EXCLUSION_FILES = 797
 
+/** [MEASURED] near-dup-census.json: 6,386 crossing pairs in the union of arms,
+ *  of which the census reports zero cross-collection. Asserted, not assumed. */
+const EXPECTED_CENSUS_UNION_PAIRS = 6386
+
+/** [MEASURED] Component granularity makes an exact 15% unreachable: the draw adds
+ *  whole components, and the largest is 7 artworks. Overall the achievable error is
+ *  well under a percent; the thin `<=400` stratum (93 artworks) is the binding case,
+ *  where a single 2-artwork component is already 2.2%. */
+const FRACTION_TOLERANCE_OVERALL = 0.01
+const FRACTION_TOLERANCE_PER_STRATUM = 0.03
+
 /** [INHERITED] Extensions present in the collection (case-insensitive). */
 const IMAGE_EXTENSIONS = new Set(['.avif', '.jpg', '.jpeg', '.png'])
 
 /** [INHERITED] `<32-hex>[_WxH].<ext>` — the 32-hex stem is the artwork id. */
 const FILENAME_PATTERN = /^([0-9a-f]{32})(?:_(\d+)x(\d+))?\.([A-Za-z]+)$/
+
+/** [INHERITED] The census prefixes music-artworks ids with this collection tag. */
+const CENSUS_MUSIC_ARTWORKS_COLLECTION = 'music_artworks'
+
+/** [REVIEWED] A component this large (in FILES) is template artwork or a heavily
+ *  reissued cover, not an incidental pair. Same cut the census uses for its own
+ *  named-components list. */
+const NAMED_COMPONENT_MIN_FILES = 8
+
+/** [MEASURED] near-dup-census.json `counts.undercount_vs_ground_truth_pct`: at this
+ *  threshold the scan misses 46.3% of duplicate pairs the filename ground truth
+ *  already knows about. Quoted in the docs as the lower-bound caveat. */
+const CENSUS_UNDERCOUNT_PCT = 46.3
 
 /** [UNCALIBRATED] Parallel header reads. Header-only metadata is cheap; this is
  *  just enough to keep the disk busy without exhausting file descriptors. */
@@ -108,6 +151,7 @@ const HERE = path.dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = path.resolve(HERE, '../../../..')
 const COLLECTION_ROOT = path.join(REPO_ROOT, 'music-artworks')
 const EXCLUSION_FILE = path.join(REPO_ROOT, 'research/v3/data/source-surveys/pixel_results.json')
+const CENSUS_FILE = path.join(REPO_ROOT, 'research/v3/data/embeddings/near-dup-census.json')
 const OUT_DIR = path.join(REPO_ROOT, 'research/v3/data/holdout')
 const HOLDOUT_JSON = path.join(OUT_DIR, 'holdout.json')
 const HOLDOUT_MD = path.join(OUT_DIR, 'HOLDOUT.md')
@@ -141,6 +185,39 @@ function shuffle<T>(items: T[], rng: () => number): T[] {
 }
 
 // ---------------------------------------------------------------------------
+// Union-find over artwork ids.
+// ---------------------------------------------------------------------------
+
+class UnionFind {
+	private parent = new Map<string, string>()
+
+	add(id: string): void {
+		if (!this.parent.has(id)) this.parent.set(id, id)
+	}
+
+	find(id: string): string {
+		let root = id
+		while (this.parent.get(root) !== root) root = this.parent.get(root)!
+		let walk = id
+		while (this.parent.get(walk) !== root) {
+			const next = this.parent.get(walk)!
+			this.parent.set(walk, root)
+			walk = next
+		}
+		return root
+	}
+
+	union(a: string, b: string): void {
+		const rootA = this.find(a)
+		const rootB = this.find(b)
+		if (rootA === rootB) return
+		// Deterministic merge direction: the smaller id becomes the root.
+		if (rootA < rootB) this.parent.set(rootB, rootA)
+		else this.parent.set(rootA, rootB)
+	}
+}
+
+// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
@@ -162,10 +239,21 @@ type Artwork = {
 	best: Measurement
 }
 
+type Component = {
+	/** Lexicographically smallest member id — stable across runs. */
+	id: string
+	members: Artwork[]
+	artworkCount: number
+	fileCount: number
+	/** Long edge of the largest best-rendition across members. */
+	maxLongEdgePx: number
+	stratum: StratumName
+}
+
 type HeldFile = Measurement & { sha256: string }
 
 // ---------------------------------------------------------------------------
-// Steps
+// Enumeration and measurement
 // ---------------------------------------------------------------------------
 
 async function enumerateFiles(root: string): Promise<string[]> {
@@ -320,6 +408,48 @@ async function loadExcludedArtworkIds(): Promise<{ ids: Set<string>; fileCount: 
 	return { ids, fileCount: parsed.real.length }
 }
 
+// ---------------------------------------------------------------------------
+// Near-duplicate census
+// ---------------------------------------------------------------------------
+
+type CensusPair = {
+	cosine: number
+	cosine_by_arm: Record<string, number>
+	found_by_arms: string[]
+	a: { path: string; artwork_id: string; collection: string }
+	b: { path: string; artwork_id: string; collection: string }
+}
+
+type Census = {
+	written_at: string
+	method: { threshold: number; arms_scanned: string[] }
+	pairs: CensusPair[]
+}
+
+/** Strip the census's `<collection>:` prefix from an artwork id. */
+function censusArtworkId(tagged: string): string {
+	const colon = tagged.indexOf(':')
+	return colon === -1 ? tagged : tagged.slice(colon + 1)
+}
+
+async function loadCensus(): Promise<{ census: Census; sha256: string; crossCollectionPairs: number }> {
+	const raw = await readFile(CENSUS_FILE)
+	const census = JSON.parse(raw.toString('utf8')) as Census
+	let crossCollectionPairs = 0
+	for (const pair of census.pairs) {
+		if (pair.a.collection !== pair.b.collection) crossCollectionPairs++
+	}
+	return {
+		census,
+		sha256: createHash('sha256').update(raw).digest('hex'),
+		crossCollectionPairs,
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Filtering / stratification helpers
+// ---------------------------------------------------------------------------
+
 function isSquare(m: Measurement): boolean {
 	return Math.abs(m.width / m.height - 1) <= SQUARE_ASPECT_TOLERANCE
 }
@@ -328,13 +458,12 @@ function longEdge(m: Measurement): number {
 	return Math.max(m.width, m.height)
 }
 
-function stratumOf(m: Measurement): StratumName {
-	const edge = longEdge(m)
+function bandOf(edge: number): StratumName {
 	for (const band of STRATUM_BANDS) if (edge <= band.maxLongEdge) return band.name
 	throw new Error(`no stratum for long edge ${edge}`)
 }
 
-async function sha256(absolutePath: string): Promise<string> {
+async function sha256File(absolutePath: string): Promise<string> {
 	return await new Promise((resolve, reject) => {
 		const hash = createHash('sha256')
 		createReadStream(absolutePath)
@@ -386,52 +515,161 @@ async function main(): Promise<void> {
 		}
 		candidates.push(artwork)
 	}
+	const candidateById = new Map(candidates.map((a) => [a.id, a]))
 
-	// --- stratify -----------------------------------------------------------
-	const byStratum = new Map<StratumName, Artwork[]>(STRATUM_BANDS.map((b) => [b.name, [] as Artwork[]]))
-	for (const artwork of candidates) byStratum.get(stratumOf(artwork.best))!.push(artwork)
+	// --- near-duplicate components -----------------------------------------
+	process.stderr.write('building the near-duplicate graph ...\n')
+	const { census, sha256: censusSha, crossCollectionPairs } = await loadCensus()
 
-	// --- select -------------------------------------------------------------
-	const rng = mulberry32(HOLDOUT_SEED)
-	const held: Array<{ artwork: Artwork; stratum: StratumName }> = []
-	const perStratum: Array<{ stratum: StratumName; candidates: number; held: number; fraction: number }> = []
+	const unionFind = new UnionFind()
+	for (const artwork of candidates) unionFind.add(artwork.id)
 
-	for (const band of STRATUM_BANDS) {
-		// Sort by id first so the shuffle input never depends on filesystem order.
-		const pool = byStratum.get(band.name)!.slice().sort((a, b) => (a.id < b.id ? -1 : 1))
-		const take = Math.round(pool.length * HOLDOUT_FRACTION)
-		const drawn = shuffle(pool.slice(), rng).slice(0, take)
-		drawn.sort((a, b) => (a.id < b.id ? -1 : 1))
-		for (const artwork of drawn) held.push({ artwork, stratum: band.name })
-		perStratum.push({
-			stratum: band.name,
-			candidates: pool.length,
-			held: drawn.length,
-			fraction: pool.length === 0 ? 0 : drawn.length / pool.length,
+	let edgesUsed = 0
+	let edgesOneEndpointOutsideCandidates = 0
+	let edgesBothEndpointsOutsideCandidates = 0
+	let edgesOtherCollection = 0
+	const usedEdges: Array<[string, string]> = []
+
+	for (const pair of census.pairs) {
+		if (
+			pair.a.collection !== CENSUS_MUSIC_ARTWORKS_COLLECTION ||
+			pair.b.collection !== CENSUS_MUSIC_ARTWORKS_COLLECTION
+		) {
+			edgesOtherCollection++
+			continue
+		}
+		const a = censusArtworkId(pair.a.artwork_id)
+		const b = censusArtworkId(pair.b.artwork_id)
+		const inA = candidateById.has(a)
+		const inB = candidateById.has(b)
+		if (inA && inB) {
+			unionFind.union(a, b)
+			usedEdges.push([a, b])
+			edgesUsed++
+		} else if (inA || inB) edgesOneEndpointOutsideCandidates++
+		else edgesBothEndpointsOutsideCandidates++
+	}
+
+	const membersByRoot = new Map<string, Artwork[]>()
+	for (const artwork of candidates) {
+		const root = unionFind.find(artwork.id)
+		const list = membersByRoot.get(root)
+		if (list) list.push(artwork)
+		else membersByRoot.set(root, [artwork])
+	}
+
+	const components: Component[] = []
+	for (const members of membersByRoot.values()) {
+		members.sort((a, b) => (a.id < b.id ? -1 : 1))
+		const maxLongEdgePx = Math.max(...members.map((m) => longEdge(m.best)))
+		components.push({
+			id: members[0]!.id,
+			members,
+			artworkCount: members.length,
+			fileCount: members.reduce((n, m) => n + m.files.length, 0),
+			maxLongEdgePx,
+			stratum: bandOf(maxLongEdgePx),
 		})
 	}
-	held.sort((a, b) => (a.artwork.id < b.artwork.id ? -1 : 1))
+	components.sort((a, b) => (a.id < b.id ? -1 : 1))
+	process.stderr.write(`  ${components.length} components over ${candidates.length} candidate artworks\n`)
+
+	const sizeHistogram = new Map<number, number>()
+	for (const component of components) {
+		sizeHistogram.set(component.artworkCount, (sizeHistogram.get(component.artworkCount) ?? 0) + 1)
+	}
+	const namedComponents = components
+		.filter((c) => c.fileCount >= NAMED_COMPONENT_MIN_FILES)
+		.sort((a, b) => b.fileCount - a.fileCount || (a.id < b.id ? -1 : 1))
+
+	// --- stratify (component level) -----------------------------------------
+	const byStratum = new Map<StratumName, Component[]>(STRATUM_BANDS.map((b) => [b.name, [] as Component[]]))
+	for (const component of components) byStratum.get(component.stratum)!.push(component)
+
+	// --- select -------------------------------------------------------------
+	// Whole components, drawn as a random prefix of a seeded shuffle, until the
+	// running ARTWORK count reaches the stratum's 15% target. The boundary component
+	// is included iff that lands closer to the target. A random prefix keeps the
+	// draw independent of component size (no systematic bias against big components).
+	const rng = mulberry32(HOLDOUT_SEED)
+	const heldComponents: Component[] = []
+	const perStratum: Array<{
+		stratum: StratumName
+		components: number
+		candidateArtworks: number
+		heldComponents: number
+		heldArtworks: number
+		fraction: number
+	}> = []
+
+	for (const band of STRATUM_BANDS) {
+		const pool = byStratum.get(band.name)!.slice().sort((a, b) => (a.id < b.id ? -1 : 1))
+		const poolArtworks = pool.reduce((n, c) => n + c.artworkCount, 0)
+		const target = poolArtworks * HOLDOUT_FRACTION
+		const shuffled = shuffle(pool.slice(), rng)
+
+		const drawn: Component[] = []
+		let running = 0
+		for (const component of shuffled) {
+			if (running >= target) break
+			const withComponent = running + component.artworkCount
+			if (withComponent <= target) {
+				drawn.push(component)
+				running = withComponent
+				continue
+			}
+			if (Math.abs(withComponent - target) <= Math.abs(running - target)) {
+				drawn.push(component)
+				running = withComponent
+			}
+			break
+		}
+
+		drawn.sort((a, b) => (a.id < b.id ? -1 : 1))
+		heldComponents.push(...drawn)
+		perStratum.push({
+			stratum: band.name,
+			components: pool.length,
+			candidateArtworks: poolArtworks,
+			heldComponents: drawn.length,
+			heldArtworks: running,
+			fraction: poolArtworks === 0 ? 0 : running / poolArtworks,
+		})
+	}
+	heldComponents.sort((a, b) => (a.id < b.id ? -1 : 1))
+
+	const heldArtworks = heldComponents
+		.flatMap((c) => c.members.map((m) => ({ artwork: m, component: c })))
+		.sort((a, b) => (a.artwork.id < b.artwork.id ? -1 : 1))
+	const heldIds = new Set(heldArtworks.map((h) => h.artwork.id))
 
 	// --- hash held-out files ------------------------------------------------
-	process.stderr.write(`hashing ${held.reduce((n, h) => n + h.artwork.files.length, 0)} held-out files ...\n`)
+	const heldFileTotal = heldArtworks.reduce((n, h) => n + h.artwork.files.length, 0)
+	process.stderr.write(`hashing ${heldFileTotal} held-out files ...\n`)
 	const heldRecords: Array<{
 		id: string
 		stratum: StratumName
+		componentId: string
+		componentArtworkCount: number
 		bestRenditionPath: string
 		bestLongEdgePx: number
+		ownLongEdgeBand: StratumName
 		renditionCount: number
 		files: HeldFile[]
 	}> = []
-	for (const { artwork, stratum } of held) {
+	for (const { artwork, component } of heldArtworks) {
 		const files: HeldFile[] = []
 		for (const file of artwork.files) {
-			files.push({ ...file, sha256: await sha256(path.join(REPO_ROOT, file.path)) })
+			files.push({ ...file, sha256: await sha256File(path.join(REPO_ROOT, file.path)) })
 		}
 		heldRecords.push({
 			id: artwork.id,
-			stratum,
+			stratum: component.stratum,
+			componentId: component.id,
+			componentArtworkCount: component.artworkCount,
 			bestRenditionPath: artwork.best.path,
 			bestLongEdgePx: longEdge(artwork.best),
+			ownLongEdgeBand: bandOf(longEdge(artwork.best)),
 			renditionCount: files.length,
 			files,
 		})
@@ -467,7 +705,6 @@ async function main(): Promise<void> {
 		`candidate count ${candidates.length} outside plausible range ` +
 			`[${FINAL_CANDIDATE_PLAUSIBLE_RANGE.min}, ${FINAL_CANDIDATE_PLAUSIBLE_RANGE.max}]`,
 	)
-	// Exclusion list actually applied, in both directions.
 	check(droppedTransparent.length > 0, 'transparency exclusion removed zero artworks — list not applied')
 	for (const id of excludedIds) {
 		if (!artworks.has(id)) problems.push(`exclusion list names an artwork not in the collection: ${id}`)
@@ -475,32 +712,96 @@ async function main(): Promise<void> {
 	for (const record of heldRecords) {
 		if (excludedIds.has(record.id)) problems.push(`held-out artwork is on the exclusion list: ${record.id}`)
 	}
-	// Dimensions present for every held-out file.
+
+	// Census assertions: the census must be the one we expect, and its
+	// "no cross-collection pairs" claim is asserted rather than assumed.
+	check(
+		census.method.threshold === NEAR_DUP_COSINE_THRESHOLD,
+		`census threshold ${census.method.threshold} != ${NEAR_DUP_COSINE_THRESHOLD}`,
+	)
+	check(
+		census.pairs.length === EXPECTED_CENSUS_UNION_PAIRS,
+		`census has ${census.pairs.length} pairs, expected ${EXPECTED_CENSUS_UNION_PAIRS}`,
+	)
+	check(crossCollectionPairs === 0, `census has ${crossCollectionPairs} cross-collection pairs, expected 0`)
+	check(edgesUsed > 0, 'no near-duplicate edges applied — census not wired up')
+	for (const pair of census.pairs) {
+		if (pair.found_by_arms.length === 0) {
+			problems.push('census pair with no arm attribution — the union graph is not well defined')
+			break
+		}
+	}
+
+	// THE leak check: no census edge (any arm, >= threshold) crosses the boundary.
+	let crossingEdges = 0
+	for (const [a, b] of usedEdges) {
+		if (heldIds.has(a) !== heldIds.has(b)) crossingEdges++
+	}
+	check(crossingEdges === 0, `${crossingEdges} near-duplicate edges cross the holdout boundary`)
+
+	// Residual path: a held-out artwork can have a near-duplicate among the artworks
+	// the candidate filters threw away (non-square, thumbnail-only, transparent).
+	// Those are in nobody's working set, so this is not a leak today — but if any of
+	// them is ever pulled into development work, it becomes one. Publish the list.
+	const nonCandidateQuarantine = new Set<string>()
+	for (const pair of census.pairs) {
+		if (
+			pair.a.collection !== CENSUS_MUSIC_ARTWORKS_COLLECTION ||
+			pair.b.collection !== CENSUS_MUSIC_ARTWORKS_COLLECTION
+		) {
+			continue
+		}
+		const a = censusArtworkId(pair.a.artwork_id)
+		const b = censusArtworkId(pair.b.artwork_id)
+		if (heldIds.has(a) && !candidateById.has(b)) nonCandidateQuarantine.add(b)
+		if (heldIds.has(b) && !candidateById.has(a)) nonCandidateQuarantine.add(a)
+	}
+	const quarantineIds = [...nonCandidateQuarantine].sort()
+	for (const id of quarantineIds) {
+		if (candidateById.has(id)) problems.push(`quarantine id is a candidate, which is a contradiction: ${id}`)
+	}
+
+	// Components are whole on one side.
+	for (const component of components) {
+		const inside = component.members.filter((m) => heldIds.has(m.id)).length
+		if (inside !== 0 && inside !== component.artworkCount) {
+			problems.push(`component ${component.id} is split: ${inside}/${component.artworkCount} held out`)
+		}
+	}
+
+	// Dimensions, hashes, and rendition completeness for every held-out artwork.
 	for (const record of heldRecords) {
+		const source = candidateById.get(record.id)
+		if (!source) {
+			problems.push(`held-out artwork is not a candidate: ${record.id}`)
+			continue
+		}
+		if (record.files.length !== source.files.length) {
+			problems.push(`held-out artwork ${record.id} is missing renditions`)
+		}
+		if (record.files.length === 0) problems.push(`held-out artwork has no files: ${record.id}`)
 		for (const file of record.files) {
 			if (!Number.isInteger(file.width) || !Number.isInteger(file.height) || file.width < 1 || file.height < 1) {
 				problems.push(`held-out file missing dimensions: ${file.path}`)
 			}
 			if (!/^[0-9a-f]{64}$/.test(file.sha256)) problems.push(`bad sha256 for ${file.path}`)
 		}
-		if (record.files.length === 0) problems.push(`held-out artwork has no files: ${record.id}`)
 	}
-	// Selection integrity.
-	const heldIds = new Set(heldRecords.map((r) => r.id))
+
 	check(heldIds.size === heldRecords.length, 'duplicate artwork ids in the holdout')
-	const candidateIds = new Set(candidates.map((a) => a.id))
-	for (const id of heldIds) {
-		if (!candidateIds.has(id)) problems.push(`held-out artwork is not a candidate: ${id}`)
-	}
 	const totalHeld = heldRecords.length
 	const overallFraction = totalHeld / candidates.length
 	check(
-		Math.abs(overallFraction - HOLDOUT_FRACTION) < 0.005,
-		`overall holdout fraction ${overallFraction.toFixed(4)} is not ~${HOLDOUT_FRACTION}`,
+		Math.abs(overallFraction - HOLDOUT_FRACTION) <= FRACTION_TOLERANCE_OVERALL,
+		`overall holdout fraction ${overallFraction.toFixed(4)} is more than ` +
+			`${FRACTION_TOLERANCE_OVERALL} from ${HOLDOUT_FRACTION}`,
 	)
 	for (const row of perStratum) {
-		if (row.candidates > 0 && Math.abs(row.fraction - HOLDOUT_FRACTION) > 0.01) {
-			problems.push(`stratum ${row.stratum} holdout fraction ${row.fraction.toFixed(4)} is off target`)
+		if (row.candidateArtworks > 0 && Math.abs(row.fraction - HOLDOUT_FRACTION) > FRACTION_TOLERANCE_PER_STRATUM) {
+			problems.push(
+				`stratum ${row.stratum} holdout fraction ${row.fraction.toFixed(4)} is more than ` +
+					`${FRACTION_TOLERANCE_PER_STRATUM} from ${HOLDOUT_FRACTION}`,
+			)
 		}
 	}
 
@@ -512,18 +813,59 @@ async function main(): Promise<void> {
 
 	// --- write --------------------------------------------------------------
 	const heldFileCount = heldRecords.reduce((n, r) => n + r.files.length, 0)
+	const ownBandCounts = new Map<StratumName, number>(STRATUM_BANDS.map((b) => [b.name, 0]))
+	for (const record of heldRecords) {
+		ownBandCounts.set(record.ownLongEdgeBand, ownBandCounts.get(record.ownLongEdgeBand)! + 1)
+	}
+
 	const document = {
 		header: {
 			what: 'Frozen holdout for the v3 album-artwork palette rewrite (PHASE_0_DECISIONS.md §5).',
 			schemaVersion: SCHEMA_VERSION,
 			scriptVersion: SCRIPT_VERSION,
+			supersedes: SUPERSEDES_VERSION,
+			redrawReason:
+				`Version ${SUPERSEDES_VERSION} selected at artwork-id level. The embedding near-duplicate ` +
+				'census found thousands of near-identical image pairs carrying DIFFERENT artwork ids, and ' +
+				"224 of that version's 414 held-out artworks had a near-duplicate on the other side of the line " +
+				'(221 with a working-set partner, 3 with a non-candidate partner) — a leak. ' +
+				'Nothing had consumed the holdout, so the reviewer authorised a clean redraw (2026-08-02). ' +
+				'Version 2 selects whole connected components of the near-duplicate graph.',
 			generatedBy: 'research/v3/src/holdout/freeze-holdout.ts',
 			freezeDate: FREEZE_DATE,
 			seed: HOLDOUT_SEED,
 			seedHex: `0x${HOLDOUT_SEED.toString(16)}`,
-			rng: 'mulberry32 + Fisher-Yates, one stream, strata drawn in the order listed below',
+			rng: 'mulberry32 + Fisher-Yates; one stream; strata drawn in the order listed below',
 			collectionRoot: relative(COLLECTION_ROOT),
 			pathsAreRelativeTo: 'repository root',
+			nearDuplicateCensus: {
+				file: relative(CENSUS_FILE),
+				sha256: censusSha,
+				writtenAt: census.written_at,
+				threshold: NEAR_DUP_COSINE_THRESHOLD,
+				armCriterion: NEAR_DUP_ARM_CRITERION,
+				armsScanned: census.method.arms_scanned,
+				pairsInCensus: census.pairs.length,
+				crossCollectionPairs,
+				edgesAppliedBothEndpointsCandidates: edgesUsed,
+				edgesSkippedOneEndpointNotCandidate: edgesOneEndpointOutsideCandidates,
+				edgesSkippedNeitherEndpointCandidate: edgesBothEndpointsOutsideCandidates,
+				edgesSkippedOtherCollection: edgesOtherCollection,
+				nonCandidateQuarantine: {
+					what:
+						'Artworks that failed the album-artwork candidate filters (non-square, thumbnail-only, or ' +
+						'real-transparency) but are near-duplicates of a held-out artwork. They are in nobody\'s ' +
+						'working set today, so they are not a leak — but they must never be pulled into development ' +
+						'work, or they become one.',
+					artworkCount: quarantineIds.length,
+					artworkIds: quarantineIds,
+				},
+				lowerBoundCaveat:
+					`True duplicate rate continues below cosine ${NEAR_DUP_COSINE_THRESHOLD}, so component ` +
+					'isolation is a LOWER BOUND on the real near-duplicate structure. Against duplicates the ' +
+					`filename ground truth already knows about, the census undercounts by ${CENSUS_UNDERCOUNT_PCT}% ` +
+					'at this threshold.',
+			},
 			rules: {
 				dimensions: 'measured from image headers (sharp .metadata()); filename _WxH suffixes are ignored',
 				bestRendition:
@@ -532,8 +874,13 @@ async function main(): Promise<void> {
 				minLongEdge: `best rendition long edge > ${MIN_BEST_LONG_EDGE_PX} px`,
 				transparencyExclusion:
 					'artworks with any file in the `real` array of research/v3/data/source-surveys/pixel_results.json are excluded',
-				granularity: 'selection is at artwork level; every rendition of a held-out artwork is held out',
+				granularity:
+					'selection is at NEAR-DUPLICATE COMPONENT level; a component is entirely in or entirely out, and every rendition of every member artwork goes with it',
+				stratum: "the band of the component's largest member best-rendition long edge",
 				targetFraction: HOLDOUT_FRACTION,
+				draw:
+					"random prefix of a seeded shuffle of the stratum's components, until the running artwork " +
+					'count reaches the target; the boundary component is included iff that lands closer',
 			},
 			counts: {
 				filesInCollection: absolutePaths.length,
@@ -545,22 +892,50 @@ async function main(): Promise<void> {
 				transparencyExclusionArtworksInCollection: excludedIds.size,
 				droppedTransparentCandidates: droppedTransparent.length,
 				candidateArtworks: candidates.length,
+				candidateComponents: components.length,
+				singletonComponents: sizeHistogram.get(1) ?? 0,
+				multiArtworkComponents: components.length - (sizeHistogram.get(1) ?? 0),
+				artworksAbsorbedByDeduplication: candidates.length - components.length,
+				largestComponentArtworks: Math.max(...components.map((c) => c.artworkCount)),
+				largestComponentFiles: Math.max(...components.map((c) => c.fileCount)),
+				namedComponents: namedComponents.length,
+				heldOutComponents: heldComponents.length,
 				heldOutArtworks: totalHeld,
 				heldOutFiles: heldFileCount,
-				heldOutFraction: Number(overallFraction.toFixed(6)),
+				heldOutArtworkFraction: Number(overallFraction.toFixed(6)),
+				heldOutComponentFraction: Number((heldComponents.length / components.length).toFixed(6)),
+				nearDuplicateEdgesCrossingHoldoutBoundary: crossingEdges,
+				nonCandidateQuarantineArtworks: quarantineIds.length,
 			},
+			componentSizeHistogram: Object.fromEntries(
+				[...sizeHistogram.entries()].sort((a, b) => a[0] - b[0]).map(([size, n]) => [String(size), n]),
+			),
+			namedComponents: namedComponents.map((c) => ({
+				componentId: c.id,
+				artworkCount: c.artworkCount,
+				fileCount: c.fileCount,
+				maxLongEdgePx: c.maxLongEdgePx,
+				stratum: c.stratum,
+				heldOut: heldIds.has(c.id),
+				memberIds: c.members.map((m) => m.id),
+			})),
 			strata: perStratum.map((row) => ({
 				stratum: row.stratum,
-				candidateArtworks: row.candidates,
-				heldOutArtworks: row.held,
-				fraction: Number(row.fraction.toFixed(6)),
+				components: row.components,
+				candidateArtworks: row.candidateArtworks,
+				heldOutComponents: row.heldComponents,
+				heldOutArtworks: row.heldArtworks,
+				artworkFraction: Number(row.fraction.toFixed(6)),
 			})),
+			heldOutByOwnLongEdgeBand: Object.fromEntries(
+				STRATUM_BANDS.map((b) => [b.name, ownBandCounts.get(b.name)!]),
+			),
 		},
 		artworks: heldRecords,
 	}
 
 	const json = `${JSON.stringify(document, null, '\t')}\n`
-	const markdown = renderMarkdown(document, perStratum, heldRecords)
+	const markdown = renderMarkdown(document, perStratum, heldRecords, namedComponents, sizeHistogram, ownBandCounts)
 
 	if (verifyOnly) {
 		const failures: string[] = []
@@ -589,32 +964,50 @@ async function main(): Promise<void> {
 	await writeFile(HOLDOUT_MD, markdown)
 	process.stderr.write(
 		`\nwrote ${relative(HOLDOUT_JSON)} and ${relative(HOLDOUT_MD)}\n` +
-			`  candidates ${candidates.length}, held out ${totalHeld} artworks / ${heldFileCount} files ` +
-			`(${(overallFraction * 100).toFixed(2)}%)\n`,
+			`  ${candidates.length} candidates in ${components.length} components; held out ` +
+			`${heldComponents.length} components / ${totalHeld} artworks / ${heldFileCount} files ` +
+			`(${(overallFraction * 100).toFixed(2)}% of artworks)\n` +
+			`  near-duplicate edges crossing the boundary: ${crossingEdges}\n`,
 	)
 }
 
 function renderMarkdown(
-	document: {
-		header: {
-			counts: Record<string, number>
-			seedHex: string
-			seed: number
-		}
-	},
-	perStratum: Array<{ stratum: StratumName; candidates: number; held: number; fraction: number }>,
+	document: { header: { counts: Record<string, number>; seedHex: string } },
+	perStratum: Array<{
+		stratum: StratumName
+		components: number
+		candidateArtworks: number
+		heldComponents: number
+		heldArtworks: number
+		fraction: number
+	}>,
 	heldRecords: Array<{ renditionCount: number }>,
+	namedComponents: Component[],
+	sizeHistogram: Map<number, number>,
+	ownBandCounts: Map<StratumName, number>,
 ): string {
 	const c = document.header.counts
 	const multiRendition = heldRecords.filter((r) => r.renditionCount > 1).length
-	const rows = perStratum
+	const strataRows = perStratum
 		.map(
 			(row) =>
-				`| ${row.stratum} | ${row.candidates} | ${row.held} | ${(row.fraction * 100).toFixed(1)}% |`,
+				`| ${row.stratum} | ${row.components} | ${row.candidateArtworks} | ${row.heldComponents} | ${row.heldArtworks} | ${(row.fraction * 100).toFixed(1)}% |`,
 		)
 		.join('\n')
+	const histogramRows = [...sizeHistogram.entries()]
+		.sort((a, b) => a[0] - b[0])
+		.map(([size, n]) => `| ${size} | ${n} | ${size * n} |`)
+		.join('\n')
+	const ownBandRows = STRATUM_BANDS.map((b) => `| ${b.name} | ${ownBandCounts.get(b.name)!} |`).join('\n')
 
 	return `# music-artworks holdout — frozen ${FREEZE_DATE}
+
+**Version ${SCRIPT_VERSION}, supersedes ${SUPERSEDES_VERSION}.** Version ${SUPERSEDES_VERSION} drew on
+artwork ids and leaked: the embedding near-duplicate census found that 224 of its 414
+held-out artworks had a near-identical twin — same image, different artwork id — on the
+other side of the line (221 with a working-set partner, 3 with a non-candidate partner). Nothing had consumed the holdout, so the reviewer authorised a clean
+redraw (2026-08-02). This version selects **whole near-duplicate components**. The old
+list is retrievable from git history; it is not kept on disk.
 
 ## What this is
 
@@ -624,8 +1017,7 @@ the closest set we have to the deployment distribution, and there is no more whe
 came from. The sharded corpus gets no holdout (fresh shards are effectively unlimited);
 this collection is complete, so a slice of it is reserved instead.
 
-Generated by \`research/v3/src/holdout/freeze-holdout.ts\` (version ${SCRIPT_VERSION}),
-frozen list in \`holdout.json\`.
+Generated by \`research/v3/src/holdout/freeze-holdout.ts\`, frozen list in \`holdout.json\`.
 
 ## Freeze rules
 
@@ -639,13 +1031,109 @@ Held-out artworks are excluded from:
 They are touched **only** for end-of-campaign claims — the one honest measurement at
 the end. The resolution ladder draws from the non-holdout remainder.
 
-Holding out is at the **artwork** level. ${multiRendition} of the ${c.heldOutArtworks}
-held-out artworks have more than one rendition, and every one of those renditions is held
-out with it — no artwork straddles the line, so nothing can be tuned on a small rendition
-and then "evaluated" on its large one.
+Two levels of wholeness:
+
+- **Rendition.** Every rendition of a held-out artwork is held out with it.
+  ${multiRendition} of the ${c.heldOutArtworks} held-out artworks are multi-rendition.
+- **Near-duplicate component.** If two artworks are the same image under different
+  artwork ids, they are in the same component and go to the same side. A component is
+  entirely in or entirely out.
 
 Looking at a held-out artwork spends it. If one is looked at, say so and remove it from
 the end-of-campaign claim — do not quietly keep it.
+
+## How the set was built
+
+1. Enumerate all ${c.filesInCollection} files, group by the 32-hex filename stem
+   → ${c.artworksInCollection} artworks.
+2. Measure every file from its **header**. Filenames lie here: 719 AVIFs disagree with
+   their own \`_WxH\` suffix, and 503 artworks have a derived rendition that *claims*
+   in its filename to be larger than the un-suffixed original. Measured, none actually
+   is — but 502 artworks have a derived rendition tied with the original on exact pixel
+   area. The best rendition is the largest **measured** pixel area; on a tie the
+   un-suffixed original wins (it is the source, not a re-encode), then the
+   lexicographically smallest path.
+3. Keep artworks whose best rendition is square within |w/h − 1| ≤ ${SQUARE_ASPECT_TOLERANCE}
+   (${c.squareArtworks} artworks; ${c.droppedNonSquareArtworks} dropped — banners, hero images, site furniture),
+   whose best long edge is > ${MIN_BEST_LONG_EDGE_PX} px (${c.droppedThumbnailOnlyArtworks} dropped as
+   thumbnail-only), and which have no file with genuinely transparent pixels
+   (${c.droppedTransparentCandidates} dropped — disc scans and press-photo cutouts, from the
+   ${c.transparencyExclusionFiles}-file survey in
+   \`research/v3/data/source-surveys/pixel_results.json\`).
+   → **${c.candidateArtworks} album-artwork candidates.**
+4. Build the near-duplicate graph over those candidates from
+   \`research/v3/data/embeddings/near-dup-census.json\`: an edge wherever **any** of the
+   three embedding arms put a pair at cosine ≥ ${NEAR_DUP_COSINE_THRESHOLD} (the union,
+   because leak prevention wants the conservative graph). Connected components via
+   union-find → **${c.candidateComponents} components**.
+5. Stratify components by the long edge of their largest member, and draw whole
+   components — as a random prefix of a seeded shuffle (mulberry32, seed
+   \`${document.header.seedHex}\`, Fisher-Yates) — until the running **artwork** count reaches
+   15% of the stratum. The seed is pinned in the script, so the selection is
+   reproducible from the code alone.
+
+## The duplicate structure
+
+${c.candidateArtworks} candidate artworks are only ${c.candidateComponents} distinct images:
+${c.artworksAbsorbedByDeduplication} artworks are near-duplicates of another candidate, and
+${c.multiArtworkComponents} components hold more than one artwork id.
+
+| component size (artworks) | components | artworks |
+|---|---|---|
+${histogramRows}
+
+The largest component by artworks spans ${c.largestComponentArtworks} artworks; the largest
+by files spans ${c.largestComponentFiles} files (separate maxima — no single component holds both).
+${namedComponents.length} components reach ${NAMED_COMPONENT_MIN_FILES}+ files — reissues and
+template artwork rather than incidental pairs; they are listed in \`holdout.json\` under
+\`header.namedComponents\`.
+
+**This is a lower bound.** The true duplicate rate continues below cosine
+${NEAR_DUP_COSINE_THRESHOLD}: measured against duplicates the filename ground truth
+already knows about, the census undercounts by ${CENSUS_UNDERCOUNT_PCT}% at this threshold.
+So component isolation removes the duplicates we can see, not all of them. End-of-campaign
+numbers still carry some residual optimism from near-duplicates below the bar.
+
+## Counts
+
+| stratum (component's largest long edge) | components | candidate artworks | held components | held artworks | share |
+|---|---|---|---|---|---|
+${strataRows}
+| **total** | **${c.candidateComponents}** | **${c.candidateArtworks}** | **${c.heldOutComponents}** | **${c.heldOutArtworks}** | **${(c.heldOutArtworkFraction * 100).toFixed(2)}%** |
+
+- **Nominal size:** ${c.heldOutArtworks} artworks / ${c.heldOutFiles} files.
+- **Effective size:** ${c.heldOutComponents} independent images
+  (${(c.heldOutComponentFraction * 100).toFixed(2)}% of the ${c.candidateComponents} components).
+  This is the number to use when reasoning about statistical power — the nominal count
+  double-counts duplicates.
+- The remaining ${c.candidateArtworks - c.heldOutArtworks} candidate artworks
+  (${c.candidateComponents - c.heldOutComponents} components) are the working set.
+
+**Zero** near-duplicate edges cross the holdout boundary. Asserted on every run, across
+all three arms.
+
+### One residual path — the quarantine list
+
+${c.nonCandidateQuarantineArtworks} artworks that *failed* the candidate filters
+(non-square, thumbnail-only, or real-transparency) are near-duplicates of a held-out
+artwork. They are in nobody's working set today, so nothing leaks. But if any of them is
+ever pulled into development work — a transparency edge-case batch, a banner-shaped
+pathology hunt — it becomes a leak. Their ids are in \`holdout.json\` under
+\`header.nearDuplicateCensus.nonCandidateQuarantine\`. Treat that list as held out too.
+
+### A note on the strata
+
+The stratum is a property of the **component**, taken from its largest member. Where a
+component mixes resolutions, its smaller members ride up into a higher band. The held-out
+artworks' *own* best-rendition bands are therefore distributed differently:
+
+| own best-rendition band | held-out artworks |
+|---|---|
+${ownBandRows}
+
+Both views are in \`holdout.json\` (\`stratum\` and \`ownLongEdgeBand\` per artwork). Use
+\`ownLongEdgeBand\` for any per-artwork resolution analysis; \`stratum\` only describes how
+the draw was balanced.
 
 ## How to use it
 
@@ -660,40 +1148,6 @@ const heldOut = new Set(frozen.artworks.map((a) => a.id))
 The \`sha256\` recorded for every held-out file lets a future run prove the bytes it
 measured are the bytes that were frozen.
 
-## How the set was built
-
-1. Enumerate all ${c.filesInCollection} files, group by the 32-hex filename stem
-   → ${c.artworksInCollection} artworks.
-2. Measure every file from its **header**. Filenames lie here: 719 AVIFs disagree with
-   their own \`_WxH\` suffix, and 503 artworks have a derived rendition that *claims*
-   in its filename to be larger than the un-suffixed original. Measured, none actually
-   is — but 502 artworks have a derived rendition tied with the original on exact pixel
-   area. The best rendition is the largest **measured** pixel area; on a tie the
-   un-suffixed original wins (it is the source, not a re-encode), then the
-   lexicographically smallest path. No held-out artwork ends up with a \`_WxH\` file as
-   its best rendition.
-3. Keep artworks whose best rendition is square within |w/h − 1| ≤ ${SQUARE_ASPECT_TOLERANCE}
-   (${c.squareArtworks} artworks; ${c.droppedNonSquareArtworks} dropped — banners, hero images, site furniture),
-   whose best long edge is > ${MIN_BEST_LONG_EDGE_PX} px (${c.droppedThumbnailOnlyArtworks} dropped as
-   thumbnail-only), and which have no file with genuinely transparent pixels
-   (${c.droppedTransparentCandidates} dropped — disc scans and press-photo cutouts, from the
-   ${c.transparencyExclusionFiles}-file survey in
-   \`research/v3/data/source-surveys/pixel_results.json\`).
-   → **${c.candidateArtworks} album-artwork candidates.**
-4. Stratify by the best rendition's long edge and draw ~15% per stratum with a seeded
-   PRNG (mulberry32, seed \`${document.header.seedHex}\`, Fisher-Yates). The seed is pinned in the
-   script, so the selection is reproducible from the code alone.
-
-## Counts
-
-| stratum (best long edge) | candidates | held out | share |
-|---|---|---|---|
-${rows}
-| **total** | **${c.candidateArtworks}** | **${c.heldOutArtworks}** | **${(c.heldOutFraction * 100).toFixed(2)}%** |
-
-That is ${c.heldOutFiles} files across ${c.heldOutArtworks} artworks. The remaining
-${c.candidateArtworks - c.heldOutArtworks} candidate artworks are the working set.
-
 ## Re-running
 
 \`\`\`
@@ -701,14 +1155,16 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freez
 NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freeze-holdout.ts --verify
 \`\`\`
 
-The script is idempotent — seed, freeze date and script version are pinned constants and
-all measurements come from the files themselves, so a re-run rewrites the same bytes.
-\`--verify\` re-derives the selection and fails if the committed files disagree.
-\`measurements.jsonl\` next to this file is the header-measurement cache (also the raw
-dimension survey of the whole collection); deleting it only makes the next run slower.
+The script is idempotent — seed, freeze date and script version are pinned constants,
+the census is pinned by sha256 in the header, and all measurements come from the files
+themselves, so a re-run rewrites the same bytes. \`--verify\` re-derives the selection and
+fails if the committed files disagree. \`measurements.jsonl\` next to this file is the
+header-measurement cache (also the raw dimension survey of the whole collection);
+deleting it only makes the next run slower.
 
-**Changing \`HOLDOUT_SEED\` re-rolls the holdout and voids every claim made against the
-old list.** Don't.
+**Changing \`HOLDOUT_SEED\`, the census, or the component rule re-rolls the holdout and
+voids every claim made against the old list.** That already happened once, deliberately,
+for the leak above. It must not happen again without the same authorisation.
 `
 }
 
