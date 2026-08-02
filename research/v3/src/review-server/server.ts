@@ -25,6 +25,7 @@ import {
 	GRADES,
 	PREFERENCES,
 	type AmendmentRecord,
+	type ArtworkIdentity,
 	type Author,
 	type BatchCompleteRecord,
 	type Grade,
@@ -37,7 +38,7 @@ import {
 	type VetoScope,
 } from "../warehouse/records.ts"
 import { append, readAll, resolve as resolveAmendments } from "../warehouse/warehouse.ts"
-import { BadRequest, blindSidePayload, materialize, parseBatch } from "./batch.ts"
+import { BadRequest, blindSidePayload, materialize, parseBatch, readArtworkIdentity } from "./batch.ts"
 import { newAnswerToken, newBlindingSalt, sha256 } from "./blinding.ts"
 import {
 	BRACKETING_ACTIVE_BATCH_ID,
@@ -47,9 +48,20 @@ import {
 } from "./bracketing.ts"
 
 export { BRACKETING_ACTIVE_BATCH_ID }
+import {
+	PREMISE_DISAMBIGUATION_BATCH_ID,
+	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
+	PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+	itemImagePath,
+	validateFixture,
+	type OracleValidationFixture,
+} from "./oracle-validation.ts"
+
+export { PREMISE_DISAMBIGUATION_BATCH_ID }
 import { JsonlAppender, readJsonl } from "./store.ts"
 import {
 	isBracketingBatch,
+	isOracleBatch,
 	SIDES,
 	type PushedBatch,
 	type Side,
@@ -57,6 +69,7 @@ import {
 	type StoredBatch,
 	type StoredBracketingBatch,
 	type StoredItem,
+	type StoredOracleBatch,
 	type VerdictInput,
 } from "./types.ts"
 
@@ -87,6 +100,19 @@ function itemKey(batchId: string, itemId: string): string {
 	return `${batchId} ${itemId}`
 }
 
+/**
+ * The answer key for an oracle-validation item.
+ *
+ * Not `itemKey(batchId, imageId)`, which is what a bracketing answer uses: there the pair id *is* the
+ * item id, here `imageId` is the artwork's real id and one artwork can be asked several questions in
+ * the same batch — that is the whole point of by-question passes. The key has to be derivable from
+ * a warehouse record alone (for the replay on start) and from a fixture item alone (for serving), so
+ * it is built from the two fields both of them carry.
+ */
+function oracleAnswerKey(batchId: string, questionKey: string, imageId: string): string {
+	return `${batchId} ${questionKey} ${imageId}`
+}
+
 type VerdictState = { record: VerdictRecord; recordId: string; revision: number }
 type VetoState = { record: VetoRecord; recordId: string; active: boolean }
 type AnswerState = { record: OracleLabelRecord; recordId: string; revision: number }
@@ -110,6 +136,7 @@ export class ReviewService {
 	readonly imageRoots: readonly string[]
 	readonly #batches = new Map<string, StoredBatch>()
 	readonly #bracketing = new Map<string, StoredBracketingBatch>()
+	readonly #oracle = new Map<string, StoredOracleBatch>()
 	readonly #verdicts = new Map<string, VerdictState>()
 	readonly #vetoes = new Map<string, VetoState>()
 	readonly #answers = new Map<string, AnswerState>()
@@ -125,6 +152,7 @@ export class ReviewService {
 	async load(): Promise<void> {
 		for (const stored of await readJsonl<StoredAnyBatch>(this.batchLog.path)) {
 			if (isBracketingBatch(stored)) this.#bracketing.set(stored.batchId, stored)
+			else if (isOracleBatch(stored)) this.#oracle.set(stored.batchId, stored)
 			else this.#batches.set(stored.batch.batchId, stored)
 		}
 		// Amendments are applied first: a retracted veto must come back as "not vetoed", and an
@@ -148,7 +176,9 @@ export class ReviewService {
 					active: !entry.retracted,
 				})
 			} else if (record.type === "oracle-label" && record.batch !== null) {
-				const key = itemKey(record.batch.id, record.imageId)
+				const key = this.#oracle.has(record.batch.id)
+					? oracleAnswerKey(record.batch.id, record.questionKey, record.imageId)
+					: itemKey(record.batch.id, record.imageId)
 				const previous = this.#answers.get(key)
 				const revision = (previous?.revision ?? 0) + 1
 				if (entry.retracted) {
@@ -167,7 +197,7 @@ export class ReviewService {
 	}
 
 	has(batchId: string): boolean {
-		return this.#batches.has(batchId) || this.#bracketing.has(batchId)
+		return this.#batches.has(batchId) || this.#bracketing.has(batchId) || this.#oracle.has(batchId)
 	}
 
 	#batch(batchId: string): StoredBatch {
@@ -228,6 +258,20 @@ export class ReviewService {
 				releasedAt: release?.ts ?? null,
 			}
 		})
+		const oracle = [...this.#oracle.values()].map((stored) => {
+			const release = this.#releases.get(stored.batchId)
+			const judged = stored.fixture.items.filter((item) => this.#answers.has(this.#oracleKey(stored, item))).length
+			return {
+				batchId: stored.batchId,
+				kind: "oracle-validation" as const,
+				purpose: stored.purpose,
+				pushedAt: stored.pushedAt,
+				itemCount: stored.fixture.items.length,
+				judgedCount: judged,
+				released: release !== undefined,
+				releasedAt: release?.ts ?? null,
+			}
+		})
 		const pairwise = [...this.#batches.values()].map((stored) => {
 			const release = this.#releases.get(stored.batch.batchId)
 			let judged = 0
@@ -246,7 +290,7 @@ export class ReviewService {
 				releasedAt: release?.ts ?? null,
 			}
 		})
-		return [...pairwise, ...bracketing]
+		return [...pairwise, ...bracketing, ...oracle]
 	}
 
 	/** The blinded payload. Never contains a variant id, a fingerprint, or the blinding key. */
@@ -506,8 +550,184 @@ export class ReviewService {
 		return { recordId: record.id, revision: state.revision }
 	}
 
+	/* --- oracle validation: by-question passes over artworks (REVIEW_UI.md §6) ---------------- */
+
+	/**
+	 * Push an oracle-validation round.
+	 *
+	 * Every item's file is read here and its identity materialized the same way a pairwise item's is
+	 * (full path, content hash, dimensions from the header). The fixture's own hash is checked
+	 * against the bytes on disk: an artwork that has changed is not the artwork the round was
+	 * designed around, and silently relabelling a different rendition would corrupt the join back to
+	 * the oracle's rows.
+	 */
+	async pushOracleValidation(
+		fixture: OracleValidationFixture,
+		fundedBy: readonly string[] = [],
+		batchId = fixture.batchId,
+	): Promise<{ batchId: string; itemCount: number }> {
+		if (fixture.fixtureVersion !== PREMISE_DISAMBIGUATION_FIXTURE_VERSION) {
+			throw new BadRequest(`Unknown oracle-validation fixture version ${fixture.fixtureVersion}`)
+		}
+		try {
+			validateFixture(fixture)
+		} catch (error) {
+			throw new BadRequest(`Invalid oracle-validation fixture: ${(error as Error).message}`)
+		}
+		if (this.has(batchId)) throw new Conflict(`Batch ${batchId} already exists`)
+
+		const artworks: Record<string, ArtworkIdentity> = {}
+		for (const item of fixture.items) {
+			const artwork = await readArtworkIdentity(itemImagePath(item), {
+				what: `item ${item.itemId}`,
+				collection: item.collection,
+				artworkId: item.artworkId,
+				imageRoots: this.imageRoots,
+			})
+			if (artwork.sha256 !== item.sha256) {
+				throw new BadRequest(
+					`item ${item.itemId}: ${item.imagePath} hashes ${artwork.sha256}, the fixture was built against ${item.sha256}`,
+				)
+			}
+			artworks[item.itemId] = artwork
+		}
+
+		const stored: StoredOracleBatch = {
+			kind: "oracle-validation",
+			batchId,
+			purpose: fixture.purpose,
+			fundedBy: [...fundedBy],
+			pushedAt: new Date().toISOString(),
+			fixture,
+			artworks,
+			answerTokens: Object.fromEntries(fixture.items.map((item) => [newAnswerToken(), item.itemId])),
+		}
+		await this.batchLog.append(stored)
+		this.#oracle.set(batchId, stored)
+		return { batchId, itemCount: fixture.items.length }
+	}
+
+	#oracleKey(stored: StoredOracleBatch, item: { questionKey: string; imageId: string }): string {
+		return oracleAnswerKey(stored.batchId, item.questionKey, item.imageId)
+	}
+
+	#oracleBatch(batchId: string): StoredOracleBatch {
+		const stored = this.#oracle.get(batchId)
+		if (stored === undefined) throw new NotFound(`Unknown oracle-validation batch ${batchId}`)
+		return stored
+	}
+
+	/**
+	 * What the browser may see: the questions with their answer vocabulary, and one image per item,
+	 * in by-question serve order.
+	 *
+	 * Deliberately absent — this batch exists to break a tie between the oracle and the accepted
+	 * palette, so both of their answers, and anything that implies one, must stay server-side: the
+	 * VLM's `ground_type` per variant, the published gradient boolean, the item's contradiction
+	 * bucket, the fixture's selection counts, the content hash (it is the join key to both), and the
+	 * real item id. The reviewer answers the question, not the disagreement.
+	 */
+	oracleValidationPayload(batchId: string) {
+		const stored = this.#oracleBatch(batchId)
+		const byId = new Map(stored.fixture.items.map((item) => [item.itemId, item]))
+		const tokenFor = new Map(Object.entries(stored.answerTokens).map(([token, itemId]) => [itemId, token]))
+		const release = this.#releases.get(batchId)
+		const counted = new Map<string, number>()
+		for (const item of stored.fixture.items) counted.set(item.questionKey, (counted.get(item.questionKey) ?? 0) + 1)
+		return {
+			batchId,
+			purpose: stored.purpose,
+			pushedAt: stored.pushedAt,
+			released: release !== undefined,
+			releasedAt: release?.ts ?? null,
+			// The wording comes from the fixture, so the page cannot drift from what the answers were
+			// recorded under — the same rule the bracketing round had to learn.
+			questions: stored.fixture.questions.map((question) => ({
+				key: question.key,
+				kind: question.kind,
+				question: question.question,
+				instruction: question.instruction,
+				answers: question.answers.map((answer) => ({
+					key: answer.key,
+					label: answer.label,
+					gloss: answer.gloss,
+					hotkey: answer.hotkey,
+				})),
+				itemCount: counted.get(question.key) ?? 0,
+			})),
+			items: stored.fixture.serveOrder.map((itemId) => {
+				const item = byId.get(itemId)!
+				const artwork = stored.artworks[itemId]
+				const answered = this.#answers.get(this.#oracleKey(stored, item))
+				return {
+					token: tokenFor.get(itemId)!,
+					questionKey: item.questionKey,
+					media: `/media/${encodeURIComponent(batchId)}/${encodeURIComponent(tokenFor.get(itemId)!)}`,
+					// Dimensions from the header, so the page can hold the image's aspect ratio while it loads.
+					width: artwork.rendition.width,
+					height: artwork.rendition.height,
+					answer: answered === undefined ? null : answered.record.answer,
+					revision: answered?.revision ?? 0,
+				}
+			}),
+		}
+	}
+
+	/**
+	 * Record one closed-vocabulary answer.
+	 *
+	 * These are `oracle-label` records with the oracle's own provenance columns — same
+	 * `labelSchemaVersion`, same `questionKey`, same answer vocabulary — because the whole point of
+	 * the mode is that a human row and a VLM row are comparable field by field. What distinguishes
+	 * them is `author.kind === "human"` and the batch purpose, never the schema.
+	 */
+	async putOracleAnswer(batchId: string, token: string, answer: string): Promise<{ recordId: string; revision: number }> {
+		const stored = this.#oracleBatch(batchId)
+		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
+		const itemId = stored.answerTokens[token]
+		if (itemId === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
+		const item = stored.fixture.items.find((entry) => entry.itemId === itemId)
+		if (item === undefined) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
+		const question = stored.fixture.questions.find((entry) => entry.key === item.questionKey)
+		if (question === undefined) throw new NotFound(`Unknown question ${item.questionKey} in batch ${batchId}`)
+		// A closed vocabulary is the instrument: an answer outside it is not a weaker answer, it is a
+		// different question, and it would silently break every join against the oracle's rows.
+		if (!question.answers.some((entry) => entry.key === answer)) {
+			throw new BadRequest(`answer must be one of ${question.answers.map((entry) => entry.key).join(" | ")}`)
+		}
+		const key = this.#oracleKey(stored, item)
+		const previous = this.#answers.get(key)
+		const record = append<OracleLabelRecord>(this.warehousePath, {
+			type: "oracle-label",
+			author: this.author,
+			imageId: item.imageId,
+			artwork: stored.artworks[itemId],
+			labelSchemaVersion: stored.fixture.labelSchemaVersion,
+			questionKey: question.key,
+			answer,
+			confidence: null,
+			ambiguityNote: null,
+			stratum: item.stratum,
+			batch: {
+				id: batchId,
+				purpose: stored.purpose,
+				itemCount: stored.fixture.items.length,
+				fundedBy: [...stored.fundedBy],
+			},
+		} satisfies RecordInput<OracleLabelRecord>)
+		const state = { record, recordId: record.id, revision: (previous?.revision ?? 0) + 1 }
+		this.#answers.set(key, state)
+		return { recordId: record.id, revision: state.revision }
+	}
+
 	/** Items still missing a judgement. Release is refused while this is non-empty. */
 	pending(batchId: string): string[] {
+		const oracle = this.#oracle.get(batchId)
+		if (oracle !== undefined) {
+			return oracle.fixture.items
+				.filter((item) => !this.#answers.has(this.#oracleKey(oracle, item)))
+				.map((item) => item.itemId)
+		}
 		const bracketing = this.#bracketing.get(batchId)
 		if (bracketing !== undefined) {
 			return bracketing.fixture.items
@@ -525,8 +745,9 @@ export class ReviewService {
 
 	/** Items judged without free text. Reported, never blocking — a forced comment is a corrupted channel. */
 	commentless(batchId: string): string[] {
-		// A bracketing round has no free-text channel: the question is y/n by design.
-		if (this.#bracketing.has(batchId)) return []
+		// A bracketing round has no free-text channel: the question is y/n by design. Neither has an
+		// oracle-validation round: §6's whole design target is the 5-second answer.
+		if (this.#bracketing.has(batchId) || this.#oracle.has(batchId)) return []
 		const stored = this.#batch(batchId)
 		return stored.items
 			.filter((item) => (this.#verdicts.get(itemKey(batchId, item.itemId))?.record.comment ?? "").trim().length === 0)
@@ -536,9 +757,15 @@ export class ReviewService {
 
 	/** The record ids this release stands on: the latest verdict per item, plus active vetoes. */
 	fundingRecordIds(batchId: string): string[] {
-		const bracketing = this.#bracketing.get(batchId)
-		if (bracketing !== undefined) {
-			return bracketing.fixture.items
+		const oracle = this.#oracle.get(batchId)
+		if (oracle !== undefined) {
+			return oracle.fixture.items
+				.map((item) => this.#answers.get(this.#oracleKey(oracle, item))?.recordId)
+				.filter((id): id is string => id !== undefined)
+		}
+		const bracketed = this.#bracketing.get(batchId)
+		if (bracketed !== undefined) {
+			return bracketed.fixture.items
 				.map((item) => this.#answers.get(itemKey(batchId, item.itemId))?.recordId)
 				.filter((id): id is string => id !== undefined)
 		}
@@ -556,10 +783,10 @@ export class ReviewService {
 
 	/** The explicit reviewer action that completes a batch. Appends `batch-complete`. */
 	async release(batchId: string, note = ""): Promise<BatchCompleteRecord> {
-		// One release flow for both kinds: the batch-complete record is what the watcher waits for,
+		// One release flow for every kind: the batch-complete record is what the watcher waits for,
 		// whatever the batch was made of.
-		const bracketing = this.#bracketing.get(batchId)
-		const stored = bracketing === undefined ? this.#batch(batchId) : null
+		const answersOnly = this.#bracketing.get(batchId) ?? this.#oracle.get(batchId)
+		const stored = answersOnly === undefined ? this.#batch(batchId) : null
 		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is already released`)
 		const pending = this.pending(batchId)
 		if (pending.length > 0) {
@@ -572,22 +799,32 @@ export class ReviewService {
 			type: "batch-complete",
 			author: this.author,
 			batchId,
-			purpose: bracketing?.purpose ?? stored!.batch.purpose,
-			itemCount: bracketing?.fixture.items.length ?? stored!.items.length,
-			fundedBy: [...(bracketing?.fundedBy ?? stored!.batch.fundedBy)],
-			releasedItemIds: (bracketing?.fixture.items ?? stored!.items).map((item) => item.itemId),
+			purpose: answersOnly?.purpose ?? stored!.batch.purpose,
+			itemCount: answersOnly?.fixture.items.length ?? stored!.items.length,
+			fundedBy: [...(answersOnly?.fundedBy ?? stored!.batch.fundedBy)],
+			releasedItemIds: (answersOnly?.fixture.items ?? stored!.items).map((item) => item.itemId),
 			note,
 		} satisfies RecordInput<BatchCompleteRecord>)
 		this.#releases.set(batchId, record)
 		return record
 	}
 
-	/** Artwork bytes, with a custody check: a changed file invalidates every verdict about it. */
-	async media(batchId: string, itemId: string): Promise<{ bytes: Buffer; contentType: string }> {
-		const { item } = this.#item(batchId, itemId)
-		const bytes = await readFile(item.artwork.path)
-		if (bytes.byteLength !== item.artwork.rendition.bytes || sha256(bytes) !== item.artwork.sha256) {
-			throw new Conflict(`Artwork custody changed for ${item.artwork.path}`)
+	/**
+	 * Artwork bytes, with a custody check: a changed file invalidates every judgement about it.
+	 *
+	 * One route for every mode. On an oracle-validation batch the second segment is the item's
+	 * opaque token, not its id — the browser never learns the id, so it cannot ask by one.
+	 */
+	async media(batchId: string, handle: string): Promise<{ bytes: Buffer; contentType: string }> {
+		const oracle = this.#oracle.get(batchId)
+		const artwork =
+			oracle === undefined
+				? this.#item(batchId, handle).item.artwork
+				: oracle.artworks[oracle.answerTokens[handle] ?? ""]
+		if (artwork === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
+		const bytes = await readFile(artwork.path)
+		if (bytes.byteLength !== artwork.rendition.bytes || sha256(bytes) !== artwork.sha256) {
+			throw new Conflict(`Artwork custody changed for ${artwork.path}`)
 		}
 		return { bytes, contentType: imageContentType(bytes) }
 	}
@@ -697,6 +934,9 @@ const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
 	["/bracketing", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
 	["/bracketing.html", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
 	["/bracketing.js", { file: "bracketing.js", type: "text/javascript; charset=utf-8" }],
+	["/oracle", { file: "oracle.html", type: "text/html; charset=utf-8" }],
+	["/oracle.html", { file: "oracle.html", type: "text/html; charset=utf-8" }],
+	["/oracle.js", { file: "oracle.js", type: "text/javascript; charset=utf-8" }],
 ])
 
 export type ReviewServerOptions = ReviewServiceOptions & Readonly<{ uiRoot?: string }>
@@ -761,6 +1001,39 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 					await service.putBracketingAnswer(
 						decodeURIComponent(answerMatch[1]),
 						decodeURIComponent(answerMatch[2]),
+						body.answer,
+					),
+				)
+				return
+			}
+
+			if (method === "POST" && path === "/api/oracle-validation") {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				const fixture =
+					body.fixture === undefined
+						? ((JSON.parse(await readFile(PREMISE_DISAMBIGUATION_FIXTURE_PATH, "utf8")) as OracleValidationFixture))
+						: (body.fixture as OracleValidationFixture)
+				const fundedBy = Array.isArray(body.fundedBy) ? (body.fundedBy as string[]) : []
+				respondJson(response, 201, await service.pushOracleValidation(fixture, fundedBy))
+				return
+			}
+
+			const oracleMatch = /^\/api\/oracle-validation\/([^/]+)$/u.exec(path)
+			if (method === "GET" && oracleMatch) {
+				respondJson(response, 200, service.oracleValidationPayload(decodeURIComponent(oracleMatch[1])))
+				return
+			}
+
+			const oracleAnswerMatch = /^\/api\/oracle-validation\/([^/]+)\/items\/([^/]+)\/answer$/u.exec(path)
+			if (oracleAnswerMatch && (method === "PUT" || method === "POST")) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				if (typeof body.answer !== "string") throw new BadRequest("answer must be one of the offered vocabulary tokens")
+				respondJson(
+					response,
+					200,
+					await service.putOracleAnswer(
+						decodeURIComponent(oracleAnswerMatch[1]),
+						decodeURIComponent(oracleAnswerMatch[2]),
 						body.answer,
 					),
 				)
@@ -895,6 +1168,25 @@ export async function seedBracketingRound(
 	return pushed.batchId
 }
 
+/** Push the premise-disambiguation round if it is not in the queue yet. Idempotent by batch id. */
+export async function seedOracleValidationRound(
+	service: ReviewService,
+	fixturePath = PREMISE_DISAMBIGUATION_FIXTURE_PATH,
+	batchId = PREMISE_DISAMBIGUATION_BATCH_ID,
+): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as OracleValidationFixture
+	if (service.has(batchId)) return null
+	const pushed = await service.pushOracleValidation(
+		fixture,
+		[
+			"V3_PLAN.md §5 step 1 — the premise test's contradictions have no human answer",
+			`selection: ${fixture.selection.rule}`,
+		],
+		batchId,
+	)
+	return pushed.batchId
+}
+
 async function main(): Promise<void> {
 	const { values } = parseArgs({
 		options: {
@@ -904,6 +1196,7 @@ async function main(): Promise<void> {
 			reviewer: { type: "string" },
 			"no-demo": { type: "boolean", default: false },
 			"no-bracketing": { type: "boolean", default: false },
+			"no-oracle": { type: "boolean", default: false },
 		},
 		strict: true,
 	})
@@ -922,6 +1215,10 @@ async function main(): Promise<void> {
 	if (values["no-bracketing"] !== true) {
 		const seeded = await seedBracketingRound(handle.service)
 		if (seeded !== null) process.stdout.write(`seeded bracketing round "${seeded}" — http://127.0.0.1:${values.port}/bracketing\n`)
+	}
+	if (values["no-oracle"] !== true) {
+		const seeded = await seedOracleValidationRound(handle.service)
+		if (seeded !== null) process.stdout.write(`seeded oracle-validation round "${seeded}" — http://127.0.0.1:${values.port}/oracle\n`)
 	}
 	const actual = await handle.listen(port)
 	process.stdout.write(`v3 review server: http://127.0.0.1:${actual}/\n`)

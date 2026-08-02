@@ -21,6 +21,7 @@ Then open <http://127.0.0.1:3010/>. It binds to `127.0.0.1` only.
 | `--reviewer <id>` | `flo` | `author.id` on every record |
 | `--no-demo` | off | do not seed the demo fixture batch |
 | `--no-bracketing` | off | do not seed the colour-bracketing round |
+| `--no-oracle` | off | do not seed the oracle-validation round |
 
 On start the server replays both files, so a restart is invisible: the queue, every verdict and
 every release come back. It can be killed at any moment; at most the record in flight is lost.
@@ -52,8 +53,11 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
 | `PUT` | `/api/batches/:batchId/items/:itemId/verdict` | submit or edit one verdict |
 | `PUT` | `/api/batches/:batchId/items/:itemId/veto` | veto the artwork (`{active:false}` withdraws it) |
 | `POST` | `/api/batches/:batchId/release` | release the batch |
-| `GET` | `/media/:batchId/:itemId` | the artwork bytes, custody-checked on every request |
-| `GET` | `/`, `/app.js`, `/styles.css` | the review page (read from disk per request — edit it while the server stands) |
+| `POST` | `/api/oracle-validation` | push an oracle-validation round (body `{fixture?, fundedBy?}`; omit `fixture` for the committed one) |
+| `GET` | `/api/oracle-validation/:batchId` | the by-question payload the browser renders |
+| `PUT` | `/api/oracle-validation/:batchId/items/:token/answer` | record one closed-vocabulary answer |
+| `GET` | `/media/:batchId/:itemId` | the artwork bytes, custody-checked on every request (an oracle-validation batch takes the item's **token** here, not its id) |
+| `GET` | `/`, `/bracketing`, `/oracle` (+ their `.js`, `/styles.css`) | the three pages (read from disk per request — edit them while the server stands) |
 
 ### Pushing a batch
 
@@ -240,12 +244,118 @@ threshold with a confidence interval, whether one threshold survives all four qu
 consistency, control correctness, and part 2's visibility threshold. Writes
 `research/v3/data/calibration/bracketing-round-1-analysis.json` and prints a plain-language summary.
 
+## The oracle-validation round
+
+The third mode, sharing the same queue, batch log, release flow and warehouse. It is the human
+labeling pass that validates the VLM oracle (`REVIEW_UI.md` §6).
+
+**For the reviewer:** <http://127.0.0.1:3010/oracle> — seeded automatically on start. One artwork,
+one question, one closed vocabulary, and the answer mapping on screen at all times. Keyboard only:
+**1**–**6** (whatever the fixture bound; `y`/`n` for a boolean question) · **u** undo one · **r**
+release when finished. It auto-advances, resumes wherever you stopped, and is meant for ten-minute
+chunks. 30 items.
+
+**By-question passes, not by-item forms.** An item is (artwork, question, vocabulary). Every artwork
+is asked question 1, then every artwork is asked question 2 — the serve order never interleaves them
+and a test asserts it cannot. One criterion stays in the reviewer's head for a whole pass, which is
+what makes §6's five-second answer possible; a form per artwork pays a context switch on every item.
+The first batch has one question, so the whole round is one pass.
+
+**The wording is served from the fixture**, never written into the page — the same rule the
+bracketing round had to learn the hard way. The question, the standing instruction and every answer's
+gloss travel with the answers.
+
+**Answers are `oracle-label` records with the oracle's own provenance columns.** Same
+`labelSchemaVersion` (`group-a.v1`, the VLM's `schema_version`), same `questionKey`, same answer
+vocabulary — that is the point, the rows are meant to be compared field for field. What separates the
+human rows from the VLM's is `author.kind === "human"` and the batch purpose, never the schema; the
+analysis filters on authorship and a test asserts a machine-authored row in the same batch is ignored.
+Each record carries full artwork identity (path + sha256 + header dimensions) and the stratum.
+
+Answers are keyed by `(batch, question, imageId)` rather than by item id, because one artwork can be
+asked several questions in the same batch. A fixture that asks one artwork the same question twice is
+refused.
+
+### Batch 1 — the premise-test disambiguation round
+
+`oracle-premise-disambiguation-1`, 30 artworks, one question: **`ground_type`**, in the exact
+vocabulary the VLM answered (`flat_field | shaded_field | multiple_distinct_fields | full_scene |
+pattern_or_texture | none_discernible`), with the option glosses copied from the oracle's own prompt
+so neither rater is answering a slightly different question. The standing instruction is *"A gradient
+means continuous shading within one physical surface — shadows on the same surface. The sky and the
+grass are different areas, not a gradient."*
+
+**Who is in it.** Every artwork the premise test bucketed `contradiction_hard` or
+`contradiction_soft` under **either** prompt variant, deduplicated across variants: 19 under A, 20
+under B, overlapping on 9 → 30 distinct artworks. Artworks whose own accepted palettes disagreed
+about the gradient boolean (5 of them) are excluded, matching the premise analysis's primary
+population — there is nothing to disambiguate when the published side does not agree with itself.
+Each artwork is served at its **eval-set rendition**, and the fixture records which
+(`rendition.source`, `sourceEntryId`, `longEdgePx`); the record's dimensions come from the file header
+at push time, and the push refuses if the bytes no longer hash to what the fixture was built against.
+
+**The fixture is committed and deterministic**:
+`research/v3/data/oracle-validation/premise-disambiguation-1.json`. Regenerate with:
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/oracle-validation.ts --write
+```
+
+It is derived from `research/v3/data/oracle-premise/premise-run-1.jsonl` and `eval-set.json`. The
+premise test's own maps (`GRADIENT_MAP`, `P6_BUCKETS`, `tier_of`) are mirrored into
+`oracle-validation.ts` as `[INHERITED]` constants rather than imported across a language boundary; a
+test re-derives every bucket from them and asserts the totals equal the ones published in
+`premise-run-1.agreement.json`, so the copy cannot drift from the original. **No code under
+`research/v3/oracle/premise/` is touched** — its outputs are read, never written.
+
+**What the browser is given: an image, a question, and an opaque token.** Not the oracle's answer,
+not the published gradient boolean, not the item's contradiction bucket, not the selection counts,
+not the content hash (it is the join key to both truth sources), and not the real item id. The
+fixture itself carries no per-item truth either: the analysis re-derives all of it from the source
+files by content hash. This batch decides the premise verdict; a payload that leaked either side
+would replace the measurement with a measurement of the reviewer's agreeableness.
+
+**Analysis** — runs on whatever has been answered so far, including nothing:
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/analyze-oracle-validation.ts [--warehouse <path>] [--batch <id>]
+```
+
+A three-way join by content hash: the reviewer's answers, the VLM's `ground_type` per prompt variant,
+and the accepted palette's gradient flag. Per artwork it reports the reviewer's `ground_type`, the
+binary that label maps to, who agreed (`oracle | flag | both | neither` counting both variants, plus
+the sharp `contradictionVerdict` on the contradicting variants only, where the two sides point
+opposite ways by construction). Totals include exact ground-type agreement per variant, binary
+agreement per variant and against the flag, and a breakdown by resolution tier. It writes
+`research/v3/data/oracle-validation/premise-disambiguation-1-analysis.json` and prints plain
+sentences plus one line per artwork — this number decides the oracle-premise verdict, so it is
+written to be read, not only parsed.
+
+Scoping is per batch id, for the reason the bracketing analysis learned: a second pass over the same
+artworks is different data and pooling them would move the number with nothing looking wrong.
+
+### Tests, including the page itself
+
+`review-server-oracle-validation.test.ts` covers the fixture, the serving, the records, resume,
+release and the analysis. `review-server-oracle-ui.test.ts` drives **the real `review-ui/oracle.js`**
+over HTTP against the real server by dispatching key events into the handler the page registered:
+every number key writes its own answer for the artwork that was on screen, `u` steps back and
+replaces, an unbound key does nothing, reopening resumes at the first unanswered item, and `r`
+releases. A mapping that is off by one is invisible in every server-side test and fatal to the data.
+The repository installs no browser driver (and `CONVENTIONS.md` forbids adding one), so the test
+provides the handful of DOM calls the page makes — element creation, text, children, one keydown
+listener, `location`, `fetch` — and everything above that line is genuine. Layout and CSS are not
+covered; those are judged by the reviewer opening the page.
+
 ## What works, and what is stubbed
 
 Working end to end: push, queue, blinded rendering with mock UI and named swatches, gradient
 display mapping, dual grades + preference + comment + confound, artwork veto and its withdrawal,
-free editing before release, release, custody-checked image serving, restart recovery, and the
-colour-bracketing round (generation, serving, keyboard answering, undo, release, analysis).
+free editing before release, release, custody-checked image serving, restart recovery, the
+colour-bracketing round and the oracle-validation round (generation, serving, keyboard answering,
+undo, release, analysis) — the last one driven end to end by real keystrokes in its own test.
 
 Not built in this skeleton:
 
@@ -255,8 +365,12 @@ Not built in this skeleton:
   a mistaken endorsement is withdrawn with an empty-patch amendment and `retract: true`.
 - **Post-release amendments** ("amend previous batch"). The server refuses post-release edits with
   409 today; the amendment machinery it would use already exists in the warehouse library.
-- **Calibration mode** (`mode: "absolute"`, REVIEW_UI.md §5) and **oracle validation mode**
-  (by-question passes, REVIEW_UI.md §6). Both are separate UIs over the same warehouse.
+- **Calibration mode** (`mode: "absolute"`, REVIEW_UI.md §5) — a separate UI over the same warehouse.
+- **Coverage-aware sequential stopping** for oracle validation (REVIEW_UI.md §6): per-stratum
+  stopping rules, space-spanning serve order and neighbourhood expansion all need the SigLIP
+  embeddings, which are another workstream's. The mode records `stratum` on every row so the rule can
+  be applied later; the first batch is a fixed, fully enumerated set (every contradiction), so it has
+  nothing to stop early on.
 - **Note-only records and tags.** The tagging agent reads comments afterwards and files derived
   records; nothing here does that yet.
 - **The completion watcher.** Meant to be a shell loop outside any model's context, tailing the

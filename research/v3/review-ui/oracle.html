@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>oracle validation</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="oracle-body">
+		<header class="oracle-bar oracle-head">
+			<div class="oracle-prompt">
+				<p id="question">loading…</p>
+				<p id="instruction" class="oracle-instruction"></p>
+			</div>
+			<p id="progress"></p>
+		</header>
+
+		<main id="stage" class="oracle-stage" aria-live="polite"></main>
+
+		<footer class="oracle-bar oracle-foot">
+			<ul id="mapping" class="oracle-mapping"></ul>
+			<p id="status">…</p>
+			<p class="oracle-keys"><b>u</b> undo one · <b>r</b> release when finished</p>
+		</footer>
+	</body>
+	<script type="module" src="/oracle.js"></script>
+</html>

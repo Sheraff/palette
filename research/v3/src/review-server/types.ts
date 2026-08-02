@@ -17,6 +17,7 @@ import type {
 	Preference,
 } from "../warehouse/records.ts"
 import type { BracketingFixture } from "./bracketing.ts"
+import type { OracleValidationFixture } from "./oracle-validation.ts"
 
 export {
 	BATCH_PURPOSES,
@@ -121,10 +122,38 @@ export type StoredBracketingBatch = Readonly<{
 	answerTokens: Readonly<Record<string, string>>
 }>
 
-export type StoredAnyBatch = StoredBatch | StoredBracketingBatch
+/**
+ * An oracle-validation round sharing the queue with the other kinds (REVIEW_UI.md §6).
+ *
+ * The items are (artwork, question, closed vocabulary) triples. The whole fixture is stored as-is,
+ * plus the artwork identity materialized at push time — the fixture carries the path and the hash
+ * the round was designed against, and the push is where the file on disk is checked against it.
+ */
+export type StoredOracleBatch = Readonly<{
+	kind: "oracle-validation"
+	batchId: string
+	purpose: BatchPurpose
+	fundedBy: readonly string[]
+	pushedAt: string
+	fixture: OracleValidationFixture
+	/** Materialized artwork identity per fixture item id: full path, content hash, header dimensions. */
+	artworks: Readonly<Record<string, ArtworkIdentity>>
+	/**
+	 * Opaque per-item tokens, token → fixture itemId. Same reason as the bracketing round's: the
+	 * browser needs *a* name to answer with, and it should not be one that carries meaning. Random
+	 * per batch, so the committed fixture cannot be mapped back to them either.
+	 */
+	answerTokens: Readonly<Record<string, string>>
+}>
+
+export type StoredAnyBatch = StoredBatch | StoredBracketingBatch | StoredOracleBatch
 
 export function isBracketingBatch(stored: StoredAnyBatch): stored is StoredBracketingBatch {
 	return (stored as StoredBracketingBatch).kind === "bracketing"
+}
+
+export function isOracleBatch(stored: StoredAnyBatch): stored is StoredOracleBatch {
+	return (stored as StoredOracleBatch).kind === "oracle-validation"
 }
 
 /** What the browser submits for one item. */

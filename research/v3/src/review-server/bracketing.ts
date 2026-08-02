@@ -32,7 +32,7 @@ import {
 	rgbToHex,
 	rgbToOkLab,
 } from "../contract/color.ts"
-import { APCA_RAW_IDENTICAL_CEILING, SAME_COLOR_BAR } from "../contract/constants.ts"
+import { APCA_RAW_IDENTICAL_CEILING } from "../contract/constants.ts"
 import type { OkLab, Rgb8 } from "../contract/types.ts"
 
 /* ------------------------------------------------------------------------------------------- */
@@ -41,6 +41,19 @@ import type { OkLab, Rgb8 } from "../contract/types.ts"
 
 /** Fixture format version, stamped into the file. Bump on any breaking change to the shapes. */
 export const BRACKETING_FIXTURE_VERSION = "color-bracketing-1"
+
+/**
+ * The prior this round was designed against: 0.012, translated from v2-3's CIE76 ΔE 3.3 by the
+ * exact-ΔE-ray scheme in `research/v3/src/contract/calibration/`.
+ *
+ * `[UNCALIBRATED]` — and deliberately **frozen here rather than imported**. It used to be
+ * `SAME_COLOR_BAR` in `../contract/constants.ts`; this round is what measured that constant, and the
+ * contract has since replaced it with the measured `SAME_COLOR_BAR_BY_REGION` /
+ * `POOLED_SAME_COLOR_BAR`. Pointing the generator at the measured value would regenerate a
+ * *different* set of pairs from the ones the reviewer actually answered, silently invalidating a
+ * released round. The design-time prior is part of this fixture's history, so it lives with it.
+ */
+export const BRACKETING_PRIOR_SAME_COLOR_BAR = 0.012
 
 /**
  * Master seed. One number drives every draw in the round, so the fixture is reproducible and a
@@ -388,7 +401,7 @@ function generatePart1(random: () => number): BracketingItem[] {
 
 		// Repeats come from the rungs nearest the prior, where the answer is genuinely uncertain.
 		const byNearness = [...ladderItems].sort(
-			(a, b) => Math.abs(Math.log(a.truth.okLabDistance / SAME_COLOR_BAR)) - Math.abs(Math.log(b.truth.okLabDistance / SAME_COLOR_BAR)),
+			(a, b) => Math.abs(Math.log(a.truth.okLabDistance / BRACKETING_PRIOR_SAME_COLOR_BAR)) - Math.abs(Math.log(b.truth.okLabDistance / BRACKETING_PRIOR_SAME_COLOR_BAR)),
 		)
 		for (let index = 0; index < PART1_REPEATS_PER_QUADRANT; index++) {
 			const source = byNearness[index]
@@ -519,7 +532,7 @@ export function generateBracketingFixture(batchId = "bracketing-round-1", seed =
 		criterion: BRACKETING_CRITERION,
 		prompts: PART_PROMPTS,
 		quadrantBoundaries: { lightness: QUADRANT_LIGHTNESS_BOUNDARY, chroma: QUADRANT_CHROMA_BOUNDARY },
-		prior: { sameColorBar: SAME_COLOR_BAR },
+		prior: { sameColorBar: BRACKETING_PRIOR_SAME_COLOR_BAR },
 		items,
 		serveOrder,
 	}

@@ -196,11 +196,64 @@ export function deriveCollection(imagePath: string): string {
 }
 
 /**
- * Read the artwork, hash it, read its real dimensions from the file header, hash both palettes,
- * blind the item, and name every displayed color.
+ * Read one artwork and build its identity: full path, content hash, and real dimensions from the
+ * file header.
  *
  * Dimensions come from `sharp .metadata()`, never from the filename — `music-artworks/` filenames
- * lie, 719 AVIFs disagree with their own header (CONVENTIONS.md).
+ * lie, 719 AVIFs disagree with their own header (CONVENTIONS.md). Shared by every mode that serves
+ * an artwork, so all of them identify one the same way.
+ *
+ * `what` names the caller's item in the error messages, which is what makes a bad push diagnosable.
+ */
+export async function readArtworkIdentity(
+	imagePath: string,
+	options: Readonly<{
+		what: string
+		collection?: string
+		artworkId?: string | null
+		imageRoots?: readonly string[]
+	}>,
+): Promise<ArtworkIdentity> {
+	const imageRoots = options.imageRoots ?? []
+	// Push is localhost-only and trusted, but there is no reason for a batch to reach outside the
+	// corpus: an allowlist keeps a malformed or hostile push from turning the server into a
+	// read-any-file proxy.
+	require_(
+		imageRoots.length === 0 || imageRoots.some((root) => isInside(root, imagePath)),
+		`${options.what}: imagePath must live under ${imageRoots.join(" or ")}`,
+	)
+	let bytes: Buffer
+	try {
+		bytes = await readFile(imagePath)
+	} catch (error) {
+		throw new BadRequest(`${options.what}: cannot read ${imagePath} (${(error as Error).message})`)
+	}
+	let metadata: sharp.Metadata
+	try {
+		metadata = await sharp(bytes).metadata()
+	} catch (error) {
+		throw new BadRequest(`${options.what}: ${imagePath} is not a decodable image (${(error as Error).message})`)
+	}
+	require_(
+		Number.isInteger(metadata.width) && Number.isInteger(metadata.height) && typeof metadata.format === "string",
+		`${options.what}: ${imagePath} has no usable image header`,
+	)
+	return {
+		path: imagePath,
+		sha256: sha256(bytes),
+		rendition: {
+			width: metadata.width as number,
+			height: metadata.height as number,
+			format: metadata.format as string,
+			bytes: bytes.byteLength,
+			collection: options.collection ?? deriveCollection(imagePath),
+			artworkId: options.artworkId ?? null,
+		},
+	}
+}
+
+/**
+ * Read every artwork, hash both palettes, blind each item, and name every displayed color.
  */
 export async function materialize(
 	batch: PushedBatch,
@@ -210,41 +263,12 @@ export async function materialize(
 ): Promise<StoredBatch> {
 	const items: StoredItem[] = []
 	for (const item of batch.items) {
-		// Push is localhost-only and trusted, but there is no reason for a batch to reach outside the
-		// corpus: an allowlist keeps a malformed or hostile push from turning the server into a
-		// read-any-file proxy.
-		require_(
-			imageRoots.length === 0 || imageRoots.some((root) => isInside(root, item.imagePath)),
-			`item ${item.itemId}: imagePath must live under ${imageRoots.join(" or ")}`,
-		)
-		let bytes: Buffer
-		try {
-			bytes = await readFile(item.imagePath)
-		} catch (error) {
-			throw new BadRequest(`item ${item.itemId}: cannot read ${item.imagePath} (${(error as Error).message})`)
-		}
-		let metadata: sharp.Metadata
-		try {
-			metadata = await sharp(bytes).metadata()
-		} catch (error) {
-			throw new BadRequest(`item ${item.itemId}: ${item.imagePath} is not a decodable image (${(error as Error).message})`)
-		}
-		require_(
-			Number.isInteger(metadata.width) && Number.isInteger(metadata.height) && typeof metadata.format === "string",
-			`item ${item.itemId}: ${item.imagePath} has no usable image header`,
-		)
-		const artwork: ArtworkIdentity = {
-			path: item.imagePath,
-			sha256: sha256(bytes),
-			rendition: {
-				width: metadata.width as number,
-				height: metadata.height as number,
-				format: metadata.format as string,
-				bytes: bytes.byteLength,
-				collection: item.collection ?? deriveCollection(item.imagePath),
-				artworkId: item.artworkId ?? null,
-			},
-		}
+		const artwork = await readArtworkIdentity(item.imagePath, {
+			what: `item ${item.itemId}`,
+			collection: item.collection,
+			artworkId: item.artworkId,
+			imageRoots,
+		})
 		const paletteHashes: [string, string] = [hashPalette(item.sides[0].palette), hashPalette(item.sides[1].palette)]
 		const hexes = item.sides.flatMap((side) => [
 			...ROLES.map((role) => side.palette[role]),

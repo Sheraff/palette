@@ -501,3 +501,118 @@ summary {
 	gap: 12px;
 	text-align: center;
 }
+
+/* ---- oracle validation (REVIEW_UI.md §6) ----
+ * A looking task: the artwork takes the whole stage and the chrome is two lines of white on black.
+ * The answer mapping is pinned to the bottom bar and never scrolls away — a recalled hotkey is a
+ * mis-pressed hotkey, and a closed vocabulary gives no way to spot that afterwards.
+ */
+
+.oracle-body {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-rows: auto minmax(0, 1fr) auto;
+	gap: 0;
+	overflow: hidden;
+}
+
+.oracle-bar {
+	border: 0;
+	padding: 10px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	font-size: 12px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.oracle-head {
+	align-items: flex-start;
+}
+
+.oracle-foot {
+	align-items: flex-end;
+	border-top: 1px solid var(--ink);
+}
+
+.oracle-prompt {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	min-width: 0;
+}
+
+/* The standing instruction. It stays on screen for every item of the pass: an answer only means
+ * something against the exact words it was answered under. */
+.oracle-instruction {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.oracle-keys {
+	text-transform: none;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+.oracle-stage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 3vw 2vh;
+	min-height: 0;
+}
+
+/* Large, because this is a looking task: fill the stage, never crop, never upscale past the file. */
+.oracle-art {
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	border: 1px solid var(--ink);
+}
+
+.oracle-mapping {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+	text-transform: none;
+	letter-spacing: 0.02em;
+}
+
+.oracle-map {
+	display: grid;
+	grid-template-columns: 1.5em minmax(0, 14em) minmax(0, 1fr);
+	gap: 10px;
+	align-items: baseline;
+}
+
+.oracle-map-label {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+}
+
+.oracle-map-gloss {
+	min-width: 0;
+}
+
+.oracle-done {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	text-align: center;
+}
