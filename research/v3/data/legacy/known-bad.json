@@ -1,0 +1,4503 @@
+{
+	"meta": {
+		"contract": "v2-3",
+		"generatedBy": "research/v3/src/legacy/distill-legacy-verdicts.ts",
+		"policy": "research/v3/PHASE_0_DECISIONS.md §5 — not a verdict store; a data input for mechanical checks only",
+		"source": {
+			"warehouse": "research/v2-3-eval/data/verdicts.jsonl",
+			"batches": "research/v2-3-eval/data/batches/",
+			"results": "research/v2-3-eval/data/results/"
+		},
+		"gradeVocabulary": [
+			"strong",
+			"acceptable",
+			"weak-fallback",
+			"unacceptable"
+		],
+		"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+		"matchSemantics": "Match on roleSignature within the v3 same-color bar (all four roles), never exact hex equality. The bar is UNCALIBRATED pending the reviewer bracketing round (PHASE_0_DECISIONS.md §3, §6); exact hexes are stored here so any bar can be applied after the fact. paletteSignature (which folds in gradient, midpoint and collapse) is for provenance and de-duplication only — do not gate on it, because the v2-3 gradient representation does not survive into the v3 contract.",
+		"counts": {
+			"recordsRead": 495,
+			"recordsWithEmbeddedPalettes": 478,
+			"recordsWithHexOnlyPalette": 4,
+			"recordsWithCorrections": 102,
+			"recordsCarryingNoPalette": 11,
+			"artworkResolvedFromBatch": 478,
+			"artworkResolvedFromResults": 11,
+			"artworkUnresolvable": 6,
+			"paletteInstancesRecovered": 830,
+			"paletteInstancesUnrecoverable": 0,
+			"labelsWithoutPalette": 0,
+			"contentHashVerified": 478,
+			"contentHashMismatch": 0,
+			"acceptableGradedInstances": 244,
+			"ungradedLosingSidesInBadRecords": 15,
+			"gradeCounts": {
+				"strong": 298,
+				"acceptable": 154,
+				"weak-fallback": 27,
+				"(none)": 13,
+				"unacceptable": 3
+			},
+			"comparisonCounts": {
+				"ab": 375,
+				"identical": 103,
+				"correction-only": 2,
+				"gallery-survey": 1,
+				"absolute": 4,
+				"note-only": 10
+			},
+			"correctionsKindCounts": {
+				"(none)": 120,
+				"endorsed-sample": 375
+			}
+		},
+		"fixture": "known-bad",
+		"consumedBy": "known-worse gate (PHASE_0_DECISIONS.md §3)",
+		"selection": "verdict in {weak-fallback, unacceptable}, applied to the labels listed in verdictApplies",
+		"gatePolicy": "Every entry here has a bad standing grade under the recency rule, and blocks integration when a v3 output matches it. The sole exception is contested: true — conflicting grades at an identical timestamp, which recency cannot decide; those warn rather than block. Palettes whose latest grade is strong or acceptable are absent from this file entirely, even if an earlier comparison graded them bad; they live in endorsements.json or acceptable.json instead.",
+		"recencyRule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block.",
+		"entryCount": 37,
+		"contestedEntryCount": 0,
+		"hardGateEntryCount": 37,
+		"resolvedByRecencyEntryCount": 3,
+		"droppedByRecency": [
+			{
+				"entryId": "9f587af857ee3314",
+				"imagePath": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+				"contentSha256": "2e4a6d27cee4b46cdba4a2e5f0a26f71d373b6284855d4a4500a0a08732dda28",
+				"roleSignature": "#927f92,#fcfef9,#23232d,#824892",
+				"droppedGrade": "weak-fallback",
+				"standingGrade": "acceptable",
+				"standingRecordedAt": "2026-08-01T12:55:27.394Z",
+				"nowLivesIn": "acceptable.json",
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T21:07:49.961Z",
+						"grade": "weak-fallback",
+						"batch": "review-9-fresh",
+						"label": "trunk-dca4",
+						"warehouseLine": 57
+					},
+					{
+						"recordedAt": "2026-07-30T21:39:33.083Z",
+						"grade": "strong",
+						"batch": "review-10-marks-midpoints",
+						"label": "trunk-a5",
+						"warehouseLine": 72
+					},
+					{
+						"recordedAt": "2026-08-01T12:55:27.394Z",
+						"grade": "acceptable",
+						"batch": "rw-batch-roleflip",
+						"label": "trunk",
+						"warehouseLine": 333
+					}
+				]
+			},
+			{
+				"entryId": "b90907e055c235e1",
+				"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+				"contentSha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"roleSignature": "#dbdce1,#fbfbfb,#1d1a21,#bebcbf",
+				"droppedGrade": "weak-fallback",
+				"standingGrade": "acceptable",
+				"standingRecordedAt": "2026-07-31T18:14:04.831Z",
+				"nowLivesIn": "acceptable.json",
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T15:40:22.992Z",
+						"grade": "weak-fallback",
+						"batch": "review-19-fresh",
+						"label": "trunk-k2",
+						"warehouseLine": 141
+					},
+					{
+						"recordedAt": "2026-07-31T17:37:05.671Z",
+						"grade": "acceptable",
+						"batch": "review-24-coverage",
+						"label": "x-coverage-incumbent",
+						"warehouseLine": 165
+					},
+					{
+						"recordedAt": "2026-07-31T18:14:04.831Z",
+						"grade": "acceptable",
+						"batch": "review-25-decisions",
+						"label": "w-batch-before",
+						"warehouseLine": 176
+					}
+				]
+			},
+			{
+				"entryId": "957f25232906a6f8",
+				"imagePath": "images/johns.jpg",
+				"contentSha256": "3c519a67314f999a0e52b005eef4b146a9e43ab70819ce00f6e197c62f01dac1",
+				"roleSignature": "#0d181c,#0d181c,#f7f8fa,#ff5a62",
+				"droppedGrade": "weak-fallback",
+				"standingGrade": "acceptable",
+				"standingRecordedAt": "2026-07-31T16:32:59.480Z",
+				"nowLivesIn": "acceptable.json",
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T19:41:07.014Z",
+						"grade": "weak-fallback",
+						"batch": "review-5-midpoints-alternatives",
+						"label": "trunk-d-c3",
+						"warehouseLine": 31
+					},
+					{
+						"recordedAt": "2026-07-31T16:32:59.480Z",
+						"grade": "acceptable",
+						"batch": "review-23-fg-movers",
+						"label": "o2-before",
+						"warehouseLine": 154
+					}
+				]
+			}
+		],
+		"identicalTimestampConflicts": [],
+		"unrecoverable": [
+			{
+				"warehouseLine": 170,
+				"batch": "conversational",
+				"image": "images/* (all 37 non-scrambled)",
+				"comparison": "gallery-survey",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo surveyed the full 37-artwork mock-UI gallery at trunk 979c245: 'Apart from johns missing the sailor blue surface, the entire set is very good.' A set-wide endorsement of the current dev-set output; the single exception (johns surface #335c94-class) is already batch-25 item 8."
+			},
+			{
+				"warehouseLine": 240,
+				"batch": "conversational",
+				"image": null,
+				"comparison": "note-only",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo, on the contextual-accent observation ('the machinery scores accent chroma and identity absolutely'): 'that's the kind of thing I meant when I said looking at the whole thing.' Framing: whole-palette relational properties are a FAMILY, not one-offs. Member 1: gamut coverage (palette vs artwork, batch-26, integrated). Member 2: contextual accent-ness (role vs rest-of-palette, candidate). The family question for any future arm: which other role qualities are relational rather than absolute (foreground separability? surface support?)."
+			},
+			{
+				"warehouseLine": 456,
+				"batch": "conversational",
+				"image": null,
+				"comparison": "note-only",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo, scoping the zero-contrast rule (follow-up to cs2-batch 07d4cb): a mid-gradient APCA zero-crossing is not the same thing as exact-zero contrast between foreground and surface/background. The crossing is a single thin line orthogonal to the gradient; the role pairs are flat colors occupying large areas, so zero holds everywhere. Consequence: the hue-conditional tolerance for sign flips (birdsofprey) applies only to thin gradient crossings, never to flat role-pair contrast. A flat fg/surface pair at ~zero APCA is invalid regardless of hue separation."
+			},
+			{
+				"warehouseLine": 457,
+				"batch": "conversational",
+				"image": "09/ab67616d0000b27300093ce40fe3f073dcd87ab5",
+				"comparison": "note-only",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo, on the endorsed teal #0e4355 / oxblood #6b141a gradient for 093ce4: endpoint extension will NOT pass through the needed dark midpoint. The midpoint is an extra color that must be added because the straight OKLab interpolation between the endpoints passes through a color that doesn't feel like part of the artwork. Two distinct mechanisms: (1) endpoint extension outward along the ramp; (2) detect when the straight line between endpoints crosses colors the artwork doesn't contain, and insert a source-supported midpoint to bend the ramp back onto artwork colors. (2) is the mechanism behind both this palette and the thrice-asked 09d178 rich gradient."
+			},
+			{
+				"warehouseLine": 458,
+				"batch": "conversational",
+				"image": null,
+				"comparison": "note-only",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo, walking back certainty on the zero-APCA rule: 'for the never 0 APCA exactly on background or surface i'm not 100% sure of this rule, I want to see what the consequences would be first.' Status: HYPOTHESIS under evaluation, not policy. The apca-zero-floor arm's census + blast radius is the evidence Flo will decide on; no integration without a reviewed batch showing consequences."
+			},
+			{
+				"warehouseLine": 471,
+				"batch": "conversational",
+				"image": null,
+				"comparison": "note-only",
+				"reason": "record carries no palette content (note-only / survey); nothing to distil",
+				"notes": "Flo, after looking at apca-1 (3005, direct fixes) and apca-2 (3006, cascade casualties) without submitting formal verdicts: 'the results are mostly not very good, but they do save some unusable palettes too (like ab67616d00001e0200099b3aaf316149051a4578 which gets basically a black-on-black palette), so for now it's hard to conclude'. Read: the defect class is real and worth fixing (099b3a is the exemplar save: fg #000000 on surface #151515), but the wide guard's repair quality is too low to endorse. Raises the weight of the leave-and-flag tier in the narrow repair: a mediocre forced repair should not beat an honest failure report."
+			}
+		]
+	},
+	"entries": [
+		{
+			"contract": "v2-3",
+			"entryId": "95fb78a3fd76c776",
+			"artwork": {
+				"imagePath": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+				"contentSha256": "2e4a6d27cee4b46cdba4a2e5f0a26f71d373b6284855d4a4500a0a08732dda28",
+				"byteCount": 204925,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#927f92",
+						"rgb": [
+							146,
+							127,
+							146
+						],
+						"name": "Violet Grey"
+					},
+					"surface": {
+						"hex": "#615362",
+						"rgb": [
+							97,
+							83,
+							98
+						],
+						"name": "Porphyry"
+					},
+					"foreground": {
+						"hex": "#fcfef9",
+						"rgb": [
+							252,
+							254,
+							249
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#23232d",
+						"rgb": [
+							35,
+							35,
+							45
+						],
+						"name": "Grackle"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#927f92,surface=#615362,foreground=#fcfef9,accent=#23232d|g0|m-|c00",
+			"roleSignature": "#927f92,#615362,#fcfef9,#23232d",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T21:07:49.961Z",
+						"grade": "weak-fallback",
+						"batch": "review-9-fresh",
+						"label": "v2-2",
+						"warehouseLine": 57
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-30T21:07:49.961Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 57,
+					"batch": "review-9-fresh",
+					"label": "v2-2",
+					"recordedAt": "2026-07-30T21:07:49.961Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "The accent of option B is good with the plum color. The foreground of option A is good, the snow white matches the artworks text "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d12d9309c3047429",
+			"artwork": {
+				"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+				"contentSha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+				"byteCount": 90209,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#070908",
+						"rgb": [
+							7,
+							9,
+							8
+						],
+						"name": "Blackout"
+					},
+					"surface": {
+						"hex": "#070908",
+						"rgb": [
+							7,
+							9,
+							8
+						],
+						"name": "Blackout"
+					},
+					"foreground": {
+						"hex": "#fdf9fa",
+						"rgb": [
+							253,
+							249,
+							250
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#055226",
+						"rgb": [
+							5,
+							82,
+							38
+						],
+						"name": "Woodland Green"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#070908,surface=#070908,foreground=#fdf9fa,accent=#055226|g0|m-|c10",
+			"roleSignature": "#070908,#070908,#fdf9fa,#055226",
+			"grades": [
+				"acceptable",
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": true,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T22:43:30.664Z",
+						"grade": "acceptable",
+						"batch": "calib-batch-1b",
+						"label": "calib-1",
+						"warehouseLine": 210
+					},
+					{
+						"recordedAt": "2026-07-31T22:43:30.664Z",
+						"grade": "acceptable",
+						"batch": "calib-batch-1b",
+						"label": "calib-1b",
+						"warehouseLine": 210
+					},
+					{
+						"recordedAt": "2026-08-01T10:21:24.115Z",
+						"grade": "weak-fallback",
+						"batch": "sr-batch",
+						"label": "sr-off",
+						"warehouseLine": 286
+					}
+				],
+				"distinctGrades": [
+					"acceptable",
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T10:21:24.115Z",
+				"resolvedByRecency": true,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 286,
+					"batch": "sr-batch",
+					"label": "sr-off",
+					"recordedAt": "2026-08-01T10:21:24.115Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "In this artwork Woodland Green is an important part of the identity. So not having it makes the palette weaker. \nthis artwork has big white text, which make Snow a very suitable color for the foreground.\nthis artwork has a wide black field, which makes Blackout a very suitable color for the background\nso a way to make this work is to have Woodland Green as the surface, which does fit the artwork's \"intent\", and then keep Cream / Bone as the accent"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "57cf5049a4d3df97",
+			"artwork": {
+				"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+				"contentSha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+				"byteCount": 90209,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#070908",
+						"rgb": [
+							7,
+							9,
+							8
+						],
+						"name": "Blackout"
+					},
+					"surface": {
+						"hex": "#070908",
+						"rgb": [
+							7,
+							9,
+							8
+						],
+						"name": "Blackout"
+					},
+					"foreground": {
+						"hex": "#fdf9fa",
+						"rgb": [
+							253,
+							249,
+							250
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#ede1bb",
+						"rgb": [
+							237,
+							225,
+							187
+						],
+						"name": "Cream"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#070908,surface=#070908,foreground=#fdf9fa,accent=#ede1bb|g0|m-|c10",
+			"roleSignature": "#070908,#070908,#fdf9fa,#ede1bb",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T10:21:24.115Z",
+						"grade": "weak-fallback",
+						"batch": "sr-batch",
+						"label": "sr-ask",
+						"warehouseLine": 286
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T10:21:24.115Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 286,
+					"batch": "sr-batch",
+					"label": "sr-ask",
+					"recordedAt": "2026-08-01T10:21:24.115Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "In this artwork Woodland Green is an important part of the identity. So not having it makes the palette weaker. \nthis artwork has big white text, which make Snow a very suitable color for the foreground.\nthis artwork has a wide black field, which makes Blackout a very suitable color for the background\nso a way to make this work is to have Woodland Green as the surface, which does fit the artwork's \"intent\", and then keep Cream / Bone as the accent"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "2ef8fde73a17ebb2",
+			"artwork": {
+				"imagePath": "02/ab67616d00001e02000200344e34f02b55e8292a.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/02/ab67616d00001e02000200344e34f02b55e8292a.jpg",
+				"contentSha256": "7b3b6cd56203653128e6295b1b46f431383d96edb70da955c654cbfba0104eda",
+				"byteCount": 25894,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000200344e34f02b55e8292a.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#172027",
+						"rgb": [
+							23,
+							32,
+							39
+						],
+						"name": "Jaguar"
+					},
+					"surface": {
+						"hex": "#172027",
+						"rgb": [
+							23,
+							32,
+							39
+						],
+						"name": "Jaguar"
+					},
+					"foreground": {
+						"hex": "#dcdcda",
+						"rgb": [
+							220,
+							220,
+							218
+						],
+						"name": "Fog"
+					},
+					"accent": {
+						"hex": "#e90c35",
+						"rgb": [
+							233,
+							12,
+							53
+						],
+						"name": "Ketchup"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#172027,surface=#172027,foreground=#dcdcda,accent=#e90c35|g0|m-|c10",
+			"roleSignature": "#172027,#172027,#dcdcda,#e90c35",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-off",
+						"warehouseLine": 408
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 408,
+					"batch": "cs-batch",
+					"label": "cs-off",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "cs-off",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "2be6a9dbe54252ce",
+			"artwork": {
+				"imagePath": "02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/02/ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg",
+				"contentSha256": "3531198dee6bd1a1dcd126007e4b49ef9f63a3af095a06bd11b2f442ba6d2535",
+				"byteCount": 71676,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b27300020d4f30cc8764aee3ec5c.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#ebd4ce",
+						"rgb": [
+							235,
+							212,
+							206
+						],
+						"name": "Ballet Tights"
+					},
+					"surface": {
+						"hex": "#1f1e1a",
+						"rgb": [
+							31,
+							30,
+							26
+						],
+						"name": "Umbra"
+					},
+					"foreground": {
+						"hex": "#50595e",
+						"rgb": [
+							80,
+							89,
+							94
+						],
+						"name": "Iron"
+					},
+					"accent": {
+						"hex": "#73503c",
+						"rgb": [
+							115,
+							80,
+							60
+						],
+						"name": "Coffee"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#e3cfce",
+					"rgb": [
+						227,
+						207,
+						206
+					],
+					"name": "Pearl"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#ebd4ce,surface=#1f1e1a,foreground=#50595e,accent=#73503c|g1|m#e3cfce|c00",
+			"roleSignature": "#ebd4ce,#1f1e1a,#50595e,#73503c",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T21:40:08.495Z",
+						"grade": "weak-fallback",
+						"batch": "apcaN-batch",
+						"label": "apcaN-on",
+						"warehouseLine": 489
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T21:40:08.495Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 489,
+					"batch": "apcaN-batch",
+					"label": "apcaN-on",
+					"recordedAt": "2026-08-01T21:40:08.495Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "apcaN-on",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d88586c84ff5eaf1",
+			"artwork": {
+				"imagePath": "02/ab67616d0000b273000213609eeb6cc1696b2da4.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/02/ab67616d0000b273000213609eeb6cc1696b2da4.jpg",
+				"contentSha256": "cd9c1b085e7c126f7abc05141813914484bb34e5db506ebbe6475f60ae70481c",
+				"byteCount": 153362,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000213609eeb6cc1696b2da4.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#c26a54",
+						"rgb": [
+							194,
+							106,
+							84
+						],
+						"name": "Copper Rose"
+					},
+					"surface": {
+						"hex": "#aa5246",
+						"rgb": [
+							170,
+							82,
+							70
+						],
+						"name": "RGBBQ"
+					},
+					"foreground": {
+						"hex": "#fbfef7",
+						"rgb": [
+							251,
+							254,
+							247
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#fcd500",
+						"rgb": [
+							252,
+							213,
+							0
+						],
+						"name": "Taxi Yellow"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#c26a54,surface=#aa5246,foreground=#fbfef7,accent=#fcd500|g1|m-|c00",
+			"roleSignature": "#c26a54,#aa5246,#fbfef7,#fcd500",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T19:36:53.048Z",
+						"grade": "weak-fallback",
+						"batch": "cs2-batch",
+						"label": "cs2-off",
+						"warehouseLine": 446
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T19:36:53.048Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 446,
+					"batch": "cs2-batch",
+					"label": "cs2-off",
+					"recordedAt": "2026-08-01T19:36:53.048Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "cs2-off",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d497968beed67cf1",
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"contentSha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+				"byteCount": 212458,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#b6810d",
+						"rgb": [
+							182,
+							129,
+							13
+						],
+						"name": "Ochre"
+					},
+					"surface": {
+						"hex": "#332616",
+						"rgb": [
+							51,
+							38,
+							22
+						],
+						"name": "Dark Taupe"
+					},
+					"foreground": {
+						"hex": "#030303",
+						"rgb": [
+							3,
+							3,
+							3
+						],
+						"name": "Jet Black"
+					},
+					"accent": {
+						"hex": "#1e1c1f",
+						"rgb": [
+							30,
+							28,
+							31
+						],
+						"name": "Umbra"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#ad6d00",
+					"rgb": [
+						173,
+						109,
+						0
+					],
+					"name": "Dark Goldenrod"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#b6810d,surface=#332616,foreground=#030303,accent=#1e1c1f|g1|m#ad6d00|c00",
+			"roleSignature": "#b6810d,#332616,#030303,#1e1c1f",
+			"grades": [
+				"unacceptable"
+			],
+			"worstGrade": "unacceptable",
+			"standingGrade": "unacceptable",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T10:48:27.949Z",
+						"grade": "unacceptable",
+						"batch": "batch-35",
+						"label": "gr-c",
+						"warehouseLine": 301
+					}
+				],
+				"distinctGrades": [
+					"unacceptable"
+				],
+				"latestGrade": "unacceptable",
+				"latestRecordedAt": "2026-08-01T10:48:27.949Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 301,
+					"batch": "batch-35",
+					"label": "gr-c",
+					"recordedAt": "2026-08-01T10:48:27.949Z",
+					"comparison": "ab",
+					"verdict": "unacceptable",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "a53a40e01e9422b7",
+			"artwork": {
+				"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+				"contentSha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+				"byteCount": 212458,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#fcc02c",
+						"rgb": [
+							252,
+							192,
+							44
+						],
+						"name": "Sunflower"
+					},
+					"surface": {
+						"hex": "#332616",
+						"rgb": [
+							51,
+							38,
+							22
+						],
+						"name": "Dark Taupe"
+					},
+					"foreground": {
+						"hex": "#030303",
+						"rgb": [
+							3,
+							3,
+							3
+						],
+						"name": "Jet Black"
+					},
+					"accent": {
+						"hex": "#1e1c1f",
+						"rgb": [
+							30,
+							28,
+							31
+						],
+						"name": "Umbra"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#ad6d00",
+					"rgb": [
+						173,
+						109,
+						0
+					],
+					"name": "Dark Goldenrod"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#fcc02c,surface=#332616,foreground=#030303,accent=#1e1c1f|g1|m#ad6d00|c00",
+			"roleSignature": "#fcc02c,#332616,#030303,#1e1c1f",
+			"grades": [
+				"unacceptable"
+			],
+			"worstGrade": "unacceptable",
+			"standingGrade": "unacceptable",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T10:48:27.949Z",
+						"grade": "unacceptable",
+						"batch": "batch-35",
+						"label": "gr-a",
+						"warehouseLine": 301
+					}
+				],
+				"distinctGrades": [
+					"unacceptable"
+				],
+				"latestGrade": "unacceptable",
+				"latestRecordedAt": "2026-08-01T10:48:27.949Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 301,
+					"batch": "batch-35",
+					"label": "gr-a",
+					"recordedAt": "2026-08-01T10:48:27.949Z",
+					"comparison": "ab",
+					"verdict": "unacceptable",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "5fad2e9bd8d8d322",
+			"artwork": {
+				"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+				"contentSha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+				"byteCount": 169979,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#fcfaed",
+						"rgb": [
+							252,
+							250,
+							237
+						],
+						"name": "Snow"
+					},
+					"surface": {
+						"hex": "#f0b691",
+						"rgb": [
+							240,
+							182,
+							145
+						],
+						"name": "Peach"
+					},
+					"foreground": {
+						"hex": "#364d55",
+						"rgb": [
+							54,
+							77,
+							85
+						],
+						"name": "Harbour Slate"
+					},
+					"accent": {
+						"hex": "#f8e541",
+						"rgb": [
+							248,
+							229,
+							65
+						],
+						"name": "Dandelion"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#fcfaed,surface=#f0b691,foreground=#364d55,accent=#f8e541|g0|m-|c00",
+			"roleSignature": "#fcfaed,#f0b691,#364d55,#f8e541",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T12:05:46.853Z",
+						"grade": "weak-fallback",
+						"batch": "batch-38",
+						"label": "gc2-flat",
+						"warehouseLine": 315
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T12:05:46.853Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 315,
+					"batch": "batch-38",
+					"label": "gc2-flat",
+					"recordedAt": "2026-08-01T12:05:46.853Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "i wouldn't have expected Snow to be the background when Peach seems to be the dominating field color in the artwork. These palettes feel wrong. An incorrect background makes it very hard to judge the rest of the palette"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "e8998963e0ccfe11",
+			"artwork": {
+				"imagePath": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+				"contentSha256": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+				"byteCount": 169979,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#fcfaed",
+						"rgb": [
+							252,
+							250,
+							237
+						],
+						"name": "Snow"
+					},
+					"surface": {
+						"hex": "#f0b691",
+						"rgb": [
+							240,
+							182,
+							145
+						],
+						"name": "Peach"
+					},
+					"foreground": {
+						"hex": "#364d55",
+						"rgb": [
+							54,
+							77,
+							85
+						],
+						"name": "Harbour Slate"
+					},
+					"accent": {
+						"hex": "#f8e541",
+						"rgb": [
+							248,
+							229,
+							65
+						],
+						"name": "Dandelion"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#fcfaed,surface=#f0b691,foreground=#364d55,accent=#f8e541|g1|m-|c00",
+			"roleSignature": "#fcfaed,#f0b691,#364d55,#f8e541",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T12:05:46.853Z",
+						"grade": "weak-fallback",
+						"batch": "batch-38",
+						"label": "gc2-grad",
+						"warehouseLine": 315
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T12:05:46.853Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 315,
+					"batch": "batch-38",
+					"label": "gc2-grad",
+					"recordedAt": "2026-08-01T12:05:46.853Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "i wouldn't have expected Snow to be the background when Peach seems to be the dominating field color in the artwork. These palettes feel wrong. An incorrect background makes it very hard to judge the rest of the palette"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "bbb71429c18b790d",
+			"artwork": {
+				"imagePath": "03/ab67616d0000b27300039a97d604f239674f8d7b.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/03/ab67616d0000b27300039a97d604f239674f8d7b.jpg",
+				"contentSha256": "f01959bf3b2cb44385a3fd311d99d635ebe978b538dc2e9cb6ec4a41d0558700",
+				"byteCount": 154428,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b27300039a97d604f239674f8d7b.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#060702",
+						"rgb": [
+							6,
+							7,
+							2
+						],
+						"name": "Black Olive"
+					},
+					"surface": {
+						"hex": "#7bd45c",
+						"rgb": [
+							123,
+							212,
+							92
+						],
+						"name": "Leaf Bud"
+					},
+					"foreground": {
+						"hex": "#f8fdf7",
+						"rgb": [
+							248,
+							253,
+							247
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#e30629",
+						"rgb": [
+							227,
+							6,
+							41
+						],
+						"name": "Ketchup"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#060702,surface=#7bd45c,foreground=#f8fdf7,accent=#e30629|g0|m-|c00",
+			"roleSignature": "#060702,#7bd45c,#f8fdf7,#e30629",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T13:33:05.309Z",
+						"grade": "weak-fallback",
+						"batch": "batch-bf-1",
+						"label": "bf-on",
+						"warehouseLine": 373
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T13:33:05.309Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 373,
+					"batch": "batch-bf-1",
+					"label": "bf-on",
+					"recordedAt": "2026-08-01T13:33:05.309Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "bf-on",
+					"tags": [],
+					"notes": "neither white not black background really works, i think Leaf Bud would be more appropriate. At least Black Olive matches the shadows of the people in the picture, which *kinda* works as a background."
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "3fd3893e7ab03c8c",
+			"artwork": {
+				"imagePath": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+				"absolutePath": "/Users/Flo/GitHub/palette/05/ab67616d0000b2730005230fae1822525e5a5ff6",
+				"contentSha256": "64b30b7fb70fd2fa77beb55129174da294dbdeb223a6cb17a92b6cb09754ae62",
+				"byteCount": 67824,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730005230fae1822525e5a5ff6"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#eff3f6",
+						"rgb": [
+							239,
+							243,
+							246
+						],
+						"name": "Frost"
+					},
+					"surface": {
+						"hex": "#d6d7dc",
+						"rgb": [
+							214,
+							215,
+							220
+						],
+						"name": "Fog"
+					},
+					"foreground": {
+						"hex": "#121117",
+						"rgb": [
+							18,
+							17,
+							23
+						],
+						"name": "Darkroom"
+					},
+					"accent": {
+						"hex": "#86858b",
+						"rgb": [
+							134,
+							133,
+							139
+						],
+						"name": "Pebble"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#eff3f6,surface=#d6d7dc,foreground=#121117,accent=#86858b|g1|m-|c00",
+			"roleSignature": "#eff3f6,#d6d7dc,#121117,#86858b",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T20:09:22.588Z",
+						"grade": "weak-fallback",
+						"batch": "review-6-fresh",
+						"label": "v2-2",
+						"warehouseLine": 39
+					},
+					{
+						"recordedAt": "2026-07-30T20:09:22.588Z",
+						"grade": "weak-fallback",
+						"batch": "review-6-fresh",
+						"label": "trunk-d-c3",
+						"warehouseLine": 39
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-30T20:09:22.588Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 39,
+					"batch": "review-6-fresh",
+					"label": "v2-2",
+					"recordedAt": "2026-07-30T20:09:22.588Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [
+						"incomplete-identity"
+					],
+					"notes": "There are many colors in this artwork and they all seem to get picked up by the roll corrections swatches so they could be used as the accent "
+				},
+				{
+					"warehouseLine": 39,
+					"batch": "review-6-fresh",
+					"label": "trunk-d-c3",
+					"recordedAt": "2026-07-30T20:09:22.588Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [
+						"incomplete-identity"
+					],
+					"notes": "There are many colors in this artwork and they all seem to get picked up by the roll corrections swatches so they could be used as the accent "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "3032108863483ea5",
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007447dce968ba3a4066044",
+				"absolutePath": "/Users/Flo/GitHub/palette/07/ab67616d0000b2730007447dce968ba3a4066044",
+				"contentSha256": "dcae765bccc77600c0a4bebfce054444127a1b2b6432c88fcb1011b0126a2bc0",
+				"byteCount": 90747,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730007447dce968ba3a4066044"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#131313",
+						"rgb": [
+							19,
+							19,
+							19
+						],
+						"name": "Iron Black"
+					},
+					"surface": {
+						"hex": "#131313",
+						"rgb": [
+							19,
+							19,
+							19
+						],
+						"name": "Iron Black"
+					},
+					"foreground": {
+						"hex": "#ececee",
+						"rgb": [
+							236,
+							236,
+							238
+						],
+						"name": "Linen"
+					},
+					"accent": {
+						"hex": "#404066",
+						"rgb": [
+							64,
+							64,
+							102
+						],
+						"name": "Quarry"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#131313,surface=#131313,foreground=#ececee,accent=#404066|g0|m-|c10",
+			"roleSignature": "#131313,#131313,#ececee,#404066",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T23:33:30.435Z",
+						"grade": "weak-fallback",
+						"batch": "calib-batch-2",
+						"label": "calib-2",
+						"warehouseLine": 231
+					},
+					{
+						"recordedAt": "2026-07-31T23:33:30.435Z",
+						"grade": "weak-fallback",
+						"batch": "calib-batch-2",
+						"label": "calib-2b",
+						"warehouseLine": 231
+					},
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-off",
+						"warehouseLine": 403
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 231,
+					"batch": "calib-batch-2",
+					"label": "calib-2",
+					"recordedAt": "2026-07-31T23:33:30.435Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "this palette is dull compared to the artwork. We could have a dark muted purple surface (maybe even a gradient with the background) and then a rich dark bordeaux accent. Those changes would match the artwork much more"
+				},
+				{
+					"warehouseLine": 231,
+					"batch": "calib-batch-2",
+					"label": "calib-2b",
+					"recordedAt": "2026-07-31T23:33:30.435Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "this palette is dull compared to the artwork. We could have a dark muted purple surface (maybe even a gradient with the background) and then a rich dark bordeaux accent. Those changes would match the artwork much more"
+				},
+				{
+					"warehouseLine": 403,
+					"batch": "cs-batch",
+					"label": "cs-off",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "5a7973048a213686",
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007447dce968ba3a4066044",
+				"absolutePath": "/Users/Flo/GitHub/palette/07/ab67616d0000b2730007447dce968ba3a4066044",
+				"contentSha256": "dcae765bccc77600c0a4bebfce054444127a1b2b6432c88fcb1011b0126a2bc0",
+				"byteCount": 90747,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730007447dce968ba3a4066044"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#131313",
+						"rgb": [
+							19,
+							19,
+							19
+						],
+						"name": "Iron Black"
+					},
+					"surface": {
+						"hex": "#872b74",
+						"rgb": [
+							135,
+							43,
+							116
+						],
+						"name": "Byzantium"
+					},
+					"foreground": {
+						"hex": "#ececee",
+						"rgb": [
+							236,
+							236,
+							238
+						],
+						"name": "Linen"
+					},
+					"accent": {
+						"hex": "#404066",
+						"rgb": [
+							64,
+							64,
+							102
+						],
+						"name": "Quarry"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#131313,surface=#872b74,foreground=#ececee,accent=#404066|g0|m-|c00",
+			"roleSignature": "#131313,#872b74,#ececee,#404066",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-on",
+						"warehouseLine": 403
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 403,
+					"batch": "cs-batch",
+					"label": "cs-on",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "f7b1bf0e8443dea8",
+			"artwork": {
+				"imagePath": "07/ab67616d0000b27300079f9ad0372526979bfb09",
+				"absolutePath": "/Users/Flo/GitHub/palette/07/ab67616d0000b27300079f9ad0372526979bfb09",
+				"contentSha256": "977c144f0bf9a43b199fe722fecf14232c16791032f862f81c24b4a3fadbf7a4",
+				"byteCount": 82575,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b27300079f9ad0372526979bfb09"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#242328",
+						"rgb": [
+							36,
+							35,
+							40
+						],
+						"name": "Lead"
+					},
+					"surface": {
+						"hex": "#6b3e45",
+						"rgb": [
+							107,
+							62,
+							69
+						],
+						"name": "Cherrywood"
+					},
+					"foreground": {
+						"hex": "#b98285",
+						"rgb": [
+							185,
+							130,
+							133
+						],
+						"name": "Rosa Chinensis"
+					},
+					"accent": {
+						"hex": "#ededed",
+						"rgb": [
+							237,
+							237,
+							237
+						],
+						"name": "Linen"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#242328,surface=#6b3e45,foreground=#b98285,accent=#ededed|g1|m-|c00",
+			"roleSignature": "#242328,#6b3e45,#b98285,#ededed",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T12:05:46.853Z",
+						"grade": "weak-fallback",
+						"batch": "batch-38",
+						"label": "gc2-grad",
+						"warehouseLine": 316
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T12:05:46.853Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 316,
+					"batch": "batch-38",
+					"label": "gc2-grad",
+					"recordedAt": "2026-08-01T12:05:46.853Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "gc2-grad",
+					"tags": [],
+					"notes": "I don't really see where this Cherrywood surface comes from. I do think this artwork wants a gradient field, but probably surface should be closer to Beaujolais to match the artwork."
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "a7aec09212249995",
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"absolutePath": "/Users/Flo/GitHub/palette/07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"contentSha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+				"byteCount": 131560,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#5d856b",
+						"rgb": [
+							93,
+							133,
+							107
+						],
+						"name": "Kashmir"
+					},
+					"surface": {
+						"hex": "#99bece",
+						"rgb": [
+							153,
+							190,
+							206
+						],
+						"name": "Ghost"
+					},
+					"foreground": {
+						"hex": "#242426",
+						"rgb": [
+							36,
+							36,
+							38
+						],
+						"name": "Lead"
+					},
+					"accent": {
+						"hex": "#fbfbfb",
+						"rgb": [
+							251,
+							251,
+							251
+						],
+						"name": "Snow"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#86b1c1",
+					"rgb": [
+						134,
+						177,
+						193
+					],
+					"name": "Ether"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#5d856b,surface=#99bece,foreground=#242426,accent=#fbfbfb|g1|m#86b1c1|c00",
+			"roleSignature": "#5d856b,#99bece,#242426,#fbfbfb",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T07:17:39.280Z",
+						"grade": "weak-fallback",
+						"batch": "review-13-fresh",
+						"label": "trunk-h",
+						"warehouseLine": 88
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T07:17:39.280Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 88,
+					"batch": "review-13-fresh",
+					"label": "trunk-h",
+					"recordedAt": "2026-07-31T07:17:39.280Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "There are some issues here. I don't know how important they are, but first of all, the foreground should be white. This is what the main text of the artwork is, and there is a full white drawing in front, so it really feels like the foreground should be white. Then the accent should be marmalade orange, this is really what the artwork is representing with the album title being orange. And then I'm not sure we should have a gradient between cashmere green and ghost blue. In the artwork, this is the sky and the grass, and visually it doesn't feel like there's a gradient between both because they are just different areas, different surfaces "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "e0d0335aa44e858a",
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"absolutePath": "/Users/Flo/GitHub/palette/07/ab67616d0000b2730007cc8b341c11227aa7b461",
+				"contentSha256": "53b7d30a76fea0b17048da8e944d868cefe3ad544aef60275c95f9b99e7a646f",
+				"byteCount": 131560,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730007cc8b341c11227aa7b461"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#5d856b",
+						"rgb": [
+							93,
+							133,
+							107
+						],
+						"name": "Kashmir"
+					},
+					"surface": {
+						"hex": "#99bece",
+						"rgb": [
+							153,
+							190,
+							206
+						],
+						"name": "Ghost"
+					},
+					"foreground": {
+						"hex": "#242426",
+						"rgb": [
+							36,
+							36,
+							38
+						],
+						"name": "Lead"
+					},
+					"accent": {
+						"hex": "#fbfbfb",
+						"rgb": [
+							251,
+							251,
+							251
+						],
+						"name": "Snow"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#5d856b,surface=#99bece,foreground=#242426,accent=#fbfbfb|g1|m-|c00",
+			"roleSignature": "#5d856b,#99bece,#242426,#fbfbfb",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T07:17:39.280Z",
+						"grade": "weak-fallback",
+						"batch": "review-13-fresh",
+						"label": "v2-2",
+						"warehouseLine": 88
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T07:17:39.280Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 88,
+					"batch": "review-13-fresh",
+					"label": "v2-2",
+					"recordedAt": "2026-07-31T07:17:39.280Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "There are some issues here. I don't know how important they are, but first of all, the foreground should be white. This is what the main text of the artwork is, and there is a full white drawing in front, so it really feels like the foreground should be white. Then the accent should be marmalade orange, this is really what the artwork is representing with the album title being orange. And then I'm not sure we should have a gradient between cashmere green and ghost blue. In the artwork, this is the sky and the grass, and visually it doesn't feel like there's a gradient between both because they are just different areas, different surfaces "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "e62aa0aa9896edb7",
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008601958194a047b8e75a3",
+				"absolutePath": "/Users/Flo/GitHub/palette/08/ab67616d0000b2730008601958194a047b8e75a3",
+				"contentSha256": "d3b22b4e8e2f3bb535473d98bfa6488b0bae7d71b53f995f0f038af05fbb318b",
+				"byteCount": 74214,
+				"rendition": {
+					"format": "jpeg",
+					"width": 600,
+					"height": 600
+				},
+				"imageId": "ab67616d0000b2730008601958194a047b8e75a3"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#623c39",
+						"rgb": [
+							98,
+							60,
+							57
+						],
+						"name": "Brick Dust"
+					},
+					"surface": {
+						"hex": "#623c39",
+						"rgb": [
+							98,
+							60,
+							57
+						],
+						"name": "Brick Dust"
+					},
+					"foreground": {
+						"hex": "#faf4e8",
+						"rgb": [
+							250,
+							244,
+							232
+						],
+						"name": "White"
+					},
+					"accent": {
+						"hex": "#fbb94b",
+						"rgb": [
+							251,
+							185,
+							75
+						],
+						"name": "Honeycomb"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 600,
+					"height": 600
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#623c39,surface=#623c39,foreground=#faf4e8,accent=#fbb94b|g0|m-|c10",
+			"roleSignature": "#623c39,#623c39,#faf4e8,#fbb94b",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T14:08:39.819Z",
+						"grade": "weak-fallback",
+						"batch": "review-18-vivid-boundary",
+						"label": "vivid-series-2-incumbent",
+						"warehouseLine": 125
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T14:08:39.819Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 125,
+					"batch": "review-18-vivid-boundary",
+					"label": "vivid-series-2-incumbent",
+					"recordedAt": "2026-07-31T14:08:39.819Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "vivid-series-2-incumbent",
+					"tags": [
+						"incomplete-identity"
+					],
+					"notes": "These palettes feel all wrong. They do not capture the vibe of the artwork at all. Visually the background is very obviously green, a mix of Verde and wintergreen. The main text is split between two colors, which is honeycomb (orange yellow) and firebug pink. And only then, in the order of importance, we find the brick dust brown and the red-orange accent and the white "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "a36cf35a960cfe91",
+			"artwork": {
+				"imagePath": "0a/ab67616d0000b273000a9ef1cb958fbed62e6c33",
+				"absolutePath": "/Users/Flo/GitHub/palette/0a/ab67616d0000b273000a9ef1cb958fbed62e6c33",
+				"contentSha256": "53021f3a23bc87da4dd456e8b73a8f496c39848726e2c81a5ef26c3608e49cd3",
+				"byteCount": 111033,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000a9ef1cb958fbed62e6c33"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#7b8181",
+						"rgb": [
+							123,
+							129,
+							129
+						],
+						"name": "Sleepy Koala"
+					},
+					"surface": {
+						"hex": "#231103",
+						"rgb": [
+							35,
+							17,
+							3
+						],
+						"name": "Bean There Done That"
+					},
+					"foreground": {
+						"hex": "#a19e8d",
+						"rgb": [
+							161,
+							158,
+							141
+						],
+						"name": "Putty"
+					},
+					"accent": {
+						"hex": "#4c1f0a",
+						"rgb": [
+							76,
+							31,
+							10
+						],
+						"name": "Dark Rum"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#8d9183",
+					"rgb": [
+						141,
+						145,
+						131
+					],
+					"name": "Lichen Grey"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#7b8181,surface=#231103,foreground=#a19e8d,accent=#4c1f0a|g1|m#8d9183|c00",
+			"roleSignature": "#7b8181,#231103,#a19e8d,#4c1f0a",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T21:40:08.495Z",
+						"grade": "weak-fallback",
+						"batch": "apcaN-batch",
+						"label": "apcaN-on",
+						"warehouseLine": 487
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T21:40:08.495Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 487,
+					"batch": "apcaN-batch",
+					"label": "apcaN-on",
+					"recordedAt": "2026-08-01T21:40:08.495Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "apcaN-on",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "c86ca5daad218a1e",
+			"artwork": {
+				"imagePath": "0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"absolutePath": "/Users/Flo/GitHub/palette/0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"contentSha256": "68e89a5ccb3ef771678339686d428aedfa58b6aaf3a6f13f170adb067d1fc06e",
+				"byteCount": 39393,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000b5fe0db38c29686e103dc"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#010101",
+						"rgb": [
+							1,
+							1,
+							1
+						],
+						"name": "Soot"
+					},
+					"surface": {
+						"hex": "#fb1b1c",
+						"rgb": [
+							251,
+							27,
+							28
+						],
+						"name": "Torch Red"
+					},
+					"foreground": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"accent": {
+						"hex": "#032842",
+						"rgb": [
+							3,
+							40,
+							66
+						],
+						"name": "Deep Nordic"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#010101,surface=#fb1b1c,foreground=#f3f3f3,accent=#032842|g0|m-|c00",
+			"roleSignature": "#010101,#fb1b1c,#f3f3f3,#032842",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-on",
+						"warehouseLine": 402
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 402,
+					"batch": "cs-batch",
+					"label": "cs-on",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "cs-on",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "c119e28af88557c8",
+			"artwork": {
+				"imagePath": "0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"absolutePath": "/Users/Flo/GitHub/palette/0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"contentSha256": "68e89a5ccb3ef771678339686d428aedfa58b6aaf3a6f13f170adb067d1fc06e",
+				"byteCount": 39393,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000b5fe0db38c29686e103dc"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"surface": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"foreground": {
+						"hex": "#010101",
+						"rgb": [
+							1,
+							1,
+							1
+						],
+						"name": "Soot"
+					},
+					"accent": {
+						"hex": "#012943",
+						"rgb": [
+							1,
+							41,
+							67
+						],
+						"name": "Deep Nordic"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f3f3f3,surface=#f3f3f3,foreground=#010101,accent=#012943|g0|m-|c10",
+			"roleSignature": "#f3f3f3,#f3f3f3,#010101,#012943",
+			"grades": [
+				"weak-fallback",
+				"unacceptable"
+			],
+			"worstGrade": "unacceptable",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": true,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T07:44:35.392Z",
+						"grade": "unacceptable",
+						"batch": "batch-32",
+						"label": "ra2-off",
+						"warehouseLine": 254
+					},
+					{
+						"recordedAt": "2026-08-01T09:11:21.817Z",
+						"grade": "weak-fallback",
+						"batch": "batch-33",
+						"label": "ra3-off",
+						"warehouseLine": 264
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback",
+					"unacceptable"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T09:11:21.817Z",
+				"resolvedByRecency": true,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": true,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 254,
+					"batch": "batch-32",
+					"label": "ra2-off",
+					"recordedAt": "2026-08-01T07:44:35.392Z",
+					"comparison": "ab",
+					"verdict": "unacceptable",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "These proposed palettes don't really match the artwork. The artwork has a mostly dark background, fully black on the outside and a dark blue to blue gradient in the middle. It also has white drawings and a bright red symbol. I think the confusion might come from the fact that on top of the white drawing there is black text. So it looks like the foreground should be some sort of black or dark blue.\n\nI think a better palette would actually use a white as the foreground. The red symbol's color could be used as the accent, and then background and surface could be black and blue, possibly with a gradient \n\nAt the very least, if we keep this white background, we need to have the accent represent the red symbol's color because right now the palettes look pretty much just black and white with a slight blue tint, which doesn't fit this artwork "
+				},
+				{
+					"warehouseLine": 264,
+					"batch": "batch-33",
+					"label": "ra3-off",
+					"recordedAt": "2026-08-01T09:11:21.817Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "6a9c347b72411095",
+			"artwork": {
+				"imagePath": "0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"absolutePath": "/Users/Flo/GitHub/palette/0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"contentSha256": "68e89a5ccb3ef771678339686d428aedfa58b6aaf3a6f13f170adb067d1fc06e",
+				"byteCount": 39393,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000b5fe0db38c29686e103dc"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"surface": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"foreground": {
+						"hex": "#012943",
+						"rgb": [
+							1,
+							41,
+							67
+						],
+						"name": "Deep Nordic"
+					},
+					"accent": {
+						"hex": "#010101",
+						"rgb": [
+							1,
+							1,
+							1
+						],
+						"name": "Soot"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f3f3f3,surface=#f3f3f3,foreground=#012943,accent=#010101|g0|m-|c10",
+			"roleSignature": "#f3f3f3,#f3f3f3,#012943,#010101",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T09:11:21.817Z",
+						"grade": "weak-fallback",
+						"batch": "batch-33",
+						"label": "ra3-on",
+						"warehouseLine": 264
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T09:11:21.817Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 264,
+					"batch": "batch-33",
+					"label": "ra3-on",
+					"recordedAt": "2026-08-01T09:11:21.817Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "3525bad82ade3399",
+			"artwork": {
+				"imagePath": "0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"absolutePath": "/Users/Flo/GitHub/palette/0b/ab67616d00001e02000b5fe0db38c29686e103dc",
+				"contentSha256": "68e89a5ccb3ef771678339686d428aedfa58b6aaf3a6f13f170adb067d1fc06e",
+				"byteCount": 39393,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000b5fe0db38c29686e103dc"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"surface": {
+						"hex": "#f3f3f3",
+						"rgb": [
+							243,
+							243,
+							243
+						],
+						"name": "Frost"
+					},
+					"foreground": {
+						"hex": "#012943",
+						"rgb": [
+							1,
+							41,
+							67
+						],
+						"name": "Deep Nordic"
+					},
+					"accent": {
+						"hex": "#045187",
+						"rgb": [
+							4,
+							81,
+							135
+						],
+						"name": "Slumber"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f3f3f3,surface=#f3f3f3,foreground=#012943,accent=#045187|g0|m-|c10",
+			"roleSignature": "#f3f3f3,#f3f3f3,#012943,#045187",
+			"grades": [
+				"unacceptable"
+			],
+			"worstGrade": "unacceptable",
+			"standingGrade": "unacceptable",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T07:44:35.392Z",
+						"grade": "unacceptable",
+						"batch": "batch-32",
+						"label": "ra2-on",
+						"warehouseLine": 254
+					}
+				],
+				"distinctGrades": [
+					"unacceptable"
+				],
+				"latestGrade": "unacceptable",
+				"latestRecordedAt": "2026-08-01T07:44:35.392Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 254,
+					"batch": "batch-32",
+					"label": "ra2-on",
+					"recordedAt": "2026-08-01T07:44:35.392Z",
+					"comparison": "ab",
+					"verdict": "unacceptable",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "These proposed palettes don't really match the artwork. The artwork has a mostly dark background, fully black on the outside and a dark blue to blue gradient in the middle. It also has white drawings and a bright red symbol. I think the confusion might come from the fact that on top of the white drawing there is black text. So it looks like the foreground should be some sort of black or dark blue.\n\nI think a better palette would actually use a white as the foreground. The red symbol's color could be used as the accent, and then background and surface could be black and blue, possibly with a gradient \n\nAt the very least, if we keep this white background, we need to have the accent represent the red symbol's color because right now the palettes look pretty much just black and white with a slight blue tint, which doesn't fit this artwork "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "f3500f9992d14c50",
+			"artwork": {
+				"imagePath": "0c/ab67616d00001e02000cd48fb26f462cd33760f6",
+				"absolutePath": "/Users/Flo/GitHub/palette/0c/ab67616d00001e02000cd48fb26f462cd33760f6",
+				"contentSha256": "f7478e0b5c12281467189169747b6aeee1f2509fbbdbb6d433d5df6da240cd87",
+				"byteCount": 25765,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000cd48fb26f462cd33760f6"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#ffffff",
+						"rgb": [
+							255,
+							255,
+							255
+						],
+						"name": "Snow"
+					},
+					"surface": {
+						"hex": "#ffffff",
+						"rgb": [
+							255,
+							255,
+							255
+						],
+						"name": "Snow"
+					},
+					"foreground": {
+						"hex": "#201f41",
+						"rgb": [
+							32,
+							31,
+							65
+						],
+						"name": "Night Violet"
+					},
+					"accent": {
+						"hex": "#b7f07d",
+						"rgb": [
+							183,
+							240,
+							125
+						],
+						"name": "Nursery"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#ffffff,surface=#ffffff,foreground=#201f41,accent=#b7f07d|g0|m-|c10",
+			"roleSignature": "#ffffff,#ffffff,#201f41,#b7f07d",
+			"grades": [
+				"strong",
+				"acceptable",
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": true,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T19:56:08.821Z",
+						"grade": "acceptable",
+						"batch": "batch-26",
+						"label": "x2-coverage",
+						"warehouseLine": 185
+					},
+					{
+						"recordedAt": "2026-08-01T12:24:03.989Z",
+						"grade": "strong",
+						"batch": "batch-ma-revival",
+						"label": "ma-off",
+						"warehouseLine": 329
+					},
+					{
+						"recordedAt": "2026-08-01T19:36:53.048Z",
+						"grade": "weak-fallback",
+						"batch": "cs2-batch",
+						"label": "cs2-off",
+						"warehouseLine": 454
+					}
+				],
+				"distinctGrades": [
+					"strong",
+					"acceptable",
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T19:36:53.048Z",
+				"resolvedByRecency": true,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 454,
+					"batch": "cs2-batch",
+					"label": "cs2-off",
+					"recordedAt": "2026-08-01T19:36:53.048Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "cs2-off",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "22ac0b8521d1da8f",
+			"artwork": {
+				"imagePath": "0d/ab67616d00001e02000db903479b2da9843413b1",
+				"absolutePath": "/Users/Flo/GitHub/palette/0d/ab67616d00001e02000db903479b2da9843413b1",
+				"contentSha256": "4f867a2b206fafc74e1c62a949fe8372a7ba558a878adf830049326c8841d854",
+				"byteCount": 28969,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000db903479b2da9843413b1"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#e2d5c5",
+						"rgb": [
+							226,
+							213,
+							197
+						],
+						"name": "Ballet Tights"
+					},
+					"surface": {
+						"hex": "#eac22d",
+						"rgb": [
+							234,
+							194,
+							45
+						],
+						"name": "Gold"
+					},
+					"foreground": {
+						"hex": "#20150f",
+						"rgb": [
+							32,
+							21,
+							15
+						],
+						"name": "Espresso Martini"
+					},
+					"accent": {
+						"hex": "#5da1a2",
+						"rgb": [
+							93,
+							161,
+							162
+						],
+						"name": "Dusty Turquoise"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#e2d5c5,surface=#eac22d,foreground=#20150f,accent=#5da1a2|g0|m-|c00",
+			"roleSignature": "#e2d5c5,#eac22d,#20150f,#5da1a2",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-on",
+						"warehouseLine": 406
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 406,
+					"batch": "cs-batch",
+					"label": "cs-on",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "cs-on",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "60c3cf90eb95bdfa",
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000eaebc73a8a91dabda71fa",
+				"absolutePath": "/Users/Flo/GitHub/palette/0e/ab67616d00001e02000eaebc73a8a91dabda71fa",
+				"contentSha256": "3c75edff09f458139fc54ddae499e0198d9bdd4761ef9832bbcb769b393b8cff",
+				"byteCount": 48579,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000eaebc73a8a91dabda71fa"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#242424",
+						"rgb": [
+							36,
+							36,
+							36
+						],
+						"name": "Lead"
+					},
+					"surface": {
+						"hex": "#242424",
+						"rgb": [
+							36,
+							36,
+							36
+						],
+						"name": "Lead"
+					},
+					"foreground": {
+						"hex": "#f1f9ec",
+						"rgb": [
+							241,
+							249,
+							236
+						],
+						"name": "Ghost Mint"
+					},
+					"accent": {
+						"hex": "#78d429",
+						"rgb": [
+							120,
+							212,
+							41
+						],
+						"name": "Cheerly Kiwi"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#242424,surface=#242424,foreground=#f1f9ec,accent=#78d429|g0|m-|c10",
+			"roleSignature": "#242424,#242424,#f1f9ec,#78d429",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T14:08:39.819Z",
+						"grade": "weak-fallback",
+						"batch": "review-18-vivid-boundary",
+						"label": "vivid-series-2-incumbent",
+						"warehouseLine": 126
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T14:08:39.819Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 126,
+					"batch": "review-18-vivid-boundary",
+					"label": "vivid-series-2-incumbent",
+					"recordedAt": "2026-07-31T14:08:39.819Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [
+						"wrong-role"
+					],
+					"notes": "This palette is pretty bad as well. I don't know why the foreground was picked as ghost mint when really this is not the color that reflects this artwork. But in this case, the ghost mint white can serve as the accent "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "1a13ead3c54c32ce",
+			"artwork": {
+				"imagePath": "0e/ab67616d00001e02000eaebc73a8a91dabda71fa",
+				"absolutePath": "/Users/Flo/GitHub/palette/0e/ab67616d00001e02000eaebc73a8a91dabda71fa",
+				"contentSha256": "3c75edff09f458139fc54ddae499e0198d9bdd4761ef9832bbcb769b393b8cff",
+				"byteCount": 48579,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000eaebc73a8a91dabda71fa"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#242424",
+						"rgb": [
+							36,
+							36,
+							36
+						],
+						"name": "Lead"
+					},
+					"surface": {
+						"hex": "#242424",
+						"rgb": [
+							36,
+							36,
+							36
+						],
+						"name": "Lead"
+					},
+					"foreground": {
+						"hex": "#f1f9ec",
+						"rgb": [
+							241,
+							249,
+							236
+						],
+						"name": "Ghost Mint"
+					},
+					"accent": {
+						"hex": "#7df20d",
+						"rgb": [
+							125,
+							242,
+							13
+						],
+						"name": "Leafhopper"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": true,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#242424,surface=#242424,foreground=#f1f9ec,accent=#7df20d|g0|m-|c10",
+			"roleSignature": "#242424,#242424,#f1f9ec,#7df20d",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T14:08:39.819Z",
+						"grade": "weak-fallback",
+						"batch": "review-18-vivid-boundary",
+						"label": "vivid-series-2-vivid",
+						"warehouseLine": 126
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T14:08:39.819Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 126,
+					"batch": "review-18-vivid-boundary",
+					"label": "vivid-series-2-vivid",
+					"recordedAt": "2026-07-31T14:08:39.819Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [
+						"wrong-role"
+					],
+					"notes": "This palette is pretty bad as well. I don't know why the foreground was picked as ghost mint when really this is not the color that reflects this artwork. But in this case, the ghost mint white can serve as the accent "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d0ce5f01790b7f8d",
+			"artwork": {
+				"imagePath": "0e/ab67616d0000b273000e229142cb6dbae156341c",
+				"absolutePath": "/Users/Flo/GitHub/palette/0e/ab67616d0000b273000e229142cb6dbae156341c",
+				"contentSha256": "892b4ec6f159917b16c9f0e1d428a639baa07ec400142c61bec0fdfb20cdecff",
+				"byteCount": 237798,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000e229142cb6dbae156341c"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#0c1416",
+						"rgb": [
+							12,
+							20,
+							22
+						],
+						"name": "Darkroom"
+					},
+					"surface": {
+						"hex": "#264010",
+						"rgb": [
+							38,
+							64,
+							16
+						],
+						"name": "Dark Fern"
+					},
+					"foreground": {
+						"hex": "#e8ebe2",
+						"rgb": [
+							232,
+							235,
+							226
+						],
+						"name": "Linen"
+					},
+					"accent": {
+						"hex": "#dd5839",
+						"rgb": [
+							221,
+							88,
+							57
+						],
+						"name": "Kimchi"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#0c1416,surface=#264010,foreground=#e8ebe2,accent=#dd5839|g1|m-|c00",
+			"roleSignature": "#0c1416,#264010,#e8ebe2,#dd5839",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T12:05:46.853Z",
+						"grade": "weak-fallback",
+						"batch": "batch-38",
+						"label": "gc2-grad",
+						"warehouseLine": 319
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T12:05:46.853Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 319,
+					"batch": "batch-38",
+					"label": "gc2-grad",
+					"recordedAt": "2026-08-01T12:05:46.853Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "gc2-grad",
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "15023b05935e9efb",
+			"artwork": {
+				"imagePath": "0e/ab67616d0000b273000ec4aa76a94a5ba13c5946",
+				"absolutePath": "/Users/Flo/GitHub/palette/0e/ab67616d0000b273000ec4aa76a94a5ba13c5946",
+				"contentSha256": "49d0579daaf642d7bf46d23f8ec358c76812c9aec31d46e28abd1172956b714f",
+				"byteCount": 162535,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000ec4aa76a94a5ba13c5946"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f1f0ec",
+						"rgb": [
+							241,
+							240,
+							236
+						],
+						"name": "Linen"
+					},
+					"surface": {
+						"hex": "#483469",
+						"rgb": [
+							72,
+							52,
+							105
+						],
+						"name": "Lava Stone"
+					},
+					"foreground": {
+						"hex": "#ddd1c3",
+						"rgb": [
+							221,
+							209,
+							195
+						],
+						"name": "Rice Paper"
+					},
+					"accent": {
+						"hex": "#d44b91",
+						"rgb": [
+							212,
+							75,
+							145
+						],
+						"name": "Kirby"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f1f0ec,surface=#483469,foreground=#ddd1c3,accent=#d44b91|g0|m-|c00",
+			"roleSignature": "#f1f0ec,#483469,#ddd1c3,#d44b91",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T11:44:07.426Z",
+						"grade": "weak-fallback",
+						"batch": "batch-37",
+						"label": "gc-flat",
+						"warehouseLine": 313
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T11:44:07.426Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 313,
+					"batch": "batch-37",
+					"label": "gc-flat",
+					"recordedAt": "2026-08-01T11:44:07.426Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "it is hard to rank these palettes about the gradient because I think the main issue is that this background is incorrect. It relied too much on the thin white frame around the outside, and completely failed to convey the real artwork's background which is likely closer to the Lava Stone purple.\nThen the surface can be another color, the other dominant background color in the artwork seems to be Rhubarb pink, which makes for a nice gradient (but doesn't *have* to be a gradient)\n"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d67b3bf575ff7169",
+			"artwork": {
+				"imagePath": "0e/ab67616d0000b273000ec4aa76a94a5ba13c5946",
+				"absolutePath": "/Users/Flo/GitHub/palette/0e/ab67616d0000b273000ec4aa76a94a5ba13c5946",
+				"contentSha256": "49d0579daaf642d7bf46d23f8ec358c76812c9aec31d46e28abd1172956b714f",
+				"byteCount": 162535,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000ec4aa76a94a5ba13c5946"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f1f0ec",
+						"rgb": [
+							241,
+							240,
+							236
+						],
+						"name": "Linen"
+					},
+					"surface": {
+						"hex": "#483469",
+						"rgb": [
+							72,
+							52,
+							105
+						],
+						"name": "Lava Stone"
+					},
+					"foreground": {
+						"hex": "#ddd1c3",
+						"rgb": [
+							221,
+							209,
+							195
+						],
+						"name": "Rice Paper"
+					},
+					"accent": {
+						"hex": "#d44b91",
+						"rgb": [
+							212,
+							75,
+							145
+						],
+						"name": "Kirby"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f1f0ec,surface=#483469,foreground=#ddd1c3,accent=#d44b91|g1|m-|c00",
+			"roleSignature": "#f1f0ec,#483469,#ddd1c3,#d44b91",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T11:44:07.426Z",
+						"grade": "weak-fallback",
+						"batch": "batch-37",
+						"label": "gc-grad",
+						"warehouseLine": 313
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T11:44:07.426Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 313,
+					"batch": "batch-37",
+					"label": "gc-grad",
+					"recordedAt": "2026-08-01T11:44:07.426Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "it is hard to rank these palettes about the gradient because I think the main issue is that this background is incorrect. It relied too much on the thin white frame around the outside, and completely failed to convey the real artwork's background which is likely closer to the Lava Stone purple.\nThen the surface can be another color, the other dominant background color in the artwork seems to be Rhubarb pink, which makes for a nice gradient (but doesn't *have* to be a gradient)\n"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "092c07550fbadee0",
+			"artwork": {
+				"imagePath": "0f/ab67616d00001e02000f58e77c6b56afa4666ad0",
+				"absolutePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f58e77c6b56afa4666ad0",
+				"contentSha256": "cda5c405771355c2c304a95e861b29354e859e465b9c9cc9d17f0d688452c747",
+				"byteCount": 57078,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000f58e77c6b56afa4666ad0"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#1a1c1b",
+						"rgb": [
+							26,
+							28,
+							27
+						],
+						"name": "Umbra"
+					},
+					"surface": {
+						"hex": "#df5d29",
+						"rgb": [
+							223,
+							93,
+							41
+						],
+						"name": "Flame"
+					},
+					"foreground": {
+						"hex": "#fba037",
+						"rgb": [
+							251,
+							160,
+							55
+						],
+						"name": "Golden Mango"
+					},
+					"accent": {
+						"hex": "#62478a",
+						"rgb": [
+							98,
+							71,
+							138
+						],
+						"name": "Purple Haze"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#1a1c1b,surface=#df5d29,foreground=#fba037,accent=#62478a|g0|m-|c00",
+			"roleSignature": "#1a1c1b,#df5d29,#fba037,#62478a",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-on",
+						"warehouseLine": 407
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 407,
+					"batch": "cs-batch",
+					"label": "cs-on",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "d38ba9b620566c84",
+			"artwork": {
+				"imagePath": "0f/ab67616d00001e02000f58e77c6b56afa4666ad0",
+				"absolutePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f58e77c6b56afa4666ad0",
+				"contentSha256": "cda5c405771355c2c304a95e861b29354e859e465b9c9cc9d17f0d688452c747",
+				"byteCount": 57078,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000f58e77c6b56afa4666ad0"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#f99c3d",
+						"rgb": [
+							249,
+							156,
+							61
+						],
+						"name": "Golden Mango"
+					},
+					"surface": {
+						"hex": "#b7452b",
+						"rgb": [
+							183,
+							69,
+							43
+						],
+						"name": "Paprika"
+					},
+					"foreground": {
+						"hex": "#171c16",
+						"rgb": [
+							23,
+							28,
+							22
+						],
+						"name": "Dark Forest"
+					},
+					"accent": {
+						"hex": "#62478a",
+						"rgb": [
+							98,
+							71,
+							138
+						],
+						"name": "Purple Haze"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#f99c3d,surface=#b7452b,foreground=#171c16,accent=#62478a|g0|m-|c00",
+			"roleSignature": "#f99c3d,#b7452b,#171c16,#62478a",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T16:59:45.057Z",
+						"grade": "weak-fallback",
+						"batch": "cs-batch",
+						"label": "cs-off",
+						"warehouseLine": 407
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T16:59:45.057Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 407,
+					"batch": "cs-batch",
+					"label": "cs-off",
+					"recordedAt": "2026-08-01T16:59:45.057Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": ""
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "de7b086ca261b85b",
+			"artwork": {
+				"imagePath": "0f/ab67616d00001e02000f9f4ba3750dc73886b2ad",
+				"absolutePath": "/Users/Flo/GitHub/palette/0f/ab67616d00001e02000f9f4ba3750dc73886b2ad",
+				"contentSha256": "8eea482de0ccd404aed4835bb6e7ee31e602b6c698e1771b8fa542557fe66f5e",
+				"byteCount": 44081,
+				"rendition": {
+					"format": "jpeg",
+					"width": 300,
+					"height": 300
+				},
+				"imageId": "ab67616d00001e02000f9f4ba3750dc73886b2ad"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#21356a",
+						"rgb": [
+							33,
+							53,
+							106
+						],
+						"name": "Deep Dusk"
+					},
+					"surface": {
+						"hex": "#4d4b59",
+						"rgb": [
+							77,
+							75,
+							89
+						],
+						"name": "Liver"
+					},
+					"foreground": {
+						"hex": "#f1faf9",
+						"rgb": [
+							241,
+							250,
+							249
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#eed32e",
+						"rgb": [
+							238,
+							211,
+							46
+						],
+						"name": "Banana Propaganda"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 300,
+					"height": 300
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#21356a,surface=#4d4b59,foreground=#f1faf9,accent=#eed32e|g0|m-|c00",
+			"roleSignature": "#21356a,#4d4b59,#f1faf9,#eed32e",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T22:28:05.233Z",
+						"grade": "weak-fallback",
+						"batch": "calib-batch-1a",
+						"label": "calib-1",
+						"warehouseLine": 205
+					},
+					{
+						"recordedAt": "2026-07-31T22:28:05.233Z",
+						"grade": "weak-fallback",
+						"batch": "calib-batch-1a",
+						"label": "calib-1b",
+						"warehouseLine": 205
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T22:28:05.233Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 205,
+					"batch": "calib-batch-1a",
+					"label": "calib-1",
+					"recordedAt": "2026-07-31T22:28:05.233Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "The surface doesn't feel like it comes from this artwork, i don't know where Liver grey is represented.\nThis is also a pretty bad quality artwork, i'm almost tempted to drop it."
+				},
+				{
+					"warehouseLine": 205,
+					"batch": "calib-batch-1a",
+					"label": "calib-1b",
+					"recordedAt": "2026-07-31T22:28:05.233Z",
+					"comparison": "identical",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "The surface doesn't feel like it comes from this artwork, i don't know where Liver grey is represented.\nThis is also a pretty bad quality artwork, i'm almost tempted to drop it."
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "52447da991e701ad",
+			"artwork": {
+				"imagePath": "0f/ab67616d0000b273000f815611cd5966187e2051",
+				"absolutePath": "/Users/Flo/GitHub/palette/0f/ab67616d0000b273000f815611cd5966187e2051",
+				"contentSha256": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+				"byteCount": 107852,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b273000f815611cd5966187e2051"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#dbdce1",
+						"rgb": [
+							219,
+							220,
+							225
+						],
+						"name": "Fog"
+					},
+					"surface": {
+						"hex": "#fbfbfb",
+						"rgb": [
+							251,
+							251,
+							251
+						],
+						"name": "Snow"
+					},
+					"foreground": {
+						"hex": "#1d1a21",
+						"rgb": [
+							29,
+							26,
+							33
+						],
+						"name": "Umbra"
+					},
+					"accent": {
+						"hex": "#6a5248",
+						"rgb": [
+							106,
+							82,
+							72
+						],
+						"name": "Lynx"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#dbdce1,surface=#fbfbfb,foreground=#1d1a21,accent=#6a5248|g0|m-|c00",
+			"roleSignature": "#dbdce1,#fbfbfb,#1d1a21,#6a5248",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-31T15:40:22.992Z",
+						"grade": "weak-fallback",
+						"batch": "review-19-fresh",
+						"label": "v2-2",
+						"warehouseLine": 141
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-31T15:40:22.992Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 141,
+					"batch": "review-19-fresh",
+					"label": "v2-2",
+					"recordedAt": "2026-07-31T15:40:22.992Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": null,
+					"tags": [],
+					"notes": "This artwork is indeed mostly black, white, and grey but it does have a couple splashes of color around pink and purple, so we should have some of this represented. Maybe the accent could be muted grape purple or serenade pink"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "0902c903382ef5d0",
+			"artwork": {
+				"imagePath": "11/ab67616d0000b2730011079ecb2d897c4f3d2f6a",
+				"absolutePath": "/Users/Flo/GitHub/palette/11/ab67616d0000b2730011079ecb2d897c4f3d2f6a",
+				"contentSha256": "fb6f1c822d1c3a43d3fd2eef9c397ed872ba7d06cbde60d8ec58988f34d6789d",
+				"byteCount": 139066,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "ab67616d0000b2730011079ecb2d897c4f3d2f6a"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#0b1218",
+						"rgb": [
+							11,
+							18,
+							24
+						],
+						"name": "Darkroom"
+					},
+					"surface": {
+						"hex": "#233b47",
+						"rgb": [
+							35,
+							59,
+							71
+						],
+						"name": "Gunmetal"
+					},
+					"foreground": {
+						"hex": "#a5d1d2",
+						"rgb": [
+							165,
+							209,
+							210
+						],
+						"name": "Glacier Mist"
+					},
+					"accent": {
+						"hex": "#f09ea4",
+						"rgb": [
+							240,
+							158,
+							164
+						],
+						"name": "Petal Pink"
+					}
+				},
+				"gradient": false,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#0b1218,surface=#233b47,foreground=#a5d1d2,accent=#f09ea4|g0|m-|c00",
+			"roleSignature": "#0b1218,#233b47,#a5d1d2,#f09ea4",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-08-01T15:08:50.167Z",
+						"grade": "weak-fallback",
+						"batch": "rw-batch-collapse",
+						"label": "trunk",
+						"warehouseLine": 387
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-08-01T15:08:50.167Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 387,
+					"batch": "rw-batch-collapse",
+					"label": "trunk",
+					"recordedAt": "2026-08-01T15:08:50.167Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "trunk",
+					"tags": [],
+					"notes": "this palette is better with and accent than without one. But the color choice isn't ideal: there is a vivid red in this artwork that is fairly important, and this Petal Pink doesn't really capture it\nthis palette might work with a gradient too, but we would need to try it (i can't try it myself because there are no controls for it in the \"One palette you'd endorse\" UI)"
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "5a93a4ed65678066",
+			"artwork": {
+				"imagePath": "images/doja.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/images/doja.jpg",
+				"contentSha256": "6db5579b6d143c716ac1658937fe60587a47812251c13524fb8cd580512e54ef",
+				"byteCount": 133578,
+				"rendition": {
+					"format": "jpeg",
+					"width": 640,
+					"height": 640
+				},
+				"imageId": "doja.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#fd75b5",
+						"rgb": [
+							253,
+							117,
+							181
+						],
+						"name": "Playful Pink"
+					},
+					"surface": {
+						"hex": "#f79e80",
+						"rgb": [
+							247,
+							158,
+							128
+						],
+						"name": "Bisque"
+					},
+					"foreground": {
+						"hex": "#fff6fc",
+						"rgb": [
+							255,
+							246,
+							252
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#ce5e52",
+						"rgb": [
+							206,
+							94,
+							82
+						],
+						"name": "Marsala"
+					}
+				},
+				"gradient": true,
+				"midpoint": {
+					"hex": "#ff8cc6",
+					"rgb": [
+						255,
+						140,
+						198
+					],
+					"name": "Rosebud"
+				},
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 640,
+					"height": 640
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#fd75b5,surface=#f79e80,foreground=#fff6fc,accent=#ce5e52|g1|m#ff8cc6|c00",
+			"roleSignature": "#fd75b5,#f79e80,#fff6fc,#ce5e52",
+			"grades": [
+				"unacceptable"
+			],
+			"worstGrade": "unacceptable",
+			"standingGrade": "unacceptable",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T19:41:07.014Z",
+						"grade": "unacceptable",
+						"batch": "review-5-midpoints-alternatives",
+						"label": "trunk-dc-b2",
+						"warehouseLine": 29
+					}
+				],
+				"distinctGrades": [
+					"unacceptable"
+				],
+				"latestGrade": "unacceptable",
+				"latestRecordedAt": "2026-07-30T19:41:07.014Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 29,
+					"batch": "review-5-midpoints-alternatives",
+					"label": "trunk-dc-b2",
+					"recordedAt": "2026-07-30T19:41:07.014Z",
+					"comparison": "ab",
+					"verdict": "unacceptable",
+					"preferredLabel": "trunk-dc-b2",
+					"tags": [],
+					"notes": "The midpoint makes option A nicer but that might be mainly due to the fact that there should not be a gradient between pink and the Bisque skin color. This is not representative of the artwork and so introducing a midpoint that increases the pinkness maybe is just better because it hides some of the gradient to skin color "
+				}
+			]
+		},
+		{
+			"contract": "v2-3",
+			"entryId": "3dfd6b1955544613",
+			"artwork": {
+				"imagePath": "images/placebo.jpg",
+				"absolutePath": "/Users/Flo/GitHub/palette/images/placebo.jpg",
+				"contentSha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+				"byteCount": 210759,
+				"rendition": {
+					"format": "jpeg",
+					"width": 1400,
+					"height": 1400
+				},
+				"imageId": "placebo.jpg"
+			},
+			"palette": {
+				"completeness": "full",
+				"roles": {
+					"background": {
+						"hex": "#607b76",
+						"rgb": [
+							96,
+							123,
+							118
+						],
+						"name": "Grey Teal"
+					},
+					"surface": {
+						"hex": "#a0a39a",
+						"rgb": [
+							160,
+							163,
+							154
+						],
+						"name": "Edamame"
+					},
+					"foreground": {
+						"hex": "#fbfdfa",
+						"rgb": [
+							251,
+							253,
+							250
+						],
+						"name": "Snow"
+					},
+					"accent": {
+						"hex": "#111312",
+						"rgb": [
+							17,
+							19,
+							18
+						],
+						"name": "Iron Black"
+					}
+				},
+				"gradient": true,
+				"midpoint": null,
+				"collapse": {
+					"surface": false,
+					"accent": false
+				},
+				"processedSize": {
+					"width": 1400,
+					"height": 1400
+				},
+				"processedSizeMatchesHeader": true
+			},
+			"paletteSignature": "background=#607b76,surface=#a0a39a,foreground=#fbfdfa,accent=#111312|g1|m-|c00",
+			"roleSignature": "#607b76,#a0a39a,#fbfdfa,#111312",
+			"grades": [
+				"weak-fallback"
+			],
+			"worstGrade": "weak-fallback",
+			"standingGrade": "weak-fallback",
+			"resolvedByRecency": false,
+			"contested": false,
+			"resolution": {
+				"gradeHistory": [
+					{
+						"recordedAt": "2026-07-30T18:48:15.747Z",
+						"grade": "weak-fallback",
+						"batch": "review-3-identity",
+						"label": "v2-2",
+						"warehouseLine": 18
+					}
+				],
+				"distinctGrades": [
+					"weak-fallback"
+				],
+				"latestGrade": "weak-fallback",
+				"latestRecordedAt": "2026-07-30T18:48:15.747Z",
+				"resolvedByRecency": false,
+				"tiedLatestGrades": [],
+				"supersededByLaterGrade": false,
+				"rule": "Latest-timestamped grade wins (reviewer decision 2026-08-02). Where the same artwork and the same exact palette were graded more than once, the most recent grade is the pair's standing verdict; earlier grades are history, not live contradictions. Only conflicting grades sharing an identical timestamp stay unresolved, and those warn rather than block."
+			},
+			"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
+			"evidence": [
+				{
+					"warehouseLine": 18,
+					"batch": "review-3-identity",
+					"label": "v2-2",
+					"recordedAt": "2026-07-30T18:48:15.747Z",
+					"comparison": "ab",
+					"verdict": "weak-fallback",
+					"preferredLabel": "v2-2",
+					"tags": [],
+					"notes": "I'm only saying weak fallback here because we know that the background can be better, but if we're only focusing on the accents, then yeah, option A is stronger. There is some bright red text in this artwork that could also work as the accent, maybe but I don't see it picked up in all the roll corrections colors that are proposed. The closest is the barn red, but it's not exactly the same color as what's on the artwork "
+				}
+			]
+		}
+	]
+}
