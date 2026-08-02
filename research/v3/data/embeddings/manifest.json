@@ -1,7 +1,7 @@
 {
   "stage": "oracle-stage-1-embeddings",
   "spec": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md sections 2.1, 6",
-  "written_at": "2026-08-02T19:54:00Z",
+  "written_at": "2026-08-02T20:36:44Z",
   "versions": {
     "python": "3.14.3",
     "torch": "2.13.0",
@@ -228,23 +228,57 @@
         "sharded": {
           "root": "{00..09,0a..0f,10..14}/",
           "files_enumerated": 7550,
-          "files_embedded": 0,
+          "files_embedded": 7550,
           "files_failed": 0,
           "npy": "sharded.dinov2-vitl14-392.npy",
           "ids": "sharded.dinov2-vitl14-392.ids.jsonl",
-          "complete": false
+          "complete": true,
+          "last_run": {
+            "collection": "sharded",
+            "arm": "dinov2-vitl14-392",
+            "queued": 7550,
+            "embedded": 7550,
+            "failed": 0,
+            "decode_seconds": 10.815388713846914,
+            "encode_seconds": 1108.9863893820439,
+            "wall_seconds": 1121.0123206250137,
+            "remaining": 0,
+            "total_rows": 7550,
+            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/sharded.dinov2-vitl14-392.npy",
+            "npy_shape": [
+              7550,
+              1024
+            ]
+          }
         },
         "music_artworks": {
           "root": "music-artworks/",
           "files_enumerated": 8595,
-          "files_embedded": 0,
+          "files_embedded": 8595,
           "files_failed": 0,
           "npy": "music_artworks.dinov2-vitl14-392.npy",
           "ids": "music_artworks.dinov2-vitl14-392.ids.jsonl",
-          "complete": false
+          "complete": true,
+          "last_run": {
+            "collection": "music_artworks",
+            "arm": "dinov2-vitl14-392",
+            "queued": 8595,
+            "embedded": 8595,
+            "failed": 0,
+            "decode_seconds": 30.434743014513515,
+            "encode_seconds": 1115.132825016859,
+            "wall_seconds": 1147.9760089579504,
+            "remaining": 0,
+            "total_rows": 8595,
+            "npy": "/Users/Flo/GitHub/palette/research/v3/data/embeddings/music_artworks.dinov2-vitl14-392.npy",
+            "npy_shape": [
+              8595,
+              1024
+            ]
+          }
         }
       },
-      "has_output": false
+      "has_output": true
     },
     "dinov3-vitl16": {
       "model": {

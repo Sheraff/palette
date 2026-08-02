@@ -1,0 +1,99 @@
+{
+  "_comment": [
+    "Pinned query covers for gallery/neighbors.html. Not sampled per run: the",
+    "same twelve covers every time, so two reviewers looking at the panel on",
+    "different days are looking at the same thing.",
+    "",
+    "Selection, by group:",
+    "  famous      recognisable covers, so a reviewer can judge neighbour quality",
+    "              against their own knowledge of the record.",
+    "  v2-3-hard   covers the v2-3 palette algorithm demonstrably failed on. These",
+    "              were matched into music-artworks by CONTENT (sha256 of the file",
+    "              bytes), not by filename -- the eval keeps them in images/ under",
+    "              short names, and 7 of the 25 turn out to be byte-identical to a",
+    "              file already in the corpus.",
+    "  distinctive covers with the LOWEST best-neighbour cosine across all three",
+    "              finalists, i.e. the corpus's genuine visual outliers, chosen by",
+    "              measurement rather than by browsing.",
+    "  random-300  seeded draw from the 300 px tier, to show what the models do",
+    "              with a low-detail thumbnail.",
+    "",
+    "loups.jpg and doja.jpg were requested but are NOT present in either corpus by",
+    "content hash, so they cannot be shown without embedding them ad hoc."
+  ],
+  "seed": 20260802,
+  "queries": [
+    {
+      "path": "music-artworks/9/6/e/96e11373275cc8adb4db639a986401b9.jpg",
+      "label": "System of a Down — Toxicity",
+      "group": "famous",
+      "why": "Globally recognisable. Photographic scene, heavy grain, hillside lettering integrated into the artwork plus a separate red title overlay — two different kinds of text in one cover."
+    },
+    {
+      "path": "music-artworks/6/9/e/69eb0435ce0c9f41665c9e2c480314a9.jpg",
+      "label": "Green Day — American Idiot",
+      "group": "famous",
+      "why": "Globally recognisable, and does triple duty: flat black field with white/red vector art, a parental-advisory badge in the corner, and a known v2-3 failure (the algorithm reversed the black background and white foreground)."
+    },
+    {
+      "path": "music-artworks/8/7/e/87e9beeb1ba665f10b446ae57c79b672.jpg",
+      "label": "The Longest Johns — Between Wind and Water  (v2-3 'johns')",
+      "group": "v2-3-hard",
+      "why": "The highest-mandate unmet ask in the whole v2-3 eval: 'we are really missing the sailor blue surface'. The blue wave field dominates the lower two thirds, and the palette omitted it. Also blocks 'krafty' — unreachable without crossing johns."
+    },
+    {
+      "path": "music-artworks/6/2/7/62730e508630a4192921b87e0530ccd6.jpg",
+      "label": "v2-3 'krafty'",
+      "group": "v2-3-hard",
+      "why": "Reviewer ask: 'the text of the artwork is Golden Mango, so the foreground of the palette should also be golden mango'. A case where the wanted colour is carried by lettering, not by area."
+    },
+    {
+      "path": "music-artworks/d/7/a/d7a06753cf29eeb6ffecd71ed7c56a7a.jpg",
+      "label": "v2-3 'muse'",
+      "group": "v2-3-hard",
+      "why": "Midpoint degeneracy: 'the midpoint was pitch black and the background was pitch black'. Also the one confirmed v3 gradient false-removal in the exposed diagnostic."
+    },
+    {
+      "path": "music-artworks/1/c/7/1c73b3ebefa105bf82f2324fb39f75dc.jpg",
+      "label": "v2-3 'infected'",
+      "group": "v2-3-hard",
+      "why": "The ask that is provably unreachable: the reviewer wanted a blue that 'no measurable property' separates from the rest. If any model puts visually blue covers next to this one, that is a hint the property exists in embedding space even though it did not exist in colorimetry."
+    },
+    {
+      "path": "0c/ab67616d0000b273000cddab7c4a5e6d8ad9e140",
+      "label": "fly agaric on forest floor",
+      "group": "distinctive",
+      "why": "The single most isolated cover in the corpus — lowest best-neighbour cosine averaged across all three finalists (dinov2 0.180 / pe-core 0.468 / dinov3 0.170). One sharp red subject on dark bokeh: exactly the has_dominant_subject + has_accent_color case the palette cares about."
+    },
+    {
+      "path": "0c/ab67616d0000b273000c539f3879b821f1edc886",
+      "label": "boarding passes on black",
+      "group": "distinctive",
+      "why": "PE-Core put this cover in a cluster of its OWN (size 1) — the only degenerate cluster in any of the three models. All three agree it is an outlier (best neighbour 0.39-0.48). Red and white paper documents, dense fine print, pure black ground."
+    },
+    {
+      "path": "09/ab67616d0000b2730009376e1bc66e075b74cd3d",
+      "label": "Monĕsk — Departure",
+      "group": "distinctive",
+      "why": "Near-monochrome fog photograph, very low chroma, thin grey type. The 'has_accent_color = false' case — if a model returns colourful neighbours here it is not reading chroma at all."
+    },
+    {
+      "path": "03/ab67616d00001e020003bbca465dc03873544b29.jpg",
+      "label": "baroque pavilion, muted photograph",
+      "group": "distinctive",
+      "why": "Highly isolated (dinov2 0.152, the lowest single score in the sample) and a 300 px thumbnail, so it tests outlier behaviour and low resolution at the same time. Desaturated architectural photograph with no text at all."
+    },
+    {
+      "path": "01/ab67616d00001e020001881aa1230782fc989799.jpg",
+      "label": "random 300 px thumbnail (1 of 2)",
+      "group": "random-300",
+      "why": "Seeded draw from the 2,917-file 300 px tier. Included unfiltered: a sanity check should contain some covers nobody chose for being interesting."
+    },
+    {
+      "path": "03/ab67616d00001e0200035e3fabeee4bd013a833d.jpg",
+      "label": "random 300 px thumbnail (2 of 2)",
+      "group": "random-300",
+      "why": "Seeded draw from the 300 px tier. At this resolution small text and label logos are physically illegible, so neighbours driven by fine detail are suspect."
+    }
+  ]
+}

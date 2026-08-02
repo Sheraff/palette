@@ -186,6 +186,58 @@ def build_ground_truth() -> tuple[dict, dict]:
 # --------------------------------------------------------------------------
 
 
+def discover_arms(out_dir: Path):
+    """Every arm in config.ARMS whose output is COMPLETE for both collections.
+
+    Derived from config.ARMS rather than a hand-maintained shortlist. An earlier
+    version iterated config.BAKEOFF_ARMS, which is a curated display list, so the
+    dinov2-vitl14-392 tiebreaker was silently never scored even though its files
+    were on disk. Deriving the list from the registry means a newly added arm
+    cannot drop out the same way; it either appears, or it appears in `skipped`
+    with a reason.
+
+    "Complete" means both collections have an id index whose ok+failed rows equal
+    the number of files enumerated for that collection. A half-finished run is
+    excluded rather than silently scored against a partial pool, which would make
+    its ranks incomparable with the other arms.
+    """
+    included: list[str] = []
+    skipped: list[tuple[str, str]] = []
+
+    enumerated = {}
+    for collection in config.COLLECTIONS:
+        try:
+            enumerated[collection] = len(common.enumerate_collection(collection))
+        except FileNotFoundError:
+            enumerated[collection] = None
+
+    for tag in config.ARMS:
+        reasons = []
+        for collection in config.COLLECTIONS:
+            store = common.EmbeddingStore(out_dir, collection, arm_tag=tag)
+            if not store.ids_path.exists():
+                reasons.append(f"no output for {collection}")
+                continue
+            recovery = store.recover(read_only=True)
+            resolved = recovery["ok_rows"] + recovery["failed_rows"]
+            expected = enumerated.get(collection)
+            if expected is not None and resolved != expected:
+                reasons.append(
+                    f"{collection} incomplete ({resolved}/{expected} files resolved)"
+                )
+        if reasons:
+            skipped.append((tag, "; ".join(reasons)))
+        else:
+            included.append(tag)
+
+    # Stable, meaningful order: curated bake-off order first, then any newcomers
+    # alphabetically, so a new arm lands predictably instead of wherever the dict
+    # happens to put it.
+    order = {tag: n for n, tag in enumerate(config.BAKEOFF_ARMS)}
+    included.sort(key=lambda t: (order.get(t, len(order)), t))
+    return included, skipped
+
+
 def load_arm_matrix(out_dir: Path, arm_tag: str):
     """Concatenate both collections into one candidate pool for `arm_tag`."""
     import numpy as np
@@ -211,7 +263,8 @@ def load_arm_matrix(out_dir: Path, arm_tag: str):
     return pool, rows, index_of_path, per_collection
 
 
-def evaluate_arm(out_dir: Path, arm_tag: str, truth: dict) -> dict:
+def evaluate_arm(out_dir: Path, arm_tag: str, truth: dict,
+                 return_pairs: bool = False) -> dict:
     import numpy as np
 
     started = time.perf_counter()
@@ -308,6 +361,13 @@ def evaluate_arm(out_dir: Path, arm_tag: str, truth: dict) -> dict:
         }
         report["by_collection"][collection] = entry
 
+    if return_pairs:
+        # Per-pair ranks, keyed so two arms can be compared pair-by-pair. Used for
+        # paired significance tests; omitted from the stored JSON because 24,648
+        # rows per arm would bloat the artifact for no downstream reader.
+        report["pair_ranks"] = {
+            (r["collection"], r["query"], r["target"]): r["rank"] for r in results
+        }
     report["worst_examples"] = [
         {k: r[k] for k in ("collection", "query", "target", "rank", "similarity")}
         for r in sorted(results, key=lambda r: -r["rank"])[:10]
@@ -457,13 +517,14 @@ def main() -> int:
 
     arms = args.arms
     if arms is None:
-        arms = []
-        for tag in config.BAKEOFF_ARMS:
-            store = common.EmbeddingStore(out_dir, config.COLLECTIONS[0], arm_tag=tag)
-            if store.ids_path.exists() or store.npy_path.exists():
-                arms.append(tag)
+        arms, skipped = discover_arms(out_dir)
+        print("\nARM DISCOVERY")
+        for tag in arms:
+            print(f"  include {tag}")
+        for tag, reason in skipped:
+            print(f"  skip    {tag:22s} {reason}")
         if not arms:
-            print("\nno arm has output under " + str(out_dir))
+            print("\nno arm has complete output under " + str(out_dir))
             return 1
 
     reports = []

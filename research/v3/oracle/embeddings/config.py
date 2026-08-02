@@ -146,14 +146,19 @@ DINOV3_BLOCK_REASON = "gated=manual; 401 GatedRepoError with no HF_TOKEN availab
 # and warns on every load; `embed.py --pin-arm-weights <tag>` fills it in.
 UNPINNED_WEIGHTS = None
 
-# [UNCALIBRATED] Known confound in the bake-off, recorded so no one reads the
-# result as purely architectural: the arms run at different input resolutions
-# (SigLIP2 384, PE-Core 336, DINOv2 224). If DINOv2 loses narrowly, run the
-# ARM_DINOV2_HIRES arm at 392 before concluding anything about the architecture.
+# [MEASURED] The resolution confound was real but has now been SETTLED, on
+# 2026-08-02, by running ARM_DINOV2_HIRES (the same DINOv2 weights at 392 px
+# instead of 224 px) over the full corpus.
+#
+# The result went the opposite way to the worry. More pixels made retrieval
+# WORSE: R@1 fell from 0.7892 at 224 px to 0.7544 at 392 px, a paired McNemar
+# p=2e-81 over 24,648 pairs. So DINOv2's standing was never propped up by
+# resolution -- it was the LOWEST-resolution arm in the bake-off and still led.
+# Any remaining differences between arms are architectural, not per-pixel budget.
 ARM_RESOLUTION_CONFOUND = (
-    "arms run at their own pretraining resolutions (384/336/224), so a narrow "
-    "loss may be resolution rather than architecture; ARM_DINOV2_HIRES exists to "
-    "settle that case"
+    "settled 2026-08-02: raising DINOv2 from 224 px to 392 px LOWERED R@1 from "
+    "0.7892 to 0.7544 (McNemar p=2e-81, n=24648), so the arms' differing input "
+    "resolutions do not explain the ranking; the lowest-resolution arm led"
 )
 
 # [INHERITED] ImageNet channel statistics, the normalization DINOv2 was trained
@@ -264,6 +269,12 @@ DEFAULT_ARM = ARM_SIGLIP2
 
 # [REVIEWED] Arms the bake-off compares by default. ARM_DINOV2_HIRES is excluded
 # because it is a tiebreaker, not a contender — enable it deliberately.
-BAKEOFF_ARMS = (ARM_SIGLIP2, ARM_DINOV2, ARM_PE_CORE, ARM_DINOV3)
+# [REVIEWED] Display order for the bake-off table. This is an ORDERING hint only:
+# eval_pairs.discover_arms() derives what actually gets scored from config.ARMS
+# plus completeness on disk. It used to be the gate, which is why the
+# ARM_DINOV2_HIRES tiebreaker was silently never scored despite having output.
+BAKEOFF_ARMS = (
+    ARM_SIGLIP2, ARM_DINOV2, ARM_PE_CORE, ARM_DINOV3, ARM_DINOV2_HIRES,
+)
 
 BAKEOFF_FILENAME = "bakeoff.json"
