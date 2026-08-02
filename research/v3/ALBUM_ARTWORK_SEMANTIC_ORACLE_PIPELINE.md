@@ -521,9 +521,15 @@ filename. It would require content-based matching (see §12).
    The upstream CDN did not upscale beyond source. **Always read dimensions from
    the header.** Any filename-derived resolution filter would badly overstate
    what is available.
-2. **The un-suffixed file is not always the largest.** 291 artworks have a
-   rendition bigger than their extension-less "original". Select the best rendition
-   by measured dimensions, never by name.
+2. **The un-suffixed file is not always the largest.** *[Corrected 2026-08-02 by the
+   holdout freeze's header survey: this trap does not reproduce as stated. Measured from
+   headers, **zero** artworks have a derived rendition larger than their un-suffixed
+   original — 503 artworks merely have a rendition whose *filename claims* to be bigger,
+   which is trap #1 restated. The real hazard is **ties**: 502 artworks have a derived AVIF
+   at exactly the original's pixel area (CDN re-encode at same size); a naive tie-break can
+   silently pick the re-encoded AVIF over the source JPEG/PNG. Tie-break: area →
+   un-suffixed original wins → lexicographic path.]* Select the best rendition by measured
+   dimensions, never by name.
 3. **AVIF decode is a dependency.** Over half the files are AVIF, which needs
    `pillow-avif-plugin` or a libavif-backed loader. Mostly these are the small
    derived thumbnails (AVIF median 333, only 5.8% above 640), so best-per-artwork

@@ -34,7 +34,7 @@ chaotic → ~0.
   corpora then fully opaque); an input with genuinely transparent pixels is flagged loudly,
   never silently flattened. Disc scans also exist as opaque JPEGs — the oracle's
   `physical_media_scan` question covers those. Per-file data:
-  `~/.claude/jobs/e3ef7e22/tmp/pixel_results.json`.
+  `research/v3/data/source-surveys/pixel_results.json` (committed copy).
 
 ## 2. Output contract
 
@@ -197,14 +197,25 @@ canary).
   shards on demand; fresh-artwork rounds stay the idle-time default.
 - **Holdout in `music-artworks/`: yes.** It is complete (the reviewer's personal library — the
   closest set to the deployment distribution, and no more where it came from). Reserve a
-  random ~15% of the ~3,097 album-artwork candidates, stratified by resolution band,
+  random ~15% of the album-artwork candidates, stratified by resolution band,
   multi-rendition artworks kept whole on one side of the line; freeze the list in a committed
   file. Excluded from review, dev batches, outlier mining, and tuning — touched only for
-  end-of-campaign claims. The resolution ladder draws from the non-holdout 85%.
-- **v2-3 verdicts are NOT imported into the v3 warehouse.** Their value is distilled into two
+  end-of-campaign claims. The resolution ladder draws from the non-holdout remainder.
+  *Frozen 2026-08-02:* the transparency exclusion reduced candidates from 3,097 square
+  artworks to **2,757** (324 square real-transparency files were disc scans/cutouts, all
+  single-rendition); **414 artworks / 1,098 files held out (15.02%)**, seed pinned `[HELD]`,
+  byte-reproducible. See `research/v3/data/holdout/HOLDOUT.md`.
+- **v2-3 verdicts are NOT imported into the v3 warehouse.** Their value is distilled into
   purpose-built fixture files consumed only by mechanical checks: **known-bad palettes** (feeds
-  the known-worse gate) and **endorsements** (feeds the concordance dashboard and reachability
-  diagnostics), each entry carrying scoping metadata (rendition, old contract version).
+  the known-worse gate), **endorsements** (feeds the concordance dashboard and reachability
+  diagnostics), and **acceptable** (a "not-rejected" baseline tier for the dashboard, never an
+  endorsement), each entry carrying scoping metadata (rendition, old contract version).
+  *Consumption semantics (2026-08-02):* the known-worse gate keys on the **role signature**
+  (four role colors, matched within the same-color bar), never the full palette signature —
+  v3's decoupled-stop gradients make full-signature matches structurally impossible, and
+  gradient fields on legacy entries are advisory only. Contested entries (same palette graded
+  both good and bad in the source data — 2 exist) **warn, never block**; the hard gate set is
+  the uncontested entries.
   Rationale: the data's value flows through exactly the two sanctioned channels; nothing can
   mistake them for current verdicts because they are not verdicts anywhere — and the v3
   warehouse schema (dual grades, code fingerprints) structurally rejects old-format records.
