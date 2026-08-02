@@ -1,0 +1,187 @@
+# V3 Phase 0 — Working Decisions
+
+**Status:** working decisions, discussed 2026-08-02. Updated as discussions settle.
+**Scope:** input policy · output contract · metrics. Referenced from `V3_PLAN.md` §6.
+
+---
+
+## 1. Input policy
+
+**The palette attaches to the file, not the artwork.** A rendition genuinely lacking
+information (a small accent blended away at low resolution) cannot owe us that information.
+What attaches to the *artwork* is an expectation: renditions should mostly agree, and
+disagreements should be **explainable by genuine information loss, not chaos**. The
+cross-rendition metric classifies each disagreement: *informed* (the differing role's support
+falls below resolvability at the smaller size — fine and expected) vs *chaotic* (both
+renditions had the same information; the pipeline diverged — the robustness failure). Target:
+chaotic → ~0.
+
+- **No resampling, ever.** The algorithm processes native resolution. Never upscale.
+  Downscale-above-W is at most a *future performance optimization*, admissible only with
+  measured proof of palette-equivalence above W. (Not to be confused with the oracle's 640 px
+  normalization, which is label-production policy, not algorithm policy.)
+- **Pinned decoder**, versioned input-preprocessing, version stamped on every verdict.
+- **Resolution agnosticism as a design constraint.** All *content* statistics scale-free
+  (area fractions, normalized coordinates — never raw pixel counts). Absolute pixel constants
+  permitted only for genuinely pixel-scale phenomena (sensor/compression noise floors), each
+  individually justified and tested under the resolution ladder. The
+  informed-vs-chaotic metric is the empirical detector for violations.
+- **Transparency: resolved by measurement (2026-08-02).** The sharded corpus is 100% JPEG
+  (checked exhaustively by magic bytes) — no transparency. `music-artworks/` has 797 PNGs with
+  real transparent pixels; visual inspection shows they are **not album artwork** — disc scans
+  (circular cutouts, ~26–31% transparent) and artist press-photo cutouts (59–89% transparent).
+  Policy: exclude all real-transparency files from the album-artwork candidate set (both
+  corpora then fully opaque); an input with genuinely transparent pixels is flagged loudly,
+  never silently flattened. Disc scans also exist as opaque JPEGs — the oracle's
+  `physical_media_scan` question covers those. Per-file data:
+  `~/.claude/jobs/e3ef7e22/tmp/pixel_results.json`.
+
+## 2. Output contract
+
+- Roles `{background, surface, foreground, accent}` (flat colors, exact source pixels) +
+  `gradient: null | {stops: [2..4]}` (source pixels) — stops decoupled from role colors.
+- **Guide-stop semantics for stops 3–4.** A 3rd stop is allowed when the artwork genuinely has
+  a 3-color linear gradient. Stops 3–4 are otherwise *guides*: they exist only to pull the
+  rendered OKLab interpolation onto the artwork when the 2-stop straight line demonstrably
+  passes through off-artwork colors. Never to expand colorspace coverage or fit a metric.
+  Curvature carries a banding cost when rendered, so the winning gradient is the **flattest
+  path that stays on-artwork** — excursion reduction justifies a stop; meandering is forbidden.
+- **Geometry is opportunistic.** Detection is geometry-agnostic (linear, radial, conic — all
+  publish a t-parameterized color path; the consumer renders it as a 135° linear gradient). An
+  optional `geometry` field is populated only when fitting computed it anyway; never computed
+  for the sake of the output.
+- **Explicit collapse flags** (`surfaceCollapsed`, `accentCollapsed`) — makes collapse
+  countable instead of implicit hex equality.
+- **Metadata block:** algorithm version, preprocessing version, input content hash, source
+  rendition + processed size. This is what keeps every verdict permanently scopable.
+- **The review-UI preview renderer is part of the contract** — gradient verdicts are verdicts
+  about a rendered ramp; pin the renderer alongside the schema.
+- **Minimum-contrast user parameters**, all defaulting to none: `minTextContrast` (foreground
+  vs background, surface, and every published stop) and `minAccentContrast` (accent vs same —
+  accent is not text; its stakes are lower and it gets its own knob). Unit: APCA Lc, evaluated
+  internally on raw pre-clamp values (the public unit has a dead band in (0, 7.3); the
+  implementation must not). Along a gradient: the **indistinct fraction** (length of ramp below
+  the bar, computed on raw values to avoid the zero-clamp phantom-flip artifact) — floor +
+  max-fraction parameter shape; exact defaults open, pathology-census discussion.
+- **Where parameters act is deliberately NOT decided** — "winner-stage repair" presumes
+  v2-3's shape. The paradigm-neutral requirement, which becomes a bake-off criterion:
+  (a) parameters at defaults → byte-identical to the unparameterized algorithm;
+  (b) enabling a floor may change only artworks that actually violate it — zero collateral.
+
+## 3. Metrics
+
+- **One ruler.** A single same-color bar used everywhere (agreement, movement, distinctness).
+  Proposed: Euclidean OKLab distance (same space as all other math; CIE76's known weaknesses
+  sit exactly in our dark/near-neutral range), threshold **empirically bracketed by the
+  reviewer** in one purpose-built round spanning dark/light × neutral/saturated pairs — also
+  testing whether one threshold survives all four quadrants. v2-3's 3.3 CIE76 is the prior,
+  not the answer.
+- **Gates** (binary, block integration): determinism (same buffer → byte-identical);
+  invariance (relabeling, iteration order → zero changes); degenerate sweep (zero crashes);
+  known-worse (zero outputs matching reviewed-bad palettes); contract-invariant validation
+  (every published palette passes the contract's own invariants, corpus-wide);
+  byte-identity for OFF mechanisms. Exhaustive for what is currently known; every new failure
+  class gets asked "should this be a gate?".
+- **Tracked metrics** (dashboards, drive iteration between review batches): cross-rendition
+  agreement with informed/chaotic split (644 pairs + ladders); perturbation stability
+  (±1-LSB dither, re-encode; v2-3 baseline 0/114 unmoved); warehouse concordance (parity
+  tracker, never a fitting target); pathology census (list TBD); semantic concordance vs
+  oracle (both directions); parameter honesty (tunable-site count, provenance fraction,
+  reviewed-vs-unseen stability ratio, healthy ≈ 1.0).
+- All corpus metrics per artwork (dedup on artwork id), stratified by resolution tier.
+
+## 4. Contract invariants and pathology census (discussed 2026-08-02)
+
+**Framework — one list, three confidence tiers, movement by evidence:**
+
+- **Invariant** — never legitimate on any artwork. A violating palette is invalid; publication
+  is refused or repaired; a violation reaching the corpus is stop-the-line. Enforced by the
+  contract-validation gate.
+- **Pathology** — almost always wrong, but rare legitimate instances exist or verdicts are
+  lacking. Counted corpus-wide per run; instances generate review batches.
+- **Distribution shift** — a property of the corpus, not of one palette: collapse rates,
+  gradient rates, role-permutation churn, mover-set composition. Catches asymmetric mechanisms
+  that per-palette checks structurally cannot see.
+
+Promotion/demotion is evidence-driven both ways: unanimously-bad reviewed instances promote a
+pathology to invariant; an invariant that ever blocks an endorsed palette is demoted — the
+reviewer outranks the rule. Meta-rules: **validation runs on the final published object only**;
+**any repair re-validates the entire palette** (v2-3's first repair relocated the defect in
+13/15 cases); **invariant thresholds reuse the one ruler** or carry measured provenance.
+
+### Invariants
+
+1. **Schema validity.** Four roles present, valid sRGB, stops 2–4 with ordered positions in
+   [0,1], collapse flags consistent, metadata block complete.
+2. **Source support.** Every published color (roles and stops) is an exact pixel of the input,
+   meeting the population floor and spatial-spread test (thresholds need provenance; shape
+   settled).
+3. **Palette-wide distinctness.** Every pair of published colors distinct above the same-color
+   bar, with exactly two exception classes:
+   - *Sanctioned collapses:* surface→background and accent→foreground — **exact** equality with
+     the collapse flag set; near-identical-but-unequal, or equal-without-flag, are violations.
+   - *Field roles vs stops:* background/surface may coincide with stop colors (with decoupled
+     stops this is the natural case).
+   Subsumes: stop distinctness, invisible accent (invariant per reviewer 2026-08-02: an
+   invisible accent is never valid), foreground-matches-a-stop ("white on white"),
+   black-on-black fg/bg, and non-degenerate-gradient (distinct stops ⇒ distinct endpoints).
+4. **No flat pair at exact-zero luminance contrast.** Foreground vs background and vs surface —
+   invalid regardless of hue. Accent vs background and vs surface likewise, with its **own
+   threshold**. "Exact zero" is operationally a small interval `|raw APCA| < ε` on the **raw
+   pre-clamp scale** — necessarily raw, because the public Lc scale clamps everything below
+   ~7.3 to 0 and cannot distinguish "truly invisible" from "very low but real". Each ε is
+   **measured, not chosen** (from the distribution of raw values over corpus pairs). Open measurement question for the accent: text readability at equal luminance is
+   luminance-driven, but chromatic icons at equal luminance can be visible — the accent floor
+   may properly live in color distance (already enforced by distinctness) or at a lower
+   luminance epsilon; the bracketing round shows flat equal-luminance chromatic accent pairs
+   and the reviewer's eyes decide.
+5. **Transparent input refused loudly** (§1), never silently flattened.
+
+### Pathology census (counted per run; instances feed review batches)
+
+- **P1 — Off-artwork ramp:** rendered gradient's worst excursion from populated artwork colors
+  above the excursion bar, after guide stops. Bar inherited (2.5× same-color) — recalibrate in
+  the bracketing round.
+- **P2 — Indistinct ramp exposure:** foreground's indistinct fraction over the ramp above a
+  reference fraction, tracked at a fixed internal bar even when user parameters are off.
+- **P3 — Collapse on a chromatically rich artwork** and **P4 — near-neutral palette on a vivid
+  artwork:** expected mostly legitimate; primary job is outlier mining for review batches
+  (v2-3's accidental trial of this flag class hit a 25% defect rate).
+- **P5 — Identity coverage shortfall:** a major artwork hue direction (large mass, visual
+  weight) with no published color near it — v2-3's most frequent complaint class (27 notes).
+  Not an invariant: the all-one-hue rule means neutrals-only can be correct, and minor hues
+  must never be force-included. Acute special case: a signature color that reached **no**
+  published role.
+- **P6 — Oracle cross-checks** (once the oracle lands). The VLM labels what the artwork *is*
+  ("flat background" / "one shaded surface" / "several distinct areas"); the algorithm decides
+  what to *publish*. Comparing them corpus-wide finds likely mistakes without human review —
+  but never as an exact-match test, because several palettes can be valid for one artwork.
+  Each (label, decision) combination goes into one of three buckets:
+  1. *Contradiction* — VLM says flat background, we published a gradient (or: one shaded
+     surface, we published flat — softer). Almost certainly our mistake → flagged for review.
+  2. *Agreement* — nothing to do.
+  3. *Can't tell* — VLM says several distinct areas, we published a gradient. Could be good
+     (sky+sea as one blue gradient) or bad (sky+grass merged). The label can't distinguish, so
+     no per-artwork flags: just occasional small review samples, plus watching the bucket's
+     *count* — if a code change suddenly moves hundreds of artworks into this bucket,
+     something is probably wrong even if no single one is provably bad.
+  Accent check: flag only "the VLM says this artwork has a signature color, and that color
+  appears in no published role." Signature on the foreground with a collapsed accent = no
+  flag, correct behavior. Oracle checks are review flags, never gates.
+
+### Distribution-level census (per integration / version)
+
+Gradient rate moved in either direction (neutrality census); collapse rates per role
+(asymmetric-lever detector); role-permutation rate (same colors, reshuffled roles — 16% of
+v2-3 corrections); mover-set composition (any mover without the targeted defect = cascade
+canary).
+
+## 5. Open items
+
+- Same-color-bar bracketing round (ruler unit + threshold; §3) — now also carries: the accent
+  flat-zero unit/epsilon question (§4 invariant 4), the excursion bar recalibration (P1), and
+  flat equal-luminance chromatic accent pairs.
+- Foreground exact-zero epsilon: measurement-only (raw APCA distribution over corpus pairs).
+- ~~Contrast-parameter defaults~~ **Settled (2026-08-02):** with no parameters set, the
+  algorithm enforces the §4 invariants and nothing else. No hidden contrast opinions anywhere
+  ("no parameter means no behavior" — reviewer).

@@ -4,7 +4,9 @@
 **Working model:** Claude Fable as architect/orchestrator, Opus subagents doing all implementation
 work in isolated arms, Flo as the sole reviewer and ground truth.
 **Companion documents:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` (dev-time VLM oracle),
-`ORACLE_QUESTION_SET.md` (proposed oracle questions).
+`ORACLE_QUESTION_SET.md` (proposed oracle questions), `PHASE_0_DECISIONS.md` (input policy,
+output contract, metrics — working decisions), `REVIEW_UI.md` (review server, verdict model,
+warehouse, oracle-validation mode).
 
 ---
 
@@ -135,12 +137,12 @@ co-equal deliverable with `artwork_labels`, and mask quality goes into the human
 
 ### Phase 0 — instruments (no palette code)
 
-- Port warehouse + review UI; keep the v2-3 review machinery verbatim (blinded 4–10 item
-  batches, content-hash side shuffling, key never served, calibration rounds with repeats,
-  fresh-artwork rounds as the idle-time default).
-- **Decide the canonical-input policy** — informed by the resolution ladder, decided day one;
-  every verdict is scoped to a rendition.
-- Fix the output contract (render stops ≠ role colors, multi-stop capable).
+- Build the review server + warehouse per **`REVIEW_UI.md`** — v2-3's proven machinery
+  (blinded 4–10 item batches, content-hash side shuffling, key never served, calibration
+  rounds with repeats, fresh-artwork rounds as the idle-time default) plus the v3 changes
+  (standing queue server, dual grades, agent-derived tags, oracle-validation mode).
+- Input policy, output contract, and metrics per **`PHASE_0_DECISIONS.md`** (working
+  decisions, discussed 2026-08-02).
 - Build the gates before the pipeline: relabel-invariance test, dither/re-encode stability
   canary, repeated-extraction canary, degenerate-artwork sweep, the edge-case corpus (as
   tests).
