@@ -1,0 +1,575 @@
+# Pointing models and SAM point prompts — feasibility scout
+
+**For:** the reviewer and the orchestrator. **Date:** 2026-08-03. **Status:** paper only.
+**No GPU was used, no model was downloaded, nothing was loaded.** Every claim below is either
+read out of source already on this disk, or read out of the HuggingFace metadata API.
+
+**Why this exists.** The reviewer asked:
+
+> "isn't there a model that is particularly good at pointing? I think it was in our list at some
+> point but we never tried it, because it was specialised in pointing."
+
+And the motivating move: `GROUND_FREETEXT_SYNTHESIS.md` concludes that the surviving human question
+about ground is **not** "what kind of ground is this" but **"which pixels are ground"** — a pointing
+question. SAM's native prompt modes include point prompts, which this campaign has never used.
+Pointing model → points on the ground → SAM point-prompt segmentation → a background mask directly.
+
+---
+
+## The one-page answer
+
+| | |
+|---|---|
+| Was a pointing model ever on our written list? | **No** — zero hits in the tree and in all 508 commits. It was never proposed and never rejected. But its absence closed three doors that are still shut (§1). |
+| Does a pointing specialist exist on our stack? | **Yes, and better than expected.** `mlx-vlm 0.6.8` — the version already installed and pinned — ships a dedicated `molmo_point` model module. |
+| Are there MLX weights? | **Yes.** `mlx-community/MolmoPoint-8B` in 8 quantizations, uploaded 2026-03-21. |
+| Does mlx-vlm's SAM 3.1 support point prompts? | **The weights do; the code path does not.** All 145 interactive tensors are present in the snapshot we already have. Nothing calls them. |
+| Is adding them plumbing or missing weights? | **Plumbing.** ~80–150 lines, in our own code, no mlx-vlm patch, no download. |
+| Probe cost | **one 9–11 GB download + ~15–20 min of GPU slot.** |
+| Biggest single risk | a coordinate-convention ambiguity in untested MLX code — see §3.4. It is cheap to settle and it must be settled first. |
+
+---
+
+## 1. Provenance — was it on our list?
+
+**It was never on the written list.** Not in the working tree, and not in the history.
+
+**[MEASURED]** 2026-08-03, across all file types, excluding `node_modules` and `.claude/worktrees/`:
+
+- `molmo`, `pixmo`, `allenai`, `allen ai`, `ai2` — **zero hits** in the working tree; **zero hits**
+  under `git grep HEAD`; **zero commits** matching under `git log --all -i --grep` (508 commits).
+- `florence`, `kosmos`, `cogvlm`, `llava`, `paligemma`, `owlv2`, `owl-vit`, `groundingdino`,
+  `seem`, `xdecoder`, `clipseg` — zero hits in `research/`.
+- `visual grounding`, `referring expression`, `keypoint`, `point prompt`, `point_prompt`,
+  `positive point`, `negative point`, `box prompt`, `geometric prompt`, `click prompt`,
+  `mask prompt` — **zero hits anywhere.**
+- The words "pointing"/"points" occur ~90 times in `research/v3` and are **always** percentage
+  points, "points at" (a symlink or reference), or `SweepPoint` in the mask-quality sweep code.
+  Not one instance refers to a model capability.
+
+**The candidate lists that do exist, and what is on them.** The repo has a rich model-selection
+record; a pointing model is on none of it:
+
+| List | Members | Where |
+|---|---|---|
+| VLM candidates (the "are we using the best models" answer) | Qwen3-32B-dense, Gemma-3-27B, InternVL3.5, GLM-4.5V — **all four enumerated** | `reviews/phase-0-adversarial/unrealized-ideas.md:289-307` |
+| VLM bake-off arms (registered, pinned) | `Qwen3-VL-30B-A3B-6bit`, `Qwen3-VL-32B-8bit`, `gemma-3-27b-it-8bit`, `InternVL3_5-30B-A3B-4bit` (blocked) | `oracle/bakeoff/README.md:60-63` |
+| Embedding arms | siglip2-so400m, dinov2-vitl14 (winner), dinov2-vitl14-392, pe-core-l14, dinov3-vitl16, dinov3-vith16plus | `oracle/embeddings/config.py:155-160` |
+| Pipeline roster | SigLIP/CLIP, SAM 3.1, Qwen3-VL 30B, Qwen3-VL 32B | `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md:66-73` |
+
+The pipeline doc has **no** "candidate models" or "models considered" section in its 996 lines. The
+only model *class* it explicitly rejects is monocular depth (lines 717-722). Nothing pointing-shaped
+was ever proposed and turned down.
+
+**Three places where the gap is visible in the doc, and this is the part worth the reviewer's
+attention.** The absence is not a clerical oversight — it is load-bearing in three separate
+decisions, each of which reads differently once you know a pointing model was available:
+
+1. **Spatial disambiguation was declared impossible and designed around.**
+   `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md:696-716`:
+
+   > "SAM 3 segments *all* instances of a category and ignores instance-level spatial constraints
+   > in the prompt. 'The figure on the left' returns all figures. **Do not write prompts that
+   > depend on spatial disambiguation.**"
+
+   True of *text* prompts. Not true of the model, which has point prompts (§3.3). The rule that
+   came out of this is a rule about one prompt mode, written as though it were a rule about SAM.
+
+2. **The salience question was attacked with ten more text phrasings and then abandoned.**
+   `data/sam/SAM_DESIGN_NOTES.md:70-111` — "The attributive-colour family is dead", "The
+   salience-noun family is mostly dead too", and on one image "every one of the ten phrasings
+   returns nothing." The conclusion drawn was that the capability does not exist. Supplying a
+   coordinate from elsewhere is never raised as the alternative.
+
+3. **The VLM→SAM handoff was architected as noun-passing only.**
+   `ORACLE_QUESTION_SET.md:645`:
+
+   > "**SAM masks nouns it is given. The VLM is the thing that knows which noun to give it.**"
+
+   Coordinates are never contemplated as the thing passed across that seam.
+
+**The nearest the repo comes to the idea** is `ORACLE_QUESTION_SET.md:370` — and it is an
+instruction to a *human*, not a model: *"Can you point to two or more separate areas of the
+background, each with its own colour?"* We have been asking the reviewer to point for some time.
+
+**How to read the reviewer's memory.** The recollection "it was in our list at some point" does not
+match any list in this repo. It is most likely a memory from outside it — Molmo's entire public
+identity when the 0924 family shipped was pointing. **The instinct is right even though the
+provenance is not ours, and that is the better outcome:** there is no prior rejection to
+re-litigate, no earlier reasoning to recover, and no argument on record against trying it. The
+option was never rejected. It was never seen.
+
+---
+
+## 2. Availability on this stack
+
+### 2.1 The decisive fact: mlx-vlm already supports it
+
+`mlx-vlm 0.6.8` — **the version already installed** in `research/v3/oracle/sam/.venv`, and the
+version `config.py` pins as `RUNTIME_VERSION_PIN` because it is the only one carrying
+`mlx_vlm.models.sam3_1` — also ships three Molmo modules:
+
+```
+mlx_vlm/models/molmo/          # Molmo 0924 family
+mlx_vlm/models/molmo2/         # Molmo 2
+mlx_vlm/models/molmo_point/    # MolmoPoint — the pointing specialist
+```
+
+`molmo_point/` is 2,254 lines across 8 files, including a purpose-built
+`point_utils.py`. **This is not a generic VLM with a grounding prompt bolted on — it is a
+distinct architecture with point prediction in the model config** (`patch_location`,
+`no_more_points_class`, `patch_embed_dim`, dedicated `patch_token_id` / `subpatch_token_id` /
+`location_token_id` special tokens).
+
+**[MEASURED]** `ls .venv/lib/python3.14/site-packages/mlx_vlm/models/`, 2026-08-03.
+
+An MLX weight conversion without a matching `mlx_vlm.models.*` implementation is useless. Here we
+have both. That is the whole reason this route is cheap.
+
+### 2.2 MLX weights on HuggingFace
+
+**[MEASURED]** HF metadata API, 2026-08-03. Sizes are the sum of the actual files in the repo.
+
+| Repo | Revision (sha) | Uploaded | Download |
+|---|---|---|---|
+| `mlx-community/MolmoPoint-8B-4bit` | `9bab196f867c` | 2026-03-21 | **7.24 GB** |
+| `mlx-community/MolmoPoint-8B-6bit` | `52b27064f2f2` | 2026-03-21 | **9.01 GB** |
+| `mlx-community/MolmoPoint-8B-8bit` | `e295e68b2ee5` | 2026-03-21 | **10.77 GB** |
+| `mlx-community/MolmoPoint-8B-fp16` | `0a60033b4e48` | 2026-03-21 | **17.38 GB** |
+
+Also present and not recommended for this probe: `-5bit`, `-mxfp4`, `-mxfp8`, `-nvfp4`.
+
+Upstream originals: `allenai/MolmoPoint-8B` (the one we want), `allenai/MolmoPoint-GUI-8B` (GUI
+screenshots — wrong domain), `allenai/MolmoPoint-Vid-4B` (video). The `Molmo2-8B` family also has
+MLX conversions, but `MolmoPoint` is the pointing-specialised sibling and is the right pick.
+
+Note the 4-bit repo is 7.24 GB, not the ~4.5 GB a naive 8B×4bit estimate suggests — the vision
+tower and the enlarged embedding table (152k+ vocab, including the point tokens) are not quantized
+down as far. Do not budget from the parameter count; budget from the table above.
+
+**Recommendation: `-8bit` (10.77 GB) for the first probe.** Not because 6-bit will not work, but
+because the probe's purpose is to decide whether *pointing at album-cover grounds* works at all. If
+it fails at 6-bit we cannot tell whether the model or the quantization failed, and we would run it
+again at 8-bit anyway. Buy the attributable answer once. If 8-bit points land well, re-test at
+4-bit as a **cost** question, separately — that is a different experiment with a different purpose.
+
+### 2.3 Machine headroom
+
+**[MEASURED]** 2026-08-03. 103 GB unified memory; MolmoPoint-8B at 8-bit (~11 GB) and SAM 3.1
+bf16 (3.49 GB) can be **co-resident with room to spare** — the pointing pass and the segmentation
+pass do not need to be separate processes, which removes a whole class of hand-off plumbing.
+
+Disk: 114 GB free, but the volume is **88% full**. An 11 GB download is fine; it is worth saying
+out loud before a habit of pulling fp16 variants forms.
+
+### 2.4 How good is it at pointing? — what we can and cannot claim
+
+**What we can claim, from source on this disk:** MolmoPoint is *architecturally* a pointing model,
+not a general VLM with a pointing prompt. The evidence is in the config and the token vocabulary,
+not in a benchmark table:
+
+- Dedicated special tokens `patch_token_id`, `subpatch_token_id`, `location_token_id` (151947-9).
+- A `3x3` sub-patch localization head (`patch_location`), i.e. spatial resolution finer than the
+  ViT patch grid — a design choice that only makes sense if coordinates are the output.
+- `no_more_points_class` — a first-class "stop / nothing more to point at" class.
+- A separate `point_utils.py` decoding pipeline with no analogue for any other model in mlx-vlm.
+
+Bolting pointing onto a chat VLM does not produce any of that. **This is a stronger warrant than a
+published score would be**, because it tells us the capability is in the model's output
+representation rather than in its prompt-following.
+
+**What we cannot claim:** I have **not** verified published pointing-accuracy numbers (PixMo-Points,
+Point-Bench, or third-party MolmoPoint-vs-Qwen comparisons) against sources, and this document
+therefore quotes none. **Do not let a number enter this campaign's reasoning by way of my
+recollection.** Two things follow, and both are fine:
+
+1. The probe in §4 is a *direct* measurement on our own 15 covers against the reviewer's own prose.
+   That is better evidence for our decision than any public benchmark, because "point to the
+   background of an album cover" is not what those benchmarks measure. Public numbers would only
+   have told us whether to bother running §4 — and the architecture already tells us that.
+2. If the orchestrator wants the published comparison for the record, it is a web task, not a GPU
+   task, and it does not block anything here.
+
+### 2.5 Alternatives — for the record
+
+The alternatives question is largely moot because the primary route works natively. Recorded so the
+next reader does not re-derive it:
+
+- **PyTorch MPS.** Not needed. Would mean `trust_remote_code` custom modeling code on MPS, which is
+  the slowest and most fragile path on this hardware. Skip.
+- **llama.cpp / GGUF.** Vision support is per-architecture and MolmoPoint's point-token head is
+  exotic. No reason to look.
+- **Qwen3-VL grounding.** Already on our stack (`mlx_vlm/models/qwen3_vl`). But its grounding mode
+  emits **boxes**, and a box is the wrong primitive here: the question is *which pixels are ground*,
+  and a box around a diffuse, frame-filling, possibly disconnected ground says almost nothing. A
+  point can be placed *inside* an irregular region; a box cannot describe one. Where Qwen3-VL is
+  genuinely useful is as the **cross-check** — if the two models point/box at different regions on
+  the same cover, that disagreement is itself evidence about whether the ground is well-defined,
+  which is exactly the reviewer's `000c4d52`/`000fa9b5`/`krafty` ambiguity.
+- **`moondream2` / `moondream3`** are also present in mlx-vlm and Moondream documents a `point`
+  skill. Worth knowing as a **small, fast** second opinion (a 2B-class model) if MolmoPoint proves
+  too slow to run corpus-wide. Not the first probe.
+- **`locateanything`** is also in the installed mlx-vlm module list and the name suggests
+  localization. Not investigated. Noted so it is not missed twice.
+
+---
+
+## 3. Interface
+
+### 3.1 What MolmoPoint emits
+
+**Not** the old Molmo `<point x="..." y="...">` XML. MolmoPoint uses **special tokens**, decoded
+against per-image metadata. From
+`.venv/.../mlx_vlm/models/molmo_point/point_utils.py`:
+
+```python
+EXTRACT_POINT_TRIPLE = re.compile(
+    r"<POINT_(\d+)> ?<POINT_(\d+)> ?<POINT_(\d+)> ?([0-9]+)"
+)
+```
+
+Each point is a **triple plus an id**: `(patch_id, subpatch_id, location_id, example_id)`. Those are
+indices into the vision tower's patch grid, not coordinates. `extract_points_from_text()` converts
+them to pixels using metadata the *image processor* produced:
+
+```
+extract_points_from_text(output_text, pointing_metadata, no_more_points_class=True,
+                         patch_location="3x3") -> List[(object_id, image_num, x, y)]
+```
+
+Three properties that matter for us:
+
+1. **Output is in ORIGINAL image pixel coordinates.** The metadata carries
+   `image_sizes = [(w, h) for each input image]` and the final step is
+   `(p_x / mapping.shape[1]) * w`. No rescaling on our side. **[MEASURED]** source read,
+   `point_utils.py:52-71`, `image_processing.py:336-344`.
+2. **Multiple points are native.** The regex is a `finditer` over the whole output, and each point
+   carries an `object_id`, so "point to all X" returns a *set* of grouped points in one generation.
+   This is the property a taxonomy question cannot have and a pointing question can: it answers
+   "which parts" in the plural, which is precisely the reviewer's `krafty` problem ("flowers on the
+   four corners").
+3. **Absence has a first-class representation.** `no_more_points_class: bool = True` in the model
+   config — the model has an explicit *no more points* class rather than being forced to emit a
+   coordinate. **This is the single most valuable property for our use.** Our whole ground problem
+   started with a reviewer pressing "none discernible" and then saying it was not true. A model that
+   can decline to point, structurally, is a model whose silence means something. Whether it
+   *actually* declines on hard covers is a probe question, not a documentation question — §4 tests
+   it explicitly.
+
+**Point precision** is quantized: one third of a pooled patch cell (`patch_location="3x3"` splits
+each patch into a 3×3 sub-grid, `point_utils.py:56-60`). With `base_image_input_size=(378,378)`,
+`image_patch_size=14`, `max_crops=24`, that is single-digit pixels on a 640 px cover — far finer
+than a SAM point prompt needs. Confirm empirically on the probe rather than trusting this
+arithmetic.
+
+### 3.2 The one gap on the Molmo side
+
+`extract_points_from_text` is **defined but never called anywhere else in mlx-vlm**. The standard
+`mlx_vlm.generate` will hand back a *string* containing `<POINT_n>` tokens; converting it is the
+caller's job. The metadata arrives by side-channel — the processor stashes it on itself as
+`self._pointing_metadata` during `__call__` (`processing_molmo_point.py:221-223`).
+
+**Cost: ~10 lines.** Generate, then call `extract_points_from_text(out, processor._pointing_metadata)`.
+The only trap is that the side-channel attribute is overwritten per call, so it must be read
+immediately after the matching `__call__` — which forbids batching images across one processor
+instance without care. Worth a comment in whatever runner uses it.
+
+### 3.3 SAM 3.1 point prompts — weights present, code path absent
+
+This is the substantive finding of the scout, and it is better news than the task framing assumed.
+
+**The weights are already on this disk.** Reading the safetensors header of the pinned snapshot
+`mlx-community/sam3.1-bf16` @ `a992e302…` (**[MEASURED]** 2026-08-03, header parse only, no load):
+
+| Key pattern | Tensors present |
+|---|---|
+| `tracker_model.interactive_sam_prompt_encoder.*` | **14** |
+| `tracker_model.interactive_sam_mask_decoder.*` | **131** |
+| `…prompt_encoder.point_embed.weight` | 1 |
+| `…prompt_encoder.not_a_point_embed.weight` | 1 |
+| `detector_model.geometry_encoder.points_{direct,pool,pos_enc}_project.*` | 6 |
+
+That is **145 tensors of interactive point-prompt machinery already downloaded**, and it is
+consistent with what `config.py` already records — `WEIGHT_LOAD_NOTE` says the manual load matches
+all 1,961 parameters `strict=True` with zero missing. Those 145 are inside that 1,961. **We have
+been loading the point-prompt weights into memory on every SAM run this whole campaign and never
+calling them.**
+
+**What is missing is only the forward path.** Three specific gaps, all read from source:
+
+1. **The detector ignores its point projections.** `sam3_1.py:29` says so in a comment —
+   `# SAM 3.1 adds point prompt projections (unused in detection-only mode)`. `GeometryEncoder`
+   constructs `points_direct_project`, `points_pool_project`, `points_pos_enc_project` and never
+   uses them.
+2. **The interactive FPN is never computed.** `_get_tracker_features()` (`sam3_1.py:162-170`) calls
+   the neck with `need_interactive=False, need_propagation=True`. The neck fully supports
+   `need_interactive=True` and has its own `interactive_convs` (`vision.py:89-91`) — it is simply
+   never asked.
+3. **The interactive decoder is constructed, loaded, and never called.** `tracker.py:125` builds
+   `self.interactive_sam_mask_decoder` with `num_multimask_outputs=4` specifically for point/box
+   prompts (the comment at `tracker.py:111` says
+   `# Interactive SAM components (for point/box prompts — single object, 4 mask outputs)`), but
+   `track_step` encodes prompts with `interactive_sam_prompt_encoder` and then **decodes with
+   `self.sam_mask_decoder`** — the 16-object multiplex *propagation* decoder
+   (`tracker.py:197-208`). The interactive decoder has no caller anywhere in the package.
+
+And the public API confirms it: `generate.py` exposes `predict_multi` (text/concept) and
+`track_video*`. **There is no single-image point-prompt entry point at all.**
+
+The prompt encoder itself is complete and correct-looking. `SAMPromptEncoder.__call__`
+(`models/sam3/sam_components.py:353-393`) takes exactly what we need:
+
+```
+points: (coords (B,N,2), labels (B,N))   # labels: 1 = foreground, 0 = background, -1 = padding
+boxes:  (B, N_box, 4)
+masks:  (B, 1, H, W)
+```
+
+`-1` padding is routed to `not_a_point_embed` (`sam_components.py:414-417`), so ragged point sets
+across a batch are already handled.
+
+**Cost to add: plumbing, not weights, and it does not require patching mlx-vlm.** `common.load_sam()`
+already builds the `Model` directly and returns it (it must, because `mlx_vlm.utils.load_model()`
+double-transposes the conv weights for this repo — `WEIGHT_LOAD_NOTE`). So we hold the live module
+tree and can call submodules ourselves. The adapter is roughly:
+
+1. `_get_interactive_features(backbone)` — a copy of `_get_tracker_features` with the flags flipped. ~6 lines.
+2. `segment_from_points(model, pixel_values, coords, labels)` — backbone → interactive FPN →
+   `interactive_sam_prompt_encoder(points=(coords, labels))` →
+   **`interactive_sam_mask_decoder`** (not `sam_mask_decoder`) with `multimask_output=True` →
+   upscale to image size, pick by IoU score. ~60–100 lines, most of it the mask post-processing
+   that `generate.py:_postprocess_mlx` already demonstrates and can be borrowed from.
+3. No memory bank, no `track_step`, no video path — a single image with points is the simplest
+   possible call into this model.
+
+**Estimate: 80–150 lines in `research/v3/oracle/sam/`, zero downloads, no upstream patch.**
+
+### 3.4 The one real risk, and it must be settled first
+
+`SAMPromptEncoder._embed_points` (`models/sam3/sam_components.py:396-404`) normalizes coordinates by
+**`image_embedding_size`** — the *feature grid* (e.g. 72×72) — not by the input image size:
+
+```python
+coords = coords + 0.5
+coords = coords / mx.array([self.image_embedding_size[1], self.image_embedding_size[0]], ...)
+```
+
+Upstream SAM normalizes by **`input_image_size`** (1024) in the equivalent function. So either
+(a) this port expects the caller to pass coordinates already in feature-grid units, or (b) it is a
+latent bug in code that has never been executed because nothing calls it.
+
+**We cannot tell from reading, and we must not guess.** Both readings produce a running program;
+only one produces masks in the right place. Fortunately it is trivially decidable and self-checking:
+**prompt a point at a known unambiguous location — the dead centre of a cover with a large flat
+ground — and see where the mask lands.** If a centre point in image pixels lands correctly, reading
+(a) is wrong and the divide is a bug; if the mask lands in the top-left ~7% of the frame
+(72/1024), the caller owes it feature-grid coordinates. Ten seconds of GPU, and it gates everything
+else. **This is step 0 of the probe.**
+
+---
+
+## 4. Probe design — pre-registered
+
+Paper only. Nothing here has been run. **The GPU is a single-owner resource; this waits for a slot
+from the orchestrator** (`CONVENTIONS.md`).
+
+### 4.1 Step 0 — the coordinate-convention gate (SAM only, no Molmo)
+
+Before any pointing model is downloaded. Load SAM as usual, hand
+`segment_from_points` a single foreground point at the image centre of
+`000bc98f315aba36374f9f93` (the one cover in the 19 the reviewer called **`flat_field`** — the
+easiest possible target). Render the overlay.
+
+- **Mask covers the flat ground →** convention (a) is wrong, coordinates are image pixels, proceed.
+- **Mask lands in the extreme top-left →** feed feature-grid coordinates; re-test; proceed.
+- **Neither →** the interactive decoder wiring is wrong. Stop and report. Do not download Molmo.
+
+**Cost: ~2 minutes, zero download.** This step alone retires the whole §3.4 risk and is worth
+running even if the pointing half is deferred.
+
+### 4.2 The image set — 15 covers, all verified present on disk
+
+**The 9 free-text covers** (`cascade-ground-truth-1-analysis.json` →
+`verdict.vocabulary_misfit_covers`) — the ones where the reviewer pressed *none discernible* and
+then described the ground in prose anyway:
+
+| # | id | path | reviewer's ground, in their words |
+|---|---|---|---|
+| 1 | `00014fb4…` | `01/ab67616d0000b27300014fb430dd1b693e653121.jpg` | "green on the left and red on the right" — two fields |
+| 2 | `00030075…` | `03/ab67616d00001e02000300752f338b6aedff856c.jpg` | one green wall, "maybe 30% of the entire picture" |
+| 3 | `00066a61…` | `06/ab67616d00001e0200066a61bbcbeadd632f7f38` | "many pink squares … one coherent background" |
+| 4 | `00075841…` | `07/ab67616d0000b27300075841f68d8cd71db368d8` | white banner "about maybe 15% of the height"; hardwood floor behind the objects |
+| 5 | `000c4d52…` | `0c/ab67616d00001e02000c4d52300a016ee65f1622` | **ambiguous** — "none of it really feels like a background" |
+| 6 | `000f0a78…` | `0f/ab67616d00001e02000f0a78a1791248aec707e3` | "black bar at the top, then a champagne bar, then a red field" |
+| 7 | `000fa9b5…` | `0f/ab67616d0000b273000fa9b53f161dc999ef557d` | **ambiguous** — collage; grey dots on white, a shaded yellow field |
+| 8 | `artofficial` | `images/artofficial.jpg` | one face near the middle is the subject, "everything else feels like the background" |
+| 9 | `krafty` | `images/krafty.jpg` | **ambiguous** — black flat field behind everything; pink leaves either ground or figure |
+
+**6 controls**, drawn from the same 19 so the comparison is like-for-like. Four of them are the
+covers where reviewer and model D **exactly matched** on ground type (from
+`slices_reported_separately_never_pooled.corpus_wide_19.exact_ground_type_match.covers_matched`) —
+i.e. demonstrably easy, by the campaign's own measurement, not by my guess:
+
+| id | path | reviewer's answer | why this control |
+|---|---|---|---|
+| `000bc98f…` | `0b/ab67616d0000b273000bc98f315aba36374f9f93` | `flat_field` | easiest possible; also the §4.1 gate image |
+| `0002dfdc…` | `02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg` | `multiple_distinct_fields` | exact match |
+| `0000269e…` | `00/ab67616d00001e020000269ead63cf2376a6b67d.jpg` | `multiple_distinct_fields` | exact match |
+| `disney` | `images/disney.avif` | `multiple_distinct_fields` | exact match; also exercises AVIF decode |
+| `elephunk` | `images/elephunk.jpg` | `multiple_distinct_fields` | exact match |
+| `skap` | `images/skap.jpg` | `full_scene` | **negative-ish control** — a scene with no separable ground; a well-behaved pointer should decline or scatter |
+
+**[MEASURED]** all 15 paths verified to exist on disk, 2026-08-03.
+
+### 4.3 Prompts — 3 variants, fixed before the run
+
+1. `point to the background` — the plain form.
+2. `point to all parts of the background` — tests the plural/`object_id` grouping that §3.2 claims.
+3. `point to the background surface behind the subject` — the figure/ground framing, because
+   `GROUND_FREETEXT_SYNTHESIS.md` §"decidability test" says test (2), *which pixels are ground*, is
+   the one that actually failed, and it is a figure/ground question.
+
+Record the raw output string for every call, not just the parsed points. A parse that silently
+yields zero points and a genuine *no more points* decline are different events and the stored row
+must distinguish them.
+
+### 4.4 Success criteria — pre-registered, and pinned to the reviewer's own prose
+
+The reviewer's free-text descriptions are unusually spatial ("on the left", "on the right", "at the
+top", "in the four corners", "about 15% of the height"), which makes them directly checkable
+against a pixel coordinate. That is the whole reason this probe is worth running, and it is why the
+criteria can be fixed in advance.
+
+**Primary (the 6 covers the synthesis calls palette-decidable — 1, 2, 3, 4, 6, 8):**
+
+- **PASS** if, on ≥5 of 6, every returned point falls inside a region the reviewer's description
+  names as ground. Concretely, per cover:
+  - **1** — points fall in the green left region and/or the red right region, **not** on the woman,
+    the dragons, or the footballs. Bonus signal: points in *both* → the plural works.
+  - **2** — points on the green wall.
+  - **3** — points on the pink squares.
+  - **4** — points on the white top banner and/or the hardwood floor, **not** on the shoes, hat, or
+    guitar.
+  - **6** — points in the black bar, the champagne bar, and/or the red field; ideally one per band.
+  - **8** — points anywhere in the illustrated field **except** the one central face the reviewer
+    named as the subject.
+- **FAIL** if points land on the named subjects on ≥2 of the 6.
+
+**Secondary (the 3 the synthesis calls genuinely ambiguous — 5, 7, 9):** there is **no correct
+answer**, so these are not scored for correctness. They are scored for **behaviour**, and the
+question is whether the model's uncertainty is legible:
+
+- Does it decline (`no more points`)? Does it return few points, or many scattered ones?
+- On `krafty` specifically: does it include the pink leaves or not? The reviewer could argue it
+  both ways. **Either answer is acceptable; an answer is the point.** If the model commits
+  confidently and consistently across the 3 prompt variants where the human could not commit at
+  all, that is a finding about the instrument and should be reported as one, not as a win.
+
+**Controls:** on the 5 non-`skap` controls, points must land on the ground the reviewer named. If
+they do not, the probe has failed at the easy end and nothing about the 9 can be concluded. On
+`skap` (`full_scene`), a decline or a wide scatter is the *expected* good behaviour.
+
+**Stop rule.** If the controls fail, stop; do not interpret the 9.
+
+### 4.5 The SAM hand-off, and what it is actually for
+
+For each cover, take the points that pass and feed them to `segment_from_points` as foreground
+(`label=1`). Optionally add the reviewer-named subject as a **background** point (`label=0`) — the
+prompt encoder supports mixed labels natively and that is exactly the disambiguation SAM's
+interactive mode exists for.
+
+Compare the resulting background mask against the **running residual/mask-subtraction experiment**
+(`RESIDUAL_EXPERIMENT_NOTES.md`). These are two independent routes to the same object: residual
+derives ground by *subtracting* everything it can name; pointing derives it *directly*. **Where
+they agree, the ground is real and we have it two ways. Where they disagree, that is the
+interesting evidence** — and given the synthesis's finding that 3 of 9 covers are ambiguous *even
+in prose*, we should expect and want disagreement on exactly those three. Agreement everywhere
+would be the suspicious result.
+
+### 4.6 Cost
+
+| Item | Estimate | Basis |
+|---|---|---|
+| Step 0 gate (SAM only) | **~2 min**, 0 GB | one image, no download |
+| MolmoPoint-8B-8bit download | **10.77 GB** | [MEASURED] HF API |
+| Model load | ~1 min | comparable to SAM's load |
+| Pointing: 15 covers × 3 prompts = 45 generations | **~4–8 min** | [ASSUMED] ~5–10 s/generation; 24-crop prefill dominates, point outputs are only a few tokens. **Unverified — this is the least certain number here.** |
+| SAM point-prompt passes | **~1–2 min** | SAM measured at 4.25 s/image for 10 concept passes (`PHASE_0_LOOSE_ENDS.md` A9: `elapsed=604.1s`, 142 images); a single point prompt is one backbone forward plus a small decoder |
+| Overlay rendering | ~1 min | `overlay.py` exists |
+| **Total GPU slot** | **~15–20 min** | |
+| **Total disk** | **~11 GB** | leaves ~103 GB free on a volume already at 88% |
+
+The download is the only large cost and it is one-time. **The step-0 gate needs no download at
+all**, so if the orchestrator wants to de-risk this before spending 11 GB, §4.1 is a standalone
+2-minute job that answers the hardest open question in this document.
+
+---
+
+## 5. Proposed loose-end and plan entries
+
+Proposed only — I own this file and nothing else. The orchestrator places these.
+
+**A-class (sharp — something downstream already leans on it):**
+
+> **A-new. SAM point prompts are loaded on every run and never called.**
+> **What.** The pinned snapshot carries 145 interactive point-prompt tensors
+> (`interactive_sam_prompt_encoder` 14, `interactive_sam_mask_decoder` 131, plus the detector's
+> three point projections). `load_weights(strict=True)` matches them; nothing in mlx-vlm calls
+> them. `track_step` even encodes prompts with the interactive encoder and then decodes with the
+> *propagation* decoder (`tracker.py:197-208`), leaving `interactive_sam_mask_decoder` with no
+> caller in the package.
+> **Why sharp.** Every "SAM can only do text/concept prompts" statement in this campaign is
+> false as stated — it is a property of mlx-vlm's exposed API, not of the model or of our weights.
+> Any design note reasoning from that limit should be re-read.
+> **Cost to close.** 80–150 lines in `oracle/sam/`, no download, no upstream patch. Gated by §3.4.
+> **Owner.** orchestrator, for scheduling. **Revives when:** the ground question needs pixels.
+
+> **A-new+1. The MLX point-prompt coordinate convention is untested and ambiguous.**
+> `_embed_points` normalizes by `image_embedding_size`, upstream SAM normalizes by
+> `input_image_size`. Never executed, so never caught either way. Decidable in ~2 min of GPU with
+> no download (§4.1). **Must be settled before any point-prompt result is believed.**
+
+**B-class (standing — parked with a clear trigger):**
+
+> **B-new. A pointing specialist is available on this stack and has never been tried.**
+> `mlx-vlm 0.6.8` ships `molmo_point`; `mlx-community/MolmoPoint-8B-*` exists in 8 quantizations.
+> Never named in any repo document (§1) — there is no prior rejection to overturn.
+> **Trigger:** the ground question moves to pixels, per `GROUND_FREETEXT_SYNTHESIS.md` option (b).
+> **Cost:** 11 GB + ~15 min (§4.6).
+
+**Documentation corrections** — three statements in the design docs are true of *text prompts* but
+are written as though true of *SAM*, and each one closed a door:
+
+> **(i)** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md:696-716` — *"Do not write prompts that depend
+> on spatial disambiguation."* Correct for concept prompts; **point prompts are exactly the
+> spatial-disambiguation mechanism**, and their weights are in the snapshot we already load. The
+> rule should be scoped to the prompt mode it describes.
+>
+> **(ii)** `data/sam/SAM_DESIGN_NOTES.md:70-111` — the salience probe concluded the capability does
+> not exist after ten text phrasings failed. It should record that a non-text route (an externally
+> supplied coordinate) was not tried, so a future reader does not re-derive the same dead end.
+>
+> **(iii)** `ORACLE_QUESTION_SET.md:645` — *"SAM masks nouns it is given."* SAM also masks
+> **points** it is given. The VLM→SAM seam can carry coordinates, not only nouns.
+>
+> And `SAM_DESIGN_NOTES.md` / `oracle/sam/config.py` should state plainly that SAM 3.1 has point,
+> box and mask prompt modes, that this campaign uses text/concept only, and that the point weights
+> are present and loaded. Nothing currently says other prompt modes exist — which is how a
+> capability sitting in memory on every run stayed invisible for the whole campaign.
+
+---
+
+## 6. What would change my mind
+
+Written down so this document can be held to it.
+
+- **If the §4.1 gate shows the interactive decoder produces garbage regardless of coordinate
+  convention**, then §3.3's "plumbing, not weights" claim is wrong and the cost estimate is worthless.
+  Everything downstream of that gate is conditional on it.
+- **If MolmoPoint declines to point on most of the 9**, that is not a failed probe — it would be
+  strong evidence *for* the synthesis's ambiguity finding, arriving from an independent instrument.
+  Report it as such.
+- **If MolmoPoint points confidently and consistently on `000c4d52`, `000fa9b5` and `krafty`** —
+  the three the reviewer could not resolve even in prose — treat that with suspicion, not
+  celebration. A model that is certain where a careful human is not is more likely to be exhibiting
+  a prior than a perception.
