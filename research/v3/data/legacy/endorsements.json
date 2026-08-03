@@ -15,7 +15,7 @@
 			"unacceptable"
 		],
 		"gradientAdvisory": "v2-3 gradients reuse background/surface as the endpoints and pin the midpoint at t=0.5; v3 stops are decoupled from roles, so gradient comparison against this entry is advisory only. Role-level color matching is the reliable signal.",
-		"matchSemantics": "Match on roleSignature within the v3 same-color bar (all four roles), never exact hex equality. The bar is UNCALIBRATED pending the reviewer bracketing round (PHASE_0_DECISIONS.md §3, §6); exact hexes are stored here so any bar can be applied after the fact. paletteSignature (which folds in gradient, midpoint and collapse) is for provenance and de-duplication only — do not gate on it, because the v2-3 gradient representation does not survive into the v3 contract.",
+		"matchSemantics": "Match on roleSignature within the v3 same-color bar (all four roles), never exact hex equality. The bar is the FROZEN region-dependent sameColorBar(pair) of src/contract/ (calibrated bracketing rounds 1+2, frozen 2026-08-03 — see data/decisions/); exact hexes are stored here so any bar can be applied after the fact. paletteSignature (which folds in gradient, midpoint and collapse) is for provenance and de-duplication only — do not gate on it, because the v2-3 gradient representation does not survive into the v3 contract.",
 		"counts": {
 			"recordsRead": 495,
 			"recordsWithEmbeddedPalettes": 478,

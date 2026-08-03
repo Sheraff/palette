@@ -81,12 +81,14 @@ const GRADIENT_ADVISORY =
  * Orchestrator decision 2026-08-02 (open question 2): a v3 palette "matches" a fixture entry when
  * all four role colors fall within the v3 same-color bar ("one ruler", PHASE_0_DECISIONS.md §3) —
  * never on exact hex equality. Exact hexes are stored so any bar can be applied after the fact.
- * The bar itself (unit and threshold) is UNCALIBRATED until the reviewer bracketing round settles
- * it; v2-3's 3.3 CIE76 is the prior, not the answer.
+ * The bar was calibrated over bracketing rounds 1+2 (criterion register-as-same) and FROZEN
+ * 2026-08-03 (`d-2026-08-03-same-color-bar-freeze`): region-dependent, sameColorBar(pair) in
+ * src/contract/, constants.ts holding the digits.
  */
 const MATCH_SEMANTICS =
 	"Match on roleSignature within the v3 same-color bar (all four roles), never exact hex equality. "
-	+ "The bar is UNCALIBRATED pending the reviewer bracketing round (PHASE_0_DECISIONS.md §3, §6); "
+	+ "The bar is the FROZEN region-dependent sameColorBar(pair) of src/contract/ (calibrated "
+	+ "bracketing rounds 1+2, frozen 2026-08-03 — see data/decisions/); "
 	+ "exact hexes are stored here so any bar can be applied after the fact. "
 	+ "paletteSignature (which folds in gradient, midpoint and collapse) is for provenance and "
 	+ "de-duplication only — do not gate on it, because the v2-3 gradient representation does not "
