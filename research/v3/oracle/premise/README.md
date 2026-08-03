@@ -35,11 +35,19 @@ the default is run 1's, so an A/B rerun needs no flag and loads byte-identically
 | `group-a.v2` | `group-a.v2` | C, D | criterion arm (PREMISE_NEXT §5) |
 | `group-a.probes.bundled` | `group-a.probes.v1.1` | P, Q | probe arm, six probes in one answer |
 | `group-a.probes.solo` | `group-a.probes.v1.1` | six `S-*` | probe arm, one probe per inference |
+| `group-bcd.v1` | `group-bcd.v1` | E, F | the nine group-B/C/D questions in one decode, two orderings (PREMISE_NEXT §15) |
 
 `CANONICAL_FIELDS` and `VOCABULARIES` are read from each prompt document's own
 `canonical_fields` / `vocabularies` blocks, falling back to the module constants when absent —
 which is what keeps A/B and C/D working while letting the probe arm declare eight fields (and a
 solo file exactly one), none of them `ground_type`.
+
+A prompt document may also declare `multi_select_fields`, naming canonical fields whose answer is
+a **list** of vocabulary values rather than one value (`text_roles` and `overlays` in
+`group-bcd.v1`; empty everywhere else). Those fields are rendered as array-of-enum in the JSON
+schema, which the constrained-decoding backend supports — `uniqueItems` is the one thing it does
+not, so a repeated value cannot be forbidden by the grammar and is counted by the analysis
+instead. PREMISE_NEXT §15.3 and §15.4.
 
 **Superseded prompts are refused.** The eight deleted `group-a.probes.v1` files presupposed a
 singular background (PREMISE_NEXT §13.2). Their `prompt_hash` and `file_hash` prefixes are

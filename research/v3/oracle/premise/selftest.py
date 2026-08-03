@@ -192,6 +192,8 @@ def main() -> int:
 
     check_prompt_sets(variants)
     check_probe_derivation()
+    check_prompt_files_unchanged()
+    check_group_bcd()
 
     print()
     if failures:
@@ -212,7 +214,8 @@ def check_prompt_sets(v1_variants) -> None:
           "A/B fall back to the module constants")
 
     expected_counts = {"group-a.v1": 2, "group-a.v2": 2,
-                       "group-a.probes.bundled": 2, "group-a.probes.solo": 6}
+                       "group-a.probes.bundled": 2, "group-a.probes.solo": 6,
+                       "group-bcd.v1": 2}
     for name in sorted(PROMPT_SETS):
         try:
             loaded = default_variants(name)
@@ -428,6 +431,315 @@ def check_probe_derivation() -> None:
     bad = [k for k in d.table
            if d.derive({p: words[ch] for p, ch in zip(d.probe_order, k)})["probe_vector"] != k]
     check("derive() reproduces all 729 vectors from their answers", not bad, str(bad[:3]))
+
+
+# [REVIEWED] Every prompt file that existed before group-bcd.v1 was added, with its sha256 as
+# published in PREMISE_NEXT.md §6, §13.1 and §13.2. A new schema group must not perturb one byte
+# of an older one: A and B are the record of what run 1 asked, C/D and the probe files are drafted
+# and approved instruments awaiting a GPU slot, and the derivation table is a signed contract.
+PRE_EXISTING_PROMPT_FILES = {
+    "group-a.variant-a.json":
+        "b73b1e22c093f5297a6e47379ed6e464b1decac73e5ebb1461bfdcf3823b08fc",
+    "group-a.variant-b.json":
+        "8f7b494c0ec42a7bda1a1b176e2549e1abb0022095fa113e42b97487cab779df",
+    "group-a.v2.variant-c.json":
+        "6e25e75b6081dbd45fce8d2340668a1f29914ccd37ce587fa1568a7048649734",
+    "group-a.v2.variant-d.json":
+        "6715237d45ff190ec5129d4bb3510d05d4715fe477030bf1efc6302ef28c7314",
+    "group-a.probes.v1.1.bundled-p.json":
+        "45dc5dddadc550f21dc2e8f1d3d7c13fb6e34d8f6e63c1a76159e0f21b4b3861",
+    "group-a.probes.v1.1.bundled-q.json":
+        "31b956d9ea721860a9cb434d276b3b6a23303a561fdd3f7eae9ecf29da600049",
+    "group-a.probes.v1.1.solo-bg-visible.json":
+        "5121c921c4cb707179c66a9e0597444e7ff84daeb259c0691a5a18b79aa04477",
+    "group-a.probes.v1.1.solo-one-colour.json":
+        "15e57f3e751b9bcf0734df682f03d20aeb380011610c56e9859413b05c87e613",
+    "group-a.probes.v1.1.solo-continuous-change.json":
+        "506e3dc2033672633822249ea0bdb6f86448816c9bbd39cd29179122a52950bf",
+    "group-a.probes.v1.1.solo-separate-areas.json":
+        "e204c7f8f95ed22cc73c3c146ea7d1a427831cfa122b0514831fca2af087f0b4",
+    "group-a.probes.v1.1.solo-motif-or-material.json":
+        "bb9130ab98ebed796db8ad6f3b975038a731bae4f4d8497dd9177260f01551bc",
+    "group-a.probes.v1.1.solo-depicted-place.json":
+        "12d678b525782565080eac40665fc486ede7b592f5cad6e8dbdabcdbbf071728",
+    "derivation.group-a.probes.v1.json":
+        "da67d5ebf0aaab0c593f8fb8e040192e0e688f9dccfcc9bb2fe6b2af391a2fc5",
+}
+
+# [REVIEWED] PREMISE_NEXT.md §15.2, published alongside the two files.
+GROUP_BCD_PUBLISHED = {
+    "E": {"prompt_hash": "684b3623d4472b02", "schema_hash": "90bb6054508958ee",
+          "file_hash": "572570503238309e"},
+    "F": {"prompt_hash": "fa65d8dd73821ae7", "schema_hash": "03ca0c2aa807e0d1",
+          "file_hash": "baa79cdafd7db472"},
+}
+
+# [REVIEWED] ORACLE_QUESTION_SET.md §B, §C and §D, in document order. The four `not_applicable`
+# values and nothing else are the deviations each prompt file declares.
+GROUP_BCD_VOCABULARIES = {
+    "has_text": ("yes", "no", "illegible_at_this_size"),
+    "text_roles": ("title_display", "artist_name", "tracklist_or_body", "badge_or_sticker",
+                   "label_logo", "incidental_in_scene", "not_applicable"),
+    "text_dominance": ("dominant_element", "present_secondary", "minor", "not_applicable"),
+    "overlays": ("parental_advisory", "label_logo", "barcode_or_price", "watermark", "none"),
+    "physical_media_scan": ("yes", "no"),
+    "has_dominant_subject": ("single", "multiple", "none"),
+    "subject_area_band": ("under_25", "25_60", "over_60", "not_applicable"),
+    "has_signature_color": ("yes", "no"),
+    "signature_carrier": ("text", "subject", "background", "small_element", "not_applicable"),
+}
+
+# [REVIEWED] Forced by constrained decoding, not chosen: a conditional field generated before its
+# condition would be answered blind. Identical in every variant of this schema group.
+GROUP_BCD_GATES = (
+    ("has_text", "text_roles"),
+    ("has_text", "text_dominance"),
+    ("has_dominant_subject", "subject_area_band"),
+    ("has_signature_color", "signature_carrier"),
+)
+
+
+def check_prompt_files_unchanged() -> None:
+    """A new schema group is additive or it is a regression. Byte identity, not "looks fine"."""
+    print()
+    on_disk = {p.name: common.sha256_file(p) for p in common.PROMPTS_DIR.glob("*.json")}
+    changed = {name: (expected[:16], on_disk.get(name, "MISSING")[:16])
+               for name, expected in PRE_EXISTING_PROMPT_FILES.items()
+               if on_disk.get(name) != expected}
+    check("every pre-existing prompt file is byte-identical",
+          not changed, str(changed) or f"{len(PRE_EXISTING_PROMPT_FILES)} files unchanged")
+    unexpected = sorted(set(on_disk) - set(PRE_EXISTING_PROMPT_FILES)
+                        - {"group-bcd.v1.variant-e.json", "group-bcd.v1.variant-f.json"})
+    check("prompts/ holds no file this selftest does not know about", not unexpected, str(unexpected))
+    # The globs must stay disjoint, or a set silently starts loading another set's files.
+    matched = {name: {p.name for p in common.PROMPTS_DIR.glob(glob)}
+               for name, (_, glob) in PROMPT_SETS.items()}
+    overlaps = {(a, b): sorted(matched[a] & matched[b])
+                for a in matched for b in matched
+                if a < b and matched[a] & matched[b]}
+    check("no two registered prompt sets glob the same file", not overlaps, str(overlaps))
+    check("group-bcd.v1 globs exactly its own two files",
+          matched["group-bcd.v1"] == {"group-bcd.v1.variant-e.json", "group-bcd.v1.variant-f.json"},
+          str(sorted(matched["group-bcd.v1"])))
+
+
+def check_group_bcd() -> None:
+    """The nine group-B/C/D questions in one constrained decode, two orderings. Never piloted:
+    everything below is a check that the instrument is what it says it is, not a measurement."""
+    print()
+    variants = {v.variant: v for v in default_variants("group-bcd.v1")}
+    check("group-bcd.v1 loads variants E and F", sorted(variants) == ["E", "F"], str(sorted(variants)))
+    if sorted(variants) != ["E", "F"]:
+        return
+    e, f = variants["E"], variants["F"]
+
+    # -- identity ---------------------------------------------------------------
+    for variant in (e, f):
+        published = GROUP_BCD_PUBLISHED[variant.variant]
+        check(f"variant {variant.variant} hashes match PREMISE_NEXT §15.2",
+              variant.prompt_hash.startswith(published["prompt_hash"])
+              and variant.schema_hash.startswith(published["schema_hash"])
+              and variant.file_hash.startswith(published["file_hash"]),
+              f"{variant.prompt_hash[:16]} / {variant.schema_hash[:16]} / {variant.file_hash[:16]}")
+    check("the schema_version guard keeps this set out of any group-a file",
+          e.schema_version == "group-bcd.v1"
+          and PROMPT_SETS["group-bcd.v1"][0] == "group-bcd.v1"
+          and e.schema_version not in {PROMPT_SETS[s][0] for s in PROMPT_SETS if s != "group-bcd.v1"},
+          "run_premise.py asserts existing rows' schema_version is a subset of this run's")
+
+    # -- the nine questions, and their vocabularies -----------------------------
+    check("both variants declare exactly the nine group-B/C/D fields",
+          set(e.canonical_fields) == set(GROUP_BCD_VOCABULARIES)
+          and set(f.canonical_fields) == set(GROUP_BCD_VOCABULARIES)
+          and len(e.canonical_fields) == 9,
+          str(sorted(e.canonical_fields)))
+    check("both variants declare the question set's vocabularies plus the four documented deviations",
+          e.vocabularies == GROUP_BCD_VOCABULARIES and f.vocabularies == GROUP_BCD_VOCABULARIES,
+          str({k: v for k, v in e.vocabularies.items() if GROUP_BCD_VOCABULARIES.get(k) != v}))
+    check("option order inside every question is byte-identical between E and F",
+          all(e.vocabularies[k] == f.vocabularies[k] for k in GROUP_BCD_VOCABULARIES))
+    check("no confidence and no free-text field",
+          "confidence" not in e.canonical_fields and "ambiguity_note" not in e.canonical_fields
+          and e.free_text_fields == () and f.free_text_fields == (),
+          "design rule 7: self-reported confidence is degenerate under greedy decoding")
+
+    # -- order: what is forced, what is held, what is varied --------------------
+    def canonical_order(variant):
+        return [variant.field_map[key] for key in variant.json_schema["properties"]]
+
+    order_e, order_f = canonical_order(e), canonical_order(f)
+    check("the generation order matches each file's declared question_order",
+          all(order == json.loads(variant.path.read_text())["question_order"]
+              for order, variant in ((order_e, e), (order_f, f))),
+          f"E={order_e}")
+    for gate, dependent in GROUP_BCD_GATES:
+        check(f"{gate} is generated before {dependent} in both variants",
+              order_e.index(gate) < order_e.index(dependent)
+              and order_f.index(gate) < order_f.index(dependent))
+    check("signature_carrier is held last in both variants, as the ordering control",
+          order_e[-1] == "signature_carrier" and order_f[-1] == "signature_carrier")
+    moved = [q for q in order_e if order_e.index(q) != order_f.index(q)]
+    check("E and F differ in generation order for 8 of the 9 fields",
+          len(moved) == 8, f"{len(moved)} moved: {moved}")
+    check("E and F differ in generation order, so their schema hashes differ",
+          e.schema_hash != f.schema_hash and order_e != order_f)
+    check("E and F use disjoint JSON key names, so a row cannot be misattributed",
+          set(e.field_map) & set(f.field_map) == set(),
+          f"E={sorted(e.field_map)}")
+    check("E and F ask the same nine canonical fields",
+          set(e.field_map.values()) == set(f.field_map.values()))
+
+    # -- the shared blocks ------------------------------------------------------
+    doc_e = json.loads(e.path.read_text())
+    doc_f = json.loads(f.path.read_text())
+    blocks_e, blocks_f = doc_e["shared_blocks"], doc_f["shared_blocks"]
+    check("the seven shared blocks are byte-identical between E and F",
+          blocks_e == blocks_f and len(blocks_e) == 7, f"{len(blocks_e)} blocks")
+    check("every shared block appears verbatim in both prompts",
+          all(block in e.prompt and block in f.prompt for block in blocks_e.values()),
+          str([name for name, block in blocks_e.items()
+               if block not in e.prompt or block not in f.prompt]) or "all 7 present in both")
+    check("every stem and gloss is independently written (the prompts share no long line)",
+          not (set(e.prompt.split("\n")) & set(f.prompt.split("\n"))
+               - {line for block in blocks_e.values() for line in block.split("\n")} - {""}),
+          "shared blocks are the only text in common")
+    check("the resolution escape hatch survives into both renderings",
+          "illegible_at_this_size" in e.prompt and "illegible_at_this_size" in f.prompt,
+          "pipeline §7.1 / PHASE_0_DECISIONS.md §7: never a confident negative below the floor")
+
+    # -- multi-select shape -----------------------------------------------------
+    check("both variants declare text_roles and overlays as the multi-selects",
+          e.multi_select_fields == ("text_roles", "overlays")
+          and f.multi_select_fields == ("text_roles", "overlays"))
+    for variant in (e, f):
+        shapes = {}
+        for key, canonical in variant.field_map.items():
+            prop = variant.json_schema["properties"][key]
+            if canonical in variant.multi_select_fields:
+                shapes[key] = (prop.get("type"), tuple(prop["items"]["enum"]),
+                               prop.get("minItems"), prop.get("maxItems"), "uniqueItems" in prop)
+        check(f"variant {variant.variant} renders both multi-selects as array-of-enum",
+              all(shape[0] == "array" and shape[2] == 1
+                  and shape[3] == len(shape[1]) and shape[4] is False
+                  for shape in shapes.values()) and len(shapes) == 2,
+              str(shapes))
+    check("no group-A variant declares a multi-select, so their loading is unchanged",
+          all(v.multi_select_fields == ()
+              for name in PROMPT_SETS if name != "group-bcd.v1"
+              for v in default_variants(name)))
+
+    # -- validation: what is fatal, and what is counted instead -----------------
+    good = {key: (list(e.vocabularies[canonical][:2]) if canonical in e.multi_select_fields
+                  else e.vocabularies[canonical][0])
+            for key, canonical in e.field_map.items()}
+    parsed = validate_and_canonicalize(good, e)
+    check("a valid nine-field document canonicalizes",
+          parsed["text_roles"] == ["title_display", "artist_name"]
+          and parsed["has_text"] == "yes" and len(parsed) == 9, str(parsed))
+
+    def rejects(payload):
+        try:
+            validate_and_canonicalize(payload, e)
+        except SchemaViolation:
+            return True
+        return False
+
+    check("a multi-select answered with a bare string is rejected",
+          rejects({**good, "stickers": "none"}))
+    check("an empty multi-select is rejected", rejects({**good, "stickers": []}))
+    check("an out-of-vocabulary list item is rejected",
+          rejects({**good, "lettering_kinds": ["title_display", "gradient"]}))
+    check("a repeated list value is kept and counted, not failed",
+          validate_and_canonicalize({**good, "stickers": ["label_logo", "label_logo"]}, e)["overlays"]
+          == ["label_logo", "label_logo"],
+          "the grammar cannot forbid it and greedy retry reproduces it; §A.6.6 says count it")
+    check("an exclusive value beside another is kept and counted, not failed",
+          validate_and_canonicalize({**good, "stickers": ["none", "watermark"]}, e)["overlays"]
+          == ["none", "watermark"],
+          "failing the row would discard the other eight answers to punish one")
+    check("a single-value field still rejects a list",
+          rejects({**good, "lettering": ["yes"]}))
+
+    check_group_bcd_grammar((e, f))
+
+
+def check_group_bcd_grammar(variants) -> None:
+    """array-of-enum has to survive the constrained-decoding backend, not just json.dumps.
+
+    Grammar compilation is CPU-only and loads no weights, so this stays a model-free check.
+    The tokenizer-backed half needs the pinned snapshot on disk; without it, it is skipped
+    rather than failed, and preflight.py --stage retry is the backstop either way.
+    """
+    print()
+    try:
+        import llguidance as llg
+    except ImportError as error:
+        check("llguidance is importable", False, str(error))
+        return
+
+    grammars = {}
+    for variant in variants:
+        try:
+            grammars[variant.variant] = llg.JsonCompiler(
+                separators=(", ", ": "), whitespace_pattern="").compile(
+                    json.dumps(variant.json_schema))
+        except Exception as error:
+            check(f"variant {variant.variant} schema compiles to a grammar", False,
+                  f"{type(error).__name__}: {error}")
+    check("both group-bcd.v1 schemas compile to a grammar (array-of-enum is supported)",
+          len(grammars) == len(variants))
+    try:
+        llg.JsonCompiler(separators=(", ", ": "), whitespace_pattern="").compile(json.dumps(
+            {"type": "object",
+             "properties": {"x": {"type": "array", "items": {"type": "string", "enum": ["a"]},
+                                  "minItems": 1, "uniqueItems": True}},
+             "required": ["x"], "additionalProperties": False}))
+        check("uniqueItems is still unimplemented by llguidance (so no schema may declare it)",
+              False, "it compiled — re-read the deviation note in both prompt files")
+    except Exception as error:
+        check("uniqueItems is still unimplemented by llguidance (so no schema may declare it)",
+              "uniqueItems" in str(error), str(error)[:120])
+
+    manifest_path = common.MODEL_MANIFEST_PATH
+    snapshot = None
+    if manifest_path.exists():
+        snapshot = Path(json.loads(manifest_path.read_text())["snapshot_path"])
+    if snapshot is None or not snapshot.exists():
+        print("skip  tokenizer-backed grammar walk — pinned snapshot not on disk")
+        return
+    try:
+        import llguidance.hf
+        from transformers import AutoTokenizer
+        tokenizer = AutoTokenizer.from_pretrained(str(snapshot))
+        llg_tokenizer = llguidance.hf.from_tokenizer(tokenizer)
+    except Exception as error:
+        print(f"skip  tokenizer-backed grammar walk — {type(error).__name__}: {error}")
+        return
+
+    for variant in variants:
+        grammar = grammars.get(variant.variant)
+        if grammar is None:
+            continue
+        check(f"variant {variant.variant} grammar validates against the pinned tokenizer",
+              llg.LLMatcher.validate_grammar(grammar, llg_tokenizer) == "")
+        # The longest legal answer: every multi-select at full length, every single-value field
+        # at its longest value. It must fit inside MAX_TOKENS with room to spare.
+        worst = {key: (list(variant.vocabularies[canonical])
+                       if canonical in variant.multi_select_fields
+                       else max(variant.vocabularies[canonical], key=len))
+                 for key, canonical in variant.field_map.items()}
+        text = json.dumps(worst, separators=(", ", ": "))
+        token_ids = tokenizer.encode(text, add_special_tokens=False)
+        matcher = llg.LLMatcher(llg_tokenizer, grammar)
+        accepted = all(matcher.consume_token(t) for t in token_ids) and matcher.is_accepting()
+        check(f"variant {variant.variant} accepts its longest legal answer, within MAX_TOKENS",
+              accepted and len(token_ids) < common.MAX_TOKENS,
+              f"{len(token_ids)} tokens, cap {common.MAX_TOKENS}")
+        matcher = llg.LLMatcher(llg_tokenizer, grammar)
+        bad = text.replace('"title_display"', '"title"', 1).replace('"words"', '"wordz"', 1)
+        check(f"variant {variant.variant} grammar rejects an off-vocabulary answer",
+              not all(matcher.consume_token(t)
+                      for t in tokenizer.encode(bad, add_special_tokens=False)))
 
 
 if __name__ == "__main__":

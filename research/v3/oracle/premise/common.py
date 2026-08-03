@@ -123,6 +123,10 @@ PROMPT_SETS: dict[str, tuple[str, str]] = {
     "group-a.v2": ("group-a.v2", "group-a.v2.variant-*.json"),
     "group-a.probes.bundled": ("group-a.probes.v1.1", "group-a.probes.v1.1.bundled-*.json"),
     "group-a.probes.solo": ("group-a.probes.v1.1", "group-a.probes.v1.1.solo-*.json"),
+    # The first non-group-A set: the nine group-B/C/D questions in one constrained decode,
+    # two orderings (E, F). PREMISE_NEXT.md §15. The schema_version guard below is what keeps
+    # its rows out of any file holding group-a rows.
+    "group-bcd.v1": ("group-bcd.v1", "group-bcd.v1.variant-*.json"),
 }
 # [REVIEWED] Run 1's set. Default so nothing that worked before needs a flag.
 DEFAULT_PROMPT_SET = "group-a.v1"
@@ -238,6 +242,11 @@ class PromptVariant:
     # solo file declares exactly one field, so neither can satisfy a module-level constant.
     canonical_fields: tuple[str, ...] = CANONICAL_FIELDS
     vocabularies: dict[str, tuple[str, ...]] = field(default_factory=lambda: dict(VOCABULARIES))
+    # [REVIEWED] PREMISE_NEXT.md §15.3. Canonical fields whose answer is a LIST of vocabulary
+    # values rather than one value — `text_roles` and `overlays` in group-bcd.v1. Empty on
+    # every group-A variant, which is why every assertion and every validation branch that
+    # reads it is a no-op for A/B, C/D and the probe arm.
+    multi_select_fields: tuple[str, ...] = ()
     # Probe-arm metadata. Absent (None / empty) on every non-probe variant.
     presentation_mode: str | None = None      # 'bundled' | 'separate'
     probe_order: tuple[str, ...] = ()
@@ -283,6 +292,7 @@ def load_prompt_variant(path: Path, expected_schema_version: str | None = None) 
         file_hash=sha256_bytes(raw),
         canonical_fields=canonical_fields,
         vocabularies=vocabularies,
+        multi_select_fields=tuple(doc.get("multi_select_fields") or ()),
         presentation_mode=doc.get("presentation_mode"),
         probe_order=tuple(doc.get("probe_order") or ()),
         derivation_schema_version=doc.get("derivation_schema_version"),
@@ -302,8 +312,24 @@ def load_prompt_variant(path: Path, expected_schema_version: str | None = None) 
     assert set(schema["properties"]) == set(variant.field_map), (
         f"{path.name}: json_schema properties and field_map keys disagree")
     for key, canonical in variant.field_map.items():
-        if canonical in vocabularies:
-            assert tuple(sorted(schema["properties"][key]["enum"])) == tuple(sorted(vocabularies[canonical])), (
+        if canonical not in vocabularies:
+            continue
+        prop = schema["properties"][key]
+        if canonical in variant.multi_select_fields:
+            # A multi-select is an array of enum items. llguidance 1.7.6 compiles this; it does
+            # NOT implement `uniqueItems`, so declaring it would make the grammar fail to build
+            # at the first token of the run rather than here (PREMISE_NEXT.md §15.3).
+            assert prop.get("type") == "array", (
+                f"{path.name}: {key} is declared multi-select but its schema type is "
+                f"{prop.get('type')!r}, not 'array'")
+            assert tuple(sorted(prop["items"]["enum"])) == tuple(sorted(vocabularies[canonical])), (
+                f"{path.name}: {key} item enum does not match the declared vocabulary for {canonical}")
+            assert prop.get("minItems") == 1, (
+                f"{path.name}: {key} must declare minItems 1 — an empty list is not an answer")
+            assert "uniqueItems" not in prop, (
+                f"{path.name}: {key} declares uniqueItems, which llguidance does not implement")
+        else:
+            assert tuple(sorted(prop["enum"])) == tuple(sorted(vocabularies[canonical])), (
                 f"{path.name}: {key} enum does not match the declared vocabulary for {canonical}")
     return variant
 
@@ -492,6 +518,26 @@ def validate_and_canonicalize(payload: Any, variant: PromptVariant) -> dict[str,
     out: dict[str, Any] = {}
     for key, canonical in variant.field_map.items():
         value = payload[key]
+        if canonical in variant.multi_select_fields:
+            # Structural only. Every one of these three conditions is already guaranteed by the
+            # array-of-enum grammar, so a violation here means the grammar path regressed — which
+            # is exactly what the check is for. Deliberately NOT checked: repeated values, and an
+            # exclusive value (`none` / `not_applicable`) appearing alongside others. The grammar
+            # cannot forbid either, greedy decoding means a retry reproduces them exactly, and
+            # failing the row would discard the other eight answers to punish one. They are kept
+            # verbatim and counted by the analysis (PREMISE_NEXT.md §15.4), which is the treatment
+            # ORACLE_QUESTION_SET.md §A.6.6 established for self-contradiction.
+            vocabulary = variant.vocabularies[canonical]
+            if not isinstance(value, list):
+                raise SchemaViolation(f"{key} must be a list, got {type(value).__name__}")
+            if not value:
+                raise SchemaViolation(f"{key} is an empty list; minItems is 1")
+            for entry in value:
+                if not isinstance(entry, str) or entry not in vocabulary:
+                    raise SchemaViolation(
+                        f"{key} contains {entry!r}, outside the vocabulary for {canonical}")
+            out[canonical] = list(value)
+            continue
         if canonical in variant.vocabularies:
             if not isinstance(value, str) or value not in variant.vocabularies[canonical]:
                 raise SchemaViolation(f"{key}={value!r} is outside the vocabulary for {canonical}")
