@@ -60,6 +60,32 @@ SHARDED_DIR_NAMES = (
 # [MEASURED] The second collection's root, surveyed in spec section 7.4.
 MUSIC_ARTWORKS_DIR_NAME = "music-artworks"
 
+# [MEASURED] Files each collection must enumerate to. Counted from the ids files
+# and the tree on 2026-08-02 and re-counted 2026-08-03; the same two numbers are
+# already asserted on the TypeScript side (`src/coverage-set/corpus.ts`
+# EXPECTED_SHARDED_FILES / EXPECTED_MUSIC_ARTWORKS_FILES, enforced in
+# build-coverage-set.ts).
+#
+# Why this exists (adversarial review 2026-08-03, MINOR-11): the glob in
+# `common.enumerate_collection` is the denominator behind EVERY completeness
+# check on the Python side -- `eval_pairs.discover_arms` asks "did this arm
+# resolve as many rows as the collection has files?", and `embed.py` asks the
+# same. It raised on a MISSING shard directory but never on a short count, so a
+# partial sync silently lowered the denominator and a truncated arm certified
+# itself complete. 7,550 + 8,595 = 16,145, the pool size every bake-off and
+# census number is computed over.
+EXPECTED_FILE_COUNTS = {
+    COLLECTION_SHARDED: 7550,
+    COLLECTION_MUSIC_ARTWORKS: 8595,
+}
+
+# [MEASURED] The root those counts were measured under, captured at import and
+# never reassigned. `selftest.py` swaps `REPO_ROOT` for a temporary directory
+# holding a five-file synthetic corpus, which is a DIFFERENT corpus and must not
+# be measured against these numbers. Comparing the enumeration root against this
+# constant is what tells the two cases apart.
+PINNED_CORPUS_ROOT = REPO_ROOT
+
 # Extensions are deliberately not used to decide what to decode. The sharded set
 # is 6,090 extension-less files plus 1,460 `.jpg`, all JPEG by magic bytes
 # (measured 2026-08-02); music-artworks is .avif/.jpg/.jpeg/.png. PIL sniffs the

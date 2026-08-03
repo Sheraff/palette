@@ -74,10 +74,14 @@ HOLDOUT_PATH = config.REPO_ROOT / "research" / "v3" / "data" / "holdout" / "hold
 CENSUS_FILENAME = "near-dup-census.json"
 
 
-def load_pool(out_dir: Path, arm_tag: str):
+def load_pool(out_dir: Path, arm_tag: str, allow_partial: bool = False):
     """All embedded files of both collections, as one float64 matrix."""
     import numpy as np
     import query as query_mod
+
+    query_mod.require_complete(
+        out_dir, config.COLLECTIONS, arm_tag, allow_partial=allow_partial
+    )
 
     blocks, rows = [], []
     for collection in config.COLLECTIONS:
@@ -86,6 +90,47 @@ def load_pool(out_dir: Path, arm_tag: str):
         rows.extend(index)
     pool = np.ascontiguousarray(np.concatenate(blocks, axis=0), dtype="float64")
     return pool, rows
+
+
+def load_secondary_pool(out_dir: Path, arm_tag: str, primary_paths: list[str],
+                        allow_partial: bool = False):
+    """A secondary arm's matrix, asserted to share the primary arm's row order.
+
+    Why this is not `load_pool(...)[0]` (adversarial review 2026-08-03, MAJOR-4).
+    Every index in this script -- `artwork_ids`, `paths`, `index_of_path`,
+    `keys`, `held_rows`, and the `left`/`right` arrays the cross-arm cosines are
+    gathered with -- comes from the PRIMARY arm's row order. Discarding a
+    secondary arm's row list assumes the two orders agree. They do today: all
+    six arms produce byte-identical path order for both collections, because
+    `common.enumerate_collection` sorts and every row is `ok`. But nothing made
+    that a property of the code.
+
+    The failure is asymmetric, which is what makes it dangerous. A LARGER
+    secondary matrix raises IndexError, loudly. A SMALLER one -- one arm that
+    failed a single file -- silently shifts every index past that row, and
+    `crossing_pairs_union_of_arms`, `crossing_pairs_all_arms_agree`,
+    `cosine_by_arm`, `found_by_arms` and the whole holdout report become
+    garbage that still looks like a census.
+
+    So the path sequence is compared element-wise, not just its length.
+    """
+    matrix, rows = load_pool(out_dir, arm_tag, allow_partial=allow_partial)
+    paths = [record["path"] for record in rows]
+    if len(paths) != len(primary_paths):
+        raise RuntimeError(
+            f"arm {arm_tag} has {len(paths)} rows but the primary arm has "
+            f"{len(primary_paths)}. Every index in this census comes from the "
+            "primary arm's row order, so the two arms must be embedded over the "
+            "same corpus. Re-run embed.py for the short arm."
+        )
+    for position, (mine, theirs) in enumerate(zip(paths, primary_paths)):
+        if mine != theirs:
+            raise RuntimeError(
+                f"arm {arm_tag} row {position} is {mine!r} but the primary arm's "
+                f"row {position} is {theirs!r}. The row orders have diverged, so "
+                "cross-arm cosines would be computed between different images."
+            )
+    return matrix
 
 
 def scan_pairs(pool, artwork_ids, threshold: float):
@@ -146,11 +191,16 @@ def main() -> int:
                         choices=list(config.ARMS))
     parser.add_argument("--arms", nargs="+", default=list(gallery.FINALIST_ARMS),
                         choices=list(config.ARMS))
+    parser.add_argument(
+        "--allow-partial", action="store_true",
+        help="scan an incomplete embedding pool (the resulting counts are not "
+        "comparable with any stored census)",
+    )
     args = parser.parse_args()
     out_dir = Path(args.out_dir).resolve()
 
     # ---- corpus and identity -------------------------------------------------
-    pool, rows = load_pool(out_dir, args.primary_arm)
+    pool, rows = load_pool(out_dir, args.primary_arm, args.allow_partial)
     paths = [record["path"] for record in rows]
     index_of_path = {path: i for i, path in enumerate(paths)}
     keys = [gallery.artwork_key(record["collection"], record["path"]) for record in rows]
@@ -162,7 +212,11 @@ def main() -> int:
     per_arm: dict[str, dict] = {}
     same_counts: dict[str, int] = {}
     for arm_tag in args.arms:
-        matrix = pool if arm_tag == args.primary_arm else load_pool(out_dir, arm_tag)[0]
+        matrix = (
+            pool
+            if arm_tag == args.primary_arm
+            else load_secondary_pool(out_dir, arm_tag, paths, args.allow_partial)
+        )
         crossing, same = scan_pairs(matrix, artwork_ids, NEAR_DUP_THRESHOLD)
         per_arm[arm_tag] = crossing
         same_counts[arm_tag] = same
@@ -184,7 +238,11 @@ def main() -> int:
     right = np.array([j for _, j in union])
     cos_by_arm: dict[str, "np.ndarray"] = {}
     for arm_tag in args.arms:
-        matrix = pool if arm_tag == args.primary_arm else load_pool(out_dir, arm_tag)[0]
+        matrix = (
+            pool
+            if arm_tag == args.primary_arm
+            else load_secondary_pool(out_dir, arm_tag, paths, args.allow_partial)
+        )
         values = (matrix[left] * matrix[right]).sum(axis=1)
         cos_by_arm[arm_tag] = np.round(values, COSINE_ROUND_DECIMALS)
         if arm_tag != args.primary_arm:
@@ -339,8 +397,22 @@ def main() -> int:
         "written_at": common.utc_now_iso(),
         "method": {
             "primary_arm": args.primary_arm,
-            "primary_arm_rationale": "won the retrieval bake-off (R@1 0.7892); "
-            "see bakeoff.json",
+            # The old text here read "won the retrieval bake-off (R@1 0.7892)".
+            # That number does NOT separate dinov2-vitl14 from pe-core-l14:
+            # paired McNemar over the same 24,648 pairs gives b01=1573, b10=1559,
+            # p=0.816 (review 2026-08-03, MAJOR-3). Anyone re-deriving the choice
+            # from the ranking alone finds a coin flip. The real grounds are
+            # below, in the order they actually decided it.
+            "primary_arm_rationale": "chosen on the reviewer's gallery browse "
+            "(GALLERY_NOTES.md): pe-core-l14 matches by ARTIST rather than by "
+            "image, which is semantic leakage for every use this census has, so "
+            "it was eliminated independent of its R@1. Against the remaining "
+            "arms the retrieval bake-off DOES separate: dinov2-vitl14 beats "
+            "dinov3-vitl16 at p=1.4e-22 and every other arm more strongly "
+            "(bakeoff.json). It does NOT separate dinov2-vitl14 from "
+            "pe-core-l14 (R@1 0.78923 vs 0.78866, McNemar p=0.816, n=24648) — "
+            "that pair is separated by the reviewer's eye alone. See "
+            "decisions.json d-2026-08-02-embedding-canonical-model.",
             "arms_scanned": list(args.arms),
             "scope_note": "the census is computed independently on each finalist "
             "and then combined, so cross-arm agreement is MEASURED here rather "
@@ -355,6 +427,20 @@ def main() -> int:
             "identity": "artwork id is the 24-char suffix (sharded) or 32-hex "
             "stem (music-artworks); pairs sharing an id are EXCLUDED as already "
             "known",
+            # Stamped because the block below is holdout-dependent and the
+            # holdout is redrawable. The 2026-08-02 census carried no version
+            # marker, was read a day later against holdout 2.0.0, and said the
+            # current holdout leaked catastrophically when in fact it was
+            # describing the already-fixed 1.0.0 bug (review 2026-08-03,
+            # MAJOR-2).
+            "holdout_version": holdout["header"].get("scriptVersion"),
+            "holdout_file_sha256": common.sha256_file(HOLDOUT_PATH),
+            "holdout_dependent_fields": [
+                "holdout_crossing",
+                "pairs[].a.side",
+                "pairs[].b.side",
+                "named_components[].holdout_files",
+            ],
         },
         "counts": {
             "files_in_pool": int(pool.shape[0]),
@@ -376,9 +462,23 @@ def main() -> int:
         "holdout_crossing": reports,
         "named_components": {
             "min_size": NAMED_COMPONENT_MIN_SIZE,
-            "note": "connected components of the near-dup graph at the primary "
-            "threshold. A large component with many distinct artwork ids is "
-            "template artwork or a heavily reissued cover, not an incidental pair.",
+            # Two corrections here (review 2026-08-03, MINOR-9). The old note
+            # said "at the primary threshold", which misnames the thing that
+            # varies: the threshold is 0.95 either way, it is the ARM that is
+            # primary. And "named components" also names a DIFFERENT set in
+            # holdout.json (header.namedComponents, 251 of them, built over the
+            # UNION of arms and counted in files); this block has 99, built over
+            # the primary arm alone and counted in files too. Same name, 2.5x
+            # different count, in two files that cite each other.
+            "note": "connected components of the near-dup graph of the PRIMARY "
+            "ARM only, at threshold 0.95, counted in files. A large component "
+            "with many distinct artwork ids is template artwork or a heavily "
+            "reissued cover, not an incidental pair.",
+            "graph": "primary arm only",
+            "not_to_be_confused_with": "holdout.json header.namedComponents, "
+            "which is a different set: components of the UNION of all three "
+            "arms, over candidate artworks only. Different graph, different "
+            "population, different count.",
             "components": named,
         },
         "pairs": pair_records,

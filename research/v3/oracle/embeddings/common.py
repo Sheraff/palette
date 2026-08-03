@@ -49,12 +49,24 @@ def utc_now_iso() -> str:
 # --------------------------------------------------------------------------
 
 
-def enumerate_collection(collection: str, repo_root: Path | None = None) -> list[str]:
+class CorpusSizeMismatch(RuntimeError):
+    """A collection enumerated to a different file count than the pinned one."""
+
+
+def enumerate_collection(collection: str, repo_root: Path | None = None,
+                         expect_pinned_count: bool = True) -> list[str]:
     """Return every file in a collection as a path relative to the repo root.
 
     Sorted, so the work order is identical on every run and a resumed run picks up
     exactly where it left off. Identity downstream is (path, sha256) per
     CONVENTIONS.md; no id prefix is parsed here.
+
+    The count is asserted against `config.EXPECTED_FILE_COUNTS`. This list is the
+    denominator behind every completeness check on this side of the codebase
+    (`eval_pairs.discover_arms`, `embed.py`), so a short enumeration does not
+    fail — it makes a truncated arm certify itself complete (adversarial review
+    2026-08-03, MINOR-11). Pass `expect_pinned_count=False` only when the corpus
+    is deliberately being changed, and re-pin the constant in the same commit.
     """
     root = repo_root or config.REPO_ROOT
     paths: list[str] = []
@@ -78,6 +90,23 @@ def enumerate_collection(collection: str, repo_root: Path | None = None) -> list
         raise ValueError(f"unknown collection: {collection}")
 
     paths.sort()
+
+    # Only the real corpus is measured against the pinned counts. A different
+    # root is a different corpus by definition (selftest.py builds a five-file
+    # synthetic one), so the numbers do not apply there.
+    expected = config.EXPECTED_FILE_COUNTS.get(collection)
+    if root != config.PINNED_CORPUS_ROOT:
+        expected = None
+    if expect_pinned_count and expected is not None and len(paths) != expected:
+        raise CorpusSizeMismatch(
+            f"{collection}: enumerated {len(paths)} files under {root}, but "
+            f"config.EXPECTED_FILE_COUNTS pins {expected}. Every stored count "
+            "(bake-off pool size, census pool, coverage-set universe) was "
+            "computed over the pinned corpus, so continuing would compare new "
+            "numbers against old ones. Either restore the missing files, or "
+            "re-pin the constant deliberately and regenerate everything "
+            "downstream."
+        )
     return paths
 
 

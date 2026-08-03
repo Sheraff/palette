@@ -66,6 +66,41 @@ MUSIC_NAME_RE = re.compile(r"^([0-9a-f]{32})(?:_(\d+)x(\d+))?$")
 # near-dup dedup; 5 shows whether a miss was close or hopeless.
 RECALL_AT = (1, 5, 10)
 
+# [MEASURED] What the headline R@1 does and does not measure. Both numbers were
+# raised by the adversarial review of 2026-08-03 (MINOR-5, MINOR-6) and
+# re-derived here from the stored vectors and the sha256/width/height already in
+# the ids files, per pair, for dinov2-vitl14. They affect every arm the same way,
+# so no ranking moves and no conclusion changes — but a reader who takes 0.7892
+# as "how often the model finds a different rendition of the same cover" is
+# reading it about 0.2 pp too high and about 8% too resolution-robust.
+#
+# This block is prose the payload carries; it is not recomputed per run, because
+# recomputing it needs the per-pair ranks that are deliberately not stored. If
+# the corpus changes, re-derive it before trusting it.
+FLOORS_AND_STRATA = {
+    "identical_bytes_floor": (
+        "246 of the 24,648 ordered pairs (1.00%) join two files with IDENTICAL "
+        "sha256 — the same bytes stored twice under different rendition names "
+        "(187 files across 81 artworks). All 246 are rank 1 by construction: no "
+        "model can fail them. R@1 excluding them is 0.78711 against the "
+        "published 0.78923, so 0.21 pp of the headline is a floor rather than a "
+        "measurement. `excluded_from_pool_per_pair` above describes what leaves "
+        "the POOL and says nothing about duplicate bytes among the TARGETS."
+    ),
+    "resolution_stratification": (
+        "1,986 of the 24,648 pairs (8.06%) join two files of identical measured "
+        "width and height — a re-encode at the same size, still a different "
+        "rendition, but not a resolution change. R@1 on that slice is 0.86354; "
+        "on the genuinely different-size remainder, 0.78272. The bake-off is "
+        "read as a resolution-robustness instrument (it is what settles the "
+        "224-vs-392 confound), and on the strictly cross-resolution pairs it is "
+        "about 8% weaker than the headline."
+    ),
+    "measured_on": "dinov2-vitl14, 2026-08-03, from the stored .npy vectors and "
+    "the sha256/width/height recorded in the ids files. R@1 reproduced to "
+    "0.7892323920804933, identical to the published value.",
+}
+
 # [MEASURED] The sharded corpus is bimodal at 300 and 640 px (spec section 7),
 # so a query is assigned to a tier by its measured long edge with the split
 # halfway between. Nothing else in the corpus lands near 470.
@@ -483,6 +518,13 @@ def main() -> int:
     parser.add_argument("--ground-truth-only", action="store_true")
     parser.add_argument("--selftest", action="store_true")
     parser.add_argument("--json-out", default=None)
+    parser.add_argument(
+        "--allow-incomplete-arms",
+        action="store_true",
+        help="write a bake-off that is missing an arm from config.BAKEOFF_ARMS, "
+        "or that scores an arm whose embedding output is incomplete. The gap is "
+        "recorded in the JSON either way; this flag only stops it being fatal",
+    )
     args = parser.parse_args()
 
     if args.selftest:
@@ -515,25 +557,81 @@ def main() -> int:
     if args.ground_truth_only:
         return 0
 
-    arms = args.arms
-    if arms is None:
-        arms, skipped = discover_arms(out_dir)
-        print("\nARM DISCOVERY")
-        for tag in arms:
-            print(f"  include {tag}")
-        for tag, reason in skipped:
-            print(f"  skip    {tag:22s} {reason}")
-        if not arms:
-            print("\nno arm has complete output under " + str(out_dir))
+    # Discovery ALWAYS runs, even when --arms names the arms explicitly. It used
+    # to be skipped in that case, so a partially-embedded arm could be pooled
+    # against a complete one with no check at all (review 2026-08-03, MINOR-10).
+    # --arms now selects from the discovered set rather than replacing it.
+    discovered, skipped = discover_arms(out_dir)
+    print("\nARM DISCOVERY")
+    for tag in discovered:
+        print(f"  include {tag}")
+    for tag, reason in skipped:
+        print(f"  skip    {tag:22s} {reason}")
+    if not discovered:
+        print("\nno arm has complete output under " + str(out_dir))
+        return 1
+
+    skip_reasons = dict(skipped)
+    requested = list(args.arms) if args.arms else list(discovered)
+    incomplete_requested = [t for t in requested if t not in discovered]
+    if incomplete_requested:
+        detail = "; ".join(
+            f"{t}: {skip_reasons.get(t, 'not discovered')}"
+            for t in incomplete_requested
+        )
+        print(f"[eval] REQUESTED BUT INCOMPLETE: {detail}")
+        if not args.allow_incomplete_arms:
+            print(
+                "[eval] refusing to score an incomplete arm against complete "
+                "ones — their ranks would be drawn from different pools and are "
+                "not comparable. Finish embed.py, or pass "
+                "--allow-incomplete-arms."
+            )
+            return 1
+
+    arms = requested
+
+    # config.BAKEOFF_ARMS is the curated set the bake-off is SUPPOSED to compare.
+    # It is not the gate on what gets scored — that is config.ARMS plus
+    # completeness, deliberately, because using BAKEOFF_ARMS as the gate is what
+    # silently dropped the dinov2-vitl14-392 tiebreaker. Here it is the floor: a
+    # run that is missing one of these arms must say so out loud, because a
+    # bake-off over four arms and one over six were previously indistinguishable
+    # in the artifact.
+    missing_from_bakeoff = [t for t in config.BAKEOFF_ARMS if t not in arms]
+    if missing_from_bakeoff:
+        detail = "; ".join(
+            f"{t}: {skip_reasons.get(t, 'not requested')}"
+            for t in missing_from_bakeoff
+        )
+        print(f"[eval] MISSING FROM THE CURATED BAKE-OFF SET: {detail}")
+        if not args.allow_incomplete_arms:
+            print(
+                "[eval] refusing to write a bake-off missing a curated arm — "
+                "the artifact would look identical to a complete one. Pass "
+                "--allow-incomplete-arms to write it anyway (the gap is "
+                "recorded in the JSON)."
+            )
             return 1
 
     reports = []
+    failed_arms: list[dict] = []
     for tag in arms:
         try:
             reports.append(evaluate_arm(out_dir, tag, truth))
             print(f"[eval] scored {tag}")
-        except FileNotFoundError as exc:
-            print(f"[eval] skipping {tag}: {exc}")
+        except Exception as exc:  # noqa: BLE001 - recorded, never swallowed
+            # Previously only FileNotFoundError was caught and the arm vanished
+            # from the payload with no trace. Any failure is now a recorded row.
+            failed_arms.append({"arm": tag, "error": f"{type(exc).__name__}: {exc}"})
+            print(f"[eval] FAILED {tag}: {type(exc).__name__}: {exc}")
+
+    if failed_arms and not args.allow_incomplete_arms:
+        print(
+            "[eval] refusing to write a bake-off whose arms did not all score. "
+            "Pass --allow-incomplete-arms to record the failures and continue."
+        )
+        return 1
 
     print_table(reports)
 
@@ -552,6 +650,24 @@ def main() -> int:
             "tiers_from": "measured header dimensions in the id index, never "
             "filenames",
             "resolution_confound": config.ARM_RESOLUTION_CONFOUND,
+            "floors_and_strata": FLOORS_AND_STRATA,
+        },
+        "completeness": {
+            "note": "what this run actually scored. Written because a bake-off "
+            "over four of six arms used to be indistinguishable in the artifact "
+            "from one over six (review 2026-08-03, MINOR-10).",
+            "registry_arms": list(config.ARMS),
+            "curated_bakeoff_arms": list(config.BAKEOFF_ARMS),
+            "arms_requested": arms,
+            "arms_discovered_complete": discovered,
+            "arms_scored": [report["arm"] for report in reports],
+            "arms_skipped": [
+                {"arm": tag, "reason": reason} for tag, reason in skipped
+            ],
+            "arms_failed_during_scoring": failed_arms,
+            "arms_missing_from_curated_set": missing_from_bakeoff,
+            "incomplete_allowed": bool(args.allow_incomplete_arms),
+            "complete": not missing_from_bakeoff and not failed_arms,
         },
         "ground_truth": diagnostics,
         "arms": {report["arm"]: report for report in reports},

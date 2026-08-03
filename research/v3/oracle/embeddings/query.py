@@ -22,12 +22,96 @@ import config
 import common
 
 
+def collection_provenance(out_dir: Path, collection: str,
+                          arm_tag: str = config.DEFAULT_ARM) -> dict:
+    """Where this collection's vectors come from, and whether it is complete.
+
+    Why (adversarial review 2026-08-03, MINOR-12): `load_collection` falls back
+    to the append-only shard file when the finalized `.npy` is absent, so a
+    half-finished arm loads and clusters exactly like a finished one, and the
+    pool size printed in a gallery header reads as authoritative. Two arms
+    clustered at different pool sizes produce side-by-side pages that are not
+    comparable, and nothing said so. Every caller that shows or stores a pool
+    size should carry this dict alongside it.
+    """
+    store = common.EmbeddingStore(out_dir, collection, arm_tag=arm_tag)
+    ok_rows = failed_rows = 0
+    if store.ids_path.exists():
+        for record in common.read_jsonl(store.ids_path):
+            status = record.get("status")
+            if status == "ok":
+                ok_rows += 1
+            elif status == "failed":
+                failed_rows += 1
+    try:
+        expected = len(common.enumerate_collection(collection))
+        expected_source = "enumerated"
+    except common.CorpusSizeMismatch as exc:
+        expected = config.EXPECTED_FILE_COUNTS.get(collection)
+        expected_source = f"pinned (corpus drift: {exc})"
+    except FileNotFoundError:
+        expected = config.EXPECTED_FILE_COUNTS.get(collection)
+        expected_source = "pinned (collection directory missing)"
+
+    if store.npy_path.exists():
+        source = "npy"
+    elif store.shard_path.exists():
+        source = "append-only shard (RUN NOT FINALIZED)"
+    else:
+        source = "missing"
+
+    resolved = ok_rows + failed_rows
+    return {
+        "collection": collection,
+        "arm": arm_tag,
+        "vector_source": source,
+        "ok_rows": ok_rows,
+        "failed_rows": failed_rows,
+        "expected_files": expected,
+        "expected_source": expected_source,
+        "complete": expected is not None and resolved == expected,
+    }
+
+
+def require_complete(out_dir: Path, collections, arm_tag: str,
+                     allow_partial: bool = False) -> list[dict]:
+    """Provenance for each collection, raising unless every one is complete.
+
+    `allow_partial` downgrades the failure to a printed warning, so an
+    exploratory query on a running embed job stays possible — but it is an
+    explicit act, and the caller is expected to record the returned dicts in
+    whatever artifact it writes.
+    """
+    provenance = [
+        collection_provenance(out_dir, collection, arm_tag)
+        for collection in collections
+    ]
+    partial = [p for p in provenance if not p["complete"]]
+    if partial:
+        detail = "; ".join(
+            f"{p['collection']}/{p['arm']}: {p['ok_rows']}+{p['failed_rows']} of "
+            f"{p['expected_files']} files resolved, from {p['vector_source']}"
+            for p in partial
+        )
+        if not allow_partial:
+            raise RuntimeError(
+                "refusing to compute over a partial pool — " + detail + ". "
+                "Finish embed.py, or pass the caller's --allow-partial and "
+                "accept that the result is not comparable with any other arm."
+            )
+        print(f"[query] WARNING partial pool: {detail}", flush=True)
+    return provenance
+
+
 def load_collection(out_dir: Path, collection: str,
                     arm_tag: str = config.DEFAULT_ARM):
     """Return (matrix, rows) where rows[i] describes matrix[i].
 
     Reads the finalized .npy when it exists and falls back to the append-only
     shard file, so a partially-completed run is queryable without finalizing.
+    Completeness is NOT checked here — call `collection_provenance` or
+    `require_complete` for that; this stays permissive because `embed.py`'s own
+    resume path depends on loading a half-written store.
     """
     import numpy as np
 
@@ -98,11 +182,39 @@ def main() -> int:
     out_dir = Path(args.out_dir).resolve()
 
     loaded = {}
+    unavailable: list[dict] = []
     for collection in args.search:
         try:
             loaded[collection] = load_collection(out_dir, collection, args.arm)
         except FileNotFoundError as exc:
             print(f"[query] {exc}")
+            unavailable.append({"collection": collection, "reason": str(exc)})
+
+    # The pool actually searched, stated whenever a result is emitted. Silently
+    # searching a reduced pool and reporting the hits as if they came from the
+    # whole corpus is the failure this reports (review 2026-08-03, MINOR-12).
+    provenance = [
+        collection_provenance(out_dir, collection, args.arm)
+        for collection in loaded
+    ]
+    pool_note = {
+        "arm": args.arm,
+        "collections_requested": list(args.search),
+        "collections_searched": list(loaded),
+        "collections_unavailable": unavailable,
+        "complete_pool": bool(loaded)
+        and not unavailable
+        and all(p["complete"] for p in provenance)
+        and set(loaded) == set(config.COLLECTIONS),
+        "per_collection": provenance,
+    }
+    if not pool_note["complete_pool"]:
+        print(
+            "[query] WARNING searching a REDUCED pool: "
+            + json.dumps(pool_note["per_collection"])
+            + f" unavailable={unavailable}",
+            flush=True,
+        )
 
     if args.stats or (args.file is None and args.row is None):
         for collection, (matrix, rows) in loaded.items():
@@ -165,6 +277,9 @@ def main() -> int:
     results = results[: args.k + 1]
 
     if args.json:
+        # First line describes the pool, so a consumer of the JSON can never
+        # mistake a partial search for a full one.
+        print(json.dumps({"pool": pool_note}))
         for similarity, collection, record in results:
             print(json.dumps({"similarity": similarity, "collection": collection, **record}))
     else:

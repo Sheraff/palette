@@ -18,11 +18,22 @@ same pages byte for byte.
 Chrome is flat black and white on purpose. The artworks supply the colour; if
 the page supplied any, you could not trust what you were looking at.
 
+HOLDOUT. These pages show a human real album art, so they can spend held-out
+artworks. The pages built on 2026-08-02 did: 117 of the 413 held-out artworks
+and 2 quarantined ones were rendered, unrecorded (adversarial review 2026-08-03,
+MAJOR-1; disclosure in `data/holdout/HOLDOUT.md`). Since 2026-08-03 the render
+step is gated by `holdout_filter` and the policy is stamped into every page and
+into summary.json. The default is `--holdout exclude`. The embedding pool,
+k-means and neighbour search are NOT filtered -- the holdout bars looking at an
+artwork, not computing over it, and a filtered pool would make every cluster
+count incomparable with the corpus.
+
 Usage:
   .venv/bin/python gallery.py                     # both pages, all finalists
   .venv/bin/python gallery.py --arms dinov2-vitl14
   .venv/bin/python gallery.py --clusters-only
   .venv/bin/python gallery.py --neighbors-only
+  .venv/bin/python gallery.py --holdout mark      # deliberate look; SPENDS them
 """
 
 from __future__ import annotations
@@ -49,6 +60,7 @@ from pathlib import Path
 import config
 import common
 import eval_pairs
+import holdout_filter
 
 # [REVIEWED] Cluster count. The reviewer asked for k about 36; 36 also divides
 # the corpus into groups averaging ~450 files, which is small enough that a row
@@ -174,10 +186,20 @@ def kmeans(matrix, k: int, seed: int, max_iters: int):
     return assignments, centers, distances, iterations
 
 
-def cluster_arm(out_dir: Path, arm_tag: str):
-    """Load one arm's full corpus and cluster it."""
+def cluster_arm(out_dir: Path, arm_tag: str, allow_partial: bool = False):
+    """Load one arm's full corpus and cluster it.
+
+    The pool is checked for completeness before anything is clustered. Two arms
+    clustered at different pool sizes produce side-by-side pages that are not
+    comparable, and the header's `pool` line reads as authoritative either way
+    (review 2026-08-03, MINOR-12).
+    """
     import numpy as np
     import query as query_mod
+
+    provenance = query_mod.require_complete(
+        out_dir, config.COLLECTIONS, arm_tag, allow_partial=allow_partial
+    )
 
     blocks, rows = [], []
     for collection in config.COLLECTIONS:
@@ -236,6 +258,8 @@ def cluster_arm(out_dir: Path, arm_tag: str):
         "converged": iterations < KMEANS_MAX_ITERS,
         "seconds": round(elapsed, 1),
         "pool": int(pool.shape[0]),
+        "pool_complete": all(p["complete"] for p in provenance),
+        "pool_provenance": provenance,
         "dim": int(pool.shape[1]),
         "size_min": int(sizes.min()),
         "size_max": int(sizes.max()),
@@ -266,10 +290,15 @@ def artwork_key(collection: str, path: str) -> str:
     return f"{collection}:{match.group(1) if match else stem}"
 
 
-def neighbours_for(out_dir: Path, arm_tag: str, query_paths: list[str], groups: dict):
+def neighbours_for(out_dir: Path, arm_tag: str, query_paths: list[str], groups: dict,
+                   allow_partial: bool = False):
     """Top-N neighbours per query, with same-artwork renditions removed."""
     import numpy as np
     import query as query_mod
+
+    query_mod.require_complete(
+        out_dir, config.COLLECTIONS, arm_tag, allow_partial=allow_partial
+    )
 
     blocks, rows = [], []
     for collection in config.COLLECTIONS:
@@ -370,6 +399,14 @@ figcaption {
 }
 .tag { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: #000; }
 .tag.r { color: #888; }
+figure.held img, figure.quar img { border: 3px solid #000; outline: 2px solid #fff; }
+.tag.h {
+  background: #000; color: #fff; padding: 0 3px; letter-spacing: .1em;
+}
+.holdout {
+  border: 2px solid #000; padding: 8px 12px; margin: 0 0 20px; font-size: 11px;
+}
+.holdout b { text-transform: uppercase; letter-spacing: .06em; }
 .legend { font-size: 11px; color: #555; margin: 0 0 18px; }
 .legend b { color: #000; }
 .q { border-top: 1px solid #000; padding: 16px 0 18px; }
@@ -412,6 +449,89 @@ def short_name(path: str) -> str:
     return name if len(name) <= 22 else name[:10] + "…" + name[-10:]
 
 
+# --------------------------------------------------------------------------
+# Holdout gate at the render step
+# --------------------------------------------------------------------------
+
+
+def gate(view, policy: str, records, path_of=lambda r: r["path"]):
+    """Split records into (showable, withheld_counts) under the holdout policy.
+
+    `withheld_counts` is {"held": n, "quarantined": n} and is reported on the
+    page, so a row that is short of thumbnails says why rather than looking like
+    a small cluster. Under `mark` and `ignore` nothing is withheld; the caller
+    badges instead.
+    """
+    counts = {"held": 0, "quarantined": 0}
+    showable = []
+    for record in records:
+        kind = view.classify(path_of(record))
+        if kind != "open":
+            counts[kind] += 1
+            if policy == "exclude":
+                continue
+        showable.append(record)
+    return showable, counts
+
+
+def badge_for(view, policy: str, path: str) -> tuple[str, str]:
+    """(extra figure class, caption badge html) for one thumbnail."""
+    if policy == "ignore":
+        return "", ""
+    kind = view.classify(path)
+    if kind == "held":
+        return " held", " <span class='tag h'>holdout</span>"
+    if kind == "quarantined":
+        return " quar", " <span class='tag h'>quarantined</span>"
+    return "", ""
+
+
+def withheld_note(counts: dict) -> str:
+    if not counts["held"] and not counts["quarantined"]:
+        return ""
+    bits = []
+    if counts["held"]:
+        bits.append(f"{counts['held']} held out")
+    if counts["quarantined"]:
+        bits.append(f"{counts['quarantined']} quarantined")
+    return " &middot; " + html.escape(", ".join(bits)) + " withheld"
+
+
+def holdout_banner(view, policy: str, totals: dict) -> str:
+    """The page's own disclosure. Every page carries one, whatever the policy."""
+    source = "research/v3/data/holdout/holdout.json"
+    if policy == "exclude":
+        body = (
+            f"<b>holdout: excluded.</b> {totals['held']} thumbnail slot(s) of "
+            f"held-out artworks and {totals['quarantined']} of quarantined "
+            "non-candidates were withheld from this page. Cluster sizes, "
+            "centroids and neighbour ranks are computed over the FULL pool — "
+            "only the rendering is gated. Nothing on this page spends a "
+            "held-out artwork."
+        )
+    elif policy == "mark":
+        body = (
+            f"<b>holdout: SHOWN AND MARKED.</b> This page renders "
+            f"{totals['held']} thumbnail slot(s) of held-out artworks and "
+            f"{totals['quarantined']} of quarantined non-candidates, badged "
+            "in black. Looking at them SPENDS them: record it in HOLDOUT.md "
+            "and remove them from the end-of-campaign claim."
+        )
+    else:
+        body = (
+            "<b>holdout: IGNORED.</b> This page was built with "
+            "<code>--holdout ignore</code>, so held-out artworks are rendered "
+            "with no marking and are indistinguishable from the rest. Anyone "
+            "who browsed it must assume the holdout was spent. Use "
+            "<code>--holdout exclude</code>."
+        )
+    return (
+        f"<div class='holdout'>{body}<br>"
+        f"<span style='color:#555'>list: <code>{source}</code> &middot; "
+        f"{html.escape(view.describe())}</span></div>"
+    )
+
+
 def footer_html(extra: str = "") -> str:
     arms = ", ".join(
         f"<code>{html.escape(t)}</code>" for t in FINALIST_ARMS
@@ -437,9 +557,11 @@ def page(title: str, body: str) -> str:
     )
 
 
-def render_clusters(gallery_dir: Path, arm_tag: str, clusters, stats) -> str:
+def render_clusters(gallery_dir: Path, arm_tag: str, clusters, stats,
+                    view, policy: str) -> str:
     prefix = rel_to_repo(gallery_dir)
     spec = config.ARMS[arm_tag]
+    totals = {"held": 0, "quarantined": 0}
 
     warn = []
     if stats["singleton_clusters"]:
@@ -487,41 +609,61 @@ def render_clusters(gallery_dir: Path, arm_tag: str, clusters, stats) -> str:
         "a row where solid and dashed look unrelated is a cluster that is not "
         "really a visual family.</p>",
     ]
+    # The banner reports totals that are only known after the rows are built, so
+    # its slot is reserved here and filled in once the loop is done.
+    head_len = len(parts)
 
     for cluster in clusters:
         counts = " / ".join(
             f"{collection.split('_')[0]} {n}"
             for collection, n in cluster["collections"].items()
         )
+        near, near_withheld = gate(view, policy, cluster["near"])
+        rand, rand_withheld = gate(view, policy, cluster["random"])
+        row_withheld = {
+            key: near_withheld[key] + rand_withheld[key]
+            for key in ("held", "quarantined")
+        }
+        for key in row_withheld:
+            totals[key] += row_withheld[key]
+
         parts.append("<div class='row'>")
         parts.append(
             f"<div class='rowhead'><h2>cluster {cluster['id']:02d}</h2>"
             f"<span class='meta'>{cluster['size']} files &middot; {counts} &middot; "
-            f"mean dist {cluster['mean_distance']:.3f}</span></div>"
+            f"mean dist {cluster['mean_distance']:.3f}"
+            f"{withheld_note(row_withheld) if policy == 'exclude' else ''}"
+            "</span></div>"
         )
         width = min(100.0, 100.0 * cluster["size"] / max(1, clusters[0]["size"]))
         parts.append(f"<div class='bar' style='width:{width:.1f}%'></div>")
         parts.append("<div class='strip'>")
-        for record in cluster["near"]:
+        for record in near:
+            extra, badge = badge_for(view, policy, record["path"])
+            cls = f" class='{extra.strip()}'" if extra else ""
             parts.append(
-                f"<figure>{img_tag(prefix, record['path'])}"
-                f"<figcaption><span class='tag'>near</span><br>"
+                f"<figure{cls}>{img_tag(prefix, record['path'])}"
+                f"<figcaption><span class='tag'>near</span>{badge}<br>"
                 f"{html.escape(short_name(record['path']))}</figcaption></figure>"
             )
-        for record in cluster["random"]:
+        for record in rand:
+            extra, badge = badge_for(view, policy, record["path"])
             parts.append(
-                f"<figure class='rand'>{img_tag(prefix, record['path'])}"
-                f"<figcaption><span class='tag r'>rand</span><br>"
+                f"<figure class='rand{extra}'>{img_tag(prefix, record['path'])}"
+                f"<figcaption><span class='tag r'>rand</span>{badge}<br>"
                 f"{html.escape(short_name(record['path']))}</figcaption></figure>"
             )
         parts.append("</div></div>")
 
+    parts.insert(head_len, holdout_banner(view, policy, totals))
     parts.append(footer_html())
     return page(f"clusters — {arm_tag}", "".join(parts))
 
 
-def render_neighbours(gallery_dir: Path, queries: list[dict], per_arm: dict) -> str:
+def render_neighbours(gallery_dir: Path, queries: list[dict], per_arm: dict,
+                      view, policy: str) -> str:
     prefix = rel_to_repo(gallery_dir)
+    totals = {"held": 0, "quarantined": 0}
     links = " &middot; ".join(
         f"<a href='{html.escape(t)}.html'>{html.escape(t)} clusters</a>"
         for t in FINALIST_ARMS
@@ -539,14 +681,37 @@ def render_neighbours(gallery_dir: Path, queries: list[dict], per_arm: dict) -> 
         "the same cover stored under a different content hash — a near-duplicate "
         "the filename-based ground truth does not know about.</p>",
     ]
+    head_len = len(parts)
 
     for query in queries:
         path = query["path"]
+        # `per_arm` holds only the arms this run computed, which --arms can
+        # narrow; FINALIST_ARMS is the full display order. Indexing it directly
+        # made `--arms dinov2-vitl14` -- an invocation this module's own docstring
+        # advertises -- die with a KeyError.
         first = next(
-            (per_arm[a][path] for a in FINALIST_ARMS if per_arm[a].get(path)), None
+            (
+                per_arm[a][path]
+                for a in FINALIST_ARMS
+                if a in per_arm and per_arm[a].get(path)
+            ),
+            None,
         )
         if first is None:
             continue
+        # A query cover is looked at directly and at 128 px, which is the most
+        # expensive kind of look on this page. queries.json is a pinned list, so
+        # a held-out query is an editing mistake, not a sampling accident.
+        query_kind = view.classify(path)
+        if query_kind != "open":
+            totals[query_kind] += 1
+            if policy == "exclude":
+                print(
+                    f"[gallery] SKIPPING query {path}: it is {query_kind}. "
+                    "Fix queries.json rather than lowering the policy.",
+                    flush=True,
+                )
+                continue
         record = first["query"]
         dims = f"{record.get('width')}x{record.get('height')}"
         parts.append("<div class='q'>")
@@ -559,16 +724,30 @@ def render_neighbours(gallery_dir: Path, queries: list[dict], per_arm: dict) -> 
             f"{html.escape(record.get('format', '?'))}</span></div></div>"
         )
         for arm_tag in FINALIST_ARMS:
+            if arm_tag not in per_arm:
+                parts.append(
+                    f"<div class='model'><div class='mtag'>{html.escape(arm_tag)}"
+                    "</div><div class='qwhy'>NOT RUN — this page was built with "
+                    "--arms and does not include this finalist, so the "
+                    "side-by-side comparison this panel exists for is "
+                    "incomplete</div></div>"
+                )
+                continue
             entry = per_arm[arm_tag].get(path)
             parts.append("<div class='model'>")
             parts.append(f"<div class='mtag'>{html.escape(arm_tag)}</div>")
             if not entry:
                 parts.append("<div class='qwhy'>not embedded by this arm</div></div>")
                 continue
+            shown, withheld = gate(view, policy, entry["neighbours"])
+            for key in withheld:
+                totals[key] += withheld[key]
             parts.append("<div class='strip'>")
-            for neighbour in entry["neighbours"]:
+            for neighbour in shown:
+                extra, badge = badge_for(view, policy, neighbour["path"])
+                cls = f" class='{extra.strip()}'" if extra else ""
                 parts.append(
-                    f"<figure>{img_tag(prefix, neighbour['path'])}"
+                    f"<figure{cls}>{img_tag(prefix, neighbour['path'])}"
                     f"<figcaption><span class='sim'>"
                     f"{neighbour['similarity']:.3f}</span>"
                     + (
@@ -576,12 +755,19 @@ def render_neighbours(gallery_dir: Path, queries: list[dict], per_arm: dict) -> 
                         if neighbour.get("renditions", 1) > 1
                         else ""
                     )
+                    + badge
                     + f"<br>{html.escape(short_name(neighbour['path']))}"
                     "</figcaption></figure>"
+                )
+            if policy == "exclude" and (withheld["held"] or withheld["quarantined"]):
+                parts.append(
+                    f"<div class='qwhy'>{withheld_note(withheld)[10:]}"
+                    " — the rank they held is not shown</div>"
                 )
             parts.append("</div></div>")
         parts.append("</div>")
 
+    parts.insert(head_len, holdout_banner(view, policy, totals))
     parts.append(footer_html("queries are a pinned list, not sampled per run."))
     return page("neighbours — finalists", "".join(parts))
 
@@ -604,21 +790,62 @@ def main() -> int:
         default=None,
         help="JSON file of query covers; defaults to queries.json next to this script",
     )
+    parser.add_argument(
+        "--holdout",
+        choices=list(holdout_filter.POLICIES),
+        default=holdout_filter.DEFAULT_POLICY,
+        help="what to do with held-out and quarantined artworks at render time. "
+        "exclude (default) withholds the thumbnail; mark shows it badged and "
+        "SPENDS the artwork; ignore reproduces the pre-2026-08-03 pages",
+    )
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help="build pages from an incomplete embedding pool (not comparable "
+        "between arms; recorded in summary.json either way)",
+    )
     args = parser.parse_args()
 
     out_dir = Path(args.out_dir).resolve()
     gallery_dir = out_dir / GALLERY_DIR_NAME
     gallery_dir.mkdir(parents=True, exist_ok=True)
 
-    summary = {"written_at": common.utc_now_iso(), "k": KMEANS_K, "seed": KMEANS_SEED}
+    view = holdout_filter.load_holdout()
+    print(f"[gallery] {view.describe()}; policy={args.holdout}", flush=True)
+    if args.holdout != "exclude":
+        print(
+            f"[gallery] WARNING --holdout {args.holdout}: held-out artworks will "
+            "be rendered. Anyone who browses these pages spends them — record it "
+            "in research/v3/data/holdout/HOLDOUT.md and remove them from the "
+            "end-of-campaign claim.",
+            flush=True,
+        )
+
+    summary = {
+        "written_at": common.utc_now_iso(),
+        "k": KMEANS_K,
+        "seed": KMEANS_SEED,
+        "holdout": {
+            "policy": args.holdout,
+            "list": "research/v3/data/holdout/holdout.json",
+            "version": view.version,
+            "artworks": len(view.artwork_ids),
+            "quarantined_non_candidates": len(view.quarantined_ids),
+            "note": "the pool, k-means and neighbour search are NOT filtered — "
+            "only the rendering step is. `exclude` means no thumbnail on these "
+            "pages spends a held-out artwork.",
+        },
+    }
 
     if not args.neighbors_only:
         summary["clusters"] = {}
         for arm_tag in args.arms:
             print(f"[gallery] clustering {arm_tag} ...", flush=True)
-            clusters, stats = cluster_arm(out_dir, arm_tag)
+            clusters, stats = cluster_arm(out_dir, arm_tag, args.allow_partial)
             (gallery_dir / f"{arm_tag}.html").write_text(
-                render_clusters(gallery_dir, arm_tag, clusters, stats), encoding="utf-8"
+                render_clusters(gallery_dir, arm_tag, clusters, stats,
+                                view, args.holdout),
+                encoding="utf-8",
             )
             summary["clusters"][arm_tag] = stats
             print(
@@ -641,17 +868,45 @@ def main() -> int:
         for arm_tag in args.arms:
             print(f"[gallery] neighbours for {arm_tag} ...", flush=True)
             per_arm[arm_tag] = neighbours_for(
-                out_dir, arm_tag, [q["path"] for q in queries], truth
+                out_dir, arm_tag, [q["path"] for q in queries], truth,
+                args.allow_partial,
             )
         (gallery_dir / "neighbors.html").write_text(
-            render_neighbours(gallery_dir, queries, per_arm), encoding="utf-8"
+            render_neighbours(gallery_dir, queries, per_arm, view, args.holdout),
+            encoding="utf-8",
         )
+        held_queries = [
+            q["path"] for q in queries if view.classify(q["path"]) != "open"
+        ]
         summary["neighbours"] = {
             "queries": len(queries),
             "per_query": NEIGHBOURS_PER_QUERY,
             "source": str(queries_path.name),
+            "queries_held_out_or_quarantined": held_queries,
         }
         print(f"[gallery] wrote {gallery_dir / 'neighbors.html'}", flush=True)
+
+    # What the pages on disk actually expose, measured from their own source.
+    # This is the disclosure HOLDOUT.md asks for, produced by the build rather
+    # than remembered afterwards.
+    pages = sorted(gallery_dir.glob("*.html"))
+    if pages:
+        summary["holdout"]["exposure_audit"] = holdout_filter.audit_pages(pages, view)
+        union = summary["holdout"]["exposure_audit"]["union"]
+        print(
+            f"[gallery] exposure audit: {union['music_artworks_ids_shown']} "
+            f"music-artworks ids rendered across {len(pages)} page(s), of which "
+            f"{union['held_out_artworks_shown']} held out "
+            f"({union['held_out_pct_of_holdout']}% of the holdout) and "
+            f"{union['quarantined_artworks_shown']} quarantined",
+            flush=True,
+        )
+        if union["held_out_artworks_shown"]:
+            print(
+                "[gallery] ^ those artworks are SPENT. Record them in "
+                "research/v3/data/holdout/HOLDOUT.md.",
+                flush=True,
+            )
 
     (gallery_dir / "summary.json").write_text(
         json.dumps(summary, indent=2) + "\n", encoding="utf-8"

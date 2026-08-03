@@ -26,6 +26,7 @@ import webbrowser
 from pathlib import Path
 
 import config
+import holdout_filter
 
 # [REVIEWED] Default port. Nothing special about it; high enough to need no
 # privileges and unusual enough to rarely collide.
@@ -108,6 +109,31 @@ def main() -> int:
 
     root = config.REPO_ROOT
     handler = functools.partial(CorpusHandler, directory=str(root))
+
+    # Serving is re-exposing. The pages built before 2026-08-03 have no holdout
+    # gate, so say what opening them costs BEFORE the browser opens (review
+    # 2026-08-03, MAJOR-1). Measured from the page source, not assumed.
+    gallery_dir = root / GALLERY_REL
+    pages = sorted(gallery_dir.glob("*.html"))
+    if pages:
+        audit = holdout_filter.audit_pages(pages)
+        union = audit["union"]
+        if union["held_out_artworks_shown"] or union["quarantined_artworks_shown"]:
+            print(
+                "!! HOLDOUT WARNING: these pages render "
+                f"{union['held_out_artworks_shown']} held-out artworks "
+                f"({union['held_out_pct_of_holdout']}% of the holdout) and "
+                f"{union['quarantined_artworks_shown']} quarantined "
+                "non-candidates. Browsing them spends those artworks — "
+                "see research/v3/data/holdout/HOLDOUT.md. Rebuild with "
+                "`gallery.py --holdout exclude` for a page that costs nothing."
+            )
+            for name, row in audit["pages"].items():
+                if row["of_which_held_out"] or row["of_which_quarantined"]:
+                    print(
+                        f"     {name:24s} {row['of_which_held_out']:4d} held out, "
+                        f"{row['of_which_quarantined']:3d} quarantined"
+                    )
 
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("127.0.0.1", args.port), handler) as httpd:

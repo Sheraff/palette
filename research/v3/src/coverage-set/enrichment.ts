@@ -34,9 +34,15 @@ export type EnrichmentEntry = {
  *  the eval set whose contents are established independently of the model".
  *  Two of the five (`images/greenday.jpg`, `images/slim.jpg`) live in the repo's
  *  legacy `images/` directory, which is in neither embedded collection; they are
- *  carried anyway, flagged `inEmbeddingUniverse: false`, because there are only
- *  five confirmed PA covers in existence here and dropping two would halve the
- *  evidence behind any PA-mark instrument. */
+ *  carried anyway, flagged `inEmbeddingUniverse: false`, because dropping them
+ *  would take a third of the PA evidence with them.
+ *
+ *  Two counts live here and they are not the same number (review 2026-08-03,
+ *  MINOR-8). This list is the FIVE covers probe 2 opened by eye. The
+ *  `parental-advisory` SLICE holds SIX, because one probe-4 cover
+ *  (`07/ab67616d0000b27300072f04eb3dae24ba1cc3e8`, a shipping label) carries a
+ *  PA mark as well as its barcode. Six minus the two legacy covers is four —
+ *  a third gone, not a halving, which is what the generated prose used to say. */
 const PARENTAL_ADVISORY: EnrichmentEntry[] = [
 	{
 		path: 'images/greenday.jpg',

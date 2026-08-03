@@ -880,11 +880,21 @@ async function main(): Promise<void> {
 				eval142VsUniverse: evalTvd,
 				ratio: coreTvd === 0 ? null : round(evalTvd / coreTvd, 2),
 			},
+			// The two eval-142 percentage columns in this file have DIFFERENT
+			// denominators and used to carry the same name and the same table
+			// header four lines apart (review 2026-08-03, MINOR-7). The tier mix
+			// is over all 142 entries, because a tier comes from an entry's own
+			// measured header and every entry has one, including the 25 that are
+			// not in the embedded corpus. The per-cluster mix can only be over
+			// the locatable ones, because an artwork outside the corpus has no
+			// cluster. Both are right; only one can be called "eval-142 %".
+			eval142PctDenominator: 'all included eval-142 entries',
 			tierMix: tierNames.map((t) => ({
 				tier: t,
 				universePct: pct(universeTierCounts.get(t)!, members.length),
 				corePct: pct(coreTierCounts.get(t)!, core.length),
 				eval142Pct: pct(evalTierCounts.get(t)!, evalEntries.length),
+				eval142PctOf: evalEntries.length,
 				eval142Artworks: evalTierCounts.get(t)!,
 			})),
 			clustersEval142NeverTouches: evalUntouchedClusters,
@@ -899,7 +909,10 @@ async function main(): Promise<void> {
 				universePct: pct(row.universeArtworks, members.length),
 				coreArtworks: row.coreArtworks,
 				eval142Artworks: row.eval142Artworks,
+				// Denominator is the LOCATABLE entries, not all 142: an entry
+				// outside the embedded corpus has no cluster to be counted in.
 				eval142Pct: pct(row.eval142Artworks, locatable.length),
+				eval142PctOf: locatable.length,
 			})),
 			rows: evalRows,
 		},
@@ -1021,7 +1034,13 @@ function renderMarkdown(output: any, extra: { clusterSizes: number[]; quotas: nu
 		`| barcode | ${slices.get('barcode') ?? 0} | applied overlays (promo sticker, shipping label) that are on the cover but not part of the artwork |`,
 		`| confirmed-negative | ${slices.get('confirmed-negative') ?? 0} | a cover confirmed to carry no mark, no logo, no sticker and no display text: any detection here is a false positive by construction |`,
 		'',
-		`${c.enrichmentArtworks - c.enrichmentInEmbeddingUniverse} of them (\`images/greenday.jpg\`, \`images/slim.jpg\`) live in the repo’s legacy \`images/\` directory, which is in neither embedded collection. They are carried anyway, flagged \`inEmbeddingUniverse: false\` with no cluster, because only five confirmed parental-advisory covers exist here and dropping two would halve the evidence behind any PA instrument.`,
+		// The count in this sentence used to be a literal five while the table
+		// above computed six, and "dropping two would halve" was wrong against
+		// either (review 2026-08-03, MINOR-8). Both numbers are computed now.
+		// The six are the covers carrying the PA slice; five of those come from
+		// the probe-2 eye check, the sixth is a probe-4 shipping-label cover
+		// that carries a PA mark too.
+		`${c.enrichmentArtworks - c.enrichmentInEmbeddingUniverse} of them (\`images/greenday.jpg\`, \`images/slim.jpg\`) live in the repo’s legacy \`images/\` directory, which is in neither embedded collection. They are carried anyway, flagged \`inEmbeddingUniverse: false\` with no cluster: both carry a confirmed parental-advisory mark, only ${slices.get('parental-advisory') ?? 0} covers in this repo do, and dropping them would leave ${(slices.get('parental-advisory') ?? 0) - (c.enrichmentArtworks - c.enrichmentInEmbeddingUniverse)} — a third of the PA evidence gone.`,
 		'',
 		'Enrichment rows point at the **exact file a human opened**, not at the artwork’s largest rendition — the confirmation was made on that file. Each row carries `enrichmentSource`, naming the repo file that establishes its content: `research/v3/oracle/sam/review_round_2.py` (the covers opened by eye during the SAM vocabulary probe) and `research/v3/data/sam/probe-4-scripts-objects.jsonl` (whose `image_kind` / `image_note` fields were filled in by opening each file).',
 		'',
@@ -1035,15 +1054,15 @@ function renderMarkdown(output: any, extra: { clusterSizes: number[]; quotas: nu
 		`- **${e.clustersEval142NeverTouches.length} of the ${h.clustering.k} clusters contain no eval-142 artwork at all** — clusters ${e.clustersEval142NeverTouches.join(', ') || '(none)'}, holding ${e.clustersEval142NeverTouchesUniverseShare}% of the universe between them. On those kinds of cover the inherited bench could say nothing, because it contained nothing from there.`,
 		`- **The mix is wrong, not just the coverage.** Distance between a sample’s cluster mix and the corpus’s (total variation, 0 = identical, 1 = disjoint): the core sits at **${e.clusterMixDistance.coreVsUniverse}**, eval-142 at **${e.clusterMixDistance.eval142VsUniverse}**${e.clusterMixDistance.ratio ? ` — ${e.clusterMixDistance.ratio}× further out` : ''}. That is the measurement this whole comparison exists to produce. The core’s own distance is not zero and is not meant to be: the per-cluster floor of ${CLUSTER_FLOOR} intentionally over-samples the small clusters, and that accounts for essentially all of it.`,
 		'',
-		'Resolution mix, the other axis that has to match:',
+		`Resolution mix, the other axis that has to match. **This table's eval-142 column is over all ${e.includedEntries} entries** — a resolution tier comes from an entry's own measured header, so even the ${e.notInEmbeddedCorpus} entries outside the corpus have one. The per-cluster table further down is over the ${e.locatable} locatable entries instead, because an artwork outside the corpus has no cluster. Both columns are correct; they are not comparable to each other.`,
 		'',
-		'| tier | universe % | core % | eval-142 % |',
+		`| tier | universe % | core % | eval-142 % (of ${e.includedEntries}) |`,
 		'|---|---|---|---|',
 		...e.tierMix.map((row: any) => `| ${row.tier} | ${row.universePct}% | ${row.corePct}% | ${row.eval142Pct}% |`),
 		'',
 		'The verdict this supports: eval-142 was never a sample of this corpus. It is a set of covers that accumulated during v2 development for reasons that had nothing to do with covering the corpus, a sixth of it is not in the corpus at all, and its cluster mix sits several times further from the corpus than the core does. It remains perfectly good evidence about the *artworks in it* — the gradient labels behind it are real reviewer work — and nothing here retracts that. What it cannot support is any sentence of the form "on the corpus, the instrument does X".',
 		'',
-		'| cluster | universe | universe % | core | eval-142 | eval-142 % |',
+		`| cluster | universe | universe % | core | eval-142 | eval-142 % (of ${e.locatable} locatable) |`,
 		'|---|---|---|---|---|---|',
 		...e.perCluster.map((row: any) => `| ${row.cluster} | ${row.universeArtworks} | ${row.universePct}% | ${row.coreArtworks} | ${row.eval142Artworks} | ${row.eval142Pct}% |`),
 		'',

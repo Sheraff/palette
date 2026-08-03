@@ -643,12 +643,14 @@
 			"eval142VsUniverse": 0.2273,
 			"ratio": 2.67
 		},
+		"eval142PctDenominator": "all included eval-142 entries",
 		"tierMix": [
 			{
 				"tier": "<=400",
 				"universePct": 26.45,
 				"corePct": 26.5,
 				"eval142Pct": 31.69,
+				"eval142PctOf": 142,
 				"eval142Artworks": 45
 			},
 			{
@@ -656,6 +658,7 @@
 				"universePct": 61.56,
 				"corePct": 61.5,
 				"eval142Pct": 60.56,
+				"eval142PctOf": 142,
 				"eval142Artworks": 86
 			},
 			{
@@ -663,6 +666,7 @@
 				"universePct": 10.3,
 				"corePct": 10.5,
 				"eval142Pct": 4.93,
+				"eval142PctOf": 142,
 				"eval142Artworks": 7
 			},
 			{
@@ -670,6 +674,7 @@
 				"universePct": 1.69,
 				"corePct": 1.5,
 				"eval142Pct": 2.82,
+				"eval142PctOf": 142,
 				"eval142Artworks": 4
 			}
 		],
@@ -688,7 +693,8 @@
 				"universePct": 2.77,
 				"coreArtworks": 6,
 				"eval142Artworks": 0,
-				"eval142Pct": 0
+				"eval142Pct": 0,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 1,
@@ -696,7 +702,8 @@
 				"universePct": 1.75,
 				"coreArtworks": 5,
 				"eval142Artworks": 2,
-				"eval142Pct": 1.71
+				"eval142Pct": 1.71,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 2,
@@ -704,7 +711,8 @@
 				"universePct": 3.23,
 				"coreArtworks": 6,
 				"eval142Artworks": 5,
-				"eval142Pct": 4.27
+				"eval142Pct": 4.27,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 3,
@@ -712,7 +720,8 @@
 				"universePct": 0.39,
 				"coreArtworks": 3,
 				"eval142Artworks": 1,
-				"eval142Pct": 0.85
+				"eval142Pct": 0.85,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 4,
@@ -720,7 +729,8 @@
 				"universePct": 1.51,
 				"coreArtworks": 4,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 5,
@@ -728,7 +738,8 @@
 				"universePct": 2.49,
 				"coreArtworks": 5,
 				"eval142Artworks": 2,
-				"eval142Pct": 1.71
+				"eval142Pct": 1.71,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 6,
@@ -736,7 +747,8 @@
 				"universePct": 3.43,
 				"coreArtworks": 6,
 				"eval142Artworks": 8,
-				"eval142Pct": 6.84
+				"eval142Pct": 6.84,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 7,
@@ -744,7 +756,8 @@
 				"universePct": 2.68,
 				"coreArtworks": 5,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 8,
@@ -752,7 +765,8 @@
 				"universePct": 3.7,
 				"coreArtworks": 6,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 9,
@@ -760,7 +774,8 @@
 				"universePct": 3.25,
 				"coreArtworks": 6,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 10,
@@ -768,7 +783,8 @@
 				"universePct": 2.85,
 				"coreArtworks": 6,
 				"eval142Artworks": 1,
-				"eval142Pct": 0.85
+				"eval142Pct": 0.85,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 11,
@@ -776,7 +792,8 @@
 				"universePct": 1.22,
 				"coreArtworks": 4,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 12,
@@ -784,7 +801,8 @@
 				"universePct": 2.7,
 				"coreArtworks": 6,
 				"eval142Artworks": 1,
-				"eval142Pct": 0.85
+				"eval142Pct": 0.85,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 13,
@@ -792,7 +810,8 @@
 				"universePct": 1.84,
 				"coreArtworks": 5,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 14,
@@ -800,7 +819,8 @@
 				"universePct": 3.87,
 				"coreArtworks": 7,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 15,
@@ -808,7 +828,8 @@
 				"universePct": 3.81,
 				"coreArtworks": 7,
 				"eval142Artworks": 8,
-				"eval142Pct": 6.84
+				"eval142Pct": 6.84,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 16,
@@ -816,7 +837,8 @@
 				"universePct": 4.21,
 				"coreArtworks": 7,
 				"eval142Artworks": 2,
-				"eval142Pct": 1.71
+				"eval142Pct": 1.71,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 17,
@@ -824,7 +846,8 @@
 				"universePct": 2.58,
 				"coreArtworks": 5,
 				"eval142Artworks": 2,
-				"eval142Pct": 1.71
+				"eval142Pct": 1.71,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 18,
@@ -832,7 +855,8 @@
 				"universePct": 5.17,
 				"coreArtworks": 8,
 				"eval142Artworks": 7,
-				"eval142Pct": 5.98
+				"eval142Pct": 5.98,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 19,
@@ -840,7 +864,8 @@
 				"universePct": 2.5,
 				"coreArtworks": 5,
 				"eval142Artworks": 6,
-				"eval142Pct": 5.13
+				"eval142Pct": 5.13,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 20,
@@ -848,7 +873,8 @@
 				"universePct": 3.21,
 				"coreArtworks": 6,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 21,
@@ -856,7 +882,8 @@
 				"universePct": 3.64,
 				"coreArtworks": 6,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 22,
@@ -864,7 +891,8 @@
 				"universePct": 0.58,
 				"coreArtworks": 4,
 				"eval142Artworks": 0,
-				"eval142Pct": 0
+				"eval142Pct": 0,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 23,
@@ -872,7 +900,8 @@
 				"universePct": 3.17,
 				"coreArtworks": 6,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 24,
@@ -880,7 +909,8 @@
 				"universePct": 3.3,
 				"coreArtworks": 6,
 				"eval142Artworks": 1,
-				"eval142Pct": 0.85
+				"eval142Pct": 0.85,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 25,
@@ -888,7 +918,8 @@
 				"universePct": 2.68,
 				"coreArtworks": 5,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 26,
@@ -896,7 +927,8 @@
 				"universePct": 3.13,
 				"coreArtworks": 6,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 27,
@@ -904,7 +936,8 @@
 				"universePct": 1.51,
 				"coreArtworks": 4,
 				"eval142Artworks": 4,
-				"eval142Pct": 3.42
+				"eval142Pct": 3.42,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 28,
@@ -912,7 +945,8 @@
 				"universePct": 2.44,
 				"coreArtworks": 5,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 29,
@@ -920,7 +954,8 @@
 				"universePct": 3.01,
 				"coreArtworks": 6,
 				"eval142Artworks": 3,
-				"eval142Pct": 2.56
+				"eval142Pct": 2.56,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 30,
@@ -928,7 +963,8 @@
 				"universePct": 0.79,
 				"coreArtworks": 4,
 				"eval142Artworks": 0,
-				"eval142Pct": 0
+				"eval142Pct": 0,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 31,
@@ -936,7 +972,8 @@
 				"universePct": 1.21,
 				"coreArtworks": 4,
 				"eval142Artworks": 0,
-				"eval142Pct": 0
+				"eval142Pct": 0,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 32,
@@ -944,7 +981,8 @@
 				"universePct": 2.44,
 				"coreArtworks": 5,
 				"eval142Artworks": 5,
-				"eval142Pct": 4.27
+				"eval142Pct": 4.27,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 33,
@@ -952,7 +990,8 @@
 				"universePct": 2.66,
 				"coreArtworks": 5,
 				"eval142Artworks": 1,
-				"eval142Pct": 0.85
+				"eval142Pct": 0.85,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 34,
@@ -960,7 +999,8 @@
 				"universePct": 6.44,
 				"coreArtworks": 9,
 				"eval142Artworks": 6,
-				"eval142Pct": 5.13
+				"eval142Pct": 5.13,
+				"eval142PctOf": 117
 			},
 			{
 				"cluster": 35,
@@ -968,7 +1008,8 @@
 				"universePct": 3.82,
 				"coreArtworks": 7,
 				"eval142Artworks": 7,
-				"eval142Pct": 5.98
+				"eval142Pct": 5.98,
+				"eval142PctOf": 117
 			}
 		],
 		"rows": [
