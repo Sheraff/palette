@@ -1,7 +1,13 @@
 # V3 Phase 0 — Working Decisions
 
-**Status:** working decisions, discussed 2026-08-02. Updated as discussions settle.
-**Scope:** input policy · output contract · metrics. Referenced from `V3_PLAN.md` §6.
+**Status:** working decisions, discussed 2026-08-02, **updated 2026-08-03 at the close of Phase 0.**
+Updated as discussions settle.
+**Scope:** input policy · output contract · metrics · corpus/legacy data · oracle label semantics ·
+measured resolution floors. Referenced from `V3_PLAN.md` §6.
+**Companions:** `data/decisions/decisions.json` (standing decision records, recheckable against the
+warehouse) · `PHASE_0_LOOSE_ENDS.md` (every deliberately-open item, with owner and revival
+condition). Where a decision here has a record, the record carries the evidence and the caveats;
+this document carries the rule.
 
 ---
 
@@ -219,10 +225,33 @@ canary).
   multi-rendition artworks kept whole on one side of the line; freeze the list in a committed
   file. Excluded from review, dev batches, outlier mining, and tuning — touched only for
   end-of-campaign claims. The resolution ladder draws from the non-holdout remainder.
-  *Frozen 2026-08-02:* the transparency exclusion reduced candidates from 3,097 square
-  artworks to **2,757** (324 square real-transparency files were disc scans/cutouts, all
-  single-rendition); **414 artworks / 1,098 files held out (15.02%)**, seed pinned `[HELD]`,
+  *Frozen 2026-08-02, version **2.0.0**:* the transparency exclusion reduced candidates from 3,097
+  square artworks to **2,757** (324 square real-transparency files were disc scans/cutouts, all
+  single-rendition). **413 artworks / 1,073 files held out (14.98%)**, seed pinned `[HELD]`,
   byte-reproducible. See `research/v3/data/holdout/HOLDOUT.md`.
+
+  **Version 1.0.0 leaked and was voided.** It drew on artwork ids; the embedding near-duplicate
+  census then found that **224 of its 414 held-out artworks had a near-identical twin — the same
+  image under a different artwork id — on the working-set side of the line.** Nothing had consumed
+  the holdout, so the reviewer authorised a clean redraw (2026-08-02). 2.0.0 selects **whole
+  near-duplicate components**: an edge wherever any of three embedding arms puts a pair at cosine
+  ≥ 0.95, connected components via union-find, whole components drawn. Zero near-duplicate edges
+  cross the boundary, asserted on every run across all three arms.
+  - **Use the effective size, not the nominal one.** 2,757 candidate artworks are only **1,712
+    distinct images**. The holdout is 413 artworks but **254 independent components** (14.84% of
+    components) — that is the number to reason about statistical power with. The nominal count
+    double-counts duplicates.
+  - **The census is a lower bound.** Measured against duplicates the filename ground truth already
+    knows about, it undercounts by **46.3%** at cosine 0.95. Component isolation removes the
+    duplicates we can see, not all of them; end-of-campaign numbers still carry residual optimism.
+  - **One residual path:** 12 artworks that *failed* the candidate filters (non-square,
+    thumbnail-only, real-transparency) are near-duplicates of a held-out artwork. They are in
+    nobody's working set today, so nothing leaks — but pulling any of them into a transparency or
+    banner-shaped edge-case batch would create one. Their ids are in `holdout.json` under
+    `header.nearDuplicateCensus.nonCandidateQuarantine`. **Treat that list as held out too.**
+  - Changing the seed, the census or the component rule re-rolls the holdout and **voids every
+    claim made against the old list.** That has now happened once, deliberately, with reviewer
+    authorisation. It must not happen again without the same authorisation.
 - **v2-3 verdicts are NOT imported into the v3 warehouse.** Their value is distilled into
   purpose-built fixture files consumed only by mechanical checks: **known-bad palettes** (feeds
   the known-worse gate), **endorsements** (feeds the concordance dashboard and reachability
@@ -231,9 +260,29 @@ canary).
   *Consumption semantics (2026-08-02):* the known-worse gate keys on the **role signature**
   (four role colors, matched within the same-color bar), never the full palette signature —
   v3's decoupled-stop gradients make full-signature matches structurally impossible, and
-  gradient fields on legacy entries are advisory only. Contested entries (same palette graded
-  both good and bad in the source data — 2 exist) **warn, never block**; the hard gate set is
-  the uncontested entries.
+  gradient fields on legacy entries are advisory only.
+
+  *Conflicting grades — settled by **recency** (reviewer 2026-08-03, superseding the earlier
+  warn-never-block answer given by the orchestrator the same day).* 36 (artwork, exact palette)
+  pairs carry more than one grade across different comparisons — the censored/relative
+  epistemology showing through, since the same palette can win one blinded pairing and lose
+  another. Six of those involve a bad grade. **The latest-timestamped grade is the pair's standing
+  verdict**; earlier grades are history, not live contradictions. Consequences, all applied in the
+  data:
+  - Latest grade bad → **hard-gate** known-bad entry, marked `resolvedByRecency` with the full
+    `gradeHistory`. Latest grade good → **dropped from `known-bad.json` entirely**.
+  - **`contested` now means exactly one thing: conflicting grades sharing an identical timestamp,
+    which recency cannot break. There are none** — checked, not assumed. So all **37 known-bad
+    entries are hard-gate entries**; there is no warn-only tier.
+  - **Membership is the signal.** A palette whose standing grade is bad lives in `known-bad.json`
+    and nowhere else — removed from the good-tier files rather than kept there flagged as
+    superseded history, so a mechanical consumer never has to remember to filter. Good-tier
+    overlap with known-bad is **0**.
+  - Recency is a **policy, not a measurement**: it asserts that a later blinded comparison reflects
+    the reviewer's settled view better than an earlier one, and the warehouse epistemology gives no
+    evidence either way. It moves 3 palettes into the gate and 3 out of it, on a gate set of 37 —
+    roughly an 8% swing decided by a tie-break rule. Recorded in
+    `data/decisions/decisions.json` → `d-2026-08-02-legacy-contested-pairs-recency`.
   Rationale: the data's value flows through exactly the two sanctioned channels; nothing can
   mistake them for current verdicts because they are not verdicts anywhere — and the v3
   warehouse schema (dual grades, code fingerprints) structurally rejects old-format records.
@@ -242,12 +291,141 @@ canary).
   it. **Long runs:** the orchestrator asks before starting or resuming any long run; the
   reviewer gives the go-ahead and calls cool-downs.
 
-## 6. Open items
+## 6. The semantic oracle — what its labels are, and are not (decided 2026-08-03)
 
-- Same-color-bar bracketing round (ruler unit + threshold; §3) — now also carries: the accent
-  flat-zero unit/epsilon question (§4 invariant 4), the excursion bar recalibration (P1), and
-  flat equal-luminance chromatic accent pairs.
-- Foreground exact-zero epsilon: measurement-only (raw APCA distribution over corpus pairs).
+**The step-back.** Group A was piloted (`premise-run-1`, 137 artworks × 2 prompt variants),
+the reviewer hand-answered the 30 artworks where oracle and flag contradicted
+(`disambiguation-1`), a decomposed-probe arm was drafted and its human half run
+(`oracle-probe-gold-1`, 180 answers), and a criterion arm was drafted. At that point the
+instrument had been rewritten three times in two days and none of the rewrites had been measured
+against a model. The reviewer called a step-back on 2026-08-03. What it settled:
+
+**Oracle labels are known-noisy instruments for census, flagging and stratification. They are
+never per-item truth.** Concretely, and binding on every consumer:
+
+- **Never a gate**, never a fitting target, never an adjudicator of an individual artwork.
+- **Legitimate uses:** corpus-scale *counts* (the gradient-boolean neutrality census — "panel
+  neutrality is not corpus neutrality"), *flags* that queue artworks for human review, and
+  *strata* for sampling. All three tolerate per-item noise; none of them survives being read as
+  a verdict.
+- **P6's three-bucket structure (§4) is the shape all oracle cross-checks take** — contradiction,
+  agreement, can't-tell — precisely because several palettes can be valid for one artwork.
+- **Flag agreement is not accuracy.** Reviewer ruling, 2026-08-03: the published gradient flag is
+  **palette-conditional, not an artwork label** — an artwork can support a valid flat palette
+  *and* a valid gradient palette, and the flag only records which choice won. So (a) elicited
+  human labels are the primary judge for any oracle or model comparison; (b) flag agreement is a
+  secondary, palette-conditional signal; (c) the disambiguation tiebreak (flag 14 / oracle 10 /
+  neither 6) **overstates oracle error** by an unknown share of legitimate other-choice cases.
+
+**The instrument is frozen** at the **v2 single-question group-A form carrying variant B's
+ordering** — context questions (`enclosure`, `field_texture`) asked *before* the critical ground
+question, because under constrained decoding the property order is the generation order, so the
+model commits to two cheap facts before answering the hard one. Variant B beat A on every readout:
+exact match with the reviewer 16/30 vs 7/30, binary agreement 17/24 vs 8/20, κ vs the flag 0.31 vs
+0.21, answers landing on a value that predicts nothing 31% vs 44%.
+*Honest caveat:* A and B differ in **order and in wording**, so ordering is not cleanly isolated.
+The criterion arm (variants C, D) was drafted to deconfound it and has **not been run**.
+
+**The probe arm is parked, with its findings banked.** Its human half is the reason: the reviewer
+answered all six probes on the same 30 artworks they had already answered directly, and the
+729-row derivation reproduced their own direct tag on **13/30 (43.3%)** — below the reviewer's own
+63% self-consistency noise floor. Two instruments disagreeing with each other more than one
+reviewer disagrees with themselves is the finding. The `unsure` channel built to carry ambiguity
+was used **once in 180 answers** while the reviewer reported the questions as ambiguous. The VLM
+half was never run, so the arm's own questions — are the probes easy, does the inconsistency rate
+earn its place, does bundling contaminate — remain unanswered; that is what "parked" means rather
+than "rejected". All nine probe prompt files are inert (no glob matches them) and the arm is
+revived only by an explicit orchestrator opt-in.
+
+**What is still open: which model runs the bulk pass.** See §8.
+
+Recorded as `data/decisions/decisions.json` → `d-2026-08-03-oracle-question-set-freeze`, funded by
+212 reviewer answers and rechecked against the warehouse.
+
+## 7. Measured resolution floors (ladder-sample-1, 2026-08-03)
+
+The resolution ladder answers a question the whole corpus depends on: **below what size does a
+question stop being answerable at all?** Measured by running the frozen instrument down a ladder
+of renditions of the same artwork and comparing each rendition's answer to the largest rendition's
+(2,913 work rows, 1,225 ladder comparisons, 400 artworks with an answered reference, native
+resolution, canary stable, zero failed or reparsed rows).
+
+| question | agreement floor | lowest passing bin | **unanswerable below** | pooled agreement |
+|---|---|---|---|---|
+| `ground_type` (feeds the **gradient boolean**) | 0.85 | 241–340 px | **~241 px** | 0.830 |
+| `gradient_boolean` (derived) | 0.85 | 241–340 px | **~241 px** | 0.863 |
+| `field_texture` | 0.85 | 241–340 px | **~241 px** | 0.856 |
+| `shading_geometry` | 0.85 | 441–560 px | **~441 px** | 0.671 |
+| `enclosure` | 0.85 | — | answerable at every measured size | 0.922 |
+
+**The action these floors compel:** record `below_resolution` for a question on any rendition
+under its floor. **Never a confident negative.** A small rendition that cannot support the question
+must not be counted as evidence that the answer is "no".
+
+Provenance and caveats, all load-bearing:
+
+- **The 0.85 agreement floor is `[UNCALIBRATED]`.** It is a CLI flag with no measured basis — the
+  analysis prints the whole curve at every bin precisely so a reviewer can move it. Every floor in
+  the table above moves with it. Owner: reviewer.
+- **The codec-control noise floor was never populated** (`codec_control_same_size.n = 0` for every
+  question — the run did not pass `--include-duplicate-sizes`). Same-size agreement is the number
+  that says how much of the disagreement is codec noise rather than lost information, and without
+  it a floor above the noise floor is unreachable at any resolution. **Every
+  `unanswerable_below_px` verdict above is therefore provisional** until that control is run. This
+  is the largest single soft spot in the ladder result.
+- **`shading_geometry` is weak everywhere**, not merely below 441 px — its pooled agreement is
+  0.671, far under the floor. Treat its floor as "the size below which it is hopeless", not as a
+  size above which it is reliable.
+- **Two bins are thin** (161–240 px n=4, 681–900 px n=4) and the 561–680 px bin is empty under
+  every scope; the ladder is consequently **silent on whether 640 px is enough**, which needs a
+  different collection rather than a bigger scope.
+- **The transfer check holds**, which is what lets the curve be used corpus-wide: the ladder curve
+  predicts 0.834 and the matched-contrast control 0.814 against the 644 real sharded pairs'
+  observed 0.818.
+- **The answer key may be wrong at the very top.** At 3,000 px the model called an artwork
+  `pattern_or_texture` where every smaller rendition said `flat_field` — seeing paper grain
+  invisible at any size a user will ever view. If that turns out to be common, the reference
+  rendition should be capped at a viewing-plausible size and the ladder **re-scored**; the run
+  does not need repeating, only the analysis.
+
+## 8. Open items
+
+**The full ledger, with owners and revival conditions, is `PHASE_0_LOOSE_ENDS.md`.** This section
+keeps only the items that change a decision in this document.
+
+- ~~Same-color-bar bracketing round~~ **Settled and FROZEN (2026-08-03).** Two rounds ran; the bar
+  is region-dependent (§3) and is frozen at its per-region **point estimates**. **No round 3.**
+  The freeze was priced, not assumed: over 554 real palettes and 3,221 role pairs, the remaining
+  95%-interval uncertainty produces 0 decision flips at the low end, 2 at the high end, 0 under
+  the hue split — and both high-end flips would newly condemn a palette the reviewer *endorsed*,
+  which §4 says demotes a rule rather than tightening it. Recorded as
+  `d-2026-08-03-same-color-bar-freeze`.
+  - **The light-saturated hue split is NOT adopted.** It flips only toward more violations, all on
+    endorsed or accepted palettes, and its 0.03805 third is the middle of a separation gap rather
+    than a fitted crossing.
+  - **The anisotropy finding is not priced by any of this.** OKLab distance looks anisotropic under
+    the reviewer's criterion (at a fixed distance: lightness-only pairs read "same" 4/4,
+    chroma-only 2/4, hue-only 1/4) — that is a **missing dimension, not a width in the bar**, and
+    no scalar bar can express it. If a round 3 is ever justified, this is the better question to
+    spend it on. Both findings are held by a deliberate tripwire test that fails if either is ever
+    quietly encoded.
+- **Still open from that round:** the excursion bar recalibration (P1, still inherited at 2.5×
+  same-color) and flat equal-luminance chromatic accent pairs. The accent *visibility* distance
+  was measured (0.0744) but under **complete separation** — the reported value is the middle of a
+  0.06300–0.08796 band, bracketed rather than pinned.
+- Foreground exact-zero epsilon: **still measurement-only, still not measured.** `EPSILON_TEXT_RAW`
+  and `EPSILON_ACCENT_RAW` both sit `[UNCALIBRATED]` at 2.5 — a placeholder chosen only to clear
+  the measured 1.9815 identical-colors residue. §4 requires them derived from the raw-APCA
+  distribution over corpus pairs; that run has not happened.
+- **Bulk-model decision — PENDING.** Which VLM runs the corpus-wide oracle pass is undecided. The
+  incumbent (`qwen3-30b-a3b`, 6-bit MoE) is the only arm with a full 137-artwork run; challenger
+  runs are **in progress** and so far only cover the gold-30 (`qwen3-32b-dense` 8-bit, the
+  pipeline's planned adjudicator; `gemma3-27b` 8-bit). InternVL3.5 is **blocked** — no runtime
+  supports it. On the hard-case gold-30 the arms disagree in opposite directions (the dense
+  challenger wins under variant A and loses under variant B; cross-arm agreement is 0.533, i.e.
+  **these are meaningfully different instruments**), so the gold-30 cannot settle it — the eval-142
+  runs plus **reviewer visual evaluations** are the next step. No bulk run starts before this
+  lands, and the GPU queue is the orchestrator's, one job at a time.
 - ~~Contrast-parameter defaults~~ **Settled (2026-08-02, after two rounds of relitigation):**
   the contrast parameters are **always set** — default = minimum = the experimentally
   determined ε of §4 invariant 4, in raw APCA units near zero. Callers can only raise the

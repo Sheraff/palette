@@ -1,12 +1,16 @@
 # V3 — Plan, Process, and Ideas
 
-**Status:** proposal, discussed 2026-08-02. Nothing in this folder is built.
+**Status:** **Phase 0 built and complete, 2026-08-03.** Plan proposed 2026-08-02; §6's Phase 0
+exit criteria are all met (see §6 for the status table and its pointers). Phase 1 is **gated on
+an adversarial review of Phase 0** — reviewer directive, 2026-08-03. Phases 1–3 remain proposal.
 **Working model:** Claude Fable as architect/orchestrator, Opus subagents doing all implementation
 work in isolated arms, Flo as the sole reviewer and ground truth.
 **Companion documents:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` (dev-time VLM oracle),
-`ORACLE_QUESTION_SET.md` (proposed oracle questions), `PHASE_0_DECISIONS.md` (input policy,
-output contract, metrics — working decisions), `REVIEW_UI.md` (review server, verdict model,
-warehouse, oracle-validation mode).
+`ORACLE_QUESTION_SET.md` (the oracle question set — v2, group A piloted and measured),
+`PHASE_0_DECISIONS.md` (input policy, output contract, metrics — working decisions),
+`REVIEW_UI.md` (review server, verdict model, warehouse, oracle-validation mode),
+`PHASE_0_LOOSE_ENDS.md` (every deliberately-open item, with owner and revival condition),
+`data/decisions/` (standing decision records, machine-recheckable against the warehouse).
 
 ---
 
@@ -128,6 +132,16 @@ component**. What it unlocks:
 4. **Freeze the question set alongside the divergence phase** (the paradigms may add
    questions), then the full bulk run with the pipeline doc's §5 hygiene.
 
+**Status 2026-08-03 — steps 1–3 are done and step 4 is half-done.** The premise came back weak but
+not refuted: on the 30 artworks where oracle and flag contradicted, the reviewer sided with the
+flag 14, the oracle 10, and neither 6 — "a lean, not a verdict", and evidence that the contested
+slice is intrinsically ambiguous rather than that the oracle is wrong. Embeddings paid off
+immediately and independently of the oracle, exactly as predicted: they found the holdout leak
+that voided v1 (`PHASE_0_DECISIONS.md` §5). The ladder measured per-question resolution floors
+(§7). **The question set is frozen** at v2 group A with variant B's ordering, and the labels are
+scoped to census/flag/strata use only (§6 of `PHASE_0_DECISIONS.md`) — but the **bulk run has not
+started**, because which model runs it is still open. See `PHASE_0_LOOSE_ENDS.md`.
+
 **Emphasis correction to the pipeline doc:** SAM's masks may matter more than the VLM's labels.
 The VLM answers image-level questions, but most unsolved semantics are *pixel-attribution*
 problems (which pixels are the badge, the text, the residual field). `artwork_regions` is a
@@ -135,21 +149,37 @@ co-equal deliverable with `artwork_labels`, and mask quality goes into the human
 
 ## 6. Process
 
-### Phase 0 — instruments (no palette code)
+### Phase 0 — instruments (no palette code) — **COMPLETE 2026-08-03**
 
-- Build the review server + warehouse per **`REVIEW_UI.md`** — v2-3's proven machinery
-  (blinded 4–10 item batches, content-hash side shuffling, key never served, calibration
-  rounds with repeats, fresh-artwork rounds as the idle-time default) plus the v3 changes
-  (standing queue server, dual grades, agent-derived tags, oracle-validation mode).
-- Input policy, output contract, and metrics per **`PHASE_0_DECISIONS.md`** (working
-  decisions, discussed 2026-08-02).
-- Build the gates before the pipeline: relabel-invariance test, dither/re-encode stability
-  canary, repeated-extraction canary, degenerate-artwork sweep, the edge-case corpus (as
-  tests).
-- **Robustness as a first-class machine metric:** cross-rendition agreement, dither stability,
-  relabel invariance. These don't need the reviewer, so they can drive iteration between
-  review batches — v2-3 never had an objective co-metric.
-- Oracle steps 1–3 (§5) run here.
+The original criteria, each with its status and where to check it. Nothing below is a claim about
+palette quality; Phase 0 built *instruments*, and the honest summary is that the instrument-side
+criteria are met and the two pipeline-facing ones are **structurally unbuildable until a pipeline
+exists** — they are specified, and they move to the Phase 2 entry condition rather than counting
+as Phase 0 debt.
+
+| # | criterion | status | where |
+|---|---|---|---|
+| 1 | Review server + warehouse per `REVIEW_UI.md` — blinded 4–10 item batches, content-hash side shuffling, key never served, calibration rounds with repeats, plus the v3 changes (standing queue server, dual grades, agent-derived tags, oracle-validation mode) | **met** | `src/review-server/`, `src/warehouse/`, `review-ui/`; 434 warehouse records across 5 batches; `src/tagging/` for the tag vocabulary and export |
+| 2 | Input policy, output contract, metrics per `PHASE_0_DECISIONS.md` | **met, and three of them measured rather than assumed** | transparency resolved by exhaustive survey (§1); the one ruler calibrated *and frozen* (§3, §7); the ε floor's 1.9815 raw-APCA residue measured exhaustively (§4) |
+| 3 | Contract-invariant validation gate | **met** | `src/contract/invariants.ts`, `tests/contract-invariants.test.ts`; exercised corpus-wide by the calibration-consequence run over 554 real palettes |
+| 4 | The perturbation gates — relabel-invariance, dither/re-encode canary, repeated-extraction canary, degenerate-artwork sweep | **specified, NOT built** | they take a palette pipeline as input and there is none yet. **Moved to the Phase 2 entry condition:** the first prototype that emits palettes does not get adjudicated until these run against it. Tracked in `PHASE_0_LOOSE_ENDS.md` |
+| 5 | Robustness as a first-class machine co-metric (cross-rendition agreement, dither stability, relabel invariance) | **specified, NOT built** — same reason as #4 | the 644 cross-rendition pairs and the resolution ladder that feed it **are** built and measured (`data/oracle-ladder/`) |
+| 6 | Oracle step 1 — premise test | **met** | `premise-run-1` (137 artworks × 2 variants) + `disambiguation-1` (30 reviewer answers). Premise verdict: **weak but not refuted** — the contested slice is intrinsically ambiguous |
+| 7 | Oracle step 2 — embeddings over both collections | **met** | 6 arms × 2 collections, 16,145 vectors; retrieval bake-off; near-duplicate census; cluster galleries |
+| 8 | Oracle step 3 — resolution ladder + 644-pair transfer check | **met** | `data/oracle-ladder/ladder-sample-1.analysis.json`; transfer holds against both the curve and the matched-contrast control; per-question resolution floors measured (`PHASE_0_DECISIONS.md` §7) |
+| 9 | Corpus, holdout and legacy distillation | **met** (not an original bullet; added during the phase) | holdout frozen at v2 on near-duplicate components (`data/holdout/`); three legacy fixtures distilled (`data/legacy/`) |
+| 10 | SAM masks as a co-equal deliverable (§5's emphasis correction) | **partially met** | model pinned, machinery self-tested, prompt set replaced on measurement; **the score threshold is uncalibrated and no reviewer has validated a mask** |
+
+**Standing decisions are recorded in `data/decisions/decisions.json`** and are machine-recheckable
+against the warehouse (`warehouse recheck --decisions`). Every deliberately-open item is in
+**`PHASE_0_LOOSE_ENDS.md`** with an owner and a revival condition.
+
+**Gate to Phase 1 — reviewer directive, 2026-08-03: an adversarial review of Phase 0.** Divergence
+does not start until Phase 0's instruments have been attacked rather than admired. The reason is
+the same one that motivates the whole rewrite: every Phase 1 proposal will be evaluated *through*
+these instruments, so an instrument that is wrong in a way nobody looked for becomes an error that
+no amount of later care can detect. `PHASE_0_LOOSE_ENDS.md` is that review's starting map, not its
+scope limit.
 
 ### Phase 1 — divergence (anti-anchoring by construction)
 

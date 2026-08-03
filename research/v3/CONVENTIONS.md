@@ -21,6 +21,13 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
 | legacy distillation | `research/v3/src/legacy/`, `research/v3/data/legacy/` |
 | holdout freeze | `research/v3/src/holdout/`, `research/v3/data/holdout/` |
 | embeddings | `research/v3/oracle/embeddings/`, `research/v3/data/embeddings/` |
+| calibration consequence | `research/v3/src/calibration-consequence/`, `research/v3/data/calibration-consequence/` |
+| tagging | `research/v3/src/tagging/` |
+| oracle — premise / ladder / bakeoff / SAM | `research/v3/oracle/<name>/`, `research/v3/data/oracle-*`, `research/v3/data/sam/` |
+| housekeeping + reconciliation | `research/v3/data/decisions/`, `research/v3/PHASE_0_LOOSE_ENDS.md`, and doc edits to `V3_PLAN.md` / `PHASE_0_DECISIONS.md` / `CONVENTIONS.md` |
+
+The `.md` files inside a workstream's data directory belong to that workstream — a housekeeping
+pass reports contradictions in them, it does not edit them.
 
 **Rules:**
 
@@ -50,5 +57,17 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
   inside template literals). Signature: `grep` treats a text file as binary, or Edit cannot
   match text you can plainly see. Check with `grep -rlP '\x00' <path>`, repair to a space,
   and verify output hashes unchanged.
+- **A standing decision gets a record.** Anything later work is entitled to assume without
+  re-deriving — an instrument choice, a freeze, a corpus policy, a gate rule — goes into
+  `research/v3/data/decisions/decisions.json` (schema and rules in that directory's `README.md`).
+  `fundedBy` holds **warehouse record ids and nothing else**, so
+  `warehouse recheck --decisions` can flag the decision when the evidence under it is amended or
+  retracted; file references go in `fundedByArtifacts`, which no tool checks. A decision the
+  reviewer gave conversationally still gets a record — with an **empty `fundedBy`**, which is the
+  honest statement that no machine can ever re-check it. Append, never edit: a changed decision is
+  a new record carrying `supersedes`.
+- **A deliberately-open item gets a ledger entry** in `research/v3/PHASE_0_LOOSE_ENDS.md`, with an
+  owner and the condition that revives it. "Known and parked" is a respectable state; "open and
+  unrecorded" is not.
 - Read `V3_PLAN.md` and `PHASE_0_DECISIONS.md` before writing code; `REVIEW_UI.md` for
-  anything reviewer-facing.
+  anything reviewer-facing; `PHASE_0_LOOSE_ENDS.md` before assuming any instrument is settled.
