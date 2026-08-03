@@ -14,7 +14,7 @@ import sharp from "sharp"
 import { hashPalette, type ArtworkIdentity, type CodeFingerprint, type PaletteSnapshot } from "../warehouse/records.ts"
 import { blindItem, sha256 } from "./blinding.ts"
 import { nameHexes, normalizeHex } from "./color.ts"
-import { displayStops, fieldCss } from "./gradient.ts"
+import { canonicalPosition, displayStops, fieldCss, GRADIENT_POSITION_DECIMALS } from "./gradient.ts"
 import {
 	BATCH_PURPOSES,
 	ROLES,
@@ -81,12 +81,20 @@ function parseGradient(value: unknown): PaletteSnapshot["gradient"] {
 	const parsed = stops.map((raw, index) => {
 		const stop = asRecord(raw, `gradient.stops[${index}]`)
 		const color = normalizeHexOrThrow(stop.color, `gradient.stops[${index}].color`)
-		const position = stop.position
+		const raw_ = stop.position
 		require_(
-			typeof position === "number" && Number.isFinite(position) && position >= 0 && position <= 1,
+			typeof raw_ === "number" && Number.isFinite(raw_) && raw_ >= 0 && raw_ <= 1,
 			`gradient.stops[${index}].position must be a number in [0,1]`,
 		)
-		require_(position > previous, "gradient stop positions must be strictly increasing")
+		// Canonical numeric form, applied BEFORE monotonicity so the check is about the positions that
+		// will actually be stored and served. See `GRADIENT_POSITION_DECIMALS`: the float
+		// representation of a position is a served field, and two arms that reach the same position by
+		// different arithmetic would otherwise be separable by its trailing digits alone.
+		const position = canonicalPosition(raw_ as number)
+		require_(
+			position > previous,
+			`gradient stop positions must be strictly increasing at ${GRADIENT_POSITION_DECIMALS} decimal places`,
+		)
 		previous = position
 		return { color, position }
 	})

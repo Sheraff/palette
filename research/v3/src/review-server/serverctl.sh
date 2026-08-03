@@ -27,8 +27,23 @@ PORT=${REVIEW_SERVER_PORT:-3010}
 HOST=127.0.0.1
 BASE="http://$HOST:$PORT"
 RUN_DIR="$V3/data/review-server"
-PIDFILE="$RUN_DIR/server.pid"
-LOGFILE="$RUN_DIR/server.log"
+# THE RUN FILES ARE SCOPED BY PORT, and that is load-bearing rather than tidy.
+#
+# `REVIEW_SERVER_PORT` was overridable while the pidfile and the log were fixed, so starting a second
+# instance on another port overwrote the pidfile of the reviewer's server on 3010. A later
+# default-port `stop` then read that pidfile, killed the OTHER process, reported "stopped", and left
+# the reviewer's server running and unmanaged — after which `restart` refuses ("already answers but
+# is not ours") and the reviewer's session is stranded behind a server nobody owns. That is a live
+# hazard for exactly the workflow an agent has to use to test anything: work on your own port.
+#
+# The 3010 files keep their historical names so an existing pidfile is still found after this change.
+if [ "$PORT" = "3010" ]; then
+	PIDFILE="$RUN_DIR/server.pid"
+	LOGFILE="$RUN_DIR/server.log"
+else
+	PIDFILE="$RUN_DIR/server.$PORT.pid"
+	LOGFILE="$RUN_DIR/server.$PORT.log"
+fi
 
 # How long `start` waits for the process to answer its first request, in seconds.
 # [UNCALIBRATED] — chosen here. A cold start replays the warehouse and the batch log; on the current

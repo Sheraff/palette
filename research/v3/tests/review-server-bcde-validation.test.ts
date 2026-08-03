@@ -23,11 +23,16 @@ import { fileURLToPath } from "node:url"
 import { validateRecord, type OracleLabelRecord } from "../src/warehouse/records.ts"
 import {
 	analyzeBcdeValidation,
+	BCDE_VALIDATION_ANALYSIS_PATH,
+	CONTRADICTION_CEILING,
 	cohenKappa,
 	collectBcdeAnswers,
+	GATE_CONSISTENCY_RULES,
 	jaccard,
+	JOINED_GRADES,
 	readPilotAnswers,
 	sameAnswer,
+	verifyPilotOverlap,
 } from "../src/review-server/analyze-bcde-validation.ts"
 import {
 	BCDE_INSTRUCTION,
@@ -50,7 +55,7 @@ import {
 	type OracleQuestion,
 	type OracleValidationFixture,
 } from "../src/review-server/oracle-validation.ts"
-import { seedBcdeValidationRound } from "../src/review-server/server.ts"
+import { REPO_ROOT, seedBcdeValidationRound } from "../src/review-server/server.ts"
 import { readJsonl } from "../src/review-server/store.ts"
 import { call, openPage, startHarness, type FakePage, type Harness } from "../src/review-server/test-support.ts"
 import type { StoredOracleBatch } from "../src/review-server/types.ts"
@@ -64,6 +69,17 @@ const PROMPT_PATH = fileURLToPath(new URL("../oracle/premise/prompts/group-bcde.
 const fixture = await buildBcdeValidationFixture()
 const prompt = readGroupBcdePrompt(PROMPT_PATH)
 const overlays = fixture.questions.find((question) => question.key === "overlays")!
+
+/**
+ * The committed analysis of the real round.
+ *
+ * Read from the file rather than recomputed, because the assertions below are about what the *repo*
+ * says: an analysis that reports the right thing only when a test recomputes it is not on the record.
+ */
+const committed = JSON.parse(await readFile(BCDE_VALIDATION_ANALYSIS_PATH, "utf8"))
+function committedAnalysis(): any {
+	return committed
+}
 
 describe("bcde-validation fixture", () => {
 	it("is deterministic and matches the committed file", async () => {
@@ -538,8 +554,20 @@ describe("bcde-validation analysis", () => {
 		assert.equal(analysis.perQuestion.length, 8)
 		for (const question of analysis.perQuestion) {
 			for (const variant of ["E", "F"] as const) {
-				assert.equal(question.perVariant[variant].kappa.kappa, null)
+				for (const grade of JOINED_GRADES) {
+					assert.equal(question.perVariant[variant][grade].kappa.kappa, null)
+				}
 			}
+		}
+		// The scoping claim is that the two join grades are never pooled. That is a claim about the
+		// SHAPE of the output, so it is checked as one: no joined statistic exists that is not keyed by
+		// a grade, which makes a pooled number unwritable rather than merely absent today.
+		for (const question of analysis.perQuestion) {
+			for (const variant of ["E", "F"] as const) {
+				assert.deepEqual(Object.keys(question.perVariant[variant]).sort(), [...JOINED_GRADES].sort())
+			}
+			assert.deepEqual(Object.keys(question.variantAgreementSubset).sort(), [...JOINED_GRADES].sort())
+			assert.deepEqual(Object.keys(question.variantSplitSubset).sort(), [...JOINED_GRADES].sort())
 		}
 		// Never one accuracy number: the scoping says so before any figure is printed.
 		assert.ok(analysis.scoping.some((note) => note.startsWith("NEVER ONE ACCURACY NUMBER")))
@@ -569,12 +597,16 @@ describe("bcde-validation analysis", () => {
 			const subject = analysis.perQuestion.find((question) => question.key === "subject_kind")!
 			assert.equal(subject.answered, 2)
 			assert.equal(subject.unanswered, 18)
-			assert.equal(subject.perVariant.E.buckets.agreement, 2, "the reviewer echoed E and did not land in its bucket")
-			assert.equal(subject.perVariant.E.buckets.disagreement, 0)
+			// Both answered artworks are exact-byte joins, so the exact-byte grade carries both and the
+			// rendition grade carries none. Nothing anywhere adds the two together.
+			assert.equal(subject.perVariant.E.exact_bytes.buckets.agreement, 2, "the reviewer echoed E and did not land in its bucket")
+			assert.equal(subject.perVariant.E.exact_bytes.buckets.disagreement, 0)
+			assert.equal(subject.perVariant.E.same_artwork_other_rendition.n, 0, "the rendition row was never answered here")
 			// E and F both said `object` on these two, so both rows are in the agreement subset.
-			assert.equal(subject.variantAgreementSubset.n, 2)
-			assert.equal(subject.variantSplitSubset.n, 0)
-			assert.equal(subject.perVariant.E.kappa.kappa, null, "a kappa on two rows is an artefact")
+			assert.equal(subject.variantAgreementSubset.exact_bytes.n, 2)
+			assert.equal(subject.variantAgreementSubset.same_artwork_other_rendition.n, 0)
+			assert.equal(subject.variantSplitSubset.exact_bytes.n, 0)
+			assert.equal(subject.perVariant.E.exact_bytes.kappa.kappa, null, "a kappa on two rows is an artefact")
 			assert.deepEqual(
 				subject.perArtwork.filter((row) => row.joinGrade === "exact_bytes").length,
 				2,
@@ -612,8 +644,175 @@ describe("bcde-validation analysis", () => {
 			assert.equal(question.multi!.meanSize, 2)
 			assert.equal(question.multi!.singletonRate, 0)
 			assert.deepEqual(question.reviewerDistribution, { "parental_advisory+watermark": 1 })
+			// One spelling of an answer, everywhere. The distribution key, the kappa token and the set
+			// comparison used to canonicalize independently — source order, sorted, sorted — and agreed
+			// only because every array in the real round has length 1. This one has two.
+			assert.deepEqual(Object.keys(question.reviewerDistribution), ["parental_advisory+watermark"])
 		} finally {
 			await harness.stop()
 		}
+	})
+
+	it("files a reviewer refusal as can't-tell, never as 'agreed with neither wording'", () => {
+		// The manifest case from the real round: signature_carrier on 0e/…29f5b2b4 — the reviewer said
+		// not_applicable, E said `text`, F said `background`. The variants split, and the old split
+		// subset reported `reviewerWithNeither: 1`, which reads as a substantive human answer that
+		// missed both wordings. The human declined to answer. That is the exact pooling the third
+		// bucket exists to prevent, and it happened inside the file whose header says so.
+		const analysis = committedAnalysis()
+		const carrier = analysis.perQuestion.find((entry: any) => entry.key === "signature_carrier")!
+		const split = carrier.variantSplitSubset.exact_bytes
+		assert.equal(split.n, 1, "E and F split on exactly one exact-byte row")
+		assert.equal(split.reviewerCantTell, 1, "the reviewer refused")
+		assert.equal(split.reviewerWithNeither, 0, "and refusing is not disagreeing with both")
+		assert.equal(split.reviewerWithE, 0)
+		assert.equal(split.reviewerWithF, 0)
+		// Same row, same reading, in the buckets: can't-tell there too, and left out of the kappa
+		// vector entirely, because a kappa has two categories and no third.
+		assert.equal(carrier.perVariant.E.exact_bytes.buckets.cant_tell, 1)
+		assert.equal(carrier.perVariant.E.exact_bytes.n, 2, "two exact-byte rows carry a comparison")
+		assert.equal(carrier.perVariant.E.exact_bytes.kappa.n, 1, "only one of them is scorable as agreement")
+	})
+
+	it("reports the gate contradictions against the pre-registered ceiling, rather than omitting them", () => {
+		// CR-2. The reviewer's own answers break §15.6-(3)'s ceiling by more than four times, and the
+		// committed analysis computed no gate-consistency section at all — the word "contradiction"
+		// appeared only inside prose. This is the human reference standard the VLM is to be graded
+		// against; whatever the right reading is, it has to be on the record first.
+		const gates = committedAnalysis().gateConsistency
+		assert.equal(gates.ceiling, CONTRADICTION_CEILING)
+		assert.equal(gates.rowsConsidered, 20)
+		assert.equal(gates.totalContradictions, 9)
+		assert.equal(gates.artworksWithAnyContradiction, 8)
+		assert.equal(gates.withinCeiling, false, "45% against a 10% ceiling")
+		const byRule = new Map(gates.rules.map((rule: any) => [rule.id, rule]))
+		assert.equal(byRule.get(9).contradictions, 5, "#9 — a noun for a subject it said was absent")
+		assert.equal(byRule.get(4).contradictions, 1)
+		assert.equal(byRule.get(5).contradictions, 1)
+		assert.equal(byRule.get(6).contradictions, 2, "#6 — the accent question refusing itself")
+		assert.equal(byRule.get(10).contradictions, 0, "not every rule fired, and the zero is stated")
+		// Every row of the pre-registered table appears, including the ones this round cannot check:
+		// "we did not measure it" and "it did not fire" are different facts.
+		assert.deepEqual(
+			gates.rules.map((rule: any) => rule.id),
+			GATE_CONSISTENCY_RULES.map((rule) => rule.id),
+		)
+		for (const id of [1, 2, 3, 11, 12]) {
+			assert.equal(byRule.get(id).evaluable, false)
+			assert.match(byRule.get(id).notEvaluableBecause, /did not ask/u)
+		}
+		// The corroborating detail §15.6-(3) asks for: the abstention value never fired where its own
+		// gate had just made it the only consistent answer.
+		const abstention = gates.abstentionUse.find((entry: any) => entry.questionKey === "subject_kind")
+		assert.equal(abstention.refusalsUsed, 0)
+		assert.equal(abstention.opportunities, 5)
+		assert.match(gates.reading, /HUMAN REFERENCE STANDARD/u)
+		assert.ok(
+			gates.contradictions.every((entry: any) => typeof entry.imageId === "string" && typeof entry.gateAnswer === "string"),
+			"reported per artwork, so a reading can be argued from the rows rather than from the rate",
+		)
+	})
+
+	it("checks the stored answers against the vocabulary, not only against 'string or string[]'", () => {
+		const check = committedAnalysis().vocabulary
+		assert.equal(check.checked, 160)
+		assert.deepEqual(check.offVocabulary, [])
+		assert.deepEqual(check.unsortedArrays, [])
+		assert.deepEqual(check.duplicateValues, [])
+		assert.deepEqual(check.emptyArrays, [])
+		assert.deepEqual(check.wrongShape, [])
+		assert.deepEqual(check.orphanAnswers, [])
+	})
+
+	it("catches a hand-appended answer that never went through the server", async () => {
+		// The gap this closes: write-time enforcement is sound and could not be got past, but the
+		// analyzer type-checked the shape and nothing else, so a row appended to the warehouse by hand
+		// with a value outside the vocabulary would have passed the analysis in silence.
+		const harness = await startHarness()
+		try {
+			await seedBcdeValidationRound(harness.handle.service)
+			const item = fixture.items.find((entry) => entry.questionKey === "grain_or_noise")!
+			const forged = {
+				id: "ol-forged-1",
+				type: "oracle-label",
+				ts: new Date().toISOString(),
+				schema: "v3.0",
+				author: { kind: "human", id: "test-reviewer" },
+				batch: { id: BATCH, purpose: "oracle-validation" },
+				questionKey: "grain_or_noise",
+				imageId: item.imageId,
+				imagePath: item.imagePath,
+				sha256: item.sha256,
+				stratum: item.stratum,
+				labelSchemaVersion: BCDE_LABEL_SCHEMA_VERSION,
+				answer: "maybe",
+				confidence: null,
+				ambiguityNote: null,
+				fundedBy: [],
+			}
+			const analysis = analyzeBcdeValidation(
+				fixture,
+				[...harness.records(), forged as never],
+				await readPilotAnswers(),
+				{ warehousePath: harness.warehousePath, fixturePath: BCDE_VALIDATION_FIXTURE_PATH, pilotRunPath: "(pilot)" },
+			)
+			assert.deepEqual(analysis.vocabulary.offVocabulary, [
+				{ questionKey: "grain_or_noise", imageId: item.imageId, value: "maybe" },
+			])
+			assert.match(analysis.vocabulary.reading, /did not come through the server/u)
+		} finally {
+			await harness.stop()
+		}
+	})
+
+	it("verifies the three-artwork overlap against the image bytes, not against id prefixes", async () => {
+		// MA-8. The join is `artworkId` string equality across three mixed id namespaces — the exact
+		// pattern CONVENTIONS.md forbids ("identify artworks by full path + content hash, never by id
+		// prefix"), in the join that produces the headline. The answer was right; the method was not.
+		const verification = await verifyPilotOverlap(fixture, await readPilotAnswers(), REPO_ROOT)
+		assert.deepEqual(verification.roundHashMismatches, [], "every round artwork hashes to what it declares")
+		assert.deepEqual(verification.pilotHashMismatches, [])
+		assert.deepEqual(verification.unresolvedPaths, [])
+		assert.equal(verification.pairs.length, 3)
+		assert.equal(verification.pairs.filter((pair) => pair.proposedGrade === "exact_bytes").length, 2)
+		const rendition = verification.pairs.find((pair) => pair.proposedGrade === "same_artwork_other_rendition")!
+		assert.ok(rendition.lumaCorrelation !== null && rendition.lumaCorrelation > 0.98, "0.9862 in the audit's own sweep")
+		assert.ok(verification.pairs.every((pair) => pair.accepted))
+
+		// And an id match the pictures do not support is not a join: it drops to `none` rather than
+		// contributing a comparison nobody checked.
+		const rejected = {
+			...verification,
+			pairs: verification.pairs.map((pair) =>
+				pair.proposedGrade === "same_artwork_other_rendition" ? { ...pair, accepted: false, reason: "test" } : pair,
+			),
+		}
+		const analysis = analyzeBcdeValidation(
+			fixture,
+			[],
+			await readPilotAnswers(),
+			{ warehousePath: "(none)", fixturePath: BCDE_VALIDATION_FIXTURE_PATH, pilotRunPath: "(pilot)" },
+			() => new Date(0),
+			rejected,
+		)
+		assert.equal(analysis.counts.joinOtherRendition, 0)
+		assert.equal(analysis.counts.joinNone, 18)
+		assert.equal(analysis.counts.joinExactBytes, 2)
+	})
+
+	it("says plainly when a run was given no verification at all", async () => {
+		const analysis = analyzeBcdeValidation(fixture, [], await readPilotAnswers(), {
+			warehousePath: "(none)",
+			fixturePath: BCDE_VALIDATION_FIXTURE_PATH,
+			pilotRunPath: "(pilot)",
+		})
+		assert.equal(analysis.overlapVerification, null)
+		// `null`, not `false`: "no verification was supplied to this run" and "checked and fine" are
+		// different statements, and only one of them may be inferred from silence.
+		assert.ok(
+			analysis.perQuestion.every((question) => question.perArtwork.every((row) => row.joinVerified === null)),
+			"every row says it was not checked",
+		)
+		assert.ok(analysis.summaryLines.some((line) => line.includes("JOIN NOT VERIFIED IN THIS RUN")))
 	})
 })

@@ -1,6 +1,6 @@
 {
-	"generatedAt": "2026-08-03T17:54:14.704Z",
-	"whatThisIs": "The first human answers to any group-BCDE question, beside the pilot's two prompt variants. No number here is an accuracy: the reviewer-vs-model join is three artworks wide, and P6 forbids reading any oracle cross-check as an exact-match test in the first place.",
+	"generatedAt": "2026-08-03T19:12:42.707Z",
+	"whatThisIs": "The first human answers to any group-BCDE question, beside the pilot's two prompt variants. No number here is an accuracy: the reviewer-vs-model join is 3 artworks wide and is reported split by join grade, never pooled; and P6 forbids reading any oracle cross-check as an exact-match test in the first place.",
 	"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
 	"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/oracle-validation/bcde-validation-1.json",
 	"pilotRunPath": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/group-bcde-pilot-1.jsonl",
@@ -8,10 +8,11 @@
 	"labelSchemaVersion": "group-bcde.v1",
 	"scoping": [
 		"NO GROUND TRUTH EXISTED BEFORE THIS ROUND. The pilot measured E against F, which is self-consistency; a model can be perfectly self-consistent and perfectly wrong. These reviewer answers are the first human answer to any group-BCDE question, and they are elicited human labels — PHASE_0_DECISIONS.md §8's primary judge for any oracle comparison.",
-		"THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. Three artworks are in both — two on identical bytes, one at another rendition. No agreement rate computed on three rows is a rate. The two join grades are never pooled: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
+		"THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. 3 artworks are in both — 2 on identical bytes, 1 at another rendition. No agreement rate computed on 3 rows is a rate. THE TWO JOIN GRADES ARE NEVER POOLED, and this file emits no figure that pools them: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
 		"WORDING ASYMMETRY, PRE-REGISTERED (§15.9). Every stem and gloss the reviewer read was parsed out of variant E's prompt file. Scoring F against these answers carries a wording caveat that scoring E does not. That asymmetry is the price of two independent renderings; it is stated, not discovered later.",
-		"WHAT THE ROUND IS FOR AT FULL WIDTH: twenty reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
-		"NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against."
+		"WHAT THE ROUND IS FOR AT FULL WIDTH: 20 reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
+		"NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against. A reviewer refusal is its own bucket everywhere, including in the split subset: the human declining to answer is not the human disagreeing with both wordings.",
+		"THE REVIEWER'S OWN ANSWERS ARE CHECKED FOR SELF-CONTRADICTION, against the same pre-registered ceiling the model is held to (PREMISE_NEXT.md §15.6-(3), <= 10% of ok rows). See `gateConsistency`. This is a human reference standard; if it breaks the bar set for the machine, that must be on the record before any model is graded against these rows, whatever the right reading of it turns out to be."
 	],
 	"counts": {
 		"artworks": 20,
@@ -36,6 +37,280 @@
 		"medium": "kappa 0.8146 and a well-spread distribution; the highest-agreement question with real spread.",
 		"text_roles": "exact-set agreement 0.7817, mean Jaccard 0.9123, no vocabulary value below the kappa floor. §15.9 named it as the multi-select that would need kind:\"multi\" — the kind was built (it is generic, and overlays uses it), but the pilot leaves text_roles nothing to validate."
 	},
+	"gateConsistency": {
+		"ceiling": 0.1,
+		"ceilingSource": "PREMISE_NEXT.md §15.6-(3): total contradiction rate <= 10% of ok rows. Pre-registered for the model; applied here to the human, because these rows are the standard the model is graded against.",
+		"rowsConsidered": 20,
+		"rules": [
+			{
+				"id": 1,
+				"statement": "has_text in {no, illegible_at_this_size} but text_roles != [not_applicable]",
+				"reading": "a kind of text named after saying it could not be read",
+				"evaluable": false,
+				"notEvaluableBecause": "this round did not ask has_text or text_roles",
+				"rowsArmed": 0,
+				"contradictions": 0,
+				"rate": null
+			},
+			{
+				"id": 2,
+				"statement": "has_text in {no, illegible_at_this_size} but text_dominance != not_applicable",
+				"reading": "the same, for weight",
+				"evaluable": false,
+				"notEvaluableBecause": "this round did not ask has_text",
+				"rowsArmed": 0,
+				"contradictions": 0,
+				"rate": null
+			},
+			{
+				"id": 3,
+				"statement": "has_text == yes but text_roles == [not_applicable]",
+				"reading": "text seen, no kind nameable — legitimate on odd covers; a high rate means the role vocabulary does not cover the corpus",
+				"evaluable": false,
+				"notEvaluableBecause": "this round did not ask has_text or text_roles",
+				"rowsArmed": 0,
+				"contradictions": 0,
+				"rate": null
+			},
+			{
+				"id": 4,
+				"statement": "has_dominant_subject == none but subject_area_band != not_applicable",
+				"reading": "a size for a subject it said was absent",
+				"evaluable": true,
+				"notEvaluableBecause": null,
+				"rowsArmed": 5,
+				"contradictions": 1,
+				"rate": 0.2
+			},
+			{
+				"id": 5,
+				"statement": "has_signature_color == no but signature_carrier != not_applicable",
+				"reading": "a carrier for a colour it said does not exist",
+				"evaluable": true,
+				"notEvaluableBecause": null,
+				"rowsArmed": 4,
+				"contradictions": 1,
+				"rate": 0.25
+			},
+			{
+				"id": 6,
+				"statement": "has_signature_color == yes but signature_carrier == not_applicable",
+				"reading": "the accent question refusing itself — §15.6-(3) calls this the single most decision-relevant contradiction in the set",
+				"evaluable": true,
+				"notEvaluableBecause": null,
+				"rowsArmed": 16,
+				"contradictions": 2,
+				"rate": 0.125
+			},
+			{
+				"id": 9,
+				"statement": "has_dominant_subject == none but subject_kind != not_applicable",
+				"reading": "a noun for a subject it said was absent — §15.6-(3) calls this the one that matters most for the SAM handoff, because it is the shape of a bad concept prompt",
+				"evaluable": true,
+				"notEvaluableBecause": null,
+				"rowsArmed": 5,
+				"contradictions": 5,
+				"rate": 1
+			},
+			{
+				"id": 10,
+				"statement": "has_dominant_subject != none but subject_kind == not_applicable",
+				"reading": "a subject it can see and cannot name — a vocabulary gap, and the argument for a seventh value",
+				"evaluable": true,
+				"notEvaluableBecause": null,
+				"rowsArmed": 15,
+				"contradictions": 0,
+				"rate": 0
+			},
+			{
+				"id": 11,
+				"statement": "medium == typography_only but has_text in {no, illegible_at_this_size}",
+				"reading": "type-only artwork with no readable type",
+				"evaluable": false,
+				"notEvaluableBecause": "this round did not ask medium or has_text",
+				"rowsArmed": 0,
+				"contradictions": 0,
+				"rate": null
+			},
+			{
+				"id": 12,
+				"statement": "medium == typography_only but has_dominant_subject != none",
+				"reading": "type-only artwork with a subject in it",
+				"evaluable": false,
+				"notEvaluableBecause": "this round did not ask medium",
+				"rowsArmed": 0,
+				"contradictions": 0,
+				"rate": null
+			}
+		],
+		"multiSelectShape": {
+			"exclusiveValueBesideAnother": 0,
+			"repeatedValue": 0,
+			"note": "Rules 7 and 8 of the same table. The server refuses both at write time (shape, membership, non-empty, no-repeat, then sort), so a non-zero count here means a row reached the warehouse by some path other than the server."
+		},
+		"totalContradictions": 9,
+		"artworksWithAnyContradiction": 8,
+		"contradictionRate": 0.45,
+		"artworkRate": 0.4,
+		"withinCeiling": false,
+		"abstentionUse": [
+			{
+				"questionKey": "text_dominance",
+				"opportunities": 0,
+				"refusalsUsed": 8
+			},
+			{
+				"questionKey": "subject_area_band",
+				"opportunities": 5,
+				"refusalsUsed": 4
+			},
+			{
+				"questionKey": "signature_carrier",
+				"opportunities": 4,
+				"refusalsUsed": 5
+			},
+			{
+				"questionKey": "subject_kind",
+				"opportunities": 5,
+				"refusalsUsed": 0
+			}
+		],
+		"contradictions": [
+			{
+				"ruleId": 4,
+				"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+				"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_area_band",
+				"conditionalAnswer": "over_60"
+			},
+			{
+				"ruleId": 5,
+				"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+				"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+				"gateKey": "has_signature_color",
+				"gateAnswer": "no",
+				"conditionalKey": "signature_carrier",
+				"conditionalAnswer": "subject"
+			},
+			{
+				"ruleId": 6,
+				"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+				"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+				"gateKey": "has_signature_color",
+				"gateAnswer": "yes",
+				"conditionalKey": "signature_carrier",
+				"conditionalAnswer": "not_applicable"
+			},
+			{
+				"ruleId": 6,
+				"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+				"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+				"gateKey": "has_signature_color",
+				"gateAnswer": "yes",
+				"conditionalKey": "signature_carrier",
+				"conditionalAnswer": "not_applicable"
+			},
+			{
+				"ruleId": 9,
+				"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+				"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_kind",
+				"conditionalAnswer": "abstract_shape"
+			},
+			{
+				"ruleId": 9,
+				"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+				"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_kind",
+				"conditionalAnswer": "animal"
+			},
+			{
+				"ruleId": 9,
+				"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+				"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_kind",
+				"conditionalAnswer": "abstract_shape"
+			},
+			{
+				"ruleId": 9,
+				"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+				"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_kind",
+				"conditionalAnswer": "abstract_shape"
+			},
+			{
+				"ruleId": 9,
+				"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+				"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+				"gateKey": "has_dominant_subject",
+				"gateAnswer": "none",
+				"conditionalKey": "subject_kind",
+				"conditionalAnswer": "abstract_shape"
+			}
+		],
+		"reading": "9 contradiction(s) across 8 of 20 answered artworks — 45% against a pre-registered ceiling of 10%. THIS IS THE HUMAN REFERENCE STANDARD, and it is internally inconsistent by more than the bar set for the machine. Nothing here says which reading is right — question ambiguity, gate-pair wording, or reviewer fatigue — and this analysis does not choose one. It says the fact is on the record before any model is graded against these rows."
+	},
+	"vocabulary": {
+		"checked": 160,
+		"offVocabulary": [],
+		"unsortedArrays": [],
+		"duplicateValues": [],
+		"emptyArrays": [],
+		"wrongShape": [],
+		"orphanAnswers": [],
+		"reading": "All 160 stored answers are in the fixture's own vocabulary, in the shape their question declares, sorted and without repeats, and every one is filed against a pair the round actually asked. The server enforces all of this at write time; this check exists because the analyzer used to type-check \"string or string[]\" and nothing else, so a hand-appended warehouse row with a bogus value would have passed the analysis silently."
+	},
+	"overlapVerification": {
+		"method": "sha256 recomputed from file bytes for every round artwork and every pilot row it joins; id-based rendition matches confirmed by normalized 16x16 luma correlation",
+		"threshold": 0.9,
+		"imageRoot": "/Users/Flo/GitHub/palette/",
+		"roundHashMismatches": [],
+		"pilotHashMismatches": [],
+		"unresolvedPaths": [],
+		"pairs": [
+			{
+				"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+				"artworkId": "0004ccf0ae91364130886c02",
+				"proposedGrade": "exact_bytes",
+				"roundPath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+				"pilotPath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+				"lumaCorrelation": null,
+				"accepted": true,
+				"reason": "both files hash to the sha256 they declare, and the two sha256 are the same"
+			},
+			{
+				"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"proposedGrade": "same_artwork_other_rendition",
+				"roundPath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+				"pilotPath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+				"lumaCorrelation": 0.9862,
+				"accepted": true,
+				"reason": "the two renditions correlate at 0.9862, above the 0.9 floor"
+			},
+			{
+				"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+				"artworkId": "000e007955ee2f8b29f5b2b4",
+				"proposedGrade": "exact_bytes",
+				"roundPath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+				"pilotPath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+				"lumaCorrelation": null,
+				"accepted": true,
+				"reason": "both files hash to the sha256 they declare, and the two sha256 are the same"
+			}
+		]
+	},
+	"unexpectedPilotVariants": [],
 	"perQuestion": [
 		{
 			"key": "grain_or_noise",
@@ -51,60 +326,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 3,
-						"disagreement": 0,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 2,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 1,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 1,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 3,
-						"disagreement": 0,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 2,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 1,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 1,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 3,
-					"disagreement": 0,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 2,
+						"raw": 1,
+						"reason": "n=2 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 1,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -113,12 +456,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -126,12 +470,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -139,12 +484,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -152,12 +498,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -165,12 +512,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -178,12 +526,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -191,12 +540,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -204,12 +554,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -217,12 +568,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -230,6 +582,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {
@@ -241,7 +594,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -249,12 +602,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -262,6 +616,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "no",
 					"model": {
@@ -273,7 +628,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -281,12 +636,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -294,6 +650,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {
@@ -305,7 +662,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -313,12 +670,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -326,12 +684,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -339,12 +698,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -352,12 +712,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -365,12 +726,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -378,12 +740,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -410,60 +773,128 @@
 			},
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 1,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 2,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": 1,
+						"meanJaccard": 1,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 1,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": 0.6667,
-					"meanJaccard": 0.6667,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 0,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": 0,
+						"meanJaccard": 0,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 0,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 1,
-						"disagreement": 2,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": 0.5,
+						"meanJaccard": 0.5,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": 0.3333,
-					"meanJaccard": 0.3333,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.3333,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 0,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": 0,
+						"meanJaccard": 0,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 0,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 2,
-				"buckets": {
-					"agreement": 1,
-					"disagreement": 1,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 2,
-					"raw": 0.5,
-					"reason": "n=2 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 0,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 0,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 1,
-				"reviewerWithE": 1,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 1,
+					"reviewerWithE": 1,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -472,6 +903,7 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -479,7 +911,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -487,6 +919,7 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -494,7 +927,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -502,6 +935,7 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"label_logo"
@@ -509,7 +943,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -517,6 +951,7 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -524,7 +959,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -532,6 +967,7 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -539,7 +975,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -547,6 +983,7 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"label_logo"
@@ -554,7 +991,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -562,6 +999,7 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -569,7 +1007,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -577,6 +1015,7 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"label_logo"
@@ -584,7 +1023,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -592,6 +1031,7 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -599,7 +1039,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -607,6 +1047,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -624,7 +1065,10 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": 1
+					"setOverlap": {
+						"E": 1,
+						"F": 1
+					}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -632,6 +1076,7 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -639,7 +1084,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -647,6 +1092,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": [
 						"label_logo"
@@ -664,7 +1110,10 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": 0
+					"setOverlap": {
+						"E": 0,
+						"F": 0
+					}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -672,6 +1121,7 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"watermark"
@@ -679,7 +1129,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -687,6 +1137,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -704,7 +1155,10 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": false,
-					"setOverlap": 1
+					"setOverlap": {
+						"E": 1,
+						"F": 0
+					}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -712,6 +1166,7 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -719,7 +1174,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -727,6 +1182,7 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -734,7 +1190,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -742,6 +1198,7 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -749,7 +1206,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -757,6 +1214,7 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -764,7 +1222,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -772,6 +1230,7 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"label_logo"
@@ -779,7 +1238,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -787,6 +1246,7 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": [
 						"none"
@@ -794,7 +1254,7 @@
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -813,60 +1273,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 1,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 1,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 2,
-					"disagreement": 1,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 2,
+						"raw": 0.5,
+						"reason": "n=2 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 0.6667,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -875,12 +1403,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "none",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -888,12 +1417,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "none",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -901,12 +1431,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -914,12 +1445,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -927,12 +1459,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "multiple",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -940,12 +1473,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "multiple",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -953,12 +1487,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "none",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -966,12 +1501,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "multiple",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -979,12 +1515,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -992,6 +1529,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "none",
 					"model": {
@@ -1003,7 +1541,7 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -1011,12 +1549,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -1024,6 +1563,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "single",
 					"model": {
@@ -1035,7 +1575,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -1043,12 +1583,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -1056,6 +1597,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {
@@ -1067,7 +1609,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -1075,12 +1617,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "multiple",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -1088,12 +1631,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -1101,12 +1645,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "none",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -1114,12 +1659,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "multiple",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -1127,12 +1673,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -1140,12 +1687,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "single",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -1165,60 +1713,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 1,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 1,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 2,
-					"disagreement": 1,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 2,
+						"raw": 0.5,
+						"reason": "n=2 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 0.6667,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -1227,12 +1843,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "abstract_shape",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -1240,12 +1857,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "abstract_shape",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -1253,12 +1871,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "object",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -1266,12 +1885,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -1279,12 +1899,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -1292,12 +1913,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "object",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -1305,12 +1927,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "animal",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -1318,12 +1941,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -1331,12 +1955,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "object",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -1344,6 +1969,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "abstract_shape",
 					"model": {
@@ -1355,7 +1981,7 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -1363,12 +1989,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "object",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -1376,6 +2003,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "object",
 					"model": {
@@ -1387,7 +2015,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -1395,12 +2023,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "animal",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -1408,6 +2037,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {
@@ -1419,7 +2049,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -1427,12 +2057,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -1440,12 +2071,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -1453,12 +2085,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "abstract_shape",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -1466,12 +2099,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -1479,12 +2113,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "person",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -1492,12 +2127,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "object",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -1517,60 +2153,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 0,
-						"cant_tell": 1
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 1
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 0,
-						"cant_tell": 1
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 1
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 2,
-					"disagreement": 0,
-					"cant_tell": 1
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 1
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 0.6667,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -1579,12 +2283,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -1592,12 +2297,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -1605,12 +2311,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -1618,12 +2325,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "under_25",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -1631,12 +2339,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -1644,12 +2353,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "under_25",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -1657,12 +2367,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "over_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -1670,12 +2381,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "over_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -1683,12 +2395,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "under_25",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -1696,6 +2409,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {
@@ -1707,7 +2421,7 @@
 						"F": "cant_tell"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -1715,12 +2429,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "under_25",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -1728,6 +2443,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "25_60",
 					"model": {
@@ -1739,7 +2455,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -1747,12 +2463,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -1760,6 +2477,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {
@@ -1771,7 +2489,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -1779,12 +2497,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "over_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -1792,12 +2511,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -1805,12 +2525,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -1818,12 +2539,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -1831,12 +2553,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -1844,12 +2567,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "25_60",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -1867,60 +2591,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 3,
-						"disagreement": 0,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 2,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 1,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 1,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 3,
-						"disagreement": 0,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 2,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 1,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 1,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 3,
-					"disagreement": 0,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 2,
+						"raw": 1,
+						"reason": "n=2 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 1,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -1929,12 +2721,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -1942,12 +2735,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -1955,12 +2749,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -1968,12 +2763,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -1981,12 +2777,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -1994,12 +2791,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -2007,12 +2805,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -2020,12 +2819,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -2033,12 +2833,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -2046,6 +2847,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {
@@ -2057,7 +2859,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -2065,12 +2867,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -2078,6 +2881,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "yes",
 					"model": {
@@ -2089,7 +2893,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -2097,12 +2901,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "no",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -2110,6 +2915,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {
@@ -2121,7 +2927,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -2129,12 +2935,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -2142,12 +2949,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -2155,12 +2963,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -2168,12 +2977,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -2181,12 +2991,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -2194,12 +3005,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "yes",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -2219,60 +3031,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 1,
-						"disagreement": 2,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.3333,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 0,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 0,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 1,
-						"disagreement": 2,
-						"cant_tell": 0
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 2,
+							"raw": 0.5,
+							"reason": "n=2 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.3333,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 0,
+							"disagreement": 1,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 0,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 3,
-				"buckets": {
-					"agreement": 1,
-					"disagreement": 2,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 2,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 2,
+						"raw": 0.5,
+						"reason": "n=2 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 3,
-					"raw": 0.3333,
-					"reason": "n=3 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 0,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 0,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 0,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 0
+				"exact_bytes": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -2281,12 +3161,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -2294,12 +3175,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -2307,12 +3189,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -2320,12 +3203,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -2333,12 +3217,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -2346,12 +3231,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -2359,12 +3245,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -2372,12 +3259,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -2385,12 +3273,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -2398,6 +3287,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "present_secondary",
 					"model": {
@@ -2409,7 +3299,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -2417,12 +3307,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "present_secondary",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -2430,6 +3321,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "minor",
 					"model": {
@@ -2441,7 +3333,7 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -2449,12 +3341,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -2462,6 +3355,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {
@@ -2473,7 +3367,7 @@
 						"F": "disagreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -2481,12 +3375,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "present_secondary",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -2494,12 +3389,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -2507,12 +3403,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "dominant_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -2520,12 +3417,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -2533,12 +3431,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "present_secondary",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -2546,12 +3445,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "present_secondary",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		},
@@ -2572,60 +3472,128 @@
 			"multi": null,
 			"perVariant": {
 				"E": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 0,
-						"cant_tell": 1
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 1
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				},
 				"F": {
-					"buckets": {
-						"agreement": 2,
-						"disagreement": 0,
-						"cant_tell": 1
+					"exact_bytes": {
+						"n": 2,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 1
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					},
-					"exactSetAgreement": null,
-					"meanJaccard": null,
-					"kappa": {
-						"kappa": null,
-						"n": 3,
-						"raw": 0.6667,
-						"reason": "n=3 is below the 10-row floor for a kappa"
+					"same_artwork_other_rendition": {
+						"n": 1,
+						"buckets": {
+							"agreement": 1,
+							"disagreement": 0,
+							"cant_tell": 0
+						},
+						"exactSetAgreement": null,
+						"meanJaccard": null,
+						"kappa": {
+							"kappa": null,
+							"n": 1,
+							"raw": 1,
+							"reason": "n=1 is below the 10-row floor for a kappa"
+						}
 					}
 				}
 			},
 			"variantAgreementSubset": {
-				"n": 2,
-				"buckets": {
-					"agreement": 2,
-					"disagreement": 0,
-					"cant_tell": 0
+				"exact_bytes": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				},
-				"kappa": {
-					"kappa": null,
-					"n": 2,
-					"raw": 1,
-					"reason": "n=2 is below the 10-row floor for a kappa"
+				"same_artwork_other_rendition": {
+					"n": 1,
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"kappa": {
+						"kappa": null,
+						"n": 1,
+						"raw": 1,
+						"reason": "n=1 is below the 10-row floor for a kappa"
+					}
 				}
 			},
 			"variantSplitSubset": {
-				"n": 1,
-				"reviewerWithE": 0,
-				"reviewerWithF": 0,
-				"reviewerWithNeither": 1
+				"exact_bytes": {
+					"n": 1,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 1
+				},
+				"same_artwork_other_rendition": {
+					"n": 0,
+					"reviewerWithE": 0,
+					"reviewerWithF": 0,
+					"reviewerWithNeither": 0,
+					"reviewerCantTell": 0
+				}
 			},
 			"joinCounts": {
 				"exact_bytes": 2,
 				"same_artwork_other_rendition": 1,
 				"none": 17
+			},
+			"joinedRowsMissingThisQuestion": {
+				"exact_bytes": 0,
+				"same_artwork_other_rendition": 0
 			},
 			"perArtwork": [
 				{
@@ -2634,12 +3602,13 @@
 					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "background",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
@@ -2647,12 +3616,13 @@
 					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "background",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
@@ -2660,12 +3630,13 @@
 					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "subject",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
@@ -2673,12 +3644,13 @@
 					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "background",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
@@ -2686,12 +3658,13 @@
 					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "subject",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
@@ -2699,12 +3672,13 @@
 					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "subject",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
@@ -2712,12 +3686,13 @@
 					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "small_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
@@ -2725,12 +3700,13 @@
 					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
@@ -2738,12 +3714,13 @@
 					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "background",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
@@ -2751,6 +3728,7 @@
 					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "background",
 					"model": {
@@ -2762,7 +3740,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
@@ -2770,12 +3748,13 @@
 					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
 					"stratum": "<=400",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
@@ -2783,6 +3762,7 @@
 					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
 					"stratum": "401-640",
 					"joinGrade": "same_artwork_other_rendition",
+					"joinVerified": true,
 					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
 					"reviewer": "subject",
 					"model": {
@@ -2794,7 +3774,7 @@
 						"F": "agreement"
 					},
 					"variantsAgree": true,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b27300137c811595edad61c67781",
@@ -2802,12 +3782,13 @@
 					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
@@ -2815,6 +3796,7 @@
 					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
 					"stratum": "<=400",
 					"joinGrade": "exact_bytes",
+					"joinVerified": true,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {
@@ -2826,7 +3808,7 @@
 						"F": "cant_tell"
 					},
 					"variantsAgree": false,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
@@ -2834,12 +3816,13 @@
 					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "small_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
@@ -2847,12 +3830,13 @@
 					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
 					"stratum": "641-1024",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "small_element",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
@@ -2860,12 +3844,13 @@
 					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "text",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
@@ -2873,12 +3858,13 @@
 					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "not_applicable",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
@@ -2886,12 +3872,13 @@
 					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "subject",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				},
 				{
 					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
@@ -2899,12 +3886,13 @@
 					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
 					"stratum": "401-640",
 					"joinGrade": "none",
+					"joinVerified": null,
 					"pilotImagePath": null,
 					"reviewer": "subject",
 					"model": {},
 					"bucket": {},
 					"variantsAgree": null,
-					"setOverlap": null
+					"setOverlap": {}
 				}
 			]
 		}
@@ -2916,52 +3904,100 @@
 		"",
 		"GRAIN_OR_NOISE (enum) — 20/20 answered",
 		"  reviewer said: no 17 · yes 3",
-		"  vs E: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (3 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 2 agree · 0 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 2 agree · 0 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"OVERLAYS (multi) — 20/20 answered",
 		"  reviewer said: none 14 · label_logo 5 · watermark 1",
-		"  set size: mean 1 · one value only on 1 of rows",
-		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 2 answered rows (1 with the reviewer); they split on 1 (reviewer with E 1, with F 0, with neither 0)",
+		"  set size: mean 1 · one value only on 20 of 20 answered rows (100%)",
+		"  [exact_bytes] vs E: 2 agree · 0 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 1 answered rows (1 with the reviewer); they split on 1 (reviewer with E 1, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 0 agree · 1 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 0 agree · 1 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (0 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"HAS_DOMINANT_SUBJECT (enum) — 20/20 answered",
 		"  reviewer said: single 10 · none 5 · multiple 5",
-		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"SUBJECT_KIND (enum) — 20/20 answered",
 		"  reviewer said: person 8 · object 6 · abstract_shape 4 · animal 2",
-		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"SUBJECT_AREA_BAND (enum) — 20/20 answered",
 		"  reviewer said: 25_60 9 · not_applicable 4 · under_25 4 · over_60 3",
-		"  vs E: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 1 agree · 0 disagree · 1 can't-tell  (n=2)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 0 disagree · 1 can't-tell  (n=2)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"HAS_SIGNATURE_COLOR (enum) — 20/20 answered",
 		"  reviewer said: yes 16 · no 4",
-		"  vs E: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (3 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 2 agree · 0 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 2 agree · 0 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"TEXT_DOMINANCE (enum) — 20/20 answered",
 		"  reviewer said: not_applicable 8 · dominant_element 6 · present_secondary 5 · minor 1",
-		"  vs E: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 3 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"  [exact_bytes] vs E: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 1 disagree · 0 can't-tell  (n=2)  kappa — n=2 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 2 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"  [same_artwork_other_rendition] vs E: 0 agree · 1 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 0 agree · 1 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (0 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
 		"",
 		"SIGNATURE_CARRIER (enum) — 20/20 answered",
 		"  reviewer said: subject 6 · background 5 · not_applicable 5 · small_element 3 · text 1",
-		"  vs E: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  vs F: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
-		"  E and F agreed on 2 answered rows (2 with the reviewer); they split on 1 (reviewer with E 0, with F 0, with neither 1)",
+		"  [exact_bytes] vs E: 1 agree · 0 disagree · 1 can't-tell  (n=2)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [exact_bytes] vs F: 1 agree · 0 disagree · 1 can't-tell  (n=2)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [exact_bytes] E and F agreed on 1 answered rows (1 with the reviewer); they split on 1 (reviewer with E 0, with F 0, with neither 0, could not tell 1)",
+		"  [same_artwork_other_rendition] vs E: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] vs F: 1 agree · 0 disagree · 0 can't-tell  (n=1)  kappa — n=1 is below the 10-row floor for a kappa",
+		"  [same_artwork_other_rendition] E and F agreed on 1 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0, could not tell 0)",
+		"",
+		"GATE CONSISTENCY — the reviewer's own answers, against §15.6-(3)'s pre-registered table:",
+		"  #1 has_text in {no, illegible_at_this_size} but text_roles != [not_applicable] — not evaluable: this round did not ask has_text or text_roles",
+		"  #2 has_text in {no, illegible_at_this_size} but text_dominance != not_applicable — not evaluable: this round did not ask has_text",
+		"  #3 has_text == yes but text_roles == [not_applicable] — not evaluable: this round did not ask has_text or text_roles",
+		"  #4 has_dominant_subject == none but subject_area_band != not_applicable — 1 of 5 armed rows",
+		"  #5 has_signature_color == no but signature_carrier != not_applicable — 1 of 4 armed rows",
+		"  #6 has_signature_color == yes but signature_carrier == not_applicable — 2 of 16 armed rows",
+		"  #9 has_dominant_subject == none but subject_kind != not_applicable — 5 of 5 armed rows",
+		"  #10 has_dominant_subject != none but subject_kind == not_applicable — 0 of 15 armed rows",
+		"  #11 medium == typography_only but has_text in {no, illegible_at_this_size} — not evaluable: this round did not ask medium or has_text",
+		"  #12 medium == typography_only but has_dominant_subject != none — not evaluable: this round did not ask medium",
+		"  abstention: text_dominance used not_applicable 8 time(s), on 0 occasion(s) where its gate had just made it the only consistent answer",
+		"  abstention: subject_area_band used not_applicable 4 time(s), on 5 occasion(s) where its gate had just made it the only consistent answer",
+		"  abstention: signature_carrier used not_applicable 5 time(s), on 4 occasion(s) where its gate had just made it the only consistent answer",
+		"  abstention: subject_kind used not_applicable 0 time(s), on 5 occasion(s) where its gate had just made it the only consistent answer",
+		"  9 contradiction(s) across 8 of 20 answered artworks — 45% against a pre-registered ceiling of 10%. THIS IS THE HUMAN REFERENCE STANDARD, and it is internally inconsistent by more than the bar set for the machine. Nothing here says which reading is right — question ambiguity, gate-pair wording, or reviewer fatigue — and this analysis does not choose one. It says the fact is on the record before any model is graded against these rows.",
+		"",
+		"VOCABULARY: All 160 stored answers are in the fixture's own vocabulary, in the shape their question declares, sorted and without repeats, and every one is filed against a pair the round actually asked. The server enforces all of this at write time; this check exists because the analyzer used to type-check \"string or string[]\" and nothing else, so a hand-appended warehouse row with a bogus value would have passed the analysis silently.",
+		"",
+		"JOIN VERIFIED AGAINST THE IMAGE BYTES (sha256 recomputed from file bytes for every round artwork and every pilot row it joins; id-based rendition matches confirmed by normalized 16x16 luma correlation):",
+		"  accepted 04/ab67616d00001e020004ccf0ae91364130886c02 (exact_bytes) — both files hash to the sha256 they declare, and the two sha256 are the same",
+		"  accepted 13/ab67616d0000b2730013bebcaee941ebcc13437c (same_artwork_other_rendition) — the two renditions correlate at 0.9862, above the 0.9 floor",
+		"  accepted 0e/ab67616d00001e02000e007955ee2f8b29f5b2b4 (exact_bytes) — both files hash to the sha256 they declare, and the two sha256 are the same",
 		"",
 		"QUESTIONS DELIBERATELY NOT ASKED, and why (the pilot's own numbers):",
 		"  has_text — kappa 0.9657 with raw agreement 0.993 — E and F differ on one image in 142. There is nothing for 20 reviewer answers to resolve. (Its own FAILURE, 15.6-2a, is that illegible_at_this_size never fires; that is a vocabulary question, not an accuracy question, and 20 more images at this tier mix would not fire it either.)",
@@ -2971,9 +4007,10 @@
 		"",
 		"SCOPING:",
 		"  - NO GROUND TRUTH EXISTED BEFORE THIS ROUND. The pilot measured E against F, which is self-consistency; a model can be perfectly self-consistent and perfectly wrong. These reviewer answers are the first human answer to any group-BCDE question, and they are elicited human labels — PHASE_0_DECISIONS.md §8's primary judge for any oracle comparison.",
-		"  - THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. Three artworks are in both — two on identical bytes, one at another rendition. No agreement rate computed on three rows is a rate. The two join grades are never pooled: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
+		"  - THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. 3 artworks are in both — 2 on identical bytes, 1 at another rendition. No agreement rate computed on 3 rows is a rate. THE TWO JOIN GRADES ARE NEVER POOLED, and this file emits no figure that pools them: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
 		"  - WORDING ASYMMETRY, PRE-REGISTERED (§15.9). Every stem and gloss the reviewer read was parsed out of variant E's prompt file. Scoring F against these answers carries a wording caveat that scoring E does not. That asymmetry is the price of two independent renderings; it is stated, not discovered later.",
-		"  - WHAT THE ROUND IS FOR AT FULL WIDTH: twenty reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
-		"  - NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against."
+		"  - WHAT THE ROUND IS FOR AT FULL WIDTH: 20 reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
+		"  - NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against. A reviewer refusal is its own bucket everywhere, including in the split subset: the human declining to answer is not the human disagreeing with both wordings.",
+		"  - THE REVIEWER'S OWN ANSWERS ARE CHECKED FOR SELF-CONTRADICTION, against the same pre-registered ceiling the model is held to (PREMISE_NEXT.md §15.6-(3), <= 10% of ok rows). See `gateConsistency`. This is a human reference standard; if it breaks the bar set for the machine, that must be on the record before any model is graded against these rows, whatever the right reading of it turns out to be."
 	]
 }

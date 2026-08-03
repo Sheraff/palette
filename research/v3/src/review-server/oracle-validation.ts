@@ -304,13 +304,38 @@ export const GROUND_TYPE_QUESTION: OracleQuestion = {
  * [INHERITED] — verbatim from `research/v3/oracle/premise/analyze.py` `GRADIENT_MAP`. A test asserts
  * it still equals the map recorded in `premise-run-1.agreement.json`, so the two cannot drift.
  */
-export const GRADIENT_MAP: Readonly<Record<string, "gradient" | "flat" | "unmapped">> = {
+export const GRADIENT_MAP: Readonly<Record<string, "gradient" | "flat" | "unmapped" | "unanswerable">> = {
 	shaded_field: "gradient",
 	flat_field: "flat",
 	multiple_distinct_fields: "flat",
+	// Deliberately unmapped: a depicted scene, an all-over pattern, or nothing discernible does not
+	// predict a gradient decision in either direction, and forcing them into the binary would
+	// manufacture agreement or disagreement the label does not contain.
 	full_scene: "unmapped",
 	pattern_or_texture: "unmapped",
 	none_discernible: "unmapped",
+	// [REVIEWED] Probe arm only (`group-a.probes.*`). What the derivation table returns when the
+	// probes contradicted each other, when every probe was negative or unsure, or when one is missing.
+	// It is a NON-ANSWER rather than a claim about the artwork — unlike the three above, which do
+	// assert something and are legitimately scored as "did not claim one shaded surface" — so it is
+	// excluded from both binaries and counted on its own. Scoring it as `flat` would credit or blame
+	// an arm for a row it explicitly declined to label.
+	underdetermined: "unanswerable",
+}
+
+/**
+ * The binary a `ground_type` predicts, or null when the label makes no prediction either way.
+ *
+ * Written as an allowlist of the two values that ARE binaries, rather than as a denylist of the ones
+ * that are not. The denylist form (`mapped === undefined || mapped === "unmapped" ? null : mapped`)
+ * was correct only for as long as `unmapped` was the sole non-answer: when the premise workstream
+ * added `unanswerable`, the same expression would have started returning it as though it were a
+ * binary, silently scoring a declined row. Every non-answer the map ever gains is null here by
+ * default, which is the safe direction.
+ */
+export function gradientBinary(groundType: string): "gradient" | "flat" | null {
+	const mapped = GRADIENT_MAP[groundType]
+	return mapped === "gradient" || mapped === "flat" ? mapped : null
 }
 
 export type P6Bucket = "agreement" | "contradiction_hard" | "contradiction_soft" | "underdetermined"

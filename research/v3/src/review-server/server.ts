@@ -160,6 +160,7 @@ import {
 	type StoredItem,
 	type StoredOracleBatch,
 	type StoredVerdictRecord,
+	type SupersedingOracleLabel,
 	type VerdictInput,
 } from "./types.ts"
 
@@ -218,6 +219,15 @@ export type QueueEntry = Readonly<{
 	judgedCount: number
 	released: boolean
 	releasedAt: string | null
+	/**
+	 * The question set a batch's answers are filed under, for the modes that have one
+	 * (`oracle-validation`); `null` everywhere else.
+	 *
+	 * It is on the queue row because `batchReviewPaths` needs it: the adjudication view joins
+	 * `group-a.v1` `ground_type` answers against the premise run and refuses every other schema, so a
+	 * link offered from `kind` alone lands on a dead page for any other question set.
+	 */
+	labelSchemaVersion: string | null
 }>
 
 export type BatchReviewPaths = Readonly<{
@@ -227,6 +237,15 @@ export type BatchReviewPaths = Readonly<{
 	payload: string
 	/** Where a released batch is revisited — adjudication for an oracle round, amendment otherwise. */
 	afterRelease: string | null
+	/**
+	 * The JSON the `afterRelease` page loads, or `null` when there is no such page.
+	 *
+	 * Declared for the same reason `payload` is: `verify-live.ts` crawls it, and a revisit page whose
+	 * data endpoint 404s is a dead link that no amount of checking the *page* can see. This was not
+	 * hypothetical — four of five released oracle rounds shipped exactly that state while the crawl
+	 * reported zero failures, because it fetched the page and never the data.
+	 */
+	afterReleasePayload: string | null
 }>
 
 export type DashboardEntry = QueueEntry & BatchReviewPaths & Readonly<{ remaining: number }>
@@ -239,20 +258,51 @@ export type DashboardEntry = QueueEntry & BatchReviewPaths & Readonly<{ remainin
  * be wrong. Every page honours `?batch=`, so the link is unambiguous even when several rounds of the
  * same kind are open at once.
  */
-export function batchReviewPaths(entry: Pick<QueueEntry, "batchId" | "kind">): BatchReviewPaths {
+export function batchReviewPaths(
+	entry: Pick<QueueEntry, "batchId" | "kind"> & Partial<Pick<QueueEntry, "labelSchemaVersion">>,
+): BatchReviewPaths {
 	const query = `?batch=${encodeURIComponent(entry.batchId)}`
 	const id = encodeURIComponent(entry.batchId)
 	switch (entry.kind) {
 		case "calibration":
-			return { page: `/calibration${query}`, payload: `/api/calibration/${id}`, afterRelease: `/amend${query}` }
+			// `/amend` re-reads the calibration payload itself (`amend.js:263`), so the after-release
+			// data endpoint is the same URL as the review-time one.
+			return {
+				page: `/calibration${query}`,
+				payload: `/api/calibration/${id}`,
+				afterRelease: `/amend${query}`,
+				afterReleasePayload: `/api/calibration/${id}`,
+			}
 		case "bracketing":
 			// No after-release page: the amendment view covers pairwise and calibration verdicts only,
 			// and a bracketing answer is amended through the warehouse, not the browser.
-			return { page: `/bracketing${query}`, payload: `/api/bracketing/${id}`, afterRelease: null }
+			return {
+				page: `/bracketing${query}`,
+				payload: `/api/bracketing/${id}`,
+				afterRelease: null,
+				afterReleasePayload: null,
+			}
 		case "oracle-validation":
-			return { page: `/oracle${query}`, payload: `/api/oracle-validation/${id}`, afterRelease: `/oracle-review${query}` }
+			// The adjudication view serves ONE question set. Offering its link for any other schema
+			// hands the reviewer a page that renders "could not load" — which is what four of five
+			// released rounds did, undetected, because the link was emitted from `kind` alone. The
+			// server knows the schema at dashboard-build time, so it decides here instead.
+			return {
+				page: `/oracle${query}`,
+				payload: `/api/oracle-validation/${id}`,
+				afterRelease:
+					entry.labelSchemaVersion === ORACLE_LABEL_SCHEMA_VERSION ? `/oracle-review${query}` : null,
+				afterReleasePayload:
+					entry.labelSchemaVersion === ORACLE_LABEL_SCHEMA_VERSION ? `/api/oracle-review/${id}` : null,
+			}
 		default:
-			return { page: `/pairwise${query}`, payload: `/api/batches/${id}`, afterRelease: `/amend${query}` }
+			// `/amend` re-reads the pairwise payload itself (`amend.js:263`).
+			return {
+				page: `/pairwise${query}`,
+				payload: `/api/batches/${id}`,
+				afterRelease: `/amend${query}`,
+				afterReleasePayload: `/api/batches/${id}`,
+			}
 	}
 }
 
@@ -555,6 +605,7 @@ export class ReviewService {
 				judgedCount: judged,
 				released: release !== undefined,
 				releasedAt: release?.ts ?? null,
+				labelSchemaVersion: null,
 			}
 		})
 		const bracketing = [...this.#bracketing.values()].map((stored) => {
@@ -569,6 +620,7 @@ export class ReviewService {
 				judgedCount: judged,
 				released: release !== undefined,
 				releasedAt: release?.ts ?? null,
+				labelSchemaVersion: null,
 			}
 		})
 		const oracle = [...this.#oracle.values()].map((stored) => {
@@ -583,6 +635,7 @@ export class ReviewService {
 				judgedCount: judged,
 				released: release !== undefined,
 				releasedAt: release?.ts ?? null,
+				labelSchemaVersion: stored.fixture.labelSchemaVersion,
 			}
 		})
 		const pairwise = [...this.#batches.values()].map((stored) => {
@@ -601,6 +654,7 @@ export class ReviewService {
 				judgedCount: judged,
 				released: release !== undefined,
 				releasedAt: release?.ts ?? null,
+				labelSchemaVersion: null,
 			}
 		})
 		return [...pairwise, ...calibration, ...bracketing, ...oracle]
@@ -1448,7 +1502,7 @@ export class ReviewService {
 		const answer: string | string[] = Array.isArray(submitted) ? [...chosen].sort() : (submitted as string)
 		const key = this.#oracleKey(stored, item)
 		const previous = this.#answers.get(key)
-		const record = append<OracleLabelRecord>(this.warehousePath, {
+		const record = append<SupersedingOracleLabel>(this.warehousePath, {
 			type: "oracle-label",
 			author: this.author,
 			imageId: item.imageId,
@@ -1459,13 +1513,26 @@ export class ReviewService {
 			confidence: null,
 			ambiguityNote: null,
 			stratum: item.stratum,
+			// Supersession, WRITTEN DOWN. A reviewer stepping back and answering again produces a second
+			// record for the same (questionKey, imageId), and the round that shipped has three such
+			// pairs: 163 records covering 160 answers. Nothing on the records said so. The server's
+			// `revision` counter lives in memory and is never persisted, so supersession was
+			// reconstructible only by FILE ORDER — a convention every consumer had to know and reproduce
+			// exactly, or see 163 rows with 3 phantoms. The pairwise path records `supersededVerdictIds`;
+			// this one now records the same fact in the same spirit.
+			//
+			// Additive: `supersedes` is null on a first answer and on every record written before this
+			// existed, so no stored record becomes invalid and no reader that ignores the field breaks.
+			// It is the reconstruction that stops depending on order, not the schema that changes shape.
+			supersedes: previous?.recordId ?? null,
+			revision: (previous?.revision ?? 0) + 1,
 			batch: {
 				id: batchId,
 				purpose: stored.purpose,
 				itemCount: stored.fixture.items.length,
 				fundedBy: [...stored.fundedBy],
 			},
-		} satisfies RecordInput<OracleLabelRecord>)
+		} satisfies RecordInput<SupersedingOracleLabel>)
 		const state = { record, recordId: record.id, revision: (previous?.revision ?? 0) + 1 }
 		this.#answers.set(key, state)
 		return { recordId: record.id, revision: state.revision }

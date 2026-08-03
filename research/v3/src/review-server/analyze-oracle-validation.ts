@@ -34,7 +34,7 @@ import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
 import type { OracleLabelRecord, WarehouseRecord } from "../warehouse/records.ts"
 import { readAll, resolve } from "../warehouse/warehouse.ts"
 import {
-	GRADIENT_MAP,
+	gradientBinary,
 	PREMISE_DISAMBIGUATION_BATCH_ID,
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
 	PREMISE_RUN_PATH,
@@ -53,8 +53,8 @@ export const ORACLE_VALIDATION_ANALYSIS_PATH = fileURLToPath(
 export type Binary = "gradient" | "flat" | null
 
 function binaryOf(groundType: string): Binary {
-	const mapped = GRADIENT_MAP[groundType]
-	return mapped === undefined || mapped === "unmapped" ? null : mapped
+	// One shared allowlist, so a new non-answer value in the map cannot become a binary here.
+	return gradientBinary(groundType)
 }
 
 export type VariantView = Readonly<{

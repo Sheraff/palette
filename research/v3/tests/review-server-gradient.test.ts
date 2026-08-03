@@ -8,10 +8,12 @@ import { after, before, describe, it } from "node:test"
 import {
 	GRADIENT_DISPLAY_RESERVE_MULTI_STOP,
 	GRADIENT_DISPLAY_RESERVE_TWO_STOP,
+	canonicalPosition,
 	displayPosition,
+	displayStops,
 	fieldCss,
 } from "../src/review-server/gradient.ts"
-import { call, startHarness, type Harness } from "../src/review-server/test-support.ts"
+import { call, makeBatch, startHarness, type Harness } from "../src/review-server/test-support.ts"
 import { seedDemoBatch } from "../src/review-server/server.ts"
 
 const names = { "#111111": "Ink", "#555555": "Middle", "#999999": "Pale" }
@@ -58,6 +60,79 @@ describe("gradient display mapping", () => {
 		assert.throws(() => displayPosition(1.2, 2), RangeError)
 		assert.throws(() => displayPosition(-0.1, 2), RangeError)
 		assert.throws(() => displayPosition(0.5, 1), RangeError)
+	})
+
+	it("serves a stop position in one canonical numeric form — a blinding defence, not a display choice", () => {
+		// A position is served to the browser as a JSON number, so its float REPRESENTATION is served
+		// with it. `0.35` and `0.35000000000000003` are the same ramp and different strings, and two
+		// arms whose fitting code reaches the same position by different arithmetic would be told apart
+		// by the trailing digits alone — without anyone looking at a colour. Positions were checked for
+		// range and monotonicity and never canonicalized, so that channel was open.
+		assert.equal(canonicalPosition(0.35000000000000003), 0.35)
+		assert.equal(canonicalPosition(0.1 + 0.2), 0.3)
+		assert.equal(canonicalPosition(0.35), 0.35, "a position already canonical is unchanged")
+
+		const noisy = { stops: [{ color: "#111111", position: 0 }, { color: "#999999", position: 0.35000000000000003 }] }
+		const clean = { stops: [{ color: "#111111", position: 0 }, { color: "#999999", position: 0.35 }] }
+		assert.deepEqual(displayStops(noisy, names), displayStops(clean, names))
+		// Including the derived number: 0.35 -> 0.5775000000000001 through the display mapping.
+		for (const stop of displayStops(clean, names)) {
+			assert.equal(stop.publishedPosition, canonicalPosition(stop.publishedPosition))
+			assert.equal(stop.displayPosition, canonicalPosition(stop.displayPosition))
+		}
+		assert.equal(fieldCss(noisy, "#111111", names), fieldCss(clean, "#111111", names))
+	})
+})
+
+describe("canonical positions at push time", () => {
+	let harness: Harness
+
+	before(async () => {
+		harness = await startHarness()
+	})
+
+	after(async () => {
+		await harness?.stop()
+	})
+
+	/**
+	 * One item whose two sides carry the SAME ramp, reached by different arithmetic. Same colours,
+	 * same positions — the only thing that could tell the arms apart is the float representation.
+	 */
+	function sameRampBothSides(batchId: string, left: number, right: number): any {
+		const batch = JSON.parse(JSON.stringify(makeBatch(batchId, 1))) as any
+		const ramp = (position: number) => ({
+			stops: [
+				{ color: "#111111", position: 0 },
+				{ color: "#999999", position },
+			],
+		})
+		batch.items[0].sides[0].palette = { ...batch.items[0].sides[0].palette, background: "#111111", gradient: ramp(left) }
+		batch.items[0].sides[1].palette = { ...batch.items[0].sides[1].palette, background: "#111111", gradient: ramp(right) }
+		return batch
+	}
+
+	it("stores and serves the same numbers for the same ramp, however it was computed", async () => {
+		const pushed = await call(harness.base, "POST", "/api/batches", sameRampBothSides("canon-1", 0.35, 0.35000000000000003))
+		assert.equal(pushed.status, 201)
+		const payload = await call(harness.base, "GET", "/api/batches/canon-1")
+		const [a, b] = (["A", "B"] as const).map((key) => payload.body.items[0].sides[key])
+		// The two arms are indistinguishable in the served payload, which is the whole point: if a
+		// trailing digit told them apart, the shuffle would be decoration for this batch.
+		assert.deepEqual(a.gradient, b.gradient)
+		assert.equal(a.fieldCss, b.fieldCss)
+		assert.equal(a.gradient.stops[1].publishedPosition, 0.35)
+	})
+
+	it("refuses two stops that are the same position once canonicalized", async () => {
+		const collapsed = sameRampBothSides("canon-2", 0.35, 0.35)
+		collapsed.items[0].sides[0].palette.gradient.stops = [
+			{ color: "#111111", position: 0.4 },
+			{ color: "#999999", position: 0.4000000001 },
+		]
+		const refused = await call(harness.base, "POST", "/api/batches", collapsed)
+		assert.equal(refused.status, 400)
+		assert.match(String(refused.body.error?.message ?? refused.body.error), /strictly increasing at 6 decimal places/u)
 	})
 })
 

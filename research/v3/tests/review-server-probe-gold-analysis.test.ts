@@ -91,11 +91,30 @@ describe("probe derivation — lookup, never rules", () => {
 	})
 })
 
+/**
+ * `skipped.*.otherBatch` counts warehouse records belonging to *other* rounds. It is a diagnostic
+ * about the corpus, not about this analysis, and it grows every time any unrelated batch is pushed.
+ * Baking it into a golden file makes the golden a hostage of the rest of the warehouse: the suite
+ * goes red on a clean tree the moment someone else pushes a round, which is how a real regression
+ * gets to hide behind a known-red test. So it is compared as a *property* (present, positive, and
+ * never shrinking — the log is append-only) rather than as a value.
+ */
+const CORPUS_SIZE_DEPENDENT = ["otherBatch"] as const
+
+function withoutCorpusSizeDependentCounters(analysis: unknown): unknown {
+	const copy = JSON.parse(JSON.stringify(analysis)) as { skipped?: Record<string, Record<string, number>> }
+	for (const scope of Object.values(copy.skipped ?? {})) {
+		for (const key of CORPUS_SIZE_DEPENDENT) delete scope[key]
+	}
+	return copy
+}
+
 describe("probe-gold analysis", () => {
 	it("reproduces the committed analysis from the warehouse", async () => {
 		const committed = JSON.parse(await readFile(ANALYSIS_PATH, "utf8")) as {
 			generatedAt: string
 			warehousePath: string
+			skipped: Record<string, Record<string, number>>
 			[key: string]: unknown
 		}
 		const { readAll } = await import("../src/warehouse/warehouse.ts")
@@ -107,9 +126,19 @@ describe("probe-gold analysis", () => {
 			{ warehousePath: committed.warehousePath },
 			() => new Date(committed.generatedAt),
 		)
+		const freshJson = JSON.parse(JSON.stringify(fresh)) as typeof committed
 		// The analysis is a pure function of the warehouse plus two committed fixtures: re-running it
 		// must give the same file back, or the number in the report is not the number in the repo.
-		assert.deepEqual(JSON.parse(JSON.stringify(fresh)), committed)
+		// Everything except the corpus-size diagnostics, which are checked as properties below.
+		assert.deepEqual(withoutCorpusSizeDependentCounters(freshJson), withoutCorpusSizeDependentCounters(committed))
+		for (const scope of ["probe", "direct"] as const) {
+			assert.ok(freshJson.skipped[scope].otherBatch > 0, `${scope}: other rounds are read and skipped, never pooled`)
+			assert.ok(
+				freshJson.skipped[scope].otherBatch >= committed.skipped[scope].otherBatch,
+				`${scope}: the warehouse is append-only, so this counter can only grow (` +
+					`committed ${committed.skipped[scope].otherBatch}, now ${freshJson.skipped[scope].otherBatch})`,
+			)
+		}
 	})
 
 	it("reports the matrix, not only a rate, and against the pre-registered floor", async () => {

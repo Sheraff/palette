@@ -12,7 +12,7 @@
  */
 import assert from "node:assert/strict"
 import { spawn } from "node:child_process"
-import { appendFile, mkdtemp, open, rm, stat, writeFile } from "node:fs/promises"
+import { appendFile, mkdtemp, open, rename, rm, stat, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { after, before, describe, it } from "node:test"
@@ -84,6 +84,65 @@ describe("completion watcher", () => {
 		await appendFile(warehousePath, completeLine("whichever-comes-first"))
 		const sighting = await waiting
 		assert.equal(sighting?.batchId, "whichever-comes-first")
+	})
+
+	it("in any-batch mode, DEFAULT flags do not fire on releases that predate the watcher", async () => {
+		// The regression, and the reason the old test could not see it: it passed `includeExisting:
+		// false` explicitly AND started from an empty log, so it exercised neither the default nor a
+		// non-empty history. Against the real warehouse — 998 KB, releases going back days — the
+		// defaults returned in 2 ms with a batch released the day before yesterday, and the
+		// orchestrator's contract ("exit 0 ⇒ notify once") turned that into a notification with no
+		// release behind it.
+		const history = join(root, "with-history.jsonl")
+		await writeFile(history, completeLine("released-last-tuesday") + completeLine("released-yesterday"))
+
+		// No batchId, no includeExisting: exactly what the CLI passes with no flags.
+		const nothingYet = await watchForCompletion({ warehousePath: history, intervalMs: 5, timeoutMs: 200 })
+		assert.equal(nothingYet, null, "history is not news; the watcher must still be waiting")
+
+		const waiting = watchForCompletion({ warehousePath: history, intervalMs: 5, timeoutMs: 5000 })
+		await new Promise((done) => setTimeout(done, 30))
+		await appendFile(history, completeLine("released-just-now"))
+		const sighting = await waiting
+		assert.equal(sighting?.batchId, "released-just-now", "and it reports the NEXT one, which is what it promises")
+		assert.equal(sighting?.alreadyReleased, false)
+
+		// The opposite default is equally deliberate: naming a batch asks "is X done", and the answer
+		// to that does not depend on when you asked.
+		const named = await watchForCompletion({
+			warehousePath: history,
+			batchId: "released-last-tuesday",
+			intervalMs: 5,
+			timeoutMs: 200,
+		})
+		assert.equal(named?.batchId, "released-last-tuesday")
+		assert.equal(named?.alreadyReleased, true)
+
+		// A caller who genuinely wants the old any-batch behaviour can still ask for it.
+		const optedIn = await watchForCompletion({
+			warehousePath: history,
+			intervalMs: 5,
+			timeoutMs: 200,
+			includeExisting: true,
+		})
+		assert.equal(optedIn?.batchId, "released-last-tuesday", "the oldest release in the log, on request")
+	})
+
+	it("recovers when the warehouse is replaced by a file of the same size or larger", async () => {
+		// The offset-only recovery keyed off `size < offset`, so a REPLACED file (new inode, same or
+		// greater size) left the watcher reading from a position that means nothing in the new file —
+		// it would wait forever. Nothing rewrites the warehouse today; this costs one `stat` field.
+		const swapped = join(root, "swapped.jsonl")
+		await writeFile(swapped, completeLine("before-the-swap", "bc-before"))
+		const waiting = watchForCompletion({ warehousePath: swapped, batchId: "after-the-swap", intervalMs: 5, timeoutMs: 5000 })
+		await new Promise((done) => setTimeout(done, 40))
+
+		const replacement = join(root, "replacement.jsonl")
+		await writeFile(replacement, completeLine("before-the-swap", "bc-before") + completeLine("after-the-swap", "bc-after"))
+		await rename(replacement, swapped)
+
+		const sighting = await waiting
+		assert.equal(sighting?.recordId, "bc-after", "a new inode resets the offset instead of hanging")
 	})
 
 	it("reports a batch that was already released when it started, rather than hanging", async () => {
@@ -237,5 +296,37 @@ describe("completion watcher as a background shell command", () => {
 	it("refuses an unknown flag rather than waiting forever on a typo", async () => {
 		const result = await runWatcher(["--warehosue", "typo"])
 		assert.equal(result.code, 1)
+	})
+
+	it("with NO flags at all, does not exit 0 on a release that was already in the log", async () => {
+		// The CLI is where the defect lived: the CLI computed `includeExisting` into a boolean before
+		// calling the watcher, so `--batch`'s correct default silently governed any-batch mode too.
+		// This runs the real process the way the orchestrator does, with the flags it actually uses.
+		const scratch = await mkdtemp(join(tmpdir(), "v3-watch-cli-"))
+		const log = join(scratch, "warehouse.jsonl")
+		try {
+			await writeFile(log, completeLine("released-two-days-ago"))
+			const stale = await runWatcher(["--warehouse", log, "--interval", "20", "--timeout", "0.4"])
+			assert.equal(stale.code, 2, "exit 0 here is a notification with no release behind it")
+			assert.equal(stale.stdout, "")
+
+			// And the escape hatch still works, so nothing is lost — only the default changed.
+			const optedIn = await runWatcher([
+				"--warehouse",
+				log,
+				"--interval",
+				"20",
+				"--timeout",
+				"0.4",
+				"--include-existing",
+			])
+			assert.equal(optedIn.code, 0)
+			assert.equal(JSON.parse(optedIn.stdout.trim()).batchId, "released-two-days-ago")
+
+			const contradictory = await runWatcher(["--warehouse", log, "--only-new", "--include-existing"])
+			assert.equal(contradictory.code, 1, "two flags asking for opposite things is a mistake, not a precedence puzzle")
+		} finally {
+			await rm(scratch, { recursive: true, force: true })
+		}
 	})
 })

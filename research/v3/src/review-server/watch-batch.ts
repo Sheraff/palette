@@ -17,6 +17,12 @@
  * batch id, the release record id, its timestamp and the item count, so the shell that was waiting
  * can hand the orchestrator a complete fact without a second query.
  *
+ * **`--batch X` and no `--batch` are different questions**, and they treat the log's history
+ * differently. `--batch X` reports X even if X was released before the watcher started — the answer
+ * to "is X done" does not depend on when you asked. Without `--batch` the question is "the NEXT
+ * release of any batch", so releases already in the log are skipped; `--include-existing` opts back
+ * in, `--only-new` forces the skip in either mode.
+ *
  * **Cheap by construction.** It never re-reads the warehouse: it remembers a byte offset and reads
  * only what was appended since, keeping any partial trailing line for the next pass (the log is
  * append-only and every record is fsync'd, but a poll can still land mid-write). A poll on an
@@ -63,10 +69,20 @@ export type WatchOptions = Readonly<{
 	/**
 	 * Report a matching record that was already in the log at start.
 	 *
-	 * Default true, and deliberately so: this is a "wait until released" primitive, and a caller that
-	 * asks about an already-released batch is asking a question whose answer is yes. Making it block
-	 * instead would turn a lost race — the reviewer releasing between the push and the watcher
-	 * starting — into a hang.
+	 * **The default depends on the mode, because the question is not the same one.**
+	 *
+	 * With `--batch X` it defaults to TRUE: this is a "wait until X is released" primitive, and a
+	 * caller asking about an already-released batch is asking a question whose answer is yes. Making
+	 * it block instead would turn a lost race — the reviewer releasing between the push and the
+	 * watcher starting — into a hang.
+	 *
+	 * Without a batch the question is "wait for the NEXT release of any batch", and every historical
+	 * release in the log is an answer to a question nobody asked. Defaulting to true there meant the
+	 * watcher returned in 2 ms with a release from two days earlier, and the orchestrator's contract
+	 * ("exit 0 ⇒ notify once") turned that into a notification with no release behind it. So in
+	 * any-batch mode the default is FALSE: only a release that happens from now on counts.
+	 *
+	 * An explicit value always wins, in either mode.
 	 */
 	includeExisting?: boolean
 	/** Test seam: called after each poll that found nothing. */
@@ -118,17 +134,23 @@ export async function watchForCompletion(options: WatchOptions = {}): Promise<Co
 	const wanted = options.batchId ?? null
 	const intervalMs = options.intervalMs ?? DEFAULT_POLL_INTERVAL_MS
 	const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_SECONDS * 1000
-	const includeExisting = options.includeExisting !== false
+	// See `WatchOptions.includeExisting`: naming a batch asks "is X done yet", naming none asks "tell
+	// me about the next release", and only the first of those is answered by a record from last week.
+	const includeExisting = options.includeExisting ?? wanted !== null
 	const deadline = timeoutMs > 0 ? Date.now() + timeoutMs : Infinity
 
 	let offset = 0
 	let carry = ""
 	let firstPass = true
+	let inode: number | null = null
 
 	for (;;) {
 		let size = 0
+		let currentInode: number | null = null
 		try {
-			size = (await stat(warehousePath)).size
+			const stats = await stat(warehousePath)
+			size = stats.size
+			currentInode = stats.ino
 		} catch (error) {
 			// No warehouse yet is not an error: the orchestrator can start the watcher before the first
 			// record of the campaign exists.
@@ -136,7 +158,18 @@ export async function watchForCompletion(options: WatchOptions = {}): Promise<Co
 			size = 0
 			offset = 0
 			carry = ""
+			inode = null
 		}
+
+		// A file REPLACED rather than appended to (new inode) may be the same size or larger, so the
+		// shrink check below cannot see it: the watcher would resume at a byte offset that means
+		// nothing in the new file and wait forever. Nothing rewrites the warehouse today; this costs
+		// one field of a `stat` we already do.
+		if (currentInode !== null && inode !== null && currentInode !== inode) {
+			offset = 0
+			carry = ""
+		}
+		if (currentInode !== null) inode = currentInode
 
 		if (size < offset) {
 			offset = 0
@@ -183,6 +216,8 @@ async function main(): Promise<void> {
 			timeout: { type: "string", default: String(DEFAULT_TIMEOUT_SECONDS) },
 			/** Ignore releases already in the log; wait for one that happens from now on. */
 			"only-new": { type: "boolean", default: false },
+			/** Accept a release already in the log. The default with `--batch`; opt-in without it. */
+			"include-existing": { type: "boolean", default: false },
 			quiet: { type: "boolean", default: false },
 		},
 		strict: true,
@@ -191,13 +226,19 @@ async function main(): Promise<void> {
 	const timeoutSeconds = Number(values.timeout)
 	if (!Number.isFinite(intervalMs) || intervalMs < 0) throw new Error("--interval must be a number of milliseconds")
 	if (!Number.isFinite(timeoutSeconds) || timeoutSeconds < 0) throw new Error("--timeout must be a number of seconds")
+	if (values["only-new"] === true && values["include-existing"] === true) {
+		throw new Error("--only-new and --include-existing ask for opposite things; pass at most one")
+	}
 
 	const sighting = await watchForCompletion({
 		warehousePath: values.warehouse,
 		batchId: values.batch ?? null,
 		intervalMs,
 		timeoutMs: timeoutSeconds * 1000,
-		includeExisting: values["only-new"] !== true,
+		// Undefined when neither flag is given, so the mode-dependent default applies. Passing a
+		// computed boolean here is what made `--batch`'s correct default silently govern any-batch mode
+		// as well, and any-batch mode then fired on the oldest release in the log.
+		includeExisting: values["only-new"] === true ? false : values["include-existing"] === true ? true : undefined,
 	})
 
 	if (sighting === null) {

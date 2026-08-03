@@ -34,6 +34,28 @@ export const GRADIENT_DISPLAY_ANGLE_DEGREES = 135
 /** The interpolation space of the rendered ramp. Same space as all other palette math. */
 export const GRADIENT_DISPLAY_INTERPOLATION = "oklab" as const
 
+/**
+ * Decimal places every stop position is canonicalized to, at push time and on the way out.
+ *
+ * **This is a blinding defence, not a display choice.** A position is served to the browser as a
+ * JSON number, so its float *representation* is served with it: `0.35` and `0.35000000000000003`
+ * are the same ramp and different strings, and two arms whose fitting code reaches the same position
+ * by different arithmetic would be told apart by nothing but the trailing digits. Positions were
+ * validated for range and monotonicity and never canonicalized, so that channel was open.
+ *
+ * 1e-6 of a ramp is a ten-thousandth of a percent of the field — far below anything a fitted
+ * position means and far below anything the rendered CSS can express (`percent()` below rounds to
+ * two decimals of a percent). So this throws away no information that any consumer had.
+ * [UNCALIBRATED] — chosen here; any precision coarser than the arithmetic noise and finer than the
+ * rendering closes the channel equally well.
+ */
+export const GRADIENT_POSITION_DECIMALS = 6
+
+/** A stop position in its canonical numeric form. See `GRADIENT_POSITION_DECIMALS`. */
+export function canonicalPosition(position: number): number {
+	return Number(position.toFixed(GRADIENT_POSITION_DECIMALS))
+}
+
 export function displayReserve(stopCount: number): number {
 	if (!Number.isInteger(stopCount) || stopCount < 2) {
 		throw new RangeError(`A gradient needs at least 2 stops, got ${stopCount}`)
@@ -65,8 +87,12 @@ export function displayStops(gradient: Gradient, colorNames: Record<string, stri
 	return gradient.stops.map((stop) => ({
 		hex: stop.color,
 		name: colorNames[stop.color] ?? stop.color,
-		publishedPosition: stop.position,
-		displayPosition: displayPosition(stop.position, gradient.stops.length),
+		// Canonicalized on the way out as well as on the way in, so that a palette stored before this
+		// rule existed cannot serve its float noise to the browser either. Both numbers are served, so
+		// both are canonical: `displayPosition` is derived arithmetic and carries its own trailing
+		// digits (0.35 -> 0.5775000000000001).
+		publishedPosition: canonicalPosition(stop.position),
+		displayPosition: canonicalPosition(displayPosition(stop.position, gradient.stops.length)),
 	}))
 }
 

@@ -35,10 +35,11 @@ import { dirname } from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
 import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
-import type { OracleLabelRecord, WarehouseRecord } from "../warehouse/records.ts"
+import type { WarehouseRecord } from "../warehouse/records.ts"
 import { readAll, resolve } from "../warehouse/warehouse.ts"
+import type { SupersedingOracleLabel } from "./types.ts"
 import {
-	GRADIENT_MAP,
+	gradientBinary,
 	PREMISE_DISAMBIGUATION_BATCH_ID,
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
 	PROBE_GOLD_BATCH_ID,
@@ -179,16 +180,22 @@ export function collectAnswers(
 	batchId: string,
 ): { byQuestionAndImage: Map<string, string>; skipped: Record<string, number> } {
 	const skipped: Record<string, number> = { otherBatch: 0, machineAuthored: 0, retracted: 0, superseded: 0, nonString: 0 }
-	const latest = new Map<string, { answer: string; index: number }>()
+	type Candidate = { answer: string; index: number; recordId: string }
+	const candidates = new Map<string, Candidate[]>()
+	const replaced = new Set<string>()
 	resolve(records).forEach((entry, index) => {
 		if (entry.record.type !== "oracle-label") return
-		const label = entry.record as OracleLabelRecord
-		if (entry.retracted) {
-			skipped.retracted++
-			return
-		}
+		const label = entry.record as SupersedingOracleLabel
+		// Batch scoping comes FIRST, so every counter below this line is a statement about *this*
+		// round. A retraction in some other round is not this round's business; counting it here made
+		// `retracted` grow with the corpus the way `otherBatch` does. (Value today: 0 either way — all
+		// retractions in the warehouse target `note` records, which never reach this loop.)
 		if (label.batch?.id !== batchId) {
 			skipped.otherBatch++
+			return
+		}
+		if (entry.retracted) {
+			skipped.retracted++
 			return
 		}
 		if (label.author.kind !== "human") {
@@ -199,15 +206,29 @@ export function collectAnswers(
 			skipped.nonString++
 			return
 		}
+		// `supersedes` (written by the server) settles supersession outright; file order is the fallback
+		// for records written before that field existed. See `SupersedingOracleLabel` for why the
+		// order-only convention was a defect: it is unverifiable, and it disagrees with `wc -l`.
+		if (typeof label.supersedes === "string") replaced.add(label.supersedes)
 		const key = `${label.questionKey} ${label.imageId}`
-		const previous = latest.get(key)
-		if (previous !== undefined) skipped.superseded++
-		if (previous === undefined || previous.index < index) latest.set(key, { answer: label.answer, index })
+		const held = candidates.get(key)
+		if (held === undefined) candidates.set(key, [{ answer: label.answer, index, recordId: label.id }])
+		else {
+			held.push({ answer: label.answer as string, index, recordId: label.id })
+			skipped.superseded++
+		}
 	})
-	return {
-		byQuestionAndImage: new Map([...latest].map(([key, value]) => [key, value.answer])),
-		skipped,
+	const byQuestionAndImage = new Map<string, string>()
+	for (const [key, held] of candidates) {
+		// A record something else replaced never stands, whatever its position in the file. With no
+		// `supersedes` anywhere, `replaced` is empty and this is exactly the file-order answer.
+		const survivors = held.filter((candidate) => !replaced.has(candidate.recordId))
+		const chosen = (survivors.length > 0 ? survivors : held).reduce((latest, candidate) =>
+			candidate.index > latest.index ? candidate : latest,
+		)
+		byQuestionAndImage.set(key, chosen.answer)
 	}
+	return { byQuestionAndImage, skipped }
 }
 
 /* ------------------------------------------------------------------------------------------- */
@@ -293,8 +314,9 @@ function pct(part: number, whole: number): string {
 }
 
 function binaryOf(groundType: string): string | null {
-	const mapped = GRADIENT_MAP[groundType]
-	return mapped === undefined || mapped === "unmapped" ? null : mapped
+	// One shared allowlist, so a new non-answer value in the map cannot become a binary here. This
+	// matters for exactly this file: `underdetermined` is a probe-arm outcome and it must stay null.
+	return gradientBinary(groundType)
 }
 
 /**

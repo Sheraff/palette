@@ -13,6 +13,7 @@ import type {
 	BatchPurpose,
 	CodeFingerprint,
 	Grade,
+	OracleLabelRecord,
 	PaletteSnapshot,
 	Preference,
 	VerdictRecord,
@@ -272,3 +273,27 @@ export type AbsoluteVerdictInput = Readonly<{
 	grade: Grade
 	comment: string
 }>
+
+/**
+ * An `oracle-label` record that says which record it replaced.
+ *
+ * **Why this is here and not in `records.ts`.** It is an additive extension the review server writes
+ * and the analyses read; the warehouse schema owns the base record and validates it permissively, so
+ * a record carrying these two fields is a valid `oracle-label` today and a record without them stays
+ * valid forever. The schema workstream should fold it into `OracleLabelRecord` proper — see the
+ * proposed ledger entry — at which point this alias becomes a re-export.
+ *
+ * **What it fixes.** The reviewer can step back and answer again, which writes a second record for
+ * the same `(questionKey, imageId)`. The bcde round shipped 163 records covering 160 answers for
+ * exactly this reason. Nothing on the records said which was which: the server's revision counter
+ * was in-memory only, so supersession had to be reconstructed from FILE ORDER by every consumer
+ * independently — the warehouse query CLI, a future join, an agent doing arithmetic on `wc -l`. Any
+ * of them that did not replicate the convention exactly saw 163 rows with 3 phantoms. The pairwise
+ * path already records `supersededVerdictIds`; this is the same fact for the oracle path.
+ */
+export type SupersedingOracleLabel = OracleLabelRecord & {
+	/** The record this answer replaces, or null when it is the first answer for the item. */
+	supersedes: string | null
+	/** 1 for a first answer, 2 for the first re-answer, and so on. */
+	revision: number
+}

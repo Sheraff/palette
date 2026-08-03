@@ -13,6 +13,7 @@
 import assert from "node:assert/strict"
 import { after, before, describe, it } from "node:test"
 import { fileURLToPath } from "node:url"
+import { ORACLE_LABEL_SCHEMA_VERSION } from "../src/review-server/oracle-validation.ts"
 import { batchReviewPaths, seedOracleValidationRound } from "../src/review-server/server.ts"
 import { call, makeBatch, openPage, startHarness, type FakeNode, type Harness } from "../src/review-server/test-support.ts"
 
@@ -33,22 +34,42 @@ describe("batchReviewPaths", () => {
 			page: "/pairwise?batch=b-1",
 			payload: "/api/batches/b-1",
 			afterRelease: "/amend?batch=b-1",
+			afterReleasePayload: "/api/batches/b-1",
 		})
 		assert.deepEqual(batchReviewPaths({ batchId: "b-2", kind: "calibration" }), {
 			page: "/calibration?batch=b-2",
 			payload: "/api/calibration/b-2",
 			afterRelease: "/amend?batch=b-2",
+			afterReleasePayload: "/api/calibration/b-2",
 		})
 		assert.deepEqual(batchReviewPaths({ batchId: "b-3", kind: "bracketing" }), {
 			page: "/bracketing?batch=b-3",
 			payload: "/api/bracketing/b-3",
 			afterRelease: null,
+			afterReleasePayload: null,
 		})
-		assert.deepEqual(batchReviewPaths({ batchId: "b-4", kind: "oracle-validation" }), {
-			page: "/oracle?batch=b-4",
-			payload: "/api/oracle-validation/b-4",
-			afterRelease: "/oracle-review?batch=b-4",
-		})
+		assert.deepEqual(
+			batchReviewPaths({ batchId: "b-4", kind: "oracle-validation", labelSchemaVersion: ORACLE_LABEL_SCHEMA_VERSION }),
+			{
+				page: "/oracle?batch=b-4",
+				payload: "/api/oracle-validation/b-4",
+				afterRelease: "/oracle-review?batch=b-4",
+				afterReleasePayload: "/api/oracle-review/b-4",
+			},
+		)
+	})
+
+	it("offers no adjudication link for a question set the adjudication view cannot join", () => {
+		// The regression this pins: the link used to be emitted from `kind` alone, so four of the five
+		// released oracle rounds — every one answered under a schema other than group-a.v1 — put a link
+		// on the dashboard that landed on "could not load". A missing link is a true statement; a dead
+		// link is not.
+		for (const schema of ["group-bcde.v1", "group-a.probes.v1", "sam-mask-quality.v1", null]) {
+			const paths = batchReviewPaths({ batchId: "b-5", kind: "oracle-validation", labelSchemaVersion: schema })
+			assert.equal(paths.afterRelease, null, `${String(schema)} has no adjudication view`)
+			assert.equal(paths.afterReleasePayload, null, `${String(schema)} has no adjudication payload either`)
+			assert.equal(paths.page, "/oracle?batch=b-5", "the answering page is still where the round is reviewed")
+		}
 	})
 
 	it("escapes a batch id that would otherwise break the link", () => {
