@@ -210,6 +210,28 @@ The ratification round is built — build-only, not pushed — by `oracle/sam/re
 (the sample and the overlays) and `oracle/sam/build-ratification-fixture.ts` (the fixture),
 batch `sam-mask-quality-2-v2-ratification`, reading whatever the re-run above produces.
 
+**Built, 2026-08-03**, against the finished `sam-eval-142-v2` (142/142, 0 failed, 4.25 s/image):
+40 items in four passes — 10 `parental-advisory` (the 5 covers confirmed by eye plus 5 on covers
+nobody confirmed), 9 `display-text` (including both masks of `images/toxicity.jpg`, the note-5
+cover: artist 0.688, title 0.357), 6 `emblem`, and 15 **residual-field** panels asking whether
+what survives the masks is the background. One shortfall, recorded rather than papered over:
+`images/vvbrown.jpg` produced **zero** `display-text` masks in v2, so the second confirmed
+competing-text cover could not be in the round.
+
+## Follow-ups that live elsewhere
+
+- **Probe 3 (salience / non-semantic phrasings)** — run 2026-08-03, 12 covers, 10 phrasings,
+  ~2 min GPU. Results, overlays and the proposal are in `SAM_DESIGN_NOTES.md` §3; rows in
+  `probe-3-salience.jsonl`. Headline: the attributive-colour family is dead (0 above the
+  calibrated cut, including on the two covers picked as its best case), the salience-noun family
+  is nearly dead ("the most prominent object" 0/12; nothing at all fires on a cover with one
+  unmistakable human subject) — and the control, "the background", fired on 5 of 12 with clean
+  field masks, which §8.3 does not expect. Nothing was added to `CONCEPT_PROMPTS`.
+- **What a mask may be asked to decide** — `SAM_DESIGN_NOTES.md` §1–2: masks locate mark-shaped
+  things and never decide provenance alone; exclusion needs corroboration; the nesting signal is
+  measured there (11.7% of `mark_like` instances sit inside a person), including its measured
+  false-positive mode.
+
 ## Not done here (owned elsewhere)
 
 - The standing-decision record in `research/v3/data/decisions/decisions.json` and the A5

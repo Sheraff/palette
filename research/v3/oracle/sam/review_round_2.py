@@ -23,6 +23,13 @@ wording makes are:
   3. `emblem` is the honest name for what the prompt "logo" returns, because the mask cannot know
      whether the mark is part of the artwork or applied to it. Reviewer note 1.
 
+The round carries a **second section** with a different question. §8.3's subtractive premise —
+"everything not covered by an instance mask is field, run colorimetry on that residual" — has never
+been looked at by a human. It is the load-bearing assumption of the whole geometry stage and it is
+an assumption about pixels, so it is checkable by eye: black out every v2 mask and ask whether what
+is left is the background. That section is built by `build_residual_sample` and rendered by
+`render_residual`; it shares the batch and gets its own pass.
+
 Each claim is checkable by eye on a specific kind of cover, so the sample is **purposive**: the PA
 masks (both on the five covers confirmed to carry a mark and on any cover that is not — those are
 the false positives the claim would be sunk by), the `display-text` masks on covers where artist and
@@ -53,7 +60,8 @@ import random
 from collections import defaultdict
 from pathlib import Path
 
-from PIL import Image
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
 
 import common
 import config
@@ -150,12 +158,50 @@ CONFIRMED_NEGATIVE_IMAGES: tuple[str, ...] = (
     "03/ab67616d00001e02000300752f338b6aedff856c.jpg",          # interior photo only
 )
 
-# [REVIEWED] A cover shows "competing" display text when at least two `display-text` instances
-# survive the calibrated cut. Two strong masks on one cover is the situation reviewer note 5
-# describes — one of them is the artist and one is the title, and the tag has to be true of both.
-# The cut is config.CALIBRATED_SCORE_THRESHOLD rather than the run threshold because a 0.31 second
-# mask is not competition, it is noise.
+# [REVIEWED] A cover shows "competing" display text when it carries at least two `display-text`
+# instances, the strongest of them is above the calibrated cut, and the second is anywhere in the
+# run. Two masks on one cover is the situation reviewer note 5 describes — one is the artist, one is
+# the title, and the tag has to be true of both.
+#
+# The second mask is deliberately NOT held to the calibrated cut. Requiring it excluded
+# `images/toxicity.jpg`, which is the canonical example of the claim: probe 2 measured the artist
+# name at 0.688 and the actual album title at 0.357, and it is precisely that gap — the wrong role
+# scoring higher — that made the rename necessary. A round about note 5 that dropped the note-5
+# cover would have been testing something else. The strong-mask requirement stays, so a pair of
+# noise masks cannot qualify.
 COMPETITION_MIN_INSTANCES = 2
+
+# --------------------------------------------------------------------------------- residual section
+
+# [UNCALIBRATED] How many residual panels. Fifteen on top of the twenty-five mask items keeps the
+# sitting near round 1's length while giving each residual band three or four covers — enough for
+# the reviewer to see whether the failures cluster in one kind of cover, not enough to estimate a
+# rate. The section exists to find out whether the premise survives contact with a human at all.
+RESIDUAL_QUOTA = 15
+
+# [REVIEWED] The residual bands, over `residual_field_fraction` from the run's per-image summary row
+# (1 minus the union of every mask). Named for what the number means to a looker, and chosen so both
+# ends of the coordinator's "field-having and full-scene both" are forced into the sample:
+#   full-scene   less than half the cover survives — SAM found things everywhere, so what remains is
+#                whatever fell between them, and that is where the premise is most likely to break.
+#   mixed        the ordinary case.
+#   field-having most of the cover survives; a plausible ground/field separation.
+#   near-empty   almost nothing was masked, usually because nothing fired at all. The residual is
+#                then the whole artwork, and calling that "field" is the premise at its weakest.
+RESIDUAL_BANDS: tuple[tuple[str, float, float], ...] = (
+    ("full-scene", 0.0, 0.5),
+    ("mixed", 0.5, 0.8),
+    ("field-having", 0.8, 0.95),
+    ("near-empty", 0.95, 1.001),
+)
+
+# [REVIEWED] What a removed pixel is filled with. NOT black: overlay.py's residual view blacks the
+# union out, which is unreadable on the many covers that are themselves black — the reviewer cannot
+# tell a removed region from a dark one, and would be answering about the wrong pixels. A two-grey
+# checkerboard reads as "cut out" on any artwork and belongs to no cover.
+REMOVED_FILL_A = (58, 58, 58)
+REMOVED_FILL_B = (94, 94, 94)
+REMOVED_CHECK_PX = 8
 
 # [REVIEWED] Roles, recorded per item so the analysis can split "did the reviewer accept masks on
 # covers we know carry the thing" from "did the reviewer reject masks on covers we do not". Both
@@ -301,18 +347,20 @@ def build_sample(regions: list[dict]) -> tuple[list[tuple[dict, str]], dict]:
             by_image[row["image_path"]].append(row)
     pairs: list[tuple[str, tuple[dict, dict]]] = []
     for image_path, rows in by_image.items():
-        strong = sorted((r for r in rows if r["score"] >= cut), key=lambda r: (-r["score"], rr.mask_row_id(r)))
-        if len(strong) >= COMPETITION_MIN_INSTANCES:
-            pairs.append((image_path, (strong[0], strong[1])))
+        ranked = sorted(rows, key=lambda r: (-r["score"], rr.mask_row_id(r)))
+        if len(ranked) >= COMPETITION_MIN_INSTANCES and ranked[0]["score"] >= cut:
+            pairs.append((image_path, (ranked[0], ranked[1])))
     forced_pairs = [p for p in pairs if p[0] in CONFIRMED_COMPETING_TEXT_IMAGES]
     forced_pairs.sort(key=lambda p: CONFIRMED_COMPETING_TEXT_IMAGES.index(p[0]))
     other_pairs = sorted((p for p in pairs if p[0] not in CONFIRMED_COMPETING_TEXT_IMAGES),
                          key=lambda p: competition_rank(p[1]))
     for image_path in CONFIRMED_COMPETING_TEXT_IMAGES:
         if image_path not in {p[0] for p in pairs}:
+            found = len(by_image.get(image_path, []))
             notes.append(
-                f"confirmed competing-text cover {image_path} has fewer than "
-                f"{COMPETITION_MIN_INSTANCES} display-text masks above {cut:g} in the run"
+                f"confirmed competing-text cover {image_path} is not in the round: "
+                f"{found} display-text mask(s) in the run, needs {COMPETITION_MIN_INSTANCES} "
+                f"with the strongest above {cut:g}"
             )
     text_taken = 0
     for image_path, (first, second) in forced_pairs + other_pairs:
@@ -359,7 +407,194 @@ def build_sample(regions: list[dict]) -> tuple[list[tuple[dict, str]], dict]:
     return selected, composition
 
 
+# --------------------------------------------------------------------------------- residual build
+
+
+def residual_band_of(fraction: float) -> str:
+    for name, low, high in RESIDUAL_BANDS:
+        if low <= fraction < high:
+            return name
+    raise ValueError(f"residual fraction {fraction} falls outside the declared bands")
+
+
+def residual_item_id(image_row: dict) -> str:
+    """Opaque id for a residual panel. Salted differently from the mask items so the same artwork
+    appearing in both sections cannot collide, and so neither id can be guessed from the other."""
+    digest = hashlib.sha256(f"{BATCH_ID}|residual|{image_row['image_sha256']}".encode("utf-8")).hexdigest()
+    return f"smq2f-{digest[:12]}"
+
+
+def build_residual_sample(
+    images: dict[str, dict],
+    already_sampled: set[str],
+    rng: random.Random,
+) -> tuple[list[dict], dict]:
+    """Pick the residual covers: round-robin over the residual bands, seeded, diverse by artwork.
+
+    Round-robin rather than random over the whole run for the same reason the mask section is
+    purposive — the population is not uniform (most covers sit in one or two bands), and a sample
+    that reflects the population would show the reviewer fifteen variations of the ordinary case and
+    nothing from the two ends where the premise is actually at risk.
+    """
+    by_band: dict[str, list[dict]] = defaultdict(list)
+    skipped = 0
+    for row in sorted(images.values(), key=lambda r: r["image_sha256"]):
+        fraction = row.get("residual_field_fraction")
+        if fraction is None:
+            skipped += 1
+            continue
+        by_band[residual_band_of(fraction)].append(row)
+    for band in by_band:
+        rng.shuffle(by_band[band])
+        # Covers the mask section did not use come first. An artwork the reviewer has already looked
+        # at twice is not a fresh judgement about the field on a third sight of it.
+        by_band[band].sort(key=lambda r: r["image_sha256"] in already_sampled)
+
+    taken_in_band = {band: 0 for band in by_band}
+    drawn: list[dict] = []
+    while len(drawn) < RESIDUAL_QUOTA:
+        live = [band for band in by_band if by_band[band]]
+        if not live:
+            break
+        band = min(live, key=lambda b: (taken_in_band[b], len(by_band[b]), b))
+        drawn.append(by_band[band].pop(0))
+        taken_in_band[band] += 1
+
+    notes: list[str] = []
+    for name, _, _ in RESIDUAL_BANDS:
+        if not any(residual_band_of(r["residual_field_fraction"]) == name for r in drawn):
+            notes.append(f"residual band '{name}' is empty in this run — no cover fell in it")
+    if len(drawn) < RESIDUAL_QUOTA:
+        notes.append(f"residual section short by {RESIDUAL_QUOTA - len(drawn)}")
+    if skipped:
+        notes.append(f"{skipped} image rows carried no residual_field_fraction and were skipped")
+    composition = {
+        "quota": RESIDUAL_QUOTA,
+        "drawnByBand": {name: sum(1 for r in drawn
+                                  if residual_band_of(r["residual_field_fraction"]) == name)
+                        for name, _, _ in RESIDUAL_BANDS},
+        "bandPopulations": {name: len([r for r in images.values()
+                                       if r.get("residual_field_fraction") is not None
+                                       and residual_band_of(r["residual_field_fraction"]) == name])
+                            for name, _, _ in RESIDUAL_BANDS},
+        "reusedFromMaskSection": sum(1 for r in drawn if r["image_sha256"] in already_sampled),
+        "notes": notes,
+    }
+    return drawn, composition
+
+
+def checkerboard(height: int, width: int, cell: int) -> np.ndarray:
+    """A two-grey checkerboard the size of the panel. What a removed pixel is filled with."""
+    ys = (np.arange(height) // cell)[:, None]
+    xs = (np.arange(width) // cell)[None, :]
+    pick = ((ys + xs) % 2).astype(bool)
+    board = np.empty((height, width, 3), dtype=np.uint8)
+    board[~pick] = np.array(REMOVED_FILL_A, dtype=np.uint8)
+    board[pick] = np.array(REMOVED_FILL_B, dtype=np.uint8)
+    return board
+
+
+def render_residual(image_row: dict) -> Image.Image:
+    """One panel: the untouched artwork, then the same artwork with every v2 mask removed.
+
+    The right panel is exactly §8.3's residual field — `union_mask_rle` is the union the run itself
+    computed and the colorimetry stage is specified to run on, not a re-derivation — so a `no` here
+    is a finding about the pipeline's own number and not about this script's arithmetic.
+    """
+    common.register_image_plugins()
+    original = Image.open(config.REPO_ROOT / image_row["image_path"]).convert("RGB")
+    height, width = image_row["height"], image_row["width"]
+    if original.size != (width, height):
+        raise ValueError(f"{image_row['image_path']}: file is {original.size}, the run saw {(width, height)}")
+
+    scale = rr.panel_scale(width, height)
+    big = original.resize((width * scale, height * scale), Image.Resampling.LANCZOS)
+    base = np.array(big)
+
+    union = common.rle_decode(image_row["union_mask_rle"], height, width)
+    union_big = np.array(
+        Image.fromarray((union.astype(np.uint8) * 255)).resize(
+            (width * scale, height * scale), Image.Resampling.NEAREST
+        )
+    ) > 127
+
+    residual = base.copy()
+    board = checkerboard(residual.shape[0], residual.shape[1], REMOVED_CHECK_PX * scale)
+    residual[union_big] = board[union_big]
+
+    panel_w, panel_h = big.size
+    sheet = Image.new("RGB", (panel_w * 2 + rr.PANEL_GAP_PX, panel_h + rr.LABEL_STRIP_PX), rr.SHEET_BG)
+    sheet.paste(big, (0, 0))
+    sheet.paste(Image.fromarray(residual), (panel_w + rr.PANEL_GAP_PX, 0))
+    draw = ImageDraw.Draw(sheet)
+    font = ImageFont.load_default(size=rr.LABEL_FONT_PX)
+    draw.text((2, panel_h + 6), "artwork", fill=rr.SHEET_FG, font=font)
+    # No fraction, no band, no instance count: those are what the answers are joined against.
+    draw.text((panel_w + rr.PANEL_GAP_PX + 2, panel_h + 6),
+              "everything the masks found, removed", fill=rr.SHEET_FG, font=font)
+    return sheet
+
+
+def residual_manifest_entry(image_row: dict, overlay_path: Path) -> dict:
+    overlay: dict | None = None
+    if overlay_path.exists():
+        overlay_bytes = overlay_path.read_bytes()
+        with Image.open(overlay_path) as opened:
+            overlay_w, overlay_h = opened.size
+        overlay = {
+            "path": str(overlay_path.relative_to(config.REPO_ROOT)),
+            "sha256": hashlib.sha256(overlay_bytes).hexdigest(),
+            "bytes": len(overlay_bytes),
+            "width": overlay_w,
+            "height": overlay_h,
+            "scale": rr.panel_scale(image_row["width"], image_row["height"]),
+        }
+    band = residual_band_of(image_row["residual_field_fraction"])
+    return {
+        "itemId": residual_item_id(image_row),
+        "residualBand": band,
+        "stratum": f"residual|{band}",
+        # Everything below this line is the answer key for this section: it is what the reviewer's
+        # yes/no is joined against. Manifest-side only, exactly like the mask items' scores.
+        "residualFieldFraction": image_row["residual_field_fraction"],
+        "maskedAreaFraction": image_row["masked_area_fraction"],
+        "instancesTotal": image_row["instances_total"],
+        "instancesByConcept": image_row["instances_by_concept"],
+        "groupUnionAreaFractions": {
+            key: value for key, value in image_row.items() if key.endswith("_union_area_fraction")
+        },
+        "maskRef": {
+            "run": SOURCE_RUN,
+            "runId": image_row["run_id"],
+            "schemaVersion": image_row["schema_version"],
+            "imageSha256": image_row["image_sha256"],
+        },
+        "artwork": {
+            "imagePath": image_row["image_path"],
+            "imageId": image_row["image_id"],
+            "artworkId": image_row["artwork_id"],
+            "collection": image_row["collection"],
+            "sha256": image_row["image_sha256"],
+            "width": image_row["width"],
+            "height": image_row["height"],
+        },
+        "overlay": overlay,
+    }
+
+
 # --------------------------------------------------------------------------------- manifest
+
+RESIDUAL_SELECTION_RULE = (
+    f"{RESIDUAL_QUOTA} covers from the same run, rendered as the residual field: the artwork beside "
+    "the artwork with the union of every v2 mask removed (a checkerboard, not black, so a removed "
+    "region is legible on a dark cover). Round-robin over four bands of the run's own "
+    "`residual_field_fraction` — full-scene (<0.5), mixed, field-having, near-empty (>0.95) — so "
+    "both ends are forced in: the covers where SAM found things everywhere, and the covers where it "
+    "found almost nothing and the 'residual' is the whole artwork. Covers not used by the mask "
+    "section come first. What this section decides: whether §8.3's subtractive premise — everything "
+    "not covered by an instance mask is field, and colorimetry runs on that residual — survives "
+    "being looked at. Nothing downstream has ever tested it on a human."
+)
 
 SELECTION_RULE = (
     "A purposive sample from the concept-set-v2 re-run, built to ratify three named claims rather "
@@ -436,6 +671,9 @@ def build(run: str, write: bool) -> dict:
         )
     regions, images = rr.read_run(run)          # raises if the run predates concept set v2
     selected, composition = build_sample(regions)
+    residual_rows, residual_composition = build_residual_sample(
+        images, {row["image_sha256"] for row, _ in selected}, random.Random(SEED + 1)
+    )
 
     if write:
         OVERLAY_DIR.mkdir(parents=True, exist_ok=True)
@@ -448,7 +686,16 @@ def build(run: str, write: bool) -> dict:
             )
         entries.append(manifest_entry(row, role, images[row["image_sha256"]], overlay_path))
     entries.sort(key=lambda entry: entry["itemId"])
-    missing = [entry["itemId"] for entry in entries if entry["overlay"] is None]
+
+    residual_entries: list[dict] = []
+    for image_row in residual_rows:
+        overlay_path = OVERLAY_DIR / f"{residual_item_id(image_row)}.png"
+        if write:
+            render_residual(image_row).save(overlay_path, optimize=True)
+        residual_entries.append(residual_manifest_entry(image_row, overlay_path))
+    residual_entries.sort(key=lambda entry: entry["itemId"])
+
+    missing = [entry["itemId"] for entry in entries + residual_entries if entry["overlay"] is None]
     if write and missing:
         raise RuntimeError(f"{len(missing)} overlays did not render: {missing[:3]}")
 
@@ -485,6 +732,19 @@ def build(run: str, write: bool) -> dict:
         "conceptGroups": {group: list(concepts) for group, concepts in config.CONCEPT_GROUPS.items()},
         "selection": {"rule": SELECTION_RULE, "composition": composition},
         "items": entries,
+        # The second section. A separate key, not more `items`: the review-server's shared fixture
+        # builder reads `items` and asks one mask question per concept about each of them, which is
+        # not this section's question. build-ratification-fixture.ts picks these up and appends its
+        # own pass. A reader of the manifest that knows nothing about the residual section still
+        # gets a correct, complete mask section.
+        "residualSection": {
+            "questionKey": "residual_is_field",
+            "rule": RESIDUAL_SELECTION_RULE,
+            "bands": [{"band": name, "low": low, "high": high} for name, low, high in RESIDUAL_BANDS],
+            "removedFill": {"a": list(REMOVED_FILL_A), "b": list(REMOVED_FILL_B), "checkPx": REMOVED_CHECK_PX},
+            "composition": residual_composition,
+            "items": residual_entries,
+        },
     }
 
 
@@ -508,6 +768,17 @@ def report(manifest: dict) -> None:
     print(f"  shortfall: {composition['shortfall']}")
     for note in composition["notes"]:
         print(f"  NOTE {note}")
+
+    residual = manifest["residualSection"]
+    print(f"\n  residual section: {len(residual['items'])} covers, question {residual['questionKey']}")
+    for name, _, _ in RESIDUAL_BANDS:
+        drawn = residual["composition"]["drawnByBand"][name]
+        population = residual["composition"]["bandPopulations"][name]
+        print(f"    {name:14s} {drawn:3d}  (of {population} in the run)")
+    print(f"    reused from the mask section: {residual['composition']['reusedFromMaskSection']}")
+    for note in residual["composition"]["notes"]:
+        print(f"  NOTE {note}")
+    print(f"\n  TOTAL items: {len(items) + len(residual['items'])}")
 
 
 def main() -> int:

@@ -1,0 +1,144 @@
+{
+	"run": "sam-eval-142-v2",
+	"scoreCut": 0.578,
+	"containmentThreshold": 0.8,
+	"bboxScreen": 0.5,
+	"markGroup": [
+		"emblem",
+		"parental-advisory",
+		"sticker"
+	],
+	"personGroup": [
+		"face",
+		"person"
+	],
+	"totals": {
+		"marks": 77,
+		"bbox_nested": 12,
+		"mask_nested": 9
+	},
+	"bboxNestedRate": 0.1558,
+	"maskNestedRate": 0.1169,
+	"imagesWithMarks": 47,
+	"imagesWithNesting": 7,
+	"nestedInsideDominantPerson": 0,
+	"nestedInsideOrdinaryPerson": 9,
+	"byConcept": {
+		"emblem": {
+			"marks": 65,
+			"bbox_nested": 10,
+			"mask_nested": 7
+		},
+		"parental-advisory": {
+			"marks": 8,
+			"bbox_nested": 1,
+			"mask_nested": 1
+		},
+		"sticker": {
+			"marks": 4,
+			"bbox_nested": 1,
+			"mask_nested": 1
+		}
+	},
+	"examples": [
+		{
+			"imagePath": "00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+			"markConcept": "emblem",
+			"markScore": 0.839845,
+			"markAreaFraction": 0.001377778,
+			"insideConcept": "person",
+			"insideScore": 0.75192,
+			"insideAreaFraction": 0.341444444,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+			"markConcept": "emblem",
+			"markScore": 0.778671,
+			"markAreaFraction": 0.002836914,
+			"insideConcept": "person",
+			"insideScore": 0.797873,
+			"insideAreaFraction": 0.137492676,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "05/ab67616d00001e020005fa7c7e0e067474967e41",
+			"markConcept": "emblem",
+			"markScore": 0.752128,
+			"markAreaFraction": 0.000622222,
+			"insideConcept": "person",
+			"insideScore": 0.833695,
+			"insideAreaFraction": 0.119688889,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"markConcept": "emblem",
+			"markScore": 0.700267,
+			"markAreaFraction": 0.000666667,
+			"insideConcept": "person",
+			"insideScore": 0.921655,
+			"insideAreaFraction": 0.348522222,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+			"markConcept": "emblem",
+			"markScore": 0.675865,
+			"markAreaFraction": 0.003133333,
+			"insideConcept": "person",
+			"insideScore": 0.921655,
+			"insideAreaFraction": 0.348522222,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "0f/ab67616d00001e02000f723f36271de0ed3aa893",
+			"markConcept": "sticker",
+			"markScore": 0.597894,
+			"markAreaFraction": 0.003377778,
+			"insideConcept": "person",
+			"insideScore": 0.901266,
+			"insideAreaFraction": 0.3312,
+			"bboxContainment": 1.0,
+			"maskContainment": 1.0
+		},
+		{
+			"imagePath": "0a/ab67616d0000b273000a8097d86930fb02f5a76d",
+			"markConcept": "emblem",
+			"markScore": 0.864817,
+			"markAreaFraction": 0.002570801,
+			"insideConcept": "person",
+			"insideScore": 0.903863,
+			"insideAreaFraction": 0.284179688,
+			"bboxContainment": 1.0,
+			"maskContainment": 0.9554
+		},
+		{
+			"imagePath": "0a/ab67616d0000b273000a8097d86930fb02f5a76d",
+			"markConcept": "parental-advisory",
+			"markScore": 0.74938,
+			"markAreaFraction": 0.002565918,
+			"insideConcept": "person",
+			"insideScore": 0.903863,
+			"insideAreaFraction": 0.284179688,
+			"bboxContainment": 1.0,
+			"maskContainment": 0.9553
+		},
+		{
+			"imagePath": "00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+			"markConcept": "emblem",
+			"markScore": 0.599988,
+			"markAreaFraction": 0.337533333,
+			"insideConcept": "face",
+			"insideScore": 0.760656,
+			"insideAreaFraction": 0.283577778,
+			"bboxContainment": 0.7313,
+			"maskContainment": 0.8395
+		}
+	]
+}
