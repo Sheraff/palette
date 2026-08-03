@@ -252,12 +252,16 @@ area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIE
 
 ### A8. ~~The legacy fixtures' README still says the same-color bar is `[UNCALIBRATED]`~~ CLOSED 2026-08-03
 **Resolution:** the one-paragraph correction A8 asked for has been applied.
-`data/legacy/README.md`:409 now reads "**Within the bar, on all four roles, never exact hex.** The
-bar was `[UNCALIBRATED]` when this was decided; **it has since been calibrated per region and
-frozen**." The sentence A8 quoted is gone, and the known-worse gate's wiring instructions no longer
-under-claim. **Residue, correct and deliberately kept:** the README still says at :438–439 that hit
-counts computed **before 2026-08-03** are provisional, because they predate the bar. That is a
-different and true statement, not the stale one. Original entry kept below for the record.
+`data/legacy/README.md` now reads "**Within the bar, on all four roles, never exact hex.** The bar
+was `[UNCALIBRATED]` when this was decided; it has since been calibrated per region and frozen" —
+today in the decision table, findable as `grep -n 'Within the bar, on all four roles'`. The sentence A8 quoted is
+gone, and the known-worse gate's wiring instructions no longer under-claim. **Residue, correct and
+deliberately kept:** the README still says that hit counts computed **before 2026-08-03** are
+provisional (`grep -n 'before 2026-08-03 are still provisional'`), because they predate the bar.
+That is a different and true statement, not the stale one. *Citations de-pinned 2026-08-04: this
+block cited `:409` and `:438–439`, which had drifted to `:425` and `:454–455` under ordinary README
+edits — exactly the Rule 2 failure mode (§ "a number a document computed about an artifact that kept
+growing"), so the pointers are now greps, which do not rot.* Original entry kept below for the record.
 
 ### A8 (original). The legacy fixtures' README still says the same-color bar is `[UNCALIBRATED]`
 - **What.** `data/legacy/README.md` tells every consumer that "until it lands, no consumer of these

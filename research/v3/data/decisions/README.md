@@ -4,8 +4,13 @@
 were made between 2026-08-02 and 2026-08-03, this file was not. Every record says so via
 `recordedAt`.
 
-**Counts in this document are as of 2026-08-03 (late) and are re-derived, not remembered.** The file
-holds **47 decisions**, of which **11** carry a non-empty `fundedBy`. They arrived in four waves:
+**Counts in this document are as of 2026-08-04 and are re-derived, not remembered.** The file
+holds **48 decisions**, of which **12** carry a non-empty `fundedBy`. The 48th, appended 2026-08-04,
+is `d-2026-08-04-embedding-canonical-model-warehouse-funded` — a **funding amendment**: it changes no
+instrument and no number, and exists only because the reviewer's four embedding-gallery observations
+were ported into the warehouse and can now be cited by id. It is the first record in this file whose
+entire purpose is to move a decision from unfundable to re-checkable. The first 47 arrived in four
+waves:
 15 written on 2026-08-03, **20 appended the same evening** from the Phase 0 adversarial review's six
 fix arms and three reviewer rulings, **5 more** in the consolidated post-review pass, and **7 in the
 second batched ledger pass** — the ladder's capped-reference key, the census-aware re-score's
@@ -65,10 +70,13 @@ The file is `decisions.json`, shaped
 `{ "what": …, "recordedAt": …, "consumedBy": …, "decisions": [ … ] }`. Extra fields are ignored by
 every consumer, so a record may carry more than the schema names.
 
-**`supersedes` is in use as of 2026-08-03.** Two chains exist:
+**`supersedes` is in use as of 2026-08-03.** Two chains exist, one of them now three records long:
+`d-2026-08-04-embedding-canonical-model-warehouse-funded` →
 `d-2026-08-03-embedding-canonical-model-rationale` → `d-2026-08-02-embedding-canonical-model`
-(same choice, restated grounds — the superseded record cited a statistic that did not support it),
-and `d-2026-08-03-sam-per-group-score-thresholds` → `d-2026-08-03-sam-calibrated-score-threshold`
+(same choice throughout — first the grounds were restated, because the superseded record cited a
+statistic that did not support it; then the citation list was corrected, because the evidence had
+reached the warehouse. **Neither link changed the instrument**, which is the clearest illustration
+of the rule below that superseding does not imply new evidence), and `d-2026-08-03-sam-per-group-score-thresholds` → `d-2026-08-03-sam-calibrated-score-threshold`
 (the pooled cut, replaced by per-group cuts on a re-analysis of the same 60 judgments). Note what
 the second one shows: a superseding record does **not** imply new evidence. Read the chain, not
 the latest record alone — the superseded record is why artifacts on disk look the way they do.
@@ -193,9 +201,11 @@ numbers. Quote the right-hand column.
 
 ## The honest part
 
-**36 of the 47 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
+**36 of the 48 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
 that evening, the exceptions being the two SAM threshold records; then 2 of 5, and all 7 of the
-second batched ledger pass). This is not an oversight and must not be quietly filled in — and the ratio keeps
+second batched ledger pass; the 2026-08-04 funding amendment is funded, so the absolute count of
+empties is unchanged and only the denominator moved). This is not an oversight and must not be
+quietly filled in — and the ratio keeps
 getting *worse*, not better, because the records that keep arriving are conversational reviewer
 rulings and definitional choices, which is exactly the class the empty field was designed to make
 visible. **Two of the empties are now empty for a subtler reason worth naming**
@@ -213,7 +223,7 @@ never flag either record.
 | `d-2026-08-03-tagging-symmetry-scoping` | yes — 13 records |
 | `d-2026-08-03-tagging-meta-scope` | yes — 13 records |
 | `d-2026-08-03-sam-concept-set-v2` | yes — 40 records |
-| canonical embedding model | **no** — reviewer's gallery observations were relayed conversationally |
+| canonical embedding model | **yes, as of 2026-08-04** — 4 records (the gallery observations, ported to the warehouse 2026-08-03 and cited by `d-2026-08-04-embedding-canonical-model-warehouse-funded`). Was **no** for the two earlier records in the chain, which is why they say so; the port did not add evidence, it made the existing evidence citable |
 | holdout v2 redraw | **no** — reviewer authorisation was conversational |
 | legacy contested-pairs recency | **no** — reviewer ruling was conversational |
 | SAM prompt-set replacement | **no** — orchestrator decision on n=10; no reviewer had seen a mask *when it was written*. 100 reviewer-graded masks exist now, and that record's caveats are stale — read `-sam-concept-set-v2` and the two threshold records instead |
@@ -225,7 +235,9 @@ never flag either record.
 Every **no** row above is a load-bearing decision that `recheck` can never flag, however the reviewer
 later revises the judgement behind them. Recording the gap is the point of the field being empty
 rather than absent. **The table is a sample, not a census** — it names the original ten and has not
-been extended row by row as the file grew past 46 records; the query below is the census.
+been extended row by row as the file grew to 48 records; the query below is the census. The canonical
+embedding model's row is the one **no** that has since become a **yes**, and it took a deliberate
+port to do it — which is the measure of how much work discharging one of these costs.
 
 Re-derive the split rather than trusting this table:
 

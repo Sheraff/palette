@@ -1780,6 +1780,50 @@
     "IT MEASURES AN EXTREMUM AND NOT A LENGTH. A ramp can clear the floor at every point and still sit just above it over most of its span; the indistinct fraction is a different quantity and stays parked (B15, pathology P2)."
    ],
    "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-04-embedding-canonical-model-warehouse-funded",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-selection",
+   "supersedes": "d-2026-08-03-embedding-canonical-model-rationale",
+   "scope": "Identical to the two superseded records: every v3 consumer of image embeddings — the near-duplicate census, the holdout component graph, corpus stratification, cluster galleries and visual retrieval. Dev-time only; embeddings are never a runtime palette component. This record changes NO instrument, NO artifact, NO analysis and NO number — it is a funding amendment and nothing else. It does NOT re-open the choice; it does NOT make the reviewer's observations repeatable, elicited or independent; and it does NOT settle the dinov2-vs-dinov3 tail question, which stays open (PHASE_0_LOOSE_ENDS.md C4). What it binds is exactly one thing: what `warehouse recheck --decisions` can and cannot see.",
+   "decision": "The canonical embedding instrument remains dinov2-vitl14 at its native 224 px input, on the grounds stated by the superseded record — unchanged in every respect. What changes is that the decisive evidence is now MACHINE-CHECKABLE. The reviewer's four gallery observations of 2026-08-02, which both superseded records could cite only as prose in GALLERY_NOTES.md, were ported into the warehouse on 2026-08-03T14:16:23Z as human-authored note records (author.kind=human, id=flo) against GALLERY_NOTES.md#obs-1 through #obs-4, and are cited here in `fundedBy`: n-msdbbeqw-3e725512 (obs-1, PE-Core-L14 matches by ARTIST rather than by image — the semantic-leakage observation that does all the work), n-msdbber4-f9fb1c27 (obs-2, DINOv2 and DINOv3 attend to different structure), n-msdbber9-ad958e78 (obs-3, DINOv3 matches semantic category across styles), n-msdbbere-64a4d8b9 (obs-4, the DINO family is better but the reviewer cannot separate the two). The caveat both superseded records carried — 'NO WAREHOUSE RECORDS FUND THIS … recheck can therefore never flag this decision, however the reviewer later revises those observations' — is therefore DISCHARGED, and was already factually expired when written into the 2026-08-03 record: the porting it said was pending had happened. If the reviewer now amends or retracts any of those four observations, this decision flags.",
+   "fundedBy": [
+    "n-msdbbeqw-3e725512",
+    "n-msdbber4-f9fb1c27",
+    "n-msdbber9-ad958e78",
+    "n-msdbbere-64a4d8b9"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/warehouse/warehouse.jsonl",
+     "what": "The four cited notes live here. Read this reference as a pointer for a human; the machine-checkable half is `fundedBy` above, which is the entire point of this record. Note ids are stable; the file is append-only."
+    },
+    {
+     "ref": "research/v3/data/embeddings/GALLERY_NOTES.md",
+     "sha256": "28940918d33739b99e7a98b8b560a7eb232c268a3cf1dd570687dfbb40f14beb",
+     "what": "THE DECISIVE EVIDENCE, unchanged, and now mirrored by warehouse records rather than standing alone. Reviewer gallery browse, 2026-08-02, observation 1: pe-core-l14 'seems to consider close artworks when they are by the same artist, even if the images themselves don't look much alike'. Semantic leakage for near-dup, stratification and visual retrieval alike; it eliminates PE-Core whatever its R@1 says. Qualitative, unrepeatable, and correct. The file's standing promise that these observations are 'to be ported into the warehouse as tagged note records once the tagging flow exists' is now fulfilled; the sentence remains in the file and is stale there. sha256 re-verified against disk 2026-08-04 and unchanged — a note of what the file said, never a checked seal."
+    },
+    {
+     "ref": "research/v3/data/embeddings/bakeoff.json",
+     "sha256": "ef4cbf93181115213ae3a536e3343d8c6703b888d37df9059a8236ab8e5ca3d3",
+     "what": "The retrieval bake-off, carried forward unchanged from the superseded record and cited for finding (2) only. It separates dinov2-vitl14 from dinov3-vitl16 at McNemar p=1.35e-22 and from every other arm more strongly, and it does NOT separate dinov2-vitl14 from pe-core-l14 (b01=1573 b10=1559, p=0.816). sha256 re-verified against disk 2026-08-04 and unchanged."
+    },
+    {
+     "ref": "research/v3/data/embeddings/bakeoff-strata.json",
+     "sha256": "8af09537a2b34ab386a2d0bbffd64ae7eecc821d0f7eac5a84dab108a9953445",
+     "what": "Floors and strata inside the bake-off's pair set. Carried forward unchanged; every effect it measures applies to all arms identically, so no ranking here moves. sha256 re-verified against disk 2026-08-04 and unchanged."
+    }
+   ],
+   "fundingCaveats": [
+    "THE PORT IS NOT NEW EVIDENCE, AND THIS RECORD MUST NOT BE READ AS STRENGTHENING THE CHOICE. The four notes are the same conversational observations the orchestrator transcribed into GALLERY_NOTES.md on 2026-08-02, entered into the warehouse on 2026-08-03T14:16:23Z. Nothing was re-elicited and nothing was re-observed. Porting makes the evidence re-checkable; it does not make it repeatable, and it does not remove the orchestrator's transcription from the chain between the reviewer's screen and this record. The decision is exactly as well-founded as it was on 2026-08-03, no more.",
+    "ONLY ONE OF THE FOUR IS LOAD-BEARING. obs-1 (n-msdbbeqw-3e725512) is the sole evidence separating the top two arms. obs-2 and obs-3 are characterisations of DINOv2/DINOv3 behaviour that no step of the argument rests on, and obs-4 (n-msdbbere-64a4d8b9) — 'I think the DINO models are better, but I wouldn't know which one of the 2' — funds the OPEN tail question, not the choice. All four are cited because `fundedBy` lists the evidence a decision was fitted to, so an amendment to any of them should reach this record; a fundedBy length is not an evidence count.",
+    "RECHECK'S STALE WINDOW OPENS AT THIS RECORD'S ts, NOT AT THE OBSERVATION'S. The notes were created 2026-08-03T14:16:23Z; this record's ts is 2026-08-04T00:00:00Z, so recheck's `stale` test — amendments strictly after ts — covers 2026-08-04 onward. Verified 2026-08-04: no amendment, retraction or supersession touches any of the four (the warehouse's 13 amendments all target the agent-derived v1.0.0 tagging notes n-msdbda9*, never these human base notes). Verified structurally too: notes can never be reported `superseded`, because itemKeyOf (warehouse.ts) returns null for anything that is not a verdict or an oracle-label, so the later v2.1.0 derived notes sharing these itemIds cannot make these four read as drafts.",
+    "THE HEADLINE METRIC DOES NOT SEPARATE THE TOP TWO ARMS. dinov2-vitl14 beats pe-core-l14 by 14 pairs out of 24,648 (p=0.816). If the reviewer's semantic-leakage observation is ever withdrawn, this decision has NO remaining evidence distinguishing dinov2-vitl14 from pe-core-l14 and must be re-opened, not re-derived. That is now a flag rather than a hope: withdrawing obs-1 is exactly the amendment recheck will catch, which is the whole value of this append.",
+    "THE DINOV2-VS-DINOV3 TAIL ARGUMENT IS STILL UNRESOLVED. dinov3-vitl16 has the better tail (worst rank 17 vs dinov2's 64) while losing on R@1 at p=1.4e-22; that trade was decided by the headline metric, not argued. obs-4 is the reviewer declining to separate them. Unchanged by this record and still tracked at PHASE_0_LOOSE_ENDS.md C4.",
+    "THE GALLERY BROWSE THAT DECIDED THIS SPENT HOLDOUT ARTWORKS. The pages the reviewer looked at rendered 117 of the 413 held-out artworks and 2 quarantined non-candidates, and 3 of the 12 pinned query covers are held out — including covers named in the observations cited here ('johns', 'krafty', 'muse'). Measured 2026-08-03; see HOLDOUT_EXPOSURE.md. Ruled a disclosable fact rather than a defect by d-2026-08-03-reviewer-holdout-purpose-is-algorithm-leakage. Carried forward because it remains true of the evidence this record cites."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

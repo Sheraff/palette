@@ -69,11 +69,49 @@ pass reports contradictions in them, it does not edit them.
   process's Metal context stays poisoned — under an ordinary retry path a whole run can
   mark itself failed-and-complete in seconds. Runners should treat GPU faults as
   non-terminal (no `failed` rows; exit distinctly; let the supervisor restart fresh).
-- **Known artifact — stray NUL bytes in generated source.** Three separate agent-written
-  files have contained literal NUL bytes where a space belonged (typically as separators
-  inside template literals). Signature: `grep` treats a text file as binary, or Edit cannot
-  match text you can plainly see. Check with `grep -rlP '\x00' <path>`, repair to a space,
-  and verify output hashes unchanged.
+- **Known artifact — stray NUL bytes in generated source.** Four separate agent-written files
+  have now contained literal NUL bytes, typically as separators inside template literals.
+  Signature: `grep` treats a text file as binary, or Edit cannot match text you can plainly see.
+
+  **Repair to the `\u0000` escape, never to a space** (corrected 2026-08-04). A raw NUL used as a
+  key separator is *load-bearing*: `` `${a}\u0000${b}` `` is byte-identical to the raw form, so
+  hashes and Map keys survive, while a space silently changes every id derived from that string.
+  `src/legacy/distill-legacy-verdicts.ts` is the reference for the escape form. Verify by running
+  the script before and after and hashing its output — `oracle/premise/build-eval-set.ts`
+  (6 NULs, one inside a `createHash` call feeding `entryId`) produced a byte-identical
+  `eval-set.json` across the repair.
+
+  **Do not sweep with `grep -rlP '\x00'`** (corrected 2026-08-04). On this machine `grep` is
+  **ugrep 7.5.0**, which suppresses the match as binary and exits 1 — verified against a
+  deliberately planted NUL, where it reported nothing. It is a *silent* false clean, the worst
+  failure mode for a safety check. (`grep -rlaP` does work here, but it is the same command one
+  character away from lying again.) Use Python, which reads bytes and cannot be talked out of it:
+
+  ```sh
+  python3 - <paths…> <<'PY'
+  import sys, pathlib
+  SKIP = {".git", "node_modules", ".venv", "__pycache__"}
+  TEXT = {".ts", ".tsx", ".js", ".mjs", ".py", ".md", ".json", ".jsonl", ".sh", ".css", ".html", ".txt"}
+  hits = 0
+  for root in sys.argv[1:]:
+      p0 = pathlib.Path(root)
+      for p in ([p0] if p0.is_file() else p0.rglob("*")):
+          if SKIP & set(p.parts) or not p.is_file() or p.suffix not in TEXT:
+              continue
+          if b"\0" in p.read_bytes():
+              print(p); hits += 1
+  print(f"NUL-carrying files: {hits}")
+  PY
+  ```
+- **Never run a bare `git commit` — always commit with an explicit pathspec** (added 2026-08-04).
+  The index is shared, and work parks there: a staged set whose commit is blocked (a signing
+  prompt, a held review) sits in the index for hours belonging to someone else. Two agents in one
+  night swept a parked 17-file staged set into their own commit with a bare `git commit` and had
+  to `git reset --soft` back out; both were caught only by the agent's own sanity check, not by
+  any tooling. Run `git status` first, and if anything is staged that is not yours, commit as
+  `git commit -- <your paths>` and leave the rest of the index exactly as found. This tightens
+  the "no git commands / the orchestrator commits" rule above — it is the rule for whoever *is*
+  committing, orchestrator included.
 - **A standing decision gets a record.** Anything later work is entitled to assume without
   re-deriving — an instrument choice, a freeze, a corpus policy, a gate rule — goes into
   `research/v3/data/decisions/decisions.json` (schema and rules in that directory's `README.md`).

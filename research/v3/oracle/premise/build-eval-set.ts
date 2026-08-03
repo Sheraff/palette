@@ -201,7 +201,7 @@ async function readBatchIndex(): Promise<Map<string, BatchItem>> {
 		const parsed = JSON.parse(await readFile(join(BATCHES_ROOT, file), "utf8")) as
 			{ name?: string; items?: BatchItem[] }
 		const name = parsed.name ?? basename(file, ".json")
-		for (const item of parsed.items ?? []) index.set(`${name} ${item.image}`, item)
+		for (const item of parsed.items ?? []) index.set(`${name}\u0000${item.image}`, item)
 	}
 	return index
 }
@@ -363,7 +363,7 @@ for (const { line, record } of records) {
 		unresolvable.push({ warehouseLine: line, batch: record.batch, image: null, reason: "record carries no image name" })
 		continue
 	}
-	const fromBatch = batchIndex.get(`${record.batch} ${imageName}`)
+	const fromBatch = batchIndex.get(`${record.batch}\u0000${imageName}`)
 	const imagePath = fromBatch?.imagePath ?? resultsIndex.get(imageName) ?? null
 	if (imagePath === null) {
 		counts.imageUnresolvable += 1
@@ -417,7 +417,7 @@ for (const { line, record } of records) {
 
 const historyByKey = new Map<string, GradedInstance[]>()
 for (const instance of graded) {
-	const key = `${instance.image.sha256} ${instance.signature}`
+	const key = `${instance.image.sha256}\u0000${instance.signature}`
 	const list = historyByKey.get(key) ?? []
 	list.push(instance)
 	historyByKey.set(key, list)
@@ -447,7 +447,7 @@ for (const instance of graded) {
 	counts.strongPaletteInstances += 1
 	if (instance.gradient === null) continue
 
-	const key = `${instance.image.sha256} ${instance.signature}`
+	const key = `${instance.image.sha256}\u0000${instance.signature}`
 	const standing = standingGradeOf(key)
 	const standingIsBad = standing.tied.length > 0
 		? standing.tied.some((g) => BAD_GRADES.includes(g))
@@ -494,7 +494,7 @@ for (const { line, record } of records) {
 	if (note === "") continue
 	const imageName = record.image
 	if (typeof imageName !== "string" || imageName === "") continue
-	const fromBatch = batchIndex.get(`${record.batch} ${imageName}`)
+	const fromBatch = batchIndex.get(`${record.batch}\u0000${imageName}`)
 	const imagePath = fromBatch?.imagePath ?? resultsIndex.get(imageName) ?? null
 	if (imagePath === null) continue
 	const image = imageCache.get(imagePath)
@@ -565,7 +565,7 @@ for (const [sha, bucket] of observationsByImage) {
 
 	const allNotes = (notesByImageSha.get(sha) ?? []).sort((a, b) => a.warehouseLine - b.warehouseLine)
 	entries.push({
-		entryId: createHash("sha256").update(`${sha} premise-eval`).digest("hex").slice(0, 16),
+		entryId: createHash("sha256").update(`${sha}\u0000premise-eval`).digest("hex").slice(0, 16),
 		included,
 		exclusionReason,
 		image: bucket.image,
