@@ -32,7 +32,11 @@ import {
 	rgbToHex,
 	rgbToOkLab,
 } from "../contract/color.ts"
-import { APCA_RAW_IDENTICAL_CEILING } from "../contract/constants.ts"
+import {
+	APCA_RAW_IDENTICAL_CEILING,
+	POOLED_SAME_COLOR_BAR,
+	SAME_COLOR_BAR_BY_REGION,
+} from "../contract/constants.ts"
 import type { OkLab, Rgb8 } from "../contract/types.ts"
 
 /* ------------------------------------------------------------------------------------------- */
@@ -332,6 +336,91 @@ export type Decomposition = Readonly<{
 	purity: number
 }>
 
+/**
+ * Round 3's per-item record of *why this pair discriminates* — the straddle-rule arithmetic, frozen
+ * onto the item at generation time so the scoring can never be re-derived under different bars.
+ *
+ * A pair straddles when its two colours fall in different regions, and then `sameColorBar()` has to
+ * pick one bar from two. `Math.max` and the average of the two disagree on exactly one interval:
+ * `avg < d < max`, where the larger bar still calls the pair "the same colour" and the average
+ * already calls it distinct. `zone` says which side of that interval the *achieved* distance landed
+ * on, and `discriminating` is true only in the middle.
+ */
+export type StraddleFacts = Readonly<{
+	regionFirst: Quadrant
+	regionSecond: Quadrant
+	barFirst: number
+	barSecond: number
+	/** The two candidate rules, evaluated on this pair. `bandLow`/`bandHigh` are aliases with intent. */
+	avgBar: number
+	maxBar: number
+	minBar: number
+	bandLow: number
+	bandHigh: number
+	/** `(d − avg) / (max − avg)`. Inside the band this is in (0,1); controls sit outside it. */
+	bandFraction: number
+	zone: "below-avg" | "in-band" | "above-max"
+	/** What each rule predicts for this pair: `true` = "the same colour". */
+	predictsSameUnderMax: boolean
+	predictsSameUnderAvg: boolean
+	/** True exactly when the two rules disagree — the only items the primary analysis scores. */
+	discriminating: boolean
+}>
+
+/**
+ * Round 3's design record: the pre-registered scoring rule, carried in the fixture.
+ *
+ * It lives here for the same reason round 2's `refinement` does — a round that exists to decide
+ * between two rules is only interpretable next to the rule that was fixed *before* the answers
+ * arrived. The prose version, with the power analysis and the declared confounds, is
+ * `research/v3/data/calibration/bracketing-round-3-preregistration.md`.
+ */
+export type StraddleDesign = Readonly<{
+	round: number
+	question: string
+	preregistration: string
+	/** The frozen regional bars this round's bands are built from, and where they came from. */
+	bars: Readonly<Record<string, number>>
+	barsSource: string
+	/** Per region pair: the disagreement band, and how many items were allocated to it. */
+	bands: readonly Readonly<{
+		regions: readonly [Quadrant, Quadrant]
+		avgBar: number
+		maxBar: number
+		width: number
+		inBandItems: number
+		/** Share of cross-region role pairs in the measured v2-3 corpus (see `corpusFrequency`). */
+		corpusShare: number
+	}>[]
+	/** What the real corpus says about cross-region pairs — measured, not assumed. */
+	corpusFrequency: Readonly<{
+		source: readonly string[]
+		palettes: number
+		rolePairs: number
+		crossRegionPairs: number
+		crossRegionShare: number
+		pairsInAnyDisagreementBand: number
+		closestCrossRegionPair: number
+		note: string
+	}>
+	/** The decision rule, fixed before any answer existed. Quoted, not paraphrased, in the analysis. */
+	scoring: Readonly<{
+		population: string
+		prediction: string
+		decisive: string
+		decisiveAtDesignN: Readonly<{ n: number; favoursMax: number; favoursAverage: number }>
+		unresolved: string
+		anisotropyVeto: string
+		validityGates: string
+		sensitivity: string
+		exploratory: string
+		power: Readonly<Record<string, number>>
+		powerNote: string
+	}>
+	directionClasses: readonly DirectionKind[]
+	minimumDirectionPurity: number
+}>
+
 export type BracketingItem = Readonly<{
 	/** Stable id; also the `imageId` of the warehouse record (see the note in server.ts). */
 	itemId: string
@@ -371,6 +460,11 @@ export type BracketingItem = Readonly<{
 	direction?: DirectionKind
 	/** How the achieved 8-bit difference actually splits between the axes. */
 	decomposition?: Decomposition
+
+	/* --- round 3 only. -------------------------------------------------------------------------- */
+
+	/** Why this pair discriminates between the two straddle rules. Never served. */
+	straddle?: StraddleFacts
 }>
 
 export type BracketingFixture = Readonly<{
@@ -389,6 +483,8 @@ export type BracketingFixture = Readonly<{
 	serveOrder: readonly string[]
 	/** Round 2 only: what this round refines, and the design that follows from it. */
 	refinement?: BracketingRefinement
+	/** Round 3 only: the straddle question and its pre-registered scoring rule. */
+	straddleDesign?: StraddleDesign
 }>
 
 /**
@@ -998,6 +1094,563 @@ export const BRACKETING_ROUND_2_FIXTURE_PATH = fileURLToPath(
 )
 
 /* ------------------------------------------------------------------------------------------- */
+/* Round 3 — the straddle rule                                                                   */
+/* ------------------------------------------------------------------------------------------- */
+
+/**
+ * Round 3 measures the one thing rounds 1 and 2 could not: **which bar applies when a pair's two
+ * colours fall in different regions.**
+ *
+ * `sameColorBar()` takes `Math.max` of the two regional bars. The alternative is their average. The
+ * choice has never been measured — 0 of the 140 pairs in rounds 1–2 straddle a boundary — and the
+ * "measurably most stable" tie-break the docstring used to cite was found unreproducible, and
+ * *reversed* on replication (`reviews/phase-0-adversarial/contract.md` finding 1). The reviewer's
+ * ruling: test it, do not argue it.
+ *
+ * The design is pre-registered in full at
+ * `research/v3/data/calibration/bracketing-round-3-preregistration.md`, written before this code
+ * was. The one-line version: only pairs whose achieved distance lands strictly between the two bars'
+ * average and their maximum discriminate, because only there do the two rules give different
+ * verdicts — `max` says "the same colour", the average says "distinct". Everything else in the round
+ * is a control.
+ */
+export const BRACKETING_ROUND_3_BATCH_ID = "bracketing-round-3"
+
+/** Round 3's seed. Distinct from rounds 1 and 2 so no stimulus is accidentally shared. */
+export const BRACKETING_ROUND_3_SEED = 20260804
+
+/**
+ * The six ordered region pairs, most-frequent first.
+ *
+ * The order is the measured one: over 554 real v2-3 palettes (`data/legacy/{endorsements,
+ * acceptable,known-bad}.json`), 2,582 of 3,309 role pairs are cross-region, and these are their
+ * shares. All six occur between 10.5% and 22.0%, so none can be dropped as negligible — the top
+ * three simply get two extra items each.
+ */
+export const ROUND3_REGION_PAIRS: readonly (readonly [Quadrant, Quadrant])[] = [
+	["dark-neutral", "light-neutral"],
+	["dark-neutral", "light-saturated"],
+	["light-neutral", "light-saturated"],
+	["dark-saturated", "light-saturated"],
+	["dark-saturated", "light-neutral"],
+	["dark-neutral", "dark-saturated"],
+]
+
+/** Measured share of cross-region role pairs, keyed `a|b`. See `ROUND3_REGION_PAIRS`. */
+export const ROUND3_CORPUS_SHARE: Readonly<Record<string, number>> = {
+	"dark-neutral|light-neutral": 0.2196,
+	"dark-neutral|light-saturated": 0.1940,
+	"light-neutral|light-saturated": 0.1886,
+	"dark-saturated|light-saturated": 0.1600,
+	"dark-saturated|light-neutral": 0.1332,
+	"dark-neutral|dark-saturated": 0.1046,
+}
+
+/**
+ * Where inside the disagreement band the rungs go, as a fraction of `(max − avg)`.
+ *
+ * The three highest-frequency pairs get four positions, the rest three: 4·3 + 3·3 = 21 cells, each
+ * built twice (once per direction) for **42 discriminating items**. Positions stay clear of the band
+ * edges because the edges are exactly where the two rules stop disagreeing.
+ */
+export const ROUND3_BAND_FRACTIONS_WIDE = [0.2, 0.4, 0.6, 0.8] as const
+export const ROUND3_BAND_FRACTIONS_NARROW = [0.2, 0.5, 0.8] as const
+
+/** How many of the six pairs get the wider ladder. */
+export const ROUND3_WIDE_LADDER_PAIRS = 3
+
+/**
+ * Band fractions for the two band controls, which sit *outside* the band on either side.
+ *
+ * Both rules agree on these, so they score nothing. They exist to check that the bands are where
+ * rounds 1–2 put them: if the reviewer calls a below-band pair distinct, the band's floor is wrong
+ * and the straddle verdict computed against it is not interpretable.
+ */
+export const ROUND3_BELOW_BAND_FRACTION = -0.6
+export const ROUND3_ABOVE_BAND_FRACTION = 1.6
+
+/** Clearly-distinct attention checks, as a multiple of the pair's `max` bar. */
+export const ROUND3_OBVIOUS_BAR_MULTIPLE = 4
+
+/**
+ * The two direction classes every band cell is built in, and the purity each must reach.
+ *
+ * This is the round's main confound control. Crossing the lightness boundary forces `ΔL ≠ 0` and
+ * crossing the chroma boundary forces `ΔC ≠ 0`, so the region pair partly dictates the direction of
+ * the difference — and round 2's direction probe found OKLab distance to be anisotropic under this
+ * criterion (at a fixed 0.01500: lightness-only called "same" 4/4, chroma-only 2/4, hue-only 1/4).
+ * Without this control a pure direction effect could masquerade as a verdict on the straddle rule.
+ * Hue is not used as a third class here: a hue rotation changes neither L nor C, so it cannot cross
+ * either boundary on its own and cannot produce a straddling pair.
+ */
+export const ROUND3_DIRECTIONS = ["lightness", "chroma"] as const
+export const ROUND3_MIN_DIRECTION_PURITY = 0.7
+
+export const ROUND3_IDENTICAL_CONTROLS = 3
+export const ROUND3_OBVIOUS_CONTROLS = 3
+export const ROUND3_BAND_CONTROLS_PER_SIDE = 2
+export const ROUND3_REPEATS = 6
+
+/** Minimum number of served positions between a repeat and the item it duplicates. */
+export const ROUND3_MIN_REPEAT_SEPARATION = 12
+
+const ROUND3_PREREGISTRATION_PATH = "research/v3/data/calibration/bracketing-round-3-preregistration.md"
+
+/** The bar this round's bands are built from, for one region. */
+function barFor(quadrant: Quadrant): number {
+	return SAME_COLOR_BAR_BY_REGION[quadrant]
+}
+
+/** The disagreement band for a region pair: `(avg, max)` of the two regional bars. */
+export function straddleBand(first: Quadrant, second: Quadrant): { avg: number; max: number; min: number } {
+	const a = barFor(first)
+	const b = barFor(second)
+	return { avg: (a + b) / 2, max: Math.max(a, b), min: Math.min(a, b) }
+}
+
+/** The straddle facts for an achieved pair — the arithmetic that decides what, if anything, it tests. */
+export function straddleFactsFor(first: Rgb8, second: Rgb8): StraddleFacts {
+	const regionFirst = quadrantOf(rgbToOkLab(first))
+	const regionSecond = quadrantOf(rgbToOkLab(second))
+	const { avg, max, min } = straddleBand(regionFirst, regionSecond)
+	const distance = okLabDistance(rgbToOkLab(first), rgbToOkLab(second))
+	const predictsSameUnderMax = distance < max
+	const predictsSameUnderAvg = distance < avg
+	const zone = distance <= avg ? "below-avg" : distance >= max ? "above-max" : "in-band"
+	return {
+		regionFirst,
+		regionSecond,
+		barFirst: barFor(regionFirst),
+		barSecond: barFor(regionSecond),
+		avgBar: avg,
+		maxBar: max,
+		minBar: min,
+		bandLow: avg,
+		bandHigh: max,
+		// Degenerate only when both colours share a region, which round 3 never builds on purpose.
+		bandFraction: max === avg ? 0 : (distance - avg) / (max - avg),
+		zone,
+		predictsSameUnderMax,
+		predictsSameUnderAvg,
+		discriminating: predictsSameUnderMax !== predictsSameUnderAvg,
+	}
+}
+
+/**
+ * Find an 8-bit pair that straddles the `first`/`second` region boundary at a chosen distance.
+ *
+ * Two things make this different from `bestStep`, which round 1 uses. First, the pair must land in
+ * *two different* quadrants, so the base colour has to hug every boundary the pair crosses — that is
+ * structural, not a sampling choice: if two colours are `d` apart and a boundary separates them,
+ * both are within `d` of it. Second, on the axes the pair does **not** cross, the base roams the
+ * region's full window rather than clustering at the boundary, so e.g. a dark-neutral × dark-saturated
+ * pair can sit at L ≈ 0.25 rather than only at L ≈ 0.55.
+ *
+ * The partner is built in cylindrical coordinates with the hue held fixed, so the difference splits
+ * between lightness and chroma only and `decompose`'s purity means what the design intends. The
+ * search then re-measures on the 8-bit grid and keeps the best candidate: what is recorded is always
+ * the achieved distance between the two integers displayed, never the target.
+ */
+function findStraddlePair(
+	random: () => number,
+	first: Quadrant,
+	second: Quadrant,
+	target: number,
+	direction: (typeof ROUND3_DIRECTIONS)[number],
+	tolerance: number,
+	band: { low: number; high: number } | null,
+	hueThird: number | null,
+	attempts = 400_000,
+): { first: Rgb8; second: Rgb8 } | null {
+	const crossesLightness = first.startsWith("dark") !== second.startsWith("dark")
+	const crossesChroma = first.endsWith("neutral") !== second.endsWith("neutral")
+	const [darkLow, darkHigh] = LIGHTNESS_WINDOW.dark
+	const [lightLow, lightHigh] = LIGHTNESS_WINDOW.light
+	const [saturatedLow, saturatedHigh] = CHROMA_WINDOW.saturated
+	// Keep the base this far inside a window it must not leave, so its partner cannot fall out.
+	const margin = target + 0.002
+	let best: { first: Rgb8; second: Rgb8 } | null = null
+	let bestError = Infinity
+
+	for (let attempt = 0; attempt < attempts; attempt++) {
+		// --- the base colour ------------------------------------------------------------------
+		const dark = first.startsWith("dark")
+		const neutral = first.endsWith("neutral")
+		const lightness = crossesLightness
+			? QUADRANT_LIGHTNESS_BOUNDARY + (dark ? -1 : 1) * (0.0004 + random() * target)
+			: dark
+				? darkLow + margin + random() * (QUADRANT_LIGHTNESS_BOUNDARY - margin - darkLow - margin)
+				: lightLow + margin + random() * (lightHigh - margin - lightLow - margin)
+		const chromaValue = crossesChroma
+			? QUADRANT_CHROMA_BOUNDARY + (neutral ? -1 : 1) * (0.0004 + random() * target)
+			: neutral
+				? random() * (QUADRANT_CHROMA_BOUNDARY - margin)
+				: saturatedLow + margin + random() * (saturatedHigh - margin - saturatedLow - margin)
+		const hue = random() * 2 * Math.PI
+		const baseRgb = okLabToRgb([lightness, chromaValue * Math.cos(hue), chromaValue * Math.sin(hue)])
+		const baseLab = rgbToOkLab(baseRgb)
+		if (quadrantOf(baseLab) !== first || !inWindow(baseLab, first)) continue
+		if (hueThird !== null && chroma(baseLab) >= QUADRANT_CHROMA_BOUNDARY && hueThirdOf(baseLab) !== hueThird) continue
+
+		// --- the partner, hue held fixed --------------------------------------------------------
+		// The dominant component carries `share` of the squared distance; the other carries the rest.
+		const share = 0.78 + random() * 0.2
+		const lightnessStep = target * Math.sqrt(direction === "lightness" ? share : 1 - share)
+		const chromaStep = target * Math.sqrt(direction === "lightness" ? 1 - share : share)
+		// A crossed axis must point across its boundary; a free axis may go either way.
+		const lightnessSign = crossesLightness ? (second.startsWith("dark") ? -1 : 1) : random() < 0.5 ? -1 : 1
+		const chromaSign = crossesChroma ? (second.endsWith("neutral") ? -1 : 1) : random() < 0.5 ? -1 : 1
+		const baseChroma = chroma(baseLab)
+		const baseHue = Math.atan2(baseLab[2], baseLab[1])
+		const partnerChroma = Math.max(0, baseChroma + chromaSign * chromaStep)
+		const seedRgb = okLabToRgb([
+			baseLab[0] + lightnessSign * lightnessStep,
+			partnerChroma * Math.cos(baseHue),
+			partnerChroma * Math.sin(baseHue),
+		])
+
+		// --- refine on the 8-bit grid -----------------------------------------------------------
+		for (let red = -3; red <= 3; red++) {
+			for (let green = -3; green <= 3; green++) {
+				for (let blue = -3; blue <= 3; blue++) {
+					const candidate: Rgb8 = [
+						Math.min(255, Math.max(0, seedRgb[0] + red)),
+						Math.min(255, Math.max(0, seedRgb[1] + green)),
+						Math.min(255, Math.max(0, seedRgb[2] + blue)),
+					]
+					const candidateLab = rgbToOkLab(candidate)
+					if (quadrantOf(candidateLab) !== second || !inWindow(candidateLab, second)) continue
+					const achieved = okLabDistance(baseLab, candidateLab)
+					if (band !== null && (achieved <= band.low || achieved >= band.high)) continue
+					const error = Math.abs(achieved - target)
+					if (error > tolerance || error >= bestError) continue
+					if (decompose(baseRgb, candidate, direction).purity < ROUND3_MIN_DIRECTION_PURITY) continue
+					if (
+						hueThird !== null &&
+						chroma(candidateLab) >= QUADRANT_CHROMA_BOUNDARY &&
+						hueThirdOf(candidateLab) !== hueThird
+					) {
+						continue
+					}
+					bestError = error
+					best = { first: baseRgb, second: candidate }
+					if (bestError < tolerance * 0.03) return best
+				}
+			}
+		}
+	}
+	return best
+}
+
+/**
+ * A cross-region pair at a frankly large distance, for the clearly-distinct attention checks.
+ *
+ * These cannot use `findStraddlePair`: that function builds a pair along one dominant axis inside a
+ * boundary-hugging window, and at four times a regional bar there is often no such pair at all — a
+ * chroma-dominant difference of 0.065 between two *neutral* regions would need a chroma change of
+ * 0.054, and the neutral window is only 0.05 wide. An attention check has no direction requirement
+ * anyway; it only has to be obviously two colours. So both members are sampled independently in
+ * their own regions and the closest achieved distance to the target is kept.
+ */
+function findObviousPair(
+	random: () => number,
+	first: Quadrant,
+	second: Quadrant,
+	target: number,
+	attempts = 40_000,
+): { first: Rgb8; second: Rgb8 } | null {
+	let best: { first: Rgb8; second: Rgb8 } | null = null
+	let bestError = Infinity
+	for (let attempt = 0; attempt < attempts; attempt++) {
+		const a = sampleBase(random, first)
+		const b = sampleBase(random, second)
+		const error = Math.abs(okLabDistance(rgbToOkLab(a), rgbToOkLab(b)) - target)
+		if (error < bestError) {
+			bestError = error
+			best = { first: a, second: b }
+			if (bestError < target * 0.01) return best
+		}
+	}
+	return best
+}
+
+/** Build one round-3 item, attaching the straddle arithmetic measured on the achieved pair. */
+function makeStraddleItem(
+	itemId: string,
+	first: Rgb8,
+	second: Rgb8,
+	targetDistance: number | null,
+	role: BracketingItem["role"],
+	direction: (typeof ROUND3_DIRECTIONS)[number] | null,
+	repeatOf: string | null = null,
+): BracketingItem {
+	const straddle = straddleFactsFor(first, second)
+	const stratum =
+		straddle.regionFirst === straddle.regionSecond
+			? straddle.regionFirst
+			: `straddle-${[straddle.regionFirst, straddle.regionSecond].slice().sort().join("+")}`
+	const lab = rgbToOkLab(first)
+	const partnerLab = rgbToOkLab(second)
+	const saturated = chroma(lab) >= QUADRANT_CHROMA_BOUNDARY ? lab : chroma(partnerLab) >= QUADRANT_CHROMA_BOUNDARY ? partnerLab : null
+	return makeItem(itemId, "same-color", stratum, first, second, targetDistance, role, repeatOf, {
+		...(saturated === null ? {} : { hueThird: hueThirdOf(saturated) }),
+		...(direction === null ? {} : { direction, decomposition: decompose(first, second, direction) }),
+		straddle,
+	})
+}
+
+function round3PairKey(pair: readonly [Quadrant, Quadrant]): string {
+	return `${pair[0]}|${pair[1]}`
+}
+
+/** Short, stable id fragment for a region pair — first letters of each half. */
+function round3PairSlug(pair: readonly [Quadrant, Quadrant]): string {
+	const short = (quadrant: Quadrant) => quadrant.split("-").map((part) => part[0]).join("")
+	return `${short(pair[0])}-${short(pair[1])}`
+}
+
+function generateRound3Items(random: () => number): BracketingItem[] {
+	const items: BracketingItem[] = []
+
+	// --- the 42 discriminating in-band items, plus the 4 band controls ------------------------
+	ROUND3_REGION_PAIRS.forEach((pair, pairIndex) => {
+		const [first, second] = pair
+		const { avg, max } = straddleBand(first, second)
+		const width = max - avg
+		const wide = pairIndex < ROUND3_WIDE_LADDER_PAIRS
+		const fractions = wide ? ROUND3_BAND_FRACTIONS_WIDE : ROUND3_BAND_FRACTIONS_NARROW
+		const involvesLightSaturated = first === "light-saturated" || second === "light-saturated"
+		const slug = round3PairSlug(pair)
+		let cell = 0
+		for (const fraction of fractions) {
+			for (const direction of ROUND3_DIRECTIONS) {
+				const target = avg + width * fraction
+				// Light-saturated's bar is a known placeholder that varies 2.5× across hue thirds,
+				// so its items are spread evenly over the three rather than left to the sampler.
+				const hueThird = involvesLightSaturated ? cell % 3 : null
+				const found = findStraddlePair(
+					random,
+					first,
+					second,
+					target,
+					direction,
+					Math.max(width * 0.06, 3e-5),
+					{ low: avg, high: max },
+					hueThird,
+				)
+				if (found === null) {
+					throw new Error(`round 3: no in-band pair for ${first}×${second} ${direction} at ${target}`)
+				}
+				items.push(
+					makeStraddleItem(
+						`r3-${slug}-f${Math.round(fraction * 100)}-${direction}`,
+						found.first,
+						found.second,
+						target,
+						"ladder",
+						direction,
+					),
+				)
+				cell++
+			}
+		}
+	})
+
+	// Band controls: outside the band on either side, where the two rules agree. Placed on the two
+	// widest bands, because a control needs room to sit clear of the edge it is testing.
+	for (let index = 0; index < ROUND3_BAND_CONTROLS_PER_SIDE; index++) {
+		for (const [label, fraction] of [
+			["below", ROUND3_BELOW_BAND_FRACTION],
+			["above", ROUND3_ABOVE_BAND_FRACTION],
+		] as const) {
+			const pair = ROUND3_REGION_PAIRS[index === 0 ? 1 : 3]
+			const [first, second] = pair
+			const { avg, max } = straddleBand(first, second)
+			const width = max - avg
+			const target = avg + width * fraction
+			const direction = index === 0 ? "lightness" : "chroma"
+			const found = findStraddlePair(random, first, second, target, direction, target * 0.06, null, null)
+			if (found === null) throw new Error(`round 3: no ${label}-band control for ${first}×${second}`)
+			items.push(
+				makeStraddleItem(
+					`r3-${round3PairSlug(pair)}-control-${label}-${index}`,
+					found.first,
+					found.second,
+					target,
+					"ladder",
+					direction,
+				),
+			)
+		}
+	}
+
+	// --- attention checks ---------------------------------------------------------------------
+	// Identical pairs: a colour against itself, which must read as the same colour.
+	for (let index = 0; index < ROUND3_IDENTICAL_CONTROLS; index++) {
+		const quadrant = QUADRANTS[index]
+		const base = sampleBase(random, quadrant)
+		items.push(makeStraddleItem(`r3-control-identical-${index}`, base, base, 0, "control-identical", null))
+	}
+
+	// Clearly distinct: cross-region pairs at 4× the max bar — the distance range where real
+	// cross-region role pairs actually live (the corpus minimum is 0.04664).
+	for (let index = 0; index < ROUND3_OBVIOUS_CONTROLS; index++) {
+		const pair = ROUND3_REGION_PAIRS[index]
+		const [first, second] = pair
+		const { max } = straddleBand(first, second)
+		const target = max * ROUND3_OBVIOUS_BAR_MULTIPLE
+		const found = findObviousPair(random, first, second, target)
+		if (found === null) throw new Error(`round 3: no obvious control for ${first}×${second}`)
+		items.push(
+			makeStraddleItem(`r3-control-obvious-${index}`, found.first, found.second, target, "control-obvious", null),
+		)
+	}
+
+	// --- silent repeats -------------------------------------------------------------------------
+	// Byte-identical duplicates of in-band items, spread across region pairs. They measure the
+	// reviewer's own repeatability on *this* band; the pre-registered scoring does not count them as
+	// independent trials (rounds 1–2 did, and finding 8 is about exactly that).
+	const inBand = items.filter((item) => item.role === "ladder" && item.straddle?.zone === "in-band")
+	const step = Math.floor(inBand.length / ROUND3_REPEATS)
+	for (let index = 0; index < ROUND3_REPEATS; index++) {
+		const source = inBand[index * step]
+		items.push(
+			makeStraddleItem(
+				`r3-repeat-${index}`,
+				source.first,
+				source.second,
+				source.truth.targetDistance,
+				"repeat",
+				(source.direction as (typeof ROUND3_DIRECTIONS)[number] | undefined) ?? null,
+				source.itemId,
+			),
+		)
+	}
+
+	return items
+}
+
+/**
+ * Serve order with the repeats pulled away from their originals.
+ *
+ * A repeat only measures repeatability if the reviewer cannot remember the first showing, so a
+ * shuffle that happens to place a duplicate three items after its original is worthless. Reshuffles
+ * (deterministically, from the same stream) until every repeat is at least
+ * `ROUND3_MIN_REPEAT_SEPARATION` positions from its source, and keeps the best attempt otherwise.
+ */
+function round3ServeOrder(items: readonly BracketingItem[], random: () => number): string[] {
+	const sourceOf = new Map(items.filter((item) => item.repeatOf !== null).map((item) => [item.itemId, item.repeatOf!]))
+	let best: string[] = []
+	let bestSeparation = -1
+	for (let attempt = 0; attempt < 400; attempt++) {
+		const order = shuffled(items.map((item) => item.itemId), random)
+		const position = new Map(order.map((id, index) => [id, index]))
+		let worst = Infinity
+		for (const [repeat, source] of sourceOf) {
+			worst = Math.min(worst, Math.abs(position.get(repeat)! - position.get(source)!))
+		}
+		if (worst > bestSeparation) {
+			bestSeparation = worst
+			best = order
+		}
+		if (bestSeparation >= ROUND3_MIN_REPEAT_SEPARATION) break
+	}
+	return best
+}
+
+export function generateBracketingRound3Fixture(
+	batchId = BRACKETING_ROUND_3_BATCH_ID,
+	seed = BRACKETING_ROUND_3_SEED,
+): BracketingFixture {
+	const random = mulberry32(seed)
+	const items = generateRound3Items(random)
+	const bands = ROUND3_REGION_PAIRS.map((pair) => {
+		const { avg, max } = straddleBand(pair[0], pair[1])
+		return {
+			regions: pair,
+			avgBar: avg,
+			maxBar: max,
+			width: max - avg,
+			inBandItems: items.filter(
+				(item) =>
+					item.role === "ladder" &&
+					item.straddle?.zone === "in-band" &&
+					[item.straddle.regionFirst, item.straddle.regionSecond].slice().sort().join("|") ===
+						[pair[0], pair[1]].slice().sort().join("|"),
+			).length,
+			corpusShare: ROUND3_CORPUS_SHARE[round3PairKey(pair)],
+		}
+	})
+	return {
+		fixtureVersion: BRACKETING_FIXTURE_VERSION,
+		batchId,
+		seed,
+		generatedBy: "research/v3/src/review-server/bracketing.ts",
+		criterion: BRACKETING_CRITERION,
+		prompts: PART_PROMPTS,
+		quadrantBoundaries: { lightness: QUADRANT_LIGHTNESS_BOUNDARY, chroma: QUADRANT_CHROMA_BOUNDARY },
+		// Round 3's prior is the pooled bar from rounds 1–2. It is not what this round measures — the
+		// bands are built from the *regional* bars — but it is the scalar the fixture format carries.
+		prior: { sameColorBar: POOLED_SAME_COLOR_BAR },
+		items,
+		serveOrder: round3ServeOrder(items, random),
+		straddleDesign: {
+			round: 3,
+			question:
+				"When a pair's two colours fall in different regions, is the same-colour bar the larger of the two regional bars (Math.max, the incumbent) or their average?",
+			preregistration: ROUND3_PREREGISTRATION_PATH,
+			bars: { ...SAME_COLOR_BAR_BY_REGION },
+			barsSource:
+				"research/v3/src/contract/constants.ts SAME_COLOR_BAR_BY_REGION — [REVIEWED], bracketing rounds 1 and 2 pooled",
+			bands,
+			corpusFrequency: {
+				source: [
+					"research/v3/data/legacy/endorsements.json",
+					"research/v3/data/legacy/acceptable.json",
+					"research/v3/data/legacy/known-bad.json",
+				],
+				palettes: 554,
+				rolePairs: 3309,
+				crossRegionPairs: 2582,
+				crossRegionShare: 0.7803,
+				pairsInAnyDisagreementBand: 0,
+				closestCrossRegionPair: 0.04664,
+				note:
+					"All six region pairs occur between 10.5% and 22.0% of cross-region role pairs, so all six are covered. None of the 2,582 lands in any disagreement band — the straddle rule is dormant for role-pair distinctness on today's corpus, which is a statement about this reviewed corpus, not a reason to leave the rule unmeasured.",
+			},
+			scoring: {
+				population:
+					"The 42 items with role 'ladder' and straddle.zone 'in-band', each counted once, at its first showing. Repeats are not counted as independent trials. Controls and attention checks are never scored. n = those answered, k = those answered 'same colour'.",
+				prediction:
+					"On every in-band item the two rules disagree by construction: Math.max predicts 'same colour', the average predicts 'distinct'. So accuracy(max) = k/n and accuracy(avg) = 1 - k/n exactly, and the winner is whichever exceeds one half.",
+				decisive:
+					"Decisive if and only if the two-sided exact binomial test of k against p = 0.5 yields p < 0.05, and the 95% Wilson interval for k/n excludes 0.5. At the design n these coincide. If n < 42, the threshold is recomputed at the realized n before the count is looked at.",
+				decisiveAtDesignN: { n: 42, favoursMax: 28, favoursAverage: 14 },
+				unresolved:
+					"Any 15 <= k <= 27 is reported as unresolved — not a tie, not weak support for either rule, and not a licence to keep Math.max on the strength of this round. The rule then stays as it is only because it is already there, and the loose end stays open.",
+				anisotropyVeto:
+					"k is also computed over the 21 lightness-dominant and the 21 chroma-dominant in-band items separately. If those rates fall on opposite sides of 0.5 and at least one subgroup is individually decisive at alpha = 0.05, the round reports 'anisotropy-confounded': no global winner, and the finding is that the straddle bar depends on the direction of the difference, which neither candidate rule can express.",
+				validityGates:
+					"Checked before anything above is computed. All 3 identical-pair checks must be answered 'same' and all 3 clearly-distinct checks 'distinct'; any failure voids the round. If both below-band items come back 'distinct', or both above-band items 'same', the bands are not where rounds 1-2 put them and the verdict is reported as not interpretable.",
+				sensitivity:
+					"Re-run with each repeated item's later answer substituted for its first. If the verdict differs from the primary run, the round is unresolved whatever the primary count said.",
+				exploratory:
+					"A logistic fit of P(same) on log d over all 46 ladder items. If its p = 0.5 crossing lands strictly inside the pooled band with a 95% interval excluding both the pooled avg and the pooled max, that is reported as 'neither rule — the straddling bar is intermediate'. Badly under-powered at 46 points over six bands; exploratory, never the headline.",
+				power: { "0.60": 0.24, "0.65": 0.48, "0.70": 0.74, "0.75": 0.92, "0.80": 0.99 },
+				powerNote:
+					"The round reliably detects a strong preference and is underpowered for a mild one. The reviewer's measured repeat consistency across rounds 1-2 is 62.5%, which sits below the decisive cut of 66.7% — so 'unresolved' is a genuinely likely outcome, and it is a real result rather than a failure. Stated before the data so that a null cannot later be read as support for the incumbent.",
+			},
+			directionClasses: [...ROUND3_DIRECTIONS],
+			minimumDirectionPurity: ROUND3_MIN_DIRECTION_PURITY,
+		},
+	}
+}
+
+export const BRACKETING_ROUND_3_FIXTURE_PATH = fileURLToPath(
+	new URL("../../data/calibration/bracketing-round-3.json", import.meta.url),
+)
+
+/* ------------------------------------------------------------------------------------------- */
 /* Part 2 — accent at equal luminance                                                            */
 /* ------------------------------------------------------------------------------------------- */
 
@@ -1176,18 +1829,63 @@ function reportRound2(fixture: BracketingFixture): void {
 	}
 }
 
+/** Round 3's console summary: the bands, what landed in them, and the controls. */
+function reportRound3(fixture: BracketingFixture): void {
+	const items = fixture.items
+	const inBand = items.filter((item) => item.role === "ladder" && item.straddle?.zone === "in-band")
+	process.stdout.write(`round 3 — the straddle rule (${fixture.batchId})\n`)
+	process.stdout.write(`  criterion: ${fixture.criterion}\n`)
+	process.stdout.write(`  items ${items.length}: in-band ${inBand.length}`)
+	for (const role of ["ladder", "repeat", "control-identical", "control-obvious"] as const) {
+		const count = items.filter((item) => item.role === role).length
+		process.stdout.write(`, ${role} ${count}`)
+	}
+	process.stdout.write("\n")
+	for (const band of fixture.straddleDesign?.bands ?? []) {
+		const mine = inBand.filter(
+			(item) =>
+				[item.straddle!.regionFirst, item.straddle!.regionSecond].slice().sort().join("|") ===
+				[band.regions[0], band.regions[1]].slice().sort().join("|"),
+		)
+		const fractions = mine.map((item) => item.straddle!.bandFraction)
+		process.stdout.write(
+			`  ${band.regions[0]} × ${band.regions[1]}: band ${band.avgBar.toFixed(5)}–${band.maxBar.toFixed(5)}` +
+				` (width ${band.width.toFixed(5)}, corpus ${(band.corpusShare * 100).toFixed(1)}%)` +
+				` items ${mine.length} at fractions ${fractions.map((value) => value.toFixed(2)).join(" ")}\n`,
+		)
+	}
+	const purity = items.filter((item) => item.decomposition !== undefined).map((item) => item.decomposition!.purity)
+	process.stdout.write(
+		`  direction purity: min ${Math.min(...purity).toFixed(3)} over ${purity.length} directed items\n`,
+	)
+	const discriminating = items.filter((item) => item.straddle?.discriminating === true).length
+	process.stdout.write(`  discriminating items (the two rules disagree): ${discriminating}\n`)
+}
+
 async function main(): Promise<void> {
 	const { values } = parseArgs({
 		options: { write: { type: "boolean", default: false }, round: { type: "string", default: "1" } },
 		strict: true,
 	})
-	if (values.round !== "1" && values.round !== "2") throw new Error("--round must be 1 or 2")
-	const round2 = values.round === "2"
-	const fixture = round2 ? generateBracketingRound2Fixture() : generateBracketingFixture()
-	if (round2) reportRound2(fixture)
+	if (values.round !== "1" && values.round !== "2" && values.round !== "3") {
+		throw new Error("--round must be 1, 2 or 3")
+	}
+	const fixture =
+		values.round === "3"
+			? generateBracketingRound3Fixture()
+			: values.round === "2"
+				? generateBracketingRound2Fixture()
+				: generateBracketingFixture()
+	if (values.round === "3") reportRound3(fixture)
+	else if (values.round === "2") reportRound2(fixture)
 	else reportRound1(fixture)
 	if (values.write) {
-		const path = round2 ? BRACKETING_ROUND_2_FIXTURE_PATH : BRACKETING_FIXTURE_PATH
+		const path =
+			values.round === "3"
+				? BRACKETING_ROUND_3_FIXTURE_PATH
+				: values.round === "2"
+					? BRACKETING_ROUND_2_FIXTURE_PATH
+					: BRACKETING_FIXTURE_PATH
 		await writeFile(path, serializeFixture(fixture))
 		process.stdout.write(`wrote ${path}\n`)
 	}

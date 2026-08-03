@@ -1,0 +1,3273 @@
+{
+	"fixtureVersion": "color-bracketing-1",
+	"batchId": "bracketing-round-3",
+	"seed": 20260804,
+	"generatedBy": "research/v3/src/review-server/bracketing.ts",
+	"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+	"prompts": {
+		"same-color": {
+			"question": "Same color?",
+			"instruction": "Answer whether they register as the same color — not whether you can detect any difference at the seam. If you have to hunt along the boundary to find it, they're the same color. If they'd read as two different colors in a UI, they're different."
+		},
+		"accent-visible": {
+			"question": "Can you clearly see the shapes?",
+			"instruction": "Would these icons work as UI elements? If you have to hunt for them or they strain, answer no."
+		}
+	},
+	"quadrantBoundaries": {
+		"lightness": 0.55,
+		"chroma": 0.05
+	},
+	"prior": {
+		"sameColorBar": 0.01535
+	},
+	"items": [
+		{
+			"itemId": "r3-dn-ln-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				94,
+				116,
+				104
+			],
+			"second": [
+				97,
+				120,
+				109
+			],
+			"firstHex": "#5e7468",
+			"secondHex": "#61786d",
+			"truth": {
+				"targetDistance": 0.01349,
+				"okLabDistance": 0.013496095739203625,
+				"chromaDistance": 0.0018714823461629395,
+				"apcaRaw": -3.656329997858189,
+				"apcaLc": 0,
+				"deltaApcaY": 0.011672927075632028,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.013365708137983212,
+				"deltaChroma": -0.00009076759355697295,
+				"deltaHueDegrees": 3.355751169968215,
+				"arc": 0.0018692818084296064,
+				"dominant": "lightness",
+				"purity": 0.9807710297441413
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.20175416955499983,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				99,
+				117,
+				119
+			],
+			"second": [
+				93,
+				121,
+				125
+			],
+			"firstHex": "#637577",
+			"secondHex": "#5d797d",
+			"truth": {
+				"targetDistance": 0.01349,
+				"okLabDistance": 0.013484036210318951,
+				"chromaDistance": 0.01135150037641971,
+				"apcaRaw": -3.055593322826948,
+				"apcaLc": 0,
+				"deltaApcaY": 0.007655896025179909,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.007277545721281031,
+				"deltaChroma": 0.011300760417221493,
+				"deltaHueDegrees": 2.306672171241331,
+				"arc": 0.0010959536491095122,
+				"dominant": "chroma",
+				"purity": 0.7021856457307933
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.19828380153063324,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f40-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				116,
+				108,
+				107
+			],
+			"second": [
+				116,
+				113,
+				112
+			],
+			"firstHex": "#746c6b",
+			"secondHex": "#747170",
+			"truth": {
+				"targetDistance": 0.014185,
+				"okLabDistance": 0.014189839784005074,
+				"chromaDistance": 0.006329383606016757,
+				"apcaRaw": -3.637785120213459,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01147794805865232,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.012700017963121923,
+				"deltaChroma": -0.006151292629866278,
+				"deltaHueDegrees": 13.364552458326557,
+				"arc": 0.0016537972602520738,
+				"dominant": "lightness",
+				"purity": 0.7990059348816526
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.40139274359858224,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f40-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				123,
+				107,
+				125
+			],
+			"second": [
+				128,
+				107,
+				132
+			],
+			"firstHex": "#7b6b7d",
+			"secondHex": "#806b84",
+			"truth": {
+				"targetDistance": 0.014185,
+				"okLabDistance": 0.014180808362037639,
+				"chromaDistance": 0.012002525981181972,
+				"apcaRaw": -2.749318977964222,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005531262819532506,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.007552131875959822,
+				"deltaChroma": 0.011951897199164702,
+				"deltaHueDegrees": -1.6141645820484314,
+				"arc": 0.0011140581610169435,
+				"dominant": "chroma",
+				"purity": 0.710248813560844
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.39879377324824133,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f60-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				118,
+				109,
+				112
+			],
+			"second": [
+				119,
+				114,
+				118
+			],
+			"firstHex": "#766d70",
+			"secondHex": "#777276",
+			"truth": {
+				"targetDistance": 0.01488,
+				"okLabDistance": 0.01488128321012423,
+				"chromaDistance": 0.0053562457268371295,
+				"apcaRaw": -3.788346540756868,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012591695161885769,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.013883919536415656,
+				"deltaChroma": -0.0034923024695666972,
+				"deltaHueDegrees": -22.987400386365493,
+				"arc": 0.00412036847063717,
+				"dominant": "lightness",
+				"purity": 0.8685499280470691
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.6003692691004976,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f60-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				115,
+				110,
+				122
+			],
+			"second": [
+				117,
+				110,
+				131
+			],
+			"firstHex": "#736e7a",
+			"secondHex": "#756e83",
+			"truth": {
+				"targetDistance": 0.01488,
+				"okLabDistance": 0.014883600767453195,
+				"chromaDistance": 0.013960707356033362,
+				"apcaRaw": -2.4668742144144846,
+				"apcaLc": 0,
+				"deltaApcaY": 0.003620439113921514,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.005159478842298837,
+				"deltaChroma": 0.013846616817578976,
+				"deltaHueDegrees": -4.0345832985736365,
+				"arc": 0.001846652968361391,
+				"dominant": "chroma",
+				"purity": 0.8645812378120599
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.6010361920728619,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				109,
+				110,
+				108
+			],
+			"second": [
+				115,
+				114,
+				111
+			],
+			"firstHex": "#6d6e6c",
+			"secondHex": "#73726f",
+			"truth": {
+				"targetDistance": 0.015575,
+				"okLabDistance": 0.015570617432757719,
+				"chromaDistance": 0.002896079866490099,
+				"apcaRaw": -3.8523654835205305,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012929170286086977,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015298916584000621,
+				"deltaChroma": 0.001443657230677927,
+				"deltaHueDegrees": -37.04547393300416,
+				"arc": 0.002552149468986874,
+				"dominant": "lightness",
+				"purity": 0.964568493612181
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.7987388295705665,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ln-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				104,
+				115,
+				124
+			],
+			"second": [
+				96,
+				119,
+				131
+			],
+			"firstHex": "#68737c",
+			"secondHex": "#607783",
+			"truth": {
+				"targetDistance": 0.015575,
+				"okLabDistance": 0.01556962306327213,
+				"chromaDistance": 0.014429003929994083,
+				"apcaRaw": -2.8925756380471004,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006528736614667241,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.005849530572669126,
+				"deltaChroma": 0.013459552745301567,
+				"deltaHueDegrees": -11.862303898262098,
+				"arc": 0.005382469348788328,
+				"dominant": "chroma",
+				"purity": 0.7414011898976487
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.7984526800783108,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				133,
+				107,
+				82
+			],
+			"second": [
+				140,
+				111,
+				81
+			],
+			"firstHex": "#856b52",
+			"secondHex": "#8c6f51",
+			"truth": {
+				"targetDistance": 0.017486,
+				"okLabDistance": 0.017496539729953027,
+				"chromaDistance": 0.007457417102520518,
+				"apcaRaw": -3.9715849488239354,
+				"apcaLc": 0,
+				"deltaApcaY": 0.013895992927782319,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015827691956847634,
+				"deltaChroma": 0.007261733201427631,
+				"deltaHueDegrees": 1.8355160442726657,
+				"arc": 0.0017011259227230672,
+				"dominant": "lightness",
+				"purity": 0.8182983055296791
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.2015488214479099,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				90,
+				117,
+				127
+			],
+			"second": [
+				82,
+				121,
+				137
+			],
+			"firstHex": "#5a757f",
+			"secondHex": "#527989",
+			"truth": {
+				"targetDistance": 0.017486,
+				"okLabDistance": 0.0174951122496385,
+				"chromaDistance": 0.01535598040832025,
+				"apcaRaw": -3.1770956744913,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008468404394168988,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.008382888423851043,
+				"deltaChroma": 0.015197821376725068,
+				"deltaHueDegrees": 3.0042098461414923,
+				"arc": 0.002234071367277807,
+				"dominant": "chroma",
+				"purity": 0.7542304519832553
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.2013390521144013,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f40-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				132,
+				100,
+				115
+			],
+			"second": [
+				141,
+				103,
+				119
+			],
+			"firstHex": "#846473",
+			"secondHex": "#8d6777",
+			"truth": {
+				"targetDistance": 0.018847,
+				"okLabDistance": 0.018839283540204192,
+				"chromaDistance": 0.007629863482202169,
+				"apcaRaw": -4.014250072185746,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01398421710100839,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.017225091800950332,
+				"deltaChroma": 0.007177552057280483,
+				"deltaHueDegrees": 2.9763621597293763,
+				"arc": 0.0025946696405026374,
+				"dominant": "lightness",
+				"purity": 0.8358951568962197
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.3988660602798225,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f40-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				132,
+				108,
+				86
+			],
+			"second": [
+				142,
+				106,
+				77
+			],
+			"firstHex": "#846c56",
+			"secondHex": "#8e6a4d",
+			"truth": {
+				"targetDistance": 0.018847,
+				"okLabDistance": 0.018851788403153685,
+				"chromaDistance": 0.01821395631373375,
+				"apcaRaw": -2.399071768550041,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0031591049996936293,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0048622753314346845,
+				"deltaChroma": 0.01777087506796582,
+				"deltaHueDegrees": -4.33507097770633,
+				"arc": 0.004049191689599693,
+				"dominant": "chroma",
+				"purity": 0.8874845823197862
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.40070365953764664,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f60-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				75,
+				119,
+				119
+			],
+			"second": [
+				73,
+				126,
+				124
+			],
+			"firstHex": "#4b7777",
+			"secondHex": "#497e7c",
+			"truth": {
+				"targetDistance": 0.020208,
+				"okLabDistance": 0.020215684059067054,
+				"chromaDistance": 0.008765316873842565,
+				"apcaRaw": -4.475551944644088,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017377258695044473,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.018216561203398096,
+				"deltaChroma": 0.008236430257657357,
+				"deltaHueDegrees": -3.271052442180462,
+				"arc": 0.003007866174350845,
+				"dominant": "lightness",
+				"purity": 0.8118899927555839
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.6011291784080903,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f60-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				88,
+				117,
+				139
+			],
+			"second": [
+				78,
+				119,
+				151
+			],
+			"firstHex": "#58758b",
+			"secondHex": "#4e7797",
+			"truth": {
+				"targetDistance": 0.020208,
+				"okLabDistance": 0.020196109511843096,
+				"chromaDistance": 0.019819341418983366,
+				"apcaRaw": -2.540661181297996,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004115952460202299,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.003882852705438311,
+				"deltaChroma": 0.01976298103676774,
+				"deltaHueDegrees": 1.4971590293552026,
+				"arc": 0.0015157644297780705,
+				"dominant": "chroma",
+				"purity": 0.9574111828395135
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5982526835919318,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				137,
+				101,
+				95
+			],
+			"second": [
+				147,
+				105,
+				97
+			],
+			"firstHex": "#89655f",
+			"secondHex": "#936961",
+			"truth": {
+				"targetDistance": 0.021568999999999998,
+				"okLabDistance": 0.021558750415739573,
+				"chromaDistance": 0.008117567969586898,
+				"apcaRaw": -4.409153611077553,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01673392536624424,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.019972100784526603,
+				"deltaChroma": 0.00799471522295788,
+				"deltaHueDegrees": 1.5593955428956328,
+				"arc": 0.0014111249916061133,
+				"dominant": "lightness",
+				"purity": 0.8582015001537678
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.7984938156854626,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				90,
+				118,
+				126
+			],
+			"second": [
+				76,
+				123,
+				136
+			],
+			"firstHex": "#5a767e",
+			"secondHex": "#4c7b88",
+			"truth": {
+				"targetDistance": 0.021568999999999998,
+				"okLabDistance": 0.021570059057651293,
+				"chromaDistance": 0.02025213293966575,
+				"apcaRaw": -3.19757991203343,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008631835568241403,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0074241874400280405,
+				"deltaChroma": 0.020251914045915836,
+				"deltaHueDegrees": 0.1235741245803581,
+				"arc": 0.00009665941531836894,
+				"dominant": "chroma",
+				"purity": 0.8815136413679212
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.8001556293389116,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				211,
+				173,
+				160
+			],
+			"second": [
+				221,
+				177,
+				166
+			],
+			"firstHex": "#d3ada0",
+			"secondHex": "#ddb1a6",
+			"truth": {
+				"targetDistance": 0.020266,
+				"okLabDistance": 0.0202717550031416,
+				"chromaDistance": 0.007368168957320202,
+				"apcaRaw": -4.89571440618469,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03393891001587779,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.01888528890760688,
+				"deltaChroma": 0.005608960101741833,
+				"deltaHueDegrees": -5.369703744818452,
+				"arc": 0.004785238870515211,
+				"dominant": "lightness",
+				"purity": 0.8677440040109529
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.201728229171652,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				155,
+				195,
+				190
+			],
+			"second": [
+				138,
+				197,
+				188
+			],
+			"firstHex": "#9bc3be",
+			"secondHex": "#8ac5bc",
+			"truth": {
+				"targetDistance": 0.020266,
+				"okLabDistance": 0.020270432634201696,
+				"chromaDistance": 0.01922411982210612,
+				"apcaRaw": 1.2069897448595581,
+				"apcaLc": 0,
+				"deltaApcaY": 0.007246948986317336,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.0064283478626327994,
+				"deltaChroma": 0.019063509071230347,
+				"deltaHueDegrees": -2.742243016786688,
+				"arc": 0.00252140523913914,
+				"dominant": "chroma",
+				"purity": 0.8840152945088215
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.2013311213818909,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f40-lightness",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				232,
+				201,
+				219
+			],
+			"second": [
+				243,
+				204,
+				227
+			],
+			"firstHex": "#e8c9db",
+			"secondHex": "#f3cce3",
+			"truth": {
+				"targetDistance": 0.020932,
+				"okLabDistance": 0.02092902250448077,
+				"chromaDistance": 0.010915032652320161,
+				"apcaRaw": -4.461902381821785,
+				"apcaLc": 0,
+				"deltaApcaY": 0.039060083430882186,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.017857380692359315,
+				"deltaChroma": 0.010913792807328966,
+				"deltaHueDegrees": -0.19966828434843364,
+				"arc": 0.00016560793893767437,
+				"dominant": "lightness",
+				"purity": 0.7280098677314478
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.39910585720143316,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f40-chroma",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				226,
+				221,
+				196
+			],
+			"second": [
+				235,
+				224,
+				186
+			],
+			"firstHex": "#e2ddc4",
+			"secondHex": "#ebe0ba",
+			"truth": {
+				"targetDistance": 0.020932,
+				"okLabDistance": 0.020931790699685943,
+				"chromaDistance": 0.017814696627004894,
+				"apcaRaw": -3.185000015597609,
+				"apcaLc": 0,
+				"deltaApcaY": 0.027790581167565387,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.010989833755941869,
+				"deltaChroma": 0.01758134607184377,
+				"deltaHueDegrees": -3.955609081522894,
+				"arc": 0.0029373219602398773,
+				"dominant": "chroma",
+				"purity": 0.7048986662414088
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.39993714705283606,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f60-lightness",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				169,
+				195,
+				173
+			],
+			"second": [
+				160,
+				190,
+				163
+			],
+			"firstHex": "#a9c3ad",
+			"secondHex": "#a0bea3",
+			"truth": {
+				"targetDistance": 0.021598,
+				"okLabDistance": 0.02159519309900538,
+				"chromaDistance": 0.008426736085497485,
+				"apcaRaw": 3.822980479884725,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03624403537224663,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": -0.019883221165814757,
+				"deltaChroma": 0.008301193130042989,
+				"deltaHueDegrees": -1.816742114601766,
+				"arc": 0.0014551263855408522,
+				"dominant": "lightness",
+				"purity": 0.8477019356095437
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5991570867884023,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f60-chroma",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				129,
+				123,
+				149
+			],
+			"second": [
+				125,
+				119,
+				158
+			],
+			"firstHex": "#817b95",
+			"secondHex": "#7d779e",
+			"truth": {
+				"targetDistance": 0.021598,
+				"okLabDistance": 0.0215935975239431,
+				"chromaDistance": 0.019976176922128126,
+				"apcaRaw": 2.0285169814462742,
+				"apcaLc": 0,
+				"deltaApcaY": 0.009494762097924575,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.008199744483938343,
+				"deltaChroma": 0.01965236325259189,
+				"deltaHueDegrees": -4.232034160113471,
+				"arc": 0.00365496860578847,
+				"dominant": "chroma",
+				"purity": 0.827350297898553
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5986779351180482,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				209,
+				189,
+				164
+			],
+			"second": [
+				209,
+				181,
+				151
+			],
+			"firstHex": "#d1bda4",
+			"secondHex": "#d1b597",
+			"truth": {
+				"targetDistance": 0.022264,
+				"okLabDistance": 0.02226643229282885,
+				"chromaDistance": 0.011636256546734357,
+				"apcaRaw": 3.973151017212025,
+				"apcaLc": 0,
+				"deltaApcaY": 0.03885965521295287,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": -0.018983981158590346,
+				"deltaChroma": 0.01107076290469309,
+				"deltaHueDegrees": -4.446764298112257,
+				"arc": 0.003609036258176492,
+				"dominant": "lightness",
+				"purity": 0.7266273821566837
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.8007304182669224,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ln-ls-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				180,
+				206,
+				182
+			],
+			"second": [
+				172,
+				208,
+				170
+			],
+			"firstHex": "#b4ceb6",
+			"secondHex": "#acd0aa",
+			"truth": {
+				"targetDistance": 0.022264,
+				"okLabDistance": 0.022264123006627938,
+				"chromaDistance": 0.021866874779119617,
+				"apcaRaw": 0.8467993074735937,
+				"apcaLc": 0,
+				"deltaApcaY": 0.004327202608548575,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.004186999002694147,
+				"deltaChroma": 0.021593057341454218,
+				"deltaHueDegrees": -3.723702239391912,
+				"arc": 0.0035202645939661943,
+				"dominant": "chroma",
+				"purity": 0.9396932131403181
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.800036938927309,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				112,
+				118,
+				34
+			],
+			"second": [
+				115,
+				124,
+				28
+			],
+			"firstHex": "#707622",
+			"secondHex": "#737c1c",
+			"truth": {
+				"targetDistance": 0.019766,
+				"okLabDistance": 0.0197640451840936,
+				"chromaDistance": 0.010538132366003376,
+				"apcaRaw": -4.24840487490595,
+				"apcaLc": 0,
+				"deltaApcaY": 0.015942979482018782,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.01672020479167302,
+				"deltaChroma": 0.010106891889988284,
+				"deltaHueDegrees": 1.5465731593538976,
+				"arc": 0.0029869006888204163,
+				"dominant": "lightness",
+				"purity": 0.7156667217780621
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.1995057355483186,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				0,
+				122,
+				161
+			],
+			"second": [
+				43,
+				124,
+				155
+			],
+			"firstHex": "#007aa1",
+			"secondHex": "#2b7c9b",
+			"truth": {
+				"targetDistance": 0.019766,
+				"okLabDistance": 0.019762198650234944,
+				"chromaDistance": 0.017518529617589648,
+				"apcaRaw": -2.775197975392787,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005732560218131927,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.009145797697794444,
+				"deltaChroma": -0.017223436599080474,
+				"deltaHueDegrees": -1.8655076798835637,
+				"arc": 0.003214144350129192,
+				"dominant": "chroma",
+				"purity": 0.7594194056204776
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.1990388496169267,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f50-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				147,
+				73,
+				165
+			],
+			"second": [
+				153,
+				80,
+				171
+			],
+			"firstHex": "#9349a5",
+			"secondHex": "#9950ab",
+			"truth": {
+				"targetDistance": 0.0209525,
+				"okLabDistance": 0.02095430047029602,
+				"chromaDistance": 0.0021250813668053075,
+				"apcaRaw": -4.478461486114653,
+				"apcaLc": 0,
+				"deltaApcaY": 0.016720416681892405,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.020846264350811272,
+				"deltaChroma": -0.0021194348571675625,
+				"deltaHueDegrees": -0.05699704726373511,
+				"arc": 0.00015481541618084056,
+				"dominant": "lightness",
+				"purity": 0.9897149857393545
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5004552390129002,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f50-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				114,
+				118,
+				54
+			],
+			"second": [
+				118,
+				120,
+				71
+			],
+			"firstHex": "#727636",
+			"secondHex": "#767847",
+			"truth": {
+				"targetDistance": 0.0209525,
+				"okLabDistance": 0.020958174100742997,
+				"chromaDistance": 0.01788000315226247,
+				"apcaRaw": -3.2339760784992344,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008904899433256008,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.010933917363513346,
+				"deltaChroma": -0.017730858535926222,
+				"deltaHueDegrees": -1.7002001779592888,
+				"arc": 0.002319562657293974,
+				"dominant": "chroma",
+				"purity": 0.7156228923153286
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5014346651688996,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				56,
+				124,
+				87
+			],
+			"second": [
+				69,
+				129,
+				94
+			],
+			"firstHex": "#387c57",
+			"secondHex": "#45815e",
+			"truth": {
+				"targetDistance": 0.022139,
+				"okLabDistance": 0.02214467341595488,
+				"chromaDistance": 0.007391665026179598,
+				"apcaRaw": -4.473426085215546,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017366272888839185,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.02087462212448532,
+				"deltaChroma": -0.007308908190752694,
+				"deltaHueDegrees": -0.7225586549043896,
+				"arc": 0.001103946035129304,
+				"dominant": "lightness",
+				"purity": 0.8885805535447385
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.8014344920239898,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				118,
+				101,
+				155
+			],
+			"second": [
+				120,
+				102,
+				169
+			],
+			"firstHex": "#76659b",
+			"secondHex": "#7866a9",
+			"truth": {
+				"targetDistance": 0.022139,
+				"okLabDistance": 0.022134607892501098,
+				"chromaDistance": 0.019228813783076067,
+				"apcaRaw": -3.1607366309538927,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008270631464181777,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.010963283588895978,
+				"deltaChroma": 0.01867010392594108,
+				"deltaHueDegrees": -2.8238004716141063,
+				"arc": 0.004624513439837693,
+				"dominant": "chroma",
+				"purity": 0.7111517051212295
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.7988894797727178,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				138,
+				99,
+				101
+			],
+			"second": [
+				142,
+				104,
+				103
+			],
+			"firstHex": "#8a6365",
+			"secondHex": "#8e6867",
+			"truth": {
+				"targetDistance": 0.01577,
+				"okLabDistance": 0.015770550898744403,
+				"chromaDistance": 0.004654310442091266,
+				"apcaRaw": -3.883069397974676,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01310252872501605,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.015068101073410944,
+				"deltaChroma": -0.0016363338775029698,
+				"deltaHueDegrees": 4.999231269546474,
+				"arc": 0.0043577643446740125,
+				"dominant": "lightness",
+				"purity": 0.912881545019662
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.20088143799104602,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				115,
+				115,
+				78
+			],
+			"second": [
+				115,
+				117,
+				90
+			],
+			"firstHex": "#73734e",
+			"secondHex": "#73755a",
+			"truth": {
+				"targetDistance": 0.01577,
+				"okLabDistance": 0.015769213243492602,
+				"chromaDistance": 0.013964377728709775,
+				"apcaRaw": -2.8448860893940653,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006191746291781514,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.007325588097119362,
+				"deltaChroma": -0.013739311799814372,
+				"deltaHueDegrees": 3.0835127263692215,
+				"arc": 0.0025242438794634506,
+				"dominant": "chroma",
+				"purity": 0.7587021497728249
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.19874118958816395,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f50-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				94,
+				120,
+				91
+			],
+			"second": [
+				99,
+				124,
+				98
+			],
+			"firstHex": "#5e785b",
+			"secondHex": "#637c62",
+			"truth": {
+				"targetDistance": 0.0159575,
+				"okLabDistance": 0.015957001754482645,
+				"chromaDistance": 0.0048523579375620044,
+				"apcaRaw": -3.877378368053016,
+				"apcaLc": 0,
+				"deltaApcaY": 0.013344178381927807,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.01520133308096172,
+				"deltaChroma": -0.004585130158081152,
+				"deltaHueDegrees": 1.7720059499480953,
+				"arc": 0.0015896495881931672,
+				"dominant": "lightness",
+				"purity": 0.907511612153197
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.49920280717223275,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f50-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				100,
+				111,
+				147
+			],
+			"second": [
+				104,
+				114,
+				141
+			],
+			"firstHex": "#646f93",
+			"secondHex": "#68728d",
+			"truth": {
+				"targetDistance": 0.0159575,
+				"okLabDistance": 0.015958374928658557,
+				"chromaDistance": 0.014265146687059553,
+				"apcaRaw": -2.937633630274888,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006810348007360217,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.00715369277788136,
+				"deltaChroma": -0.014133822751609841,
+				"deltaHueDegrees": -2.1966627872919844,
+				"arc": 0.001950093075190515,
+				"dominant": "chroma",
+				"purity": 0.7841818792451134
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.5013998858536923,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				137,
+				97,
+				105
+			],
+			"second": [
+				137,
+				103,
+				111
+			],
+			"firstHex": "#896169",
+			"secondHex": "#89676f",
+			"truth": {
+				"targetDistance": 0.016145,
+				"okLabDistance": 0.016145163013602637,
+				"chromaDistance": 0.008425668841808532,
+				"apcaRaw": -3.747889198764066,
+				"apcaLc": 0,
+				"deltaApcaY": 0.012116104629796953,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.013772232691324215,
+				"deltaChroma": -0.008091989412243997,
+				"deltaHueDegrees": -2.7517550538168627,
+				"arc": 0.002355706881284748,
+				"dominant": "lightness",
+				"purity": 0.7275468100784211
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.8002608217642198,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-ds-ln-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				75,
+				123,
+				118
+			],
+			"second": [
+				89,
+				121,
+				117
+			],
+			"firstHex": "#4b7b76",
+			"secondHex": "#597975",
+			"truth": {
+				"targetDistance": 0.016145,
+				"okLabDistance": 0.016144899994566596,
+				"chromaDistance": 0.01583457690164245,
+				"apcaRaw": -2.0437294854530714,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0007025589664379772,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0031502333533450777,
+				"deltaChroma": -0.01582417537606829,
+				"deltaHueDegrees": -0.7411065294256787,
+				"arc": 0.00058290035927114,
+				"dominant": "chroma",
+				"purity": 0.9606252689087266
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.799839991306555,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f20-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				26,
+				46,
+				68
+			],
+			"second": [
+				21,
+				43,
+				66
+			],
+			"firstHex": "#1a2e44",
+			"secondHex": "#152b42",
+			"truth": {
+				"targetDistance": 0.01274,
+				"okLabDistance": 0.012736073880917418,
+				"chromaDistance": 0.0031502464934300167,
+				"apcaRaw": 1.1954532079821616,
+				"apcaLc": 0,
+				"deltaApcaY": 0.002317909619259142,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": -0.012340321103229801,
+				"deltaChroma": 0.0030660816267357102,
+				"deltaHueDegrees": -0.8368126150435273,
+				"arc": 0.0007236696364900843,
+				"dominant": "lightness",
+				"purity": 0.9388159065036165
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.19862241435698855,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f20-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				104,
+				88,
+				59
+			],
+			"second": [
+				109,
+				86,
+				50
+			],
+			"firstHex": "#68583b",
+			"secondHex": "#6d5632",
+			"truth": {
+				"targetDistance": 0.01274,
+				"okLabDistance": 0.012736783732317961,
+				"chromaDistance": 0.01272108594668952,
+				"apcaRaw": 0.8364273728745573,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0007447075062647773,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.0006321646785275581,
+				"deltaChroma": 0.012086950182491285,
+				"deltaHueDegrees": -4.236403634019595,
+				"arc": 0.003991396575079724,
+				"dominant": "chroma",
+				"purity": 0.8994560300665828
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.19887148502384597,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f50-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				118,
+				90,
+				108
+			],
+			"second": [
+				118,
+				85,
+				104
+			],
+			"firstHex": "#765a6c",
+			"secondHex": "#765568",
+			"truth": {
+				"targetDistance": 0.013595,
+				"okLabDistance": 0.013593221868486783,
+				"chromaDistance": 0.007163033517506232,
+				"apcaRaw": 2.1898691845030993,
+				"apcaLc": 0,
+				"deltaApcaY": 0.008323900776724652,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": -0.011552775925853909,
+				"deltaChroma": 0.006483899565782658,
+				"deltaHueDegrees": 3.61131792847209,
+				"arc": 0.0030512023591198604,
+				"dominant": "lightness",
+				"purity": 0.7221539553183745
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.49937609420588874,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f50-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				71,
+				59,
+				84
+			],
+			"second": [
+				72,
+				58,
+				91
+			],
+			"firstHex": "#473b54",
+			"secondHex": "#483a5b",
+			"truth": {
+				"targetDistance": 0.013595,
+				"okLabDistance": 0.01359044498637639,
+				"chromaDistance": 0.013373109978953957,
+				"apcaRaw": -1.5159641139874178,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0005444174186105544,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0024207693856551638,
+				"deltaChroma": 0.013104865029963289,
+				"deltaHueDegrees": -3.0123623478443164,
+				"arc": 0.0026872355362857455,
+				"dominant": "chroma",
+				"purity": 0.9292206423770873
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.4984017496057509,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f80-lightness",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				108,
+				107,
+				76
+			],
+			"second": [
+				112,
+				111,
+				75
+			],
+			"firstHex": "#6c6b4c",
+			"secondHex": "#706f4b",
+			"truth": {
+				"targetDistance": 0.014450000000000001,
+				"okLabDistance": 0.014449637346983747,
+				"chromaDistance": 0.006643167176036966,
+				"apcaRaw": -3.5270829502422227,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01053574523852048,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.012832004883515769,
+				"deltaChroma": 0.00663566391996049,
+				"deltaHueDegrees": 0.368017613343568,
+				"arc": 0.00031636785552636374,
+				"dominant": "lightness",
+				"purity": 0.7886316325689579
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.7998727533276303,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ds-f80-chroma",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+dark-saturated",
+			"first": [
+				18,
+				22,
+				45
+			],
+			"second": [
+				20,
+				22,
+				52
+			],
+			"firstHex": "#12162d",
+			"secondHex": "#141634",
+			"truth": {
+				"targetDistance": 0.014450000000000001,
+				"okLabDistance": 0.014450160501764616,
+				"chromaDistance": 0.012453874697880913,
+				"apcaRaw": -0.9209009442052105,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0005714436558053246,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.007328584006221106,
+				"deltaChroma": 0.012115604133337378,
+				"deltaHueDegrees": 3.2080944521812853,
+				"arc": 0.0029027830526257323,
+				"dominant": "chroma",
+				"purity": 0.7025959619267098
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.01502,
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"minBar": 0.00932,
+				"bandLow": 0.01217,
+				"bandHigh": 0.01502,
+				"bandFraction": 0.8000563164086371,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-control-below-0",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				86,
+				115,
+				136
+			],
+			"second": [
+				84,
+				119,
+				141
+			],
+			"firstHex": "#567388",
+			"secondHex": "#54778d",
+			"truth": {
+				"targetDistance": 0.012042,
+				"okLabDistance": 0.012052931886970479,
+				"chromaDistance": 0.006268177753306779,
+				"apcaRaw": -3.3535882487189217,
+				"apcaLc": 0,
+				"deltaApcaY": 0.009631018608521336,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.010294810086878714,
+				"deltaChroma": 0.005431834807240472,
+				"deltaHueDegrees": -3.6019315969039667,
+				"arc": 0.003132788650911268,
+				"dominant": "lightness",
+				"purity": 0.7293973205160005
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": -0.5983935507758299,
+				"zone": "below-avg",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": true,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-dn-ls-control-above-0",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				103,
+				113,
+				89
+			],
+			"second": [
+				109,
+				121,
+				88
+			],
+			"firstHex": "#677159",
+			"secondHex": "#6d7958",
+			"truth": {
+				"targetDistance": 0.027013,
+				"okLabDistance": 0.026986032970249575,
+				"chromaDistance": 0.012766543639534972,
+				"apcaRaw": -5.0978814320764165,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0214529204086005,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.023775225319042637,
+				"deltaChroma": 0.012690025372843437,
+				"deltaHueDegrees": -1.8107671148824522,
+				"arc": 0.0014100000689506594,
+				"dominant": "lightness",
+				"purity": 0.7761527708003311
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 1.5960371741733397,
+				"zone": "above-max",
+				"predictsSameUnderMax": false,
+				"predictsSameUnderAvg": false,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-control-below-1",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				148,
+				99,
+				77
+			],
+			"second": [
+				142,
+				104,
+				86
+			],
+			"firstHex": "#94634d",
+			"secondHex": "#8e6856",
+			"truth": {
+				"targetDistance": 0.016602,
+				"okLabDistance": 0.01660185529822226,
+				"chromaDistance": 0.015904856893933082,
+				"apcaRaw": -2.680088042172558,
+				"apcaLc": 0,
+				"deltaApcaY": 0.005057005844600698,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 0,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.004759950265141422,
+				"deltaChroma": -0.015822282940399973,
+				"deltaHueDegrees": 1.4586495260356216,
+				"arc": 0.001631072234880292,
+				"dominant": "chroma",
+				"purity": 0.9081574231799939
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": -0.6000365870487325,
+				"zone": "below-avg",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": true,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-ds-ls-control-above-1",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				15,
+				122,
+				157
+			],
+			"second": [
+				59,
+				123,
+				152
+			],
+			"firstHex": "#0f7a9d",
+			"secondHex": "#3b7b98",
+			"truth": {
+				"targetDistance": 0.025303,
+				"okLabDistance": 0.02534303030303155,
+				"chromaDistance": 0.02260627295110125,
+				"apcaRaw": -2.935023162864949,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006830083363947609,
+				"identical": false
+			},
+			"role": "ladder",
+			"repeatOf": null,
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.011455374642528438,
+				"deltaChroma": -0.022245480023835223,
+				"deltaHueDegrees": 2.5679870416518895,
+				"arc": 0.0040534769207257685,
+				"dominant": "chroma",
+				"purity": 0.7701910913458248
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 1.6101214419801646,
+				"zone": "above-max",
+				"predictsSameUnderMax": false,
+				"predictsSameUnderAvg": false,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-identical-0",
+			"part": "same-color",
+			"stratum": "dark-neutral",
+			"first": [
+				104,
+				110,
+				133
+			],
+			"second": [
+				104,
+				110,
+				133
+			],
+			"firstHex": "#686e85",
+			"secondHex": "#686e85",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.9203682026960895,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null,
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "dark-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.00932,
+				"avgBar": 0.00932,
+				"maxBar": 0.00932,
+				"minBar": 0.00932,
+				"bandLow": 0.00932,
+				"bandHigh": 0.00932,
+				"bandFraction": 0,
+				"zone": "below-avg",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": true,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-identical-1",
+			"part": "same-color",
+			"stratum": "dark-saturated",
+			"first": [
+				78,
+				108,
+				63
+			],
+			"second": [
+				78,
+				108,
+				63
+			],
+			"firstHex": "#4e6c3f",
+			"secondHex": "#4e6c3f",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.8457364348996979,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null,
+			"hueThird": 1,
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "dark-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.01502,
+				"avgBar": 0.01502,
+				"maxBar": 0.01502,
+				"minBar": 0.01502,
+				"bandLow": 0.01502,
+				"bandHigh": 0.01502,
+				"bandFraction": 0,
+				"zone": "below-avg",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": true,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-identical-2",
+			"part": "same-color",
+			"stratum": "light-neutral",
+			"first": [
+				135,
+				162,
+				140
+			],
+			"second": [
+				135,
+				162,
+				140
+			],
+			"firstHex": "#87a28c",
+			"secondHex": "#87a28c",
+			"truth": {
+				"targetDistance": 0,
+				"okLabDistance": 0,
+				"chromaDistance": 0,
+				"apcaRaw": -1.9119045022997334,
+				"apcaLc": 0,
+				"deltaApcaY": 0,
+				"identical": true
+			},
+			"role": "control-identical",
+			"repeatOf": null,
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01627,
+				"barSecond": 0.01627,
+				"avgBar": 0.01627,
+				"maxBar": 0.01627,
+				"minBar": 0.01627,
+				"bandLow": 0.01627,
+				"bandHigh": 0.01627,
+				"bandFraction": 0,
+				"zone": "below-avg",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": true,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-obvious-0",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				79,
+				106,
+				99
+			],
+			"second": [
+				94,
+				126,
+				106
+			],
+			"firstHex": "#4f6a63",
+			"secondHex": "#5e7e6a",
+			"truth": {
+				"targetDistance": 0.06508,
+				"okLabDistance": 0.06494146450959613,
+				"chromaDistance": 0.019924985403908118,
+				"apcaRaw": -9.876844210114665,
+				"apcaLc": 0,
+				"deltaApcaY": 0.052659637556775926,
+				"identical": false
+			},
+			"role": "control-obvious",
+			"repeatOf": null,
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 15.006176837293856,
+				"zone": "above-max",
+				"predictsSameUnderMax": false,
+				"predictsSameUnderAvg": false,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-obvious-1",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				80,
+				117,
+				103
+			],
+			"second": [
+				11,
+				147,
+				141
+			],
+			"firstHex": "#507567",
+			"secondHex": "#0b938d",
+			"truth": {
+				"targetDistance": 0.09172,
+				"okLabDistance": 0.09133888027973867,
+				"chromaDistance": 0.05978811305601877,
+				"apcaRaw": -12.577958248892784,
+				"apcaLc": -9.877958248892785,
+				"deltaApcaY": 0.07658337555061323,
+				"identical": false
+			},
+			"role": "control-obvious",
+			"repeatOf": null,
+			"hueThird": 1,
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 11.052737733980704,
+				"zone": "above-max",
+				"predictsSameUnderMax": false,
+				"predictsSameUnderAvg": false,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-control-obvious-2",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				154,
+				165,
+				180
+			],
+			"second": [
+				167,
+				130,
+				171
+			],
+			"firstHex": "#9aa5b4",
+			"secondHex": "#a782ab",
+			"truth": {
+				"targetDistance": 0.09172,
+				"okLabDistance": 0.0918121336152255,
+				"chromaDistance": 0.06739589399849001,
+				"apcaRaw": 11.615821708188927,
+				"apcaLc": 8.915821708188927,
+				"deltaApcaY": 0.09962505170857477,
+				"identical": false
+			},
+			"role": "control-obvious",
+			"repeatOf": null,
+			"hueThird": 2,
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 21.68532540997763,
+				"zone": "above-max",
+				"predictsSameUnderMax": false,
+				"predictsSameUnderAvg": false,
+				"discriminating": false
+			}
+		},
+		{
+			"itemId": "r3-repeat-0",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				94,
+				116,
+				104
+			],
+			"second": [
+				97,
+				120,
+				109
+			],
+			"firstHex": "#5e7468",
+			"secondHex": "#61786d",
+			"truth": {
+				"targetDistance": 0.01349,
+				"okLabDistance": 0.013496095739203625,
+				"chromaDistance": 0.0018714823461629395,
+				"apcaRaw": -3.656329997858189,
+				"apcaLc": 0,
+				"deltaApcaY": 0.011672927075632028,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-dn-ln-f20-lightness",
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.013365708137983212,
+				"deltaChroma": -0.00009076759355697295,
+				"deltaHueDegrees": 3.355751169968215,
+				"arc": 0.0018692818084296064,
+				"dominant": "lightness",
+				"purity": 0.9807710297441413
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.20175416955499983,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-repeat-1",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-neutral",
+			"first": [
+				104,
+				115,
+				124
+			],
+			"second": [
+				96,
+				119,
+				131
+			],
+			"firstHex": "#68737c",
+			"secondHex": "#607783",
+			"truth": {
+				"targetDistance": 0.015575,
+				"okLabDistance": 0.01556962306327213,
+				"chromaDistance": 0.014429003929994083,
+				"apcaRaw": -2.8925756380471004,
+				"apcaLc": 0,
+				"deltaApcaY": 0.006528736614667241,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-dn-ln-f80-chroma",
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.005849530572669126,
+				"deltaChroma": 0.013459552745301567,
+				"deltaHueDegrees": -11.862303898262098,
+				"arc": 0.005382469348788328,
+				"dominant": "chroma",
+				"purity": 0.7414011898976487
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.00932,
+				"barSecond": 0.01627,
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"minBar": 0.00932,
+				"bandLow": 0.012795,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.7984526800783108,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-repeat-2",
+			"part": "same-color",
+			"stratum": "straddle-dark-neutral+light-saturated",
+			"first": [
+				137,
+				101,
+				95
+			],
+			"second": [
+				147,
+				105,
+				97
+			],
+			"firstHex": "#89655f",
+			"secondHex": "#936961",
+			"truth": {
+				"targetDistance": 0.021568999999999998,
+				"okLabDistance": 0.021558750415739573,
+				"chromaDistance": 0.008117567969586898,
+				"apcaRaw": -4.409153611077553,
+				"apcaLc": 0,
+				"deltaApcaY": 0.01673392536624424,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-dn-ls-f80-lightness",
+			"hueThird": 0,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.019972100784526603,
+				"deltaChroma": 0.00799471522295788,
+				"deltaHueDegrees": 1.5593955428956328,
+				"arc": 0.0014111249916061133,
+				"dominant": "lightness",
+				"purity": 0.8582015001537678
+			},
+			"straddle": {
+				"regionFirst": "dark-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.00932,
+				"barSecond": 0.02293,
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"minBar": 0.00932,
+				"bandLow": 0.016125,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.7984938156854626,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-repeat-3",
+			"part": "same-color",
+			"stratum": "straddle-light-neutral+light-saturated",
+			"first": [
+				129,
+				123,
+				149
+			],
+			"second": [
+				125,
+				119,
+				158
+			],
+			"firstHex": "#817b95",
+			"secondHex": "#7d779e",
+			"truth": {
+				"targetDistance": 0.021598,
+				"okLabDistance": 0.0215935975239431,
+				"chromaDistance": 0.019976176922128126,
+				"apcaRaw": 2.0285169814462742,
+				"apcaLc": 0,
+				"deltaApcaY": 0.009494762097924575,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-ln-ls-f60-chroma",
+			"hueThird": 2,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": -0.008199744483938343,
+				"deltaChroma": 0.01965236325259189,
+				"deltaHueDegrees": -4.232034160113471,
+				"arc": 0.00365496860578847,
+				"dominant": "chroma",
+				"purity": 0.827350297898553
+			},
+			"straddle": {
+				"regionFirst": "light-neutral",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01627,
+				"barSecond": 0.02293,
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"minBar": 0.01627,
+				"bandLow": 0.0196,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.5986779351180482,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-repeat-4",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-saturated",
+			"first": [
+				56,
+				124,
+				87
+			],
+			"second": [
+				69,
+				129,
+				94
+			],
+			"firstHex": "#387c57",
+			"secondHex": "#45815e",
+			"truth": {
+				"targetDistance": 0.022139,
+				"okLabDistance": 0.02214467341595488,
+				"chromaDistance": 0.007391665026179598,
+				"apcaRaw": -4.473426085215546,
+				"apcaLc": 0,
+				"deltaApcaY": 0.017366272888839185,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-ds-ls-f80-lightness",
+			"hueThird": 1,
+			"direction": "lightness",
+			"decomposition": {
+				"deltaL": 0.02087462212448532,
+				"deltaChroma": -0.007308908190752694,
+				"deltaHueDegrees": -0.7225586549043896,
+				"arc": 0.001103946035129304,
+				"dominant": "lightness",
+				"purity": 0.8885805535447385
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-saturated",
+				"barFirst": 0.01502,
+				"barSecond": 0.02293,
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"minBar": 0.01502,
+				"bandLow": 0.018975,
+				"bandHigh": 0.02293,
+				"bandFraction": 0.8014344920239898,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		},
+		{
+			"itemId": "r3-repeat-5",
+			"part": "same-color",
+			"stratum": "straddle-dark-saturated+light-neutral",
+			"first": [
+				75,
+				123,
+				118
+			],
+			"second": [
+				89,
+				121,
+				117
+			],
+			"firstHex": "#4b7b76",
+			"secondHex": "#597975",
+			"truth": {
+				"targetDistance": 0.016145,
+				"okLabDistance": 0.016144899994566596,
+				"chromaDistance": 0.01583457690164245,
+				"apcaRaw": -2.0437294854530714,
+				"apcaLc": 0,
+				"deltaApcaY": 0.0007025589664379772,
+				"identical": false
+			},
+			"role": "repeat",
+			"repeatOf": "r3-ds-ln-f80-chroma",
+			"hueThird": 1,
+			"direction": "chroma",
+			"decomposition": {
+				"deltaL": 0.0031502333533450777,
+				"deltaChroma": -0.01582417537606829,
+				"deltaHueDegrees": -0.7411065294256787,
+				"arc": 0.00058290035927114,
+				"dominant": "chroma",
+				"purity": 0.9606252689087266
+			},
+			"straddle": {
+				"regionFirst": "dark-saturated",
+				"regionSecond": "light-neutral",
+				"barFirst": 0.01502,
+				"barSecond": 0.01627,
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"minBar": 0.01502,
+				"bandLow": 0.015645,
+				"bandHigh": 0.01627,
+				"bandFraction": 0.799839991306555,
+				"zone": "in-band",
+				"predictsSameUnderMax": true,
+				"predictsSameUnderAvg": false,
+				"discriminating": true
+			}
+		}
+	],
+	"serveOrder": [
+		"r3-ds-ln-f50-chroma",
+		"r3-ds-ln-f80-chroma",
+		"r3-ds-ln-f50-lightness",
+		"r3-dn-ln-f40-chroma",
+		"r3-ds-ls-f20-lightness",
+		"r3-ds-ln-f80-lightness",
+		"r3-dn-ls-control-below-0",
+		"r3-dn-ln-f80-chroma",
+		"r3-dn-ls-f80-lightness",
+		"r3-dn-ln-f20-chroma",
+		"r3-ds-ls-f20-chroma",
+		"r3-ln-ls-f40-chroma",
+		"r3-ln-ls-f40-lightness",
+		"r3-dn-ls-f20-chroma",
+		"r3-ln-ls-f20-chroma",
+		"r3-repeat-0",
+		"r3-repeat-3",
+		"r3-dn-ds-f20-lightness",
+		"r3-dn-ls-control-above-0",
+		"r3-dn-ls-f60-lightness",
+		"r3-ds-ls-f80-lightness",
+		"r3-dn-ds-f80-lightness",
+		"r3-ds-ln-f20-chroma",
+		"r3-ln-ls-f80-lightness",
+		"r3-ds-ls-control-below-1",
+		"r3-control-obvious-0",
+		"r3-dn-ds-f50-chroma",
+		"r3-dn-ls-f20-lightness",
+		"r3-dn-ds-f80-chroma",
+		"r3-ds-ls-f50-chroma",
+		"r3-ds-ls-f50-lightness",
+		"r3-repeat-5",
+		"r3-dn-ls-f40-lightness",
+		"r3-dn-ls-f80-chroma",
+		"r3-control-obvious-2",
+		"r3-ln-ls-f80-chroma",
+		"r3-dn-ln-f80-lightness",
+		"r3-dn-ln-f40-lightness",
+		"r3-repeat-4",
+		"r3-repeat-1",
+		"r3-ln-ls-f60-lightness",
+		"r3-ds-ls-control-above-1",
+		"r3-control-identical-2",
+		"r3-dn-ds-f20-chroma",
+		"r3-dn-ds-f50-lightness",
+		"r3-dn-ln-f20-lightness",
+		"r3-control-obvious-1",
+		"r3-ln-ls-f60-chroma",
+		"r3-ln-ls-f20-lightness",
+		"r3-ds-ln-f20-lightness",
+		"r3-dn-ln-f60-chroma",
+		"r3-dn-ls-f40-chroma",
+		"r3-dn-ls-f60-chroma",
+		"r3-control-identical-1",
+		"r3-dn-ln-f60-lightness",
+		"r3-repeat-2",
+		"r3-control-identical-0",
+		"r3-ds-ls-f80-chroma"
+	],
+	"straddleDesign": {
+		"round": 3,
+		"question": "When a pair's two colours fall in different regions, is the same-colour bar the larger of the two regional bars (Math.max, the incumbent) or their average?",
+		"preregistration": "research/v3/data/calibration/bracketing-round-3-preregistration.md",
+		"bars": {
+			"dark-neutral": 0.00932,
+			"dark-saturated": 0.01502,
+			"light-neutral": 0.01627,
+			"light-saturated": 0.02293
+		},
+		"barsSource": "research/v3/src/contract/constants.ts SAME_COLOR_BAR_BY_REGION — [REVIEWED], bracketing rounds 1 and 2 pooled",
+		"bands": [
+			{
+				"regions": [
+					"dark-neutral",
+					"light-neutral"
+				],
+				"avgBar": 0.012795,
+				"maxBar": 0.01627,
+				"width": 0.003474999999999999,
+				"inBandItems": 8,
+				"corpusShare": 0.2196
+			},
+			{
+				"regions": [
+					"dark-neutral",
+					"light-saturated"
+				],
+				"avgBar": 0.016125,
+				"maxBar": 0.02293,
+				"width": 0.0068049999999999986,
+				"inBandItems": 8,
+				"corpusShare": 0.194
+			},
+			{
+				"regions": [
+					"light-neutral",
+					"light-saturated"
+				],
+				"avgBar": 0.0196,
+				"maxBar": 0.02293,
+				"width": 0.0033299999999999996,
+				"inBandItems": 8,
+				"corpusShare": 0.1886
+			},
+			{
+				"regions": [
+					"dark-saturated",
+					"light-saturated"
+				],
+				"avgBar": 0.018975,
+				"maxBar": 0.02293,
+				"width": 0.003955,
+				"inBandItems": 6,
+				"corpusShare": 0.16
+			},
+			{
+				"regions": [
+					"dark-saturated",
+					"light-neutral"
+				],
+				"avgBar": 0.015645,
+				"maxBar": 0.01627,
+				"width": 0.0006250000000000006,
+				"inBandItems": 6,
+				"corpusShare": 0.1332
+			},
+			{
+				"regions": [
+					"dark-neutral",
+					"dark-saturated"
+				],
+				"avgBar": 0.01217,
+				"maxBar": 0.01502,
+				"width": 0.00285,
+				"inBandItems": 6,
+				"corpusShare": 0.1046
+			}
+		],
+		"corpusFrequency": {
+			"source": [
+				"research/v3/data/legacy/endorsements.json",
+				"research/v3/data/legacy/acceptable.json",
+				"research/v3/data/legacy/known-bad.json"
+			],
+			"palettes": 554,
+			"rolePairs": 3309,
+			"crossRegionPairs": 2582,
+			"crossRegionShare": 0.7803,
+			"pairsInAnyDisagreementBand": 0,
+			"closestCrossRegionPair": 0.04664,
+			"note": "All six region pairs occur between 10.5% and 22.0% of cross-region role pairs, so all six are covered. None of the 2,582 lands in any disagreement band — the straddle rule is dormant for role-pair distinctness on today's corpus, which is a statement about this reviewed corpus, not a reason to leave the rule unmeasured."
+		},
+		"scoring": {
+			"population": "The 42 items with role 'ladder' and straddle.zone 'in-band', each counted once, at its first showing. Repeats are not counted as independent trials. Controls and attention checks are never scored. n = those answered, k = those answered 'same colour'.",
+			"prediction": "On every in-band item the two rules disagree by construction: Math.max predicts 'same colour', the average predicts 'distinct'. So accuracy(max) = k/n and accuracy(avg) = 1 - k/n exactly, and the winner is whichever exceeds one half.",
+			"decisive": "Decisive if and only if the two-sided exact binomial test of k against p = 0.5 yields p < 0.05, and the 95% Wilson interval for k/n excludes 0.5. At the design n these coincide. If n < 42, the threshold is recomputed at the realized n before the count is looked at.",
+			"decisiveAtDesignN": {
+				"n": 42,
+				"favoursMax": 28,
+				"favoursAverage": 14
+			},
+			"unresolved": "Any 15 <= k <= 27 is reported as unresolved — not a tie, not weak support for either rule, and not a licence to keep Math.max on the strength of this round. The rule then stays as it is only because it is already there, and the loose end stays open.",
+			"anisotropyVeto": "k is also computed over the 21 lightness-dominant and the 21 chroma-dominant in-band items separately. If those rates fall on opposite sides of 0.5 and at least one subgroup is individually decisive at alpha = 0.05, the round reports 'anisotropy-confounded': no global winner, and the finding is that the straddle bar depends on the direction of the difference, which neither candidate rule can express.",
+			"validityGates": "Checked before anything above is computed. All 3 identical-pair checks must be answered 'same' and all 3 clearly-distinct checks 'distinct'; any failure voids the round. If both below-band items come back 'distinct', or both above-band items 'same', the bands are not where rounds 1-2 put them and the verdict is reported as not interpretable.",
+			"sensitivity": "Re-run with each repeated item's later answer substituted for its first. If the verdict differs from the primary run, the round is unresolved whatever the primary count said.",
+			"exploratory": "A logistic fit of P(same) on log d over all 46 ladder items. If its p = 0.5 crossing lands strictly inside the pooled band with a 95% interval excluding both the pooled avg and the pooled max, that is reported as 'neither rule — the straddling bar is intermediate'. Badly under-powered at 46 points over six bands; exploratory, never the headline.",
+			"power": {
+				"0.60": 0.24,
+				"0.65": 0.48,
+				"0.70": 0.74,
+				"0.75": 0.92,
+				"0.80": 0.99
+			},
+			"powerNote": "The round reliably detects a strong preference and is underpowered for a mild one. The reviewer's measured repeat consistency across rounds 1-2 is 62.5%, which sits below the decisive cut of 66.7% — so 'unresolved' is a genuinely likely outcome, and it is a real result rather than a failure. Stated before the data so that a null cannot later be read as support for the incumbent."
+		},
+		"directionClasses": [
+			"lightness",
+			"chroma"
+		],
+		"minimumDirectionPurity": 0.7
+	}
+}

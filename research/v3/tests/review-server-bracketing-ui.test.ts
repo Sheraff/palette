@@ -18,8 +18,10 @@ import type { OracleLabelRecord } from "../src/warehouse/records.ts"
 import { isBatchReleased } from "../src/warehouse/warehouse.ts"
 import {
 	BRACKETING_ROUND_2_BATCH_ID,
+	BRACKETING_ROUND_3_BATCH_ID,
 	PART_PROMPTS,
 	generateBracketingRound2Fixture,
+	generateBracketingRound3Fixture,
 } from "../src/review-server/bracketing.ts"
 import { seedBracketingRound2 } from "../src/review-server/server.ts"
 import { readJsonl } from "../src/review-server/store.ts"
@@ -150,5 +152,97 @@ describe("bracketing page, driven by keystrokes (round 2)", () => {
 		)
 		assert.equal(answeredIds.size, fixture.items.length)
 		assert.equal(Object.keys(stored.answerTokens).length, fixture.items.length)
+	})
+})
+
+/**
+ * Round 3, the same page, driven by the same keys.
+ *
+ * Repeated for round 3 rather than trusted from round 2 because of the `freetext.js` lesson
+ * (2026-08-03): a review-UI page can be served, crawl clean under `verify-live`, and still be
+ * key-dead — `verify-live` proves a module is *fetchable*, never that it *runs*. `PHASE_0_LOOSE_ENDS`
+ * L-i revives that obligation "when any new review-UI page or interaction mode is served to the
+ * reviewer", and a new round is a new payload through the same module.
+ *
+ * The round-3-specific risk this closes is the stratum. Round 3's strata are region *pairs*
+ * (`straddle-dark-neutral+light-saturated`), and the whole round is scored by splitting on them, so
+ * an off-by-one between the served item and the recorded one would file answers under the wrong
+ * region pair and still produce a plausible-looking table.
+ */
+describe("bracketing page, driven by keystrokes (round 3)", () => {
+	let harness: Harness
+	let page: FakePage
+	const round3 = generateBracketingRound3Fixture()
+
+	before(async () => {
+		harness = await startHarness()
+		// Pushed last, so the page's "newest unreleased round" rule lands on it.
+		await harness.handle.service.pushBracketing(round3, ["round 3 — the straddle rule"])
+		page = await openPage(harness.base, BRACKETING_PAGE, NODE_IDS)
+	})
+
+	after(async () => {
+		await harness?.stop()
+	})
+
+	it("lands on round 3 and shows the same criterion as rounds 1 and 2", () => {
+		assert.match(page.nodes.status.textContent, new RegExp(BRACKETING_ROUND_3_BATCH_ID, "u"))
+		assert.match(page.nodes.progress.textContent, new RegExp(`^1 / ${round3.items.length}`, "u"))
+		assert.equal(page.nodes.question.textContent, PART_PROMPTS["same-color"].question)
+		assert.equal(page.nodes.instruction.textContent, PART_PROMPTS["same-color"].instruction)
+	})
+
+	it("renders two flat fields carrying the first served pair's colours", () => {
+		const first = round3.items.find((item) => item.itemId === round3.serveOrder[0])!
+		assert.deepEqual(fieldColours(page), [first.firstHex, first.secondHex])
+	})
+
+	it("records y and n against the pair on screen, with the region-pair stratum intact", async () => {
+		const answered: { itemId: string; expected: boolean }[] = []
+		for (const [index, key] of ["y", "n", "y", "n"].entries()) {
+			const served = round3.serveOrder[index]
+			const item = round3.items.find((entry) => entry.itemId === served)!
+			assert.deepEqual(fieldColours(page), [item.firstHex, item.secondHex], `item ${index + 1} shows the wrong colours`)
+			await page.press(key)
+			answered.push({ itemId: served, expected: key === "y" })
+		}
+		assert.match(page.nodes.progress.textContent, new RegExp(`^5 / ${round3.items.length}`, "u"))
+
+		const labels = harness.records().filter((record): record is OracleLabelRecord => record.type === "oracle-label")
+		assert.equal(labels.length, answered.length)
+		for (const [index, entry] of answered.entries()) {
+			const item = round3.items.find((candidate) => candidate.itemId === entry.itemId)!
+			assert.equal(labels[index].imageId, entry.itemId, `answer ${index + 1} landed on the wrong pair`)
+			assert.equal(labels[index].answer, entry.expected)
+			assert.equal(labels[index].batch?.id, BRACKETING_ROUND_3_BATCH_ID)
+			assert.equal(labels[index].stratum, item.stratum)
+		}
+		// At least one of the first four is a straddling pair, or the round is not testing its question.
+		const strata = answered.map((entry) => round3.items.find((item) => item.itemId === entry.itemId)!.stratum)
+		assert.ok(strata.some((stratum) => stratum.startsWith("straddle-")), "no straddling pair among the first four")
+	})
+
+	it("steps back on u and appends the replacement", async () => {
+		const before = harness.records().length
+		await page.press("u")
+		assert.match(page.nodes.status.textContent, /stepped back/u)
+		await page.press("y")
+		assert.equal(harness.records().length, before + 1, "undo appends; it never deletes")
+	})
+
+	it("ignores a key the round does not bind", async () => {
+		for (const key of ["1", "q", "z"]) {
+			await assert.rejects(() => page.press(key), new RegExp(`the page ignored the ${key} key`, "u"))
+		}
+	})
+
+	it("refuses to release while pairs are unanswered, then releases on r", async () => {
+		await page.press("r")
+		assert.match(page.nodes.status.textContent, /release refused: .*unjudged items/u)
+		for (let remaining = 5; remaining <= round3.items.length; remaining++) await page.press("y")
+		assert.match(page.nodes.question.textContent, /every item answered/u)
+		await page.press("r")
+		assert.match(page.nodes.status.textContent, /^released at /u)
+		assert.ok(isBatchReleased(harness.records(), BRACKETING_ROUND_3_BATCH_ID))
 	})
 })
