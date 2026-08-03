@@ -570,3 +570,276 @@ they now demonstrably work.
    the part of it that can be automated, and the rest is deferred to §8 rather than approximated.
 5. **`skap` was added to the wiring smoke's cover set** (a non-square 1000x894 image) to make sure
    the coordinate conversion was exercised on a non-square frame. It was; nothing broke.
+
+---
+
+# 12. The phrasing sweep — 2026-08-04, later the same day
+
+**Appended, not merged.** Everything above is the probe as it was written and is left untouched,
+including the places this sweep shows were too narrow. **Pre-registered in
+`POINTING_PHRASING_PREREG.md`** — candidates, scoring, pick rule and the reviewer-round bar were all
+fixed in that file before a model was loaded. This section reports against that registration.
+
+**GPU:** single-owner slot, `pgrep` clean before starting. **Total 11.1 min** (§12.7). **No download.**
+
+## 12.1 The one-page answer
+
+| | |
+|---|---|
+| Does a phrasing recover the figure/ground question? | **No. Not one.** Every phrasing that asks it lands at 0-4 of 15 (§12.3). |
+| Then what breaks it — the relative clause, or the noun? | **Both, independently and about equally.** The probe conflated two changes; separated, each one alone is nearly as destructive as the pair (§12.3). This is the sweep's real finding. |
+| Did anything clear the pre-registered bar? | **Yes, two — `plain` and `backdrop`** (§12.2). |
+| Which was picked? | **`plain`, the incumbent**, on the pre-registered cross-model tie-break. **The sweep searched the phrasing space and found no improvement** (§12.4). |
+| Was the round built and pushed? | **Yes** — `pointing-ground-1`, 8 tiles, live on 3010 (§12.6). |
+| Did the automatic on-ground proxy separate anything? | **No — and that matters** (§12.5). |
+
+## 12.2 The sweep table
+
+8 phrasings x 15 covers x 2 pointers = 240 calls. `ans` = calls returning >=1 in-frame point;
+`dec` = explicit decline; `unp` = unparsed; `onFig` = point inside a stored `person`/`face` mask on
+the 11 decidable covers (the pre-registered FAIL condition); `ctrl` = of the 5 non-`skap` controls.
+
+**MolmoPoint-8B-8bit** — the model the pick is decided on:
+
+| phrasing | ans | dec | unp | onFig | ctrl | answer rate | on-ground | score | CLEARS |
+|---|---|---|---|---|---|---|---|---|---|
+| `plain` — *point to the background* | **15/15** | 0 | 0 | 0 | 5/5 | 1.000 | 1.000 | **1.000** | **YES** |
+| `backdrop` — *point to the backdrop* | **15/15** | 0 | 0 | 0 | 5/5 | 1.000 | 1.000 | **1.000** | **YES** |
+| `empty_area` — *point to the empty area* | 15/15 | 0 | 0 | 0 | 5/5 | 1.000 | 1.000 | 1.000 | ineligible |
+| `wall` — *point to the wall* | 6/15 | 9 | 0 | 0 | 1/5 | 0.400 | 1.000 | 0.400 | ineligible |
+| `surface` — *point to the background surface* | 4/15 | 11 | 0 | 0 | 0/5 | 0.267 | 1.000 | 0.267 | - |
+| `fg_minimal` — *point to the background behind the subject* | 3/15 | 12 | 0 | 0 | 1/5 | 0.200 | 1.000 | 0.200 | - |
+| `fg_full` — *point to the background surface behind the subject* | 1/15 | 14 | 0 | 0 | 0/5 | 0.067 | 1.000 | 0.067 | - |
+| `behind` — *point to what is behind the subject* | **0/15** | 15 | 0 | — | 0/5 | 0.000 | — | 0.000 | - |
+
+**Qwen3-VL-30B-A3B-6bit** — run for the cross-model tie-break only:
+
+| phrasing | ans | dec | unp | onFig | ctrl | answer rate |
+|---|---|---|---|---|---|---|
+| `plain` | **11/15** | 2 | 2 | 1 | 4/5 | 0.733 |
+| `backdrop` | 7/15 | 4 | 4 | 0 | 3/5 | 0.467 |
+| `surface` | 6/15 | 7 | 2 | 0 | 1/5 | 0.400 |
+| `empty_area` | 5/15 | 10 | 0 | 0 | 1/5 | 0.333 |
+| `wall` | 3/15 | 12 | 0 | 0 | 0/5 | 0.200 |
+| `fg_full` | 1/15 | 14 | 0 | 0 | 0/5 | 0.067 |
+| `fg_minimal` | **0/15** | 14 | 1 | — | 0/5 | 0.000 |
+| `behind` | **0/15** | 14 | 1 | — | 0/5 | 0.000 |
+
+**The probe replicates exactly, on a different day and a fresh process.** Qwen `plain` came back
+11 points / 2 declines / 2 unparsed — the probe's §3.2 row to the digit. Qwen `fg_full` 1/15 and
+MolmoPoint `fg_full` 1/15 — the probe's §5.1 row to the digit. MolmoPoint `plain` 15/15 — the probe's
+§5.2 claim to the digit. At temperature 0 these models are reproducible across runs, which is worth
+knowing before anyone treats a single future run as noise.
+
+## 12.3 The mechanism — what actually breaks the figure/ground sentence
+
+The probe's failing prompt changed **two** things at once against the working one: it added a
+prepositional phrase (`behind the subject`) *and* elaborated the head noun (`background` ->
+`background surface`). §5.1 attributed the collapse to the figure/ground framing as a whole. The 2x2
+separates them, on MolmoPoint:
+
+| | noun **not** elaborated | noun elaborated |
+|---|---|---|
+| **no** PP | `plain` **15/15** | `surface` **4/15** |
+| **+ PP** `behind the subject` | `fg_minimal` **3/15** | `fg_full` **1/15** |
+
+**Neither factor is the culprit; the bare noun phrase is the whole load-bearing thing.** Adding two
+words of noun (`surface`) costs 11 of 15 answers on its own, with no figure/ground content
+whatsoever. Adding the prepositional phrase costs 12 of 15 on its own. Together, 14. The effects are
+roughly equal and close to saturating individually.
+
+**So §5.1's finding was right about the fact and wrong about the cause**, and the correction is the
+more general and more useful statement:
+
+> Pointing models answer **bare noun-phrase imperatives** — `point to the <noun>`. *Any* elaboration
+> past that collapses the answer rate: a relative clause, an added head noun, or a relation with no
+> ground noun at all. It is not about figure/ground. Figure/ground merely cannot be expressed
+> without elaboration, which is why it looked like the cause.
+
+The sharpest single number is **`behind` — `point to what is behind the subject` — 0/15 on both
+models, the only phrasing in the sweep that never answered once.** That is the figure/ground
+relation stated with no ground noun to point at, and it is unanswerable to both pointers. The
+capability is noun-directed; it has no relational mode to reach for.
+
+**Consequence for the route.** The question `GROUND_FREETEXT_SYNTHESIS.md` §6 says actually
+matters — *which pixels are ground* — is a **relational** question. This sweep is the second
+independent measurement that the pointing route cannot be asked it, and it now says so
+mechanistically rather than by one failing sentence. Pointing can be asked *"where is the
+background?"*; it cannot be asked *"what is behind the subject?"*. Those are not the same question,
+and the synthesis is explicit that the second is the one that broke.
+
+## 12.4 The pick, by the pre-registered rule
+
+Two phrasings cleared on MolmoPoint (`plain`, `backdrop`), both at a combined score of exactly
+1.000 — a tie, because both answered every cover with zero on-figure points.
+
+Pre-registered tie-break #2 is the **Qwen answer rate**, on the stated reason that a phrasing which
+works on two independently-trained models is a fact about the sentence rather than about one
+model's training set. `plain` 11/15 vs `backdrop` 7/15.
+
+> **THE PICK: `plain` — `point to the background`. The incumbent.**
+
+**Stated plainly, as the pre-registration required: the sweep found no improvement.** The phrasing
+space proposed in §7.2 was searched — four new noun phrases and a factorial — and the sentence the
+probe was already using survived it. `backdrop` matched it on MolmoPoint and is **not** cross-model
+robust (15/15 vs 7/15), which is exactly the failure mode tie-break #2 exists to catch.
+
+**What was retired:** §7.2's hope that "this is ~5 minutes of GPU and could plausibly move the
+answer rate more than switching models did". It did not move the answer rate at all. It bought the
+mechanism in §12.3 instead, which is worth more.
+
+### The willingness diagnostic, and an honest mixed reading
+
+`wall` and `empty_area` were pre-registered as ineligible-but-run: nouns that are factually false on
+most album covers, where **a high answer rate is evidence against the route**, not for it.
+
+- **`empty_area` answered 15/15 on MolmoPoint** — every cover, including covers with no empty area.
+- **`wall` answered only 6/15** (3/15 on Qwen).
+
+These pull in opposite directions and the honest reading is the weaker one. If the model pointed at
+any noun it was handed, `wall` would also be 15/15; it is not, so there **is** image conditioning.
+But "empty area" is a vaguer noun than "wall" and is arguably locally true of most covers, so its
+15/15 is not clean evidence of a prior either. **The diagnostic did not resolve.** It is reported
+because it was pre-registered, and it is not being read as support for the route.
+
+## 12.5 The automatic on-ground proxy did not discriminate — and that is the finding
+
+Look down the `on-ground` column of §12.2: it is **1.000 for every phrasing on MolmoPoint** and near
+it on Qwen. Across 120 MolmoPoint calls, **zero** points landed inside a stored `person`/`face`
+mask. On Qwen, one did.
+
+The combined score was therefore driven **entirely by the answer rate**; the correctness half
+contributed nothing to any comparison. That is not a good result dressed as a caveat — it means:
+
+> **The only correctness criterion available without a human cannot tell a good ground point from a
+> bad one.** It only catches the crudest failure — landing on a face — and no phrasing in this sweep
+> ever committed it.
+
+This is the strongest possible argument for §7.1's position and the reason the reviewer round is
+not optional. Every number in §12.2 could be identical whether the dots are on ground or merely off
+faces, and nothing in the instrument can tell those apart.
+
+**A second limitation, recorded honestly.** The three prose-derived bonus checks (§PREREG 3 —
+points in both halves of `00014fb4`, two of three bands of `000f0a78`, three quadrants of `disney`)
+**could not fire on the picked phrasing**: MolmoPoint returned exactly **one point per answer** on
+both `plain` and `backdrop`, and all three checks need two or more. They are scored 0/3, and that
+zero is **structurally unfirable, not a negative result**. The plural capability the probe measured
+(1.79 points/call) came from the probe's *plural* phrasing, which this sweep did not carry. Qwen's
+`plain` did fire one (1/2). If the multi-field cases matter, they need a plural prompt, and the
+pick is a singular one — an open trade, not a settled one.
+
+## 12.6 The reviewer round — BUILT and PUSHED
+
+`pointing-ground-1`, live on `http://127.0.0.1:3010/`, **8 tiles, 1 question, 4 answers**, open.
+
+**Composition** — exactly the pre-registration, no discretion exercised at build time:
+the 6 palette-decidable misfit covers (`00014fb4`, `00030075`, `00066a61`, `00075841`, `000f0a78`,
+`artofficial`) plus the 2 covers where the pick and its closest rival produced the most different
+masks: **`elephunk` (mask IoU 0.246)** and **`0002dfdc` (0.409)**. The three ambiguous covers are
+deliberately absent — they have no correct answer and asking would manufacture one.
+
+**The panel:** two panels, left the bare artwork, right the same artwork with the SAM mask as a pink
+wash and the prompted pixel as a green dot. **No caption, no area number, no phrasing, no model name
+on the panel** — telling the reviewer what the model thought would measure the label, not the mask.
+
+**The question**, carried from §8 and re-fixed in the pre-registration:
+*"The pink wash is what the model called the background. It was grown from the green dot — the
+single pixel the model pointed at. Is the dot on the background? Is the wash the background?"*
+Answers on digits `1`-`4`: dot right + wash right / dot right + wash wrong / dot wrong / can't tell.
+Digits deliberately: `review-ui/oracle.js:322` resolves an answer hotkey **before** falling through
+to `u` (undo) and `r` (release), so a letter hotkey can make release unreachable.
+
+> **THE BAR, fixed in `POINTING_PHRASING_PREREG.md` §5 before any answer was seen:** carry pointing
+> forward as a ground route only if **dot-right >= 6/8** **and** **dot-right-and-wash-right >= 4/8**.
+
+**Gates, all green:**
+
+| check | result |
+|---|---|
+| push | `201 {"batchId":"pointing-ground-1","itemCount":8}` |
+| `verify-live` | **OK** — 28 pages, 11 modules, 18 batches, 75 requests |
+| live-payload key smoke, this batch | **pass** — `token,questionKey,media,width,height,answer,revision`; answers `1..4` |
+| answer-key leak scan of the live payload | **none** (10 forbidden manifest fields, string-scanned) |
+| media | `200 image/png 774,571 bytes` |
+| live-payload key smoke, all batches | **12/12 oracle-validation** (the other 6 are `calibration`/`mechanism`, a different payload shape, out of scope) |
+| review-ui modules added or changed | **none** — the round runs on the incumbent `oracle.js`, and `oracle.js:322` uses `normalizeKey(event.key…)`, not the `freetext.js` defect form |
+
+**The one part of the freetext.js convention I could not perform:** L-i's "press one answer hotkey
+yourself before handing the URL over" needs a browser. I did not press a key, because the only way
+to exercise the live answer path from a shell is to record a real answer into the open round, which
+would corrupt it. What is asserted instead: no `review-ui` module was added or changed, so the
+keyboard path is the incumbent one that 12 oracle batches have been answered through, and the
+specific defect L-i names is statically absent from it. **Flagging it rather than claiming it.**
+
+**Watch command — reported, NOT started, per the task:**
+
+```
+NODE_NO_WARNINGS=1 nohup node --experimental-strip-types \
+  research/v3/src/review-server/watch-batch.ts --batch pointing-ground-1 \
+  >/tmp/watch-pointing-ground-1.log 2>&1 &
+```
+
+## 12.7 Cost, and an operational finding worth more than the minutes
+
+| item | actual |
+|---|---|
+| MolmoPoint, 120 calls | 8.2 min pointer time (8.6 min wall) |
+| Qwen, 120 calls | 2.1 min pointer time (2.5 min wall) |
+| **total GPU slot** | **11.1 min** — inside the ~20 min stop, above the ~11 min estimate by rounding |
+
+**`common.load_sam()` sha256-hashes the 3.5 GB weights file BEFORE its own timer starts.** Every
+note in this file reporting a "0.2 s" or "~1 min" SAM load has been quoting `load_seconds`, which
+**excludes that hash**. Measured here: the first load cost **~8 minutes of wall clock** — most of it
+the hash plus a one-time MLX Metal kernel compile — against a reported `load_seconds` of 0.2. The
+second run, with `--no-verify-weights` and the Metal cache warm, loaded in **0.2 s wall**.
+
+Nothing is wrong with the check; the verification is worth having. What is wrong is the **number
+everyone has been quoting**. Anyone budgeting a SAM job from `load_seconds` will under-budget the
+first load of a session by an order of magnitude. Recorded here so it is not rediscovered as a hang
+— it looks exactly like a wedged process: low CPU, flat RSS, no output for minutes.
+
+## 12.8 Ledger items — proposed, NOT placed
+
+**B-new+1 — REVISE, urgently.** The standing entry reads *"pointing models will not answer
+elaborated figure/ground prompts"*. That is true but attributes the failure to the wrong thing.
+Replace with: **pointing models answer bare noun-phrase imperatives only; any elaboration — added
+head noun, relative clause, or a relation with no ground noun — collapses the answer rate, and the
+figure/ground question is unaskable because it cannot be phrased without one.** Evidence: the 2x2 in
+§12.3 and `behind` at 0/15 on both models. The consequence already recorded — *neither model's
+silence is evidence about an image* — stands unchanged and is now better founded.
+
+**B-new — REVISE.** Its trigger was "the §7 phrasing sweep". The sweep has run: the phrasing space
+was searched and the incumbent survived. The pointer question is settled as far as prompting can
+settle it; what remains is whether the dots are right, which is `pointing-ground-1`.
+
+**A-new+3 (NEW) — `load_sam`'s reported load time excludes a multi-minute weights hash.** §12.7.
+Small, operational, and it has already cost one agent eight minutes of a single-owner GPU slot
+spent wondering whether a process was wedged.
+
+**A-new+4 (NEW, and the one that should worry us) — the pointing route has no automatic
+correctness signal.** §12.5: the only human-free criterion is "not on a face", it fired zero times
+across 120 calls, and it therefore cannot rank phrasings, cannot rank models, and cannot be a gate.
+Every comparison in this document and the probe above it is an **answer-rate** comparison wearing a
+correctness label. Trigger: any proposal to scale pointing on the strength of a measured number.
+
+## 12.9 What would change my mind
+
+- **If `pointing-ground-1` clears the bar**, §12.5's worry is over-stated — the proxy is blind but
+  the dots are right anyway — and the residual cross-check (§7.4) becomes the next measurement.
+- **If dots are right and washes are wrong**, it is SAM candidate selection (§2.4), not the pointer,
+  and it is cheap to work on. This is the outcome the two disagreement tiles are there to catch.
+- **If dots are wrong on the decidable six**, the route is done: the phrasing space is searched, the
+  better pointer is already in use, and there is nothing left to turn.
+
+## 12.10 Deviations from the pre-registration
+
+1. **`--no-verify-weights` was added mid-run and used for the Qwen pass**, after the first load cost
+   ~8 min (§12.7). The same file was verified against the same pin minutes earlier in the same
+   session. Recorded in the Qwen output as `weights_sha256_verified_this_run: false`, so no row
+   claims a check it did not get.
+2. **The all-batches key smoke is reported as 12/12 over oracle-validation batches**, not 18/18. The
+   6 excluded are `calibration`/`mechanism` batches whose payload shape my assertion does not
+   describe. Reporting 12/18 would have been a false alarm; silently asserting over 18 would have
+   been a false pass. Scope stated instead.
+3. **No keypress was performed against the live page** (§12.6), with the reason and the compensating
+   argument stated rather than the check quietly dropped.
