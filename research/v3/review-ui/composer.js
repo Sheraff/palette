@@ -17,15 +17,18 @@
  *     grade in, because a palette that only looks right in a different renderer is not endorsed.
  *  3. **Editing a submitted composition is a NEW endorsement.** The record is immutable evidence of
  *     what was assembled and previewed; the warehouse refuses an amendment carrying palette changes.
- *     A mistaken one is withdrawn, and both stay in the log.
+ *     A mistaken one is deleted (`w`) — which retracts it rather than erasing the line — and the
+ *     replacement is a second submission. Both stay in the log; only one of them counts.
  *
  * Keyboard, while the composer is open: `t` next target · `T` previous target · `1`–`9` assign that
- * swatch · `g` cycle flat / 2 stops / 3 stops · `s` submit · `w` withdraw the latest endorsement ·
+ * swatch · `g` cycle flat / 2 stops / 3 stops · `s` submit · `w` delete the submitted palette ·
  * `e` or `Esc` close. Digits address the swatch grid here, not the grade scale — the composer owns
- * the keyboard while it is open, and the legend on screen says so.
+ * the keyboard while it is open, and the legend on screen says so. The digit row is decoded by the
+ * shared `keys.js`, so the reviewer's AZERTY row (`&é"'(§è!çà`) addresses the grid too.
  */
 
 import { el, renderMock, renderSwatches } from "./mock.js"
+import { normalizeKey } from "./keys.js"
 
 /** Roles in published order. [INHERITED] output contract, PHASE_0_DECISIONS.md §2. */
 const ROLES = ["background", "surface", "foreground", "accent"]
@@ -33,7 +36,24 @@ const ROLES = ["background", "surface", "foreground", "accent"]
 /** Gradient shapes the composer offers. REVIEW_UI.md §4: "must support flat / 2-stop / 3-stop". */
 const GRADIENT_MODES = ["flat", "2-stop", "3-stop"]
 
-/** Stop positions per mode. The published values; the display mapping is the server's business. */
+/**
+ * How many colours each shape asks the reviewer for, beyond the four roles.
+ *
+ * Reviewer, 2026-08-03: *"why does the 2-stop background option actually add 2 colors? a 2-stop
+ * gradient is between surface and background, no extra color. Only the 3-stop gradient adds a
+ * midpoint color"*. They are right about what the reviewer is being asked, so:
+ *
+ *  - **2-stop** asks for **nothing**. The ramp runs background → surface, both already picked.
+ *  - **3-stop** asks for **one** colour, the midpoint; the ends stay background and surface.
+ *
+ * The submitted palette still carries explicit stops with explicit positions, because the output
+ * contract says a gradient is a list of stops and the composer must be able to express what the
+ * algorithm publishes. The decoupling stays in the data; it is gone from the form, where it was
+ * asking the reviewer to state the same two colours twice.
+ */
+const EXTRA_COLORS_PER_MODE = { flat: 0, "2-stop": 0, "3-stop": 1 }
+
+/** Published stop positions per mode. The display mapping is the server's business, not this file's. */
 const STOP_POSITIONS = { flat: [], "2-stop": [0, 1], "3-stop": [0, 0.5, 1] }
 
 /** How many swatches a digit key can reach. 1–9 on the keyboard; the rest are a click away. */
@@ -57,8 +77,9 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 		open: false,
 		roles: { background: null, surface: null, foreground: null, accent: null },
 		mode: "flat",
-		stops: [],
-		/** Which slot the next picked colour fills: a role name, or `stop:<index>`. */
+		/** The 3-stop shape's middle colour, and the only stop colour the reviewer ever picks. */
+		midpoint: null,
+		/** Which slot the next picked colour fills: a role name, or `midpoint`. */
 		target: "background",
 		swatches: [],
 		source: null,
@@ -74,10 +95,24 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 	const itemPath = (...parts) =>
 		["/api/batches", encodeURIComponent(batchId), "items", encodeURIComponent(item.itemId), ...parts].join("/")
 
-	const targets = () => [...ROLES, ...state.stops.map((_, index) => `stop:${index}`)]
+	/** The slots that ask the reviewer for a colour: the four roles, plus a midpoint on 3-stop only. */
+	const targets = () => [...ROLES, ...(EXTRA_COLORS_PER_MODE[state.mode] > 0 ? ["midpoint"] : [])]
+
+	/**
+	 * The stops the palette will carry, derived rather than asked for.
+	 *
+	 * Background and surface are the two ends in every shape — that is what makes the 2-stop form
+	 * empty — and the midpoint is the one colour a 3-stop shape adds.
+	 */
+	function stopColors() {
+		if (state.mode === "flat") return []
+		if (state.mode === "2-stop") return [state.roles.background, state.roles.surface]
+		return [state.roles.background, state.midpoint ?? state.roles.background, state.roles.surface]
+	}
 
 	function paletteOf() {
 		if (ROLES.some((role) => state.roles[role] === null)) return null
+		if (EXTRA_COLORS_PER_MODE[state.mode] > 0 && state.midpoint === null) return null
 		return {
 			background: state.roles.background,
 			surface: state.roles.surface,
@@ -88,18 +123,25 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 			gradient:
 				state.mode === "flat"
 					? null
-					: { stops: state.stops.map((stop, index) => ({ color: stop, position: STOP_POSITIONS[state.mode][index] })) },
+					: { stops: stopColors().map((color, index) => ({ color, position: STOP_POSITIONS[state.mode][index] })) },
 		}
 	}
 
-	/** Seed the composition from a side the reviewer was shown, or leave it empty. */
+	/**
+	 * Seed the composition from a side the reviewer was shown, or leave it empty.
+	 *
+	 * A shown palette may carry stops that are not its background and surface — the contract allows
+	 * that and the algorithm sometimes does it. What is kept here is its *shape* and, on three stops,
+	 * its middle colour; the ends follow the roles, because those are the two ends the form now
+	 * offers. The reviewer sees the result in the preview before anything is endorsed.
+	 */
 	function startFrom(sideName, side) {
 		state.basedOn = sideName
 		if (side !== null) {
 			for (const role of side.roles) state.roles[role.role] = role.hex
 			const stops = side.gradient === null ? [] : side.gradient.stops.map((stop) => stop.hex)
 			state.mode = stops.length >= 3 ? "3-stop" : stops.length === 2 ? "2-stop" : "flat"
-			state.stops = stops.slice(0, 3)
+			state.midpoint = stops.length >= 3 ? stops[1] : null
 		}
 		state.target = "background"
 		schedulePreview()
@@ -107,7 +149,7 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 	}
 
 	function assign(hex) {
-		if (state.target.startsWith("stop:")) state.stops[Number(state.target.slice(5))] = hex
+		if (state.target === "midpoint") state.midpoint = hex
 		else state.roles[state.target] = hex
 		// Zero ceremony: picking a colour moves to the next empty slot, so a fresh palette is four
 		// clicks and not four clicks plus four target selections.
@@ -119,18 +161,21 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 	}
 
 	function valueOf(slot) {
-		return slot.startsWith("stop:") ? (state.stops[Number(slot.slice(5))] ?? null) : state.roles[slot]
+		return slot === "midpoint" ? state.midpoint : state.roles[slot]
 	}
 
 	function cycleMode(step = 1) {
 		const next = (GRADIENT_MODES.indexOf(state.mode) + step + GRADIENT_MODES.length) % GRADIENT_MODES.length
 		state.mode = GRADIENT_MODES[next]
-		const wanted = STOP_POSITIONS[state.mode].length
-		// A new stop starts as the background — a real source pixel, so the palette stays submittable —
-		// and the reviewer replaces it.
-		while (state.stops.length < wanted) state.stops.push(state.roles.background ?? state.swatches[0]?.hex ?? null)
-		state.stops.length = wanted
-		if (state.target.startsWith("stop:") && Number(state.target.slice(5)) >= wanted) state.target = "background"
+		if (EXTRA_COLORS_PER_MODE[state.mode] === 0) {
+			// Nothing extra to pick: the 2-stop ramp is background → surface, both already chosen.
+			state.midpoint = null
+			if (state.target === "midpoint") state.target = "background"
+		} else if (state.midpoint === null) {
+			// The midpoint starts as the background — a real source pixel, so the palette stays
+			// previewable and submittable from the first frame — and the reviewer replaces it.
+			state.midpoint = state.roles.background ?? state.swatches[0]?.hex ?? null
+		}
 		schedulePreview()
 		render()
 	}
@@ -224,16 +269,23 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 		}
 	}
 
-	/** Withdraw the latest endorsement: an empty-patch retracting amendment, never a deletion. */
+	/**
+	 * Delete the palette this reviewer submitted on this item.
+	 *
+	 * "Delete" in the reviewer's sense, not the log's: what is appended is an empty-patch retracting
+	 * amendment, so the palette stops counting as evidence everywhere (release stops citing it, the
+	 * warehouse resolves it as retracted) while the record itself stays in the log. Nothing here ever
+	 * removes a line — but from the reviewer's side the palette is gone, and the button says that.
+	 */
 	async function withdraw() {
 		const live = (item.endorsements ?? []).filter((entry) => !entry.retracted)
 		if (live.length === 0) {
-			status("no endorsement to withdraw on this item")
+			status("nothing to delete — you have no submitted palette on this item")
 			return
 		}
-		const reason = globalThis.prompt("Why withdraw this endorsement?") ?? ""
+		const reason = globalThis.prompt("Why delete this submitted palette?") ?? ""
 		if (reason.trim().length === 0) {
-			status("withdrawal cancelled — an amendment needs a reason")
+			status("deletion cancelled — the log needs a reason for it")
 			return
 		}
 		try {
@@ -242,10 +294,10 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 				headers: { "content-type": "application/json" },
 				body: JSON.stringify({ target: "endorsement", patch: {}, retract: true, reason }),
 			})
-			status("endorsement withdrawn — the record stays in the log, retracted")
+			status("submitted palette deleted — it counts as evidence no more; the record stays in the log, retracted")
 			await onSubmitted()
 		} catch (error) {
-			status(`not withdrawn: ${error.message}`)
+			status(`not deleted: ${error.message}`)
 		}
 	}
 
@@ -255,7 +307,7 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 		const row = el("div", { class: "control-row" })
 		for (const slot of targets()) {
 			const hex = valueOf(slot)
-			const label = slot.startsWith("stop:") ? `stop ${Number(slot.slice(5)) + 1}` : slot
+			const label = slot === "midpoint" ? "gradient midpoint" : slot
 			// The active target is marked in the text, not only by inversion: the reviewer moves through
 			// these with `t` while looking at the artwork, and a class change is not readable from there.
 			const button = el("button", {
@@ -308,7 +360,7 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 	function renderPreview() {
 		const block = el("div", { class: "composer-preview" })
 		if (state.preview === null) {
-			block.append(el("p", { text: "pick a colour for every role to see the preview" }))
+			block.append(el("p", { text: "pick a colour for every slot above to see the preview" }))
 			return block
 		}
 		// The same mock, from the same module, fed the server's own side payload: the reviewer previews
@@ -393,10 +445,29 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 
 		const submitButton = el("button", { text: "endorse this palette (s)", attrs: { type: "button" } })
 		submitButton.addEventListener("click", submit)
-		const withdrawButton = el("button", { text: "withdraw the latest (w)", attrs: { type: "button" } })
-		withdrawButton.addEventListener("click", withdraw)
 		const closeButton = el("button", { text: "close (Esc)", attrs: { type: "button" } })
 		closeButton.addEventListener("click", () => close())
+
+		// The delete button, and the one line that says why deleting is the only correction there is.
+		// Reviewer, 2026-08-03: "there is a button that says 'withdraw the latest (w)' and i have no idea
+		// what this does". So it now names the thing it acts on, and it is only on screen when there IS
+		// one — a button offering to delete something that does not exist is the same confusion again.
+		const live = (item.endorsements ?? []).filter((entry) => !entry.retracted)
+		const deleteButton =
+			live.length === 0
+				? null
+				: el("button", { text: "delete my submitted palette (w)", attrs: { type: "button" } })
+		deleteButton?.addEventListener("click", withdraw)
+		const deleteNote =
+			live.length === 0
+				? null
+				: el("p", {
+						class: "control-note",
+						text:
+							"a submitted palette cannot be edited — it is evidence of what you actually assembled and " +
+							"previewed — so deleting it and composing a new one is the only correction. The record stays " +
+							"in the log, marked withdrawn.",
+					})
 
 		// Nullish children are filtered rather than appended: `append(null)` writes the text "null".
 		root.append(
@@ -405,8 +476,8 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 				el("p", {
 					class: "composer-keys",
 					text:
-						"t / T target · 1–9 swatch · g gradient shape · s endorse · w withdraw · Esc close · " +
-						"click the artwork to eyedrop",
+						`t / T target · 1–9 swatch · g gradient shape · s endorse · ${live.length > 0 ? "w delete · " : ""}` +
+						"Esc close · click the artwork to eyedrop",
 				}),
 				el(
 					"div",
@@ -414,14 +485,23 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 					el("div", { class: "composer-pickers" }, image, renderGrid()),
 					renderPreview(),
 				),
-				el("p", { class: "control-label", text: "roles and stops" }),
+				el("p", { class: "control-label", text: "colours to pick" }),
 				renderTargets(),
 				modeRow,
+				// What each shape asks for, in one line, because "2 stops" reading as "two more colours"
+				// is exactly the misunderstanding the reviewer reported.
+				el("p", {
+					class: "control-note",
+					text:
+						"flat — one colour, the background · 2 stops — background → surface, no extra colour · " +
+						"3 stops — background → midpoint → surface, one extra colour",
+				}),
 				state.foreign.length > 0
 					? el("p", { class: "banner", text: `not pixels of this artwork: ${state.foreign.join(", ")}` })
 					: null,
 				comment,
-				el("div", { class: "control-row" }, submitButton, withdrawButton, closeButton),
+				el("div", { class: "control-row" }, submitButton, deleteButton, closeButton),
+				deleteNote,
 				renderEndorsements(),
 			].filter((child) => child !== null),
 		)
@@ -457,8 +537,14 @@ export function createComposer({ batchId, item: initialItem, artworkSrc, api, st
 			item = next
 			render()
 		},
-		/** True when the composer consumed the key. The host page must not act on it as well. */
-		onKey(key) {
+		/**
+		 * True when the composer consumed the key. The host page must not act on it as well.
+		 *
+		 * The key is normalized again here even though the host page already did it: this is a module
+		 * with several callers, and "the digit row works" must not depend on which page is hosting it.
+		 */
+		onKey(rawKey) {
+			const key = normalizeKey(rawKey)
 			if (!state.open) {
 				if (key !== "e") return false
 				open()

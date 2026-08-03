@@ -15,6 +15,7 @@ import type {
 	Grade,
 	PaletteSnapshot,
 	Preference,
+	VerdictRecord,
 } from "../warehouse/records.ts"
 import type { BracketingFixture } from "./bracketing.ts"
 import type { OracleValidationFixture } from "./oracle-validation.ts"
@@ -206,11 +207,53 @@ export function isCalibrationBatch(stored: StoredAnyBatch): stored is StoredCali
 	return (stored as StoredCalibrationBatch).kind === "calibration"
 }
 
+/**
+ * How the preference on a pairwise verdict got its value.
+ *
+ * `explicit` — the reviewer pressed it. `prefilled` — the two grades differed, so the page filled in
+ * the better-graded side and the reviewer left it there (they can always override it; overriding
+ * makes it explicit).
+ *
+ * Recorded because the two are not the same evidence, and nothing downstream can tell them apart
+ * afterwards. Reviewer, 2026-08-03: *"if I rate 'A strong' and then 'B weak' I should not have to
+ * rate 'A is better'"* — that convenience is right, and it also means a preference can now exist
+ * without anyone having stated it. Adjudication that weighs a preference, and any future measurement
+ * of reviewer consistency, needs to know which kind it is holding.
+ *
+ * Equal grades never prefill: two strongs are not interchangeable (regrade agreement ~88%,
+ * REVIEW_UI.md §2), so there the reviewer still presses one, including "no preference".
+ */
+export const PREFERENCE_SOURCES = ["explicit", "prefilled"] as const
+export type PreferenceSource = (typeof PREFERENCE_SOURCES)[number]
+
+/**
+ * A verdict record as this server writes and replays it: the warehouse's own `VerdictRecord` plus one
+ * additive field.
+ *
+ * Why additive and not a schema change: `records.ts` belongs to the contract/warehouse workstream
+ * (CONVENTIONS.md path ownership), and `VerdictRecord` had no field that fits — `comment` is the
+ * reviewer's raw text and must stay theirs, and `PaletteSnapshot.meta` is about a palette, not about
+ * how a judgement was entered. `validateRecord` checks the fields it knows and passes anything else
+ * through untouched, and `serializeRecord` writes every key, so the flag round-trips through append,
+ * read and restart-replay without the schema version moving or any other workstream's code changing.
+ *
+ * Optional here, not required, for the two honest reasons a reader would ask about: records written
+ * before this existed do not carry it, and a direct API caller need not send it. Both are read as
+ * `explicit`, which is what they are — nothing prefilled them.
+ *
+ * It is deliberately **not** in `AMENDABLE_FIELDS`, so no amendment can rewrite it. An amendment is
+ * a reviewer typing a reason six weeks later; it is explicit by construction, and it never converts
+ * a record that says how the *original* answer was entered.
+ */
+export type StoredVerdictRecord = VerdictRecord & { preferenceSource?: PreferenceSource | null }
+
 /** What the browser submits for one item. */
 export type VerdictInput = Readonly<{
 	gradeA: Grade
 	gradeB: Grade
 	preference: Preference
+	/** Whether the reviewer pressed the preference or accepted the one the grades implied. */
+	preferenceSource: PreferenceSource
 	/** Free text: the primary channel. May be empty. */
 	comment: string
 	confound: boolean

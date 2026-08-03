@@ -18,6 +18,7 @@
  */
 
 import { el, renderSide } from "./mock.js"
+import { normalizeKey } from "./keys.js"
 
 const GRADE_KEYS_A = { 1: "strong", 2: "acceptable", 3: "weak", 4: "unacceptable" }
 const GRADE_KEYS_B = { 6: "strong", 7: "acceptable", 8: "weak", 9: "unacceptable" }
@@ -281,7 +282,8 @@ function onKey(event) {
 	if (isTyping() && event.key !== "Escape") return
 	if (batch === null) return
 	const item = batch.items[index]
-	const key = event.key
+	// One keymap for every page: the French (Mac AZERTY) digit row answers wherever a digit does.
+	const key = normalizeKey(event.key)
 
 	if (editing !== null && editing.itemId === item?.itemId) {
 		const patch = editing.patch

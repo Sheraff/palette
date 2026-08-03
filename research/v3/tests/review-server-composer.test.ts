@@ -323,32 +323,45 @@ describe("palette composer — the artwork's own colours", () => {
 	})
 })
 
+/** Wait for an asynchronous render (the live preview is a debounced round trip to the server). */
+async function waitFor(what: string, predicate: () => boolean): Promise<void> {
+	for (let attempt = 0; attempt < 300; attempt++) {
+		if (predicate()) return
+		await new Promise((done) => setTimeout(done, 5))
+	}
+	assert.fail(what)
+}
+
+/** Which gradient shape the composer is on, read off the page rather than assumed. */
+function modeOf(page: FakePage): string {
+	const selected = page.nodes.item
+		.byClass("selected")
+		.map((node) => node.textContent)
+		.filter((text) => ["flat", "2-stop", "3-stop"].includes(text))
+	return selected.at(-1) ?? ""
+}
+
+async function setMode(page: FakePage, wanted: string): Promise<void> {
+	for (let attempt = 0; attempt < 3 && modeOf(page) !== wanted; attempt++) await page.press("g")
+	assert.equal(modeOf(page), wanted)
+}
+
+/**
+ * The slots the composer is asking the reviewer to fill, as the targets row shows them.
+ *
+ * Read off the buttons rather than from the composer's internals: the reviewer's complaint was about
+ * how many colours the form asks for, and that is a property of what is on screen.
+ */
+function targetLabels(page: FakePage): string[] {
+	return page.nodes.item
+		.descendants()
+		.filter((node) => node.tagName === "button" && /^(▸ )?[a-z ]+: (#[0-9a-f]{6}|—)$/u.test(node.textContent))
+		.map((node) => node.textContent.replace(/^▸ /u, "").split(":")[0])
+}
+
 describe("palette composer — the page, driven by keystrokes", () => {
 	let harness: Harness
 	let page: FakePage
-
-	/** Wait for an asynchronous render (the live preview is a debounced round trip to the server). */
-	async function waitFor(what: string, predicate: () => boolean): Promise<void> {
-		for (let attempt = 0; attempt < 300; attempt++) {
-			if (predicate()) return
-			await new Promise((done) => setTimeout(done, 5))
-		}
-		assert.fail(what)
-	}
-
-	/** Which gradient shape the composer is on, read off the page rather than assumed. */
-	function mode(): string {
-		const selected = page.nodes.item
-			.byClass("selected")
-			.map((node) => node.textContent)
-			.filter((text) => ["flat", "2-stop", "3-stop"].includes(text))
-		return selected.at(-1) ?? ""
-	}
-
-	async function setMode(wanted: string): Promise<void> {
-		for (let attempt = 0; attempt < 3 && mode() !== wanted; attempt++) await page.press("g")
-		assert.equal(mode(), wanted)
-	}
 
 	before(async () => {
 		harness = await startHarness()
@@ -368,6 +381,11 @@ describe("palette composer — the page, driven by keystrokes", () => {
 			page.nodes.status.textContent.includes("digits pick swatches"),
 			"the reviewer must be told the digits changed meaning",
 		)
+		// Nothing has been submitted on this item, so there is nothing to delete and no button offering
+		// to. Reviewer, 2026-08-03: "there is a button that says 'withdraw the latest (w)' and i have no
+		// idea what this does" — a button for a thing that does not exist yet is where that starts.
+		assert.ok(!page.nodes.item.textContent.includes("delete my submitted palette"))
+		assert.ok(!page.nodes.item.textContent.includes("w delete"), "the key legend must not offer it either")
 	})
 
 	it("previews the composition in the same mock the sides are judged in", async () => {
@@ -384,7 +402,7 @@ describe("palette composer — the page, driven by keystrokes", () => {
 	})
 
 	it("walks the targets with `t` and fills each from the swatch grid with a digit", async () => {
-		await setMode("flat")
+		await setMode(page, "flat")
 		for (const [position, key] of ["1", "2", "3", "4"].entries()) {
 			await page.press(key)
 			assert.match(page.nodes.status.textContent, /#[0-9a-f]{6}/u, "the status line should name the picked colour")
@@ -406,8 +424,20 @@ describe("palette composer — the page, driven by keystrokes", () => {
 		assert.equal(endorsed.paletteHash, hashPalette(endorsed.palette))
 	})
 
+	it("only now offers to delete it, saying what it deletes and why that is the only undo", async () => {
+		await waitFor("the delete button should appear once a palette has been submitted", () =>
+			page.nodes.item.textContent.includes("delete my submitted palette (w)"),
+		)
+		// The one line of explanation next to it: an endorsement is immutable evidence, so deleting and
+		// composing again is the only correction there is.
+		assert.match(page.nodes.item.textContent, /cannot be edited/u)
+		assert.match(page.nodes.item.textContent, /only correction/u)
+		assert.match(page.nodes.item.textContent, /stays in the log, marked withdrawn/u)
+		assert.ok(page.nodes.item.textContent.includes("w delete"), "the key legend should now list it")
+	})
+
 	it("cycles flat / 2-stop / 3-stop, and a 3-stop endorsement records three stops", async () => {
-		await setMode("3-stop")
+		await setMode(page, "3-stop")
 		await waitFor("the preview should show a three-stop ramp", () =>
 			page.nodes.item.byClass("swatches").some((node) => node.textContent.includes("gradient — 3 stops")),
 		)
@@ -433,6 +463,125 @@ describe("palette composer — the page, driven by keystrokes", () => {
 		// no swatch was assigned.
 		assert.match(page.nodes.status.textContent, /needs a grade for A, a grade for B, and a preference/u)
 		assert.equal(harness.records().filter((record) => record.type === "endorsed-sample").length, endorsementsBefore)
+	})
+})
+
+/**
+ * What each gradient shape actually asks the reviewer for.
+ *
+ * Reviewer, 2026-08-03: *"why does the 2-stop background option actually add 2 colors? a 2-stop
+ * gradient is between surface and background, no extra color. Only the 3-stop gradient adds a
+ * midpoint color"*. They are describing the form, and the form was wrong: it asked for the two ends
+ * again, as if they were free, when the whole point of a two-stop field is that it runs between the
+ * two colours already chosen.
+ *
+ * So: **2 stops asks for nothing, 3 stops asks for one colour.** The submitted palette still carries
+ * explicit stops with explicit positions — the output contract says a gradient is a list of stops,
+ * and the composer has to be able to express what the algorithm publishes. The decoupling stays in
+ * the data and is gone from the form, which is what these tests pin.
+ */
+describe("palette composer — what each gradient shape asks for", () => {
+	let harness: Harness
+	let page: FakePage
+	let swatches: Array<{ hex: string; name: string }>
+
+	const endorsements = () =>
+		harness.records().filter((record): record is EndorsedSampleRecord => record.type === "endorsed-sample")
+
+	before(async () => {
+		harness = await startHarness()
+		await call(harness.base, "POST", "/api/batches", makeBatch("composer-shapes", 2))
+		swatches = (await call(harness.base, "GET", "/api/batches/composer-shapes/items/item-0/colors")).body.swatches
+		page = await openPage(harness.base, APP_PAGE, NODE_IDS, `${harness.base}/?batch=composer-shapes`)
+		await page.press("e")
+		await waitFor("the swatch grid should load", () => page.nodes.item.byClass("composer-swatch").length > 0)
+		// Fill the four roles from the artwork's own grid, so everything below is submittable.
+		await setMode(page, "flat")
+		for (const [position, key] of ["1", "2", "3", "4"].entries()) {
+			await page.press(key)
+			if (position < 3) await page.press("t")
+		}
+	})
+
+	after(async () => {
+		await harness?.stop()
+	})
+
+	it("asks for four colours when the field is flat", () => {
+		assert.deepEqual(targetLabels(page), ["background", "surface", "foreground", "accent"])
+	})
+
+	it("2 stops adds NO colour picker, and its ramp runs background → surface", async () => {
+		await setMode(page, "2-stop")
+		assert.deepEqual(
+			targetLabels(page),
+			["background", "surface", "foreground", "accent"],
+			"a 2-stop field must not ask for a single extra colour",
+		)
+		assert.match(page.nodes.item.textContent, /2 stops — background → surface, no extra colour/u)
+
+		await waitFor("the preview should show a two-stop ramp", () =>
+			page.nodes.item.byClass("swatches").some((node) => node.textContent.includes("gradient — 2 stops")),
+		)
+		await page.press("s")
+		await waitFor("the endorsement should be appended", () => endorsements().length === 1)
+
+		// The contract's explicit stops are still there — populated from the roles, not asked for.
+		const stops = endorsements()[0].palette.gradient?.stops
+		assert.equal(stops?.length, 2)
+		assert.deepEqual(stops, [
+			{ color: swatches[0].hex, position: 0 },
+			{ color: swatches[1].hex, position: 1 },
+		])
+		assert.equal(endorsements()[0].palette.background, swatches[0].hex)
+		assert.equal(endorsements()[0].palette.surface, swatches[1].hex)
+	})
+
+	it("3 stops adds exactly ONE colour picker, the midpoint, and keeps the ends", async () => {
+		await setMode(page, "3-stop")
+		assert.deepEqual(
+			targetLabels(page),
+			["background", "surface", "foreground", "accent", "gradient midpoint"],
+			"a 3-stop field asks for one extra colour and no more",
+		)
+		assert.match(page.nodes.item.textContent, /3 stops — background → midpoint → surface, one extra colour/u)
+
+		// Walk to the midpoint and give it a colour the ends do not have, so the record shows which slot
+		// the reviewer's pick landed in.
+		for (let attempt = 0; attempt < 6 && !page.nodes.item.textContent.includes("▸ gradient midpoint"); attempt++) {
+			await page.press("t")
+		}
+		assert.ok(page.nodes.item.textContent.includes("▸ gradient midpoint"), "`t` should reach the midpoint")
+		await page.press("5")
+
+		await waitFor("the preview should show a three-stop ramp", () =>
+			page.nodes.item.byClass("swatches").some((node) => node.textContent.includes("gradient — 3 stops")),
+		)
+		await page.press("s")
+		await waitFor(
+			`the second endorsement should be appended (status: ${page.nodes.status.textContent})`,
+			() => endorsements().length === 2,
+		)
+
+		const stops = endorsements()[1].palette.gradient?.stops
+		assert.deepEqual(stops, [
+			{ color: swatches[0].hex, position: 0 },
+			{ color: swatches[4].hex, position: 0.5 },
+			{ color: swatches[1].hex, position: 1 },
+		])
+	})
+
+	it("offers no delete button on an item the reviewer has submitted nothing for", async () => {
+		await page.press("ArrowRight")
+		await page.press("e")
+		assert.ok(page.nodes.item.textContent.includes("t / T target"), "the composer should be open on item 2")
+		assert.ok(
+			!page.nodes.item.textContent.includes("delete my submitted palette"),
+			"item 2 carries no endorsement, so there is nothing to delete",
+		)
+		// And the key says so rather than doing nothing silently.
+		await page.press("w")
+		assert.match(page.nodes.status.textContent, /nothing to delete/u)
 	})
 })
 

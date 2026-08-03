@@ -13,8 +13,12 @@
  *
  * The answer mapping is on screen for every item. That is not decoration: an answer key the
  * reviewer has to recall is an answer key they will eventually mis-press, and there is no way to
- * find that afterwards in a closed vocabulary.
+ * find that afterwards in a closed vocabulary. For the same reason the digit row is decoded by the
+ * shared `keys.js`: on the reviewer's French (Mac AZERTY) keyboard the unshifted digit row sends
+ * `&é"'(§è!çà`, and an enum whose keys need a modifier held down is an enum answered wrong.
  */
+
+import { normalizeKey } from "./keys.js"
 
 const nodes = {
 	preamble: document.querySelector("#preamble"),
@@ -182,7 +186,7 @@ async function release() {
 
 function onKey(event) {
 	if (event.metaKey || event.ctrlKey || event.altKey) return
-	const key = event.key.toLowerCase()
+	const key = normalizeKey(event.key.toLowerCase())
 	const item = index < batch.items.length ? batch.items[index] : null
 	const question = item === null ? null : questionOf(item)
 	const chosen = question === null ? undefined : question.answers.find((entry) => entry.hotkey === key)

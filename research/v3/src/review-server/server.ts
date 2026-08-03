@@ -143,8 +143,10 @@ import {
 	isBracketingBatch,
 	isCalibrationBatch,
 	isOracleBatch,
+	PREFERENCE_SOURCES,
 	SIDES,
 	type AbsoluteVerdictInput,
+	type PreferenceSource,
 	type PushedBatch,
 	type Side,
 	type StoredAnyBatch,
@@ -154,6 +156,7 @@ import {
 	type StoredCalibrationItem,
 	type StoredItem,
 	type StoredOracleBatch,
+	type StoredVerdictRecord,
 	type VerdictInput,
 } from "./types.ts"
 
@@ -199,7 +202,7 @@ function oracleAnswerKey(batchId: string, questionKey: string, imageId: string):
 }
 
 type VerdictState = {
-	record: VerdictRecord
+	record: StoredVerdictRecord
 	recordId: string
 	revision: number
 	/** Amendments applied to this verdict after release, newest last. Empty before the first one. */
@@ -600,6 +603,9 @@ export class ReviewService {
 			gradeA: state.record.gradeA,
 			gradeB: state.record.gradeB,
 			preference: state.record.preference,
+			// Served back so a reloaded page knows whether it may still re-prefill this preference. A
+			// record without the field predates it or came from a direct API call: nothing prefilled it.
+			preferenceSource: state.record.preferenceSource ?? "explicit",
 			confound: state.record.confound,
 			confoundNote: state.record.confoundNote ?? "",
 			...common,
@@ -745,7 +751,7 @@ export class ReviewService {
 		this.#refuseWhenReleased(batchId, `verdict on ${itemId}`)
 		const key = itemKey(batchId, itemId)
 		const previous = this.#verdicts.get(key)
-		const record = append<VerdictRecord>(this.warehousePath, {
+		const record = append<StoredVerdictRecord>(this.warehousePath, {
 			type: "verdict",
 			author: this.author,
 			mode: "pairwise",
@@ -757,10 +763,14 @@ export class ReviewService {
 			gradeA: input.gradeA,
 			gradeB: input.gradeB,
 			preference: input.preference,
+			// Whether the reviewer pressed this preference or accepted the one their two grades implied.
+			// An additive field on the record (see `StoredVerdictRecord`): the warehouse validates and
+			// stores it without knowing it, and no amendment can rewrite it.
+			preferenceSource: input.preferenceSource,
 			comment: input.comment,
 			confound: input.confound,
 			confoundNote: input.confound ? input.confoundNote : null,
-		} satisfies RecordInput<VerdictRecord>)
+		} satisfies RecordInput<StoredVerdictRecord>)
 		const state: VerdictState = {
 			record,
 			recordId: record.id,
@@ -1724,10 +1734,17 @@ function parseVerdictInput(value: unknown): VerdictInput {
 	if (confound && confoundNote.trim().length === 0) {
 		throw new BadRequest("a confound flag needs a note saying which unrelated defect")
 	}
+	// How the preference was entered (types.ts `PREFERENCE_SOURCES`). Absent means explicit: a caller
+	// that does not send it has no prefill machinery, so nothing filled anything in for it.
+	const preferenceSource = record.preferenceSource ?? "explicit"
+	if (typeof preferenceSource !== "string" || !(PREFERENCE_SOURCES as readonly string[]).includes(preferenceSource)) {
+		throw new BadRequest(`preferenceSource must be one of ${PREFERENCE_SOURCES.join(" | ")}`)
+	}
 	return {
 		gradeA: grade(record.gradeA, "gradeA"),
 		gradeB: grade(record.gradeB, "gradeB"),
 		preference: preference as Preference,
+		preferenceSource: preferenceSource as PreferenceSource,
 		comment,
 		confound,
 		confoundNote,
@@ -1747,7 +1764,7 @@ function parseAbsoluteVerdictInput(value: unknown): AbsoluteVerdictInput {
 	}
 	// Deliberately refused rather than ignored: these are pairwise fields, and silently dropping them
 	// would let a mis-wired page believe it recorded a comparison.
-	for (const field of ["gradeA", "gradeB", "preference", "confound"]) {
+	for (const field of ["gradeA", "gradeB", "preference", "preferenceSource", "confound"]) {
 		if (record[field] !== undefined) throw new BadRequest(`${field} has no meaning in absolute (calibration) grading`)
 	}
 	return { grade: grade as Grade, comment }
@@ -1816,6 +1833,9 @@ const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
 	// shows the same one, from one file (`mock.js`), and the composer lives beside it.
 	["/mock.js", { file: "mock.js", type: "text/javascript; charset=utf-8" }],
 	["/composer.js", { file: "composer.js", type: "text/javascript; charset=utf-8" }],
+	// The keyboard map, shared for the same reason: every page binds digits, the reviewer's AZERTY
+	// digit row sends `&é"'(§è!çà`, and a per-page copy is a per-page chance to record a wrong answer.
+	["/keys.js", { file: "keys.js", type: "text/javascript; charset=utf-8" }],
 	["/calibration", { file: "calibration.html", type: "text/html; charset=utf-8" }],
 	["/calibration.html", { file: "calibration.html", type: "text/html; charset=utf-8" }],
 	["/calibration.js", { file: "calibration.js", type: "text/javascript; charset=utf-8" }],

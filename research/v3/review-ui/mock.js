@@ -6,11 +6,17 @@
  * the reviewer judged — which only holds if there is exactly one renderer. That is why this is a
  * module and not a copy in each page.
  *
- * Layout revision 2, 2026-08-03, from the reviewer's own report on revision 1. Their four findings,
+ * **Layout revision 3, 2026-08-03.** One change from revision 2, from the reviewer testing it live:
+ * *"now the artwork is slightly too small"*. The thumbnail goes from 96 px to 152 px (1.58x, inside
+ * the 1.5–1.8x they asked for) — see `.mock-art` in `styles.css` for why that size and not another.
+ * Everything else below is revision 2 and unchanged; the artwork is still a thumbnail, and the field
+ * still dominates the frame.
+ *
+ * Revision 2, 2026-08-03, came from the reviewer's own report on revision 1. Their four findings,
  * and what each one changed:
  *
  *  1. "the artwork takes too much space, i can barely see the background/gradient i'm supposed to
- *     review" — the artwork is now a small thumbnail. It is context; the palette is the subject, so
+ *     review" — the artwork is now a thumbnail. It is context; the palette is the subject, so
  *     the field has to dominate the frame.
  *  2. "all the content is at the bottom, so in case of a gradient, almost nothing is on top of the
  *     background color" — content is spread across the mock's full height in three regions, so BOTH

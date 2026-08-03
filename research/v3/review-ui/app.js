@@ -8,11 +8,14 @@
  *
  * The mock player lives in `mock.js` — three pages render it and it is part of the output contract,
  * so there is exactly one of it. The palette composer lives in `composer.js` and is optional per
- * item: closed until `e`, never required, never blocking.
+ * item: closed until `e`, never required, never blocking. The keyboard's digit row is decoded by
+ * `keys.js`, which is shared for the same reason the mock is: one mapping, or a mis-mapped key
+ * silently records a judgement nobody made.
  */
 
 import { el, renderSide } from "./mock.js"
 import { createComposer } from "./composer.js"
+import { normalizeKey } from "./keys.js"
 
 const GRADE_LABELS = {
 	strong: "strong",
@@ -69,6 +72,8 @@ function draftFor(item) {
 			gradeA: item.verdict?.gradeA ?? null,
 			gradeB: item.verdict?.gradeB ?? null,
 			preference: item.verdict?.preference ?? null,
+			/** "prefilled" | "explicit" | null — how the preference on this draft got its value. */
+			preferenceSource: item.verdict?.preferenceSource ?? null,
 			comment: item.verdict?.comment ?? "",
 			confound: item.verdict?.confound ?? false,
 			confoundNote: item.verdict?.confoundNote ?? "",
@@ -76,6 +81,61 @@ function draftFor(item) {
 		drafts.set(item.itemId, draft)
 	}
 	return draft
+}
+
+/**
+ * The preference the two grades already imply, filled in for the reviewer.
+ *
+ * Reviewer, 2026-08-03: "if I rate 'A strong' and then 'B weak' I should not have to rate 'A is
+ * better' (this should autofill if individual ratings for A and B are not the same)". Two rules
+ * follow, and the second matters as much as the first:
+ *
+ *  - **grades differ** → the better-graded side is prefilled. It stays a button like any other: the
+ *    reviewer can override it, and a sidegrade preference is still theirs to state.
+ *  - **grades are equal** → nothing is prefilled, and the item stays unjudged until a preference is
+ *    chosen. Two strongs are not interchangeable (regrade agreement is ~88%, REVIEW_UI.md §2), so
+ *    guessing here would invent an ordering constraint the reviewer never made — including
+ *    "no preference", which is itself a statement and has to be pressed.
+ *
+ * An explicit choice is never overwritten by a later regrade: the reviewer said what they meant, and
+ * a machine that quietly undoes it is worse than one that never helped. Which of the two happened is
+ * recorded on the verdict (`preferenceSource`), so nothing downstream has to guess whether a
+ * preference was pressed or inferred.
+ */
+function applyPrefill(draft) {
+	if (draft.preferenceSource === "explicit") return
+	if (draft.gradeA === null || draft.gradeB === null) return
+	if (draft.gradeA === draft.gradeB) {
+		// A prefill that is no longer implied is withdrawn, not left behind as a stale answer.
+		if (draft.preferenceSource === "prefilled") {
+			draft.preference = null
+			draft.preferenceSource = null
+		}
+		return
+	}
+	// `batch.grades` is served best-first, so the lower index is the better grade.
+	const rankA = batch.grades.indexOf(draft.gradeA)
+	const rankB = batch.grades.indexOf(draft.gradeB)
+	draft.preference = rankA < rankB ? "a" : "b"
+	draft.preferenceSource = "prefilled"
+}
+
+/** Record a grade the reviewer just gave, and let the prefill rule run on the result. */
+function setGrade(item, side, grade) {
+	const draft = draftFor(item)
+	draft[side] = grade
+	applyPrefill(draft)
+	render()
+	save(item)
+}
+
+/** Record a preference the reviewer pressed. Pressed is explicit, by definition. */
+function setPreference(item, value) {
+	const draft = draftFor(item)
+	draft.preference = value
+	draft.preferenceSource = "explicit"
+	render()
+	save(item)
 }
 
 function isJudged(item) {
@@ -98,7 +158,9 @@ async function save(item) {
 		const result = await api(batchPath("items", item.itemId, "verdict"), {
 			method: "PUT",
 			headers: { "content-type": "application/json" },
-			body: JSON.stringify(draft),
+			// `preferenceSource` travels with the verdict: whether the reviewer pressed the preference or
+			// accepted the one the grades implied is a property of this judgement, not of the session.
+			body: JSON.stringify({ ...draft, preferenceSource: draft.preferenceSource ?? "explicit" }),
 		})
 		status(`saved ${item.itemId} — revision ${result.revision} at ${new Date(result.recordedAt).toLocaleTimeString()}`)
 		renderNav()
@@ -139,34 +201,29 @@ function renderInputs(item) {
 
 	const block = el("div", { class: "inputs" })
 
+	// Said on screen, next to the buttons, whenever the preference was not pressed: a prefilled answer
+	// the reviewer never noticed is a preference they never gave.
+	const prefillNote =
+		draft.preferenceSource === "prefilled"
+			? el("p", {
+					class: "control-note",
+					text: `prefilled from the grades — side ${draft.preference?.toUpperCase()} is graded higher. Click or press a / b / n to override.`,
+				})
+			: draft.gradeA !== null && draft.gradeA === draft.gradeB
+				? el("p", { class: "control-note", text: "both sides are graded the same — choose, or say no preference (n)." })
+				: null
+
 	block.append(
-		control(
-			"grade side A",
-			buttonRow(gradesA, (value) => draft.gradeA === value, (value) => {
-				draft.gradeA = value
-				render()
-				save(item)
-			}),
-		),
-		control(
-			"grade side B",
-			buttonRow(gradesB, (value) => draft.gradeB === value, (value) => {
-				draft.gradeB = value
-				render()
-				save(item)
-			}),
-		),
+		control("grade side A", buttonRow(gradesA, (value) => draft.gradeA === value, (value) => setGrade(item, "gradeA", value))),
+		control("grade side B", buttonRow(gradesB, (value) => draft.gradeB === value, (value) => setGrade(item, "gradeB", value))),
 		control(
 			"preference",
 			buttonRow(
 				batch.preferences.map((value) => [value, PREFERENCE_LABELS[value] ?? value]),
 				(value) => draft.preference === value,
-				(value) => {
-					draft.preference = value
-					render()
-					save(item)
-				},
+				(value) => setPreference(item, value),
 			),
+			prefillNote,
 		),
 	)
 
@@ -389,8 +446,8 @@ function onKey(event) {
 	if (isTyping()) return
 	const item = batch?.items[index]
 	if (item === undefined) return
-	const draft = draftFor(item)
-	const key = event.key
+	// One keymap for every page: the French (Mac AZERTY) digit row answers wherever a digit does.
+	const key = normalizeKey(event.key)
 
 	// The composer owns the keyboard while it is open: its digits address the swatch grid, not the
 	// grade scale. That is why it is opened deliberately, with one key, and says so on screen.
@@ -404,17 +461,11 @@ function onKey(event) {
 	} else if (key === "ArrowRight" || key === "j") {
 		move(1)
 	} else if (GRADE_KEYS_A[key]) {
-		draft.gradeA = GRADE_KEYS_A[key]
-		render()
-		save(item)
+		setGrade(item, "gradeA", GRADE_KEYS_A[key])
 	} else if (GRADE_KEYS_B[key]) {
-		draft.gradeB = GRADE_KEYS_B[key]
-		render()
-		save(item)
+		setGrade(item, "gradeB", GRADE_KEYS_B[key])
 	} else if (key === "a" || key === "b" || key === "n") {
-		draft.preference = key === "n" ? "no-preference" : key
-		render()
-		save(item)
+		setPreference(item, key === "n" ? "no-preference" : key)
 	} else if (key === "c") {
 		nodes.item.querySelector("textarea")?.focus()
 	} else if (key === "x") {

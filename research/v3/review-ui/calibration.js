@@ -15,6 +15,7 @@
  */
 
 import { el, renderSide } from "./mock.js"
+import { normalizeKey } from "./keys.js"
 
 const GRADE_KEYS = { 1: "strong", 2: "acceptable", 3: "weak", 4: "unacceptable" }
 /** Free text is written to the warehouse this long after the last keystroke, and on blur. */
@@ -289,7 +290,8 @@ function onKey(event) {
 	if (isTyping()) return
 	const item = batch?.items[index]
 	if (item === undefined) return
-	const key = event.key
+	// One keymap for every page: the French (Mac AZERTY) digit row answers wherever a digit does.
+	const key = normalizeKey(event.key)
 
 	if (key === "ArrowLeft" || key === "k") {
 		move(-1)

@@ -141,6 +141,30 @@ it is what makes a bad push diagnosable, and confined to the repository by the a
   salt in any served response, asserted over every endpoint including the image bytes.
 - **Both sides are graded**, then a preference — the v2-3 gap this fixes. Grades and preference come
   from the warehouse vocabulary (`strong | acceptable | weak | unacceptable`, `a | b | no-preference`).
+- **The preference is prefilled when the two grades already imply it.** Reviewer, 2026-08-03: *"if I
+  rate 'A strong' and then 'B weak' I should not have to rate 'A is better' (this should autofill if
+  individual ratings for A and B are not the same)"*. So:
+
+  | grades | what the page does |
+  |---|---|
+  | differ | the better-graded side is prefilled, with a line on screen saying so. Fully overridable. |
+  | equal | **nothing is prefilled** and the item stays unjudged until a preference is pressed — including "no preference", which is a statement of its own. Two strongs are not interchangeable (regrade agreement ~88%, REVIEW_UI.md §2), so inferring an order there would invent a constraint the reviewer never made. |
+
+  An explicit choice is never overwritten by a later regrade, and a prefill the grades stop implying
+  is withdrawn rather than left behind. **Which of the two happened is recorded on the verdict**, in
+  `preferenceSource: "explicit" | "prefilled"` — a preference that exists because a rule filled it in
+  is not the same evidence as one the reviewer pressed, and nothing downstream could tell them apart
+  afterwards. Adjudication that wants pressed preferences only can now ask for them.
+
+  **Where the flag lives, exactly.** It is an *additive field on the ordinary `verdict` record*, not a
+  new record type and not a schema change: `records.ts` belongs to another workstream, `VerdictRecord`
+  had no field that fits (`comment` is the reviewer's raw text; `PaletteSnapshot.meta` is about a
+  palette), and `validateRecord` validates the fields it knows while `serializeRecord` writes every
+  key — so the flag round-trips through append, read and restart-replay with the schema version
+  unmoved. It is deliberately **not** in `AMENDABLE_FIELDS`: an amendment is explicit by construction
+  and must not rewrite how the original answer was entered. Absent on a record means `explicit` (a
+  caller without the feature had nothing prefilling anything). The local type is
+  `StoredVerdictRecord` in `types.ts`, which is where the reasoning is written down.
 - **Free text is the primary channel.** It is never forced: release reports which items carry no
   comment and releases anyway (a comment demanded is a comment corrupted).
 - **A confound flag requires its note** — "re-run after the defect is fixed" needs to know which
@@ -169,19 +193,28 @@ greys. Selection is shown by inverting. The only colors on screen are the palett
 mock player UI and the swatches under it, each labelled with its hex **and** its
 `colornames-oklab` name.
 
-### Mock player layout — revision 2 (2026-08-03)
+### Mock player layout — revision 3 (2026-08-03)
 
 **The mock is part of the output contract**: a verdict is about the exact rendering the reviewer
-judged, so the layout is versioned and dated here. Revision 1 was superseded on the reviewer's own
-report — they are the design authority on this surface — and **no verdict exists against revision 1
-beyond the demo fixture**, so nothing needed rescoping. Any future change to this layout must be
-recorded the same way, because from here on verdicts will be scoped to revision 2.
+judged, so the layout is versioned and dated here. Every revision so far was superseded on the
+reviewer's own report — they are the design authority on this surface — and **no verdict exists
+against revision 1 or 2 beyond the demo fixtures**, so nothing needed rescoping. Any future change
+must be recorded the same way, because from here on verdicts are scoped to revision 3.
 
-Their four findings, verbatim, and what each changed:
+**Revision 3 is one number.** Testing revision 2 live, the reviewer said *"now the artwork is
+slightly too small"* — revision 2's 96 px thumbnail overshot. It is now **152 px**: 1.58× revision
+2, inside the 1.5–1.8× the reviewer asked for, on the same 8 px step as the rest of the stylesheet,
+and still a thumbnail by construction — the sides grid is `minmax(420px, 1fr)`, so at its narrowest
+the mock has ~360 px of content width and the artwork takes 42% of it, and ~36% of the 420 px frame
+height. The field keeps the clear majority of the frame on both axes, which is the property revision
+2 existed to protect. `review-server-mock-layout.test.ts` asserts the number *and* the band, so a
+future drift back towards revision 1's full-width artwork fails a test rather than a review session.
+
+Revision 2's four findings, verbatim, and what each changed (all still in force):
 
 | finding | change |
 |---|---|
-| *"the artwork takes too much space, i can barely see the background/gradient i'm supposed to review"* | the artwork is a **96 px thumbnail** in the middle region, no longer a full-width row. It is context; the palette is the subject. |
+| *"the artwork takes too much space, i can barely see the background/gradient i'm supposed to review"* | the artwork is a **thumbnail** in the middle region (96 px in revision 2, **152 px** from revision 3), no longer a full-width row. It is context; the palette is the subject. |
 | *"all the content is at the bottom, so in case of a gradient, almost nothing is on top of the background color"* | content is spread over **three regions across a 420 px-min frame**, `space-between`: **top** — album title + artist in foreground directly on the field, plus accent icons; **middle** — thumbnail beside the surface card; **bottom** — accent transport icons, an "up next" caption in foreground on the field, and a rail. Both ends of a gradient now carry text and accent. |
 | *"the accent color is only used on top of a surface colored area, so i won't be able to see it in other contexts"* | accent appears in **four contexts**: on the field at the top of the ramp, on the field at the bottom, on the surface card, and as the fill of a **background-coloured rail** (twice). Those are exactly the relationships the contract's accent floors are checked against — background, surface, and the stops. |
 | *"the swatches ... takes too much space, put it below the mock ui, not next to it"* | `.side-body` is a column: mock first, then a **compact wrapping swatch row** underneath. |
@@ -203,6 +236,22 @@ was staged.
 Keyboard: `← →` / `j k` move between items · `1–4` grade A · `6–9` grade B · `a b n` preference ·
 `c` comment · `x` confound · `v` veto · `e` open the palette composer · `Esc` leaves the text field.
 Shortcuts are off while typing. `?batch=<id>` and `?item=<itemId>` open a specific comparison.
+
+### The digit row, on an AZERTY keyboard
+
+The reviewer works on a French Mac, where the unshifted digit row sends **`&é"'(§è!çà`** rather than
+`1234567890`. Every page here binds digits somewhere — grades, composer swatches, oracle-validation
+enums — so on that keyboard every one of those needed a modifier held down. Both rows now answer,
+everywhere, in order: `&`→1 `é`→2 `"`→3 `'`→4 `(`→5 `§`→6 `è`→7 `!`→8 `ç`→9 `à`→0. Reviewer's own
+sequence, 2026-08-03, verbatim.
+
+The mapping lives in **`review-ui/keys.js`** and nowhere else, for the same reason the mock player
+does: a per-page copy is a per-page chance for a mis-mapped key to record an answer nobody gave, and
+in a closed vocabulary that is unfindable afterwards. Four of the ten characters are letters (`é è ç
+à`), so `review-server-keymap.test.ts` reads the *page sources* for their literal key bindings and
+asserts the two sets stay disjoint — plus it drives the pairwise, calibration, composer and oracle
+pages with AZERTY keystrokes and checks what lands in the warehouse. Pages that bind no digits
+(`bracketing.js`, `oracle-review.js`, both letter-only) are unchanged.
 
 The mock player itself lives in **`review-ui/mock.js`** and nowhere else. Three pages render one now
 (pairwise, calibration, the composer's preview) and the mock is part of the output contract, so a
@@ -242,17 +291,41 @@ itself. It POSTs the palette and gets back the same side payload a judged side g
 display stops, `fieldCss` — so the preview goes through the pinned `[REVIEWED]` display mapping and
 the reviewer previews in the mock they grade in. Flat / 2-stop / 3-stop, per §4.
 
+**What each gradient shape asks for.** Reviewer, 2026-08-03: *"why does the 2-stop background option
+actually add 2 colors? a 2-stop gradient is between surface and background, no extra color. Only the
+3-stop gradient adds a midpoint color"*. Right, and the form was wrong:
+
+| shape | colour pickers it adds | stops submitted |
+|---|---|---|
+| flat | none | `null` |
+| 2 stops | **none** — the ramp is background → surface, both already chosen | `[background@0, surface@1]` |
+| 3 stops | **one**, the midpoint | `[background@0, midpoint@0.5, surface@1]` |
+
+The submitted palette still carries **explicit stops with explicit positions**, because the output
+contract says a gradient is a list of stops and the composer must be able to express what the
+algorithm publishes. The decoupling stays in the data; it is gone from the form, where it was asking
+the reviewer to state the same two colours twice. Seeding from a shown side keeps that side's shape
+(and, on three stops, its middle colour); the ends follow the roles, and the reviewer sees the result
+in the preview before anything is endorsed.
+
 **Editing a submitted composition is a NEW endorsement.** An endorsement is immutable evidence of what
 was assembled and previewed; the warehouse's `AMENDABLE_FIELDS` lists only `comment` for this type and
 throws on anything else, so no code path here can rewrite a palette even by accident. Earlier
 endorsements stay on screen — "the reviewer moved from this palette to that one" is itself evidence —
-and a mistaken one is **withdrawn** with an empty-patch retracting amendment (`w`), which is its only
+and a mistaken one is **deleted** with an empty-patch retracting amendment (`w`), which is its only
 correction and works before and after release alike.
 
-Keyboard, while it is open: `t` / `T` next / previous target · `1–9` assign that swatch · `g` cycle
-flat / 2-stop / 3-stop · `s` endorse · `w` withdraw the latest · `Esc` or `e` close. **The digits
-address the swatch grid while the composer is open, not the grade scale** — which is why it is opened
-deliberately, with one key, and says so on screen the moment it opens.
+That button used to read *"withdraw the latest (w)"*, and the reviewer's verdict on it was *"i have
+no idea what this does"*. It now says **"delete my submitted palette (w)"**, appears **only when this
+item actually carries a live endorsement of theirs**, and carries one line next to it explaining why
+deleting is the only undo there is: a submitted palette cannot be edited, because it is evidence of
+what was assembled and previewed. "Delete" is the reviewer's sense of the word, not the log's —
+nothing is ever removed from the JSONL; the record stays, marked withdrawn, funding nothing.
+
+Keyboard, while it is open: `t` / `T` next / previous target · `1–9` assign that swatch (AZERTY digit
+row too) · `g` cycle flat / 2-stop / 3-stop · `s` endorse · `w` delete the submitted palette · `Esc`
+or `e` close. **The digits address the swatch grid while the composer is open, not the grade scale** —
+which is why it is opened deliberately, with one key, and says so on screen the moment it opens.
 
 ## Calibration mode — absolute grading
 
@@ -311,7 +384,9 @@ and an *edit* action per item. What may change is the warehouse's business, not 
 the fields in `AMENDABLE_FIELDS` (`gradeA`, `gradeB`, `preference`, `comment`, `confound`,
 `confoundNote` for a verdict; `reason`, `scope` for a veto; `comment` for an endorsement; `note` for
 the release record). The artwork, the palettes shown, the fingerprints and the hashes are frozen at
-append time — a verdict is always about the exact palettes shown.
+append time — a verdict is always about the exact palettes shown. `preferenceSource` is frozen too,
+and deliberately: an amendment is a reviewer typing a reason weeks later, so it is explicit by
+construction, and it never rewrites how the *original* answer was entered.
 
 Two rules the server adds on top of the field allowlist:
 
@@ -677,7 +752,9 @@ covered; those are judged by the reviewer opening the page.
 | `review-server-blinding.test.ts` | payload hygiene over **every** endpoint and page, the salted-shuffle attack replay |
 | `review-server-release.test.ts` | release is explicit, refuses unjudged items, agrees with the warehouse's own summary |
 | `review-server-mock-layout.test.ts` | the mock player, one test per reviewer finding, through the real `app.js` |
-| `review-server-composer.test.ts` | source-pixel-only colours from both pickers, preview through the pinned renderer, edit-appends-a-new-record, withdrawal; then the page by keystroke |
+| `review-server-composer.test.ts` | source-pixel-only colours from both pickers, preview through the pinned renderer, edit-appends-a-new-record, deletion; then the page by keystroke, including what each gradient shape asks for and when the delete button exists |
+| `review-server-preference-prefill.test.ts` | the prefill rule and its three refusals (equal grades, explicit choices, prefills the grades stop implying), and `preferenceSource` on the wire, in the log and across a restart |
+| `review-server-keymap.test.ts` | the AZERTY digit row: the mapping in order, that it collides with no page binding (read from the page sources), and four pages answering real AZERTY keystrokes |
 | `review-server-calibration.test.ts` | `mode: "absolute"` and the refusal of every pairwise field, the shared release flow; then the page by keystroke |
 | `review-server-amendments.test.ts` | the field allowlist, value validation, retraction, `recheckFundedBy`, replay after restart; then the page by keystroke |
 | `review-server-watch-batch.test.ts` | the watcher's exit codes, its tail-only reading, a torn write, and the real process under a shell |
@@ -690,11 +767,13 @@ page's internals, because a test that reaches inside stops testing the page.
 
 ## What works, and what is not built
 
-Working end to end: push, queue, blinded rendering with mock UI and named swatches, gradient display
-mapping, dual grades + preference + comment + confound, artwork veto and its withdrawal, free editing
-before release, release with a batch-level note, custody-checked image serving, restart recovery, the
+Working end to end: push, queue, blinded rendering with mock UI and named swatches (**layout revision
+3**), gradient display mapping, dual grades + preference (**prefilled from the grades when they
+differ, recorded as `explicit` or `prefilled`**) + comment + confound, artwork veto and its
+withdrawal, free editing before release, release with a batch-level note, custody-checked image
+serving, restart recovery, **both digit rows on every page that binds digits** (`keys.js`), the
 **palette composer** (eyedropper, swatch grid, live preview in the judging renderer, `endorsed-sample`
-records, withdrawal), **calibration mode** (absolute grading, its own push and page, the shared release
+records, deletion), **calibration mode** (absolute grading, its own push and page, the shared release
 flow), **post-release amendments** (verdict, veto, endorsement, release note, retraction), the
 **completion watcher**, the colour-bracketing round (rounds 1 and 2) and the oracle-validation round
 (generation, serving, keyboard answering, undo, release, analysis). Every page is driven end to end by
