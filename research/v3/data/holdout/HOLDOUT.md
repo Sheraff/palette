@@ -145,6 +145,49 @@ Both views are in `holdout.json` (`stratum` and `ownLongEdgeBand` per artwork). 
 `ownLongEdgeBand` for any per-artwork resolution analysis; `stratum` only describes how
 the draw was balanced.
 
+## What has been looked at — disclosed, and what it does and does not cost
+
+Two separate things get confused here, so they are separated first.
+
+**What this holdout claims: ALGORITHM AND TUNING LEAKAGE PREVENTION.** No palette code has been
+fitted, tuned, thresholded or debugged against these artworks. That is the claim, it is the claim
+the freeze rules above enforce, and it is intact.
+
+**What it has never claimed: reviewer-naive eyes.** Reviewer ruling, 2026-08-03: *"Every image that
+comes from `music-artworks/` I have seen multiple times before. We cannot claim I have never seen
+them (and we don't need to). Images from the hex folders those I probably haven't seen (unless
+shown in a review) and I can supply many more folders from the hex source."* This is the reviewer's
+personal library. **Held-out artworks are assumed reviewer-familiar**, and any statement that a
+number here is a fresh-eyes number is wrong regardless of what any browse did.
+
+**Measured exposure, 2026-08-03.** The embedding bake-off's cluster-gallery browse — which is what
+decided the canonical embedding model — rendered:
+
+- **117 of the 413 held-out artworks** (28.3%),
+- **2 of the quarantined non-candidates**, and
+- **3 of the 12 pinned query covers** (`johns`, `krafty`, `muse`) — including covers named in
+  the observations that decision cites.
+
+Full per-artwork accounting: `research/v3/data/embeddings/HOLDOUT_EXPOSURE.md`.
+
+**What follows from that, given the ruling above: nothing that voids anything.** No tuning happened
+in a gallery browse, so the leakage claim is untouched; and the reviewer had seen those covers
+before the gallery existed, so no naive-eyes claim was spent either — there was none to spend.
+Recorded as `d-2026-08-03-reviewer-holdout-purpose-is-algorithm-leakage`.
+
+**Two hygiene consequences, kept because cheap is not the same as free:**
+
+1. The gallery **excludes held-out artworks by default** from here on. The claim does not depend on
+   it; casually spending the holdout is still a bad habit.
+2. The **3 held-out pinned query covers should be replaced** with working-set covers — a pinned
+   query cover is looked at repeatedly and forever. Tracked as `PHASE_0_LOOSE_ENDS.md` C9.
+
+**Where fresh-eyes evaluation actually comes from.** Not from this file. It comes from importing
+genuinely fresh folders from the hex source at claim time — the sharded collection has no holdout
+precisely because its supply is effectively unlimited. **That mechanism has never been exercised
+once**, and under this ruling it is the only path the campaign has to a reviewer-naive number.
+Tracked as `PHASE_0_LOOSE_ENDS.md` A11, and it is the item that matters.
+
 ## How to use it
 
 Exclude by artwork id, not by path — every rendition shares the id:

@@ -2,10 +2,26 @@
 
 **Version:** **v2**, 2026-08-03. Supersedes v1 (2026-08-02) **for group A**, and adds one field to
 group D (§D.1 `subject_kind`, needs sign-off). Groups B, C, E and F are carried over unchanged.
-**Nothing in groups B–F has been piloted**; the first instrument that asks any of them —
-`group-bcde.v1`, covering B, C, D and E in one decode — is drafted and unrun
-(`oracle/premise/PREMISE_NEXT.md` §15). v1's group A is kept verbatim in Appendix V1 at the
-bottom — nothing in this document has been deleted.
+v1's group A is kept verbatim in Appendix V1 at the bottom — nothing in this document has been
+deleted.
+
+> **STATUS CORRECTION, 2026-08-03. Groups B, C, D and E have been piloted — twice, on both
+> sides.** This header previously said "nothing in groups B–F has been piloted" and that
+> `group-bcde.v1` was "drafted and unrun". Both are false, and the correction governs every
+> per-group "Not piloted" note below, each of which now carries its own count. On disk:
+> `group-bcde-pilot-1.jsonl` (**model side** — 299 rows, variants E/F, 142 images, all ok) with
+> `bcde-pilot-1-analysis.json` (49 pre-registered verdicts); and batch **`bcde-validation-1`**
+> (**human side** — released, 160 items over 20 artworks × 8 questions, 163 warehouse records,
+> every `oracle-label` carrying `labelSchemaVersion: "group-bcde.v1"`). Human answers by
+> question: `overlays` 22 (C) · `grain_or_noise` 21 (E) · `has_dominant_subject` 20,
+> `subject_kind` 20, `subject_area_band` 20, `has_signature_color` 20, `signature_carrier` 20
+> (D) · `text_dominance` 20 (B). **Group F alone is genuinely untouched** — no
+> `light_text_safe` / `dark_text_safe` / `two_color_faithful` record exists anywhere.
+> This document's own Appendix R records **two reviewer rulings issued during that round**, so a
+> reader who trusted the old header and Appendix R was reading two different worlds.
+> **Nothing may be graded against the `bcde-validation-1` rows until the round's 45%
+> self-contradiction rate has a reading on the record** — see `PHASE_0_LOOSE_ENDS.md` L-b and
+> L-h, which also record that the round's served wording differed from variant E.
 
 **Status:** group A is piloted and measured. Two measurements exist and are cited throughout:
 
@@ -23,7 +39,7 @@ in this document where a human answered the actual question.
 | schema_version | prompts | vocabulary | state |
 |---|---|---|---|
 | `group-a.v1` | `prompts/group-a.variant-{a,b}.json` | v1 group-A vocabulary | **frozen**, run once as `premise-run-1`, never to be edited |
-| `group-a.v2` | `prompts/group-a.v2.variant-{c,d}.json` | **identical to v1** | drafted, not run — corrected criterion text + B ordering, vocabulary deliberately untouched |
+| `group-a.v2` | `prompts/group-a.v2.variant-{c,d}.json` | **identical to v1** | **RUN 2026-08-03** as `premise-run-cd` (299 rows, 142 images, all ok) — corrected criterion text + B ordering, vocabulary deliberately untouched. Its result is adverse to the ordering hypothesis; see design rule 6 and `oracle/premise/CD_RESULT.md` |
 | `group-a.v3` | none yet | **split** `ground_type` (§A.5) | proposed 2026-08-03, **superseded the same day** by the probe arm, which generalises it (§A.6.7). Kept for the record; do not implement. |
 | `group-a.probes.v1` | — | six probes, tag derived | **superseded before running** by v1.1 (referent defect, §A.6.0). Prompt files deleted; hashes kept in `PREMISE_NEXT.md` §13.2 |
 | `group-a.probes.v1.1` | `prompts/group-a.probes.v1.1.*.json` (2 bundled + 6 solo) + `prompts/derivation.group-a.probes.v1.json` | **no ground_type question at all** — six probes, tag derived | drafted, not run — the **decomposed-probe arm**, reviewer-initiated (§A.6) |
@@ -35,9 +51,13 @@ the prompt version.**
 
 **Companion to:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` — that document's §8 holds the
 design rules and explicitly marks its own question list as a placeholder; this document is the
-actual set. The §8.1 design rules (closed vocabularies, 5-second answerability, description
-separated from judgment, never ask for computables) govern everything below. §D below **adds a
-sixth rule**, earned by measurement rather than proposed.
+actual set. The §8.1 design rules — **five** of them: ask what the algorithm must decide rather
+than what the image *is*; closed vocabularies; 5-second answerability; description separated from
+judgment; never ask for computables — govern everything below. This document **adds four more
+(rules 6, 7, 8 and 9)**, in their own section near the bottom, each earned by measurement or by a
+reviewer ruling rather than proposed. *(Corrected 2026-08-03: this line previously enumerated four
+§8.1 rules, omitting the first, and said "§D below adds a sixth rule" — true when only rule 6
+existed, and rule 6 was never in §D.)*
 
 ---
 
@@ -58,9 +78,10 @@ sixth rule**, earned by measurement rather than proposed.
 | 11 | Probe arm **v1 → v1.1: the referent defect** — reviewer stress test found the probes presupposed a singular background. Referent preamble + whole-region clauses + unsure framing; derivation untouched | §A.6.0, §A.6.1, §A.6.4 case 9 | **SIGNED OFF 2026-08-03** (reviewer: "the six probe wording is ok"; answered in the §12 round before reading the derivation rules — scoping note in the round's analysis) |
 | 12 | **New field `subject_kind`** added to group D, and groups B–E folded into one pilot instrument (`group-bcde.v1`, `oracle/premise/PREMISE_NEXT.md` §15). Reviewer-initiated 2026-08-03 | §D.1, §D, §E | **NEEDS SIGN-OFF** — it is a new question, not a rewording. Nothing is retired for it |
 
-Groups B–F are otherwise unchanged, and remain unpiloted. Row 12 is the first addition any of them
-has ever taken; it adds a field and pilots four groups, and corrects nothing, because there is no
-measurement of these groups to correct.
+Groups B–F are otherwise unchanged. Row 12 is the first addition any of them has ever taken; it
+adds a field and pilots four groups, and corrected nothing *when written*, because there was no
+measurement of these groups to correct. **That pilot has since run on both sides (see the status
+correction at the top), so B, C, D and E are no longer unmeasured; F still is.**
 
 ---
 
@@ -559,7 +580,9 @@ Stated now, so it is not rationalised later:
 
 ## B. Text — feeds the foreground role
 
-*Unchanged from v1. Not piloted.*
+*Vocabulary unchanged from v1. **Piloted 2026-08-03** in `group-bcde.v1`: `text_dominance` × 20
+human answers (`bcde-validation-1`) plus the model side. `text_roles` was deliberately **omitted**
+from the built round despite the multi-select machinery existing, so it remains unanswered.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
@@ -571,11 +594,15 @@ Deliberately absent: text color, polarity, pixel size — all computable once SA
 exist.
 
 **Expected reliability: high** (except `text_roles` on ambiguous integrated typography).
-`[UNCALIBRATED]` — still a guess, no pilot has touched this group.
+Still `[UNCALIBRATED]` — but no longer *untouched*: the group has been piloted (see the status
+correction at the top), and `text_dominance` carries a **failing** pre-registered bar from the
+BCDE pilot (`15.6-2b.text_roles`, presence-rate on the gate-open subset). "A guess" was true
+before 2026-08-03; what is true now is "measured once, and one bar failed".
 
 ## C. Provenance — feeds the "belongs to the artwork" exclusions
 
-*Unchanged from v1. Not piloted.*
+*Vocabulary unchanged from v1. **Piloted 2026-08-03** in `group-bcde.v1`: `overlays` × 22 human
+answers — the only multi-select actually served in the built round.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
@@ -586,7 +613,12 @@ exist.
 
 ## D. Subject and identity — feeds the accent role
 
-*Carried over from v1 unchanged, plus one new field (§D.1). Not piloted.*
+*Carried over from v1 unchanged, plus one new field (§D.1). **Piloted 2026-08-03** in
+`group-bcde.v1`: `has_dominant_subject`, `subject_kind`, `subject_area_band`,
+`has_signature_color` and `signature_carrier` at 20 human answers each. This is the round that
+produced both Appendix R rulings and design rule 9. Two of its pre-registered bars are unresolved:
+`has_signature_color` (modal 0.8592) and — from §C — `overlays` singleton at 0.9542, against a
+**post-hoc** `SINGLETON_NEAR_ONE = 0.90`.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
@@ -600,8 +632,10 @@ exist.
 
 ### D.1 `subject_kind` — the VLM→SAM handoff
 
-*New in v2, 2026-08-03, reviewer-initiated. **NEEDS SIGN-OFF.** Drafted into
-`group-bcde.v1`; nothing has run.*
+*New in v2, 2026-08-03, reviewer-initiated. **NEEDS SIGN-OFF.** Drafted into `group-bcde.v1` —
+and **it has since run**: 20 human `subject_kind` answers in `bcde-validation-1`, plus the model
+side. The pre-registered analysis below (the distribution conditioned on
+`has_dominant_subject == multiple`) is therefore computable and owed.*
 
 Every other question in this document is asked because the answer is **semantic and not
 computable**. `subject_kind` is asked for a different reason, and it is worth stating plainly
@@ -610,9 +644,17 @@ than a label in its own right:
 
 > **SAM masks nouns it is given. The VLM is the thing that knows which noun to give it.**
 
-The organizing rule says spatial questions are SAM's job and concept prompts are unioned per
-pipeline §8.3 — `text`, `lettering`, `logo`, `sticker`, `person`, `face`. That prompt list is
-**fixed and hand-written**, so it can only find the nouns someone thought of in advance.
+The organizing rule says spatial questions are SAM's job and concept prompts are unioned across a
+fixed set. *(Corrected 2026-08-03. This passage previously quoted the set as `text`, `lettering`,
+`logo`, `sticker`, `person`, `face` "per pipeline §8.3". That was wrong twice: §8.3 never named
+that six-item list, and the set is now **v2.1, ten concepts** — `words`, `letter`, `lettering`,
+`display-text`/"album title", `emblem`/"logo", `sticker`, `parental-advisory`, `person`, `face`,
+`barcode`. `oracle/sam/config.py` is the authority. The specific phrasing `text`, named first in
+the old list, was measured to fire on **0 of 10** and **0 of 16** images with this model.)*
+That prompt list is **hand-written** — and it has now changed twice, in exactly the direction this
+argument asks for, which strengthens the argument rather than weakening it: a hand-written list
+can only find the nouns someone thought of in advance, and the fix each time was that someone
+thought of more.
 Motivating case, from the residual round: **a car the masks missed.** `vehicle` was not in the
 list, so no mask existed, so nothing downstream could reason about the largest coloured object on
 the cover. A per-artwork `subject_kind` makes the concept prompt **conditional on the artwork**
@@ -653,7 +695,8 @@ pilot.
 
 ## E. Medium and character — priors, stratification, confound control
 
-*Unchanged from v1. Not piloted.*
+*Unchanged from v1. **Piloted 2026-08-03** in `group-bcde.v1`: `grain_or_noise` × 21 human
+answers. `medium` and `color_character` were not served in the built round.*
 
 | field | vocabulary | primary use |
 |---|---|---|
@@ -716,9 +759,20 @@ These extend pipeline §8.1's five rules. They are here because a run produced t
 
    *Stated honestly:* A and B differ in **both** order and wording, so this is "the B rendering
    wins", with ordering as the deliberate structural difference and the only one with a
-   mechanism behind it. Variants C and D are two further independent wordings that both keep B's
-   order; if they land near B, ordering carried it, and rule 6 is confirmed rather than merely
-   consistent with the data. Until then rule 6 is `[MEASURED, one comparison, wording-confounded]`.
+   mechanism behind it. Variants C and D were two further independent wordings that both keep B's
+   order, pre-registered so that landing near B would confirm rule 6 rather than leave it merely
+   consistent with the data.
+
+   ***The replication was run, and it FAILED*** (2026-08-03, `premise-run-cd`). C and D agree with
+   each other on **0.4599** of artworks — *worse* than A agrees with B (0.708) — and neither lands
+   near B. **Holding B's order fixed does not reproduce B's result.** So order is **not
+   sufficient**, and the A→B difference **cannot be attributed to order** on the available
+   evidence. Rule 6 is retagged
+   **`[MEASURED, one comparison; the pre-registered replication FAILED — premise-run-cd]`**.
+   What survives is the observation and the mechanism, not the causal attribution: B beat A, and
+   generation-order-is-property-order remains a real property of constrained decoding. What does
+   not survive is "ordering carried it". See `oracle/premise/CD_RESULT.md` for the analysis, and
+   `PHASE_0_DECISIONS.md` §6 for the freeze's standing (it stands; one rule it cited does not).
 
 7. **Self-reported confidence is not an uncertainty signal under greedy decoding.** Ask for it
    if you want an audit trail; get the actual uncertainty from disagreement between prompt
@@ -747,8 +801,11 @@ These extend pipeline §8.1's five rules. They are here because a run produced t
 *(unchanged from v1)*
 
 - **Anything colorimetric** — hex, contrast, areas, luminance ordering, polarity: computed.
-- **Anything spatial** — where the text/badge/subject is: SAM's job. Concept prompts: `text`,
-  `lettering`, `logo`, `sticker`, `person`, `face` — phrasings unioned per pipeline doc §8.3.
+- **Anything spatial** — where the text/badge/subject is: SAM's job. Concept prompts are the
+  **v2.1 set of ten**, unioned: `words`, `letter`, `lettering`, `display-text` ("album title"),
+  `emblem` ("logo"), `sticker`, `parental-advisory`, `person`, `face`, `barcode`.
+  **`oracle/sam/config.py` is the authority, not this line and not pipeline §8.3** — §8.3's list
+  was never the one quoted here and has not been updated for v1→v2→v2.1.
 - **Anything aesthetic** — "is this a good accent": that is the reviewer, and only the reviewer.
 - **Anything requiring deliberation** — violates the 5-second validation rule, so it cannot be
   validated and therefore cannot be trusted.
@@ -763,7 +820,20 @@ These extend pipeline §8.1's five rules. They are here because a run produced t
 **v2 addition — group A's own lifecycle.** Group A has now been through one pilot and one human
 round. It has not earned corpus-wide status: at variant B's numbers, `ground_type` agrees with a
 human on 53% of contested artworks and discards 31% of its answers. The gate for going
-corpus-wide is in `oracle/premise/PREMISE_NEXT.md`.
+corpus-wide is in `oracle/premise/PREMISE_NEXT.md` §4.
+
+**Update 2026-08-03 — the gate has been evaluated, and it splits.** The criterion arm ran. Its
+**unmapped** criterion passed outright — **0%** unmapped under both C and D, against 31–44% under
+A/B — which is a large favourable result on the half of the gate that motivated design rule 8. Its
+**exact-match** criterion was **not met by any variant** (best 16/30 against a required 22/30). So
+group A still has not earned corpus-wide status, but the reason has changed: it is no longer
+"answers refuse the question", it is "the answers that are given do not match the human often
+enough". The gate's own pre-registered branch on this outcome is to escalate the §A.5 vocabulary
+split as `group-a.v3`; the **chosen** direction is instead the reviewer's residual-isolation route,
+which would make background structure a pixel computation and moot the corpus-wide question rather
+than answer it. Both are recorded — `d-2026-08-03-group-a-corpus-gate-outcome` and
+`d-2026-08-03-reviewer-background-via-residual-isolation` — and the vocabulary split stays as the
+fallback if the residual route fails a second time.
 
 **Anti-anchoring caveat.** This set is derived from the problem spec's semantic primitives
 (field, figure, text, provenance, identity), not from v2-3's failure ledger — but groups A and D

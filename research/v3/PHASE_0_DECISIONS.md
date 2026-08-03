@@ -36,6 +36,10 @@ chaotic → ~0.
   (checked exhaustively by magic bytes) — no transparency. `music-artworks/` has 797 PNGs with
   real transparent pixels; visual inspection shows they are **not album artwork** — disc scans
   (circular cutouts, ~26–31% transparent) and artist press-photo cutouts (59–89% transparent).
+  *Those two ranges are **cluster descriptors from visual inspection, not measured bounds***
+  (noted 2026-08-03): the survey's actual transparent-fraction range is 0.40%–100%, with 184 files
+  in 26–31% and 282 in 59–89%. The policy does not depend on them — it excludes all
+  real-transparency files regardless — but they should not be read as bounds.
   Policy: exclude all real-transparency files from the album-artwork candidate set (both
   corpora then fully opaque); an input with genuinely transparent pixels is flagged loudly,
   never silently flattened. Disc scans also exist as opaque JPEGs — the oracle's
@@ -69,9 +73,18 @@ chaotic → ~0.
   zero, expressed in raw pre-clamp APCA units, inside the range that Lc clamps to 0
   (|raw| < ~10). Callers can raise the floor, never lower it below ε. API surface: the public
   unit is Lc, evaluated internally as `max(requested_raw, ε_raw)` — necessary because the
-  default/minimum lives below Lc's expressible range (its dead band in (0, 7.3)). Along a gradient: the **indistinct fraction** (length of ramp below
+  default/minimum lives below Lc's expressible range (its dead band in (0, 7.3)).
+  **The stop scope is enforced as of 2026-08-03** (`I4.stop-below-contrast-floor` in
+  `src/contract/invariants.ts`): until then the invariant checked only background and surface,
+  so a foreground that vanished against a published stop published clean, and the "and every
+  published stop" above was documentation with no enforcement path. `minAccentContrast` does
+  **not** extend to stops today and is pinned by test as such — whether it should is on the
+  reviewer queue, not decided here. Recorded as
+  `d-2026-08-03-min-text-contrast-covers-published-stops`.
+  Along a gradient: the **indistinct fraction** (length of ramp below
   the bar, computed on raw values to avoid the zero-clamp phantom-flip artifact) — floor +
-  max-fraction parameter shape; exact defaults open, pathology-census discussion.
+  max-fraction parameter shape; exact defaults open, pathology-census discussion. With stops
+  now enforced, the ramp **interior** is the only part the contract does not police.
 - **Where parameters act is deliberately NOT decided** — "winner-stage repair" presumes
   v2-3's shape. The paradigm-neutral requirement, which becomes a bake-off criterion:
   (a) parameters at defaults → byte-identical to the unparameterized algorithm;
@@ -81,7 +94,9 @@ chaotic → ~0.
 
 - **One ruler.** A single same-color *rule* used everywhere (agreement, movement,
   distinctness), in Euclidean OKLab distance. **Calibrated over two rounds (2026-08-02/03,
-  criterion "register-as-same", 156 fitted answers, controls clean, repeat consistency 63%)
+  criterion "register-as-same", **152 unique answers** funding the freeze record, of which
+  **140 same-colour items were answered** and **130 are fitted points** — 120 same-colour + 10
+  accent; controls clean, repeat consistency 63%)
   and FROZEN** (`d-2026-08-03-same-color-bar-freeze`, on the calibration-consequence
   analysis): **a single threshold was REFUTED** — the frozen pooled rounds-1+2 values are
   dark-neutral **0.00932** (CI 0.00764–0.01137), dark-saturated **0.01502**, light-neutral
@@ -92,7 +107,13 @@ chaotic → ~0.
   eyes discriminate dark neutrals ~2× finer than OKLab distance predicts — v2-3's dark-toe
   complaint, quantified. Full data: `research/v3/data/calibration/`.
 - **Accent visibility is two-dimensional** (same round, part 2): at equal luminance a
-  chromatic accent becomes functional at OKLab distance ≈0.0744 (CI 0.052–0.106) — hue
+  chromatic accent becomes functional at OKLab distance ≈0.0744 — the **middle of the
+  0.06300–0.08796 separation band**, which is the honest bracket to quote. (The logistic
+  fit's 95% CI of 0.052–0.106 is a **ridge artifact**: the data are completely separated, so
+  the curve cannot pin the crossing and its interval describes the ridge rather than the
+  uncertainty. Same fit object, different statistic — do not cite the CI as the bracket.
+  0.0744 is the geometric mean of the band, exact to five digits.) The threshold itself
+  stands — hue
   rescues, at ~5× the same-color bar. Invariant 4's accent clause is accordingly: violation
   requires BOTH |raw APCA| < ε_accent AND color distance < 0.0744 `[REVIEWED]`. The
   foreground clause is unchanged — text is luminance-driven, no color rescue (v2-3 reviewer
@@ -157,10 +178,16 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
    *Implementation note (2026-08-02):* this invariant is realized as the contrast parameters'
    **floor** — each parameter's default = minimum = its ε (§2), so the invariant is simply the
    parameter at its lowest setting; there is no separate enforcement path.
-   *Measured constraint (2026-08-02):* identical colors do NOT produce raw APCA 0 — the
-   formula's reverse branch leaves a luminance-dependent residue peaking at **|raw| = 1.9815**
-   (`[MEASURED]`, exhaustive Y scan). Both ε values must exceed that ceiling or a literally
-   identical fg/bg pair passes; the corpus ε distribution starts there, not at 0.
+   *Measured constraint (2026-08-02, **corrected 2026-08-03**):* identical colors do NOT produce
+   raw APCA 0 — the formula's reverse branch leaves a luminance-dependent residue peaking at
+   **|raw| = 1.98152** (`APCA_RAW_IDENTICAL_CEILING` in `src/contract/constants.ts`, which is
+   the authority for the digits). The earlier value **1.9815 was refuted**: `#df11de` against
+   itself produces 1.981519246, which *exceeds* it — a rounded-down bound is not a bound. The
+   provenance changed with the value: the ceiling is now **analytic**
+   (`Y* = (0.62/0.65)^(1/0.03)`), **not** an exhaustive Y scan. Both ε values must exceed that
+   ceiling or a literally identical fg/bg pair passes; the corpus ε distribution starts there,
+   not at 0. Quoting 1.9815 re-opens exactly the invisible-pair hole this invariant exists to
+   close, so the refuted digits must not survive anywhere.
    *Scope note:* when `accentCollapsed` is set, the accent pairs are skipped — a collapsed
    accent is the foreground and is validated as such; it has no independent existence. Open measurement question for the accent: text readability at equal luminance is
    luminance-driven, but chromatic icons at equal luminance can be visible — the accent floor
@@ -227,9 +254,14 @@ canary).
   multi-rendition artworks kept whole on one side of the line; freeze the list in a committed
   file. Excluded from review, dev batches, outlier mining, and tuning — touched only for
   end-of-campaign claims. The resolution ladder draws from the non-holdout remainder.
-  *Frozen 2026-08-02, version **2.0.0**:* the transparency exclusion reduced candidates from 3,097
-  square artworks to **2,757** (324 square real-transparency files were disc scans/cutouts, all
-  single-rendition). **413 artworks / 1,073 files held out (14.98%)**, seed pinned `[HELD]`,
+  *Frozen 2026-08-02, version **2.0.0**:* the candidate set narrows from 3,097 square artworks to
+  **2,757** in **two** steps, not one — **16 thumbnail-only** artworks (best long edge ≤ 150 px)
+  and **324 square real-transparency files** (disc scans/cutouts, all single-rendition).
+  3,097 − 16 − 324 = 2,757; the earlier text attributed the whole drop to transparency and its
+  arithmetic did not close. `data/coverage-set/COVERAGE_SET.md` carries the full chain
+  (4,088 artworks − 991 non-square = 3,097). Both endpoints were always right, and every
+  downstream number keyed to 2,757 is unaffected.
+  **413 artworks / 1,073 files held out (14.98%)**, seed pinned `[HELD]`,
   byte-reproducible. See `research/v3/data/holdout/HOLDOUT.md`.
 
   **Version 1.0.0 leaked and was voided.** It drew on artwork ids; the embedding near-duplicate
@@ -295,7 +327,8 @@ canary).
 
 ## 6. The semantic oracle — what its labels are, and are not (decided 2026-08-03)
 
-**The step-back.** Group A was piloted (`premise-run-1`, 137 artworks × 2 prompt variants),
+**The step-back.** Group A was piloted (`premise-run-1`, 142 artworks decoded, **137** of them the
+analysis population, × 2 prompt variants),
 the reviewer hand-answered the 30 artworks where oracle and flag contradicted
 (`disambiguation-1`), a decomposed-probe arm was drafted and its human half run
 (`oracle-probe-gold-1`, 180 answers), and a criterion arm was drafted. At that point the
@@ -326,7 +359,31 @@ model commits to two cheap facts before answering the hard one. Variant B beat A
 exact match with the reviewer 16/30 vs 7/30, binary agreement 17/24 vs 8/20, κ vs the flag 0.31 vs
 0.21, answers landing on a value that predicts nothing 31% vs 44%.
 *Honest caveat:* A and B differ in **order and in wording**, so ordering is not cleanly isolated.
-The criterion arm (variants C, D) was drafted to deconfound it and has **not been run**.
+The criterion arm (variants C, D) was drafted to deconfound it.
+
+***The criterion arm has since RUN, and its result is adverse (2026-08-03).*** `premise-run-cd.jsonl`
+— 299 rows, variants C and D, 142 images, all ok. The pre-registered §4 gate splits:
+
+| readout | A-vs-B (the frozen instrument) | C-vs-D (the deconfounder) |
+|---|---|---|
+| `ground_type` raw inter-variant agreement | 0.708 | **0.4599** |
+| κ vs the accepted flag | A 0.21 / B 0.311 | **C 0.126 / D 0.392** |
+| unmapped share of 137 | 60 (44%) / 43 (31%) | **0 / 0** |
+
+Two independent readings, and both belong here. **The unmapped criterion passed outright** — 0%
+under both C and D, a large favourable result that bears on B5 and on design rule 8. **The
+exact-match criterion failed** by every variant (best 16/30 against a required 22/30), and C and D
+agree *with each other* on only 46% of artworks — **worse than A agrees with B**. Two wordings that
+share B's ordering do not reproduce B, so **ordering is not sufficient**, and the A→B difference
+cannot be attributed to order on the available evidence. That is evidence *against* the hypothesis
+C/D were pre-registered to confirm.
+
+**The freeze itself stands.** Variant B remains the frozen rendering and still beat A on every
+readout; what changed is that one design rule cited in its support (rule 6) now carries a failed
+replication. Write-up: `oracle/premise/CD_RESULT.md`. Records:
+`d-2026-08-03-group-a-corpus-gate-outcome` (both successors — the gate's own escalation branch and
+the reviewer's chosen residual-isolation direction) and
+`d-2026-08-03-reviewer-background-via-residual-isolation`.
 
 **The probe arm is parked, with its findings banked.** Its human half is the reason: the reviewer
 answered all six probes on the same 30 artworks they had already answered directly, and the
@@ -336,8 +393,16 @@ reviewer disagrees with themselves is the finding. The `unsure` channel built to
 was used **once in 180 answers** while the reviewer reported the questions as ambiguous. The VLM
 half was never run, so the arm's own questions — are the probes easy, does the inconsistency rate
 earn its place, does bundling contaminate — remain unanswered; that is what "parked" means rather
-than "rejected". All nine probe prompt files are inert (no glob matches them) and the arm is
-revived only by an explicit orchestrator opt-in.
+than "rejected". The arm is revived only by an explicit orchestrator opt-in.
+
+*Correction 2026-08-03 — the guarantee is weaker than it was stated.* This document, `B3` in the
+ledger and `PREMISE_NEXT.md` all said "all nine probe prompt files are inert — **no glob matches
+them**". That is no longer true: `common.py`'s `PROMPT_SETS` registry now registers
+`group-a.probes.bundled` and `group-a.probes.solo` with matching globs. The **operational** claim
+survives — the default prompt set is still `group-a.v1`, no A/B rerun is affected, and the arm is
+still gated on an explicit opt-in — but the mechanism is now "**nobody selects them**", not
+"nothing can reach them", and that is a strictly weaker property. It should be stated as the
+weaker one.
 
 **What is still open: which model runs the bulk pass.** See §8.
 
@@ -349,8 +414,14 @@ Recorded as `data/decisions/decisions.json` → `d-2026-08-03-oracle-question-se
 The resolution ladder answers a question the whole corpus depends on: **below what size does a
 question stop being answerable at all?** Measured by running the frozen instrument down a ladder
 of renditions of the same artwork and comparing each rendition's answer to the largest rendition's
-(2,913 work rows, 1,225 ladder comparisons, 400 artworks with an answered reference, native
-resolution, canary stable, zero failed or reparsed rows).
+(**3,088 work rows** — 3,136 rows less 48 canary; **1,431 ladder comparisons** in total, of which
+**1,190** are the primary scope; **400 artworks** with an answered reference; native resolution,
+canary stable, zero failed or reparsed rows). *Corrected 2026-08-03:* the earlier "2,913 work rows"
+was the **planned image count** from `cost-scoping.json`, a plan quoted as an execution, and the
+earlier "1,225 ladder comparisons" was `ground_type.pooled_unrestricted.n` — **one question's**
+count quoted as a population. Both were near-right before the codec-control rerun regenerated the
+analysis; the sentence was not updated when the codec-control bullet below it was. The floors
+themselves are exact and unaffected — `ladder-sample-1.analysis.json` is the authority.
 
 | question | agreement floor | lowest passing bin | **unanswerable below** | pooled agreement |
 |---|---|---|---|---|
@@ -379,9 +450,13 @@ Provenance and caveats, all load-bearing:
 - **`shading_geometry` is weak everywhere**, not merely below 441 px — its pooled agreement is
   0.671, far under the floor. Treat its floor as "the size below which it is hopeless", not as a
   size above which it is reliable.
-- **Two bins are thin** (161–240 px n=4, 681–900 px n=4) and the 561–680 px bin is empty under
-  every scope; the ladder is consequently **silent on whether 640 px is enough**, which needs a
-  different collection rather than a bigger scope.
+- **Three bins are thin**, not two. Against the analysis's own `min_bin_n = 30` rule its
+  `thin_bins` list names 161–240 px (n=4), 681–900 px (n=4) **and 901–1400 px (n=15)** — plus
+  341–440 px for `shading_geometry` specifically. The 561–680 px bin is empty under every scope.
+  The earlier "two bins" understated thinness in the direction of confidence, in the section whose
+  whole job is to say how far the ladder can be trusted; and 901–1400 px is the bin nearest the
+  "is 640 px enough?" question. The ladder is consequently **silent on whether 640 px is enough**,
+  which needs a different collection rather than a bigger scope.
 - **The transfer check holds**, which is what lets the curve be used corpus-wide: the ladder curve
   predicts 0.834 and the matched-contrast control 0.814 against the 644 real sharded pairs'
   observed 0.818.
@@ -418,17 +493,26 @@ keeps only the items that change a decision in this document.
   0.06300–0.08796 band, bracketed rather than pinned.
 - Foreground exact-zero epsilon: **still measurement-only, still not measured.** `EPSILON_TEXT_RAW`
   and `EPSILON_ACCENT_RAW` both sit `[UNCALIBRATED]` at 2.5 — a placeholder chosen only to clear
-  the measured 1.9815 identical-colors residue. §4 requires them derived from the raw-APCA
-  distribution over corpus pairs; that run has not happened.
-- **Bulk-model decision — PENDING.** Which VLM runs the corpus-wide oracle pass is undecided. The
-  incumbent (`qwen3-30b-a3b`, 6-bit MoE) is the only arm with a full 137-artwork run; challenger
-  runs are **in progress** and so far only cover the gold-30 (`qwen3-32b-dense` 8-bit, the
-  pipeline's planned adjudicator; `gemma3-27b` 8-bit). InternVL3.5 is **blocked** — no runtime
-  supports it. On the hard-case gold-30 the arms disagree in opposite directions (the dense
-  challenger wins under variant A and loses under variant B; cross-arm agreement is 0.533, i.e.
-  **these are meaningfully different instruments**), so the gold-30 cannot settle it — the eval-142
-  runs plus **reviewer visual evaluations** are the next step. No bulk run starts before this
-  lands, and the GPU queue is the orchestrator's, one job at a time.
+  the **1.98152** identical-colors ceiling (§4; the refuted 1.9815 is not the bound). §4 requires
+  them derived from the raw-APCA distribution over corpus pairs; that run has not happened.
+  *When it does:* `HAND_WRITTEN_EPSILON_CONTRAST` and the six bracket fixtures must be
+  **re-derived**, not adjusted — they are pinned to 2.5 by test and will fail loudly first, by
+  design. Loose end A3 carries the trigger.
+- **Bulk-model decision — PENDING, and the blocker is now reviewer bandwidth, not GPU.** Which VLM
+  runs the corpus-wide oracle pass is undecided. *Corrected 2026-08-03:* **two of the three arms
+  now have full eval-142 runs** — the incumbent `qwen3-30b-a3b` (6-bit MoE, 284 rows / 142 images /
+  137 scored / 0 failed) **and** the dense challenger `qwen3-32b-dense` (8-bit, the pipeline's
+  planned adjudicator; 236 eval142-tagged rows / 137 scored / 0 failed / 0 parse_failed). Only
+  `gemma3-27b` (8-bit) is still gold-30-only. InternVL3.5 is **blocked** — no runtime supports it.
+  On the hard-case gold-30 the arms disagree in opposite directions (the dense challenger wins
+  under variant A and loses under variant B; cross-arm agreement **0.533**, i.e. **these are
+  meaningfully different instruments**), so the gold-30 cannot settle it — but the same pair on
+  **eval-142 agrees 0.761 (n=142)**, a materially different picture of how far apart they are, and
+  exactly the number the ledger said was needed. What remains outstanding is the **reviewer visual
+  evaluations alone.** That is a much smaller ask than "challenger runs in progress" implied, and
+  it is reviewer-bandwidth-shaped rather than GPU-shaped — which matters, because reviewer
+  bandwidth is this campaign's stated binding constraint. No bulk run starts before it lands, and
+  the GPU queue is the orchestrator's, one job at a time.
 - ~~Contrast-parameter defaults~~ **Settled (2026-08-02, after two rounds of relitigation):**
   the contrast parameters are **always set** — default = minimum = the experimentally
   determined ε of §4 invariant 4, in raw APCA units near zero. Callers can only raise the

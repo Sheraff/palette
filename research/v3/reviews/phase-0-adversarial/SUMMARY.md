@@ -662,5 +662,43 @@ each individually verified — but a reader counting runs from the heading will 
 
 ---
 
-*Compiled 2026-08-03 from the nine Phase 0 adversarial reports in this directory. This file creates
-no new findings; every claim above is traceable to a report and a finding number in it.*
+## 8. Corrections of record (appended 2026-08-03, wave 2 — ledger synchronisation)
+
+Three numbers in this file and in the fleet reports are superseded. Each was recomputed by a
+wave-1 fix agent against the raw data, and each correction is now carried into the ledgers. They
+are recorded here rather than edited in place, for the same reason the decision ledger appends
+rather than edits: the superseded figure was quoted elsewhere while it stood.
+
+**C1 — the demo verdict split is 4+4, not 5+3.** The fleet report gave `demo-batch-0001` 5 verdicts
++ 1 batch-complete and `demo-calibration-0001` 3 + 1. Recounted from `warehouse.jsonl`, it is
+**four records per demo batch**, ten demo records in total. Both readings agree the warehouse holds
+**8 verdicts** and **773 records across 10 released batches**, and R4 above already noted the
+per-batch discrepancy; this settles which side of it is right. Carried into
+`d-2026-08-03-demo-fixtures-are-not-ground-truth` and `V3_PLAN.md` row 1.
+
+**C2 — the gate-contradiction rate is 45%, superseding 40%.** R8 above flagged that
+`review-server.md` CR-2's headline put a per-contradiction numerator (9) over a per-artwork
+denominator (20 artworks, 8 distinct). The server agent's fixed analyzer recomputes it: **9 of 20
+rows = 45%**, and because the registered ceiling is phrased "of **ok rows**", 45% is the
+like-for-like figure. It is **4.5×** the pre-registered 10% ceiling, not 4×. Carried into
+`d-2026-08-03-reviewer-answers-held-to-model-ceiling` and loose end **L-b**, which places a standing
+prohibition on grading anything against the `bcde-validation-1` rows until the rate has a reading.
+
+**C3 — the as-registered BCDE tally is 36 bars: 34 pass / 2 FAIL**, superseding the auditor's
+provisional 35 pass / 1 fail (§2(g)). `text_roles` flipped from pass to fail when the
+gate-dilution fix landed — the bar is a presence rate that was being computed over the whole set
+rather than the gate-open subset, and diluting the denominator was hiding the failure. So the
+correction moves in the *adverse* direction, which is worth stating plainly: the audit's own fix
+made the result worse, not better. The two failing bars and the one met §15.8 wrongness condition
+are carried into loose end **B19** with an owner, and the post-hoc threshold that decides the third
+is carried into **B20**.
+
+*None of the three changes a Tier 1 or Tier 2 finding. All three change a number a later reader
+would otherwise quote.*
+
+---
+
+*Compiled 2026-08-03 from the nine Phase 0 adversarial reports in this directory. §§1–7 create no
+new findings; every claim in them is traceable to a report and a finding number in it. §8 was
+appended during the wave-2 ledger synchronisation and records corrections made by the wave-1 fix
+agents against the raw data.*

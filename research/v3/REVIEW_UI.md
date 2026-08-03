@@ -21,8 +21,10 @@ gradient notes asked for *more* gradient; three arms were misdirected).
   implicit last-item event. Until release, every item stays freely editable (revisit,
   re-grade, rewrite comments) with zero ceremony and no forced summary screen. Release
   appends the `batch-complete` record; that is the trigger.
-- **Completion watching costs no agent context:** a background watcher (a shell loop outside
-  the model's context) waits for `batch-complete` and notifies the orchestrator once. No
+- **Completion watching costs no agent context:** a background watcher
+  (`src/review-server/watch-batch.ts`, a Node script run detached — outside the model's
+  context; the `serverctl.sh` shell wrapper is a separate thing, for the server itself)
+  waits for `batch-complete` and notifies the orchestrator once. No
   polling code or repeated status checks crowd the working context; between sessions, the
   next session reads the warehouse at start.
 - **Storage: append-only JSONL. The agent-facing surface is a query CLI, not the file.**
@@ -43,8 +45,23 @@ gradient notes asked for *more* gradient; three arms were misdirected).
 
 - **Pairwise A/B is the atomic comparative unit** (also for the Phase 2 bake-off — the batch
   builder does round-robin pair sampling across paradigms; the UI never changes).
-- **Blinding kept verbatim from v2-3:** sides shuffled per item by content hash; the
-  unblinding key is never served.
+- **Blinding guarantees exactly one thing, and it is narrower than v2-3 assumed.** Sides are
+  shuffled per item by content hash under a per-batch salt, and the unblinding key is never
+  served. What that closes is the **hash-reconstruction channel** — without the salt the served
+  digest could be re-derived and the order recovered (measured at 53.2% before the salt landed).
+  What it does **not** close is the **content channel**: the payload must serve each side's
+  palette in full for the reviewer to judge it (`roles[].hex`, both collapse flags,
+  `gradient.stops[]` with true positions, `fieldCss`), so whenever two arms differ
+  *systematically* in any served field the arms are self-identifying and the shuffle is
+  decoration. **Measured 2026-08-03:** a 24-item two-arm batch whose arms differed only in style
+  (one always flat, one always a 2-stop gradient) was unblinded **24/24 from the served payload
+  alone**, by the one-line rule "the side with a non-null `gradient` is arm-beta" — no hashing,
+  no salt, no batch log (adversarial review, `reviews/phase-0-adversarial/review-server.md`
+  CR-1). One narrow leak is now closed at the source: **stop positions are canonicalized to 6
+  decimal places at push time**, so two code paths cannot betray their identity through float
+  representation. The general case cannot be closed by the server. **Batch designers must ask,
+  before treating blinding as a control, whether the arms are separable by any served field.**
+  Phase 2's paradigm bake-off is exactly the shape that fails this test.
 - **Both sides get a grade** — the v2-3 gap this fixes: "prefer A, A is strong" never said
   whether B was also strong. Per item: grade A, grade B, then preference (`A | B |
   no-preference`). "No preference" contributes no ordering constraint (unchanged).
@@ -118,15 +135,29 @@ The human-labeling pass that validates the VLM oracle (`ORACLE_QUESTION_SET.md`)
 - **By-question passes, not by-item forms:** one question across many artworks in a row
   ("has text? y/n" × 40), then the next question. Matches the 5-second rule; minimizes
   context switching.
-- **Keyboard-only** (y/n or 1–5 for enums), auto-advance on answer, undo = one key.
+- **Keyboard-only**, auto-advance on answer. Enums bind digits `1`–`9` and `0` (`DIGIT_HOTKEYS`,
+  ten slots; the live `ground_type` enum uses 1–6); `y`/`n`/`u` where a question is boolean or
+  probe-shaped. **Undo is one keypress but not one key**: `u`, `Backspace` or `ArrowLeft`, and
+  `u` is displaced to `Backspace` whenever a question binds `u` as an answer hotkey — the footer
+  prints which is live. `r` releases the round.
+- **An item is one (image, question) answer** when the round asks several questions of an image,
+  and one image when it asks one. `reviewed` / `pending` are counted on that key, and a batch's
+  declared `itemCount` must be stated in the same unit (`labelUnit`). A round that declares
+  images-only while asking several questions per image reports progress its reviewer cannot
+  reconcile.
 - **Multi-select questions toggle and commit.** Some oracle questions take a *list* of values, not
-  one (`overlays`, `text_roles`). They are the one shape that cannot auto-advance: the digit keys
+  one. `overlays` is the only one served today; `text_roles` is drafted for the shape but
+  deliberately omitted from the built round. They are the one shape that cannot auto-advance: the digit keys
   turn values on and off and Enter — or Space — records the set and moves on. Such a question binds
   digits and nothing else, so the commit key and undo stay unambiguous, and the answer is one record
   carrying a sorted array. The alternative, one yes/no pass per value, was rejected because it asks a
   different question from the one the model answered (`PREMISE_NEXT.md` §15.9).
 - **Resumable anywhere**, designed for ten-minute chunks.
-- **Sequential stopping per question, made coverage-aware by the embeddings:** the validation
+- **Sequential stopping per question, made coverage-aware by the embeddings — SPECIFIED, NOT
+  BUILT.** `src/review-server/README.md` lists it first under "Not built" (blocked on the
+  embeddings workstream); everything in this bullet is the design, not the server's behaviour.
+  The mitigation is real and already in place: `stratum` is recorded on every `oracle-label`
+  row, so the rule can be applied retroactively to rounds already run. The design: the validation
   sample is drawn as a stratified cover of SigLIP embedding space (per-cluster quotas /
   farthest-point spread), items are served in space-spanning order, and the stopping rule is
   evaluated **per stratum** — a question stops only when agreement is tight in *every*
@@ -147,8 +178,24 @@ funded this decision" without archaeology.
 
 - The 2-stop 35% / 3+-stop 10% display reserves are carried `[REVIEWED]` from v2-3; re-tune
   only if the reviewer objects once real v3 gradients render.
-- Server deployment details (port, LAN exposure, auth — none needed if localhost-only).
-- ~~The tagging agent's tag vocabulary~~ **Built 2026-08-03**: 66 tags in 33 symmetric pairs
-  across 8 axes — see `data/tagging/TAGS.md` (generated) and
-  `src/tagging/TAGGING_PROTOCOL.md`. Tags are filed post-hoc by the export/import tooling, so
-  the review server needs no tagging UI.
+- ~~Server deployment details (port, LAN exposure, auth)~~ **Settled — the parenthetical was
+  the decision.** The server binds `127.0.0.1` on `DEFAULT_PORT = 3010` (`server.ts`;
+  `serverctl.sh` honours `REVIEW_SERVER_PORT`), localhost-only, no auth. The standing policy is
+  in `src/review-server/README.md`. Worth knowing where it is written down, because that
+  binding is what keeps loose end A7 (symlink/realpath) dormant — A7's revival condition is
+  "before the server is ever exposed beyond localhost".
+- **Push-time arm-separability diagnostic — open, and never a refusal.** Per §2's measured
+  content channel: at push time, report whether the batch's arms are distinguishable by any
+  served field (gradient presence, stop count, collapse flags, `fieldCss` geometry token). It
+  prints and records; it does not block, because a legitimate bake-off may deliberately compare
+  a flat paradigm against a gradient one and the right response is to know it, not to be
+  stopped. Owner: review-server workstream. *Revives when: the first real two-arm batch is
+  designed — Phase 2's bake-off.*
+- ~~The tagging agent's tag vocabulary~~ **Built 2026-08-03, at v2.1.0**: 103 tags across 12
+  axes — 96 tags in 48 opposed judgment pairs, plus 7 descriptive tags on `instrument-behavior`
+  that have **no opposite by design**. The vocabulary is deliberately *not* uniformly symmetric:
+  symmetry is required of judgments, and a scoping rule (recorded as
+  `d-2026-08-03-tagging-symmetry-scoping`) says where it applies. `lintVocabulary` /
+  `loadVocabulary` enforce it on read. See `data/tagging/TAGS.md` (generated) and
+  `src/tagging/TAGGING_PROTOCOL.md` §2, which are the authorities for these counts. Tags are
+  filed post-hoc by the export/import tooling, so the review server needs no tagging UI.

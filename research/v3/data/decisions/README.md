@@ -5,8 +5,10 @@ were made between 2026-08-02 and 2026-08-03, this file was not. Every record say
 `recordedAt`.
 
 **Counts in this document are as of 2026-08-03 and are re-derived, not remembered.** The file
-holds **15 decisions**; 5 of them carry `fundedBy`, citing **434 warehouse record ids (421
-unique)**. Re-derive before quoting:
+holds **35 decisions** — 15 written on 2026-08-03, plus **20 appended the same evening** from the
+Phase 0 adversarial review's six fix arms and three reviewer rulings. **7** of them carry
+`fundedBy`. Every count below that predates that append is marked; re-derive before quoting
+anything:
 
 ```sh
 jq '.decisions|length' research/v3/data/decisions/decisions.json
@@ -55,8 +57,21 @@ list of **warehouse record ids** and not a list of prose citations.
 
 The file is `decisions.json`, shaped
 `{ "what": …, "recordedAt": …, "consumedBy": …, "decisions": [ … ] }`. Extra fields are ignored by
-every consumer, so a record may carry more than the schema names. No record carries `supersedes`
-yet — nothing here has been replaced.
+every consumer, so a record may carry more than the schema names.
+
+**`supersedes` is in use as of 2026-08-03.** Two chains exist:
+`d-2026-08-03-embedding-canonical-model-rationale` → `d-2026-08-02-embedding-canonical-model`
+(same choice, restated grounds — the superseded record cited a statistic that did not support it),
+and `d-2026-08-03-sam-per-group-score-thresholds` → `d-2026-08-03-sam-calibrated-score-threshold`
+(the pooled cut, replaced by per-group cuts on a re-analysis of the same 60 judgments). Note what
+the second one shows: a superseding record does **not** imply new evidence. Read the chain, not
+the latest record alone — the superseded record is why artifacts on disk look the way they do.
+
+Three SAM records still describe one instrument in three successive states
+(`-sam-prompt-set-replacement` → `-sam-concept-set-v2` → `-sam-concept-set-v2.1-barcode`) with
+**no `supersedes` linking them**. They are append-only history and must not be edited to add it;
+the chain is stated here instead, and the earliest of the three carries caveats about `config.py`
+that the code has since fixed.
 
 ### `kind` is a free label, and here is what is actually in it
 
@@ -64,7 +79,9 @@ yet — nothing here has been replaced.
 is a label for humans grepping the file, so the list below is a **description, not a
 constraint** — but reach for an existing value before inventing one.
 
-In use on 2026-08-03 (`jq -r '.decisions[].kind' … | sort | uniq -c`):
+In use on 2026-08-03 **across the first 15 records** — the 20 appended that evening reuse these
+labels and invent none, so the vocabulary is unchanged and only the counts below have moved.
+Re-derive with `jq -r '.decisions[].kind' … | sort | uniq -c`:
 
 | kind | records | means |
 |---|---|---|
@@ -129,11 +146,16 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types \
 Exit 0 and `flagged=0` means every decision here still stands on evidence that has not moved.
 **Run it before any integration and before any adversarial review.**
 
-As of 2026-08-03 it reports **`flagged=2`**: `same-color-bar-freeze` (4 superseded ids) and
-`oracle-question-set-freeze` (2). Both are re-answers the reviewer made during the round, and
-both analyses already exclude superseded answers — so the science is unaffected and the flag is
-telling the truth about the citation lists, not about the conclusions. Do not clear it by editing
-`fundedBy`; a fixed citation list is a new decision record.
+**`flagged>0` is the standing expectation, not a defect.** Before the 2026-08-03 evening append it
+reported `flagged=2`: `same-color-bar-freeze` (4 superseded ids) and `oracle-question-set-freeze`
+(2). Both are re-answers the reviewer made during the round, and both analyses already exclude
+superseded answers — so the science is unaffected and the flag is telling the truth about the
+citation lists, not about the conclusions. The two new SAM threshold records cite the full
+`sam-mask-quality-1` round the same way, so the count moves with them. **Re-derive the number; do
+not quote a remembered one, and do not clear a flag by editing `fundedBy`** — a fixed citation
+list is a new decision record. Recorded as
+`d-2026-08-03-recheck-covers-supersession-and-retraction`. The rule that makes the check worth
+anything: open every flag, *then* decide whether the conclusion moved.
 
 Because `missing` is a real signal, `fundedBy` must never be used for prose or for file paths —
 those would show up as missing evidence forever and train everyone to ignore the output. File
@@ -146,7 +168,7 @@ amendment to any single answer flags the decision that was fitted to it.
 
 Because it lists every record, `fundedBy` includes drafts the reviewer later replaced. That is
 not a defect — it is why `recheck` reports `superseded` — but it means **a `fundedBy` length is
-not an evidence count.** As of 2026-08-03:
+not an evidence count.** As of 2026-08-03, before the evening append:
 
 | decision | ids cited | standing (not superseded) |
 |---|---|---|
@@ -162,8 +184,11 @@ numbers. Quote the right-hand column.
 
 ## The honest part
 
-**10 of the 15 decisions have an empty `fundedBy`.** This is not an oversight and must not be
-quietly filled in:
+**28 of the 35 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
+on 2026-08-03, the exceptions being the two SAM threshold records). This is not an oversight and
+must not be quietly filled in — and the ratio got *worse*, not better, because three of the
+appended records are conversational reviewer rulings, which is exactly the class the empty field
+was designed to make visible:
 
 | decision | funded by warehouse records? |
 |---|---|
@@ -175,8 +200,11 @@ quietly filled in:
 | canonical embedding model | **no** — reviewer's gallery observations were relayed conversationally |
 | holdout v2 redraw | **no** — reviewer authorisation was conversational |
 | legacy contested-pairs recency | **no** — reviewer ruling was conversational |
-| SAM prompt-set replacement | **no** — orchestrator decision on n=10; no reviewer has seen a mask |
-| …and the other six | **no** — see each record's `fundingCaveats` |
+| SAM prompt-set replacement | **no** — orchestrator decision on n=10; no reviewer had seen a mask *when it was written*. 100 reviewer-graded masks exist now, and that record's caveats are stale — read `-sam-concept-set-v2` and the two threshold records instead |
+| `d-2026-08-03-sam-calibrated-score-threshold` | yes — 60 records (`sam-mask-quality-1`) |
+| `d-2026-08-03-sam-per-group-score-thresholds` | yes — the **same** 60 records, re-analysed |
+| the three reviewer rulings of 2026-08-03 (holdout purpose, area-guard scope, background via residual) | **no** — all three relayed conversationally |
+| …and the rest | **no** — see each record's `fundingCaveats` |
 
 Those ten are load-bearing decisions that `recheck` can never flag, however the reviewer later
 revises the judgement behind them. Recording the gap is the point of the field being empty rather

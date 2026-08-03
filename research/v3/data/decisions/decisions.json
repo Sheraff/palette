@@ -718,6 +718,654 @@
     "research/v3/ORACLE_QUESTION_SET.md"
    ],
    "scope": "oracle question schema v2 (bulk-run design); all future question authoring"
+  },
+  {
+   "id": "d-2026-08-03-min-text-contrast-covers-published-stops",
+   "ts": "2026-08-03T20:40:00Z",
+   "kind": "instrument-design",
+   "scope": "The output contract's minTextContrast parameter and invariant 4, for the foreground role only. It does NOT extend minAccentContrast to published stops — that stays foreground-vs-fields and accent-vs-fields, and is pinned by test as such; whether it should is a reviewer question (PHASE_0_LOOSE_ENDS.md B13/B15 neighbourhood). It does NOT decide the gradient module's indistinct-fraction shape along the ramp interior, which remains open (B15).",
+   "decision": "minTextContrast is enforced against every PUBLISHED STOP, not only against background and surface. §2 of PHASE_0_DECISIONS.md always said \"foreground vs background, surface, and every published stop\"; until 2026-08-03 the invariant only checked the two field roles, so a foreground that vanished against a stop published clean. The stop clause is now a real enforcement path, coded as I4.stop-below-contrast-floor (src/contract/invariants.ts). Consequence: the ramp INTERIOR is the only part of the gradient the contract does not police — the interior is a fraction question, not a pair contrast, and belongs to the gradient module when that exists.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "§2 output contract — the sentence that always specified the stop scope, and §4 invariant 4, which realizes it as the parameter floor."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/contract.md",
+     "what": "Finding 2 of the contract arm: the documented stop scope was never enforced. The fix landed the same day."
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "The enforcement site: violation code I4.stop-below-contrast-floor."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a documentation-vs-code reconciliation found by an adversarial review agent, not a reviewer ruling and not a measurement. What it restores is a rule the reviewer had already agreed to in §2; nobody re-elicited it.",
+    "THE EPSILON UNDER IT IS STILL A PLACEHOLDER. The floor this clause enforces is EPSILON_TEXT_RAW, [UNCALIBRATED] at 2.5, chosen only to clear the identical-colour APCA ceiling of 1.98152. When the corpus epsilon measurement lands (loose end A3), the enforced value changes and this clause changes what it condemns.",
+    "THE ASYMMETRY WITH THE ACCENT IS UNDECIDED, NOT DECIDED. minAccentContrast deliberately does not extend to stops today, and the current test pins that. This record does not argue it is right; it records that the two parameters now differ in scope and that the difference is on the reviewer queue."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-oracle-round-item-unit",
+   "ts": "2026-08-03T20:50:00Z",
+   "kind": "instrument-design",
+   "scope": "Every oracle-validation round pushed to the review server, and every progress figure computed over one (reviewed, pending, itemCount, the reviewer-facing footer). It does NOT change any stored record: an oracle-label row is what it always was. It does not apply to pairwise verdict batches, whose item has always been one comparison.",
+   "decision": "A round's ITEM is one (image, question) answer when the round asks several questions of an image, and one image when it asks one. reviewed and pending are counted on that key, and a batch's declared itemCount must be stated in the same unit, declared as labelUnit. The two conventions had coexisted silently: bcde-validation-1 declares 160 items = 20 artworks x 8 questions, while earlier rounds declared images. A round that declares images-only while asking several questions per image reports progress its own reviewer cannot reconcile, and the mixed convention is exactly what made \"how much is left\" unanswerable from the warehouse alone.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1.json",
+     "what": "160 items over 20 artworks and 8 questions — the round that forced the unit to be named. Its 160 answers sit under 163 warehouse records (3 superseded re-answers)."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/warehouse-decisions.md",
+     "what": "The finding: itemCount conventions coexist across released batches, and pending counts were computed against the wrong denominator for multi-question rounds."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a convention chosen by the warehouse workstream to make two existing conventions distinguishable, not a measurement and not a reviewer ruling.",
+    "THE MITIGATION IS DECLARATIVE, SO IT CAN BE DECLARED WRONG. labelUnit is written by the batch designer. A batch that declares images-only while asking several questions per image revives the whole defect, and nothing in the server can catch that from the data.",
+    "RECORD COUNTS ARE NOT ANSWER COUNTS EITHER WAY. Four of the ten released batches hold more warehouse records than declared items, because a re-answer appends. Any progress figure must resolve supersession first."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-amendment-allowlist-at-read",
+   "ts": "2026-08-03T20:52:00Z",
+   "kind": "instrument-design",
+   "scope": "The warehouse query layer and every consumer that reads amended records. It does NOT change what may be WRITTEN — the append-time allowlist is unchanged — and it does not retroactively rewrite any stored amendment. It is a read-time refusal, not a migration.",
+   "decision": "AMENDABLE_FIELDS is enforced at QUERY time as well as at append time. An amendment patching a field outside the allowlist is dropped when the record is resolved, and the drop is reported rather than silent. Identity, provenance and palette hashes are therefore unrewritable by anything that reaches the file — including a hand edit, a future tool, or an agent with write access — because the reader refuses the patch even if the writer accepted it. Before this, the allowlist lived only in the append path, so the guarantee held exactly as long as every write went through the CLI.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/warehouse/",
+     "what": "The read-time enforcement site and its tests."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/warehouse-decisions.md",
+     "what": "The finding: the append-time allowlist was the whole defence, and the file is a plain JSONL any process can append to."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a structural hardening proposed and implemented by the warehouse arm of the adversarial review.",
+    "IT DOES NOT PROTECT THE ORIGINAL RECORD. An attacker or a bug that rewrites a base record in place, rather than appending an amendment, is untouched by this — append-only is a convention of the writers, not a property of the filesystem. The defence is git history, and nothing else.",
+    "THIRTEEN AMENDMENTS EXIST TODAY AND ALL ARE AGENT-AUTHORED RETRACTIONS OF DERIVED NOTES. There are zero reviewer amendments, so this rule has never yet refused anything in production."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-recheck-covers-supersession-and-retraction",
+   "ts": "2026-08-03T20:54:00Z",
+   "kind": "process",
+   "scope": "warehouse recheck --decisions, and how its output is to be read by any agent or reviewer. It does NOT license editing a decision's fundedBy to make a flag go away, and it does not make a flag a defect.",
+   "decision": "The funding gate flags four distinct ways evidence can have moved — amended, retracted, superseded, and missing — not just amendment. In particular SUPERSEDED (the reviewer re-answered the item, so the cited record is a draft) is a first-class flag, and RETRACTED counts whenever it happened, including before the decision was made: citing evidence that was already gone is worse than citing evidence that moved afterwards. Consequence, stated so nobody \"fixes\" it: recheck legitimately reports flagged>0 today. A flag is the instrument telling the truth about a citation list. It is cleared by a NEW decision record with a corrected citation list, never by editing fundedBy in place.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/decisions/README.md",
+     "what": "The four flag semantics and the standing expectation, written out with the current expected count."
+    },
+    {
+     "ref": "research/v3/src/warehouse/cli.ts",
+     "what": "The recheck implementation."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a process rule about the tool that checks warehouse records; it cannot itself be checked by that tool.",
+    "THE EXPECTED FLAG COUNT IS A MOVING NUMBER AND MUST NOT BE PINNED IN PROSE. It was 2 before the 2026-08-03 ledger synchronisation and rises whenever a new record cites a list containing a superseded answer. Re-derive it; do not quote a remembered value.",
+    "A FLAG STILL HAS TO BE READ. \"Expected\" does not mean \"ignorable\" — the check is worthless if flagged>0 becomes background noise nobody opens. The rule is: open every flag, then decide whether the conclusion moved."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-demo-fixtures-are-not-ground-truth",
+   "ts": "2026-08-03T20:56:00Z",
+   "kind": "corpus-policy",
+   "scope": "demo-batch-0001 and demo-calibration-0001, and every headline count or analysis computed over warehouse verdicts. It does NOT quarantine any oracle-label round; all eight released oracle and calibration rounds are real reviewer work.",
+   "decision": "The two demo batches are FIXTURES, not evidence. They are excluded from headline counts and from any analysis that selects verdicts, by fingerprint prefix (batch ids beginning \"demo-\"), and they are NEVER deleted — a deleted fixture is a fixture that gets recreated by hand next time, differently. Ten warehouse records are demo (8 verdicts + 2 batch-complete). The consequence worth saying out loud, because it is easy to misread the record types: after excluding them, v3 holds ZERO reviewer verdicts. Every reviewer answer in this warehouse is an oracle-label or a calibration answer; no palette has been graded in v3, because no palette exists yet.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/warehouse/warehouse.jsonl",
+     "what": "773 records across 10 released batches; 10 of them demo (8 verdicts under demo-batch-0001 / demo-calibration-0001 plus their 2 batch-complete records)."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/warehouse-decisions.md",
+     "what": "The finding: the demo verdicts are indistinguishable from real ones to any consumer that filters by type alone."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a corpus-hygiene rule about the warehouse, decided by the warehouse workstream.",
+    "THE EXCLUSION IS BY ID PREFIX, WHICH IS A NAMING CONVENTION AND NOT A PROPERTY. A future fixture batch not named \"demo-*\" is not excluded by anything.",
+    "THE DEMO VERDICT SPLIT IS 4+4, NOT 5+3. The consolidated fleet report said 5+3; recounted from the file it is four records per demo batch (including each batch-complete). Both agree the warehouse holds 8 verdicts in total."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-group-a-corpus-gate-outcome",
+   "ts": "2026-08-03T21:05:00Z",
+   "kind": "question-set-ruling",
+   "scope": "Group A's corpus-wide status and the §4 gate registered in oracle/premise/PREMISE_NEXT.md. It does NOT reopen the question-set freeze — the frozen instrument stands. It does not settle whether ordering matters in general; it settles that the evidence offered for it does not carry.",
+   "decision": "The criterion arm (variants C and D) RAN, and the §4 corpus-wide gate splits. The UNMAPPED criterion passed outright: 0% unmapped under both C and D, against 31-44% under A/B — a large, favourable result. The EXACT-MATCH criterion was not met by any variant (best 16/30 against a required 22/30). C and D also agree with each other on only 46% of artworks, WORSE than A agrees with B (0.4599 against 0.708 raw inter-variant agreement), so two wordings that share B's ordering do not reproduce B: ordering is not sufficient, and the A-to-B difference cannot be attributed to order on the available evidence. Both successors are recorded, deliberately: (a) the gate's OWN pre-registered branch on this outcome is to escalate the §A.5 ground_type vocabulary split as group-a.v3; (b) the CHOSEN direction, per the reviewer's ruling of the same evening, is not (a) but the residual-isolation route — see d-2026-08-03-reviewer-background-via-residual-isolation. Where they disagree, the reviewer's direction governs and the pre-registration is kept visible so nobody later mistakes the change of course for a result.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/premise/CD_RESULT.md",
+     "what": "The write-up of the criterion arm and its adverse outcome."
+    },
+    {
+     "ref": "research/v3/data/oracle-premise/premise-run-cd.jsonl",
+     "what": "299 rows, variants C and D, schema_version group-a.v2, 142 images, all ok — the run itself."
+    },
+    {
+     "ref": "research/v3/oracle/premise/PREMISE_NEXT.md",
+     "what": "§4, which pre-registers the gate (unmapped <=15% AND exact match >=22/30) and its escalation branch."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. The exact-match criterion is scored against disambiguation-1, 30 reviewer answers already in the warehouse and already cited by the question-set freeze; this record cites the analysis, not the answers, because the decision here is about the GATE's reading and not about the answers.",
+    "THE ADVERSE HALF IS A NEGATIVE RESULT ON A PRE-REGISTERED PREDICTION, WHICH IS THE STRONGEST KIND AND ALSO THE EASIEST TO OVER-READ. It refutes \"ordering carried the A-to-B difference\". It does NOT show that ordering is irrelevant, and it does not show that variant B is a bad instrument — B remains the frozen rendering and beat A on every readout.",
+    "THE UNMAPPED RESULT IS FAVOURABLE AND UNDER-REPORTED. 0% unmapped is a large improvement that no document carried for a full day. It bears directly on loose end B5 and on design rule 8, and it was measured, not projected.",
+    "THE TWO SUCCESSORS ARE NOT EQUIVALENT AND THE RECORD DELIBERATELY KEEPS BOTH. If the residual route fails, the pre-registered escalation is what the campaign already committed to and is the fallback, not a new idea."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-drop-confidence-from-next-schema",
+   "ts": "2026-08-03T21:07:00Z",
+   "kind": "question-set-ruling",
+   "scope": "The next oracle schema version to be drafted. It does NOT edit any frozen schema — group-a.v1 and group-a.v2 keep the field, because a frozen instrument is not editable — and it does not delete the field from stored rows, which stay readable as an audit trail.",
+   "decision": "The per-record confidence field is DROPPED from the next schema. It was pre-registered to earn its place by showing >10% non-high answers; the observed rate is 1.4%, and this is the SECOND run in a row to measure it degenerate (298 of 299 rows said high in premise-run-1; the same shape in the criterion arm). ambiguity_note was empty on the same rows. The uncertainty signal that does work is inter-variant disagreement, which costs a second decode rather than a field. Keeping a field that a pre-registered criterion twice failed is how a question set accumulates weight without accumulating information.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/ORACLE_QUESTION_SET.md",
+     "what": "The Meta section, which already records confidence as measured degenerate and names inter-variant disagreement as the working signal; and design rule 7, which states it as a rule."
+    },
+    {
+     "ref": "research/v3/data/oracle-premise/premise-run-cd.jsonl",
+     "what": "The second measurement: 1.4% non-high against a pre-registered >10%."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a model-side measurement about a model-side field; no human answered anything about it.",
+    "IT IS MEASURED UNDER GREEDY CONSTRAINED DECODING ONLY. A sampled decode, or a model that was actually trained to calibrate, could plausibly make the field informative again. The finding is about this instrument, not about self-reported confidence in general.",
+    "THE AUDIT-TRAIL USE SURVIVES THE FIELD. Anything wanting a per-row uncertainty note after this must ask for it deliberately and justify it against the same >10% bar."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-sam-calibrated-score-threshold",
+   "ts": "2026-08-03T21:12:00Z",
+   "kind": "instrument-design",
+   "scope": "Every CONSUMER of stored SAM mask rows. It does NOT change the run-time capture floor SCORE_THRESHOLD = 0.3, which stays deliberately low so that raising the cut is a query and never a re-run; and it does not re-score or rewrite any stored row.",
+   "decision": "The consumer-side cut is CALIBRATED_SCORE_THRESHOLD = 0.578, applied together with an AREA GUARD at CALIBRATED_MAX_AREA_FRACTION = 0.5 through the single predicate passes_calibrated_cut(). At that cut, against the 60 reviewer judgments of sam-mask-quality-1: precision 0.9062, recall 0.6905, Youden J 0.5140. The sweep optimum is 0.577937 and is recorded as such; the STORED CONSTANT IS KEPT AT THE ROUNDED 0.578 DELIBERATELY, because every artifact in data/sam/ was computed at it and moving the constant to the sweep value would silently invalidate the reproduction of those numbers for a difference of 6.3e-5. The population-weighted alternative is 0.643816 (J 0.3732) and is recorded alongside, because the unweighted optimum is partly an artefact of the round's even-quota sampling.",
+   "fundedBy": [
+    "o-msd971or-b2399da2",
+    "o-msd9b1ob-462621e2",
+    "o-msd9b4an-61473a39",
+    "o-msd9bf1z-7f77a16a",
+    "o-msd9bfvk-e1d8b7b5",
+    "o-msd9bsv4-1f459121",
+    "o-msd9bu4i-128b40e8",
+    "o-msd9bvn2-cb029f98",
+    "o-msd9bx7r-2e61e6cf",
+    "o-msd9bz41-900c29b9",
+    "o-msd9cekd-d6d0e0c0",
+    "o-msd9cgey-3ff0bdc5",
+    "o-msd9chrp-1c268b32",
+    "o-msd9ckx1-4bbfd79d",
+    "o-msd9cnq0-99b8ec25",
+    "o-msd9crg3-549905d0",
+    "o-msd9cuot-b0726f28",
+    "o-msd9cvzu-0e781248",
+    "o-msd9d8mh-ea9d0706",
+    "o-msd9deil-42ba6405",
+    "o-msd9dg6l-89f79e2d",
+    "o-msd9dk9o-f536e035",
+    "o-msd9dnsg-a547765d",
+    "o-msd9dzkl-3f7ff61f",
+    "o-msd9e2k1-44b02aa7",
+    "o-msd9e551-8545f1d3",
+    "o-msd9e6lu-9365f49c",
+    "o-msd9e9g1-d02e437d",
+    "o-msd9eall-6d7c3083",
+    "o-msd9eckh-178f66b8",
+    "o-msd9ef8f-9d3efe6c",
+    "o-msd9egyu-d3068235",
+    "o-msd9ejx3-3aaf8732",
+    "o-msd9evvw-76ae393e",
+    "o-msd9ewtp-3c6984e7",
+    "o-msd9f0zb-d3673664",
+    "o-msd9f3et-6929e3c6",
+    "o-msd9f77e-72bf97bf",
+    "o-msd9fca0-d81284ef",
+    "o-msd9fdp9-bb3b8bad",
+    "o-msd9ffcf-fadfe28d",
+    "o-msd9fice-786e56a2",
+    "o-msd9fjvc-30f289df",
+    "o-msd9fmhi-a59d5f4d",
+    "o-msd9fss8-2107af6f",
+    "o-msd9fui9-d32106c0",
+    "o-msd9fwtz-75c63656",
+    "o-msd9fz3p-f858eafd",
+    "o-msd9g4kt-2d358fbc",
+    "o-msd9g5wd-c6398503",
+    "o-msd9g6zv-178b3849",
+    "o-msd9g94y-8853236c",
+    "o-msd9gai4-c4942d34",
+    "o-msd9gbde-72f506a5",
+    "o-msd9gf9d-7b25c1eb",
+    "o-msd9ghb5-cb384b10",
+    "o-msd9ghyh-9f075ca1",
+    "o-msd9glx1-f9f955fc",
+    "o-msd9gmps-2321e5f2",
+    "o-msd9go2x-5c003e27"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-analysis.json",
+     "what": "The sweep and its per-cut precision/recall/J table, regenerated 2026-08-03. Previously cited by config.py and MASK_REVIEW_NOTES.md while absent from disk; it now exists."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-sample.json",
+     "what": "The 60-mask sample the judgments join to."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "The reviewer's round and its written calibration outcome."
+    }
+   ],
+   "fundingCaveats": [
+    "THE ROUND IS EVEN-QUOTA, SO THE UNWEIGHTED OPTIMUM IS NOT A CORPUS OPTIMUM. The sample was drawn with equal quotas per concept, not in corpus proportion. That is why the population-weighted alternative is recorded at all, and it differs by 0.066 — a real gap, not a rounding difference.",
+    "n=60, ONE ROUND, ONE REVIEWER. Precision 0.9062 is 29 of 32. A single re-judgement moves it by three points.",
+    "THE AREA GUARD IS UNTESTED WHERE IT MATTERS MOST. It cost zero true positives in sample, but the sample contains almost no big-area person masks, and on album artwork a mask covering 90% of the image is entirely plausible for a face or a car. See d-2026-08-03-reviewer-area-guard-scoped-per-concept-group and loose end A6, reopened for exactly this.",
+    "THE CLOSURE THIS REPLACES WAS CIRCULAR. The earlier A6 closure argued no area guard was needed because all three hallucination-signature masks scored below the cut — which such a mask cannot fail to do, by construction. The guard is here because the argument against it carried no information, not because the argument was reversed."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-sam-per-group-score-thresholds",
+   "ts": "2026-08-03T21:14:00Z",
+   "kind": "instrument-design",
+   "supersedes": "d-2026-08-03-sam-calibrated-score-threshold",
+   "scope": "Every consumer of stored SAM mask rows, replacing the single pooled cut with a per-group cut where one is calibrated. It does NOT change the run-time capture floor, the area guard, or any stored row. It does not calibrate mark_like or person_like, which fall back to the pooled cut.",
+   "decision": "Score thresholds are PER CONCEPT GROUP where the group separates: CALIBRATED_GROUP_THRESHOLDS = {\"text_like\": 0.697295}, with the pooled 0.578 as the fallback for every other group, resolved through calibrated_threshold_for(concept). This REVERSES the earlier finding that \"the concept groups did not separate, so no per-group threshold is justified\" — that conclusion was an artefact of an every() quantifier in the adoption rule, which required the gain to hold for every group before adopting it for any. Measured at its own cut, text_like reaches precision 1.000 at recall 0.4783, and overall Youden J rises 0.5140 to 0.5602. This is also the category-aware mechanism loose end A12 asked for; note the direction, because it is the opposite of what A12 wants: text_like moves UP, so per-group thresholds by themselves revive no CJK mask. A12 stays open.",
+   "fundedBy": [
+    "o-msd971or-b2399da2",
+    "o-msd9b1ob-462621e2",
+    "o-msd9b4an-61473a39",
+    "o-msd9bf1z-7f77a16a",
+    "o-msd9bfvk-e1d8b7b5",
+    "o-msd9bsv4-1f459121",
+    "o-msd9bu4i-128b40e8",
+    "o-msd9bvn2-cb029f98",
+    "o-msd9bx7r-2e61e6cf",
+    "o-msd9bz41-900c29b9",
+    "o-msd9cekd-d6d0e0c0",
+    "o-msd9cgey-3ff0bdc5",
+    "o-msd9chrp-1c268b32",
+    "o-msd9ckx1-4bbfd79d",
+    "o-msd9cnq0-99b8ec25",
+    "o-msd9crg3-549905d0",
+    "o-msd9cuot-b0726f28",
+    "o-msd9cvzu-0e781248",
+    "o-msd9d8mh-ea9d0706",
+    "o-msd9deil-42ba6405",
+    "o-msd9dg6l-89f79e2d",
+    "o-msd9dk9o-f536e035",
+    "o-msd9dnsg-a547765d",
+    "o-msd9dzkl-3f7ff61f",
+    "o-msd9e2k1-44b02aa7",
+    "o-msd9e551-8545f1d3",
+    "o-msd9e6lu-9365f49c",
+    "o-msd9e9g1-d02e437d",
+    "o-msd9eall-6d7c3083",
+    "o-msd9eckh-178f66b8",
+    "o-msd9ef8f-9d3efe6c",
+    "o-msd9egyu-d3068235",
+    "o-msd9ejx3-3aaf8732",
+    "o-msd9evvw-76ae393e",
+    "o-msd9ewtp-3c6984e7",
+    "o-msd9f0zb-d3673664",
+    "o-msd9f3et-6929e3c6",
+    "o-msd9f77e-72bf97bf",
+    "o-msd9fca0-d81284ef",
+    "o-msd9fdp9-bb3b8bad",
+    "o-msd9ffcf-fadfe28d",
+    "o-msd9fice-786e56a2",
+    "o-msd9fjvc-30f289df",
+    "o-msd9fmhi-a59d5f4d",
+    "o-msd9fss8-2107af6f",
+    "o-msd9fui9-d32106c0",
+    "o-msd9fwtz-75c63656",
+    "o-msd9fz3p-f858eafd",
+    "o-msd9g4kt-2d358fbc",
+    "o-msd9g5wd-c6398503",
+    "o-msd9g6zv-178b3849",
+    "o-msd9g94y-8853236c",
+    "o-msd9gai4-c4942d34",
+    "o-msd9gbde-72f506a5",
+    "o-msd9gf9d-7b25c1eb",
+    "o-msd9ghb5-cb384b10",
+    "o-msd9ghyh-9f075ca1",
+    "o-msd9glx1-f9f955fc",
+    "o-msd9gmps-2321e5f2",
+    "o-msd9go2x-5c003e27"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-analysis.json",
+     "what": "The per-group sweep: text_like optimum 0.697295 with precision 1.000 / recall 0.4783, and the pooled-vs-per-group J comparison 0.5140 -> 0.5602."
+    },
+    {
+     "ref": "research/v3/oracle/sam/config.py",
+     "what": "CALIBRATED_GROUP_THRESHOLDS, calibrated_threshold_for(), group_of(), and the CONCEPT_GROUPS the cuts key on."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "The round that funds both cuts."
+    }
+   ],
+   "fundingCaveats": [
+    "ONE GROUP OF THREE IS CALIBRATED. mark_like and person_like fall back to the pooled cut and are not separately measured; the record should not be read as \"per-group thresholds are in force\" but as \"text_like has its own, and the mechanism exists for the others\".",
+    "THE SAME n=60 ROUND FUNDS BOTH THIS AND THE RECORD IT SUPERSEDES. Nothing new was measured — the raw judgments were re-analysed after the quantifier bug was found. A superseding record on unchanged evidence is exactly the case the append-never-edit rule exists for, and the reader should know the evidence did not grow.",
+    "text_like RECALL AT ITS OWN CUT IS 0.4783. Precision 1.000 is bought with recall: fewer than half the reviewer-approved text masks survive the cut. For a consumer that needs coverage rather than purity this is the wrong cut, and the pooled one may be the right one.",
+    "A12 IS NOT ADDRESSED. CJK text tops out at 0.472 anywhere, so raising the text_like cut to 0.697 moves it further out of reach, not closer."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-embedding-canonical-model-rationale",
+   "ts": "2026-08-03T00:00:00Z",
+   "kind": "instrument-selection",
+   "supersedes": "d-2026-08-02-embedding-canonical-model",
+   "scope": "Identical to the superseded record: every v3 consumer of image embeddings — the near-duplicate census, the holdout component graph, corpus stratification, cluster galleries and visual retrieval. Dev-time only; embeddings are never a runtime palette component. This record changes NO instrument and NO artifact. It exists because the superseded record's machine-readable rationale cited a statistic that does not support it, and anyone re-deriving the choice from that record would have found a coin flip.",
+   "decision": "The canonical embedding instrument remains dinov2-vitl14 at its native 224 px input — unchanged. What changes is the stated grounds. The choice rests on TWO separate findings, in this order: (1) pe-core-l14 was eliminated by the reviewer's gallery browse, which found it matches by ARTIST rather than by image — semantic leakage for every use this instrument has — independent of its R@1; (2) among the remaining arms the retrieval bake-off separates decisively, dinov2-vitl14 beating dinov3-vitl16 at McNemar p=1.4e-22 and every other arm more strongly. The bake-off does NOT separate dinov2-vitl14 from pe-core-l14 and must never be cited as though it did.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/embeddings/GALLERY_NOTES.md",
+     "sha256": "28940918d33739b99e7a98b8b560a7eb232c268a3cf1dd570687dfbb40f14beb",
+     "what": "THE DECISIVE EVIDENCE, and the only evidence that separates the top two arms. Reviewer gallery browse, 2026-08-02, observation 1: pe-core-l14 'seems to consider close artworks when they are by the same artist, even if the images themselves don't look much alike'. That is semantic leakage for near-dup, stratification and visual retrieval alike, and it eliminates PE-Core whatever its R@1 says. Qualitative, unrepeatable, and correct."
+    },
+    {
+     "ref": "research/v3/data/embeddings/bakeoff.json",
+     "sha256": "ef4cbf93181115213ae3a536e3343d8c6703b888d37df9059a8236ab8e5ca3d3",
+     "what": "Same-artwork-different-rendition retrieval over 24,648 ordered pairs pooled across both collections. R@1: dinov2-vitl14 0.78923, pe-core-l14 0.78866, dinov3-vitl16 0.77110, dinov3-vith16plus 0.76428, dinov2-vitl14-392 0.75438, siglip2-so400m 0.67657. Paired McNemar of dinov2-vitl14 against each other arm on the SAME pairs, re-derived 2026-08-03 from the stored vectors: vs pe-core-l14 b01=1573 b10=1559 chi2cc=0.05 p=0.816 — NOT SEPARATED; vs dinov3-vitl16 b01=1263 b10=816 p=1.35e-22; vs dinov3-vith16plus p=1.43e-36; vs dinov2-vitl14-392 p=4.58e-79 (exact binomial 2.03e-81); vs siglip2-so400m p<1e-300. The resolution confound is settled inside the same file: raising DINOv2 from 224 px to 392 px LOWERED R@1, so the arms' differing input resolutions do not explain the ranking."
+    },
+    {
+     "ref": "research/v3/data/embeddings/bakeoff-strata.json",
+     "sha256": "8af09537a2b34ab386a2d0bbffd64ae7eecc821d0f7eac5a84dab108a9953445",
+     "what": "Floors and strata inside the bake-off's pair set, measured 2026-08-03. 246 of the 24,648 pairs (1.00%) are files with IDENTICAL sha256 and are rank 1 by construction: R@1 without them is 0.78711, so 0.21 pp of every arm's headline is a floor. 1,986 pairs (8.06%) join two files of identical measured width and height: R@1 0.86354 on that slice against 0.78272 on the genuinely cross-resolution remainder. Both affect every arm identically, so no ranking and no conclusion here moves."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS, and the part that does the work is the part no machine can check. The reviewer's gallery observations were relayed conversationally and transcribed into GALLERY_NOTES.md by the orchestrator; that file still says they are 'to be ported into the warehouse as tagged note records once the tagging flow exists'. `warehouse recheck --decisions` can therefore never flag this decision, however the reviewer later revises those observations.",
+    "THE HEADLINE METRIC DOES NOT SEPARATE THE TOP TWO ARMS. dinov2-vitl14 beats pe-core-l14 by 14 pairs out of 24,648 (p=0.816). The superseded record cited that ranking — 'first of six arms, ahead of pe-core-l14 0.7887' — with no significance statement, and `near_dup_census.py` wrote 'won the retrieval bake-off (R@1 0.7892)' into every census header. Both have been corrected. If the reviewer's semantic-leakage observation is ever withdrawn, this decision has NO remaining evidence distinguishing dinov2-vitl14 from pe-core-l14 and must be re-opened, not re-derived.",
+    "THE DINOV2-VS-DINOV3 TAIL ARGUMENT IS STILL UNRESOLVED, and is a different question from the one above. dinov3-vitl16 has the better tail (worst rank 17 vs dinov2's 64) while losing on R@1 at p=1.4e-22. That trade was decided by the headline metric, not argued. PHASE_0_LOOSE_ENDS.md C4 currently describes the dinov2-vs-dinov3 pair as 'never fully argued'; on R@1 that pair IS settled, and the genuinely unseparated pair — dinov2 vs pe-core — is the one C4 does not mention.",
+    "THE GALLERY BROWSE THAT DECIDED THIS SPENT HOLDOUT ARTWORKS. The pages the reviewer looked at rendered 117 of the 413 held-out artworks and 2 quarantined non-candidates, and 3 of the 12 pinned query covers are held out — including the covers named in the observations this decision cites ('johns', 'krafty', 'muse'). Measured 2026-08-03; see research/v3/data/embeddings/HOLDOUT_EXPOSURE.md. The evidence for this decision is sound, but it was not free."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-blinding-guarantees-exactly-one-thing",
+   "ts": "2026-08-03T21:20:00Z",
+   "kind": "instrument-design",
+   "scope": "Every blinded batch the review server serves, and every claim made about a verdict on the strength of blinding. It does NOT weaken the salt, which stays and does its job; and it does not apply to oracle-validation rounds, which are not blinded comparisons.",
+   "decision": "Blinding guarantees exactly one thing: the served payload does not let the batch order be reconstructed from the item hash. The salt closes that channel. It does NOT hide CONTENT-LEVEL ARM IDENTITY, and it structurally cannot — the payload must serve each side's palette in full for the reviewer to judge it. Measured, not argued: a 24-item two-arm batch whose arms differed only in style (one always flat, one always a 2-stop gradient) was unblinded 24/24 = 100% from the served payload alone, by the one-line rule \"the side with a non-null gradient is arm-beta\". The standing obligation therefore moves to the batch designer: BEFORE treating blinding as a control, ask whether the two arms are separable by any served field (gradient presence, stop count, either collapse flag, the fieldCss geometry token). Phase 2's paradigm bake-off is exactly the shape that fails this test, and it is the round that matters most.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "CR-1: the attack, the 24/24 result, and the served-field inventory that makes it work."
+    },
+    {
+     "ref": "research/v3/REVIEW_UI.md",
+     "what": "§2, whose one-line blinding specification never contemplated content-level identity, now amended to say so."
+    },
+    {
+     "ref": "research/v3/src/review-server/blinding.ts",
+     "what": "The completeness claim that was false, and its amendment."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS, AND NONE CAN. The only pairwise batch this warehouse has ever held is demo-batch-0001, a 3-item fixture. The instrument has never carried a real arm comparison, so the content channel is not merely unmeasured in production — it is unmeasurable from anything in the repo, and it will first apply on the round that matters most.",
+    "THE ATTACK WAS RUN AGAINST A DELIBERATELY SEPARABLE PAIR. Arms that differ only in colour choice may well be unseparable in practice. The finding is that the server offers NO guarantee either way, not that every batch is transparent.",
+    "THE REMEDY IS A HUMAN OBLIGATION, WHICH IS THE WEAKEST KIND. The push-time separability diagnostic that would make it mechanical is specified and not built (REVIEW_UI.md §8)."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-gradient-stop-canonical-form",
+   "ts": "2026-08-03T21:22:00Z",
+   "kind": "instrument-design",
+   "scope": "Stop positions as SERVED in a review payload. It does NOT round published positions in the palette itself — those stay the true fitted values — and it does not change the gradient display mapping, which is a separate display-only transform.",
+   "decision": "Published stop positions are canonicalized to 6 DECIMAL PLACES at push time. Positions were validated for range and monotonicity but never rounded, so two code paths producing the same position could serve 0.35 against 0.35000000000000003 and betray which arm produced which side through float representation alone. Six decimal places is far below any position difference a reviewer can see and far above any the fitting distinguishes, so the canonical form costs nothing and closes one narrow leg of the content channel described in d-2026-08-03-blinding-guarantees-exactly-one-thing.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "CR-1: the float-representation channel, listed among the served fields that carry arm identity."
+    },
+    {
+     "ref": "research/v3/src/review-server/batch.ts",
+     "what": "The push-time canonicalization and the range/monotonicity validation it sits beside."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a hygiene fix on a channel that has never been exploited, because no real two-arm batch has ever been served.",
+    "IT CLOSES ONE LEG OF A CHANNEL THAT STAYS OPEN. Gradient presence, stop count and the collapse flags are still served in full and still identify systematically-differing arms. Canonicalizing positions must not be read as fixing the blinding.",
+    "SIX DECIMAL PLACES IS A CHOSEN NUMBER, NOT A MEASURED ONE. It was picked as obviously-below-perception and obviously-above-fitting-resolution. No measurement bounds it."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-corpus-size-dependent-diagnostics-never-golden-compared",
+   "ts": "2026-08-03T21:24:00Z",
+   "kind": "process",
+   "scope": "Any diagnostic or verification output whose value depends on how much data exists at the moment it runs — warehouse counts, batch tallies, coverage summaries, verify-live output. It does NOT apply to genuinely fixed artifacts (frozen fixtures, pinned hashes, seeded draws), which SHOULD be golden-compared.",
+   "decision": "A diagnostic whose output depends on corpus size is never compared against a golden file. It is asserted against its own INVARIANTS (shape, internal consistency, monotonicity) or against a query re-run at the same moment, never against a stored expected string. A golden comparison over a growing corpus fails on every legitimate growth and passes only while nothing happens, which trains the reader to regenerate the golden without looking — the exact habit the check exists to prevent. This is the same failure as the expiring [MEASURED] count in prose, in test form.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "The finding on verify-live and its golden-compared, size-dependent output."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/docs-drift.md",
+     "what": "§7 — the same failure mode in documents: \"434 records\", \"66 tags\", \"35 items\", \"2,913 work rows\", each a number a document computed about an artifact that kept growing."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a testing convention, adopted from a defect found in one instrument and generalized by argument rather than by survey.",
+    "IT IS NOT YET ENFORCED ANYWHERE. Nothing detects a size-dependent golden comparison; the rule is a reading rule for whoever writes the next check."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-watch-batch-any-batch-ignores-history",
+   "ts": "2026-08-03T21:26:00Z",
+   "kind": "instrument-design",
+   "scope": "watch-batch.ts when invoked without --batch. With --batch it is unchanged: it waits for that batch and reports it whenever it completes.",
+   "decision": "The completion watcher in any-batch mode waits for the next batch-complete APPENDED AFTER IT STARTED, and ignores every batch already complete in the file. Otherwise the watcher fires instantly on the ten batches already released and reports a months-old completion as news — which is worse than not watching, because the orchestrator acts on it. The offset is taken at start, and the JSONL tail is read forward from there.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/review-server/watch-batch.ts",
+     "what": "The offset-tracked JSONL tail and its exit codes (0 complete / 2 timeout / 1 error)."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "The finding on any-batch mode replaying history."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is an interface decision on an orchestrator-facing tool.",
+    "IT MAKES THE WATCHER NON-RESUMABLE ACROSS RESTARTS IN ANY-BATCH MODE. A watcher that dies and restarts misses a completion that happened in the gap. Use --batch when the completion actually matters."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-oracle-label-supersession-persisted",
+   "ts": "2026-08-03T21:28:00Z",
+   "kind": "instrument-design",
+   "scope": "oracle-label records that a reviewer re-answers within a round. It does NOT apply to post-release amendments, which are a different mechanism with their own record type.",
+   "decision": "When a reviewer re-answers an item during a round, the supersession is PERSISTED as a relation on the records rather than recomputed by every consumer from timestamps. Both records stay — the draft is evidence that a draft existed — and the replacement is named. This is what lets warehouse recheck --decisions report superseded-ids=<old>-><new> instead of silently counting a draft as standing evidence, and it is why a fundedBy length is not an evidence count: same-color-bar-freeze cites 156 ids of which 152 stand.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/review-server/",
+     "what": "The persistence of the supersession relation at answer time."
+    },
+    {
+     "ref": "research/v3/data/decisions/README.md",
+     "what": "The cited-versus-standing table, which is only computable because supersession is stored."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a schema decision about how warehouse records relate.",
+    "FOUR OF TEN RELEASED BATCHES ALREADY HOLD MORE RECORDS THAN DECLARED ITEMS. The relation was reconstructed for those from what the file already carried; if any reconstruction is wrong, a draft is standing and a standing answer is a draft, and nothing downstream would notice."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-answers-held-to-model-ceiling",
+   "ts": "2026-08-03T21:30:00Z",
+   "kind": "process",
+   "scope": "Pre-registered consistency ceilings in oracle rounds. It does NOT invalidate any reviewer answer, and it does not make the reviewer wrong — it makes the QUESTION SET accountable to the same bar it holds the model to.",
+   "decision": "A consistency ceiling pre-registered for the model is applied to the REVIEWER's own answers on the same questions, and the result is reported whichever way it falls. Measured on bcde-validation-1: the pre-registered gate-consistency ceiling is \"total contradiction rate <= 10% of ok rows\"; the reviewer's own answers contradict each other on 9 of 20 artworks = 45%, about four times the registered ceiling, and no document reported it. The reading is NOT \"the reviewer is unreliable\". It is that a 45% self-contradiction rate on a question set means the QUESTIONS do not have unique answers — which is design rule 9's finding arriving as a number instead of as an anecdote, and which is why nothing may be graded against these rows until the rate has a reading on the record (loose end L-b).",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "CR-2: the recomputation from raw warehouse records, and the corrected 45% per-contradiction figure."
+    },
+    {
+     "ref": "research/v3/oracle/premise/PREMISE_NEXT.md",
+     "what": "The pre-registered <=10% gate-consistency ceiling that the measurement is held against."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+     "what": "The round: 20 artworks, all four gate pairs served together, 160/160 answered."
+    }
+   ],
+   "fundingCaveats": [
+    "THE DENOMINATOR IS CONTESTED AND BOTH READINGS ARE ON THE RECORD. 9 contradictions over 20 rows is 45%; 8 distinct artworks over 20 is 40%. The registered ceiling is phrased \"of ok rows\", so 45% is the like-for-like number and supersedes the fleet report's 40%.",
+    "n=20 ARTWORKS, ONE ROUND, ONE SITTING. A rate this far above its ceiling is unlikely to be noise, but the confidence interval is wide and no second round exists.",
+    "THIS RECORD DOES NOT SUPPLY THE READING IT DEMANDS. It records that the number exists and that nothing may be graded against these rows until someone reads it. The reconciliation labeling round now being built is what is expected to supply it."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-pilot-overlap-joins-verified-against-bytes",
+   "ts": "2026-08-03T21:32:00Z",
+   "kind": "process",
+   "scope": "Any join between a reviewer round and a model run — the reviewer-vs-VLM comparisons every oracle validation exists to produce. It does NOT apply to joins within one run.",
+   "decision": "A reviewer-versus-model join is verified against BYTES, not against artwork ids, and the join breakdown is reported alongside every comparison drawn from it. An artwork id names a set of renditions; the reviewer saw one file and the model decoded another, and the same id can therefore be a false join. Reported for bcde-validation-1: of 20 artworks, 2 join on exact bytes, 1 joins through a different rendition of the same artwork, and 17 do not join at all. Any statement of the form \"the reviewer and the model agree on X\" drawn from this round rests on n<=3, and must say so.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+     "what": "joinExactBytes 2 / joinOtherRendition 1 / joinNone 17 — the breakdown, computed and reported rather than assumed."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "The finding that the join was not being verified, and the fixed analyzer."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is an analysis convention.",
+    "THE NARROW JOIN IS A KNOWN AND ACCEPTED COST, NOT A BUG. Reviewer rounds now draw from the coverage-set core (d-2026-08-03-reviewer-rounds-from-coverage-core) while the VLM runs are still on the pilot eval set, and the core intersects it on 3 of 200 artworks. The join widens as VLM runs move onto the core; until then, reviewer-vs-model claims from these rounds are close to unfounded."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-holdout-purpose-is-algorithm-leakage",
+   "ts": "2026-08-03T23:00:00Z",
+   "kind": "corpus-policy",
+   "scope": "What the music-artworks holdout claims, and therefore what spends it. It does NOT unfreeze the holdout, relax the exclusion rules, or license looking at held-out artworks in development — the freeze rules stand unchanged. It does not apply to the sharded collection, which has no holdout by design.",
+   "decision": "The holdout prevents ALGORITHM AND TUNING LEAKAGE. It has never claimed reviewer-naive eyes, and it must not be described as though it did. Reviewer, 2026-08-03: \"Every image that comes from music-artworks/ I have seen multiple times before. We cannot claim I have never seen them (and we don't need to). Images from the hex folders those I probably haven't seen (unless shown in a review) and I can supply many more folders from the hex source. So we shouldn't worry too much about the holdouts.\" Consequences, all of them: (1) held-out music-artworks artworks are ASSUMED reviewer-familiar, so a browse that rendered some of them is a disclosure of fact, not an open problem; (2) genuinely fresh-eyes evaluation routes through a fresh hex-shard import at claim time, and that mechanism has still never been exercised (loose end A11); (3) the gallery exclude-by-default stays as hygiene, because \"the claim does not depend on it\" is not a reason to spend it casually.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/embeddings/HOLDOUT_EXPOSURE.md",
+     "what": "The measurement that raised the question: the reviewer's bake-off gallery browse rendered 117 of the 413 held-out artworks, 2 quarantined non-candidates, and 3 of the 12 pinned query covers."
+    },
+    {
+     "ref": "research/v3/data/holdout/HOLDOUT.md",
+     "what": "The freeze document, which now carries the exposure disclosure under this ruling."
+    },
+    {
+     "ref": "research/v3/PHASE_0_LOOSE_ENDS.md",
+     "what": "A11 — the sharded collection has no holdout, and the fresh-shard import mechanism has never been exercised. This ruling makes A11 the load-bearing item rather than the exposure count."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a conversational reviewer ruling, relayed and transcribed by the orchestrator. warehouse recheck can never flag it, however the reviewer later revises it.",
+    "IT NARROWS A CLAIM RATHER THAN STRENGTHENING ONE. The holdout is worth less after this record than the earlier documents implied it was worth — an end-of-campaign number on music-artworks is not a fresh-eyes number and never was. What the ruling adds is that we now know which claim we hold.",
+    "THE ROUTE IT NAMES IS UNTESTED. Fresh-shard import at claim time is the mechanism the whole fresh-eyes claim now rests on, and it has never been run once. If it turns out to be harder than assumed, this ruling has moved the campaign's only naive-evaluation path onto an unexercised tool."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-area-guard-scoped-per-concept-group",
+   "ts": "2026-08-03T23:05:00Z",
+   "kind": "instrument-design",
+   "scope": "The SAM area guard (CALIBRATED_MAX_AREA_FRACTION) and its interaction with the concept groups. It does NOT change any score threshold, and it does not remove the guard — the guard stays on as it is until a round measures the scoping.",
+   "decision": "The area guard's exposure on large subject masks is confirmed as the live concern, and the DIRECTION is per-concept-group scoping rather than a single global fraction. Reviewer, 2026-08-03: \"since we're processing artworks, it wouldn't be too surprising to have 90% of the image be 'a face' or 'a car'.\" Proposed shape, to be calibrated rather than assumed: guard mark_like and text_like, where a mask covering most of the cover is genuinely implausible; EXEMPT person_like and any future dynamic subject noun, where it is ordinary. This must be calibrated in a MASK ROUND 3 that shows the reviewer big-area person masks specifically — the current quality sample contains almost none, which is precisely why the guard could be adopted at zero measured cost. Loose end A6 stays OPEN until that round runs.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/sam/config.py",
+     "what": "CALIBRATED_MAX_AREA_FRACTION = 0.5, passes_calibrated_cut(), and the three CONCEPT_GROUPS the scoping would key on."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/sam.md",
+     "what": "The finding: the A6 closure argued no guard was needed on a tautology, the round holds a counterexample (8b4f2aadf3b1:sticker:0), and the guard's person exposure is untested."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "The 60-mask round, whose composition is why the guard cost zero in sample."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a conversational reviewer ruling about a hazard, not a measurement of one. The hazard itself is also unmeasured — no round has yet shown the reviewer a big-area person mask.",
+    "THE ZERO IN-SAMPLE COST OF THE GUARD IS EVIDENCE ABOUT THE SAMPLE, NOT ABOUT THE GUARD. A sample with almost no big-area person masks cannot price a guard that fires on big-area person masks.",
+    "THE SCOPING IS A PROPOSAL AND MUST NOT BE IMPLEMENTED AS A RULING. What is signed is the direction and the requirement to calibrate it; the group assignment (guard mark_like and text_like, exempt person_like) is the orchestrator's proposal and could be wrong — a full-bleed logo is not obviously implausible either."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-background-via-residual-isolation",
+   "ts": "2026-08-03T23:10:00Z",
+   "kind": "process",
+   "scope": "How background structure is to be obtained. It supersedes nothing in the ledger and freezes nothing: it is the chosen SUCCESSOR to the failed §4 gate, replacing the gate's own pre-registered escalation branch as the direction of travel. It does NOT retire the group-a.v3 vocabulary split, which stays as the fallback. It does not relax A12 or the location-prior rule.",
+   "decision": "Stop asking VLMs background questions; retry \"everything but the masks\" — residual isolation — as the route to background structure. Reviewer direction, 2026-08-03. The retry is not a repeat: it carries three changes the failed round did not have. (a) CALIBRATED CUTS — round 2's residual panels were judged at the raw 0.3 capture floor, not at a calibrated threshold, so what the reviewer rejected was not the instrument the campaign now has. (b) VLM-to-SAM DYNAMIC PROMPTING — measured at 19/21 in probe 5 and never built; this is the first use that needs it. (c) PER-GROUP THRESHOLDS, now that they exist. The prize is structural: if the residual isolates background cleanly, background structure becomes a PIXEL COMPUTATION and the corpus-wide group-A question is mooted rather than answered. Two constraints stay in force regardless: CJK contamination (A12) and \"SAM masks are a location prior, never colour evidence\" — until a purity round says otherwise.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/sam.md",
+     "what": "Finding 4: round 2's residual panels were judged at the raw 0.3 union, so the residual route was never evaluated at a calibrated cut."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/unrealized-ideas.md",
+     "what": "Item 1: VLM-to-SAM dynamic prompting, measured 19/21 in probe 5 and never built — the highest-value unbuilt idea in the review, and a dependency of this route."
+    },
+    {
+     "ref": "research/v3/oracle/premise/CD_RESULT.md",
+     "what": "The §4 gate outcome this is the successor to; see d-2026-08-03-group-a-corpus-gate-outcome for the gate's own escalation branch, which this direction displaces without deleting."
+    }
+   ],
+   "fundingCaveats": [
+    "NO WAREHOUSE RECORDS FUND THIS. It is a conversational reviewer direction about what to try next — the least checkable kind of decision and the most consequential, since it redirects a workstream.",
+    "THE ROUTE HAS ALREADY FAILED ONCE. Residual isolation was tried in round 2 and the reviewer rejected the panels. The argument for retrying is that the round did not test today's instrument, not that the earlier judgement was wrong. If the recalibrated retry fails too, that is two failures and the pre-registered vocabulary split is what remains.",
+    "ONE OF ITS THREE INGREDIENTS DOES NOT EXIST. VLM-to-SAM dynamic prompting is measured but unbuilt. This direction cannot be executed as stated until it is.",
+    "IT MOOTS A QUESTION BY REPLACING IT, WHICH IS NOT THE SAME AS ANSWERING IT. If background becomes a pixel computation, the corpus-wide group-A question is not settled — it is no longer asked. Anything that later needs a semantic background label is back where it started."
+   ],
+   "recordedAt": "2026-08-03"
   }
  ]
 }

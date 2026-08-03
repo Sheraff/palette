@@ -3,8 +3,13 @@
 **Toolchain (match the repo root):** plain Node with `--experimental-strip-types`, ESM
 (`"type": "module"`), tests via `node:test` (`node --experimental-strip-types --test`),
 TypeScript 5.6 types only (no build step). Use the **root** `package.json` dependencies —
-available: `sharp` (image decode/metadata, AVIF-capable), `apca-w3`, `colornames-oklab`,
-`colorjs.io`, `@types/node`. **Never install packages; never edit `package.json`** (the
+available: `sharp` 0.33.5 (image decode/metadata, AVIF-capable), `apca-w3`, `colornames-oklab`,
+`colorjs.io`, `@types/node`. **The root also aliases `sharp-modern` (`npm:sharp@0.35.3`)** — every
+v3 import resolves to plain `sharp` 0.33.5, which does register AVIF input, so the AVIF claim holds
+for the package actually used. Worth knowing the alias exists: a repo normally carries two sharps
+because of a decode difference, and the header-dimensions rule below is a hard rule over exactly
+the AVIF files where the two versions could differ. If you ever need `sharp-modern`, say so
+explicitly rather than letting resolution pick. **Never install packages; never edit `package.json`** (the
 orchestrator reconciles scripts/deps at integration). Python only where local models require
 it, in a project-local venv, never system-wide. If the environment itself blocks you (system
 interpreter too old, wheel unavailable), stop and escalate with the exact failure — a
@@ -22,9 +27,21 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
 | holdout freeze | `research/v3/src/holdout/`, `research/v3/data/holdout/` |
 | embeddings | `research/v3/oracle/embeddings/`, `research/v3/data/embeddings/` |
 | calibration consequence | `research/v3/src/calibration-consequence/`, `research/v3/data/calibration-consequence/` |
-| tagging | `research/v3/src/tagging/` |
-| oracle — premise / ladder / bakeoff / SAM | `research/v3/oracle/<name>/`, `research/v3/data/oracle-*`, `research/v3/data/sam/` |
-| housekeeping + reconciliation | `research/v3/data/decisions/`, `research/v3/PHASE_0_LOOSE_ENDS.md`, and doc edits to `V3_PLAN.md` / `PHASE_0_DECISIONS.md` / `CONVENTIONS.md` |
+| tagging | `research/v3/src/tagging/`, `research/v3/data/tagging/`, `research/v3/tests/tagging-*.test.ts` |
+| coverage set | `research/v3/src/coverage-set/`, `research/v3/data/coverage-set/` |
+| oracle — premise / ladder / bakeoff / SAM | `research/v3/oracle/<name>/`, `research/v3/data/oracle-*`, `research/v3/data/sam/`, `research/v3/tests/sam-*.test.ts` |
+| housekeeping + reconciliation | `research/v3/data/decisions/`, `research/v3/PHASE_0_LOOSE_ENDS.md`, and doc edits to `V3_PLAN.md` / `PHASE_0_DECISIONS.md` / `CONVENTIONS.md` / `REVIEW_UI.md` / `ORACLE_QUESTION_SET.md` |
+
+Data directories written by the instrument that owns the code, and owned with it:
+`research/v3/data/warehouse/` (warehouse), `research/v3/data/review-server/` (review server),
+`research/v3/data/calibration/` (calibration consequence), `research/v3/data/source-surveys/`
+(read-mostly; the surveys are inputs, and a regeneration is a reviewer-visible event).
+
+*Added 2026-08-03 (adversarial review, docs-drift §2.18): `src/coverage-set/`,
+`data/coverage-set/`, `data/tagging/`, the tagging and SAM test globs, and the four data
+directories above previously belonged to **no row**. An unowned path holding the authoritative tag
+vocabulary is a write collision waiting to happen, and path ownership is this campaign's only
+collision-avoidance mechanism for parallel agents.*
 
 The `.md` files inside a workstream's data directory belong to that workstream — a housekeeping
 pass reports contradictions in them, it does not edit them.
@@ -69,5 +86,16 @@ pass reports contradictions in them, it does not edit them.
 - **A deliberately-open item gets a ledger entry** in `research/v3/PHASE_0_LOOSE_ENDS.md`, with an
   owner and the condition that revives it. "Known and parked" is a respectable state; "open and
   unrecorded" is not.
+- **A quoted count carries the timestamp it was measured at, or is replaced by the query that
+  regenerates it** (added 2026-08-03). "434 records" is not honest; "434 records as of
+  2026-08-03T10:12Z" is honest and self-invalidating, and `warehouse status` is better than either.
+  The same applies in tests: **a diagnostic whose output depends on corpus size is never
+  golden-compared** — assert its invariants instead
+  (`d-2026-08-03-corpus-size-dependent-diagnostics-never-golden-compared`). Genuinely fixed
+  artifacts — frozen fixtures, pinned hashes, seeded draws — *should* be golden-compared.
+- **A status claim about code another workstream owns cites that workstream's README** (added
+  2026-08-03). Do not assert independently that someone else's code is unbuilt. In every
+  built-vs-unbuilt inversion the adversarial review found, the README was right and the summarising
+  document was behind it — because the README is maintained by the workstream that owns the code.
 - Read `V3_PLAN.md` and `PHASE_0_DECISIONS.md` before writing code; `REVIEW_UI.md` for
   anything reviewer-facing; `PHASE_0_LOOSE_ENDS.md` before assuming any instrument is settled.
