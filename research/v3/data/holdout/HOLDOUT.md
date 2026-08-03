@@ -61,7 +61,8 @@ the end-of-campaign claim — do not quietly keep it.
    → **2757 album-artwork candidates.**
 4. Build the near-duplicate graph over those candidates from
    `research/v3/data/embeddings/near-dup-census.json`: an edge wherever **any** of the
-   three embedding arms put a pair at cosine ≥ 0.95 (the union,
+   three embedding arms **dinov2-vitl14**, **pe-core-l14**, **dinov3-vitl16**
+   put a pair at cosine ≥ 0.95 (the union,
    because leak prevention wants the conservative graph). Connected components via
    union-find → **1712 components**.
 5. Stratify components by the long edge of their largest member, and draw whole
@@ -208,13 +209,34 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freez
 NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freeze-holdout.ts --verify
 ```
 
-The script is idempotent — seed, freeze date and script version are pinned constants,
-the census is pinned by sha256 in the header, and all measurements come from the files
-themselves, so a re-run rewrites the same bytes. `--verify` re-derives the selection and
-fails if the committed files disagree. `measurements.jsonl` next to this file is the
-header-measurement cache (also the raw dimension survey of the whole collection);
-deleting it only makes the next run slower.
+The script is idempotent — seed, freeze date and script version are pinned constants, and
+all measurements come from the files themselves, so a re-run rewrites the same bytes.
+`--verify` re-derives the selection and fails if the committed files disagree.
+`measurements.jsonl` next to this file is the header-measurement cache (also the raw
+dimension survey of the whole collection); deleting it only makes the next run slower.
+
+**What the run asserts about the census, exactly.** The component rule is the union over a
+NAMED arm set, and every part of that name is now checked against a pinned constant rather
+than described in prose:
+
+| pinned in `freeze-holdout.ts` | value | asserted on every run |
+| --- | --- | --- |
+| arm set (`EXPECTED_CENSUS_ARMS`) | dinov2-vitl14, pe-core-l14, dinov3-vitl16 | yes — set equality against `method.arms_scanned`, plus no pair may be attributed to an arm outside the set |
+| primary arm | dinov2-vitl14 | yes |
+| cosine threshold | 0.95 | yes |
+| union pair count | 6386 | yes |
+| cross-collection pairs | 0 | yes |
+| edges crossing the holdout boundary | 0 | yes |
+
+The census **sha256 is recorded in the header for provenance but is not compared** — that is
+deliberate, because the census is expected to be regenerated and a byte pin would fail on a
+legitimate rebuild. Identity is carried by the rule (arms, primary, threshold) plus the pair
+count instead. Until the arm-list assertion landed, a census silently recomputed over a
+different arm set that happened to land on 6386 pairs would have
+passed every check; it no longer does.
 
 **Changing `HOLDOUT_SEED`, the census, or the component rule re-rolls the holdout and
 voids every claim made against the old list.** That already happened once, deliberately,
-for the leak above. It must not happen again without the same authorisation.
+for the leak above. It must not happen again without the same authorisation — and the
+arm-set constant above is now part of "the component rule" in the enforceable sense, so
+editing it is a re-roll, not a refactor.

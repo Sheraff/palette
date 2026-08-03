@@ -309,8 +309,24 @@ superseded instances in the good-tier files, flagged `supersededByLaterGrade: tr
 and two `grade-acceptable` entries were simultaneously known-bad. Because these fixtures are consumed
 mechanically, that made correctness depend on a consumer remembering to filter. They are now **removed from
 `endorsements.json` and `acceptable.json` entirely** and listed in each file's `meta.droppedAsStandingBad`
-with the grade history and the file they moved to. The three files are disjoint by standing grade: the
-good-tier overlap with `known-bad.json` is **0**.
+with the grade history and the file they moved to.
+
+**The claim that matters is exact, and it is narrower than "the three files are disjoint".** What is 0
+is the **good-tier ∩ known-bad** overlap — the one the known-worse gate depends on. Measured on
+(`artwork.contentSha256`, `roleSignature`) over the three files as they stand:
+
+| pair | overlapping keys |
+| --- | --- |
+| `endorsements.json` ∩ `known-bad.json` | **0** |
+| `acceptable.json` ∩ `known-bad.json` | **0** |
+| `endorsements.json` ∩ `acceptable.json` | **31** |
+
+So the two **good tiers do overlap each other**, by 31 keys, and `acceptable.json` additionally holds
+**9** entries whose `standingGrade` is `"strong"` (the other 157 are `"acceptable"`). That overlap is
+harmless in itself — both good-tier files feed the concordance dashboard only, and `entryId` is disjoint
+across all three files (0 shared ids) — but it is **not** a licence to concatenate the three files:
+doing so double-counts 31 palettes. Read the tiers separately, or de-duplicate on
+(`contentSha256`, `roleSignature`) first.
 
 ### A2 — The losing side of a bad-graded comparison
 
@@ -438,6 +454,8 @@ pair; do not re-derive a threshold, and do not fall back to exact hex. Two thing
 - **Hit counts computed before 2026-08-03 are still provisional** and should be re-run, because they
   were produced under an exact-hex approximation rather than the bar.
 
-Each fixture's `meta.matchSemantics` string was written before the calibration and still describes the
-bar as pending; it is frozen data and was deliberately not rewritten. This README is the current
-statement.
+Each fixture's `meta.matchSemantics` **was** rewritten when the bar landed — an earlier draft of this
+paragraph said it had deliberately been left describing the bar as pending, and that is no longer true.
+All three files now carry identical, current wording naming the bar as the **frozen** region-dependent
+`sameColorBar(pair)` of `src/contract/`, calibrated on bracketing rounds 1+2 and frozen 2026-08-03. The
+fixture strings and this README agree; either can be read as the current statement.

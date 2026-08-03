@@ -72,9 +72,11 @@ KMEANS_K = 36
 # reproducible and so two reviewers discussing "cluster 17" mean the same thing.
 KMEANS_SEED = 20260802
 
-# [MEASURED] Lloyd iteration ceiling. dinov2 converges at 95 and dinov3 at 69,
-# but pe-core needed more than 100, so the ceiling was raised on 2026-08-02 until
-# every arm converged rather than reporting a truncated run as if it were final.
+# [MEASURED] Lloyd iteration ceiling. At a ceiling of 100 pe-core had not
+# converged, so the ceiling was raised on 2026-08-02 until every arm converged
+# rather than reporting a truncated run as if it were final. Under the current
+# gallery run all three finalists converge well inside it: dinov2 93, pe-core 62,
+# dinov3-vitl16 47 (data/embeddings/gallery/summary.json, clusters.*.iterations).
 KMEANS_MAX_ITERS = 300
 
 # [REVIEWED] Members shown per cluster row: half nearest the centroid, half drawn
@@ -908,7 +910,32 @@ def main() -> int:
                 flush=True,
             )
 
-    (gallery_dir / "summary.json").write_text(
+    # A partial run (--clusters-only / --neighbors-only) must not silently DELETE the
+    # half it did not compute. summary.json is the record for the WHOLE gallery, and the
+    # cluster block carries the k-means iteration counts that KMEANS_MAX_ITERS cites; a
+    # --neighbors-only run used to drop it, so re-rendering one page destroyed the other
+    # page's provenance. Carry the untouched block forward verbatim, and stamp it as
+    # carried over with the timestamp of the run that actually produced it, so nobody
+    # reads a stale block as if this run had recomputed it.
+    summary_path = gallery_dir / "summary.json"
+    previous: dict = {}
+    if summary_path.exists():
+        try:
+            previous = json.loads(summary_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            previous = {}
+    for block, produced_by_this_run in (
+        ("clusters", not args.neighbors_only),
+        ("neighbours", not args.clusters_only),
+    ):
+        if not produced_by_this_run and block in previous:
+            summary[block] = previous[block]
+            summary.setdefault("carried_over", {})[block] = {
+                "written_at": previous.get("written_at"),
+                "note": "not recomputed by this run; copied from the previous summary.json",
+            }
+
+    summary_path.write_text(
         json.dumps(summary, indent=2) + "\n", encoding="utf-8"
     )
     print(f"[gallery] wrote {gallery_dir / 'summary.json'}", flush=True)

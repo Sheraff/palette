@@ -417,8 +417,11 @@ word for word. A clean fit here shows the vocabulary *can* express these classes
 independent evidence that it generalises. The zero-tag rate on the first pass over comments
 nobody drafted against is the real test, and it is the number to watch (§3).
 
-**Owed elsewhere.** The judgment/descriptive split (§2a) and the meta scope decision (§2b) are
-standing decisions later work is entitled to assume, so they owe a record in
+**Owed elsewhere — PAID (2026-08-03).** The judgment/descriptive split (§2a) and the meta scope
+decision (§2b) are standing decisions later work is entitled to assume, so they owed a record in
 `research/v3/data/decisions/decisions.json` — a housekeeping-owned file this workstream does not
-write. Their `fundedBy` is the 13 reviewer note ids listed in the fixture, which is exactly the
-evidence `warehouse recheck --decisions` can re-check.
+write. Both records now exist: **`d-2026-08-03-tagging-symmetry-scoping`** and
+**`d-2026-08-03-tagging-meta-scope`**. Each carries all **13** reviewer note ids from the fixture in
+its `fundedBy` (13/13, verified by set intersection), which is exactly the evidence
+`warehouse recheck --decisions` can re-check. Nothing is owed here any more; if either record's
+`fundedBy` ever shrinks, this section is the statement of what it should contain.

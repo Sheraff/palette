@@ -76,7 +76,26 @@ const MIN_BEST_LONG_EDGE_PX = 150
  *  conservative graph, so we take the UNION over the three embedding arms — a pair
  *  counts as an edge if ANY arm put it at >= 0.95. */
 const NEAR_DUP_COSINE_THRESHOLD = 0.95
-const NEAR_DUP_ARM_CRITERION = 'any_arm (union of dinov2-vitl14, pe-core-l14, dinov3-vitl16)'
+
+/** [HELD] The three arms the union is taken over, pinned as a constant rather than
+ *  described in prose. PHASE_0_DECISIONS.md §5 names the component rule — the union
+ *  over THESE arms at THIS threshold — as one of the three things that re-rolls the
+ *  holdout, and C3 makes a re-roll authorisation-gated and reviewer-only. Before this
+ *  pin the only identity check on the census was its pair COUNT, so a census silently
+ *  recomputed over a different arm set that happened to land on 6,386 pairs would have
+ *  passed every check. Order-insensitive on compare; listed in the census's own order.
+ *  Changing this list is a holdout re-roll and needs the C3 authorisation. */
+const EXPECTED_CENSUS_ARMS = ['dinov2-vitl14', 'pe-core-l14', 'dinov3-vitl16'] as const
+
+/** [HELD] The census's primary arm, i.e. the canonical embedding instrument of
+ *  `d-2026-08-02-embedding-canonical-model`. The union is what the leak check uses;
+ *  this is pinned so a census built around a different primary is not silently
+ *  accepted as the same instrument. */
+const EXPECTED_CENSUS_PRIMARY_ARM = 'dinov2-vitl14'
+
+/** Derived from the pin above so the prose in holdout.json cannot drift from the
+ *  assertion that enforces it. */
+const NEAR_DUP_ARM_CRITERION = `any_arm (union of ${EXPECTED_CENSUS_ARMS.join(', ')})`
 
 /** [REVIEWED] Resolution bands for stratification, on the long edge of the best
  *  rendition in a component (max across its member artworks). 400 and 640 are the
@@ -422,7 +441,7 @@ type CensusPair = {
 
 type Census = {
 	written_at: string
-	method: { threshold: number; arms_scanned: string[] }
+	method: { threshold: number; arms_scanned: string[]; primary_arm?: string }
 	pairs: CensusPair[]
 }
 
@@ -723,6 +742,35 @@ async function main(): Promise<void> {
 		census.pairs.length === EXPECTED_CENSUS_UNION_PAIRS,
 		`census has ${census.pairs.length} pairs, expected ${EXPECTED_CENSUS_UNION_PAIRS}`,
 	)
+
+	// The component rule is the union over a NAMED arm set, not "three arms". Assert the
+	// list itself, not just the pair count: two different arm sets can agree on a count.
+	const armsScanned = census.method.arms_scanned ?? []
+	const armsSeen = [...armsScanned].sort()
+	const armsExpected = [...EXPECTED_CENSUS_ARMS].sort()
+	check(
+		armsSeen.length === armsExpected.length && armsSeen.every((arm, i) => arm === armsExpected[i]),
+		`census arms_scanned [${armsScanned.join(', ')}] != pinned arm set ` +
+			`[${EXPECTED_CENSUS_ARMS.join(', ')}] — this is a different component rule, and changing it ` +
+			'is a holdout re-roll (PHASE_0_DECISIONS.md §5, C3 authorisation)',
+	)
+	check(
+		census.method.primary_arm === EXPECTED_CENSUS_PRIMARY_ARM,
+		`census primary_arm ${String(census.method.primary_arm)} != ${EXPECTED_CENSUS_PRIMARY_ARM}`,
+	)
+	// And no pair may be attributed to an arm outside the pinned set — otherwise an extra
+	// arm could contribute edges while `arms_scanned` still read as expected.
+	{
+		const pinned = new Set<string>(EXPECTED_CENSUS_ARMS)
+		const strays = new Set<string>()
+		for (const pair of census.pairs) {
+			for (const arm of pair.found_by_arms) if (!pinned.has(arm)) strays.add(arm)
+		}
+		check(
+			strays.size === 0,
+			`census pairs attributed to arms outside the pinned set: ${[...strays].sort().join(', ')}`,
+		)
+	}
 	check(crossCollectionPairs === 0, `census has ${crossCollectionPairs} cross-collection pairs, expected 0`)
 	check(edgesUsed > 0, 'no near-duplicate edges applied — census not wired up')
 	for (const pair of census.pairs) {
@@ -1063,7 +1111,8 @@ the end-of-campaign claim — do not quietly keep it.
    → **${c.candidateArtworks} album-artwork candidates.**
 4. Build the near-duplicate graph over those candidates from
    \`research/v3/data/embeddings/near-dup-census.json\`: an edge wherever **any** of the
-   three embedding arms put a pair at cosine ≥ ${NEAR_DUP_COSINE_THRESHOLD} (the union,
+   three embedding arms **${EXPECTED_CENSUS_ARMS.join('**, **')}**
+   put a pair at cosine ≥ ${NEAR_DUP_COSINE_THRESHOLD} (the union,
    because leak prevention wants the conservative graph). Connected components via
    union-find → **${c.candidateComponents} components**.
 5. Stratify components by the long edge of their largest member, and draw whole
@@ -1198,16 +1247,37 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freez
 NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/holdout/freeze-holdout.ts --verify
 \`\`\`
 
-The script is idempotent — seed, freeze date and script version are pinned constants,
-the census is pinned by sha256 in the header, and all measurements come from the files
-themselves, so a re-run rewrites the same bytes. \`--verify\` re-derives the selection and
-fails if the committed files disagree. \`measurements.jsonl\` next to this file is the
-header-measurement cache (also the raw dimension survey of the whole collection);
-deleting it only makes the next run slower.
+The script is idempotent — seed, freeze date and script version are pinned constants, and
+all measurements come from the files themselves, so a re-run rewrites the same bytes.
+\`--verify\` re-derives the selection and fails if the committed files disagree.
+\`measurements.jsonl\` next to this file is the header-measurement cache (also the raw
+dimension survey of the whole collection); deleting it only makes the next run slower.
+
+**What the run asserts about the census, exactly.** The component rule is the union over a
+NAMED arm set, and every part of that name is now checked against a pinned constant rather
+than described in prose:
+
+| pinned in \`freeze-holdout.ts\` | value | asserted on every run |
+| --- | --- | --- |
+| arm set (\`EXPECTED_CENSUS_ARMS\`) | ${EXPECTED_CENSUS_ARMS.join(', ')} | yes — set equality against \`method.arms_scanned\`, plus no pair may be attributed to an arm outside the set |
+| primary arm | ${EXPECTED_CENSUS_PRIMARY_ARM} | yes |
+| cosine threshold | ${NEAR_DUP_COSINE_THRESHOLD} | yes |
+| union pair count | ${EXPECTED_CENSUS_UNION_PAIRS} | yes |
+| cross-collection pairs | 0 | yes |
+| edges crossing the holdout boundary | 0 | yes |
+
+The census **sha256 is recorded in the header for provenance but is not compared** — that is
+deliberate, because the census is expected to be regenerated and a byte pin would fail on a
+legitimate rebuild. Identity is carried by the rule (arms, primary, threshold) plus the pair
+count instead. Until the arm-list assertion landed, a census silently recomputed over a
+different arm set that happened to land on ${EXPECTED_CENSUS_UNION_PAIRS} pairs would have
+passed every check; it no longer does.
 
 **Changing \`HOLDOUT_SEED\`, the census, or the component rule re-rolls the holdout and
 voids every claim made against the old list.** That already happened once, deliberately,
-for the leak above. It must not happen again without the same authorisation.
+for the leak above. It must not happen again without the same authorisation — and the
+arm-set constant above is now part of "the component rule" in the enforceable sense, so
+editing it is a re-roll, not a refactor.
 `
 }
 

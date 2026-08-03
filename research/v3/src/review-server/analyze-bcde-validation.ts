@@ -583,7 +583,7 @@ function isRefusal(answer: string | readonly string[]): boolean {
 
 export function sameAnswer(a: string | readonly string[], b: string | readonly string[]): boolean {
 	if (typeof a === "string" || typeof b === "string") return typeof a === "string" && typeof b === "string" && a === b
-	return [...a].sort().join(" ") === [...b].sort().join(" ")
+	return [...a].sort().join("\u0000") === [...b].sort().join("\u0000")
 }
 
 /** Jaccard on two sets. 1 when both are empty, which cannot happen here — a set answer is non-empty. */
