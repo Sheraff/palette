@@ -12,9 +12,10 @@ would be a row this file does not have.
 agent or by the orchestrator. *Revives when* is the concrete trigger, not an aspiration. **Blast
 radius** says what silently becomes wrong if the item is wrong.
 
-**Counts:** 34 items — 8 **sharp** (something downstream is already leaning on them), 18
+**Counts:** 35 items — 9 **sharp** (something downstream is already leaning on them), 18
 **standing** (parked with a clear trigger), 8 **latent** (harmless today, harmful under a specific
-future move).
+future move). Four rows are now **closed** (A1, A5, A6, B8) and are kept, struck through, with
+their original text — a ledger that deletes its closed rows cannot be audited.
 
 ---
 
@@ -70,7 +71,19 @@ longer provisional. Original entry kept below for the record.
   genuine pixel of the input but occurs as scattered noise passes.
 - **Owner.** contract workstream + **reviewer** (for the threshold). **Revives when:** Phase 1.
 
-### A5. The SAM concept set was changed by an agent over a standing reviewer prerogative
+### A5. ~~The SAM concept set was changed by an agent over a standing reviewer prerogative~~ CLOSED 2026-08-03
+**Resolution:** the reviewer reviewed the masks. Batch `sam-mask-quality-1`, 60/60 answered and
+released 2026-08-03, produced by the replaced concept set — verdict "the results are impressive,
+though not always accurate … all in all, pretty good i thought"
+(`data/sam/MASK_REVIEW_NOTES.md`). **The prompt set is ratified by that round**, which is exactly
+the reviewer act A5 was waiting for. What the round did *not* ratify is the concept *wording*:
+the reviewer's notes 1, 2 and 5 name three label/category mismatches, and the reviewer asked for
+a vocabulary-alignment follow-up — carried forward as A9, not as a reopening of A5. The two code
+defects riding along (the stale `[MEASURED, n=10, HELD]` comment, `CONCEPT_GROUPS["text_like"]`
+still listing `text`/`typography`) remain the oracle workstream's to fix and are not closed here.
+Original entry kept below for the record.
+
+### A5 (original). The SAM concept set was changed by an agent over a standing reviewer prerogative
 - **What.** `oracle/sam/config.py` `CONCEPT_PROMPTS` was replaced with the probe's measured winners
   (`words`, `letter`, `lettering`, `album title`, `logo`, `sticker`, `person`, `face`) because the
   pipeline §8.3 phrasings `text` and `typography` fire on **0 of 10** images with this model. The
@@ -86,7 +99,17 @@ longer provisional. Original entry kept below for the record.
   still lists `text` and `typography`, so the group union is computed over concepts that can never
   appear.
 
-### A6. `SCORE_THRESHOLD = 0.3` is `[UNCALIBRATED]`
+### A6. ~~`SCORE_THRESHOLD = 0.3` is `[UNCALIBRATED]`~~ CLOSED 2026-08-03
+**Resolution:** calibrated against the same round as A5 (`sam-mask-quality-1`, 60 reviewer
+judgments). **`SCORE_THRESHOLD = 0.578` `[REVIEWED]`** — a single cut; the concept groups did not
+separate, so no per-group threshold is justified. At that cut: precision 91%, recall 69%, J 0.514.
+The population-weighted optimum is 0.644 (J 0.373) and is recorded alongside it, because the
+unweighted optimum is partly an artefact of the even-quota sampling. All three
+hallucination-signature masks were rejected by the reviewer **and** dropped by the cut, so no
+area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIEW_NOTES.md`
+("Calibration outcome"). Original entry kept below for the record.
+
+### A6 (original). `SCORE_THRESHOLD = 0.3` is `[UNCALIBRATED]`
 - **What.** Deliberately low: §8.3 says recall is SAM's problem, and every row carries its score.
   "Raising this later is free; lowering it means re-running."
 - **Owner.** **reviewer**, at the same round as A5. **Revives when:** masks are reviewed.
@@ -114,6 +137,27 @@ longer provisional. Original entry kept below for the record.
   under-claiming — a reader would think the gate cannot be built yet.
 - **Owner.** legacy workstream (path ownership — reported, not edited here).
   **Revives when:** immediately; it is a one-paragraph correction.
+
+### A9. The concept-vocabulary refinement probe's results are not ratified
+- **What.** The mask-quality round closed A5 but opened its successor: the reviewer's own synthesis
+  was *"maybe we need to adjust the exact vocabulary of our queries so we more semantically align
+  with what the model is good at and we'd get even better results"*, backed by three concrete
+  mismatches in the same round — "logo"/"sticker" imply a provenance the mask cannot know (note 1),
+  parental-advisory marks arrive under "sticker" (note 2), and "album title" masks the artist name
+  as often as the title (note 5). Probe 2 was run to answer it and its findings and proposed
+  concept set v2 live in **`data/sam/VOCAB_PROBE_NOTES.md`**. Nothing in `oracle/sam/config.py` was
+  changed.
+- **Why it is sharp.** The same standing rule that made A5 sharp applies unchanged: changing the
+  question set is the reviewer's call. Any of the proposed changes — including a tag rename with no
+  prompt change — moves `concept_set_hash()`, which is part of `row_key`, so it alters the identity
+  of every mask row ever produced and re-runs `sam-eval-142` (~6.5 min measured).
+- **Owner.** **reviewer** (ratify, amend or reject the proposal).
+  **Revives when:** the next mask-quality round — which should carry the new `parental-advisory`
+  masks and `display-text` masks on covers where artist and title compete, since those are the two
+  claims a human can actually check.
+- **Blast radius.** Bounded and forward-only: today's stored rows stay valid under today's set. The
+  cost of *not* deciding is that the labels keep misnaming what they found, which is a category
+  error a downstream provenance rule would inherit silently.
 
 ---
 
@@ -155,7 +199,14 @@ Superseded by the probe arm, which generalises it. Kept for the record. Re-elici
 new vocabulary costs ~3 minutes of reviewer time, which is the reason nothing should be shaped
 around avoiding it.
 
-### B8. `PREMISE_NEXT.md` §14 sign-off ledger has three unsigned items
+### B8. ~~`PREMISE_NEXT.md` §14 sign-off ledger has three unsigned items~~ CLOSED 2026-08-03
+**Resolution:** §14 has been brought up to date — row 4 (probe wording, v1.1) and row 5 (the
+derivation table, signed **as rules, skimmed**, not read row by row) are **SIGNED OFF 2026-08-03**,
+and row 7 (the human probe round) is marked **DONE** with its result. §7 of the same file, which
+still described rows 1–3 as pending, was made to agree on 2026-08-03. Nothing on that ledger is
+blocking; the arms wait on a GPU slot. Original entry kept below for the record.
+
+### B8 (original). `PREMISE_NEXT.md` §14 sign-off ledger has three unsigned items
 The probe wording (item 4), the 729-row derivation table (item 5), and the human probe round
 (item 7). **The round was run; the ledger was never updated to say so.** *Owner: reviewer +
 oracle/premise workstream.*
@@ -245,6 +296,14 @@ does not depend on the choice.
 tagging flow exists" (B18). Until then the canonical-embedding decision has an **empty `fundedBy`**
 and `warehouse recheck` can never flag it. Same structural gap for the holdout redraw
 authorisation, the legacy recency ruling, and the SAM prompt-set change.
+
+**Update 2026-08-03 — half closed.** The port happened: 13 reviewer observations (4 gallery, 6 SAM
+mask review, 3 `ORACLE_QUESTION_SET.md` Appendix R rulings) are now raw `note` records in the
+warehouse, keyed by source document (`data/tagging/port-reviewer-notes.ts`, re-runnable and
+idempotent). **The record ids now exist; nothing cites them yet.** The remaining half is the
+housekeeping workstream's: put those ids in the `fundedBy` of the canonical-embedding decision and
+of the other decisions listed above, which is what makes `warehouse recheck --decisions` able to
+flag them.
 
 ### C6. The legacy identical-timestamp warn path is untested by reality
 `contested` now means only "conflicting grades sharing an identical timestamp", which warns rather

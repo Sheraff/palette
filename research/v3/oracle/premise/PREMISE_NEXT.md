@@ -226,20 +226,33 @@ vocabulary (inherited from v1), the `THE TEST` block and the `WHICH ANSWERS ARE 
 **Variants A and B were not touched.** They are the record of what run 1 actually asked, and run 1
 cannot be re-read against any other text.
 
-## 7. What still needs reviewer sign-off before this run means anything
+## 7. Reviewer sign-off — settled 2026-08-03
+
+**Nothing here is blocking any more.** This section listed three open sign-offs when it was
+written; the reviewer signed two of them on 2026-08-03 and the third was never blocking. The
+authoritative row-by-row record is the **§14 sign-off ledger** — this section is its summary and
+must not disagree with it.
 
 From `ORACLE_QUESTION_SET.md` v2's changelog — the run can proceed without these, but the *labels*
 it produces are only as authorised as the criterion behind them:
 
-1. The corrected `ground_type` criterion (§A.2). The reviewer authored both source rulings; what
-   needs sign-off is the generalisation drawn from them.
-2. The precedence rule (§A.1) — new policy, not transcription. It is the one change in C/D that
-   the reviewer has not already decided in some form.
-3. The `confidence` stem trigger — low stakes, but it is a change to a field the reviewer's own
-   form also carries.
+1. The corrected `ground_type` criterion (§A.2). **SIGNED OFF 2026-08-03.** The reviewer authored
+   both source rulings and signed off the generalisation drawn from them (§14 row 1).
+2. The precedence rule (§A.1) — new policy, not transcription, and the one change in C/D the
+   reviewer had not already decided in some form. **SIGNED OFF 2026-08-03** (§14 row 2).
+3. The `confidence` stem trigger — **not separately signed, and not blocking** (§14 row 3). Low
+   stakes, but it is a change to a field the reviewer's own form also carries.
+
+Two further sign-offs landed the same day and belong to the probe arm rather than to this run: the
+probe set and its **v1.1** wordings (§14 row 4), and the derivation table — signed **as rules,
+skimmed, not read row by row** (§14 row 5). The human probe round itself is **done**, not pending
+(§14 row 7).
 
 Not needed before this run: the §A.5 vocabulary split. It is a proposal, deliberately
 unimplemented, superseded by the probe arm below, and this run is part of its evidence.
+
+**What the run is actually waiting on is a GPU slot, not a signature** — see the run-approval
+paragraph under §14.
 
 ---
 
