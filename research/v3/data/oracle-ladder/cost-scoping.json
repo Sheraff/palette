@@ -1,0 +1,159 @@
+{
+	"what": "Projected cost of each resolution-ladder scope (oracle pipeline §7.4.3)",
+	"generatedBy": "research/v3/oracle/ladder/scope-cost.ts",
+	"model": {
+		"anchors": [
+			{
+				"longEdgePx": 147,
+				"seconds": 1.95,
+				"n": 2
+			},
+			{
+				"longEdgePx": 300,
+				"seconds": 2.33,
+				"n": 43
+			},
+			{
+				"longEdgePx": 500,
+				"seconds": 2.83,
+				"n": 4
+			},
+			{
+				"longEdgePx": 640,
+				"seconds": 3.11,
+				"n": 93
+			},
+			{
+				"longEdgePx": 1079,
+				"seconds": 11.5,
+				"n": 1
+			},
+			{
+				"longEdgePx": 3000,
+				"seconds": 55.3,
+				"n": 1
+			}
+		],
+		"interpolation": "linear in pixel area between anchors; last-segment slope above the top anchor",
+		"pixelsPerImageTokenEdge": 28,
+		"measuredWallSecondsPerRow": 2.87,
+		"conservativeMultiplier": 3,
+		"modelLoadSeconds": 35,
+		"canaryEvery": 100,
+		"variantsPerImage": 1,
+		"measuredOn": [
+			"research/v3/data/oracle-premise/premise-run-1.jsonl (variant B, 142 rows, 300 and 640 px)",
+			"research/v3/data/oracle-ladder/smoke-1.jsonl (13 rows + 3 canaries, 112–3,000 px, native)"
+		],
+		"caveats": [
+			"Nothing is measured between 640 and 1,079 px, and the 681-900 px bin holds 586 of the 4,306 full-scope rungs. Their cost is interpolation, and the interpolation is across the segment where the cost curve is known to bend upward, so this is the largest single source of error in the full-scope figure.",
+			"The 1,079 and 3,000 px anchors are n=1 each.",
+			"Peak memory measured 28.2 GB on the 3,000 px image against 27.0 GB on a 640 px one — no OOM, no memory reason to cap (pipeline §7.5)."
+		]
+	},
+	"scopes": [
+		{
+			"scope": "full",
+			"what": "every distinct-size rendition of all ladder-eligible artworks",
+			"artworks": 1125,
+			"images": 4306,
+			"inferences": 4350,
+			"imageTokens": 1227633,
+			"measuredHours": 3.410453125826242,
+			"conservativeHours": 10.231359377478725,
+			"longEdge": {
+				"min": 112,
+				"p50": 333,
+				"max": 3000
+			}
+		},
+		{
+			"scope": "sample",
+			"what": "stratified 400-artwork sample, every distinct-size rendition",
+			"artworks": 400,
+			"images": 1625,
+			"inferences": 1642,
+			"imageTokens": 513288,
+			"measuredHours": 1.389839969403683,
+			"conservativeHours": 4.169519908211049,
+			"longEdge": {
+				"min": 112,
+				"p50": 333,
+				"max": 3000
+			}
+		},
+		{
+			"scope": "pairs",
+			"what": "the 644 sharded cross-tier pairs (transfer check)",
+			"artworks": 644,
+			"images": 1288,
+			"inferences": 1301,
+			"imageTokens": 417338,
+			"measuredHours": 0.99339391721357,
+			"conservativeHours": 2.9801817516407096,
+			"longEdge": {
+				"min": 300,
+				"p50": 567,
+				"max": 640
+			}
+		},
+		{
+			"scope": "sample+pairs",
+			"what": "scope sample then scope pairs, one after the other",
+			"artworks": 1044,
+			"images": 2913,
+			"inferences": 2943,
+			"imageTokens": 930626,
+			"measuredHours": 2.373511664394975,
+			"conservativeHours": 7.1205349931849256,
+			"longEdge": {
+				"min": 112,
+				"p50": 333,
+				"max": 3000
+			}
+		},
+		{
+			"scope": "full --include-duplicate-sizes",
+			"what": "as full, plus the same-size re-encodes (codec control, no new rung)",
+			"artworks": 1125,
+			"images": 4861,
+			"inferences": 4910,
+			"imageTokens": 1512987,
+			"measuredHours": 3.935399094692758,
+			"conservativeHours": 11.806197284078275,
+			"longEdge": {
+				"min": 112,
+				"p50": 455,
+				"max": 3000
+			}
+		}
+	],
+	"scoredComparisonsPerBin": {
+		"full": {
+			"441-560": 831,
+			"0-160": 1169,
+			"241-340": 1006,
+			"341-440": 103,
+			"901-1400": 15,
+			"161-240": 11,
+			"681-900": 7
+		},
+		"sample": {
+			"0-160": 420,
+			"241-340": 441,
+			"441-560": 264,
+			"341-440": 42,
+			"901-1400": 15,
+			"161-240": 4,
+			"681-900": 4
+		},
+		"pairs": {
+			"241-340": 644
+		}
+	},
+	"powerNotes": [
+		"Counted the way analyze.py scores: reference >= 500 px, same-size renditions excluded, one comparison per rung.",
+		"The 561-680 px bin is empty under every scope. The CDN derives 147 / ~330 / ~480 px renditions and nothing between 560 and the original, so a ~640 px rung exists only when 640 IS the original — where it is the reference, not a rung. The ladder therefore brackets 300 px well and is silent on whether 640 px is itself enough; that question needs a different collection.",
+		"Matched-contrast anchors: 86 of 86 are forced into the sample, so scope `sample` and scope `full` give the transfer check identical power."
+	]
+}

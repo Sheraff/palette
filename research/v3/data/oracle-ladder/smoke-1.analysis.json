@@ -1,0 +1,797 @@
+{
+	"what": "Resolution-ladder analysis (ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md \u00a77.4.3) and the \u00a77.3 transfer check",
+	"generated_by": "research/v3/oracle/ladder/analyze.py",
+	"generated_at": "2026-08-03T08:17:11Z",
+	"settings": {
+		"agreement_floor": 0.85,
+		"min_bin_n": 30,
+		"reference_min_long_edge_px": 500,
+		"long_edge_bins": [
+			"0-160",
+			"161-240",
+			"241-340",
+			"341-440",
+			"441-560",
+			"561-680",
+			"681-900",
+			"901-1400",
+			"1401+"
+		],
+		"conditional_questions": {
+			"shading_geometry": [
+				"ground_type",
+				"shaded_field"
+			]
+		},
+		"gradient_map": {
+			"shaded_field": "gradient",
+			"flat_field": "flat",
+			"multiple_distinct_fields": "flat"
+		}
+	},
+	"health": {
+		"result_files": [
+			"../../data/oracle-ladder/smoke-1.jsonl"
+		],
+		"rows": 16,
+		"work_rows": 13,
+		"canary_rows": 3,
+		"ok": 13,
+		"failed": 0,
+		"parse_failed": 0,
+		"attempts_gt_1": 0,
+		"scopes": [
+			"sample"
+		],
+		"collections": {
+			"music-artworks": 13
+		},
+		"prompt_hashes": [
+			"c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+		],
+		"model_revisions": [
+			"f31102655767c89366f63d3eab2a5e2a8fd6d293"
+		],
+		"resolution_caps": [
+			0
+		],
+		"canary": {
+			"count": 3,
+			"distinct_parsed_answers": 1,
+			"stable": true
+		},
+		"native_resolution": true
+	},
+	"population": {
+		"ladder_comparisons_total": 11,
+		"ladder_comparisons_primary": 10,
+		"codec_control_comparisons": 1,
+		"matched_contrast_comparisons": 1,
+		"sharded_pair_comparisons": 0,
+		"artworks_with_an_answered_reference": 2
+	},
+	"per_question": {
+		"ground_type": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 3,
+					"agree": 2,
+					"agreement": 0.6667,
+					"ci95": [
+						0.2077,
+						0.9385
+					]
+				},
+				"241-340": {
+					"n": 2,
+					"agree": 1,
+					"agreement": 0.5,
+					"ci95": [
+						0.0945,
+						0.9055
+					]
+				},
+				"341-440": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"441-560": {
+					"n": 3,
+					"agree": 2,
+					"agreement": 0.6667,
+					"ci95": [
+						0.2077,
+						0.9385
+					]
+				},
+				"901-1400": {
+					"n": 1,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.7935
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "insufficient_data",
+				"thin_bins": [
+					"0-160",
+					"241-340",
+					"341-440",
+					"441-560",
+					"901-1400"
+				],
+				"usable_bins": []
+			},
+			"pooled_primary": {
+				"n": 10,
+				"agree": 6,
+				"agreement": 0.6,
+				"ci95": [
+					0.3127,
+					0.8318
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 10,
+				"agree": 6,
+				"agreement": 0.6,
+				"ci95": [
+					0.3127,
+					0.8318
+				]
+			},
+			"codec_control_same_size": {
+				"n": 1,
+				"agree": 1,
+				"agreement": 1.0,
+				"ci95": [
+					0.2065,
+					1.0
+				]
+			},
+			"by_reference_band": {
+				"561-680": {
+					"n": 6,
+					"agree": 6,
+					"agreement": 1.0,
+					"ci95": [
+						0.6097,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 4,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.4899
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "ground_type",
+				"predicted_from_curve": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"verdict_vs_curve": "not_measurable",
+				"verdict_vs_matched_contrast": "not_measurable",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"field_texture": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 3,
+					"agree": 1,
+					"agreement": 0.3333,
+					"ci95": [
+						0.0615,
+						0.7923
+					]
+				},
+				"241-340": {
+					"n": 2,
+					"agree": 1,
+					"agreement": 0.5,
+					"ci95": [
+						0.0945,
+						0.9055
+					]
+				},
+				"341-440": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"441-560": {
+					"n": 3,
+					"agree": 2,
+					"agreement": 0.6667,
+					"ci95": [
+						0.2077,
+						0.9385
+					]
+				},
+				"901-1400": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "insufficient_data",
+				"thin_bins": [
+					"0-160",
+					"241-340",
+					"341-440",
+					"441-560",
+					"901-1400"
+				],
+				"usable_bins": []
+			},
+			"pooled_primary": {
+				"n": 10,
+				"agree": 6,
+				"agreement": 0.6,
+				"ci95": [
+					0.3127,
+					0.8318
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 10,
+				"agree": 6,
+				"agreement": 0.6,
+				"ci95": [
+					0.3127,
+					0.8318
+				]
+			},
+			"codec_control_same_size": {
+				"n": 1,
+				"agree": 1,
+				"agreement": 1.0,
+				"ci95": [
+					0.2065,
+					1.0
+				]
+			},
+			"by_reference_band": {
+				"561-680": {
+					"n": 6,
+					"agree": 5,
+					"agreement": 0.8333,
+					"ci95": [
+						0.4365,
+						0.9699
+					]
+				},
+				"1401+": {
+					"n": 4,
+					"agree": 1,
+					"agreement": 0.25,
+					"ci95": [
+						0.0456,
+						0.6994
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "field_texture",
+				"predicted_from_curve": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"verdict_vs_curve": "not_measurable",
+				"verdict_vs_matched_contrast": "not_measurable",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"enclosure": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 3,
+					"agree": 1,
+					"agreement": 0.3333,
+					"ci95": [
+						0.0615,
+						0.7923
+					]
+				},
+				"241-340": {
+					"n": 2,
+					"agree": 1,
+					"agreement": 0.5,
+					"ci95": [
+						0.0945,
+						0.9055
+					]
+				},
+				"341-440": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"441-560": {
+					"n": 3,
+					"agree": 2,
+					"agreement": 0.6667,
+					"ci95": [
+						0.2077,
+						0.9385
+					]
+				},
+				"901-1400": {
+					"n": 1,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.7935
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "insufficient_data",
+				"thin_bins": [
+					"0-160",
+					"241-340",
+					"341-440",
+					"441-560",
+					"901-1400"
+				],
+				"usable_bins": []
+			},
+			"pooled_primary": {
+				"n": 10,
+				"agree": 5,
+				"agreement": 0.5,
+				"ci95": [
+					0.2366,
+					0.7634
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 10,
+				"agree": 5,
+				"agreement": 0.5,
+				"ci95": [
+					0.2366,
+					0.7634
+				]
+			},
+			"codec_control_same_size": {
+				"n": 1,
+				"agree": 1,
+				"agreement": 1.0,
+				"ci95": [
+					0.2065,
+					1.0
+				]
+			},
+			"by_reference_band": {
+				"561-680": {
+					"n": 6,
+					"agree": 5,
+					"agreement": 0.8333,
+					"ci95": [
+						0.4365,
+						0.9699
+					]
+				},
+				"1401+": {
+					"n": 4,
+					"agree": 0,
+					"agreement": 0.0,
+					"ci95": [
+						0.0,
+						0.4899
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "enclosure",
+				"predicted_from_curve": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"verdict_vs_curve": "not_measurable",
+				"verdict_vs_matched_contrast": "not_measurable",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"shading_geometry": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"241-340": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"341-440": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"441-560": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "insufficient_data",
+				"thin_bins": [
+					"0-160",
+					"241-340",
+					"341-440",
+					"441-560",
+					"901-1400"
+				],
+				"usable_bins": []
+			},
+			"pooled_primary": {
+				"n": 0,
+				"agree": 0,
+				"agreement": null,
+				"ci95": [
+					0.0,
+					1.0
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 0,
+				"agree": 0,
+				"agreement": null,
+				"ci95": [
+					0.0,
+					1.0
+				]
+			},
+			"codec_control_same_size": {
+				"n": 0,
+				"agree": 0,
+				"agreement": null,
+				"ci95": [
+					0.0,
+					1.0
+				]
+			},
+			"by_reference_band": {
+				"561-680": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "shading_geometry",
+				"predicted_from_curve": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"verdict_vs_curve": "not_measurable",
+				"verdict_vs_matched_contrast": "not_measurable",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		},
+		"gradient_boolean": {
+			"curve_vs_largest_rendition": {
+				"0-160": {
+					"n": 2,
+					"agree": 2,
+					"agreement": 1.0,
+					"ci95": [
+						0.3424,
+						1.0
+					]
+				},
+				"241-340": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"341-440": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"441-560": {
+					"n": 2,
+					"agree": 2,
+					"agreement": 1.0,
+					"ci95": [
+						0.3424,
+						1.0
+					]
+				},
+				"901-1400": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				}
+			},
+			"resolution_floor": {
+				"verdict": "insufficient_data",
+				"thin_bins": [
+					"0-160",
+					"241-340",
+					"341-440",
+					"441-560",
+					"901-1400"
+				],
+				"usable_bins": []
+			},
+			"pooled_primary": {
+				"n": 6,
+				"agree": 6,
+				"agreement": 1.0,
+				"ci95": [
+					0.6097,
+					1.0
+				]
+			},
+			"pooled_unrestricted": {
+				"n": 6,
+				"agree": 6,
+				"agreement": 1.0,
+				"ci95": [
+					0.6097,
+					1.0
+				]
+			},
+			"codec_control_same_size": {
+				"n": 1,
+				"agree": 1,
+				"agreement": 1.0,
+				"ci95": [
+					0.2065,
+					1.0
+				]
+			},
+			"by_reference_band": {
+				"561-680": {
+					"n": 6,
+					"agree": 6,
+					"agreement": 1.0,
+					"ci95": [
+						0.6097,
+						1.0
+					]
+				},
+				"1401+": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				}
+			},
+			"transfer_check": {
+				"question": "gradient_boolean",
+				"predicted_from_curve": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"predicted_from_matched_contrast": {
+					"n": 1,
+					"agree": 1,
+					"agreement": 1.0,
+					"ci95": [
+						0.2065,
+						1.0
+					]
+				},
+				"observed_sharded_pairs": {
+					"n": 0,
+					"agree": 0,
+					"agreement": null,
+					"ci95": [
+						0.0,
+						1.0
+					]
+				},
+				"verdict_vs_curve": "not_measurable",
+				"verdict_vs_matched_contrast": "not_measurable",
+				"note": "\u00a77.4.3 step 2: if the curve predicts the observed sharded agreement, the curve can be trusted corpus-wide; if not, fall back to the in-distribution 2-point measurement."
+			}
+		}
+	},
+	"confidence_by_bin": {
+		"0-160": {
+			"high": 3
+		},
+		"241-340": {
+			"high": 2
+		},
+		"341-440": {
+			"high": 1
+		},
+		"441-560": {
+			"high": 3
+		},
+		"901-1400": {
+			"high": 1
+		}
+	},
+	"notes": [
+		"Agreement here is agreement with the SAME MODEL at a larger size, never with a human. It measures how much of the answer survives downscaling, which is exactly the \u00a77.1 question; it says nothing about whether the large-size answer is right.",
+		"Read every curve against `codec_control_same_size`. That is the noise floor: two byte-different encodings of the same pixels. Agreement cannot exceed it for reasons of resolution.",
+		"`shading_geometry` is conditioned on the reference answering `shaded_field`; its n is therefore much smaller than the others'."
+	]
+}
