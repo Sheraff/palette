@@ -702,3 +702,75 @@ would otherwise quote.*
 new findings; every claim in them is traceable to a report and a finding number in it. §8 was
 appended during the wave-2 ledger synchronisation and records corrections made by the wave-1 fix
 agents against the raw data.*
+
+---
+
+## 9. Disposition of the unrealized-ideas top 10 — appended 2026-08-03 (late), second batched ledger pass
+
+Append-only, like §8. This section **adds no findings and re-scores no report**. It records what
+happened to the items in §4's value ordering once they were acted on, because that table is the one
+place a later reader will look to ask "did anyone ever do these?" — and four of the ten now have
+answers that the table cannot carry.
+
+| rank | item | disposition, 2026-08-03 |
+|---|---|---|
+| 1 | VLM→SAM dynamic prompting: proven, unbuilt | **BUILT AND RUN.** 142 covers, 52 extra prompts over 47 covers, 543 s of GPU, 0 failed. The mechanism works where it was handed a thing-word and does nothing where it was handed an abstraction — see below. |
+| 3 | No parameter-honesty instrument exists | **BUILT AND MEASURING** (`src/honesty/`), covering two of criterion 2's three numbers. The third is now a ledger row of its own (**B30**). |
+| 4 | `d`/`m` adjudication annotations: built, zero data | **CLOSED BY RULING — the data will never be collected.** See below. |
+| 5 | Ladder reference never capped and re-scored | **ANALYSIS HALF CLOSED.** See below. |
+| 8 | Bake-off R@1 never rescored census-aware | **CLOSED.** See below. |
+
+The other five (2, 6, 7, 9, 10) are untouched by this pass and stay exactly as that report left them.
+
+**Item 5 — the ladder re-score, analysis half closed.** The re-score ran on the existing rows with
+no GPU and no new inference, exactly as the item said it could. It affects far more of the sample
+than anyone had checked: **223 of 400 artworks** own a reference bigger than the instrument's 640 px
+cap. The item said the resulting bias ran "in an unknown direction"; **it is now known and it is
+11.5 to 1 toward hallucinated structure** — 23 disagreements where the big file sees structure and
+every viewable file sees `flat_field`, against 2 the other way. The two floors anything downstream
+leans on (`ground_type`, `gradient_boolean`) **do not move**, the 300 px corpus-inclusion decision
+does not flip, and the transfer check is untouched. What does not survive is **`shading_geometry`'s
+~441 px floor**: under the cap its own codec ceiling is 0.796, *below* the 0.85 floor being applied
+to it, so that floor was an artifact of an over-sized answer key rather than a resolution result.
+`PHASE_0_DECISIONS.md` §7.1; record `d-2026-08-03-ladder-capped-reference-key`; the *run* half of
+the item — a genuine downscale rather than a CDN rendition of similar size — stays open as **B26**.
+
+**Item 8 — the census-aware re-score, closed.** The item assumed the re-score would be cosmetic. It
+is not: counting a known near-duplicate as a hit moves R@1 by **16–18 points**. But it changes **no
+conclusion** — the arm order is identical under the only symmetric standard, the dinov2-vs-dinov3
+separation *strengthens* (p = 1.4e-22 → 1.2e-34), and the dinov2-vs-pe-core pair stays unseparated.
+Two things it added that outlive the item: the tail trade C4 left open is now **measured on both
+sides** (below rank 10: dinov3-vitl16 **2** against dinov2's **13**, where the strict counts had
+suggested 47 against 57), and **referee standards are shown to measure architectural kinship rather
+than quality** and must never be quoted as verdicts on a cross-family pair. **No re-look at the
+canonical-model record is needed**, and that is recorded rather than assumed
+(`d-2026-08-03-census-aware-rescore-does-not-reopen-canonical-model`).
+
+**Item 4 — the `d`/`m` annotations, closed by ruling and not by collection.** Reviewer, 2026-08-03:
+*"we already know it's not reliable so there is no point in me rating it."* The instrument stays
+built, tested and verified live, and is now **unused by decision rather than by neglect** — which is
+the whole difference this disposition records. The consequence the report predicted stands and is
+now stamped where it matters: the claim the instrument existed to quantify — that the contested
+slice is *intrinsically ambiguous* rather than the oracle being wrong — **rests on one dated verbal
+remark and on nothing else, permanently**, because the machinery that could have quantified it will
+not run. The report named three documents carrying that claim. Two still do and are now softened in
+place (`V3_PLAN.md` §5 and its §6 table row 6, plus the Appendix R entry in
+`ORACLE_QUESTION_SET.md`); the loose-ends ledger's copy had already been reworded out in an earlier
+pass, so the third live citation is in the plan rather than the ledger. One residue is **reported and
+not edited**, per path ownership: `oracle/bakeoff/README.md` carries the same claim and belongs to
+the oracle workstream. Record: `d-2026-08-03-reviewer-dm-annotations-not-collected`.
+
+**Item 1 — dynamic prompting, and the finding it produced.** Worth recording here because the item
+was ranked first and the outcome is not the one its ranking implied. The mechanism is real: adding a
+per-cover noun costs **~0.04 s**, provably does not perturb the static answers (137 of 140 covers
+byte-identical, the other 3 differing only by a concept the comparison run was never asked for), and
+removed up to **32% of a cover** from the residual where it was given a thing-word. But the half of
+probe 5's recommendation that carries the weight — the **species noun** — **does not exist in any
+oracle answer on disk**, because `subject_kind` is a closed six-value enum and nothing collects free
+text. So the run measured class words, and `"object"` — handed to **24 of 142 covers** — is measured
+**dead: 0/24 fired, 22 returned nothing at all.** The item's own framing ("proven, unbuilt") turned
+out to be half right: the mechanism was proven, and what was unbuilt was **the question**, not the
+prompting. Carried as loose end **A13**.
+
+*Appended during the second batched ledger pass, 2026-08-03. Nothing in §§1–8 was edited: those
+sections are the review as it was written, and a disposition is not a correction.*

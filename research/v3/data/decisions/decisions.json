@@ -1591,6 +1591,195 @@
     "IT SETTLES NO ROUTE. The successor question — vocabulary v3, pixel retirement via the residual route, or both — is open and reviewer-owned. The residual route has no purity measurement yet, so the option the synthesis argues for cannot currently be evaluated on evidence."
    ],
    "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-ladder-capped-reference-key",
+   "ts": "2026-08-03T21:50:00Z",
+   "kind": "instrument-design",
+   "scope": "How the resolution ladder's answer key is to be read, and which of its five per-question floors may be cited. It binds every consumer of PHASE_0_DECISIONS.md §7 and every below_resolution tagging rule. It does NOT retract the published floors — ladder-sample-1.analysis.json stays the authority and both keys are reported side by side, always. It does NOT re-run anything: no GPU, no model, no new inference was involved. It does NOT settle the 0.85 agreement floor (A2), which is still [UNCALIBRATED] under both keys, and it does NOT answer whether 640 px is enough, which needs a different collection.",
+   "decision": "The ladder's published floors were graded against each artwork's LARGEST rendition, which for 223 of 400 sampled artworks is bigger than the instrument's 640 px hard cap. Re-scored against a capped key — each artwork's largest rendition at or below 640 px — three things are now standing facts. (1) THE TWO FLOORS ANYTHING DOWNSTREAM LEANS ON DO NOT MOVE: ground_type and the derived gradient_boolean hold at ~241 px, and the gradient boolean's pooled agreement gets BETTER under the honest key (0.863 -> 0.877). The 2,270 300-px-only artworks stay in the corpus; that decision does not flip. (2) THE OVER-SIZED KEY WAS BIASED IN ONE DIRECTION, AND THE DIRECTION IS NOW KNOWN: of 40 ground_type disagreements, 23 are 'the big file sees structure where every viewable file sees flat_field' against 2 the other way — 11.5 to 1 — and 20 of the 23 are exactly shaded_field -> flat_field. The published key was calling gradients that are not visible at any size the pipeline can be given. Unrealized-ideas item 5 said the bias ran 'in an unknown direction'; it runs toward hallucinated structure. (3) shading_geometry's ~441 px FLOOR WAS AN ARTIFACT OF THE OVER-SIZED KEY AND MUST NOT BE CITED AS A RESOLUTION RESULT. Under the cap its same-size codec control is 0.796 — two byte-different encodings of identical pixels agree 80% of the time — so the 0.85 floor sits ABOVE the question's own noise ceiling and no resolution could ever clear it. A1's 'the failing bins are genuine resolution effects' conclusion survives for four of five questions and does NOT survive for this one. Consequent tagging change: a rendition at 300 px supports ground_type, gradient_boolean and enclosure, and must be tagged below_resolution for field_texture (newly) and shading_geometry (already).",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-ladder/ladder-sample-1.capped-reference.analysis.json",
+     "what": "The two-column analysis. Column A is produced by importing analyze.py's own scoring functions and is asserted bit-identical to the published ladder-sample-1.analysis.json across curves, pooled rates, codec control and floor verdicts for all five questions, so any difference between columns is a difference of answer key and of nothing else. Carries floor_fragility per bin and the 500/441/300/0 reference-cap columns side by side."
+    },
+    {
+     "ref": "research/v3/oracle/ladder/CAPPED_REFERENCE_NOTES.md",
+     "what": "The write-up: the 223-artwork exposure, the per-question re-key rates, the four floors that moved and the reading of each, the capped codec control, and the six things the re-score explicitly cannot say."
+    },
+    {
+     "ref": "research/v3/data/oracle-ladder/ladder-sample-1.analysis.json",
+     "what": "The published floors, unchanged and still the authority. Cited here so that this record cannot be read as retracting it."
+    }
+   ],
+   "fundingCaveats": [
+    "THE CAPPED KEY IS A PROXY, NOT A DOWNSCALE. The pipeline would take the 3,000 px file and downscale it to 640; that image was never inferred, because inferring it needs the GPU this analysis was forbidden. The key used is the CDN's OWN ~483 px or ~333 px rendition — a different resampler and codec arriving near the same size. The size of that proxy error is the codec control itself (0.80-0.95 by question) and is reported beside every number rather than assumed away. Carried as a standing loose end.",
+    "IT DEVIATES FROM A PUBLISHED CONSTANT, DELIBERATELY AND VISIBLY. REFERENCE_MIN_LONG_EDGE_PX = 500 cannot survive the cap: ZERO of the 223 affected artworks own a rendition between 500 and 640 px, because the CDN derives ~147/~333/~483 and then jumps to the original — which is also why the 561-680 bin is structurally empty. Keeping 500 would delete every artwork the cap is about. The headline capped column uses 441 px, a published bin edge, and the JSON stamps this as a deviation and reports 500/441/300/0 side by side.",
+    "MOST VERDICTS ARE NOT SETTLED AT 0.85 UNDER EITHER KEY. Of the decisive bins, most have a 95% interval that CONTAINS 0.85 — including both bins behind the field_texture 241->341 move and the enclosure gains-a-floor move. Read those two as 'no longer supported by this data', never as 'proven bad'. floor_fragility flags every bin as settled or not.",
+    "POWER IS LOWER, HONESTLY. 1,190 -> 669 primary comparisons; 373 -> 193 artworks. 49 artworks leave the analysis entirely because their only rendition at or below the cap is their smallest (~147 px), so they own a key with no rung beneath it. That is a fact about what the CDN derived, not a result.",
+    "THE TRANSFER CHECK IS UNTOUCHED, AND THAT IS THE REASSURING PART. Its rows were already all <= 640 px, so capping changes nothing: predicted 0.834 against observed 0.818, n=145 identical. The argument that lets the ladder curve be used corpus-wide never rested on the contaminated key."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-census-aware-rescore-does-not-reopen-canonical-model",
+   "ts": "2026-08-03T21:35:00Z",
+   "kind": "instrument-selection",
+   "scope": "How the embedding bake-off's two R@1 numbers are to be quoted, and the standing of the canonical-model choice under the census-aware re-score. It binds anyone citing a bake-off retrieval number. It does NOT supersede d-2026-08-02-embedding-canonical-model or d-2026-08-03-embedding-canonical-model-rationale — both stand unchanged, and this record exists partly to say so. It does NOT settle the dinov2-vs-dinov3 tail trade, which is C4's open question and remains a reviewer judgement.",
+   "decision": "The census-aware re-score is NOT cosmetic, and it changes NO conclusion. Counting a known near-duplicate of the query as a hit moves R@1 by 16-18 points (dinov2-vitl14 0.789 -> 0.952), because a same-artwork pair usually sits above cosine 0.95 and so does almost anything that outranks it — which is the census's own threshold. Standing readings: (a) STRICT R@1 is a lower bound on usefulness and an unbiased estimate of same-artwork identity; CENSUS-AWARE R@1 is an upper bound on usefulness and an overestimate of identity; the truth for any use lies between them and the gap does not matter to the decision. (b) THE ARM ORDER IS UNCHANGED under strict_intersection, the only standard symmetric across the arms that wrote it; the one nominal flip under the union (pe-core edging dinov2) is an artifact of pe-core contributing 1,333 census pairs to dinov2's 566 and vanishes under the symmetric standard. (c) THE dinov2-vs-dinov3 SEPARATION STRENGTHENS, not weakens (p = 1.4e-22 strict -> 1.2e-34 union edge, 6.7e-38 intersection). (d) THE dinov2-vs-pe-core PAIR REMAINS UNSEPARATED, and what separates them is still the reviewer's artist-leakage observation alone; this re-score adds no evidence there and does not weaken it. (e) REFEREE STANDARDS MEASURE ARCHITECTURAL KINSHIP, NOT QUALITY, and must never be quoted as verdicts on a cross-family pair: the two referees disagree violently on dinov2-vs-pe-core, both at p < 1e-25, and dinov3-vitl16 agrees with dinov2 on 78.8% of its census edges against pe-core's 65.8%. No census standard is genuinely neutral; strict_intersection is the least-bad and is still not neutral.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/embeddings/bakeoff-census-aware.json",
+     "what": "The re-score. Annotates bakeoff.json without rewriting it: per-arm census-aware R@1 under four standards, paired McNemar by standard, the referee-standard kinship measurement, the below-rank-10 tail counts, and an explicit what_this_can_and_cannot_claim block. Generated by oracle/embeddings/bakeoff_census_aware.py, written 2026-08-03T21:28:45Z."
+    },
+    {
+     "ref": "research/v3/data/embeddings/bakeoff.json",
+     "what": "The strict bake-off, unchanged and still the number for any identity claim."
+    }
+   ],
+   "fundingCaveats": [
+    "A CENSUS HIT IS NOT THE SAME ARTWORK. The census joins files with different artwork ids at cosine >= 0.95 across three arms; a pair may be one photograph under two catalogue entries, a reissue, a colour-graded variant, or two covers that genuinely look alike. Census-aware R@1 is therefore NOT an estimate of 'how often the model finds another rendition of the same cover' — the strict number is the only one that answers that.",
+    "THE THREE JOBS THIS INSTRUMENT ACTUALLY HAS — near-duplicate detection, stratification and holdout-leak prevention, and retrieval for review tooling — all treat a near-duplicate at rank 1 as a success, which is why the strict score systematically understates the instrument for them.",
+    "NO NEW EVIDENCE ON THE PAIR THAT MATTERS. The canonical-model choice between dinov2 and pe-core still rests on one reviewer gallery observation with an empty fundedBy. If that observation is ever withdrawn the decision must be REOPENED, not re-derived — unchanged by this re-score."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-tunable-sites-are-a-phase-1-obligation",
+   "ts": "2026-08-03T22:00:00Z",
+   "kind": "process",
+   "scope": "The status of the parameter-honesty census's untagged backlog during Phase 0, and what the untagged count may be used to claim. It binds the loose-ends ledger's framing of that backlog and any argument that Phase 0 is incomplete because sites are untagged. It does NOT retire the census, does NOT weaken CONVENTIONS.md's no-anonymous-literals rule for newly written constants, and does NOT excuse an untagged site in Phase 1 code.",
+   "decision": "Reviewer ruling, 2026-08-03, verbatim: 'tunable sites do not matter much in v3 Phase 0. This phase is about laying the groundwork and preparing tools for the next phases.' Consequence, and the reason this is recorded rather than remembered: the untagged backlog measured by the parameter-honesty census is a PHASE 1 OBLIGATION, NOT PHASE 0 DEBT. Phase 0 built instruments — scanners, analyzers, fixture builders, one-shot scripts — and the criterion in V3_PLAN.md §1 is about the PALETTE ALGORITHM's free parameters, which do not exist yet. The census's Phase 0 job is therefore to be a working instrument with a baseline reading on the record, not to drive a tagging campaign now. Each workstream owns the tagging of its own paths, and the obligation lands before Phase 1 code lands in that workstream's directory.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/honesty/HONESTY.md",
+     "what": "The generated census page, carrying the baseline reading and its timestamp. Regenerate rather than quoting: node --experimental-strip-types src/honesty/cli.ts"
+    },
+    {
+     "ref": "research/v3/src/honesty/README.md",
+     "what": "The instrument, its three properties (lower bound, no silent exclusion, measures itself), and the proposed ledger items this ruling reshapes."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY BECAUSE THE RULING WAS CONVERSATIONAL. No machine can ever re-check it, which is what the empty field is for.",
+    "IT IS A RULING ABOUT PRIORITY, NOT ABOUT THE MEASUREMENT. The census's numbers are unaffected by it, and nothing here licenses reading a low documented fraction as acceptable in Phase 1.",
+    "THE CENSUS COVERS TWO OF THE CRITERION'S THREE NUMBERS. The third — the reviewed-vs-unseen perturbation-stability ratio, v2-3's 1.61x overfitting alarm, target ~1.0 — needs a pipeline that emits palettes and is tracked nowhere today. This ruling does not touch that gap, which is carried as its own ledger row."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-honesty-census-definitions",
+   "ts": "2026-08-03T21:41:00Z",
+   "kind": "instrument-design",
+   "scope": "Two definitional choices inside the parameter-honesty census that a later reader is entitled to inherit rather than re-derive. It binds how the census's documented and anchored fractions are read and compared over time. It does NOT fix the exclusion rules, which are policy in classify.ts and are meant to be argued with, and it does NOT make any particular fraction a target or a gate.",
+   "decision": "(1) [UNCALIBRATED] COUNTS AS UNANCHORED. A site tagged [UNCALIBRATED] is documented but not anchored: an instrument that let it count toward the anchored fraction would report a system as honest for admitting it is untuned, which inverts the metric. (2) THE METRIC IS DELIBERATELY A LOWER BOUND. Exclusion rules are narrow on purpose; where it is unclear whether a number is structural or tunable it is COUNTED, inflating the denominator and pushing the fraction down. The tree is at least this honest, never less — and an instrument erring the other way could be improved by broadening an exclusion, which is exactly the failure mode this one exists to detect. Corollaries already in force: no exclusion is silent (every dropped literal names a rule and the counts sum), whole-file skips are listed individually, and src/honesty/ is inside its own scanned tree because exempting the instrument from its own metric would be the precise quiet exemption it exists to catch.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/honesty/README.md",
+     "what": "The three properties that make the number trustworthy, the documented-vs-anchored definition, and the stated limitation that only numeric literals are counted — so a tunable expressed as a string, a boolean switch or a choice of algorithm is invisible."
+    },
+    {
+     "ref": "research/v3/data/honesty/honesty-report.json",
+     "what": "The census itself: totals, per-file and per-tag breakdowns, the full untagged list with file:line, and every exclusion with its count."
+    }
+   ],
+   "fundingCaveats": [
+    "DEFINITIONS CANNOT BE MACHINE-CHECKED, so fundedBy is empty by necessity rather than by omission.",
+    "ONLY NUMERIC LITERALS ARE COUNTED. The largest blind spot is published with the numbers rather than hidden: a tunable expressed as a string, a boolean, or a choice of algorithm does not appear in any fraction here.",
+    "THE TWO LANGUAGE SCANNERS HAVE DIFFERENT FIDELITY — TypeScript via the compiler's own AST, Python via a hand-written lexer — and the report publishes fidelity per language and never pools the two silently."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-dm-annotations-not-collected",
+   "ts": "2026-08-03T22:05:00Z",
+   "kind": "process",
+   "scope": "The d/m adjudication-annotation instrument and every claim that leans on the reviewer's adjudication-browse remark. It binds how the 'the contested slice is intrinsically ambiguous' claim may be stated in any document. It does NOT delete the instrument, which stays built and tested, and it does NOT retract the reviewer's remark — the remark stands as what it is, one dated verbal observation.",
+   "decision": "Reviewer ruling, 2026-08-03, verbatim: 'we already know it's not reliable so there is no point in me rating it.' The d/m adjudication annotations (oracle-defensible / oracle-misread) will NOT be collected. The page, the deliberately symmetric vocabulary, the record plumbing and its fifteen tests remain built, verified live, and unused BY DECISION rather than by neglect — which is the difference this record exists to make. Standing consequence: the claim the instrument was built to quantify — that the contested slice is intrinsically ambiguous rather than the oracle being wrong — rests on ONE DATED VERBAL REMARK from the adjudication browse ('where i voted differently from the oracles, i could see their point of view') and on nothing else. Every document that states it must say so where it states it. The claim is not retracted; it is de-rated from a quantified finding to an unquantified reviewer impression, permanently, because the machinery that could have quantified it will not be run.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/unrealized-ideas.md",
+     "what": "Item 4: the instrument built with zero data collected, the transcript quotes on both sides, and the observation that the claim then appeared in three governing documents funded entirely by one verbal remark. Ranked that report's highest evidence-per-minute item — now closed by ruling rather than by collection."
+    },
+    {
+     "ref": "research/v3/ORACLE_QUESTION_SET.md",
+     "what": "Appendix R, adjudication-browse entry — the remark's primary record, now carrying the standing of its own evidence."
+    },
+    {
+     "ref": "research/v3/src/review-server/README.md",
+     "what": "The adjudication-browse tag plumbing, which stays built and is now documented as deliberately uncollected."
+    }
+   ],
+   "fundingCaveats": [
+    "THIS CLOSES AN INSTRUMENT WITHOUT A MEASUREMENT, WHICH IS THE COST. Nobody will ever know the d-rate on the flag-sided items. The ruling is that the answer would not change what is done with the contested slice, and that is a judgement about value, not a finding about ambiguity.",
+    "THE PALETTE-CONDITIONAL RULING FROM THE SAME BROWSE IS UNAFFECTED. 'The published gradient flag is palette-conditional, not an artwork label' is a separate, independently-argued ruling in the same Appendix R entry and keeps its full standing; only the ambiguity half is de-rated here.",
+    "ONE RESIDUE IS NOT MINE TO EDIT. oracle/bakeoff/README.md carries the same claim and belongs to the oracle workstream; it is reported, not edited, per the path-ownership rule."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-signature-carrier-spread-value-and-multi-select",
+   "ts": "2026-08-03T22:10:00Z",
+   "kind": "question-set-ruling",
+   "scope": "The signature_carrier question in oracle schema v2. It supplies the VALUE that d-2026-08-03-schema-v2-split-gated-pairs identified as missing and could not supply by splitting, and it confirms the multi-select half signed off in d-2026-08-03-bcde-question-rulings-and-rule-9. It does NOT supersede either record — read all three as one chain. It does NOT rewrite the frozen v1 question set, does NOT retract any answer already collected, and does NOT fix the wording, which is deliberately left to a pilot.",
+   "decision": "Reviewer rulings, 2026-08-03, on signature_carrier. (1) ADD A VALUE for the case where the signature colour is spread across several elements at once — the case gate-consistency rule #6 keeps firing on and that the split-gated-pairs proposal explicitly could not reach. (2) MAKE IT MULTI-SELECT as well: the value and the multi-select are BOTH adopted, not alternatives. A colour carried by the text AND the subject is a stronger signature, and that pervasiveness is signal the single-select was silently discarding; a colour that is simply spread with no nameable carrier is a different answer again, and the enum now has a slot for it. (3) THE WORDING IS TO BE OPTIMIZED FOR MODEL COMPREHENSION VIA PILOT, not chosen by argument — reviewer, verbatim: 'what matters is that the model understands it, not me.' The exact phrasing of the new value and of the multi-select instruction is therefore an empirical question for the next group-BCDE pilot, and no wording is fixed by this record.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/ORACLE_QUESTION_SET.md",
+     "what": "Appendix R: the reviewer's original signature_carrier complaint ('some image has both the text and the main subject be the exact same colour which is the signature colour — how do you answer with only 1 answer?'), the signed-off multi-select fix, and this ruling's entry."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+     "what": "The round the complaint came out of, and the gate-consistency accounting in which rule #6 is the most decision-relevant surviving contradiction."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY BECAUSE THE RULINGS WERE CONVERSATIONAL, and the round that motivated them is not cited by id for the same reason d-2026-08-03-schema-v2-split-gated-pairs gives: the independent-elicitation records are mechanically superseded by the joint reconciliation round, so citing them would make recheck report this record as standing on drafts.",
+    "THE MULTI-SELECT MACHINERY HAS NEVER BEEN EXERCISED BY REAL DATA. Loose end L-f: across the entire warehouse, zero array-valued answers carry two or more elements. This question would be the first real test of machinery only unit tests have touched — and loose end B19's overlays singleton rate (0.9542) is simultaneously an argument for retiring multi-select elsewhere. Both are live at once and that is not a contradiction: one question's answers are genuinely single-valued and another's are not.",
+    "A VALUE AND A MULTI-SELECT OVERLAP, AND THE PILOT MUST SEPARATE THEM. 'Spread across several elements' and selecting two carriers can describe the same cover. Whether the model uses the spread value as an escape hatch instead of naming carriers is exactly what the pilot has to measure; if it does, the value is doing harm and this ruling's first half should be re-put to the reviewer.",
+    "RECORDED SINGLE ANSWERS ON MULTI-CARRIER COVERS ARE FORCED CHOICES and carry that noise. Nothing in the collected v1 data is corrected by this ruling."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-whole-ramp-contrast-floors",
+   "ts": "2026-08-03T22:10:00Z",
+   "kind": "instrument-design",
+   "scope": "Invariant 4's contrast floors where a palette publishes a gradient: which colours are checked, over what, and in which space. It binds src/contract/invariants.ts, the two contrast parameters' meaning in PHASE_0_DECISIONS.md §2, and any consumer counting I4 violation codes. It does NOT change either parameter's default or minimum (both still the epsilon of §4 invariant 4). It does NOT measure the indistinct FRACTION, which is a length rather than an extremum and stays parked as loose end B15. It does NOT settle where in a pipeline the parameters act (B14).",
+   "decision": "Reviewer rulings, 2026-08-03, verbatim on three points: 'the accent's minimum contrast must be checked against gradient backgrounds like the foreground's is'; 'it's not \"each stop\" by the way, because the contrast issue could happen somewhere in the middle of 2 points too'; and 'minimum contrast over the entire rendered ramp, sampled in the interpolation space the player actually renders - this space is OKLab'. Consequences, all now in force. (1) BOTH floors hold over the WHOLE INTERPOLATED RAMP, not at the stop points: minTextContrast for the foreground and minAccentContrast for the accent, each a minimum over the ramp. The per-stop clause added earlier the same day checked the corners of a picture and called it the picture, and left the accent out entirely. (2) '§2's and every published stop' NAMES THE GRADIENT, NOT FOUR COLOURS - a stop is a point on a continuum the viewer sees all of, which is also why §2 pins the preview renderer. (3) THE ACCENT'S TWO DIMENSIONS ARE MINIMISED POINTWISE, AS A CONJUNCTION: it violates only where |raw APCA| and OKLab distance both undershoot AT THE SAME RAMP POINT. Minimising them separately would condemn a ramp that is isoluminant at one end and same-hued at the other while being visible throughout. (4) THE INTERPOLATION SPACE IS OKLab, declared once as RAMP_INTERPOLATION_SPACE and read by the CSS emitter so the two cannot drift. (5) CODES SAY WHERE: a minimum landing on a published stop keeps I4.stop-below-contrast-floor and names the stop, preserving the existing census; an interior minimum reports I4.ramp-below-contrast-floor and names the position; one violation per role, because a minimum has one location. The whole-ramp minimum is a strict superset of what the per-stop check saw, so nothing previously caught can now escape.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/ramp.ts",
+     "what": "The sampler and its guarantee: 2048 uniform samples per segment plus every stop exactly, then a 4096-sample refinement around the coarse minimum, with a per-step reach bound in two cases — a luminance crossing flips APCA's polarity branch and both sides read <= 1.21527 raw, below every expressible floor, so a crossing is always caught however narrow; otherwise |raw| moves <= 0.69511 per step, so every true minimum below (floor - 0.695) is certainly seen. 0 verdict disagreements against a 16x denser reference over 120 ramps x 212 floors."
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "RAMP_FLOOR_ROLES and validateContrastFloors — the enforcement, the two violation codes, and the one-violation-per-role rule."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/contract.md",
+     "what": "Finding 2, the hole that started the sequence: a palette publishing clean with foreground #111111 over a #000000 stop — |raw APCA| 1.17, Lc 0, 0.178 apart in OKLab, so invariant 3 was legitimately content."
+    },
+    {
+     "ref": "research/v3/REVIEW_UI.md",
+     "what": "§3's display mapping — the strictly increasing affine reparameterization under which the display ramp carries the same colours as the published ramp, which is why verdict equivalence between the two holds."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY BECAUSE THE RULINGS WERE CONVERSATIONAL. No machine can re-check them.",
+    "VERDICT EQUIVALENCE ON THE DISPLAY RAMP HOLDS BECAUSE TODAY'S DISPLAY MAPPING IS MONOTONE, NOT BECAUSE DISPLAY MAPPINGS ARE. It is asserted at every requestable floor, and a future transform that reorders, duplicates, extrapolates beyond [0,1] or interpolates in another space would break it SILENTLY — the invariant would keep passing on the published ramp while the reviewer looks at a worse one. Carried as loose end C13.",
+    "THE GUARANTEE IS A REACH BOUND, NOT AN EXHAUSTIVE PROOF. Sampling can in principle miss a minimum narrower than the bound in a case the two-case analysis does not cover; the 0-disagreement check against a 16x denser reference is strong evidence and is not a proof.",
+    "TWO FIXTURES FLIPPED, BOTH DELIBERATELY: the accent-vs-stop scope pin, which existed precisely so that changing the restriction had to be deliberate and which the reviewer has now answered; and foregroundInvisibleOverStop, which now reports its true worst point (#121212 at t=0.180176, |raw| 0.41) rather than the #000000 stop (|raw| 1.17). No valid fixture flipped.",
+    "IT MEASURES AN EXTREMUM AND NOT A LENGTH. A ramp can clear the floor at every point and still sit just above it over most of its span; the indistinct fraction is a different quantity and stays parked (B15, pathology P2)."
+   ],
+   "recordedAt": "2026-08-03"
   }
  ]
 }

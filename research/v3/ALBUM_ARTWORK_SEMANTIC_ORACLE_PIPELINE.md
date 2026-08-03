@@ -707,12 +707,39 @@ Two ways to work with this rather than around it:
   that never reasoned about it.
 - **Union multiple prompt phrasings.** SAM 3's documented weakness is low recall —
   it often misses the target entirely, producing zero-IoU predictions. Running
-  `text` / `lettering` / `typography` / `logo` as separate passes and unioning the
-  masks costs nothing locally and materially reduces the holes.
+  several phrasings as separate passes and unioning the masks costs nothing locally
+  and materially reduces the holes.
+
+  ***The phrasings this section originally named are superseded, and one of them was
+  measured dead (corrected 2026-08-03, docs-drift finding 2.9 residual).*** This
+  paragraph used to name `text` / `lettering` / `typography` / `logo` for the union
+  and `text` / `logo` / `person` / `sticker` as the well-handled set. **`text` and
+  `typography` fire on 0 of 10 and 0 of 16 images with this model** and were removed;
+  the set has since changed twice more. The live set is **concept set v2.1, ten
+  concepts** — `words`, `letter`, `lettering`, `display-text` (prompt "album title"),
+  `emblem` (prompt "logo"), `sticker`, `parental-advisory`, `person`, `face`,
+  `barcode`. **`oracle/sam/config.py` `CONCEPT_PROMPTS` is the authority for the
+  digits and the phrasings; this document is not.** Records:
+  `d-2026-08-03-sam-prompt-set-replacement` → `d-2026-08-03-sam-concept-set-v2` →
+  `d-2026-08-03-sam-concept-set-v2.1-barcode`. The union *argument* above survives
+  unchanged — it is the specific word list that expired.
 
 Also known: SAM 3 segments *all* instances of a category and ignores instance-level
-spatial constraints in the prompt. "The figure on the left" returns all figures.
-Do not write prompts that depend on spatial disambiguation.
+spatial constraints **in a text prompt**. "The figure on the left" returns all figures.
+Do not write **text** prompts that depend on spatial disambiguation.
+
+***Scoped 2026-08-03, from the pointing-model scout — and this correction reopens a
+door.*** The rule above was written as a rule about SAM and is a rule about one prompt
+mode. **SAM 3.1's point, box and mask prompt modes are exactly the spatial-disambiguation
+mechanism**, and the interactive point-prompt weights are already in the pinned snapshot:
+145 tensors (`interactive_sam_prompt_encoder` 14, `interactive_sam_mask_decoder` 131,
+plus the detector's three point projections), matched `strict=True` on every load, and
+**never called**, because mlx-vlm exposes no single-image point-prompt entry point. What
+is missing is the forward path, not the weights. Any design note in this campaign that
+reasons from "SAM cannot do spatial disambiguation" — including the salience probe's
+conclusion in `data/sam/SAM_DESIGN_NOTES.md`, which declared the capability absent after
+ten *text* phrasings failed — should be re-read with that distinction in mind. Loose ends
+**A14**, **A15**, **B27**; source: `oracle/sam/POINTING_SCOUT_NOTES.md`.
 
 **Depth models were considered and rejected.** Monocular depth estimation is
 trained on photographs of 3-D scenes. Much of this corpus is flat — typography,
@@ -720,6 +747,18 @@ vector illustration, abstract pattern — and on those a depth model returns
 confident, plausible garbage rather than a null. Trusting it would require knowing
 photo-vs-flat first, at which point the VLM answers the structural question
 directly and more reliably.
+
+*Reopened as a cheap probe, 2026-08-03 — reviewer-proposed, not adopted.* The reviewer
+raised **"image to depth map"** as a route to the figure/ground line, which is the gap
+`GROUND_FREETEXT_SYNTHESIS.md` identifies as the one the ground question never asks about
+and the one a richer vocabulary cannot reach. The orchestrator judged it **worth a cheap
+probe** rather than a redesign, and a scout report is pending. Note what the rejection
+above does and does not say: it is an argument about **trusting** depth as a label on a
+corpus that is largely flat, and it is untested on this corpus — nobody has run a depth
+model over these images and looked. A probe that measures how depth behaves on *known-flat*
+covers is the cheapest way to find out whether the "confident, plausible garbage" prediction
+is right, and it would be evidence either way. **Nothing is adopted and the paragraph above
+stands until a probe says otherwise.** Loose end **B28**.
 
 ---
 

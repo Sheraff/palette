@@ -74,17 +74,35 @@ chaotic → ~0.
   (|raw| < ~10). Callers can raise the floor, never lower it below ε. API surface: the public
   unit is Lc, evaluated internally as `max(requested_raw, ε_raw)` — necessary because the
   default/minimum lives below Lc's expressible range (its dead band in (0, 7.3)).
-  **The stop scope is enforced as of 2026-08-03** (`I4.stop-below-contrast-floor` in
-  `src/contract/invariants.ts`): until then the invariant checked only background and surface,
-  so a foreground that vanished against a published stop published clean, and the "and every
-  published stop" above was documentation with no enforcement path. `minAccentContrast` does
-  **not** extend to stops today and is pinned by test as such — whether it should is on the
-  reviewer queue, not decided here. Recorded as
-  `d-2026-08-03-min-text-contrast-covers-published-stops`.
+  **Both floors hold over the WHOLE RENDERED RAMP as of 2026-08-03**, and this replaced a per-stop
+  clause added earlier the same day. Sequence, because both steps are on the record: until that
+  morning the invariant checked only background and surface, so a foreground that vanished against a
+  published stop published clean (`d-2026-08-03-min-text-contrast-covers-published-stops`,
+  `I4.stop-below-contrast-floor`); then the **reviewer ruled**, verbatim — *"the accent's minimum
+  contrast must be checked against gradient backgrounds like the foreground's is"* and *"it's not
+  'each stop' by the way, because the contrast issue could happen somewhere in the middle of 2 points
+  too"* — so the per-stop check was checking the corners of a picture and calling it the picture, and
+  it left the accent out entirely. **"And every published stop" names the gradient, not four
+  colours.** Now: `minTextContrast` **and** `minAccentContrast` are each enforced as a **minimum over
+  the entire interpolated ramp**, the accent's as the pointwise conjunction of its two dimensions
+  (luminance *and* colour distance must both undershoot **at the same ramp point** — minimising them
+  separately would condemn a ramp that is isoluminant at one end and same-hued at the other while
+  being visible throughout). A minimum landing on a published stop still reports
+  `I4.stop-below-contrast-floor` and names the stop, so the existing census stays countable; an
+  interior minimum reports `I4.ramp-below-contrast-floor` and names the position. One violation per
+  role, because a minimum has one location. **The interpolation space is OKLab** — reviewer ruling,
+  *"sampled in the interpolation space the player actually renders"* — declared once as
+  `RAMP_INTERPOLATION_SPACE` and read by the CSS emitter so the two cannot drift; the pinned emitter
+  already produced `linear-gradient(135deg in oklab, …)`, and a missing hint would have mattered
+  (sRGB interpolation renders a ramp **up to 0.153 OKLab / 20.5 raw APCA units** away mid-segment,
+  measured). Recorded as `d-2026-08-03-reviewer-whole-ramp-contrast-floors`; loose end **B21** closes
+  on it.
   Along a gradient: the **indistinct fraction** (length of ramp below
   the bar, computed on raw values to avoid the zero-clamp phantom-flip artifact) — floor +
-  max-fraction parameter shape; exact defaults open, pathology-census discussion. With stops
-  now enforced, the ramp **interior** is the only part the contract does not police.
+  max-fraction parameter shape; exact defaults open, pathology-census discussion. **No region of a
+  published gradient is now unpoliced; what the contract does not measure is a *length*** — the
+  invariant is an extremum, and a ramp can clear the floor everywhere and still sit close to it over
+  most of its span (loose end **B15**, pathology **P2**).
 - **Where parameters act is deliberately NOT decided** — "winner-stage repair" presumes
   v2-3's shape. The paradigm-neutral requirement, which becomes a bake-off criterion:
   (a) parameters at defaults → byte-identical to the unparameterized algorithm;
@@ -435,6 +453,93 @@ themselves are exact and unaffected — `ladder-sample-1.analysis.json` is the a
 under its floor. **Never a confident negative.** A small rendition that cannot support the question
 must not be counted as evidence that the answer is "no".
 
+### 7.1 Re-scored against a capped answer key (2026-08-03) — what survives and what does not
+
+The table above grades every small rendition against each artwork's **largest** rendition. For
+**223 of the 400 sampled artworks that largest rendition is bigger than 640 px** — up to 3,000 px —
+while the instrument is hard-capped at 640 (`RESOLUTION_CAP_PX`, downscale-only) and the sharded
+corpus tops out there too. So the published key was allowed to see paper grain, canvas weave and
+faint gradients that **no consumer of the label and no viewer ever sees**, and renditions were
+marked wrong for failing to report them. The last bullet of the original §7 called for the reference
+to be capped at a viewing-plausible size and the ladder re-scored, "the run does not need repeating,
+only the analysis". **That analysis has now run** — no GPU, no model, zero new inferences —
+and this subsection is its result. Record: `d-2026-08-03-ladder-capped-reference-key`. Write-up:
+`oracle/ladder/CAPPED_REFERENCE_NOTES.md`. Data:
+`data/oracle-ladder/ladder-sample-1.capped-reference.analysis.json`.
+
+**`ladder-sample-1.analysis.json` remains the authority for the published floors.** Both keys are
+reported side by side, always; the capped column is a second reading of the same rows, not a
+replacement.
+
+| question | published floor | **capped floor** | moved? |
+|---|---|---|---|
+| `ground_type` | ~241 px | **~241 px** | no |
+| `gradient_boolean` | ~241 px | **~241 px** | no |
+| `field_texture` | ~241 px | **~341 px** | yes — one bin worse, and *unresolved* (see below) |
+| `enclosure` | answerable at every size | **~241 px** | yes — gains a floor, also unresolved |
+| `shading_geometry` | ~441 px | **never clears the floor** | yes — the published floor was an artifact |
+
+**The two floors anything downstream leans on did not move.** `ground_type` and the
+`gradient_boolean` derived from it — the input to the palette's gradient decision — hold at ~241 px
+under the honest key, and the gradient boolean's pooled agreement gets *better*, not worse
+(0.863 → **0.877**), which is what you would expect once the key stops seeing gradients that are not
+there. The corpus-inclusion decision does not flip either: at 300 px the gradient boolean clears the
+floor under **both** keys (0.872 published / 0.878 capped), so keeping the **2,270 300 px-only
+artworks** stays correct.
+
+**The over-sized key was biased, and the direction is now known.** Of the 40 `ground_type`
+disagreements between the two keys, **23** are "the big file sees structure (`shaded_field` /
+`pattern_or_texture`) where every viewable file sees `flat_field`" against **2** the other way —
+**11.5 to 1** — and 20 of the 23 are exactly `shaded_field → flat_field`. The bias runs toward
+**hallucinated structure**: the published key was calling gradients invisible at any size the
+pipeline can be given.
+
+**`shading_geometry`'s floor was never a resolution result.** Its same-size codec control **under
+the cap is 0.796** — two byte-different encodings of *identical pixels* agree 80% of the time — so
+the 0.85 floor sits **above this question's own noise ceiling** and no resolution could ever clear
+it. §7's warning to "treat its floor as the size below which it is hopeless" was too generous: the
+~441 px figure must not be cited as a size at which the question becomes reliable. A1's conclusion —
+failing bins sit below their codec ceilings, so the drops are genuine resolution effects — **survives
+for four of five questions and does not survive for this one**:
+
+| question | published control | capped control (≤640 px) | vs the 0.85 floor |
+|---|---|---|---|
+| `ground_type` | 0.903 (n=206) | **0.885** (n=156) | ceiling above the floor — floor reachable |
+| `field_texture` | 0.922 | **0.949** | reachable |
+| `enclosure` | 0.961 | **0.955** | reachable |
+| `gradient_boolean` | 0.907 | **0.887** | reachable |
+| `shading_geometry` | 0.857 (n=63) | **0.796** (n=44) | **floor is ABOVE the ceiling — unreachable** |
+
+**The one action that changes:** the per-question blind-spot list that travels with a 300 px
+rendition. Under the honest key such a rendition supports `ground_type`, `gradient_boolean` and
+`enclosure`, and must be tagged `below_resolution` for **`field_texture`** (newly) as well as
+`shading_geometry` (already). The corpus was never the problem; the tagging was one question too
+generous.
+
+**Four limits, stated because two of them are load-bearing:**
+
+- **The capped key is a proxy, not a downscale.** The pipeline would take the 3,000 px file and
+  resample it to 640; that image was never inferred. The key used is the CDN's *own* ~483 px or
+  ~333 px rendition — a different resampler and codec arriving near the same size. The size of that
+  proxy error is the codec control above (0.80–0.95 by question). Carried as loose end **B26**.
+- **`REFERENCE_MIN_LONG_EDGE_PX = 500` cannot survive the cap, and the deviation is stamped rather
+  than hidden.** **Zero** of the 223 affected artworks own a rendition between 500 and 640 px — the
+  CDN derives ~147 / ~333 / ~483 and then jumps to the original, which is also why the 561–680 bin is
+  structurally empty. The headline capped column therefore uses **441 px**, a published bin edge, and
+  the JSON reports 500 / 441 / 300 / 0 side by side.
+- **Most verdicts are not settled at 0.85 under either key.** Most decisive bins have a 95% interval
+  that *contains* 0.85 — including both bins behind the `field_texture` and `enclosure` moves. Read
+  those two as "no longer supported by this data", never as "proven bad". The floor is still
+  `[UNCALIBRATED]` (**A2**), and `floor_fragility` in the JSON flags every bin as settled or not.
+- **Power is lower, honestly.** 1,190 → 669 primary comparisons; 373 → 193 artworks. **49 artworks
+  leave the analysis entirely** because their only rendition at or below the cap is their smallest
+  (~147 px), so they own a key with no rung beneath it.
+
+**And the reassuring result: the transfer check is untouched.** Its rows were already all ≤ 640 px
+(a ~300 rung against a ~640 key), so capping changes nothing — predicted 0.834 against observed
+0.818, n=145 identical. The argument that lets the ladder curve be used corpus-wide never rested on
+the contaminated key.
+
 Provenance and caveats, all load-bearing:
 
 - **The 0.85 agreement floor is `[UNCALIBRATED]`.** It is a CLI flag with no measured basis — the
@@ -449,7 +554,9 @@ Provenance and caveats, all load-bearing:
   ever to the 0.85 `[UNCALIBRATED]` floor.
 - **`shading_geometry` is weak everywhere**, not merely below 441 px — its pooled agreement is
   0.671, far under the floor. Treat its floor as "the size below which it is hopeless", not as a
-  size above which it is reliable.
+  size above which it is reliable. **Superseded by §7.1 (2026-08-03), which is stronger:** under a
+  capped key its own codec ceiling (0.796) falls *beneath* the 0.85 floor, so the ~441 px figure is
+  an artifact of an over-sized answer key and is not a resolution result at all.
 - **Three bins are thin**, not two. Against the analysis's own `min_bin_n = 30` rule its
   `thin_bins` list names 161–240 px (n=4), 681–900 px (n=4) **and 901–1400 px (n=15)** — plus
   341–440 px for `shading_geometry` specifically. The 561–680 px bin is empty under every scope.
@@ -460,11 +567,14 @@ Provenance and caveats, all load-bearing:
 - **The transfer check holds**, which is what lets the curve be used corpus-wide: the ladder curve
   predicts 0.834 and the matched-contrast control 0.814 against the 644 real sharded pairs'
   observed 0.818.
-- **The answer key may be wrong at the very top.** At 3,000 px the model called an artwork
+- ~~**The answer key may be wrong at the very top.** At 3,000 px the model called an artwork
   `pattern_or_texture` where every smaller rendition said `flat_field` — seeing paper grain
   invisible at any size a user will ever view. If that turns out to be common, the reference
   rendition should be capped at a viewing-plausible size and the ladder **re-scored**; the run
-  does not need repeating, only the analysis.
+  does not need repeating, only the analysis.~~ **MEASURED 2026-08-03 — it is common, it runs in one
+  direction, and the analysis has been done: see §7.1.** It affects 223 of 400 sampled artworks;
+  the bias is 11.5 to 1 toward hallucinated structure; the two floors anything downstream leans on
+  do not move; `shading_geometry`'s floor does not survive.
 
 ## 8. Open items
 

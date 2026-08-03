@@ -4,11 +4,17 @@
 were made between 2026-08-02 and 2026-08-03, this file was not. Every record says so via
 `recordedAt`.
 
-**Counts in this document are as of 2026-08-03 and are re-derived, not remembered.** The file
-holds **35 decisions** — 15 written on 2026-08-03, plus **20 appended the same evening** from the
-Phase 0 adversarial review's six fix arms and three reviewer rulings. **7** of them carry
-`fundedBy`. Every count below that predates that append is marked; re-derive before quoting
-anything:
+**Counts in this document are as of 2026-08-03 (late) and are re-derived, not remembered.** The file
+holds **47 decisions**, of which **11** carry a non-empty `fundedBy`. They arrived in four waves:
+15 written on 2026-08-03, **20 appended the same evening** from the Phase 0 adversarial review's six
+fix arms and three reviewer rulings, **5 more** in the consolidated post-review pass, and **7 in the
+second batched ledger pass** — the ladder's capped-reference key, the census-aware re-score's
+standing, two reviewer rulings (tunable sites are a Phase 1 obligation; the `d`/`m` annotations will
+not be collected), the honesty census's two definitional choices, the signature_carrier
+spread-value-plus-multi-select ruling, and the whole-ramp contrast floors. **All seven carry an empty
+`fundedBy`**, which is the expected shape: four are conversational rulings, two are definitions no
+machine can check, and one is an analysis of files rather than of reviewer answers. Every count below
+that predates a later append is marked; re-derive before quoting anything:
 
 ```sh
 jq '.decisions|length' research/v3/data/decisions/decisions.json
@@ -79,9 +85,12 @@ that the code has since fixed.
 is a label for humans grepping the file, so the list below is a **description, not a
 constraint** — but reach for an existing value before inventing one.
 
-In use on 2026-08-03 **across the first 15 records** — the 20 appended that evening reuse these
-labels and invent none, so the vocabulary is unchanged and only the counts below have moved.
-Re-derive with `jq -r '.decisions[].kind' … | sort | uniq -c`:
+In use on 2026-08-03 **across the first 15 records** — every later append reuses these labels and
+invents none, so the vocabulary is unchanged and only the counts below have moved. Across all **47**
+records the distribution is `instrument-design` 17 · `process` 11 · `instrument-selection` 6 ·
+`corpus-policy` 5 · `question-set-ruling` 4 · one each of `metric-freeze`, `instrument-freeze`,
+`instrument` and `fixture-policy` (measured 2026-08-03, late). Re-derive with
+`jq -r '.decisions[].kind' … | sort | uniq -c`:
 
 | kind | records | means |
 |---|---|---|
@@ -184,11 +193,18 @@ numbers. Quote the right-hand column.
 
 ## The honest part
 
-**28 of the 35 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
-on 2026-08-03, the exceptions being the two SAM threshold records). This is not an oversight and
-must not be quietly filled in — and the ratio got *worse*, not better, because three of the
-appended records are conversational reviewer rulings, which is exactly the class the empty field
-was designed to make visible:
+**36 of the 47 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
+that evening, the exceptions being the two SAM threshold records; then 2 of 5, and all 7 of the
+second batched ledger pass). This is not an oversight and must not be quietly filled in — and the ratio keeps
+getting *worse*, not better, because the records that keep arriving are conversational reviewer
+rulings and definitional choices, which is exactly the class the empty field was designed to make
+visible. **Two of the empties are now empty for a subtler reason worth naming**
+(`d-2026-08-03-schema-v2-split-gated-pairs` and the signature_carrier ruling that completes it): the
+records that would fund them are **mechanically superseded** by a later reconciliation round, so
+citing them by id would make `recheck` report the decision as standing on drafts — the precise
+misreading `d-2026-08-03-gate-contradictions-are-elicitation-mode-effects` exists to refute. The
+citation therefore lives in `fundedByArtifacts`, and the honest consequence is that `recheck` can
+never flag either record.
 
 | decision | funded by warehouse records? |
 |---|---|
@@ -206,9 +222,10 @@ was designed to make visible:
 | the three reviewer rulings of 2026-08-03 (holdout purpose, area-guard scope, background via residual) | **no** — all three relayed conversationally |
 | …and the rest | **no** — see each record's `fundingCaveats` |
 
-Those ten are load-bearing decisions that `recheck` can never flag, however the reviewer later
-revises the judgement behind them. Recording the gap is the point of the field being empty rather
-than absent.
+Every **no** row above is a load-bearing decision that `recheck` can never flag, however the reviewer
+later revises the judgement behind them. Recording the gap is the point of the field being empty
+rather than absent. **The table is a sample, not a census** — it names the original ten and has not
+been extended row by row as the file grew past 46 records; the query below is the census.
 
 Re-derive the split rather than trusting this table:
 

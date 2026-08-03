@@ -644,6 +644,14 @@ than a label in its own right:
 
 > **SAM masks nouns it is given. The VLM is the thing that knows which noun to give it.**
 
+*(Scoped 2026-08-03, from the pointing-model scout. That sentence is true of the prompt mode this
+campaign uses and false as a statement about SAM: **SAM 3.1 also masks points, boxes and masks it is
+given**, and the interactive point-prompt weights are in the snapshot we load on every run — 145
+tensors, matched `strict=True`, never called, because mlx-vlm exposes no point-prompt entry point.
+So the VLM→SAM seam can carry **coordinates**, not only nouns. Nothing about `subject_kind`'s
+rationale changes; what changes is that "noun-passing" is one design of that seam rather than the
+only one. Loose ends **A14**, **A15**, **B27**; source: `oracle/sam/POINTING_SCOUT_NOTES.md`.)*
+
 The organizing rule says spatial questions are SAM's job and concept prompts are unioned across a
 fixed set. *(Corrected 2026-08-03. This passage previously quoted the set as `text`, `lettering`,
 `logo`, `sticker`, `person`, `face` "per pipeline §8.3". That was wrong twice: §8.3 never named
@@ -885,8 +893,16 @@ the reviewer notes did not show the forced choice losing information — what th
   (b) flag-agreement is a secondary, palette-conditional signal — never call it accuracy;
   (c) the disambiguation tiebreak (flag 14 / oracle 10 / neither 6) overstates oracle error
   by an unknown share of legitimate other-choice cases. The reviewer also reported that
-  where they voted differently from the oracle, they could see its point of view — further
-  evidence the contested slice is intrinsically ambiguous.
+  where they voted differently from the oracle, they could see its point of view.
+  *(Standing of that second half, recorded 2026-08-03: it is **one dated verbal remark and the
+  only evidence there is** for "the contested slice is intrinsically ambiguous". The instrument
+  built to quantify it — the `d`/`m` adjudication annotations, page, symmetric vocabulary, record
+  plumbing and fifteen tests, all verified live — **will not be run**, by reviewer ruling: "we
+  already know it's not reliable so there is no point in me rating it"
+  (`d-2026-08-03-reviewer-dm-annotations-not-collected`). So the ambiguity claim is de-rated to an
+  unquantified reviewer impression, permanently, and must be stated as one wherever it appears.
+  The palette-conditional ruling above it is unaffected: that one is independently argued and keeps
+  its full standing.)*
 
 - **2026-08-03, BCDE validation round (reviewer): `has_dominant_subject` has no unit rule.**
   "What if the main content is just 2 hands holding an object — does it count as 1, 2, or 3?"
@@ -965,6 +981,37 @@ the reviewer notes did not show the forced choice losing information — what th
   descriptions verbatim: **`oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`**. Record:
   `d-2026-08-03-ground-freetext-primary-evidence` — the prose is the primary evidence and any tag
   derived from it is a derived record (REVIEW_UI.md §4).
+
+- **2026-08-03, schema-v2 review (reviewer): `signature_carrier` gets a *spread* value **and**
+  multi-select, and the wording is the model's problem, not the reviewer's.** Three rulings in one,
+  all SIGNED OFF 2026-08-03, recorded as
+  `d-2026-08-03-reviewer-signature-carrier-spread-value-and-multi-select`:
+
+  1. **Add a value for "the signature colour is spread across several elements."** This is the case
+     gate-consistency rule #6 keeps firing on — `has_signature_color == yes` with
+     `signature_carrier == not_applicable` — and it is precisely the case
+     `d-2026-08-03-schema-v2-split-gated-pairs` said splitting the pair **could not reach**: that
+     proposal's own residue paragraph asks for a *value*, not a split, and this ruling supplies it.
+  2. **Keep multi-select as well — the two are cumulative, not alternatives.** The earlier
+     Appendix R ruling above ("some image has both the text and the main subject be the exact same
+     colour…") stands and is not replaced. A colour carried by text **and** subject is a *stronger*
+     signature and gets listed twice; a colour that is simply spread with no nameable carrier is a
+     different answer again and now has a slot.
+  3. **The exact wording is to be optimized for MODEL comprehension via pilot, not chosen by
+     argument.** Reviewer, verbatim: *"what matters is that the model understands it, not me."* So
+     no phrasing is fixed here — for the new value or for the multi-select instruction — and the
+     next group-BCDE pilot is what settles it. This is design rule 9 applied to phrasing:
+     ambiguity is designed out empirically, not glossed.
+
+  *Two caveats travel with this entry.* The **multi-select machinery has never been exercised by
+  real data** (loose end L-f: zero array-valued answers anywhere in the warehouse carry two or more
+  elements), so this question would be its first real test — while B19's `overlays` singleton rate
+  argues for retiring multi-select on a *different* question, which is not a contradiction. And the
+  **value and the multi-select overlap**: "spread" and "two carriers selected" can describe the same
+  cover, so the pilot must measure whether the model uses the spread value as an escape hatch
+  instead of naming carriers. If it does, the value is doing harm and half of this ruling goes back
+  to the reviewer. Recorded single answers on multi-carrier covers stay forced choices and carry
+  that noise; nothing already collected is corrected by this.
 
 ## Appendix V1 — group A as written in v1
 
