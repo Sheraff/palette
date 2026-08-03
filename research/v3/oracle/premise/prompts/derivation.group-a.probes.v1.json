@@ -1,0 +1,4869 @@
+{
+	"schema_version": "group-a.probes.v1",
+	"provenance": "[REVIEWED] research/v3/ORACLE_QUESTION_SET.md v2 §A.6. Committed a priori, before any probe-arm inference exists. The enumeration below is generated from `rules_in_order` and is the contract: an implementation that disagrees with any of the 729 entries is wrong, not the table.",
+	"probe_order": [
+		"bg_visible",
+		"one_colour",
+		"continuous_change",
+		"separate_areas",
+		"motif_or_material",
+		"depicted_place"
+	],
+	"encoding": "Each key is six characters over {y,n,u}, one per probe, in `probe_order`. y=yes, n=no, u=unsure.",
+	"unsure_policy": "`unsure` is never an assertion. It triggers no rule. It is counted (see `unsure_rate` in the analysis contract) and it can only ever route a vector to rule 9.",
+	"rules_in_order": [
+		{
+			"n": 1,
+			"if": "bg_visible == no AND any of (one_colour, continuous_change, separate_areas, motif_or_material, depicted_place) == yes",
+			"then": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"why": "You cannot see no background and also describe it."
+		},
+		{
+			"n": 2,
+			"if": "bg_visible == no",
+			"then": "none_discernible",
+			"disposition": "derived",
+			"why": "The escape hatch, reached only when nothing contradicts it."
+		},
+		{
+			"n": 3,
+			"if": "one_colour == yes AND (continuous_change == yes OR separate_areas == yes)",
+			"then": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"why": "One colour all over cannot also change across itself or be several colours."
+		},
+		{
+			"n": 4,
+			"if": "one_colour == yes",
+			"then": "flat_field",
+			"disposition": "derived",
+			"tension": "uniform_vs_material when motif_or_material == yes — a one-colour paper or canvas is real; flat_field wins and field_texture carries the material.",
+			"why": "One colour, nothing contradicting it."
+		},
+		{
+			"n": 5,
+			"if": "continuous_change == yes",
+			"then": "shaded_field",
+			"disposition": "derived",
+			"tension": "continuity_vs_areas / continuity_vs_material / continuity_vs_place",
+			"why": "Continuity wins. The probe asks for change across the WHOLE background, so the competing cases (gradient sky over flat grass, flat area meeting shaded area) answer `no` here and never reach this rule. See §A.6.4's six worked cases."
+		},
+		{
+			"n": 6,
+			"if": "separate_areas == yes",
+			"then": "multiple_distinct_fields",
+			"disposition": "derived",
+			"tension": "areas_vs_material / areas_vs_place",
+			"why": "Discrete colour areas beat both material and depicted place. This is the full_scene leak closed a priori: sky over grass is two areas that happen to be photographed."
+		},
+		{
+			"n": 7,
+			"if": "motif_or_material == yes",
+			"then": "pattern_or_texture",
+			"disposition": "derived",
+			"tension": "material_vs_place",
+			"why": "A motif or material that is the ground, with no colour structure asserted."
+		},
+		{
+			"n": 8,
+			"if": "depicted_place == yes",
+			"then": "full_scene",
+			"disposition": "derived",
+			"why": "Reached only when no colour-structure probe fired — which IS v2's definition sentence for full_scene: a depicted space with no readable colour behaviour."
+		},
+		{
+			"n": 9,
+			"if": "otherwise",
+			"then": "underdetermined",
+			"disposition": "unsure if any probe == unsure, else all_negative",
+			"why": "Nothing was asserted. There is nothing to derive from, and saying so is the point."
+		}
+	],
+	"field_texture_derivation": [
+		"motif_or_material == yes -> one_textured_material",
+		"else separate_areas == yes -> distinct_areas",
+		"else -> smooth",
+		"ground_type == underdetermined -> underdetermined",
+		"NOTE the deliberate asymmetry with ground_type: material beats areas here, areas beat material there. field_texture is about the material question; ground_type is about colour structure. §A.6.5."
+	],
+	"shading_geometry_derivation": [
+		"Take shading_direction as answered, then force not_applicable when the derived ground_type is not shaded_field.",
+		"Report both the raw and the forced value. In group-a.v1 the radial_or_vignette<->not_applicable pair was 21 of 26 inter-variant disagreements on this field [MEASURED premise-run-1]; forcing removes that class by construction rather than by asking better."
+	],
+	"self_check": {
+		"total_vectors": 729,
+		"ground_type_counts_over_uniform_vector_space": {
+			"flat_field": 72,
+			"full_scene": 32,
+			"multiple_distinct_fields": 72,
+			"none_discernible": 32,
+			"pattern_or_texture": 48,
+			"shaded_field": 108,
+			"underdetermined": 365
+		},
+		"disposition_counts": {
+			"all_negative": 1,
+			"contradiction_uniformity": 90,
+			"contradiction_visibility": 211,
+			"derived": 364,
+			"unsure": 63
+		},
+		"tension_counts": {
+			"areas_vs_material": 24,
+			"areas_vs_place": 24,
+			"continuity_vs_areas": 36,
+			"continuity_vs_material": 36,
+			"continuity_vs_place": 36,
+			"material_vs_place": 16,
+			"uniform_vs_material": 24
+		},
+		"note": "These counts are over the uniform 3^6 vector space, NOT over any corpus. They exist to prove the table is total, that every tag is reachable, and that no tag is degenerate. They are not a prediction.",
+		"reading_the_underdetermined_count": "365 of 729 looks alarming and is an artefact of the uniform space: 211 of them are contradiction_visibility, which needs bg_visible == no, and bg_visible == no is one third of the uniform space but 1 of 30 in the human data [MEASURED disambiguation-1]. The honest figure is the one conditioned on a visible background, below.",
+		"given_bg_visible_yes": {
+			"vectors": 243,
+			"ground_type_counts": {
+				"flat_field": 36,
+				"full_scene": 16,
+				"multiple_distinct_fields": 36,
+				"pattern_or_texture": 24,
+				"shaded_field": 54,
+				"underdetermined": 77
+			},
+			"disposition_counts": {
+				"all_negative": 1,
+				"contradiction_uniformity": 45,
+				"derived": 166,
+				"unsure": 31
+			}
+		}
+	},
+	"table": {
+		"yyyyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyynuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyyuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yynnyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynnyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynnyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynnny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynnnn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynnnu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynnuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynnun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynnuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynuyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynuyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynuyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yynuny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynunn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynunu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynuuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynuun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yynuuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyuyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"yyunyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyunyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyunyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyunny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyunnn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyunnu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyunuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyunun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyunuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuuyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyuuyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyuuyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"yyuuny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuunn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuunu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuuuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuuun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yyuuuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynyyyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"ynyyyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"ynyyyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"ynyyny": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"ynyynn": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"ynyynu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"ynyyuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"ynyyun": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"ynyyuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"ynynyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"ynynyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"ynynyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"ynynny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"ynynnn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynynnu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynynuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"ynynun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynynuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynyuyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"ynyuyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"ynyuyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"ynyuny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"ynyunn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynyunu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynyuuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"ynyuun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynyuuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"ynnyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"ynnyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"ynnyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"ynnynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"ynnyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnnyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"ynnnyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnnyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnnny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnnnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "all_negative",
+			"tensions": []
+		},
+		"ynnnnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnnuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnnun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnnuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"ynnuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynnuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynnuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynuyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"ynuyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"ynuyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"ynuyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"ynuynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"ynuyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynunyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"ynunyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynunyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynunny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynunnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynunnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynunuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynunun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynunuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynuuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"ynuuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynuunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynuuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ynuuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ynuuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuyyyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"yuyyyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"yuyyyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"yuyyny": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"yuyynn": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"yuyynu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"yuyyuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"yuyyun": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"yuyyuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"yuynyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"yuynyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"yuynyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"yuynny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"yuynnn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuynnu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuynuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"yuynun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuynuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuyuyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"yuyuyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"yuyuyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"yuyuny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"yuyunn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuyunu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuyuuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"yuyuun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuyuuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"yunyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"yunyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"yunyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"yunynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"yunyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunnyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"yunnyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunnyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunnny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunnnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunnnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunnuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunnun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunnuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"yunuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yununy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yununn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yununu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yunuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yunuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuuyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"yuuyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"yuuyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"yuuyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"yuuynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"yuuyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuunyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"yuunyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuunyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuunny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuunnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuunnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuunuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuunun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuunuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuuuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"yuuuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuuunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuuuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"yuuuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"yuuuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"nyyyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyynuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyyuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynnuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nynuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyunuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nyuuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnynuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnyuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnnn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnnnu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnnuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnnun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnnuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnunn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnunu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnnuun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnnuuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnuyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunnn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnunnu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnunuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnunun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnunuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnuuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuunn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnuunu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnuuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nnuuun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nnuuuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuyyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuynuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuyuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnnn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunnnu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunnuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunnun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunnuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nununy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nununn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nununu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nunuun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nunuuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuuyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunnn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuunnu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuunuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuunun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuunuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuuuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuunn": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuuunu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuuuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_visibility",
+			"tensions": []
+		},
+		"nuuuun": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"nuuuuu": {
+			"ground_type": "none_discernible",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyyyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyynuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyyuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uynnyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynnyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynnyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynnny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynnnn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynnnu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynnuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynnun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynnuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynuyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynuyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynuyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uynuny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynunn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynunu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynuuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynuun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uynuuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuyyy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyyn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyyu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyny": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuynn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuynu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyuy": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyuyuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "contradiction_uniformity",
+			"tensions": []
+		},
+		"uyunyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyunyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyunyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyunny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyunnn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyunnu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyunuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyunun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyunuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuuyy": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyuuyn": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyuuyu": {
+			"ground_type": "flat_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"uniform_vs_material"
+			]
+		},
+		"uyuuny": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuunn": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuunu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuuuy": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuuun": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uyuuuu": {
+			"ground_type": "flat_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unyyyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"unyyyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"unyyyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"unyyny": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"unyynn": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"unyynu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"unyyuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"unyyun": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"unyyuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"unynyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"unynyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"unynyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"unynny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"unynnn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unynnu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unynuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"unynun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unynuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unyuyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"unyuyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"unyuyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"unyuny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"unyunn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unyunu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unyuuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"unyuun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unyuuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"unnyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"unnyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"unnyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"unnynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"unnyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnnyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"unnnyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnnyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnnny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnnnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnnnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnnuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnnun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnnuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"unnuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unnuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unnuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unuyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"unuyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"unuyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"unuyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"unuynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"unuyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ununyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"ununyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ununyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ununny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ununnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ununnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ununuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"ununun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"ununuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unuuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"unuuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unuunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unuuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"unuuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"unuuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuyyyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"uuyyyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"uuyyyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_material"
+			]
+		},
+		"uuyyny": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"uuyynn": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"uuyynu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"uuyyuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas",
+				"continuity_vs_place"
+			]
+		},
+		"uuyyun": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"uuyyuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_areas"
+			]
+		},
+		"uuynyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"uuynyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"uuynyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"uuynny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"uuynnn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuynnu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuynuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"uuynun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuynuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuyuyy": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material",
+				"continuity_vs_place"
+			]
+		},
+		"uuyuyn": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"uuyuyu": {
+			"ground_type": "shaded_field",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_material"
+			]
+		},
+		"uuyuny": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"uuyunn": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuyunu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuyuuy": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": [
+				"continuity_vs_place"
+			]
+		},
+		"uuyuun": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuyuuu": {
+			"ground_type": "shaded_field",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"uunyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"uunyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"uunyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"uunynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"uunyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunnyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"uunnyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunnyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunnny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunnnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunnnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunnuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunnun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunnuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"uunuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uununy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uununn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uununu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uunuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uunuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuuyyy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material",
+				"areas_vs_place"
+			]
+		},
+		"uuuyyn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"uuuyyu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_material"
+			]
+		},
+		"uuuyny": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"uuuynn": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuynu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuyuy": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": [
+				"areas_vs_place"
+			]
+		},
+		"uuuyun": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuyuu": {
+			"ground_type": "multiple_distinct_fields",
+			"field_texture": "distinct_areas",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuunyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"uuunyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuunyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuunny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuunnn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuunnu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuunuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuunun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuunuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuuuyy": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": [
+				"material_vs_place"
+			]
+		},
+		"uuuuyn": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuuyu": {
+			"ground_type": "pattern_or_texture",
+			"field_texture": "one_textured_material",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuuny": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuunn": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuuunu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuuuuy": {
+			"ground_type": "full_scene",
+			"field_texture": "smooth",
+			"disposition": "derived",
+			"tensions": []
+		},
+		"uuuuun": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		},
+		"uuuuuu": {
+			"ground_type": "underdetermined",
+			"field_texture": "underdetermined",
+			"disposition": "unsure",
+			"tensions": []
+		}
+	}
+}

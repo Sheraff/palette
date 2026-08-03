@@ -21,7 +21,8 @@ in this document where a human answered the actual question.
 |---|---|---|---|
 | `group-a.v1` | `prompts/group-a.variant-{a,b}.json` | v1 group-A vocabulary | **frozen**, run once as `premise-run-1`, never to be edited |
 | `group-a.v2` | `prompts/group-a.v2.variant-{c,d}.json` | **identical to v1** | drafted, not run — corrected criterion text + B ordering, vocabulary deliberately untouched |
-| `group-a.v3` | none yet | **split** `ground_type` (§A.5) | **proposed only. Needs reviewer sign-off. Do not implement.** |
+| `group-a.v3` | none yet | **split** `ground_type` (§A.5) | proposed 2026-08-03, **superseded the same day** by the probe arm, which generalises it (§A.6.7). Kept for the record; do not implement. |
+| `group-a.probes.v1` | `prompts/group-a.probes.v1.*.json` (2 bundled + 6 solo) + `prompts/derivation.group-a.probes.v1.json` | **no ground_type question at all** — six probes, tag derived | drafted, not run — the **decomposed-probe arm**, reviewer-initiated (§A.6) |
 
 **Companion to:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` — that document's §8 holds the
 design rules and explicitly marks its own question list as a placeholder; this document is the
@@ -43,6 +44,8 @@ sixth rule**, earned by measurement rather than proposed.
 | 6 | `confidence` recorded as **measured degenerate** (299 rows, 298 said `high`); inter-variant disagreement named as the real uncertainty signal | §A.4, §Meta | mechanical |
 | 7 | `ground_type` vocabulary split proposed — `full_scene` / `pattern_or_texture` are answers on a *different axis* and eat the decision-relevant answer | §A.5 | **needs sign-off — proposal only, nothing implemented** |
 | 8 | v1's group A preserved verbatim; v1's "candidate refinements" log preserved verbatim | Appendix V1, Appendix R | mechanical |
+| 9 | **Decomposed-probe arm** added: six easy probes replace the six-way question, tag derived by a committed table. Reviewer-initiated 2026-08-03 | §A.6 | **needs sign-off** — it is a new instrument, not a rewording. Nothing is retired for it; it is an arm to be measured against C/D |
+| 10 | The §A.5 split marked **superseded by §A.6** — the probe arm is its generalisation, and if the probes win, the split is subsumed | §A.5, §A.6.7 | mechanical (a pointer, not a decision) |
 
 Nothing in groups B–F changed. They have not been piloted, so there is nothing to correct them
 with.
@@ -262,6 +265,196 @@ try to stop `full_scene` from eating the answer using words instead of schema. I
 leak persisting despite the precedence rule, that is the argument that the leak is structural and
 the split is required.
 
+**Superseded, same day, by §A.6.** The split is a two-field coarsening of the six-probe arm below.
+Do not implement it independently. §A.6.7 sets out what happens to it under each outcome.
+
+## A.6 The decomposed-probe arm — `group-a.probes.v1`
+
+*New in v2. Reviewer-initiated, 2026-08-03: "might increase reliability, and make the questions
+easier to answer." Drafted, not run, nothing retired for it.*
+
+Instead of one six-way question about a construct that took the reviewer two mid-round rulings to
+pin down, ask **six easy things** and **derive** the tag from the answers. The bet is that a model
+(and a human) can reliably answer "is the background one colour?" even when neither can reliably
+answer "what is the ground made of?", and that the aggregate of six reliable answers beats one
+unreliable one.
+
+The arm asks **no question whose answer is `ground_type`.** That is the whole point. `ground_type`
+and `field_texture` are *derived*.
+
+### A.6.1 The probes
+
+Every probe is `yes | no | unsure`. Every probe passes the five-second rule standing alone, and
+every probe means something on its own terms — none is the six-way question in disguise.
+
+| # | probe | question |
+|---|---|---|
+| 1 | `bg_visible` | Can you make out a background at all — anything behind and around the subject, lettering or figures? |
+| 2 | `one_colour` | Is the background essentially one single colour all over? |
+| 3 | `continuous_change` | Does the background's colour change continuously — a fade, a glow, a vignette, colours melting into one another — **across the whole background rather than only in one part of it**? |
+| 4 | `separate_areas` | Can you point to two or more separate areas of the background, each with its own colour? **A blurry or soft join still counts as two areas.** |
+| 5 | `motif_or_material` | Is the background a repeating motif, or the surface of a material — paper, fabric, film grain, concrete, brush marks? |
+| 6 | `depicted_place` | Does the background show a place with depth — a room, a landscape, a street? |
+
+**The two bolded clauses are load-bearing and they are the only place the canonical cases touch a
+probe.** Probe 3's "across the whole background" is what makes a gradient sky over flat grass
+answer *no* — the colour changes in one part only. Probe 4's "a blurry or soft join still counts"
+is canonical case 2's ruling, applied locally.
+
+**No probe quotes the corrected criterion or the canonical examples.** Importing the hard construct
+into an "easy question" would make it the same question in more words, and the arm would be a
+rewording rather than an alternative. The criterion's work is done in the *derivation*, once, in
+public, by a table — not re-done by the answering instrument on every image.
+
+### A.6.2 What is not decomposed, and why
+
+- **`enclosure` stays a single three-way question, asked first.** It is already group A's most
+  reliable field (raw 0.87, κ 0.60 inter-variant `[MEASURED premise-run-1]`) — decomposing a
+  reliable question spends decode budget for nothing. Holding it fixed also makes it a **control**:
+  if `enclosure` moves in this arm, something about the arm changed the model rather than the
+  question. And first is the position the measured A→B ordering gain came from.
+- **`shading_geometry` becomes `shading_direction`, asked unconditionally**, same four values, with
+  the derivation forcing `not_applicable` when the derived tag is not `shaded_field`. In run 1,
+  21 of this field's 26 inter-variant disagreements were `radial_or_vignette`↔`not_applicable`
+  `[MEASURED premise-run-1]` — pure downstream noise from the ground answer. The arm deletes that
+  class by construction instead of asking better.
+- **`field_texture` is not asked at all.** It is derived (§A.6.5). Probe 5 already collects what it
+  wanted, and its `distinct_areas` value duplicated probe 4.
+- **`confidence` and `ambiguity_note` are dropped.** 298 of 299 rows said `high` and left the note
+  empty `[MEASURED premise-run-1]`. Per-probe `unsure` is confidence asked at the granularity where
+  it can act; the aggregate instrument is the inconsistency rate (§A.6.6).
+
+### A.6.3 The derivation, as an ordered rule list
+
+First match wins. Total by construction — rule 9 is a catch-all. `unsure` is **never an
+assertion**: it triggers no rule, it is counted, and it can only route a vector to rule 9.
+
+| # | if | then | disposition |
+|---|---|---|---|
+| 1 | `bg_visible == no` and any content probe `== yes` | `underdetermined` | `contradiction_visibility` |
+| 2 | `bg_visible == no` | `none_discernible` | derived |
+| 3 | `one_colour == yes` and (`continuous_change == yes` or `separate_areas == yes`) | `underdetermined` | `contradiction_uniformity` |
+| 4 | `one_colour == yes` | `flat_field` | derived (tension `uniform_vs_material`) |
+| 5 | `continuous_change == yes` | `shaded_field` | derived (tensions vs areas / material / place) |
+| 6 | `separate_areas == yes` | `multiple_distinct_fields` | derived (tensions vs material / place) |
+| 7 | `motif_or_material == yes` | `pattern_or_texture` | derived (tension vs place) |
+| 8 | `depicted_place == yes` | `full_scene` | derived |
+| 9 | otherwise | `underdetermined` | `unsure` if any probe is `unsure`, else `all_negative` |
+
+Two things fall out of the ordering, and both are the fix rather than an accident:
+
+- **Rule 6 closes the `full_scene` leak a priori.** Sky over grass is two areas that happen to be
+  photographed, so it never reaches rule 8. `full_scene` is now reachable *only* when no
+  colour-structure probe fired — which is exactly v2's definition sentence for it (§A.1), derived
+  rather than hoped for.
+- **Rule 5's precedence — continuity beats everything — is what the corrected criterion says**, and
+  it is safe only because probe 3 asks about the *whole* background. §A.6.4 walks the cases.
+
+The full enumeration of all **3⁶ = 729** answer vectors is committed in
+`oracle/premise/prompts/derivation.group-a.probes.v1.json`, generated from these nine rules. It is
+the contract: **an implementation that disagrees with any of the 729 entries is wrong, not the
+table.** No post-hoc freedom, because there is nothing left to decide after the run.
+
+### A.6.4 The worked cases, checked against the table
+
+Every case the criterion was corrected over, run through the derivation:
+
+| case | probes 2–6 (`one_colour`, `continuous`, `areas`, `motif`, `place`) | derived | wanted |
+|---|---|---|---|
+| melting-band wall (canonical 1) | n, **y**, y, n, n | `shaded_field` | `shaded_field` ✓ |
+| crisp-band wall (canonical 1) | n, n, **y**, n, n | `multiple_distinct_fields` | `multiple_distinct_fields` ✓ |
+| flat area meets shaded area, blurry join (canonical 2) | n, n, **y**, n, n | `multiple_distinct_fields` | `multiple_distinct_fields` ✓ |
+| hazy sky into sea (§A.2's "not sufficient" example) | n, **y**, y, n, y | `shaded_field` | `shaded_field` ✓ |
+| gradient sky over flat grass | n, n, **y**, n, y | `multiple_distinct_fields` | `multiple_distinct_fields` ✓ |
+| vignette on one surface | n, **y**, n, n, n | `shaded_field` | `shaded_field` ✓ |
+| photograph of a room, no colour structure | n, n, n, n, **y** | `full_scene` | `full_scene` ✓ |
+| out-of-focus floral photograph | n, n, n, **y**, y | `pattern_or_texture` | `pattern_or_texture` ✓ |
+
+The last two are the machine's and the human's most-used escape values, and the table sends each
+where the v2 definition sentences say it should go. Note the second and third rows have the *same
+probe vector* and the same answer — the two canonical cases collapse into one rule, which is what a
+correct decomposition looks like.
+
+### A.6.5 Derived `field_texture` and `shading_geometry`
+
+`field_texture`: `motif_or_material == yes` → `one_textured_material`; else `separate_areas == yes`
+→ `distinct_areas`; else `smooth`.
+
+**Note the deliberate asymmetry**: material beats areas here, areas beat material in `ground_type`.
+That is not an inconsistency — `field_texture` is *about* the material question, `ground_type` is
+about colour structure, and the same evidence answers them differently. Being able to state that in
+one line is itself an argument for decomposition: under one enum the two readings had to fight over
+a single slot.
+
+`shading_geometry`: take `shading_direction` as answered, then force `not_applicable` when the
+derived tag is not `shaded_field`. Report raw and forced.
+
+### A.6.6 Inconsistency is a first-class metric, not an error log
+
+The derivation produces three named quantities per record, and the analysis must report all three:
+
+| quantity | what it is | why it matters |
+|---|---|---|
+| **inconsistency rate** | share of records hitting rule 1 or rule 3 — logically contradictory vectors | the model asserted two things that cannot both hold. Unavailable from a single enum: a six-way question *cannot* be self-contradictory, which is not a virtue, it is a missing instrument |
+| **tension rate** | share of records where two probes competed and precedence decided (e.g. `continuity_vs_areas`) | not an error. These are the genuinely hard artworks, named a priori |
+| **unsure rate** | share of records with any `unsure` probe, and the per-probe breakdown | tells you *which* probe is hard, which a single enum can never localise |
+
+Under `group-a.v1` the model's own uncertainty signal was degenerate (298/299 `high`). These three
+are structural: they cannot be degenerate unless the answers genuinely are. **Whether they are
+*useful* is pre-registered as a test, not assumed** — see `oracle/premise/PREMISE_NEXT.md`: do
+flagged records predict the artworks the single-question arm contested?
+
+### A.6.7 Relation to the §A.5 split — the probes generalise it
+
+§A.5 proposed splitting one enum into two: `ground_variation` (the decision) and `ground_content`
+(the prior). The probe arm is the same move taken further:
+
+| §A.5's field | the probes that decompose it |
+|---|---|
+| `ground_variation` | `one_colour`, `continuous_change`, `separate_areas` |
+| `ground_content` | `motif_or_material`, `depicted_place`, `bg_visible` |
+
+So **§A.5 is the two-field coarsening of §A.6**, and the two must not be implemented as rivals.
+What each outcome means:
+
+| probe arm result | disposition of §A.5 |
+|---|---|
+| probes beat C/D | **subsumed.** Withdraw `group-a.v3`; the probe arm is the successor and the split is never built |
+| probes lose, but the unmapped-share collapse holds | the split's benefit was real, the decomposition's cost was not. Build §A.5 as the cheap half |
+| probes lose and unmapped share stays high | the construct is the problem, not its packaging. Neither is built; escalate |
+| probes win only on the derived tag, not per-probe | suspect the derivation is doing the work a model should. Re-read §A.6.3 before believing it |
+
+### A.6.8 Two presentation modes, because ordering effects are measured-large
+
+Design rule 6 says order matters — measured at 23% → 53%. An arm that claims to be *more reliable*
+has to show its probes are order-robust, so the arm ships in two modes:
+
+- **Bundled** (`bundled-p`, `bundled-q`): all eight fields in one constrained decode. P uses the
+  §A.6.1 order; Q uses a seeded random permutation of the six probes (seed 20260803, the fixture
+  seed), with `enclosure` held first and `shading_direction` held last so P-vs-Q isolates probe
+  order and nothing else. 4 of 6 probes move position.
+- **Separate** (`solo-*`, six files): one inference per probe, so no probe can see another's
+  answer. Tests whether bundling *contaminates* — whether answering `one_colour: no` pushes the
+  next answer. Stems, glosses and framing are byte-identical to the bundled rendering, so the
+  comparison measures bundling and not wording. Costs ~4× the bundled arm; gated on the gold-30
+  first.
+
+### A.6.9 What would make this arm wrong
+
+Stated now, so it is not rationalised later:
+
+- **A probe that is not actually easy.** Pre-registered per-probe bar: ≥90% P-vs-Q agreement. A
+  probe under that fails its own premise and should be dropped or rewritten regardless of how the
+  aggregate scores.
+- **A derivation doing the model's work.** If the derived tag beats the single question while the
+  individual probes are no more reliable than the enum was, the table is imposing structure the
+  answers do not support. §A.6.7's fourth row.
+- **Abstention dressed as accuracy.** `underdetermined` is honest, but an arm that abstains on a
+  third of the corpus has not replaced anything. Pre-registered ceiling: ≤10%.
+- **Six probes are more decode than one enum.** The bundled arm costs the same wall-clock as a
+  single-question arm (image encode dominates), but the separate mode does not. If separate mode
+  wins by a hair, it is not worth 4×.
+
 ## B. Text — feeds the foreground role
 
 *Unchanged from v1. Not piloted.*
@@ -427,6 +620,18 @@ what was decided, when, and by whom.*
 corrected criterion sentence. The "add an explicit value" option in entry 1 was **not** taken;
 the reviewer notes did not show the forced choice losing information — what they showed was a
 *different* leak, on a different axis (§A.5).
+
+- **2026-08-03, adjudication browse (reviewer): the published gradient flag is
+  palette-conditional, not an artwork label.** "The flat/gradient flag might not be the most
+  fair comparison since it can really depend on which colors were picked for
+  background/surface too." An artwork can support a valid flat palette AND a valid gradient
+  palette; the flag records which choice won. Binding on all scoring: (a) reviewer-elicited
+  labels (gold-30 and successors) are the PRIMARY judge for any oracle/model comparison;
+  (b) flag-agreement is a secondary, palette-conditional signal — never call it accuracy;
+  (c) the disambiguation tiebreak (flag 14 / oracle 10 / neither 6) overstates oracle error
+  by an unknown share of legitimate other-choice cases. The reviewer also reported that
+  where they voted differently from the oracle, they could see its point of view — further
+  evidence the contested slice is intrinsically ambiguous.
 
 ## Appendix V1 — group A as written in v1
 

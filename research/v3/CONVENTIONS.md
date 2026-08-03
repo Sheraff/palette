@@ -38,6 +38,13 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
 - **Plain language** in docs, comments, reports. No cleverness.
 - Long-running scripts: JSONL/shard checkpoints flushed per record, resumable from output,
   deliberately killable.
+- **The GPU is a single-owner resource — the orchestrator owns the queue.** Agents never
+  start GPU work (including "brief" smoke tests or load verifications) while any GPU job may
+  be running; ask the orchestrator for a slot instead. Measured consequence of violating
+  this: a concurrent Metal job dies with `kIOGPUCommandBufferCallbackErrorTimeout` and the
+  process's Metal context stays poisoned — under an ordinary retry path a whole run can
+  mark itself failed-and-complete in seconds. Runners should treat GPU faults as
+  non-terminal (no `failed` rows; exit distinctly; let the supervisor restart fresh).
 - **Known artifact — stray NUL bytes in generated source.** Three separate agent-written
   files have contained literal NUL bytes where a space belonged (typically as separators
   inside template literals). Signature: `grep` treats a text file as binary, or Edit cannot

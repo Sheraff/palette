@@ -1,0 +1,180 @@
+{
+	"schema_version": "group-a.probes.v1",
+	"prompt_variant": "P",
+	"presentation_mode": "bundled",
+	"provenance": "[REVIEWED] research/v3/ORACLE_QUESTION_SET.md v2 §A.6, schema group group-a.probes.v1. Probe wordings and the derivation are committed there before any inference exists.",
+	"probe_order": [
+		"bg_visible",
+		"one_colour",
+		"continuous_change",
+		"separate_areas",
+		"motif_or_material",
+		"depicted_place"
+	],
+	"probe_order_seed": null,
+	"design_notes": [
+		"Group-a.probes.v1 is the DECOMPOSED-PROBE ARM: six independently meaningful yes/no/unsure probes whose aggregate derives the tag, instead of one six-way question. Reviewer-initiated, 2026-08-03: \"might increase reliability, and make the questions easier to answer.\" Full design: ORACLE_QUESTION_SET.md §A.6.",
+		"Every probe passes the five-second rule standing alone, and every probe is meaningful on its own terms — none of them is the six-way question in disguise.",
+		"`enclosure` is NOT decomposed. It is group A's most reliable field already (raw 0.87, kappa 0.60 inter-variant [MEASURED premise-run-1]); decomposing a reliable question spends decode for nothing. It is also held first in both bundled variants, both because that is the position the measured A->B ordering gain came from and because holding one field constant across arms makes it a control: if enclosure moves in this arm, something about the arm changed the model, not the question.",
+		"Derivation is a priori and committed: `derivation.group-a.probes.v1.json` enumerates all 3^6 = 729 answer vectors. An implementation that disagrees with any entry is wrong, not the table.",
+		"Variant P asks the probes in the order ORACLE_QUESTION_SET.md §A.6.1 lists them: visibility, then the three colour-structure probes, then the two content probes."
+	],
+	"deviations": [
+		"No `confidence` field and no `note` field, in either mode. Under group-a.v1 both were degenerate: 298 of 299 parsed rows said `high` and the same 298 left the note empty [MEASURED premise-run-1]. In this arm the per-probe `unsure` value IS the confidence, asked at the granularity where it can act, and the aggregate uncertainty instruments are the inconsistency and tension rates from the derivation table. Re-adding `note` to the bundled variants is a one-line change if the reviewer wants the audit trail back.",
+		"`shading_direction` is asked unconditionally, with `not_applicable` available, rather than conditionally on a prior `shaded_field` answer. The derivation forces `not_applicable` when the derived ground_type is not shaded_field. In group-a.v1 the radial_or_vignette<->not_applicable pair was 21 of 26 inter-variant disagreements on this field [MEASURED premise-run-1]; the arm removes that class by construction.",
+		"This arm asks no question whose answer is `ground_type`. `ground_type` and `field_texture` are DERIVED, by the committed table in `derivation.group-a.probes.v1.json`. Nothing downstream may re-derive them a second way.",
+		"No probe quotes the corrected criterion or the canonical examples from ORACLE_QUESTION_SET.md §A.2. That is the point of the arm: importing the hard construct into an \"easy question\" would make it the same question in more words. Where a canonical case bears on one probe it appears as a local clarification of that probe alone (`separate_areas`: \"A blurry or soft join still counts as two areas\")."
+	],
+	"canonical_fields": [
+		"enclosure",
+		"bg_visible",
+		"one_colour",
+		"continuous_change",
+		"separate_areas",
+		"motif_or_material",
+		"depicted_place",
+		"shading_direction"
+	],
+	"vocabularies": {
+		"bg_visible": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"one_colour": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"continuous_change": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"separate_areas": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"motif_or_material": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"depicted_place": [
+			"yes",
+			"no",
+			"unsure"
+		],
+		"enclosure": [
+			"thick_frame_or_bars",
+			"none",
+			"thin_border"
+		],
+		"shading_direction": [
+			"radial_or_vignette",
+			"not_applicable",
+			"irregular",
+			"linear"
+		]
+	},
+	"derives": {
+		"ground_type": "derivation.group-a.probes.v1.json",
+		"field_texture": "derivation.group-a.probes.v1.json",
+		"shading_geometry": "derivation.group-a.probes.v1.json"
+	},
+	"system": "You label album cover artwork for a research dataset. You answer only with the exact words offered. You never explain, never add fields, never use words that were not offered.",
+	"prompt": "Look at this album cover.\n\nThe BACKGROUND is the large area behind and around any subject, lettering or figures. Small details do not count. What the cover is about does not count. Whether it is attractive does not count.\n\nAnswer each question on its own. Do not try to make your answers tell one story.\n\n1. enclosure - Is the artwork shut in by a border or a bar?\n   thick_frame_or_bars - a wide frame, or a solid band along one or more edges, big enough to be an area in its own right\n   none - the picture runs all the way out to the edges\n   thin_border - a narrow keyline or thin frame\n\n2. bg_visible - Can you make out a background at all — anything behind and around the subject, lettering or figures?\n   yes - there is a background you can see\n   no - you cannot make out any background\n   unsure - you cannot tell\n\n3. one_colour - Is the background essentially one single colour all over?\n   yes - one colour, all over\n   no - more than one colour is present\n   unsure - you cannot tell\n\n4. continuous_change - Does the background's colour change continuously — a fade, a glow, a vignette, colours melting into one another — across the whole background rather than only in one part of it?\n   yes - it changes continuously, across the whole background\n   no - it does not, or it only changes in one part\n   unsure - you cannot tell\n\n5. separate_areas - Can you point to two or more separate areas of the background, each with its own colour? A blurry or soft join still counts as two areas.\n   yes - two or more separate areas, each its own colour\n   no - you cannot pick out separate areas\n   unsure - you cannot tell\n\n6. motif_or_material - Is the background a repeating motif, or the surface of a material — paper, fabric, film grain, concrete, brush marks?\n   yes - a repeating motif, or a material surface\n   no - neither\n   unsure - you cannot tell\n\n7. depicted_place - Does the background show a place with depth — a room, a landscape, a street?\n   yes - a place with depth is shown\n   no - no place is shown\n   unsure - you cannot tell\n\n8. shading_direction - If the background's colour changes across it, which way does it change?\n   radial_or_vignette - spreading outward from a centre, or darkening into the corners\n   not_applicable - the colour does not change across the background\n   irregular - it changes, but with no simple geometry\n   linear - it runs straight across, one edge to the other\n\nReply with JSON only.",
+	"json_schema": {
+		"type": "object",
+		"properties": {
+			"enclosure": {
+				"type": "string",
+				"enum": [
+					"thick_frame_or_bars",
+					"none",
+					"thin_border"
+				]
+			},
+			"bg_visible": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"one_colour": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"continuous_change": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"separate_areas": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"motif_or_material": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"depicted_place": {
+				"type": "string",
+				"enum": [
+					"yes",
+					"no",
+					"unsure"
+				]
+			},
+			"shading_direction": {
+				"type": "string",
+				"enum": [
+					"radial_or_vignette",
+					"not_applicable",
+					"irregular",
+					"linear"
+				]
+			}
+		},
+		"required": [
+			"enclosure",
+			"bg_visible",
+			"one_colour",
+			"continuous_change",
+			"separate_areas",
+			"motif_or_material",
+			"depicted_place",
+			"shading_direction"
+		],
+		"additionalProperties": false
+	},
+	"field_map": {
+		"enclosure": "enclosure",
+		"bg_visible": "bg_visible",
+		"one_colour": "one_colour",
+		"continuous_change": "continuous_change",
+		"separate_areas": "separate_areas",
+		"motif_or_material": "motif_or_material",
+		"depicted_place": "depicted_place",
+		"shading_direction": "shading_direction"
+	},
+	"free_text_fields": []
+}

@@ -1,0 +1,41 @@
+ORACLE VLM BAKE-OFF — scores
+generated 2026-08-03T08:22:30.229Z  ·  repo head 1e58829aee2e
+
+ARMS
+  qwen3-30b-a3b      mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit
+                     rev f31102655767 · 6bit · 30B total / 3B active (MoE) · results on disk
+  qwen3-32b-dense    mlx-community/Qwen3-VL-32B-Instruct-8bit
+                     rev 14fd4c76af6b · 8bit · 32B dense · no results yet
+  gemma3-27b         mlx-community/gemma-3-27b-it-8bit
+                     rev 524cdc4f56a5 · 8bit · 27B dense · no results yet
+
+=== GOLD30 ====================================================
+  reference: the reviewer's own ground_type answers on 30 hand-labelled
+  artworks, every one of them a case where the premise oracle and the
+  accepted flag contradicted each other. A hard-case probe, not the ranking.
+
+  arm                var      exact      binary   kappa  no-pred
+  qwen3-30b-a3b      A       7/30          8/20  +0.032        4
+  qwen3-30b-a3b      B      16/30         17/24  +0.364        0
+  (accepted flag)    -            -       14/24  +0.062
+
+  inter-variant (A vs B) — the subset the dense adjudicator would be sent:
+  qwen3-30b-a3b      ground_type agreement 0.300 (kappa +0.000) · binary disagreement 19/30
+
+=== EVAL142 ====================================================
+  reference: the accepted gradient flag on every included artwork. An
+  accepted algorithm decision, not an elicited label (eval-set.json
+  meta.groundTruthEpistemology). P6: the buckets are the instrument.
+
+  arm                var       strict   kappa      mapped  agree  c-hard  c-soft  undet
+  qwen3-30b-a3b      A         84/137  +0.210       55/77     55       1      18     63
+  qwen3-30b-a3b      B         91/137  +0.311       70/94     70       8      12     47
+
+  inter-variant (A vs B) — the subset the dense adjudicator would be sent:
+  qwen3-30b-a3b      ground_type agreement 0.708 (kappa +0.610) · binary disagreement 36/137
+
+SELF-CHECK against the published gold-30 analysis: PASS
+
+HEALTH
+  qwen3-30b-a3b      gold30   rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 2.9194s
+  qwen3-30b-a3b      eval142  rows  284 ok  284 failed   0 parse_failed   0 retried   0 median 2.9194s

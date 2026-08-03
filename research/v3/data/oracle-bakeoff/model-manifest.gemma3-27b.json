@@ -1,0 +1,121 @@
+{
+	"purpose": "Weight provenance for a bake-off arm (pipeline doc \u00a75.2).",
+	"generated_by": "research/v3/oracle/bakeoff/pin_arms.py",
+	"generated_at": "2026-08-03T08:17:51.185Z",
+	"arm": "gemma3-27b",
+	"model_id": "mlx-community/gemma-3-27b-it-8bit",
+	"model_revision": "524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"quantization": "8bit",
+	"architecture": "gemma3",
+	"snapshot_path": "/Users/Flo/.cache/huggingface/hub/models--mlx-community--gemma-3-27b-it-8bit/snapshots/524cdc4f56a58ef94949ba65dc63a29c48362b1a",
+	"total_bytes": 31082196389,
+	"weights_manifest_sha256": "fcbd487c53a9bcd41a22db4d788c87c58b0164ea23e301a76f10326e51bc6f4c",
+	"hashes_computed": true,
+	"runtime": {
+		"mlx_vlm": "0.6.8",
+		"mlx": "0.32.0",
+		"mlx_metal": "0.32.0",
+		"transformers": "5.14.1",
+		"llguidance": "1.7.6",
+		"pillow": "12.3.0",
+		"pillow_avif_plugin": "1.6.0",
+		"huggingface_hub": "1.26.0"
+	},
+	"files": [
+		{
+			"file": ".gitattributes",
+			"bytes": 1570,
+			"sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930"
+		},
+		{
+			"file": "README.md",
+			"bytes": 945,
+			"sha256": "43cf0f58d665e09907605e7d7e76283b241d4b229bfdfe9154c1e79cd175df1a"
+		},
+		{
+			"file": "added_tokens.json",
+			"bytes": 35,
+			"sha256": "50b2f405ba56a26d4913fd772089992252d7f942123cc0a034d96424221ba946"
+		},
+		{
+			"file": "chat_template.json",
+			"bytes": 1615,
+			"sha256": "fe16baf728db49457cde32802cd7efc0ac8a7a9877dbe22fe3322b2d9dc6ccd9"
+		},
+		{
+			"file": "config.json",
+			"bytes": 1248,
+			"sha256": "f9e972381fe5591cb8a7535e849ccdb5d755bbfc1d723b2d9921faf8e0c5c7ff"
+		},
+		{
+			"file": "generation_config.json",
+			"bytes": 192,
+			"sha256": "e04ecb65db447404710114fb282baaac482d22a95e2244ecaab428b81672ba78"
+		},
+		{
+			"file": "model-00001-of-00006.safetensors",
+			"bytes": 5279750284,
+			"sha256": "70191eb2728aa213a842eef43a87df5e43296e16e763a8869531b334730be8cd"
+		},
+		{
+			"file": "model-00002-of-00006.safetensors",
+			"bytes": 5264743530,
+			"sha256": "74093b7205f75166d216773a3922fba9ddb1a2e81704ac827cf1b8048bc2e009"
+		},
+		{
+			"file": "model-00003-of-00006.safetensors",
+			"bytes": 5264743642,
+			"sha256": "963923489e71e1767794cece1cec9725430d3cc1b40fc6365edc019dfd8bc189"
+		},
+		{
+			"file": "model-00004-of-00006.safetensors",
+			"bytes": 5264743640,
+			"sha256": "0783b1011fab72d210273c24b787ebebffeaa355aca22e5ab18542a2d7883f5c"
+		},
+		{
+			"file": "model-00005-of-00006.safetensors",
+			"bytes": 5264743646,
+			"sha256": "a0f5018f7075d6731c893952584fc62b27a5452559e6e965e719d94039ddd38e"
+		},
+		{
+			"file": "model-00006-of-00006.safetensors",
+			"bytes": 4704107440,
+			"sha256": "e1d269620c3b03e39e158cf07153faf2176ddfb1dca7caf7fdeb75151d90b797"
+		},
+		{
+			"file": "model.safetensors.index.json",
+			"bytes": 126651,
+			"sha256": "71567cc4dcf16476da69af42108fb6b30b24f6cf49a4f71f9917da57715f74c5"
+		},
+		{
+			"file": "preprocessor_config.json",
+			"bytes": 570,
+			"sha256": "f688d6bb20c5017601c4011de7ca656da8485b540b05013efdaf986c0fcc918d"
+		},
+		{
+			"file": "processor_config.json",
+			"bytes": 70,
+			"sha256": "3ffd5f11778dc73e2b69b3c00535e4121e1badf7018136263cd17b5b34fbaa53"
+		},
+		{
+			"file": "special_tokens_map.json",
+			"bytes": 662,
+			"sha256": "2f7b0adf4fb469770bb1490e3e35df87b1dc578246c5e7e6fc76ecf33213a397"
+		},
+		{
+			"file": "tokenizer.json",
+			"bytes": 33384568,
+			"sha256": "4667f2089529e8e7657cfb6d1c19910ae71ff5f28aa7ab2ff2763330affad795"
+		},
+		{
+			"file": "tokenizer.model",
+			"bytes": 4689074,
+			"sha256": "1299c11d7cf632ef3b4e11937501358ada021bbdf7c47638d13c0ee982f2e79c"
+		},
+		{
+			"file": "tokenizer_config.json",
+			"bytes": 1157007,
+			"sha256": "0d95398b39395e5cfb290683a78f3fb0551223c672d8b033333c1a5307473760"
+		}
+	]
+}
