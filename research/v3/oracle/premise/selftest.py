@@ -193,7 +193,7 @@ def main() -> int:
     check_prompt_sets(variants)
     check_probe_derivation()
     check_prompt_files_unchanged()
-    check_group_bcd()
+    check_group_bcde()
 
     print()
     if failures:
@@ -215,7 +215,7 @@ def check_prompt_sets(v1_variants) -> None:
 
     expected_counts = {"group-a.v1": 2, "group-a.v2": 2,
                        "group-a.probes.bundled": 2, "group-a.probes.solo": 6,
-                       "group-bcd.v1": 2}
+                       "group-bcde.v1": 2}
     for name in sorted(PROMPT_SETS):
         try:
             loaded = default_variants(name)
@@ -433,7 +433,7 @@ def check_probe_derivation() -> None:
     check("derive() reproduces all 729 vectors from their answers", not bad, str(bad[:3]))
 
 
-# [REVIEWED] Every prompt file that existed before group-bcd.v1 was added, with its sha256 as
+# [REVIEWED] Every prompt file that existed before group-bcde.v1 was added, with its sha256 as
 # published in PREMISE_NEXT.md §6, §13.1 and §13.2. A new schema group must not perturb one byte
 # of an older one: A and B are the record of what run 1 asked, C/D and the probe files are drafted
 # and approved instruments awaiting a GPU slot, and the derivation table is a signed contract.
@@ -467,16 +467,25 @@ PRE_EXISTING_PROMPT_FILES = {
 }
 
 # [REVIEWED] PREMISE_NEXT.md §15.2, published alongside the two files.
-GROUP_BCD_PUBLISHED = {
-    "E": {"prompt_hash": "684b3623d4472b02", "schema_hash": "90bb6054508958ee",
-          "file_hash": "572570503238309e"},
-    "F": {"prompt_hash": "fa65d8dd73821ae7", "schema_hash": "03ca0c2aa807e0d1",
-          "file_hash": "baa79cdafd7db472"},
+GROUP_BCDE_PUBLISHED = {
+    "E": {"prompt_hash": "1cbd4894e8b2f118", "schema_hash": "b169bc565982ad5b",
+          "file_hash": "0e0fe253a0f5b956"},
+    "F": {"prompt_hash": "3a50829af99684eb", "schema_hash": "9386abfb170b6465",
+          "file_hash": "e0d8597ed1da0424"},
 }
 
-# [REVIEWED] ORACLE_QUESTION_SET.md §B, §C and §D, in document order. The four `not_applicable`
-# values and nothing else are the deviations each prompt file declares.
-GROUP_BCD_VOCABULARIES = {
+# [REVIEWED] PREMISE_NEXT.md §15.2. The nine-question `group-bcd.v1` was drafted, superseded the
+# same day by this thirteen-question schema, and DELETED rather than frozen — it never ran and
+# produced no row anywhere, so there is no data for a freeze to protect. §13.2's precedent.
+SUPERSEDED_GROUP_BCD_FILES = (
+    "group-bcd.v1.variant-e.json",
+    "group-bcd.v1.variant-f.json",
+)
+
+# [REVIEWED] ORACLE_QUESTION_SET.md §B, §C, §D (including the new §D.1 `subject_kind`) and §E, in
+# document order. The five `not_applicable` values and nothing else are the deviations each
+# prompt file declares.
+GROUP_BCDE_VOCABULARIES = {
     "has_text": ("yes", "no", "illegible_at_this_size"),
     "text_roles": ("title_display", "artist_name", "tracklist_or_body", "badge_or_sticker",
                    "label_logo", "incidental_in_scene", "not_applicable"),
@@ -484,16 +493,23 @@ GROUP_BCD_VOCABULARIES = {
     "overlays": ("parental_advisory", "label_logo", "barcode_or_price", "watermark", "none"),
     "physical_media_scan": ("yes", "no"),
     "has_dominant_subject": ("single", "multiple", "none"),
+    "subject_kind": ("person", "animal", "vehicle", "object", "building_or_structure",
+                     "abstract_shape", "not_applicable"),
     "subject_area_band": ("under_25", "25_60", "over_60", "not_applicable"),
     "has_signature_color": ("yes", "no"),
     "signature_carrier": ("text", "subject", "background", "small_element", "not_applicable"),
+    "medium": ("photograph", "illustration_or_painting", "render_3d", "typography_only",
+               "collage", "abstract_or_pattern"),
+    "color_character": ("monochrome", "duotone_or_tinted", "limited_palette", "full_spectrum"),
+    "grain_or_noise": ("yes", "no"),
 }
 
 # [REVIEWED] Forced by constrained decoding, not chosen: a conditional field generated before its
 # condition would be answered blind. Identical in every variant of this schema group.
-GROUP_BCD_GATES = (
+GROUP_BCDE_GATES = (
     ("has_text", "text_roles"),
     ("has_text", "text_dominance"),
+    ("has_dominant_subject", "subject_kind"),
     ("has_dominant_subject", "subject_area_band"),
     ("has_signature_color", "signature_carrier"),
 )
@@ -509,8 +525,14 @@ def check_prompt_files_unchanged() -> None:
     check("every pre-existing prompt file is byte-identical",
           not changed, str(changed) or f"{len(PRE_EXISTING_PROMPT_FILES)} files unchanged")
     unexpected = sorted(set(on_disk) - set(PRE_EXISTING_PROMPT_FILES)
-                        - {"group-bcd.v1.variant-e.json", "group-bcd.v1.variant-f.json"})
+                        - {"group-bcde.v1.variant-e.json", "group-bcde.v1.variant-f.json"})
     check("prompts/ holds no file this selftest does not know about", not unexpected, str(unexpected))
+    # §15.2: the nine-question draft was deleted, not frozen — it produced no row anywhere, and a
+    # loadable superset-minus-four schema in prompts/ is a hazard with no offsetting benefit.
+    check("no superseded group-bcd.v1 prompt file remains on disk",
+          not any((common.PROMPTS_DIR / name).exists() for name in SUPERSEDED_GROUP_BCD_FILES)
+          and not list(common.PROMPTS_DIR.glob("group-bcd.v1.*")),
+          str(sorted(p.name for p in common.PROMPTS_DIR.glob("group-bcd.v1.*"))))
     # The globs must stay disjoint, or a set silently starts loading another set's files.
     matched = {name: {p.name for p in common.PROMPTS_DIR.glob(glob)}
                for name, (_, glob) in PROMPT_SETS.items()}
@@ -518,46 +540,47 @@ def check_prompt_files_unchanged() -> None:
                 for a in matched for b in matched
                 if a < b and matched[a] & matched[b]}
     check("no two registered prompt sets glob the same file", not overlaps, str(overlaps))
-    check("group-bcd.v1 globs exactly its own two files",
-          matched["group-bcd.v1"] == {"group-bcd.v1.variant-e.json", "group-bcd.v1.variant-f.json"},
-          str(sorted(matched["group-bcd.v1"])))
+    check("group-bcde.v1 globs exactly its own two files",
+          matched["group-bcde.v1"] == {"group-bcde.v1.variant-e.json", "group-bcde.v1.variant-f.json"},
+          str(sorted(matched["group-bcde.v1"])))
 
 
-def check_group_bcd() -> None:
-    """The nine group-B/C/D questions in one constrained decode, two orderings. Never piloted:
+def check_group_bcde() -> None:
+    """Thirteen questions — groups B, C, D and E plus subject_kind — in one constrained decode,
+    two orderings. Never piloted:
     everything below is a check that the instrument is what it says it is, not a measurement."""
     print()
-    variants = {v.variant: v for v in default_variants("group-bcd.v1")}
-    check("group-bcd.v1 loads variants E and F", sorted(variants) == ["E", "F"], str(sorted(variants)))
+    variants = {v.variant: v for v in default_variants("group-bcde.v1")}
+    check("group-bcde.v1 loads variants E and F", sorted(variants) == ["E", "F"], str(sorted(variants)))
     if sorted(variants) != ["E", "F"]:
         return
     e, f = variants["E"], variants["F"]
 
     # -- identity ---------------------------------------------------------------
     for variant in (e, f):
-        published = GROUP_BCD_PUBLISHED[variant.variant]
+        published = GROUP_BCDE_PUBLISHED[variant.variant]
         check(f"variant {variant.variant} hashes match PREMISE_NEXT §15.2",
               variant.prompt_hash.startswith(published["prompt_hash"])
               and variant.schema_hash.startswith(published["schema_hash"])
               and variant.file_hash.startswith(published["file_hash"]),
               f"{variant.prompt_hash[:16]} / {variant.schema_hash[:16]} / {variant.file_hash[:16]}")
     check("the schema_version guard keeps this set out of any group-a file",
-          e.schema_version == "group-bcd.v1"
-          and PROMPT_SETS["group-bcd.v1"][0] == "group-bcd.v1"
-          and e.schema_version not in {PROMPT_SETS[s][0] for s in PROMPT_SETS if s != "group-bcd.v1"},
+          e.schema_version == "group-bcde.v1"
+          and PROMPT_SETS["group-bcde.v1"][0] == "group-bcde.v1"
+          and e.schema_version not in {PROMPT_SETS[s][0] for s in PROMPT_SETS if s != "group-bcde.v1"},
           "run_premise.py asserts existing rows' schema_version is a subset of this run's")
 
     # -- the nine questions, and their vocabularies -----------------------------
-    check("both variants declare exactly the nine group-B/C/D fields",
-          set(e.canonical_fields) == set(GROUP_BCD_VOCABULARIES)
-          and set(f.canonical_fields) == set(GROUP_BCD_VOCABULARIES)
-          and len(e.canonical_fields) == 9,
+    check("both variants declare exactly the thirteen group-B/C/D/E fields",
+          set(e.canonical_fields) == set(GROUP_BCDE_VOCABULARIES)
+          and set(f.canonical_fields) == set(GROUP_BCDE_VOCABULARIES)
+          and len(e.canonical_fields) == 13,
           str(sorted(e.canonical_fields)))
     check("both variants declare the question set's vocabularies plus the four documented deviations",
-          e.vocabularies == GROUP_BCD_VOCABULARIES and f.vocabularies == GROUP_BCD_VOCABULARIES,
-          str({k: v for k, v in e.vocabularies.items() if GROUP_BCD_VOCABULARIES.get(k) != v}))
+          e.vocabularies == GROUP_BCDE_VOCABULARIES and f.vocabularies == GROUP_BCDE_VOCABULARIES,
+          str({k: v for k, v in e.vocabularies.items() if GROUP_BCDE_VOCABULARIES.get(k) != v}))
     check("option order inside every question is byte-identical between E and F",
-          all(e.vocabularies[k] == f.vocabularies[k] for k in GROUP_BCD_VOCABULARIES))
+          all(e.vocabularies[k] == f.vocabularies[k] for k in GROUP_BCDE_VOCABULARIES))
     check("no confidence and no free-text field",
           "confidence" not in e.canonical_fields and "ambiguity_note" not in e.canonical_fields
           and e.free_text_fields == () and f.free_text_fields == (),
@@ -572,33 +595,33 @@ def check_group_bcd() -> None:
           all(order == json.loads(variant.path.read_text())["question_order"]
               for order, variant in ((order_e, e), (order_f, f))),
           f"E={order_e}")
-    for gate, dependent in GROUP_BCD_GATES:
+    for gate, dependent in GROUP_BCDE_GATES:
         check(f"{gate} is generated before {dependent} in both variants",
               order_e.index(gate) < order_e.index(dependent)
               and order_f.index(gate) < order_f.index(dependent))
     check("signature_carrier is held last in both variants, as the ordering control",
           order_e[-1] == "signature_carrier" and order_f[-1] == "signature_carrier")
     moved = [q for q in order_e if order_e.index(q) != order_f.index(q)]
-    check("E and F differ in generation order for 8 of the 9 fields",
-          len(moved) == 8, f"{len(moved)} moved: {moved}")
+    check("E and F differ in generation order for 12 of the 13 fields",
+          len(moved) == 12, f"{len(moved)} moved: {moved}")
     check("E and F differ in generation order, so their schema hashes differ",
           e.schema_hash != f.schema_hash and order_e != order_f)
     check("E and F use disjoint JSON key names, so a row cannot be misattributed",
           set(e.field_map) & set(f.field_map) == set(),
           f"E={sorted(e.field_map)}")
-    check("E and F ask the same nine canonical fields",
+    check("E and F ask the same thirteen canonical fields",
           set(e.field_map.values()) == set(f.field_map.values()))
 
     # -- the shared blocks ------------------------------------------------------
     doc_e = json.loads(e.path.read_text())
     doc_f = json.loads(f.path.read_text())
     blocks_e, blocks_f = doc_e["shared_blocks"], doc_f["shared_blocks"]
-    check("the seven shared blocks are byte-identical between E and F",
-          blocks_e == blocks_f and len(blocks_e) == 7, f"{len(blocks_e)} blocks")
+    check("the eight shared blocks are byte-identical between E and F",
+          blocks_e == blocks_f and len(blocks_e) == 8, f"{len(blocks_e)} blocks")
     check("every shared block appears verbatim in both prompts",
           all(block in e.prompt and block in f.prompt for block in blocks_e.values()),
           str([name for name, block in blocks_e.items()
-               if block not in e.prompt or block not in f.prompt]) or "all 7 present in both")
+               if block not in e.prompt or block not in f.prompt]) or "all 8 present in both")
     check("every stem and gloss is independently written (the prompts share no long line)",
           not (set(e.prompt.split("\n")) & set(f.prompt.split("\n"))
                - {line for block in blocks_e.values() for line in block.split("\n")} - {""}),
@@ -625,7 +648,7 @@ def check_group_bcd() -> None:
               str(shapes))
     check("no group-A variant declares a multi-select, so their loading is unchanged",
           all(v.multi_select_fields == ()
-              for name in PROMPT_SETS if name != "group-bcd.v1"
+              for name in PROMPT_SETS if name != "group-bcde.v1"
               for v in default_variants(name)))
 
     # -- validation: what is fatal, and what is counted instead -----------------
@@ -633,9 +656,9 @@ def check_group_bcd() -> None:
                   else e.vocabularies[canonical][0])
             for key, canonical in e.field_map.items()}
     parsed = validate_and_canonicalize(good, e)
-    check("a valid nine-field document canonicalizes",
+    check("a valid thirteen-field document canonicalizes",
           parsed["text_roles"] == ["title_display", "artist_name"]
-          and parsed["has_text"] == "yes" and len(parsed) == 9, str(parsed))
+          and parsed["has_text"] == "yes" and len(parsed) == 13, str(parsed))
 
     def rejects(payload):
         try:
@@ -656,14 +679,14 @@ def check_group_bcd() -> None:
     check("an exclusive value beside another is kept and counted, not failed",
           validate_and_canonicalize({**good, "stickers": ["none", "watermark"]}, e)["overlays"]
           == ["none", "watermark"],
-          "failing the row would discard the other eight answers to punish one")
+          "failing the row would discard the other twelve answers to punish one")
     check("a single-value field still rejects a list",
           rejects({**good, "lettering": ["yes"]}))
 
-    check_group_bcd_grammar((e, f))
+    check_group_bcde_grammar((e, f))
 
 
-def check_group_bcd_grammar(variants) -> None:
+def check_group_bcde_grammar(variants) -> None:
     """array-of-enum has to survive the constrained-decoding backend, not just json.dumps.
 
     Grammar compilation is CPU-only and loads no weights, so this stays a model-free check.
@@ -686,7 +709,7 @@ def check_group_bcd_grammar(variants) -> None:
         except Exception as error:
             check(f"variant {variant.variant} schema compiles to a grammar", False,
                   f"{type(error).__name__}: {error}")
-    check("both group-bcd.v1 schemas compile to a grammar (array-of-enum is supported)",
+    check("both group-bcde.v1 schemas compile to a grammar (array-of-enum is supported)",
           len(grammars) == len(variants))
     try:
         llg.JsonCompiler(separators=(", ", ": "), whitespace_pattern="").compile(json.dumps(

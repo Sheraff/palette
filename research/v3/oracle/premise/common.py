@@ -123,10 +123,12 @@ PROMPT_SETS: dict[str, tuple[str, str]] = {
     "group-a.v2": ("group-a.v2", "group-a.v2.variant-*.json"),
     "group-a.probes.bundled": ("group-a.probes.v1.1", "group-a.probes.v1.1.bundled-*.json"),
     "group-a.probes.solo": ("group-a.probes.v1.1", "group-a.probes.v1.1.solo-*.json"),
-    # The first non-group-A set: the nine group-B/C/D questions in one constrained decode,
-    # two orderings (E, F). PREMISE_NEXT.md §15. The schema_version guard below is what keeps
-    # its rows out of any file holding group-a rows.
-    "group-bcd.v1": ("group-bcd.v1", "group-bcd.v1.variant-*.json"),
+    # The first non-group-A set: thirteen questions — groups B, C, D and E, plus the new
+    # `subject_kind` — in one constrained decode, two orderings (E, F). PREMISE_NEXT.md §15.
+    # The schema_version guard below is what keeps its rows out of any file holding group-a rows.
+    # Supersedes the nine-question `group-bcd.v1`, which was drafted the same day, never
+    # registered against a run and never produced a row; its identities are kept in §15.2.
+    "group-bcde.v1": ("group-bcde.v1", "group-bcde.v1.variant-*.json"),
 }
 # [REVIEWED] Run 1's set. Default so nothing that worked before needs a flag.
 DEFAULT_PROMPT_SET = "group-a.v1"
@@ -243,7 +245,7 @@ class PromptVariant:
     canonical_fields: tuple[str, ...] = CANONICAL_FIELDS
     vocabularies: dict[str, tuple[str, ...]] = field(default_factory=lambda: dict(VOCABULARIES))
     # [REVIEWED] PREMISE_NEXT.md §15.3. Canonical fields whose answer is a LIST of vocabulary
-    # values rather than one value — `text_roles` and `overlays` in group-bcd.v1. Empty on
+    # values rather than one value — `text_roles` and `overlays` in group-bcde.v1. Empty on
     # every group-A variant, which is why every assertion and every validation branch that
     # reads it is a no-op for A/B, C/D and the probe arm.
     multi_select_fields: tuple[str, ...] = ()

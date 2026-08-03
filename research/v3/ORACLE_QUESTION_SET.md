@@ -1,8 +1,11 @@
 # V3 Semantic Oracle — Question Set
 
-**Version:** **v2**, 2026-08-03. Supersedes v1 (2026-08-02) **for group A only**; groups B–F are
-carried over unchanged and are still unpiloted draft. v1's group A is kept verbatim in
-Appendix V1 at the bottom — nothing in this document has been deleted.
+**Version:** **v2**, 2026-08-03. Supersedes v1 (2026-08-02) **for group A**, and adds one field to
+group D (§D.1 `subject_kind`, needs sign-off). Groups B, C, E and F are carried over unchanged.
+**Nothing in groups B–F has been piloted**; the first instrument that asks any of them —
+`group-bcde.v1`, covering B, C, D and E in one decode — is drafted and unrun
+(`oracle/premise/PREMISE_NEXT.md` §15). v1's group A is kept verbatim in Appendix V1 at the
+bottom — nothing in this document has been deleted.
 
 **Status:** group A is piloted and measured. Two measurements exist and are cited throughout:
 
@@ -53,9 +56,11 @@ sixth rule**, earned by measurement rather than proposed.
 | 9 | **Decomposed-probe arm** added: six easy probes replace the six-way question, tag derived by a committed table. Reviewer-initiated 2026-08-03 | §A.6 | **needs sign-off** — it is a new instrument, not a rewording. Nothing is retired for it; it is an arm to be measured against C/D |
 | 10 | The §A.5 split marked **superseded by §A.6** — the probe arm is its generalisation, and if the probes win, the split is subsumed | §A.5, §A.6.7 | mechanical (a pointer, not a decision) |
 | 11 | Probe arm **v1 → v1.1: the referent defect** — reviewer stress test found the probes presupposed a singular background. Referent preamble + whole-region clauses + unsure framing; derivation untouched | §A.6.0, §A.6.1, §A.6.4 case 9 | **SIGNED OFF 2026-08-03** (reviewer: "the six probe wording is ok"; answered in the §12 round before reading the derivation rules — scoping note in the round's analysis) |
+| 12 | **New field `subject_kind`** added to group D, and groups B–E folded into one pilot instrument (`group-bcde.v1`, `oracle/premise/PREMISE_NEXT.md` §15). Reviewer-initiated 2026-08-03 | §D.1, §D, §E | **NEEDS SIGN-OFF** — it is a new question, not a rewording. Nothing is retired for it |
 
-Nothing in groups B–F changed. They have not been piloted, so there is nothing to correct them
-with.
+Groups B–F are otherwise unchanged, and remain unpiloted. Row 12 is the first addition any of them
+has ever taken; it adds a field and pilots four groups, and corrects nothing, because there is no
+measurement of these groups to correct.
 
 ---
 
@@ -581,16 +586,70 @@ exist.
 
 ## D. Subject and identity — feeds the accent role
 
-*Unchanged from v1. Not piloted.*
+*Carried over from v1 unchanged, plus one new field (§D.1). Not piloted.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
 | `has_dominant_subject` | `single \| multiple \| none` | Figure/ground separation at the coarsest useful grain. |
+| `subject_kind` (when a subject exists) | `person \| animal \| vehicle \| object \| building_or_structure \| abstract_shape` | **New in v2, §D.1.** Names the noun so SAM can be asked to mask it. |
 | `subject_area_band` | `under_25 \| 25_60 \| over_60` | Same; also the band where saliency methods degenerate (large-subject covers). |
 | `has_signature_color` | `yes \| no` | Is there one color that reads as *this cover's* color. |
 | `signature_carrier` (when yes) | `text \| subject \| background \| small_element` | Aimed at the measured finding that ~half of accent corrections were salience mismatches: names which evidence lane *should* supply the accent — which no color statistic can. |
 
 **Expected reliability: medium.** `[UNCALIBRATED]`
+
+### D.1 `subject_kind` — the VLM→SAM handoff
+
+*New in v2, 2026-08-03, reviewer-initiated. **NEEDS SIGN-OFF.** Drafted into
+`group-bcde.v1`; nothing has run.*
+
+Every other question in this document is asked because the answer is **semantic and not
+computable**. `subject_kind` is asked for a different reason, and it is worth stating plainly
+because it is the first question here whose purpose is **synergy with another instrument** rather
+than a label in its own right:
+
+> **SAM masks nouns it is given. The VLM is the thing that knows which noun to give it.**
+
+The organizing rule says spatial questions are SAM's job and concept prompts are unioned per
+pipeline §8.3 — `text`, `lettering`, `logo`, `sticker`, `person`, `face`. That prompt list is
+**fixed and hand-written**, so it can only find the nouns someone thought of in advance.
+Motivating case, from the residual round: **a car the masks missed.** `vehicle` was not in the
+list, so no mask existed, so nothing downstream could reason about the largest coloured object on
+the cover. A per-artwork `subject_kind` makes the concept prompt **conditional on the artwork**
+instead of fixed, at the cost of one enum in a decode that is already happening.
+
+This also means `subject_kind` is the one field in this document whose value is **not** settled by
+its own reliability. A `subject_kind` that is right 80% of the time still adds a mask 80% of the
+time where today there is none; the failure mode is a wasted SAM call, not a wrong label entering
+the palette. Judge it by whether the named masks land, not by κ alone.
+
+**Vocabulary**, six values, closed, five-second answerable:
+
+| value | means |
+|---|---|
+| `person` | a person, a face, a figure, a crowd |
+| `animal` | a creature of any kind |
+| `vehicle` | a car, a bike, a boat, a plane, a train |
+| `object` | a made thing: an instrument, a bottle, a chair, a tool |
+| `building_or_structure` | a building, a bridge, a tower, a room read as a structure |
+| `abstract_shape` | a shape or form that is not a thing you could name |
+
+Asked **only when `has_dominant_subject != none`**, and a fixed JSON schema cannot express that, so
+the prompt files add `not_applicable` — the same deviation `shading_geometry` has carried since
+`group-a.v1`, and the gate is always generated first so the pair is jointly readable.
+
+**The known limitation, recorded now rather than discovered later.** `subject_kind` is
+**single-select**, so a cover holding a person *and* a car has two kinds and one slot. That is
+design rule 8's shape — a value set that cannot record the answer it is asking for — and it is
+exactly the failure the motivating case is made of. The prompt files resolve it by naming the
+largest, and the pilot is **pre-registered to report the `subject_kind` distribution conditioned on
+`has_dominant_subject == multiple`**. If mixed-kind covers are common, the successor is a
+multi-select, and `group-bcde.v1` already carries multi-select machinery for `text_roles` and
+`overlays`.
+
+**What would retire this field:** if SAM's fixed prompt union turns out to already find the named
+subject on ~every artwork, the question feeds no decision and the organizing rule deletes it at the
+pilot.
 
 ## E. Medium and character — priors, stratification, confound control
 
@@ -607,6 +666,19 @@ with limited palettes") and corpus stratification.
 
 **v2 note.** If §A.5's split is ever adopted, `ground_content` and `medium` overlap and one of
 them should go. Do not add both without deciding which one a downstream consumer reads.
+
+**v2 note — group E is in the first pilot, alongside B, C and D** (`group-bcde.v1`,
+`oracle/premise/PREMISE_NEXT.md` §15). Tiering below calls E a candidate tier that "runs on the
+pilot", and this is that pilot. `medium` is also beyond SAM's reach — masks say *where* a region
+is, never how the picture was made — so it cannot be recovered from the segmentation lane if it is
+dropped here.
+
+Two of the three sit close to the "never ask for computables" line and are flagged for it:
+**`color_character` and `grain_or_noise` could plausibly be answered by a pixel statistic.** They
+are asked anyway because their use is evaluation-side stratification rather than an algorithm
+input, and because `grain_or_noise` is explicitly a JPEG-artifact confound control. Pre-registered
+consequence: **if a cheap computed measure reproduces either of them, that question is deleted and
+the statistic is used instead.**
 
 ## F. Eval-side target variables — never algorithm inputs
 

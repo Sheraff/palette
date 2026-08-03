@@ -635,37 +635,57 @@ separate on the gold-30 (~30 min), the last gated on the second. The human half 
 
 ---
 
-# 15. Groups B, C and D — the first pilot (`group-bcd.v1`)
+# 15. Groups B, C, D and E — the first pilot (`group-bcde.v1`)
 
-**Status (2026-08-03):** drafted, unrun, **not approved** — this is a new instrument on questions no
-run has ever touched, so it needs a sign-off (§15.9) and a GPU slot, in that order. Nothing here
+**Status (2026-08-03):** drafted, unrun, **not approved** — a new instrument on questions no run has
+ever touched, so it needs the sign-offs in §15.10 and then a GPU slot, in that order. Nothing here
 competes with the two group-A arms; it is a different question set answering different decisions,
-and it should be queued **after** them, because they are already approved and they are the ones
-that decide whether the oracle is worth going corpus-wide with at all.
+and it should be queued **after** them, because they are already approved and they are the ones that
+decide whether the oracle is worth going corpus-wide with at all.
+
+**Scope note.** An earlier draft of this section covered nine questions as `group-bcd.v1`. The
+reviewer extended it the same day, before anything ran, to fold in **group E** and a **new
+question, `subject_kind`**. The nine-question files were deleted rather than frozen — §13.2's
+precedent, and for the same reason: freezing exists to protect collected data, and they produced no
+inference, no human answer and no row anywhere. Their identities are kept in §15.2 so the record
+survives the files.
 
 ## 15.1 What this is, and what it is not
 
-`ORACLE_QUESTION_SET.md` §B, §C and §D are nine questions across three groups:
+Thirteen questions across four groups, all of them beyond SAM's reach and none of them ever piloted:
 
 | group | fields | the decision each feeds |
 |---|---|---|
 | B — text | `has_text`, `text_roles`, `text_dominance` | foreground candidacy, and whether text can claim the foreground at all |
 | C — provenance | `overlays`, `physical_media_scan` | identity exclusion: what is on the cover but not *of* it |
-| D — subject and identity | `has_dominant_subject`, `subject_area_band`, `has_signature_color`, `signature_carrier` | figure/ground at the coarsest grain, and which evidence lane should supply the accent |
+| D — subject and identity | `has_dominant_subject`, **`subject_kind`**, `subject_area_band`, `has_signature_color`, `signature_carrier` | figure/ground at the coarsest grain, which noun SAM should be asked to mask, and which evidence lane should supply the accent |
+| E — medium and character | `medium`, `color_character`, `grain_or_noise` | stratified evaluation and confound control; turns anecdotal failure classes into counted ones |
 
-All three are marked **"Unchanged from v1. Not piloted."** and all three carry `[UNCALIBRATED]`
-reliability guesses (B: high; C: high; D: medium). **Nothing below is a measurement.** This section
-is the plan for producing the first one, and its main job is to say — before any number exists —
-what would count as the instrument working and what would count as it failing.
+`ORACLE_QUESTION_SET.md` marks B, C and E "Unchanged from v1. Not piloted", and carries
+`[UNCALIBRATED]` reliability guesses for all four groups (B high, C high, D medium, E none stated).
+**Nothing below is a measurement.** This section is the plan for producing the first one, and its
+main job is to say — before any number exists — what would count as the instrument working and what
+would count as it failing.
 
-`group-bcd.v1` puts all nine in **one constrained decode**, in two orderings (E and F), and asks
-them corpus-wide on the same eval set every other premise run has used.
+**`subject_kind` is the one genuinely new question**, added to `ORACLE_QUESTION_SET.md` as §D.1 in
+the same revision and flagged there as needing sign-off. Its purpose is different in kind from
+everything else in this set: **SAM masks the nouns it is given, and the VLM is what knows which noun
+to give it.** Pipeline §8.3's concept-prompt union is fixed and hand-written (`text`, `lettering`,
+`logo`, `sticker`, `person`, `face`), so it can only find nouns someone thought of in advance —
+which is how the residual round ended up with **a car the masks missed**. One enum, inside a decode
+that is already happening, makes the concept prompt conditional on the artwork.
 
-**Why one document rather than three.** Image encode and prefill dominate cost at ~10.5 s per
-inference `[MEASURED premise-run-1]`; decode length is negligible either way. The longest *legal*
-answer to all nine questions is **129 tokens (E) / 134 tokens (F)** against `MAX_TOKENS` 256
-`[MEASURED, the pinned model's tokenizer, CPU only]`. Three schemas would cost three runs for the
-same answers, and would additionally destroy the gate orders §15.2 depends on.
+**Why one document rather than four.** Image encode and prefill dominate cost at ~10.5 s per
+inference `[MEASURED premise-run-1]`; decode length is negligible. The longest *legal* answer to all
+thirteen questions is **169 tokens (E) / 179 tokens (F)** against `MAX_TOKENS` 256 `[MEASURED, the
+pinned model's tokenizer, CPU only]`. Four schemas would cost four runs for the same answers, and
+would additionally destroy the gate orders §15.2 depends on.
+
+**Headroom warning, since this is the number that moved.** Going from nine questions to thirteen
+took the worst case from 129/134 tokens to 169/179 — about **70% of `MAX_TOKENS`**. That is still
+safe, and the *typical* answer is far shorter, but a fourteenth question is no longer free:
+**anything added to this schema must re-measure the worst case**, and `selftest.py` asserts it
+against the cap on every run so the ceiling cannot be crossed silently.
 
 ## 15.2 The two orderings, and what is held fixed
 
@@ -674,44 +694,63 @@ exactly once, in a comparison confounded with wording. E and F apply it to a fre
 put its two readings against each other:
 
 - **E — rule 6 taken globally.** Every question that can be answered by *naming what is on the
-  cover* comes before every question that requires a *judgement about what it means*. Order:
-  `physical_media_scan`, `overlays`, `has_text`, `has_dominant_subject`, `subject_area_band`,
-  `has_signature_color`, `text_roles`, `text_dominance`, `signature_carrier`.
+  cover* comes before every question that requires a *judgement about what it means*, with group
+  E's three medium-and-colour facts at the very front as the cheapest and most global of all.
+  Order: `medium`, `color_character`, `grain_or_noise`, `physical_media_scan`, `overlays`,
+  `has_text`, `has_dominant_subject`, `subject_kind`, `subject_area_band`, `has_signature_color`,
+  `text_roles`, `text_dominance`, `signature_carrier`.
 - **F — rule 6 taken locally.** Each judgement sits immediately after its own gating question, and
-  the question set's own B / C / D grouping is kept intact. Order: `has_text`, `text_roles`,
-  `text_dominance`, `overlays`, `physical_media_scan`, `has_dominant_subject`,
-  `subject_area_band`, `has_signature_color`, `signature_carrier`.
+  the question set's group blocks are kept intact. Order: `has_text`, `text_roles`,
+  `text_dominance`, `overlays`, `physical_media_scan`, `medium`, `color_character`,
+  `grain_or_noise`, `has_dominant_subject`, `subject_kind`, `subject_area_band`,
+  `has_signature_color`, `signature_carrier`.
 
-**Eight of the nine fields change position.** Held fixed on purpose:
+**Twelve of the thirteen fields change position.** Held fixed on purpose:
 
-1. **`signature_carrier` is last in both.** It is the field with the least prior evidence behind it
-   and the one §D says the accent role turns on, and holding one field's position constant across
-   both renderings makes it a control: if it moves between E and F, something other than order
-   moved it. This is the role `enclosure` plays in the probe arm's P/Q pair (§A.6.2).
-2. **Three gate orders are forced, not chosen, and identical in both:** `has_text` before
-   `text_roles` and `text_dominance`; `has_dominant_subject` before `subject_area_band`;
-   `has_signature_color` before `signature_carrier`. Under constrained decoding the JSON property
-   order **is** the generation order, so a conditional field generated before its condition would
-   be answered blind.
-3. **Enum option order** inside every question is the question set's own order, byte-identical
+1. **`signature_carrier` is last in both.** It is the field §D says the accent role turns on, and
+   holding one field's position constant across both renderings makes it a control: if it moves
+   between E and F, something other than order moved it. This is the role `enclosure` plays in the
+   probe arm's P/Q pair (§A.6.2). It is also **why F puts group E's block between the provenance
+   and subject blocks** rather than at the end, where the question set's own group sequence would
+   have put it: keeping the control fixed is worth more than following that sequence exactly, and
+   the swap is recorded here rather than left to be noticed.
+2. **`subject_kind` sits immediately after its gate in both** — position 8 in E (inside the
+   describe block, which is where it belongs: it names a noun, it does not judge one), position 10
+   in F. Its distance from `has_dominant_subject` is zero in both, so the pilot does *not* test
+   ordering for the new question. That is deliberate: a brand-new question should be measured under
+   its best-guess placement before its placement is varied.
+3. **Five gate orders are forced, not chosen, and identical in both:** `has_text` before
+   `text_roles` and `text_dominance`; `has_dominant_subject` before **`subject_kind`** and before
+   `subject_area_band`; `has_signature_color` before `signature_carrier`. Under constrained
+   decoding the JSON property order **is** the generation order, so a conditional field generated
+   before its condition would be answered blind.
+4. **Enum option order** inside every question is the question set's own order, byte-identical
    between E and F. No option-order hypothesis is under test here.
-4. **Seven shared blocks** — the definitions of text, of an added-on element, of the main subject,
-   of the signature colour, plus the list rule, the no-measuring rule and the anti-coherence line —
-   are byte-identical between E and F and declared as explicit `shared_blocks` keys so the identity
-   is asserted by `selftest.py`, not eyeballed. Everything else (opening line, every stem, every
-   gloss, every JSON key) is independently written. This is the C/D pattern.
+5. **Eight shared blocks** — the definitions of text, of an added-on element, of the main subject,
+   of one-picture-one-medium, of the signature colour, plus the list rule, the no-measuring rule
+   and the anti-coherence line — are byte-identical between E and F and declared as explicit
+   `shared_blocks` keys so the identity is asserted by `selftest.py`, not eyeballed. Everything
+   else (opening line, every stem, every gloss, every JSON key) is independently written, and
+   `selftest.py` asserts the two prompts share **no line at all** outside those blocks. This is
+   the C/D pattern.
 
 **Stated with its confound, as A-vs-B was:** E and F differ in **both** order and wording, so a
 difference between them is "the E rendering wins", with ordering as the deliberate structural
 difference and the only one with a mechanism behind it. A third rendering keeping one variant's
-order is what would separate them, and it is not worth drafting before the pilot says whether
-either rendering is answerable at all.
+order is what would separate them, and it is not worth drafting before the pilot says whether either
+rendering is answerable at all.
 
 **Referents were checked against a plural case before shipping.** `ORACLE_QUESTION_SET.md` §A.6.0
-made this a standing rule after v1's probes presupposed a singular background. The `THE MAIN
-SUBJECT` block carries "when there is more than one, take them all together", and
-`subject_area_band`'s stem says "taken together" in both renderings, so a two-figure cover has an
-answer instead of a presupposition failure.
+made this a standing rule after v1's probes presupposed a singular background. Two blocks do that
+work here:
+
+- `THE MAIN SUBJECT` carries *"when there is more than one, take them all together — except where a
+  single kind of thing is asked for, and then name the kind of the largest one."* This is what makes
+  `subject_kind` answerable on a cover holding a person **and** a car — which is the motivating case
+  itself — instead of a presupposition failure.
+- `ONE PICTURE, ONE MEDIUM` does the same job for `medium`, which competes with itself on a
+  photographed collage or a photograph with type over it. It is the precedence rule §A.1 had to
+  learn the expensive way, applied a priori this time.
 
 ### File identity
 
@@ -721,34 +760,56 @@ uses.
 
 | | variant E | variant F |
 |---|---|---|
-| file | `prompts/group-bcd.v1.variant-e.json` | `prompts/group-bcd.v1.variant-f.json` |
-| `prompt_hash` | `684b3623d4472b029799b1cca88afc22905824bde1ac735b797cfcf902de297a` | `fa65d8dd73821ae78898eb0f7dce36a29788b76c96645baa4377b4ee4bbfe114` |
-| `schema_hash` | `90bb6054508958eed57b6b42e25ecdfb5534780130368c46fdb76584faf64da8` | `03ca0c2aa807e0d1b4bdc1ce417c8d4a77ec99e59038afa4e07c538fa3077679` |
-| `file_hash` | `572570503238309ea6f66a4ca0c12d3c8c9a80f4b63ebd099387143ba4876250` | `baa79cdafd7db47254aae564a7954a262296f95973a82d02b5b89e8f98a868b7` |
-| JSON keys, in generation order | `packaging_shot`, `stickers`, `lettering`, `subject_count`, `subject_size`, `signature_colour`, `lettering_kinds`, `lettering_weight`, `signature_source` | `words`, `word_kinds`, `word_prominence`, `added_marks`, `packaging_photo`, `main_thing`, `main_thing_area`, `defining_colour`, `defining_colour_where` |
-| prompt length | 4 355 chars | 4 153 chars |
+| file | `prompts/group-bcde.v1.variant-e.json` | `prompts/group-bcde.v1.variant-f.json` |
+| `prompt_hash` | `1cbd4894e8b2f118ebfe47557afbda309e62a5479b7278b130fa03a7612d7a1f` | `3a50829af99684eb3b11642ad7df9c1e99d165df9a350033b28113583c3e6891` |
+| `schema_hash` | `b169bc565982ad5b961285cf92e80d643bdc2810f3cbbde49d31d8f11eea130c` | `9386abfb170b6465339f96ec8dbb48322d8fc8906da7674c2f1c11b58996ee21` |
+| `file_hash` | `0e0fe253a0f5b956a3351f6e4a693e05a255063cd4bbf03b927a7423368f9730` | `e0d8597ed1da0424c5c0bc23390cb485391548af396a9d3e3c1935bd5d229010` |
+| prompt length | 6 092 chars | 5 749 chars |
+
+JSON keys, in generation order:
+
+- **E** — `picture_kind`, `colour_range`, `texture_noise`, `packaging_shot`, `stickers`,
+  `lettering`, `subject_count`, `subject_is`, `subject_size`, `signature_colour`,
+  `lettering_kinds`, `lettering_weight`, `signature_source`
+- **F** — `words`, `word_kinds`, `word_prominence`, `added_marks`, `packaging_photo`, `made_how`,
+  `colour_spread`, `speckle`, `main_thing`, `main_thing_kind`, `main_thing_area`,
+  `defining_colour`, `defining_colour_where`
 
 The two variants use **disjoint JSON key names**, so a row cannot be misattributed even if its
 `prompt_variant` column were lost.
 
-**No group-A file was touched.** `selftest.py` pins the `sha256` of all thirteen pre-existing
-prompt files (A, B, C, D, the eight probe files, the derivation table) and fails if any byte moves.
+**Superseded and deleted: the nine-question `group-bcd.v1`.** Drafted 2026-08-03, extended the same
+day, never registered against a run, never executed. Identities kept so the record survives the
+files:
+
+| file (deleted) | `prompt_hash` | `file_hash` |
+|---|---|---|
+| `group-bcd.v1.variant-e.json` | `684b3623d4472b02…` | `572570503238309e…` |
+| `group-bcd.v1.variant-f.json` | `fa65d8dd73821ae7…` | `baa79cdafd7db472…` |
+
+These are **not** added to `common.py`'s superseded-hash poison table, and the reason matters: that
+table exists to invalidate *rows*, and no row carrying these hashes can exist, because the set was
+never registered against a run and the schema-version guard has been in place from the first commit
+of the registry entry. `selftest.py` asserts instead that no `group-bcd.v1.*` file is on disk.
+
+**No group-A file was touched.** `selftest.py` pins the `sha256` of all thirteen pre-existing prompt
+files (A, B, C, D, the eight probe files, the derivation table) and fails if any byte moves.
 
 ## 15.3 Machinery: the registry entry, and the multi-select grammar
 
-The criterion arm needed two lines of `common.py` (§5) and the probe arm needed five (§13). This
-set needs **one registry entry plus one narrowly-scoped capability**, because it is the first
-schema group with a question whose answer is a *list*.
+The criterion arm needed two lines of `common.py` (§5) and the probe arm needed five (§13). This set
+needs **one registry entry plus one narrowly-scoped capability**, because it is the first schema
+group with a question whose answer is a *list*.
 
 **1. Registry entry** — added, nothing existing modified:
 
 ```python
-"group-bcd.v1": ("group-bcd.v1", "group-bcd.v1.variant-*.json"),
+"group-bcde.v1": ("group-bcde.v1", "group-bcde.v1.variant-*.json"),
 ```
 
-The schema-version guard is unchanged and needs nothing new: `load_prompt_variant` asserts each
-file declares `group-bcd.v1`, and `run_premise.py` refuses to write into a file that already holds
-rows of another schema version. **Verified:** pointing a `group-bcd.v1` run at a file holding one
+The schema-version guard is unchanged and needs nothing new: `load_prompt_variant` asserts each file
+declares `group-bcde.v1`, and `run_premise.py` refuses to write into a file that already holds rows
+of another schema version. **Verified:** pointing a run of this set at a file holding one
 `group-a.v1` row fails at startup with the "mixing question sets in one file is a reporting trap"
 assertion, before the model is loaded.
 
@@ -765,40 +826,40 @@ thirteen older prompt files are byte-identical, so "additive" is checked rather 
 
 ### Does llguidance support array-of-enum? Yes — verified, CPU only
 
-`mlx-vlm` 0.6.8's constrained path is `llguidance` 1.7.6 via
-`build_json_schema_logits_processor`. Grammar construction there is
-`llguidance.JsonCompiler(...).compile(schema)` — **pure CPU, no weights, no Metal**, so this was
-verifiable without a GPU slot, and it is now a permanent `selftest.py` check:
+`mlx-vlm` 0.6.8's constrained path is `llguidance` 1.7.6 via `build_json_schema_logits_processor`.
+Grammar construction there is `llguidance.JsonCompiler(...).compile(schema)` — **pure CPU, no
+weights, no Metal** — so this was verifiable without a GPU slot, and it is now a permanent
+`selftest.py` check:
 
-- both `group-bcd.v1` schemas compile;
+- both `group-bcde.v1` schemas compile;
 - both grammars **validate against the pinned model's own tokenizer** (loaded from the pinned
   snapshot, tokenizer files only);
-- walking the **longest legal answer** token by token through an `LLMatcher` is accepted and ends
-  in an accepting state — E 129 tokens, F 134 tokens, against `MAX_TOKENS` 256;
+- walking the **longest legal answer** token by token through an `LLMatcher` is accepted and ends in
+  an accepting state — E 169 tokens, F 179 tokens, against `MAX_TOKENS` 256;
 - an off-vocabulary value is rejected mid-decode;
 - the grammar **enforces property order**, which is the mechanism design rule 6 rests on: feeding
-  the same nine fields in a different order is rejected.
+  the same thirteen fields in a different order is rejected.
 
 **One backend limitation, and it shapes the schema.** `uniqueItems` is **not implemented** by
 llguidance — declaring it raises `Unimplemented keys: ["uniqueItems"]` at compile time. So the
 grammar **cannot** forbid a repeated value in a list, and neither prompt file declares it.
-`selftest.py` asserts the limitation still holds, so if a future llguidance implements it, the
-check fails loudly and the schema can be tightened deliberately rather than by accident.
+`selftest.py` asserts the limitation still holds, so if a future llguidance implements it, the check
+fails loudly and the schema can be tightened deliberately rather than by accident.
 
-**Still owed to the pre-flight, not to this section:** the full
-`build_json_schema_logits_processor` path imports `mlx.core` and defines a Metal kernel, so it is
-not something an agent may exercise while the GPU is single-owner. `preflight.py --stage retry
---prompt-set group-bcd.v1` is the check that closes it, and it must be run before the pilot
-(§15.5).
+**Still owed to the pre-flight, not to this section:** the full `build_json_schema_logits_processor`
+path imports `mlx.core` and defines a Metal kernel, so it is not something an agent may exercise
+while the GPU is single-owner. `preflight.py --stage retry --prompt-set group-bcde.v1` is the check
+that closes it, and it must be run before the pilot (§15.5).
 
-## 15.4 Vocabularies: four added values, and what is deliberately *not* a failure
+## 15.4 Vocabularies: five added values, and what is deliberately *not* a failure
 
-The nine vocabularies are the question set's, verbatim, plus four values and no more:
+The thirteen vocabularies are the question set's, verbatim, plus five values and no more:
 
 | field | added | why |
 |---|---|---|
 | `text_roles` | `not_applicable` | a fixed JSON schema cannot make a field conditional without a union. Covers both "no text" and "text, but no kind can be named" — it does not need to distinguish them, because `has_text` is generated first and already does (`no` vs `illegible_at_this_size`) |
 | `text_dominance` | `not_applicable` | same, conditional on `has_text` |
+| `subject_kind` | `not_applicable` | same, conditional on `has_dominant_subject == none` |
 | `subject_area_band` | `not_applicable` | same, conditional on `has_dominant_subject == none` |
 | `signature_carrier` | `not_applicable` | same, conditional on `has_signature_color == no` |
 
@@ -807,15 +868,31 @@ since has carried. `overlays` keeps the question set's own **`none`** rather tha
 `not_applicable`, because there `none` is a real observation ("I looked, there are none"), not an
 inapplicability.
 
+**`subject_kind` is single-select, and that is a limitation with a test attached rather than a
+settled choice.** A cover holding a person *and* a car has two kinds and one slot; the shared block
+resolves it by naming the largest. This is design rule 8's shape — a slot that cannot record the
+answer it is asking for — and it is precisely the shape of the motivating case, so the pilot is
+**pre-registered to report `subject_kind` conditioned on `has_dominant_subject == multiple`**
+(§15.6). If mixed-kind covers are common, the successor is a multi-select, and the machinery for
+that already exists in this schema.
+
 **`has_text` keeps `illegible_at_this_size`**, unchanged, and it is the **only** resolution escape
-hatch anywhere in groups B–D. Pipeline §7.1 and `PHASE_0_DECISIONS.md` §7: a rendition below a
+hatch anywhere in groups B–E. Pipeline §7.1 and `PHASE_0_DECISIONS.md` §7: a rendition below a
 question's resolution floor must never yield a confident negative. Note what is *not* known — the
 measured floors cover **group-A questions only**; no floor has been measured for any question in
 this schema. §15.6 therefore reports this value's rate **by resolution tier**, and a zero rate
 across all 43 thumbnail-tier images is a finding about the instrument, not a clean bill of health.
 
+**Two questions sit close to the computable line and are flagged for it.** `color_character` and
+`grain_or_noise` could plausibly be answered by a pixel statistic, which is the one rule in
+`ORACLE_QUESTION_SET.md`'s "deliberately NOT asked" list they graze. They are asked anyway because
+§E asks them, because their use is evaluation-side stratification rather than an algorithm input,
+and because `grain_or_noise` is explicitly a JPEG-artifact confound control. **Pre-registered
+consequence: if a cheap computed measure reproduces either of them, that question is deleted from
+the next schema and the statistic is used instead.**
+
 **Two defects are counted, not failed.** The grammar cannot prevent either, greedy decoding means a
-retry reproduces them exactly, and failing the row would discard the other eight answers to punish
+retry reproduces them exactly, and failing the row would discard the other twelve answers to punish
 one. Both are recorded verbatim and reported as named rates, which is the treatment
 `ORACLE_QUESTION_SET.md` §A.6.6 established for self-contradiction:
 
@@ -823,24 +900,26 @@ one. Both are recorded verbatim and reported as named rates, which is the treatm
 - **exclusive value beside another** (`["none", "watermark"]`, `["not_applicable", "artist_name"]`).
 
 What *is* a hard validation failure, and therefore a `parse_failed` row: a multi-select answered
-with a bare string, an empty list, or a value outside the vocabulary. All three are impossible
-under the grammar, so any of them firing means the grammar path regressed — which is exactly what
-the check is for.
+with a bare string, an empty list, or a value outside the vocabulary. All three are impossible under
+the grammar, so any of them firing means the grammar path regressed — which is exactly what the
+check is for.
 
 ## 15.5 The pilot run
 
 **Item set: the full eval set, unchanged. 142 images × 2 variants = 284 inferences.** Same file,
 same `build-eval-set.ts` output, same population as run 1 and as both group-A arms, so every
-stratification (43 thumbnail ≤320 px, 88 standard, 11 large >640 px) and every future join is
-exact. **Do not select a subset**, and in particular do not select on any group-A result — these
-questions have nothing to do with the gradient boolean, and a set chosen by another instrument's
-difficulty is not a sample of anything.
+stratification (43 thumbnail ≤320 px, 88 standard, 11 large >640 px) and every future join is exact.
+**Do not select a subset**, and in particular do not select on any group-A result — these questions
+have nothing to do with the gradient boolean, and a set chosen by another instrument's difficulty is
+not a sample of anything.
 
-**Cost: ~50 min at burst, ~1.5 h if the machine throttles** — the same 284 inferences as run 1, the
-same images, and a decode 60–70 tokens longer per answer, which is negligible against a ~10.5 s
-image encode.
+**Cost: ~50 min at burst, ~1.5 h if the machine throttles.** Adding four questions did **not** move
+this. The inference count is unchanged at 284, the images are unchanged, and the extra decode is
+~40–45 tokens per answer against a ~10.5 s image encode — under 2% of wall clock. **Thirteen
+questions cost what nine cost, and both cost what four cost**, which is the whole argument for
+bundling and is why group E was worth folding in rather than scheduling separately.
 
-**Output: `../../data/oracle-premise/group-bcd-pilot-1.jsonl`.** Never append to run 1, run 2 or
+**Output: `../../data/oracle-premise/group-bcde-pilot-1.jsonl`.** Never append to run 1, run 2 or
 the probe run; the schema-version guard enforces this, but the naming should not rely on it.
 
 **Pre-flight first, both stages, because new keys mean a new grammar:**
@@ -848,8 +927,8 @@ the probe run; the schema-version guard enforces this, but the naming should not
 ```
 cd research/v3/oracle/premise
 .venv/bin/python selftest.py
-.venv/bin/python preflight.py --stage smoke --prompt-set group-bcd.v1
-.venv/bin/python preflight.py --stage retry --prompt-set group-bcd.v1
+.venv/bin/python preflight.py --stage smoke --prompt-set group-bcde.v1
+.venv/bin/python preflight.py --stage retry --prompt-set group-bcde.v1
 ```
 
 `--stage decode` does not need redoing; the images are unchanged. `--stage retry` is the one that
@@ -861,32 +940,32 @@ built through `mlx-vlm`'s own code path rather than through `llguidance` directl
 
 ```
 cd research/v3/oracle/premise
-./supervise.sh --prompt-set group-bcd.v1 --out ../../data/oracle-premise/group-bcd-pilot-1.jsonl
+./supervise.sh --prompt-set group-bcde.v1 --out ../../data/oracle-premise/group-bcde-pilot-1.jsonl
 ```
 
 Resume is automatic and idempotent: the same command re-run picks up whatever is missing, because
-`row_key` carries the prompt hash. Exit 3 from the worker is a canary mismatch — the supervisor
-will not restart, and the run is not a usable artifact.
+`row_key` carries the prompt hash. Exit 3 from the worker is a canary mismatch — the supervisor will
+not restart, and the run is not a usable artifact.
 
 **Dry run, for the queue estimate, loads no model:**
 
 ```
-.venv/bin/python run_premise.py --prompt-set group-bcd.v1 \
-    --out ../../data/oracle-premise/group-bcd-pilot-1.jsonl --dry-run
+.venv/bin/python run_premise.py --prompt-set group-bcde.v1 \
+    --out ../../data/oracle-premise/group-bcde-pilot-1.jsonl --dry-run
 ```
 
 **Analysis is not yet built, and deliberately so.** `analyze.py` is group-A-shaped: it reads
 `parsed["ground_type"]`, maps it to the gradient boolean and scores it against the accepted
-palettes' flag. Not one of those exists for groups B–D — there is **no ground truth of any kind**
-for these nine questions, which is why §15.8 exists. The pilot's analysis is therefore a separate
-step whose metrics are pre-registered in §15.6 and §15.7 below, to be built against the run's rows
-once they exist and never before, so it cannot be shaped by them.
+palettes' flag. Not one of those exists for groups B–E — there is **no ground truth of any kind**
+for these thirteen questions, which is why §15.9 exists. The pilot's analysis is therefore a
+separate step whose metrics are pre-registered in §15.6 and §15.7 below, to be built against the
+run's rows once they exist and never before, so it cannot be shaped by them.
 
 ## 15.6 Health metrics, pre-registered
 
-Stated before the run so they cannot be moved afterwards. None of these needs ground truth; all of
-them are computable from the 284 rows alone. **Read them in this order** — a schema that fails 1 or
-2 makes every later number meaningless.
+Stated before the run so they cannot be moved afterwards. None of these needs ground truth; all are
+computable from the 284 rows alone. **Read them in this order** — a schema that fails 1 or 2 makes
+every later number meaningless.
 
 ### 1. Parse rate — is the instrument even working?
 
@@ -895,44 +974,56 @@ them are computable from the 284 rows alone. **Read them in this order** — a s
 | rows with `status == "ok"` | **≥ 99%** (run 1 achieved essentially 100% across 299 rows) |
 | rows with `parse_failed` | **0.** Every hard validation failure is impossible under the grammar, so one is a grammar regression, not a model error |
 | `attempts > 1` | **0**, for the same reason |
+| `generation_tokens` at or near `MAX_TOKENS` | **0.** At 169/179 worst case this should never bind, and a truncated decode would look like a parse failure with a plausible cause |
 
 Below 95% ok, stop and read `raw_text`: the answer is in the bytes, and under greedy decoding a
 repeated failure is an infrastructure fact rather than bad luck.
 
 ### 2. Distribution sanity — did each question find its answer, or refuse it?
 
-The failure signature named in advance: **a question whose answers are all one value**. That is
-what `confidence` did under group-a.v1 (298 of 299 said `high`), and it is not visible from an
-agreement number — an all-one-answer field agrees with itself perfectly.
+The failure signature named in advance: **a question whose answers are all one value.** That is what
+`confidence` did under group-a.v1 (298 of 299 said `high`), and it is not visible from an agreement
+number — an all-one-answer field agrees with itself perfectly.
 
 Two different bars, because two different kinds of question are in this set:
 
 **(a) Questions where a skewed corpus is genuinely plausible** — `has_text`, `physical_media_scan`,
-`overlays`. Here a high share on one value may simply be true, so the bar is on the *minority
-cells*: **a value that fires zero times across 142 images is reported as possibly unanswerable**,
-with its stem quoted. Priors, stated as priors and not as measurements `[UNCALIBRATED]`:
+`overlays`, `grain_or_noise`. Here a high share on one value may simply be true, so the bar is on
+the *minority cells*: **a value that fires zero times across 142 images is reported as possibly
+unanswerable**, with its stem quoted. Priors, stated as priors and not as measurements
+`[UNCALIBRATED]`:
 
 | field | expected shape | what would be alarming |
 |---|---|---|
 | `has_text` | majority `yes` — album covers carry titles and artist names | `yes` under 60%, or `illegible_at_this_size` never firing on any of the 43 thumbnail-tier images |
 | `physical_media_scan` | **rare** — the corpus is digital artwork renditions | above ~15%, which would mean the question is reading "photograph" rather than "photograph *of packaging*" |
 | `overlays` | `none` common, the four positive values sparse but non-zero | `none` at 100%, i.e. the question can only say no |
+| `grain_or_noise` | a real minority, concentrated on photographs and illustrations | above ~60%, which would mean it is reading JPEG artifacts rather than intentional grain — the exact confound §E names it for |
 
 **(b) Questions where the corpus should genuinely spread** — `text_roles`, `text_dominance`,
-`has_dominant_subject`, `subject_area_band`, `has_signature_color`, `signature_carrier`. Here the
-probe arm's non-degeneracy bar applies: **no single value on more than 85% of rows.** A field over
-that is reported as degenerate and is a candidate for deletion at the pilot, which is what
-`ORACLE_QUESTION_SET.md`'s organizing rule promises ("a question that feeds no decision gets
-deleted at the pilot").
+`has_dominant_subject`, `subject_kind`, `subject_area_band`, `has_signature_color`,
+`signature_carrier`, `medium`, `color_character`. Here the probe arm's non-degeneracy bar applies:
+**no single value on more than 85% of rows.** A field over that is reported as degenerate and is a
+candidate for deletion at the pilot, which is what `ORACLE_QUESTION_SET.md`'s organizing rule
+promises ("a question that feeds no decision gets deleted at the pilot").
 
-**Report `has_text` and `illegible_at_this_size` broken down by resolution tier**, unconditionally.
-It is the only resolution instrument in this schema and no floor has ever been measured for it.
+**Three breakdowns to report unconditionally**, each of which uses only the run's own rows and each
+of which can only be produced because the questions were bundled:
+
+1. **`has_text` and `illegible_at_this_size` by resolution tier.** It is the only resolution
+   instrument in this schema and no floor has ever been measured for it.
+2. **`grain_or_noise` crossed with `medium`.** Grain on `photograph` should exceed grain on
+   `typography_only` by a wide margin. If it does not, the question is reading compression, and §E's
+   own stated confound has become the measurement.
+3. **`subject_kind` conditioned on `has_dominant_subject`.** Two things: the `multiple` slice is
+   where the single-select limitation bites (§15.4), and the `none` slice must be
+   `not_applicable` — see contradiction 9 below.
 
 ### 3. Gate consistency — the instrument this schema has that group A's never did
 
-Four conditional fields sit behind three gates, and the gate is always generated first. That makes
-a contradiction *possible*, which — exactly as in §A.6.6 — is a feature, not a defect: a schema
-that cannot contradict itself is missing an instrument. Count each, as a rate over ok rows:
+Five conditional fields sit behind three gates, and the gate is always generated first. That makes a
+contradiction *possible*, which — exactly as in §A.6.6 — is a feature, not a defect: a schema that
+cannot contradict itself is missing an instrument. Count each, as a rate over ok rows:
 
 | # | contradiction | reading |
 |---|---|---|
@@ -944,18 +1035,26 @@ that cannot contradict itself is missing an instrument. Count each, as a rate ov
 | 6 | `has_signature_color == yes` but `signature_carrier == not_applicable` | the accent question refusing itself — the single most decision-relevant contradiction in the set |
 | 7 | exclusive value beside another, in either multi-select | §15.4 |
 | 8 | repeated value in either multi-select | §15.4 |
+| 9 | `has_dominant_subject == none` but `subject_kind ≠ not_applicable` | a noun for a subject it said was absent. **The one that matters most for the SAM handoff**: it is the shape of a bad concept prompt |
+| 10 | `has_dominant_subject ≠ none` but `subject_kind == not_applicable` | a subject it can see and cannot name — a vocabulary gap, and the argument for a seventh value |
+| 11 | `medium == typography_only` but `has_text ∈ {no, illegible_at_this_size}` | type-only artwork with no readable type |
+| 12 | `medium == typography_only` but `has_dominant_subject ≠ none` | type-only artwork with a subject in it |
+
+Rows 11 and 12 are free: they cost nothing to compute, they need no ground truth, and they are a
+**cross-group** consistency check that no single-group schema could have produced. They are the best
+argument in this section for bundling four groups rather than running them apart.
 
 **Pre-registered ceiling: total contradiction rate ≤ 10% of ok rows**, the same ceiling the probe
-arm's `underdetermined` carries. Above that, the ordering is not doing the work design rule 6
-claims for it, and the honest conclusion is that the gates need to be separate inferences rather
-than earlier properties.
+arm's `underdetermined` carries. Above that, the ordering is not doing the work design rule 6 claims
+for it, and the honest conclusion is that the gates need to be separate inferences rather than
+earlier properties.
 
 ## 15.7 Inter-variant agreement, per question
 
-The uncertainty instrument that actually works (design rule 7): disagreement between renderings,
-per question, over the 142 images both answered.
+The uncertainty instrument that actually works (design rule 7): disagreement between renderings, per
+question, over the 142 images both answered.
 
-**Seven single-value questions:** raw agreement **and** Cohen's κ, quoted together and never
+**Eleven single-value questions:** raw agreement **and** Cohen's κ, quoted together and never
 separately — a field where one value dominates can post 0.90 raw at κ 0.0, which is the arithmetic
 of a near-constant and is precisely the §15.6-(2) failure wearing a good number.
 
@@ -967,18 +1066,19 @@ of a near-constant and is precisely the §15.6-(2) failure wearing a good number
 | mean Jaccard | \|E ∩ F\| / \|E ∪ F\| per row, averaged — the graceful version of the above |
 | per-value κ | one presence/absence κ per vocabulary value, e.g. "did both variants see a `label_logo`" |
 
-The per-value column is the one that localises: it is how "the model cannot tell a `badge_or_sticker`
-from a `label_logo`" becomes a fact rather than an impression, and a single set-level number can
-never show it.
+The per-value column is the one that localises: it is how "the model cannot tell a
+`badge_or_sticker` from a `label_logo`" becomes a fact rather than an impression, and a single
+set-level number can never show it.
 
 **Pre-registered bars**, calibrated against what group A actually produced (`enclosure` raw 0.87 /
 κ 0.60 was its most reliable field; `field_texture` raw 0.66 / κ 0.45 its worst):
 
 | | bar | reading if missed |
 |---|---|---|
-| `has_text`, `physical_media_scan` | κ ≥ 0.70 | these are the two questions the set expects to be easy. Under 0.70 the premise that "cheap describable facts are reliable" is wrong for this model, and the ordering rationale in §15.2 loses its foundation |
-| `has_dominant_subject`, `has_signature_color`, `text_dominance`, `subject_area_band` | κ ≥ 0.45 | at or below group A's worst field; report and consider deletion |
-| `signature_carrier` | κ ≥ 0.45, **reported on the `has_signature_color == yes` subset with its n** | the whole point of the field. Computed over all rows it is inflated by agreeing `not_applicable`s, and that number must not be quoted alone |
+| `has_text`, `physical_media_scan`, `medium` | κ ≥ 0.70 | the three questions the set expects to be easy. Under 0.70 the premise that "cheap describable facts are reliable" is wrong for this model, and the ordering rationale in §15.2 loses its foundation |
+| `has_dominant_subject`, `has_signature_color`, `text_dominance`, `subject_area_band`, `color_character`, `grain_or_noise` | κ ≥ 0.45 | at or below group A's worst field; report and consider deletion |
+| `subject_kind` | κ ≥ 0.60, **reported on the `has_dominant_subject != none` subset with its n** | it is a naming question, not a judgement, so it should be nearer the easy group than the hard one. Computed over all rows it is inflated by agreeing `not_applicable`s, and that number must not be quoted alone |
+| `signature_carrier` | κ ≥ 0.45, **reported on the `has_signature_color == yes` subset with its n** | the whole point of the field. Same inflation caveat |
 | `text_roles`, `overlays` | exact-set ≥ 0.60, mean Jaccard ≥ 0.75, and **no vocabulary value below κ 0.40** | the per-value floor is a gate on the *value*, not on the field, exactly as the probe arm's 90% bar is a gate on the probe |
 
 **Also report, with no bar attached:** the E-vs-F difference in the §15.6-(3) contradiction rate. If
@@ -986,20 +1086,37 @@ one ordering contradicts itself materially less than the other on the same image
 rule 6 measured on a fresh question set — the cleanest reading available from this run, since it
 needs no ground truth and no human.
 
+### `subject_kind` is not finally judged here
+
+Its bar above is a *screen*, not the verdict. `subject_kind` exists to hand SAM a noun, so the
+question it actually has to answer is **"does the named mask land?"** — run SAM with the
+artwork's own `subject_kind` added to pipeline §8.3's concept union and count how often that
+produces a mask the fixed union missed. That is the **SAM workstream's** measurement, not this one's;
+this section owes it the labels and a clean statement of what they are. Recorded here so the handoff
+is not left implicit: a `subject_kind` at κ 0.55 that recovers the missed car is worth more than one
+at κ 0.85 that names nothing SAM did not already have.
+
 ## 15.8 What would make this schema wrong
 
 Stated now, so it is not rationalised later.
 
 - **A question with no spread.** §15.6-(2). Delete it; the organizing rule already promises this.
-- **`signature_carrier` refusing itself.** Contradiction 6 above at any material rate means the
-  accent question is being answered by the gate rather than by the image, and the field's premise —
-  that a model can name *which lane* carries a cover's colour — is unsupported.
+- **`signature_carrier` refusing itself.** Contradiction 6 at any material rate means the accent
+  question is being answered by the gate rather than by the image, and the field's premise — that a
+  model can name *which lane* carries a cover's colour — is unsupported.
+- **`subject_kind` that SAM cannot use.** Contradictions 9 and 10, or a distribution collapsed onto
+  `person`, mean the field is not doing the one job it was added for. It is the newest question here
+  and it has the least standing; it should be the first deleted, not the last.
+- **A computed statistic reproducing `color_character` or `grain_or_noise`.** §15.4. That is not a
+  failure of the pilot, it is a success of the cheaper instrument, and the question goes.
 - **Multi-selects that only ever return one value.** If `text_roles` is a singleton on ~every row,
   the array machinery bought nothing and the field should be a plain enum in v2.
 - **Order dominating everything.** If E and F disagree on more than ~35% of rows on most questions,
   the answers are being produced by the prompt's shape rather than by the artwork, and the right
-  response is fewer questions per decode, not better wording.
-- **A high `not_applicable` share on `text_roles` while `has_text == yes`.** That is design rule 8
+  response is fewer questions per decode, not better wording. **This is the risk the extension to
+  thirteen questions raises**, and it is the reason the contradiction ceiling in §15.6-(3) is worth
+  reading before any agreement number.
+- **A high `not_applicable` share on `text_roles` while `has_text == yes`.** Design rule 8
   reappearing in group B: a value that maps to no decision is a value that can refuse the question.
   Count it **before** reading any agreement number.
 
@@ -1007,92 +1124,102 @@ Stated now, so it is not rationalised later.
 
 **Do not build this until the pilot has run.** Half its value is in choosing which questions are
 worth a reviewer's time, and that choice is what the pilot's numbers are for. It is specified now,
-in full, so that the pilot cannot be read as if a human round were impossible, and so the spec is
-on record before any model answer could shape it.
+in full, so that the pilot cannot be read as if a human round were impossible, and so the spec is on
+record before any model answer could shape it.
 
-**Why it is needed at all.** There is **no ground truth of any kind** for these nine questions —
+**Why it is needed at all.** There is **no ground truth of any kind** for these thirteen questions —
 no accepted-palette flag to lean on the way group A leans on the gradient boolean, no reviewer
 answers, nothing. Inter-variant agreement (§15.7) measures self-consistency, and a model can be
 perfectly self-consistent and perfectly wrong. Until a human answers these questions, every number
 in this pilot is a statement about the instrument and none is a statement about the artworks.
 
 ```
-batchId              oracle-group-bcd-gold-1
+batchId              oracle-group-bcde-gold-1
 purpose              oracle-validation
 fixtureVersion       oracle-validation-1
-labelSchemaVersion   group-bcd.v1
+labelSchemaVersion   group-bcde.v1
 seed                 20260803
-items                180  = 20 artworks x 9 questions
-serveOrder           nine contiguous passes, one per question, shuffled within each pass
+items                260  = 20 artworks x 13 questions
+serveOrder           thirteen contiguous passes, one per question, shuffled within each pass
                      (validateFixture rejects interleaved questions)
-questions            nine; every vocabulary is <= 7 values, inside MAX_ENUM_ANSWERS = 9
+questions            thirteen; every vocabulary is <= 7 values, inside MAX_ENUM_ANSWERS = 9
 ```
 
 **Selection — 20 artworks, drawn by a seeded rule that does not look at any model answer.**
 Stratified over the eval set's resolution tiers in proportion (6 thumbnail, 12 standard, 2 large),
 seeded `20260803`, from the 142. Explicitly **not** the gold-30: that set is defined by group-A
-oracle-vs-flag contradiction, which has nothing to do with text, provenance or subject, and reusing
-it would import another instrument's hard tail for no benefit. **Do not re-select on E-vs-F
+oracle-vs-flag contradiction, which has nothing to do with text, provenance, subject or medium, and
+reusing it would import another instrument's hard tail for no benefit. **Do not re-select on E-vs-F
 disagreement** — §3's rule applies unchanged. A *second*, separately-reported round on disagreement
 artworks is legitimate afterwards, and must be labelled as the conditioned sample it is.
 
-**Why 20 and not 30.** 20 × 9 = 180 items, the exact size of `oracle-probe-gold-1`, which cost the
-reviewer ~10–15 minutes at a measured ~7 s/item. 30 × 9 = 270 would be ~30 minutes, and reviewer
-time is the scarce resource (§3). If the pilot shows only four or five questions worth validating,
-the round shrinks further and 30 artworks become affordable — decide that after, not now.
+**Cost, and the lever to pull if it is too much.** 260 items at the measured ~7 s/item is **~25–30
+minutes**, against `oracle-probe-gold-1`'s 180 items and ~10–15 minutes. Two ways down, and the
+pilot decides which:
+
+| lever | shape | cost |
+|---|---|---|
+| **drop questions** — ask only what the pilot showed to be worth validating | e.g. 8 questions × 20 artworks = 160 items | ~15 min. **Preferred**: this is what the pilot is for |
+| **drop artworks** — keep all thirteen questions, 14 artworks | 182 items, the probe-gold size | ~15 min, but n=14 makes every per-question rate noise |
+
+Do not decide this before the pilot. Reviewer time is the scarce resource (§3), and spending it on a
+question the pilot showed to be degenerate is the one clearly wrong answer.
 
 **The one blocker, and it is real.** `oracle-validation.ts` supports `kind: "enum" | "boolean"` and
-nothing else. Seven of the nine questions map onto `kind: "enum"` directly, with hotkeys `1`–`7`
-(`MAX_ENUM_ANSWERS` is 9, so even the seven-value `text_roles` vocabulary fits an enum *display*).
-**But `text_roles` and `overlays` are multi-selects, and a reviewer cannot pick several answers
-under a one-keystroke auto-advance UI.** Two ways out, both priced, neither to be chosen by this
-workstream:
+nothing else. Eleven of the thirteen questions map onto `kind: "enum"` directly, with hotkeys `1`–`7`
+(`MAX_ENUM_ANSWERS` is 9, so even the seven-value `text_roles` and `subject_kind` vocabularies fit an
+enum *display*). **But `text_roles` and `overlays` are multi-selects, and a reviewer cannot pick
+several answers under a one-keystroke auto-advance UI.** Two ways out, both priced, neither to be
+chosen by this workstream:
 
 | option | shape | cost |
 |---|---|---|
-| **A — add `kind: "multi"`** to the fixture schema and the review UI: multiple keys toggle, one key commits | 180 items, 9 passes, ~10–15 min | a small, self-contained change in the **review-server workstream**, which owns `oracle-validation.ts` and `REVIEW_UI.md`. Preferred: it is the only shape that asks the reviewer the same question the model was asked |
-| **B — decompose into per-value yes/no passes**: `text_roles` → 6 passes, `overlays` → 4 passes (its `none` is derived from four `no`s) | 7 + 10 = 17 passes, 340 items, ~35–40 min | no code change, but it is **a different question** from the one the model answered, so it reintroduces exactly the construct-match caveat §8.1 row 2 spent the probe-gold round removing |
+| **A — add `kind: "multi"`** to the fixture schema and the review UI: multiple keys toggle, one key commits | 260 items, 13 passes, ~25–30 min | a small, self-contained change in the **review-server workstream**, which owns `oracle-validation.ts` and `REVIEW_UI.md`. Preferred: it is the only shape that asks the reviewer the same question the model was asked |
+| **B — decompose into per-value yes/no passes**: `text_roles` → 6 passes, `overlays` → 4 passes (its `none` is derived from four `no`s) | 11 + 10 = 21 passes, 420 items, ~45–50 min | no code change, but it is **a different question** from the one the model answered, so it reintroduces exactly the construct-match caveat §8.1 row 2 spent the probe-gold round removing |
 
 Recommendation: **A**, raised with the review-server workstream after the pilot, and only for the
-multi-selects that survive §15.6. If A is unavailable, run the seven single-value questions alone
-(140 items, ~15 min) and say plainly that the multi-selects are unvalidated.
+multi-selects that survive §15.6. If A is unavailable, run the eleven single-value questions alone
+(220 items, ~25 min) and say plainly that the multi-selects are unvalidated.
 
 **Everything else follows `oracle-probe-gold-1` (§12), which worked:**
 
-- **Question text and every `answers[].gloss` must be byte-identical to a prompt file's rendering
-  of that question.** An answer only means something against the exact words it was answered under.
+- **Question text and every `answers[].gloss` must be byte-identical to a prompt file's rendering of
+  that question.** An answer only means something against the exact words it was answered under.
   **Use variant E's wording**, and record that choice in the batch's `builtFrom` — E and F word the
   same questions differently, so scoring F against this gold carries a stated wording caveat that
   scoring E does not. That asymmetry is the price of two independent renderings and it should be
   written down, not discovered later.
 - **The shared blocks must be on the page**, once, above the question, on every pass — not only
-  inside `instruction`. They are the definitions the whole set rests on. Both prompt files declare
-  them as explicit `shared_blocks` keys precisely so the fixture builder can assert the match
-  instead of restating them.
+  inside `instruction`. They are the definitions the whole set rests on, and two of them
+  (`THE MAIN SUBJECT`, `ONE PICTURE, ONE MEDIUM`) are what make `subject_kind` and `medium`
+  answerable at all. Both prompt files declare all eight as explicit `shared_blocks` keys precisely
+  so the fixture builder can assert the match instead of restating them.
 - **`instruction`, same on every pass:** *"Answer this one question only. Do not try to make your
   answers across questions tell one story."* The anti-coherence line is the same one the prompt
   files carry as a shared block.
-- **Pass order:** variant E's question order. Fixed and recorded, not randomised — with one
-  reviewer there is nothing to average over.
-- **Do not show the reviewer any model answer**, and do not run this in the same sitting as
-  anything that displays one.
+- **Pass order:** variant E's question order. Fixed and recorded, not randomised — with one reviewer
+  there is nothing to average over.
+- **Do not show the reviewer any model answer**, and do not run this in the same sitting as anything
+  that displays one.
 - **The 20 artworks join back by `imagePath` and `sha256`**, exactly as `oracle-probe-gold-1` does,
   so the join to the pilot's rows is exact.
 
 **What the round can then measure**, and it is worth being precise about how little a first round
-buys: per-question exact agreement between the reviewer and each of E and F, on 20 artworks. At
-n=20 the 1σ binomial noise is about ±2 items, so only large gaps mean anything, and the round's
-real product is **which questions are answerable by a human at all** — a question the reviewer
-finds unanswerable is deleted regardless of what the model did with it.
+buys: per-question exact agreement between the reviewer and each of E and F, on 20 artworks. At n=20
+the 1σ binomial noise is about ±2 items, so only large gaps mean anything, and the round's real
+product is **which questions are answerable by a human at all** — a question the reviewer finds
+unanswerable is deleted regardless of what the model did with it.
 
 ## 15.10 Sign-off ledger additions
 
 | # | change | status |
 |---|---|---|
-| 9 | the `group-bcd.v1` schema: nine group-B/C/D questions in one constrained decode, two orderings | **needs sign-off.** It is a new instrument on never-piloted questions, not a rewording of a measured one |
-| 10 | the four added `not_applicable` values (§15.4) | **needs sign-off**, though it is the same move group-a.v1 already made for `shading_geometry` |
-| 11 | multi-selects as array-of-enum, with repeats and exclusive-value conflicts **counted rather than failed** (§15.4) | **needs sign-off.** It is a policy about what counts as a bad answer, and it is the kind of thing that is much harder to change once rows exist |
-| 12 | the pilot run itself: 284 inferences, ~50 min of GPU | **needs approval and a slot**, after the two group-A arms |
-| 13 | the reviewer validation round (§15.9) | **not yet requestable.** Gated on the pilot, and on the review-server `kind: "multi"` decision |
+| 9 | the `group-bcde.v1` schema: thirteen group-B/C/D/E questions in one constrained decode, two orderings | **needs sign-off.** A new instrument on never-piloted questions, not a rewording of a measured one |
+| 10 | **the new field `subject_kind`** (`ORACLE_QUESTION_SET.md` §D.1) and its VLM→SAM rationale | **needs sign-off.** Reviewer-initiated 2026-08-03; it is a new question, and the §D.1 write-up including the single-select limitation is what needs signing |
+| 11 | folding **group E** into the pilot rather than scheduling it separately | **needs sign-off**, though it is close to free: the inference count and wall clock do not move |
+| 12 | the five added `not_applicable` values (§15.4) | **needs sign-off**, though it is the same move group-a.v1 already made for `shading_geometry` |
+| 13 | multi-selects as array-of-enum, with repeats and exclusive-value conflicts **counted rather than failed** (§15.4) | **needs sign-off.** It is a policy about what counts as a bad answer, and it is much harder to change once rows exist |
+| 14 | the pilot run itself: 284 inferences, ~50 min of GPU | **needs approval and a slot**, after the two group-A arms |
+| 15 | the reviewer validation round (§15.9) | **not yet requestable.** Gated on the pilot, and on the review-server `kind: "multi"` decision |
 
 **No agent starts this run.** The GPU is single-owner (`CONVENTIONS.md`).
