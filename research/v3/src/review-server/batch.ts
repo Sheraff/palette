@@ -20,9 +20,12 @@ import {
 	ROLES,
 	type BatchPurpose,
 	type PushedBatch,
+	type PushedCalibrationBatch,
 	type PushedItem,
 	type PushedSide,
 	type StoredBatch,
+	type StoredCalibrationBatch,
+	type StoredCalibrationItem,
 	type StoredItem,
 } from "./types.ts"
 
@@ -93,7 +96,7 @@ function parseGradient(value: unknown): PaletteSnapshot["gradient"] {
 	return { stops: parsed, geometry: asString(geometry, "gradient.geometry", 64) }
 }
 
-function parsePalette(value: unknown): PaletteSnapshot {
+export function parsePalette(value: unknown): PaletteSnapshot {
 	const record = asRecord(value, "palette")
 	const roles = Object.fromEntries(ROLES.map((role) => [role, normalizeHexOrThrow(record[role], `palette.${role}`)]))
 	const surfaceCollapsed = record.surfaceCollapsed
@@ -169,6 +172,54 @@ export function parseBatch(value: unknown): PushedBatch {
 	const items = record.items
 	require_(Array.isArray(items) && items.length >= 1, "batch.items must hold at least one item")
 	const parsedItems = items.map(parseItem)
+	const seen = new Set<string>()
+	for (const item of parsedItems) {
+		require_(!seen.has(item.itemId), `batch has two items called ${item.itemId}`)
+		seen.add(item.itemId)
+	}
+	return {
+		batchId: asId(record.batchId, "batch.batchId"),
+		purpose: purpose as BatchPurpose,
+		fundedBy: fundedBy.map((entry, index) => asString(entry, `batch.fundedBy[${index}]`, 512)),
+		items: parsedItems,
+	}
+}
+
+/**
+ * Validate a pushed calibration round (REVIEW_UI.md §5).
+ *
+ * The same push shape as a pairwise batch with `sides` replaced by one palette — deliberately, so
+ * the orchestrator's batch builder differs from the pairwise one only where the science does. The
+ * purpose defaults to `calibration` because that is what the mode is for, but it is not forced: an
+ * absolute grading round can legitimately be an `outlier-mine` (grade these suspicious palettes) and
+ * the warehouse would then say so honestly.
+ */
+export function parseCalibrationBatch(value: unknown): PushedCalibrationBatch {
+	const record = asRecord(value, "batch")
+	const purpose = record.purpose ?? "calibration"
+	require_(
+		typeof purpose === "string" && (BATCH_PURPOSES as readonly string[]).includes(purpose),
+		`batch.purpose must be one of ${BATCH_PURPOSES.join(" | ")}`,
+	)
+	const fundedBy = record.fundedBy ?? []
+	require_(Array.isArray(fundedBy), "batch.fundedBy must be an array of strings")
+	const items = record.items
+	require_(Array.isArray(items) && items.length >= 1, "batch.items must hold at least one item")
+	const parsedItems = items.map((entry) => {
+		const item = asRecord(entry, "item")
+		const imagePath = asString(item.imagePath, "item.imagePath", 4096)
+		require_(isAbsolute(imagePath), "item.imagePath must be an absolute path")
+		return {
+			itemId: asId(item.itemId, "item.itemId"),
+			imagePath,
+			collection: item.collection === undefined ? undefined : asString(item.collection, "item.collection", 128),
+			artworkId:
+				item.artworkId === undefined || item.artworkId === null ? null : asString(item.artworkId, "item.artworkId", 256),
+			variantId: asString(item.variantId, "item.variantId", 128),
+			palette: parsePalette(item.palette),
+			fingerprint: parseFingerprint(item.fingerprint),
+		}
+	})
 	const seen = new Set<string>()
 	for (const item of parsedItems) {
 		require_(!seen.has(item.itemId), `batch has two items called ${item.itemId}`)
@@ -283,6 +334,33 @@ export async function materialize(
 		})
 	}
 	return { batch, pushedAt, blindingSalt, items }
+}
+
+/** Read every artwork, hash the palette, and name every displayed colour. No blinding: one side. */
+export async function materializeCalibration(
+	batch: PushedCalibrationBatch,
+	pushedAt: string,
+	imageRoots: readonly string[] = [],
+): Promise<StoredCalibrationBatch> {
+	const items: StoredCalibrationItem[] = []
+	for (const item of batch.items) {
+		const artwork = await readArtworkIdentity(item.imagePath, {
+			what: `item ${item.itemId}`,
+			collection: item.collection,
+			artworkId: item.artworkId,
+			imageRoots,
+		})
+		items.push({
+			itemId: item.itemId,
+			artwork,
+			paletteHash: hashPalette(item.palette),
+			colorNames: nameHexes([
+				...ROLES.map((role) => item.palette[role]),
+				...(item.palette.gradient?.stops.map((stop) => stop.color) ?? []),
+			]),
+		})
+	}
+	return { kind: "calibration", batch, pushedAt, items }
 }
 
 /**

@@ -422,6 +422,139 @@ input[type="checkbox"] {
 	gap: 8px;
 }
 
+/* The batch-level note, written before the release button is pressed. */
+.release-note {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.modes {
+	letter-spacing: 0.04em;
+}
+
+/* ---- the palette composer (REVIEW_UI.md §4) ----
+ * Optional per item and closed by default, so it costs nothing when it is not wanted. Two pickers on
+ * the left, the live preview on the right — the same mock the reviewer grades in, never a second
+ * renderer. Chrome stays black and white; the only colours are the artwork, the swatches and the
+ * preview itself.
+ */
+
+.composer {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.composer-keys {
+	letter-spacing: 0.02em;
+}
+
+.composer-body {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+	gap: 12px;
+	align-items: start;
+}
+
+.composer-pickers {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+/* The eyedropper target. Cross-hair because clicking it picks the pixel under the pointer. */
+.composer-art {
+	display: block;
+	width: 100%;
+	max-width: 420px;
+	height: auto;
+	border: 1px solid var(--ink);
+	cursor: crosshair;
+}
+
+.composer-grid {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.composer-swatch {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	text-align: left;
+	padding: 3px 6px;
+}
+
+.composer-swatch-text {
+	white-space: nowrap;
+}
+
+.composer-grid-note {
+	flex: 1 0 100%;
+	letter-spacing: 0.02em;
+}
+
+.composer-preview {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.composer-history {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	word-break: break-all;
+}
+
+/* ---- amend a released batch ----
+ * Read-only until an item is opened for editing. It reuses the adjudication page's item shell, since
+ * both are "browse a finished thing and optionally record something about it".
+ */
+
+.amend-body {
+	padding-bottom: 96px;
+}
+
+.amend-blurb {
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.amend-foot {
+	position: fixed;
+	left: 12px;
+	right: 12px;
+	bottom: 12px;
+	background: var(--paper);
+	gap: 6px;
+}
+
+.amend-item {
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-areas: "head" "art";
+}
+
+.amend-item-body {
+	grid-area: art;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	min-width: 0;
+}
+
 .keys {
 	list-style: none;
 	padding: 0;

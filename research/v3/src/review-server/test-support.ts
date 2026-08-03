@@ -222,8 +222,33 @@ export class FakeNode {
 		return this.attrs[name] ?? null
 	}
 
-	/** The pairwise page wires buttons this way; the tests drive the keyboard, so this only records. */
-	addEventListener(): void {}
+	readonly listeners = new Map<string, Array<(event: unknown) => void>>()
+
+	/**
+	 * Element-level listeners, recorded so a test can drive a form the way the reviewer does.
+	 *
+	 * The keyboard is still the primary path — but some inputs are genuinely typed into (an
+	 * amendment's reason, a comment), and a test that reached into the page's internal state instead
+	 * would stop testing the page.
+	 */
+	addEventListener(type?: string, handler?: (event: unknown) => void): void {
+		if (typeof type !== "string" || typeof handler !== "function") return
+		const list = this.listeners.get(type) ?? []
+		list.push(handler)
+		this.listeners.set(type, list)
+	}
+
+	dispatch(type: string, event: Record<string, unknown> = {}): void {
+		for (const handler of [...(this.listeners.get(type) ?? [])]) {
+			handler({ type, preventDefault() {}, target: this, ...event })
+		}
+	}
+
+	/** Type into a text field: set the value and fire `input`, exactly as a keystroke would. */
+	enter(text: string): void {
+		this.value = text
+		this.dispatch("input")
+	}
 
 	focus(): void {}
 
@@ -307,6 +332,9 @@ export async function openPage(
 	// these only need to exist.
 	globals.addEventListener = () => {}
 	globals.removeEventListener = () => {}
+	// The item pages scroll back to the top when they move between items. Nothing to assert, but it
+	// has to exist or navigating by keyboard throws.
+	globals.scrollTo = () => {}
 	// Relative URLs are what a page uses; Node's fetch needs them resolved against the origin.
 	globals.fetch = (input: string, init?: unknown) => realFetch(new URL(String(input), base), init as RequestInit)
 

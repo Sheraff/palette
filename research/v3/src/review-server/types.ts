@@ -146,7 +146,53 @@ export type StoredOracleBatch = Readonly<{
 	answerTokens: Readonly<Record<string, string>>
 }>
 
-export type StoredAnyBatch = StoredBatch | StoredBracketingBatch | StoredOracleBatch
+/**
+ * One item of a calibration round: one artwork, one palette, no comparison (REVIEW_UI.md §5).
+ *
+ * `variantId` and `fingerprint` are the same true names a pairwise side carries, and they are
+ * withheld from the payload for the same reason. There is nothing to blind in absolute grading — one
+ * palette cannot be shuffled against itself — but an algorithm version on screen would still tell
+ * the reviewer whose palette they are grading, and the grade is supposed to be about the palette.
+ */
+export type PushedCalibrationItem = Readonly<{
+	itemId: string
+	/** Absolute path. Artworks are identified by full path + content hash (CONVENTIONS.md). */
+	imagePath: string
+	collection?: string
+	artworkId?: string | null
+	variantId: string
+	palette: PaletteSnapshot
+	fingerprint: CodeFingerprint
+}>
+
+export type PushedCalibrationBatch = Readonly<{
+	batchId: string
+	purpose: BatchPurpose
+	fundedBy: readonly string[]
+	items: readonly PushedCalibrationItem[]
+}>
+
+export type StoredCalibrationItem = Readonly<{
+	itemId: string
+	artwork: ArtworkIdentity
+	paletteHash: string
+	colorNames: Readonly<Record<string, string>>
+}>
+
+/**
+ * A calibration round sharing the queue, the batch log, the release flow and the warehouse.
+ *
+ * No blinding salt: with one palette per item there is no side order to hide. Everything else is
+ * the pairwise batch's shape, because everything else about it is the same job.
+ */
+export type StoredCalibrationBatch = Readonly<{
+	kind: "calibration"
+	batch: PushedCalibrationBatch
+	pushedAt: string
+	items: readonly StoredCalibrationItem[]
+}>
+
+export type StoredAnyBatch = StoredBatch | StoredBracketingBatch | StoredOracleBatch | StoredCalibrationBatch
 
 export function isBracketingBatch(stored: StoredAnyBatch): stored is StoredBracketingBatch {
 	return (stored as StoredBracketingBatch).kind === "bracketing"
@@ -154,6 +200,10 @@ export function isBracketingBatch(stored: StoredAnyBatch): stored is StoredBrack
 
 export function isOracleBatch(stored: StoredAnyBatch): stored is StoredOracleBatch {
 	return (stored as StoredOracleBatch).kind === "oracle-validation"
+}
+
+export function isCalibrationBatch(stored: StoredAnyBatch): stored is StoredCalibrationBatch {
+	return (stored as StoredCalibrationBatch).kind === "calibration"
 }
 
 /** What the browser submits for one item. */
@@ -166,4 +216,16 @@ export type VerdictInput = Readonly<{
 	confound: boolean
 	/** Required non-empty when `confound` is true. */
 	confoundNote: string
+}>
+
+/**
+ * What the browser submits for one calibration item (REVIEW_UI.md §5).
+ *
+ * One grade, no preference, no second side. The confound flag is deliberately absent too: "I'm only
+ * choosing A because B has a defect" is a statement about a comparison, and there is no comparison
+ * here.
+ */
+export type AbsoluteVerdictInput = Readonly<{
+	grade: Grade
+	comment: string
 }>

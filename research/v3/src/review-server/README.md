@@ -19,7 +19,7 @@ Then open <http://127.0.0.1:3010/>. It binds to `127.0.0.1` only.
 | `--warehouse <path>` | `research/v3/data/warehouse/warehouse.jsonl` | the warehouse JSONL (same default the query CLI reads) |
 | `--batches <path>` | `research/v3/data/review-server/batches.jsonl` | the batch log (server-side state, see below) |
 | `--reviewer <id>` | `flo` | `author.id` on every record |
-| `--no-demo` | off | do not seed the demo fixture batch |
+| `--no-demo` | off | do not seed the demo fixture batch or the demo calibration round |
 | `--no-bracketing` | off | do not seed the colour-bracketing round |
 | `--no-oracle` | off | do not seed the oracle-validation round |
 
@@ -47,19 +47,33 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
 
 | method | path | what |
 |---|---|---|
-| `POST` | `/api/batches` | push a batch (JSON body, see below) |
+| `POST` | `/api/batches` | push a pairwise batch (JSON body, see below) |
 | `GET` | `/api/queue` | every batch with its progress and release state |
 | `GET` | `/api/batches/:batchId` | the blinded payload the browser renders |
 | `PUT` | `/api/batches/:batchId/items/:itemId/verdict` | submit or edit one verdict |
 | `PUT` | `/api/batches/:batchId/items/:itemId/veto` | veto the artwork (`{active:false}` withdraws it) |
-| `POST` | `/api/batches/:batchId/release` | release the batch |
+| `POST` | `/api/batches/:batchId/release` | release the batch (body `{note?}` — the batch-level note) |
+| `POST` | `/api/calibration` | push a calibration round (absolute grading, body below) |
+| `GET` | `/api/calibration/:batchId` | the calibration payload the browser renders |
+| `PUT` | `/api/calibration/:batchId/items/:itemId/verdict` | submit or edit one absolute verdict (`{grade, comment}`) |
+| `GET` | `/api/batches/:batchId/items/:itemId/colors` | the artwork's quantized swatch grid (composer) |
+| `GET` | `/api/batches/:batchId/items/:itemId/pixel?x=&y=` | the exact pixel at a normalized point (eyedropper) |
+| `POST` | `/api/batches/:batchId/items/:itemId/preview` | render a composed palette through the pinned renderer |
+| `POST` | `/api/batches/:batchId/items/:itemId/endorsement` | submit a composed palette as an `endorsed-sample` |
+| `POST` | `/api/batches/:batchId/items/:itemId/amend` | amend or retract a verdict / veto / endorsement |
+| `POST` | `/api/batches/:batchId/release-note` | amend the batch-level note on a released batch |
 | `POST` | `/api/oracle-validation` | push an oracle-validation round (body `{fixture?, fundedBy?}`; omit `fixture` for the committed one) |
 | `GET` | `/api/oracle-validation/:batchId` | the by-question payload the browser renders |
 | `PUT` | `/api/oracle-validation/:batchId/items/:token/answer` | record one closed-vocabulary answer |
 | `GET` | `/api/oracle-review/:batchId` | the post-release adjudication payload (**404 unless released**) |
 | `PUT` | `/api/oracle-review/:batchId/items/:token/note` | one optional adjudication annotation (**404 unless released**) |
 | `GET` | `/media/:batchId/:itemId` | the artwork bytes, custody-checked on every request (an oracle-validation batch takes the item's **token** here, not its id) |
-| `GET` | `/`, `/bracketing`, `/oracle`, `/oracle-review` (+ their `.js`, `/styles.css`) | the four pages (read from disk per request — edit them while the server stands) |
+| `GET` | `/`, `/calibration`, `/amend`, `/bracketing`, `/oracle`, `/oracle-review` (+ their `.js`, `/mock.js`, `/composer.js`, `/styles.css`) | the six pages (read from disk per request — edit them while the server stands) |
+
+The five **item-level** routes (`veto`, `colors`, `pixel`, `preview`, `endorsement`, `amend`) live under
+`/api/batches/…` for pairwise and calibration items alike. A veto, a composed palette, an eyedropper
+sample and an amendment do not care how many palettes the item showed, so there is one handler each
+rather than two that will drift. Only the payload and the verdict route differ per mode.
 
 ### Pushing a batch
 
@@ -138,7 +152,11 @@ it is what makes a bad push diagnosable, and confined to the repository by the a
   summary screen** by design.
 - **Release** is an explicit button. It refuses while any item is neither graded nor vetoed, then
   appends `batch-complete` (last, after all its evidence) and closes the batch. Its response hands
-  back `fundingRecordIds` — the record ids a downstream decision should cite as `fundedBy`.
+  back `fundingRecordIds` — the record ids a downstream decision should cite as `fundedBy`: the
+  standing verdict per item, every active veto, and every endorsed sample composed along the way.
+  Next to the release button is the **batch-level note** — one line saying what the batch was for, in
+  the reviewer's words, written onto the release record. Optional, like every free-text channel here,
+  and amendable afterwards (`POST /api/batches/:batchId/release-note`).
 - **A veto** is an artwork judgement, not a palette one, and counts as "judged" for release.
   Withdrawing one appends a retracting amendment; nothing is ever deleted.
 
@@ -183,8 +201,177 @@ positions are shown next to the display positions, so the reviewer can see what 
 was staged.
 
 Keyboard: `← →` / `j k` move between items · `1–4` grade A · `6–9` grade B · `a b n` preference ·
-`c` comment · `x` confound · `v` veto · `Esc` leaves the text field. Shortcuts are off while
-typing. `?batch=<id>` and `?item=<itemId>` open a specific comparison.
+`c` comment · `x` confound · `v` veto · `e` open the palette composer · `Esc` leaves the text field.
+Shortcuts are off while typing. `?batch=<id>` and `?item=<itemId>` open a specific comparison.
+
+The mock player itself lives in **`review-ui/mock.js`** and nowhere else. Three pages render one now
+(pairwise, calibration, the composer's preview) and the mock is part of the output contract, so a
+verdict is about the exact rendering the reviewer judged — which only holds while there is exactly
+one renderer. `review-server-mock-layout.test.ts` drives it through the real `app.js`.
+
+## The palette composer
+
+<http://127.0.0.1:3010/> — press **`e`** on any item. Optional, per item, zero ceremony: it is closed
+until asked for, it never blocks a verdict, and nothing about it is needed to release a batch. What
+it produces is an `endorsed-sample` — never a fitting target, never an auto-win (REVIEW_UI.md §4).
+Its uses are **reachability diagnosis** ("can the algorithm even produce this?" — how v2-3's candidacy
+walls were found), destination adjudication, and complaint interpretation.
+
+**Every colour comes from the artwork, and the server enforces it.** Role and stop colours are exact
+source pixels in the output contract, so a composed palette holding anything else would answer no
+question about what the algorithm could reach. Two pickers, both returning real pixels:
+
+- the **eyedropper** — click the artwork; the click's normalized (x, y) is resolved against the
+  *decoded file* server-side, never against the scaled copy on screen, because a browser's resampled
+  pixel is a colour the file does not contain;
+- the **swatch grid** — the artwork's colours merged under the contract's own `sameColorBar()`, each
+  cluster represented by its most frequent *exact* member (never a cluster mean). Greedy in
+  descending frequency, so the order is the artwork's own order of importance, and deterministic.
+
+At submit time every colour is checked against a membership bitmap of the whole file (2 MB, constant
+whatever the image size), and a palette carrying a foreign colour is refused by name. While
+composing, the same check runs on every preview and warns without blocking.
+
+The grid shows **24 swatches out of at most 256 clusters** and reports what fraction of the artwork
+they stand for — typically ~36% on a photograph, and that is a property of photographs under the one
+ruler, not a defect: a photo genuinely holds hundreds of colours that do not read as each other. The
+eyedropper reaches everything the grid does not. Both numbers are `[MEASURED]`, see `composer.ts`.
+
+**Always preview before submit, in the judging renderer.** The composer does not render the gradient
+itself. It POSTs the palette and gets back the same side payload a judged side gets — colour names,
+display stops, `fieldCss` — so the preview goes through the pinned `[REVIEWED]` display mapping and
+the reviewer previews in the mock they grade in. Flat / 2-stop / 3-stop, per §4.
+
+**Editing a submitted composition is a NEW endorsement.** An endorsement is immutable evidence of what
+was assembled and previewed; the warehouse's `AMENDABLE_FIELDS` lists only `comment` for this type and
+throws on anything else, so no code path here can rewrite a palette even by accident. Earlier
+endorsements stay on screen — "the reviewer moved from this palette to that one" is itself evidence —
+and a mistaken one is **withdrawn** with an empty-patch retracting amendment (`w`), which is its only
+correction and works before and after release alike.
+
+Keyboard, while it is open: `t` / `T` next / previous target · `1–9` assign that swatch · `g` cycle
+flat / 2-stop / 3-stop · `s` endorse · `w` withdraw the latest · `Esc` or `e` close. **The digits
+address the swatch grid while the composer is open, not the grade scale** — which is why it is opened
+deliberately, with one key, and says so on screen the moment it opens.
+
+## Calibration mode — absolute grading
+
+<http://127.0.0.1:3010/calibration>. REVIEW_UI.md §5: periodic absolute grading of never-reviewed
+artworks, with previously graded ones mixed back in — the repeats measure drift and reviewer noise.
+One artwork, one palette, one grade. No A/B, no preference, no confound flag: those are statements
+about a comparison, and there is no comparison here. Same grade scale, same warehouse, same mock, same
+release flow, same veto.
+
+The records are ordinary `verdict` records with **`mode: "absolute"`**, `sideB` / `gradeB` /
+`preference` null — the warehouse refuses the record outright if any of them is present, which is what
+keeps a calibration grade from ever being counted as half a comparison. The server refuses those
+fields on the way in too, rather than dropping them silently: a mis-wired page must not be able to
+believe it recorded a comparison.
+
+Push a round the way a pairwise batch is pushed, with `sides` replaced by one palette:
+
+```jsonc
+{
+  "batchId": "calibration-round-1",
+  "purpose": "calibration",            // optional; defaults to calibration
+  "fundedBy": ["…"],
+  "items": [{
+    "itemId": "cal-0",
+    "imagePath": "/absolute/path/to/cover.jpg",
+    "collection": "sharded-corpus",    // optional; derived from the path when absent
+    "artworkId": null,                 // optional
+    "variantId": "trunk",              // TRUE name — never served
+    "fingerprint": { "algorithmVersion": "…", "preprocessingVersion": "…", "gitCommit": "…", "dirty": false },
+    "palette": { "background": "#…", "surface": "#…", "foreground": "#…", "accent": "#…",
+                 "gradient": null, "surfaceCollapsed": false, "accentCollapsed": false }
+  }]
+}
+```
+
+There is nothing to blind with one palette per item, and the variant id and fingerprint are still kept
+server-side: an algorithm version on screen would make the grade about a label instead of about the
+palette. Dimensions come from the file header at push time, as everywhere else. A demo round
+(`fixtures/demo-calibration.json`, the same three artworks as the demo pairwise batch) is seeded under
+the same `--no-demo` flag.
+
+Keyboard: `← →` / `j k` move · `1–4` grade · `c` comment · `v` veto.
+
+## Amending a released batch
+
+<http://127.0.0.1:3010/amend>. This replaces the skeleton's flat 409. Before release every item is
+freely editable with zero ceremony; after it, a correction is an **`amendment` record pointing at the
+original**, and the latest one wins at query time. That is what lets the orchestrator trigger the
+moment a batch is released without racing the reviewer's second thoughts: every downstream decision
+records the verdict ids that funded it, and `recheckFundedBy` flags any decision funded by
+since-amended evidence for re-check (REVIEW_UI.md §1).
+
+The page lists released batches (pairwise and calibration) **read-only**, each item shown with the
+palettes exactly as they were judged — amending a grade without seeing what it was about is guessing —
+and an *edit* action per item. What may change is the warehouse's business, not this server's: only
+the fields in `AMENDABLE_FIELDS` (`gradeA`, `gradeB`, `preference`, `comment`, `confound`,
+`confoundNote` for a verdict; `reason`, `scope` for a veto; `comment` for an endorsement; `note` for
+the release record). The artwork, the palettes shown, the fingerprints and the hashes are frozen at
+append time — a verdict is always about the exact palettes shown.
+
+Two rules the server adds on top of the field allowlist:
+
+- **Values are validated, not only field names.** A patch is an untyped bag by construction and
+  nothing re-validates the patched record, so `gradeA: "banana"` would be accepted by the log and only
+  discovered by whatever tried to count it. Grades, preference, scope and the confound flag are
+  checked here, and an absolute verdict refuses `gradeB` / `preference` outright.
+- **An amendment needs a reason**, and it is the one place in this instrument where ceremony is
+  deliberate: "I changed my mind" about released evidence is itself evidence, and a bare grade flip
+  six weeks later is unreadable.
+
+`retract: true` withdraws a record instead of patching it: a retracted verdict stops being the
+reviewer's position and funds nothing, a retracted veto puts the artwork back, a retracted endorsement
+stays in the log marked withdrawn. Nothing is ever deleted.
+
+After every amendment the server **rebuilds its whole state from the warehouse** rather than mirroring
+the change in memory. Amendment semantics are subtle — a retraction leaves the *previous* record
+standing, a patch applies over its whole chain — and deriving the running state and a query's answer
+from the same code is the only way to be sure they agree. Amendments are rare; a divergence would not
+have been.
+
+Keyboard: `j k` move · `e` edit this item · `1–4` / `6–9` grades · `a b n` preference · `s` save ·
+`x` retract · `Esc` cancel.
+
+## The completion watcher
+
+REVIEW_UI.md §1 asks for completion watching that costs no agent context: a loop **outside** the
+model's context waits for `batch-complete` and notifies the orchestrator once. Run it from a
+background shell and wait on the process — no polling code, no repeated status checks, nothing in the
+working context:
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/watch-batch.ts --batch arm-3-round-1
+```
+
+| flag | default | meaning |
+|---|---|---|
+| `--batch <id>` | any batch | the batch to wait for |
+| `--warehouse <path>` | the standard warehouse | which log to watch |
+| `--interval <ms>` | `1000` | how often to look |
+| `--timeout <seconds>` | `0` (forever) | give up after this long |
+| `--only-new` | off | ignore a release already in the log; wait for one from now on |
+| `--quiet` | off | print nothing; use the exit code alone |
+
+Exit codes: **0** released · **2** timed out · **1** something went wrong. On success it prints one
+JSON line — batch id, release record id, timestamp, item count, purpose, note — so the shell that was
+waiting can hand the orchestrator a complete fact without a second query.
+
+By default a batch that was *already* released when the watcher started counts: this is a "wait until
+released" primitive, and a caller asking about an already-released batch is asking a question whose
+answer is yes. Blocking instead would turn a lost race — the reviewer releasing between the push and
+the watcher starting — into a hang. `--only-new` is there when the caller really means "the next one".
+
+**Cheap by construction.** It never re-reads the log: it remembers a byte offset, reads only what was
+appended since, and keeps a partial trailing line for the next pass (the log is append-only and every
+record is fsync'd, but a poll can still land mid-write). A poll on an unchanged file is one `stat`, so
+the cost does not grow with the campaign — which is what makes a one-second interval reasonable for a
+wait that may last hours. A test plants a matching record *behind* the watcher's offset, in place,
+without changing the file's size: a tail reader cannot see it, a re-reader would report it at once.
 
 ## The colour-bracketing round
 
@@ -480,31 +667,51 @@ provides the handful of DOM calls the page makes — element creation, text, chi
 listener, `location`, `fetch` — and everything above that line is genuine. Layout and CSS are not
 covered; those are judged by the reviewer opening the page.
 
-## What works, and what is stubbed
+## Tests
 
-Working end to end: push, queue, blinded rendering with mock UI and named swatches, gradient
-display mapping, dual grades + preference + comment + confound, artwork veto and its withdrawal,
-free editing before release, release, custody-checked image serving, restart recovery, the
-colour-bracketing round (rounds 1 and 2) and the oracle-validation round (generation, serving,
-keyboard answering, undo, release, analysis). Both keyboard-only pages are driven end to end by real
-keystrokes in their own tests.
+`NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/review-server-*.test.ts`
 
-Not built in this skeleton:
+| file | what it holds down |
+|---|---|
+| `review-server-verdicts.test.ts` | one complete self-contained record per verdict, restart recovery |
+| `review-server-blinding.test.ts` | payload hygiene over **every** endpoint and page, the salted-shuffle attack replay |
+| `review-server-release.test.ts` | release is explicit, refuses unjudged items, agrees with the warehouse's own summary |
+| `review-server-mock-layout.test.ts` | the mock player, one test per reviewer finding, through the real `app.js` |
+| `review-server-composer.test.ts` | source-pixel-only colours from both pickers, preview through the pinned renderer, edit-appends-a-new-record, withdrawal; then the page by keystroke |
+| `review-server-calibration.test.ts` | `mode: "absolute"` and the refusal of every pairwise field, the shared release flow; then the page by keystroke |
+| `review-server-amendments.test.ts` | the field allowlist, value validation, retraction, `recheckFundedBy`, replay after restart; then the page by keystroke |
+| `review-server-watch-batch.test.ts` | the watcher's exit codes, its tail-only reading, a torn write, and the real process under a shell |
+| `review-server-gradient.test.ts`, `-bracketing*.test.ts`, `-oracle*.test.ts`, `-probe-gold*.test.ts` | the display mapping and the three answer-only modes |
 
-- **Palette composer / `endorsed-sample`.** When it is built: an endorsement is **immutable
-  evidence**. Editing a composed palette submits a **new** `endorsed-sample` record — never an
-  amendment carrying palette changes (the warehouse throws on that). Only `comment` is amendable;
-  a mistaken endorsement is withdrawn with an empty-patch amendment and `retract: true`.
-- **Post-release amendments** ("amend previous batch"). The server refuses post-release edits with
-  409 today; the amendment machinery it would use already exists in the warehouse library.
-- **Calibration mode** (`mode: "absolute"`, REVIEW_UI.md §5) — a separate UI over the same warehouse.
+The keyboard-only pages are driven by dispatching real key events into the handler the page
+registered, against the real server over HTTP (`test-support.ts`, `openPage`). A form the reviewer
+genuinely types into is typed into — value set, `input` fired — rather than poked at through the
+page's internals, because a test that reaches inside stops testing the page.
+
+## What works, and what is not built
+
+Working end to end: push, queue, blinded rendering with mock UI and named swatches, gradient display
+mapping, dual grades + preference + comment + confound, artwork veto and its withdrawal, free editing
+before release, release with a batch-level note, custody-checked image serving, restart recovery, the
+**palette composer** (eyedropper, swatch grid, live preview in the judging renderer, `endorsed-sample`
+records, withdrawal), **calibration mode** (absolute grading, its own push and page, the shared release
+flow), **post-release amendments** (verdict, veto, endorsement, release note, retraction), the
+**completion watcher**, the colour-bracketing round (rounds 1 and 2) and the oracle-validation round
+(generation, serving, keyboard answering, undo, release, analysis). Every page is driven end to end by
+real keystrokes in its own test.
+
+Not built:
+
 - **Coverage-aware sequential stopping** for oracle validation (REVIEW_UI.md §6): per-stratum
   stopping rules, space-spanning serve order and neighbourhood expansion all need the SigLIP
   embeddings, which are another workstream's. The mode records `stratum` on every row so the rule can
   be applied later; the first batch is a fixed, fully enumerated set (every contradiction), so it has
   nothing to stop early on.
 - **Note-only records and tags.** The tagging agent reads comments afterwards and files derived
-  records; nothing here does that yet.
-- **The completion watcher.** Meant to be a shell loop outside any model's context, tailing the
-  warehouse for `batch-complete`.
+  records; nothing here does that yet. Free-standing reviewer notes (no batch, no item) have no UI —
+  every note the server writes today is attached to an item.
+- **Idle-time fresh-artwork rounds** (REVIEW_UI.md §4). The calibration push takes any list of
+  artwork + palette, so the round shape exists; what is missing is the sampler that decides *which*
+  artworks, and the re-inclusion policy that makes drift measurable. That is a batch-builder question,
+  not a server one.
 - Multi-reviewer use, auth, LAN exposure. Localhost, one reviewer, no timing.

@@ -199,7 +199,7 @@ export function collectAnswers(
 			skipped.nonString++
 			return
 		}
-		const key = `${label.questionKey} ${label.imageId}`
+		const key = `${label.questionKey} ${label.imageId}`
 		const previous = latest.get(key)
 		if (previous !== undefined) skipped.superseded++
 		if (previous === undefined || previous.index < index) latest.set(key, { answer: label.answer, index })
@@ -353,7 +353,7 @@ export function analyzeProbeGold(
 			const answers: Record<string, string> = {}
 			let unsureCount = 0
 			for (const [index, probeKey] of PROBE_ORDER.entries()) {
-				const answer = probe.byQuestionAndImage.get(`${probeKey} ${meta.imageId}`)
+				const answer = probe.byQuestionAndImage.get(`${probeKey} ${meta.imageId}`)
 				if (answer === undefined) {
 					missingProbeAnswers += 1
 					continue
@@ -374,7 +374,7 @@ export function analyzeProbeGold(
 
 			const directImageId = directImageIds.get(sha256)
 			const directAnswer =
-				directImageId === undefined ? null : (direct.byQuestionAndImage.get(`ground_type ${directImageId}`) ?? null)
+				directImageId === undefined ? null : (direct.byQuestionAndImage.get(`ground_type ${directImageId}`) ?? null)
 			if (directAnswer === null) missingDirectAnswers += 1
 
 			if (directAnswer !== null) {

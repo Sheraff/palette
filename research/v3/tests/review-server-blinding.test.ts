@@ -41,11 +41,41 @@ describe("review server blinding", () => {
 		assert.match(stored.blindingSalt, /^[0-9a-f]{64}$/u, "a batch must be salted")
 
 		const served: string[] = []
-		for (const path of ["/", "/index.html", "/app.js", "/styles.css", "/api/queue", "/api/batches/blind-batch"]) {
+		for (const path of [
+			"/",
+			"/index.html",
+			"/app.js",
+			"/styles.css",
+			// The pages added after the skeleton go through the same sweep — every one of them renders
+			// palettes, and any of them could leak by accident.
+			"/mock.js",
+			"/composer.js",
+			"/calibration",
+			"/calibration.js",
+			"/amend",
+			"/amend.js",
+			"/api/queue",
+			"/api/batches/blind-batch",
+			// The composer's own endpoints, on a blinded item: the artwork's colours, one sampled pixel.
+			"/api/batches/blind-batch/items/item-0/colors",
+			"/api/batches/blind-batch/items/item-0/pixel?x=0.5&y=0.5",
+		]) {
 			const response = await call(harness.base, "GET", path)
 			assert.equal(response.status, 200, `${path} should serve`)
 			served.push(typeof response.body === "string" ? response.body : JSON.stringify(response.body))
 		}
+		// A composed-palette preview, which renders through the same code a judged side does.
+		const shown = (await call(harness.base, "GET", "/api/batches/blind-batch")).body.items[0].sides.A
+		const preview = await call(harness.base, "POST", "/api/batches/blind-batch/items/item-0/preview", {
+			palette: {
+				...Object.fromEntries(shown.roles.map((role: any) => [role.role, role.hex])),
+				gradient: null,
+				surfaceCollapsed: false,
+				accentCollapsed: false,
+			},
+		})
+		assert.equal(preview.status, 200)
+		served.push(JSON.stringify(preview.body))
 		// The artwork bytes go through the same server; read them as text so a leaked id would show.
 		const media = await fetch(`${harness.base}/media/blind-batch/item-0`)
 		assert.equal(media.status, 200)

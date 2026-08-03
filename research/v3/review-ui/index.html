@@ -24,6 +24,15 @@
 				<button type="button" id="next">next item →</button>
 				<button type="button" id="release">release batch</button>
 			</div>
+			<label class="release-note">
+				note on release (optional) — what this batch was for, in your words
+				<input type="text" id="release-note" placeholder="goes on the batch-complete record" />
+			</label>
+			<p class="modes">
+				other modes: <a href="/calibration">calibration</a> · <a href="/amend">amend a released batch</a> ·
+				<a href="/bracketing">colour bracketing</a> · <a href="/oracle">oracle validation</a> ·
+				<a href="/oracle-review">oracle adjudication</a>
+			</p>
 			<details>
 				<summary>keyboard</summary>
 				<ul class="keys">
@@ -32,6 +41,11 @@
 					<li><b>6 7 8 9</b> — grade side B: strong / acceptable / weak / unacceptable</li>
 					<li><b>a</b> prefer A · <b>b</b> prefer B · <b>n</b> no preference</li>
 					<li><b>c</b> write comment · <b>x</b> toggle confound · <b>v</b> veto this artwork</li>
+					<li><b>e</b> — open the palette composer (optional, per item)</li>
+					<li>
+						in the composer: <b>t</b> / <b>T</b> next / previous target · <b>1–9</b> assign that swatch ·
+						<b>g</b> flat / 2-stop / 3-stop · <b>s</b> endorse · <b>w</b> withdraw the latest · <b>Esc</b> close
+					</li>
 					<li><b>Esc</b> — leave the text field (shortcuts are off while typing)</li>
 				</ul>
 			</details>

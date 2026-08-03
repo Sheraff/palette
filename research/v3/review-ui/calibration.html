@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>v3 calibration</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body>
+		<header class="bar">
+			<h1>v3 calibration — absolute grading</h1>
+			<p id="batch-line">loading…</p>
+			<nav id="item-nav" class="item-nav" aria-label="items in this round"></nav>
+		</header>
+
+		<main id="item" class="item" aria-live="polite">
+			<p>loading…</p>
+		</main>
+
+		<footer class="bar">
+			<p id="status" role="status">…</p>
+			<div class="footer-actions">
+				<button type="button" id="prev">← previous item</button>
+				<button type="button" id="next">next item →</button>
+				<button type="button" id="release">release round</button>
+			</div>
+			<label class="release-note">
+				note on release (optional)
+				<input type="text" id="release-note" placeholder="goes on the batch-complete record" />
+			</label>
+			<p class="modes">
+				one palette per item, no comparison. Grade it on its own terms — the repeats in this round are
+				what measure drift and reviewer noise. <a href="/">pairwise review</a> ·
+				<a href="/amend">amend a released batch</a>
+			</p>
+			<details>
+				<summary>keyboard</summary>
+				<ul class="keys">
+					<li><b>← →</b> or <b>j k</b> — previous / next item</li>
+					<li><b>1 2 3 4</b> — grade: strong / acceptable / weak / unacceptable</li>
+					<li><b>c</b> write comment · <b>v</b> veto this artwork</li>
+					<li><b>Esc</b> — leave the text field (shortcuts are off while typing)</li>
+				</ul>
+			</details>
+		</footer>
+
+		<script type="module" src="/calibration.js"></script>
+	</body>
+</html>

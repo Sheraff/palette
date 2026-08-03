@@ -22,15 +22,20 @@ import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
 import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
 import {
+	AMENDABLE_FIELDS,
 	GRADES,
+	hashPalette,
 	PREFERENCES,
 	type AmendmentRecord,
 	type ArtworkIdentity,
 	type Author,
 	type BatchCompleteRecord,
+	type BatchRef,
+	type EndorsedSampleRecord,
 	type Grade,
 	type NoteRecord,
 	type OracleLabelRecord,
+	type PaletteSnapshot,
 	type Preference,
 	type RecordInput,
 	type VerdictRecord,
@@ -39,7 +44,18 @@ import {
 	type VetoScope,
 } from "../warehouse/records.ts"
 import { append, readAll, resolve as resolveAmendments } from "../warehouse/warehouse.ts"
-import { BadRequest, blindSidePayload, materialize, parseBatch, readArtworkIdentity } from "./batch.ts"
+import {
+	BadRequest,
+	blindSidePayload,
+	materialize,
+	materializeCalibration,
+	parseBatch,
+	parseCalibrationBatch,
+	parsePalette,
+	readArtworkIdentity,
+} from "./batch.ts"
+import { foreignColors, pixelAt, readImageColors } from "./composer.ts"
+import { nameHexes } from "./color.ts"
 import { newAnswerToken, newBlindingSalt, sha256 } from "./blinding.ts"
 import {
 	BRACKETING_ACTIVE_BATCH_ID,
@@ -125,13 +141,17 @@ export { PREMISE_DISAMBIGUATION_BATCH_ID }
 import { JsonlAppender, readJsonl } from "./store.ts"
 import {
 	isBracketingBatch,
+	isCalibrationBatch,
 	isOracleBatch,
 	SIDES,
+	type AbsoluteVerdictInput,
 	type PushedBatch,
 	type Side,
 	type StoredAnyBatch,
 	type StoredBatch,
 	type StoredBracketingBatch,
+	type StoredCalibrationBatch,
+	type StoredCalibrationItem,
 	type StoredItem,
 	type StoredOracleBatch,
 	type VerdictInput,
@@ -152,6 +172,7 @@ const here = new URL("./", import.meta.url)
 export const DEFAULT_UI_ROOT = fileURLToPath(new URL("../../review-ui/", here))
 export const DEFAULT_BATCH_LOG_PATH = fileURLToPath(new URL("../../data/review-server/batches.jsonl", here))
 export const DEMO_BATCH_PATH = fileURLToPath(new URL("./fixtures/demo-batch.json", here))
+export const DEMO_CALIBRATION_PATH = fileURLToPath(new URL("./fixtures/demo-calibration.json", here))
 /** research/v3/src/review-server/ → repository root. */
 export const REPO_ROOT = fileURLToPath(new URL("../../../../", here))
 
@@ -177,9 +198,31 @@ function oracleAnswerKey(batchId: string, questionKey: string, imageId: string):
 	return `${batchId} ${questionKey} ${imageId}`
 }
 
-type VerdictState = { record: VerdictRecord; recordId: string; revision: number }
+type VerdictState = {
+	record: VerdictRecord
+	recordId: string
+	revision: number
+	/** Amendments applied to this verdict after release, newest last. Empty before the first one. */
+	amendments: AmendmentRecord[]
+	/** True when an amendment withdrew it: the item carries no standing judgement any more. */
+	retracted: boolean
+}
 type VetoState = { record: VetoRecord; recordId: string; active: boolean }
 type AnswerState = { record: OracleLabelRecord; recordId: string; revision: number }
+/**
+ * One endorsed sample, as submitted.
+ *
+ * A list per item rather than one entry: an endorsement is immutable evidence of what the reviewer
+ * assembled and previewed, so an edited composition is a NEW record (the warehouse refuses an
+ * amendment that carries palette changes). The earlier ones are not drafts to be discarded — "the
+ * reviewer moved from this palette to that one" is itself evidence — so they stay on screen, and a
+ * mistaken one is withdrawn with a retracting amendment.
+ */
+type EndorsementState = {
+	record: EndorsedSampleRecord
+	recordId: string
+	retracted: boolean
+}
 
 export type ReviewServiceOptions = Readonly<{
 	warehousePath?: string
@@ -201,10 +244,13 @@ export class ReviewService {
 	readonly #batches = new Map<string, StoredBatch>()
 	readonly #bracketing = new Map<string, StoredBracketingBatch>()
 	readonly #oracle = new Map<string, StoredOracleBatch>()
+	readonly #calibration = new Map<string, StoredCalibrationBatch>()
 	readonly #verdicts = new Map<string, VerdictState>()
 	readonly #vetoes = new Map<string, VetoState>()
 	readonly #answers = new Map<string, AnswerState>()
+	readonly #endorsements = new Map<string, EndorsementState[]>()
 	readonly #releases = new Map<string, BatchCompleteRecord>()
+	readonly #releaseIds = new Map<string, string>()
 	/** Post-release joins for the adjudication view. Frozen data, so computed once per batch. */
 	readonly #adjudicationCache = new Map<string, OracleValidationAnalysis>()
 	#premiseRun: Awaited<ReturnType<typeof readPremiseRun>> | null = null
@@ -220,8 +266,28 @@ export class ReviewService {
 		for (const stored of await readJsonl<StoredAnyBatch>(this.batchLog.path)) {
 			if (isBracketingBatch(stored)) this.#bracketing.set(stored.batchId, stored)
 			else if (isOracleBatch(stored)) this.#oracle.set(stored.batchId, stored)
+			else if (isCalibrationBatch(stored)) this.#calibration.set(stored.batch.batchId, stored)
 			else this.#batches.set(stored.batch.batchId, stored)
 		}
+		this.#replayWarehouse()
+	}
+
+	/**
+	 * Rebuild every judgement from the warehouse.
+	 *
+	 * Run on start, and again after each amendment. Re-reading the whole log for one amendment is
+	 * deliberate: amendment semantics are subtle (a retraction leaves the *previous* record standing,
+	 * a patch applies over its whole chain), and the only way to be sure the running server agrees
+	 * with what a query would see is to derive both from the same code. Amendments are rare and the
+	 * log is small; a divergence between live state and replay would not be.
+	 */
+	#replayWarehouse(): void {
+		this.#verdicts.clear()
+		this.#vetoes.clear()
+		this.#answers.clear()
+		this.#endorsements.clear()
+		this.#releases.clear()
+		this.#releaseIds.clear()
 		// Amendments are applied first: a retracted veto must come back as "not vetoed", and an
 		// amended verdict must show its amended grades.
 		for (const entry of resolveAmendments(readAll(this.warehousePath))) {
@@ -230,12 +296,32 @@ export class ReviewService {
 				const key = itemKey(record.batch.id, record.itemId)
 				const previous = this.#verdicts.get(key)
 				const revision = (previous?.revision ?? 0) + 1
-				// A retracted verdict still counts as a revision that happened, but is not the position.
+				// A retracted verdict still counts as a revision that happened, but is not the position:
+				// withdrawing a re-save leaves the previous save standing, which is exactly what the
+				// warehouse's `supersededVerdictIds` does. When there is no previous one, the retracted
+				// record is kept as the state so the page can say "you withdrew this" — `#standing`
+				// filters it out of everything that counts.
 				if (entry.retracted) {
-					if (previous !== undefined) this.#verdicts.set(key, { ...previous, revision })
+					this.#verdicts.set(
+						key,
+						previous === undefined
+							? { record, recordId: entry.original.id, revision, amendments: entry.amendments, retracted: true }
+							: { ...previous, revision },
+					)
 				} else {
-					this.#verdicts.set(key, { record, recordId: entry.original.id, revision })
+					this.#verdicts.set(key, {
+						record,
+						recordId: entry.original.id,
+						revision,
+						amendments: entry.amendments,
+						retracted: false,
+					})
 				}
+			} else if (record.type === "endorsed-sample" && record.batch !== null && record.itemId !== null) {
+				const key = itemKey(record.batch.id, record.itemId)
+				const list = this.#endorsements.get(key) ?? []
+				list.push({ record, recordId: entry.original.id, retracted: entry.retracted })
+				this.#endorsements.set(key, list)
 			} else if (record.type === "veto" && record.batch !== null && record.itemId !== null) {
 				this.#vetoes.set(itemKey(record.batch.id, record.itemId), {
 					record,
@@ -255,6 +341,7 @@ export class ReviewService {
 				}
 			} else if (record.type === "batch-complete") {
 				this.#releases.set(record.batchId, record)
+				this.#releaseIds.set(record.batchId, entry.original.id)
 			}
 		}
 	}
@@ -264,7 +351,12 @@ export class ReviewService {
 	}
 
 	has(batchId: string): boolean {
-		return this.#batches.has(batchId) || this.#bracketing.has(batchId) || this.#oracle.has(batchId)
+		return (
+			this.#batches.has(batchId) ||
+			this.#bracketing.has(batchId) ||
+			this.#oracle.has(batchId) ||
+			this.#calibration.has(batchId)
+		)
 	}
 
 	#batch(batchId: string): StoredBatch {
@@ -280,12 +372,73 @@ export class ReviewService {
 		return { stored, index, item: stored.items[index] }
 	}
 
+	#calibrationBatch(batchId: string): StoredCalibrationBatch {
+		const stored = this.#calibration.get(batchId)
+		if (stored === undefined) throw new NotFound(`Unknown calibration batch ${batchId}`)
+		return stored
+	}
+
+	#calibrationItem(
+		batchId: string,
+		itemId: string,
+	): { stored: StoredCalibrationBatch; index: number; item: StoredCalibrationItem } {
+		const stored = this.#calibrationBatch(batchId)
+		const index = stored.items.findIndex((entry) => entry.itemId === itemId)
+		if (index < 0) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
+		return { stored, index, item: stored.items[index] }
+	}
+
+	/**
+	 * One item of whichever palette-judging mode owns it.
+	 *
+	 * Pairwise and calibration items differ in how many palettes they show and in nothing else that
+	 * matters to a veto, a composed palette, an eyedropper sample or an amendment. Those five routes
+	 * are therefore shared, and this is what makes them so — rather than five pairs of near-identical
+	 * handlers that will drift.
+	 */
+	#judgeable(
+		batchId: string,
+		itemId: string,
+	): {
+		kind: "pairwise" | "calibration"
+		artwork: ArtworkIdentity
+		batchRef: BatchRef
+		/** Palette hashes of everything the reviewer was shown, keyed by the name they know it under. */
+		shown: Record<string, string>
+	} {
+		if (this.#calibration.has(batchId)) {
+			const { stored, item } = this.#calibrationItem(batchId, itemId)
+			return {
+				kind: "calibration",
+				artwork: item.artwork,
+				batchRef: this.#calibrationBatchRef(stored),
+				shown: { palette: item.paletteHash },
+			}
+		}
+		const { stored, item } = this.#item(batchId, itemId)
+		return {
+			kind: "pairwise",
+			artwork: item.artwork,
+			batchRef: this.#batchRef(stored),
+			shown: Object.fromEntries(SIDES.map((side) => [side, item.paletteHashes[item.blinding[side]]])),
+		}
+	}
+
 	released(batchId: string): BatchCompleteRecord | null {
 		return this.#releases.get(batchId) ?? null
 	}
 
 	/** The batch metadata every record in the batch carries, denormalized (REVIEW_UI.md §7). */
-	#batchRef(stored: StoredBatch) {
+	#batchRef(stored: StoredBatch): BatchRef {
+		return {
+			id: stored.batch.batchId,
+			purpose: stored.batch.purpose,
+			itemCount: stored.items.length,
+			fundedBy: [...stored.batch.fundedBy],
+		}
+	}
+
+	#calibrationBatchRef(stored: StoredCalibrationBatch): BatchRef {
 		return {
 			id: stored.batch.batchId,
 			purpose: stored.batch.purpose,
@@ -310,7 +463,42 @@ export class ReviewService {
 		return { batchId: batch.batchId, itemCount: stored.items.length }
 	}
 
+	/**
+	 * Materialize and persist a pushed calibration round (REVIEW_UI.md §5).
+	 *
+	 * Same push path as a pairwise batch, minus the blinding: with one palette per item there are no
+	 * sides to shuffle. The variant id and the fingerprint still go to the batch log and never to the
+	 * browser, for the reason `types.ts` gives — grading a palette should not be grading a label.
+	 */
+	async pushCalibration(value: unknown): Promise<{ batchId: string; itemCount: number }> {
+		const batch = parseCalibrationBatch(value)
+		if (this.has(batch.batchId)) throw new Conflict(`Batch ${batch.batchId} already exists`)
+		const stored = await materializeCalibration(batch, new Date().toISOString(), this.imageRoots)
+		await this.batchLog.append(stored)
+		this.#calibration.set(batch.batchId, stored)
+		return { batchId: batch.batchId, itemCount: stored.items.length }
+	}
+
 	queue() {
+		const calibration = [...this.#calibration.values()].map((stored) => {
+			const batchId = stored.batch.batchId
+			const release = this.#releases.get(batchId)
+			let judged = 0
+			for (const item of stored.items) {
+				const key = itemKey(batchId, item.itemId)
+				if (this.#standing(key) !== null || this.#vetoes.get(key)?.active === true) judged += 1
+			}
+			return {
+				batchId,
+				kind: "calibration" as const,
+				purpose: stored.batch.purpose,
+				pushedAt: stored.pushedAt,
+				itemCount: stored.items.length,
+				judgedCount: judged,
+				released: release !== undefined,
+				releasedAt: release?.ts ?? null,
+			}
+		})
 		const bracketing = [...this.#bracketing.values()].map((stored) => {
 			const release = this.#releases.get(stored.batchId)
 			const judged = stored.fixture.items.filter((item) => this.#answers.has(itemKey(stored.batchId, item.itemId))).length
@@ -344,7 +532,7 @@ export class ReviewService {
 			let judged = 0
 			for (const item of stored.items) {
 				const key = itemKey(stored.batch.batchId, item.itemId)
-				if (this.#verdicts.has(key) || this.#vetoes.get(key)?.active === true) judged += 1
+				if (this.#standing(key) !== null || this.#vetoes.get(key)?.active === true) judged += 1
 			}
 			return {
 				batchId: stored.batch.batchId,
@@ -357,7 +545,85 @@ export class ReviewService {
 				releasedAt: release?.ts ?? null,
 			}
 		})
-		return [...pairwise, ...bracketing, ...oracle]
+		return [...pairwise, ...calibration, ...bracketing, ...oracle]
+	}
+
+	/**
+	 * The reviewer's standing verdict on an item, or null when they have none.
+	 *
+	 * Null covers two different histories that behave identically from here on: never judged, and
+	 * judged then retracted by a post-release amendment. In both cases nothing may cite the item.
+	 */
+	#standing(key: string): VerdictState | null {
+		const state = this.#verdicts.get(key)
+		return state === undefined || state.retracted ? null : state
+	}
+
+	/**
+	 * Released batches take no more direct writes.
+	 *
+	 * Before release everything is freely editable with zero ceremony; after it, a second thought is
+	 * an `amendment` record pointing at the original, which is what lets the orchestrator trigger on
+	 * release without racing the reviewer (REVIEW_UI.md §1). So this is not "no more edits" — it is
+	 * "edits change shape", and the message says where they go.
+	 */
+	#refuseWhenReleased(batchId: string, what: string): void {
+		if (!this.#releases.has(batchId)) return
+		throw new Conflict(
+			`Batch ${batchId} is released; a ${what} after release is an amendment — ` +
+				`POST /api/batches/${batchId}/items/<itemId>/amend`,
+		)
+	}
+
+	/**
+	 * What the browser is told about a verdict. Never a variant id, never a fingerprint.
+	 *
+	 * An absolute verdict is served with one `grade` and nothing about a comparison that did not
+	 * happen — a calibration page reading `gradeA` and ignoring `gradeB` would be a page one edit away
+	 * from recording half a pairwise judgement.
+	 */
+	#verdictPayload(key: string) {
+		const state = this.#verdicts.get(key)
+		if (state === undefined) return null
+		const common = {
+			comment: state.record.comment,
+			revision: state.revision,
+			recordedAt: state.record.ts,
+			/** Post-release second thoughts, so the page can show that this is no longer the first answer. */
+			amendmentCount: state.amendments.length,
+			amendedAt: state.amendments.at(-1)?.ts ?? null,
+			retracted: state.retracted,
+		}
+		if (state.record.mode === "absolute") return { mode: "absolute" as const, grade: state.record.gradeA, ...common }
+		return {
+			mode: "pairwise" as const,
+			gradeA: state.record.gradeA,
+			gradeB: state.record.gradeB,
+			preference: state.record.preference,
+			confound: state.record.confound,
+			confoundNote: state.record.confoundNote ?? "",
+			...common,
+		}
+	}
+
+	/**
+	 * Endorsed samples for one item, oldest first — every one of them, retracted ones included.
+	 *
+	 * `basedOnPaletteHash` is deliberately not here. It is the content hash of a *shown* side, and the
+	 * payload-hygiene rule is that no shown side's hash is ever served: the browser has no use for it
+	 * (it knows which side it started from), and it is exactly the kind of derived identifier a future
+	 * blinding attack would be built on.
+	 */
+	#endorsementPayload(key: string) {
+		return (this.#endorsements.get(key) ?? []).map((entry) => ({
+			recordId: entry.recordId,
+			// The palette the browser itself assembled and its hash: nothing it did not already have.
+			palette: entry.record.palette,
+			paletteHash: entry.record.paletteHash,
+			comment: entry.record.comment,
+			recordedAt: entry.record.ts,
+			retracted: entry.retracted,
+		}))
 	}
 
 	/** The blinded payload. Never contains a variant id, a fingerprint, or the blinding key. */
@@ -370,12 +636,12 @@ export class ReviewService {
 			pushedAt: stored.pushedAt,
 			released: release !== undefined,
 			releasedAt: release?.ts ?? null,
+			releaseNote: release?.note ?? "",
 			grades: GRADES,
 			preferences: PREFERENCES,
 			items: stored.items.map((item, index) => {
 				const pushed = stored.batch.items[index]
 				const key = itemKey(batchId, item.itemId)
-				const verdict = this.#verdicts.get(key)
 				const veto = this.#vetoes.get(key)
 				return {
 					itemId: item.itemId,
@@ -397,19 +663,55 @@ export class ReviewService {
 					),
 					/** True when both sides render identically: not a real comparison. */
 					identical: item.paletteHashes[0] === item.paletteHashes[1],
-					verdict:
-						verdict === undefined
+					verdict: this.#verdictPayload(key),
+					endorsements: this.#endorsementPayload(key),
+					veto:
+						veto === undefined
 							? null
-							: {
-									gradeA: verdict.record.gradeA,
-									gradeB: verdict.record.gradeB,
-									preference: verdict.record.preference,
-									comment: verdict.record.comment,
-									confound: verdict.record.confound,
-									confoundNote: verdict.record.confoundNote ?? "",
-									revision: verdict.revision,
-									recordedAt: verdict.record.ts,
-								},
+							: { active: veto.active, reason: veto.record.reason, scope: veto.record.scope, recordedAt: veto.record.ts },
+				}
+			}),
+		}
+	}
+
+	/**
+	 * The calibration payload: one palette per item, one grade to give (REVIEW_UI.md §5).
+	 *
+	 * Same hygiene as the pairwise payload — no variant id, no fingerprint, no palette hash — and the
+	 * same rendered field, because the mock is the judging surface in both modes and a grade given
+	 * against a different rendering is a grade about a different thing.
+	 */
+	calibrationPayload(batchId: string) {
+		const stored = this.#calibrationBatch(batchId)
+		const release = this.#releases.get(batchId)
+		return {
+			batchId,
+			purpose: stored.batch.purpose,
+			pushedAt: stored.pushedAt,
+			released: release !== undefined,
+			releasedAt: release?.ts ?? null,
+			releaseNote: release?.note ?? "",
+			mode: "absolute" as const,
+			grades: GRADES,
+			items: stored.items.map((item, index) => {
+				const pushed = stored.batch.items[index]
+				const key = itemKey(batchId, item.itemId)
+				const veto = this.#vetoes.get(key)
+				return {
+					itemId: item.itemId,
+					artwork: {
+						media: `/media/${encodeURIComponent(batchId)}/${encodeURIComponent(item.itemId)}`,
+						fileName: item.artwork.path.split("/").at(-1) ?? item.artwork.path,
+						sha256: item.artwork.sha256,
+						width: item.artwork.rendition.width,
+						height: item.artwork.rendition.height,
+						format: item.artwork.rendition.format,
+						bytes: item.artwork.rendition.bytes,
+						collection: item.artwork.rendition.collection,
+					},
+					side: blindSidePayload(pushed.palette, item.colorNames),
+					verdict: this.#verdictPayload(key),
+					endorsements: this.#endorsementPayload(key),
 					veto:
 						veto === undefined
 							? null
@@ -440,9 +742,7 @@ export class ReviewService {
 	 */
 	async putVerdict(batchId: string, itemId: string, input: VerdictInput): Promise<VerdictState> {
 		const { stored, index, item } = this.#item(batchId, itemId)
-		if (this.#releases.has(batchId)) {
-			throw new Conflict(`Batch ${batchId} is released; post-release edits need an amendment record (not built yet)`)
-		}
+		this.#refuseWhenReleased(batchId, `verdict on ${itemId}`)
 		const key = itemKey(batchId, itemId)
 		const previous = this.#verdicts.get(key)
 		const record = append<VerdictRecord>(this.warehousePath, {
@@ -461,15 +761,66 @@ export class ReviewService {
 			confound: input.confound,
 			confoundNote: input.confound ? input.confoundNote : null,
 		} satisfies RecordInput<VerdictRecord>)
-		const state: VerdictState = { record, recordId: record.id, revision: (previous?.revision ?? 0) + 1 }
+		const state: VerdictState = {
+			record,
+			recordId: record.id,
+			revision: (previous?.revision ?? 0) + 1,
+			amendments: [],
+			retracted: false,
+		}
+		this.#verdicts.set(key, state)
+		return state
+	}
+
+	/**
+	 * Write (or rewrite) one calibration item's absolute verdict (REVIEW_UI.md §5).
+	 *
+	 * `mode: "absolute"`, and side B, grade B and preference are null — the warehouse refuses an
+	 * absolute verdict that carries any of them, which is what keeps a calibration grade from ever
+	 * being counted as half of a comparison.
+	 */
+	async putAbsoluteVerdict(batchId: string, itemId: string, input: AbsoluteVerdictInput): Promise<VerdictState> {
+		const { stored, index, item } = this.#calibrationItem(batchId, itemId)
+		this.#refuseWhenReleased(batchId, `verdict on ${itemId}`)
+		const key = itemKey(batchId, itemId)
+		const previous = this.#verdicts.get(key)
+		const pushed = stored.batch.items[index]
+		const record = append<VerdictRecord>(this.warehousePath, {
+			type: "verdict",
+			author: this.author,
+			mode: "absolute",
+			batch: this.#calibrationBatchRef(stored),
+			itemId,
+			artwork: item.artwork,
+			sideA: {
+				paletteHash: item.paletteHash,
+				fingerprint: pushed.fingerprint,
+				variantId: pushed.variantId,
+				palette: pushed.palette,
+			},
+			sideB: null,
+			gradeA: input.grade,
+			gradeB: null,
+			preference: null,
+			comment: input.comment,
+			confound: false,
+			confoundNote: null,
+		} satisfies RecordInput<VerdictRecord>)
+		const state: VerdictState = {
+			record,
+			recordId: record.id,
+			revision: (previous?.revision ?? 0) + 1,
+			amendments: [],
+			retracted: false,
+		}
 		this.#verdicts.set(key, state)
 		return state
 	}
 
 	/** Record an artwork veto. Withdrawing one is a retracting amendment, never a deletion. */
 	async putVeto(batchId: string, itemId: string, reason: string, scope: VetoScope, active: boolean): Promise<VetoState> {
-		const { stored, item } = this.#item(batchId, itemId)
-		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
+		const judgeable = this.#judgeable(batchId, itemId)
+		this.#refuseWhenReleased(batchId, `veto on ${itemId}`)
 		const key = itemKey(batchId, itemId)
 		const previous = this.#vetoes.get(key)
 
@@ -491,15 +842,229 @@ export class ReviewService {
 		const record = append<VetoRecord>(this.warehousePath, {
 			type: "veto",
 			author: this.author,
-			batch: this.#batchRef(stored),
+			batch: judgeable.batchRef,
 			itemId,
-			artwork: item.artwork,
+			artwork: judgeable.artwork,
 			reason,
 			scope,
 		} satisfies RecordInput<VetoRecord>)
 		const state: VetoState = { record, recordId: record.id, active: true }
 		this.#vetoes.set(key, state)
 		return state
+	}
+
+	/* --- the palette composer (REVIEW_UI.md §4) ------------------------------------------------ */
+
+	/**
+	 * The artwork's own colours: a compact quantized grid, plus what the eyedropper is sampling.
+	 *
+	 * Served for pairwise and calibration items alike. Nothing here says anything about the palettes
+	 * on screen — it is a property of the image file, so it cannot leak which side is which.
+	 */
+	async paletteSource(batchId: string, itemId: string) {
+		const { artwork } = this.#judgeable(batchId, itemId)
+		const colors = await readImageColors(artwork.path, artwork.sha256)
+		return {
+			batchId,
+			itemId,
+			width: colors.width,
+			height: colors.height,
+			pixels: colors.pixels,
+			distinctColors: colors.distinctColors,
+			swatches: colors.swatches,
+			coveredAreaFraction: colors.coveredAreaFraction,
+		}
+	}
+
+	/**
+	 * The colour at a normalized point of the artwork — the eyedropper.
+	 *
+	 * Resolved here rather than in a canvas because the browser holds a *rendered* copy: scaled,
+	 * possibly colour-managed, and therefore full of colours the file does not contain. A role colour
+	 * is an exact source pixel or it is not a palette the algorithm could ever produce.
+	 */
+	async samplePixel(batchId: string, itemId: string, x: number, y: number) {
+		const { artwork } = this.#judgeable(batchId, itemId)
+		const colors = await readImageColors(artwork.path, artwork.sha256)
+		return pixelAt(colors, x, y)
+	}
+
+	/** Every colour of a candidate palette that this artwork does not contain. */
+	async #foreign(batchId: string, itemId: string, palette: PaletteSnapshot): Promise<string[]> {
+		const { artwork } = this.#judgeable(batchId, itemId)
+		const colors = await readImageColors(artwork.path, artwork.sha256)
+		return foreignColors(colors, paletteHexes(palette))
+	}
+
+	/**
+	 * Render a composed palette through the pinned preview renderer.
+	 *
+	 * The composer previews in the same mock as every judged side, and "the same" has to mean the
+	 * same code: the browser pastes `fieldCss` and never composes a gradient itself (REVIEW_UI.md §3,
+	 * the display mapping is `[REVIEWED]`). So the preview goes through `blindSidePayload`, exactly
+	 * like a served side, and the reviewer is looking at the renderer they will be judged against.
+	 */
+	async previewPalette(batchId: string, itemId: string, value: unknown) {
+		const palette = parsePalette(value)
+		const foreign = await this.#foreign(batchId, itemId, palette)
+		return {
+			side: blindSidePayload(palette, nameHexes(paletteHexes(palette))),
+			paletteHash: hashPalette(palette),
+			/** Colours the artwork does not contain — a warning while composing, a refusal on submit. */
+			foreign,
+		}
+	}
+
+	/**
+	 * Submit a composed palette as an `endorsed-sample`.
+	 *
+	 * **Editing an endorsement is a new endorsement.** The record is immutable evidence of what the
+	 * reviewer assembled and previewed; the warehouse's AMENDABLE_FIELDS lists only `comment` for this
+	 * type and throws on anything else, so there is no code path here that could rewrite a palette
+	 * even by accident. Statistical weight: never a fitting target, never an auto-win (REVIEW_UI.md
+	 * §4) — this server only records it.
+	 */
+	async putEndorsement(
+		batchId: string,
+		itemId: string,
+		value: unknown,
+		comment: string,
+		basedOn: string | null,
+	): Promise<{ recordId: string; paletteHash: string; count: number }> {
+		const judgeable = this.#judgeable(batchId, itemId)
+		this.#refuseWhenReleased(batchId, `endorsement on ${itemId}`)
+		const palette = parsePalette(value)
+		const foreign = await this.#foreign(batchId, itemId, palette)
+		if (foreign.length > 0) {
+			throw new BadRequest(
+				`the artwork contains no such pixel: ${foreign.join(", ")} — role and stop colours are exact source pixels`,
+			)
+		}
+		if (basedOn !== null && judgeable.shown[basedOn] === undefined) {
+			throw new BadRequest(`basedOn must be one of ${Object.keys(judgeable.shown).join(" | ")}, or null`)
+		}
+		const record = append<EndorsedSampleRecord>(this.warehousePath, {
+			type: "endorsed-sample",
+			author: this.author,
+			batch: judgeable.batchRef,
+			itemId,
+			artwork: judgeable.artwork,
+			palette,
+			paletteHash: hashPalette(palette),
+			// Which shown palette it was assembled from, by content hash — the blinded side name is a
+			// property of this batch's shuffle and would mean nothing outside it.
+			basedOnPaletteHash: basedOn === null ? null : judgeable.shown[basedOn],
+			comment,
+		} satisfies RecordInput<EndorsedSampleRecord>)
+		const key = itemKey(batchId, itemId)
+		const list = this.#endorsements.get(key) ?? []
+		list.push({ record, recordId: record.id, retracted: false })
+		this.#endorsements.set(key, list)
+		return { recordId: record.id, paletteHash: record.paletteHash, count: list.length }
+	}
+
+	/* --- post-release amendments (REVIEW_UI.md §1, §2) ----------------------------------------- */
+
+	/**
+	 * Amend or retract one item's judgement after its batch was released.
+	 *
+	 * Safe by construction, and that is the whole design: an amendment is a **new record pointing at
+	 * the original**, the latest one wins at query time, and every downstream decision records the
+	 * verdict ids that funded it — so a standing gate query (`recheckFundedBy`) flags anything funded
+	 * by since-amended evidence instead of the orchestrator having to wait for the reviewer's second
+	 * thoughts before triggering.
+	 *
+	 * What may change is bounded by the warehouse's `AMENDABLE_FIELDS`, not by this server: an
+	 * amendment expresses a second thought about a *judgement* and may never change what the record
+	 * was *about*. The palettes shown, the artwork, the fingerprints and the content hashes are frozen
+	 * at append time, because a verdict is always about the exact palettes shown.
+	 */
+	async amendItem(
+		batchId: string,
+		itemId: string,
+		target: "verdict" | "veto" | "endorsement",
+		patch: Record<string, unknown>,
+		reason: string,
+		retract: boolean,
+	): Promise<{ recordId: string; targetId: string; target: string; retracted: boolean }> {
+		// The batch must exist and own the item: an amendment naming an item nobody was shown is a
+		// typo, and the warehouse would happily store it.
+		this.#judgeable(batchId, itemId)
+		// Verdicts and vetoes are directly editable until release, so amending one before release would
+		// be a second way to say the same thing. An endorsement is the exception and always has been:
+		// it is immutable evidence from the moment it is appended, so withdrawing it is its *only*
+		// correction, in an open batch as much as in a closed one.
+		if (target !== "endorsement" && this.#releases.get(batchId) === undefined) {
+			throw new Conflict(
+				`Batch ${batchId} is not released; before release every item is directly editable — amendments are for second thoughts about closed batches`,
+			)
+		}
+		if (reason.trim().length === 0) throw new BadRequest("an amendment needs a reason")
+		const key = itemKey(batchId, itemId)
+
+		const targetId = (() => {
+			if (target === "verdict") {
+				const state = this.#verdicts.get(key)
+				if (state === undefined) throw new NotFound(`Item ${itemId} carries no verdict to amend`)
+				// An absolute verdict has no side B and no preference, and the warehouse refuses one that
+				// carries them. An amendment is not re-validated against that rule on append, so it is
+				// enforced here: a calibration grade must never turn into half a comparison.
+				if (state.record.mode === "absolute") {
+					for (const field of ["gradeB", "preference", "confound", "confoundNote"]) {
+						if (field in patch) throw new BadRequest(`${field} has no meaning on an absolute (calibration) verdict`)
+					}
+				}
+				return state.recordId
+			}
+			if (target === "veto") {
+				const state = this.#vetoes.get(key)
+				if (state === undefined) throw new NotFound(`Item ${itemId} carries no veto to amend`)
+				return state.recordId
+			}
+			// An endorsement is immutable evidence, so "amend the endorsement" can only ever mean the
+			// latest one: an older one is a palette the reviewer already moved on from.
+			const list = (this.#endorsements.get(key) ?? []).filter((entry) => !entry.retracted)
+			if (list.length === 0) throw new NotFound(`Item ${itemId} carries no endorsement to amend`)
+			return list[list.length - 1].recordId
+		})()
+
+		const record = append<AmendmentRecord>(this.warehousePath, {
+			type: "amendment",
+			author: this.author,
+			targetId,
+			patch,
+			retract,
+			reason,
+		} satisfies RecordInput<AmendmentRecord>)
+
+		// Derived, never mirrored: the running state is rebuilt from the log the amendment just joined,
+		// so what the reviewer sees next and what a query would answer cannot disagree.
+		this.#replayWarehouse()
+		return { recordId: record.id, targetId, target, retracted: retract }
+	}
+
+	/**
+	 * Amend the batch-level note on a released batch.
+	 *
+	 * `note` is the one amendable field of a `batch-complete` record. It exists because the release
+	 * record is the batch's own statement of what it was, and "what I meant by this batch" is
+	 * sometimes only clear afterwards.
+	 */
+	async amendReleaseNote(batchId: string, note: string, reason: string): Promise<{ recordId: string; targetId: string }> {
+		const release = this.#releases.get(batchId)
+		const targetId = this.#releaseIds.get(batchId)
+		if (release === undefined || targetId === undefined) throw new NotFound(`Batch ${batchId} is not released`)
+		if (reason.trim().length === 0) throw new BadRequest("an amendment needs a reason")
+		const record = append<AmendmentRecord>(this.warehousePath, {
+			type: "amendment",
+			author: this.author,
+			targetId,
+			patch: { note },
+			retract: false,
+			reason,
+		} satisfies RecordInput<AmendmentRecord>)
+		this.#replayWarehouse()
+		return { recordId: record.id, targetId }
 	}
 
 	/* --- calibration: the same-colour-bar bracketing round (PHASE_0_DECISIONS.md §3) --------- */
@@ -950,11 +1515,12 @@ export class ReviewService {
 				.filter((item) => !this.#answers.has(itemKey(batchId, item.itemId)))
 				.map((item) => item.itemId)
 		}
-		const stored = this.#batch(batchId)
-		return stored.items
+		const calibration = this.#calibration.get(batchId)
+		const items = calibration === undefined ? this.#batch(batchId).items : calibration.items
+		return items
 			.filter((item) => {
 				const key = itemKey(batchId, item.itemId)
-				return !this.#verdicts.has(key) && this.#vetoes.get(key)?.active !== true
+				return this.#standing(key) === null && this.#vetoes.get(key)?.active !== true
 			})
 			.map((item) => item.itemId)
 	}
@@ -964,14 +1530,22 @@ export class ReviewService {
 		// A bracketing round has no free-text channel: the question is y/n by design. Neither has an
 		// oracle-validation round: §6's whole design target is the 5-second answer.
 		if (this.#bracketing.has(batchId) || this.#oracle.has(batchId)) return []
-		const stored = this.#batch(batchId)
-		return stored.items
+		const calibration = this.#calibration.get(batchId)
+		const items = calibration === undefined ? this.#batch(batchId).items : calibration.items
+		return items
 			.filter((item) => (this.#verdicts.get(itemKey(batchId, item.itemId))?.record.comment ?? "").trim().length === 0)
 			.filter((item) => this.#vetoes.get(itemKey(batchId, item.itemId))?.active !== true)
 			.map((item) => item.itemId)
 	}
 
-	/** The record ids this release stands on: the latest verdict per item, plus active vetoes. */
+	/**
+	 * The record ids this release stands on: the standing verdict per item, every active veto, and
+	 * every endorsed sample the reviewer composed along the way.
+	 *
+	 * This is what a downstream decision cites as `fundedBy`, and it is also what the standing gate
+	 * query re-checks when one of them is later amended — so it lists everything the batch actually
+	 * produced, not only the grades.
+	 */
 	fundingRecordIds(batchId: string): string[] {
 		const oracle = this.#oracle.get(batchId)
 		if (oracle !== undefined) {
@@ -985,14 +1559,18 @@ export class ReviewService {
 				.map((item) => this.#answers.get(itemKey(batchId, item.itemId))?.recordId)
 				.filter((id): id is string => id !== undefined)
 		}
-		const stored = this.#batch(batchId)
+		const calibration = this.#calibration.get(batchId)
+		const items = calibration === undefined ? this.#batch(batchId).items : calibration.items
 		const ids: string[] = []
-		for (const item of stored.items) {
+		for (const item of items) {
 			const key = itemKey(batchId, item.itemId)
-			const verdict = this.#verdicts.get(key)
+			const verdict = this.#standing(key)
 			const veto = this.#vetoes.get(key)
-			if (verdict !== undefined) ids.push(verdict.recordId)
+			if (verdict !== null) ids.push(verdict.recordId)
 			if (veto?.active === true) ids.push(veto.recordId)
+			for (const endorsement of this.#endorsements.get(key) ?? []) {
+				if (!endorsement.retracted) ids.push(endorsement.recordId)
+			}
 		}
 		return ids
 	}
@@ -1002,7 +1580,8 @@ export class ReviewService {
 		// One release flow for every kind: the batch-complete record is what the watcher waits for,
 		// whatever the batch was made of.
 		const answersOnly = this.#bracketing.get(batchId) ?? this.#oracle.get(batchId)
-		const stored = answersOnly === undefined ? this.#batch(batchId) : null
+		const calibration = this.#calibration.get(batchId)
+		const stored = answersOnly === undefined && calibration === undefined ? this.#batch(batchId) : null
 		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is already released`)
 		const pending = this.pending(batchId)
 		if (pending.length > 0) {
@@ -1011,17 +1590,19 @@ export class ReviewService {
 					(pending.length > 8 ? ` (+${pending.length - 8} more)` : ""),
 			)
 		}
+		const palettes = calibration ?? stored
 		const record = append<BatchCompleteRecord>(this.warehousePath, {
 			type: "batch-complete",
 			author: this.author,
 			batchId,
-			purpose: answersOnly?.purpose ?? stored!.batch.purpose,
-			itemCount: answersOnly?.fixture.items.length ?? stored!.items.length,
-			fundedBy: [...(answersOnly?.fundedBy ?? stored!.batch.fundedBy)],
-			releasedItemIds: (answersOnly?.fixture.items ?? stored!.items).map((item) => item.itemId),
+			purpose: answersOnly?.purpose ?? palettes!.batch.purpose,
+			itemCount: answersOnly?.fixture.items.length ?? palettes!.items.length,
+			fundedBy: [...(answersOnly?.fundedBy ?? palettes!.batch.fundedBy)],
+			releasedItemIds: (answersOnly?.fixture.items ?? palettes!.items).map((item) => item.itemId),
 			note,
 		} satisfies RecordInput<BatchCompleteRecord>)
 		this.#releases.set(batchId, record)
+		this.#releaseIds.set(batchId, record.id)
 		return record
 	}
 
@@ -1034,9 +1615,9 @@ export class ReviewService {
 	async media(batchId: string, handle: string): Promise<{ bytes: Buffer; contentType: string }> {
 		const oracle = this.#oracle.get(batchId)
 		const artwork =
-			oracle === undefined
-				? this.#item(batchId, handle).item.artwork
-				: oracle.artworks[oracle.answerTokens[handle] ?? ""]
+			oracle !== undefined
+				? oracle.artworks[oracle.answerTokens[handle] ?? ""]
+				: this.#judgeable(batchId, handle).artwork
 		if (artwork === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
 		const bytes = await readFile(artwork.path)
 		if (bytes.byteLength !== artwork.rendition.bytes || sha256(bytes) !== artwork.sha256) {
@@ -1044,6 +1625,17 @@ export class ReviewService {
 		}
 		return { bytes, contentType: imageContentType(bytes) }
 	}
+}
+
+/** Every colour a palette puts on screen: the four roles, plus every gradient stop. */
+function paletteHexes(palette: PaletteSnapshot): string[] {
+	return [
+		palette.background,
+		palette.surface,
+		palette.foreground,
+		palette.accent,
+		...(palette.gradient?.stops.map((stop) => stop.color) ?? []),
+	]
 }
 
 /** Content type from magic bytes. Filenames are never trusted in this repository. */
@@ -1142,11 +1734,94 @@ function parseVerdictInput(value: unknown): VerdictInput {
 	}
 }
 
+function parseAbsoluteVerdictInput(value: unknown): AbsoluteVerdictInput {
+	if (typeof value !== "object" || value === null) throw new BadRequest("Verdict must be an object")
+	const record = value as Record<string, unknown>
+	const grade = record.grade
+	if (typeof grade !== "string" || !(GRADES as readonly string[]).includes(grade)) {
+		throw new BadRequest(`grade must be one of ${GRADES.join(" | ")}`)
+	}
+	const comment = record.comment ?? ""
+	if (typeof comment !== "string" || comment.length > MAX_COMMENT_LENGTH) {
+		throw new BadRequest(`comment must be a string of at most ${MAX_COMMENT_LENGTH} characters`)
+	}
+	// Deliberately refused rather than ignored: these are pairwise fields, and silently dropping them
+	// would let a mis-wired page believe it recorded a comparison.
+	for (const field of ["gradeA", "gradeB", "preference", "confound"]) {
+		if (record[field] !== undefined) throw new BadRequest(`${field} has no meaning in absolute (calibration) grading`)
+	}
+	return { grade: grade as Grade, comment }
+}
+
+/** Which record an amendment is about. Verdict unless the reviewer says otherwise. */
+const AMEND_TARGETS = ["verdict", "veto", "endorsement"] as const
+type AmendTarget = (typeof AMEND_TARGETS)[number]
+
+/** The warehouse record type behind each amendable target on an item. */
+const AMEND_TARGET_TYPE = { verdict: "verdict", veto: "veto", endorsement: "endorsed-sample" } as const
+
+/**
+ * Validate an amendment's patch: allowed fields, and allowed *values*.
+ *
+ * `AMENDABLE_FIELDS` is the authority on which fields may change, and the warehouse enforces it on
+ * append. It cannot check values, though — a patch is an untyped bag by construction, and nothing
+ * re-validates the patched record. So a grade of "banana" or a preference of "maybe" would be
+ * accepted by the log and only discovered by whatever tried to count it. That check is here.
+ */
+function parseAmendPatch(target: AmendTarget, value: unknown): Record<string, unknown> {
+	if (typeof value !== "object" || value === null || Array.isArray(value)) throw new BadRequest("patch must be an object")
+	const raw = value as Record<string, unknown>
+	const allowed = AMENDABLE_FIELDS[AMEND_TARGET_TYPE[target]]
+	const patch: Record<string, unknown> = {}
+	for (const [field, entry] of Object.entries(raw)) {
+		if (entry === undefined) continue
+		if (!allowed.includes(field)) {
+			throw new BadRequest(
+				`field ${JSON.stringify(field)} is not amendable on a ${AMEND_TARGET_TYPE[target]} record (allowed: ${allowed.join(", ") || "none"})`,
+			)
+		}
+		if (field === "gradeA" || field === "gradeB") {
+			if (typeof entry !== "string" || !(GRADES as readonly string[]).includes(entry)) {
+				throw new BadRequest(`${field} must be one of ${GRADES.join(" | ")}`)
+			}
+		} else if (field === "preference") {
+			if (typeof entry !== "string" || !(PREFERENCES as readonly string[]).includes(entry)) {
+				throw new BadRequest(`preference must be one of ${PREFERENCES.join(" | ")}`)
+			}
+		} else if (field === "scope") {
+			if (entry !== "artwork" && entry !== "rendition") throw new BadRequest("scope must be artwork | rendition")
+		} else if (field === "confound") {
+			if (typeof entry !== "boolean") throw new BadRequest("confound must be a boolean")
+		} else if (typeof entry !== "string" || entry.length > MAX_COMMENT_LENGTH) {
+			throw new BadRequest(`${field} must be a string of at most ${MAX_COMMENT_LENGTH} characters`)
+		}
+		patch[field] = entry
+	}
+	// The same rule the live form enforces: the flag without the defect is unqueryable.
+	if (patch.confound === true && typeof patch.confoundNote === "string" && patch.confoundNote.trim().length === 0) {
+		throw new BadRequest("a confound flag needs a note saying which unrelated defect")
+	}
+	if (patch.reason !== undefined && String(patch.reason).trim().length === 0) {
+		throw new BadRequest("a veto's reason cannot be emptied by an amendment; retract it instead")
+	}
+	return patch
+}
+
 const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
 	["/", { file: "index.html", type: "text/html; charset=utf-8" }],
 	["/index.html", { file: "index.html", type: "text/html; charset=utf-8" }],
 	["/app.js", { file: "app.js", type: "text/javascript; charset=utf-8" }],
 	["/styles.css", { file: "styles.css", type: "text/css; charset=utf-8" }],
+	// Shared modules: the mock player is part of the output contract, so every page that shows one
+	// shows the same one, from one file (`mock.js`), and the composer lives beside it.
+	["/mock.js", { file: "mock.js", type: "text/javascript; charset=utf-8" }],
+	["/composer.js", { file: "composer.js", type: "text/javascript; charset=utf-8" }],
+	["/calibration", { file: "calibration.html", type: "text/html; charset=utf-8" }],
+	["/calibration.html", { file: "calibration.html", type: "text/html; charset=utf-8" }],
+	["/calibration.js", { file: "calibration.js", type: "text/javascript; charset=utf-8" }],
+	["/amend", { file: "amend.html", type: "text/html; charset=utf-8" }],
+	["/amend.html", { file: "amend.html", type: "text/html; charset=utf-8" }],
+	["/amend.js", { file: "amend.js", type: "text/javascript; charset=utf-8" }],
 	["/bracketing", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
 	["/bracketing.html", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
 	["/bracketing.js", { file: "bracketing.js", type: "text/javascript; charset=utf-8" }],
@@ -1190,6 +1865,30 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 			}
 			if (method === "POST" && path === "/api/batches") {
 				respondJson(response, 201, await service.pushBatch(await requestBody(request)))
+				return
+			}
+
+			/* --- calibration mode: absolute grading of single palettes (REVIEW_UI.md §5) --------- */
+
+			if (method === "POST" && path === "/api/calibration") {
+				respondJson(response, 201, await service.pushCalibration(await requestBody(request)))
+				return
+			}
+
+			const calibrationMatch = /^\/api\/calibration\/([^/]+)$/u.exec(path)
+			if (method === "GET" && calibrationMatch) {
+				respondJson(response, 200, service.calibrationPayload(decodeURIComponent(calibrationMatch[1])))
+				return
+			}
+
+			const calibrationVerdictMatch = /^\/api\/calibration\/([^/]+)\/items\/([^/]+)\/verdict$/u.exec(path)
+			if (calibrationVerdictMatch && (method === "PUT" || method === "POST")) {
+				const state = await service.putAbsoluteVerdict(
+					decodeURIComponent(calibrationVerdictMatch[1]),
+					decodeURIComponent(calibrationVerdictMatch[2]),
+					parseAbsoluteVerdictInput(await requestBody(request)),
+				)
+				respondJson(response, 200, { recordId: state.recordId, revision: state.revision, recordedAt: state.record.ts })
 				return
 			}
 
@@ -1320,6 +2019,112 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 				return
 			}
 
+			/* --- the palette composer (REVIEW_UI.md §4) ------------------------------------------ */
+
+			const colorsMatch = /^\/api\/batches\/([^/]+)\/items\/([^/]+)\/colors$/u.exec(path)
+			if (method === "GET" && colorsMatch) {
+				respondJson(
+					response,
+					200,
+					await service.paletteSource(decodeURIComponent(colorsMatch[1]), decodeURIComponent(colorsMatch[2])),
+				)
+				return
+			}
+
+			const pixelMatch = /^\/api\/batches\/([^/]+)\/items\/([^/]+)\/pixel$/u.exec(path)
+			if (method === "GET" && pixelMatch) {
+				const x = Number(url.searchParams.get("x"))
+				const y = Number(url.searchParams.get("y"))
+				respondJson(
+					response,
+					200,
+					await service.samplePixel(decodeURIComponent(pixelMatch[1]), decodeURIComponent(pixelMatch[2]), x, y),
+				)
+				return
+			}
+
+			const previewMatch = /^\/api\/batches\/([^/]+)\/items\/([^/]+)\/preview$/u.exec(path)
+			if (previewMatch && (method === "POST" || method === "PUT")) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				respondJson(
+					response,
+					200,
+					await service.previewPalette(
+						decodeURIComponent(previewMatch[1]),
+						decodeURIComponent(previewMatch[2]),
+						body.palette,
+					),
+				)
+				return
+			}
+
+			const endorsementMatch = /^\/api\/batches\/([^/]+)\/items\/([^/]+)\/endorsement$/u.exec(path)
+			if (endorsementMatch && (method === "POST" || method === "PUT")) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				const comment = body.comment ?? ""
+				if (typeof comment !== "string" || comment.length > MAX_COMMENT_LENGTH) {
+					throw new BadRequest(`comment must be a string of at most ${MAX_COMMENT_LENGTH} characters`)
+				}
+				const basedOn = body.basedOn === undefined || body.basedOn === null ? null : String(body.basedOn)
+				respondJson(
+					response,
+					201,
+					await service.putEndorsement(
+						decodeURIComponent(endorsementMatch[1]),
+						decodeURIComponent(endorsementMatch[2]),
+						body.palette,
+						comment,
+						basedOn,
+					),
+				)
+				return
+			}
+
+			/* --- post-release amendments (REVIEW_UI.md §2) --------------------------------------- */
+
+			const amendMatch = /^\/api\/batches\/([^/]+)\/items\/([^/]+)\/amend$/u.exec(path)
+			if (method === "POST" && amendMatch) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				const target = body.target === undefined ? "verdict" : String(body.target)
+				if (!(AMEND_TARGETS as readonly string[]).includes(target)) {
+					throw new BadRequest(`target must be one of ${AMEND_TARGETS.join(" | ")}`)
+				}
+				const reason = typeof body.reason === "string" ? body.reason : ""
+				const retract = body.retract === true
+				const patch = parseAmendPatch(target as AmendTarget, body.patch ?? {})
+				if (Object.keys(patch).length === 0 && !retract) {
+					throw new BadRequest("an amendment must change something or retract the record")
+				}
+				respondJson(
+					response,
+					200,
+					await service.amendItem(
+						decodeURIComponent(amendMatch[1]),
+						decodeURIComponent(amendMatch[2]),
+						target as AmendTarget,
+						patch,
+						reason,
+						retract,
+					),
+				)
+				return
+			}
+
+			const releaseNoteMatch = /^\/api\/batches\/([^/]+)\/release-note$/u.exec(path)
+			if (method === "POST" && releaseNoteMatch) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				if (typeof body.note !== "string" || body.note.length > MAX_COMMENT_LENGTH) {
+					throw new BadRequest(`note must be a string of at most ${MAX_COMMENT_LENGTH} characters`)
+				}
+				const reason = typeof body.reason === "string" ? body.reason : ""
+				respondJson(
+					response,
+					200,
+					await service.amendReleaseNote(decodeURIComponent(releaseNoteMatch[1]), body.note, reason),
+				)
+				return
+			}
+
 			const releaseMatch = /^\/api\/batches\/([^/]+)\/release$/u.exec(path)
 			if (method === "POST" && releaseMatch) {
 				const batchId = decodeURIComponent(releaseMatch[1])
@@ -1390,6 +2195,26 @@ export async function seedDemoBatch(service: ReviewService, fixturePath = DEMO_B
 		}))
 	}
 	const pushed = await service.pushBatch(fixture)
+	return pushed.batchId
+}
+
+/**
+ * Push the demo calibration round if it is not in the queue yet. Idempotent by batch id.
+ *
+ * Same three artworks as the demo pairwise batch, so the two modes can be compared on screen without
+ * inventing colours. Seeded under the same `--no-demo` flag, because it is the same kind of thing:
+ * something to look at, never evidence.
+ */
+export async function seedDemoCalibration(service: ReviewService, fixturePath = DEMO_CALIBRATION_PATH): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as Record<string, unknown>
+	if (typeof fixture.batchId === "string" && service.has(fixture.batchId)) return null
+	if (fixture.imagePathsRelativeTo === "repo-root" && Array.isArray(fixture.items)) {
+		fixture.items = fixture.items.map((item: Record<string, unknown>) => ({
+			...item,
+			imagePath: join(REPO_ROOT, String(item.imagePath)),
+		}))
+	}
+	const pushed = await service.pushCalibration(fixture)
 	return pushed.batchId
 }
 
@@ -1502,6 +2327,10 @@ async function main(): Promise<void> {
 	if (values["no-demo"] !== true) {
 		const seeded = await seedDemoBatch(handle.service)
 		if (seeded !== null) process.stdout.write(`seeded demo batch "${seeded}"\n`)
+		const calibration = await seedDemoCalibration(handle.service)
+		if (calibration !== null) {
+			process.stdout.write(`seeded demo calibration round "${calibration}" — http://127.0.0.1:${values.port}/calibration\n`)
+		}
 	}
 	if (values["no-bracketing"] !== true) {
 		const seeded = await seedBracketingRound(handle.service)
