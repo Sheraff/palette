@@ -57,6 +57,8 @@ import {
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
 	PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
 	PREMISE_RUN_PATH,
+	PROBE_GOLD_BATCH_ID,
+	PROBE_GOLD_FIXTURE_PATH,
 	itemImagePath,
 	readPremiseRun,
 	validateFixture,
@@ -696,6 +698,10 @@ export class ReviewService {
 				kind: question.kind,
 				question: question.question,
 				instruction: question.instruction,
+				// Served so the page can put them above the question on every item of the pass. They are
+				// part of what was asked, not chrome: see OracleQuestion.preamble.
+				preamble: question.preamble ?? null,
+				framing: question.framing ?? null,
 				answers: question.answers.map((answer) => ({
 					key: answer.key,
 					label: answer.label,
@@ -1411,6 +1417,31 @@ export async function seedBracketingRound2(
 	return pushed.batchId
 }
 
+/**
+ * Push the human probe round if it is not in the queue yet. Idempotent by batch id.
+ *
+ * PREMISE_NEXT.md §12. Deliberately a separate batch from the disambiguation round even though it
+ * covers the same 30 artworks: it asks different questions, under a different label schema, and the
+ * whole point of use (b) is comparing the two — which needs them to be two.
+ */
+export async function seedProbeGoldRound(
+	service: ReviewService,
+	fixturePath = PROBE_GOLD_FIXTURE_PATH,
+	batchId = PROBE_GOLD_BATCH_ID,
+): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as OracleValidationFixture
+	if (service.has(batchId)) return null
+	const pushed = await service.pushOracleValidation(
+		fixture,
+		[
+			"PREMISE_NEXT.md §12 — probe-native gold, and the model-free reliability test",
+			`probes: ${fixture.questions.map((question) => question.key).join(", ")}`,
+		],
+		batchId,
+	)
+	return pushed.batchId
+}
+
 /** Push the premise-disambiguation round if it is not in the queue yet. Idempotent by batch id. */
 export async function seedOracleValidationRound(
 	service: ReviewService,
@@ -1464,6 +1495,8 @@ async function main(): Promise<void> {
 	if (values["no-oracle"] !== true) {
 		const seeded = await seedOracleValidationRound(handle.service)
 		if (seeded !== null) process.stdout.write(`seeded oracle-validation round "${seeded}" — http://127.0.0.1:${values.port}/oracle\n`)
+		const probes = await seedProbeGoldRound(handle.service)
+		if (probes !== null) process.stdout.write(`seeded oracle-validation round "${probes}" — http://127.0.0.1:${values.port}/oracle\n`)
 	}
 	const actual = await handle.listen(port)
 	process.stdout.write(`v3 review server: http://127.0.0.1:${actual}/\n`)

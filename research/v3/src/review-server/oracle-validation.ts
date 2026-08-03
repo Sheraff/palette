@@ -20,6 +20,7 @@
  *   NODE_NO_WARNINGS=1 node --experimental-strip-types \
  *     research/v3/src/review-server/oracle-validation.ts --write
  */
+import { readFileSync } from "node:fs"
 import { readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -69,6 +70,18 @@ export type OracleQuestion = Readonly<{
 	 * words the reviewer read must travel with the answers.
 	 */
 	instruction: string
+	/**
+	 * The referent preamble — what "the background" means — rendered on the page above the question,
+	 * on every pass. Carried byte-identically from the prompt file's `referent_preamble`.
+	 *
+	 * Not optional decoration. v1 of these probes called the background "the large area", a singular
+	 * referent, which made four of the six probes unanswerable on a plural background (half sky, half
+	 * roof). v1.1 fixes the referent once, here; a reviewer who never sees it is answering v1's
+	 * question, not v1.1's.
+	 */
+	preamble?: string
+	/** The unsure framing, likewise on the page above the question. From `unsure_framing`. */
+	framing?: string
 	answers: readonly OracleAnswerOption[]
 }>
 
@@ -484,13 +497,216 @@ export function serializeFixture(fixture: OracleValidationFixture): string {
 	return `${JSON.stringify(fixture, null, "\t")}\n`
 }
 
+/* ------------------------------------------------------------------------------------------- */
+/* Batch 2 — the human probe round (PREMISE_NEXT.md §12)                                         */
+/* ------------------------------------------------------------------------------------------- */
+
+export const PROBE_GOLD_BATCH_ID = "oracle-probe-gold-1"
+export const PROBE_GOLD_SEED = 20260803
+/** The probe arm's question-set schema. The reviewer's rows must carry the model's, as always. */
+export const PROBE_LABEL_SCHEMA_VERSION = "group-a.probes.v1.1"
+
+export const PROBE_GOLD_FIXTURE_PATH = fileURLToPath(
+	new URL("../../data/oracle-validation/probe-gold-1.json", import.meta.url),
+)
+const PROBE_PROMPT_DIR = fileURLToPath(new URL("../../oracle/premise/prompts/", import.meta.url))
+
+/**
+ * The six probes, in `bundled-p`'s order.
+ *
+ * Fixed and recorded rather than randomised per sitting: with one reviewer there is nothing to
+ * average a randomised order over, and a fixed order is reproducible where a shuffled one is not
+ * (PREMISE_NEXT.md §12). `enclosure` and `shading_direction` are not here — only these six derive
+ * `ground_type`.
+ * [REVIEWED] — `group-a.probes.v1.1.bundled-p.json`, questions 2–7.
+ */
+export const PROBE_ORDER = [
+	"bg_visible",
+	"one_colour",
+	"continuous_change",
+	"separate_areas",
+	"motif_or_material",
+	"depicted_place",
+] as const
+
+/** Probe key → its solo prompt file. Solo, because that file renders the probe on its own. */
+const PROBE_PROMPT_FILES: Readonly<Record<string, string>> = {
+	bg_visible: "group-a.probes.v1.1.solo-bg-visible.json",
+	one_colour: "group-a.probes.v1.1.solo-one-colour.json",
+	continuous_change: "group-a.probes.v1.1.solo-continuous-change.json",
+	separate_areas: "group-a.probes.v1.1.solo-separate-areas.json",
+	motif_or_material: "group-a.probes.v1.1.solo-motif-or-material.json",
+	depicted_place: "group-a.probes.v1.1.solo-depicted-place.json",
+}
+
+/**
+ * One key per probe answer. `y`/`n`/`u` keeps the one-keystroke, auto-advance property §6 asks for.
+ *
+ * The question `kind` is **`enum`, not `boolean`**: `BOOLEAN_HOTKEYS` is fixed at two keys and a
+ * probe has three answers. A consequence worth stating, because the page has to handle it: `u` is an
+ * *answer* here, so it is no longer undo — the page falls back to Backspace / ArrowLeft and says so
+ * on screen.
+ * [REVIEWED] — PREMISE_NEXT.md §12.
+ */
+const PROBE_HOTKEYS: Readonly<Record<string, string>> = { yes: "y", no: "n", unsure: "u" }
+
+/**
+ * The anti-coherence instruction, on every pass, verbatim from PREMISE_NEXT.md §12.
+ *
+ * The reviewer has seen these 30 artworks before and answered a six-way question about them. The
+ * derivation is only meaningful if each probe is answered on its own terms rather than back-solved
+ * into the answer they remember giving.
+ */
+export const PROBE_INSTRUCTION =
+	"Answer this one question only. Do not try to make your answers across questions tell one story. " +
+	"If you cannot tell, answer unsure — it is a real answer."
+
+/**
+ * Pull one probe's exact rendering out of its prompt file.
+ *
+ * Parsed, never transcribed. §12 requires the stem and every gloss to be byte-identical to what the
+ * model was shown, and a hand-copied string is a byte-identical string right up until someone fixes
+ * a typo in one of the two places.
+ */
+/** Small indirection so the parser can be pointed at a fixture directory in tests. */
+function readFileSyncUtf8(path: string): string {
+	return readFileSync(path, "utf8")
+}
+
+export function readProbePrompt(
+	promptFile: string,
+): { key: string; question: string; preamble: string; framing: string; answers: { key: string; gloss: string }[] } {
+	const raw = JSON.parse(readFileSyncUtf8(promptFile)) as {
+		referent_preamble: string
+		unsure_framing: string
+		canonical_fields: string[]
+		prompt: string
+	}
+	const marker = "One question only.\n\n"
+	const start = raw.prompt.indexOf(marker)
+	if (start < 0) throw new Error(`${promptFile}: no single-probe block`)
+	const block = raw.prompt.slice(start + marker.length).split("\n\nReply with JSON only.")[0]
+	const [stem, ...optionLines] = block.split("\n")
+	const key = stem.slice(0, stem.indexOf(" - "))
+	if (raw.canonical_fields.length !== 1 || raw.canonical_fields[0] !== key) {
+		throw new Error(`${promptFile}: stem names ${key} but the file declares ${raw.canonical_fields.join(", ")}`)
+	}
+	const answers = optionLines.map((line) => {
+		const trimmed = line.trim()
+		const at = trimmed.indexOf(" - ")
+		if (at < 0) throw new Error(`${promptFile}: option line without a gloss: ${line}`)
+		return { key: trimmed.slice(0, at), gloss: trimmed.slice(at + 3) }
+	})
+	return { key, question: stem, preamble: raw.referent_preamble, framing: raw.unsure_framing, answers }
+}
+
+/** Every probe as an `OracleQuestion`, in pass order. */
+export function probeQuestions(promptDir = PROBE_PROMPT_DIR): OracleQuestion[] {
+	return PROBE_ORDER.map((probe) => {
+		const parsed = readProbePrompt(join(promptDir, PROBE_PROMPT_FILES[probe]))
+		if (parsed.key !== probe) throw new Error(`${probe}: prompt file renders ${parsed.key}`)
+		return {
+			key: probe,
+			kind: "enum",
+			question: parsed.question,
+			instruction: PROBE_INSTRUCTION,
+			preamble: parsed.preamble,
+			framing: parsed.framing,
+			answers: parsed.answers.map((answer) => {
+				const hotkey = PROBE_HOTKEYS[answer.key]
+				if (hotkey === undefined) throw new Error(`${probe}: no hotkey for answer ${answer.key}`)
+				return { key: answer.key, label: answer.key, gloss: answer.gloss, hotkey }
+			}),
+		}
+	})
+}
+
+/**
+ * The human probe round: the same 30 gold artworks, asked the six probes instead of the one six-way
+ * question, in six contiguous passes.
+ *
+ * The item rows are **reused verbatim** from the disambiguation round's committed fixture — same
+ * `imagePath`, same `sha256`, same rendition — so the join back to the reviewer's own direct answers
+ * and to the model's rows is exact. Only the questions and the serve order change.
+ */
+export async function buildProbeGoldFixture(
+	options: { goldFixturePath?: string; promptDir?: string; batchId?: string; seed?: number } = {},
+): Promise<OracleValidationFixture> {
+	const gold = JSON.parse(await readFile(options.goldFixturePath ?? PREMISE_DISAMBIGUATION_FIXTURE_PATH, "utf8")) as
+		OracleValidationFixture
+	const questions = probeQuestions(options.promptDir)
+	const seed = options.seed ?? PROBE_GOLD_SEED
+	const random = mulberry32(seed)
+
+	const items: OracleValidationItem[] = []
+	const serveOrder: string[] = []
+	for (const question of questions) {
+		const pass = gold.items.map((item) => ({
+			...item,
+			itemId: `pg-${question.key}-${item.sha256.slice(0, 12)}`,
+			questionKey: question.key,
+		}))
+		items.push(...pass)
+		// Contiguous passes, shuffled inside each one so the artworks are not walked in the same
+		// order six times — which would let the reviewer recognise position rather than artwork.
+		serveOrder.push(...shuffled(pass.map((item) => item.itemId), random))
+	}
+
+	const fixture: OracleValidationFixture = {
+		fixtureVersion: PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+		batchId: options.batchId ?? PROBE_GOLD_BATCH_ID,
+		purpose: "oracle-validation",
+		labelSchemaVersion: PROBE_LABEL_SCHEMA_VERSION,
+		seed,
+		generatedBy: "research/v3/src/review-server/oracle-validation.ts",
+		builtFrom: [
+			"research/v3/data/oracle-validation/premise-disambiguation-1.json",
+			...PROBE_ORDER.map((probe) => `research/v3/oracle/premise/prompts/${PROBE_PROMPT_FILES[probe]}`),
+		],
+		selection: {
+			rule:
+				"The same 30 gold artworks as the disambiguation round, asked the six group-a.probes.v1.1 " +
+				"probes that derive ground_type, one contiguous pass per probe in bundled-p's order. Two " +
+				"pre-registered uses (PREMISE_NEXT.md §12): a probe-native gold with no construct-match " +
+				"caveat, and the model-free reliability test — the reviewer's probe-derived tags against " +
+				"the reviewer's own direct six-way answers on the same images.",
+			counts: { artworks: gold.items.length, probes: questions.length, items: items.length },
+		},
+		questions,
+		items,
+		serveOrder,
+	}
+	validateFixture(fixture)
+	return fixture
+}
+
 /** Absolute path of one item's rendition. The fixture stores repo-root-relative paths. */
 export function itemImagePath(item: OracleValidationItem, repoRoot = REPO_ROOT): string {
 	return join(repoRoot, item.imagePath)
 }
 
 async function main(): Promise<void> {
-	const { values } = parseArgs({ options: { write: { type: "boolean", default: false } }, strict: true })
+	const { values } = parseArgs({
+		options: { write: { type: "boolean", default: false }, fixture: { type: "string", default: "disambiguation" } },
+		strict: true,
+	})
+	if (values.fixture === "probe-gold") {
+		const probes = await buildProbeGoldFixture()
+		process.stdout.write(
+			`${probes.batchId}: ${probes.items.length} items = ` +
+				`${probes.selection.counts.artworks} artworks x ${probes.selection.counts.probes} probes\n`,
+		)
+		for (const question of probes.questions) {
+			process.stdout.write(
+				`  ${question.key.padEnd(18)} ${question.answers.map((answer) => `${answer.hotkey}=${answer.key}`).join(" ")}\n`,
+			)
+		}
+		if (values.write) {
+			await writeFile(PROBE_GOLD_FIXTURE_PATH, serializeFixture(probes))
+			process.stdout.write(`wrote ${PROBE_GOLD_FIXTURE_PATH}\n`)
+		}
+		return
+	}
 	const fixture = await buildPremiseDisambiguationFixture()
 	const counts = fixture.selection.counts
 	process.stdout.write(`${fixture.batchId}: ${fixture.items.length} items, ${fixture.questions.length} question\n`)

@@ -546,6 +546,19 @@ summary {
 	min-width: 0;
 }
 
+/* The referent preamble and the unsure framing: what "the background" means, and that unsure is a
+ * real answer. Above the question, on every item — see OracleQuestion.preamble. */
+.oracle-preamble {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.oracle-preamble:empty {
+	display: none;
+}
+
 /* The standing instruction. It stays on screen for every item of the pass: an answer only means
  * something against the exact words it was answered under. */
 .oracle-instruction {

@@ -17,12 +17,15 @@
  */
 
 const nodes = {
+	preamble: document.querySelector("#preamble"),
+	framing: document.querySelector("#framing"),
 	question: document.querySelector("#question"),
 	instruction: document.querySelector("#instruction"),
 	progress: document.querySelector("#progress"),
 	stage: document.querySelector("#stage"),
 	mapping: document.querySelector("#mapping"),
 	status: document.querySelector("#status"),
+	undokey: document.querySelector("#undokey"),
 }
 
 let batch = null
@@ -46,6 +49,13 @@ async function api(path, init) {
 	const body = await response.json().catch(() => ({}))
 	if (!response.ok) throw new Error(body.error ?? `${response.status} ${response.statusText}`)
 	return body
+}
+
+/** True when the current question spends `u` on an answer, so `u` cannot also mean undo. */
+function undoIsTaken() {
+	const item = index < batch.items.length ? batch.items[index] : null
+	const question = item === null ? null : questionOf(item)
+	return question !== null && question.answers.some((entry) => entry.hotkey === "u")
 }
 
 function questionOf(item) {
@@ -76,6 +86,8 @@ function render() {
 	if (index >= batch.items.length) {
 		nodes.question.textContent = "every item answered"
 		nodes.instruction.textContent = ""
+		nodes.preamble.textContent = ""
+		nodes.framing.textContent = ""
 		nodes.progress.textContent = `${batch.items.length} / ${batch.items.length}`
 		nodes.mapping.replaceChildren()
 		nodes.stage.replaceChildren(
@@ -91,7 +103,13 @@ function render() {
 	const question = questionOf(item)
 	nodes.question.textContent = question === null ? item.questionKey : question.question
 	nodes.instruction.textContent = question === null ? "" : question.instruction
+	// The referent preamble and the unsure framing sit above the question on EVERY item of every
+	// pass, not once at the start: they are what makes these probes answerable on a background made
+	// of several parts, and a reviewer who scrolled past them once is answering a different question.
+	nodes.preamble.textContent = question?.preamble ?? ""
+	nodes.framing.textContent = question?.framing ?? ""
 	if (question !== null) renderMapping(question)
+	nodes.undokey.textContent = undoIsTaken() ? "backspace" : "u"
 
 	// Progress is reported inside the pass, not across the batch: the reviewer is answering one
 	// question, and "12 of 30" for that question is the number that says how much is left of it.
@@ -169,8 +187,9 @@ function onKey(event) {
 	const question = item === null ? null : questionOf(item)
 	const chosen = question === null ? undefined : question.answers.find((entry) => entry.hotkey === key)
 	if (chosen !== undefined) answer(chosen.key)
-	// `u` is undo even on a boolean question: `n` is taken by an answer, so undo needs its own key.
-	else if (key === "u" || event.key === "Backspace") undo()
+	// `u` is undo unless the question spends it on an answer — the probe round binds y/n/u, so there
+	// undo is Backspace or ArrowLeft, and the footer says which.
+	else if ((key === "u" && !undoIsTaken()) || event.key === "Backspace") undo()
 	else if (key === "r") release()
 	else if (event.key === "ArrowLeft") undo()
 	else return

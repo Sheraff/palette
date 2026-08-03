@@ -34,7 +34,7 @@ const BATCH = PREMISE_DISAMBIGUATION_BATCH_ID
 const fixture = await buildPremiseDisambiguationFixture()
 
 /** The page's node ids, in the order `visible()` joins them; the status line comes last. */
-const NODE_IDS = ["question", "instruction", "progress", "mapping", "stage", "status"] as const
+const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "status"] as const
 
 const open = (base: string) => openPage(base, ORACLE_PAGE, NODE_IDS)
 
