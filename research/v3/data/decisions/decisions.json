@@ -659,6 +659,18 @@
     "research/v3/data/sam/mask-quality-2-sample.json"
    ],
    "scope": "SAM geometry stage, concept set v2 onward"
+  },
+  {
+   "id": "d-2026-08-03-coverage-set-canonical-bench",
+   "ts": "2026-08-03T20:10:00Z",
+   "kind": "corpus-policy",
+   "decision": "coverage-set-1 (200 core embedding-stratified artworks + 20 labeled enrichment) is the canonical instrument-tuning bench. eval-142 is retained ONLY for truth-anchored comparisons against its existing labels \u2014 measured 2.67x further from the corpus distribution than the core (cluster-mix TVD 0.227 vs 0.085), 17.6% of it outside the embedded corpus entirely, 4 of 36 clusters never touched. New instrument tuning runs on the coverage core; reviewer label rounds accumulate on it toward the stage-4 validation sample.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/data/coverage-set/coverage-set-1.json",
+    "research/v3/data/coverage-set/COVERAGE_SET.md"
+   ],
+   "scope": "all instrument tuning from 2026-08-03"
   }
  ]
 }

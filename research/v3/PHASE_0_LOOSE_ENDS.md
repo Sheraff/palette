@@ -180,6 +180,18 @@ area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIE
   family option scan, low priority). **Revives when:** the bulk run is designed.
 - **Blast radius.** Bulk-run cost (17.5h vs 28h) and label coverage (95% vs 64%).
 
+
+### A11. The sharded collection has NO holdout — coverage-set membership is not a claims shield
+- **What.** The frozen holdout covers music-artworks only (by design: the sharded supply is
+  effectively unlimited upstream, so "never-seen evaluation = import fresh shards" —
+  reviewer decision 2026-08-02). The coverage set now touches most sharded clusters, so
+  "not in the coverage set" must never be read as "clean for a final accuracy claim".
+- **Consequence.** Any end-of-campaign claim on the sharded distribution requires importing
+  genuinely fresh shards at claim time; the mechanism has never been exercised.
+- **Owner.** orchestrator (exercise the fresh-shard import once, before Phase 2 claims).
+  **Revives when:** the first sharded-corpus accuracy claim is drafted.
+- **Blast radius.** Final claims only; dev work unaffected.
+
 ## B. Standing — parked with a clear trigger
 
 ### B1. The bulk-model decision (which VLM runs the corpus pass)
