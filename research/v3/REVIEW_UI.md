@@ -142,5 +142,7 @@ funded this decision" without archaeology.
 - The 2-stop 35% / 3+-stop 10% display reserves are carried `[REVIEWED]` from v2-3; re-tune
   only if the reviewer objects once real v3 gradients render.
 - Server deployment details (port, LAN exposure, auth — none needed if localhost-only).
-- The tagging agent's tag vocabulary — draft alongside the pathology census; must be
-  symmetric.
+- ~~The tagging agent's tag vocabulary~~ **Built 2026-08-03**: 66 tags in 33 symmetric pairs
+  across 8 axes — see `data/tagging/TAGS.md` (generated) and
+  `src/tagging/TAGGING_PROTOCOL.md`. Tags are filed post-hoc by the export/import tooling, so
+  the review server needs no tagging UI.

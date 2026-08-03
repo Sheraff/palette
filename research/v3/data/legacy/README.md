@@ -17,8 +17,9 @@ every entry carries `"contract": "v2-3"` so a later reader cannot mistake it for
 **Matching is within the bar, never exact hex.** A v3 palette matches a fixture entry when all four role
 colors fall within the v3 same-color bar — the "one ruler" of `PHASE_0_DECISIONS.md` §3. Never on hex
 equality. The fixtures store exact hexes precisely so that any bar can be applied after the fact.
-The bar itself is **[UNCALIBRATED]** — unit and threshold are pending the reviewer bracketing round (§3, §6;
-v2-3's 3.3 CIE76 is the prior, not the answer). Compare on `roleSignature`, or per role. Do **not** gate on
+**The bar has since been calibrated and frozen** (see "The bar, as of 2026-08-03" below): it is
+region-dependent Euclidean OKLab distance, `sameColorBar(a, b)` in `research/v3/src/contract/color.ts`.
+Compare on `roleSignature`, or per role. Do **not** gate on
 `paletteSignature`: it folds in gradient, midpoint and collapse, which do not survive into the v3 contract,
 so it is for provenance and de-duplication only. This string travels with the data as `meta.matchSemantics`.
 
@@ -405,7 +406,7 @@ the generator and in the data.
 | --- | --- | --- | --- |
 | 1 | Should contested known-bad entries block the gate? | **Superseded — see row 1b.** First answer was warn-never-block with 35 hard-gate entries. | — |
 | 1b | *(reviewer, superseding row 1)* How do conflicting grades resolve? | **By recency: the latest-timestamped grade wins.** Latest grade bad → hard-gate entry marked `resolvedByRecency`; latest grade good → dropped from known-bad entirely, lives where its standing grade puts it. Identical-timestamp conflicts alone fall back to warn-not-block — **there are none**. Result: 37 entries, all hard-gate. | `known-bad.json` → `meta.recencyRule`, `meta.gatePolicy`, `meta.hardGateEntryCount` (37), `meta.droppedByRecency`, `meta.identicalTimestampConflicts` (empty); `resolution` per entry; A1 above |
-| 2 | Exact-hex match, or within the same-color bar? | **Within the bar, on all four roles, never exact hex.** The bar is **[UNCALIBRATED]** pending the reviewer bracketing round. | `meta.matchSemantics` in all three fixtures; "Two rules" section above |
+| 2 | Exact-hex match, or within the same-color bar? | **Within the bar, on all four roles, never exact hex.** The bar was `[UNCALIBRATED]` when this was decided; it has since been calibrated per region and frozen. | `meta.matchSemantics` in all three fixtures; "Two rules" section above; "The bar, as of 2026-08-03" below |
 | 3 | Export the 15 ungraded losing sides? | **No — stay excluded, no flag.** The recorded count is enough. | `meta.counts.ungradedLosingSidesInBadRecords`; A2 above |
 | 4 | What to do with `acceptable`? | **Export as a third fixture**, `acceptable.json`, kind `grade-acceptable` — a not-rejected baseline tier for the concordance dashboard only, explicitly not endorsements. | `acceptable.json` → `meta.purpose`; A3 above |
 | 5 | *(verifier caveat)* 3 standing-bad palettes sat in the good-tier files as flagged history. Is a flag enough? | **No — file membership must BE the signal.** Removed from `endorsements.json` (1) and `acceptable.json` (2) entirely; listed in `meta.droppedAsStandingBad`; good-tier overlap with known-bad is now 0. The stale counter `acceptableInstancesNotExported` was renamed `acceptableGradedInstances`. | `meta.membershipRule`, `meta.droppedAsStandingBad` in both good-tier files; A1, A3 above |
@@ -415,9 +416,28 @@ reviewer on the same day** with the recency rule. Both are recorded above rather
 other, because the fixtures were built once under each and the counts differ (35 hard-gate entries under the
 first answer, 37 under the second).
 
-### Still open, for whoever wires the gate
+### The bar, as of 2026-08-03 — settled, for whoever wires the gate
 
-The same-color bar (decision 2) is a **v3-wide** open item, not a legacy-fixture one — it is listed in
-`PHASE_0_DECISIONS.md` §6 as the bracketing round. Until it lands, no consumer of these fixtures can
-compute a match, only an exact-hex approximation of one. Anything built against them before then should
-treat its hit counts as provisional and re-run once the bar is fixed.
+**This section supersedes the earlier "still open" note.** The same-color bar (decision 2) was a
+**v3-wide** open item, not a legacy-fixture one, and it has since **landed**. The reviewer bracketing
+round ran twice (round 1 clarified + round 2, pooled), and it **refuted a single threshold**: the bar is
+**region-dependent**, on quadrants of OKLab lightness 0.55 and chroma 0.05 — see
+`PHASE_0_DECISIONS.md` §3 and §8, and the raw data in `research/v3/data/calibration/`. It is implemented as
+`sameColorBar(a, b)` in `research/v3/src/contract/color.ts`, over `SAME_COLOR_BAR_BY_REGION` in
+`src/contract/constants.ts`; when a pair straddles two regions the **larger** bar wins. The bar is
+**frozen** at its per-region point estimates by decision `d-2026-08-03-same-color-bar-freeze` in
+`research/v3/data/decisions/decisions.json` (no bracketing round 3; the light-saturated hue split is
+deliberately **not** adopted), on the calibration-consequence analysis.
+
+So a consumer of these fixtures **can compute a real match today** — call `sameColorBar()` per role
+pair; do not re-derive a threshold, and do not fall back to exact hex. Two things to carry with it:
+
+- **`POOLED_SAME_COLOR_BAR` (0.01535) is not the gate's bar.** It exists for corpus metrics and
+  dashboards that need one number comparable across runs. Every *per-pair* judgement — including the
+  known-worse gate — uses the regional `sameColorBar()`.
+- **Hit counts computed before 2026-08-03 are still provisional** and should be re-run, because they
+  were produced under an exact-hex approximation rather than the bar.
+
+Each fixture's `meta.matchSemantics` string was written before the calibration and still describes the
+bar as pending; it is frozen data and was deliberately not rewritten. This README is the current
+statement.

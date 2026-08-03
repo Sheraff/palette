@@ -1,9 +1,13 @@
 # Premise test — what to run next
 
-**For:** the orchestrator. **Status:** drafted, nothing run, nothing in `common.py` changed.
+**For:** the orchestrator. **Status (2026-08-03):** both **model** arms are still drafted and unrun,
+and nothing in `common.py` has changed — but they are now **approved and queued** for a GPU slot, and
+the sign-off ledger (§14) is clear. **The human half of the probe arm HAS been run** (§12,
+`oracle-probe-gold-1`): 43% exact agreement against the reviewer's own direct answers, below the 63%
+floor, concentrated on `flat_field`.
 **Reads with:** `README.md` (this directory), `../../ORACLE_QUESTION_SET.md` v2 §A.
 
-**Two arms are drafted and neither has been run:**
+**Two model arms are drafted and neither has been run:**
 
 | arm | schema | what it changes | §§ |
 |---|---|---|---|
@@ -398,6 +402,31 @@ the model's work.
 
 # 12. The human probe round — batch spec
 
+> **STATUS: RUN, 2026-08-03.** Batch `oracle-probe-gold-1` was built to this spec, released to the
+> reviewer, answered in full (180 of 180 answers, 30 artworks, none missing) and analyzed.
+> **Headline, from use (b):** probe-derived and direct six-way tags agree **exactly on 13 of 30
+> (43%)** — **20 points BELOW the 63% floor**, so the two instruments disagree with each other more
+> than the reviewer disagrees with themselves. The disagreement is **patterned, not diffuse: it is
+> concentrated on `flat_field`** — where the direct answer was `flat_field` the probes agreed on
+> only **2 of 11 (18%)**, against 75% on `shaded_field` and 80% on `multiple_distinct_fields`; the
+> probes' most common substitution for a direct `flat_field` is `multiple_distinct_fields` (4).
+> Binary-mapped agreement is 16 of 20 (80%), with 10 artworks mapping to no prediction on either
+> side. The `unsure` channel went essentially unused (1 of 180), but the ambiguity surfaced through
+> the tension flags and `underdetermined` instead: 71% of disagreeing artworks fired one, against
+> 46% of agreeing ones.
+> **Full numbers, confusion matrix and scoping caveats:**
+> `research/v3/data/oracle-validation/probe-gold-1-analysis.json` (batch:
+> `probe-gold-1.json`). Two caveats travel with it and are recorded there: the round was **clean on
+> the rules** (all 180 probes answered before the derivation table was read, which is the condition
+> use (b) needs), but carries a **mild anchoring caveat** — the reviewer had browsed
+> `/oracle-review`, which shows their own direct answers for these same 30 artworks, earlier the
+> same day, so any agreement measured here is an **upper bound**.
+> **No model is involved in this result**, and none of the probe arm's model numbers have been read.
+>
+> **What is still not done here:** use (a), the probe-native gold, is available but unspent — no VLM
+> probe answers exist yet to score against it. See the sequencing note at the end of this section,
+> which still holds for the model arm.
+
 **Purpose, pre-registered, two uses:**
 
 **(a) Probe-native gold.** The reviewer's own probe answers on the same 30 artworks, run through the
@@ -570,13 +599,23 @@ a prompt that presupposed a singular background.
 
 # 14. Sign-off ledger
 
+**Updated 2026-08-03.** The reviewer signed off rows 1, 2, 4 and 5 on that date, and row 7 has been
+run — see §12 for the result. Nothing on this ledger is now blocking.
+
 | # | change | arm | status |
 |---|---|---|---|
-| 1 | corrected `ground_type` criterion (§A.2) | criterion | reviewer authored both source rulings; the generalisation needs sign-off |
-| 2 | precedence rule (§A.1) | criterion | **new policy** — the one change in C/D the reviewer has not decided in some form |
-| 3 | `confidence` stem trigger | criterion | low stakes |
-| 4 | the probe set and its wordings, **v1.1** (§A.6.1) | probe | **new instrument** — needs sign-off before the human round, since the reviewer will answer these words. The v1.1 referent preamble, whole-region clauses and unsure framing are reviewer-authored; what needs sign-off is that they are now correct on a plural background |
-| 5 | the derivation table (§A.6.3, 729 rows) | probe | **needs sign-off** — it is where the criterion's judgement now lives, once, instead of on every image |
+| 1 | corrected `ground_type` criterion (§A.2) | criterion | **SIGNED OFF 2026-08-03.** Reviewer authored both source rulings and signed off the generalisation drawn from them |
+| 2 | precedence rule (§A.1) | criterion | **SIGNED OFF 2026-08-03.** New policy, and the one change in C/D the reviewer had not decided in some form — now decided |
+| 3 | `confidence` stem trigger | criterion | low stakes; not separately signed, and not blocking |
+| 4 | the probe set and its wordings, **v1.1** (§A.6.1) | probe | **SIGNED OFF 2026-08-03**, before the human round, which is what the sign-off was needed for. The reviewer then answered these exact words in `oracle-probe-gold-1` |
+| 5 | the derivation table (§A.6.3, 729 rows) | probe | **SIGNED OFF 2026-08-03 — with a stated limit: the reviewer signed off the derivation RULES, skimmed, not a row-by-row reading of all 729 rows.** The table is asserted equal to the rules by unit test, so the rules are the thing that was signed |
 | 6 | dropping `confidence` / `ambiguity_note` from the probe arm | probe | measured-driven; reversible in one line |
-| 7 | the human probe round (§12) | probe | **needs reviewer time**, ~15 min, and must not be anchored |
+| 7 | the human probe round (§12) | probe | **DONE 2026-08-03** — batch `oracle-probe-gold-1`, released and answered in full (180/180), then analyzed. Result: 43% exact agreement with the reviewer's own direct answers, below the 63% floor, concentrated on `flat_field`. Recorded anchoring caveat, so the rate is an upper bound. Full numbers: `research/v3/data/oracle-validation/probe-gold-1-analysis.json` |
 | 8 | §A.5 vocabulary split | — | superseded by the probe arm; nothing to sign |
+
+**Run approvals, as of 2026-08-03.** The **criterion arm (variants C, D)** and the **probe arm's VLM
+runs** are **approved and QUEUED** — they are waiting on a GPU slot from the orchestrator, not on a
+sign-off. The GPU is single-owner (`CONVENTIONS.md`): no agent starts either run. The sequencing in
+the header still governs — criterion arm (~50 min) first, then probe bundled (~50 min), then probe
+separate on the gold-30 (~30 min), the last gated on the second. The human half of the probe arm
+(row 7) is already banked, so the probe-native gold is in place before any model number is read.

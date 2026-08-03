@@ -80,13 +80,15 @@ chaotic → ~0.
 ## 3. Metrics
 
 - **One ruler.** A single same-color *rule* used everywhere (agreement, movement,
-  distinctness), in Euclidean OKLab distance. **Calibrated 2026-08-02**
-  (bracketing-round-1-clarified, criterion "register-as-same", 72 items, controls clean,
-  repeat consistency 63%): **a single threshold was REFUTED** — dark-neutral pairs measure
-  0.00876 (CI 0.00575–0.01335), roughly half of dark-saturated 0.01764, light-neutral
-  0.01629, light-saturated 0.02687 (wide CI); dark-neutral's interval excludes the pooled
-  0.01582. The ruler is therefore **region-dependent** (quadrant boundaries L 0.55 / C 0.05),
-  `[REVIEWED]`, implemented as `sameColorBar(pair)` in the contract module. The reviewer's
+  distinctness), in Euclidean OKLab distance. **Calibrated over two rounds (2026-08-02/03,
+  criterion "register-as-same", 156 fitted answers, controls clean, repeat consistency 63%)
+  and FROZEN** (`d-2026-08-03-same-color-bar-freeze`, on the calibration-consequence
+  analysis): **a single threshold was REFUTED** — the frozen pooled rounds-1+2 values are
+  dark-neutral **0.00932** (CI 0.00764–0.01137), dark-saturated **0.01502**, light-neutral
+  **0.01627**, light-saturated **0.02293**; both ends exclude the pooled 0.01535
+  (metrics-only reference, never the gate's bar). The ruler is **region-dependent**
+  (quadrant boundaries L 0.55 / C 0.05), `[REVIEWED]`, implemented as `sameColorBar(pair)`
+  in the contract module — `src/contract/constants.ts` is the authority for the digits. The reviewer's
   eyes discriminate dark neutrals ~2× finer than OKLab distance predicts — v2-3's dark-toe
   complaint, quantified. Full data: `research/v3/data/calibration/`.
 - **Accent visibility is two-dimensional** (same round, part 2): at equal luminance a

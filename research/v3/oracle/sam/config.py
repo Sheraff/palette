@@ -83,13 +83,22 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
 # 0/10 each; "lettering" 2/10, "logo" 3/10, "sticker" 1/10. Phrasings §8.3 does not name
 # do far better: "words" 7/10, "letter" 7/10, "word" 6/10, "letters" 6/10,
 # "album title" 5/10, "title" 4/10, "caption" 4/10 — and the masks are pixel-accurate on
-# the glyphs. The set above is left exactly as §8.3 specifies, because changing the
-# question set is the reviewer's call, not an agent's. See research/v3/data/sam/probe-1.jsonl.
+# the glyphs. On this evidence the set above was REPLACED with the measured winners by
+# orchestrator decision 2026-08-03 (`d-2026-08-03-sam-prompt-set-replacement` in
+# research/v3/data/decisions/decisions.json); the §8.3 phrasings it drops are named in this
+# block, which is now the only record of the original set. The REVIEWER'S VETO STANDS over
+# that replacement — changing the question set is the reviewer's call, not an agent's, and
+# no reviewer has yet seen a mask from the new set. Ratifying or reversing it is one edit
+# either way (loose end A5). See research/v3/data/sam/probe-1.jsonl.
 
 # [REVIEWED] §8.3's subtractive use needs to know which concepts are "the same idea"
 # so the union fractions mean something. Every concept appears in exactly one group.
+# The membership tracks CONCEPT_PROMPTS: "text_like" was updated on 2026-08-03 alongside the
+# prompt-set replacement above — it listed "text" and "typography", which can no longer
+# appear in any row, so the group union was being computed over concepts that never fire.
+# selftest.py asserts the two stay in step ("every concept is in exactly one group").
 CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
-    "text_like": ("text", "lettering", "typography", "logo", "sticker"),
+    "text_like": ("words", "letter", "lettering", "album-title", "logo", "sticker"),
     "person_like": ("person", "face"),
 }
 

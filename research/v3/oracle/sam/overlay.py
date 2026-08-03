@@ -20,15 +20,21 @@ import common
 import config
 
 # Distinct enough to tell apart on a busy cover. Human-facing only.
+# Keys track config.CONCEPT_PROMPTS (updated 2026-08-03 with the prompt-set
+# replacement — the audit found the old keys would KeyError on every new concept).
 CONCEPT_COLORS = {
-    "text": (255, 64, 64),
-    "lettering": (255, 160, 0),
-    "typography": (255, 232, 0),
+    "words": (255, 64, 64),
+    "letter": (255, 160, 0),
+    "lettering": (255, 232, 0),
+    "album-title": (255, 96, 160),
     "logo": (0, 200, 255),
     "sticker": (255, 0, 220),
     "person": (0, 255, 120),
     "face": (120, 100, 255),
 }
+assert set(CONCEPT_COLORS) == {tag for tag, _ in config.CONCEPT_PROMPTS}, (
+    "CONCEPT_COLORS out of step with config.CONCEPT_PROMPTS"
+)
 
 
 def blend(base: np.ndarray, mask: np.ndarray, color, alpha=0.5) -> np.ndarray:
