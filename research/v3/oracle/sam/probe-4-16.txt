@@ -1,0 +1,50 @@
+# Script / object / overlay probe set (probe-4-scripts-objects), 16 images.
+# Targeted, not random: every image was OPENED and its content confirmed by eye before it
+# went on this list (see PROBE4_NOTES.md "Selection"). Two of them are the reviewer's named
+# misses from the residual round (batch sam-mask-quality-2-v2-ratification).
+# read_list_file() has no inline-comment support, so every note is on its own line.
+
+# --- the two named misses from the residual round ----------------------------
+# smq2f-02b3899bac5b: Rose Liu, large Chinese characters 没有你的天冬 + 刘明湘 LEFT STANDING
+10/ab67616d0000b27300100a3e9c764acf01c16db8
+# smq2f-3394ee31e933: "GOALS", a Mercedes G-class LEFT STANDING, residual fraction 0.969
+00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg
+
+# --- more CJK script (3) -----------------------------------------------------
+# 佛前等花开 — six large Chinese characters across the top, 舍大仙儿 smaller below
+03/ab67616d0000b2730003f2b6590090abe420d104.jpg
+# 森昌子 / こころ雪 / 美しき大地 — Japanese kanji + hiragana, vertical right column
+08/ab67616d0000b2730008f7b7f01d9149dbe92fa0
+# FEARING WORDS 言葉を恐れる — Japanese line under a Latin line, inside one framed box
+10/ab67616d00001e0200106c3252a4c133c0abde36
+
+# --- non-Latin but NOT CJK (3), to see what the CJK words over-generalise to --
+# Korean hangul: 먹구름을 향해 달리는 차 안에서
+00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg
+# Thai: กำลังพัฒนา
+05/ab67616d0000b2730005230fae1822525e5a5ff6
+# Malayalam: നിന്നെയും കാത്ത്
+00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg
+
+# --- prominent vehicles (4, incl. the GOALS miss above) ----------------------
+# illustrated yellow sedan, centre, on a psychedelic road
+02/ab67616d00001e020002881a851f1e14c374562b.jpg
+# illustrated Suzuki jeep, centre, front three-quarter, empty landscape behind
+01/ab67616d0000b2730001adc121d5ed117cfdbd91.jpg
+# photoreal orange Lamborghini, fills the lower two thirds
+0a/ab67616d0000b273000ae334b447825e117f2e01
+# red saloon with four people standing around it — car vs person competition
+0d/ab67616d00001e02000d676569f781897718a085
+
+# --- printed barcodes (2) ----------------------------------------------------
+# peel-off promo sticker carrying a real EAN barcode, 9 006472 008231
+03/ab67616d0000b2730003580bd2766859c4d81e13.jpg
+# parcel with a printed shipping label (barcode block) plus a parental-advisory mark
+07/ab67616d0000b27300072f04eb3dae24ba1cc3e8
+
+# --- negatives (2) -----------------------------------------------------------
+# spa interior photo: no text of any script, no vehicle, no barcode. Concept set v2 found
+# NOTHING at all on this one (smq2f-86b12169135a, residual fraction 1.000).
+03/ab67616d00001e02000300752f338b6aedff856c.jpg
+# Latin display type only, no vehicle, no barcode — also the "words" positive control
+images/toxicity.jpg
