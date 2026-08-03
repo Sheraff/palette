@@ -104,6 +104,16 @@ CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
 
 # --------------------------------------------------------------------------- thresholds
 
+# [REVIEWED] Calibrated 2026-08-03 by the reviewer's mask-quality round (60 masks,
+# sam-mask-quality-1, analysis in data/sam/mask-quality-analysis.json): the cut that best
+# separates the reviewer's yes from no is 0.578 (precision 91%, recall 69%, J 0.514; the
+# population-weighted alternative is 0.644, J 0.373 — the unweighted optimum is partly an
+# artefact of even-quota sampling, both recorded). All 3 hallucination-signature masks fall
+# below it, so no area-fraction guard is needed. STORED ROWS keep using the low run-time
+# threshold below so raising the cut stays a query, never a re-run; consumers should filter
+# at CALIBRATED_SCORE_THRESHOLD.
+CALIBRATED_SCORE_THRESHOLD = 0.578
+
 # [UNCALIBRATED] Score below which a detection is dropped. mlx-vlm's own README example
 # uses 0.3; the class default is 0.5. Kept low deliberately: §8.3 says recall is the
 # problem, and every row carries its score, so a stricter cut can be applied in SQL
