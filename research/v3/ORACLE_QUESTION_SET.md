@@ -1,12 +1,57 @@
-# V3 Semantic Oracle — Proposed Question Set
+# V3 Semantic Oracle — Question Set
 
-**Status:** draft — discussed 2026-08-02, not yet piloted, not yet validated against human labels
+**Version:** **v2**, 2026-08-03. Supersedes v1 (2026-08-02) **for group A only**; groups B–F are
+carried over unchanged and are still unpiloted draft. v1's group A is kept verbatim in
+Appendix V1 at the bottom — nothing in this document has been deleted.
+
+**Status:** group A is piloted and measured. Two measurements exist and are cited throughout:
+
+| tag | what it is | size |
+|---|---|---|
+| `premise-run-1` | local VLM, 2 prompt variants (A/B), greedy + constrained decode, scored against the *accepted palette's* gradient boolean | 137 artworks × 2 variants (primary population) |
+| `disambiguation-1` | the reviewer answering `ground_type` themselves on the artworks where oracle and flag contradicted | 30 artworks, 30 answered |
+
+Ground truth in `premise-run-1` is an **accepted algorithm decision, not an elicited human
+label** (`eval-set.json` → `meta.groundTruthEpistemology`). `disambiguation-1` is the only place
+in this document where a human answered the actual question.
+
+**Schema versions.**
+
+| schema_version | prompts | vocabulary | state |
+|---|---|---|---|
+| `group-a.v1` | `prompts/group-a.variant-{a,b}.json` | v1 group-A vocabulary | **frozen**, run once as `premise-run-1`, never to be edited |
+| `group-a.v2` | `prompts/group-a.v2.variant-{c,d}.json` | **identical to v1** | drafted, not run — corrected criterion text + B ordering, vocabulary deliberately untouched |
+| `group-a.v3` | none yet | **split** `ground_type` (§A.5) | **proposed only. Needs reviewer sign-off. Do not implement.** |
+
 **Companion to:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` — that document's §8 holds the
 design rules and explicitly marks its own question list as a placeholder; this document is the
-proposed actual set. The §8.1 design rules (closed vocabularies, 5-second answerability,
-description separated from judgment, never ask for computables) govern everything below.
+actual set. The §8.1 design rules (closed vocabularies, 5-second answerability, description
+separated from judgment, never ask for computables) govern everything below. §D below **adds a
+sixth rule**, earned by measurement rather than proposed.
+
+---
+
+## Changelog v1 → v2
+
+| # | change | where | kind |
+|---|---|---|---|
+| 1 | `ground_type`'s criterion corrected: the axis is **one continuous colour progression vs discrete colour areas**; surface identity is a prior, neither necessary nor sufficient | §A.2 | **needs sign-off** — it is a criterion change, though the reviewer authored both source rulings |
+| 2 | The two reviewer-decided cases written up as canonical examples, in one block that prompt files quote verbatim | §A.2 | mechanical (transcription of recorded rulings) |
+| 3 | Per-value definition sentences added to the `ground_type` vocabulary, and a **precedence rule** saying when *not* to reach for `full_scene` / `pattern_or_texture` / `none_discernible` | §A.1, §A.3 | **needs sign-off** — the precedence rule is new policy, not transcription |
+| 4 | New design rule: **question order matters; ask the context questions before the critical one** | §D | mechanical (states a measured result) |
+| 5 | Expected reliability replaced with measured reliability, per field, per tier | §A.4 | mechanical |
+| 6 | `confidence` recorded as **measured degenerate** (299 rows, 298 said `high`); inter-variant disagreement named as the real uncertainty signal | §A.4, §Meta | mechanical |
+| 7 | `ground_type` vocabulary split proposed — `full_scene` / `pattern_or_texture` are answers on a *different axis* and eat the decision-relevant answer | §A.5 | **needs sign-off — proposal only, nothing implemented** |
+| 8 | v1's group A preserved verbatim; v1's "candidate refinements" log preserved verbatim | Appendix V1, Appendix R | mechanical |
+
+Nothing in groups B–F changed. They have not been piloted, so there is nothing to correct them
+with.
+
+---
 
 ## Organizing rule
+
+*(unchanged from v1)*
 
 Ask the VLM only what is:
 
@@ -23,21 +68,203 @@ feeds no decision gets deleted at the pilot.
 
 ## A. Ground structure — feeds the gradient boolean and the background/surface roles
 
+*Revised in v2. v1's version of this section is in Appendix V1.*
+
 The heart of the set. v2-3's founding gradient rule — "shadows on one surface" vs "the sky and
-the grass are different areas" — is pure semantics and consumed 10+ review rounds.
+the grass are different areas" — is pure semantics and consumed 10+ review rounds. v2 keeps the
+same four fields and the same closed vocabularies; what changed is the **criterion** the
+critical field is judged by, and the instructions around the values.
+
+### A.1 Fields
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
-| `ground_type` | `flat_field \| shaded_field \| multiple_distinct_fields \| full_scene \| pattern_or_texture \| none_discernible` | The gradient boolean's semantic core: `shaded_field` vs `multiple_distinct_fields` **is** the one-surface-vs-two-areas distinction. Single most valuable label in the pass. |
+| `ground_type` | `flat_field \| shaded_field \| multiple_distinct_fields \| full_scene \| pattern_or_texture \| none_discernible` | The gradient boolean's semantic core: `shaded_field` vs `multiple_distinct_fields` **is** the continuous-progression-vs-discrete-areas distinction. Single most valuable label in the pass. |
 | `shading_geometry` (when shaded) | `linear \| radial_or_vignette \| irregular` | Output-contract decision on how much gradient geometry to keep (v2-3 detected radial on most gradient winners and threw it away). |
-| `field_texture` | `one_textured_material \| distinct_areas \| smooth` | Does the field's color variation read as grain/texture of one material or as distinct colored areas — the scrambled-cover test in semantic form. |
+| `field_texture` | `one_textured_material \| distinct_areas \| smooth` | Does the field's colour variation read as grain/texture of one material or as distinct coloured areas — the scrambled-cover test in semantic form. |
 | `enclosure` | `none \| thin_border \| thick_frame_or_bars` | The frame/bar class asked structurally (does a frame steal the background role), not as a per-artwork patch. |
 
-**Expected reliability: low-to-medium.** These are the genuinely ambiguous questions — which is
-exactly why they're worth asking. This group has the best existing validation hook: the
-warehouse's gradient-boolean endorsements (~80 artworks with reviewed gradient verdicts).
+**Per-value definition sentences for `ground_type`** *(new in v2; the prompt files render these
+in their own words)*:
+
+| value | means | maps to the gradient boolean as |
+|---|---|---|
+| `flat_field` | one area, essentially one colour, no progression across it | flat |
+| `shaded_field` | **one continuous colour progression** across the ground — light, shadow, glow, fade, or colours melting into one another | gradient |
+| `multiple_distinct_fields` | **discrete colour areas** — two or more, each its own colour, however hard or soft the join between them looks | flat |
+| `full_scene` | a depicted space whose ground has **no readable overall colour behaviour** — not merely "this is a photograph of a place" | *nothing* (unmapped) |
+| `pattern_or_texture` | a repeating motif or a material surface that **is** the ground, with no overall progression and no discrete colour areas | *nothing* (unmapped) |
+| `none_discernible` | no ground can be made out at all | *nothing* (unmapped) |
+
+**Precedence rule** *(new in v2, needs sign-off)*: the first three values answer the criterion
+in §A.2 and are used **whenever the ground can be read at all**. The last three exist for
+grounds where the criterion cannot be applied. A photograph of a place whose ground still reads
+as one progression, or as discrete areas, takes the criterion answer — not `full_scene`.
+
+Why the rule exists, in numbers: `full_scene` was chosen by the VLM on **50 of 137** artworks
+under variant A and **38 of 137** under variant B `[MEASURED premise-run-1]`, and by the
+reviewer on **0 of 30** artworks in `disambiguation-1` — with the option present and hotkeyed
+`[MEASURED disambiguation-1]`. Every one of those answers is a discarded answer: the field
+exists to feed the gradient boolean and `full_scene` feeds it nothing. Under variant A, **44%**
+of all `ground_type` answers (60/137) landed on a value that predicts nothing; under B, **31%**
+(43/137).
+
+### A.2 The criterion — corrected in v2
+
+> **THE TEST.** Does the ground read as **one continuous colour progression**, or as
+> **discrete colour areas**? Whether it is one physical surface is a strong hint, but it is
+> neither required nor decisive.
+>
+> **Canonical case 1 — the painted wall.** A wall painted in bands that melt into each other is
+> **one continuous progression** (`shaded_field`) — this is the contract's genuine three-stop
+> gradient case. The same wall painted in *crisp* bands is **discrete areas**
+> (`multiple_distinct_fields`). Same wall, same paint, different answer.
+>
+> **Canonical case 2 — the blurry meeting line.** One flat area meeting one shaded area along a
+> blurry line is still **discrete areas** (`multiple_distinct_fields`). A single surface that is
+> flat across part of itself and shaded across another part is **one continuous progression**
+> (`shaded_field`). How soft the join looks is never the test.
+>
+> If it is genuinely a coin flip, answer with your first read. Do not deliberate.
+
+Both cases were decided by the reviewer during `disambiguation-1` and are recorded verbatim in
+Appendix R. Together they are what corrected the criterion: surface identity is **neither
+necessary** (the crisp-banded wall is one surface and reads discrete) **nor sufficient** (a hazy
+sky-into-sea is two things and can read continuous).
+
+This block is the text the `group-a.v2` prompt files carry as **one shared block, byte-identical
+between variants C and D** — so that the two instruments are quoting one sentence, not two
+paraphrases of it. The prompt rendering differs from the blockquote above only in typography:
+markdown emphasis is dropped and the em dashes become commas, because the prompt is plain text.
+No word changes. The same rule applies to any human review form built for `group-a.v2`: quote the
+block, do not restate it.
+
+The v1 criterion — "a gradient means continuous shading within one physical surface; the sky and
+the grass are different areas" — is not wrong, it is *incomplete*: it names the prior and stops.
+It is preserved in Appendix V1 because `premise-run-1` and `disambiguation-1` were both
+collected under it, and no re-reading of those numbers is legitimate under the new wording.
+
+### A.3 Genuine ambiguity
+
+A forced choice with no deliberation, matching the VLM's forced choice under constrained
+decoding — the two instruments must be symmetric or the comparison is not a comparison. When the
+answer is a coin flip, both answer their first read; the *disagreement between prompt variants*
+is what carries the ambiguity, not a hedge inside one answer (§A.4, `confidence`).
+
+### A.4 Reliability — measured, no longer expected
+
+v1 said "expected reliability: low-to-medium" for this group. That guess is now replaced by
+measurement. Every number below carries its source.
+
+**`ground_type`, against a human who answered the same question** (`disambiguation-1`, the
+30 artworks where oracle and flag contradicted — i.e. the *hard* subset by construction, not a
+random sample):
+
+| | exact `ground_type` match | binary gradient agreement |
+|---|---|---|
+| variant A | 7/30 = **23%** | 8/20 = **40%** |
+| variant B | 16/30 = **53%** | 17/24 = **71%** |
+| the v2-3 algorithm's flag | — | 14/24 = **58%** |
+
+`[MEASURED disambiguation-1]`. Binary denominators differ because unmapped labels are dropped.
+
+**`ground_type`, against the accepted palettes' flag, corpus-wide** (`premise-run-1`, n=137):
+
+| | strict (unmapped forced to flat) | mapped labels only | unmapped |
+|---|---|---|---|
+| variant A | agreement 61%, κ **0.21** | n=77, agreement 71%, κ **0.45** | 60/137 |
+| variant B | agreement 66%, κ **0.31** | n=94, agreement 74%, κ **0.48** | 43/137 |
+
+`[MEASURED premise-run-1]`. Quote both columns or neither (`analyze.py` notes). Verdict:
+**moderate at best, and only after a third of the answers are thrown away.**
+
+**By resolution tier — `ground_type` at thumbnail tier is now MEASURED low.** On
+`disambiguation-1`, of the 7 thumbnail-tier artworks the reviewer sided with the algorithm's
+flag 6 times, with a label that predicts nothing once, and **with the oracle zero times**
+(standard tier: oracle 10, flag 6, neither 5; large tier: oracle 0, flag 2)
+`[MEASURED disambiguation-1, n=7 at this tier]`. The honest reading, stated with its
+counterweight: at corpus scale against the flag, the thumbnail tier is *not* the worst tier
+(variant B: thumbnail κ 0.42, standard κ 0.24, large κ 0.48 `[MEASURED premise-run-1]`). So the
+claim is narrow and it is the one that matters: **where a human actually looked at a contested
+thumbnail, the oracle never won.** This is consistent with pipeline §7.1 — a 300 px thumbnail
+must never yield a confident negative — and it is the first measured support for it.
+
+**The other three fields**, by inter-variant agreement only (no human answered these yet)
+`[MEASURED premise-run-1, n=137]`:
+
+| field | raw | κ | dominant disagreement | reading |
+|---|---|---|---|---|
+| `enclosure` | 0.87 | 0.60 | `none`↔`thin_border` (9) | medium-high; the disagreement is a threshold on "how thin is a border", which is a definition problem, not a perception problem |
+| `shading_geometry` | 0.81 | 0.58 | `radial_or_vignette`↔`not_applicable` (21 of 26) | **not independently unreliable** — it is downstream of `ground_type`; almost all disagreement is one variant saying `shaded_field` and the other not |
+| `field_texture` | 0.66 | 0.45 | `distinct_areas`→`smooth` (20) | **low, and the worst of the four.** It also overlaps `ground_type` (see §A.5) |
+| `ground_type` | 0.71 | 0.61 | `shaded_field`→`flat_field` (12), `full_scene`→`shaded_field` (8) | the two variants disagree on the *binary* for **36/137 = 26%** of artworks |
+
+**`confidence` is measured degenerate.** Across 299 parsed rows, **298 said `high`**; one said
+`medium`. `ambiguity_note` was empty on the same 298. Inter-variant κ = 0.0 at 99% raw
+agreement — the arithmetic of a constant. Under greedy constrained decoding the model does not
+report uncertainty, so `confidence` **must not be used as a routing or filtering signal**. Keep
+the field (it costs ~2 tokens and parity with the human form is worth something), but the real
+uncertainty instrument is pipeline §3's: the 26% of artworks where the two prompt variants
+disagree on the binary. `group-a.v2` gives the stem an operational trigger ("answer low whenever
+a second answer is defensible") to see whether the degeneracy is the model or the question.
+
+### A.5 The vocabulary question — proposal, HELD
+
+v1's `ground_type` asks one enum to carry **two different axes**:
+
+- **how the ground's colour varies** — `flat_field` / `shaded_field` /
+  `multiple_distinct_fields`. This is the axis the gradient boolean needs.
+- **what the ground is made of / whether it is a place** — `full_scene` / `pattern_or_texture` /
+  `none_discernible`. This is a prior and a stratifier.
+
+Forced into one slot, whichever axis reads more strongly wins, and the decision-relevant answer
+is the one that gets eaten. The evidence, all `[MEASURED]`:
+
+1. **The reviewer's own usage on the contested set:** `flat_field` 11, `shaded_field` 8,
+   `pattern_or_texture` **5/30**, `multiple_distinct_fields` 5, `none_discernible` **1/30**,
+   `full_scene` **0/30**. So **6 of 30 (20%)** of a *human's* answers on the hardest artworks
+   landed on labels that predict nothing about the boolean this field exists to feed. Those six
+   are not mistakes — an out-of-focus floral photograph really is a texture. The question simply
+   has no way to also record how its colour varies.
+2. **`full_scene` is the big leak, and it is a machine-only category.** 50/137 (A) and 38/137
+   (B) at corpus scale, versus 0/30 from the human. Where the human ground truth said
+   "gradient", variant A had answered `full_scene` on 29 artworks — the single largest block of
+   discarded signal in the run.
+3. **`pattern_or_texture` is smaller but real, and it is partly redundant.** The human used it
+   5/30; the VLM 10/137 (A) and 5/137 (B). But `field_texture` already asks the texture question
+   separately, so the same fact is being collected twice — once where it is harmless and once
+   where it destroys the answer.
+4. **`none_discernible` is rare and should stay.** 1/30 from the human, ~0 from the VLM. It is an
+   escape hatch, not a category, and removing escape hatches is how you manufacture confident
+   wrong answers.
+
+**Proposed `group-a.v3` shape — NOT ADOPTED, NOT IMPLEMENTED:**
+
+| field | vocabulary | note |
+|---|---|---|
+| `ground_variation` | `uniform \| continuous_progression \| discrete_areas \| not_discernible` | the decision field; always mapped except the escape hatch |
+| `ground_content` | `flat_graphic \| depicted_space \| pattern_or_material \| photographic` | the prior and stratifier; never blocks the decision |
+
+Expected effect: unmapped answers fall from 31–44% to roughly the `not_discernible` rate (~3%),
+and `full_scene` stops being able to refuse the question. Cost: it is a **vocabulary change**,
+so `premise-run-1` and `disambiguation-1` become non-comparable, the review form must be rebuilt,
+and the reviewer must re-answer a set. That is a real bill and it is the reviewer's to authorise.
+
+**Why `group-a.v2` (variants C/D) does not implement it.** Two changes at once cannot be
+attributed. The corrected criterion is cheap and already reviewer-authored; the split is
+expensive and unproven. C/D measure the criterion under the **frozen** vocabulary, which also
+establishes the baseline the split would have to beat. If the criterion alone closes most of the
+gap, the split may not be worth its bill.
+
+**Definition sentences vs the split — both, not either.** The per-value sentences in §A.1 and the
+precedence rule are in v2 *now* precisely because they are the cheap half of the same fix: they
+try to stop `full_scene` from eating the answer using words instead of schema. If C/D show the
+leak persisting despite the precedence rule, that is the argument that the leak is structural and
+the split is required.
 
 ## B. Text — feeds the foreground role
+
+*Unchanged from v1. Not piloted.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
@@ -49,17 +276,22 @@ Deliberately absent: text color, polarity, pixel size — all computable once SA
 exist.
 
 **Expected reliability: high** (except `text_roles` on ambiguous integrated typography).
+`[UNCALIBRATED]` — still a guess, no pilot has touched this group.
 
 ## C. Provenance — feeds the "belongs to the artwork" exclusions
+
+*Unchanged from v1. Not piloted.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
 | `overlays` (multi-select) | `parental_advisory \| label_logo \| barcode_or_price \| watermark \| none` | Identity exclusion: overlaid elements "don't really belong to the artwork itself". |
 | `physical_media_scan` | `yes \| no` | Is this a photograph/scan of physical packaging (sleeve edges, vinyl, jewel case, wear) rather than the artwork itself — a class v2-3 never named, and it changes what "the field" means. |
 
-**Expected reliability: high.** Cheap, decisive, consumable by any paradigm.
+**Expected reliability: high.** Cheap, decisive, consumable by any paradigm. `[UNCALIBRATED]`
 
 ## D. Subject and identity — feeds the accent role
+
+*Unchanged from v1. Not piloted.*
 
 | field | vocabulary | decision it feeds |
 |---|---|---|
@@ -68,9 +300,11 @@ exist.
 | `has_signature_color` | `yes \| no` | Is there one color that reads as *this cover's* color. |
 | `signature_carrier` (when yes) | `text \| subject \| background \| small_element` | Aimed at the measured finding that ~half of accent corrections were salience mismatches: names which evidence lane *should* supply the accent — which no color statistic can. |
 
-**Expected reliability: medium.**
+**Expected reliability: medium.** `[UNCALIBRATED]`
 
 ## E. Medium and character — priors, stratification, confound control
+
+*Unchanged from v1. Not piloted.*
 
 | field | vocabulary | primary use |
 |---|---|---|
@@ -81,7 +315,12 @@ exist.
 These rarely feed a decision directly; their value is evaluation-side ("fails on illustrations
 with limited palettes") and corpus stratification.
 
+**v2 note.** If §A.5's split is ever adopted, `ground_content` and `medium` overlap and one of
+them should go. Do not add both without deciding which one a downstream consumer reads.
+
 ## F. Eval-side target variables — never algorithm inputs
+
+*Unchanged from v1. Not piloted.*
 
 | field | vocabulary | use |
 |---|---|---|
@@ -93,9 +332,45 @@ with limited palettes") and corpus stratification.
 Per the pipeline doc: `confidence` (`high | medium | low`), `ambiguity_note` (free text, human
 audit only, never read by code), plus the full provenance columns of §5.2/§9.
 
+**v2 correction:** `confidence` as asked in `group-a.v1` is degenerate (§A.4) — 298 of 299 rows
+said `high`, and `ambiguity_note` was empty on the same 298. Treat both as **audit trail, not
+signal**, until a variant demonstrates otherwise. The uncertainty signal that *does* work is
+inter-variant disagreement.
+
+---
+
+## Design rules added in v2 — measured, not proposed
+
+These extend pipeline §8.1's five rules. They are here because a run produced them.
+
+6. **Question order matters. Ask the context questions before the critical one.**
+   Variants A and B put the same four questions, with the same closed vocabularies, to the same
+   model under greedy constrained decoding. A asked `ground_type` **first**; B asked
+   `enclosure`, then `field_texture`, then `ground_type`. Under constrained decoding the JSON
+   property order *is* the generation order, so by the time B answers the critical question the
+   model has already committed to two cheap, high-reliability facts about the same image.
+   Result: **53% vs 23%** exact agreement with the reviewer, **71% vs 40%** on the binary, and
+   **43 vs 60** discarded answers out of 137 `[MEASURED premise-run-1, disambiguation-1]`.
+
+   *Stated honestly:* A and B differ in **both** order and wording, so this is "the B rendering
+   wins", with ordering as the deliberate structural difference and the only one with a
+   mechanism behind it. Variants C and D are two further independent wordings that both keep B's
+   order; if they land near B, ordering carried it, and rule 6 is confirmed rather than merely
+   consistent with the data. Until then rule 6 is `[MEASURED, one comparison, wording-confounded]`.
+
+7. **Self-reported confidence is not an uncertainty signal under greedy decoding.** Ask for it
+   if you want an audit trail; get the actual uncertainty from disagreement between prompt
+   variants (pipeline §3). 298/299 `[MEASURED premise-run-1]`.
+
+8. **A value that maps to no decision is a value that can refuse the question.** Count the
+   share of answers landing on unmapped values *before* reading any agreement number: at 31–44%
+   the agreement figure is describing a minority of the corpus. §A.5.
+
 ---
 
 ## What is deliberately NOT asked
+
+*(unchanged from v1)*
 
 - **Anything colorimetric** — hex, contrast, areas, luminance ordering, polarity: computed.
 - **Anything spatial** — where the text/badge/subject is: SAM's job. Concept prompts: `text`,
@@ -111,6 +386,11 @@ audit only, never read by code), plus the full provenance columns of §5.2/§9.
 - **Candidate tier (groups E–F):** runs on the pilot; survives only if the validation sample
   shows both reliability *and* actual downstream use.
 
+**v2 addition — group A's own lifecycle.** Group A has now been through one pilot and one human
+round. It has not earned corpus-wide status: at variant B's numbers, `ground_type` agrees with a
+human on 53% of contested artworks and discards 31% of its answers. The gate for going
+corpus-wide is in `oracle/premise/PREMISE_NEXT.md`.
+
 **Anti-anchoring caveat.** This set is derived from the problem spec's semantic primitives
 (field, figure, text, provenance, identity), not from v2-3's failure ledger — but groups A and D
 in particular encode hypotheses about what matters. The pilot plus the human validation sample
@@ -120,7 +400,10 @@ questions*, never as their source.
 
 ---
 
-## Candidate refinements surfaced during use
+## Appendix R — candidate refinements surfaced during use
+
+*Kept verbatim from v1. Both entries are now folded into §A.2; they stay here as the record of
+what was decided, when, and by whom.*
 
 - **2026-08-03, premise disambiguation round (reviewer):** `ground_type` has a gap for
   "one flat field + one shaded field with a blurry meeting line". Resolution applied
@@ -131,3 +414,46 @@ questions*, never as their source.
   forced choice is symmetric with the VLM's). Schema v2 candidates: sharpen the
   definition sentence, or add an explicit value if reviewer notes show the forced choice
   losing real information.
+- **2026-08-03, same round (reviewer), second case:** one wall painted in bands that melt
+  into each other → `shaded_field` (it is the contract's genuine-3-stop-gradient case);
+  one wall in *crisp* bands → `multiple_distinct_fields`. Together with the first case this
+  **corrects the criterion**: the axis is "does the ground read as one continuous color
+  progression or as discrete color areas" — surface identity is a strong *prior*, neither
+  necessary (crisp-banded wall reads discrete) nor sufficient (hazy sky-into-sea can read
+  continuous). Schema v2's definition sentence should carry this axis; genuine ambiguity
+  stays a gut read (symmetric with the VLM's forced choice).
+
+**v2 disposition:** entry 1 → §A.2 canonical case 2. Entry 2 → §A.2 canonical case 1 and the
+corrected criterion sentence. The "add an explicit value" option in entry 1 was **not** taken;
+the reviewer notes did not show the forced choice losing information — what they showed was a
+*different* leak, on a different axis (§A.5).
+
+## Appendix V1 — group A as written in v1
+
+*Superseded by §A above. Preserved verbatim because `premise-run-1` and `disambiguation-1` were
+both collected under this text, and those numbers may only be re-read against it.*
+
+> ## A. Ground structure — feeds the gradient boolean and the background/surface roles
+>
+> The heart of the set. v2-3's founding gradient rule — "shadows on one surface" vs "the sky and
+> the grass are different areas" — is pure semantics and consumed 10+ review rounds.
+>
+> | field | vocabulary | decision it feeds |
+> |---|---|---|
+> | `ground_type` | `flat_field \| shaded_field \| multiple_distinct_fields \| full_scene \| pattern_or_texture \| none_discernible` | The gradient boolean's semantic core: `shaded_field` vs `multiple_distinct_fields` **is** the one-surface-vs-two-areas distinction. Single most valuable label in the pass. |
+> | `shading_geometry` (when shaded) | `linear \| radial_or_vignette \| irregular` | Output-contract decision on how much gradient geometry to keep (v2-3 detected radial on most gradient winners and threw it away). |
+> | `field_texture` | `one_textured_material \| distinct_areas \| smooth` | Does the field's color variation read as grain/texture of one material or as distinct colored areas — the scrambled-cover test in semantic form. |
+> | `enclosure` | `none \| thin_border \| thick_frame_or_bars` | The frame/bar class asked structurally (does a frame steal the background role), not as a per-artwork patch. |
+>
+> **Expected reliability: low-to-medium.** These are the genuinely ambiguous questions — which is
+> exactly why they're worth asking. This group has the best existing validation hook: the
+> warehouse's gradient-boolean endorsements (~80 artworks with reviewed gradient verdicts).
+
+And the v1 criterion as it was put to both instruments, verbatim from
+`data/oracle-validation/premise-disambiguation-1.json`:
+
+> The GROUND is the large area behind and around any subject, text or figures. What is it made
+> of?
+>
+> A gradient means continuous shading within one physical surface — shadows on the same
+> surface. The sky and the grass are different areas, not a gradient.
