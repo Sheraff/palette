@@ -226,18 +226,16 @@ input[type="checkbox"] {
 	min-width: 0;
 }
 
-/* Small and borderless, and the one number revision 3 moves.
+/* Small and borderless, and the one number revision 4 moves.
  *
- * Revision 1 gave the artwork the whole width and the reviewer could not see the field they were
- * there to judge; revision 2 cut it to 96 px and overshot — "now the artwork is slightly too small".
- * 152 px is 1.58x that, inside the 1.5–1.8x the reviewer asked for and on the same 8 px step as the
- * rest of this file. It is still a thumbnail by construction: the sides grid is `minmax(420px, 1fr)`,
- * so at the narrowest column the mock has ~360 px of content width and the artwork takes 42% of it,
- * and ~36% of the 420 px frame height. The field keeps the clear majority of the frame on both axes,
- * which is the property revision 2 was protecting. */
+ * Revision 1: full width (field invisible). Revision 2: 96 px (overshot small). Revision 3:
+ * 152 px (orchestrator band-pick). Revision 4: [REVIEWED] 250 px — the reviewer's own number,
+ * given verbatim 2026-08-03 ("let's make the embedded artworks width:250px"). This supersedes
+ * the earlier keep-it-under-half heuristic: the reviewer is the design authority on the
+ * judging surface, and the number is theirs. */
 .mock-art {
 	display: block;
-	width: 152px;
+	width: 250px;
 	height: auto;
 	flex: none;
 	border: 0;

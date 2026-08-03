@@ -39,11 +39,10 @@ function mocks(page: FakePage): FakeNode[] {
 	return page.nodes.item.byClass("mock")
 }
 
-/** Revision 3's artwork width, and the two revisions it sits between. Reviewer-set, `[REVIEWED]`. */
-const REVISION_2_ART_WIDTH_PX = 96
-const ART_WIDTH_PX = 152
-/** The reviewer asked for "somewhere between": 1.5–1.8x revision 2, keeping the field dominant. */
-const ART_WIDTH_BAND = [1.5, 1.8] as const
+/** Revision 4's artwork width. [REVIEWED] — the reviewer's own number, verbatim 2026-08-03:
+ *  "let's make the embedded artworks width:250px". Supersedes revision 3's band heuristic and
+ *  the under-half rule: the reviewer is the design authority on the judging surface. */
+const ART_WIDTH_PX = 250
 
 describe("mock player layout (revision 3)", () => {
 	let harness: Harness
@@ -95,21 +94,9 @@ describe("mock player layout (revision 3)", () => {
 		const css = await readFile(STYLES, "utf8")
 		const rule = css.slice(css.indexOf(".mock-art {"), css.indexOf("}", css.indexOf(".mock-art {")))
 		const width = Number(/width:\s*(\d+)px/u.exec(rule)?.[1])
-		assert.equal(width, ART_WIDTH_PX, "the artwork must have a fixed width, in px")
+		assert.equal(width, ART_WIDTH_PX, "the artwork width is the reviewer's own number — do not drift it")
 		assert.match(rule, /border:\s*0/u, "borderless on the field")
 		assert.ok(!/width:\s*100%/u.test(rule), "revision 1's full-width artwork is the defect being fixed")
-		// Revision 3: bigger than revision 2 by the factor the reviewer asked for, and no bigger.
-		const factor = width / REVISION_2_ART_WIDTH_PX
-		assert.ok(
-			factor >= ART_WIDTH_BAND[0] && factor <= ART_WIDTH_BAND[1],
-			`the artwork is ${factor.toFixed(2)}x revision 2's ${REVISION_2_ART_WIDTH_PX}px, outside the ${ART_WIDTH_BAND.join("–")}x the reviewer asked for`,
-		)
-		// And still a thumbnail: under half of the narrowest column the sides grid can give a mock, so
-		// the field keeps the majority of the frame. That is the property finding 1 is about.
-		const columns = css.slice(css.indexOf(".sides {"), css.indexOf("}", css.indexOf(".sides {")))
-		const narrowestColumn = Number(/minmax\((\d+)px/u.exec(columns)?.[1])
-		assert.ok(narrowestColumn > 0, "the sides grid should declare a minimum column width")
-		assert.ok(width < narrowestColumn / 2, "the artwork must stay well under half the mock's width")
 	})
 
 	it("2. content sits at BOTH ends, so a gradient is judged over its whole ramp", async () => {
