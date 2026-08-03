@@ -540,7 +540,7 @@ land together, with the constant marked PROVISIONAL — see the proposed diff.
   `mask_rle`**, so a completion round is a CPU render plus reviewer time — **no GPU**. Until then the
   specificity term rests on one answer. This is the cheapest thing left to do and it is the one that
   turns a provisional constant into a settled one.
-- **Correct vs useful.** The accepted CJK masks are small (median area 0.00282 of the cover) — the
+- **Correct vs useful.** The accepted CJK masks are small (median area 0.00268 of the cover) — the
   same "correct but tiny" caution round 3 raised for hard text, and it is still not the question any
   round has asked.
 - **The re-run cost.** Adding the concepts changes `concept_set_hash()`, so `sam-eval-142` must be
