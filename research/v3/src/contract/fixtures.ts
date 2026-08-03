@@ -22,6 +22,7 @@ import type {
 	PixelAccessor,
 	PixelIterable,
 	PixelSample,
+	ResolvedContrastFloors,
 	Rgb8,
 	TransparencyReport,
 } from "./types.ts"
@@ -435,6 +436,157 @@ export const contrastFloorInconsistent: Palette = {
 		minAccentContrast: DEFAULT_RESOLVED_CONTRAST.minAccentContrast,
 	},
 }
+
+// ---------------------------------------------------------------------------------------------
+// I4 against the gradient stops — §2's third field for `minTextContrast`
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **The bypass the adversarial review constructed**, now a violation.
+ * (`reviews/phase-0-adversarial/contract.md` finding 2, case A11.)
+ *
+ * White background, near-white surface, near-black text, and a gradient running black → white. The
+ * foreground is perfectly legible against everything the palette calls a field, and invisible against
+ * half its own gradient: `#111111` on the `#000000` stop is |raw APCA| 1.1656, Lc 0.
+ *
+ * Invariant 3 is right not to catch it — the two colours are 0.178 apart in OKLab, nineteen
+ * dark-neutral bars, so they are genuinely *distinct colours*. They are at zero *luminance* contrast,
+ * which is a different question and the one invariant 4 asks. Before 2026-08-03 this palette returned
+ * `{ valid: true, violations: [] }`.
+ *
+ * Everything else about it is deliberately clean, so the fixture proves the new clause and nothing
+ * else: the background and surface are exempt from stop distinctness, and the accent clears every
+ * pair.
+ */
+export const foregroundInvisibleOverStop: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#eeeeee",
+	foreground: "#111111",
+	accent: "#e0533a",
+	stops: [["#000000", 0], ["#ffffff", 1]],
+})
+
+// ---------------------------------------------------------------------------------------------
+// Threshold brackets — one LSB either side of each frozen number
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * A contrast block written **by hand**, carrying the frozen epsilons as literal digits.
+ *
+ * Every other fixture here gets its contrast block from `resolveContrastParameters`, which means the
+ * declared floor is manufactured by the code under test and moves in lockstep with any edit to the
+ * epsilons — so no test built on one can tell whether an epsilon changed
+ * (`reviews/phase-0-adversarial/contract.md` finding 3, root cause). This block is typed out instead.
+ * Invariant 1 checks a declared floor against `max(lcFloorToRawMagnitude(requestedLc), ε)` to within
+ * 1e-9, so **any** edit to either epsilon in either direction makes `validateSchema` reject a palette
+ * carrying this block — which is the pin.
+ *
+ * The digits are `EPSILON_TEXT_RAW` and `EPSILON_ACCENT_RAW` as frozen on 2026-08-03. Both are
+ * `[UNCALIBRATED]` placeholders awaiting `PHASE_0_LOOSE_ENDS.md` A3's corpus measurement; when that
+ * lands, this block and the six fixtures below are what must be re-derived and re-verified, on
+ * purpose.
+ */
+export const HAND_WRITTEN_EPSILON_CONTRAST: ResolvedContrastFloors = {
+	minTextContrast: { requestedLc: 0, effectiveRawMagnitude: 2.5 },
+	minAccentContrast: { requestedLc: 0, effectiveRawMagnitude: 2.5 },
+}
+
+function withHandWrittenContrast(spec: FixtureSpec): Palette {
+	return { ...makePalette(spec), contrast: HAND_WRITTEN_EPSILON_CONTRAST }
+}
+
+/**
+ * **The text epsilon, bracketed by one least-significant bit.**
+ *
+ * The same background `#64a244` and two foregrounds one LSB apart in the red channel:
+ *
+ * | fixture | foreground | \|raw APCA\| vs background |
+ * |---|---|---|
+ * | `textFloorJustUnderEpsilon` | `#8c88ef` | 2.437945 |
+ * | `textFloorJustOverEpsilon`  | `#8d88ef` | 2.538832 |
+ *
+ * One is a violation and the other is not, and the only thing between them is `EPSILON_TEXT_RAW`.
+ * Both pairs are 0.28 apart in OKLab — thirty same-colour bars — so invariant 3 is content about both,
+ * and the surface and accent are chosen to clear every other pair by two orders of magnitude. The
+ * epsilon can move by 0.04 in one direction or 0.04 in the other before one of these two fixtures
+ * changes its verdict.
+ *
+ * Found by search over 8-bit pairs, not by asking the code what it thought: the magnitudes above are
+ * recorded here and asserted as literals in `contract-invariants.test.ts`.
+ */
+export const textFloorJustUnderEpsilon: Palette = withHandWrittenContrast({
+	background: "#64a244",
+	surface: "#101820",
+	foreground: "#8c88ef",
+	accent: "#f2f5f7",
+})
+
+export const textFloorJustOverEpsilon: Palette = withHandWrittenContrast({
+	background: "#64a244",
+	surface: "#101820",
+	foreground: "#8d88ef",
+	accent: "#f2f5f7",
+})
+
+/**
+ * **The accent epsilon, bracketed the same way**, over background `#b50f00` with two accents one LSB
+ * apart in the green channel:
+ *
+ * | fixture | accent | \|raw APCA\| | OKLab distance |
+ * |---|---|---|---|
+ * | `accentFloorJustUnderEpsilon` | `#b6123c` | 2.477742 | 0.04926 |
+ * | `accentFloorJustOverEpsilon`  | `#b6133c` | 2.506932 | 0.04903 |
+ *
+ * Both distances are **below** `ACCENT_VISIBILITY_COLOR_DISTANCE`, so the colour rescue is switched
+ * off in both and the verdict turns on `EPSILON_ACCENT_RAW` alone — which is the point, since the
+ * accent's two clauses are conjunctive and a bracket that let chroma decide would pin nothing. Both
+ * distances are also comfortably above the region's same-colour bar, so invariant 3 stays out of it.
+ */
+export const accentFloorJustUnderEpsilon: Palette = withHandWrittenContrast({
+	background: "#b50f00",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b6123c",
+})
+
+export const accentFloorJustOverEpsilon: Palette = withHandWrittenContrast({
+	background: "#b50f00",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b6133c",
+})
+
+/**
+ * **The accent visibility distance, bracketed by one least-significant bit.**
+ *
+ * Background `#057689` and two accents one LSB apart in the red channel, both at |raw APCA| under 1 —
+ * far below the accent epsilon, so luminance condemns both and only the colour rescue can save
+ * either:
+ *
+ * | fixture | accent | OKLab distance | \|raw APCA\| |
+ * |---|---|---|---|
+ * | `accentJustUnderVisibilityDistance` | `#506ca0` | 0.073786 | 0.9007 |
+ * | `accentJustOverVisibilityDistance`  | `#516ca0` | 0.074600 | 0.8380 |
+ *
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` is 0.07444, between them. This is the reviewer's own finding at
+ * its own resolution: the pair of fixtures straddles the frozen digit with 0.0007 of room on one side
+ * and 0.0002 on the other, so any edit to it is caught. Note that the *measurement* behind the
+ * constant is only bracketed to 0.06300–0.08796 — these fixtures pin the **constant**, not the
+ * reviewer's eyes, which is the distinction the constant's own comment insists on.
+ */
+export const accentJustUnderVisibilityDistance: Palette = withHandWrittenContrast({
+	background: "#057689",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#506ca0",
+})
+
+export const accentJustOverVisibilityDistance: Palette = withHandWrittenContrast({
+	background: "#057689",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#516ca0",
+})
 
 /**
  * Malformed shapes a corpus sweep over persisted JSON will actually meet. Validation must count each

@@ -213,26 +213,38 @@ export function colorRegion(color: PaletteColor): ColorRegion {
  * corresponding remedy for a violation nobody was told about. Where the rule is unmeasured, it
  * should err toward being told.
  *
- * **2. It is also, measurably, the most stable of the three.** Over 40,000 seeded close pairs
- * (OKLab distance 0.002–0.035, of which 2.75% straddle a region boundary), perturbed by ±1 LSB on
- * each channel — the dither canary that moved all 114 of v2-3's palettes:
+ * **2. A stability argument used to be made here, and it does not stand.** `[HELD, provenance
+ * refuted 2026-08-03]` — the rule is unchanged; what changed is what may be claimed for it.
  *
- * | rule            | dither changes the bar | and flips the verdict |
- * |-----------------|------------------------|-----------------------|
- * | larger of two   | 0.205%                 | 0.0550%               |
- * | midpoint colour | 0.228%                 | 0.0619%               |
- * | smaller of two  | 0.242%                 | 0.0600%               |
+ * This docstring used to cite a dither-stability study — 40,000 seeded close pairs, 2.75% of them
+ * straddling, a table of bar-change and verdict-flip rates putting "larger of two" first — and said
+ * that result was "what settles it". Three things are now known about that study, from the
+ * adversarial review (`research/v3/reviews/phase-0-adversarial/contract.md` finding 1):
  *
- * The margins are small, but they point the same way as the safety argument rather than against it,
- * which is what settles it. Intuition said the midpoint would win (a midpoint moves half as far as a
- * member); it does not, because the larger bar is pinned by whichever member sits in the more
- * forgiving region and that assignment survives a member crossing the boundary.
+ * - **It cannot be re-run.** No script, seed, output file or decision record for it exists anywhere
+ *   in the repository; a grep for every digit in the table returned only the comment itself.
+ *   `CONVENTIONS.md` requires every value to say where it comes from, and this one could not.
+ * - **Its ordering does not replicate.** An independent reimplementation across 16 protocol/seed
+ *   configurations reproduced the recorded ordering in 1 of 16 (bar changes) and 0 of 16 (verdict
+ *   flips), and measured the straddle rate at 4.2–4.4% rather than 2.75%.
+ * - **The replication points the other way.** In the modal outcome the **midpoint** rule is the most
+ *   stable of the three — precisely the result the old comment said was expected and had not
+ *   happened.
  *
- * On the same sample the three rules flag 866, 664 and 481 of the 1,101 straddling pairs — so the
- * choice is real, and confined to the 2.75% of close pairs that straddle at all.
+ * So there is no measured tie-break. Ground 1 is the whole of the case for `Math.max`, and it is
+ * enough on its own: where the rule is unmeasured it should err toward being told. The rule is held
+ * as-is rather than switched, because switching it would move which palettes validate in the middle
+ * of a freeze on the strength of a replication that has not itself been reviewed — a change of that
+ * kind is the reviewer's call, not a cleanup's.
  *
- * **Revisit this** if a bracketing round is ever run with deliberately straddling pairs. Until then
- * it is a default with a reason, not a finding.
+ * **Nothing downstream depends on the choice today:** 0 of the 140 calibration pairs straddle a
+ * boundary, and the rule only decides pairs that both straddle and sit close enough for the two bars
+ * to disagree. `PHASE_0_LOOSE_ENDS.md` B13 already records the rule as "a default with a reason, not
+ * a finding", which remains exactly true.
+ *
+ * **Revisit this** if a bracketing round is ever run with deliberately straddling pairs — and note
+ * that re-deciding the rule is now an open reviewer item, not a settled one, since the argument that
+ * was presented as deciding it has been withdrawn.
  */
 export function sameColorBar(first: PaletteColor, second: PaletteColor): number {
 	return Math.max(
@@ -290,8 +302,20 @@ function softClampBlack(y: number): number {
  *   invariant would not flag a literally identical pair.
  * - `|raw| < 10` is exactly the region where `apca-w3` reports Lc 0.
  *
- * Returns `NaN` for inputs APCA considers out of range, so a caller cannot mistake an error for a
- * zero. (`apca-w3` returns 0.0 there, which would read as "invisible" to invariant 4.)
+ * **Input range, stated as implemented.** This function checks only that both luminances are finite;
+ * it does **not** replicate the package's `icp = [0, 1.1]` input clamp that `apcaLc` below does. So
+ * for a triple outside 0–255 the behaviour is: a negative channel yields `NaN` incidentally (a
+ * negative base under a fractional exponent is `NaN` in JavaScript), while an over-range channel
+ * yields a large *finite* magnitude — e.g. `apcaRaw([300,300,300], [0,0,0])` is −141.77 where
+ * `apcaLc` reports 0. An earlier version of this docstring promised `NaN` for everything APCA
+ * considers out of range; it never did that, and the promise is withdrawn here
+ * (`reviews/phase-0-adversarial/contract.md` finding 10).
+ *
+ * The direction of the gap is the unsafe one — an out-of-range pair reads as *high* contrast, which
+ * passes invariant 4 — so callers must pass 8-bit triples. Invariant 4 does: every call site is
+ * gated by `isRgb8` on both colours, and invariant 1 independently rejects a non-8-bit triple, which
+ * is why nothing is exploitable today. A caller reaching for `apcaRaw` directly is responsible for
+ * the same gate.
  */
 export function apcaRaw(text: Rgb8, background: Rgb8): number {
 	const textY = rgbToApcaY(text)

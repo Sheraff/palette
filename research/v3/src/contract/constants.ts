@@ -77,12 +77,23 @@ export const REGION_CHROMA_BOUNDARY = 0.05
  * `research/v3/data/calibration/bracketing-round-2-analysis.json`, `pooled.quadrants`. 140 of 140
  * pairs answered across the two rounds; each threshold is a logistic fit with its 95% interval:
  *
- * | region           | bar     | 95% CI              | n  | from        |
- * |------------------|---------|---------------------|----|-------------|
- * | dark-neutral     | 0.00932 | 0.00764 – 0.01137   | 28 | 14 r1 + 14 r2 |
- * | dark-saturated   | 0.01502 | 0.01137 – 0.01986   | 28 | 14 r1 + 14 r2 |
- * | light-neutral    | 0.01627 | 0.01308 – 0.02023   | 28 | 14 r1 + 14 r2 |
- * | light-saturated  | 0.02293 | 0.01658 – 0.03170   | 36 | 14 r1 + 22 r2 |
+ * | region           | bar     | 95% CI              | trials | distinct pairs | from          |
+ * |------------------|---------|---------------------|--------|----------------|---------------|
+ * | dark-neutral     | 0.00932 | 0.00764 – 0.01137   | 28     | 22             | 14 r1 + 14 r2 |
+ * | dark-saturated   | 0.01502 | 0.01137 – 0.01986   | 28     | 22             | 14 r1 + 14 r2 |
+ * | light-neutral    | 0.01627 | 0.01308 – 0.02023   | 28     | 22             | 14 r1 + 14 r2 |
+ * | light-saturated  | 0.02293 | 0.01658 – 0.03170   | 36     | 30             | 14 r1 + 22 r2 |
+ *
+ * **The two columns differ because the rounds deliberately repeated stimuli.** 24 of the 120 fitted
+ * points are `repeat` items carrying byte-identical colours to the item they repeat (verified 8/8 in
+ * round 1, 16/16 in round 2, 6 per region), and the fit counts each showing as an independent trial.
+ * Refitting on distinct pairs only moves dark-neutral to 0.01061 (+13.8%) and light-neutral to
+ * 0.01451 (−10.8%), the other two by under 6% — every move stays inside the published intervals, so
+ * this is not a refutation of the freeze (`reviews/phase-0-adversarial/contract.md` finding 8). It is
+ * a statement about resolution: under a defensible alternative weighting two of the four frozen
+ * digits move by more than 10%, so the five-decimal freeze carries roughly one significant figure of
+ * real information. That is consistent with the 62.5% repeat consistency below and with the 8-bit
+ * quantisation floor, both of which say the same thing.
  *
  * Round 2 roughly halved every interval. It also **moved the middle two past each other**:
  * round 1 read dark-saturated (0.01764) as looser than light-neutral (0.01629), and pooled they read
@@ -194,13 +205,29 @@ export const EPSILON_ACCENT_RAW = 2.5
  * `[REVIEWED]` — reviewer bracketing round 1 part 2, batch `bracketing-round-1-clarified`,
  * 2026-08-02. Question: "Are the icons clearly visible on this background?" over equal-luminance
  * chromatic accent pairs (`accent-equal-luminance` stratum, 12 of 12 answered, 10 fitted points,
- * both controls passed). Threshold **0.07444**, 95% CI 0.05211–0.10564.
+ * both controls passed). Threshold **0.07444**, bracketed by the separation interval
+ * **0.06300–0.08796**.
  *
  * **Complete-separation caveat, from the analysis file:** every pair on one side of the gap was
  * answered one way and every pair on the other side the other way, so the logistic curve alone
- * cannot pin the threshold down. The reported value is the **middle of the gap**, which spans
- * 0.06300–0.08796. The finding — that a chromatic accent at identical brightness becomes visible
- * somewhere in that band — is solid; the exact number inside the band is not measured, only bracketed.
+ * cannot pin the threshold down. The reported value is the **middle of the gap** — specifically its
+ * *geometric* midpoint, `sqrt(0.06300 · 0.08796)`, which is why it is 0.07444 and not the arithmetic
+ * 0.07548 a reader would compute. The finding — that a chromatic accent at identical brightness
+ * becomes visible somewhere in that band — is solid; the exact number inside the band is not
+ * measured, only bracketed.
+ *
+ * **No confidence interval is quoted for this constant, deliberately.** The analysis file emits one
+ * (0.05211–0.10564 at the current ridge), and earlier versions of this comment repeated it. It is an
+ * artifact: on a perfectly separated fit the interval is a property of the ridge penalty rather than
+ * of the reviewer. Sweeping that penalty from 1e-1 to 1e-5 swings the interval's width by 2.4× and
+ * non-monotonically (0.04096–0.12351 → 0.05002–0.10845 → 0.05211–0.10564 → 0.04444–0.12422 →
+ * 0.02856–0.19355), and with the penalty removed the slope diverges and the interval is unbounded —
+ * measured in `reviews/phase-0-adversarial/contract.md` finding 4. Quoting it next to a threshold the
+ * same paragraph calls unpinnable invites a reader to take it as measurement. **The threshold itself
+ * stands**: the review's own re-derivation reproduces 0.07444 to five decimals from the raw answers,
+ * and the separation band above is what the data supports. The regional bars in
+ * `SAME_COLOR_BAR_BY_REGION` are unaffected — none of those fits is separated, and their intervals
+ * survived both a ridge sweep and a 2,000-resample bootstrap.
  *
  * The reviewer's own summary: "a coloured accent at the same brightness as its background is
  * visible, once the two colours are about 0.07444 apart in colour. Below that the reviewer stopped
@@ -276,10 +303,13 @@ export const APCA_G4G = {
  * `[INHERITED]` — `APCA_G4G.loClip * 100`. Any pair whose |raw| is below this reports Lc 0, which is
  * exactly the blindness invariant 4 works around.
  *
- * Written as a literal rather than as the product because `0.1 * 100` is 10.000000000000002 in
- * binary floating point, and this value is a *threshold*: a pair sitting exactly on it would fall on
- * the wrong side. `contract-color.test.ts` asserts the literal against the derivation, so the
- * provenance is checked rather than merely claimed.
+ * Written as a literal for legibility, and it is exact either way: `0.1 * 100 === 10` in IEEE-754
+ * double arithmetic, with no representation error. (An earlier version of this comment claimed
+ * `0.1 * 100` was 10.000000000000002 and used that as the reason. It is not — the claim was false,
+ * and is corrected here per `reviews/phase-0-adversarial/contract.md` finding 9. The hazard it
+ * describes is real, but it belongs to `LC_DEAD_BAND_CEILING`, not to this constant.)
+ * `contract-color.test.ts` asserts the literal against the derivation, so the provenance is checked
+ * rather than merely claimed.
  */
 export const APCA_RAW_LOW_CLIP = 10
 
@@ -289,8 +319,15 @@ export const APCA_RAW_LOW_CLIP = 10
  * `[INHERITED]` — `(APCA_G4G.loClip - APCA_G4G.loBoWoffset) * 100`. Lc jumps from 0 straight to 7.3;
  * nothing in between is representable. This is why `PHASE_0_DECISIONS.md` §2 makes the contrast
  * parameters' default equal to their minimum equal to an epsilon expressed in raw units — the
- * default lives below the range the public unit can say. Literal for the same floating-point reason
- * as `APCA_RAW_LOW_CLIP`, and checked against the derivation by the same test.
+ * default lives below the range the public unit can say.
+ *
+ * **This is the constant where writing the literal actually matters**, and it is the only one of the
+ * three: `(0.1 - 0.027) * 100` is 7.300000000000001 in binary floating point, not 7.3, so computing
+ * it would put the value one ulp above the number this file means — and this value is a *threshold*.
+ * (`0.1 * 100` and `0.027 * 100` are both exact, so `APCA_RAW_LOW_CLIP` and `APCA_LC_TO_RAW_OFFSET`
+ * are literals for legibility only.) `contract-color.test.ts` checks the derivation and, since
+ * 2026-08-03, checks which of the three products is exact — the 1e-9 tolerance it used before could
+ * not tell the cases apart.
  */
 export const LC_DEAD_BAND_CEILING = 7.3
 

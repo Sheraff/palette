@@ -187,7 +187,17 @@ export function schemeExactDeltaERay(want: number, seed: number): TranslationSum
 	return summarize(distances)
 }
 
-/** Split the exact-ΔE ray sample by lightness and chroma quadrant. */
+/**
+ * Split the exact-ΔE ray sample by lightness and chroma quadrant.
+ *
+ * **The quadrants here are CIELab quadrants, not the contract's.** They are cut at CIELab L 50 and
+ * CIELab chroma 20, deliberately, because this whole script lives in the ΔE world it is translating
+ * *from*. `COLOR_REGIONS` in `constants.ts` cuts at OKLab L 0.55 and OKLab chroma 0.05, which is a
+ * different partition of the same colours. The bucket keys are therefore prefixed `cielab-`: unprefixed
+ * they read as the four contract regions, and this script prints its quadrant table directly above the
+ * frozen `SAME_COLOR_BAR_BY_REGION` values in the same output, where confusing the two is easy
+ * (`reviews/phase-0-adversarial/contract.md` finding 13).
+ */
 export function schemeExactDeltaERayByQuadrant(
 	want: number,
 	seed: number,
@@ -223,7 +233,7 @@ export function schemeExactDeltaERayByQuadrant(
 		const labB = rgbToCieLab(b)
 		const lightness = (labA[0] + labB[0]) / 2
 		const chroma = (Math.hypot(labA[1], labA[2]) + Math.hypot(labB[1], labB[2])) / 2
-		const key = `${lightness < 50 ? "dark" : "light"}/${chroma < 20 ? "neutral" : "saturated"}`
+		const key = `cielab-${lightness < 50 ? "dark" : "light"}/${chroma < 20 ? "neutral" : "saturated"}`
 		;(buckets[key] ??= []).push(okDistance(a, b))
 		collected++
 	}

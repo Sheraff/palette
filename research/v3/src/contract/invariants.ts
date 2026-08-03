@@ -610,10 +610,8 @@ export function validateDistinctness(
  * `[REVIEWED]` — `PHASE_0_DECISIONS.md` §4 invariant 4: foreground versus background and versus
  * surface; accent versus background and versus surface, with its own threshold.
  *
- * Deliberately *not* here: foreground versus the gradient stops. §2 extends the `minTextContrast`
- * parameter to every published stop, but along a ramp the quantity is the *indistinct fraction*, not
- * a pair contrast, and its shape (floor plus max-fraction) is still open. It belongs to the gradient
- * module when that exists, not to this invariant.
+ * The foreground versus the **published gradient stops** is covered too, by
+ * `FOREGROUND_STOP_FLOOR` below rather than by a row here, because the stop count varies per palette.
  */
 const CONTRAST_FLOOR_PAIRS = [
 	{ text: "foreground", field: "background", floor: "minTextContrast", colorRescue: false },
@@ -621,6 +619,37 @@ const CONTRAST_FLOOR_PAIRS = [
 	{ text: "accent", field: "background", floor: "minAccentContrast", colorRescue: true },
 	{ text: "accent", field: "surface", floor: "minAccentContrast", colorRescue: true },
 ] as const
+
+/**
+ * The foreground against every **published gradient stop**, under `minTextContrast`.
+ *
+ * `[REVIEWED]` — `PHASE_0_DECISIONS.md` §2 defines the parameter as "`minTextContrast` (foreground vs
+ * background, surface, **and every published stop**)". A stop is a discrete published colour, so a
+ * pair contrast against it is exactly as well-defined as against `surface`; the same floor, the same
+ * epsilon, and no colour rescue, because text is luminance-driven.
+ *
+ * **Added 2026-08-03, and it closed a real hole.** Until then the parameter's stop scope was enforced
+ * nowhere, and the adversarial review constructed a palette that published clean with its text
+ * invisible against half its own gradient (`reviews/phase-0-adversarial/contract.md` finding 2):
+ * foreground `#111111` over a `#000000` stop — |raw APCA| 1.17, Lc 0, and 0.178 apart in OKLab, which
+ * is nineteen same-colour bars, so invariant 3 is legitimately content. Same luminance, different
+ * colour is the one thing invariant 4 exists to forbid, and at the stops it was falling through both.
+ *
+ * **This is the stops, not the ramp.** `PHASE_0_LOOSE_ENDS.md` B15 parks the gradient module's
+ * *indistinct fraction* — the length of the interpolated ramp below the bar — and that stays parked:
+ * along the ramp's interior the quantity is a fraction with a floor-plus-max-fraction shape that is
+ * still open. Nothing here computes anything about the interior. It checks the discrete colours the
+ * palette actually publishes.
+ *
+ * The violations carry their own code so the new clause is countable and demotable on its own, per
+ * §4's rule that an invariant that ever blocks a palette the reviewer endorses is demoted.
+ */
+const FOREGROUND_STOP_FLOOR = {
+	text: "foreground",
+	floor: "minTextContrast",
+	colorRescue: false,
+	code: "I4.stop-below-contrast-floor",
+} as const
 
 /**
  * **Invariant 4.** No flat pair at exact-zero luminance contrast.
@@ -640,6 +669,9 @@ const CONTRAST_FLOOR_PAIRS = [
  * - *Foreground:* luminance alone. A text pair at zero luminance contrast is invalid regardless of
  *   hue. That is a standing reviewer verdict carried over from v2-3 and is not reopened here — there
  *   is no colour rescue for text.
+ *   The foreground is held to this floor against **three** fields, per §2's definition of the
+ *   parameter: `background`, `surface`, and every published gradient stop
+ *   (`FOREGROUND_STOP_FLOOR`).
  * - *Accent:* luminance **and** colour distance, both. An accent-versus-field pair violates only when
  *   `|raw APCA| < ε` *and* the two colours are closer than `ACCENT_VISIBILITY_COLOR_DISTANCE`.
  *   Bracketing round 1 part 2 put equal-luminance chromatic accent pairs in front of the reviewer and
@@ -665,12 +697,54 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 	const accentIsForeground = palette?.collapse?.accentCollapsed === true &&
 		isHexColor(accent?.hex) && isHexColor(foreground?.hex) && accent.hex === foreground.hex
 
+	const pairs: {
+		textPath: string
+		text: PaletteColor
+		fieldPath: string
+		field: PaletteColor
+		floor: "minTextContrast" | "minAccentContrast"
+		colorRescue: boolean
+		code: string
+	}[] = []
+
 	for (const pair of CONTRAST_FLOOR_PAIRS) {
 		if (pair.text === "accent" && accentIsForeground) continue
-
 		const text = palette?.roles?.[pair.text]
 		const field = palette?.roles?.[pair.field]
 		if (!isRgb8(text?.rgb) || !isRgb8(field?.rgb)) continue // invariant 1's problem
+		pairs.push({
+			textPath: `roles.${pair.text}`,
+			text,
+			fieldPath: `roles.${pair.field}`,
+			field,
+			floor: pair.floor,
+			colorRescue: pair.colorRescue,
+			code: "I4.below-contrast-floor",
+		})
+	}
+
+	// §2's third field for `minTextContrast`: every published stop. Same floor, same epsilon, no
+	// colour rescue. See `FOREGROUND_STOP_FLOOR` for why this is the stops and not the ramp.
+	const stops = palette?.gradient?.stops
+	const foregroundColor = palette?.roles?.foreground
+	if (Array.isArray(stops) && isRgb8(foregroundColor?.rgb)) {
+		stops.forEach((stop, index) => {
+			const field = stop?.color as PaletteColor | undefined
+			if (!isRgb8(field?.rgb)) return // invariant 1's problem
+			pairs.push({
+				textPath: `roles.${FOREGROUND_STOP_FLOOR.text}`,
+				text: foregroundColor,
+				fieldPath: `gradient.stops[${index}]`,
+				field,
+				floor: FOREGROUND_STOP_FLOOR.floor,
+				colorRescue: FOREGROUND_STOP_FLOOR.colorRescue,
+				code: FOREGROUND_STOP_FLOOR.code,
+			})
+		})
+	}
+
+	for (const pair of pairs) {
+		const { text, field } = pair
 
 		// The declared floor is a field of the object under validation, so it is a claim, not an
 		// authority. Invariant 1 rejects any declaration below the epsilon — but this invariant must
@@ -688,8 +762,8 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			violations.push(violation(
 				"I4",
 				"I4.contrast-not-computable",
-				`raw APCA between roles.${pair.text} and roles.${pair.field} is not a finite number`,
-				[`roles.${pair.text}`, `roles.${pair.field}`],
+				`raw APCA between ${pair.textPath} and ${pair.fieldPath} is not a finite number`,
+				[pair.textPath, pair.fieldPath],
 			))
 			continue
 		}
@@ -712,17 +786,17 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 
 		violations.push(violation(
 			"I4",
-			"I4.below-contrast-floor",
+			pair.code,
 			rescueAvailable
-				? `roles.${pair.text} (${text.hex}) on roles.${pair.field} (${field.hex}) has |raw APCA| ${
+				? `${pair.textPath} (${text.hex}) on ${pair.fieldPath} (${field.hex}) has |raw APCA| ${
 					Math.abs(raw).toFixed(4)
 				}, below the ${pair.floor} floor of ${floor}, and is only ${
 					distance.toFixed(5)
 				} away in OKLab — under the ${ACCENT_VISIBILITY_COLOR_DISTANCE} at which colour alone makes an accent visible`
-				: `roles.${pair.text} (${text.hex}) on roles.${pair.field} (${field.hex}) has |raw APCA| ${
+				: `${pair.textPath} (${text.hex}) on ${pair.fieldPath} (${field.hex}) has |raw APCA| ${
 					Math.abs(raw).toFixed(4)
 				}, below the ${pair.floor} floor of ${floor}`,
-			[`roles.${pair.text}`, `roles.${pair.field}`],
+			[pair.textPath, pair.fieldPath],
 			{
 				raw,
 				floorRawMagnitude: floor,
@@ -764,6 +838,22 @@ function* iterateSource(source: PixelSource): Generator<PixelSample> {
  * with a made-up threshold would be worse than not implementing it.
  */
 export const DEFERRED_SPATIAL_SPREAD = "I2.spatial-spread"
+
+/**
+ * Name of invariant 5 when `validatePalette` was not given a transparency report, carried through
+ * `ValidationResult.deferred` for exactly the same reason as invariant 2's two entries: a check that
+ * did not run must never be readable as a check that passed.
+ *
+ * The reason it can be skipped at all is that the report comes from the decoder, not from the
+ * palette — nothing in a published palette records whether its input had transparent pixels, so
+ * `validatePalette` cannot answer the question on its own and must say so instead.
+ *
+ * **Added 2026-08-03.** Before that, omitting the option skipped invariant 5 in silence and returned
+ * `valid: true` (`reviews/phase-0-adversarial/contract.md` finding 5) — for an invariant whose whole
+ * statement is "transparent input refused **loudly**" (`PHASE_0_DECISIONS.md` §4). A corpus gate that
+ * forgot the option would have reported a clean sweep.
+ */
+export const DEFERRED_TRANSPARENCY_REPORT = "I5.transparency-report"
 
 export type SourceSupportResult = Readonly<{
 	violations: readonly Violation[]
@@ -954,6 +1044,10 @@ export function validatePalette(palette: Palette, options: ValidatePaletteOption
 		} else {
 			violations.push(...validateOpaqueInput(path, options.transparency))
 		}
+	} else {
+		// No report, no answer — and the absence is reported, never passed over. See
+		// `DEFERRED_TRANSPARENCY_REPORT`.
+		deferred.push(DEFERRED_TRANSPARENCY_REPORT)
 	}
 
 	violations.push(...validateSchema(palette))

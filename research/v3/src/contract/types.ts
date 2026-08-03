@@ -343,9 +343,15 @@ export type Violation = Readonly<{
 /**
  * The outcome of a validation run.
  *
- * `deferred` lists checks that were declared but not performed — today only invariant 2's spatial
- * spread. A run with violations is invalid; a run with deferrals is valid *as far as it went*, and
- * says so rather than pretending.
+ * `deferred` lists checks that were declared but not performed. Each entry is the stable code of the
+ * check, in the same vocabulary as a violation's code, so a caller can tell exactly which one is
+ * missing: `I2.spatial-spread` (thresholds not yet measured), `I2.source-support` (no decoded input
+ * supplied), `I5.transparency-report` (no decoder transparency report supplied). The reason a check
+ * is deferred belongs with its constant in `invariants.ts`, which is where it can be kept true.
+ *
+ * A run with violations is invalid; a run with deferrals is valid *as far as it went*, and says so
+ * rather than pretending. Anything reading `valid` as "this palette is good" without also reading
+ * `deferred` is reading silence as a pass, which is the failure this field exists to prevent.
  */
 export type ValidationResult = Readonly<{
 	valid: boolean

@@ -184,6 +184,35 @@ test("colorRegion places colors by the bracketing round's own strata boundaries"
 	assert.equal(REGION_CHROMA_BOUNDARY, 0.05)
 })
 
+test("colorRegion's boundaries are half-open: below is dark/neutral, at-or-above is light/saturated", () => {
+	// constants.ts states the convention in prose ("below the lightness boundary is dark, below the
+	// chroma boundary is neutral") and nothing asserted it — both `<` → `<=` mutations survived the
+	// whole suite (`reviews/phase-0-adversarial/contract.md` finding 11). These four colours are the
+	// closest 8-bit sRGB colours to each boundary on each side, so they hold the convention as tightly
+	// as the sRGB grid allows: within 8.7e-8 of the lightness boundary and 1.9e-8 of the chroma one.
+	assert.equal(colorRegion(colorFromHex("#a342ab")), "dark-saturated") // L 0.54999991, 8.7e-8 below
+	assert.equal(colorRegion(colorFromHex("#b94062")), "light-saturated") // L 0.55000023, 2.3e-7 above
+	assert.equal(colorRegion(colorFromHex("#98c2d2")), "light-neutral") // C 0.04999986, 1.4e-7 below
+	assert.equal(colorRegion(colorFromHex("#cdd2f6")), "light-saturated") // C 0.05000002, 1.9e-8 above
+})
+
+test("no 8-bit sRGB colour lands exactly on either region boundary, which is why the strictness is moot today", () => {
+	// The mutation above is equivalent *for real inputs*, and this is the fact that makes it so. It is
+	// worth pinning rather than assuming: if the boundaries ever move (B9's extra ruler dimension, or a
+	// recalibration), a boundary that a real colour can hit turns the strictness back into a live
+	// question, and this test is what says so. Sampled on a stride-3 grid — ~600k colours, enough to
+	// notice a boundary placed on a representable value, which is the failure mode that matters.
+	for (let r = 0; r < 256; r += 3) {
+		for (let g = 0; g < 256; g += 3) {
+			for (let b = 0; b < 256; b += 3) {
+				const [lightness, aAxis, bAxis] = rgbToOkLab([r, g, b] as Rgb8)
+				assert.notEqual(lightness, REGION_LIGHTNESS_BOUNDARY)
+				assert.notEqual(Math.hypot(aAxis, bAxis), REGION_CHROMA_BOUNDARY)
+			}
+		}
+	}
+})
+
 test("sameColor uses this pair's regional bar, and the bars are the reviewer's measured values", () => {
 	// One distance, judged two ways — the finding that refuted a single threshold.
 	const darkNeutralPair = [colorFromHex("#1e2a38"), colorFromHex("#162a34")] as const
@@ -452,8 +481,7 @@ test("both epsilons sit inside Lc's dead band, as the contract requires of the d
 })
 
 test("the Lc/raw scale constants match their derivation from apca-w3's SA98G table", () => {
-	// These are written as literals in constants.ts because they are thresholds and binary floating
-	// point turns `0.1 * 100` into 10.000000000000002. This test is what keeps the literals honest.
+	// These are written as literals in constants.ts. This test is what keeps the literals honest.
 	assert.ok(Math.abs(APCA_RAW_LOW_CLIP - APCA_G4G.loClip * 100) < 1e-9)
 	assert.ok(Math.abs(LC_DEAD_BAND_CEILING - (APCA_G4G.loClip - APCA_G4G.loBoWoffset) * 100) < 1e-9)
 	assert.ok(Math.abs(APCA_LC_TO_RAW_OFFSET - APCA_G4G.loBoWoffset * 100) < 1e-9)
@@ -461,8 +489,43 @@ test("the Lc/raw scale constants match their derivation from apca-w3's SA98G tab
 	assert.equal(APCA_G4G.loBoWoffset, APCA_G4G.loWoBoffset)
 })
 
+test("only one of the three scale constants actually needs to be a literal, and it is the dead-band ceiling", () => {
+	// constants.ts used to justify all three literals with "`0.1 * 100` is 10.000000000000002". It is
+	// not — that product is exact — and the tolerance in the test above cannot tell the cases apart
+	// (`reviews/phase-0-adversarial/contract.md` finding 9). The two that are exact are asserted exact,
+	// and the one that is not is asserted inexact, so neither rationale can drift again.
+	assert.equal(APCA_G4G.loClip * 100, 10, "0.1 * 100 is exact in IEEE-754")
+	assert.equal(APCA_G4G.loBoWoffset * 100, 2.7, "0.027 * 100 is exact in IEEE-754")
+	assert.notEqual(
+		(APCA_G4G.loClip - APCA_G4G.loBoWoffset) * 100,
+		7.3,
+		"(0.1 - 0.027) * 100 is 7.300000000000001 — this is the one that must stay a literal",
+	)
+	assert.equal(APCA_RAW_LOW_CLIP, APCA_G4G.loClip * 100)
+	assert.equal(APCA_LC_TO_RAW_OFFSET, APCA_G4G.loBoWoffset * 100)
+	assert.ok(LC_DEAD_BAND_CEILING < (APCA_G4G.loClip - APCA_G4G.loBoWoffset) * 100, "one ulp below")
+})
+
 test("apcaRaw returns NaN rather than 0 for non-finite input, so an error cannot read as invisibility", () => {
 	assert.ok(Number.isNaN(apcaRaw([Number.NaN as unknown as number, 0, 0], [0, 0, 0])))
+})
+
+test("apcaRaw does not range-check its input, and the docstring says so", () => {
+	// The docstring used to promise NaN for anything APCA considers out of range; it never delivered
+	// that, and the promise has been withdrawn (`reviews/phase-0-adversarial/contract.md` finding 10).
+	// This test pins the behaviour as it actually is, in both directions, because the direction of the
+	// gap is the unsafe one: an over-range triple reads as *high* contrast to invariant 4 while apcaLc
+	// reports 0. Nothing is exploitable today — every I4 call site gates on isRgb8 — but a caller
+	// reaching for apcaRaw directly inherits this and must gate too.
+	const overRange = apcaRaw([300, 300, 300] as unknown as Rgb8, [0, 0, 0])
+	assert.ok(Number.isFinite(overRange), "an over-range channel yields a large finite value, not NaN")
+	assert.ok(Math.abs(overRange) > APCA_RAW_LOW_CLIP)
+	assert.equal(apcaLc([300, 300, 300] as unknown as Rgb8, [0, 0, 0]), 0, "apcaLc does clamp it")
+
+	// The low end returns NaN only incidentally: a negative base under a fractional exponent is NaN.
+	assert.ok(Number.isNaN(apcaRaw([-1, 0, 0] as unknown as Rgb8, [0, 0, 0])))
+	// And a fractional in-range channel is computed, not rejected.
+	assert.ok(Number.isFinite(apcaRaw([1.5, 0, 0] as unknown as Rgb8, [0, 0, 0])))
 })
 
 // ---------------------------------------------------------------------------------------------

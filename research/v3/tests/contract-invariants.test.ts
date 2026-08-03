@@ -30,6 +30,7 @@ import {
 import {
 	DEFAULT_CONTRAST_PARAMETERS,
 	DEFERRED_SPATIAL_SPREAD,
+	DEFERRED_TRANSPARENCY_REPORT,
 	assertOpaqueInput,
 	publishedColors,
 	resolveContrastParameters,
@@ -42,7 +43,11 @@ import {
 	validateSourceSupport,
 } from "../src/contract/invariants.ts"
 import {
+	accentFloorJustOverEpsilon,
+	accentFloorJustUnderEpsilon,
 	accentInvisibleAtEqualLuminance,
+	accentJustOverVisibilityDistance,
+	accentJustUnderVisibilityDistance,
 	accentRescuedByColor,
 	bandedSource,
 	collapsedAccentUnderRaisedFloor,
@@ -54,6 +59,8 @@ import {
 	distinctnessInvisibleAccent,
 	distinctnessNearCollapse,
 	fixtureMetadata,
+	foregroundInvisibleOverStop,
+	HAND_WRITTEN_EPSILON_CONTRAST,
 	iterableSource,
 	lyingAccentCollapseFlag,
 	makePalette,
@@ -73,6 +80,8 @@ import {
 	schemaTooManyStops,
 	schemaUnorderedStops,
 	sparseSource,
+	textFloorJustOverEpsilon,
+	textFloorJustUnderEpsilon,
 	transparentDiscScanReport,
 	validCollapsed,
 	validFlat,
@@ -684,6 +693,227 @@ test("I4 flags an exactly identical foreground/background pair", () => {
 })
 
 // ---------------------------------------------------------------------------------------------
+// I4 against the published stops — §2's third field for minTextContrast
+// ---------------------------------------------------------------------------------------------
+
+test("I4 holds the foreground to minTextContrast against every published stop", () => {
+	// PHASE_0_DECISIONS.md §2 defines the parameter as "foreground vs background, surface, and every
+	// published stop". The stop half was enforced nowhere, and this exact palette published clean:
+	// `{ valid: true, violations: [] }` (`reviews/phase-0-adversarial/contract.md` finding 2).
+	const foreground = foregroundInvisibleOverStop.roles.foreground
+	const stop = foregroundInvisibleOverStop.gradient!.stops[0].color
+	assert.equal(stop.hex, "#000000")
+	assert.ok(Math.abs(apcaRawBetween(foreground, stop)) < EPSILON_TEXT_RAW, "luminance says invisible")
+	assert.equal(apcaLc(foreground.rgb, stop.rgb), 0, "APCA's public scale reports nothing")
+
+	// Invariant 3 is right to be content: these are genuinely distinct *colours*, nineteen
+	// dark-neutral bars apart. Zero *luminance* contrast is a different question, and it is this one.
+	assert.ok(colorDistance(foreground, stop) > sameColorBar(foreground, stop) * 15)
+	assert.deepEqual(validateDistinctness(foregroundInvisibleOverStop), [])
+	assert.deepEqual(validateSchema(foregroundInvisibleOverStop), [])
+
+	const violations = validateContrastFloors(foregroundInvisibleOverStop)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I4.stop-below-contrast-floor")
+	assert.deepEqual([...violations[0].subjects].sort(), ["gradient.stops[0]", "roles.foreground"])
+	assert.equal(violations[0].measured?.parameter, "minTextContrast")
+	assert.equal(violations[0].measured?.floorRawMagnitude, EPSILON_TEXT_RAW)
+	assert.equal(violations[0].measured?.visibilityDistance, undefined, "no colour rescue for text")
+
+	// And the whole palette is now invalid, which is the point of the fix.
+	assert.equal(validatePalette(foregroundInvisibleOverStop).valid, false)
+})
+
+test("the stop clause leaves a legible foreground alone, over every stop of a real gradient", () => {
+	// The enforcement must not cost the valid fixtures anything: validGradient's near-white foreground
+	// clears all three of its stops by an order of magnitude, and it did before the clause existed.
+	for (const stop of validGradient.gradient!.stops) {
+		assert.ok(
+			Math.abs(apcaRawBetween(validGradient.roles.foreground, stop.color)) > EPSILON_TEXT_RAW * 20,
+			`stop ${stop.color.hex} must be nowhere near the floor`,
+		)
+	}
+	assert.deepEqual(validateContrastFloors(validGradient), [])
+	assert.deepEqual(validatePalette(validGradient).violations, [])
+})
+
+test("a caller-raised minTextContrast reaches the stops too, and the stops alone can fail it", () => {
+	// The clause is the parameter, not a special case of the epsilon: raising the floor raises it
+	// everywhere §2 says the parameter applies.
+	const strict: Palette = {
+		...validGradient,
+		contrast: resolveContrastParameters({ minTextContrast: 90, minAccentContrast: 0 }),
+	}
+	const violations = validateContrastFloors(strict)
+	assert.ok(violations.length > 0)
+	assert.ok(violations.every((entry) => entry.measured?.parameter === "minTextContrast"))
+	// stop 2 (#4a6b8a, |raw| 78.9) is under a 92.7 floor; stop 0 (#101820, 102.6) is not.
+	const subjects = violations.map((entry) => [...entry.subjects].sort().join("+")).sort()
+	assert.ok(subjects.includes("gradient.stops[2]+roles.foreground"), subjects.join(", "))
+	assert.equal(subjects.includes("gradient.stops[0]+roles.foreground"), false, subjects.join(", "))
+})
+
+test("the stop clause covers the foreground only — the accent's stop scope is deliberately still open", () => {
+	// §2 reads "minAccentContrast (accent vs same)", which arguably extends the accent to the stops as
+	// well. That was not implemented here: the adversarial review's finding is about `minTextContrast`,
+	// and widening the accent's scope would change which palettes validate on a question the reviewer
+	// has not been asked. This test states the current scope so that changing it has to be deliberate.
+	const palette = makePalette({
+		background: "#101820",
+		surface: "#1e2a38",
+		foreground: "#f2f5f7",
+		accent: "#506ca0",
+		stops: [["#057689", 0], ["#2b3f57", 1]],
+	})
+	const accentOverStop = Math.abs(apcaRawBetween(palette.roles.accent, palette.gradient!.stops[0].color))
+	assert.ok(accentOverStop < EPSILON_ACCENT_RAW, "the accent is at zero luminance contrast over stop 0")
+	assert.deepEqual(validateDistinctness(palette), [], "and invariant 3 does not catch it either")
+
+	const violations = validateContrastFloors(palette)
+	assert.deepEqual(
+		violations.map((entry) => entry.code),
+		[],
+		"today the accent is not held to the stops — open reviewer item, PHASE_0_LOOSE_ENDS",
+	)
+})
+
+// ---------------------------------------------------------------------------------------------
+// The frozen thresholds, pinned — one LSB either side of each
+// ---------------------------------------------------------------------------------------------
+
+test("a hand-written contrast block pins both epsilons through invariant 1", () => {
+	// Every other fixture's contrast block comes out of `resolveContrastParameters`, so it moves in
+	// lockstep with any edit to the epsilons and can never disagree with them
+	// (`reviews/phase-0-adversarial/contract.md` finding 3, root cause). This block is typed out with
+	// the frozen digits, and I1 checks a declaration against `max(lcFloor(requestedLc), ε)` to 1e-9 —
+	// so an epsilon that moves in *either* direction makes this assertion fail.
+	assert.equal(HAND_WRITTEN_EPSILON_CONTRAST.minTextContrast.effectiveRawMagnitude, 2.5)
+	assert.equal(HAND_WRITTEN_EPSILON_CONTRAST.minAccentContrast.effectiveRawMagnitude, 2.5)
+	assert.equal(HAND_WRITTEN_EPSILON_CONTRAST.minTextContrast.requestedLc, 0)
+	assert.deepEqual(validateSchema(textFloorJustOverEpsilon), [])
+
+	// Which is to say: the resolver and the hand-written digits agree, checked without asking the
+	// resolver to supply the answer it is being checked against.
+	assert.deepEqual(
+		resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS),
+		HAND_WRITTEN_EPSILON_CONTRAST,
+	)
+})
+
+test("the text epsilon is bracketed by one least-significant bit", () => {
+	// Same background, two foregrounds one LSB apart in red. The magnitudes are recorded here as
+	// literals — measured by search over 8-bit pairs, not read back out of the code under test.
+	const under = textFloorJustUnderEpsilon.roles
+	const over = textFloorJustOverEpsilon.roles
+	assert.equal(under.background.hex, over.background.hex)
+	assert.ok(Math.abs(Math.abs(apcaRawBetween(under.foreground, under.background)) - 2.437945) < 1e-6)
+	assert.ok(Math.abs(Math.abs(apcaRawBetween(over.foreground, over.background)) - 2.538832) < 1e-6)
+
+	// 2.437945 is under the floor and 2.538832 is over it, and nothing else about the two palettes
+	// differs. An epsilon anywhere outside (2.437945, 2.538832] breaks one of these two assertions.
+	const violations = validateContrastFloors(textFloorJustUnderEpsilon)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I4.below-contrast-floor")
+	assert.deepEqual([...violations[0].subjects].sort(), ["roles.background", "roles.foreground"])
+	assert.deepEqual(validateContrastFloors(textFloorJustOverEpsilon), [])
+	assert.equal(validatePalette(textFloorJustOverEpsilon).valid, true)
+})
+
+test("the accent epsilon is bracketed by one least-significant bit", () => {
+	// Same background, two accents one LSB apart in green — and both close enough in colour that the
+	// rescue is off in both, so the verdict turns on the accent epsilon alone.
+	const under = accentFloorJustUnderEpsilon.roles
+	const over = accentFloorJustOverEpsilon.roles
+	assert.equal(under.background.hex, over.background.hex)
+	assert.ok(Math.abs(Math.abs(apcaRawBetween(under.accent, under.background)) - 2.477742) < 1e-6)
+	assert.ok(Math.abs(Math.abs(apcaRawBetween(over.accent, over.background)) - 2.506932) < 1e-6)
+	assert.ok(colorDistance(under.accent, under.background) < 0.05, "the colour rescue must be off")
+	assert.ok(colorDistance(over.accent, over.background) < 0.05, "the colour rescue must be off")
+
+	const violations = validateContrastFloors(accentFloorJustUnderEpsilon)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
+	assert.deepEqual(validateContrastFloors(accentFloorJustOverEpsilon), [])
+	assert.equal(validatePalette(accentFloorJustOverEpsilon).valid, true)
+})
+
+test("the accent visibility distance is bracketed by one least-significant bit", () => {
+	// Same background, two accents one LSB apart in red, both at |raw| under 1 — so luminance condemns
+	// both and only the colour rescue can save either. 0.073786 is under the frozen 0.07444 and
+	// 0.074600 is over it.
+	const under = accentJustUnderVisibilityDistance.roles
+	const over = accentJustOverVisibilityDistance.roles
+	assert.equal(under.background.hex, over.background.hex)
+	assert.ok(Math.abs(colorDistance(under.accent, under.background) - 0.073786) < 1e-6)
+	assert.ok(Math.abs(colorDistance(over.accent, over.background) - 0.074600) < 1e-6)
+	assert.ok(Math.abs(apcaRawBetween(under.accent, under.background)) < 1)
+	assert.ok(Math.abs(apcaRawBetween(over.accent, over.background)) < 1)
+
+	const violations = validateContrastFloors(accentJustUnderVisibilityDistance)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
+	assert.deepEqual(validateContrastFloors(accentJustOverVisibilityDistance), [])
+	assert.equal(validatePalette(accentJustOverVisibilityDistance).valid, true)
+})
+
+// ---------------------------------------------------------------------------------------------
+// Boundary strictness at the two central comparisons
+// ---------------------------------------------------------------------------------------------
+
+test("I3's comparison is inclusive: a pair exactly at the bar is distinct, one ulp under is not", () => {
+	// "Distinct **above** the bar" is a semantic claim in §4, and `distance >= bar` survived mutation
+	// to `>` (`reviews/phase-0-adversarial/contract.md` finding 6). The override hook exists precisely
+	// so a future round can sweep the threshold; here it pins the strictness at the boundary itself.
+	const stops = distinctnessNearCollapse.roles
+	const distance = colorDistance(stops.surface, stops.background)
+	assert.deepEqual(
+		validateDistinctness(distinctnessNearCollapse, () => distance),
+		[],
+		"a bar exactly equal to the distance must call the pair distinct",
+	)
+	const justAbove = validateDistinctness(distinctnessNearCollapse, () => distance + 1e-12)
+	assert.equal(justAbove.length, 1, codes(justAbove).join(", "))
+	assert.equal(justAbove[0].code, "I3.collapse-not-sanctioned")
+})
+
+test("I4's comparison is inclusive too: |raw| exactly at the floor passes, one notch under does not", () => {
+	// Same mutation, same file: `Math.abs(raw) >= floor` survived `>`. The declared floor is the hook
+	// here — a caller-raised floor set to exactly the pair's own magnitude.
+	// validCollapsed's surface *is* its background and its accent is its foreground, so the palette has
+	// exactly one distinct text pair and the floor can be set to that pair's own magnitude with nothing
+	// else to trip over.
+	const roles = validCollapsed.roles
+	const raw = Math.abs(apcaRawBetween(roles.foreground, roles.background))
+	assert.ok(Math.abs(raw - 102.6247) < 1e-4, `the fixture pair moved: ${raw}`)
+
+	const atFloor: Palette = {
+		...validCollapsed,
+		contrast: {
+			minTextContrast: { requestedLc: 0, effectiveRawMagnitude: raw },
+			minAccentContrast: { requestedLc: 0, effectiveRawMagnitude: EPSILON_ACCENT_RAW },
+		},
+	}
+	assert.deepEqual(validateContrastFloors(atFloor), [], "exactly at the floor is not below it")
+
+	const justAbove: Palette = {
+		...atFloor,
+		contrast: {
+			...atFloor.contrast,
+			minTextContrast: { requestedLc: 0, effectiveRawMagnitude: raw + 1e-9 },
+		},
+	}
+	const violations = validateContrastFloors(justAbove)
+	// Two, because the collapsed surface is the background: the same pair, named twice.
+	assert.equal(violations.length, 2, codes(violations).join(", "))
+	assert.deepEqual(
+		violations.map((entry) => [...entry.subjects].sort().join("+")).sort(),
+		["roles.background+roles.foreground", "roles.foreground+roles.surface"],
+	)
+})
+
+// ---------------------------------------------------------------------------------------------
 // I2 — source support
 // ---------------------------------------------------------------------------------------------
 
@@ -788,7 +1018,32 @@ test("I2's spatial-spread half is reported as deferred, never as a pass", () => 
 
 test("validatePalette without a source says so, rather than silently skipping invariant 2", () => {
 	const result = validatePalette(validFlat)
-	assert.deepEqual([...result.deferred].sort(), ["I2.source-support", "I2.spatial-spread"])
+	assert.deepEqual(
+		[...result.deferred].sort(),
+		["I2.source-support", "I2.spatial-spread", "I5.transparency-report"],
+	)
+})
+
+test("validatePalette without a transparency report defers invariant 5 rather than skipping it in silence", () => {
+	// This assertion used to run the other way: the deferred list was asserted to be *exactly* invariant
+	// 2's two entries, which froze the silence in place (`reviews/phase-0-adversarial/contract.md`
+	// finding 5). A caller who forgot the option got `valid: true` and no indication that the invariant
+	// whose whole statement is "refused loudly" had not run at all.
+	const withoutReport = validatePalette(validFlat)
+	assert.ok(withoutReport.deferred.includes(DEFERRED_TRANSPARENCY_REPORT))
+	assert.equal(withoutReport.valid, true, "a deferral is not a violation")
+
+	// Supplying the report performs the check, so there is nothing to defer.
+	const withReport = validatePalette(validFlat, { transparency: opaqueJpegReport })
+	assert.equal(withReport.deferred.includes(DEFERRED_TRANSPARENCY_REPORT), false)
+
+	// Including when the report is the refusing kind and the caller asked for violations, not a throw.
+	const transparent = validatePalette(validFlat, {
+		transparency: transparentDiscScanReport,
+		throwOnTransparentInput: false,
+	})
+	assert.equal(transparent.deferred.includes(DEFERRED_TRANSPARENCY_REPORT), false)
+	assert.ok(hasCode(transparent.violations, "I5.transparent-input"))
 })
 
 // ---------------------------------------------------------------------------------------------
