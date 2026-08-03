@@ -115,42 +115,85 @@ function flushComment() {
 
 /* ---------- rendering ---------- */
 
+/**
+ * The mock player — the primary judging surface (REVIEW_UI.md §3).
+ *
+ * Layout revision 2, 2026-08-03, from the reviewer's own report on revision 1. Their four findings,
+ * and what each one changed:
+ *
+ *  1. "the artwork takes too much space, i can barely see the background/gradient i'm supposed to
+ *     review" — the artwork is now a small thumbnail. It is context; the palette is the subject, so
+ *     the field has to dominate the frame.
+ *  2. "all the content is at the bottom, so in case of a gradient, almost nothing is on top of the
+ *     background color" — content is spread across the mock's full height in three regions, so BOTH
+ *     ends of a gradient carry something. Foreground text sits directly on the field at the top of
+ *     the ramp, not only on the surface card near the bottom.
+ *  3. "the accent color is only used on top of a surface colored area, so i won't be able to see it
+ *     in other contexts" — accent now appears in four places: on the field at the top, on the field
+ *     at the bottom, on the surface card, and as a fill on a background-coloured rail. Those are the
+ *     relationships the contract's accent floors are checked against (background, surface, stops),
+ *     so the reviewer can see each of them.
+ *  4. swatches moved below the mock — see `renderSide`.
+ *
+ * Unchanged and not negotiable: the artwork is borderless on the field, there are no shadows
+ * anywhere, and the gradient is the pinned preview renderer's output pasted verbatim
+ * (`side.fieldCss`) — the [REVIEWED] display mapping is never recomputed here.
+ */
 function renderMock(item, side) {
 	const roles = Object.fromEntries(side.roles.map((role) => [role.role, role.hex]))
 	const mock = el("div", { class: "mock" })
 	mock.style.background = side.fieldCss
 
+	const accentIcon = (shape) => {
+		const icon = el("span", { class: `icon ${shape}`, attrs: { "aria-hidden": "true" } })
+		icon.style.background = roles.accent
+		return icon
+	}
+	/** A progress rail: accent on a background-coloured track. Accent against background, directly. */
+	const rail = () => {
+		const track = el("div", { class: "mock-track" })
+		track.style.background = roles.background
+		const fill = el("div", { class: "mock-track-fill" })
+		fill.style.background = roles.accent
+		track.append(fill)
+		return track
+	}
+
+	// --- top: foreground text and accent icons, both directly on the field, at the gradient's
+	// background end. This is the region revision 1 had nothing in.
+	const top = el("div", { class: "mock-top" })
+	top.style.color = roles.foreground
+	const heading = el("div", { class: "mock-field-text" })
+	heading.append(el("p", { class: "mock-title", text: "Album title" }), el("p", { text: "Artist name" }))
+	const topIcons = el("div", { class: "mock-icons" })
+	topIcons.append(accentIcon("icon-prev"), accentIcon("icon-dot"))
+	top.append(heading, topIcons)
+
+	// --- middle: the artwork, small and borderless, beside the surface card.
+	const middle = el("div", { class: "mock-middle" })
 	const art = el("img", {
 		class: "mock-art",
 		attrs: { src: item.artwork.media, alt: "album artwork", loading: "lazy", decoding: "async" },
 	})
-
-	const fieldText = el("div", { class: "mock-field-text" })
-	fieldText.style.color = roles.foreground
-	fieldText.append(el("p", { class: "mock-title", text: "Album title" }), el("p", { text: "Artist name" }))
-
 	const card = el("div", { class: "mock-card" })
 	card.style.background = roles.surface
 	card.style.color = roles.foreground
-
-	const icons = el("div", { class: "mock-icons" })
-	for (const shape of ["icon-prev", "icon-play", "icon-next", "icon-dot", "icon-bars"]) {
-		const icon = el("span", { class: `icon ${shape}`, attrs: { "aria-hidden": "true" } })
-		icon.style.background = roles.accent
-		icons.append(icon)
-	}
-
+	const cardIcons = el("div", { class: "mock-icons" })
+	cardIcons.append(accentIcon("icon-play"), accentIcon("icon-bars"))
 	const rowText = el("div", { class: "mock-row-text" })
 	rowText.append(el("b", { text: "Track title" }), el("span", { text: "2:41 / 3:58" }))
+	card.append(el("div", { class: "mock-row" }, cardIcons, rowText), rail())
+	middle.append(art, card)
 
-	const track = el("div", { class: "mock-track" })
-	track.style.background = roles.background
-	const fill = el("div", { class: "mock-track-fill" })
-	fill.style.background = roles.accent
-	track.append(fill)
+	// --- bottom: accent on the field again, at the gradient's far end, plus foreground text on the
+	// field and one more accent-on-background rail.
+	const bottom = el("div", { class: "mock-bottom" })
+	bottom.style.color = roles.foreground
+	const transport = el("div", { class: "mock-icons" })
+	transport.append(accentIcon("icon-prev"), accentIcon("icon-play"), accentIcon("icon-next"))
+	bottom.append(transport, el("span", { class: "mock-caption", text: "Up next · Another track" }), rail())
 
-	card.append(el("div", { class: "mock-row" }, icons, rowText), track)
-	mock.append(art, fieldText, card)
+	mock.append(top, middle, bottom)
 	return mock
 }
 
@@ -198,6 +241,9 @@ function renderSwatches(side) {
 function renderSide(item, name, side) {
 	const panel = el("section", { class: "side", attrs: { "aria-label": `side ${name}` } })
 	panel.append(el("h2", { text: `side ${name}` }))
+	// Swatches below the mock, not beside it: the reviewer's fourth finding — "the swatches ... take
+	// too much space, put it below the mock ui ... (the swatches have only secondary importance to
+	// the mock UI)". They stay an identity check, never the judging surface (REVIEW_UI.md §3).
 	panel.append(el("div", { class: "side-body" }, renderMock(item, side), renderSwatches(side)))
 	return panel
 }

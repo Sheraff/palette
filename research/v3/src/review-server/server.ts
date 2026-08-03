@@ -86,6 +86,22 @@ const ADJUDICATION_TEXT: Record<AdjudicationVerdict, (questionKey: string) => st
 		"this is not a blurry line, the answer is wrong.",
 }
 
+/**
+ * What `d` and `m` are actually a judgement about.
+ *
+ * The reviewer's own report after the first browse: *"there are multiple oracle answers per
+ * artwork"*, so the two keys felt ill-defined — with two variants on screen, "the oracle's answer"
+ * is not one thing. The rule below names the referent and covers the case where both variants are
+ * marked with different answers. On the page it appears twice, at the top and under every item,
+ * because a rule read once at the top of a 30-item scroll is a rule the reviewer is guessing at by
+ * item 12.
+ * [REVIEWED] — reviewer's wording, 2026-08-03.
+ */
+export const ADJUDICATION_RULE =
+	"Judge the answer marked '← contradicted the flag' — d means that marked reading is a defensible " +
+	"view of this artwork, m means it misread the image. If both variants are marked with different " +
+	"answers, d if EITHER marked reading is defensible."
+
 /** The three groups the adjudication page is divided into, in reading order. */
 export const ADJUDICATION_SECTIONS = [
 	{
@@ -863,6 +879,7 @@ export class ReviewService {
 			released: true,
 			releasedAt: release.ts,
 			question: { key: question.key, question: question.question, instruction: question.instruction },
+			rule: ADJUDICATION_RULE,
 			verdicts: ADJUDICATION_VERDICTS,
 			sections: ADJUDICATION_SECTIONS.map((section) => ({
 				...section,

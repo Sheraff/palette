@@ -203,11 +203,29 @@ export class FakeNode {
 	width = 0
 	height = 0
 	style: Record<string, string> = {}
+	attrs: Record<string, string> = {}
+	value = ""
+	checked = false
+	disabled = false
 	#text = ""
 
 	constructor(tagName: string) {
 		this.tagName = tagName
 	}
+
+	setAttribute(name: string, value: unknown): void {
+		this.attrs[name] = String(value)
+		if (name === "src") this.src = String(value)
+	}
+
+	getAttribute(name: string): string | null {
+		return this.attrs[name] ?? null
+	}
+
+	/** The pairwise page wires buttons this way; the tests drive the keyboard, so this only records. */
+	addEventListener(): void {}
+
+	focus(): void {}
 
 	set textContent(value: unknown) {
 		this.#text = String(value)
@@ -225,6 +243,21 @@ export class FakeNode {
 	replaceChildren(...children: FakeNode[]): void {
 		this.#text = ""
 		this.children = children
+	}
+
+	/** Every node under this one, in document order. */
+	descendants(): FakeNode[] {
+		return this.children.flatMap((child) => [child, ...child.descendants()])
+	}
+
+	/** Only what the pages call: they use `?.` on the result, so null is a valid answer. */
+	querySelector(): FakeNode | null {
+		return null
+	}
+
+	/** Descendants carrying a class, the one query the layout tests need. */
+	byClass(className: string): FakeNode[] {
+		return this.descendants().filter((node) => node.className.split(" ").includes(className))
 	}
 }
 
@@ -245,13 +278,20 @@ export type FakePage = Readonly<{
  * The module is imported with a cache-busting query so several passes can run in one test process;
  * ESM would otherwise hand back the first instance, still bound to the first server.
  */
-export async function openPage(base: string, modulePath: string, nodeIds: readonly string[]): Promise<FakePage> {
+export async function openPage(
+	base: string,
+	modulePath: string,
+	nodeIds: readonly string[],
+	/** The URL the page thinks it is at — some pages read `?batch=` from it. */
+	href = `${base}/`,
+): Promise<FakePage> {
 	const nodes = Object.fromEntries(nodeIds.map((id) => [id, new FakeNode("div")]))
 	const listeners: ((event: unknown) => void)[] = []
 	const realFetch = globalThis.fetch
 
 	const globals = globalThis as unknown as Record<string, unknown>
 	globals.document = {
+		activeElement: null,
 		querySelector(selector: string) {
 			return nodes[selector.replace("#", "")] ?? null
 		},
@@ -262,7 +302,11 @@ export async function openPage(base: string, modulePath: string, nodeIds: readon
 			if (type === "keydown") listeners.push(handler)
 		},
 	}
-	globals.location = { href: `${base}/` }
+	globals.location = { href }
+	// The pairwise page listens on the window for blur/beforeunload; the tests drive the keyboard, so
+	// these only need to exist.
+	globals.addEventListener = () => {}
+	globals.removeEventListener = () => {}
 	// Relative URLs are what a page uses; Node's fetch needs them resolved against the origin.
 	globals.fetch = (input: string, init?: unknown) => realFetch(new URL(String(input), base), init as RequestInit)
 

@@ -148,9 +148,33 @@ Vanilla JS and CSS, no build step, no dependencies, served statically.
 
 Review chrome is **strictly black and white**: black background, flat, no shadows, no gradients, no
 greys. Selection is shown by inverting. The only colors on screen are the palettes themselves — the
-mock player UI (artwork embedded borderless on the field, a surface-coloured card, foreground text,
-accent icon shapes, no shadows) and the swatches beside it, each labelled with its hex **and** its
+mock player UI and the swatches under it, each labelled with its hex **and** its
 `colornames-oklab` name.
+
+### Mock player layout — revision 2 (2026-08-03)
+
+**The mock is part of the output contract**: a verdict is about the exact rendering the reviewer
+judged, so the layout is versioned and dated here. Revision 1 was superseded on the reviewer's own
+report — they are the design authority on this surface — and **no verdict exists against revision 1
+beyond the demo fixture**, so nothing needed rescoping. Any future change to this layout must be
+recorded the same way, because from here on verdicts will be scoped to revision 2.
+
+Their four findings, verbatim, and what each changed:
+
+| finding | change |
+|---|---|
+| *"the artwork takes too much space, i can barely see the background/gradient i'm supposed to review"* | the artwork is a **96 px thumbnail** in the middle region, no longer a full-width row. It is context; the palette is the subject. |
+| *"all the content is at the bottom, so in case of a gradient, almost nothing is on top of the background color"* | content is spread over **three regions across a 420 px-min frame**, `space-between`: **top** — album title + artist in foreground directly on the field, plus accent icons; **middle** — thumbnail beside the surface card; **bottom** — accent transport icons, an "up next" caption in foreground on the field, and a rail. Both ends of a gradient now carry text and accent. |
+| *"the accent color is only used on top of a surface colored area, so i won't be able to see it in other contexts"* | accent appears in **four contexts**: on the field at the top of the ramp, on the field at the bottom, on the surface card, and as the fill of a **background-coloured rail** (twice). Those are exactly the relationships the contract's accent floors are checked against — background, surface, and the stops. |
+| *"the swatches ... takes too much space, put it below the mock ui, not next to it"* | `.side-body` is a column: mock first, then a **compact wrapping swatch row** underneath. |
+
+Unchanged and not negotiable: the artwork is **borderless** on the field, there are **no shadows**
+anywhere, chrome outside the mock stays black and white, every colour is named via
+`colornames-oklab`, and the `[REVIEWED]` gradient display mapping is untouched — the page pastes the
+server's `fieldCss` and never composes it.
+
+`review-server-mock-layout.test.ts` drives the real `app.js` against the real server and asserts one
+test per finding, plus the invariants above.
 
 Gradients render as the pinned preview renderer's output, produced server-side and pasted by the
 browser: `linear-gradient(135deg in oklab, …)` with `display_pos = reserve + published_pos × (1 −

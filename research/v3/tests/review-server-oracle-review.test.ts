@@ -15,6 +15,7 @@ import { after, before, describe, it } from "node:test"
 import { fileURLToPath } from "node:url"
 import { validateRecord, type NoteRecord, type WarehouseRecord } from "../src/warehouse/records.ts"
 import {
+	ADJUDICATION_RULE,
 	ADJUDICATION_SECTIONS,
 	ADJUDICATION_TAG,
 	ADJUDICATION_VERDICTS,
@@ -31,7 +32,7 @@ import type { StoredOracleBatch } from "../src/review-server/types.ts"
 
 const BATCH = PREMISE_DISAMBIGUATION_BATCH_ID
 const REVIEW_PAGE = fileURLToPath(new URL("../review-ui/oracle-review.js", import.meta.url))
-const NODE_IDS = ["question", "totals", "sections", "status"] as const
+const NODE_IDS = ["question", "rule", "totals", "sections", "status"] as const
 const fixture = await buildPremiseDisambiguationFixture()
 
 /** Answer the whole round so it can be released, then release it. */
@@ -198,6 +199,15 @@ describe("oracle adjudication view", () => {
 		)
 	})
 
+	it("names what d and m are a judgement about, at the top and under every item", async () => {
+		// The reviewer's report after the first browse: "there are multiple oracle answers per artwork",
+		// so the keys were ill-defined. The rule names the referent and covers the both-marked case.
+		const payload = await call(harness.base, "GET", `/api/oracle-review/${BATCH}`)
+		assert.equal(payload.body.rule, ADJUDICATION_RULE)
+		assert.match(payload.body.rule, /contradicted the flag/u)
+		assert.match(payload.body.rule, /if EITHER marked reading is defensible/u)
+	})
+
 	it("offers a symmetric vocabulary, and refuses anything outside it", async () => {
 		// REVIEW_UI.md §4: for every expressible complaint its opposite must exist. A page that could
 		// only record "the oracle misread this" would measure willingness to complain.
@@ -275,6 +285,18 @@ describe("oracle adjudication page, driven by keystrokes", () => {
 			section.children.filter((child) => child.tagName === "article"),
 		)
 		assert.equal(articles.length, fixture.items.length)
+	})
+
+	it("repeats the d/m rule under every item, not only at the top", () => {
+		assert.equal(page.nodes.rule.textContent, ADJUDICATION_RULE)
+		const articles = page.nodes.sections.children.flatMap((section) =>
+			section.children.filter((child) => child.tagName === "article"),
+		)
+		assert.equal(articles.length, fixture.items.length)
+		for (const article of articles) {
+			assert.ok(article.textContent.includes("contradicted the flag"), "an item does not carry the rule")
+			assert.ok(article.textContent.includes("if EITHER marked reading is defensible"))
+		}
 	})
 
 	it("shows the artwork and all five facts for each item", () => {

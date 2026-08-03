@@ -16,6 +16,7 @@
 
 const nodes = {
 	question: document.querySelector("#question"),
+	rule: document.querySelector("#rule"),
 	totals: document.querySelector("#totals"),
 	sections: document.querySelector("#sections"),
 	status: document.querySelector("#status"),
@@ -70,6 +71,9 @@ function renderItem(item, position) {
 		fact("published flag", item.flag),
 		fact("you sided with", item.sidedWith),
 		fact("annotation", item.annotation ?? "—"),
+		// The rule under every item, not only at the top of the page: with two oracle answers on
+		// screen the keys are ambiguous unless the referent is named where the keys are pressed.
+		el("p", { class: "adj-rule", text: payload.rule ?? "" }),
 	)
 
 	const node = el(
@@ -84,6 +88,7 @@ function renderItem(item, position) {
 
 function render() {
 	nodes.question.textContent = payload.question.question
+	nodes.rule.textContent = payload.rule ?? ""
 	nodes.totals.textContent =
 		`${payload.totals.items} items · released ${payload.releasedAt} · ` +
 		`${payload.totals.annotated} annotated (${payload.totals["oracle-defensible"]} defensible, ` +

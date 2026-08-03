@@ -177,27 +177,62 @@ input[type="checkbox"] {
 	text-transform: uppercase;
 }
 
+/* Mock first, swatches under it (revision 2). */
 .side-body {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(200px, 0.85fr);
-	gap: 10px;
-	align-items: start;
-}
-
-/* ---- mock player UI: palette colors only, borderless artwork, no shadows ---- */
-
-.mock {
-	padding: 16px;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 10px;
 	min-width: 0;
 }
 
+/* ---- mock player UI: palette colors only, borderless artwork, no shadows ----
+ * Layout revision 2, 2026-08-03, from the reviewer's report on revision 1 (see renderMock's comment
+ * for their four findings verbatim). The shape: the field fills a tall frame and carries content at
+ * BOTH ends, so a gradient is judged over its whole ramp rather than under a card at the bottom.
+ * The artwork is a thumbnail — it is context, the palette is the subject.
+ */
+
+.mock {
+	padding: 18px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 18px;
+	/* Tall enough that a 2-stop ramp is visibly a ramp, and that the two content ends are far apart. */
+	min-height: 420px;
+	min-width: 0;
+}
+
+.mock-top,
+.mock-bottom {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	min-width: 0;
+}
+
+.mock-top {
+	justify-content: space-between;
+}
+
+.mock-bottom {
+	flex-wrap: wrap;
+}
+
+.mock-middle {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	min-width: 0;
+}
+
+/* Small and borderless. Revision 1 gave this the whole width and the reviewer could not see the
+ * field they were there to judge. */
 .mock-art {
 	display: block;
-	width: 100%;
+	width: 96px;
 	height: auto;
+	flex: none;
 	border: 0;
 }
 
@@ -205,18 +240,26 @@ input[type="checkbox"] {
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
+	min-width: 0;
 }
 
 .mock-title {
-	font-size: 16px;
+	font-size: 17px;
 	font-weight: 700;
 }
 
+.mock-caption {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
 .mock-card {
+	flex: 1 1 auto;
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	min-width: 0;
 }
 
 .mock-row {
@@ -231,9 +274,12 @@ input[type="checkbox"] {
 	min-width: 0;
 }
 
+/* The rail is background-coloured with an accent fill, so accent-against-background is on screen
+ * as a real relationship and not only as two swatches side by side. */
 .mock-track {
 	height: 4px;
 	width: 100%;
+	flex: 1 1 100%;
 }
 
 .mock-track-fill {
@@ -245,6 +291,7 @@ input[type="checkbox"] {
 	display: flex;
 	align-items: center;
 	gap: 14px;
+	flex: none;
 }
 
 .icon {
@@ -281,27 +328,33 @@ input[type="checkbox"] {
 	clip-path: polygon(0 60%, 20% 60%, 20% 100%, 0 100%, 0 60%, 40% 20%, 60% 20%, 60% 100%, 40% 100%, 40% 20%, 80% 0, 100% 0, 100% 100%, 80% 100%, 80% 0);
 }
 
-/* ---- swatches beside the mock ---- */
+/* ---- swatches, BELOW the mock ----
+ * Reviewer, revision 2: "the swatches have only secondary importance to the mock UI". A compact
+ * wrapping row under it, not a column beside it stealing half the width.
+ */
 
 .swatches {
 	list-style: none;
 	padding: 0;
+	margin: 0;
 	display: flex;
-	flex-direction: column;
-	gap: 6px;
+	flex-wrap: wrap;
+	gap: 6px 14px;
 	min-width: 0;
 }
 
 .swatches li {
 	display: grid;
-	grid-template-columns: 26px minmax(0, 1fr);
-	gap: 8px;
+	grid-template-columns: 20px minmax(0, 1fr);
+	gap: 6px;
 	align-items: start;
+	flex: 0 1 auto;
+	max-width: 100%;
 }
 
 .chip {
-	width: 26px;
-	height: 26px;
+	width: 20px;
+	height: 20px;
 	border: 1px solid var(--ink);
 }
 
@@ -317,12 +370,16 @@ input[type="checkbox"] {
 	text-transform: uppercase;
 }
 
+/* A full-width break in the wrapping row: the gradient header starts its own line. */
 .swatch-sub {
-	border-top: 1px solid var(--ink);
-	margin-top: 6px;
-	padding-top: 6px;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
+}
+
+.swatches li:has(.swatch-sub) {
+	flex: 1 0 100%;
+	border-top: 1px solid var(--ink);
+	padding-top: 6px;
 }
 
 /* ---- reviewer input ---- */
@@ -726,6 +783,18 @@ summary {
 	gap: 10px;
 	align-items: baseline;
 	word-break: break-word;
+}
+
+/* The d/m rule. Repeated under every item on purpose — see ADJUDICATION_RULE. */
+.adj-rule {
+	border-top: 1px solid var(--ink);
+	padding-top: 6px;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.adj-rule:empty {
+	display: none;
 }
 
 .adj-fact-label {
