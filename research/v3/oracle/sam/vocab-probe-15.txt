@@ -1,0 +1,45 @@
+# Concept-vocabulary probe set (probe-2-vocabulary), 15 images.
+# Targeted, not random: every image was OPENED and its content confirmed by eye before it
+# went on this list (see VOCAB_PROBE_NOTES.md "Selection"). All 15 are members of the
+# 142-image premise eval set, so their eval-142 SAM rows are available for comparison.
+# read_list_file() has no inline-comment support, so every note is on its own line.
+
+# --- parental-advisory marks (5), reviewer note 2 ----------------------------
+# PA bottom-right, flat black background
+images/greenday.jpg
+# PA top-right, over a photo, 1200px rendition
+images/slim.jpg
+# PA bottom-right, warm faded photo
+03/ab67616d0000b27300034b60105d8937440211da.jpg
+# PA bottom-right, dark photo
+0d/ab67616d0000b273000d8049603d6ab7f5d759bb
+# PA bottom-LEFT, 300px rendition (scale stress)
+0f/ab67616d00001e02000f723f36271de0ed3aa893
+
+# --- sticker-like / emblem / badge (4), reviewer note 1 ----------------------
+# literal peel-off promo sticker with a barcode
+03/ab67616d0000b2730003580bd2766859c4d81e13.jpg
+# circular crest plus a "db" monogram mark
+02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg
+# heraldic shield emblem plus a small corner badge
+09/ab67616d0000b273000955ccfc1e8da97a09b32d
+# ProSound Karaoke brand mark (pictorial mark + wordmark)
+0f/ab67616d00001e02000f0a78a1791248aec707e3
+
+# --- record-label logo / in-artwork branding (2) -----------------------------
+# Domino record-label logo, bottom-right, on an otherwise pure-type cover
+images/franz.jpg
+# band emblem drawn INTO the artwork, not applied on top
+images/elephunk.jpg
+
+# --- main display text, title-vs-artist ambiguity (2), reviewer note 5 -------
+# artist name huge, album title small
+images/toxicity.jpg
+# artist and title in the same banner treatment
+images/vvbrown.jpg
+
+# --- negatives (2): no PA mark, no logo, no sticker, no display text ---------
+# photo only
+images/orelsan.jpg
+# interior photo only
+03/ab67616d00001e02000300752f338b6aedff856c.jpg

@@ -1,0 +1,45 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 2167.04it/s]
+images/greenday.jpg                                  parental advisory=1 parental advisory sticker=1 parental advisory label=1 advisory sticker=1 record label logo=1 album title=1 logo=2
+images/slim.jpg                                      parental advisory=1 parental advisory sticker=1 parental advisory label=1 advisory sticker=1 record label logo=1 album title=1 logo=2
+03/ab67616d0000b27300034b60105d8937440211da.jpg      parental advisory=1 parental advisory sticker=1 parental advisory label=1 advisory sticker=1 record label logo=1 album title=1 logo=1 sticker=1
+0d/ab67616d0000b273000d8049603d6ab7f5d759bb          parental advisory=1 parental advisory sticker=1 parental advisory label=1 advisory sticker=1 record label logo=1 logo=1
+0f/ab67616d00001e02000f723f36271de0ed3aa893          parental advisory=1 parental advisory sticker=1 parental advisory label=1 advisory sticker=2 badge=1 record label logo=1 album title=1 logo=1 sticker=2
+03/ab67616d0000b2730003580bd2766859c4d81e13.jpg      parental advisory sticker=1 parental advisory label=1 advisory sticker=1 album title=1 logo=1 sticker=1
+02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg      parental advisory sticker=1 advisory sticker=1 emblem=2 badge=1 record label logo=1 album title=2 logo=2 sticker=1
+09/ab67616d0000b273000955ccfc1e8da97a09b32d          parental advisory sticker=2 parental advisory label=1 advisory sticker=1 emblem=1 badge=1 record label logo=1 album title=2 logo=2 sticker=2
+0f/ab67616d00001e02000f0a78a1791248aec707e3          parental advisory sticker=1 advisory sticker=1 album title=1 logo=1
+images/franz.jpg                                     parental advisory sticker=1 parental advisory label=1 advisory sticker=1 record label logo=1 album title=1 logo=1
+images/elephunk.jpg                                  parental advisory sticker=1 advisory sticker=1 album title=2 logo=1 sticker=1
+images/toxicity.jpg                                  album title=2 logo=1
+images/vvbrown.jpg                                   
+images/orelsan.jpg                                   
+03/ab67616d00001e02000300752f338b6aedff856c.jpg      
+
+images (of 15) where the phrasing fired at all (score>=0.3):
+  12  logo
+  11  parental advisory sticker
+  11  advisory sticker
+  11  album title
+   8  parental advisory label
+   8  record label logo
+   6  sticker
+   5  parental advisory
+   3  badge
+   2  emblem
+   0  explicit content
+   0  brand mark
+   0  wordmark
+   0  title text
+   0  main text
+   0  large text
+overlay: ../../data/sam/vocab-probe-overlays/pa-greenday.png
+overlay: ../../data/sam/vocab-probe-overlays/pa-dark-photo.png
+overlay: ../../data/sam/vocab-probe-overlays/pa-small-rendition.png
+overlay: ../../data/sam/vocab-probe-overlays/sticker-real.png
+overlay: ../../data/sam/vocab-probe-overlays/emblem-crest.png
+overlay: ../../data/sam/vocab-probe-overlays/logo-franz-domino.png
+overlay: ../../data/sam/vocab-probe-overlays/title-vs-artist.png
+{"families": {"parental_advisory": ["parental advisory", "parental advisory sticker", "parental advisory label", "advisory sticker", "explicit content"], "emblem": ["emblem", "badge", "brand mark", "record label logo", "wordmark"], "main_text": ["title text", "main text", "large text"], "incumbent": ["album title", "logo", "sticker"]}}
+real 52.14
+user 4.51
+sys 4.14
