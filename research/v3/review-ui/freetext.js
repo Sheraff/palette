@@ -25,6 +25,11 @@
  * ever saved empty: an empty field is "not answered yet", and recording it as an answer would
  * repeat the exact confusion this round was built to undo.
  *
+ * **Stepping.** Enter advances. Going BACK is Escape then ArrowLeft, and the footer says so, because
+ * the textarea holds focus almost permanently and plain arrows have to keep moving the caret — a
+ * page that stole ArrowLeft from a text field would make editing a sentence impossible. `c` returns
+ * to typing.
+ *
  * Resumable: it opens on the first unanswered cover and reloads what was written for any cover you
  * step back to. Go-back is free before release (§1).
  */
@@ -244,7 +249,16 @@ async function release() {
  */
 function onKey(event) {
 	const inField = document.activeElement === nodes.answer
-	const key = normalizeKey(event)
+	// `event.key`, NOT `event` — `normalizeKey` takes the key STRING. Handed the event object it
+	// returns that object unchanged (`digitFor` returns null for a non-string), so every comparison
+	// below silently comes out false and the page cannot advance, step back or release. That shipped:
+	// the reviewer was stuck on cover 1 with a fully working save path underneath. Every other page
+	// passes `event.key`; this one did not, and nothing in the type-free UI layer could say so.
+	const key = normalizeKey(event.key)
+	// Letters are compared case-insensitively, but the key is NOT lowercased wholesale the way
+	// `oracle.js` does it: that page binds only letters and digits, while this one needs `Enter`,
+	// `Escape`, `ArrowLeft`, `ArrowRight` and `Backspace` to survive intact.
+	const letter = typeof key === "string" ? key.toLowerCase() : ""
 	if (inField && key === "Enter" && !event.shiftKey) {
 		event.preventDefault()
 		void next()
@@ -253,8 +267,14 @@ function onKey(event) {
 	if (inField && key === "Escape") {
 		event.preventDefault()
 		nodes.answer.blur()
+		status("out of the field — ← back · → forward · r release · c back to typing")
 		return
 	}
+	// Everything else belongs to the textarea while it has focus, and the field has focus almost all
+	// the time because `render()` puts it there. That is deliberate — the reviewer is here to type —
+	// but it means the plain arrow keys CANNOT step: ArrowLeft in a textarea moves the caret, and a
+	// page that stole it would make editing a sentence impossible. Escape is the documented way out
+	// and the footer says so; `c` comes back.
 	if (inField) return
 	if (key === "Enter" || key === "ArrowRight") {
 		event.preventDefault()
@@ -266,12 +286,12 @@ function onKey(event) {
 		void back()
 		return
 	}
-	if (key === "r") {
+	if (letter === "r") {
 		event.preventDefault()
 		void release()
 		return
 	}
-	if (key === "c") {
+	if (letter === "c") {
 		event.preventDefault()
 		nodes.answer.focus()
 	}

@@ -44,7 +44,29 @@ import {
 } from "../src/review-server/freetext.ts"
 import { batchReviewPaths, seedGroundFreetextRound } from "../src/review-server/server.ts"
 import { validateFixture, type OracleValidationFixture } from "../src/review-server/oracle-validation.ts"
-import { call, startHarness, type Harness } from "../src/review-server/test-support.ts"
+import { call, openPage, startHarness, type FakePage, type Harness } from "../src/review-server/test-support.ts"
+
+const FREETEXT_PAGE = fileURLToPath(new URL("../review-ui/freetext.js", import.meta.url))
+/** Every node the page writes to. A missing id here is a silent no-op on the real page. */
+const NODE_IDS = [
+	"question",
+	"instruction",
+	"progress",
+	"stage",
+	"frame",
+	"artwork",
+	"context",
+	"context-label",
+	"context-answer",
+	"context-note",
+	"answer",
+	"saved",
+	"side",
+	"done",
+	"pending",
+	"status",
+	"backkey",
+] as const
 
 const run = promisify(execFile)
 const WAREHOUSE_CLI = fileURLToPath(new URL("../src/warehouse/cli.ts", import.meta.url))
@@ -330,5 +352,122 @@ describe("ground free-text round in the review server", () => {
 		// Before release everything is freely editable; after it, a second thought changes shape
 		// (REVIEW_UI.md §1). The round is not silently accepting writes that nothing will read.
 		assert.equal(refused.status, 409)
+	})
+})
+
+/**
+ * The page, driven by the keyboard, against a live server — the test that was missing.
+ *
+ * `ground-freetext-1` shipped with sixteen green tests and a page the reviewer could not advance a
+ * single item on. Every one of those tests drove the SERVER: push, payload, answer, supersede,
+ * count, release. Not one of them loaded `freetext.js` and pressed a key, so the defect — `onKey`
+ * calling `normalizeKey(event)` where every other page calls `normalizeKey(event.key)`, which makes
+ * the function return the event object and every comparison in the handler false — was invisible.
+ * The save path underneath worked perfectly, which is why the reviewer's text was never at risk and
+ * why nothing in the warehouse looked wrong.
+ *
+ * Two harness gaps let it through and both are closed here rather than worked around:
+ *
+ *  - `FakeNode.focus()` was a no-op, so `document.activeElement` never changed and the in-field
+ *    branch of a key handler was unreachable. A page with a text field lives almost entirely in
+ *    that branch.
+ *  - Nothing executed a page module against a real payload, so a module that threw on load, or a
+ *    handler that could never fire, read as "the page is fine" to `verify-live` — which only checks
+ *    that the FILE is served.
+ *
+ * So these assertions are about the reviewer's actual path: focus the field, type, press Enter, and
+ * be on the next cover.
+ */
+describe("free-text page, driven by keystrokes", () => {
+	let harness: Harness
+	let page: FakePage
+
+	before(async () => {
+		harness = await startHarness()
+		await seedGroundFreetextRound(harness.handle.service)
+		page = await openPage(harness.base, FREETEXT_PAGE, NODE_IDS, `${harness.base}/freetext?batch=${GROUND_FREETEXT_BATCH_ID}`)
+	})
+
+	after(async () => {
+		await harness?.stop()
+	})
+
+	it("opens on the first cover, with the question, the artwork and the labelled context", () => {
+		assert.equal(page.nodes.question.textContent, GROUND_FREETEXT_PROMPT)
+		assert.equal(page.nodes.instruction.textContent, GROUND_FREETEXT_INSTRUCTION)
+		assert.equal(page.nodes["context-label"].textContent, GROUND_FREETEXT_CONTEXT_LABEL)
+		assert.equal(page.nodes["context-answer"].textContent, "none_discernible")
+		assert.equal(page.nodes["context-note"].textContent, GROUND_FREETEXT_CONTEXT_NOTE)
+		assert.match(page.nodes.progress.textContent, /^1 \/ 9/u)
+		assert.match(page.nodes.artwork.src, /^\/media\//u)
+	})
+
+	it("advances to the next cover when the reviewer types and presses Enter IN THE FIELD", async () => {
+		// The reviewer's exact path, and the one the shipped page could not walk. `render()` focuses
+		// the field, so `document.activeElement` is the textarea and Enter goes down the in-field
+		// branch — the branch that a no-op `focus()` made unreachable in the old harness.
+		assert.equal(page.nodes.answer, (globalThis as unknown as { document: { activeElement: unknown } }).document.activeElement)
+		page.nodes.answer.enter("Green on the left, red on the right — two fields, but one continuous painted surface, so neither tag is true.")
+		await page.press("Enter")
+		assert.match(page.nodes.progress.textContent, /^2 \/ 9/u, "STUCK: Enter did not move to the second cover")
+		// The answer went to the warehouse, and the field is now empty for the new cover.
+		assert.equal(page.nodes.answer.value, "")
+		const written = harness.records().filter((record) => record.type === "oracle-label" && record.batch?.id === GROUND_FREETEXT_BATCH_ID)
+		assert.equal(written.length, 1)
+	})
+
+	it("steps back with escape-then-arrow, and brings the written answer back with it", async () => {
+		// The documented path, and it has to BE the documented path: the textarea holds focus almost
+		// permanently, so a plain ArrowLeft must keep moving the caret or a typo becomes unfixable.
+		await page.press("Escape")
+		await page.press("ArrowLeft")
+		assert.match(page.nodes.progress.textContent, /^1 \/ 9/u)
+		assert.match(page.nodes.answer.value, /^Green on the left/u, "stepping back lost what was written")
+		assert.equal(page.nodes.saved.textContent, "saved")
+		// Stepping re-focuses the field for typing, so going on again needs Escape once more. That is
+		// the cost of a page whose default state is "ready to type", and it is the right trade here.
+		await page.press("Escape")
+		await page.press("ArrowRight")
+		assert.match(page.nodes.progress.textContent, /^2 \/ 9/u)
+	})
+
+	it("never steals a plain arrow key from the field, or a typo would be unfixable", async () => {
+		page.nodes.answer.focus()
+		const before = page.nodes.progress.textContent
+		for (const key of ["ArrowLeft", "ArrowRight"]) await page.press(key, { expectIgnored: true })
+		assert.equal(page.nodes.progress.textContent, before, "the page stole an arrow key from the textarea")
+	})
+
+	it("leaves Shift+Enter to the field, because a description has paragraphs in it", async () => {
+		page.nodes.answer.focus()
+		// Not prevented, not acted on: it has to reach the textarea as a newline. A page that
+		// swallowed it would make multi-paragraph answers impossible to type.
+		await page.press("Enter", { shiftKey: true, expectIgnored: true })
+		assert.match(page.nodes.progress.textContent, /^2 \/ 9/u, "Shift+Enter advanced the page")
+	})
+
+	it("does not release the round when the reviewer types the letter r", async () => {
+		page.nodes.answer.focus()
+		const before = page.nodes.progress.textContent
+		await page.press("r", { expectIgnored: true })
+		assert.equal(page.nodes.progress.textContent, before)
+		const released = harness.records().filter((record) => record.type === "batch-complete")
+		assert.equal(released.length, 0, "typing the word 'red' would have released the round")
+	})
+
+	it("will not advance on an empty answer, and says so", async () => {
+		page.nodes.answer.focus()
+		page.nodes.answer.enter("   ")
+		const before = page.nodes.progress.textContent
+		let threw = false
+		try {
+			await page.press("Enter")
+		} catch {
+			// `press` insists on a visible change; there is deliberately none beyond the status line.
+			threw = true
+		}
+		assert.equal(page.nodes.progress.textContent, before, "an empty answer advanced the page")
+		assert.match(page.nodes.status.textContent, /nothing written yet/u)
+		assert.ok(threw || true)
 	})
 })

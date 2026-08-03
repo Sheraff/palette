@@ -19,8 +19,9 @@
  * The pages are driven through their real modules against the real server, as everywhere else here.
  */
 import assert from "node:assert/strict"
-import { readFile } from "node:fs/promises"
+import { readFile, readdir } from "node:fs/promises"
 import { after, before, describe, it } from "node:test"
+import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 import type { OracleLabelRecord, VerdictRecord } from "../src/warehouse/records.ts"
 import { GROUND_TYPE_QUESTION } from "../src/review-server/oracle-validation.ts"
@@ -215,5 +216,39 @@ describe("the pages answer on both digit rows", () => {
 		} finally {
 			await oracleHarness.stop()
 		}
+	})
+})
+
+/**
+ * Every page hands `normalizeKey` a key STRING, never the event.
+ *
+ * `normalizeKey(key)` starts with `digitFor(key)`, which returns null for anything that is not a
+ * string, so `normalizeKey(someEvent)` returns THE EVENT OBJECT — and every `key === "Enter"` in
+ * the handler below it is then false, forever, silently. The page loads, renders, serves, saves,
+ * and cannot respond to a single keystroke. That shipped on `/freetext` on 2026-08-03: the reviewer
+ * was stuck on cover 1 with sixteen green tests and a clean `verify-live`, because `verify-live`
+ * checks that a module is SERVED, not that it works.
+ *
+ * A static check rather than a per-page interaction test, because this is the cheap half: it costs
+ * nothing, it covers every page including ones added later, and it names the one call shape that
+ * cannot be right. The expensive half — actually executing a page module against a live payload and
+ * pressing keys — is `review-server-freetext.test.ts`'s "driven by keystrokes" suite, and the two
+ * catch different things.
+ */
+describe("the normalizeKey call shape, across every page", () => {
+	it("is never handed the event object", async () => {
+		const uiRoot = fileURLToPath(new URL("../review-ui/", import.meta.url))
+		const modules = (await readdir(uiRoot)).filter((name) => name.endsWith(".js"))
+		assert.ok(modules.length >= 8, "the page list came back suspiciously short")
+		const offenders: string[] = []
+		for (const name of modules) {
+			const source = await readFile(join(uiRoot, name), "utf8")
+			for (const [index, line] of source.split("\n").entries()) {
+				// `normalizeKey(event)` / `normalizeKey(e)` / `normalizeKey(evt)` — an identifier that is
+				// plainly the event rather than a property of it.
+				if (/normalizeKey\(\s*(event|evt|e)\s*\)/u.test(line)) offenders.push(`${name}:${index + 1}`)
+			}
+		}
+		assert.deepEqual(offenders, [], `these pages pass the event object to normalizeKey, so their key handlers can never fire: ${offenders.join(", ")}`)
 	})
 })

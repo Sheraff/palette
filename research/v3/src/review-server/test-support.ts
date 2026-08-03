@@ -250,7 +250,26 @@ export class FakeNode {
 		this.dispatch("input")
 	}
 
-	focus(): void {}
+	/**
+	 * Take focus, and be seen to have it.
+	 *
+	 * This used to be a no-op, and that is a harness divergence that shipped a broken page. A page
+	 * whose key handler branches on `document.activeElement` — as any page with a text field must,
+	 * because Enter inside a textarea means something different from Enter outside one — could only
+	 * ever be exercised down the NOT-focused path here, while the reviewer only ever walks the
+	 * focused one. `ground-freetext-1` went live with a key handler that could not fire at all and
+	 * sixteen green tests, because none of them could reach the branch the reviewer was in.
+	 */
+	focus(): void {
+		const document = (globalThis as unknown as { document?: { activeElement: unknown } }).document
+		if (document !== undefined) document.activeElement = this
+	}
+
+	blur(): void {
+		const document = (globalThis as unknown as { document?: { activeElement: unknown } }).document
+		if (document !== undefined && document.activeElement === this) document.activeElement = null
+		this.dispatch("blur")
+	}
 
 	set textContent(value: unknown) {
 		this.#text = String(value)
@@ -356,19 +375,26 @@ export async function openPage(
 		visible,
 		settle,
 		stage: () => nodes.stage,
-		async press(key: string) {
+		async press(key: string, options: { shiftKey?: boolean; expectIgnored?: boolean } = {}) {
 			let prevented = false
 			const event = {
 				key,
 				metaKey: false,
 				ctrlKey: false,
 				altKey: false,
+				shiftKey: options.shiftKey === true,
 				preventDefault() {
 					prevented = true
 				},
 			}
 			const before = visible()
 			for (const listener of listeners) listener(event)
+			// Some keys are SUPPOSED to fall through to the browser — Shift+Enter in a textarea is a
+			// newline, not a page action — so a test can say it expects that rather than a response.
+			if (options.expectIgnored === true) {
+				assert.ok(!prevented, `the page swallowed ${key}, which should have reached the field`)
+				return
+			}
 			assert.ok(prevented, `the page ignored the ${key} key`)
 			for (let attempt = 0; attempt < 200; attempt++) {
 				await new Promise((done) => setTimeout(done, 5))
