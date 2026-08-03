@@ -770,6 +770,29 @@ summary {
 	display: none;
 }
 
+/* Reconciliation context — a by-artwork round only (OracleItemReconciliation).
+ *
+ * The reviewer's own two earlier answers, side by side for the first time, and the rule they break.
+ * Black and white like the rest of the chrome (REVIEW_UI.md §3): the conflict line is set apart by a
+ * rule and by weight, never by colour, because colour anywhere but the mock UI and the swatches
+ * would be a second signal competing with the artwork. */
+.oracle-reconcile {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	max-width: 92ch;
+	line-height: 1.45;
+}
+
+.oracle-reconcile-conflict {
+	font-weight: 700;
+	border-left: 2px solid var(--ink);
+	padding-left: 8px;
+}
+
+.oracle-reconcile:empty {
+	display: none;
+}
+
 /* The standing instruction. It stays on screen for every item of the pass: an answer only means
  * something against the exact words it was answered under. */
 .oracle-instruction {

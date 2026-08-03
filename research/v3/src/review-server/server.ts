@@ -1416,6 +1416,10 @@ export class ReviewService {
 			pushedAt: stored.pushedAt,
 			released: release !== undefined,
 			releasedAt: release?.ts ?? null,
+			// How the page walks the round. Served rather than inferred: the page's progress line and
+			// its reconciliation block both depend on it, and inferring the mode from the shape of the
+			// serve order would guess wrong the moment a round had one artwork or one question.
+			serveMode: stored.fixture.serveMode ?? "by-question",
 			// The wording comes from the fixture, so the page cannot drift from what the answers were
 			// recorded under — the same rule the bracketing round had to learn.
 			questions: stored.fixture.questions.map((question) => ({
@@ -1448,6 +1452,15 @@ export class ReviewService {
 					height: artwork.rendition.height,
 					answer: answered === undefined ? null : answered.record.answer,
 					revision: answered?.revision ?? 0,
+					// The reviewer's OWN previous answers for this artwork, and the rule they break.
+					// Nothing here comes from a model or from a published flag, so this withholds exactly
+					// what the rest of the payload withholds — see this method's doc comment.
+					//
+					// The key is OMITTED, not nulled, on a by-question round. The item payload is guarded
+					// by an exact key-set assertion — that guard is how "nothing from either side of the
+					// tie" is actually enforced — and a field that appears on every round would widen the
+					// allowlist for four rounds that have no use for it.
+					...(item.reconciliation === undefined ? {} : { reconciliation: item.reconciliation }),
 				}
 			}),
 		}
@@ -1501,7 +1514,18 @@ export class ReviewService {
 		// row: an order-sensitive array would make an exact-set comparison depend on click order.
 		const answer: string | string[] = Array.isArray(submitted) ? [...chosen].sort() : (submitted as string)
 		const key = this.#oracleKey(stored, item)
-		const previous = this.#answers.get(key)
+		// Supersession is keyed by (batch, question, image), so a re-ask in a NEW batch would otherwise
+		// write a first answer and leave two live, contradicting labels for one artwork with nothing
+		// saying which is current. A round that declares `supersedesBatchId` falls back to that round's
+		// answer for the same (question, image) — the same fact, written the same way, across batches.
+		// The fallback is one lookup deep on purpose: a chain of rounds each superseding the last still
+		// resolves, because each round's own record already carries `supersedes` for the one before it.
+		const superseded = stored.fixture.supersedesBatchId
+		const previous =
+			this.#answers.get(key) ??
+			(superseded === undefined || superseded === null
+				? undefined
+				: this.#answers.get(oracleAnswerKey(superseded, question.key, item.imageId)))
 		const record = append<SupersedingOracleLabel>(this.warehousePath, {
 			type: "oracle-label",
 			author: this.author,

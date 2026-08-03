@@ -14,8 +14,18 @@
  * digits and nothing else. Stepping back onto an answered multi item reloads its set, so undo means
  * "fix this" rather than "start again".
  *
+ * **By-artwork rounds** (`serveMode: "by-artwork"`) are the exception, and there is exactly one
+ * reason to pay for it: a question whose answer only means something beside another question's
+ * answer on the SAME artwork. `bcde-validation-1` produced 9 gate contradictions across 8 of 20
+ * artworks under by-question passes — the reviewer answered a gate in one pass and its dependent in
+ * another and could not have seen that the pair does not hold. Such a round serves each artwork as
+ * one contiguous run, gate first, with the reviewer's own earlier answers and the broken rule on
+ * screen above the question. Nothing else changes: same keys, same undo, same auto-advance.
+ *
  * The page knows nothing about what the oracle answered or what the algorithm published — the
- * server does not serve either, and this batch exists precisely to break a tie between them.
+ * server does not serve either, and this batch exists precisely to break a tie between them. The
+ * reconciliation block is not an exception to that: it shows the REVIEWER's own answers back to
+ * them, and never a model's.
  *
  * The answer mapping is on screen for every item. That is not decoration: an answer key the
  * reviewer has to recall is an answer key they will eventually mis-press, and there is no way to
@@ -27,6 +37,8 @@
 import { normalizeKey } from "./keys.js"
 
 const nodes = {
+	reconcilePrior: document.querySelector("#reconcile-prior"),
+	reconcileConflict: document.querySelector("#reconcile-conflict"),
 	preamble: document.querySelector("#preamble"),
 	framing: document.querySelector("#framing"),
 	question: document.querySelector("#question"),
@@ -146,6 +158,69 @@ function renderPending(question, chosen) {
 				: `${chosen.join(", ")} · enter or space records`
 }
 
+/** One answer as the reviewer gave it — a multi-select is a list, everything else is one token. */
+function answerText(answer) {
+	return Array.isArray(answer) ? answer.join(", ") : String(answer)
+}
+
+/**
+ * The reconciliation block: what this artwork already carries, and what does not hold between those
+ * answers.
+ *
+ * It is on screen for the gate AND for every dependent, unchanged, because the whole defect being
+ * repaired is that the two were never visible at the same moment. Empty on a by-question round,
+ * where `:empty` hides both lines.
+ */
+function renderReconciliation(item) {
+	// Tolerant of a page that does not declare the two lines, the same way `renderPending` is: a
+	// missing element must not take the whole render down and leave the artwork on screen with a
+	// stale question under it. `review-server-gate-reconciliation.test.ts` asserts oracle.html
+	// declares both, which is what makes the tolerance safe rather than a place for a bug to hide.
+	if (nodes.reconcilePrior === null || nodes.reconcileConflict === null) return
+	const context = item === null ? null : (item.reconciliation ?? null)
+	if (context === null) {
+		nodes.reconcilePrior.textContent = ""
+		nodes.reconcileConflict.textContent = ""
+		return
+	}
+	const prior = context.priorAnswers.map((entry) => `${entry.questionKey} = ${answerText(entry.answer)}`).join(", ")
+	nodes.reconcilePrior.textContent = `you previously answered: ${prior} — these conflict`
+	nodes.reconcileConflict.textContent = context.conflict
+}
+
+/**
+ * The progress line.
+ *
+ * By-question rounds report progress INSIDE the pass — the reviewer is answering one question, and
+ * "12 of 30" for that question is the number that says how much is left of it. A by-artwork round
+ * has no pass to be inside: the unit of work is the artwork, so it reports the group instead, and
+ * names which side of the pair is on screen.
+ */
+function progressText(item) {
+	const answeredLabel = item.answer === null ? "" : ` · answered ${answerText(item.answer)}`
+	if (batch.serveMode === "by-artwork") {
+		const groups = []
+		for (const entry of batch.items) {
+			const groupId = entry.reconciliation?.groupId ?? null
+			if (groups.at(-1) !== groupId) groups.push(groupId)
+		}
+		const group = item.reconciliation?.groupId ?? null
+		const inGroup = batch.items.filter((entry) => (entry.reconciliation?.groupId ?? null) === group)
+		const answeredGroups = groups.filter((groupId) =>
+			batch.items.every((entry) => (entry.reconciliation?.groupId ?? null) !== groupId || entry.answer !== null),
+		).length
+		const role = item.reconciliation?.role ?? "item"
+		return (
+			`artwork ${groups.indexOf(group) + 1} / ${groups.length} · ${role} · ` +
+			`${item.questionKey} ${inGroup.indexOf(item) + 1}/${inGroup.length}${answeredLabel} · ${answeredGroups} artworks done`
+		)
+	}
+	const pass = batch.items.filter((entry) => entry.questionKey === item.questionKey)
+	const answeredInPass = pass.filter((entry) => entry.answer !== null).length
+	const passLabel = batch.questions.length > 1 ? `${item.questionKey} · ` : ""
+	return `${passLabel}${pass.indexOf(item) + 1} / ${pass.length}${answeredLabel} · ${answeredInPass} done`
+}
+
 function render() {
 	if (index >= batch.items.length) {
 		nodes.question.textContent = "every item answered"
@@ -153,6 +228,7 @@ function render() {
 		nodes.preamble.textContent = ""
 		nodes.framing.textContent = ""
 		nodes.progress.textContent = `${batch.items.length} / ${batch.items.length}`
+		renderReconciliation(null)
 		nodes.mapping.replaceChildren()
 		renderPending(null, [])
 		nodes.stage.replaceChildren(
@@ -173,19 +249,13 @@ function render() {
 	// of several parts, and a reviewer who scrolled past them once is answering a different question.
 	nodes.preamble.textContent = question?.preamble ?? ""
 	nodes.framing.textContent = question?.framing ?? ""
+	renderReconciliation(item)
 	const chosen = pendingValues(item, question)
 	if (question !== null) renderMapping(question, chosen)
 	renderPending(question, chosen)
 	nodes.undokey.textContent = undoIsTaken() ? "backspace" : "u"
 
-	// Progress is reported inside the pass, not across the batch: the reviewer is answering one
-	// question, and "12 of 30" for that question is the number that says how much is left of it.
-	const pass = batch.items.filter((entry) => entry.questionKey === item.questionKey)
-	const positionInPass = pass.indexOf(item) + 1
-	const answeredInPass = pass.filter((entry) => entry.answer !== null).length
-	const answeredLabel = item.answer === null ? "" : ` · answered ${Array.isArray(item.answer) ? item.answer.join(", ") : item.answer}`
-	const passLabel = batch.questions.length > 1 ? `${item.questionKey} · ` : ""
-	nodes.progress.textContent = `${passLabel}${positionInPass} / ${pass.length}${answeredLabel} · ${answeredInPass} done`
+	nodes.progress.textContent = progressText(item)
 
 	// The artwork is the whole judgement, so it gets the whole stage. Intrinsic dimensions come from
 	// the file header, so the frame does not jump when the bytes arrive.

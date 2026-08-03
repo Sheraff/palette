@@ -117,6 +117,46 @@ export type OracleQuestion = Readonly<{
 	answers: readonly OracleAnswerOption[]
 }>
 
+/**
+ * How a round is walked.
+ *
+ * `by-question` is §6's default and the shape every round before the gate-reconciliation one used:
+ * one question across every artwork, then the next question. `by-artwork` is the exception §6 did
+ * not anticipate and `bcde-validation-1` paid for — a question whose answer is only meaningful
+ * beside another question's answer on the *same* artwork. There, the reviewer answered
+ * `has_dominant_subject = none` in one pass and `subject_kind = abstract_shape` in another, never
+ * seeing the two together, and 9 such pairs contradicted each other across 8 of 20 artworks (45%
+ * against a 10% pre-registered ceiling). Walking a gate and its dependants together is the only
+ * arrangement in which the reviewer can see the contradiction they are being asked to resolve.
+ *
+ * It is deliberately NOT the default. The context switch §6 warns about is real, and the price is
+ * paid only where a cross-question consistency rule exists.
+ */
+export type OracleServeMode = "by-question" | "by-artwork"
+
+/**
+ * What a `by-artwork` item shows above the question, and how it groups.
+ *
+ * Present on every item of a `by-artwork` round and on none of a `by-question` round. It carries the
+ * reviewer's OWN previous answers — never a model's, never a published flag — because the failure it
+ * repairs is not ignorance of the artwork, it is that two of the reviewer's own answers were never
+ * on screen at the same time.
+ */
+export type OracleItemReconciliation = Readonly<{
+	/** One group per artwork. Groups are contiguous in `serveOrder`, gate first. */
+	groupId: string
+	/** `gate` is the question the consistency rule keys on; `dependent` is what it constrains. */
+	role: "gate" | "dependent"
+	/**
+	 * The answers this artwork already carries, in the order they were asked, gate first.
+	 * Shown verbatim: "you previously answered: has_dominant_subject = none, subject_kind =
+	 * abstract_shape".
+	 */
+	priorAnswers: readonly Readonly<{ questionKey: string; answer: string | readonly string[] }>[]
+	/** One plain sentence naming what does not hold between those answers. */
+	conflict: string
+}>
+
 export type OracleValidationItem = Readonly<{
 	/** Stable id. Server-side only — the browser is given an opaque token instead. */
 	itemId: string
@@ -146,6 +186,8 @@ export type OracleValidationItem = Readonly<{
 	}>
 	/** The stratum this item was drawn from, for per-stratum stopping (§6). */
 	stratum: string
+	/** Set on every item of a `by-artwork` round, absent everywhere else. */
+	reconciliation?: OracleItemReconciliation
 }>
 
 export type OracleValidationFixture = Readonly<{
@@ -168,8 +210,25 @@ export type OracleValidationFixture = Readonly<{
 	selection: Readonly<{ rule: string; counts: Readonly<Record<string, number>> }>
 	questions: readonly OracleQuestion[]
 	items: readonly OracleValidationItem[]
-	/** Serve order: all of one question, then all of the next; shuffled inside each pass. */
+	/**
+	 * Serve order. Under `by-question` (the default): all of one question, then all of the next,
+	 * shuffled inside each pass. Under `by-artwork`: one contiguous run per artwork, gate first.
+	 */
 	serveOrder: readonly string[]
+	/** Omitted means `by-question`. Absent from every fixture written before the mode existed. */
+	serveMode?: OracleServeMode
+	/**
+	 * The round whose answers this round supersedes, when it is a re-ask of questions already
+	 * answered elsewhere.
+	 *
+	 * Set on a reconciliation round and null everywhere else. Without it, an answer written here
+	 * would be a *first* answer to its (questionKey, imageId) — the server keys supersession by
+	 * batch — and the warehouse would hold two live, contradicting labels for one artwork with
+	 * nothing saying which is the reviewer's current reading. With it, the new record carries
+	 * `supersedes` pointing at the record it replaces, exactly as a second answer inside one round
+	 * already does.
+	 */
+	supersedesBatchId?: string | null
 }>
 
 /** Structural check. Cheap, and it is the difference between a typo and a corrupted round. */
@@ -228,11 +287,61 @@ export function validateFixture(fixture: OracleValidationFixture): void {
 	for (const itemId of fixture.serveOrder) {
 		if (!seenItems.has(itemId)) throw new Error(`serveOrder names unknown item ${itemId}`)
 	}
+	const byId = new Map(fixture.items.map((item) => [item.itemId, item]))
+	if (fixture.supersedesBatchId !== undefined && fixture.supersedesBatchId === fixture.batchId) {
+		throw new Error("supersedesBatchId names this round itself; a round cannot supersede its own answers")
+	}
+	if ((fixture.serveMode ?? "by-question") === "by-artwork") {
+		validateByArtworkOrder(fixture, byId)
+		return
+	}
+	// Checked BEFORE the interleave rule, because the likeliest way to arrive here is a by-artwork
+	// round that forgot to say so — and then "serveOrder interleaves questions" is a true sentence
+	// that points at the wrong line.
+	const stray = fixture.items.filter((item) => item.reconciliation !== undefined)
+	if (stray.length > 0) {
+		throw new Error(
+			`items ${stray.map((item) => item.itemId).join(", ")} carry reconciliation context in a by-question round; ` +
+				"the context is what a by-artwork round exists to show and it has nowhere to render here",
+		)
+	}
 	// By-question passes, not by-item forms: the questions must not interleave in the serve order.
-	const order = fixture.serveOrder.map((itemId) => fixture.items.find((item) => item.itemId === itemId)!.questionKey)
+	const order = fixture.serveOrder.map((itemId) => byId.get(itemId)!.questionKey)
 	const runs: string[] = []
 	for (const key of order) if (runs.at(-1) !== key) runs.push(key)
 	if (new Set(runs).size !== runs.length) throw new Error("serveOrder interleaves questions; §6 asks for one pass per question")
+}
+
+/**
+ * The `by-artwork` shape, checked as hard as the `by-question` one.
+ *
+ * A gate walked apart from its dependants is the exact defect this mode exists to repair, so an
+ * order that lets them drift is not a cosmetic problem — it would ship the bug again under the name
+ * of its fix.
+ */
+function validateByArtworkOrder(
+	fixture: OracleValidationFixture,
+	byId: ReadonlyMap<string, OracleValidationItem>,
+): void {
+	for (const item of fixture.items) {
+		if (item.reconciliation === undefined) throw new Error(`item ${item.itemId}: a by-artwork round needs reconciliation context on every item`)
+	}
+	const runs: { groupId: string; roles: string[]; itemIds: string[] }[] = []
+	for (const itemId of fixture.serveOrder) {
+		const reconciliation = byId.get(itemId)!.reconciliation!
+		const last = runs.at(-1)
+		if (last === undefined || last.groupId !== reconciliation.groupId) runs.push({ groupId: reconciliation.groupId, roles: [], itemIds: [] })
+		runs.at(-1)!.roles.push(reconciliation.role)
+		runs.at(-1)!.itemIds.push(itemId)
+	}
+	if (new Set(runs.map((run) => run.groupId)).size !== runs.length) {
+		throw new Error("serveOrder splits an artwork's group; a by-artwork round serves each artwork in one contiguous run")
+	}
+	for (const run of runs) {
+		if (run.roles[0] !== "gate") throw new Error(`group ${run.groupId} does not open on its gate question`)
+		if (run.roles.filter((role) => role === "gate").length !== 1) throw new Error(`group ${run.groupId} has more than one gate`)
+		if (run.roles.length < 2) throw new Error(`group ${run.groupId} has a gate and nothing depending on it; there is nothing to reconcile`)
+	}
 }
 
 /* ------------------------------------------------------------------------------------------- */
@@ -1301,6 +1410,466 @@ export async function buildBcdeValidationFixture(
 	return fixture
 }
 
+/* ------------------------------------------------------------------------------------------- */
+/* Batch 4 — cascade ground truth (reviews/phase-0-adversarial/cascade-basis.md)                  */
+/* ------------------------------------------------------------------------------------------- */
+
+export const CASCADE_GROUND_TRUTH_BATCH_ID = "cascade-ground-truth-1"
+export const CASCADE_GROUND_TRUTH_SEED = 20260803
+
+export const CASCADE_GROUND_TRUTH_FIXTURE_PATH = fileURLToPath(
+	new URL("../../data/oracle-validation/cascade-ground-truth-1.json", import.meta.url),
+)
+export const PREMISE_RUN_CD_PATH = fileURLToPath(new URL("../../data/oracle-premise/premise-run-cd.jsonl", import.meta.url))
+export const B_UNMAPPED_CLASS_ANALYSIS_PATH = fileURLToPath(
+	new URL("../../data/oracle-premise/b-unmapped-class-analysis.json", import.meta.url),
+)
+
+/**
+ * The schema these answers are comparable under — **variant D's own**, not the disambiguation
+ * round's.
+ *
+ * The whole point of this round is to score `group-a.v2` variant D's `multiple_distinct_fields`
+ * against a human who answered the same question, and D's rows carry `schema_version:
+ * "group-a.v2"` (`premise-run-cd.jsonl`, all 142 D rows). A human row labelled `group-a.v1` would
+ * not join to them. It also means the criterion below is not optional dressing: v1 and v2 are
+ * different questions, and §A.2 records that no re-reading of the v1 numbers is legitimate under the
+ * v2 wording.
+ * [INHERITED] — `data/oracle-premise/premise-run-cd.jsonl`.
+ */
+export const CASCADE_LABEL_SCHEMA_VERSION = "group-a.v2"
+
+/**
+ * The corrected criterion, quoted from `ORACLE_QUESTION_SET.md` §A.2.
+ *
+ * **Provenance, because this is the one thing in the round that could silently invalidate it.**
+ * §A.2 is the wording the reviewer signed off on 2026-08-03 (change table row 1, "SIGNED OFF …
+ * incl. the birdsofprey continuous-rainbow case → shaded_field"), and §A.2's closing paragraph
+ * binds this file directly: *"The same rule applies to any human review form built for
+ * `group-a.v2`: quote the block, do not restate it."* So it is quoted, not restated: markdown
+ * emphasis and backticks are dropped because the page renders plain text, and nothing else changes.
+ *
+ * Two wordings it is deliberately NOT:
+ *
+ * - **Not `premise-disambiguation-1.json`'s instruction.** That round served the v1 criterion
+ *   ("continuous shading within one physical surface"), which §A.2 records as *incomplete* — "it
+ *   names the prior and stops" — and which the corrected block explicitly overturns ("whether it is
+ *   one physical surface … is neither required nor decisive"). Serving v1 here would ask the
+ *   reviewer the question whose answer the policy is not about.
+ * - **Not variant C's or D's prompt text.** Those files render this same block in their own
+ *   plain-text form and then add a precedence rule of their own; the round must quote the question
+ *   set, never a model's paraphrase of it, or the human is being led by the instrument under test.
+ * [REVIEWED] — `ORACLE_QUESTION_SET.md` §A.2, signed off 2026-08-03.
+ */
+export const GROUND_TYPE_V2_CRITERION = [
+	"THE TEST. Does the ground read as one continuous colour progression, or as discrete colour areas? " +
+		"Whether it is one physical surface is a strong hint, but it is neither required nor decisive.",
+	"Canonical case 1 — the painted wall. A wall painted in bands that melt into each other is one continuous " +
+		"progression (shaded_field) — this is the contract's genuine three-stop gradient case. The same wall " +
+		"painted in crisp bands is discrete areas (multiple_distinct_fields). Same wall, same paint, different answer.",
+	"Canonical case 2 — the blurry meeting line. One flat area meeting one shaded area along a blurry line is " +
+		"still discrete areas (multiple_distinct_fields). A single surface that is flat across part of itself and " +
+		"shaded across another part is one continuous progression (shaded_field). How soft the join looks is never the test.",
+].join("\n\n")
+
+/** §A.2's closing line, the forced-choice framing §A.3 requires. [REVIEWED] — same block. */
+export const GROUND_TYPE_V2_INSTRUCTION = "If it is genuinely a coin flip, answer with your first read. Do not deliberate."
+
+/**
+ * `ground_type` under `group-a.v2`.
+ *
+ * The stem, the answer keys, the labels and the hotkeys are **byte-identical to
+ * `premise-disambiguation-1.json`** — same question, same closed vocabulary in the same order,
+ * including all three escape values (`full_scene`, `pattern_or_texture`, `none_discernible`), which
+ * stay on the keyboard because a round that withheld them would manufacture a commit the reviewer
+ * did not make. The per-value sentences are §A.1's v2 definitions rather than v1's, because three of
+ * v1's six describe the criterion §A.2 corrected — v1's `shaded_field` gloss is "one surface whose
+ * colour changes smoothly", which is precisely the surface-identity prior the correction demotes.
+ * [REVIEWED] — stem/keys/hotkeys from `premise-disambiguation-1.json`; glosses from
+ * `ORACLE_QUESTION_SET.md` §A.1.
+ */
+export const GROUND_TYPE_V2_QUESTION: OracleQuestion = {
+	key: "ground_type",
+	kind: "enum",
+	question: "The GROUND is the large area behind and around any subject, text or figures. What is it made of?",
+	instruction: GROUND_TYPE_V2_INSTRUCTION,
+	preamble: GROUND_TYPE_V2_CRITERION,
+	answers: [
+		{ key: "flat_field", label: "flat field", gloss: "one area, essentially one colour, no progression across it", hotkey: "1" },
+		{
+			key: "shaded_field",
+			label: "shaded field",
+			gloss: "one continuous colour progression across the ground — light, shadow, glow, fade, or colours melting into one another",
+			hotkey: "2",
+		},
+		{
+			key: "multiple_distinct_fields",
+			label: "multiple distinct fields",
+			gloss: "discrete colour areas — two or more, each its own colour, however hard or soft the join between them looks",
+			hotkey: "3",
+		},
+		{
+			key: "full_scene",
+			label: "full scene",
+			gloss: 'a depicted space whose ground has no readable overall colour behaviour — not merely "this is a photograph of a place"',
+			hotkey: "4",
+		},
+		{
+			key: "pattern_or_texture",
+			label: "pattern or texture",
+			gloss: "a repeating motif or a material surface that is the ground, with no overall progression and no discrete colour areas",
+			hotkey: "5",
+		},
+		{ key: "none_discernible", label: "none discernible", gloss: "no ground can be made out at all", hotkey: "6" },
+	],
+}
+
+export const CASCADE_GROUND_TRUTH_SELECTION_RULE =
+	"Every artwork in the premise evaluation set's primary population (included, and its accepted " +
+	"palettes agreeing on the gradient boolean) where prompt variant D answered " +
+	"multiple_distinct_fields — 19 artworks, of which the 8 the vocabulary-gated cascade policy " +
+	"would commit are a strict subset. The policy takes D's answer on the covers where B abstains, " +
+	"and its entire evidential basis is scored against the published accepted-palette gradient " +
+	"flag: 0 of the 19, and 0 of the 8, carry a reviewer ground_type answer with a usable binary " +
+	"(reviews/phase-0-adversarial/cascade-basis.md §2). The flag is not a usable stand-in — it " +
+	"agrees with the reviewer on 14 of 24 gold-30 items, kappa 0.0625 — so this round is the " +
+	"primary judge answering, for the exact answer value and the exact wording the policy names. " +
+	"No model answer, no flag and no bucket is written beside any item."
+
+type CascadeSelection = Readonly<{
+	items: OracleValidationItem[]
+	counts: Record<string, number>
+	policyShas: ReadonlySet<string>
+}>
+
+/** Read variant D's usable answers out of the C/D run, indexed by image hash. */
+export async function readVariantDAnswers(path = PREMISE_RUN_CD_PATH): Promise<Map<string, string>> {
+	const text = await readFile(path, "utf8")
+	const byImage = new Map<string, string>()
+	for (const line of text.split("\n")) {
+		const trimmed = line.trim()
+		if (trimmed.length === 0) continue
+		const row = JSON.parse(trimmed) as PremiseRow
+		if (row.prompt_variant !== "D" || row.is_canary === true || row.status !== "ok" || !row.parsed) continue
+		if (row.schema_version !== undefined && row.schema_version !== CASCADE_LABEL_SCHEMA_VERSION) {
+			throw new Error(`${path}: a D row carries schema ${row.schema_version}, this round joins ${CASCADE_LABEL_SCHEMA_VERSION}`)
+		}
+		byImage.set(row.image_sha256, row.parsed.ground_type)
+	}
+	return byImage
+}
+
+/** The 8 covers the vocabulary-gated policy would commit, from the class analysis's own rows. */
+export async function readPolicySliceShas(path = B_UNMAPPED_CLASS_ANALYSIS_PATH): Promise<Set<string>> {
+	const parsed = JSON.parse(await readFile(path, "utf8")) as {
+		per_item: readonly Readonly<{ sha256: string; is_class?: boolean; D_ground_type?: string }>[]
+	}
+	return new Set(
+		parsed.per_item
+			.filter((row) => row.is_class === true && row.D_ground_type === "multiple_distinct_fields")
+			.map((row) => row.sha256),
+	)
+}
+
+function selectCascadeGroundTruth(
+	dAnswers: ReadonlyMap<string, string>,
+	evalSet: ReadonlyMap<string, EvalSetEntry>,
+	policyShas: ReadonlySet<string>,
+): CascadeSelection {
+	const counts: Record<string, number> = {
+		d_rows: dAnswers.size,
+		d_answered_multiple_distinct_fields: 0,
+		excluded_not_in_primary_population: 0,
+		corpus_wide_multiple_distinct_fields: 0,
+		policy_slice: policyShas.size,
+		policy_slice_inside_the_corpus_wide_set: 0,
+		selected: 0,
+	}
+	const items: OracleValidationItem[] = []
+	// Sorted by hash so the selection is order-independent; the serve order is shuffled separately.
+	for (const sha256 of [...dAnswers.keys()].sort()) {
+		if (dAnswers.get(sha256) !== "multiple_distinct_fields") continue
+		counts.d_answered_multiple_distinct_fields += 1
+		const entry = evalSet.get(sha256)
+		if (entry === undefined) throw new Error(`no eval-set entry for ${sha256}; the two sources disagree about the corpus`)
+		// The primary population, matching the analysis this round is auditing. The excluded rows are
+		// artworks whose own accepted palettes disagree on the gradient boolean — the flag-scored
+		// numbers never covered them, so re-asking there would answer a question nobody asked.
+		if (!entry.included || entry.groundTruth.conflicted) {
+			counts.excluded_not_in_primary_population += 1
+			continue
+		}
+		counts.corpus_wide_multiple_distinct_fields += 1
+		if (policyShas.has(sha256)) counts.policy_slice_inside_the_corpus_wide_set += 1
+		items.push({
+			// Content-derived and opaque: it names the artwork, and nothing about why it is here.
+			itemId: `cg-${sha256.slice(0, 12)}`,
+			questionKey: GROUND_TYPE_V2_QUESTION.key,
+			imagePath: entry.image.imagePath,
+			sha256,
+			imageId: entry.image.imageId,
+			artworkId: entry.image.artworkId,
+			collection: deriveCollection(entry.image.imagePath),
+			rendition: {
+				source: PREMISE_RENDITION_SOURCE,
+				sourceEntryId: entry.entryId,
+				longEdgePx: entry.image.longEdgePx,
+				width: entry.image.width,
+				height: entry.image.height,
+			},
+			stratum: tierOf(entry.image.longEdgePx),
+		})
+	}
+	counts.selected = items.length
+	return { items, counts, policyShas }
+}
+
+/**
+ * Build the cascade ground-truth round.
+ *
+ * Deliberately absent from the produced fixture, exactly as in the disambiguation round: D's answer,
+ * B's answer, the published gradient flag, the cascade route, and which items are the policy's 8.
+ * The selection rule says the population out loud — it has to, or the round is unreadable later —
+ * but no item carries the fact that a model already answered it `multiple_distinct_fields`. A
+ * reviewer told that would be scoring a claim rather than reading an artwork.
+ */
+export async function buildCascadeGroundTruthFixture(
+	options: { runPath?: string; evalSetPath?: string; classAnalysisPath?: string; batchId?: string; seed?: number } = {},
+): Promise<OracleValidationFixture> {
+	const dAnswers = await readVariantDAnswers(options.runPath)
+	const evalSet = await readEvalSet(options.evalSetPath)
+	const policyShas = await readPolicySliceShas(options.classAnalysisPath)
+	const seed = options.seed ?? CASCADE_GROUND_TRUTH_SEED
+	const selection = selectCascadeGroundTruth(dAnswers, evalSet, policyShas)
+
+	// The policy's slice is a subset of the answer value's corpus-wide slice, so the union IS the 19.
+	// Asserted rather than assumed: if a policy item ever fell outside, the round would be missing the
+	// very covers the decision commits, and the deduplication would have hidden it.
+	const missed = [...policyShas].filter((sha256) => !selection.items.some((item) => item.sha256 === sha256))
+	if (missed.length > 0) {
+		throw new Error(
+			`${missed.length} of the policy's covers are outside the corpus-wide multiple_distinct_fields set ` +
+				`(${missed.join(", ")}); the round would commit covers it never asked about`,
+		)
+	}
+
+	const fixture: OracleValidationFixture = {
+		fixtureVersion: PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+		batchId: options.batchId ?? CASCADE_GROUND_TRUTH_BATCH_ID,
+		purpose: "oracle-validation",
+		labelSchemaVersion: CASCADE_LABEL_SCHEMA_VERSION,
+		seed,
+		generatedBy: "research/v3/src/review-server/oracle-validation.ts",
+		builtFrom: [
+			"research/v3/data/oracle-premise/premise-run-cd.jsonl",
+			"research/v3/data/oracle-premise/b-unmapped-class-analysis.json",
+			PREMISE_RENDITION_SOURCE,
+			"research/v3/ORACLE_QUESTION_SET.md",
+		],
+		selection: {
+			rule:
+				`${CASCADE_GROUND_TRUTH_SELECTION_RULE} WORDING: the stem, the six answer keys, their labels ` +
+				"and their hotkeys are byte-identical to premise-disambiguation-1; the criterion above the " +
+				"question is ORACLE_QUESTION_SET.md §A.2 quoted, which is the corrected wording the reviewer " +
+				"signed off on 2026-08-03 and the wording group-a.v2 (variant D) was run under. The " +
+				"disambiguation round's own instruction is NOT reused: it is the v1 criterion, which §A.2 " +
+				"supersedes, and answers under the two wordings are not comparable in either direction.",
+			counts: selection.counts,
+		},
+		questions: [GROUND_TYPE_V2_QUESTION],
+		items: selection.items,
+		serveOrder: shuffled(selection.items.map((item) => item.itemId), mulberry32(seed)),
+	}
+	validateFixture(fixture)
+	return fixture
+}
+
+/* ------------------------------------------------------------------------------------------- */
+/* Batch 5 — gate reconciliation (bcde-validation-1-analysis.json, gateConsistency)               */
+/* ------------------------------------------------------------------------------------------- */
+
+export const GATE_RECONCILIATION_BATCH_ID = "bcde-gate-reconciliation-1"
+export const GATE_RECONCILIATION_SEED = 20260803
+
+export const GATE_RECONCILIATION_FIXTURE_PATH = fileURLToPath(
+	new URL("../../data/oracle-validation/bcde-gate-reconciliation-1.json", import.meta.url),
+)
+export const BCDE_VALIDATION_ANALYSIS_PATH = fileURLToPath(
+	new URL("../../data/oracle-validation/bcde-validation-1-analysis.json", import.meta.url),
+)
+
+export const GATE_RECONCILIATION_SELECTION_RULE =
+	"Every artwork in bcde-validation-1 carrying at least one gate contradiction, per that round's " +
+	"regenerated analysis: 9 contradictions across 8 of the 20 answered artworks, a 45% rate " +
+	"against the 10% ceiling PREMISE_NEXT.md §15.6-(3) pre-registered. Each artwork is served as " +
+	"one contiguous run — the GATE question first, then every dependent question the contradiction " +
+	"names — with the reviewer's own previous answers on screen. That arrangement IS the " +
+	"intervention: the contradictions were produced by by-question passes, in which the reviewer " +
+	"answered the gate in one pass and its dependent in another and never saw the two together, so " +
+	"nothing in the instrument could have told them the pair does not hold. The round measures " +
+	"whether the rate is a reviewer-consistency fact or an instrument-shape artefact. Answers " +
+	"supersede bcde-validation-1's for the same (question, artwork); nothing is edited or deleted."
+
+type GateContradiction = Readonly<{
+	ruleId: number
+	imageId: string
+	imagePath: string
+	gateKey: string
+	gateAnswer: string
+	conditionalKey: string
+	conditionalAnswer: string
+}>
+
+type GateRule = Readonly<{ id: number; statement: string; reading: string }>
+
+export type BcdeValidationAnalysis = Readonly<{
+	batchId: string
+	gateConsistency: Readonly<{
+		totalContradictions: number
+		artworksWithAnyContradiction: number
+		contradictionRate: number
+		ceiling: number
+		withinCeiling: boolean
+		rules: readonly GateRule[]
+		contradictions: readonly GateContradiction[]
+	}>
+}>
+
+export async function readBcdeValidationAnalysis(path = BCDE_VALIDATION_ANALYSIS_PATH): Promise<BcdeValidationAnalysis> {
+	return JSON.parse(await readFile(path, "utf8")) as BcdeValidationAnalysis
+}
+
+/**
+ * Build the gate-reconciliation round.
+ *
+ * Every item row — path, hash, rendition, stratum — is **reused verbatim from
+ * `bcde-validation-1.json`**, and every question is that fixture's own question object unchanged, so
+ * a new answer lands in the same column of the same table as the answer it supersedes. Rebuilding
+ * either from the prompt file would risk a wording drift that would make the two answers
+ * incomparable, which is the one thing a reconciliation round cannot afford.
+ */
+export async function buildGateReconciliationFixture(
+	options: { sourceFixturePath?: string; analysisPath?: string; batchId?: string; seed?: number } = {},
+): Promise<OracleValidationFixture> {
+	const source = JSON.parse(await readFile(options.sourceFixturePath ?? BCDE_VALIDATION_FIXTURE_PATH, "utf8")) as OracleValidationFixture
+	const analysis = await readBcdeValidationAnalysis(options.analysisPath)
+	const seed = options.seed ?? GATE_RECONCILIATION_SEED
+	if (analysis.batchId !== source.batchId) {
+		throw new Error(`the analysis is of ${analysis.batchId} and the fixture is ${source.batchId}; they are not the same round`)
+	}
+	const gate = analysis.gateConsistency
+	const ruleById = new Map(gate.rules.map((rule) => [rule.id, rule]))
+	const questionByKey = new Map(source.questions.map((question) => [question.key, question]))
+	const itemByAsked = new Map(source.items.map((item) => [`${item.questionKey} ${item.imageId}`, item]))
+
+	// One group per contradicting artwork, in image-id order so the round is reproducible; the
+	// contradictions themselves are grouped rather than served one by one, because an artwork with two
+	// contradicting dependants is one reconciliation, not two.
+	const byArtwork = new Map<string, GateContradiction[]>()
+	for (const contradiction of gate.contradictions) {
+		const bucket = byArtwork.get(contradiction.imageId)
+		if (bucket === undefined) byArtwork.set(contradiction.imageId, [contradiction])
+		else bucket.push(contradiction)
+	}
+
+	const items: OracleValidationItem[] = []
+	const serveOrder: string[] = []
+	const questionKeys = new Set<string>()
+	for (const imageId of [...byArtwork.keys()].sort()) {
+		const contradictions = byArtwork.get(imageId)!
+		const gateKeys = new Set(contradictions.map((entry) => entry.gateKey))
+		if (gateKeys.size !== 1) throw new Error(`${imageId} contradicts under ${gateKeys.size} different gates; a group has one gate`)
+		const gateKey = contradictions[0].gateKey
+		const gateAnswer = contradictions[0].gateAnswer
+		if (contradictions.some((entry) => entry.gateAnswer !== gateAnswer)) {
+			throw new Error(`${imageId} carries two different answers for its gate ${gateKey}; the analysis contradicts itself`)
+		}
+		// Dependants in the order they were originally asked — the fixture's own question order — so
+		// the reviewer walks the pair the same way round they were first produced.
+		const dependants = [...new Set(contradictions.map((entry) => entry.conditionalKey))].sort(
+			(a, b) => source.questions.findIndex((q) => q.key === a) - source.questions.findIndex((q) => q.key === b),
+		)
+		const priorAnswers = [
+			{ questionKey: gateKey, answer: gateAnswer },
+			...dependants.map((key) => ({
+				questionKey: key,
+				answer: contradictions.find((entry) => entry.conditionalKey === key)!.conditionalAnswer,
+			})),
+		]
+		const conflict = contradictions
+			.map((entry) => {
+				const rule = ruleById.get(entry.ruleId)
+				if (rule === undefined) throw new Error(`contradiction on ${imageId} cites unknown rule ${entry.ruleId}`)
+				return `rule ${rule.id}, ${rule.statement} — ${rule.reading}`
+			})
+			.join(" · ")
+		const groupId = `gr-${imageId}`
+
+		for (const questionKey of [gateKey, ...dependants]) {
+			const original = itemByAsked.get(`${questionKey} ${imageId}`)
+			if (original === undefined) throw new Error(`${source.batchId} never asked ${questionKey} of ${imageId}`)
+			if (!questionByKey.has(questionKey)) throw new Error(`${source.batchId} has no question ${questionKey}`)
+			questionKeys.add(questionKey)
+			const itemId = `gr-${questionKey}-${original.sha256.slice(0, 12)}`
+			items.push({
+				...original,
+				itemId,
+				reconciliation: {
+					groupId,
+					role: questionKey === gateKey ? "gate" : "dependent",
+					priorAnswers,
+					conflict,
+				},
+			})
+			serveOrder.push(itemId)
+		}
+	}
+
+	const questions = source.questions.filter((question) => questionKeys.has(question.key))
+	const fixture: OracleValidationFixture = {
+		fixtureVersion: PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+		batchId: options.batchId ?? GATE_RECONCILIATION_BATCH_ID,
+		purpose: "oracle-validation",
+		// The same schema as the answers it supersedes. A reconciliation round that renamed the schema
+		// would deposit a second, incomparable column instead of replacing a value.
+		labelSchemaVersion: source.labelSchemaVersion,
+		seed,
+		generatedBy: "research/v3/src/review-server/oracle-validation.ts",
+		builtFrom: [
+			"research/v3/data/oracle-validation/bcde-validation-1.json",
+			"research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+		],
+		selection: {
+			rule:
+				`${GATE_RECONCILIATION_SELECTION_RULE} WORDING: every question object is bcde-validation-1's ` +
+				"own, unchanged, and every item row (path, hash, rendition, stratum) is reused verbatim from " +
+				"that fixture — a reconciliation answer is only a replacement if it was given to the same " +
+				"question about the same bytes.",
+			counts: {
+				source_artworks: 20,
+				source_items: source.items.length,
+				contradictions: gate.totalContradictions,
+				artworks_with_any_contradiction: gate.artworksWithAnyContradiction,
+				contradiction_rate_pct: Math.round(gate.contradictionRate * 100),
+				ceiling_pct: Math.round(gate.ceiling * 100),
+				groups: byArtwork.size,
+				questions: questions.length,
+				items: items.length,
+			},
+		},
+		questions,
+		items,
+		serveOrder,
+		serveMode: "by-artwork",
+		supersedesBatchId: source.batchId,
+	}
+	validateFixture(fixture)
+	if (fixture.selection.counts.groups !== gate.artworksWithAnyContradiction) {
+		throw new Error(`${fixture.selection.counts.groups} groups built for ${gate.artworksWithAnyContradiction} contradicting artworks`)
+	}
+	return fixture
+}
+
 /** Absolute path of one item's rendition. The fixture stores repo-root-relative paths. */
 export function itemImagePath(item: OracleValidationItem, repoRoot = REPO_ROOT): string {
 	return join(repoRoot, item.imagePath)
@@ -1334,6 +1903,49 @@ async function main(): Promise<void> {
 		if (values.write) {
 			await writeFile(BCDE_VALIDATION_FIXTURE_PATH, serializeFixture(bcde))
 			process.stdout.write(`wrote ${BCDE_VALIDATION_FIXTURE_PATH}\n`)
+		}
+		return
+	}
+	if (values.fixture === "cascade-ground-truth") {
+		const cascade = await buildCascadeGroundTruthFixture()
+		const counts = cascade.selection.counts
+		process.stdout.write(`${cascade.batchId}: ${cascade.items.length} items, ${cascade.questions.length} question (${cascade.labelSchemaVersion})\n`)
+		process.stdout.write(
+			`  D answered multiple_distinct_fields ${counts.d_answered_multiple_distinct_fields}x over ${counts.d_rows} rows; ` +
+				`${counts.excluded_not_in_primary_population} outside the primary population → ${counts.corpus_wide_multiple_distinct_fields} corpus-wide\n`,
+		)
+		process.stdout.write(
+			`  policy slice ${counts.policy_slice}, of which ${counts.policy_slice_inside_the_corpus_wide_set} already inside → ` +
+				`${counts.selected} distinct artworks after deduplication\n`,
+		)
+		const tiers = new Map<string, number>()
+		for (const item of cascade.items) tiers.set(item.stratum, (tiers.get(item.stratum) ?? 0) + 1)
+		for (const [tier, count] of [...tiers].sort()) process.stdout.write(`  ${tier.padEnd(18)} ${count}\n`)
+		if (values.write) {
+			await writeFile(CASCADE_GROUND_TRUTH_FIXTURE_PATH, serializeFixture(cascade))
+			process.stdout.write(`wrote ${CASCADE_GROUND_TRUTH_FIXTURE_PATH}\n`)
+		}
+		return
+	}
+	if (values.fixture === "gate-reconciliation") {
+		const reconciliation = await buildGateReconciliationFixture()
+		const counts = reconciliation.selection.counts
+		process.stdout.write(
+			`${reconciliation.batchId}: ${reconciliation.items.length} items over ${counts.groups} artworks ` +
+				`(${reconciliation.serveMode}, supersedes ${reconciliation.supersedesBatchId})\n`,
+		)
+		process.stdout.write(
+			`  ${counts.contradictions} contradictions across ${counts.artworks_with_any_contradiction} artworks — ` +
+				`${counts.contradiction_rate_pct}% against a ${counts.ceiling_pct}% ceiling\n`,
+		)
+		for (const itemId of reconciliation.serveOrder) {
+			const item = reconciliation.items.find((entry) => entry.itemId === itemId)!
+			const context = item.reconciliation!
+			process.stdout.write(`  ${context.role.padEnd(9)} ${item.questionKey.padEnd(20)} ${context.groupId}\n`)
+		}
+		if (values.write) {
+			await writeFile(GATE_RECONCILIATION_FIXTURE_PATH, serializeFixture(reconciliation))
+			process.stdout.write(`wrote ${GATE_RECONCILIATION_FIXTURE_PATH}\n`)
 		}
 		return
 	}

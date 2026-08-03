@@ -41,7 +41,7 @@ import type { StoredOracleBatch } from "../src/review-server/types.ts"
 
 const BATCH = PROBE_GOLD_BATCH_ID
 const ORACLE_PAGE = fileURLToPath(new URL("../review-ui/oracle.js", import.meta.url))
-const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "status"] as const
+const NODE_IDS = ["reconcile-prior", "reconcile-conflict", "preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "status"] as const
 const PROMPT_DIR = fileURLToPath(new URL("../oracle/premise/prompts/", import.meta.url))
 
 const fixture = await buildProbeGoldFixture()

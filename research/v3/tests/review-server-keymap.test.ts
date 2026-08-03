@@ -43,7 +43,7 @@ const CALIBRATION_PAGE = fileURLToPath(new URL("calibration.js", UI_ROOT))
 const ORACLE_PAGE = fileURLToPath(new URL("oracle.js", UI_ROOT))
 
 const PAIRWISE_NODE_IDS = ["batch-line", "item-nav", "prev", "next", "release", "release-note", "item", "status"] as const
-const ORACLE_NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "status"] as const
+const ORACLE_NODE_IDS = ["reconcile-prior", "reconcile-conflict", "preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "status"] as const
 
 /** The reviewer's sequence, verbatim. If this literal is ever edited, it is a new reviewer decision. */
 const REVIEWER_SEQUENCE = "&é\"'(§è!çà"

@@ -63,7 +63,7 @@ import type { StoredOracleBatch } from "../src/review-server/types.ts"
 const BATCH = BCDE_VALIDATION_BATCH_ID
 const ORACLE_PAGE = fileURLToPath(new URL("../review-ui/oracle.js", import.meta.url))
 /** `pending` is new: it is where a multi-select says what it is about to record. */
-const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "pending", "status"] as const
+const NODE_IDS = ["reconcile-prior", "reconcile-conflict", "preamble", "framing", "question", "instruction", "progress", "mapping", "stage", "undokey", "pending", "status"] as const
 const PROMPT_PATH = fileURLToPath(new URL("../oracle/premise/prompts/group-bcde.v1.variant-e.json", import.meta.url))
 
 const fixture = await buildBcdeValidationFixture()
