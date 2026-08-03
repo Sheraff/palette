@@ -1,0 +1,1364 @@
+{
+	"manifestVersion": "sam-mask-quality-sample.v1",
+	"batchId": "sam-mask-quality-3b-cjk",
+	"seed": 20260806,
+	"generatedBy": "research/v3/oracle/sam/review_round_3b.py",
+	"builtFrom": [
+		"research/v3/data/sam/sam-cjk-probe-7.jsonl",
+		"research/v3/oracle/sam/run_cjk_probe.py",
+		"research/v3/oracle/sam/cjk-probe-7.txt",
+		"research/v3/oracle/sam/config.py",
+		"research/v3/oracle/sam/review_round.py",
+		"research/v3/data/sam/PROBE4_NOTES.md"
+	],
+	"sourceRun": "sam-cjk-probe-7",
+	"conceptSetHash": "9c78298f3c9936781d4922657cae506c72147e13172d2233c801403bb040e5b6",
+	"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+	"probePrompts": {
+		"cjk-script": "chinese characters",
+		"kanji": "kanji",
+		"words": "words"
+	},
+	"renderer": {
+		"pillow": "12.3.0",
+		"minPanelPx": 640,
+		"maxPanelScale": 2,
+		"maskAlpha": 0.5,
+		"bboxWidthPx": 4,
+		"haloWidthPx": 3,
+		"locatorRingMaxExtent": 0.25,
+		"conceptLabels": {
+			"cjk-script": "Chinese or Japanese characters",
+			"kanji": "Japanese kanji characters",
+			"words": "words"
+		},
+		"conceptColors": {
+			"words": [
+				255,
+				64,
+				64
+			],
+			"letter": [
+				255,
+				160,
+				0
+			],
+			"lettering": [
+				255,
+				232,
+				0
+			],
+			"display-text": [
+				255,
+				96,
+				160
+			],
+			"emblem": [
+				0,
+				200,
+				255
+			],
+			"sticker": [
+				255,
+				0,
+				220
+			],
+			"parental-advisory": [
+				140,
+				255,
+				0
+			],
+			"person": [
+				0,
+				255,
+				120
+			],
+			"face": [
+				120,
+				100,
+				255
+			],
+			"barcode": [
+				255,
+				255,
+				255
+			],
+			"cjk-script": [
+				0,
+				210,
+				255
+			],
+			"kanji": [
+				180,
+				255,
+				0
+			]
+		}
+	},
+	"scoreThresholdAtRun": 0.3,
+	"calibratedScoreThreshold": 0.578,
+	"calibratedGroupThresholds": {
+		"text_like": 0.697295
+	},
+	"scoreBands": [
+		{
+			"band": "0.30-0.45",
+			"low": 0.3,
+			"high": 0.45
+		},
+		{
+			"band": "0.45-0.60",
+			"low": 0.45,
+			"high": 0.6
+		},
+		{
+			"band": "0.60-0.80",
+			"low": 0.6,
+			"high": 0.8
+		},
+		{
+			"band": "0.80+",
+			"low": 0.8,
+			"high": 1.01
+		}
+	],
+	"conceptGroups": {
+		"cjk_script": [
+			"cjk-script",
+			"kanji"
+		],
+		"text_like": [
+			"words"
+		]
+	},
+	"selection": {
+		"rule": "Every mask comes from `sam-cjk-probe-7`, a 7-cover run of three prompts \u2014 `chinese characters`, `kanji`, and `words` as the incumbent control \u2014 made specifically to close the gap round 3 reported: probe 4 measured that `chinese characters` recalls 4 of 4 CJK covers with zero false positives and never scores above 0.472, but it stored no mask, so nobody has ever seen one. Up to three masks per cover per concept, spread from that cell's strongest to its weakest, because a category-aware cut needs a boundary to be fitted to and a round of best-masks-only would have none. The round is made almost entirely of masks that every threshold in force DISCARDS: 0 of the run's 18 `cjk-script` regions clear the pooled cut of 0.578. What it decides: whether the calibrated cut is category-dependent \u2014 if these are correct masks, the cut is throwing away a category it was never fitted on; if they are not, loose end A12 closes and the incumbent `words` keeps the field. The panel names what the mask CLAIMS, not the prompt string: the prompt \"chinese characters\" is printed as \"Chinese or Japanese characters\" because it demonstrably fires on both and is silent on Korean, Thai and Malayalam.",
+		"composition": {
+			"perCoverPerConcept": 3,
+			"availableByConcept": {
+				"cjk-script": 18,
+				"kanji": 28,
+				"words": 6
+			},
+			"drawnByConcept": {
+				"cjk-script": 11,
+				"kanji": 10,
+				"words": 4
+			},
+			"coversWithMasks": 5,
+			"drawnAbovePooledCut": 4,
+			"cjkDrawnAbovePooledCut": 0,
+			"scoreRangeByConcept": {
+				"cjk-script": {
+					"min": 0.301817,
+					"max": 0.471964
+				},
+				"kanji": {
+					"min": 0.307835,
+					"max": 0.641773
+				},
+				"words": {
+					"min": 0.315269,
+					"max": 0.586651
+				}
+			},
+			"notes": [
+				"every `cjk-script` mask in this round is BELOW the pooled cut of 0.578 \u2014 which is the finding under test, not an accident of sampling: 0 of the run's 18 cjk-script regions clear it"
+			]
+		}
+	},
+	"a12DecisionRule": {
+		"unitOfDecision": "the `cjk_script` group (`cjk-script` + `kanji` together), which is the form probe 4 recommended: one group, one threshold, the union carrying covers where either word fires",
+		"primaryTreatment": "`partly` excluded from both sides; the denominator is decided answers only",
+		"method": "sweep a candidate cut over the observed scores of the graded masks, maximising Youden J \u2014 the same sweep that produced the pooled cut and the text_like group cut",
+		"gates": "propose a CJK group threshold only if it clears the bars the existing analysis already applies: separation from the pooled cut >= 0.05, J gain >= 0.05, and at least 5 decided answers in the group",
+		"adoptIf": "the group's masks are largely accepted AND a cut below the pooled 0.578 separates accepted from rejected \u2014 then `cjk-script`/`kanji` are proposed as a concept-set addition WITH their own group threshold, which is probe 4's second option and its recommendation",
+		"closeIf": "the masks are largely rejected \u2014 A12 closes, no concept is added, and the finding is recorded as a category whose evidence never survived being looked at",
+		"incumbentCheck": "the `words` pass is judged on the same covers. If `words` masks are accepted wherever `cjk-script` masks are, the incumbent already covers the category and a new concept buys nothing regardless of how the CJK masks score.",
+		"notAdopted": "this round edits no constant. config.CONCEPT_PROMPTS is untouched, so every stored run stays reproducible; adding a concept is the reviewer's call and a separate, later change."
+	},
+	"silentCoverYield": [
+		{
+			"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+			"regionsFound": 2,
+			"bestScoreByConcept": {
+				"cjk-script": 0.449211,
+				"kanji": 0.307835,
+				"words": 0.0
+			},
+			"recovered": true
+		},
+		{
+			"imagePath": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+			"regionsFound": 0,
+			"bestScoreByConcept": {
+				"cjk-script": 0.0,
+				"kanji": 0.0,
+				"words": 0.0
+			},
+			"recovered": false
+		},
+		{
+			"imagePath": "images/nobs.jpg",
+			"regionsFound": 0,
+			"bestScoreByConcept": {
+				"cjk-script": 0.0,
+				"kanji": 0.0,
+				"words": 0.0
+			},
+			"recovered": false
+		}
+	],
+	"items": [
+		{
+			"itemId": "smq3b-03c5c23951ea",
+			"maskRowId": "9ccfa7646ad0:cjk-script:0",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.471964,
+			"areaFraction": 0.00684082,
+			"band": "0.45-0.60",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.864497,
+					"y": 0.464082,
+					"w": 0.092697,
+					"h": 0.314572
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-03c5c23951ea.png",
+				"sha256": "58410aa28fb609d9b26145ba0f7ed61fcf11fe8e0fe9ced3e894cabc830e1446",
+				"bytes": 458037,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-224a1953c6a7",
+			"maskRowId": "143928b6baab:kanji:5",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.531515,
+			"areaFraction": 0.001433333,
+			"band": "0.45-0.60",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 5,
+				"bbox": {
+					"x": 0.688862,
+					"y": 0.523578,
+					"w": 0.058777,
+					"h": 0.055195
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-224a1953c6a7.png",
+				"sha256": "054fb3d6692d67583ef0d63a509a5c94555965403416496c1607fb681427370d",
+				"bytes": 85877,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-2638d94ffb41",
+			"maskRowId": "eeef27ece2ed:cjk-script:0",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.449211,
+			"areaFraction": 0.003898926,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.214595,
+					"y": 0.200498,
+					"w": 0.080985,
+					"h": 0.072298
+				}
+			},
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+				"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+				"artworkId": "0007960724fb77c8041c6c13",
+				"collection": "sharded",
+				"sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-2638d94ffb41.png",
+				"sha256": "885735b33f787ea19ec9c3c015b68a4e579d532682acd48668f556625acd145e",
+				"bytes": 719200,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-35dd6ed8c6a8",
+			"maskRowId": "143928b6baab:kanji:0",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.641773,
+			"areaFraction": 0.002822222,
+			"band": "0.60-0.80",
+			"clearsPooledCut": true,
+			"stratum": "cjk_script|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.524548,
+					"y": 0.521606,
+					"w": 0.071113,
+					"h": 0.060063
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-35dd6ed8c6a8.png",
+				"sha256": "ac8a16e139cb67ddecb13fc83beb20cfce341c2a2f9439d8e746b79e6ef781f7",
+				"bytes": 87643,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-3ac7c469bac0",
+			"maskRowId": "3b82cee640a2:kanji:8",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.322402,
+			"areaFraction": 0.0009375,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 8,
+				"bbox": {
+					"x": 0.663277,
+					"y": 0.269469,
+					"w": 0.043457,
+					"h": 0.034875
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-3ac7c469bac0.png",
+				"sha256": "cbb8187ddef1eecc28a45d92676fd626c330ec7256389d80a44812b588c058da",
+				"bytes": 495918,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-50948b65e2b0",
+			"maskRowId": "143928b6baab:cjk-script:0",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.377375,
+			"areaFraction": 0.018388889,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.274628,
+					"y": 0.519874,
+					"w": 0.487063,
+					"h": 0.066744
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-50948b65e2b0.png",
+				"sha256": "e5afa6c316a55ae26763863511e59ed6db1c0ba7ec0b02d90b9affd30f209613",
+				"bytes": 94104,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-683c43ed1333",
+			"maskRowId": "9ccfa7646ad0:words:2",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptPrompt": "words",
+			"conceptGroup": "text_like",
+			"conceptIsProbe": true,
+			"score": 0.41006,
+			"areaFraction": 0.006506348,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.864973,
+					"y": 0.050648,
+					"w": 0.092244,
+					"h": 0.247649
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-683c43ed1333.png",
+				"sha256": "86b099272abbd2a0c92cf16bc95c2039366cc0df488905473b88a54604fc768f",
+				"bytes": 460339,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-6cf4e5126e0b",
+			"maskRowId": "eeef27ece2ed:kanji:0",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.307835,
+			"areaFraction": 0.003762207,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.214824,
+					"y": 0.200706,
+					"w": 0.080389,
+					"h": 0.071509
+				}
+			},
+			"artwork": {
+				"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+				"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+				"artworkId": "0007960724fb77c8041c6c13",
+				"collection": "sharded",
+				"sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-6cf4e5126e0b.png",
+				"sha256": "b7ee4dcbfb5a2596625c66e794963ca8c42a24311800c8926f2852203e20e13f",
+				"bytes": 718914,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-6eb17e28dc71",
+			"maskRowId": "ec1d748a16aa:cjk-script:0",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.394539,
+			"areaFraction": 0.090681152,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.0,
+					"y": 0.001467,
+					"w": 0.993589,
+					"h": 0.339938
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"imageId": "ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"artworkId": "0003f2b6590090abe420d104",
+				"collection": "sharded",
+				"sha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-6eb17e28dc71.png",
+				"sha256": "7a1f43492bbf24c8b858693952de5e5d077cf4d4077b2741fa142965bacbf182",
+				"bytes": 596665,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-710dfe450bd3",
+			"maskRowId": "9ccfa7646ad0:words:4",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptPrompt": "words",
+			"conceptGroup": "text_like",
+			"conceptIsProbe": true,
+			"score": 0.315269,
+			"areaFraction": 0.007739258,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "text_like|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 4,
+				"bbox": {
+					"x": 0.840641,
+					"y": 0.321354,
+					"w": 0.136356,
+					"h": 0.109857
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-710dfe450bd3.png",
+				"sha256": "de587cf683d493313cb3c6427b7224e691fa2c5f50ff1deaa8e9e671e9286d5a",
+				"bytes": 460792,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-787f75917d52",
+			"maskRowId": "3b82cee640a2:cjk-script:2",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.312639,
+			"areaFraction": 0.002536621,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.704955,
+					"y": 0.469059,
+					"w": 0.102599,
+					"h": 0.088993
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-787f75917d52.png",
+				"sha256": "185d3cca540b11e5e023839a5c506265fcf2541cd2ec12e6414eb9d7ccc772bb",
+				"bytes": 500480,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-7c4599f9c6f9",
+			"maskRowId": "9ccfa7646ad0:kanji:0",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.604809,
+			"areaFraction": 0.001074219,
+			"band": "0.60-0.80",
+			"clearsPooledCut": true,
+			"stratum": "cjk_script|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.868102,
+					"y": 0.232131,
+					"w": 0.087956,
+					"h": 0.056414
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-7c4599f9c6f9.png",
+				"sha256": "afbec918eaa324792df3a48918fec4f682982dd529c5c9f7c0bd6e10adb18c37",
+				"bytes": 452927,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-8c2a9ebecbd1",
+			"maskRowId": "9ccfa7646ad0:cjk-script:6",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.306014,
+			"areaFraction": 0.002272949,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 6,
+				"bbox": {
+					"x": 0.878859,
+					"y": 0.157195,
+					"w": 0.066452,
+					"h": 0.051795
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-8c2a9ebecbd1.png",
+				"sha256": "f289af5c10a542e38e5d3b5e3e3b5724d1c15e3a72ab176bfada98f40b5319ba",
+				"bytes": 452664,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-9cab1693eff3",
+			"maskRowId": "9ccfa7646ad0:cjk-script:3",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.387273,
+			"areaFraction": 0.007514648,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 3,
+				"bbox": {
+					"x": 0.84254,
+					"y": 0.319032,
+					"w": 0.134833,
+					"h": 0.111753
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-9cab1693eff3.png",
+				"sha256": "997cacc24006c3a521ccd682c28f48cc35817f42e02b891a6f3739362f32df19",
+				"bytes": 460748,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-a307e00c02b1",
+			"maskRowId": "143928b6baab:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptPrompt": "words",
+			"conceptGroup": "text_like",
+			"conceptIsProbe": true,
+			"score": 0.586651,
+			"areaFraction": 0.024911111,
+			"band": "0.45-0.60",
+			"clearsPooledCut": true,
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.14792,
+					"y": 0.468757,
+					"w": 0.718831,
+					"h": 0.050682
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-a307e00c02b1.png",
+				"sha256": "89df82fc8fc70d533e538ffde9afdd4f05ce9bc7036ed9a464698cc1e9800422",
+				"bytes": 94274,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-a5709fa4a08a",
+			"maskRowId": "9ccfa7646ad0:kanji:11",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.548839,
+			"areaFraction": 0.002243652,
+			"band": "0.45-0.60",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 11,
+				"bbox": {
+					"x": 0.879541,
+					"y": 0.156004,
+					"w": 0.066105,
+					"h": 0.05239
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-a5709fa4a08a.png",
+				"sha256": "9113b8bc8393497bdb38ecf848dbda38ee897d95dd83077c19f055398406cb22",
+				"bytes": 452476,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-aa8bb3b38c85",
+			"maskRowId": "3b82cee640a2:kanji:4",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.34942,
+			"areaFraction": 0.003432617,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 4,
+				"bbox": {
+					"x": 0.791134,
+					"y": 0.212977,
+					"w": 0.141344,
+					"h": 0.108712
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-aa8bb3b38c85.png",
+				"sha256": "97b6729130d320359635975d8d97d93918cb8fed2258614013f47971b66cf25d",
+				"bytes": 499408,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-ba02d6d84b20",
+			"maskRowId": "143928b6baab:cjk-script:1",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.31927,
+			"areaFraction": 0.002366667,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.289796,
+					"y": 0.521986,
+					"w": 0.07014,
+					"h": 0.060699
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-ba02d6d84b20.png",
+				"sha256": "49fcc5a5a36dcfb32ca5d9c30149ad8a45a58ab7873fc93dc295aa95304f48d0",
+				"bytes": 86797,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-c6a218ec8d20",
+			"maskRowId": "143928b6baab:kanji:2",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.634527,
+			"areaFraction": 0.001677778,
+			"band": "0.60-0.80",
+			"clearsPooledCut": true,
+			"stratum": "cjk_script|0.60-0.80",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"instanceIdx": 2,
+				"bbox": {
+					"x": 0.454354,
+					"y": 0.522433,
+					"w": 0.055958,
+					"h": 0.058175
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+				"imageId": "ab67616d00001e0200106c3252a4c133c0abde36",
+				"artworkId": "00106c3252a4c133c0abde36",
+				"collection": "sharded",
+				"sha256": "143928b6baab78ddb6f702ba044f3b6ef51dee34553d774f3fc02cf932a6888b",
+				"width": 300,
+				"height": 300
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-c6a218ec8d20.png",
+				"sha256": "599a2a8574f48f2d508e8969439f20edd6743bc694bb8986d7b7b7e17eee3ec9",
+				"bytes": 86753,
+				"width": 1214,
+				"height": 634,
+				"scale": 2
+			}
+		},
+		{
+			"itemId": "smq3b-cbbfdf8912dd",
+			"maskRowId": "3b82cee640a2:cjk-script:5",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.301817,
+			"areaFraction": 0.001958008,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 5,
+				"bbox": {
+					"x": 0.814238,
+					"y": 0.479695,
+					"w": 0.101273,
+					"h": 0.079931
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-cbbfdf8912dd.png",
+				"sha256": "410bae7b676bfbf12ec8376101df9069b00a0a18b8adacc9d9a448482e9ee2ac",
+				"bytes": 498420,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-d6cd54b49de2",
+			"maskRowId": "9ccfa7646ad0:kanji:6",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.576769,
+			"areaFraction": 0.000695801,
+			"band": "0.45-0.60",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 6,
+				"bbox": {
+					"x": 0.884914,
+					"y": 0.471321,
+					"w": 0.05719,
+					"h": 0.042316
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-d6cd54b49de2.png",
+				"sha256": "5b77b4d04300f0672b1360f48a543b8010dccdf484987fef809f31f72526e2c0",
+				"bytes": 453656,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-d8bd7bda6f77",
+			"maskRowId": "ec1d748a16aa:cjk-script:1",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.352867,
+			"areaFraction": 0.00342041,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"instanceIdx": 1,
+				"bbox": {
+					"x": 0.135138,
+					"y": 0.707398,
+					"w": 0.203821,
+					"h": 0.035794
+				}
+			},
+			"artwork": {
+				"imagePath": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"imageId": "ab67616d0000b2730003f2b6590090abe420d104.jpg",
+				"artworkId": "0003f2b6590090abe420d104",
+				"collection": "sharded",
+				"sha256": "ec1d748a16aae69c7d1fad1b8528423a79174cb7770df399a7c35f8e5cdb3102",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-d8bd7bda6f77.png",
+				"sha256": "31d0aca266444561bf0d32452471d8728b24774336b4cdda515da5639f7574ac",
+				"bytes": 533785,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-e33718f7b11e",
+			"maskRowId": "3b82cee640a2:cjk-script:0",
+			"concept": "cjk-script",
+			"conceptPhrase": "Chinese or Japanese characters",
+			"conceptPrompt": "chinese characters",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.392655,
+			"areaFraction": 0.009968262,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.705064,
+					"y": 0.065209,
+					"w": 0.236097,
+					"h": 0.260846
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-e33718f7b11e.png",
+				"sha256": "8103da6157639ccdf1b76d39df9b933eb7b6ed5fbb2f812d67b436223052e4a3",
+				"bytes": 503279,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-e50f8fb6ce17",
+			"maskRowId": "9ccfa7646ad0:words:0",
+			"concept": "words",
+			"conceptPhrase": "words",
+			"conceptPrompt": "words",
+			"conceptGroup": "text_like",
+			"conceptIsProbe": true,
+			"score": 0.496063,
+			"areaFraction": 0.00809082,
+			"band": "0.45-0.60",
+			"clearsPooledCut": false,
+			"stratum": "text_like|0.45-0.60",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.004161,
+					"y": 0.939655,
+					"w": 0.319654,
+					"h": 0.044201
+				}
+			},
+			"artwork": {
+				"imagePath": "08/ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"imageId": "ab67616d0000b2730008f7b7f01d9149dbe92fa0",
+				"artworkId": "0008f7b7f01d9149dbe92fa0",
+				"collection": "sharded",
+				"sha256": "9ccfa7646ad03411834884b9c1a9391756b0bdef9a6b1f048e1753f71ee43f92",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-e50f8fb6ce17.png",
+				"sha256": "41df272138c527b3366a50c1fa9003b71990a85f64dfa3e3bbe54eb1cf023e36",
+				"bytes": 457136,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		},
+		{
+			"itemId": "smq3b-f4b2fc14ca6b",
+			"maskRowId": "3b82cee640a2:kanji:0",
+			"concept": "kanji",
+			"conceptPhrase": "Japanese kanji characters",
+			"conceptPrompt": "kanji",
+			"conceptGroup": "cjk_script",
+			"conceptIsProbe": true,
+			"score": 0.366948,
+			"areaFraction": 0.003447266,
+			"band": "0.30-0.45",
+			"clearsPooledCut": false,
+			"stratum": "cjk_script|0.30-0.45",
+			"forcedSuspicious": false,
+			"maskRef": {
+				"run": "sam-cjk-probe-7",
+				"runId": "e45032012c3142bbba39423517d4efe5",
+				"schemaVersion": "sam-regions.v1",
+				"probeConceptSetHash": "0b0a2f5f1ae0aaa1a64e2265d07044a0b84c70db233b5610b2001250078dcbc5",
+				"imageSha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"instanceIdx": 0,
+				"bbox": {
+					"x": 0.711251,
+					"y": 0.073032,
+					"w": 0.09869,
+					"h": 0.090135
+				}
+			},
+			"artwork": {
+				"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+				"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"collection": "sharded",
+				"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+				"width": 640,
+				"height": 640
+			},
+			"overlay": {
+				"path": "research/v3/data/sam/review-overlays-3b/smq3b-f4b2fc14ca6b.png",
+				"sha256": "55eefc66da21a71a62d53d44c0ede713fec2611b7feb0d9949c85832307a3a68",
+				"bytes": 499173,
+				"width": 1294,
+				"height": 674,
+				"scale": 1
+			}
+		}
+	]
+}

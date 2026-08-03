@@ -1,0 +1,565 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "sam-mask-quality-3b-cjk",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "sam-mask-quality.v1",
+	"seed": 20260806,
+	"generatedBy": "research/v3/src/review-server/sam-mask-quality.ts",
+	"builtFrom": [
+		"research/v3/data/sam/mask-quality-3b-sample.json",
+		"research/v3/data/sam/sam-cjk-probe-7.jsonl",
+		"research/v3/oracle/sam/review_round.py",
+		"research/v3/oracle/sam/review_round_3b.py",
+		"research/v3/oracle/sam/run_cjk_probe.py"
+	],
+	"selection": {
+		"rule": "Twenty-five SAM masks from `sam-cjk-probe-7`, a 7-cover GPU run of three prompts made specifically to close the gap round 3 reported. The finding under test is probe 4's: the prompt \"chinese characters\" recalls 4 of 4 CJK covers with zero false positives — and is silent on Korean, Thai and Malayalam, so it means THIS SCRIPT and not merely not-Latin — while never scoring above 0.472, which is below every cut in force. Probe 4 stored no mask, so no reviewer has ever seen one; this round is the first time they are on screen. Three passes: `cjk-script`, its union partner `kanji`, and `words` as the INCUMBENT CONTROL, because a new concept is only worth its cost if what the set already asks does not catch the same glyphs. Up to three masks per cover per concept, spread from that cell's strongest to its weakest, because a category-aware cut needs a boundary to be fitted to and a round of best-masks-only would give a sweep nothing to separate. The round is made almost entirely of masks every threshold in force DISCARDS: 0 of the run's 18 `cjk-script` regions clear the pooled cut of 0.578. What it decides: whether the calibrated cut is category-dependent. If these are correct masks, the cut is throwing away a category it was never fitted on and a CJK group threshold is justified on evidence; if they are not, A12 closes and the incumbent keeps the field. The panel names what the mask CLAIMS, not the prompt: \"chinese characters\" prints as \"Chinese or Japanese characters\" because it demonstrably fires on both, and asking the reviewer to reject a correct mask on a Japanese cover for being Japanese would measure the label rather than the mask. config.CONCEPT_PROMPTS is UNTOUCHED by this run, so every stored run stays reproducible.",
+		"counts": {
+			"masks": 25,
+			"concepts": 3,
+			"cjk-script": 11,
+			"kanji": 10,
+			"words": 4
+		}
+	},
+	"questions": [
+		{
+			"key": "mask_correct.cjk-script",
+			"kind": "enum",
+			"question": "Is this a correct \"Chinese or Japanese characters\" mask?",
+			"instruction": "Judge only the highlighted region. Other instances of the same thing that were NOT highlighted are not this question — a mask is not wrong for having missed something.",
+			"preamble": "Left: the artwork. Right: the same artwork with one region highlighted, outlined and boxed in colour. The name under the right panel is what that one region claims to be.",
+			"framing": "If you cannot tell what the highlighted region is even after zooming, answer no: an unreadable mask is not a usable one.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "the highlighted region is that thing, and it covers about the right pixels",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "the highlighted region is not that thing at all, or it covers something unrelated",
+					"hotkey": "n"
+				},
+				{
+					"key": "partly",
+					"label": "partly",
+					"gloss": "it is that thing, but the coverage is wrong — it misses much of it, or spills well beyond it",
+					"hotkey": "p"
+				}
+			]
+		},
+		{
+			"key": "mask_correct.kanji",
+			"kind": "enum",
+			"question": "Is this a correct \"Japanese kanji characters\" mask?",
+			"instruction": "Judge only the highlighted region. Other instances of the same thing that were NOT highlighted are not this question — a mask is not wrong for having missed something.",
+			"preamble": "Left: the artwork. Right: the same artwork with one region highlighted, outlined and boxed in colour. The name under the right panel is what that one region claims to be.",
+			"framing": "If you cannot tell what the highlighted region is even after zooming, answer no: an unreadable mask is not a usable one.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "the highlighted region is that thing, and it covers about the right pixels",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "the highlighted region is not that thing at all, or it covers something unrelated",
+					"hotkey": "n"
+				},
+				{
+					"key": "partly",
+					"label": "partly",
+					"gloss": "it is that thing, but the coverage is wrong — it misses much of it, or spills well beyond it",
+					"hotkey": "p"
+				}
+			]
+		},
+		{
+			"key": "mask_correct.words",
+			"kind": "enum",
+			"question": "Is this a correct \"words\" mask?",
+			"instruction": "Judge only the highlighted region. Other instances of the same thing that were NOT highlighted are not this question — a mask is not wrong for having missed something.",
+			"preamble": "Left: the artwork. Right: the same artwork with one region highlighted, outlined and boxed in colour. The name under the right panel is what that one region claims to be.",
+			"framing": "If you cannot tell what the highlighted region is even after zooming, answer no: an unreadable mask is not a usable one.",
+			"answers": [
+				{
+					"key": "yes",
+					"label": "yes",
+					"gloss": "the highlighted region is that thing, and it covers about the right pixels",
+					"hotkey": "y"
+				},
+				{
+					"key": "no",
+					"label": "no",
+					"gloss": "the highlighted region is not that thing at all, or it covers something unrelated",
+					"hotkey": "n"
+				},
+				{
+					"key": "partly",
+					"label": "partly",
+					"gloss": "it is that thing, but the coverage is wrong — it misses much of it, or spills well beyond it",
+					"hotkey": "p"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "smq3b-03c5c23951ea",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-03c5c23951ea.png",
+			"sha256": "58410aa28fb609d9b26145ba0f7ed61fcf11fe8e0fe9ced3e894cabc830e1446",
+			"imageId": "9ccfa7646ad0:cjk-script:0",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:cjk-script:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.45-0.60"
+		},
+		{
+			"itemId": "smq3b-2638d94ffb41",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-2638d94ffb41.png",
+			"sha256": "885735b33f787ea19ec9c3c015b68a4e579d532682acd48668f556625acd145e",
+			"imageId": "eeef27ece2ed:cjk-script:0",
+			"artworkId": "0007960724fb77c8041c6c13",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "eeef27ece2ed:cjk-script:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-50948b65e2b0",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-50948b65e2b0.png",
+			"sha256": "e5afa6c316a55ae26763863511e59ed6db1c0ba7ec0b02d90b9affd30f209613",
+			"imageId": "143928b6baab:cjk-script:0",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:cjk-script:0",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-6eb17e28dc71",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-6eb17e28dc71.png",
+			"sha256": "7a1f43492bbf24c8b858693952de5e5d077cf4d4077b2741fa142965bacbf182",
+			"imageId": "ec1d748a16aa:cjk-script:0",
+			"artworkId": "0003f2b6590090abe420d104",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "ec1d748a16aa:cjk-script:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-787f75917d52",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-787f75917d52.png",
+			"sha256": "185d3cca540b11e5e023839a5c506265fcf2541cd2ec12e6414eb9d7ccc772bb",
+			"imageId": "3b82cee640a2:cjk-script:2",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:cjk-script:2",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-8c2a9ebecbd1",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-8c2a9ebecbd1.png",
+			"sha256": "f289af5c10a542e38e5d3b5e3e3b5724d1c15e3a72ab176bfada98f40b5319ba",
+			"imageId": "9ccfa7646ad0:cjk-script:6",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:cjk-script:6",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-9cab1693eff3",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-9cab1693eff3.png",
+			"sha256": "997cacc24006c3a521ccd682c28f48cc35817f42e02b891a6f3739362f32df19",
+			"imageId": "9ccfa7646ad0:cjk-script:3",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:cjk-script:3",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-ba02d6d84b20",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-ba02d6d84b20.png",
+			"sha256": "49fcc5a5a36dcfb32ca5d9c30149ad8a45a58ab7873fc93dc295aa95304f48d0",
+			"imageId": "143928b6baab:cjk-script:1",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:cjk-script:1",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-cbbfdf8912dd",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-cbbfdf8912dd.png",
+			"sha256": "410bae7b676bfbf12ec8376101df9069b00a0a18b8adacc9d9a448482e9ee2ac",
+			"imageId": "3b82cee640a2:cjk-script:5",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:cjk-script:5",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-d8bd7bda6f77",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-d8bd7bda6f77.png",
+			"sha256": "31d0aca266444561bf0d32452471d8728b24774336b4cdda515da5639f7574ac",
+			"imageId": "ec1d748a16aa:cjk-script:1",
+			"artworkId": "0003f2b6590090abe420d104",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "ec1d748a16aa:cjk-script:1",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-e33718f7b11e",
+			"questionKey": "mask_correct.cjk-script",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-e33718f7b11e.png",
+			"sha256": "8103da6157639ccdf1b76d39df9b933eb7b6ed5fbb2f812d67b436223052e4a3",
+			"imageId": "3b82cee640a2:cjk-script:0",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:cjk-script:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-224a1953c6a7",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-224a1953c6a7.png",
+			"sha256": "054fb3d6692d67583ef0d63a509a5c94555965403416496c1607fb681427370d",
+			"imageId": "143928b6baab:kanji:5",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:kanji:5",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "cjk_script|0.45-0.60"
+		},
+		{
+			"itemId": "smq3b-35dd6ed8c6a8",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-35dd6ed8c6a8.png",
+			"sha256": "ac8a16e139cb67ddecb13fc83beb20cfce341c2a2f9439d8e746b79e6ef781f7",
+			"imageId": "143928b6baab:kanji:0",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:kanji:0",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "cjk_script|0.60-0.80"
+		},
+		{
+			"itemId": "smq3b-3ac7c469bac0",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-3ac7c469bac0.png",
+			"sha256": "cbb8187ddef1eecc28a45d92676fd626c330ec7256389d80a44812b588c058da",
+			"imageId": "3b82cee640a2:kanji:8",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:kanji:8",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-6cf4e5126e0b",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-6cf4e5126e0b.png",
+			"sha256": "b7ee4dcbfb5a2596625c66e794963ca8c42a24311800c8926f2852203e20e13f",
+			"imageId": "eeef27ece2ed:kanji:0",
+			"artworkId": "0007960724fb77c8041c6c13",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "eeef27ece2ed:kanji:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-7c4599f9c6f9",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-7c4599f9c6f9.png",
+			"sha256": "afbec918eaa324792df3a48918fec4f682982dd529c5c9f7c0bd6e10adb18c37",
+			"imageId": "9ccfa7646ad0:kanji:0",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:kanji:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.60-0.80"
+		},
+		{
+			"itemId": "smq3b-a5709fa4a08a",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-a5709fa4a08a.png",
+			"sha256": "9113b8bc8393497bdb38ecf848dbda38ee897d95dd83077c19f055398406cb22",
+			"imageId": "9ccfa7646ad0:kanji:11",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:kanji:11",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.45-0.60"
+		},
+		{
+			"itemId": "smq3b-aa8bb3b38c85",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-aa8bb3b38c85.png",
+			"sha256": "97b6729130d320359635975d8d97d93918cb8fed2258614013f47971b66cf25d",
+			"imageId": "3b82cee640a2:kanji:4",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:kanji:4",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-c6a218ec8d20",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-c6a218ec8d20.png",
+			"sha256": "599a2a8574f48f2d508e8969439f20edd6743bc694bb8986d7b7b7e17eee3ec9",
+			"imageId": "143928b6baab:kanji:2",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:kanji:2",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "cjk_script|0.60-0.80"
+		},
+		{
+			"itemId": "smq3b-d6cd54b49de2",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-d6cd54b49de2.png",
+			"sha256": "5b77b4d04300f0672b1360f48a543b8010dccdf484987fef809f31f72526e2c0",
+			"imageId": "9ccfa7646ad0:kanji:6",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:kanji:6",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.45-0.60"
+		},
+		{
+			"itemId": "smq3b-f4b2fc14ca6b",
+			"questionKey": "mask_correct.kanji",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-f4b2fc14ca6b.png",
+			"sha256": "55eefc66da21a71a62d53d44c0ede713fec2611b7feb0d9949c85832307a3a68",
+			"imageId": "3b82cee640a2:kanji:0",
+			"artworkId": "00100a3e9c764acf01c16db8",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "3b82cee640a2:kanji:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "cjk_script|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-683c43ed1333",
+			"questionKey": "mask_correct.words",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-683c43ed1333.png",
+			"sha256": "86b099272abbd2a0c92cf16bc95c2039366cc0df488905473b88a54604fc768f",
+			"imageId": "9ccfa7646ad0:words:2",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:words:2",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "text_like|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-710dfe450bd3",
+			"questionKey": "mask_correct.words",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-710dfe450bd3.png",
+			"sha256": "de587cf683d493313cb3c6427b7224e691fa2c5f50ff1deaa8e9e671e9286d5a",
+			"imageId": "9ccfa7646ad0:words:4",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:words:4",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "text_like|0.30-0.45"
+		},
+		{
+			"itemId": "smq3b-a307e00c02b1",
+			"questionKey": "mask_correct.words",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-a307e00c02b1.png",
+			"sha256": "89df82fc8fc70d533e538ffde9afdd4f05ce9bc7036ed9a464698cc1e9800422",
+			"imageId": "143928b6baab:words:0",
+			"artworkId": "00106c3252a4c133c0abde36",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "143928b6baab:words:0",
+				"longEdgePx": 1214,
+				"width": 1214,
+				"height": 634
+			},
+			"stratum": "text_like|0.45-0.60"
+		},
+		{
+			"itemId": "smq3b-e50f8fb6ce17",
+			"questionKey": "mask_correct.words",
+			"imagePath": "research/v3/data/sam/review-overlays-3b/smq3b-e50f8fb6ce17.png",
+			"sha256": "41df272138c527b3366a50c1fa9003b71990a85f64dfa3e3bbe54eb1cf023e36",
+			"imageId": "9ccfa7646ad0:words:0",
+			"artworkId": "0008f7b7f01d9149dbe92fa0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/mask-quality-3b-sample.json",
+				"sourceEntryId": "9ccfa7646ad0:words:0",
+				"longEdgePx": 1294,
+				"width": 1294,
+				"height": 674
+			},
+			"stratum": "text_like|0.45-0.60"
+		}
+	],
+	"serveOrder": [
+		"smq3b-9cab1693eff3",
+		"smq3b-03c5c23951ea",
+		"smq3b-ba02d6d84b20",
+		"smq3b-cbbfdf8912dd",
+		"smq3b-2638d94ffb41",
+		"smq3b-8c2a9ebecbd1",
+		"smq3b-787f75917d52",
+		"smq3b-e33718f7b11e",
+		"smq3b-d8bd7bda6f77",
+		"smq3b-50948b65e2b0",
+		"smq3b-6eb17e28dc71",
+		"smq3b-aa8bb3b38c85",
+		"smq3b-35dd6ed8c6a8",
+		"smq3b-d6cd54b49de2",
+		"smq3b-3ac7c469bac0",
+		"smq3b-a5709fa4a08a",
+		"smq3b-7c4599f9c6f9",
+		"smq3b-f4b2fc14ca6b",
+		"smq3b-224a1953c6a7",
+		"smq3b-c6a218ec8d20",
+		"smq3b-6cf4e5126e0b",
+		"smq3b-710dfe450bd3",
+		"smq3b-a307e00c02b1",
+		"smq3b-e50f8fb6ce17",
+		"smq3b-683c43ed1333"
+	]
+}

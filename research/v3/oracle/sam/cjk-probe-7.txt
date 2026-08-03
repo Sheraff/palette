@@ -1,0 +1,20 @@
+# The 7 covers of the CJK mask-quality run, per the round-3 manifest's `gpuGap` spec.
+# One repo-relative path per line. Read by run_cjk_probe.py.
+#
+# GROUP 1 — probe 4's four CJK covers (data/sam/PROBE4_NOTES.md, "Selection").
+# Every one was opened and its content confirmed by eye before it went on probe 4's list.
+# `chinese characters` scored 4/4 with zero false positives here, best 0.472 — below every
+# cut in force, which is exactly why no reviewer has ever seen one of these masks.
+10/ab67616d0000b27300100a3e9c764acf01c16db8
+03/ab67616d0000b2730003f2b6590090abe420d104.jpg
+08/ab67616d0000b2730008f7b7f01d9149dbe92fa0
+10/ab67616d00001e0200106c3252a4c133c0abde36
+
+# GROUP 2 — the three A12 covers that carry NO text_like mask at all, even at the run-time
+# floor of 0.3 (round 3, section B). The static set is completely silent on them, so round 3
+# had nothing below-cut to show and they were reported as the gap this run closes.
+# The first is the genuinely-CJK synthwave dragon; the others test whether a script word
+# finds anything where the Latin glyph words found nothing.
+07/ab67616d0000b2730007960724fb77c8041c6c13
+10/ab67616d0000b27300103a3729bf589e0dc913ab
+images/nobs.jpg
