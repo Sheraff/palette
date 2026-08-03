@@ -4,6 +4,12 @@
 **No GPU was used, no model was downloaded, nothing was loaded.** Every claim below is either
 read out of source already on this disk, or read out of the HuggingFace metadata API.
 
+**See also `GROUND_ROUTES.md`** (sibling, same date) — scouts the **depth** route the reviewer added
+on 2026-08-03, and gives the recommended **try-order across all four** ground-isolation routes.
+Short version of the ordering it argues for: the SAM point-prompt gate first (2 min, 0 GB), then
+read the already-running noun-elicitation runs, then **Qwen3-VL before MolmoPoint** — because both
+feed the same new SAM adapter and Qwen3-VL needs no download — then depth.
+
 **Why this exists.** The reviewer asked:
 
 > "isn't there a model that is particularly good at pointing? I think it was in our list at some
