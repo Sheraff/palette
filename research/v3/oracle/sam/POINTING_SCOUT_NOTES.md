@@ -22,7 +22,7 @@ Pointing model → points on the ground → SAM point-prompt segmentation → a 
 |---|---|
 | Was a pointing model ever on our written list? | **No** — zero hits in the tree and in all 508 commits. It was never proposed and never rejected. But its absence closed three doors that are still shut (§1). |
 | Does a pointing specialist exist on our stack? | **Yes, and better than expected.** `mlx-vlm 0.6.8` — the version already installed and pinned — ships a dedicated `molmo_point` model module. |
-| Are there MLX weights? | **Yes.** `mlx-community/MolmoPoint-8B` in 8 quantizations, uploaded 2026-03-21. |
+| Are there MLX weights? | **Yes.** `mlx-community/MolmoPoint-8B` in 8 quantizations, uploaded 2026-03-21, Apache-2.0. Current Point-Bench SOTA at 70.7 — with caveats (§2.5). |
 | Does mlx-vlm's SAM 3.1 support point prompts? | **The weights do; the code path does not.** All 145 interactive tensors are present in the snapshot we already have. Nothing calls them. |
 | Is adding them plumbing or missing weights? | **Plumbing.** ~80–150 lines, in our own code, no mlx-vlm patch, no download. |
 | Probe cost | **one 9–11 GB download + ~15–20 min of GPU slot.** |
@@ -153,7 +153,27 @@ it fails at 6-bit we cannot tell whether the model or the quantization failed, a
 again at 8-bit anyway. Buy the attributable answer once. If 8-bit points land well, re-test at
 4-bit as a **cost** question, separately — that is a different experiment with a different purpose.
 
-### 2.3 Machine headroom
+Licence: **Apache-2.0** (`allenai/MolmoPoint-8B`). No licensing decision needed.
+
+### 2.3 A version trap, and why it does not bite us
+
+`config.py` pins `RUNTIME_VERSION_PIN = "0.6.8"` for SAM. Three things are true of that version and
+they need to be recorded together, because two of them look alarming in isolation:
+
+- **Original Molmo-7B-D (0924) is broken on 0.6.8** — unusable output; the bug mis-indexed the image
+  feature scatter (allocating a ~15 GB tensor) and skipped the chat template. Fixed by PR #1783,
+  merged **2026-08-03 19:29Z**, released in **0.6.9 five minutes later**.
+- **MolmoPoint on 0.6.8 is fine.** Its load-error fix landed in 0.6.0 and its EOS-config fix
+  (PR #1500) in 0.6.4. Both are behind us.
+- **Molmo2 on 0.6.8 is fine.** Its float16 vision-tower overflow (all-NaN logits, output of nothing
+  but `!` characters) was fixed in 0.6.0.
+
+**Consequence: we do not need to touch the pin.** The one Molmo variant broken on our pinned version
+is the one we are not proposing to use. If someone later reaches for original Molmo-7B-D and gets
+garbage, this is why — and the fix is 0.6.9, which must then be re-checked against `sam3_1` before
+the pin moves. Do not upgrade mlx-vlm for Molmo's sake; MolmoPoint does not need it.
+
+### 2.4 Machine headroom
 
 **[MEASURED]** 2026-08-03. 103 GB unified memory; MolmoPoint-8B at 8-bit (~11 GB) and SAM 3.1
 bf16 (3.49 GB) can be **co-resident with room to spare** — the pointing pass and the segmentation
@@ -162,7 +182,7 @@ pass do not need to be separate processes, which removes a whole class of hand-o
 Disk: 114 GB free, but the volume is **88% full**. An 11 GB download is fine; it is worth saying
 out loud before a habit of pulling fp16 variants forms.
 
-### 2.4 How good is it at pointing? — what we can and cannot claim
+### 2.5 How good is it at pointing? — what we can and cannot claim
 
 **What we can claim, from source on this disk:** MolmoPoint is *architecturally* a pointing model,
 not a general VLM with a pointing prompt. The evidence is in the config and the token vocabulary,
@@ -178,39 +198,83 @@ Bolting pointing onto a chat VLM does not produce any of that. **This is a stron
 published score would be**, because it tells us the capability is in the model's output
 representation rather than in its prompt-following.
 
-**What we cannot claim:** I have **not** verified published pointing-accuracy numbers (PixMo-Points,
-Point-Bench, or third-party MolmoPoint-vs-Qwen comparisons) against sources, and this document
-therefore quotes none. **Do not let a number enter this campaign's reasoning by way of my
-recollection.** Two things follow, and both are fine:
+**Published numbers, with their provenance attached.** Sourced 2026-08-03 from the MolmoPoint paper
+(arXiv 2603.28069, Point-Bench Table 1) — **[INHERITED]**, i.e. someone else's measurement on
+someone else's data, never ours:
 
-1. The probe in §4 is a *direct* measurement on our own 15 covers against the reviewer's own prose.
-   That is better evidence for our decision than any public benchmark, because "point to the
-   background of an album cover" is not what those benchmarks measure. Public numbers would only
-   have told us whether to bother running §4 — and the architecture already tells us that.
-2. If the orchestrator wants the published comparison for the record, it is a web task, not a GPU
-   task, and it does not block anything here.
+| Model | Point-Bench avg |
+|---|---|
+| Human | 89.1 |
+| **MolmoPoint-8B** | **70.7** |
+| Molmo2-8B | 68.7 |
+| Gemini-Robotics-ER-1.5 | 67.1 |
+| Molmo-72B | 63.8 |
+| Gemini-2.5-Pro | 62.8 |
+| Qwen2.5-VL-32B/72B | 59.0 |
+| **Qwen3-VL** | **58.5** |
 
-### 2.5 Alternatives — for the record
+PixMo-Points F1: MolmoPoint-8B **89.2**, Molmo2-8B 85.2, Molmo-7B-D 75.7.
+
+**Three caveats that must travel with those numbers, or they should not be quoted at all:**
+
+1. **Point-Bench is not independent of Ai2.** It comes from PointArena (arXiv 2505.09990), authored
+   by UW **and Ai2** — Ai2 co-authored the benchmark its own model tops. Treat the 70.7 as a
+   vendor-adjacent number.
+2. The Qwen2.5-VL-32B and -72B rows are **byte-identical across all six columns** — a
+   transcription error on the paper's side. Anything resting on the Qwen comparison is softer than
+   it looks.
+3. There are **no GPT, Claude, or Moondream rows at all** in that table.
+
+**The one genuinely third-party number** — Poivre (arXiv 2509.23746, Fudan, no Ai2 affiliation),
+Point-Bench success rate: Poivre-7B 67.5, **Molmo-72B 63.8**, Gemini-2.5-Pro 62.8, Qwen3-VL-235B
+58.4, **GPT-4o 29.5**, **Claude-3.7-Sonnet 22.2**. The gap between the pointing-trained models and
+the frontier chat models is the part that replicates outside Ai2, and it is large.
+
+**What none of this measures is our question.** No public benchmark asks "point to the background of
+an album cover", and the three covers we most care about are ones a careful human could not resolve.
+So the numbers justify *bothering* with §4; they cannot stand in for it. **A direct third-party
+Molmo-vs-Qwen-vs-Moondream pointing comparison does not exist in published form** — that was checked,
+not assumed.
+
+### 2.6 Alternatives — for the record
 
 The alternatives question is largely moot because the primary route works natively. Recorded so the
-next reader does not re-derive it:
+next reader does not re-derive it, and because two of these are **corrections to what I first
+believed**:
 
-- **PyTorch MPS.** Not needed. Would mean `trust_remote_code` custom modeling code on MPS, which is
-  the slowest and most fragile path on this hardware. Skip.
-- **llama.cpp / GGUF.** Vision support is per-architecture and MolmoPoint's point-token head is
-  exotic. No reason to look.
-- **Qwen3-VL grounding.** Already on our stack (`mlx_vlm/models/qwen3_vl`). But its grounding mode
-  emits **boxes**, and a box is the wrong primitive here: the question is *which pixels are ground*,
-  and a box around a diffuse, frame-filling, possibly disconnected ground says almost nothing. A
-  point can be placed *inside* an irregular region; a box cannot describe one. Where Qwen3-VL is
-  genuinely useful is as the **cross-check** — if the two models point/box at different regions on
-  the same cover, that disagreement is itself evidence about whether the ground is well-defined,
-  which is exactly the reviewer's `000c4d52`/`000fa9b5`/`krafty` ambiguity.
-- **`moondream2` / `moondream3`** are also present in mlx-vlm and Moondream documents a `point`
-  skill. Worth knowing as a **small, fast** second opinion (a 2B-class model) if MolmoPoint proves
-  too slow to run corpus-wide. Not the first probe.
-- **`locateanything`** is also in the installed mlx-vlm module list and the name suggests
-  localization. Not investigated. Noted so it is not missed twice.
+- **PyTorch MPS — ruled out, with a specific reason.** Molmo's `trust_remote_code` modeling file
+  calls `torch.autocast(device.type, enabled=False)` when computing the attention bias.
+  `autocast` supports CPU and CUDA only, so MPS raises `RuntimeError: unsupported scalarType`.
+  This is an eager type check, **not** a missing kernel, so `PYTORCH_ENABLE_MPS_FALLBACK=1` does not
+  help. A patch exists in HF discussion #21 on `allenai/Molmo-7B-D-0924` but **nobody in that thread
+  confirmed a working end-to-end MPS run**; they fell back to CPU.
+- **llama.cpp / GGUF — ruled out.** Molmo is absent from llama.cpp's `docs/multimodal.md` vision
+  list. Issue #9645 ("Molmo 72B vision support") was closed **stale, unimplemented**. The only GGUF
+  (`reubk/Molmo2-4B-GGUF`) states it needs *"custom modifications to llama.cpp mtmd code"*, that
+  the model is *"increasingly lobotomized when mmproj is included"*, and *"I won't be maintaining
+  this model."*
+- **Qwen3-VL — CORRECTION: it does point, not only box.** I first recorded this as boxes-only; that
+  is wrong. Qwen3-VL emits `point_2d` normalized 0–1000 as well as boxes, and Qwen's own blog says
+  *"Qwen2.5-VL utilizes bounding boxes and point-based representations for grounding."* It is
+  already on our stack (`mlx_vlm/models/qwen3_vl`). The difference from MolmoPoint is not
+  *capability* but *mechanism*: Qwen emits coordinates as ordinary text to be regex-parsed, with no
+  constrained decoding and no absence class, and it scores **58.5 vs MolmoPoint's 70.7** on
+  Point-Bench. **Its real value here is as the cross-check** — where two independently-trained
+  pointers disagree about which pixels are ground, that disagreement is evidence about the *cover*,
+  which is exactly the `000c4d52`/`000fa9b5`/`krafty` ambiguity. Cheap, since it needs no new
+  download of a class we lack.
+- **Moondream — CORRECTION: unusable on MLX for this purpose.** Moondream natively has a `point`
+  skill returning normalized `{"x":…, "y":…}`, and I first noted it as a fast second opinion. But
+  **both mlx-vlm ports strip the region head at load**: `moondream3.py`'s `sanitize` drops every key
+  starting with `"region."` and `moondream2.py` drops `"region_model."`. The weights are not merely
+  unused — they are never loaded. **Moondream on MLX is caption/VQA only.** There is also no
+  published Moondream pointing accuracy of any kind (its ScreenSpot F1@0.5 = 80.4 is an
+  IoU-thresholded *region* metric and is not comparable to point-in-mask accuracy).
+- **`locateanything`** — NVIDIA LocateAnything-3B, in mlx-vlm since v0.5.0. Emits **points and
+  boxes** at 0–1000, MLX weights exist, and at 3B it is small. **Blocked by licence: NVIDIA
+  non-commercial.** Worth knowing it exists; not usable without a licensing decision.
+- **Florence-2 and PaliGemma** — boxes/polygons and `<locNNNN>` segmentation only. No task returns
+  a point. Ruled out.
 
 ---
 
@@ -493,10 +557,10 @@ would be the suspicious result.
 | Step 0 gate (SAM only) | **~2 min**, 0 GB | one image, no download |
 | MolmoPoint-8B-8bit download | **10.77 GB** | [MEASURED] HF API |
 | Model load | ~1 min | comparable to SAM's load |
-| Pointing: 15 covers × 3 prompts = 45 generations | **~4–8 min** | [ASSUMED] ~5–10 s/generation; 24-crop prefill dominates, point outputs are only a few tokens. **Unverified — this is the least certain number here.** |
+| Pointing: 15 covers × 3 prompts = 45 generations | **~4–15 min** | [ASSUMED] ~5–20 s/generation. 24-crop prefill dominates; MolmoPoint spends only 3 tokens per point, so decode is short. **The least certain number here.** mlx-vlm's own README claims *"~6 tokens/sec on Apple Silicon"* and *"peak memory approximately 39 GB"* — but for the **full bf16** model, with no hardware named. At 8-bit on 103 GB both should be materially better. Treat the range as a bound, not a forecast, and measure it on the probe. |
 | SAM point-prompt passes | **~1–2 min** | SAM measured at 4.25 s/image for 10 concept passes (`PHASE_0_LOOSE_ENDS.md` A9: `elapsed=604.1s`, 142 images); a single point prompt is one backbone forward plus a small decoder |
 | Overlay rendering | ~1 min | `overlay.py` exists |
-| **Total GPU slot** | **~15–20 min** | |
+| **Total GPU slot** | **~15–25 min** | dominated by the pointing row's uncertainty |
 | **Total disk** | **~11 GB** | leaves ~103 GB free on a volume already at 88% |
 
 The download is the only large cost and it is one-time. **The step-0 gate needs no download at
