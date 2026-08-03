@@ -445,6 +445,22 @@ const analysis = {
 			"Zero of the 2,582 cross-region role pairs in the 554-palette distilled corpus land in any disagreement band; the closest sits at OKLab 0.04664, about twice the largest bar. Whatever this round says, no current palette verdict changes either way. The round settles a rule, not a corpus behaviour.",
 	},
 
+	/**
+	 * The evidence a decision record citing this round must name in `fundedBy`, so that
+	 * `warehouse/cli.ts recheck --decisions` can tell if any of it later moves.
+	 */
+	fundedBy: {
+		batchCompleteRecordId: (() => {
+			const complete = records.find((record) => record.type === "batch-complete" && record.batchId === fixture.batchId)
+			return complete === undefined ? null : complete.id
+		})(),
+		oracleLabelRecordIds: [...answers.values()].map((answer) => answer.recordId).sort(),
+		inBandRecordIds: inBand.flatMap((item) => {
+			const answer = answerOf(item.itemId)
+			return answer === undefined ? [] : [answer.recordId]
+		}),
+	},
+
 	answerHygiene: {
 		recordsSkipped: skipped,
 		answeredItems: answers.size,
