@@ -46,6 +46,7 @@ import {
 	accentFloorJustOverEpsilon,
 	accentFloorJustUnderEpsilon,
 	accentInvisibleAtEqualLuminance,
+	accentInvisibleMidRamp,
 	accentJustOverVisibilityDistance,
 	accentJustUnderVisibilityDistance,
 	accentRescuedByColor,
@@ -59,6 +60,7 @@ import {
 	distinctnessInvisibleAccent,
 	distinctnessNearCollapse,
 	fixtureMetadata,
+	foregroundInvisibleMidRamp,
 	foregroundInvisibleOverStop,
 	HAND_WRITTEN_EPSILON_CONTRAST,
 	iterableSource,
@@ -693,7 +695,7 @@ test("I4 flags an exactly identical foreground/background pair", () => {
 })
 
 // ---------------------------------------------------------------------------------------------
-// I4 against the published stops — §2's third field for minTextContrast
+// I4 against the whole rendered ramp — the reviewer's ruling of 2026-08-03
 // ---------------------------------------------------------------------------------------------
 
 test("I4 holds the foreground to minTextContrast against every published stop", () => {
@@ -714,13 +716,25 @@ test("I4 holds the foreground to minTextContrast against every published stop", 
 
 	const violations = validateContrastFloors(foregroundInvisibleOverStop)
 	assert.equal(violations.length, 1, codes(violations).join(", "))
-	assert.equal(violations[0].code, "I4.stop-below-contrast-floor")
-	assert.deepEqual([...violations[0].subjects].sort(), ["gradient.stops[0]", "roles.foreground"])
 	assert.equal(violations[0].measured?.parameter, "minTextContrast")
 	assert.equal(violations[0].measured?.floorRawMagnitude, EPSILON_TEXT_RAW)
 	assert.equal(violations[0].measured?.visibilityDistance, undefined, "no colour rescue for text")
 
-	// And the whole palette is now invalid, which is the point of the fix.
+	// The reviewer's ruling shows up even on the fixture built for the per-stop clause: the worst
+	// point of this palette is NOT the `#000000` stop that motivated it. The ramp crosses the
+	// foreground's own luminance at t = 0.180176, rendering `#121212` — one 8-bit step away, |raw|
+	// 0.4145, nearly three times deeper than the stop the adversarial review found. Reporting the
+	// stop would have understated the defect by pointing at the second-worst colour on the ramp.
+	assert.equal(violations[0].code, "I4.ramp-below-contrast-floor")
+	assert.deepEqual([...violations[0].subjects].sort(), ["gradient.ramp@0.180176", "roles.foreground"])
+	assert.equal(violations[0].measured?.rampColor, "#121212")
+	assert.ok(
+		Math.abs(violations[0].measured!.rawAsNumber ?? (violations[0].measured!.raw as number)) <
+			Math.abs(apcaRawBetween(foreground, stop)),
+		"the ramp minimum must be strictly deeper than the worst published stop, or the ruling changed nothing here",
+	)
+
+	// And the whole palette is invalid, which is the point of both versions of the clause.
 	assert.equal(validatePalette(foregroundInvisibleOverStop).valid, false)
 })
 
@@ -753,11 +767,15 @@ test("a caller-raised minTextContrast reaches the stops too, and the stops alone
 	assert.equal(subjects.includes("gradient.stops[0]+roles.foreground"), false, subjects.join(", "))
 })
 
-test("the stop clause covers the foreground only — the accent's stop scope is deliberately still open", () => {
-	// §2 reads "minAccentContrast (accent vs same)", which arguably extends the accent to the stops as
-	// well. That was not implemented here: the adversarial review's finding is about `minTextContrast`,
-	// and widening the accent's scope would change which palettes validate on a question the reviewer
-	// has not been asked. This test states the current scope so that changing it has to be deliberate.
+test("the accent is held to the rendered ramp too — the reviewer overturned the foreground-only scope", () => {
+	// `[REVIEWED — reviewer's ruling, 2026-08-03]`: "the accent's minimum contrast must be checked
+	// against gradient backgrounds like the foreground's is".
+	//
+	// This test previously pinned the OPPOSITE and said so: "today the accent is not held to the
+	// stops — open reviewer item". `PHASE_0_DECISIONS.md` §2 recorded the same restriction and named
+	// this pin as what enforced it. The reviewer has now answered the open question, so the pin flips
+	// rather than being deleted — the palette below is the one the old test used, unchanged, and the
+	// assertion on it is inverted.
 	const palette = makePalette({
 		background: "#101820",
 		surface: "#1e2a38",
@@ -767,14 +785,68 @@ test("the stop clause covers the foreground only — the accent's stop scope is 
 	})
 	const accentOverStop = Math.abs(apcaRawBetween(palette.roles.accent, palette.gradient!.stops[0].color))
 	assert.ok(accentOverStop < EPSILON_ACCENT_RAW, "the accent is at zero luminance contrast over stop 0")
-	assert.deepEqual(validateDistinctness(palette), [], "and invariant 3 does not catch it either")
+	assert.ok(
+		colorDistance(palette.roles.accent, palette.gradient!.stops[0].color) < ACCENT_VISIBILITY_COLOR_DISTANCE,
+		"and too close in OKLab for chroma to rescue it — both dimensions must fail, or this proves nothing",
+	)
+	assert.deepEqual(validateDistinctness(palette), [], "invariant 3 does not catch it either")
 
 	const violations = validateContrastFloors(palette)
-	assert.deepEqual(
-		violations.map((entry) => entry.code),
-		[],
-		"today the accent is not held to the stops — open reviewer item, PHASE_0_LOOSE_ENDS",
-	)
+	assert.deepEqual(violations.map((entry) => entry.code), ["I4.stop-below-contrast-floor"])
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.equal(validatePalette(palette).valid, false)
+})
+
+test("a foreground clean at every stop and invisible between them now fails", () => {
+	// The reviewer's ruling, as a palette a per-stop check cannot see. See `foregroundInvisibleMidRamp`.
+	const foreground = foregroundInvisibleMidRamp.roles.foreground
+	for (const stop of foregroundInvisibleMidRamp.gradient!.stops) {
+		assert.ok(
+			Math.abs(apcaRawBetween(foreground, stop.color)) > EPSILON_TEXT_RAW * 10,
+			`stop ${stop.color.hex} must clear the floor comfortably, or the fixture is not testing the ramp`,
+		)
+	}
+	// Nothing else objects: the published colours are distinct and the schema is clean.
+	assert.deepEqual(validateDistinctness(foregroundInvisibleMidRamp), [])
+	assert.deepEqual(validateSchema(foregroundInvisibleMidRamp), [])
+
+	const violations = validateContrastFloors(foregroundInvisibleMidRamp)
+	assert.deepEqual(violations.map((entry) => entry.code), ["I4.ramp-below-contrast-floor"])
+	assert.equal(violations[0].measured?.parameter, "minTextContrast")
+	assert.equal(violations[0].measured?.rampColor, "#818181")
+	assert.ok((violations[0].measured?.rampPosition as number) > 0 && (violations[0].measured?.rampPosition as number) < 1)
+	assert.equal(validatePalette(foregroundInvisibleMidRamp).valid, false)
+})
+
+test("an accent clean at every stop and invisible between them now fails, on both its dimensions at once", () => {
+	// See `accentInvisibleMidRamp`. The accent's floor is a conjunction, so the fixture has to fail
+	// luminance AND colour at the SAME ramp point — a hue-matched ramp, not just a luminance sweep.
+	const accent = accentInvisibleMidRamp.roles.accent
+	for (const stop of accentInvisibleMidRamp.gradient!.stops) {
+		assert.ok(
+			Math.abs(apcaRawBetween(accent, stop.color)) > EPSILON_ACCENT_RAW * 5,
+			`stop ${stop.color.hex} must clear the floor, or the fixture is not testing the ramp`,
+		)
+	}
+	assert.deepEqual(validateDistinctness(accentInvisibleMidRamp), [])
+	assert.deepEqual(validateSchema(accentInvisibleMidRamp), [])
+
+	const violations = validateContrastFloors(accentInvisibleMidRamp)
+	assert.deepEqual(violations.map((entry) => entry.code), ["I4.ramp-below-contrast-floor"])
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	// Both dimensions, measured at the one point.
+	assert.ok(Math.abs(violations[0].measured!.raw as number) < EPSILON_ACCENT_RAW)
+	assert.ok((violations[0].measured!.colorDistance as number) < ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.equal(validatePalette(accentInvisibleMidRamp).valid, false)
+})
+
+test("the ramp clause leaves a legible foreground and a visible accent alone on a real gradient", () => {
+	// The enforcement must not cost the valid fixtures anything — the whole-ramp minimum, not just
+	// the stops, must clear the floor on `validGradient` for both roles.
+	assert.deepEqual(validateContrastFloors(validGradient), [])
+	assert.deepEqual(validatePalette(validGradient).violations, [])
 })
 
 // ---------------------------------------------------------------------------------------------

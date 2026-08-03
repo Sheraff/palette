@@ -10,6 +10,7 @@
  * verdict about a rendered ramp, so the ramp is produced here, server-side, and the browser only
  * pastes the resulting CSS string.
  */
+import { RAMP_INTERPOLATION_SPACE } from "../contract/ramp.ts"
 import type { PaletteSnapshot } from "./types.ts"
 
 /** The gradient as the warehouse stores it: stops carry `color` and `position`. */
@@ -31,8 +32,20 @@ export const GRADIENT_DISPLAY_RESERVE_MULTI_STOP = 0.10
 /** The gradient angle the consumer renders, whatever geometry detection used. REVIEW_UI.md §3. */
 export const GRADIENT_DISPLAY_ANGLE_DEGREES = 135
 
-/** The interpolation space of the rendered ramp. Same space as all other palette math. */
-export const GRADIENT_DISPLAY_INTERPOLATION = "oklab" as const
+/**
+ * The interpolation space of the rendered ramp. Same space as all other palette math.
+ *
+ * `[REVIEWED — reviewer's own statement, 2026-08-03]`: *"minimum contrast over the entire rendered
+ * ramp, sampled in the interpolation space the player actually renders — this space is OKLab."*
+ *
+ * **Re-exported from the contract rather than spelled again here**, as of 2026-08-03. Invariant 4
+ * now minimises contrast over this ramp, and it has to sample the space the browser is actually told
+ * to use: two independent spellings of "oklab" would be two things that could drift, and a drift
+ * would mean the validator measuring a ramp nobody renders. The hint is also load-bearing in the CSS
+ * — without `in <space>` the browser interpolates in sRGB, which is a materially different ramp (up
+ * to 0.153 OKLab and 20.5 raw APCA units apart mid-segment; see `contract-ramp.test.ts`).
+ */
+export const GRADIENT_DISPLAY_INTERPOLATION = RAMP_INTERPOLATION_SPACE
 
 /**
  * Decimal places every stop position is canonicalized to, at push time and on the way out.

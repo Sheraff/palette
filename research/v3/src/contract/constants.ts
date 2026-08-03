@@ -367,3 +367,67 @@ export const HEX_COLOR_PATTERN = /^#[0-9a-f]{6}$/
  */
 export const POSITION_MIN = 0
 export const POSITION_MAX = 1
+
+/**
+ * How many uniform samples of the rendered ramp invariant 4 evaluates **per segment** between
+ * consecutive published stops, in the coarse pass.
+ *
+ * `[MEASURED — tests/contract-ramp.test.ts, 2026-08-03]`, and the measurement is the provenance: the
+ * test re-derives every number below and fails if any of them stops holding.
+ *
+ * The reviewer's whole-ramp ruling turns a floor check into a minimisation, and a minimisation by
+ * sampling owes an answer to "what could you have stepped over?". There are two ways to miss, and
+ * they have different answers.
+ *
+ * **1. Stepping clean over a below-floor excursion.** This is the one that would matter — a ramp that
+ * dips under the floor between two samples and is never seen to. It cannot happen, and the argument
+ * is a **per-step reach** bound rather than a slope: the rendered ramp is 8-bit, so `|raw|` along it
+ * is a step function and an instantaneous derivative measures the framebuffer, not the function. What
+ * matters is how far `|raw|` can move between two adjacent samples. That splits in two, because
+ * APCA's polarity flip is a genuine discontinuity:
+ *
+ * - *The ramp crosses the subject in luminance.* APCA's branch changes and `raw` changes sign. Both
+ *   sides of the flip are small — the two branches straddle the same-colour residue, bounded by
+ *   `APCA_RAW_IDENTICAL_CEILING` = 1.98152. Measured, the better of the two samples adjacent to any
+ *   flip reads at most **1.21527** raw units, which is below the smallest floor the contract can
+ *   express. So a luminance crossing is **always** caught, however narrow it is in `t`. This is the
+ *   case that produces the deepest violations, and it needs no density argument at all.
+ * - *It does not cross.* Then `|raw|` moves smoothly, by at most **0.69511** raw units between
+ *   adjacent samples at this density. So if the true minimum is `m`, the nearest sample reads at most
+ *   `m + 0.69511`, and **every true minimum below `F − 0.69511` is certainly seen** at floor `F` — at
+ *   the smallest floor, everything below 1.805.
+ *
+ * Between them the two cases cover every way a ramp can approach a floor. The empirical half agrees:
+ * 0 verdict disagreements against a 16× denser reference over 120 random ramps × every floor a caller
+ * can request (Lc 2.5 to 108.0 — 212 floors).
+ *
+ * **2. Overstating the depth of a minimum.** `|raw|`'s true minimum sits in whichever 8-bit
+ * quantisation cell comes closest to the subject's luminance, and a cell can be narrower than a
+ * sampling step. This is a real error and it is why `RAMP_REFINEMENT_SAMPLES` exists. After
+ * refinement the measured worst overstatement is **≤ 0.05 raw units wherever the true minimum is at
+ * or above 1 raw unit**. Below that it stays larger — but a minimum under 1 raw unit is under *every*
+ * floor the contract can express, so the verdict is identical and only the quoted number moves.
+ *
+ * 2048 is the smallest power of two clearing (1) with room to spare; a 4-stop ramp costs 6145 coarse
+ * samples and roughly 3 ms, so the density is not paid for by anything that matters.
+ */
+export const RAMP_SAMPLES_PER_SEGMENT = 2048
+
+/**
+ * How many extra samples the ramp minimisation spends inside the one coarse step either side of the
+ * coarse minimum.
+ *
+ * `[MEASURED — tests/contract-ramp.test.ts, 2026-08-03]`. See failure mode 2 in
+ * `RAMP_SAMPLES_PER_SEGMENT`: uniform sampling can step over a narrow 8-bit quantisation cell and
+ * overstate the minimum by up to **0.406 raw units** at the coarse density alone, which is 16% of the
+ * ε floor and too much to quote in a violation. Rescanning the coarse minimum's neighbourhood puts
+ * the effective sampling rate where the answer is at `2048 × 4096 / 2 ≈ 4.2 M` per segment and cuts
+ * the overstatement to **≤ 0.05** raw units over the whole verdict-relevant range (0.0211 on the
+ * seeded sweep the test runs; the assertion carries the band rather than the point estimate).
+ *
+ * It does **not** need to make the number exact in the deep basins (true minimum < 1 raw unit), where
+ * a broad flat bottom can put the closest cell outside the refined neighbourhood and a few tenths of
+ * a raw unit remain. Nothing reads that difference: a minimum that low is below every floor the contract can
+ * express, so the violation fires either way and the reported figure is already "invisible".
+ */
+export const RAMP_REFINEMENT_SAMPLES = 4096

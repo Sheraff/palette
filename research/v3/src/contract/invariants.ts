@@ -41,6 +41,7 @@ import {
 	ROLE_NAMES,
 	SOURCE_POPULATION_FLOOR,
 } from "./constants.ts"
+import { firstInvisibleAccentOnRamp, minRawContrastOverRamp, rampPath } from "./ramp.ts"
 import type {
 	ContrastParameters,
 	Palette,
@@ -621,35 +622,46 @@ const CONTRAST_FLOOR_PAIRS = [
 ] as const
 
 /**
- * The foreground against every **published gradient stop**, under `minTextContrast`.
+ * The foreground **and the accent** against the whole **rendered gradient ramp**, each under its own
+ * parameter.
  *
- * `[REVIEWED]` — `PHASE_0_DECISIONS.md` §2 defines the parameter as "`minTextContrast` (foreground vs
- * background, surface, **and every published stop**)". A stop is a discrete published colour, so a
- * pair contrast against it is exactly as well-defined as against `surface`; the same floor, the same
- * epsilon, and no colour rescue, because text is luminance-driven.
+ * `[REVIEWED — reviewer's ruling, 2026-08-03]`, verbatim on both counts: the accent's minimum
+ * contrast must be checked against gradient backgrounds the way the foreground's is, and *"it's not
+ * 'each stop' by the way, because the contrast issue could happen somewhere in the middle of 2 points
+ * too."* Both floors hold over the entire ramp, not at the stop points.
  *
- * **Added 2026-08-03, and it closed a real hole.** Until then the parameter's stop scope was enforced
- * nowhere, and the adversarial review constructed a palette that published clean with its text
- * invisible against half its own gradient (`reviews/phase-0-adversarial/contract.md` finding 2):
- * foreground `#111111` over a `#000000` stop — |raw APCA| 1.17, Lc 0, and 0.178 apart in OKLab, which
- * is nineteen same-colour bars, so invariant 3 is legitimately content. Same luminance, different
- * colour is the one thing invariant 4 exists to forbid, and at the stops it was falling through both.
+ * `PHASE_0_DECISIONS.md` §2 defines `minTextContrast` as "foreground vs background, surface, **and
+ * every published stop**" and `minAccentContrast` as "accent vs same". The ruling reads "and every
+ * published stop" as naming the gradient, not as naming four colours: a stop is a point on a
+ * continuum the viewer sees all of, and §2 pins the preview renderer precisely because "gradient
+ * verdicts are verdicts about a rendered ramp".
  *
- * **This is the stops, not the ramp.** `PHASE_0_LOOSE_ENDS.md` B15 parks the gradient module's
- * *indistinct fraction* — the length of the interpolated ramp below the bar — and that stays parked:
- * along the ramp's interior the quantity is a fraction with a floor-plus-max-fraction shape that is
- * still open. Nothing here computes anything about the interior. It checks the discrete colours the
- * palette actually publishes.
+ * ## What this replaced, and why the codes are what they are
  *
- * The violations carry their own code so the new clause is countable and demotable on its own, per
- * §4's rule that an invariant that ever blocks a palette the reviewer endorses is demoted.
+ * The first version of this clause, added earlier the same day, checked the foreground against each
+ * published stop as a discrete pair. It closed a real hole — the adversarial review had constructed
+ * a palette publishing clean with its text invisible against half its own gradient
+ * (`reviews/phase-0-adversarial/contract.md` finding 2: foreground `#111111` over a `#000000` stop,
+ * |raw APCA| 1.17, Lc 0, 0.178 apart in OKLab, so invariant 3 was legitimately content) — but it
+ * checked the corners of a picture and called it the picture, and it left the accent out entirely.
+ *
+ * The stops are points *on* the ramp, so the whole-ramp minimum is a strict superset of what the
+ * per-stop check saw: nothing that used to be caught can now escape. Where the minimum lands on a
+ * published stop the violation still carries `I4.stop-below-contrast-floor` and names that stop,
+ * which keeps the existing census countable; where it lands between stops it carries
+ * `I4.ramp-below-contrast-floor` and names the position. The code therefore says *where*, and a
+ * reader of the census can tell the new cases from the old ones.
+ *
+ * One violation is reported per role rather than one per failing stop: the quantity being enforced is
+ * a minimum over the ramp, and a minimum has one location. The message quotes it.
+ *
+ * `PHASE_0_LOOSE_ENDS.md` B15's *indistinct fraction* — how much of the ramp sits below the bar — is
+ * a different quantity and stays parked. Nothing here measures a length; it measures an extremum.
  */
-const FOREGROUND_STOP_FLOOR = {
-	text: "foreground",
-	floor: "minTextContrast",
-	colorRescue: false,
-	code: "I4.stop-below-contrast-floor",
-} as const
+const RAMP_FLOOR_ROLES = [
+	{ role: "foreground", floor: "minTextContrast", colorRescue: false },
+	{ role: "accent", floor: "minAccentContrast", colorRescue: true },
+] as const
 
 /**
  * **Invariant 4.** No flat pair at exact-zero luminance contrast.
@@ -723,26 +735,6 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 		})
 	}
 
-	// §2's third field for `minTextContrast`: every published stop. Same floor, same epsilon, no
-	// colour rescue. See `FOREGROUND_STOP_FLOOR` for why this is the stops and not the ramp.
-	const stops = palette?.gradient?.stops
-	const foregroundColor = palette?.roles?.foreground
-	if (Array.isArray(stops) && isRgb8(foregroundColor?.rgb)) {
-		stops.forEach((stop, index) => {
-			const field = stop?.color as PaletteColor | undefined
-			if (!isRgb8(field?.rgb)) return // invariant 1's problem
-			pairs.push({
-				textPath: `roles.${FOREGROUND_STOP_FLOOR.text}`,
-				text: foregroundColor,
-				fieldPath: `gradient.stops[${index}]`,
-				field,
-				floor: FOREGROUND_STOP_FLOOR.floor,
-				colorRescue: FOREGROUND_STOP_FLOOR.colorRescue,
-				code: FOREGROUND_STOP_FLOOR.code,
-			})
-		})
-	}
-
 	for (const pair of pairs) {
 		const { text, field } = pair
 
@@ -807,6 +799,83 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 				...(rescueAvailable ? { visibilityDistance: ACCENT_VISIBILITY_COLOR_DISTANCE } : {}),
 			},
 		))
+	}
+
+	// --- the whole rendered ramp, for the foreground and the accent alike ---
+	// See `RAMP_FLOOR_ROLES`. Skipped entirely if any stop is malformed: interpolating through a
+	// colour invariant 1 has already condemned would manufacture a field nothing renders.
+	const stops = palette?.gradient?.stops
+	const stopsUsable = Array.isArray(stops) && stops.length >= 2 &&
+		stops.every((stop) =>
+			isRgb8(stop?.color?.rgb) && typeof stop?.position === "number" && Number.isFinite(stop.position)
+		)
+
+	if (stopsUsable) {
+		for (const entry of RAMP_FLOOR_ROLES) {
+			if (entry.role === "accent" && accentIsForeground) continue
+			const subject = palette?.roles?.[entry.role]
+			if (!isRgb8(subject?.rgb)) continue // invariant 1's problem
+
+			const subjectPath = `roles.${entry.role}`
+			const epsilon = entry.floor === "minTextContrast" ? EPSILON_TEXT_RAW : EPSILON_ACCENT_RAW
+			const declared = palette?.contrast?.[entry.floor]?.effectiveRawMagnitude
+			const declaredUsable = typeof declared === "number" && Number.isFinite(declared)
+			const floor = declaredUsable ? Math.max(declared, epsilon) : epsilon
+
+			// The colour rescue is available on the same terms as for a flat field: the accent only,
+			// and only at the epsilon. Where it applies, both dimensions are evaluated **at the same
+			// ramp point** — see `firstInvisibleAccentOnRamp` for why a conjunction cannot be
+			// whole-ramped by minimising its two halves separately.
+			const rescueAvailable = entry.colorRescue && floor <= epsilon
+			const extremum = rescueAvailable
+				? firstInvisibleAccentOnRamp(subject, stops, floor, ACCENT_VISIBILITY_COLOR_DISTANCE)
+				: minRawContrastOverRamp(subject, stops)
+
+			if (extremum === null) continue
+			if (!Number.isFinite(extremum.raw)) {
+				violations.push(violation(
+					"I4",
+					"I4.contrast-not-computable",
+					`raw APCA between ${subjectPath} and the rendered ramp at ${extremum.position.toFixed(6)} is not a finite number`,
+					[subjectPath, rampPath(extremum)],
+				))
+				continue
+			}
+			// `firstInvisibleAccentOnRamp` returns only points that already fail both dimensions, so
+			// this re-test is the one-dimensional path's — and it is a no-op for the rescued path.
+			if (!rescueAvailable && Math.abs(extremum.raw) >= floor) continue
+
+			const fieldPath = rampPath(extremum)
+			const where = extremum.stopIndex === null
+				? `the rendered ramp at t=${extremum.position.toFixed(6)}`
+				: `${fieldPath}`
+			violations.push(violation(
+				"I4",
+				extremum.stopIndex === null ? "I4.ramp-below-contrast-floor" : "I4.stop-below-contrast-floor",
+				rescueAvailable
+					? `${subjectPath} (${subject.hex}) over ${where} (${extremum.color.hex}) has |raw APCA| ${
+						Math.abs(extremum.raw).toFixed(4)
+					}, below the ${entry.floor} floor of ${floor}, and is only ${
+						extremum.distance.toFixed(5)
+					} away in OKLab — under the ${ACCENT_VISIBILITY_COLOR_DISTANCE} at which colour alone makes an accent visible`
+					: `${subjectPath} (${subject.hex}) over ${where} (${extremum.color.hex}) has |raw APCA| ${
+						Math.abs(extremum.raw).toFixed(4)
+					}, below the ${entry.floor} floor of ${floor} — this is the minimum over the entire rendered ramp, not a stop-point check`,
+				[subjectPath, fieldPath],
+				{
+					raw: extremum.raw,
+					floorRawMagnitude: floor,
+					parameter: entry.floor,
+					declaredRawMagnitude: declaredUsable ? declared : epsilon,
+					epsilon,
+					colorDistance: extremum.distance,
+					rampPosition: extremum.position,
+					rampColor: extremum.color.hex,
+					...(extremum.stopIndex === null ? {} : { stopIndex: extremum.stopIndex }),
+					...(rescueAvailable ? { visibilityDistance: ACCENT_VISIBILITY_COLOR_DISTANCE } : {}),
+				},
+			))
+		}
 	}
 
 	return violations

@@ -11,4 +11,5 @@
 export * from "./constants.ts"
 export * from "./types.ts"
 export * from "./color.ts"
+export * from "./ramp.ts"
 export * from "./invariants.ts"

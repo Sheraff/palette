@@ -466,6 +466,55 @@ export const foregroundInvisibleOverStop: Palette = makePalette({
 	stops: [["#000000", 0], ["#ffffff", 1]],
 })
 
+/**
+ * I4: a foreground that clears the floor at **every published stop** and vanishes **between** them.
+ *
+ * `#808080` over a `#303030` → `#d0d0d0` ramp. At the stops the foreground is comfortable — |raw APCA|
+ * 32.34 and 42.29, thirteen and seventeen times the epsilon — and a per-stop check reports nothing at
+ * all. Halfway along, at t ≈ 0.5332, the rendered ramp is `#818181`: one 8-bit step from the
+ * foreground, |raw APCA| 1.2153, invisible.
+ *
+ * This fixture is the reviewer's ruling of 2026-08-03 in one palette — *"it's not 'each stop' by the
+ * way, because the contrast issue could happen somewhere in the middle of 2 points too"* — and it is
+ * the case the first version of the stop clause could not see. Invariant 3 is again legitimately
+ * content: the foreground is 0.29 and 0.26 from the two stops, seventeen same-colour bars, so the
+ * *published colours* really are distinct. It is the colours between them that are not.
+ *
+ * Deliberately isolated to the foreground: the accent `#e0533a` crosses the same ramp in luminance but
+ * is 0.18 from it in OKLab at the crossing, so its chroma rescue holds and it reports nothing.
+ */
+export const foregroundInvisibleMidRamp: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#808080",
+	accent: "#e0533a",
+	stops: [["#303030", 0], ["#d0d0d0", 1]],
+})
+
+/**
+ * I4: an **accent** that clears the floor at every published stop and goes invisible between them.
+ *
+ * The accent half of the same ruling, and the half that had no enforcement path at all before
+ * 2026-08-03: `minAccentContrast` did not reach the gradient, by an explicit decision that the
+ * reviewer has now overturned.
+ *
+ * `#4a6b8a` over a `#16202c` → `#9fb6cc` ramp — a ramp of the accent's own hue, running from well
+ * below it to well above it. At the stops the accent is fine on luminance alone (|raw APCA| 24.59 and
+ * 37.51). At t ≈ 0.5234 the ramp renders `#596a7b`, where the accent is at |raw APCA| 0.7459 **and**
+ * 0.0286 away in OKLab — under the 0.07444 at which colour alone carries an accent. Both dimensions
+ * of the two-dimensional floor fail, at the same point on the ramp, which is what the accent clause
+ * requires and why a hue-matched ramp is needed to build this at all.
+ *
+ * Isolated to the accent: the foreground `#f2f5f7` bottoms out at |raw APCA| 41.33 over the same ramp.
+ */
+export const accentInvisibleMidRamp: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#4a6b8a",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
 // ---------------------------------------------------------------------------------------------
 // Threshold brackets — one LSB either side of each frozen number
 // ---------------------------------------------------------------------------------------------
