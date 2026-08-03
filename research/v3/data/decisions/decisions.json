@@ -606,6 +606,59 @@
     "research/v3/src/review-server/README.md"
    ],
    "scope": "all reviewer-facing handoffs from 2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-sam-concept-set-v2",
+   "ts": "2026-08-03T18:20:00Z",
+   "kind": "instrument",
+   "decision": "SAM concept set v2 (parental-advisory added; display-text and emblem as provenance-neutral tag names; mark_like group) is ratified by the reviewer's mask round: display-text 9/9 yes, emblem 6/6 yes, parental-advisory 9/10 (the one no from the unconfirmed slice, as designed). Residual-is-field 7y/7p/1n: the subtractive residual is a field-enriched prior, not a pure field extraction \u2014 consumers must treat it so.",
+   "fundedBy": [
+    "o-msddytom-2d06bc39",
+    "o-msddyvuu-c99496fa",
+    "o-msddyyb8-f52578c4",
+    "o-msddyzwe-b8d95426",
+    "o-msddz364-b10fbcbf",
+    "o-msddz5pl-cac56f3e",
+    "o-msddz6ln-21b5e931",
+    "o-msddz7cf-863f525a",
+    "o-msddz8bh-fafd42a7",
+    "o-msddzg81-b1c61d3c",
+    "o-msde1o9c-0352309d",
+    "o-msde1t62-cb4f16ba",
+    "o-msde1uje-1676939e",
+    "o-msde1xdd-5b9e8392",
+    "o-msde1yip-51f8560e",
+    "o-msde21s7-7a901011",
+    "o-msde238p-dd3b7db0",
+    "o-msde241o-9a3dabaa",
+    "o-msde2520-68b6e3ba",
+    "o-msde2fe8-b9fe48fe",
+    "o-msde2gga-962de2ab",
+    "o-msde2he2-2324622a",
+    "o-msde2i0g-30850eb8",
+    "o-msde2iml-0ece20d7",
+    "o-msde2jd0-b38cba3d",
+    "o-msde2w9a-ae168030",
+    "o-msde321m-eb1edd7b",
+    "o-msde3c1j-28dea4c4",
+    "o-msde3jrw-c0093931",
+    "o-msde3o9n-f94913c6",
+    "o-msde3xox-aff486e3",
+    "o-msde45o8-dd3bf519",
+    "o-msde4d8t-57e55280",
+    "o-msde4q3b-8e41465d",
+    "o-msde4u8s-ec0477fe",
+    "o-msde4vxv-5bd00287",
+    "o-msde512j-0a95ede1",
+    "o-msde53u0-276c15a6",
+    "o-msde56fa-e595dcfd",
+    "o-msde597h-99ef7eb7"
+   ],
+   "fundedByArtifacts": [
+    "research/v3/data/sam/VOCAB_PROBE_NOTES.md",
+    "research/v3/data/sam/mask-quality-2-sample.json"
+   ],
+   "scope": "SAM geometry stage, concept set v2 onward"
   }
  ]
 }
