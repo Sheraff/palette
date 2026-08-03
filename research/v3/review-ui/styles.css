@@ -756,6 +756,14 @@ summary {
 	letter-spacing: 0.02em;
 	max-width: 92ch;
 	line-height: 1.45;
+	/* The group-BCDE round's preamble is eight shared definition blocks, carried verbatim because the
+	 * reviewer must read the same definitions the model was given (PREMISE_NEXT.md §15.9). They are
+	 * separated by blank lines, and they are bounded here so that no amount of preamble can push the
+	 * artwork off a 100vh grid whose middle row is the whole judgement. A one-line preamble — every
+	 * earlier round — is unaffected by both rules. */
+	white-space: pre-line;
+	max-height: 26vh;
+	overflow-y: auto;
 }
 
 .oracle-preamble:empty {
@@ -813,6 +821,40 @@ summary {
 	grid-template-columns: 1.5em minmax(0, 14em) minmax(0, 1fr);
 	gap: 10px;
 	align-items: baseline;
+}
+
+/* A multi-select gains one column: the on/off mark. Without auto-advance there is nothing else on
+ * screen that says a keypress landed. */
+.oracle-map-multi {
+	grid-template-columns: 1.5em 2.5em minmax(0, 14em) minmax(0, 1fr);
+}
+
+.oracle-map-mark {
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	opacity: 0.45;
+}
+
+.oracle-map-multi.is-selected .oracle-map-mark,
+.oracle-map-multi.is-selected .oracle-map-label {
+	opacity: 1;
+	font-weight: 700;
+}
+
+.oracle-map-multi:not(.is-selected) .oracle-map-label,
+.oracle-map-multi:not(.is-selected) .oracle-map-gloss {
+	opacity: 0.6;
+}
+
+/* What a multi-select is about to record, and the key that records it. Empty on every other kind. */
+.oracle-pending {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	margin: 6px 0 0;
+}
+
+.oracle-pending:empty {
+	display: none;
 }
 
 .oracle-map-label {

@@ -1,7 +1,7 @@
 {
 	"stage": "smoke",
-	"at": "2026-08-02T21:19:56.884Z",
-	"model_load_seconds": 4.0,
+	"at": "2026-08-03T16:19:31.069Z",
+	"model_load_seconds": 4.4,
 	"images": [
 		"images/disney.avif",
 		"images/vvbrown.jpg",
@@ -10,56 +10,68 @@
 		"13/ab67616d0000b27300139c3eeb59e40dba08f5a1"
 	],
 	"variants": [
-		"group-a.v1/A",
-		"group-a.v1/B"
+		"group-bcde.v1/E",
+		"group-bcde.v1/F"
 	],
 	"prompt_hashes": {
-		"A": "b1e58c3af233b91e44cf3832c24eeadedd01792dcc8cd8c72a25c0fe22bbcbd8",
-		"B": "c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+		"E": "1cbd4894e8b2f118ebfe47557afbda309e62a5479b7278b130fa03a7612d7a1f",
+		"F": "3a50829af99684eb3b11642ad7df9c1e99d165df9a350033b28113583c3e6891"
 	},
 	"constrained_decoding": true,
 	"timing": {
 		"n": 10,
-		"mean_seconds": 11.898,
-		"median_seconds": 11.906,
-		"min_seconds": 8.645,
-		"max_seconds": 16.606,
-		"mean_generation_tokens": 44.3,
-		"mean_prompt_tokens": 824.2
+		"mean_seconds": 4.197,
+		"median_seconds": 4.167,
+		"min_seconds": 3.525,
+		"max_seconds": 5.016,
+		"mean_generation_tokens": 115.3,
+		"mean_prompt_tokens": 1786.7
 	},
 	"projection": {
 		"included_images": 142,
 		"variants": 2,
 		"total_inferences": 284,
 		"canary_inferences": 15,
-		"burst_estimate_seconds": 3557.5,
-		"burst_estimate_minutes": 59.3,
-		"sustained_estimate_minutes_at_65pct": 91.2,
+		"burst_estimate_seconds": 1254.8,
+		"burst_estimate_minutes": 20.9,
+		"sustained_estimate_minutes_at_65pct": 32.2,
 		"caveat": "A five-image smoke measures BURST, not sustained throughput. Pipeline \u00a710: a multi-hour laptop run throttles to roughly 60-70% of burst. Both numbers given."
 	},
 	"rows": [
 		{
 			"image_path": "images/disney.avif",
 			"image_sha256": "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b",
-			"variant": "A",
+			"variant": "E",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "multiple_distinct_fields",
-				"shading_geometry": "not_applicable",
-				"field_texture": "distinct_areas",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"medium": "typography_only",
+				"color_character": "limited_palette",
+				"grain_or_noise": "no",
+				"physical_media_scan": "no",
+				"overlays": [
+					"none"
+				],
+				"has_text": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "abstract_shape",
+				"subject_area_band": "over_60",
+				"has_signature_color": "yes",
+				"text_roles": [
+					"title_display",
+					"label_logo"
+				],
+				"text_dominance": "dominant_element",
+				"signature_carrier": "background"
 			},
-			"raw_text": "{\"ground\": \"multiple_distinct_fields\", \"shading\": \"not_applicable\", \"texture\": \"distinct_areas\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "fe30d7f78908ee524ea601582badeb367cb67eef284d7611b8f213e0cf5fbbca",
+			"raw_text": "{\"picture_kind\": \"typography_only\", \"colour_range\": \"limited_palette\", \"texture_noise\": \"no\", \"packaging_shot\": \"no\", \"stickers\": [\"none\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"abstract_shape\", \"subject_size\": \"over_60\", \"signature_colour\": \"yes\", \"lettering_kinds\": [\"title_display\", \"label_logo\"], \"lettering_weight\": \"dominant_element\", \"signature_source\": \"background\"}",
+			"raw_sha256": "c87a7134c953ffd9eac489457b3866c1c5961db08ef5e46317f78293d5d2aeae",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 753,
-			"generation_tokens": 44,
-			"wall_seconds": 16.606,
+			"prompt_tokens": 1750,
+			"generation_tokens": 110,
+			"wall_seconds": 5.016,
 			"source_long_edge_px": 483,
 			"processed_long_edge_px": 483,
 			"gradient_truth": false
@@ -67,25 +79,37 @@
 		{
 			"image_path": "images/disney.avif",
 			"image_sha256": "8aeb184764d9bdb5d8273bba8bffb4a1da2eaf44606330fa1f847a71fb01563b",
-			"variant": "B",
+			"variant": "F",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "multiple_distinct_fields",
-				"shading_geometry": "not_applicable",
-				"field_texture": "distinct_areas",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"has_text": "yes",
+				"text_roles": [
+					"title_display",
+					"label_logo"
+				],
+				"text_dominance": "dominant_element",
+				"overlays": [
+					"label_logo"
+				],
+				"physical_media_scan": "no",
+				"medium": "typography_only",
+				"color_character": "limited_palette",
+				"grain_or_noise": "no",
+				"has_dominant_subject": "single",
+				"subject_kind": "abstract_shape",
+				"subject_area_band": "over_60",
+				"has_signature_color": "no",
+				"signature_carrier": "not_applicable"
 			},
-			"raw_text": "{\"enclosure\": \"none\", \"texture\": \"distinct_areas\", \"background\": \"multiple_distinct_fields\", \"fade\": \"not_applicable\", \"certainty\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "d05bb6c7adf2abfc36fdf4b700488ca4a5309f4191aa724f43dfdad8a0fa56c4",
+			"raw_text": "{\"words\": \"yes\", \"word_kinds\": [\"title_display\", \"label_logo\"], \"word_prominence\": \"dominant_element\", \"added_marks\": [\"label_logo\"], \"packaging_photo\": \"no\", \"made_how\": \"typography_only\", \"colour_spread\": \"limited_palette\", \"speckle\": \"no\", \"main_thing\": \"single\", \"main_thing_kind\": \"abstract_shape\", \"main_thing_area\": \"over_60\", \"defining_colour\": \"no\", \"defining_colour_where\": \"not_applicable\"}",
+			"raw_sha256": "803a569e9a724083d144abe44ed754d9dc5eb011cf50690f7db267ead033f026",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 743,
-			"generation_tokens": 44,
-			"wall_seconds": 12.975,
+			"prompt_tokens": 1671,
+			"generation_tokens": 123,
+			"wall_seconds": 3.973,
 			"source_long_edge_px": 483,
 			"processed_long_edge_px": 483,
 			"gradient_truth": false
@@ -93,25 +117,37 @@
 		{
 			"image_path": "images/vvbrown.jpg",
 			"image_sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
-			"variant": "A",
+			"variant": "E",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "shaded_field",
-				"shading_geometry": "radial_or_vignette",
-				"field_texture": "smooth",
-				"enclosure": "thick_frame_or_bars",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"medium": "photograph",
+				"color_character": "duotone_or_tinted",
+				"grain_or_noise": "no",
+				"physical_media_scan": "no",
+				"overlays": [
+					"label_logo"
+				],
+				"has_text": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "person",
+				"subject_area_band": "25_60",
+				"has_signature_color": "yes",
+				"text_roles": [
+					"title_display",
+					"artist_name"
+				],
+				"text_dominance": "present_secondary",
+				"signature_carrier": "subject"
 			},
-			"raw_text": "{\"ground\": \"shaded_field\", \"shading\": \"radial_or_vignette\", \"texture\": \"smooth\", \"enclosure\": \"thick_frame_or_bars\", \"confidence\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "2446984b4929a9ac02b5460bfbc1596f84f3f72018acbec95f9772abd878df95",
+			"raw_text": "{\"picture_kind\": \"photograph\", \"colour_range\": \"duotone_or_tinted\", \"texture_noise\": \"no\", \"packaging_shot\": \"no\", \"stickers\": [\"label_logo\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"person\", \"subject_size\": \"25_60\", \"signature_colour\": \"yes\", \"lettering_kinds\": [\"title_display\", \"artist_name\"], \"lettering_weight\": \"present_secondary\", \"signature_source\": \"subject\"}",
+			"raw_sha256": "594234df30b47044cb16023644914c5a54b7e75b06c92467d4d80ccf3e08e3a1",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 928,
-			"generation_tokens": 50,
-			"wall_seconds": 14.376,
+			"prompt_tokens": 1925,
+			"generation_tokens": 114,
+			"wall_seconds": 4.163,
 			"source_long_edge_px": 1000,
 			"processed_long_edge_px": 640,
 			"gradient_truth": false
@@ -119,25 +155,37 @@
 		{
 			"image_path": "images/vvbrown.jpg",
 			"image_sha256": "06c5954c94eb50d02b71f5895503e1729c019e390e190b6f603f42ff25a282e0",
-			"variant": "B",
+			"variant": "F",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "flat_field",
-				"shading_geometry": "not_applicable",
-				"field_texture": "smooth",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"has_text": "yes",
+				"text_roles": [
+					"title_display",
+					"artist_name"
+				],
+				"text_dominance": "present_secondary",
+				"overlays": [
+					"label_logo"
+				],
+				"physical_media_scan": "no",
+				"medium": "photograph",
+				"color_character": "duotone_or_tinted",
+				"grain_or_noise": "no",
+				"has_dominant_subject": "single",
+				"subject_kind": "person",
+				"subject_area_band": "over_60",
+				"has_signature_color": "yes",
+				"signature_carrier": "subject"
 			},
-			"raw_text": "{\"enclosure\": \"none\", \"texture\": \"smooth\", \"background\": \"flat_field\", \"fade\": \"not_applicable\", \"certainty\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "bfa2a2558ab4bf57de2dbbbcc948ac8f8cd501e0ecbd19bb58b9441cdecccbe7",
+			"raw_text": "{\"words\": \"yes\", \"word_kinds\": [\"title_display\", \"artist_name\"], \"word_prominence\": \"present_secondary\", \"added_marks\": [\"label_logo\"], \"packaging_photo\": \"no\", \"made_how\": \"photograph\", \"colour_spread\": \"duotone_or_tinted\", \"speckle\": \"no\", \"main_thing\": \"single\", \"main_thing_kind\": \"person\", \"main_thing_area\": \"over_60\", \"defining_colour\": \"yes\", \"defining_colour_where\": \"subject\"}",
+			"raw_sha256": "253cc1c6f706d8528b4bb2e58b819bbcc0eb6dd55fc718716c886b19fe0d666c",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 918,
-			"generation_tokens": 41,
-			"wall_seconds": 13.358,
+			"prompt_tokens": 1846,
+			"generation_tokens": 123,
+			"wall_seconds": 4.17,
 			"source_long_edge_px": 1000,
 			"processed_long_edge_px": 640,
 			"gradient_truth": false
@@ -145,25 +193,36 @@
 		{
 			"image_path": "0c/ab67616d00001e02000c3523d80259b49a06ee45",
 			"image_sha256": "126151bdc5d5466902733a8006058b1613dd666928d2e73502df9614e630c1b7",
-			"variant": "A",
+			"variant": "E",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "full_scene",
-				"shading_geometry": "not_applicable",
-				"field_texture": "smooth",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"medium": "render_3d",
+				"color_character": "full_spectrum",
+				"grain_or_noise": "no",
+				"physical_media_scan": "no",
+				"overlays": [
+					"watermark"
+				],
+				"has_text": "no",
+				"has_dominant_subject": "multiple",
+				"subject_kind": "abstract_shape",
+				"subject_area_band": "over_60",
+				"has_signature_color": "yes",
+				"text_roles": [
+					"not_applicable"
+				],
+				"text_dominance": "not_applicable",
+				"signature_carrier": "background"
 			},
-			"raw_text": "{\"ground\": \"full_scene\", \"shading\": \"not_applicable\", \"texture\": \"smooth\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "86ff4f4c11b3b32caffab5fbef8a0aeca57cfca43041058535f5e575bdd6ddef",
+			"raw_text": "{\"picture_kind\": \"render_3d\", \"colour_range\": \"full_spectrum\", \"texture_noise\": \"no\", \"packaging_shot\": \"no\", \"stickers\": [\"watermark\"], \"lettering\": \"no\", \"subject_count\": \"multiple\", \"subject_is\": \"abstract_shape\", \"subject_size\": \"over_60\", \"signature_colour\": \"yes\", \"lettering_kinds\": [\"not_applicable\"], \"lettering_weight\": \"not_applicable\", \"signature_source\": \"background\"}",
+			"raw_sha256": "8960a295ebdf42a59a96da63d87280acdc4d047e52ef3c0aaa1b03fd73de65d9",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 609,
-			"generation_tokens": 41,
-			"wall_seconds": 10.837,
+			"prompt_tokens": 1606,
+			"generation_tokens": 109,
+			"wall_seconds": 3.525,
 			"source_long_edge_px": 300,
 			"processed_long_edge_px": 300,
 			"gradient_truth": true
@@ -171,25 +230,36 @@
 		{
 			"image_path": "0c/ab67616d00001e02000c3523d80259b49a06ee45",
 			"image_sha256": "126151bdc5d5466902733a8006058b1613dd666928d2e73502df9614e630c1b7",
-			"variant": "B",
+			"variant": "F",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "full_scene",
-				"shading_geometry": "not_applicable",
-				"field_texture": "smooth",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"has_text": "no",
+				"text_roles": [
+					"not_applicable"
+				],
+				"text_dominance": "not_applicable",
+				"overlays": [
+					"watermark"
+				],
+				"physical_media_scan": "no",
+				"medium": "render_3d",
+				"color_character": "full_spectrum",
+				"grain_or_noise": "no",
+				"has_dominant_subject": "single",
+				"subject_kind": "abstract_shape",
+				"subject_area_band": "over_60",
+				"has_signature_color": "yes",
+				"signature_carrier": "background"
 			},
-			"raw_text": "{\"enclosure\": \"none\", \"texture\": \"smooth\", \"background\": \"full_scene\", \"fade\": \"not_applicable\", \"certainty\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "053def3048e049572f043f250962fe1a2eb8e21ff10058e015bf9b4302c90009",
+			"raw_text": "{\"words\": \"no\", \"word_kinds\": [\"not_applicable\"], \"word_prominence\": \"not_applicable\", \"added_marks\": [\"watermark\"], \"packaging_photo\": \"no\", \"made_how\": \"render_3d\", \"colour_spread\": \"full_spectrum\", \"speckle\": \"no\", \"main_thing\": \"single\", \"main_thing_kind\": \"abstract_shape\", \"main_thing_area\": \"over_60\", \"defining_colour\": \"yes\", \"defining_colour_where\": \"background\"}",
+			"raw_sha256": "0cdb8a9b907c3dd9f14cb9eabc8b1ed894e1264e5771c1cd99a2249bd80da311",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 599,
-			"generation_tokens": 41,
-			"wall_seconds": 8.645,
+			"prompt_tokens": 1527,
+			"generation_tokens": 119,
+			"wall_seconds": 3.624,
 			"source_long_edge_px": 300,
 			"processed_long_edge_px": 300,
 			"gradient_truth": true
@@ -197,25 +267,36 @@
 		{
 			"image_path": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
 			"image_sha256": "0d149b97cfa25534d33918f39e3e5bbbaadabac8f3d5d8a7e456ebc695751fa3",
-			"variant": "A",
+			"variant": "E",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "shaded_field",
-				"shading_geometry": "radial_or_vignette",
-				"field_texture": "one_textured_material",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"medium": "photograph",
+				"color_character": "monochrome",
+				"grain_or_noise": "yes",
+				"physical_media_scan": "no",
+				"overlays": [
+					"watermark"
+				],
+				"has_text": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "vehicle",
+				"subject_area_band": "25_60",
+				"has_signature_color": "no",
+				"text_roles": [
+					"title_display"
+				],
+				"text_dominance": "dominant_element",
+				"signature_carrier": "not_applicable"
 			},
-			"raw_text": "{\"ground\": \"shaded_field\", \"shading\": \"radial_or_vignette\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "ea39a8f2288892acc7c4ec65cc01af73c7585d090e504e848fd0f86f8f2d96d4",
+			"raw_text": "{\"picture_kind\": \"photograph\", \"colour_range\": \"monochrome\", \"texture_noise\": \"yes\", \"packaging_shot\": \"no\", \"stickers\": [\"watermark\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"vehicle\", \"subject_size\": \"25_60\", \"signature_colour\": \"no\", \"lettering_kinds\": [\"title_display\"], \"lettering_weight\": \"dominant_element\", \"signature_source\": \"not_applicable\"}",
+			"raw_sha256": "1e16325bad53bb27850a61f067d7c0b4f88da1df31bfcf4421cfc83f5be7a137",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 928,
-			"generation_tokens": 48,
-			"wall_seconds": 13.048,
+			"prompt_tokens": 1925,
+			"generation_tokens": 108,
+			"wall_seconds": 4.099,
 			"source_long_edge_px": 640,
 			"processed_long_edge_px": 640,
 			"gradient_truth": true
@@ -223,25 +304,36 @@
 		{
 			"image_path": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
 			"image_sha256": "0d149b97cfa25534d33918f39e3e5bbbaadabac8f3d5d8a7e456ebc695751fa3",
-			"variant": "B",
+			"variant": "F",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "shaded_field",
-				"shading_geometry": "radial_or_vignette",
-				"field_texture": "one_textured_material",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"has_text": "yes",
+				"text_roles": [
+					"title_display"
+				],
+				"text_dominance": "dominant_element",
+				"overlays": [
+					"watermark"
+				],
+				"physical_media_scan": "no",
+				"medium": "photograph",
+				"color_character": "monochrome",
+				"grain_or_noise": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "vehicle",
+				"subject_area_band": "25_60",
+				"has_signature_color": "no",
+				"signature_carrier": "not_applicable"
 			},
-			"raw_text": "{\"enclosure\": \"none\", \"texture\": \"one_textured_material\", \"background\": \"shaded_field\", \"fade\": \"radial_or_vignette\", \"certainty\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "694c7f5b7c4579325ee9870d289c89786a91cb6cbb749765b564ce72f1ba2d6e",
+			"raw_text": "{\"words\": \"yes\", \"word_kinds\": [\"title_display\"], \"word_prominence\": \"dominant_element\", \"added_marks\": [\"watermark\"], \"packaging_photo\": \"no\", \"made_how\": \"photograph\", \"colour_spread\": \"monochrome\", \"speckle\": \"yes\", \"main_thing\": \"single\", \"main_thing_kind\": \"vehicle\", \"main_thing_area\": \"25_60\", \"defining_colour\": \"no\", \"defining_colour_where\": \"not_applicable\"}",
+			"raw_sha256": "ad5655c7a6f8c91be1a4eec7b820b2128083712f02189581cb0af9e1ed71d5e5",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 918,
-			"generation_tokens": 48,
-			"wall_seconds": 10.137,
+			"prompt_tokens": 1846,
+			"generation_tokens": 118,
+			"wall_seconds": 4.307,
 			"source_long_edge_px": 640,
 			"processed_long_edge_px": 640,
 			"gradient_truth": true
@@ -249,25 +341,37 @@
 		{
 			"image_path": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
 			"image_sha256": "0298c3007670023f8c34c0264cfc54dbf617b7c4bbf906e4580f49ee8b478f7d",
-			"variant": "A",
+			"variant": "E",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "full_scene",
-				"shading_geometry": "not_applicable",
-				"field_texture": "one_textured_material",
-				"enclosure": "none",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"medium": "photograph",
+				"color_character": "monochrome",
+				"grain_or_noise": "yes",
+				"physical_media_scan": "no",
+				"overlays": [
+					"none"
+				],
+				"has_text": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "person",
+				"subject_area_band": "under_25",
+				"has_signature_color": "no",
+				"text_roles": [
+					"artist_name",
+					"title_display"
+				],
+				"text_dominance": "present_secondary",
+				"signature_carrier": "not_applicable"
 			},
-			"raw_text": "{\"ground\": \"full_scene\", \"shading\": \"not_applicable\", \"texture\": \"one_textured_material\", \"enclosure\": \"none\", \"confidence\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "27085f1bf56b92d6d72120b1770ccbc275758a3b79c13573aac0661a59b79c6b",
+			"raw_text": "{\"picture_kind\": \"photograph\", \"colour_range\": \"monochrome\", \"texture_noise\": \"yes\", \"packaging_shot\": \"no\", \"stickers\": [\"none\"], \"lettering\": \"yes\", \"subject_count\": \"single\", \"subject_is\": \"person\", \"subject_size\": \"under_25\", \"signature_colour\": \"no\", \"lettering_kinds\": [\"artist_name\", \"title_display\"], \"lettering_weight\": \"present_secondary\", \"signature_source\": \"not_applicable\"}",
+			"raw_sha256": "2b00fa8272ad13412fcd58866b9a617c57a777b5fcfcd877a293ca96e8643770",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 928,
-			"generation_tokens": 44,
-			"wall_seconds": 9.722,
+			"prompt_tokens": 1925,
+			"generation_tokens": 109,
+			"wall_seconds": 4.355,
 			"source_long_edge_px": 640,
 			"processed_long_edge_px": 640,
 			"gradient_truth": false
@@ -275,25 +379,37 @@
 		{
 			"image_path": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
 			"image_sha256": "0298c3007670023f8c34c0264cfc54dbf617b7c4bbf906e4580f49ee8b478f7d",
-			"variant": "B",
+			"variant": "F",
 			"status": "ok",
 			"parsed": {
-				"ground_type": "flat_field",
-				"shading_geometry": "not_applicable",
-				"field_texture": "smooth",
-				"enclosure": "thin_border",
-				"confidence": "high",
-				"ambiguity_note": ""
+				"has_text": "yes",
+				"text_roles": [
+					"artist_name",
+					"title_display"
+				],
+				"text_dominance": "present_secondary",
+				"overlays": [
+					"none"
+				],
+				"physical_media_scan": "no",
+				"medium": "photograph",
+				"color_character": "monochrome",
+				"grain_or_noise": "yes",
+				"has_dominant_subject": "single",
+				"subject_kind": "person",
+				"subject_area_band": "25_60",
+				"has_signature_color": "no",
+				"signature_carrier": "not_applicable"
 			},
-			"raw_text": "{\"enclosure\": \"thin_border\", \"texture\": \"smooth\", \"background\": \"flat_field\", \"fade\": \"not_applicable\", \"certainty\": \"high\", \"note\": \"\"}",
-			"raw_sha256": "f39797435dd188f941dd8b51cf95b898b5833880e3b923347f759d62bd4fe379",
+			"raw_text": "{\"words\": \"yes\", \"word_kinds\": [\"artist_name\", \"title_display\"], \"word_prominence\": \"present_secondary\", \"added_marks\": [\"none\"], \"packaging_photo\": \"no\", \"made_how\": \"photograph\", \"colour_spread\": \"monochrome\", \"speckle\": \"yes\", \"main_thing\": \"single\", \"main_thing_kind\": \"person\", \"main_thing_area\": \"25_60\", \"defining_colour\": \"no\", \"defining_colour_where\": \"not_applicable\"}",
+			"raw_sha256": "3a6381a0c9728175b959a6eadf38aed983e1b13ec6507c2a6a804990a3ed74d6",
 			"attempts": 1,
 			"parse_failed": false,
 			"error_class": null,
 			"error_message": null,
-			"prompt_tokens": 918,
-			"generation_tokens": 42,
-			"wall_seconds": 9.276,
+			"prompt_tokens": 1846,
+			"generation_tokens": 120,
+			"wall_seconds": 4.734,
 			"source_long_edge_px": 640,
 			"processed_long_edge_px": 640,
 			"gradient_truth": false

@@ -819,6 +819,94 @@ written to be read, not only parsed.
 Scoping is per batch id, for the reason the bracketing analysis learned: a second pass over the same
 artworks is different data and pooling them would move the number with nothing looking wrong.
 
+### `kind: "multi"` — the array-valued question
+
+Two answer shapes existed until now: `enum` (one digit, auto-advance) and `boolean` (`y`/`n`). A
+multi-select fits neither, and `PREMISE_NEXT.md` §15.9 called that "the one blocker, and it is real":
+a reviewer cannot pick several answers under a one-keystroke auto-advance UI. The alternative on the
+table — decomposing a multi-select into one yes/no pass per value — was rejected because it asks a
+**different question** from the one the model answered, which reintroduces the construct-match caveat
+the probe-gold round had just removed.
+
+So a `multi` question toggles and commits: **digit keys turn values on and off, Enter or Space
+records the set and advances**, and `u` / Backspace / ArrowLeft still step back. Three rules hold it
+together, each enforced:
+
+- **Digits only.** `validateFixture` refuses a `multi` question that binds anything else, so the
+  commit key can never be mistaken for a value and `u` stays undo on every pass.
+- **One record, sorted.** The answer is a single `oracle-label` whose `answer` is a sorted `string[]`
+  — not one record per value. Sorting is the server's job so that two identical sets always write the
+  same row; press order was never going to be meaningful.
+- **Shape is checked before values.** A bare token on a multi-select and a one-element list on an
+  enum are both 400s. Letting either through would put two column types under one `questionKey`.
+
+An empty commit is refused by the page rather than the server: every multi vocabulary carries an
+explicit nothing-here value (`none`), so there is always something true to press. Stepping back onto
+an answered multi item reloads its set, so undo means "fix this", not "start again".
+
+### Batch 3 — the group-BCDE reviewer validation round
+
+`bcde-validation-1`, **20 artworks × 8 questions = 160 items**, `labelSchemaVersion`
+`group-bcde.v1` — the schema the VLM pilot answered under, as always. `PREMISE_NEXT.md` §15.9,
+scoped by the pilot's own analysis (`bcde-pilot-1-analysis.json`) via the "drop questions" lever that
+section priced as preferred.
+
+**Why it exists.** There is **no ground truth of any kind** for the thirteen group-B/C/D/E questions.
+The pilot measured E against F, which is self-consistency; a model can be perfectly self-consistent
+and perfectly wrong. These are the first human answers to any of them.
+
+**The eight, and the four left out.** Asked: `grain_or_noise`, `overlays`, `has_dominant_subject`,
+`subject_kind`, `subject_area_band`, `has_signature_color`, `text_dominance`, `signature_carrier` —
+in variant E's own question order, one contiguous pass each, shuffled inside each pass. Not asked:
+`has_text` (κ 0.97), `physical_media_scan` (κ 1.0), `medium` (κ 0.81) and `text_roles` (exact-set
+0.78, Jaccard 0.91) — the pilot leaves them nothing to resolve. Every inclusion and every omission
+carries its reason as a named constant in `oracle-validation.ts`, so the scoping is on record rather
+than in a message.
+
+**Who is in it, and the finding that shaped it.** The 20 artworks are drawn from the **coverage set's
+core** (`coverage-set-1.json`, `role === "core"`), not from eval-142, which `COVERAGE_SET.md`
+establishes was never a sample of this corpus. But the pilot *ran* on eval-142, and the two sets
+overlap on **three artworks — two on identical bytes, one at another rendition**. All three are
+pinned; the other 17 are drawn by a seeded rule (tier quotas in proportion to the core's own mix,
+largest remainder; then a round-robin over clusters, so the 20 land in 20 different clusters). The
+consequence is stated everywhere it matters: the reviewer-vs-model join is three rows wide, and the
+round's product at full width is 20 labels per question on the corpus bench — the **first labels the
+coverage set has ever carried** — plus §15.9's real product, which is whether a human can answer each
+of these questions at all.
+
+**Wording.** Every stem and every gloss is *parsed* out of `group-bcde.v1.variant-e.json`, never
+transcribed; the only edit is dropping the `N. ` enumerator, because this round has eight passes and
+not thirteen. All **eight shared blocks** sit above the question on every item of every pass (§15.9:
+they are what make `subject_kind` and `medium` answerable at all), carried unedited — including the
+LISTS block's "Two of the thirteen questions", which is true of the prompt the model read and not of
+this round. Scoring F against these answers therefore carries a wording caveat that scoring E does
+not, and that asymmetry is recorded on the fixture.
+
+Regenerate the committed fixture (`research/v3/data/oracle-validation/bcde-validation-1.json`):
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/oracle-validation.ts --fixture bcde --write
+```
+
+**Analysis** — runs on a half-answered round, and on an unanswered one:
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/analyze-bcde-validation.ts [--warehouse <path>] [--batch <id>]
+```
+
+Per question it reports the reviewer's full distribution over all 20 artworks (the label deposit, and
+the answerability read), then the join to each prompt variant in P6's three buckets — agreement,
+disagreement, can't-tell — with the **E-and-F-agree subset reported apart from the E-and-F-split
+subset**, because on a split row there is no single model answer to be accurate against. Kappa is
+computed per variant but **refuses below a 10-row floor** and returns its reason instead, and a
+degenerate one-value table returns null rather than a misleading zero. The two join grades
+(identical bytes / same artwork, other rendition) are counted separately and never pooled. Multi-select
+questions additionally report exact-set agreement, mean Jaccard, and the reviewer's own singleton
+rate — the number that decides whether §15.8's "the array bought nothing" verdict survives contact
+with a human. Never one accuracy number; the scoping notes say so before any figure is printed.
+
 ### The adjudication view (post-release)
 
 <http://127.0.0.1:3010/oracle-review> — a **read-only** browse of a *finished* round, built after the
@@ -856,7 +944,12 @@ Query them with the warehouse CLI on the `adjudication-browse` tag.
 ### Tests, including the page itself
 
 `review-server-oracle-validation.test.ts` covers the fixture, the serving, the records, resume,
-release and the analysis. `review-server-oracle-review.test.ts` covers the adjudication view: the
+release and the analysis. `review-server-bcde-validation.test.ts` covers batch 3 and `kind: "multi"`:
+the fixture's byte-identity against variant E's prompt file, the eight-question scoping, the
+coverage-set draw (core only, one cluster each, tier quotas, all three joinable artworks pinned), the
+array record and every shape it refuses, and the page driven by keystrokes — digits toggle without
+advancing, Enter and Space both commit, an empty commit is refused, a step-back reloads the set, and
+the AZERTY digit row does all of it too. `review-server-oracle-review.test.ts` covers the adjudication view: the
 released-only guard on both endpoints, the grouping, the note record's shape, the symmetric
 vocabulary, re-annotation, and the page driven by keystrokes. `review-server-oracle-ui.test.ts` drives **the real `review-ui/oracle.js`**
 over HTTP against the real server by dispatching key events into the handler the page registered:

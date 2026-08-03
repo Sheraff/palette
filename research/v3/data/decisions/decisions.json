@@ -671,6 +671,29 @@
     "research/v3/data/coverage-set/COVERAGE_SET.md"
    ],
    "scope": "all instrument tuning from 2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-oracle-multi-kind",
+   "ts": "2026-08-03T22:10:00Z",
+   "kind": "instrument-design",
+   "decision": "Array-valued oracle questions use kind:'multi' in the oracle-validation mode (digits toggle, Enter/Space commits, one oracle-label record with a sorted string[]), chosen over per-value decomposition (PREMISE_NEXT \u00a715.9 option A). Shape checked before values; empty commits refused (every multi vocabulary carries an explicit none).",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/tests/review-server-bcde-validation.test.ts"
+   ],
+   "scope": "oracle-validation mode from 2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reviewer-rounds-from-coverage-core",
+   "ts": "2026-08-03T22:10:00Z",
+   "kind": "corpus-policy",
+   "decision": "Reviewer label rounds draw from the coverage-set CORE (per d-2026-08-03-coverage-set-canonical-bench), accumulating toward the stage-4 validation sample. Known cost, stated: the core intersects the pilot-decoded eval set on only 3 of 200 artworks, so reviewer-vs-VLM joins start narrow and widen as VLM runs move onto the core.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/data/coverage-set/COVERAGE_SET.md",
+    "research/v3/data/oracle-validation/bcde-validation-1.json"
+   ],
+   "scope": "reviewer rounds from 2026-08-03"
   }
  ]
 }

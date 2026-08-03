@@ -119,6 +119,12 @@ The human-labeling pass that validates the VLM oracle (`ORACLE_QUESTION_SET.md`)
   ("has text? y/n" × 40), then the next question. Matches the 5-second rule; minimizes
   context switching.
 - **Keyboard-only** (y/n or 1–5 for enums), auto-advance on answer, undo = one key.
+- **Multi-select questions toggle and commit.** Some oracle questions take a *list* of values, not
+  one (`overlays`, `text_roles`). They are the one shape that cannot auto-advance: the digit keys
+  turn values on and off and Enter — or Space — records the set and moves on. Such a question binds
+  digits and nothing else, so the commit key and undo stay unambiguous, and the answer is one record
+  carrying a sorted array. The alternative, one yes/no pass per value, was rejected because it asks a
+  different question from the one the model answered (`PREMISE_NEXT.md` §15.9).
 - **Resumable anywhere**, designed for ten-minute chunks.
 - **Sequential stopping per question, made coverage-aware by the embeddings:** the validation
   sample is drawn as a stratified cover of SigLIP embedding space (per-cluster quotas /

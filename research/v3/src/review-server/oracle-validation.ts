@@ -44,6 +44,27 @@ export const MAX_ENUM_ANSWERS = 9
 /** Hotkeys for a boolean question, in the order the mapping is displayed. [REVIEWED] — §6. */
 export const BOOLEAN_HOTKEYS = ["y", "n"] as const
 
+/**
+ * The digit row, as `keys.js` normalizes it. A `multi` question binds one of these per value.
+ *
+ * Mirrored here rather than imported: `review-ui/keys.js` is browser code with no type declarations,
+ * and a fixture builder that could not check its own hotkeys would be checking nothing.
+ * `review-server-bcde-validation.test.ts` asserts the two lists stay equal, so they cannot drift.
+ * [INHERITED] — `research/v3/review-ui/keys.js` `DIGIT_ROW`.
+ */
+export const DIGIT_HOTKEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"] as const
+
+/**
+ * What commits a `multi` answer. Two keys, because one of them is always under a thumb.
+ *
+ * A multi-select cannot auto-advance on the answer keystroke — that is the whole reason the kind
+ * exists — so the commit is explicit and it is the only place in this mode where a keystroke is not
+ * an answer. Neither key can collide with a vocabulary: `validateFixture` refuses a `multi` question
+ * that binds anything but digits.
+ * [REVIEWED] — PREMISE_NEXT.md §15.9 option A ("multiple keys toggle, one key commits").
+ */
+export const MULTI_COMMIT_KEYS = ["enter", " "] as const
+
 /** One offered answer. `key` is what lands in the record, verbatim; the rest is for the human. */
 export type OracleAnswerOption = Readonly<{
 	/** The closed-vocabulary token recorded on the `oracle-label`. */
@@ -56,10 +77,21 @@ export type OracleAnswerOption = Readonly<{
 	hotkey: string
 }>
 
+/**
+ * How a question is answered.
+ *
+ * `enum` and `boolean` are one keystroke and auto-advance; `multi` is the array-valued case
+ * (PREMISE_NEXT.md §15.9): the digit keys toggle values on and off and an explicit commit key ends
+ * the item. It exists because a reviewer cannot pick several answers under a one-keystroke
+ * auto-advance UI, and because decomposing a multi-select into per-value yes/no passes would be a
+ * different question from the one the model answered.
+ */
+export type OracleQuestionKind = "enum" | "boolean" | "multi"
+
 export type OracleQuestion = Readonly<{
 	/** `questionKey` on every record this question produces, e.g. `ground_type`. */
 	key: string
-	kind: "enum" | "boolean"
+	kind: OracleQuestionKind
 	/** The stem, on screen for every item of the pass. */
 	question: string
 	/**
@@ -148,7 +180,7 @@ export function validateFixture(fixture: OracleValidationFixture): void {
 		if (seenQuestions.has(question.key)) throw new Error(`question ${question.key} appears twice`)
 		seenQuestions.add(question.key)
 		if (question.answers.length === 0) throw new Error(`question ${question.key} offers no answers`)
-		if (question.kind === "enum" && question.answers.length > MAX_ENUM_ANSWERS) {
+		if (question.kind !== "boolean" && question.answers.length > MAX_ENUM_ANSWERS) {
 			throw new Error(`question ${question.key} offers more than ${MAX_ENUM_ANSWERS} answers; split it in two`)
 		}
 		const hotkeys = new Set<string>()
@@ -163,6 +195,18 @@ export function validateFixture(fixture: OracleValidationFixture): void {
 			const expected = [...BOOLEAN_HOTKEYS].join("")
 			const got = question.answers.map((answer) => answer.hotkey).join("")
 			if (got !== expected) throw new Error(`a boolean question must bind ${expected}, not ${got}`)
+		}
+		// A multi-select binds digits and nothing else. Two reasons, both load-bearing: the commit key
+		// must never be mistakable for a value, and `u` must stay undo — a reviewer part-way through a
+		// selection needs a way out that is not an answer.
+		if (question.kind === "multi") {
+			const strayed = question.answers.filter((answer) => !(DIGIT_HOTKEYS as readonly string[]).includes(answer.hotkey))
+			if (strayed.length > 0) {
+				throw new Error(
+					`multi question ${question.key} binds ${strayed.map((answer) => answer.hotkey).join(", ")}; ` +
+						"a multi-select binds digits only, so the commit key and undo stay unambiguous",
+				)
+			}
 		}
 	}
 	const seenItems = new Set<string>()
@@ -680,6 +724,558 @@ export async function buildProbeGoldFixture(
 	return fixture
 }
 
+/* ------------------------------------------------------------------------------------------- */
+/* Batch 3 — the group-BCDE reviewer validation round (PREMISE_NEXT.md §15.9)                     */
+/* ------------------------------------------------------------------------------------------- */
+
+export const BCDE_VALIDATION_BATCH_ID = "bcde-validation-1"
+
+/**
+ * The group-BCDE question set's own schema version, carried onto every reviewer row.
+ * [INHERITED] — `group-bcde.v1.variant-e.json` `schema_version`; the pilot's rows carry the same.
+ */
+export const BCDE_LABEL_SCHEMA_VERSION = "group-bcde.v1"
+
+/**
+ * Seed for the selection draw and the per-pass serve shuffle.
+ * [UNCALIBRATED] — the date §15.9 was written against, as the two earlier rounds use; any fixed
+ * value works and this one is already on record in that section.
+ */
+export const BCDE_VALIDATION_SEED = 20260803
+
+export const BCDE_VALIDATION_FIXTURE_PATH = fileURLToPath(
+	new URL("../../data/oracle-validation/bcde-validation-1.json", import.meta.url),
+)
+export const COVERAGE_SET_PATH = fileURLToPath(new URL("../../data/coverage-set/coverage-set-1.json", import.meta.url))
+export const BCDE_PILOT_RUN_PATH = fileURLToPath(new URL("../../data/oracle-premise/group-bcde-pilot-1.jsonl", import.meta.url))
+export const BCDE_PROMPT_E_PATH = fileURLToPath(
+	new URL("../../oracle/premise/prompts/group-bcde.v1.variant-e.json", import.meta.url),
+)
+
+/**
+ * The eight questions this round asks, and why these eight.
+ *
+ * §15.9 priced two levers and named dropping questions the preferred one: "ask only what the pilot
+ * showed to be worth validating … 8 questions × 20 artworks = 160 items, ~15 min. **Preferred**:
+ * this is what the pilot is for." The pilot ran, and `bcde-pilot-1-analysis.json` is what picks
+ * these. Each line names the verdict that put the question here.
+ *
+ * [REVIEWED] — `research/v3/data/oracle-premise/bcde-pilot-1-analysis.json`, verdicts as cited.
+ */
+export const BCDE_VALIDATION_QUESTION_REASONS: Readonly<Record<string, string>> = {
+	has_signature_color:
+		"the pilot's only spread FAILURE among the single-value questions (15.6-2b.has_signature_color: " +
+		"yes on 85.9% of rows, over the 85% bar) and the weakest kappa in the set (0.4865, raw 0.8732 — " +
+		"agreement carried almost entirely by the majority class). Self-consistency cannot tell a " +
+		"well-calibrated yes from a reflex yes; a human can.",
+	signature_carrier:
+		"the accent question §15.8 names as the field's premise — can a model say which lane carries a " +
+		"cover's colour. It passed inter-variant agreement (kappa 0.7091 on the gate-open subset) and " +
+		"contradiction 6 never fired (n=0), so nothing in the pilot can distinguish 'right' from " +
+		"'consistently wrong'. It is asked with has_signature_color because the two are one decision.",
+	has_dominant_subject:
+		"kappa 0.6618, the second-lowest of the single-value questions, on a question SAM depends on. " +
+		"Its answer gates subject_kind and subject_area_band, so an error here propagates into two more.",
+	subject_area_band:
+		"kappa 0.607 on a rough-eyeball size judgement. §15.4 flags exactly this shape of question as " +
+		"the one a cheaper computed statistic might reproduce — which cannot be checked without knowing " +
+		"what the right answer was. Asked with has_dominant_subject because it is that question's child.",
+	grain_or_noise:
+		"kappa 0.5255, the second-weakest in the set, and 15.6-2.grain_confound is report_only: the " +
+		"yes-rate on photographs runs 16 points above typography_only with no bar to read it against. " +
+		"Grain is a perceptual judgement at a fixed rendition size, so the reviewer's answer is the only " +
+		"thing that can say whether the model is seeing grain or inferring it from medium.",
+	subject_kind:
+		"§15.8 gives it 'the least standing … it should be the first deleted, not the last', and it is " +
+		"the newest field. Its kappa is high (0.9312) and its distribution is 51% person, which is " +
+		"consistent both with a correct instrument and with a model that answers 'person' by default. " +
+		"Included at lower priority than the four above, per the pilot's ordering.",
+	text_dominance:
+		"included for coverage of group B rather than for a failing number: kappa 0.7284, no spread " +
+		"failure. It is the one text question with a graded vocabulary, and asking it costs 20 items.",
+	overlays:
+		"included for coverage AND because it is the round's multi-select. 15.8.multi.overlays.singleton " +
+		"is report_only at 0.9542 — the array returned one value on 95% of rows, which §15.8 says would " +
+		"make the array machinery worthless. Whether that is the corpus or the instrument is a question " +
+		"only a human answering the same list question can settle, and settling it needs kind:\"multi\".",
+}
+
+/**
+ * The four questions the pilot showed do NOT need reviewer time, and why. Recorded on the fixture so
+ * the omission is a decision on record rather than an oversight to be re-litigated.
+ */
+export const BCDE_VALIDATION_OMITTED_REASONS: Readonly<Record<string, string>> = {
+	has_text:
+		"kappa 0.9657 with raw agreement 0.993 — E and F differ on one image in 142. There is nothing " +
+		"for 20 reviewer answers to resolve. (Its own FAILURE, 15.6-2a, is that illegible_at_this_size " +
+		"never fires; that is a vocabulary question, not an accuracy question, and 20 more images at " +
+		"this tier mix would not fire it either.)",
+	physical_media_scan: "kappa 1.0, raw 1.0. Perfect inter-variant agreement on 142 images.",
+	medium: "kappa 0.8146 and a well-spread distribution; the highest-agreement question with real spread.",
+	text_roles:
+		"exact-set agreement 0.7817, mean Jaccard 0.9123, no vocabulary value below the kappa floor. " +
+		"§15.9 named it as the multi-select that would need kind:\"multi\" — the kind was built (it is " +
+		"generic, and overlays uses it), but the pilot leaves text_roles nothing to validate.",
+}
+
+/**
+ * Pass order: variant E's own question order, filtered to the eight.
+ *
+ * §15.9: "Pass order: variant E's question order. Fixed and recorded, not randomised — with one
+ * reviewer there is nothing to average over." Derived from the prompt file rather than written out,
+ * so a reordered prompt cannot silently disagree with the fixture.
+ */
+export function bcdeQuestionOrder(prompt: GroupBcdePrompt): string[] {
+	return prompt.questionOrder.filter((key) => key in BCDE_VALIDATION_QUESTION_REASONS)
+}
+
+/**
+ * The standing instruction, on every item of every pass. Verbatim from §15.9.
+ *
+ * The first sentence is the anti-coherence line the prompt files carry as the `answering` shared
+ * block; the reviewer sees that block too, in the preamble, in the model's own words.
+ */
+export const BCDE_INSTRUCTION =
+	"Answer this one question only. Do not try to make your answers across questions tell one story."
+
+export type GroupBcdePromptQuestion = Readonly<{
+	/** The canonical field name — `questionKey` on every record. */
+	key: string
+	/** The name the prompt uses on screen for it, e.g. `signature_colour` for `signature_carrier`. */
+	displayKey: string
+	/** The stem as the prompt renders it, minus only the "N. " enumerator. */
+	stem: string
+	answers: readonly Readonly<{ key: string; gloss: string }>[]
+}>
+
+export type GroupBcdePrompt = Readonly<{
+	path: string
+	schemaVersion: string
+	variant: string
+	/** All eight shared blocks, in the order the file declares them. */
+	sharedBlocks: readonly string[]
+	multiSelectFields: readonly string[]
+	questionOrder: readonly string[]
+	questions: ReadonlyMap<string, GroupBcdePromptQuestion>
+}>
+
+/** A numbered question stem: `3. texture_noise - is there visible grain …`. */
+const BCDE_STEM = /^(\d+)\. ([a-z_0-9]+) - (.+)$/
+/** An indented option line: `   yes - film grain, print dots, …`. */
+const BCDE_OPTION = /^\s+([a-z_0-9]+) - (.+)$/
+
+/**
+ * Pull every question's exact rendering out of variant E's prompt file.
+ *
+ * Parsed, never transcribed — the probe-gold precedent (§12, applied again by §15.9): "Question text
+ * and every `answers[].gloss` must be byte-identical to a prompt file's rendering of that question."
+ * A hand-copied string is byte-identical right up until someone fixes a typo in one of the two
+ * places, and an answer only means something against the exact words it was answered under.
+ *
+ * The only edit made to any string here is dropping the `N. ` enumerator from the stem: this round
+ * asks eight questions, not thirteen, so the prompt's numbering names a position that does not
+ * exist here. Everything after that enumerator, and every option line, is carried byte for byte.
+ *
+ * Three integrity checks, because a parser that quietly half-works is worse than none: the option
+ * keys must equal the file's own declared vocabulary for that field, exactly and in order; every
+ * canonical field must be reached; and every shared block must appear verbatim inside the prompt.
+ */
+export function readGroupBcdePrompt(promptFile = BCDE_PROMPT_E_PATH): GroupBcdePrompt {
+	const raw = JSON.parse(readFileSyncUtf8(promptFile)) as {
+		schema_version: string
+		prompt_variant: string
+		question_order: string[]
+		shared_blocks: Record<string, string>
+		canonical_fields: string[]
+		vocabularies: Record<string, string[]>
+		multi_select_fields: string[]
+		field_map: Record<string, string>
+		prompt: string
+	}
+	for (const [name, block] of Object.entries(raw.shared_blocks)) {
+		if (!raw.prompt.includes(block)) throw new Error(`${promptFile}: shared block ${name} is not in the prompt verbatim`)
+	}
+
+	const questions = new Map<string, GroupBcdePromptQuestion>()
+	let current: { key: string; displayKey: string; stem: string; answers: { key: string; gloss: string }[] } | null = null
+	const flush = () => {
+		if (current === null) return
+		if (current.answers.length === 0) throw new Error(`${promptFile}: question ${current.displayKey} has no options`)
+		const declared = raw.vocabularies[current.key]
+		if (declared === undefined) throw new Error(`${promptFile}: no vocabulary declared for ${current.key}`)
+		const parsed = current.answers.map((answer) => answer.key)
+		if (parsed.join("|") !== declared.join("|")) {
+			throw new Error(`${promptFile}: ${current.key} renders ${parsed.join(",")} but declares ${declared.join(",")}`)
+		}
+		questions.set(current.key, { ...current, answers: current.answers })
+		current = null
+	}
+	for (const line of raw.prompt.split("\n")) {
+		if (line.startsWith("Reply with JSON only.")) break
+		const stem = BCDE_STEM.exec(line)
+		if (stem !== null) {
+			flush()
+			const displayKey = stem[2]
+			const key = raw.field_map[displayKey]
+			if (key === undefined) throw new Error(`${promptFile}: no field_map entry for ${displayKey}`)
+			current = { key, displayKey, stem: `${displayKey} - ${stem[3]}`, answers: [] }
+			continue
+		}
+		if (current === null) continue
+		const option = BCDE_OPTION.exec(line)
+		if (option !== null) current.answers.push({ key: option[1], gloss: option[2] })
+	}
+	flush()
+
+	const missing = raw.canonical_fields.filter((field) => !questions.has(field))
+	if (missing.length > 0) throw new Error(`${promptFile}: the prompt renders no question for ${missing.join(", ")}`)
+	return {
+		path: promptFile,
+		schemaVersion: raw.schema_version,
+		variant: raw.prompt_variant,
+		sharedBlocks: Object.values(raw.shared_blocks),
+		multiSelectFields: raw.multi_select_fields,
+		questionOrder: raw.question_order,
+		questions,
+	}
+}
+
+/**
+ * The eight questions as the reviewer will be asked them.
+ *
+ * The preamble is **all eight shared blocks**, joined, above the question on every item of every
+ * pass — §15.9: "not only inside `instruction`. They are the definitions the whole set rests on, and
+ * two of them (`THE MAIN SUBJECT`, `ONE PICTURE, ONE MEDIUM`) are what make `subject_kind` and
+ * `medium` answerable at all." They are carried unedited, including the LISTS block's "Two of the
+ * thirteen questions", which is true of the prompt the model answered and not of this eight-question
+ * round. Editing it would break the byte-identity that makes the two answers comparable; the
+ * discrepancy is recorded on the fixture instead.
+ */
+export function bcdeQuestions(prompt: GroupBcdePrompt): OracleQuestion[] {
+	const preamble = prompt.sharedBlocks.join("\n\n")
+	return bcdeQuestionOrder(prompt).map((key) => {
+		const parsed = prompt.questions.get(key)
+		if (parsed === undefined) throw new Error(`${prompt.path}: no question ${key}`)
+		const kind: OracleQuestionKind = prompt.multiSelectFields.includes(key) ? "multi" : "enum"
+		return {
+			key,
+			kind,
+			question: parsed.stem,
+			instruction: BCDE_INSTRUCTION,
+			preamble,
+			answers: parsed.answers.map((answer, index) => {
+				const hotkey = DIGIT_HOTKEYS[index]
+				if (hotkey === undefined) throw new Error(`${key}: ${index + 1} answers is more than the digit row can bind`)
+				return { key: answer.key, label: answer.key, gloss: answer.gloss, hotkey }
+			}),
+		}
+	})
+}
+
+/* --- selecting the twenty artworks ---------------------------------------------------------- */
+
+type CoverageArtwork = Readonly<{
+	role: string
+	collection: string
+	artworkId: string
+	path: string
+	sha256: string
+	width: number
+	height: number
+	longEdgePx: number
+	tier: string
+	cluster: number | null
+	clusterRole: string | null
+}>
+
+/**
+ * The coverage set's collection names, as the review server and the warehouse spell them.
+ * [INHERITED] — `batch.ts` `deriveCollection`, which is what every other mode's records carry.
+ */
+const COVERAGE_COLLECTIONS: Readonly<Record<string, string>> = {
+	sharded: "sharded-corpus",
+	music_artworks: "music-artworks",
+}
+
+/**
+ * The coverage set's own resolution tiers, used verbatim as the round's strata.
+ *
+ * Not `tierOf()`: that function is the premise test's tier rule for the eval-142 bench, and this
+ * round is drawn from a different bench with its own published mix. COVERAGE_SET.md: "Report
+ * anything measured on this set **stratified by `tier`**."
+ * [INHERITED] — `research/v3/data/coverage-set/COVERAGE_SET.md`.
+ */
+export const COVERAGE_TIER_ORDER = ["<=400", "401-640", "641-1024", ">1024"] as const
+
+/** How many artworks the round asks for. §15.9's own number, unchanged by the question lever. */
+export const BCDE_VALIDATION_ARTWORKS = 20
+
+export type BcdeSelection = Readonly<{
+	artworks: readonly CoverageArtwork[]
+	/** Per artwork: how well it joins to the pilot's rows, if at all. */
+	pilotJoin: ReadonlyMap<string, "exact_bytes" | "same_artwork_other_rendition" | "none">
+	counts: Readonly<Record<string, number>>
+	tierQuotas: Readonly<Record<string, number>>
+	byCluster: Readonly<Record<string, number>>
+}>
+
+export type PilotIndex = Readonly<{
+	/** sha256 → the rendition the pilot actually decoded. */
+	bySha: ReadonlySet<string>
+	/** artworkId-shaped path stem → the pilot's `image_path`, for the artwork-level join. */
+	byArtworkKey: ReadonlyMap<string, string>
+	images: number
+}>
+
+/**
+ * Index the pilot run by what an artwork can be joined on.
+ *
+ * Two grades, kept apart on purpose. **Exact bytes** is a real join: the reviewer and the model
+ * looked at the same file. **Same artwork, other rendition** is not — a 300 px and a 640 px file are
+ * different items under CONVENTIONS.md, and a grain question in particular can legitimately have
+ * different answers on the two. The analysis reports the two grades separately and never pools them.
+ */
+export async function readBcdePilotRun(path = BCDE_PILOT_RUN_PATH): Promise<PilotIndex> {
+	const text = await readFile(path, "utf8")
+	const bySha = new Set<string>()
+	const byArtworkKey = new Map<string, string>()
+	const images = new Set<string>()
+	for (const line of text.split("\n")) {
+		const trimmed = line.trim()
+		if (trimmed.length === 0) continue
+		const row = JSON.parse(trimmed) as {
+			is_canary?: boolean
+			status?: string
+			image_sha256: string
+			image_path: string
+			artwork_id?: string
+		}
+		if (row.is_canary === true) continue
+		bySha.add(row.image_sha256)
+		images.add(row.image_sha256)
+		if (typeof row.artwork_id === "string") byArtworkKey.set(row.artwork_id, row.image_path)
+	}
+	return { bySha, byArtworkKey, images: images.size }
+}
+
+/**
+ * Largest-remainder apportionment of `total` over the tiers, in proportion to the core's own mix.
+ *
+ * Ties on the remainder go to the larger tier — deterministic, seed-free, and it never lets a
+ * rounding coin-flip decide which kind of cover is represented.
+ */
+export function tierQuotas(populations: Readonly<Record<string, number>>, total: number): Record<string, number> {
+	const tiers = COVERAGE_TIER_ORDER.filter((tier) => (populations[tier] ?? 0) > 0)
+	const universe = tiers.reduce((sum, tier) => sum + populations[tier], 0)
+	const exact = tiers.map((tier) => ({ tier, want: (populations[tier] / universe) * total }))
+	const quotas: Record<string, number> = {}
+	for (const entry of exact) quotas[entry.tier] = Math.floor(entry.want)
+	let left = total - Object.values(quotas).reduce((sum, value) => sum + value, 0)
+	const ranked = [...exact].sort((a, b) => {
+		const remainder = b.want - Math.floor(b.want) - (a.want - Math.floor(a.want))
+		if (Math.abs(remainder) > 1e-9) return remainder
+		return populations[b.tier] - populations[a.tier]
+	})
+	for (const entry of ranked) {
+		if (left <= 0) break
+		quotas[entry.tier] += 1
+		left -= 1
+	}
+	return quotas
+}
+
+export const BCDE_SELECTION_RULE =
+	"Twenty artworks from the coverage set's CORE (research/v3/data/coverage-set/coverage-set-1.json, " +
+	"role === 'core'), which is the canonical tuning bench; NOT from eval-142, which COVERAGE_SET.md " +
+	"establishes was never a sample of this corpus. Two steps, neither of which looks at any model " +
+	"answer. (1) PINNED: every core artwork the group-BCDE pilot actually decoded — there are three, " +
+	"and they are the only artworks in the whole core where a reviewer-vs-E/F comparison is possible " +
+	"at all, so all three are taken. (2) DRAWN: the remaining slots, apportioned across the core's own " +
+	"resolution tiers in proportion to the core's tier mix (largest remainder, ties to the larger " +
+	"tier), and inside each tier taken by a seeded round-robin over clusters — every cluster is " +
+	"visited at most once before any is revisited, so twenty artworks land in twenty different " +
+	"clusters wherever the tier quotas allow. Seed 20260803. Deliberately NOT re-selected on E-vs-F " +
+	"disagreement (§3's rule, restated by §15.9): a round conditioned on disagreement is a different " +
+	"population and must be reported as one."
+
+export function selectBcdeArtworks(
+	core: readonly CoverageArtwork[],
+	pilot: PilotIndex,
+	seed: number,
+	total = BCDE_VALIDATION_ARTWORKS,
+): BcdeSelection {
+	const random = mulberry32(seed)
+	const pilotJoin = new Map<string, "exact_bytes" | "same_artwork_other_rendition" | "none">()
+	for (const artwork of core) {
+		pilotJoin.set(
+			artwork.artworkId,
+			pilot.bySha.has(artwork.sha256)
+				? "exact_bytes"
+				: pilot.byArtworkKey.has(artwork.artworkId)
+					? "same_artwork_other_rendition"
+					: "none",
+		)
+	}
+
+	// Sorted by content hash, so the candidate pool is order-independent before the seeded stream
+	// touches it: the file's own row order must not be able to change the draw.
+	const pool = [...core].sort((a, b) => (a.sha256 < b.sha256 ? -1 : 1))
+	const pinned = pool.filter((artwork) => pilotJoin.get(artwork.artworkId) !== "none")
+	const taken = new Set(pinned.map((artwork) => artwork.artworkId))
+
+	const populations: Record<string, number> = {}
+	for (const artwork of pool) populations[artwork.tier] = (populations[artwork.tier] ?? 0) + 1
+	const quotas = tierQuotas(populations, total)
+
+	// The pinned artworks spend their own tier's quota. They are not extra.
+	const remaining: Record<string, number> = { ...quotas }
+	for (const artwork of pinned) remaining[artwork.tier] = (remaining[artwork.tier] ?? 0) - 1
+
+	const selected = [...pinned]
+	const clusterUse = new Map<string, number>()
+	for (const artwork of pinned) {
+		const key = String(artwork.cluster)
+		clusterUse.set(key, (clusterUse.get(key) ?? 0) + 1)
+	}
+	for (const tier of COVERAGE_TIER_ORDER) {
+		let want = remaining[tier] ?? 0
+		if (want <= 0) continue
+		const candidates = shuffled(
+			pool.filter((artwork) => artwork.tier === tier && !taken.has(artwork.artworkId)),
+			random,
+		)
+		// Round-robin over clusters: on each sweep, only artworks from the least-used clusters are
+		// eligible. Coverage that piles several picks into one cluster is not coverage (COVERAGE_SET.md
+		// step 5), and with 20 picks over 36 clusters there is no reason to double up at all.
+		while (want > 0) {
+			const floor = Math.min(
+				...candidates.filter((artwork) => !taken.has(artwork.artworkId)).map((artwork) => clusterUse.get(String(artwork.cluster)) ?? 0),
+			)
+			if (!Number.isFinite(floor)) break
+			for (const artwork of candidates) {
+				if (want <= 0) break
+				if (taken.has(artwork.artworkId)) continue
+				if ((clusterUse.get(String(artwork.cluster)) ?? 0) !== floor) continue
+				taken.add(artwork.artworkId)
+				clusterUse.set(String(artwork.cluster), floor + 1)
+				selected.push(artwork)
+				want -= 1
+			}
+		}
+	}
+
+	const byCluster: Record<string, number> = {}
+	for (const artwork of selected) byCluster[String(artwork.cluster)] = (byCluster[String(artwork.cluster)] ?? 0) + 1
+	const counts: Record<string, number> = {
+		core_artworks: core.length,
+		pilot_images: pilot.images,
+		core_in_pilot_exact_bytes: pool.filter((artwork) => pilotJoin.get(artwork.artworkId) === "exact_bytes").length,
+		core_in_pilot_same_artwork_other_rendition: pool.filter(
+			(artwork) => pilotJoin.get(artwork.artworkId) === "same_artwork_other_rendition",
+		).length,
+		pinned: pinned.length,
+		drawn: selected.length - pinned.length,
+		selected: selected.length,
+		distinct_clusters: Object.keys(byCluster).length,
+	}
+	for (const tier of COVERAGE_TIER_ORDER) {
+		counts[`tier_${tier}`] = selected.filter((artwork) => artwork.tier === tier).length
+	}
+	return { artworks: selected, pilotJoin, counts, tierQuotas: quotas, byCluster }
+}
+
+/**
+ * Build the group-BCDE reviewer validation round.
+ *
+ * Deliberately absent from the produced fixture, as in both earlier rounds: every model answer, and
+ * anything a reader could invert into one. No E or F answer, no SAM mask, no per-item join grade
+ * that would hint at whether the model has seen this cover. The analysis re-derives all of it from
+ * the pilot's JSONL by content hash, so nothing that could steer an answer is ever written down
+ * beside the items — not in the fixture, and therefore not anywhere the page could reach.
+ */
+export async function buildBcdeValidationFixture(
+	options: { coverageSetPath?: string; pilotRunPath?: string; promptPath?: string; batchId?: string; seed?: number } = {},
+): Promise<OracleValidationFixture> {
+	const seed = options.seed ?? BCDE_VALIDATION_SEED
+	const coverage = JSON.parse(await readFile(options.coverageSetPath ?? COVERAGE_SET_PATH, "utf8")) as {
+		artworks: CoverageArtwork[]
+	}
+	const core = coverage.artworks.filter((artwork) => artwork.role === "core")
+	const pilot = await readBcdePilotRun(options.pilotRunPath)
+	const prompt = readGroupBcdePrompt(options.promptPath)
+	if (prompt.schemaVersion !== BCDE_LABEL_SCHEMA_VERSION) {
+		throw new Error(`${prompt.path} is schema ${prompt.schemaVersion}, this round is built for ${BCDE_LABEL_SCHEMA_VERSION}`)
+	}
+	const questions = bcdeQuestions(prompt)
+	if (questions.length !== Object.keys(BCDE_VALIDATION_QUESTION_REASONS).length) {
+		throw new Error(`${questions.length} questions rendered, ${Object.keys(BCDE_VALIDATION_QUESTION_REASONS).length} scoped`)
+	}
+	const selection = selectBcdeArtworks(core, pilot, seed, BCDE_VALIDATION_ARTWORKS)
+
+	const random = mulberry32(seed)
+	const items: OracleValidationItem[] = []
+	const serveOrder: string[] = []
+	for (const question of questions) {
+		const pass = selection.artworks.map((artwork) => ({
+			itemId: `bv-${question.key}-${artwork.sha256.slice(0, 12)}`,
+			questionKey: question.key,
+			imagePath: artwork.path,
+			sha256: artwork.sha256,
+			imageId: artwork.path.slice(artwork.path.lastIndexOf("/") + 1),
+			artworkId: artwork.artworkId,
+			collection: COVERAGE_COLLECTIONS[artwork.collection] ?? artwork.collection,
+			rendition: {
+				source: "research/v3/data/coverage-set/coverage-set-1.json",
+				sourceEntryId: artwork.artworkId,
+				longEdgePx: artwork.longEdgePx,
+				width: artwork.width,
+				height: artwork.height,
+			},
+			// The coverage set's own tier, not tierOf(): a different bench, a different published mix.
+			stratum: artwork.tier,
+		}))
+		items.push(...pass)
+		// Contiguous passes, shuffled inside each one so the artworks are not walked in the same order
+		// eight times — which would let the reviewer recognise position rather than artwork.
+		serveOrder.push(...shuffled(pass.map((item) => item.itemId), random))
+	}
+
+	const fixture: OracleValidationFixture = {
+		fixtureVersion: PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+		batchId: options.batchId ?? BCDE_VALIDATION_BATCH_ID,
+		purpose: "oracle-validation",
+		labelSchemaVersion: BCDE_LABEL_SCHEMA_VERSION,
+		seed,
+		generatedBy: "research/v3/src/review-server/oracle-validation.ts",
+		builtFrom: [
+			"research/v3/data/coverage-set/coverage-set-1.json",
+			"research/v3/oracle/premise/prompts/group-bcde.v1.variant-e.json",
+			"research/v3/data/oracle-premise/group-bcde-pilot-1.jsonl",
+			"research/v3/data/oracle-premise/bcde-pilot-1-analysis.json",
+		],
+		selection: {
+			rule:
+				`${BCDE_SELECTION_RULE} WORDING: every stem and every gloss is parsed byte-identically out ` +
+				`of variant ${prompt.variant}'s prompt file (the "N. " enumerator is the only thing dropped, ` +
+				"because this round has eight passes and not thirteen). §15.9: E and F word the same " +
+				"questions differently, so scoring F against these answers carries a stated wording caveat " +
+				"that scoring E does not. THE JOIN: only " +
+				`${selection.counts.core_in_pilot_exact_bytes} of the ${selection.counts.core_artworks} core ` +
+				"artworks were decoded by the pilot on the same bytes, and " +
+				`${selection.counts.core_in_pilot_same_artwork_other_rendition} more at another rendition — ` +
+				"so on the other artworks in this round there is no model answer to compare against yet, " +
+				"and the round's product there is a reviewer label on the coverage set and an answer to " +
+				"'is this question answerable by a human at all'.",
+			counts: { ...selection.counts, questions: questions.length, items: items.length },
+		},
+		questions,
+		items,
+		serveOrder,
+	}
+	validateFixture(fixture)
+	return fixture
+}
+
 /** Absolute path of one item's rendition. The fixture stores repo-root-relative paths. */
 export function itemImagePath(item: OracleValidationItem, repoRoot = REPO_ROOT): string {
 	return join(repoRoot, item.imagePath)
@@ -690,6 +1286,32 @@ async function main(): Promise<void> {
 		options: { write: { type: "boolean", default: false }, fixture: { type: "string", default: "disambiguation" } },
 		strict: true,
 	})
+	if (values.fixture === "bcde") {
+		const bcde = await buildBcdeValidationFixture()
+		const counts = bcde.selection.counts
+		process.stdout.write(
+			`${bcde.batchId}: ${bcde.items.length} items = ${counts.selected} artworks x ${counts.questions} questions\n`,
+		)
+		process.stdout.write(
+			`  core∩pilot: ${counts.core_in_pilot_exact_bytes} on the same bytes, ` +
+				`${counts.core_in_pilot_same_artwork_other_rendition} same artwork/other rendition — all ${counts.pinned} pinned\n`,
+		)
+		process.stdout.write(`  clusters: ${counts.distinct_clusters} distinct of 36\n`)
+		for (const tier of COVERAGE_TIER_ORDER) {
+			process.stdout.write(`  ${tier.padEnd(10)} ${counts[`tier_${tier}`]}\n`)
+		}
+		for (const question of bcde.questions) {
+			process.stdout.write(
+				`  ${question.key.padEnd(20)} ${question.kind.padEnd(6)} ` +
+					`${question.answers.map((answer) => `${answer.hotkey}=${answer.key}`).join(" ")}\n`,
+			)
+		}
+		if (values.write) {
+			await writeFile(BCDE_VALIDATION_FIXTURE_PATH, serializeFixture(bcde))
+			process.stdout.write(`wrote ${BCDE_VALIDATION_FIXTURE_PATH}\n`)
+		}
+		return
+	}
 	if (values.fixture === "probe-gold") {
 		const probes = await buildProbeGoldFixture()
 		process.stdout.write(

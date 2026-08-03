@@ -69,6 +69,9 @@ import {
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
 import {
+	BCDE_VALIDATION_BATCH_ID,
+	BCDE_VALIDATION_FIXTURE_PATH,
+	ORACLE_LABEL_SCHEMA_VERSION,
 	PREMISE_DISAMBIGUATION_BATCH_ID,
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
 	PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
@@ -1404,7 +1407,11 @@ export class ReviewService {
 	 * the mode is that a human row and a VLM row are comparable field by field. What distinguishes
 	 * them is `author.kind === "human"` and the batch purpose, never the schema.
 	 */
-	async putOracleAnswer(batchId: string, token: string, answer: string): Promise<{ recordId: string; revision: number }> {
+	async putOracleAnswer(
+		batchId: string,
+		token: string,
+		submitted: string | readonly string[],
+	): Promise<{ recordId: string; revision: number }> {
 		const stored = this.#oracleBatch(batchId)
 		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
 		const itemId = stored.answerTokens[token]
@@ -1413,11 +1420,32 @@ export class ReviewService {
 		if (item === undefined) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
 		const question = stored.fixture.questions.find((entry) => entry.key === item.questionKey)
 		if (question === undefined) throw new NotFound(`Unknown question ${item.questionKey} in batch ${batchId}`)
+		const vocabulary = question.answers.map((entry) => entry.key)
+		// The answer's SHAPE has to match the question's kind before its VALUES are checked: a single
+		// token on a multi-select and a one-element array on an enum are both wrong, and letting either
+		// through would put two different column types under one `questionKey` in the warehouse.
+		if (question.kind === "multi" !== Array.isArray(submitted)) {
+			throw new BadRequest(
+				question.kind === "multi"
+					? `${question.key} is a multi-select; answer with an array of ${vocabulary.join(" | ")}`
+					: `${question.key} takes one of ${vocabulary.join(" | ")}, not a list`,
+			)
+		}
 		// A closed vocabulary is the instrument: an answer outside it is not a weaker answer, it is a
 		// different question, and it would silently break every join against the oracle's rows.
-		if (!question.answers.some((entry) => entry.key === answer)) {
-			throw new BadRequest(`answer must be one of ${question.answers.map((entry) => entry.key).join(" | ")}`)
+		const chosen = Array.isArray(submitted) ? submitted : [submitted as string]
+		const strayed = chosen.filter((value) => !vocabulary.includes(value))
+		if (strayed.length > 0) throw new BadRequest(`answer must be one of ${vocabulary.join(" | ")}`)
+		if (Array.isArray(submitted)) {
+			if (chosen.length === 0) throw new BadRequest(`${question.key} needs at least one value`)
+			// §15.4 counts repeats and conflicts on the MODEL's rows rather than failing them, because a
+			// repeated value is evidence about the model. A reviewer's repeat is a double keypress and
+			// carries no such information, so the UI cannot produce one and neither can this endpoint.
+			if (new Set(chosen).size !== chosen.length) throw new BadRequest(`${question.key} lists a value twice`)
 		}
+		// Sorted, so two reviewers (or the same reviewer twice) who pick the same set write the same
+		// row: an order-sensitive array would make an exact-set comparison depend on click order.
+		const answer: string | string[] = Array.isArray(submitted) ? [...chosen].sort() : (submitted as string)
 		const key = this.#oracleKey(stored, item)
 		const previous = this.#answers.get(key)
 		const record = append<OracleLabelRecord>(this.warehousePath, {
@@ -1494,6 +1522,16 @@ export class ReviewService {
 		const release = this.#releases.get(batchId)
 		if (release === undefined) {
 			throw new NotFound(`Batch ${batchId} is not released; the adjudication view exists only after release`)
+		}
+		// This view is the premise test's three-way join and nothing else: it puts the reviewer's
+		// `ground_type` beside the VLM's and the published gradient boolean. A round answered under
+		// another question set has no such join — the premise run holds no row for its artworks — so it
+		// says so plainly instead of throwing from inside the analyzer.
+		if (stored.fixture.labelSchemaVersion !== ORACLE_LABEL_SCHEMA_VERSION) {
+			throw new NotFound(
+				`Batch ${batchId} was answered under ${stored.fixture.labelSchemaVersion}; the adjudication view ` +
+					`joins ${ORACLE_LABEL_SCHEMA_VERSION} ground_type answers against the premise run and has nothing to show here`,
+			)
 		}
 		const analysis = await this.#adjudication(batchId)
 		const notes = this.#adjudicationNotes(batchId)
@@ -2105,14 +2143,22 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 			const oracleAnswerMatch = /^\/api\/oracle-validation\/([^/]+)\/items\/([^/]+)\/answer$/u.exec(path)
 			if (oracleAnswerMatch && (method === "PUT" || method === "POST")) {
 				const body = (await requestBody(request)) as Record<string, unknown>
-				if (typeof body.answer !== "string") throw new BadRequest("answer must be one of the offered vocabulary tokens")
+				// A `multi` question sends an array; every other kind sends one token. The shape check is
+				// here so a malformed body fails at the door, and the vocabulary check is in the service,
+				// where the question's own answer list lives.
+				const answer = body.answer
+				const shapeOk =
+					typeof answer === "string" || (Array.isArray(answer) && answer.every((value) => typeof value === "string"))
+				if (!shapeOk) {
+					throw new BadRequest("answer must be one of the offered vocabulary tokens, or an array of them for a multi-select")
+				}
 				respondJson(
 					response,
 					200,
 					await service.putOracleAnswer(
 						decodeURIComponent(oracleAnswerMatch[1]),
 						decodeURIComponent(oracleAnswerMatch[2]),
-						body.answer,
+						answer as string | string[],
 					),
 				)
 				return
@@ -2455,6 +2501,35 @@ export async function seedProbeGoldRound(
 	return pushed.batchId
 }
 
+/**
+ * Push the group-BCDE reviewer validation round (PREMISE_NEXT.md §15.9).
+ *
+ * The first reviewer labels ever deposited on the coverage set, and the first round in this mode
+ * that carries a `kind: "multi"` question. Idempotent by batch id, like every other seed.
+ */
+export async function seedBcdeValidationRound(
+	service: ReviewService,
+	fixturePath = BCDE_VALIDATION_FIXTURE_PATH,
+	batchId = BCDE_VALIDATION_BATCH_ID,
+): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as OracleValidationFixture
+	if (service.has(batchId)) return null
+	const pushed = await service.pushOracleValidation(
+		fixture,
+		[
+			"PREMISE_NEXT.md §15.9 — the group-BCDE reviewer validation round; there is no ground truth of " +
+				"any kind for these questions, so every pilot number is a statement about the instrument",
+			"scoped by research/v3/data/oracle-premise/bcde-pilot-1-analysis.json — eight questions of the " +
+				"thirteen, the 'drop questions' lever §15.9 priced as preferred",
+			"first label deposit on the coverage set (research/v3/data/coverage-set/coverage-set-1.json)",
+			`questions: ${fixture.questions.map((question) => question.key).join(", ")}`,
+			`selection: ${fixture.selection.rule}`,
+		],
+		batchId,
+	)
+	return pushed.batchId
+}
+
 /** Push the premise-disambiguation round if it is not in the queue yet. Idempotent by batch id. */
 export async function seedOracleValidationRound(
 	service: ReviewService,
@@ -2514,6 +2589,8 @@ async function main(): Promise<void> {
 		if (seeded !== null) process.stdout.write(`seeded oracle-validation round "${seeded}" — http://127.0.0.1:${values.port}/oracle\n`)
 		const probes = await seedProbeGoldRound(handle.service)
 		if (probes !== null) process.stdout.write(`seeded oracle-validation round "${probes}" — http://127.0.0.1:${values.port}/oracle\n`)
+		const bcde = await seedBcdeValidationRound(handle.service)
+		if (bcde !== null) process.stdout.write(`seeded oracle-validation round "${bcde}" — http://127.0.0.1:${values.port}/oracle\n`)
 	}
 	const actual = await handle.listen(port)
 	process.stdout.write(`v3 review server: http://127.0.0.1:${actual}/\n`)

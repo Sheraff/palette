@@ -1220,6 +1220,6 @@ unanswerable is deleted regardless of what the model did with it.
 | 12 | the five added `not_applicable` values (§15.4) | **needs sign-off**, though it is the same move group-a.v1 already made for `shading_geometry` |
 | 13 | multi-selects as array-of-enum, with repeats and exclusive-value conflicts **counted rather than failed** (§15.4) | **needs sign-off.** It is a policy about what counts as a bad answer, and it is much harder to change once rows exist |
 | 14 | the pilot run itself: 284 inferences, ~50 min of GPU | **needs approval and a slot**, after the two group-A arms |
-| 15 | the reviewer validation round (§15.9) | **not yet requestable.** Gated on the pilot, and on the review-server `kind: "multi"` decision |
+| 15 | the reviewer validation round (§15.9) | **BUILT AND PUSHED 2026-08-03** (`bcde-validation-1`, 160 items, coverage-core artworks; kind:"multi" built generically — see d-2026-08-03-oracle-multi-kind) |
 
 **No agent starts this run.** The GPU is single-owner (`CONVENTIONS.md`).

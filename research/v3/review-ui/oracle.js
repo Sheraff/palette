@@ -8,6 +8,12 @@
  * back, `r` releases. It auto-advances, resumes wherever you stopped, and is meant for ten-minute
  * chunks.
  *
+ * **Multi-selects** (`kind: "multi"`, PREMISE_NEXT.md §15.9) are the one question shape that cannot
+ * auto-advance: the digit keys toggle values on and off and Enter — or Space — records the set and
+ * moves on. Everything else is unchanged, including undo, which is why a multi question may bind
+ * digits and nothing else. Stepping back onto an answered multi item reloads its set, so undo means
+ * "fix this" rather than "start again".
+ *
  * The page knows nothing about what the oracle answered or what the algorithm published — the
  * server does not serve either, and this batch exists precisely to break a tie between them.
  *
@@ -30,11 +36,20 @@ const nodes = {
 	mapping: document.querySelector("#mapping"),
 	status: document.querySelector("#status"),
 	undokey: document.querySelector("#undokey"),
+	pending: document.querySelector("#pending"),
 }
 
 let batch = null
 let index = 0
 let busy = false
+
+/**
+ * The values toggled on for the multi-select item currently on screen.
+ *
+ * Keyed by the item's token so it resets by itself when the page moves, and seeded from the item's
+ * recorded answer when the reviewer steps back onto one — a half-remembered set is not an answer.
+ */
+let pending = { token: null, values: [] }
 
 function el(tag, options = {}, ...children) {
 	const node = document.createElement(tag)
@@ -66,24 +81,69 @@ function questionOf(item) {
 	return batch.questions.find((entry) => entry.key === item.questionKey) ?? null
 }
 
+/** The item on screen, or null when the pass is finished. */
+function currentItem() {
+	return index < batch.items.length ? batch.items[index] : null
+}
+
+/**
+ * The pending multi-select values for the item on screen, in the vocabulary's own order.
+ *
+ * Vocabulary order rather than press order, because the mapping is read top to bottom and a list
+ * that jumps around as it is built is a list the reviewer has to re-read on every keypress. The
+ * server sorts on the way in, so press order was never going to reach the record anyway.
+ */
+function pendingValues(item, question) {
+	if (item === null || question === null || question.kind !== "multi") return []
+	if (pending.token !== item.token) {
+		const recorded = Array.isArray(item.answer) ? item.answer : []
+		pending = { token: item.token, values: recorded }
+	}
+	return question.answers.map((answer) => answer.key).filter((key) => pending.values.includes(key))
+}
+
+function togglePending(item, key) {
+	const already = pending.values.includes(key)
+	pending = {
+		token: item.token,
+		values: already ? pending.values.filter((value) => value !== key) : [...pending.values, key],
+	}
+}
+
 /** The first item with no answer yet — how "resumable anywhere" is implemented. */
 function firstUnanswered() {
 	const at = batch.items.findIndex((item) => item.answer === null)
 	return at < 0 ? batch.items.length : at
 }
 
-function renderMapping(question) {
+function renderMapping(question, chosen) {
+	const multi = question.kind === "multi"
 	nodes.mapping.replaceChildren(
-		...question.answers.map((answer) =>
-			el(
+		...question.answers.map((answer) => {
+			const on = multi && chosen.includes(answer.key)
+			return el(
 				"li",
-				{ class: "oracle-map" },
+				{ class: multi ? `oracle-map oracle-map-multi${on ? " is-selected" : ""}` : "oracle-map" },
 				el("b", { text: answer.hotkey }),
+				// The mark exists only on a multi-select: with no auto-advance there is nothing else on
+				// screen that says a keypress landed, and a toggle you cannot see is a toggle you press twice.
+				multi ? el("span", { class: "oracle-map-mark", text: on ? "on" : "·" }) : null,
 				el("span", { class: "oracle-map-label", text: answer.label }),
 				el("span", { class: "oracle-map-gloss", text: answer.gloss }),
-			),
-		),
+			)
+		}),
 	)
+}
+
+/** The line that says what a multi-select is about to record, and what commits it. Empty otherwise. */
+function renderPending(question, chosen) {
+	if (nodes.pending === null || nodes.pending === undefined) return
+	nodes.pending.textContent =
+		question === null || question.kind !== "multi"
+			? ""
+			: chosen.length === 0
+				? "select every value that applies · enter or space records"
+				: `${chosen.join(", ")} · enter or space records`
 }
 
 function render() {
@@ -94,6 +154,7 @@ function render() {
 		nodes.framing.textContent = ""
 		nodes.progress.textContent = `${batch.items.length} / ${batch.items.length}`
 		nodes.mapping.replaceChildren()
+		renderPending(null, [])
 		nodes.stage.replaceChildren(
 			el(
 				"div",
@@ -112,7 +173,9 @@ function render() {
 	// of several parts, and a reviewer who scrolled past them once is answering a different question.
 	nodes.preamble.textContent = question?.preamble ?? ""
 	nodes.framing.textContent = question?.framing ?? ""
-	if (question !== null) renderMapping(question)
+	const chosen = pendingValues(item, question)
+	if (question !== null) renderMapping(question, chosen)
+	renderPending(question, chosen)
 	nodes.undokey.textContent = undoIsTaken() ? "backspace" : "u"
 
 	// Progress is reported inside the pass, not across the batch: the reviewer is answering one
@@ -120,7 +183,7 @@ function render() {
 	const pass = batch.items.filter((entry) => entry.questionKey === item.questionKey)
 	const positionInPass = pass.indexOf(item) + 1
 	const answeredInPass = pass.filter((entry) => entry.answer !== null).length
-	const answeredLabel = item.answer === null ? "" : ` · answered ${item.answer}`
+	const answeredLabel = item.answer === null ? "" : ` · answered ${Array.isArray(item.answer) ? item.answer.join(", ") : item.answer}`
 	const passLabel = batch.questions.length > 1 ? `${item.questionKey} · ` : ""
 	nodes.progress.textContent = `${passLabel}${positionInPass} / ${pass.length}${answeredLabel} · ${answeredInPass} done`
 
@@ -149,7 +212,7 @@ async function answer(value) {
 			},
 		)
 		item.answer = value
-		status(`recorded ${value}`)
+		status(`recorded ${Array.isArray(value) ? value.join(", ") : value}`)
 		index += 1
 		render()
 	} catch (error) {
@@ -187,9 +250,29 @@ async function release() {
 function onKey(event) {
 	if (event.metaKey || event.ctrlKey || event.altKey) return
 	const key = normalizeKey(event.key.toLowerCase())
-	const item = index < batch.items.length ? batch.items[index] : null
+	const item = currentItem()
 	const question = item === null ? null : questionOf(item)
 	const chosen = question === null ? undefined : question.answers.find((entry) => entry.hotkey === key)
+
+	// A multi-select spends its digits on toggles and commits on its own key. Handled before the
+	// single-answer path so a digit cannot auto-advance out from under a half-built selection.
+	if (question !== null && question.kind === "multi") {
+		if (chosen !== undefined) {
+			togglePending(item, chosen.key)
+			render()
+		} else if (event.key === "Enter" || event.key === " ") {
+			const values = pendingValues(item, question)
+			// An empty commit is a slip, not an answer: every multi vocabulary carries an explicit
+			// nothing-here value, so there is always something true to press.
+			if (values.length === 0) status("nothing selected — every value is off, and one of them is the empty answer")
+			else answer(values)
+		} else if (key === "u" || event.key === "Backspace" || event.key === "ArrowLeft") undo()
+		else if (key === "r") release()
+		else return
+		event.preventDefault()
+		return
+	}
+
 	if (chosen !== undefined) answer(chosen.key)
 	// `u` is undo unless the question spends it on an answer — the probe round binds y/n/u, so there
 	// undo is Backspace or ArrowLeft, and the footer says which.
