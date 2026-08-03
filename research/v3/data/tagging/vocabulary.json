@@ -1,48 +1,111 @@
 {
-	"version": "1.0.0",
+	"version": "2.1.0",
 	"updated": "2026-08-03",
-	"rule": "SYMMETRIC-VOCABULARY: for every expressible complaint, its opposite must exist. Every tag names exactly one other tag as its opposite; the relation is an involution within one axis. This is what closes v2-3's instrument-bias gap (REVIEW_UI.md §4): the UI could not record a gradient objection, so all 14 gradient notes asked for MORE gradient and three arms were misdirected.",
+	"rule": "SYMMETRIC-VOCABULARY: for every expressible complaint, its opposite must exist. Every tag names exactly one other tag as its opposite; the relation is an involution within one axis. This is what closes v2-3's instrument-bias gap (REVIEW_UI.md §4): the UI could not record a gradient objection, so all 14 gradient notes asked for MORE gradient and three arms were misdirected. In v2 this rule is SCOPED rather than weakened: it binds every judgment axis unchanged, and descriptive axes carry the coverage law in \"symmetryScoping\" instead.",
+	"symmetryScoping": "SYMMETRY IS SCOPED, NOT WEAKENED. Every axis declares a kind. On a \"judgment\" axis — anything asserting that something should have been otherwise — the involution rule applies unchanged: every tag names exactly one opposite, mutually, on the same axis, and the axis holds an even number of tags. On a \"descriptive\" axis — observations of what an instrument was seen to do, which have alternatives but no opposites (\"DINOv2 focused on the layout\" is not a complaint and inventing its negation would produce a tag nobody would ever file) — the involution is replaced by a law of the same shape minus self-inversion: every tag names at least one \"counterpart\" (the observation you would have filed had the instrument done otherwise), every tag must itself be named as some other tag's counterpart, so the alternative reading is expressible in both directions, and the axis must carry at least one positive-valence and at least one negative-valence tag, so that no axis can record only an instrument misbehaving. A descriptive axis may never carry a complaint: a tag that says something should have been otherwise belongs on a judgment axis and owes an opposite. The exemption is from self-inversion (and with it injectivity) only, and the linter checks it rather than trusting review discipline.",
 	"epistemics": "Tags are an index over the reviewer's free text, never a replacement for it. The raw text is authoritative. Derived tag records can be dropped and rebuilt from the raw text at any time.",
+	"scopes": [
+		{
+			"id": "pairwise-item",
+			"about": "One review item: the pair that was shown, or either palette in it. A pairwise-item statement is meaningless away from that item — it is a claim about what was published there, not about the artwork or about the rules."
+		},
+		{
+			"id": "artwork",
+			"about": "This artwork, and any palette that could be derived from it. Survives the item it was said on: \"this cover supports both a flat and a gradient reading\" stays true of the next batch."
+		},
+		{
+			"id": "instrument",
+			"about": "A tool we judge with or judge through: an embedding model, a segmenter, the VLM oracle, the review rendering, the tagging agent itself. Not about any one artwork, though it is usually observed on one."
+		},
+		{
+			"id": "criterion",
+			"about": "The definitions, labels and tests by which judgments are made — the question set, the category words, the rulings that settle borderline cases. Binds no artwork and no instrument run."
+		}
+	],
 	"axes": [
 		{
 			"id": "gradient",
 			"title": "Gradient direction",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Whether a gradient should exist at all, how many stops it has, how loud it is, and how closely its path follows the artwork. Positions run 0 (the background endpoint, the one the display mapping reserves room for) to 1."
 		},
 		{
 			"id": "coverage",
 			"title": "Color coverage",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Which colors reached the palette, and where the palette sits as a whole in lightness, chroma and hue relative to the artwork. Role-agnostic: about the set of published colors, not about who got which job."
 		},
 		{
 			"id": "role",
 			"title": "Role assignment",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Which color got which job (background / surface / foreground / accent), and whether each role's color is the right kind of color for that job. v2-3: 16% of corrections were pure role permutations — the same colors, reshuffled."
 		},
 		{
 			"id": "contrast",
 			"title": "Contrast",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Luminance and legibility relations between published colors: foreground against background/surface/ramp, accent against the same, surface against background. Both directions — too little and too much."
 		},
 		{
 			"id": "collapse",
 			"title": "Collapse",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Roles merging or staying apart. surface→background and accent→foreground are the two sanctioned collapses (PHASE_0_DECISIONS.md §4, invariant 3); this axis records the reviewer disagreeing with the call in either direction."
 		},
 		{
 			"id": "identity",
 			"title": "Identity",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Whether the palette reads as belonging to this artwork. Covers identity coverage (v2-3's single most frequent complaint class, 27 notes), signature colors, and the whole-palette 'does this feel like the cover' judgment."
 		},
 		{
 			"id": "provenance",
 			"title": "Provenance and overlay",
+			"kind": "judgment",
+			"scope": "pairwise-item",
 			"about": "Where a published color came from inside the image: material field, or an overlay (text, logo, watermark, sticker), a border/letterbox artifact, or noise. Both directions — wrongly included and wrongly excluded."
 		},
 		{
 			"id": "meta",
 			"title": "Comparison and process",
-			"about": "Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that 'this pair told us nothing' is as expressible as 'A won'."
+			"kind": "judgment",
+			"scope": "pairwise-item",
+			"about": "Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that \"this pair told us nothing\" is as expressible as \"A won\". SCOPE DECISION (v2): meta is pairwise-item scoped. A meta tag is a claim about one review item and the two palettes shown in it, and it does not survive the item — \"both of these are fine\" is meta/both-sides-good, while \"both a flat and a gradient palette are defensible for this artwork\" is criterion/both-readings-defensible at artwork scope. The two tagger tags override to instrument scope: they are about the tagging agent, which is itself an instrument, not about the pair."
+		},
+		{
+			"id": "instrument-behavior",
+			"title": "Instrument behaviour",
+			"kind": "descriptive",
+			"scope": "instrument",
+			"about": "What a model or tool was observed to do: what it keyed on, what it grouped together, where it surprised us. Purely descriptive — a tag here says what happened, never that it should have happened otherwise. A complaint about an instrument belongs on instrument-fitness, which is a judgment axis and owes opposites. This is the only kind of axis exempt from the involution rule, and it pays for the exemption with the coverage law (counterparts in both directions, and both valences present)."
+		},
+		{
+			"id": "instrument-fitness",
+			"title": "Instrument fitness",
+			"kind": "judgment",
+			"scope": "instrument",
+			"about": "Judgments about the instruments themselves, including the rendering the reviewer judges through. Two families: is this instrument good enough for the job, and does the review view help or hinder the judgment it is asking for. The review UI is an instrument like any other, and a review instrument that misleads is the exact failure mode v2-3 shipped."
+		},
+		{
+			"id": "concept",
+			"title": "Concept and label",
+			"kind": "judgment",
+			"scope": "criterion",
+			"about": "The words the question set uses against the things a detector actually finds. Records the right-detection/wrong-word case, a category word that admits too much or too little, and a word that conflates two things or splits one. About naming; how a call is decided is the criterion axis."
+		},
+		{
+			"id": "criterion",
+			"title": "Criterion rulings",
+			"kind": "judgment",
+			"scope": "criterion",
+			"about": "Rulings about how a judgment is to be made, and about how many answers a case admits. A ruling is not a complaint about a palette: it fixes (or declines to fix) the test that later palettes will be judged by. Multi-validity lives here too — \"both answers are defensible for this artwork\" is an artwork-scoped statement and overrides the axis scope."
 		}
 	],
 	"tags": [
@@ -498,6 +561,7 @@
 			"id": "meta/tagger-unsure",
 			"axis": "meta",
 			"opposite": "meta/tagger-confident",
+			"scope": "instrument",
 			"definition": "Filed by the tagging agent on its own work: this text is ambiguous and a human should check the mapping. Never filed from the reviewer's words.",
 			"example": "(agent-only) the comment says 'too flat' and could mean the gradient or the contrast"
 		},
@@ -505,8 +569,300 @@
 			"id": "meta/tagger-confident",
 			"axis": "meta",
 			"opposite": "meta/tagger-unsure",
+			"scope": "instrument",
 			"definition": "The tagging agent's default state — never filed explicitly. Exists so that 'unsure' is one end of a pair rather than a one-way marker.",
 			"example": "(agent-only, never filed) the comment maps cleanly onto one tag"
+		},
+		{
+			"id": "instrument-behavior/attends-to-appearance",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-semantics",
+				"instrument-behavior/attends-to-outside-identity"
+			],
+			"valence": "neutral",
+			"definition": "The instrument was observed keying on how the image looks — layout, colour, texture, the shape of the lettering.",
+			"example": "for krafty, DINOv2 focused on the layout and flowers"
+		},
+		{
+			"id": "instrument-behavior/attends-to-semantics",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-appearance"
+			],
+			"valence": "neutral",
+			"definition": "The instrument was observed keying on what is depicted, grouping across visual styles.",
+			"example": "a photo of a boat, a painting of a boat, an origami boat — it put all the boats together"
+		},
+		{
+			"id": "instrument-behavior/attends-to-outside-identity",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/attends-to-appearance",
+				"instrument-behavior/attends-to-semantics"
+			],
+			"valence": "negative",
+			"definition": "The instrument was observed keying on who the artwork belongs to — the artist, the band logo, the lettering of the name — rather than on the picture. A cue we did not ask for, so the result may not generalise.",
+			"example": "it matches by artist, not by image; the covers don't look much alike"
+		},
+		{
+			"id": "instrument-behavior/generalizes-beyond-expectation",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/misses-expected-case"
+			],
+			"valence": "positive",
+			"definition": "The instrument handled a case we had no reason to expect it to handle.",
+			"example": "a chinese character was recognized as a word — not incorrect, just interesting"
+		},
+		{
+			"id": "instrument-behavior/misses-expected-case",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/generalizes-beyond-expectation"
+			],
+			"valence": "negative",
+			"definition": "The instrument failed on a case we did expect it to handle.",
+			"example": "it finds the logo on the obvious ones and misses it whenever the sleeve is dark"
+		},
+		{
+			"id": "instrument-behavior/instruments-differ",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/instruments-agree"
+			],
+			"valence": "neutral",
+			"definition": "Two instruments given the same input were observed behaving differently.",
+			"example": "DINOv2 and DINOv3 pick out different things on the same cover"
+		},
+		{
+			"id": "instrument-behavior/instruments-agree",
+			"axis": "instrument-behavior",
+			"opposite": null,
+			"counterparts": [
+				"instrument-behavior/instruments-differ"
+			],
+			"valence": "positive",
+			"definition": "Two or more instruments given the same input were observed behaving the same way.",
+			"example": "all three models put the same five covers at the top of the list"
+		},
+		{
+			"id": "instrument-fitness/display-confusing",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-clarifying",
+			"definition": "The rendering the reviewer judges through got in the way of the judgment it was asking for.",
+			"example": "I couldn't tell which of the overlays I was supposed to be looking at"
+		},
+		{
+			"id": "instrument-fitness/display-clarifying",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-confusing",
+			"definition": "The rendering the reviewer judges through made the thing being judged easier to see.",
+			"example": "the three-layer rendering was helpful, I could see exactly what the mask covered"
+		},
+		{
+			"id": "instrument-fitness/display-too-busy",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-too-sparse",
+			"definition": "The review view puts more on screen at once than the judgment needs.",
+			"example": "there is too much on screen at once, the boxes and the rings fight each other"
+		},
+		{
+			"id": "instrument-fitness/display-too-sparse",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/display-too-busy",
+			"definition": "The review view withholds something the judgment needs.",
+			"example": "I need the artwork next to it, I can't judge this on its own"
+		},
+		{
+			"id": "instrument-fitness/needs-onboarding",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/self-explanatory",
+			"definition": "The instrument works once understood, but the first encounter with it has to be explained.",
+			"example": "i just got confused the first time, after that it was fine"
+		},
+		{
+			"id": "instrument-fitness/self-explanatory",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/needs-onboarding",
+			"definition": "The instrument needed no explaining; it read correctly on first sight.",
+			"example": "I knew what I was looking at straight away, nobody had to tell me"
+		},
+		{
+			"id": "instrument-fitness/fit-for-purpose",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/unfit-for-purpose",
+			"definition": "The reviewer judges this instrument good enough for the job we want it to do.",
+			"example": "I think the DINO models are better, they're the ones to use"
+		},
+		{
+			"id": "instrument-fitness/unfit-for-purpose",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/fit-for-purpose",
+			"definition": "The reviewer judges this instrument not good enough for the job we want it to do.",
+			"example": "this one is not doing the job, I wouldn't trust it for this"
+		},
+		{
+			"id": "instrument-fitness/candidates-separable",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/candidates-indistinguishable",
+			"definition": "The reviewer can tell two candidate instruments apart on the evidence shown, and says which one wins.",
+			"example": "the difference between these two models is obvious, the second one is clearly better"
+		},
+		{
+			"id": "instrument-fitness/candidates-indistinguishable",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/candidates-separable",
+			"definition": "The reviewer cannot tell two candidate instruments apart on the evidence shown, so the choice between them is unfunded.",
+			"example": "I wouldn't know which one of the 2"
+		},
+		{
+			"id": "instrument-fitness/disagrees-defensibly",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/disagrees-indefensibly",
+			"definition": "The instrument answered differently from the reviewer and the reviewer can see why: the disagreement is a difference of reading, not an error.",
+			"example": "where I voted differently from the oracle, I could see its point of view"
+		},
+		{
+			"id": "instrument-fitness/disagrees-indefensibly",
+			"axis": "instrument-fitness",
+			"opposite": "instrument-fitness/disagrees-defensibly",
+			"definition": "The instrument answered differently from the reviewer and the answer is not one a careful reader could have reached.",
+			"example": "it says there are two fields and there is plainly only one — that is not a matter of opinion"
+		},
+		{
+			"id": "concept/detection-right-label-wrong",
+			"axis": "concept",
+			"opposite": "concept/label-right-detection-wrong",
+			"definition": "The right thing was found, and the category word put on it is not the word the reviewer would use for it.",
+			"example": "i did not count 'parental advisory' marks as 'stickers' but the model seemed to"
+		},
+		{
+			"id": "concept/label-right-detection-wrong",
+			"axis": "concept",
+			"opposite": "concept/detection-right-label-wrong",
+			"definition": "The category word is the right one to be asking about; the region found under it is not what the word names.",
+			"example": "it says 'logo' and it has outlined the singer's face"
+		},
+		{
+			"id": "concept/label-too-broad",
+			"axis": "concept",
+			"opposite": "concept/label-too-narrow",
+			"definition": "The category word admits cases we did not mean it to cover.",
+			"example": "'face' is catching a graffiti of a face and a sculpted bust as well"
+		},
+		{
+			"id": "concept/label-too-narrow",
+			"axis": "concept",
+			"opposite": "concept/label-too-broad",
+			"definition": "The category word excludes cases we did mean it to cover.",
+			"example": "'sticker' ought to cover the price tag too, and it doesn't"
+		},
+		{
+			"id": "concept/label-conflates",
+			"axis": "concept",
+			"opposite": "concept/label-splits",
+			"definition": "One category word covers two things the work needs to keep apart.",
+			"example": "'album-title' doesn't separate the title from the artist name — it is just the main text"
+		},
+		{
+			"id": "concept/label-splits",
+			"axis": "concept",
+			"opposite": "concept/label-conflates",
+			"definition": "Two category words separate one thing that reads as a single thing, and the reviewer has to guess which to use.",
+			"example": "'border' and 'frame' are the same thing here, splitting them just makes me guess"
+		},
+		{
+			"id": "criterion/ruling-given",
+			"axis": "criterion",
+			"opposite": "criterion/underdetermined",
+			"definition": "The reviewer fixes how a case like this is to be judged from now on — a standing answer, not a one-off call.",
+			"example": "the test is surface identity, never boundary softness"
+		},
+		{
+			"id": "criterion/underdetermined",
+			"axis": "criterion",
+			"opposite": "criterion/ruling-given",
+			"definition": "The existing criterion does not decide this case, and the reviewer says so rather than deciding it.",
+			"example": "sometimes 'logo' could be part of the artwork itself, or some sort of added branding"
+		},
+		{
+			"id": "criterion/option-set-gap",
+			"axis": "criterion",
+			"opposite": "criterion/option-set-sufficient",
+			"definition": "The answer options offered for a question do not cover a case that actually occurs: the case is real and none of the available words fit it. A statement about the option set, not about whether the case has been decided — a ruling usually opens with one of these and then closes it.",
+			"example": "there's no option for one flat field and one shaded field with a blurry line between them"
+		},
+		{
+			"id": "criterion/option-set-sufficient",
+			"axis": "criterion",
+			"opposite": "criterion/option-set-gap",
+			"definition": "The answer options do cover the case; what was missing was the rule for choosing between them, not a new option.",
+			"example": "shaded_field already covers that wall, nothing new needs adding"
+		},
+		{
+			"id": "criterion/criterion-narrowed",
+			"axis": "criterion",
+			"opposite": "criterion/criterion-widened",
+			"definition": "The ruling shrinks what counts: a property that seemed to decide the call is declared not to.",
+			"example": "a soft join does not make it two fields — that was never the test"
+		},
+		{
+			"id": "criterion/criterion-widened",
+			"axis": "criterion",
+			"opposite": "criterion/criterion-narrowed",
+			"definition": "The ruling enlarges what counts: a property that seemed required is demoted to a hint, or another reading is admitted.",
+			"example": "surface identity is a strong prior, neither necessary nor sufficient"
+		},
+		{
+			"id": "criterion/forced-choice-required",
+			"axis": "criterion",
+			"opposite": "criterion/abstention-allowed",
+			"definition": "A genuinely ambiguous case must still be answered, because the human answer has to be symmetric with the instrument's.",
+			"example": "answer it on the gut read — the model doesn't get to abstain either"
+		},
+		{
+			"id": "criterion/abstention-allowed",
+			"axis": "criterion",
+			"opposite": "criterion/forced-choice-required",
+			"definition": "A genuinely ambiguous case is better left unanswered than forced.",
+			"example": "if you can't tell, don't guess — an empty answer is more useful than a coin flip"
+		},
+		{
+			"id": "criterion/both-readings-defensible",
+			"axis": "criterion",
+			"opposite": "criterion/one-reading-only",
+			"scope": "artwork",
+			"definition": "Two opposite answers are both defensible for this artwork; which one is published is a choice, not a correctness question. Artwork-scoped: unlike meta/both-sides-good it outlives the item it was said on.",
+			"example": "an artwork can support a valid flat palette and a valid gradient palette"
+		},
+		{
+			"id": "criterion/one-reading-only",
+			"axis": "criterion",
+			"opposite": "criterion/both-readings-defensible",
+			"scope": "artwork",
+			"definition": "Only one answer is defensible for this artwork; the other is wrong rather than a matter of taste.",
+			"example": "there is no reading of this cover where that call is defensible"
+		},
+		{
+			"id": "criterion/unfair-comparison-basis",
+			"axis": "criterion",
+			"opposite": "criterion/fair-comparison-basis",
+			"definition": "The property being compared on is contaminated by choices made downstream of the thing under test, so a difference on it does not mean what it looks like it means.",
+			"example": "the flat/gradient flag depends on which colours got picked, it isn't a property of the artwork"
+		},
+		{
+			"id": "criterion/fair-comparison-basis",
+			"axis": "criterion",
+			"opposite": "criterion/unfair-comparison-basis",
+			"definition": "The property being compared on does isolate the thing under test, so a difference on it can be read at face value.",
+			"example": "this measure only moves when the thing we changed moves, so the comparison is clean"
 		}
 	]
 }

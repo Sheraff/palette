@@ -22,7 +22,7 @@ import {
 	stepClock,
 } from '../src/warehouse/fixtures.ts'
 
-import { DEFAULT_VOCABULARY_PATH, loadVocabulary } from '../src/tagging/vocabulary.ts'
+import { AMBIGUITY_TAG, DEFAULT_VOCABULARY_PATH, loadVocabulary, scopeOf } from '../src/tagging/vocabulary.ts'
 import {
 	buildWorkFile,
 	collectUntagged,
@@ -250,6 +250,63 @@ describe('import — round trip', () => {
 	})
 })
 
+describe('import — the v2 vocabulary shape', () => {
+	it('files a descriptive tag beside its counterpart — two observations are not a contradiction', () => {
+		const { file, options } = fixtureWarehouse()
+		const { file: work } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary, now: () => 0 })
+		const source = work.entries[0]!.sourceId
+		const report = importTags(
+			fill(work, {
+				[source]: ['instrument-behavior/attends-to-appearance', 'instrument-behavior/attends-to-semantics'],
+			}),
+			{ warehouseFile: file, vocabulary, ...options },
+		)
+		assert.equal(report.problems.length, 0, 'counterparts are alternatives, not opposites')
+		const note = derivedNotes(file).find((n) => n.derived!.fromRecordId === source)!
+		assert.deepEqual(note.tags, ['instrument-behavior/attends-to-appearance', 'instrument-behavior/attends-to-semantics'])
+	})
+
+	it('still refuses a judgment tag filed with its opposite, on the new axes too', () => {
+		const { file, options } = fixtureWarehouse()
+		const { file: work } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary, now: () => 0 })
+		const report = importTags(
+			fill(work, { [work.entries[0]!.sourceId]: ['criterion/ruling-given', 'criterion/underdetermined'] }),
+			{ warehouseFile: file, vocabulary, ...options },
+		)
+		assert.ok(report.problems.some((p) => p.kind === 'contradiction'))
+	})
+
+	it('reports the scope breakdown next to the zero-tag rate — the instrument-blindness canary', () => {
+		const { file, options } = fixtureWarehouse()
+		const { file: work } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary, now: () => 0 })
+		const [a, b] = [work.entries[0]!.sourceId, work.entries[1]!.sourceId]
+		const report = importTags(
+			fill(work, {
+				[a!]: ['coverage/too-dark', 'criterion/both-readings-defensible'],
+				[b!]: ['instrument-behavior/instruments-differ', 'concept/label-too-broad'],
+			}),
+			{ warehouseFile: file, vocabulary, ...options },
+		)
+		assert.deepEqual(report.scopeCounts, { 'pairwise-item': 1, artwork: 1, instrument: 1, criterion: 1 })
+	})
+
+	it('counts the ambiguity tag at instrument scope — it is about the tagging agent, not the pair', () => {
+		const { file, options } = fixtureWarehouse()
+		const { file: work } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary, now: () => 0 })
+		const source = work.entries[0]!.sourceId
+		const report = importTags(fill(work, { [source]: ['meta/both-sides-good'] }, { [source]: { unsure: true } }), {
+			warehouseFile: file,
+			vocabulary,
+			...options,
+		})
+		// `meta/tagger-unsure` is appended by the importer, so it is not in scopeCounts;
+		// what matters is that the vocabulary places it away from the pairwise claim.
+		assert.equal(scopeOf(vocabulary, 'meta/both-sides-good'), 'pairwise-item')
+		assert.equal(scopeOf(vocabulary, AMBIGUITY_TAG), 'instrument')
+		assert.equal(report.ambiguous.length, 1)
+	})
+})
+
 describe('import — idempotency', () => {
 	it('re-importing the same work file appends nothing', () => {
 		const { file, options } = fixtureWarehouse()
@@ -310,6 +367,37 @@ describe('import — idempotency', () => {
 		const moved = { ...vocabulary, version: '2.0.0' }
 		assert.equal(collectUntagged(readAll(file), { vocabulary: moved }).staleVersion, work.entries.length)
 		assert.equal(collectUntagged(readAll(file), { vocabulary: moved, anyVersion: true }).entries.length, 0)
+	})
+
+	it('a version bump restages the whole index: everything goes stale, --supersede leaves one live record each', () => {
+		// This is the v1.0.0 → v2.x path the vocabulary actually took, in miniature.
+		const { file, options } = fixtureWarehouse()
+		const older = { ...vocabulary, version: '1.0.0' }
+		const { file: firstPass } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary: older, now: () => 0 })
+		importTags(fill(firstPass, { [firstPass.entries[0]!.sourceId]: ['coverage/too-dark'] }), {
+			warehouseFile: file,
+			vocabulary: older,
+			...options,
+		})
+
+		const restaged = collectUntagged(readAll(file), { vocabulary })
+		assert.equal(restaged.staleVersion, firstPass.entries.length, 'a bump re-offers every source')
+		assert.equal(restaged.entries.length, firstPass.entries.length)
+
+		const { file: secondPass } = buildWorkFile(readAll(file), { warehouseFile: file, vocabulary, now: () => 1 })
+		const report = importTags(
+			fill(secondPass, { [secondPass.entries[0]!.sourceId]: ['instrument-behavior/attends-to-outside-identity'] }),
+			{ warehouseFile: file, vocabulary, supersede: true, ...options },
+		)
+		assert.equal(report.retracted, firstPass.entries.length)
+		assert.equal(report.imported, secondPass.entries.length)
+
+		const live = resolve(readAll(file)).filter(
+			(entry: Resolved) => entry.record.type === 'note' && (entry.record as NoteRecord).derived !== null && !entry.retracted,
+		)
+		assert.equal(live.length, secondPass.entries.length, 'exactly one live derived record per source')
+		for (const entry of live) assert.equal((entry.record as NoteRecord).derived!.agentVersion, vocabulary.version)
+		assert.equal(collectUntagged(readAll(file), { vocabulary }).entries.length, 0, 'nothing is left stale afterwards')
 	})
 
 	it('derivedIndex only counts this agent, and ignores retracted records', () => {

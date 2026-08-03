@@ -41,7 +41,7 @@ import { parseArgs } from 'node:util'
 
 import type { AmendmentRecord, NoteRecord, RecordInput, RecordType, WarehouseRecord } from '../warehouse/records.ts'
 import { append, readAll, resolve, type Resolved } from '../warehouse/warehouse.ts'
-import { contradictions, loadVocabulary, unknownTags, AMBIGUITY_TAG, TaggingError, type Vocabulary } from './vocabulary.ts'
+import { contradictions, loadVocabulary, scopeOf, unknownTags, AMBIGUITY_TAG, TaggingError, type Vocabulary } from './vocabulary.ts'
 import { derivedIndex, freeTextOf, DEFAULT_WAREHOUSE_PATH } from './export-untagged.ts'
 import { isFilled, parseWorkFile, TAGGING_AGENT, type WorkEntry, type WorkFile } from './work-file.ts'
 
@@ -179,6 +179,12 @@ export interface ImportReport {
 	dryRun: boolean
 	/** Entries filed with no tags at all — the vocabulary-coverage canary. */
 	zeroTag: number
+	/**
+	 * How many imported tag instances sat at each scope. A pass that files nothing but
+	 * `pairwise-item` tags over instrument review rounds is the v1 failure repeating
+	 * itself, so the breakdown is reported next to the zero-tag rate.
+	 */
+	scopeCounts: Record<string, number>
 }
 
 /**
@@ -238,6 +244,7 @@ export function importTags(workFile: WorkFile, options: ImportOptions): ImportRe
 		appendedIds: [],
 		dryRun: options.dryRun === true,
 		zeroTag: 0,
+		scopeCounts: {},
 	}
 
 	// A global problem invalidates the whole file — nothing is written.
@@ -263,6 +270,10 @@ export function importTags(workFile: WorkFile, options: ImportOptions): ImportRe
 
 		if (entry.unsure === true) report.ambiguous.push(entry)
 		if ((entry.tags ?? []).length === 0) report.zeroTag++
+		for (const tag of entry.tags ?? []) {
+			const scope = scopeOf(options.vocabulary, tag) ?? 'unknown'
+			report.scopeCounts[scope] = (report.scopeCounts[scope] ?? 0) + 1
+		}
 
 		if (options.dryRun === true) {
 			report.imported++
@@ -308,6 +319,9 @@ function formatReport(report: ImportReport): string {
 		`entries=${report.entries} filled=${report.filled} unfilled=${report.unfilled}`,
 		`imported=${report.imported} already-derived=${report.skippedAlreadyDerived} invalid=${report.skippedInvalid} ` +
 			`retracted=${report.retracted} zero-tag=${report.zeroTag} ambiguous=${report.ambiguous.length}`,
+		`scopes=${Object.entries(report.scopeCounts)
+			.map(([scope, count]) => `${scope}:${count}`)
+			.join(' ') || '-'}`,
 	]
 	for (const problem of report.problems) lines.push(`problem ${problem.kind} source=${problem.sourceId ?? '-'} | ${problem.message}`)
 	return `${lines.join('\n')}\n`

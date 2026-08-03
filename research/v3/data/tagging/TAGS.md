@@ -1,6 +1,6 @@
 # V3 reviewer-comment tag vocabulary
 
-**Version:** 1.0.0 · **Updated:** 2026-08-03
+**Version:** 2.1.0 · **Updated:** 2026-08-03
 
 > Generated from `research/v3/data/tagging/vocabulary.json` by
 > `research/v3/src/tagging/build-tags-md.ts`. Edit the JSON, not this file.
@@ -9,28 +9,52 @@
 
 ## The rule
 
-SYMMETRIC-VOCABULARY: for every expressible complaint, its opposite must exist. Every tag names exactly one other tag as its opposite; the relation is an involution within one axis. This is what closes v2-3's instrument-bias gap (REVIEW_UI.md §4): the UI could not record a gradient objection, so all 14 gradient notes asked for MORE gradient and three arms were misdirected.
+SYMMETRIC-VOCABULARY: for every expressible complaint, its opposite must exist. Every tag names exactly one other tag as its opposite; the relation is an involution within one axis. This is what closes v2-3's instrument-bias gap (REVIEW_UI.md §4): the UI could not record a gradient objection, so all 14 gradient notes asked for MORE gradient and three arms were misdirected. In v2 this rule is SCOPED rather than weakened: it binds every judgment axis unchanged, and descriptive axes carry the coverage law in "symmetryScoping" instead.
+
+## Where the rule binds — judgment axes and descriptive axes
+
+SYMMETRY IS SCOPED, NOT WEAKENED. Every axis declares a kind. On a "judgment" axis — anything asserting that something should have been otherwise — the involution rule applies unchanged: every tag names exactly one opposite, mutually, on the same axis, and the axis holds an even number of tags. On a "descriptive" axis — observations of what an instrument was seen to do, which have alternatives but no opposites ("DINOv2 focused on the layout" is not a complaint and inventing its negation would produce a tag nobody would ever file) — the involution is replaced by a law of the same shape minus self-inversion: every tag names at least one "counterpart" (the observation you would have filed had the instrument done otherwise), every tag must itself be named as some other tag's counterpart, so the alternative reading is expressible in both directions, and the axis must carry at least one positive-valence and at least one negative-valence tag, so that no axis can record only an instrument misbehaving. A descriptive axis may never carry a complaint: a tag that says something should have been otherwise belongs on a judgment axis and owes an opposite. The exemption is from self-inversion (and with it injectivity) only, and the linter checks it rather than trusting review discipline.
 
 ## What a tag is
 
 Tags are an index over the reviewer's free text, never a replacement for it. The raw text is authoritative. Derived tag records can be dropped and rebuilt from the raw text at any time.
 
-**66 tags in 33 opposed pairs across 8 axes.** A tag id is `<axis>/<name>`. A comment maps to zero or more tags; zero is a real answer.
+**103 tags across 12 axes: 48 opposed judgment pairs (96 tags) and 7 descriptive observations.** A tag id is `<axis>/<name>`. A comment maps to zero or more tags; zero is a real answer.
 
-| axis | pairs | what it is about |
-| --- | --- | --- |
-| `gradient` | 6 | Whether a gradient should exist at all, how many stops it has, how loud it is, and how closely its path follows the artwork. Positions run 0 (the background endpoint, the one the display mapping reserves room for) to 1. |
-| `coverage` | 5 | Which colors reached the palette, and where the palette sits as a whole in lightness, chroma and hue relative to the artwork. Role-agnostic: about the set of published colors, not about who got which job. |
-| `role` | 5 | Which color got which job (background / surface / foreground / accent), and whether each role's color is the right kind of color for that job. v2-3: 16% of corrections were pure role permutations — the same colors, reshuffled. |
-| `contrast` | 4 | Luminance and legibility relations between published colors: foreground against background/surface/ramp, accent against the same, surface against background. Both directions — too little and too much. |
-| `collapse` | 3 | Roles merging or staying apart. surface→background and accent→foreground are the two sanctioned collapses (PHASE_0_DECISIONS.md §4, invariant 3); this axis records the reviewer disagreeing with the call in either direction. |
-| `identity` | 3 | Whether the palette reads as belonging to this artwork. Covers identity coverage (v2-3's single most frequent complaint class, 27 notes), signature colors, and the whole-palette 'does this feel like the cover' judgment. |
-| `provenance` | 3 | Where a published color came from inside the image: material field, or an overlay (text, logo, watermark, sticker), a border/letterbox artifact, or noise. Both directions — wrongly included and wrongly excluded. |
-| `meta` | 4 | Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that 'this pair told us nothing' is as expressible as 'A won'. |
+## Scope — what a statement is about
+
+Every axis declares a scope; a tag may override its axis. Scope is what keeps a claim about one
+review item from being read as a claim about the artwork, the instrument, or the rules.
+
+| scope | what it covers |
+| --- | --- |
+| `pairwise-item` | One review item: the pair that was shown, or either palette in it. A pairwise-item statement is meaningless away from that item — it is a claim about what was published there, not about the artwork or about the rules. |
+| `artwork` | This artwork, and any palette that could be derived from it. Survives the item it was said on: "this cover supports both a flat and a gradient reading" stays true of the next batch. |
+| `instrument` | A tool we judge with or judge through: an embedding model, a segmenter, the VLM oracle, the review rendering, the tagging agent itself. Not about any one artwork, though it is usually observed on one. |
+| `criterion` | The definitions, labels and tests by which judgments are made — the question set, the category words, the rulings that settle borderline cases. Binds no artwork and no instrument run. |
+
+## The axes
+
+| axis | kind | scope | tags | what it is about |
+| --- | --- | --- | --- | --- |
+| `gradient` | judgment | `pairwise-item` | 12 (6 pairs) | Whether a gradient should exist at all, how many stops it has, how loud it is, and how closely its path follows the artwork. Positions run 0 (the background endpoint, the one the display mapping reserves room for) to 1. |
+| `coverage` | judgment | `pairwise-item` | 10 (5 pairs) | Which colors reached the palette, and where the palette sits as a whole in lightness, chroma and hue relative to the artwork. Role-agnostic: about the set of published colors, not about who got which job. |
+| `role` | judgment | `pairwise-item` | 10 (5 pairs) | Which color got which job (background / surface / foreground / accent), and whether each role's color is the right kind of color for that job. v2-3: 16% of corrections were pure role permutations — the same colors, reshuffled. |
+| `contrast` | judgment | `pairwise-item` | 8 (4 pairs) | Luminance and legibility relations between published colors: foreground against background/surface/ramp, accent against the same, surface against background. Both directions — too little and too much. |
+| `collapse` | judgment | `pairwise-item` | 6 (3 pairs) | Roles merging or staying apart. surface→background and accent→foreground are the two sanctioned collapses (PHASE_0_DECISIONS.md §4, invariant 3); this axis records the reviewer disagreeing with the call in either direction. |
+| `identity` | judgment | `pairwise-item` | 6 (3 pairs) | Whether the palette reads as belonging to this artwork. Covers identity coverage (v2-3's single most frequent complaint class, 27 notes), signature colors, and the whole-palette 'does this feel like the cover' judgment. |
+| `provenance` | judgment | `pairwise-item` | 6 (3 pairs) | Where a published color came from inside the image: material field, or an overlay (text, logo, watermark, sticker), a border/letterbox artifact, or noise. Both directions — wrongly included and wrongly excluded. |
+| `meta` | judgment | `pairwise-item` | 8 (4 pairs) | Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that "this pair told us nothing" is as expressible as "A won". SCOPE DECISION (v2): meta is pairwise-item scoped. A meta tag is a claim about one review item and the two palettes shown in it, and it does not survive the item — "both of these are fine" is meta/both-sides-good, while "both a flat and a gradient palette are defensible for this artwork" is criterion/both-readings-defensible at artwork scope. The two tagger tags override to instrument scope: they are about the tagging agent, which is itself an instrument, not about the pair. |
+| `instrument-behavior` | descriptive | `instrument` | 7 | What a model or tool was observed to do: what it keyed on, what it grouped together, where it surprised us. Purely descriptive — a tag here says what happened, never that it should have happened otherwise. A complaint about an instrument belongs on instrument-fitness, which is a judgment axis and owes opposites. This is the only kind of axis exempt from the involution rule, and it pays for the exemption with the coverage law (counterparts in both directions, and both valences present). |
+| `instrument-fitness` | judgment | `instrument` | 12 (6 pairs) | Judgments about the instruments themselves, including the rendering the reviewer judges through. Two families: is this instrument good enough for the job, and does the review view help or hinder the judgment it is asking for. The review UI is an instrument like any other, and a review instrument that misleads is the exact failure mode v2-3 shipped. |
+| `concept` | judgment | `criterion` | 6 (3 pairs) | The words the question set uses against the things a detector actually finds. Records the right-detection/wrong-word case, a category word that admits too much or too little, and a word that conflates two things or splits one. About naming; how a call is decided is the criterion axis. |
+| `criterion` | judgment | `criterion` | 12 (6 pairs) | Rulings about how a judgment is to be made, and about how many answers a case admits. A ruling is not a complaint about a palette: it fixes (or declines to fix) the test that later palettes will be judged by. Multi-validity lives here too — "both answers are defensible for this artwork" is an artwork-scoped statement and overrides the axis scope. |
 
 ---
 
 ## Gradient direction — `gradient`
+
+**Kind:** judgment · **Scope:** `pairwise-item`
 
 Whether a gradient should exist at all, how many stops it has, how loud it is, and how closely its path follows the artwork. Positions run 0 (the background endpoint, the one the display mapping reserves room for) to 1.
 
@@ -80,6 +104,8 @@ Whether a gradient should exist at all, how many stops it has, how loud it is, a
 
 ## Color coverage — `coverage`
 
+**Kind:** judgment · **Scope:** `pairwise-item`
+
 Which colors reached the palette, and where the palette sits as a whole in lightness, chroma and hue relative to the artwork. Role-agnostic: about the set of published colors, not about who got which job.
 
 ### `coverage/missing-color` ↔ `coverage/alien-color`
@@ -120,6 +146,8 @@ Which colors reached the palette, and where the palette sits as a whole in light
 ---
 
 ## Role assignment — `role`
+
+**Kind:** judgment · **Scope:** `pairwise-item`
 
 Which color got which job (background / surface / foreground / accent), and whether each role's color is the right kind of color for that job. v2-3: 16% of corrections were pure role permutations — the same colors, reshuffled.
 
@@ -162,6 +190,8 @@ Which color got which job (background / surface / foreground / accent), and whet
 
 ## Contrast — `contrast`
 
+**Kind:** judgment · **Scope:** `pairwise-item`
+
 Luminance and legibility relations between published colors: foreground against background/surface/ramp, accent against the same, surface against background. Both directions — too little and too much.
 
 ### `contrast/text-too-low` ↔ `contrast/text-too-high`
@@ -196,6 +226,8 @@ Luminance and legibility relations between published colors: foreground against 
 
 ## Collapse — `collapse`
 
+**Kind:** judgment · **Scope:** `pairwise-item`
+
 Roles merging or staying apart. surface→background and accent→foreground are the two sanctioned collapses (PHASE_0_DECISIONS.md §4, invariant 3); this axis records the reviewer disagreeing with the call in either direction.
 
 ### `collapse/accent-should-collapse` ↔ `collapse/accent-should-not-collapse`
@@ -222,6 +254,8 @@ Roles merging or staying apart. surface→background and accent→foreground are
 ---
 
 ## Identity — `identity`
+
+**Kind:** judgment · **Scope:** `pairwise-item`
 
 Whether the palette reads as belonging to this artwork. Covers identity coverage (v2-3's single most frequent complaint class, 27 notes), signature colors, and the whole-palette 'does this feel like the cover' judgment.
 
@@ -250,6 +284,8 @@ Whether the palette reads as belonging to this artwork. Covers identity coverage
 
 ## Provenance and overlay — `provenance`
 
+**Kind:** judgment · **Scope:** `pairwise-item`
+
 Where a published color came from inside the image: material field, or an overlay (text, logo, watermark, sticker), a border/letterbox artifact, or noise. Both directions — wrongly included and wrongly excluded.
 
 ### `provenance/overlay-color-published` ↔ `provenance/overlay-color-ignored`
@@ -277,7 +313,9 @@ Where a published color came from inside the image: material field, or an overla
 
 ## Comparison and process — `meta`
 
-Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that 'this pair told us nothing' is as expressible as 'A won'.
+**Kind:** judgment · **Scope:** `pairwise-item`
+
+Statements about the comparison itself rather than about one palette, plus the tagging agent's own confidence. Kept in the vocabulary so that "this pair told us nothing" is as expressible as "A won". SCOPE DECISION (v2): meta is pairwise-item scoped. A meta tag is a claim about one review item and the two palettes shown in it, and it does not survive the item — "both of these are fine" is meta/both-sides-good, while "both a flat and a gradient palette are defensible for this artwork" is criterion/both-readings-defensible at artwork scope. The two tagger tags override to instrument scope: they are about the tagging agent, which is itself an instrument, not about the pair.
 
 ### `meta/both-sides-good` ↔ `meta/both-sides-bad`
 
@@ -302,6 +340,8 @@ Statements about the comparison itself rather than about one palette, plus the t
 
 ### `meta/tagger-unsure` ↔ `meta/tagger-confident`
 
+**Scope override:** `instrument`
+
 | tag | means | example phrase |
 | --- | --- | --- |
 | `meta/tagger-unsure` | Filed by the tagging agent on its own work: this text is ambiguous and a human should check the mapping. Never filed from the reviewer's words. | *(agent-only) the comment says 'too flat' and could mean the gradient or the contrast* |
@@ -309,73 +349,265 @@ Statements about the comparison itself rather than about one palette, plus the t
 
 ---
 
+## Instrument behaviour — `instrument-behavior`
+
+**Kind:** descriptive · **Scope:** `instrument`
+
+What a model or tool was observed to do: what it keyed on, what it grouped together, where it surprised us. Purely descriptive — a tag here says what happened, never that it should have happened otherwise. A complaint about an instrument belongs on instrument-fitness, which is a judgment axis and owes opposites. This is the only kind of axis exempt from the involution rule, and it pays for the exemption with the coverage law (counterparts in both directions, and both valences present).
+
+Descriptive tags have no opposite. Each names the alternative observation(s) — what would have
+been filed had the instrument done otherwise — and a valence, so the axis can be checked for
+being able to record both a good and a bad surprise.
+
+| tag | valence | alternatives | means | example phrase |
+| --- | --- | --- | --- | --- |
+| `instrument-behavior/attends-to-appearance` | neutral | `instrument-behavior/attends-to-semantics`<br>`instrument-behavior/attends-to-outside-identity` | The instrument was observed keying on how the image looks — layout, colour, texture, the shape of the lettering. | *for krafty, DINOv2 focused on the layout and flowers* |
+| `instrument-behavior/attends-to-semantics` | neutral | `instrument-behavior/attends-to-appearance` | The instrument was observed keying on what is depicted, grouping across visual styles. | *a photo of a boat, a painting of a boat, an origami boat — it put all the boats together* |
+| `instrument-behavior/attends-to-outside-identity` | negative | `instrument-behavior/attends-to-appearance`<br>`instrument-behavior/attends-to-semantics` | The instrument was observed keying on who the artwork belongs to — the artist, the band logo, the lettering of the name — rather than on the picture. A cue we did not ask for, so the result may not generalise. | *it matches by artist, not by image; the covers don't look much alike* |
+| `instrument-behavior/generalizes-beyond-expectation` | positive | `instrument-behavior/misses-expected-case` | The instrument handled a case we had no reason to expect it to handle. | *a chinese character was recognized as a word — not incorrect, just interesting* |
+| `instrument-behavior/misses-expected-case` | negative | `instrument-behavior/generalizes-beyond-expectation` | The instrument failed on a case we did expect it to handle. | *it finds the logo on the obvious ones and misses it whenever the sleeve is dark* |
+| `instrument-behavior/instruments-differ` | neutral | `instrument-behavior/instruments-agree` | Two instruments given the same input were observed behaving differently. | *DINOv2 and DINOv3 pick out different things on the same cover* |
+| `instrument-behavior/instruments-agree` | positive | `instrument-behavior/instruments-differ` | Two or more instruments given the same input were observed behaving the same way. | *all three models put the same five covers at the top of the list* |
+
+---
+
+## Instrument fitness — `instrument-fitness`
+
+**Kind:** judgment · **Scope:** `instrument`
+
+Judgments about the instruments themselves, including the rendering the reviewer judges through. Two families: is this instrument good enough for the job, and does the review view help or hinder the judgment it is asking for. The review UI is an instrument like any other, and a review instrument that misleads is the exact failure mode v2-3 shipped.
+
+### `instrument-fitness/display-confusing` ↔ `instrument-fitness/display-clarifying`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/display-confusing` | The rendering the reviewer judges through got in the way of the judgment it was asking for. | *I couldn't tell which of the overlays I was supposed to be looking at* |
+| `instrument-fitness/display-clarifying` | The rendering the reviewer judges through made the thing being judged easier to see. | *the three-layer rendering was helpful, I could see exactly what the mask covered* |
+
+### `instrument-fitness/display-too-busy` ↔ `instrument-fitness/display-too-sparse`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/display-too-busy` | The review view puts more on screen at once than the judgment needs. | *there is too much on screen at once, the boxes and the rings fight each other* |
+| `instrument-fitness/display-too-sparse` | The review view withholds something the judgment needs. | *I need the artwork next to it, I can't judge this on its own* |
+
+### `instrument-fitness/needs-onboarding` ↔ `instrument-fitness/self-explanatory`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/needs-onboarding` | The instrument works once understood, but the first encounter with it has to be explained. | *i just got confused the first time, after that it was fine* |
+| `instrument-fitness/self-explanatory` | The instrument needed no explaining; it read correctly on first sight. | *I knew what I was looking at straight away, nobody had to tell me* |
+
+### `instrument-fitness/fit-for-purpose` ↔ `instrument-fitness/unfit-for-purpose`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/fit-for-purpose` | The reviewer judges this instrument good enough for the job we want it to do. | *I think the DINO models are better, they're the ones to use* |
+| `instrument-fitness/unfit-for-purpose` | The reviewer judges this instrument not good enough for the job we want it to do. | *this one is not doing the job, I wouldn't trust it for this* |
+
+### `instrument-fitness/candidates-separable` ↔ `instrument-fitness/candidates-indistinguishable`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/candidates-separable` | The reviewer can tell two candidate instruments apart on the evidence shown, and says which one wins. | *the difference between these two models is obvious, the second one is clearly better* |
+| `instrument-fitness/candidates-indistinguishable` | The reviewer cannot tell two candidate instruments apart on the evidence shown, so the choice between them is unfunded. | *I wouldn't know which one of the 2* |
+
+### `instrument-fitness/disagrees-defensibly` ↔ `instrument-fitness/disagrees-indefensibly`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `instrument-fitness/disagrees-defensibly` | The instrument answered differently from the reviewer and the reviewer can see why: the disagreement is a difference of reading, not an error. | *where I voted differently from the oracle, I could see its point of view* |
+| `instrument-fitness/disagrees-indefensibly` | The instrument answered differently from the reviewer and the answer is not one a careful reader could have reached. | *it says there are two fields and there is plainly only one — that is not a matter of opinion* |
+
+---
+
+## Concept and label — `concept`
+
+**Kind:** judgment · **Scope:** `criterion`
+
+The words the question set uses against the things a detector actually finds. Records the right-detection/wrong-word case, a category word that admits too much or too little, and a word that conflates two things or splits one. About naming; how a call is decided is the criterion axis.
+
+### `concept/detection-right-label-wrong` ↔ `concept/label-right-detection-wrong`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `concept/detection-right-label-wrong` | The right thing was found, and the category word put on it is not the word the reviewer would use for it. | *i did not count 'parental advisory' marks as 'stickers' but the model seemed to* |
+| `concept/label-right-detection-wrong` | The category word is the right one to be asking about; the region found under it is not what the word names. | *it says 'logo' and it has outlined the singer's face* |
+
+### `concept/label-too-broad` ↔ `concept/label-too-narrow`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `concept/label-too-broad` | The category word admits cases we did not mean it to cover. | *'face' is catching a graffiti of a face and a sculpted bust as well* |
+| `concept/label-too-narrow` | The category word excludes cases we did mean it to cover. | *'sticker' ought to cover the price tag too, and it doesn't* |
+
+### `concept/label-conflates` ↔ `concept/label-splits`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `concept/label-conflates` | One category word covers two things the work needs to keep apart. | *'album-title' doesn't separate the title from the artist name — it is just the main text* |
+| `concept/label-splits` | Two category words separate one thing that reads as a single thing, and the reviewer has to guess which to use. | *'border' and 'frame' are the same thing here, splitting them just makes me guess* |
+
+---
+
+## Criterion rulings — `criterion`
+
+**Kind:** judgment · **Scope:** `criterion`
+
+Rulings about how a judgment is to be made, and about how many answers a case admits. A ruling is not a complaint about a palette: it fixes (or declines to fix) the test that later palettes will be judged by. Multi-validity lives here too — "both answers are defensible for this artwork" is an artwork-scoped statement and overrides the axis scope.
+
+### `criterion/ruling-given` ↔ `criterion/underdetermined`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/ruling-given` | The reviewer fixes how a case like this is to be judged from now on — a standing answer, not a one-off call. | *the test is surface identity, never boundary softness* |
+| `criterion/underdetermined` | The existing criterion does not decide this case, and the reviewer says so rather than deciding it. | *sometimes 'logo' could be part of the artwork itself, or some sort of added branding* |
+
+### `criterion/option-set-gap` ↔ `criterion/option-set-sufficient`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/option-set-gap` | The answer options offered for a question do not cover a case that actually occurs: the case is real and none of the available words fit it. A statement about the option set, not about whether the case has been decided — a ruling usually opens with one of these and then closes it. | *there's no option for one flat field and one shaded field with a blurry line between them* |
+| `criterion/option-set-sufficient` | The answer options do cover the case; what was missing was the rule for choosing between them, not a new option. | *shaded_field already covers that wall, nothing new needs adding* |
+
+### `criterion/criterion-narrowed` ↔ `criterion/criterion-widened`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/criterion-narrowed` | The ruling shrinks what counts: a property that seemed to decide the call is declared not to. | *a soft join does not make it two fields — that was never the test* |
+| `criterion/criterion-widened` | The ruling enlarges what counts: a property that seemed required is demoted to a hint, or another reading is admitted. | *surface identity is a strong prior, neither necessary nor sufficient* |
+
+### `criterion/forced-choice-required` ↔ `criterion/abstention-allowed`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/forced-choice-required` | A genuinely ambiguous case must still be answered, because the human answer has to be symmetric with the instrument's. | *answer it on the gut read — the model doesn't get to abstain either* |
+| `criterion/abstention-allowed` | A genuinely ambiguous case is better left unanswered than forced. | *if you can't tell, don't guess — an empty answer is more useful than a coin flip* |
+
+### `criterion/both-readings-defensible` ↔ `criterion/one-reading-only`
+
+**Scope override:** `artwork`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/both-readings-defensible` | Two opposite answers are both defensible for this artwork; which one is published is a choice, not a correctness question. Artwork-scoped: unlike meta/both-sides-good it outlives the item it was said on. | *an artwork can support a valid flat palette and a valid gradient palette* |
+| `criterion/one-reading-only` | Only one answer is defensible for this artwork; the other is wrong rather than a matter of taste. | *there is no reading of this cover where that call is defensible* |
+
+### `criterion/unfair-comparison-basis` ↔ `criterion/fair-comparison-basis`
+
+| tag | means | example phrase |
+| --- | --- | --- |
+| `criterion/unfair-comparison-basis` | The property being compared on is contaminated by choices made downstream of the thing under test, so a difference on it does not mean what it looks like it means. | *the flat/gradient flag depends on which colours got picked, it isn't a property of the artwork* |
+| `criterion/fair-comparison-basis` | The property being compared on does isolate the thing under test, so a difference on it can be read at face value. | *this measure only moves when the thing we changed moves, so the comparison is clean* |
+
+---
+
 ## Flat index
 
-| tag | opposite |
-| --- | --- |
-| `collapse/accent-should-collapse` | `collapse/accent-should-not-collapse` |
-| `collapse/accent-should-not-collapse` | `collapse/accent-should-collapse` |
-| `collapse/roles-too-alike` | `collapse/roles-too-distinct` |
-| `collapse/roles-too-distinct` | `collapse/roles-too-alike` |
-| `collapse/surface-should-collapse` | `collapse/surface-should-not-collapse` |
-| `collapse/surface-should-not-collapse` | `collapse/surface-should-collapse` |
-| `contrast/accent-too-high` | `contrast/accent-too-low` |
-| `contrast/accent-too-low` | `contrast/accent-too-high` |
-| `contrast/ramp-flattened-for-text` | `contrast/text-unreadable-over-ramp` |
-| `contrast/surface-too-close-to-background` | `contrast/surface-too-separated-from-background` |
-| `contrast/surface-too-separated-from-background` | `contrast/surface-too-close-to-background` |
-| `contrast/text-too-high` | `contrast/text-too-low` |
-| `contrast/text-too-low` | `contrast/text-too-high` |
-| `contrast/text-unreadable-over-ramp` | `contrast/ramp-flattened-for-text` |
-| `coverage/alien-color` | `coverage/missing-color` |
-| `coverage/hue-too-cool` | `coverage/hue-too-warm` |
-| `coverage/hue-too-warm` | `coverage/hue-too-cool` |
-| `coverage/missing-color` | `coverage/alien-color` |
-| `coverage/too-dark` | `coverage/too-light` |
-| `coverage/too-desaturated` | `coverage/too-saturated` |
-| `coverage/too-light` | `coverage/too-dark` |
-| `coverage/too-monochrome` | `coverage/too-varied` |
-| `coverage/too-saturated` | `coverage/too-desaturated` |
-| `coverage/too-varied` | `coverage/too-monochrome` |
-| `gradient/midpoint-too-early` | `gradient/midpoint-too-late` |
-| `gradient/midpoint-too-late` | `gradient/midpoint-too-early` |
-| `gradient/ramp-off-artwork` | `gradient/ramp-over-literal` |
-| `gradient/ramp-over-literal` | `gradient/ramp-off-artwork` |
-| `gradient/ramp-too-contrasty` | `gradient/ramp-too-subtle` |
-| `gradient/ramp-too-subtle` | `gradient/ramp-too-contrasty` |
-| `gradient/should-be-flat` | `gradient/should-be-gradient` |
-| `gradient/should-be-gradient` | `gradient/should-be-flat` |
-| `gradient/too-few-stops` | `gradient/too-many-stops` |
-| `gradient/too-many-stops` | `gradient/too-few-stops` |
-| `gradient/wrong-end-color` | `gradient/wrong-start-color` |
-| `gradient/wrong-start-color` | `gradient/wrong-end-color` |
-| `identity/coverage-overreach` | `identity/coverage-shortfall` |
-| `identity/coverage-shortfall` | `identity/coverage-overreach` |
-| `identity/signature-color-missing` | `identity/signature-color-overweighted` |
-| `identity/signature-color-overweighted` | `identity/signature-color-missing` |
-| `identity/too-literal` | `identity/wrong-mood` |
-| `identity/wrong-mood` | `identity/too-literal` |
-| `meta/both-sides-bad` | `meta/both-sides-good` |
-| `meta/both-sides-good` | `meta/both-sides-bad` |
-| `meta/improvement` | `meta/regression` |
-| `meta/regression` | `meta/improvement` |
-| `meta/sides-incomparable` | `meta/sides-indistinguishable` |
-| `meta/sides-indistinguishable` | `meta/sides-incomparable` |
-| `meta/tagger-confident` | `meta/tagger-unsure` |
-| `meta/tagger-unsure` | `meta/tagger-confident` |
-| `provenance/border-artifact-published` | `provenance/edge-content-ignored` |
-| `provenance/edge-content-ignored` | `provenance/border-artifact-published` |
-| `provenance/noise-color-published` | `provenance/small-region-ignored` |
-| `provenance/overlay-color-ignored` | `provenance/overlay-color-published` |
-| `provenance/overlay-color-published` | `provenance/overlay-color-ignored` |
-| `provenance/small-region-ignored` | `provenance/noise-color-published` |
-| `role/accent-should-be-chromatic` | `role/accent-should-be-neutral` |
-| `role/accent-should-be-neutral` | `role/accent-should-be-chromatic` |
-| `role/accent-too-prominent` | `role/accent-too-recessive` |
-| `role/accent-too-recessive` | `role/accent-too-prominent` |
-| `role/foreground-should-be-neutral` | `role/foreground-should-be-tinted` |
-| `role/foreground-should-be-tinted` | `role/foreground-should-be-neutral` |
-| `role/surface-should-be-chromatic` | `role/surface-should-be-neutral` |
-| `role/surface-should-be-neutral` | `role/surface-should-be-chromatic` |
-| `role/wrong-color-selection` | `role/wrong-role-assignment` |
-| `role/wrong-role-assignment` | `role/wrong-color-selection` |
+`opposite / alternatives` holds the opposite for a judgment tag and the counterparts for a descriptive one.
+
+| tag | kind | scope | opposite / alternatives |
+| --- | --- | --- | --- |
+| `collapse/accent-should-collapse` | judgment | `pairwise-item` | `collapse/accent-should-not-collapse` |
+| `collapse/accent-should-not-collapse` | judgment | `pairwise-item` | `collapse/accent-should-collapse` |
+| `collapse/roles-too-alike` | judgment | `pairwise-item` | `collapse/roles-too-distinct` |
+| `collapse/roles-too-distinct` | judgment | `pairwise-item` | `collapse/roles-too-alike` |
+| `collapse/surface-should-collapse` | judgment | `pairwise-item` | `collapse/surface-should-not-collapse` |
+| `collapse/surface-should-not-collapse` | judgment | `pairwise-item` | `collapse/surface-should-collapse` |
+| `concept/detection-right-label-wrong` | judgment | `criterion` | `concept/label-right-detection-wrong` |
+| `concept/label-conflates` | judgment | `criterion` | `concept/label-splits` |
+| `concept/label-right-detection-wrong` | judgment | `criterion` | `concept/detection-right-label-wrong` |
+| `concept/label-splits` | judgment | `criterion` | `concept/label-conflates` |
+| `concept/label-too-broad` | judgment | `criterion` | `concept/label-too-narrow` |
+| `concept/label-too-narrow` | judgment | `criterion` | `concept/label-too-broad` |
+| `contrast/accent-too-high` | judgment | `pairwise-item` | `contrast/accent-too-low` |
+| `contrast/accent-too-low` | judgment | `pairwise-item` | `contrast/accent-too-high` |
+| `contrast/ramp-flattened-for-text` | judgment | `pairwise-item` | `contrast/text-unreadable-over-ramp` |
+| `contrast/surface-too-close-to-background` | judgment | `pairwise-item` | `contrast/surface-too-separated-from-background` |
+| `contrast/surface-too-separated-from-background` | judgment | `pairwise-item` | `contrast/surface-too-close-to-background` |
+| `contrast/text-too-high` | judgment | `pairwise-item` | `contrast/text-too-low` |
+| `contrast/text-too-low` | judgment | `pairwise-item` | `contrast/text-too-high` |
+| `contrast/text-unreadable-over-ramp` | judgment | `pairwise-item` | `contrast/ramp-flattened-for-text` |
+| `coverage/alien-color` | judgment | `pairwise-item` | `coverage/missing-color` |
+| `coverage/hue-too-cool` | judgment | `pairwise-item` | `coverage/hue-too-warm` |
+| `coverage/hue-too-warm` | judgment | `pairwise-item` | `coverage/hue-too-cool` |
+| `coverage/missing-color` | judgment | `pairwise-item` | `coverage/alien-color` |
+| `coverage/too-dark` | judgment | `pairwise-item` | `coverage/too-light` |
+| `coverage/too-desaturated` | judgment | `pairwise-item` | `coverage/too-saturated` |
+| `coverage/too-light` | judgment | `pairwise-item` | `coverage/too-dark` |
+| `coverage/too-monochrome` | judgment | `pairwise-item` | `coverage/too-varied` |
+| `coverage/too-saturated` | judgment | `pairwise-item` | `coverage/too-desaturated` |
+| `coverage/too-varied` | judgment | `pairwise-item` | `coverage/too-monochrome` |
+| `criterion/abstention-allowed` | judgment | `criterion` | `criterion/forced-choice-required` |
+| `criterion/both-readings-defensible` | judgment | `artwork` | `criterion/one-reading-only` |
+| `criterion/criterion-narrowed` | judgment | `criterion` | `criterion/criterion-widened` |
+| `criterion/criterion-widened` | judgment | `criterion` | `criterion/criterion-narrowed` |
+| `criterion/fair-comparison-basis` | judgment | `criterion` | `criterion/unfair-comparison-basis` |
+| `criterion/forced-choice-required` | judgment | `criterion` | `criterion/abstention-allowed` |
+| `criterion/one-reading-only` | judgment | `artwork` | `criterion/both-readings-defensible` |
+| `criterion/option-set-gap` | judgment | `criterion` | `criterion/option-set-sufficient` |
+| `criterion/option-set-sufficient` | judgment | `criterion` | `criterion/option-set-gap` |
+| `criterion/ruling-given` | judgment | `criterion` | `criterion/underdetermined` |
+| `criterion/underdetermined` | judgment | `criterion` | `criterion/ruling-given` |
+| `criterion/unfair-comparison-basis` | judgment | `criterion` | `criterion/fair-comparison-basis` |
+| `gradient/midpoint-too-early` | judgment | `pairwise-item` | `gradient/midpoint-too-late` |
+| `gradient/midpoint-too-late` | judgment | `pairwise-item` | `gradient/midpoint-too-early` |
+| `gradient/ramp-off-artwork` | judgment | `pairwise-item` | `gradient/ramp-over-literal` |
+| `gradient/ramp-over-literal` | judgment | `pairwise-item` | `gradient/ramp-off-artwork` |
+| `gradient/ramp-too-contrasty` | judgment | `pairwise-item` | `gradient/ramp-too-subtle` |
+| `gradient/ramp-too-subtle` | judgment | `pairwise-item` | `gradient/ramp-too-contrasty` |
+| `gradient/should-be-flat` | judgment | `pairwise-item` | `gradient/should-be-gradient` |
+| `gradient/should-be-gradient` | judgment | `pairwise-item` | `gradient/should-be-flat` |
+| `gradient/too-few-stops` | judgment | `pairwise-item` | `gradient/too-many-stops` |
+| `gradient/too-many-stops` | judgment | `pairwise-item` | `gradient/too-few-stops` |
+| `gradient/wrong-end-color` | judgment | `pairwise-item` | `gradient/wrong-start-color` |
+| `gradient/wrong-start-color` | judgment | `pairwise-item` | `gradient/wrong-end-color` |
+| `identity/coverage-overreach` | judgment | `pairwise-item` | `identity/coverage-shortfall` |
+| `identity/coverage-shortfall` | judgment | `pairwise-item` | `identity/coverage-overreach` |
+| `identity/signature-color-missing` | judgment | `pairwise-item` | `identity/signature-color-overweighted` |
+| `identity/signature-color-overweighted` | judgment | `pairwise-item` | `identity/signature-color-missing` |
+| `identity/too-literal` | judgment | `pairwise-item` | `identity/wrong-mood` |
+| `identity/wrong-mood` | judgment | `pairwise-item` | `identity/too-literal` |
+| `instrument-behavior/attends-to-appearance` | descriptive | `instrument` | `instrument-behavior/attends-to-semantics`, `instrument-behavior/attends-to-outside-identity` |
+| `instrument-behavior/attends-to-outside-identity` | descriptive | `instrument` | `instrument-behavior/attends-to-appearance`, `instrument-behavior/attends-to-semantics` |
+| `instrument-behavior/attends-to-semantics` | descriptive | `instrument` | `instrument-behavior/attends-to-appearance` |
+| `instrument-behavior/generalizes-beyond-expectation` | descriptive | `instrument` | `instrument-behavior/misses-expected-case` |
+| `instrument-behavior/instruments-agree` | descriptive | `instrument` | `instrument-behavior/instruments-differ` |
+| `instrument-behavior/instruments-differ` | descriptive | `instrument` | `instrument-behavior/instruments-agree` |
+| `instrument-behavior/misses-expected-case` | descriptive | `instrument` | `instrument-behavior/generalizes-beyond-expectation` |
+| `instrument-fitness/candidates-indistinguishable` | judgment | `instrument` | `instrument-fitness/candidates-separable` |
+| `instrument-fitness/candidates-separable` | judgment | `instrument` | `instrument-fitness/candidates-indistinguishable` |
+| `instrument-fitness/disagrees-defensibly` | judgment | `instrument` | `instrument-fitness/disagrees-indefensibly` |
+| `instrument-fitness/disagrees-indefensibly` | judgment | `instrument` | `instrument-fitness/disagrees-defensibly` |
+| `instrument-fitness/display-clarifying` | judgment | `instrument` | `instrument-fitness/display-confusing` |
+| `instrument-fitness/display-confusing` | judgment | `instrument` | `instrument-fitness/display-clarifying` |
+| `instrument-fitness/display-too-busy` | judgment | `instrument` | `instrument-fitness/display-too-sparse` |
+| `instrument-fitness/display-too-sparse` | judgment | `instrument` | `instrument-fitness/display-too-busy` |
+| `instrument-fitness/fit-for-purpose` | judgment | `instrument` | `instrument-fitness/unfit-for-purpose` |
+| `instrument-fitness/needs-onboarding` | judgment | `instrument` | `instrument-fitness/self-explanatory` |
+| `instrument-fitness/self-explanatory` | judgment | `instrument` | `instrument-fitness/needs-onboarding` |
+| `instrument-fitness/unfit-for-purpose` | judgment | `instrument` | `instrument-fitness/fit-for-purpose` |
+| `meta/both-sides-bad` | judgment | `pairwise-item` | `meta/both-sides-good` |
+| `meta/both-sides-good` | judgment | `pairwise-item` | `meta/both-sides-bad` |
+| `meta/improvement` | judgment | `pairwise-item` | `meta/regression` |
+| `meta/regression` | judgment | `pairwise-item` | `meta/improvement` |
+| `meta/sides-incomparable` | judgment | `pairwise-item` | `meta/sides-indistinguishable` |
+| `meta/sides-indistinguishable` | judgment | `pairwise-item` | `meta/sides-incomparable` |
+| `meta/tagger-confident` | judgment | `instrument` | `meta/tagger-unsure` |
+| `meta/tagger-unsure` | judgment | `instrument` | `meta/tagger-confident` |
+| `provenance/border-artifact-published` | judgment | `pairwise-item` | `provenance/edge-content-ignored` |
+| `provenance/edge-content-ignored` | judgment | `pairwise-item` | `provenance/border-artifact-published` |
+| `provenance/noise-color-published` | judgment | `pairwise-item` | `provenance/small-region-ignored` |
+| `provenance/overlay-color-ignored` | judgment | `pairwise-item` | `provenance/overlay-color-published` |
+| `provenance/overlay-color-published` | judgment | `pairwise-item` | `provenance/overlay-color-ignored` |
+| `provenance/small-region-ignored` | judgment | `pairwise-item` | `provenance/noise-color-published` |
+| `role/accent-should-be-chromatic` | judgment | `pairwise-item` | `role/accent-should-be-neutral` |
+| `role/accent-should-be-neutral` | judgment | `pairwise-item` | `role/accent-should-be-chromatic` |
+| `role/accent-too-prominent` | judgment | `pairwise-item` | `role/accent-too-recessive` |
+| `role/accent-too-recessive` | judgment | `pairwise-item` | `role/accent-too-prominent` |
+| `role/foreground-should-be-neutral` | judgment | `pairwise-item` | `role/foreground-should-be-tinted` |
+| `role/foreground-should-be-tinted` | judgment | `pairwise-item` | `role/foreground-should-be-neutral` |
+| `role/surface-should-be-chromatic` | judgment | `pairwise-item` | `role/surface-should-be-neutral` |
+| `role/surface-should-be-neutral` | judgment | `pairwise-item` | `role/surface-should-be-chromatic` |
+| `role/wrong-color-selection` | judgment | `pairwise-item` | `role/wrong-role-assignment` |
+| `role/wrong-role-assignment` | judgment | `pairwise-item` | `role/wrong-color-selection` |

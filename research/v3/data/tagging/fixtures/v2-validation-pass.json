@@ -1,0 +1,254 @@
+{
+	"kind": "tagging-work-file",
+	"formatVersion": "1",
+	"vocabularyVersion": "2.1.0",
+	"agent": "tagging-agent",
+	"generatedAt": "2026-08-03T14:42:26.742Z",
+	"warehouse": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"instructions": "COMMITTED FIXTURE — the v2 validation pass. A fresh tagging agent mapped these 13 reviewer observations against vocabulary 2.1.0 under the prompt in src/tagging/TAGGING_PROTOCOL.md §4. Kept because it is the evidence that the v2 axes closed the four gap classes the v1 smoke pass found (13/13 zero-tag). tests/tagging-validation.test.ts reads it; do not edit it to make a test pass — re-run the pass instead.",
+	"entries": [
+		{
+			"sourceId": "n-msdbbeqw-3e725512",
+			"sourceType": "note",
+			"text": "Embedding gallery browse, on PE-Core-L14: it matches by artist, not by image. \"Seems to consider 'close' artworks when they are by the same artist, even if the images themselves don't look much alike (happens for toxicity, johns, krafty, muse, infected). For some of them it could be the band's logo that is the same, for others it might be the textual content that is the same (band's name), or it has deep knowledge of music artworks.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/embeddings/GALLERY_NOTES.md#obs-1",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.912Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-behavior/attends-to-outside-identity"
+			],
+			"note": "Model observed matching on the artist/band (logo, band name text) rather than on the picture."
+		},
+		{
+			"sourceId": "n-msdbber4-f9fb1c27",
+			"sourceType": "note",
+			"text": "Embedding gallery browse, DINOv2 vs DINOv3 attend to different structure: \"For krafty, DINOv2 focused on the layout and flowers, while DINOv3 seems to have focused more on the strong typography.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/embeddings/GALLERY_NOTES.md#obs-2",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.920Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-behavior/instruments-differ",
+				"instrument-behavior/attends-to-appearance"
+			],
+			"note": "Two models given the same cover keyed on different things; both cues named (layout/flowers, typography) are appearance cues."
+		},
+		{
+			"sourceId": "n-msdbber9-ad958e78",
+			"sourceType": "note",
+			"text": "Embedding gallery browse, DINOv3 sometimes matches semantic category across styles: \"For the boat in johns -> a picture of a boat, a painting of a boat, a logo of a boat, a drawing of an origami boat, all in different styles but all boats.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/embeddings/GALLERY_NOTES.md#obs-3",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.925Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-behavior/attends-to-semantics"
+			],
+			"note": "Grouped boats across photo/painting/logo/drawing styles — keying on what is depicted."
+		},
+		{
+			"sourceId": "n-msdbbere-64a4d8b9",
+			"sourceType": "note",
+			"text": "Embedding gallery browse, overall: \"I think the DINO models are better, but I wouldn't know which one of the 2.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/embeddings/GALLERY_NOTES.md#obs-4",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.930Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-fitness/fit-for-purpose",
+				"instrument-fitness/candidates-indistinguishable"
+			],
+			"note": "Judges the DINO family good enough, but cannot separate DINOv2 from DINOv3 on the evidence shown."
+		},
+		{
+			"sourceId": "n-msdbberi-99754df1",
+			"sourceType": "note",
+			"text": "SAM mask review: \"sometimes 'logo' could be part of the artwork itself, or some sort of added branding\" — and likewise \"sticker\": part of the artwork, or something added on top.",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-1",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.934Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"criterion/underdetermined"
+			],
+			"note": "Says the existing criterion does not settle whether a logo/sticker is artwork or added-on, and declines to settle it."
+		},
+		{
+			"sourceId": "n-msdbberm-91b924fc",
+			"sourceType": "note",
+			"text": "SAM mask review: \"i did not count 'parental advisory' marks as 'stickers' but the model seemed to consider them as stickers.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-2",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.938Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"concept/detection-right-label-wrong"
+			],
+			"note": "The mark was found; the reviewer would not call 'parental advisory' a sticker."
+		},
+		{
+			"sourceId": "n-msdbberq-2c67fe1f",
+			"sourceType": "note",
+			"text": "SAM mask review, on faces firing on depicted faces: \"a graffiti of a face\", \"a sculpted bust\".",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-3",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.942Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"concept/label-too-broad"
+			],
+			"note": "'face' admits depicted faces (graffiti, sculpted bust) the reviewer did not mean it to cover."
+		},
+		{
+			"sourceId": "n-msdbberu-67d3de34",
+			"sourceType": "note",
+			"text": "SAM mask review: \"a chinese character was recognized as a word (not incorrect, just interesting)\".",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-4",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.946Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-behavior/generalizes-beyond-expectation"
+			],
+			"note": "Handled a case we had no reason to expect — explicitly flagged as not incorrect, just interesting."
+		},
+		{
+			"sourceId": "n-msdbbery-b7288d4a",
+			"sourceType": "note",
+			"text": "SAM mask review: album-title masks sometimes ambiguous between the title and the artist name — \"definitely some of the main text\".",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-5",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.950Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"concept/label-conflates"
+			],
+			"note": "'album-title' does not keep the title and the artist name apart; it just marks the main text."
+		},
+		{
+			"sourceId": "n-msdbbes3-f41aed5b",
+			"sourceType": "note",
+			"text": "SAM mask review, on the overlay rendering (mask fill + bbox + locator ring): \"the three-layer rendering was helpful in some cases, i just got confused the first time that's all.\"",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/data/sam/MASK_REVIEW_NOTES.md#obs-6",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.955Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"instrument-fitness/display-clarifying",
+				"instrument-fitness/needs-onboarding"
+			],
+			"note": "The rendering helped once understood, but the first encounter confused the reviewer."
+		},
+		{
+			"sourceId": "n-msdbbes8-8471df08",
+			"sourceType": "note",
+			"text": "Premise disambiguation round, canonical ruling: ground_type has a gap for \"one flat field + one shaded field with a blurry meeting line\". The test is surface identity, never boundary softness — one surface partly flat / partly shaded is shaded_field; two areas with a soft join are multiple_distinct_fields; genuine 5-second ambiguity is answered on the gut read, because the forced choice has to be symmetric with the VLM's.",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/ORACLE_QUESTION_SET.md#appendix-r-1",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.960Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"criterion/option-set-gap",
+				"criterion/ruling-given",
+				"criterion/criterion-narrowed",
+				"criterion/forced-choice-required"
+			],
+			"note": "Names a missing ground_type option, then fixes a standing test (surface identity), rules boundary softness out of the test, and requires an answer on ambiguous cases for symmetry with the VLM."
+		},
+		{
+			"sourceId": "n-msdbbesd-68bc43d7",
+			"sourceType": "note",
+			"text": "Premise disambiguation round, second canonical ruling: one wall painted in bands that melt into each other is shaded_field — the contract's genuine three-stop gradient case; the same wall in crisp bands is multiple_distinct_fields. The axis is whether the ground reads as one continuous color progression or as discrete color areas; surface identity is a strong prior, neither necessary nor sufficient.",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/ORACLE_QUESTION_SET.md#appendix-r-2",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.965Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"criterion/ruling-given",
+				"criterion/criterion-widened"
+			],
+			"note": "A standing rule for melting vs crisp bands, and surface identity demoted from decisive to a strong prior."
+		},
+		{
+			"sourceId": "n-msdbbesh-9f87f1b3",
+			"sourceType": "note",
+			"text": "Adjudication browse: the published gradient flag is palette-conditional, not an artwork label. \"The flat/gradient flag might not be the most fair comparison since it can really depend on which colors were picked for background/surface too.\" An artwork can support a valid flat palette and a valid gradient palette; the flag records which choice won. The reviewer also reported that where they voted differently from the oracle, they could see its point of view.",
+			"context": {
+				"batchId": null,
+				"batchPurpose": null,
+				"itemId": "research/v3/ORACLE_QUESTION_SET.md#appendix-r-3",
+				"artworkPath": null,
+				"artworkSha256": null,
+				"sourceTs": "2026-08-03T14:16:23.969Z",
+				"amendedAt": null
+			},
+			"tags": [
+				"criterion/unfair-comparison-basis",
+				"criterion/both-readings-defensible",
+				"instrument-fitness/disagrees-defensibly"
+			],
+			"note": "The compared flag is contaminated by downstream color picks; the artwork admits both a flat and a gradient palette; oracle disagreements were readable as a point of view."
+		}
+	]
+}
