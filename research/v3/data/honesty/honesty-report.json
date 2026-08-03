@@ -1,18 +1,18 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-03T21:39:38.570Z",
+		"generatedAt": "2026-08-03T21:41:02.110Z",
 		"roots": [
 			"oracle",
 			"src"
 		],
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash."
 	},
-	"bodyHash": "36360f4392af69f9e648ba519d8fce66d6a26dc46737e57ab43883c6ecc1afd2",
+	"bodyHash": "b741a12a62436d603526f2702cc1b61bb994eebd13e3ccc5e116152b02ae4ff2",
 	"body": {
 		"corpus": {
 			"files": 119,
-			"lines": 57754,
+			"lines": 57846,
 			"byLanguage": {
 				"py": {
 					"files": 60,
@@ -21,7 +21,7 @@
 				},
 				"ts": {
 					"files": 59,
-					"lines": 33395,
+					"lines": 33487,
 					"fidelity": "ast"
 				}
 			}
@@ -1929,7 +1929,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 914,
+				"line": 1006,
 				"column": 49,
 				"value": 0.7,
 				"text": "0.7",
@@ -1944,7 +1944,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1059,
+				"line": 1151,
 				"column": 22,
 				"value": 0.35,
 				"text": "0.35",
@@ -1959,7 +1959,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1059,
+				"line": 1151,
 				"column": 44,
 				"value": 0.8,
 				"text": "0.8",
@@ -1974,7 +1974,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1060,
+				"line": 1152,
 				"column": 27,
 				"value": 0.08,
 				"text": "0.08",
@@ -2450,7 +2450,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 467,
+				"line": 559,
 				"column": 14,
 				"value": 0.000001,
 				"text": "1e-6",
@@ -10699,7 +10699,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 452,
+				"line": 544,
 				"column": 34,
 				"value": 200000,
 				"text": "200_000",
@@ -10714,7 +10714,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 496,
+				"line": 588,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -10728,7 +10728,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 550,
+				"line": 642,
 				"column": 14,
 				"value": 2,
 				"text": "2",
@@ -10742,7 +10742,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 568,
+				"line": 660,
 				"column": 36,
 				"value": 400,
 				"text": "400",
@@ -10757,7 +10757,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 625,
+				"line": 717,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -10771,7 +10771,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 640,
+				"line": 732,
 				"column": 17,
 				"value": 180,
 				"text": "180",
@@ -10785,7 +10785,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 641,
+				"line": 733,
 				"column": 19,
 				"value": -180,
 				"text": "180",
@@ -10800,7 +10800,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 674,
+				"line": 766,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -10814,7 +10814,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 701,
+				"line": 793,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -10828,7 +10828,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 706,
+				"line": 798,
 				"column": 17,
 				"value": 1,
 				"text": "1",
@@ -10842,7 +10842,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 718,
+				"line": 810,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -10856,7 +10856,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 736,
+				"line": 828,
 				"column": 34,
 				"value": 400000,
 				"text": "400_000",
@@ -10871,7 +10871,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 763,
+				"line": 855,
 				"column": 35,
 				"value": 3,
 				"text": "3",
@@ -10886,7 +10886,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 767,
+				"line": 859,
 				"column": 30,
 				"value": 0,
 				"text": "0",
@@ -10900,7 +10900,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 767,
+				"line": 859,
 				"column": 56,
 				"value": 255,
 				"text": "255",
@@ -10914,7 +10914,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 775,
+				"line": 867,
 				"column": 19,
 				"value": 0.1,
 				"text": "0.1",
@@ -10929,7 +10929,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 775,
+				"line": 867,
 				"column": 50,
 				"value": 0.9,
 				"text": "0.9",
@@ -10944,7 +10944,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 787,
+				"line": 879,
 				"column": 34,
 				"value": 3000,
 				"text": "3_000",
@@ -10959,7 +10959,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 901,
+				"line": 993,
 				"column": 36,
 				"value": 3000,
 				"text": "3_000",
@@ -10974,7 +10974,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1023,
+				"line": 1115,
 				"column": 28,
 				"value": 40,
 				"text": "40",
@@ -10989,7 +10989,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1031,
+				"line": 1123,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -11003,7 +11003,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1050,
+				"line": 1142,
 				"column": 35,
 				"value": 60000,
 				"text": "60_000",
@@ -16393,7 +16393,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 485,
+				"line": 577,
 				"column": 16,
 				"value": 240,
 				"text": "240",
@@ -16407,7 +16407,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 692,
+				"line": 784,
 				"column": 16,
 				"value": 400,
 				"text": "400",
@@ -16421,7 +16421,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 965,
+				"line": 1057,
 				"column": 11,
 				"value": 2,
 				"text": "2",
@@ -19464,7 +19464,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 775,
+				"line": 867,
 				"column": 36,
 				"value": 0.5,
 				"text": "0.5",
@@ -19479,7 +19479,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1071,
+				"line": 1163,
 				"column": 30,
 				"value": 64,
 				"text": "64",
@@ -19493,7 +19493,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1071,
+				"line": 1163,
 				"column": 34,
 				"value": 66,
 				"text": "66",
@@ -19507,7 +19507,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1071,
+				"line": 1163,
 				"column": 38,
 				"value": 70,
 				"text": "70",
@@ -19521,7 +19521,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1072,
+				"line": 1164,
 				"column": 92,
 				"value": 242,
 				"text": "242",
@@ -19535,7 +19535,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1072,
+				"line": 1164,
 				"column": 97,
 				"value": 240,
 				"text": "240",
@@ -19549,7 +19549,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1072,
+				"line": 1164,
 				"column": 102,
 				"value": 236,
 				"text": "236",
@@ -39778,7 +39778,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 454,
+				"line": 546,
 				"column": 26,
 				"value": 256,
 				"text": "256",
@@ -39790,7 +39790,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 455,
+				"line": 547,
 				"column": 26,
 				"value": 256,
 				"text": "256",
@@ -39802,7 +39802,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 456,
+				"line": 548,
 				"column": 26,
 				"value": 256,
 				"text": "256",
@@ -39814,7 +39814,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 27,
 				"value": 2,
 				"text": "2",
@@ -39826,7 +39826,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 31,
 				"value": 1,
 				"text": "1",
@@ -39838,7 +39838,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 45,
 				"value": 2,
 				"text": "2",
@@ -39850,7 +39850,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 49,
 				"value": 1,
 				"text": "1",
@@ -39862,7 +39862,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 63,
 				"value": 2,
 				"text": "2",
@@ -39874,7 +39874,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 465,
+				"line": 557,
 				"column": 67,
 				"value": 1,
 				"text": "1",
@@ -39886,7 +39886,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 487,
+				"line": 579,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -39898,7 +39898,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 551,
+				"line": 643,
 				"column": 48,
 				"value": 1,
 				"text": "1",
@@ -39910,7 +39910,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 592,
+				"line": 684,
 				"column": 97,
 				"value": 0,
 				"text": "0",
@@ -39924,7 +39924,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 624,
+				"line": 716,
 				"column": 46,
 				"value": 180,
 				"text": "180",
@@ -39936,7 +39936,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 625,
+				"line": 717,
 				"column": 29,
 				"value": 360,
 				"text": "360",
@@ -39948,7 +39948,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 634,
+				"line": 726,
 				"column": 9,
 				"value": 0,
 				"text": "0",
@@ -39960,7 +39960,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 640,
+				"line": 732,
 				"column": 31,
 				"value": 360,
 				"text": "360",
@@ -39972,7 +39972,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 641,
+				"line": 733,
 				"column": 33,
 				"value": 360,
 				"text": "360",
@@ -39984,7 +39984,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 658,
+				"line": 750,
 				"column": 52,
 				"value": 2,
 				"text": "2",
@@ -39996,7 +39996,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 659,
+				"line": 751,
 				"column": 14,
 				"value": 2,
 				"text": "2",
@@ -40008,7 +40008,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 659,
+				"line": 751,
 				"column": 79,
 				"value": 180,
 				"text": "180",
@@ -40020,7 +40020,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 659,
+				"line": 751,
 				"column": 86,
 				"value": 2,
 				"text": "2",
@@ -40032,7 +40032,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 665,
+				"line": 757,
 				"column": 35,
 				"value": 2,
 				"text": "2",
@@ -40044,7 +40044,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 665,
+				"line": 757,
 				"column": 55,
 				"value": 2,
 				"text": "2",
@@ -40056,7 +40056,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 665,
+				"line": 757,
 				"column": 72,
 				"value": 2,
 				"text": "2",
@@ -40068,7 +40068,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 674,
+				"line": 766,
 				"column": 25,
 				"value": 0,
 				"text": "0",
@@ -40080,7 +40080,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 674,
+				"line": 766,
 				"column": 48,
 				"value": 2,
 				"text": "2",
@@ -40092,7 +40092,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 689,
+				"line": 781,
 				"column": 52,
 				"value": 180,
 				"text": "180",
@@ -40104,7 +40104,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 693,
+				"line": 785,
 				"column": 22,
 				"value": 1,
 				"text": "1",
@@ -40116,7 +40116,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 693,
+				"line": 785,
 				"column": 26,
 				"value": -1,
 				"text": "1",
@@ -40130,7 +40130,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 695,
+				"line": 787,
 				"column": 29,
 				"value": 3,
 				"text": "3",
@@ -40142,7 +40142,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 705,
+				"line": 797,
 				"column": 39,
 				"value": 2,
 				"text": "2",
@@ -40154,7 +40154,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 707,
+				"line": 799,
 				"column": 22,
 				"value": 2,
 				"text": "2",
@@ -40166,7 +40166,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 737,
+				"line": 829,
 				"column": 44,
 				"value": 256,
 				"text": "256",
@@ -40178,7 +40178,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 737,
+				"line": 829,
 				"column": 72,
 				"value": 256,
 				"text": "256",
@@ -40190,7 +40190,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 737,
+				"line": 829,
 				"column": 100,
 				"value": 256,
 				"text": "256",
@@ -40202,7 +40202,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 764,
+				"line": 856,
 				"column": 25,
 				"value": -1,
 				"text": "1",
@@ -40216,7 +40216,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 764,
+				"line": 856,
 				"column": 28,
 				"value": 1,
 				"text": "1",
@@ -40228,7 +40228,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 774,
+				"line": 866,
 				"column": 88,
 				"value": 1,
 				"text": "1",
@@ -40240,7 +40240,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 862,
+				"line": 954,
 				"column": 97,
 				"value": 0,
 				"text": "0",
@@ -40254,7 +40254,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1024,
+				"line": 1116,
 				"column": 30,
 				"value": 2,
 				"text": "2",
@@ -40266,7 +40266,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1039,
+				"line": 1131,
 				"column": 27,
 				"value": 1,
 				"text": "1",
@@ -40278,7 +40278,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1039,
+				"line": 1131,
 				"column": 73,
 				"value": 1,
 				"text": "1",
@@ -40290,7 +40290,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1054,
+				"line": 1146,
 				"column": 27,
 				"value": 256,
 				"text": "256",
@@ -40302,7 +40302,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1055,
+				"line": 1147,
 				"column": 27,
 				"value": 256,
 				"text": "256",
@@ -40314,7 +40314,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1056,
+				"line": 1148,
 				"column": 27,
 				"value": 256,
 				"text": "256",
@@ -40326,7 +40326,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1061,
+				"line": 1153,
 				"column": 76,
 				"value": 2,
 				"text": "2",
@@ -40338,7 +40338,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1073,
+				"line": 1165,
 				"column": 107,
 				"value": 0,
 				"text": "0",
@@ -40352,7 +40352,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1085,
+				"line": 1177,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -40364,7 +40364,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1142,
+				"line": 1234,
 				"column": 84,
 				"value": 0,
 				"text": "0",
@@ -40376,7 +40376,7 @@
 			},
 			{
 				"file": "src/review-server/bracketing.ts",
-				"line": 1142,
+				"line": 1234,
 				"column": 89,
 				"value": 1,
 				"text": "1",

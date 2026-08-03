@@ -2,7 +2,7 @@
 
 **Generated file. Do not edit by hand** — regenerate with `node --experimental-strip-types src/honesty/cli.ts` from `research/v3`.
 
-Measured at **2026-08-03T21:39:38.570Z**. Body hash `36360f4392af69f9`.
+Measured at **2026-08-03T21:41:02.110Z**. Body hash `b741a12a62436d60`.
 
 Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1). It exists because v2-3 carried roughly 900 tunable sites against 11 human-anchored values — quantified overfitting. This page counts the first number and the provenance behind it. It does **not** measure the third number, the reviewed-vs-unseen perturbation-stability ratio; that needs a pipeline and belongs at the Phase 2 entry condition.
 
@@ -13,7 +13,7 @@ Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1
 - **Anchored: 365 (10.2%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
 - **Untagged: 3057** — no provenance of any kind. This is the dishonesty measure.
 
-Scanned 119 files, 57754 lines, 5745 numeric literals, of which 2158 were excluded by a named rule (listed below, none silent).
+Scanned 119 files, 57846 lines, 5745 numeric literals, of which 2158 were excluded by a named rule (listed below, none silent).
 
 **Read the fraction as a lower bound.** Exclusion rules are deliberately narrow: when it is unclear whether a number is structural or tunable it is counted, which inflates the denominator and pushes the fraction down. The tree is at least this honest, never less.
 
@@ -22,7 +22,7 @@ Scanned 119 files, 57754 lines, 5745 numeric literals, of which 2158 were exclud
 | language | files | lines | parser fidelity |
 |---|---:|---:|---|
 | py | 60 | 24359 | lexical |
-| ts | 59 | 33395 | ast |
+| ts | 59 | 33487 | ast |
 
 ## Provenance of the tunable sites
 
