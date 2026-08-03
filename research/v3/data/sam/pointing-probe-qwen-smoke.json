@@ -1,0 +1,263 @@
+{
+  "generated": "2026-08-03T22:31:50.709Z",
+  "git_head": "76c13b3f5918c0b2be90229749034b3188a4839b",
+  "pointer": {
+    "name": "qwen3-vl-30b-a3b-6bit",
+    "repo": "mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit",
+    "revision": "f31102655767c89366f63d3eab2a5e2a8fd6d293",
+    "load_seconds": 4.39,
+    "cap_px": 640,
+    "max_tokens": 256
+  },
+  "sam": {
+    "repo": "mlx-community/sam3.1-bf16",
+    "revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
+    "coord_space": "feature",
+    "selection": "containing",
+    "decoder": "interactive",
+    "fpn": "interactive"
+  },
+  "prompts": [
+    {
+      "key": "plain",
+      "text": "point to the background"
+    },
+    {
+      "key": "plural",
+      "text": "point to all parts of the background"
+    },
+    {
+      "key": "figure_ground",
+      "text": "point to the background surface behind the subject"
+    }
+  ],
+  "stored_run": "research/v3/data/sam/sam-eval-142-v4-nouns.jsonl",
+  "figure_concepts": [
+    "face",
+    "person"
+  ],
+  "mark_concepts": [
+    "barcode",
+    "display-text",
+    "emblem",
+    "letter",
+    "lettering",
+    "parental-advisory",
+    "sticker",
+    "words"
+  ],
+  "elapsed_seconds": 14.9,
+  "pointer_seconds_total": 5.3,
+  "summary": {
+    "calls": 6,
+    "produced_points": 2,
+    "declined": 4,
+    "unparsed": 0,
+    "points_on_figure": 2,
+    "point_calls": 2,
+    "points_on_figure_decidable": 2,
+    "decidable_point_calls": 2,
+    "points_on_mark": 0,
+    "controls_produced_points": 0,
+    "control_calls": 0,
+    "ambiguous_declined": 0,
+    "ambiguous_calls": 0,
+    "sam_contains_points": 1,
+    "sam_calls": 2,
+    "mean_sam_area": 0.1219,
+    "prompt_agreement_iou_mean": 0.5332,
+    "prompt_agreement_iou_median": 0.5332,
+    "lines": [
+      "calls                        6",
+      "  produced points            2/6",
+      "  explicitly DECLINED        4/6",
+      "  unparsed (not a decline)   0/6",
+      "points landed on a FIGURE    2/2   (pre-registered FAIL condition)",
+      "  ... on the 11 decidable    2/2",
+      "points landed on applied mark 0/2   (not a failure; reported)",
+      "controls produced points     0/0   (stop rule: if controls fail, the 9 are not interpreted)",
+      "ambiguous covers declined    0/0   (behaviour, not correctness)",
+      "SAM mask contains its points 1/2",
+      "mean SAM mask area           0.122",
+      "prompt-phrasing mask IoU     mean 0.533  median 0.533  (n=1)"
+    ]
+  },
+  "rows": [
+    {
+      "cover_id": "00014fb4",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "green on the left and red on the right - two fields",
+      "prompt_key": "plain",
+      "prompt": "point to the background",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "points",
+      "n_points": 1,
+      "n_in_frame": 1,
+      "raw_output": "<points x1=\"115\" y1=\"150\" alt=\"background\">background</points>",
+      "parse_note": "",
+      "pointer_seconds": 1.716,
+      "generation_tokens": 25,
+      "points_normalized": [
+        [
+          0.115,
+          0.15,
+          0
+        ]
+      ],
+      "points_pixels": [
+        [
+          73.5,
+          95.8
+        ]
+      ],
+      "concepts_at_points": [
+        [
+          "person"
+        ]
+      ],
+      "on_figure": true,
+      "on_mark": false,
+      "sam_area_fraction": 0.0905,
+      "sam_iou_pred": 1.032,
+      "sam_obj_score": 17.922,
+      "sam_contains_points": true,
+      "sam_candidate": 0,
+      "sam_selection": "containing",
+      "sam_seconds": 0.018
+    },
+    {
+      "cover_id": "00014fb4",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "green on the left and red on the right - two fields",
+      "prompt_key": "plural",
+      "prompt": "point to all parts of the background",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "points",
+      "n_points": 2,
+      "n_in_frame": 2,
+      "raw_output": "<points x1=\"154\" y1=\"104\" x2=\"885\" y2=\"104\" alt=\"parts of the background\">parts of the background</points>",
+      "parse_note": "",
+      "pointer_seconds": 1.449,
+      "generation_tokens": 45,
+      "points_normalized": [
+        [
+          0.154,
+          0.104,
+          0
+        ],
+        [
+          0.885,
+          0.104,
+          0
+        ]
+      ],
+      "points_pixels": [
+        [
+          98.4,
+          66.5
+        ],
+        [
+          565.5,
+          66.5
+        ]
+      ],
+      "concepts_at_points": [
+        [
+          "face",
+          "person"
+        ],
+        []
+      ],
+      "on_figure": true,
+      "on_mark": false,
+      "sam_area_fraction": 0.1533,
+      "sam_iou_pred": -1.629,
+      "sam_obj_score": 13.169,
+      "sam_contains_points": false,
+      "sam_candidate": 3,
+      "sam_selection": "containing",
+      "sam_seconds": 0.166
+    },
+    {
+      "cover_id": "00014fb4",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "green on the left and red on the right - two fields",
+      "prompt_key": "figure_ground",
+      "prompt": "point to the background surface behind the subject",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "declined",
+      "n_points": 0,
+      "n_in_frame": 0,
+      "raw_output": "There are no visible background surface behind the subject.",
+      "parse_note": "explicit decline",
+      "pointer_seconds": 0.953,
+      "generation_tokens": 11,
+      "points_normalized": []
+    },
+    {
+      "cover_id": "00014fb4",
+      "record": "prompt_agreement",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "pair": [
+        "plain",
+        "plural"
+      ],
+      "mask_iou": 0.5332
+    },
+    {
+      "cover_id": "00030075",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "one green wall, 'maybe 30% of the entire picture'",
+      "prompt_key": "plain",
+      "prompt": "point to the background",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "declined",
+      "n_points": 0,
+      "n_in_frame": 0,
+      "raw_output": "There are none.",
+      "parse_note": "explicit decline",
+      "pointer_seconds": 0.413,
+      "generation_tokens": 5,
+      "points_normalized": []
+    },
+    {
+      "cover_id": "00030075",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "one green wall, 'maybe 30% of the entire picture'",
+      "prompt_key": "plural",
+      "prompt": "point to all parts of the background",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "declined",
+      "n_points": 0,
+      "n_in_frame": 0,
+      "raw_output": "There are none.",
+      "parse_note": "explicit decline",
+      "pointer_seconds": 0.377,
+      "generation_tokens": 5,
+      "points_normalized": []
+    },
+    {
+      "cover_id": "00030075",
+      "role": "misfit",
+      "decidable": true,
+      "reviewer_ground": "one green wall, 'maybe 30% of the entire picture'",
+      "prompt_key": "figure_ground",
+      "prompt": "point to the background surface behind the subject",
+      "pointer": "qwen3-vl-30b-a3b-6bit",
+      "status": "declined",
+      "n_points": 0,
+      "n_in_frame": 0,
+      "raw_output": "There are none.",
+      "parse_note": "explicit decline",
+      "pointer_seconds": 0.391,
+      "generation_tokens": 5,
+      "points_normalized": []
+    }
+  ],
+  "sheet": "research/v3/data/sam/sheets/pointing-qwen-smoke.png"
+}
