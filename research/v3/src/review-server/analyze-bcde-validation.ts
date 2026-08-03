@@ -349,11 +349,47 @@ export async function verifyPilotOverlap(
 /* Reading the warehouse                                                                         */
 /* ------------------------------------------------------------------------------------------- */
 
+/**
+ * One link of a supersession chain that leaves the analyzed batch.
+ *
+ * `asGiven` is what the analyzed round recorded; `standing` is what the end of the chain says. They
+ * are kept apart everywhere, because they answer two different questions — "what did this
+ * elicitation design produce" and "what does the reviewer now hold" — and a file that reports one
+ * under the other's name is worse than a file that reports neither.
+ */
+export type CrossBatchSupersession = Readonly<{
+	questionKey: string
+	imageId: string
+	asGiven: string | readonly string[]
+	standing: string | readonly string[]
+	/** True when the end of the chain says something different from the analyzed round. */
+	changed: boolean
+	/** The analyzed batch's record first, then every superseder that replaced it, in order. */
+	chain: readonly Readonly<{ recordId: string; batchId: string | null; revision: number | null; answer: string | readonly string[] }>[]
+}>
+
 export type ReviewerAnswers = Readonly<{
-	/** `questionKey` + " " + `imageId` → the standing answer. Arrays survive as arrays. */
+	/**
+	 * AS GIVEN. `questionKey` + " " + `imageId` → the answer the ANALYZED BATCH recorded, with that
+	 * batch's own supersessions applied and nothing from any other round. This is the measurement of
+	 * the round's own elicitation design, and it never moves once the round is released.
+	 */
 	byQuestionAndImage: ReadonlyMap<string, string | readonly string[]>
+	/**
+	 * STANDING. The same keys, each carried to the END OF ITS SUPERSESSION CHAIN — including links in
+	 * OTHER batches, which is what a reconciliation round writes. This is the reviewer's current
+	 * position; it is what any later consumer of these labels must read.
+	 */
+	standingByQuestionAndImage: ReadonlyMap<string, string | readonly string[]>
+	/** Every key whose chain left the analyzed batch, changed or not. Empty when none did. */
+	crossBatchSupersessions: readonly CrossBatchSupersession[]
+	/** The other batches that carry a superseder of a record in this one, sorted. */
+	supersedingBatchIds: readonly string[]
 	skipped: Readonly<Record<string, number>>
 }>
+
+/** A chain longer than this is a bug or a loop, not a re-answer. Nothing near it exists in the log. */
+const MAX_SUPERSESSION_DEPTH = 64
 
 /**
  * The reviewer's final answer per (question, image).
@@ -374,20 +410,59 @@ export type ReviewerAnswers = Readonly<{
  *     anybody counting rows sees three phantoms.
  *
  * Both paths agree on today's data. Only the first can be verified.
+ *
+ * **A chain can leave the batch, and the batch filter must not hide that.** A reconciliation round is
+ * a separate batch whose records name records of this one in `supersedes` — cross-batch supersession,
+ * by design: "answers supersede bcde-validation-1's for the same (question, artwork); nothing is
+ * edited or deleted". Scoping to `batchId` before resolving supersession therefore drops exactly the
+ * records that say what the reviewer now holds, and the analysis reports a superseded answer as
+ * current. Both readings are produced here and neither is allowed to stand in for the other:
+ * `byQuestionAndImage` is AS GIVEN by this round, `standingByQuestionAndImage` is the end of every
+ * chain. Nothing is mutated, and no record outside this batch contributes an answer to a
+ * (question, image) this batch never asked — a superseder only ever replaces a value that is already
+ * there.
  */
 export function collectBcdeAnswers(records: readonly WarehouseRecord[], batchId: string): ReviewerAnswers {
 	const skipped: Record<string, number> = { otherBatch: 0, machineAuthored: 0, retracted: 0, superseded: 0, unusableAnswer: 0 }
 	type Candidate = { answer: string | readonly string[]; index: number; recordId: string }
+	type Usable = { label: SupersedingOracleLabel; answer: string | readonly string[]; index: number; inBatch: boolean }
 	const candidates = new Map<string, Candidate[]>()
 	const replaced = new Set<string>()
+	/** Every usable oracle-label in the WHOLE log, by every id it answers to. Chains are walked here. */
+	const usableById = new Map<string, Usable>()
+	/** `supersedes` target → the usable records that claim to replace it, any batch. */
+	const supersededBy = new Map<string, Usable[]>()
 
 	resolve(records).forEach((entry, index) => {
 		if (entry.record.type !== "oracle-label") return
 		const label = entry.record as SupersedingOracleLabel
-		// Batch scoping comes FIRST, so every counter below it is a statement about *this* round. A
-		// retraction in some other round used to increment this round's `retracted`; it read 0 only
-		// because all 13 retractions in the warehouse target `note` records, which never reach here.
-		if (label.batch?.id !== batchId) {
+		const inBatch = label.batch?.id === batchId
+		// A record that cannot stand as an answer here cannot stand as a superseder either: a retracted
+		// or machine-authored re-answer leaves the record it named in force, so the chain simply stops.
+		// These three checks therefore run on EVERY record, not only this batch's.
+		const answer = label.answer
+		const usableAnswer = typeof answer === "string" || (Array.isArray(answer) && answer.every((value) => typeof value === "string"))
+		const usable = !entry.retracted && label.author.kind === "human" && usableAnswer
+
+		if (usable) {
+			const held: Usable = { label, answer, index, inBatch }
+			// Indexed under both ids: `supersedes` names the id the server wrote, and an amendment can
+			// have moved `entry.record.id` on since. Looking up only one of the two would break a chain
+			// that an amendment touched.
+			usableById.set(label.id, held)
+			usableById.set(entry.original.id, held)
+			if (typeof label.supersedes === "string") {
+				const list = supersededBy.get(label.supersedes)
+				if (list === undefined) supersededBy.set(label.supersedes, [held])
+				else list.push(held)
+			}
+		}
+
+		// Batch scoping comes FIRST for the counters, so every one of them below is a statement about
+		// *this* round. A retraction in some other round used to increment this round's `retracted`; it
+		// read 0 only because all 13 retractions in the warehouse target `note` records, which never
+		// reach here.
+		if (!inBatch) {
 			skipped.otherBatch++
 			return
 		}
@@ -399,9 +474,7 @@ export function collectBcdeAnswers(records: readonly WarehouseRecord[], batchId:
 			skipped.machineAuthored++
 			return
 		}
-		const answer = label.answer
-		const usable = typeof answer === "string" || (Array.isArray(answer) && answer.every((value) => typeof value === "string"))
-		if (!usable) {
+		if (!usableAnswer) {
 			skipped.unusableAnswer++
 			return
 		}
@@ -415,16 +488,78 @@ export function collectBcdeAnswers(records: readonly WarehouseRecord[], batchId:
 		}
 	})
 
-	const standing = new Map<string, string | readonly string[]>()
+	const asGiven = new Map<string, string | readonly string[]>()
+	/** The record id the AS-GIVEN answer came from, so its chain can be walked forward from there. */
+	const asGivenRecordId = new Map<string, string>()
 	for (const [key, held] of candidates) {
 		// Path 1 where the records carry it; path 2 — the last one in the file — where they do not.
 		const survivors = held.filter((candidate) => !replaced.has(candidate.recordId))
 		const chosen = (survivors.length > 0 ? survivors : held).reduce((latest, candidate) =>
 			candidate.index > latest.index ? candidate : latest,
 		)
-		standing.set(key, chosen.answer)
+		asGiven.set(key, chosen.answer)
+		asGivenRecordId.set(key, chosen.recordId)
 	}
-	return { byQuestionAndImage: standing, skipped }
+
+	/* --- carry each as-given answer to the end of its chain, wherever the chain goes -------------- */
+
+	const standing = new Map<string, string | readonly string[]>(asGiven)
+	const crossBatchSupersessions: CrossBatchSupersession[] = []
+	const supersedingBatchIds = new Set<string>()
+	for (const [key, recordId] of asGivenRecordId) {
+		const start = usableById.get(recordId)
+		if (start === undefined) continue
+		const chain: { recordId: string; batchId: string | null; revision: number | null; answer: string | readonly string[] }[] = [
+			{ recordId, batchId: start.label.batch?.id ?? null, revision: start.label.revision ?? null, answer: start.answer },
+		]
+		const seen = new Set<string>([recordId])
+		let current = start
+		let leftTheBatch = false
+		for (let depth = 0; depth < MAX_SUPERSESSION_DEPTH; depth += 1) {
+			const claimants = supersededBy.get(current.label.id) ?? supersededBy.get(chain[chain.length - 1].recordId) ?? []
+			// Latest wins, by the same file-order rule the in-batch path uses — two records claiming the
+			// same predecessor is a re-answer of a re-answer, not a fork.
+			const next = claimants.filter((claim) => !seen.has(claim.label.id)).reduce<Usable | null>(
+				(latest, claim) => (latest === null || claim.index > latest.index ? claim : latest),
+				null,
+			)
+			if (next === null) break
+			seen.add(next.label.id)
+			chain.push({
+				recordId: next.label.id,
+				batchId: next.label.batch?.id ?? null,
+				revision: next.label.revision ?? null,
+				answer: next.answer,
+			})
+			if (!next.inBatch) {
+				leftTheBatch = true
+				if (next.label.batch?.id !== undefined) supersedingBatchIds.add(next.label.batch.id)
+			}
+			current = next
+		}
+		if (chain.length === 1) continue
+		standing.set(key, current.answer)
+		if (!leftTheBatch) continue
+		const given = asGiven.get(key)!
+		const split = key.indexOf(" ")
+		crossBatchSupersessions.push({
+			questionKey: key.slice(0, split),
+			imageId: key.slice(split + 1),
+			asGiven: given,
+			standing: current.answer,
+			changed: !sameAnswer(given, current.answer),
+			chain,
+		})
+	}
+
+	crossBatchSupersessions.sort((a, b) => (`${a.questionKey} ${a.imageId}` < `${b.questionKey} ${b.imageId}` ? -1 : 1))
+	return {
+		byQuestionAndImage: asGiven,
+		standingByQuestionAndImage: standing,
+		crossBatchSupersessions,
+		supersedingBatchIds: [...supersedingBatchIds].sort(),
+		skipped,
+	}
 }
 
 /* ------------------------------------------------------------------------------------------- */
@@ -808,6 +943,85 @@ export type VocabularyCheck = Readonly<{
 	reading: string
 }>
 
+/**
+ * The reviewer's own account of what the two readings are, verbatim and dated.
+ *
+ * It is quoted rather than paraphrased because the whole reading of this round turns on it, and
+ * because a paraphrase of it drifts straight back into "the first answers were wrong".
+ * [REVIEWED] — reviewer, 2026-08-03, on the gate-reconciliation round.
+ */
+export const ELICITATION_MODE_CLARIFICATION =
+	'reviewer, 2026-08-03: "on some artworks if you ask me \\"is there a subject?\\" i might answer \\"no\\", ' +
+	'but if you ask me *separately* \\"what is the subject?\\" i would answer \\"an animal\\". So if you ask me ' +
+	"to *not make a story* then I will give you those 2 answers, but if you ask me *jointly* (or just one " +
+	'after the other) then I will change my answers so they are coherent together."'
+
+/**
+ * The two readings of the same round, side by side and labelled so they cannot be swapped.
+ *
+ * **They are two ELICITATION MODES, not a draft and a correction.** Nothing in this block says the
+ * independent answers were mistakes. Per the reviewer (quoted verbatim in
+ * `ELICITATION_MODE_CLARIFICATION`), asked on its own a gate elicits a DOMINANCE judgement — "is
+ * there a subject?" → "no", meaning nothing dominates — while its dependent, asked on its own,
+ * elicits a BEST-AVAILABLE read — "what is the subject?" → "an animal", meaning the most
+ * subject-like thing present is an animal. Both are honest answers to the questions actually asked.
+ * The pair `none + animal` therefore carries MORE information than either reconciled answer: it
+ * decodes as *nothing dominant, but an animal is present*. Joint elicitation forces a coherence that
+ * destroys that nuance — it is a different instrument reading, not a better one.
+ *
+ *  - INDEPENDENT (by-question) — every question answered on its own, which is what this round's
+ *    passes asked for and what its instruction demanded. These figures never move.
+ *  - JOINT (by-artwork, reconciled) — the gate and its dependent on screen together, the reviewer
+ *    asked to make the pair hold. These are the standing answers, and supersession is the mechanical
+ *    rule that decides which answer a grader reads. Mechanically standing is not epistemically
+ *    superior.
+ *
+ * Reporting either alone gives a false answer to one of the two questions.
+ */
+export type ReconciliationReading = Readonly<{
+	whatThisIs: string
+	asGivenLabel: string
+	standingLabel: string
+	/** Other batches carrying a superseder of one of this round's records. Empty when none do. */
+	supersedingBatchIds: readonly string[]
+	/** Every (question, artwork) whose chain left this batch — with the chain, and whether it moved. */
+	crossBatchSupersessions: readonly CrossBatchSupersession[]
+	answersSuperseded: number
+	answersChanged: number
+	/** The gate table and the pilot join, recomputed over STANDING answers. */
+	standing: Readonly<{ gateConsistency: GateConsistency; perQuestion: readonly QuestionResult[] }>
+	gateComparison: Readonly<{
+		asGiven: Readonly<{ totalContradictions: number; artworksWithAnyContradiction: number; contradictionRate: number | null; withinCeiling: boolean | null }>
+		standing: Readonly<{ totalContradictions: number; artworksWithAnyContradiction: number; contradictionRate: number | null; withinCeiling: boolean | null }>
+		perRule: readonly Readonly<{
+			id: number
+			statement: string
+			asGivenRowsArmed: number
+			asGivenContradictions: number
+			standingRowsArmed: number
+			standingContradictions: number
+			resolved: number
+		}>[]
+		reading: string
+	}>
+	/** Questions whose reviewer distribution moved between the two readings, with both distributions. */
+	changedDistributions: readonly Readonly<{
+		questionKey: string
+		asGiven: Readonly<Record<string, number>>
+		standing: Readonly<Record<string, number>>
+		moved: readonly Readonly<{ value: string; asGiven: number; standing: number }>[]
+	}>[]
+	/** Pilot-join buckets that moved, per question, join grade and variant. Never pooled across grades. */
+	changedJoins: readonly Readonly<{
+		questionKey: string
+		grade: JoinedGrade
+		variant: PilotVariant
+		asGiven: Readonly<{ n: number; buckets: Record<PairBucket, number> }>
+		standing: Readonly<{ n: number; buckets: Record<PairBucket, number> }>
+	}>[]
+	reading: string
+}>
+
 export type BcdeValidationAnalysis = Readonly<{
 	generatedAt: string
 	whatThisIs: string
@@ -829,10 +1043,23 @@ export type BcdeValidationAnalysis = Readonly<{
 	}>
 	skipped: Readonly<Record<string, number>>
 	questionsOmitted: Readonly<Record<string, string>>
-	/** The reviewer's own answers checked against §15.6-(3)'s pre-registered contradiction table. */
+	/**
+	 * INDEPENDENT ELICITATION. The answers THIS ROUND recorded — every question answered on its own —
+	 * checked against §15.6-(3)'s pre-registered table. This field never moves once the round is
+	 * released. Read `gateConsistency.reading` before quoting the rate: it is not a reviewer defect,
+	 * and the ceiling it is measured against was written for a differently-shaped instrument. For the
+	 * joint reading see `reconciliation.standing.gateConsistency`.
+	 */
 	gateConsistency: GateConsistency
-	/** The stored answers checked against the vocabulary they were supposed to be drawn from. */
+	/** INDEPENDENT ELICITATION. The stored answers checked against the vocabulary they were drawn from. */
 	vocabulary: VocabularyCheck
+	/**
+	 * The joint reading, after supersession chains that leave this batch — a reconciliation round.
+	 * Present on every run; when no other batch supersedes anything here, nothing was asked jointly,
+	 * the two readings coincide, and the block says so rather than being absent, because "nothing
+	 * superseded it" and "nobody looked" are different facts.
+	 */
+	reconciliation: ReconciliationReading
 	/** The join checked against the image bytes, or null when this run was given no verification. */
 	overlapVerification: OverlapVerification | null
 	/** Prompt variants present in the pilot file that `PILOT_VARIANTS` does not cover. */
@@ -881,15 +1108,177 @@ export function bcdeScopingNotes(facts: {
 			"subset, because on a split row there is no single model answer to be accurate against. A " +
 			"reviewer refusal is its own bucket everywhere, including in the split subset: the human " +
 			"declining to answer is not the human disagreeing with both wordings.",
-		"THE REVIEWER'S OWN ANSWERS ARE CHECKED FOR SELF-CONTRADICTION, against the same pre-registered " +
-			"ceiling the model is held to (PREMISE_NEXT.md §15.6-(3), <= 10% of ok rows). See " +
-			"`gateConsistency`. This is a human reference standard; if it breaks the bar set for the machine, " +
-			"that must be on the record before any model is graded against these rows, whatever the right " +
-			"reading of it turns out to be.",
+		"THE REVIEWER'S OWN ANSWERS ARE CHECKED AGAINST THE GATE TABLE, and the rate is reported against " +
+			"§15.6-(3)'s pre-registered <= 10% ceiling because it was pre-registered — NOT because the two are " +
+			"comparable. They are not: the ceiling was written for the model, whose joint constrained decode " +
+			"generates the gate first and the dependent in its context, so coherence there is structural. " +
+			"Applying it to a human answering each question in isolation compares two elicitation modes. See " +
+			"`gateConsistency.reading` for the full reading; `withinCeiling` is not a verdict on the reviewer.",
+		"TWO ELICITATION MODES, LABELLED, NEVER BLENDED — AND NEITHER IS THE OTHER'S CORRECTION. Every " +
+			"top-level figure in this file — `gateConsistency`, `perQuestion`, `vocabulary`, `counts` — is the " +
+			"INDEPENDENT reading: every question answered on its own, which is what this round asked for. " +
+			"Those figures never move. The JOINT reading — the gate and its dependent on screen together, in a " +
+			"reconciliation round — is under `reconciliation.standing`, recomputed there from scratch. The " +
+			"reviewer holds that the independent answers are information-bearing rather than mistaken: " +
+			`${ELICITATION_MODE_CLARIFICATION} A downstream consumer of these labels reads the standing ` +
+			"(joint) state because it must read exactly one, and supersession is the mechanical rule that " +
+			"picks it — recency, not correctness. Any statement about what the reviewer perceives, or about " +
+			"how by-question elicitation behaves, reads the independent state.",
 	]
 }
 
 const EMPTY_BUCKETS = (): Record<PairBucket, number> => ({ agreement: 0, disagreement: 0, cant_tell: 0 })
+
+type ComputedState = {
+	answers: number
+	unanswered: number
+	perQuestion: QuestionResult[]
+	gateConsistency: GateConsistency
+	vocabulary: VocabularyCheck
+}
+
+/**
+ * Put the two readings beside each other, with the labels that keep them apart.
+ *
+ * Nothing here recomputes anything: both states arrive already computed, over their own answer map.
+ * This only names them, diffs them, and states what the difference means.
+ */
+export function buildReconciliationReport(
+	batchId: string,
+	crossBatchSupersessions: readonly CrossBatchSupersession[],
+	supersedingBatchIds: readonly string[],
+	asGiven: ComputedState,
+	standing: ComputedState,
+): ReconciliationReading {
+	const asGivenLabel =
+		`INDEPENDENT ELICITATION (as given) — every question answered on its own, in ${batchId}'s by-question ` +
+		`passes, under an instruction that expressly forbade making the answers cohere`
+	const standingLabel =
+		supersedingBatchIds.length === 0
+			? `JOINT ELICITATION (standing) — the end of every supersession chain. No other batch supersedes ` +
+				`anything in ${batchId}, so nothing was ever asked jointly and this equals the independent reading.`
+			: `JOINT ELICITATION (standing) — the gate and its dependent asked together in ` +
+				`${supersedingBatchIds.join(", ")}, the reviewer asked to make the pair hold`
+
+	const standingRuleById = new Map(standing.gateConsistency.rules.map((rule) => [rule.id, rule]))
+	const perRule = asGiven.gateConsistency.rules.map((rule) => {
+		const now = standingRuleById.get(rule.id)
+		return {
+			id: rule.id,
+			statement: rule.statement,
+			asGivenRowsArmed: rule.rowsArmed,
+			asGivenContradictions: rule.contradictions,
+			standingRowsArmed: now?.rowsArmed ?? 0,
+			standingContradictions: now?.contradictions ?? 0,
+			// Negative would mean the reconciliation ADDED a contradiction — reported as a negative
+			// rather than clamped, because that is the one outcome a reader must not miss.
+			resolved: rule.contradictions - (now?.contradictions ?? 0),
+		}
+	})
+
+	const changedDistributions: {
+		questionKey: string
+		asGiven: Record<string, number>
+		standing: Record<string, number>
+		moved: { value: string; asGiven: number; standing: number }[]
+	}[] = []
+	const standingQuestionByKey = new Map(standing.perQuestion.map((question) => [question.key, question]))
+	const changedJoins: ReconciliationReading["changedJoins"][number][] = []
+	for (const question of asGiven.perQuestion) {
+		const now = standingQuestionByKey.get(question.key)
+		if (now === undefined) continue
+		const values = [...new Set([...Object.keys(question.reviewerDistribution), ...Object.keys(now.reviewerDistribution)])].sort()
+		const moved = values
+			.map((value) => ({ value, asGiven: question.reviewerDistribution[value] ?? 0, standing: now.reviewerDistribution[value] ?? 0 }))
+			.filter((entry) => entry.asGiven !== entry.standing)
+		if (moved.length > 0) {
+			changedDistributions.push({
+				questionKey: question.key,
+				asGiven: question.reviewerDistribution,
+				standing: now.reviewerDistribution,
+				moved,
+			})
+		}
+		for (const grade of JOINED_GRADES) {
+			for (const variant of PILOT_VARIANTS) {
+				const before = question.perVariant[variant][grade]
+				const after = now.perVariant[variant][grade]
+				const same =
+					before.n === after.n &&
+					before.buckets.agreement === after.buckets.agreement &&
+					before.buckets.disagreement === after.buckets.disagreement &&
+					before.buckets.cant_tell === after.buckets.cant_tell
+				if (same) continue
+				changedJoins.push({
+					questionKey: question.key,
+					grade,
+					variant,
+					asGiven: { n: before.n, buckets: before.buckets },
+					standing: { n: after.n, buckets: after.buckets },
+				})
+			}
+		}
+	}
+
+	const changed = crossBatchSupersessions.filter((entry) => entry.changed).length
+	const before = asGiven.gateConsistency.totalContradictions
+	const after = standing.gateConsistency.totalContradictions
+	const reading =
+		supersedingBatchIds.length === 0
+			? `No batch outside ${batchId} supersedes any of its answers. Nothing here was ever asked jointly, so the ` +
+				`standing state IS the independent state; both are reported anyway so that a later reconciliation shows ` +
+				`up as a change rather than as a new field.`
+			: `${crossBatchSupersessions.length} of ${batchId}'s answers were re-asked jointly in ` +
+				`${supersedingBatchIds.join(", ")} and ${changed} came back different. THESE ARE TWO ELICITATION ` +
+				`MODES, NOT A DRAFT AND A CORRECTION. Asked independently, ${batchId} produced ${before} gate ` +
+				`contradiction(s); asked jointly, ${after} remain(s). The difference is a fact about the two ` +
+				`instruments, and NEITHER READING IS THE ERROR. ${ELICITATION_MODE_CLARIFICATION} On that account the ` +
+				`independent pair carries MORE information than the reconciled one — \`has_dominant_subject = none\` ` +
+				`with \`subject_kind = animal\` decodes as *nothing dominates, but an animal is present*, and the ` +
+				`joint format cannot express that at all: forcing coherence collapses two variables onto one and the ` +
+				`second is lost. Supersession decides which answer a grader reads, and that is a mechanical rule about ` +
+				`recency, not a judgement that the earlier answer was wrong. Any downstream consumer of these labels ` +
+				`reads the standing (joint) state because it must read exactly one; any statement about what the ` +
+				`reviewer perceives, or about how by-question elicitation behaves, reads the independent one.`
+
+	return {
+		whatThisIs:
+			"Two elicitation modes over the same round and the same reviewer. `gateConsistency` and `perQuestion` at " +
+			"the top level are the INDEPENDENT reading — every question answered on its own — and they never move. " +
+			"Everything under `reconciliation.standing` is the JOINT reading, recomputed from scratch over the end of " +
+			"every supersession chain. No figure is ever carried from one into the other, and neither is the other's " +
+			"correction: see `reading` and `ELICITATION_MODE_CLARIFICATION`.",
+		asGivenLabel,
+		standingLabel,
+		supersedingBatchIds,
+		crossBatchSupersessions,
+		answersSuperseded: crossBatchSupersessions.length,
+		answersChanged: changed,
+		standing: { gateConsistency: standing.gateConsistency, perQuestion: standing.perQuestion },
+		gateComparison: {
+			asGiven: {
+				totalContradictions: asGiven.gateConsistency.totalContradictions,
+				artworksWithAnyContradiction: asGiven.gateConsistency.artworksWithAnyContradiction,
+				contradictionRate: asGiven.gateConsistency.contradictionRate,
+				withinCeiling: asGiven.gateConsistency.withinCeiling,
+			},
+			standing: {
+				totalContradictions: standing.gateConsistency.totalContradictions,
+				artworksWithAnyContradiction: standing.gateConsistency.artworksWithAnyContradiction,
+				contradictionRate: standing.gateConsistency.contradictionRate,
+				withinCeiling: standing.gateConsistency.withinCeiling,
+			},
+			perRule,
+			reading:
+				`Per rule of §15.6-(3)'s pre-registered table, as given vs standing. \`resolved\` is the as-given ` +
+				`count minus the standing one; a NEGATIVE value means the reconciliation introduced a contradiction ` +
+				`that the by-question round did not have, and is reported as a negative rather than hidden.`,
+		},
+		changedDistributions,
+		changedJoins,
+		reading,
+	}
+}
 
 function ratio(part: number, whole: number): number | null {
 	return whole === 0 ? null : Number((part / whole).toFixed(4))
@@ -904,7 +1293,10 @@ export function analyzeBcdeValidation(
 	verification: OverlapVerification | null = null,
 ): BcdeValidationAnalysis {
 	const batchId = paths.batchId ?? fixture.batchId
-	const { byQuestionAndImage, skipped } = collectBcdeAnswers(records, batchId)
+	const { byQuestionAndImage, standingByQuestionAndImage, crossBatchSupersessions, supersedingBatchIds, skipped } = collectBcdeAnswers(
+		records,
+		batchId,
+	)
 
 	// One row per artwork, taken from the first pass — every pass covers the same twenty.
 	const artworks = new Map<string, { imageId: string; imagePath: string; sha256: string; stratum: string; artworkId: string | null; imageIds: string[] }>()
@@ -963,17 +1355,6 @@ export function analyzeBcdeValidation(
 		return { grade: "none", answers: null, pilotPath: null, verified: null }
 	}
 
-	/** The reviewer's standing answer for one question on one artwork, under any id it wore. */
-	const answerFor = (question: string, artwork: { imageIds: readonly string[] }): string | readonly string[] | null => {
-		for (const imageId of artwork.imageIds) {
-			const held = byQuestionAndImage.get(`${question} ${imageId}`)
-			if (held !== undefined) return held
-		}
-		return null
-	}
-
-	let answers = 0
-	let unanswered = 0
 	const joinTotals: Record<JoinGrade, number> = { exact_bytes: 0, same_artwork_other_rendition: 0, none: 0 }
 	for (const artwork of artworks.values()) joinTotals[joinOf(artwork).grade] += 1
 
@@ -983,364 +1364,416 @@ export function analyzeBcdeValidation(
 	const byGrade = <T>(make: () => T): Record<JoinedGrade, T> =>
 		Object.fromEntries(JOINED_GRADES.map((grade) => [grade, make()])) as Record<JoinedGrade, T>
 
-	const perQuestion: QuestionResult[] = fixture.questions.map((question) => {
-		const reviewerDistribution: Record<string, number> = {}
-		const perValue: Record<string, number> = {}
-		const joinCounts: Record<JoinGrade, number> = { exact_bytes: 0, same_artwork_other_rendition: 0, none: 0 }
-		const missingQuestion = byGrade(() => 0)
-		const perVariant = Object.fromEntries(
-			PILOT_VARIANTS.map((variant) => [variant, byGrade(emptyVariantHeld)]),
-		) as Record<PilotVariant, Record<JoinedGrade, VariantHeld>>
-		const agreeSubset = byGrade(() => ({ n: 0, buckets: EMPTY_BUCKETS(), pairs: [] as [string, string][] }))
-		const splitSubset = byGrade(() => ({ n: 0, reviewerWithE: 0, reviewerWithF: 0, reviewerWithNeither: 0, reviewerCantTell: 0 }))
-		let answeredHere = 0
-		let sizeSum = 0
-		let singletons = 0
+	const served = new Map(fixture.questions.map((question) => [question.key, question]))
+	const askedPairs = new Set(fixture.items.map((item) => `${item.questionKey} ${item.imageId}`))
 
-		const rows: ArtworkAnswer[] = [...artworks.values()]
-			.sort((a, b) => (a.sha256 < b.sha256 ? -1 : 1))
-			.map((artwork) => {
-				const reviewer = answerFor(question.key, artwork)
-				if (reviewer === null) unanswered += 1
-				else {
-					answers += 1
-					answeredHere += 1
-					const values = typeof reviewer === "string" ? [reviewer] : [...reviewer]
-					const token = canonicalToken(reviewer)
-					reviewerDistribution[token] = (reviewerDistribution[token] ?? 0) + 1
-					for (const value of values) perValue[value] = (perValue[value] ?? 0) + 1
-					sizeSum += values.length
-					if (values.length === 1) singletons += 1
-				}
+	/**
+	 * One complete reading of the round, over ONE answer map.
+	 *
+	 * Run twice and never blended: once over the answers this round recorded (AS GIVEN), once over the
+	 * end of every supersession chain (STANDING). Everything downstream of a reviewer answer —
+	 * distributions, the pilot join, the gate table, the vocabulary check — is inside here, because a
+	 * figure computed on one map and printed beside a figure computed on the other is precisely the
+	 * confusion this split exists to prevent.
+	 */
+	const computeState = (
+		source: ReadonlyMap<string, string | readonly string[]>,
+	): { answers: number; unanswered: number; perQuestion: QuestionResult[]; gateConsistency: GateConsistency; vocabulary: VocabularyCheck } => {
+		/** The reviewer's answer for one question on one artwork, under any id it wore. */
+		const answerFor = (question: string, artwork: { imageIds: readonly string[] }): string | readonly string[] | null => {
+			for (const imageId of artwork.imageIds) {
+				const held = source.get(`${question} ${imageId}`)
+				if (held !== undefined) return held
+			}
+			return null
+		}
 
-				const join = joinOf(artwork)
-				joinCounts[join.grade] += 1
-				// Every accumulator below is addressed through `grade`. When the artwork does not join,
-				// `grade` is null and nothing is accumulated — there is no bucket for an unjoined row and
-				// no total that spans the two grades.
-				const grade: JoinedGrade | null = join.grade === "none" ? null : join.grade
-				const model: Partial<Record<PilotVariant, string | readonly string[]>> = {}
-				const bucket: Partial<Record<PilotVariant, PairBucket>> = {}
-				const setOverlap: Partial<Record<PilotVariant, number>> = {}
-				let sawAnyValue = false
-				for (const variant of PILOT_VARIANTS) {
-					const parsed = join.answers?.get(variant)
-					const value = parsed?.[question.key]
-					if (value === undefined) continue
-					sawAnyValue = true
-					model[variant] = value
-					if (reviewer === null || grade === null) continue
-					const held = perVariant[variant][grade]
-					const b = bucketOf(reviewer, value)
-					bucket[variant] = b
-					held.buckets[b] += 1
-					held.n += 1
-					// A kappa needs one token per side and has no third category, so a can't-tell row cannot
-					// be represented in it. Rows where either side refused are left out rather than scored as
-					// agreement — which is what refusal-vs-refusal used to be, in a file whose own bucket
-					// logic called the same row can't-tell.
-					if (b !== "cant_tell") {
-						// A set answer is keyed by its sorted join, which makes the coefficient an EXACT-SET
-						// kappa — the reading §15.7 used on the pilot's own multi-selects, reported beside the
-						// Jaccard rather than instead of it.
-						held.pairs.push([canonicalToken(reviewer), canonicalToken(value)])
+		let answers = 0
+		let unanswered = 0
+
+		const perQuestion: QuestionResult[] = fixture.questions.map((question) => {
+			const reviewerDistribution: Record<string, number> = {}
+			const perValue: Record<string, number> = {}
+			const joinCounts: Record<JoinGrade, number> = { exact_bytes: 0, same_artwork_other_rendition: 0, none: 0 }
+			const missingQuestion = byGrade(() => 0)
+			const perVariant = Object.fromEntries(
+				PILOT_VARIANTS.map((variant) => [variant, byGrade(emptyVariantHeld)]),
+			) as Record<PilotVariant, Record<JoinedGrade, VariantHeld>>
+			const agreeSubset = byGrade(() => ({ n: 0, buckets: EMPTY_BUCKETS(), pairs: [] as [string, string][] }))
+			const splitSubset = byGrade(() => ({ n: 0, reviewerWithE: 0, reviewerWithF: 0, reviewerWithNeither: 0, reviewerCantTell: 0 }))
+			let answeredHere = 0
+			let sizeSum = 0
+			let singletons = 0
+
+			const rows: ArtworkAnswer[] = [...artworks.values()]
+				.sort((a, b) => (a.sha256 < b.sha256 ? -1 : 1))
+				.map((artwork) => {
+					const reviewer = answerFor(question.key, artwork)
+					if (reviewer === null) unanswered += 1
+					else {
+						answers += 1
+						answeredHere += 1
+						const values = typeof reviewer === "string" ? [reviewer] : [...reviewer]
+						const token = canonicalToken(reviewer)
+						reviewerDistribution[token] = (reviewerDistribution[token] ?? 0) + 1
+						for (const value of values) perValue[value] = (perValue[value] ?? 0) + 1
+						sizeSum += values.length
+						if (values.length === 1) singletons += 1
 					}
-					if (typeof reviewer !== "string" || typeof value !== "string") {
-						const overlap = jaccard(
-							typeof reviewer === "string" ? [reviewer] : [...reviewer],
-							typeof value === "string" ? [value] : [...value],
-						)
-						held.jaccards.push(overlap)
-						held.exactSets.push(sameAnswer(reviewer, value))
-						setOverlap[variant] = overlap
-					}
-				}
-				if (grade !== null && !sawAnyValue) missingQuestion[grade] += 1
 
-				const e = model.E
-				const f = model.F
-				const variantsAgree = e === undefined || f === undefined ? null : sameAnswer(e, f)
-				if (reviewer !== null && grade !== null && variantsAgree === true) {
-					const held = agreeSubset[grade]
-					held.n += 1
-					const b = bucketOf(reviewer, e!)
-					held.buckets[b] += 1
-					if (b !== "cant_tell") held.pairs.push([canonicalToken(reviewer), canonicalToken(e!)])
-				}
-				if (reviewer !== null && grade !== null && variantsAgree === false) {
-					const held = splitSubset[grade]
-					held.n += 1
-					if (isRefusal(reviewer)) {
-						// The human declined. That is not a substantive answer that missed both wordings, and
-						// filing it as one turns an abstention into a verdict on the wording.
-						held.reviewerCantTell += 1
-					} else {
-						const withE = sameAnswer(reviewer, e!)
-						const withF = sameAnswer(reviewer, f!)
-						if (withE) held.reviewerWithE += 1
-						if (withF) held.reviewerWithF += 1
-						if (!withE && !withF) held.reviewerWithNeither += 1
+					const join = joinOf(artwork)
+					joinCounts[join.grade] += 1
+					// Every accumulator below is addressed through `grade`. When the artwork does not join,
+					// `grade` is null and nothing is accumulated — there is no bucket for an unjoined row and
+					// no total that spans the two grades.
+					const grade: JoinedGrade | null = join.grade === "none" ? null : join.grade
+					const model: Partial<Record<PilotVariant, string | readonly string[]>> = {}
+					const bucket: Partial<Record<PilotVariant, PairBucket>> = {}
+					const setOverlap: Partial<Record<PilotVariant, number>> = {}
+					let sawAnyValue = false
+					for (const variant of PILOT_VARIANTS) {
+						const parsed = join.answers?.get(variant)
+						const value = parsed?.[question.key]
+						if (value === undefined) continue
+						sawAnyValue = true
+						model[variant] = value
+						if (reviewer === null || grade === null) continue
+						const held = perVariant[variant][grade]
+						const b = bucketOf(reviewer, value)
+						bucket[variant] = b
+						held.buckets[b] += 1
+						held.n += 1
+						// A kappa needs one token per side and has no third category, so a can't-tell row cannot
+						// be represented in it. Rows where either side refused are left out rather than scored as
+						// agreement — which is what refusal-vs-refusal used to be, in a file whose own bucket
+						// logic called the same row can't-tell.
+						if (b !== "cant_tell") {
+							// A set answer is keyed by its sorted join, which makes the coefficient an EXACT-SET
+							// kappa — the reading §15.7 used on the pilot's own multi-selects, reported beside the
+							// Jaccard rather than instead of it.
+							held.pairs.push([canonicalToken(reviewer), canonicalToken(value)])
+						}
+						if (typeof reviewer !== "string" || typeof value !== "string") {
+							const overlap = jaccard(
+								typeof reviewer === "string" ? [reviewer] : [...reviewer],
+								typeof value === "string" ? [value] : [...value],
+							)
+							held.jaccards.push(overlap)
+							held.exactSets.push(sameAnswer(reviewer, value))
+							setOverlap[variant] = overlap
+						}
 					}
-				}
+					if (grade !== null && !sawAnyValue) missingQuestion[grade] += 1
 
+					const e = model.E
+					const f = model.F
+					const variantsAgree = e === undefined || f === undefined ? null : sameAnswer(e, f)
+					if (reviewer !== null && grade !== null && variantsAgree === true) {
+						const held = agreeSubset[grade]
+						held.n += 1
+						const b = bucketOf(reviewer, e!)
+						held.buckets[b] += 1
+						if (b !== "cant_tell") held.pairs.push([canonicalToken(reviewer), canonicalToken(e!)])
+					}
+					if (reviewer !== null && grade !== null && variantsAgree === false) {
+						const held = splitSubset[grade]
+						held.n += 1
+						if (isRefusal(reviewer)) {
+							// The human declined. That is not a substantive answer that missed both wordings, and
+							// filing it as one turns an abstention into a verdict on the wording.
+							held.reviewerCantTell += 1
+						} else {
+							const withE = sameAnswer(reviewer, e!)
+							const withF = sameAnswer(reviewer, f!)
+							if (withE) held.reviewerWithE += 1
+							if (withF) held.reviewerWithF += 1
+							if (!withE && !withF) held.reviewerWithNeither += 1
+						}
+					}
+
+					return {
+						imageId: artwork.imageId,
+						imagePath: artwork.imagePath,
+						sha256: artwork.sha256,
+						stratum: artwork.stratum,
+						joinGrade: join.grade,
+						joinVerified: join.verified,
+						pilotImagePath: join.pilotPath,
+						reviewer,
+						model,
+						bucket,
+						variantsAgree,
+						setOverlap,
+					}
+				})
+
+			return {
+				key: question.key,
+				kind: question.kind,
+				question: question.question,
+				whyAsked: BCDE_VALIDATION_QUESTION_REASONS[question.key] ?? "",
+				answered: answeredHere,
+				unanswered: rows.length - answeredHere,
+				reviewerDistribution,
+				multi:
+					question.kind !== "multi"
+						? null
+						: {
+								singletonRate: ratio(singletons, answeredHere),
+								meanSize: answeredHere === 0 ? null : Number((sizeSum / answeredHere).toFixed(3)),
+								perValue,
+							},
+				perVariant: Object.fromEntries(
+					PILOT_VARIANTS.map((variant) => [
+						variant,
+						Object.fromEntries(
+							JOINED_GRADES.map((grade) => {
+								const held = perVariant[variant][grade]
+								return [
+									grade,
+									{
+										n: held.n,
+										buckets: held.buckets,
+										exactSetAgreement:
+											held.exactSets.length === 0 ? null : ratio(held.exactSets.filter(Boolean).length, held.exactSets.length),
+										meanJaccard:
+											held.jaccards.length === 0
+												? null
+												: Number((held.jaccards.reduce((sum, value) => sum + value, 0) / held.jaccards.length).toFixed(4)),
+										kappa: cohenKappa(held.pairs),
+									},
+								]
+							}),
+						),
+					]),
+				) as QuestionResult["perVariant"],
+				variantAgreementSubset: Object.fromEntries(
+					JOINED_GRADES.map((grade) => [
+						grade,
+						{ n: agreeSubset[grade].n, buckets: agreeSubset[grade].buckets, kappa: cohenKappa(agreeSubset[grade].pairs) },
+					]),
+				) as QuestionResult["variantAgreementSubset"],
+				variantSplitSubset: splitSubset,
+				joinCounts,
+				joinedRowsMissingThisQuestion: missingQuestion,
+				perArtwork: rows,
+			}
+		})
+
+		/* --- the reviewer's answers, checked against themselves ------------------------------------- */
+
+		const answeredArtworks = [...artworks.values()].filter((artwork) =>
+			fixture.questions.some((question) => answerFor(question.key, artwork) !== null),
+		)
+		const contradictions: GateContradiction[] = []
+		const abstentionOpportunities = new Map<string, number>()
+		const gateRules = GATE_CONSISTENCY_RULES.map((rule) => {
+			const missing = [rule.gateKey, rule.conditionalKey].filter((key) => !served.has(key))
+			if (missing.length > 0) {
 				return {
+					id: rule.id,
+					statement: rule.statement,
+					reading: rule.reading,
+					evaluable: false,
+					// "We did not measure it" and "it did not fire" are different facts, and an omitted row
+					// reads as the second one.
+					notEvaluableBecause: `this round did not ask ${missing.join(" or ")}`,
+					rowsArmed: 0,
+					contradictions: 0,
+					rate: null,
+				}
+			}
+			let armed = 0
+			let broken = 0
+			for (const artwork of answeredArtworks) {
+				const gate = answerFor(rule.gateKey, artwork)
+				const conditional = answerFor(rule.conditionalKey, artwork)
+				if (gate === null || conditional === null) continue
+				const gateToken = canonicalToken(gate)
+				const matches = rule.gateValues.includes(gateToken)
+				if (matches !== (rule.gateIs === "in")) continue
+				armed += 1
+				if (rule.expect === "refusal") {
+					abstentionOpportunities.set(rule.conditionalKey, (abstentionOpportunities.get(rule.conditionalKey) ?? 0) + 1)
+				}
+				const specific = RULE_SPECIFIC_CONSISTENT[rule.id]
+				const consistent =
+					specific !== undefined
+						? specific(conditional)
+						: rule.expect === "refusal"
+							? isRefusal(conditional)
+							: !isRefusal(conditional)
+				if (consistent) continue
+				broken += 1
+				contradictions.push({
+					ruleId: rule.id,
 					imageId: artwork.imageId,
 					imagePath: artwork.imagePath,
-					sha256: artwork.sha256,
-					stratum: artwork.stratum,
-					joinGrade: join.grade,
-					joinVerified: join.verified,
-					pilotImagePath: join.pilotPath,
-					reviewer,
-					model,
-					bucket,
-					variantsAgree,
-					setOverlap,
-				}
-			})
-
-		return {
-			key: question.key,
-			kind: question.kind,
-			question: question.question,
-			whyAsked: BCDE_VALIDATION_QUESTION_REASONS[question.key] ?? "",
-			answered: answeredHere,
-			unanswered: rows.length - answeredHere,
-			reviewerDistribution,
-			multi:
-				question.kind !== "multi"
-					? null
-					: {
-							singletonRate: ratio(singletons, answeredHere),
-							meanSize: answeredHere === 0 ? null : Number((sizeSum / answeredHere).toFixed(3)),
-							perValue,
-						},
-			perVariant: Object.fromEntries(
-				PILOT_VARIANTS.map((variant) => [
-					variant,
-					Object.fromEntries(
-						JOINED_GRADES.map((grade) => {
-							const held = perVariant[variant][grade]
-							return [
-								grade,
-								{
-									n: held.n,
-									buckets: held.buckets,
-									exactSetAgreement:
-										held.exactSets.length === 0 ? null : ratio(held.exactSets.filter(Boolean).length, held.exactSets.length),
-									meanJaccard:
-										held.jaccards.length === 0
-											? null
-											: Number((held.jaccards.reduce((sum, value) => sum + value, 0) / held.jaccards.length).toFixed(4)),
-									kappa: cohenKappa(held.pairs),
-								},
-							]
-						}),
-					),
-				]),
-			) as QuestionResult["perVariant"],
-			variantAgreementSubset: Object.fromEntries(
-				JOINED_GRADES.map((grade) => [
-					grade,
-					{ n: agreeSubset[grade].n, buckets: agreeSubset[grade].buckets, kappa: cohenKappa(agreeSubset[grade].pairs) },
-				]),
-			) as QuestionResult["variantAgreementSubset"],
-			variantSplitSubset: splitSubset,
-			joinCounts,
-			joinedRowsMissingThisQuestion: missingQuestion,
-			perArtwork: rows,
-		}
-	})
-
-	/* --- the reviewer's answers, checked against themselves ------------------------------------- */
-
-	const served = new Map(fixture.questions.map((question) => [question.key, question]))
-	const answeredArtworks = [...artworks.values()].filter((artwork) =>
-		fixture.questions.some((question) => answerFor(question.key, artwork) !== null),
-	)
-	const contradictions: GateContradiction[] = []
-	const abstentionOpportunities = new Map<string, number>()
-	const gateRules = GATE_CONSISTENCY_RULES.map((rule) => {
-		const missing = [rule.gateKey, rule.conditionalKey].filter((key) => !served.has(key))
-		if (missing.length > 0) {
+					gateKey: rule.gateKey,
+					gateAnswer: gate,
+					conditionalKey: rule.conditionalKey,
+					conditionalAnswer: conditional,
+				})
+			}
 			return {
 				id: rule.id,
 				statement: rule.statement,
 				reading: rule.reading,
-				evaluable: false,
-				// "We did not measure it" and "it did not fire" are different facts, and an omitted row
-				// reads as the second one.
-				notEvaluableBecause: `this round did not ask ${missing.join(" or ")}`,
-				rowsArmed: 0,
-				contradictions: 0,
-				rate: null,
+				evaluable: true,
+				notEvaluableBecause: null,
+				rowsArmed: armed,
+				contradictions: broken,
+				rate: ratio(broken, armed),
 			}
-		}
-		let armed = 0
-		let broken = 0
-		for (const artwork of answeredArtworks) {
-			const gate = answerFor(rule.gateKey, artwork)
-			const conditional = answerFor(rule.conditionalKey, artwork)
-			if (gate === null || conditional === null) continue
-			const gateToken = canonicalToken(gate)
-			const matches = rule.gateValues.includes(gateToken)
-			if (matches !== (rule.gateIs === "in")) continue
-			armed += 1
-			if (rule.expect === "refusal") {
-				abstentionOpportunities.set(rule.conditionalKey, (abstentionOpportunities.get(rule.conditionalKey) ?? 0) + 1)
-			}
-			const specific = RULE_SPECIFIC_CONSISTENT[rule.id]
-			const consistent =
-				specific !== undefined
-					? specific(conditional)
-					: rule.expect === "refusal"
-						? isRefusal(conditional)
-						: !isRefusal(conditional)
-			if (consistent) continue
-			broken += 1
-			contradictions.push({
-				ruleId: rule.id,
-				imageId: artwork.imageId,
-				imagePath: artwork.imagePath,
-				gateKey: rule.gateKey,
-				gateAnswer: gate,
-				conditionalKey: rule.conditionalKey,
-				conditionalAnswer: conditional,
-			})
-		}
-		return {
-			id: rule.id,
-			statement: rule.statement,
-			reading: rule.reading,
-			evaluable: true,
-			notEvaluableBecause: null,
-			rowsArmed: armed,
-			contradictions: broken,
-			rate: ratio(broken, armed),
-		}
-	})
-
-	// Rules 7 and 8 are about multi-select shape rather than a gate pair.
-	let exclusiveBesideAnother = 0
-	let repeatedValue = 0
-	for (const question of fixture.questions) {
-		if (question.kind !== "multi") continue
-		for (const artwork of artworks.values()) {
-			const answer = answerFor(question.key, artwork)
-			if (answer === null || typeof answer === "string") continue
-			if (new Set(answer).size !== answer.length) repeatedValue += 1
-			if (answer.length > 1 && answer.some((value) => REFUSAL_VALUES.includes(value) || value === "none")) {
-				exclusiveBesideAnother += 1
-			}
-		}
-	}
-
-	// Only questions that actually OFFER a refusal value: `has_dominant_subject` is the conditional of
-	// rule 12, but its vocabulary has no `not_applicable`, so "used it 0 times" would be a fact about
-	// the vocabulary rather than about the reviewer.
-	const abstentionUse = [...new Set(GATE_CONSISTENCY_RULES.filter((rule) => rule.expect === "refusal").map((rule) => rule.conditionalKey))]
-		.filter((key) => served.get(key)?.answers.some((answer) => REFUSAL_VALUES.includes(answer.key)) === true)
-		.map((questionKey) => {
-			let used = 0
-			for (const artwork of artworks.values()) {
-				const answer = answerFor(questionKey, artwork)
-				if (answer !== null && isRefusal(answer)) used += 1
-			}
-			return { questionKey, opportunities: abstentionOpportunities.get(questionKey) ?? 0, refusalsUsed: used }
 		})
 
-	const distinctArtworks = new Set(contradictions.map((entry) => entry.imageId)).size
-	const okRows = answeredArtworks.length
-	const contradictionRate = ratio(contradictions.length, okRows)
-	const gateConsistency: GateConsistency = {
-		ceiling: CONTRADICTION_CEILING,
-		ceilingSource:
-			"PREMISE_NEXT.md §15.6-(3): total contradiction rate <= 10% of ok rows. Pre-registered for the " +
-			"model; applied here to the human, because these rows are the standard the model is graded against.",
-		rowsConsidered: okRows,
-		rules: gateRules,
-		multiSelectShape: {
-			exclusiveValueBesideAnother: exclusiveBesideAnother,
-			repeatedValue,
-			note:
-				"Rules 7 and 8 of the same table. The server refuses both at write time " +
-				"(shape, membership, non-empty, no-repeat, then sort), so a non-zero count here means a row " +
-				"reached the warehouse by some path other than the server.",
-		},
-		totalContradictions: contradictions.length,
-		artworksWithAnyContradiction: distinctArtworks,
-		contradictionRate,
-		artworkRate: ratio(distinctArtworks, okRows),
-		withinCeiling: contradictionRate === null ? null : contradictionRate <= CONTRADICTION_CEILING,
-		abstentionUse,
-		contradictions,
-		reading:
-			contradictions.length === 0
-				? okRows === 0
-					? "Nothing answered yet, so nothing to check."
-					: `No contradiction fired on ${okRows} answered artworks. The gates and their conditionals agree.`
-				: `${contradictions.length} contradiction(s) across ${distinctArtworks} of ${okRows} answered artworks — ` +
-					`${((contradictionRate ?? 0) * 100).toFixed(0)}% against a pre-registered ceiling of ` +
-					`${(CONTRADICTION_CEILING * 100).toFixed(0)}%. THIS IS THE HUMAN REFERENCE STANDARD, and it is ` +
-					`internally inconsistent by more than the bar set for the machine. Nothing here says which reading ` +
-					`is right — question ambiguity, gate-pair wording, or reviewer fatigue — and this analysis does not ` +
-					`choose one. It says the fact is on the record before any model is graded against these rows.`,
-	}
-
-	/* --- the stored answers, checked against the vocabulary they were drawn from ----------------- */
-
-	const askedPairs = new Set(fixture.items.map((item) => `${item.questionKey} ${item.imageId}`))
-	const offVocabulary: { questionKey: string; imageId: string; value: string }[] = []
-	const unsortedArrays: { questionKey: string; imageId: string; answer: readonly string[] }[] = []
-	const duplicateValues: { questionKey: string; imageId: string; value: string }[] = []
-	const emptyArrays: { questionKey: string; imageId: string }[] = []
-	const wrongShape: { questionKey: string; imageId: string; expected: string; got: string }[] = []
-	const orphanAnswers: { questionKey: string; imageId: string }[] = []
-	let checked = 0
-	for (const [key, answer] of byQuestionAndImage) {
-		const split = key.indexOf(" ")
-		const questionKey = key.slice(0, split)
-		const imageId = key.slice(split + 1)
-		if (!askedPairs.has(key)) orphanAnswers.push({ questionKey, imageId })
-		const question = served.get(questionKey)
-		if (question === undefined) continue
-		checked += 1
-		const vocabulary = new Set(question.answers.map((entry) => entry.key))
-		const isArray = Array.isArray(answer)
-		if (question.kind === "multi" && !isArray) wrongShape.push({ questionKey, imageId, expected: "array", got: "string" })
-		if (question.kind !== "multi" && isArray) wrongShape.push({ questionKey, imageId, expected: "string", got: "array" })
-		const values = typeof answer === "string" ? [answer] : [...answer]
-		for (const value of values) if (!vocabulary.has(value)) offVocabulary.push({ questionKey, imageId, value })
-		if (isArray) {
-			if (values.length === 0) emptyArrays.push({ questionKey, imageId })
-			const seen = new Set<string>()
-			for (const value of values) {
-				if (seen.has(value)) duplicateValues.push({ questionKey, imageId, value })
-				seen.add(value)
+		// Rules 7 and 8 are about multi-select shape rather than a gate pair.
+		let exclusiveBesideAnother = 0
+		let repeatedValue = 0
+		for (const question of fixture.questions) {
+			if (question.kind !== "multi") continue
+			for (const artwork of artworks.values()) {
+				const answer = answerFor(question.key, artwork)
+				if (answer === null || typeof answer === "string") continue
+				if (new Set(answer).size !== answer.length) repeatedValue += 1
+				if (answer.length > 1 && answer.some((value) => REFUSAL_VALUES.includes(value) || value === "none")) {
+					exclusiveBesideAnother += 1
+				}
 			}
-			if (canonicalToken(answer) !== values.join("+")) unsortedArrays.push({ questionKey, imageId, answer: values })
 		}
+
+		// Only questions that actually OFFER a refusal value: `has_dominant_subject` is the conditional of
+		// rule 12, but its vocabulary has no `not_applicable`, so "used it 0 times" would be a fact about
+		// the vocabulary rather than about the reviewer.
+		const abstentionUse = [...new Set(GATE_CONSISTENCY_RULES.filter((rule) => rule.expect === "refusal").map((rule) => rule.conditionalKey))]
+			.filter((key) => served.get(key)?.answers.some((answer) => REFUSAL_VALUES.includes(answer.key)) === true)
+			.map((questionKey) => {
+				let used = 0
+				for (const artwork of artworks.values()) {
+					const answer = answerFor(questionKey, artwork)
+					if (answer !== null && isRefusal(answer)) used += 1
+				}
+				return { questionKey, opportunities: abstentionOpportunities.get(questionKey) ?? 0, refusalsUsed: used }
+			})
+
+		const distinctArtworks = new Set(contradictions.map((entry) => entry.imageId)).size
+		const okRows = answeredArtworks.length
+		const contradictionRate = ratio(contradictions.length, okRows)
+		const gateConsistency: GateConsistency = {
+			ceiling: CONTRADICTION_CEILING,
+			ceilingSource:
+				"PREMISE_NEXT.md §15.6-(3): total contradiction rate <= 10% of ok rows. Pre-registered FOR THE " +
+				"MODEL, whose decode is joint and constrained — the gate is generated first and the dependent is " +
+				"generated in its context, so coherence is structurally forced and a low rate is architecture rather " +
+				"than accuracy. Carrying that number across to a human answering each question in isolation compares " +
+				"two different elicitation modes, which is a category error; the rate below is computed and reported " +
+				"because it was pre-registered, and `withinCeiling` must not be read as a verdict on the reviewer.",
+			rowsConsidered: okRows,
+			rules: gateRules,
+			multiSelectShape: {
+				exclusiveValueBesideAnother: exclusiveBesideAnother,
+				repeatedValue,
+				note:
+					"Rules 7 and 8 of the same table. The server refuses both at write time " +
+					"(shape, membership, non-empty, no-repeat, then sort), so a non-zero count here means a row " +
+					"reached the warehouse by some path other than the server.",
+			},
+			totalContradictions: contradictions.length,
+			artworksWithAnyContradiction: distinctArtworks,
+			contradictionRate,
+			artworkRate: ratio(distinctArtworks, okRows),
+			withinCeiling: contradictionRate === null ? null : contradictionRate <= CONTRADICTION_CEILING,
+			abstentionUse,
+			contradictions,
+			reading:
+				contradictions.length === 0
+					? okRows === 0
+						? "Nothing answered yet, so nothing to check."
+						: `No contradiction fired on ${okRows} answered artworks. The gates and their conditionals agree.`
+					: `${contradictions.length} contradiction(s) across ${distinctArtworks} of ${okRows} answered artworks — ` +
+						`${((contradictionRate ?? 0) * 100).toFixed(0)}% against a pre-registered ceiling of ` +
+						`${(CONTRADICTION_CEILING * 100).toFixed(0)}%. THE COMPARISON IS A CATEGORY ERROR AND THIS RATE IS ` +
+						`NOT A REVIEWER DEFECT (loose end L-b, read 2026-08-03). Two reasons, and the second subsumes the ` +
+						`first. (1) THE CEILING WAS WRITTEN FOR A DIFFERENT INSTRUMENT. The model decodes gate and dependent ` +
+						`jointly, gate first, so its coherence is structurally forced: its low contradiction rate is ` +
+						`architecture, not virtue, and it is not comparable to a human answering each question in isolation ` +
+						`under an instruction that expressly forbade making the answers cohere. (2) THE PAIRS CONFLATE TWO ` +
+						`VARIABLES. The gate asks about the EXISTENCE OF A DOMINANT X; its dependent asks for the KIND OF THE ` +
+						`BEST-AVAILABLE X. Asked apart, both have honest answers that break the rule — ` +
+						`${ELICITATION_MODE_CLARIFICATION} — so a "contradiction" here is not an inconsistency in the ` +
+						`reviewer, it is two answers to two different questions, and the pair carries MORE information than ` +
+						`either coherent answer does. What this rate measures is how often the two variables come apart on ` +
+						`real covers. That is the argument for splitting them in schema v2 (see design rule 9), not for ` +
+						`grading a human against a bar written for a constrained decoder.`,
+		}
+
+		/* --- the stored answers, checked against the vocabulary they were drawn from ----------------- */
+
+		const offVocabulary: { questionKey: string; imageId: string; value: string }[] = []
+		const unsortedArrays: { questionKey: string; imageId: string; answer: readonly string[] }[] = []
+		const duplicateValues: { questionKey: string; imageId: string; value: string }[] = []
+		const emptyArrays: { questionKey: string; imageId: string }[] = []
+		const wrongShape: { questionKey: string; imageId: string; expected: string; got: string }[] = []
+		const orphanAnswers: { questionKey: string; imageId: string }[] = []
+		let checked = 0
+		for (const [key, answer] of source) {
+			const split = key.indexOf(" ")
+			const questionKey = key.slice(0, split)
+			const imageId = key.slice(split + 1)
+			if (!askedPairs.has(key)) orphanAnswers.push({ questionKey, imageId })
+			const question = served.get(questionKey)
+			if (question === undefined) continue
+			checked += 1
+			const vocabulary = new Set(question.answers.map((entry) => entry.key))
+			const isArray = Array.isArray(answer)
+			if (question.kind === "multi" && !isArray) wrongShape.push({ questionKey, imageId, expected: "array", got: "string" })
+			if (question.kind !== "multi" && isArray) wrongShape.push({ questionKey, imageId, expected: "string", got: "array" })
+			const values = typeof answer === "string" ? [answer] : [...answer]
+			for (const value of values) if (!vocabulary.has(value)) offVocabulary.push({ questionKey, imageId, value })
+			if (isArray) {
+				if (values.length === 0) emptyArrays.push({ questionKey, imageId })
+				const seen = new Set<string>()
+				for (const value of values) {
+					if (seen.has(value)) duplicateValues.push({ questionKey, imageId, value })
+					seen.add(value)
+				}
+				if (canonicalToken(answer) !== values.join("+")) unsortedArrays.push({ questionKey, imageId, answer: values })
+			}
+		}
+		const vocabularyProblems =
+			offVocabulary.length + unsortedArrays.length + duplicateValues.length + emptyArrays.length + wrongShape.length + orphanAnswers.length
+		const vocabulary: VocabularyCheck = {
+			checked,
+			offVocabulary,
+			unsortedArrays,
+			duplicateValues,
+			emptyArrays,
+			wrongShape,
+			orphanAnswers,
+			reading:
+				vocabularyProblems === 0
+					? `All ${checked} stored answers are in the fixture's own vocabulary, in the shape their question ` +
+						`declares, sorted and without repeats, and every one is filed against a pair the round actually asked. ` +
+						`The server enforces all of this at write time; this check exists because the analyzer used to type-check ` +
+						`"string or string[]" and nothing else, so a hand-appended warehouse row with a bogus value would have ` +
+						`passed the analysis silently.`
+					: `${vocabularyProblems} stored answer(s) do not match the fixture they were recorded under. The server ` +
+						`refuses all of these at write time, so a row that carries one did not come through the server.`,
+		}
+
+		return { answers, unanswered, perQuestion, gateConsistency, vocabulary }
 	}
-	const vocabularyProblems =
-		offVocabulary.length + unsortedArrays.length + duplicateValues.length + emptyArrays.length + wrongShape.length + orphanAnswers.length
-	const vocabulary: VocabularyCheck = {
-		checked,
-		offVocabulary,
-		unsortedArrays,
-		duplicateValues,
-		emptyArrays,
-		wrongShape,
-		orphanAnswers,
-		reading:
-			vocabularyProblems === 0
-				? `All ${checked} stored answers are in the fixture's own vocabulary, in the shape their question ` +
-					`declares, sorted and without repeats, and every one is filed against a pair the round actually asked. ` +
-					`The server enforces all of this at write time; this check exists because the analyzer used to type-check ` +
-					`"string or string[]" and nothing else, so a hand-appended warehouse row with a bogus value would have ` +
-					`passed the analysis silently.`
-				: `${vocabularyProblems} stored answer(s) do not match the fixture they were recorded under. The server ` +
-					`refuses all of these at write time, so a row that carries one did not come through the server.`,
-	}
+
+	/* --- the two readings, computed apart and never blended -------------------------------------- */
+
+	// AS GIVEN: what this round's by-question passes produced. Frozen the moment the round released —
+	// it is the measurement OF that elicitation design, and a later round cannot revise it.
+	const asGivenState = computeState(byQuestionAndImage)
+	// STANDING: the end of every supersession chain, including links written by later batches. This is
+	// the reviewer's current position and the only reading a downstream consumer of these labels may use.
+	const standingState = computeState(standingByQuestionAndImage)
+	const { answers, unanswered, perQuestion, gateConsistency, vocabulary } = asGivenState
+	const reconciliation = buildReconciliationReport(batchId, crossBatchSupersessions, supersedingBatchIds, asGivenState, standingState)
 
 	/* --- plain language ------------------------------------------------------------------------ */
 
@@ -1369,8 +1802,15 @@ export function analyzeBcdeValidation(
 		lines.push(`${result.key.toUpperCase()} (${result.kind}) — ${result.answered}/${result.answered + result.unanswered} answered`)
 		const distribution = Object.entries(result.reviewerDistribution).sort((a, b) => b[1] - a[1])
 		lines.push(
-			`  reviewer said: ${distribution.length === 0 ? "nothing yet" : distribution.map(([value, count]) => `${value} ${count}`).join(" · ")}`,
+			`  reviewer said [independent]: ${distribution.length === 0 ? "nothing yet" : distribution.map(([value, count]) => `${value} ${count}`).join(" · ")}`,
 		)
+		// Printed ONLY where the two readings differ, so the absence of this line is itself the statement
+		// that nothing about this question moved.
+		const moved = reconciliation.changedDistributions.find((entry) => entry.questionKey === result.key)
+		if (moved !== undefined) {
+			const after = Object.entries(moved.standing).sort((a, b) => b[1] - a[1])
+			lines.push(`  reviewer said [joint]: ${after.map(([value, count]) => `${value} ${count}`).join(" · ")}`)
+		}
 		if (result.multi !== null) {
 			// A rate is not a count: `singletonRate` used to be printed as "one value only on 1 of rows",
 			// which means twenty and reads as one.
@@ -1402,7 +1842,7 @@ export function analyzeBcdeValidation(
 		}
 		lines.push("")
 	}
-	lines.push("GATE CONSISTENCY — the reviewer's own answers, against §15.6-(3)'s pre-registered table:")
+	lines.push(`GATE CONSISTENCY [${reconciliation.asGivenLabel}], against §15.6-(3)'s pre-registered table:`)
 	for (const rule of gateConsistency.rules) {
 		lines.push(
 			rule.evaluable
@@ -1417,6 +1857,55 @@ export function analyzeBcdeValidation(
 		)
 	}
 	lines.push(`  ${gateConsistency.reading}`)
+	lines.push("")
+	lines.push(`GATE CONSISTENCY [${reconciliation.standingLabel}]:`)
+	for (const rule of reconciliation.standing.gateConsistency.rules) {
+		lines.push(
+			rule.evaluable
+				? `  #${rule.id} ${rule.statement} — ${rule.contradictions} of ${rule.rowsArmed} armed rows`
+				: `  #${rule.id} ${rule.statement} — not evaluable: ${rule.notEvaluableBecause}`,
+		)
+	}
+	lines.push(`  ${reconciliation.standing.gateConsistency.reading}`)
+	lines.push("")
+	lines.push("INDEPENDENT vs JOINT ELICITATION — the same reviewer, the same artworks, two instruments:")
+	lines.push(
+		`  contradictions ${reconciliation.gateComparison.asGiven.totalContradictions} -> ` +
+			`${reconciliation.gateComparison.standing.totalContradictions} · artworks ` +
+			`${reconciliation.gateComparison.asGiven.artworksWithAnyContradiction} -> ` +
+			`${reconciliation.gateComparison.standing.artworksWithAnyContradiction} · rate ` +
+			`${reconciliation.gateComparison.asGiven.contradictionRate} -> ${reconciliation.gateComparison.standing.contradictionRate}`,
+	)
+	for (const rule of reconciliation.gateComparison.perRule) {
+		if (rule.asGivenContradictions === 0 && rule.standingContradictions === 0) continue
+		lines.push(
+			`  #${rule.id} ${rule.asGivenContradictions} of ${rule.asGivenRowsArmed} armed -> ` +
+				`${rule.standingContradictions} of ${rule.standingRowsArmed} armed  (resolved ${rule.resolved})`,
+		)
+	}
+	lines.push(
+		`  ${reconciliation.answersSuperseded} answer(s) superseded from another batch, ${reconciliation.answersChanged} of them changed`,
+	)
+	for (const entry of reconciliation.crossBatchSupersessions.filter((row) => row.changed)) {
+		lines.push(
+			`    ${entry.questionKey} on ${entry.imageId}: ${canonicalToken(entry.asGiven)} -> ${canonicalToken(entry.standing)}`,
+		)
+	}
+	for (const question of reconciliation.changedDistributions) {
+		lines.push(
+			`  distribution moved — ${question.questionKey}: ` +
+				question.moved.map((entry) => `${entry.value} ${entry.asGiven}->${entry.standing}`).join(" · "),
+		)
+	}
+	for (const join of reconciliation.changedJoins) {
+		lines.push(
+			`  join moved — ${join.questionKey} [${join.grade}] vs ${join.variant}: ` +
+				`${join.asGiven.buckets.agreement}/${join.asGiven.buckets.disagreement}/${join.asGiven.buckets.cant_tell} -> ` +
+				`${join.standing.buckets.agreement}/${join.standing.buckets.disagreement}/${join.standing.buckets.cant_tell} ` +
+				`(agree/disagree/can't-tell, n=${join.asGiven.n}->${join.standing.n})`,
+		)
+	}
+	lines.push(`  ${reconciliation.reading}`)
 	lines.push("")
 	lines.push(`VOCABULARY: ${vocabulary.reading}`)
 	if (verification !== null) {
@@ -1465,6 +1954,7 @@ export function analyzeBcdeValidation(
 		questionsOmitted: BCDE_VALIDATION_OMITTED_REASONS,
 		gateConsistency,
 		vocabulary,
+		reconciliation,
 		overlapVerification: verification,
 		unexpectedPilotVariants: pilot.variantsSeen.filter((variant) => !(PILOT_VARIANTS as readonly string[]).includes(variant)),
 		perQuestion,

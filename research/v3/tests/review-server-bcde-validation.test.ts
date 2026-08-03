@@ -27,6 +27,7 @@ import {
 	CONTRADICTION_CEILING,
 	cohenKappa,
 	collectBcdeAnswers,
+	ELICITATION_MODE_CLARIFICATION,
 	GATE_CONSISTENCY_RULES,
 	jaccard,
 	JOINED_GRADES,
@@ -706,7 +707,17 @@ describe("bcde-validation analysis", () => {
 		const abstention = gates.abstentionUse.find((entry: any) => entry.questionKey === "subject_kind")
 		assert.equal(abstention.refusalsUsed, 0)
 		assert.equal(abstention.opportunities, 5)
-		assert.match(gates.reading, /HUMAN REFERENCE STANDARD/u)
+		// The reading of that 45%, revised 2026-08-03 on the reviewer's own account of it. It used to say
+		// "THIS IS THE HUMAN REFERENCE STANDARD, and it is internally inconsistent by more than the bar
+		// set for the machine" — which reads as a defect in the reviewer, and the reviewer says it is
+		// not one. The rate stays; the reading is that the ceiling was pre-registered for the MODEL's
+		// joint constrained decode, where coherence is structural, and that the gate/dependent pairs
+		// conflate existence-of-a-dominant-X with kind-of-the-best-available-X. Both figures and both
+		// sentences are pinned, because the number without this reading is the misquote.
+		assert.match(gates.reading, /CATEGORY ERROR AND THIS RATE IS NOT A REVIEWER DEFECT/u)
+		assert.match(gates.reading, /THE PAIRS CONFLATE TWO VARIABLES/u)
+		assert.match(gates.reading, /loose end L-b/u)
+		assert.match(gates.ceilingSource, /architecture rather than accuracy/u)
 		assert.ok(
 			gates.contradictions.every((entry: any) => typeof entry.imageId === "string" && typeof entry.gateAnswer === "string"),
 			"reported per artwork, so a reading can be argued from the rows rather than from the rate",
@@ -814,5 +825,256 @@ describe("bcde-validation analysis", () => {
 			"every row says it was not checked",
 		)
 		assert.ok(analysis.summaryLines.some((line) => line.includes("JOIN NOT VERIFIED IN THIS RUN")))
+	})
+})
+
+/**
+ * Cross-batch supersession — a reconciliation round's answers reaching an earlier round's analysis.
+ *
+ * The defect this pins. `collectBcdeAnswers` scoped every record to the analyzed batch BEFORE it
+ * resolved supersession, so a superseder written by another batch was counted as `skipped.otherBatch`
+ * and never reached the chain. `bcde-gate-reconciliation-1` is exactly that: a separate batch whose
+ * records name `bcde-validation-1`'s in `supersedes`, by design — "answers supersede
+ * bcde-validation-1's for the same (question, artwork); nothing is edited or deleted". The analysis
+ * therefore went on reporting superseded answers as current after the reconciliation was released.
+ *
+ * The fix is NOT to make the old figures move. Both readings are produced and both are kept:
+ *
+ *  - AS GIVEN (`gateConsistency`, `perQuestion`) — what this round's by-question passes recorded. It
+ *    is the measurement of that elicitation design, and it must survive any later re-asking, because
+ *    it is the only evidence for whether the contradiction rate was an artefact of the design.
+ *  - STANDING (`reconciliation.standing.*`) — the end of every chain, wherever the chain goes. It is
+ *    the reviewer's current position and the only reading a downstream consumer may use.
+ *
+ * A test that only checked "standing moved" would pass against an implementation that overwrote the
+ * as-given figures, which is the failure mode that would destroy the round's own measurement. Every
+ * assertion below is therefore paired: standing changed AND as-given did not.
+ */
+describe("cross-batch supersession", () => {
+	const ORIGINAL_BATCH = "cross-batch-source-1"
+	const RECONCILIATION_BATCH = "cross-batch-reconciliation-1"
+	const LATER_BATCH = "cross-batch-reconciliation-2"
+
+	/** The fixture's own item for a (question, artwork), so a synthetic record lands in a real column. */
+	function itemFor(questionKey: string, index = 0) {
+		const items = fixture.items.filter((item) => item.questionKey === questionKey)
+		assert.ok(items.length > index, `the round asks ${questionKey}`)
+		return items[index]
+	}
+
+	let serial = 0
+	function label(options: {
+		questionKey: string
+		imageId: string
+		answer: string | string[]
+		batchId: string
+		supersedes?: string
+		revision?: number
+		author?: { kind: "human" | "agent"; id: string }
+	}): OracleLabelRecord {
+		serial += 1
+		const item = fixture.items.find((entry) => entry.questionKey === options.questionKey && entry.imageId === options.imageId)!
+		const record = {
+			id: `o-xbatch-${String(serial).padStart(4, "0")}`,
+			type: "oracle-label" as const,
+			// Ascending, so file order and the `supersedes` chain agree; the reader must not need them to.
+			ts: new Date(Date.UTC(2026, 7, 3, 0, 0, serial)).toISOString(),
+			schema: "v3.0",
+			author: options.author ?? { kind: "human" as const, id: "flo" },
+			imageId: options.imageId,
+			artwork: {
+				// The fixture stores repo-root-relative paths; the warehouse identifies artworks by full path.
+				path: `${REPO_ROOT}/${item.imagePath}`,
+				sha256: item.sha256,
+				rendition: { width: 300, height: 300, format: "jpeg", bytes: 1, collection: "sharded-corpus", artworkId: item.artworkId },
+			},
+			labelSchemaVersion: fixture.labelSchemaVersion,
+			questionKey: options.questionKey,
+			answer: options.answer,
+			confidence: null,
+			ambiguityNote: null,
+			stratum: item.stratum,
+			supersedes: options.supersedes ?? null,
+			revision: options.revision ?? 1,
+			batch: { id: options.batchId, purpose: "oracle-validation", itemCount: 1, fundedBy: ["a synthetic round, for this test only"] },
+		}
+		// Synthetic records that the warehouse itself would refuse prove nothing about the reader.
+		validateRecord(record as unknown as Parameters<typeof validateRecord>[0])
+		return record as unknown as OracleLabelRecord
+	}
+
+	/** Rule 9's contradiction: a noun for a subject the gate said was absent. */
+	const gate = itemFor("has_dominant_subject")
+	const dependent = fixture.items.find((item) => item.questionKey === "subject_kind" && item.imageId === gate.imageId)!
+
+	const asGivenRecords = [
+		label({ questionKey: "has_dominant_subject", imageId: gate.imageId, answer: "none", batchId: ORIGINAL_BATCH }),
+		label({ questionKey: "subject_kind", imageId: dependent.imageId, answer: "person", batchId: ORIGINAL_BATCH }),
+	]
+	/** The reconciliation: the reviewer saw the pair together and repaired the dependent. */
+	const superseder = label({
+		questionKey: "subject_kind",
+		imageId: dependent.imageId,
+		answer: "not_applicable",
+		batchId: RECONCILIATION_BATCH,
+		supersedes: asGivenRecords[1].id,
+		revision: 2,
+	})
+
+	it("carries the standing answer across the batch boundary, and leaves the as-given answer where it was", () => {
+		const collected = collectBcdeAnswers([...asGivenRecords, superseder], ORIGINAL_BATCH)
+		const key = `subject_kind ${dependent.imageId}`
+		assert.equal(collected.byQuestionAndImage.get(key), "person", "the as-given reading must not be rewritten by a later batch")
+		assert.equal(collected.standingByQuestionAndImage.get(key), "not_applicable", "the standing reading must follow the chain out of the batch")
+		// The gate was not re-asked, so both readings agree on it — and it is reported in neither diff.
+		assert.equal(collected.byQuestionAndImage.get(`has_dominant_subject ${gate.imageId}`), "none")
+		assert.equal(collected.standingByQuestionAndImage.get(`has_dominant_subject ${gate.imageId}`), "none")
+		assert.deepEqual(collected.supersedingBatchIds, [RECONCILIATION_BATCH])
+		assert.equal(collected.crossBatchSupersessions.length, 1)
+		const [crossed] = collected.crossBatchSupersessions
+		assert.equal(crossed.questionKey, "subject_kind")
+		assert.equal(crossed.imageId, dependent.imageId)
+		assert.equal(crossed.asGiven, "person")
+		assert.equal(crossed.standing, "not_applicable")
+		assert.equal(crossed.changed, true)
+		assert.deepEqual(
+			crossed.chain.map((link) => link.batchId),
+			[ORIGINAL_BATCH, RECONCILIATION_BATCH],
+		)
+	})
+
+	it("follows a chain through several batches, and the latest link wins", () => {
+		const later = label({
+			questionKey: "subject_kind",
+			imageId: dependent.imageId,
+			answer: "abstract_shape",
+			batchId: LATER_BATCH,
+			supersedes: superseder.id,
+			revision: 3,
+		})
+		const collected = collectBcdeAnswers([...asGivenRecords, superseder, later], ORIGINAL_BATCH)
+		const key = `subject_kind ${dependent.imageId}`
+		assert.equal(collected.byQuestionAndImage.get(key), "person")
+		assert.equal(collected.standingByQuestionAndImage.get(key), "abstract_shape", "the END of the chain stands, not its first link")
+		assert.deepEqual(collected.supersedingBatchIds, [RECONCILIATION_BATCH, LATER_BATCH])
+		assert.deepEqual(
+			collected.crossBatchSupersessions[0].chain.map((link) => link.batchId),
+			[ORIGINAL_BATCH, RECONCILIATION_BATCH, LATER_BATCH],
+		)
+	})
+
+	it("does not let a machine-authored record from another batch supersede a human answer", () => {
+		// The batch filter was doing this work by accident. Dropping it must not open a door the other
+		// three checks were closing: a VLM row that names a human row is not a re-answer.
+		const machine = label({
+			questionKey: "subject_kind",
+			imageId: dependent.imageId,
+			answer: "vehicle",
+			batchId: RECONCILIATION_BATCH,
+			supersedes: asGivenRecords[1].id,
+			revision: 2,
+			author: { kind: "agent", id: "some-vlm" },
+		})
+		const collected = collectBcdeAnswers([...asGivenRecords, machine], ORIGINAL_BATCH)
+		assert.equal(collected.standingByQuestionAndImage.get(`subject_kind ${dependent.imageId}`), "person")
+		assert.deepEqual(collected.crossBatchSupersessions, [])
+	})
+
+	it("reports the gate contradiction as given AND its repair as standing, under names that cannot be swapped", async () => {
+		const analysis = analyzeBcdeValidation(fixture, [...asGivenRecords, superseder], await readPilotAnswers(), {
+			warehousePath: "(none)",
+			fixturePath: BCDE_VALIDATION_FIXTURE_PATH,
+			pilotRunPath: "(pilot)",
+			batchId: ORIGINAL_BATCH,
+		})
+
+		// AS GIVEN — the by-question round's own measurement. It stays on the record.
+		assert.equal(analysis.gateConsistency.totalContradictions, 1)
+		assert.equal(analysis.gateConsistency.artworksWithAnyContradiction, 1)
+		assert.equal(new Map(analysis.gateConsistency.rules.map((rule) => [rule.id, rule])).get(9)!.contradictions, 1)
+		assert.equal(analysis.perQuestion.find((question) => question.key === "subject_kind")!.reviewerDistribution.person, 1)
+
+		// STANDING — the reviewer's position after the reconciliation.
+		const standing = analysis.reconciliation.standing
+		assert.equal(standing.gateConsistency.totalContradictions, 0)
+		assert.equal(standing.gateConsistency.artworksWithAnyContradiction, 0)
+		assert.equal(new Map(standing.gateConsistency.rules.map((rule) => [rule.id, rule])).get(9)!.contradictions, 0)
+		const standingSubject = standing.perQuestion.find((question) => question.key === "subject_kind")!
+		assert.equal(standingSubject.reviewerDistribution.not_applicable, 1)
+		assert.equal(standingSubject.reviewerDistribution.person, undefined)
+
+		// The diff names both, and the per-rule row carries the as-given count beside the standing one.
+		assert.deepEqual(analysis.reconciliation.supersedingBatchIds, [RECONCILIATION_BATCH])
+		assert.equal(analysis.reconciliation.answersSuperseded, 1)
+		assert.equal(analysis.reconciliation.answersChanged, 1)
+		assert.equal(analysis.reconciliation.gateComparison.asGiven.totalContradictions, 1)
+		assert.equal(analysis.reconciliation.gateComparison.standing.totalContradictions, 0)
+		const rule9 = analysis.reconciliation.gateComparison.perRule.find((rule) => rule.id === 9)!
+		assert.equal(rule9.asGivenContradictions, 1)
+		assert.equal(rule9.standingContradictions, 0)
+		assert.equal(rule9.resolved, 1)
+		const moved = analysis.reconciliation.changedDistributions.find((entry) => entry.questionKey === "subject_kind")!
+		assert.deepEqual(moved.moved, [
+			{ value: "not_applicable", asGiven: 0, standing: 1 },
+			{ value: "person", asGiven: 1, standing: 0 },
+		])
+
+		// And the prose keeps them apart, so a reader skimming the summary cannot pick up the wrong one.
+		assert.ok(analysis.reconciliation.asGivenLabel.startsWith("INDEPENDENT ELICITATION"))
+		assert.ok(analysis.reconciliation.standingLabel.startsWith("JOINT ELICITATION"))
+		assert.ok(analysis.summaryLines.some((line) => line.startsWith("GATE CONSISTENCY [INDEPENDENT ELICITATION")))
+		assert.ok(analysis.summaryLines.some((line) => line.startsWith("GATE CONSISTENCY [JOINT ELICITATION")))
+		assert.ok(analysis.scoping.some((note) => note.startsWith("TWO ELICITATION MODES, LABELLED, NEVER BLENDED")))
+	})
+
+	it("frames the two states as elicitation modes, never as errors and their correction", async () => {
+		// The reviewer's own reading, 2026-08-03, and the reason this test exists: "if you ask me *not
+		// to make a story* then I will give you those 2 answers, but if you ask me *jointly* then I will
+		// change my answers so they are coherent together." Both are honest. `none + animal` says
+		// *nothing dominates, but an animal is present* — strictly more than the reconciled answer can
+		// carry. An analysis that calls the first pass wrong throws that away, and the wording is the
+		// only thing standing between a future reader and that conclusion.
+		const analysis = analyzeBcdeValidation(fixture, [...asGivenRecords, superseder], await readPilotAnswers(), {
+			warehousePath: "(none)",
+			fixturePath: BCDE_VALIDATION_FIXTURE_PATH,
+			pilotRunPath: "(pilot)",
+			batchId: ORIGINAL_BATCH,
+		})
+		const prose = [
+			analysis.reconciliation.reading,
+			analysis.reconciliation.whatThisIs,
+			analysis.gateConsistency.reading,
+			analysis.gateConsistency.ceilingSource,
+			...analysis.scoping,
+		].join("\n")
+		// The clarification is quoted verbatim and dated, not paraphrased — a paraphrase drifts straight
+		// back into "the first answers were wrong".
+		assert.ok(analysis.reconciliation.reading.includes(ELICITATION_MODE_CLARIFICATION))
+		assert.ok(ELICITATION_MODE_CLARIFICATION.startsWith("reviewer, 2026-08-03:"))
+		assert.ok(prose.includes("NOT A DRAFT AND A CORRECTION"))
+		// L-b's reading of the 45%: the ceiling was written for the model's joint constrained decode, so
+		// carrying it across to independent human passes compares two instruments.
+		assert.ok(analysis.gateConsistency.reading.includes("CATEGORY ERROR"))
+		assert.ok(analysis.gateConsistency.reading.includes("CONFLATE TWO"))
+		assert.ok(analysis.gateConsistency.ceilingSource.includes("architecture rather"))
+		// No word in the whole output may call one reading correct and the other mistaken.
+		for (const banned of [/\bcorrected\b/iu, /\bthe correct answers\b/iu, /\breviewer error\b/iu, /\bfixed the mistake\b/iu]) {
+			assert.doesNotMatch(prose, banned, `the analysis calls one elicitation mode the other's correction: ${banned}`)
+		}
+	})
+
+	it("says so when nothing supersedes the round, rather than omitting the block", async () => {
+		const analysis = analyzeBcdeValidation(fixture, asGivenRecords, await readPilotAnswers(), {
+			warehousePath: "(none)",
+			fixturePath: BCDE_VALIDATION_FIXTURE_PATH,
+			pilotRunPath: "(pilot)",
+			batchId: ORIGINAL_BATCH,
+		})
+		// "Nothing superseded it" and "nobody looked" are different facts, and an absent field reads as
+		// the second one.
+		assert.deepEqual(analysis.reconciliation.supersedingBatchIds, [])
+		assert.deepEqual(analysis.reconciliation.crossBatchSupersessions, [])
+		assert.equal(analysis.reconciliation.standing.gateConsistency.totalContradictions, analysis.gateConsistency.totalContradictions)
+		assert.ok(analysis.reconciliation.standingLabel.includes("equals the independent reading"))
 	})
 })

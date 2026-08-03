@@ -135,6 +135,47 @@ export type OracleQuestion = Readonly<{
 export type OracleServeMode = "by-question" | "by-artwork"
 
 /**
+ * What a `by-artwork` reconciliation item tells the reviewer to do, in place of the anti-coherence
+ * line every `by-question` pass carries.
+ *
+ * **Why this exists (2026-08-03, reviewer-raised).** Every question in these fixtures carries a
+ * standing instruction, and for the by-question rounds it is the anti-coherence line from
+ * PREMISE_NEXT.md §12 — *"Answer this one question only. Do not try to make your answers across
+ * questions tell one story."* That line is correct there and load-bearing: a by-question pass is
+ * measuring independent judgements, and a reviewer who tries to be consistent across questions
+ * contaminates the measurement.
+ *
+ * `bcde-gate-reconciliation-1` reuses `bcde-validation-1`'s question objects verbatim — deliberately,
+ * so the wording an answer replaces is the wording it was replaced under — and so it inherited that
+ * line into a round whose ENTIRE PURPOSE is joint gate-dependent consistency. The reviewer was shown
+ * two of their own answers, told they do not hold together, asked to resolve them, and told in the
+ * same breath not to make their answers tell one story. The reviewer flagged it as contradictory and
+ * they are right; it is not a wording nit, it is an instruction to do the opposite of the task.
+ *
+ * The replacement is deliberately narrow. "Resolve the two" is the task; "answer from the artwork"
+ * keeps the answer a perceptual judgement rather than a bookkeeping edit; "do not revisit anything
+ * beyond the pair shown" holds the intervention to the pair — a reviewer who re-opens the whole round
+ * turns a targeted repair into an uncontrolled re-elicitation and the before/after comparison stops
+ * meaning anything.
+ *
+ * It is applied AT SERVE TIME rather than baked into the fixture, so no batch data file is rewritten
+ * and no already-recorded answer is retroactively re-labelled with words it was not given under.
+ */
+export const RECONCILIATION_INSTRUCTION =
+	"Resolve the two answers so they are logically consistent with each other. Answer from the artwork, " +
+	"and do not revisit anything beyond the pair shown."
+
+/**
+ * The instruction actually shown, for one question, under one serve mode.
+ *
+ * One function, so the two modes cannot drift apart and neither can be changed without the other
+ * being looked at. `by-question` passes keep the fixture's own words untouched.
+ */
+export function instructionForServeMode(instruction: string, serveMode: OracleServeMode): string {
+	return serveMode === "by-artwork" ? RECONCILIATION_INSTRUCTION : instruction
+}
+
+/**
  * What a `by-artwork` item shows above the question, and how it groups.
  *
  * Present on every item of a `by-artwork` round and on none of a `by-question` round. It carries the

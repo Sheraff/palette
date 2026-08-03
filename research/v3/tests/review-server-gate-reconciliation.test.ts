@@ -28,11 +28,14 @@ import { after, before, describe, it } from "node:test"
 import { fileURLToPath } from "node:url"
 import type { OracleLabelRecord } from "../src/warehouse/records.ts"
 import {
+	BCDE_INSTRUCTION,
 	BCDE_VALIDATION_BATCH_ID,
 	BCDE_VALIDATION_FIXTURE_PATH,
 	GATE_RECONCILIATION_BATCH_ID,
 	GATE_RECONCILIATION_FIXTURE_PATH,
+	RECONCILIATION_INSTRUCTION,
 	buildGateReconciliationFixture,
+	instructionForServeMode,
 	readBcdeValidationAnalysis,
 	serializeFixture,
 	validateFixture,
@@ -266,6 +269,59 @@ describe("gate-reconciliation round in the review server", () => {
 		const payload = harness.handle.service.oracleValidationPayload(BCDE_VALIDATION_BATCH_ID)
 		assert.equal(payload.serveMode, "by-question")
 		for (const item of payload.items) assert.ok(!("reconciliation" in item), "a by-question item carries a reconciliation key")
+	})
+
+	/**
+	 * The instruction, per mode — reviewer-raised, 2026-08-03.
+	 *
+	 * The reconciliation fixture reuses `bcde-validation-1`'s question objects verbatim, which is what
+	 * makes an answer here a REPLACEMENT for an answer there rather than a second, incomparable column.
+	 * The cost of that decision, unnoticed until the round was being answered, is that it also inherits
+	 * that round's standing instruction — "Answer this one question only. Do not try to make your
+	 * answers across questions tell one story." — into a round that exists to ask the reviewer to make
+	 * exactly two answers hold together. The reviewer flagged it as contradictory. It is: it instructs
+	 * the opposite of the task.
+	 *
+	 * Fixed at SERVE time, not in the fixture, so no batch data file is rewritten and no already-given
+	 * answer is retroactively re-labelled with words it was not given under. Both halves are pinned
+	 * here, because a fix that swapped the by-question line too would silently damage four other rounds.
+	 */
+	it("serves the reconciliation instruction on a by-artwork round and the anti-story line on a by-question one", () => {
+		const reconciliation = harness.handle.service.oracleValidationPayload(GATE_RECONCILIATION_BATCH_ID)
+		for (const question of reconciliation.questions) {
+			assert.equal(question.instruction, RECONCILIATION_INSTRUCTION, `${question.key} was served the wrong mode's instruction`)
+			assert.match(question.instruction, /Resolve the two answers so they are logically consistent with each other/u)
+			assert.match(question.instruction, /do not revisit anything beyond the pair shown/u)
+			// The line that made it contradictory is gone from this mode, and only from this mode.
+			assert.doesNotMatch(question.instruction, /tell one story/u)
+		}
+
+		const byQuestion = harness.handle.service.oracleValidationPayload(BCDE_VALIDATION_BATCH_ID)
+		for (const question of byQuestion.questions) {
+			assert.equal(question.instruction, BCDE_INSTRUCTION, `${question.key} lost the anti-coherence line it was answered under`)
+			assert.match(question.instruction, /Do not try to make your answers across questions tell one story/u)
+		}
+
+		// Only the instruction moves. The stem, the glosses and the answer vocabulary a reconciliation
+		// answer is recorded against must stay byte-identical to the round it supersedes, or the two
+		// answers are not comparable and the supersession means nothing.
+		const sourceByKey = new Map(byQuestion.questions.map((question) => [question.key, question]))
+		for (const question of reconciliation.questions) {
+			const source = sourceByKey.get(question.key)!
+			assert.equal(question.question, source.question)
+			assert.deepEqual(question.answers, source.answers)
+			assert.equal(question.preamble, source.preamble)
+			assert.equal(question.framing, source.framing)
+		}
+	})
+
+	it("resolves the instruction from the mode alone, with no fixture rewrite", () => {
+		// The pure function the payload calls, pinned directly: a fixture whose questions are untouched
+		// still serves the right words, which is what lets the fix be a serve-time one.
+		assert.equal(instructionForServeMode(BCDE_INSTRUCTION, "by-question"), BCDE_INSTRUCTION)
+		assert.equal(instructionForServeMode(BCDE_INSTRUCTION, "by-artwork"), RECONCILIATION_INSTRUCTION)
+		// The fixture on disk is NOT rewritten — the answers already recorded were given under its words.
+		for (const question of fixture.questions) assert.equal(question.instruction, BCDE_INSTRUCTION)
 	})
 
 	it("appends a superseding oracle-label rather than editing the old one", async () => {

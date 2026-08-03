@@ -78,6 +78,7 @@ import {
 	PREMISE_RUN_PATH,
 	PROBE_GOLD_BATCH_ID,
 	PROBE_GOLD_FIXTURE_PATH,
+	instructionForServeMode,
 	itemImagePath,
 	readPremiseRun,
 	validateFixture,
@@ -1410,6 +1411,9 @@ export class ReviewService {
 		const release = this.#releases.get(batchId)
 		const counted = new Map<string, number>()
 		for (const item of stored.fixture.items) counted.set(item.questionKey, (counted.get(item.questionKey) ?? 0) + 1)
+		// How the page walks the round, resolved once: the served instruction depends on it, and reading
+		// it twice is how the payload and the instruction would come to disagree.
+		const serveMode = stored.fixture.serveMode ?? "by-question"
 		return {
 			batchId,
 			purpose: stored.purpose,
@@ -1419,14 +1423,22 @@ export class ReviewService {
 			// How the page walks the round. Served rather than inferred: the page's progress line and
 			// its reconciliation block both depend on it, and inferring the mode from the shape of the
 			// serve order would guess wrong the moment a round had one artwork or one question.
-			serveMode: stored.fixture.serveMode ?? "by-question",
+			serveMode,
 			// The wording comes from the fixture, so the page cannot drift from what the answers were
 			// recorded under — the same rule the bracketing round had to learn.
 			questions: stored.fixture.questions.map((question) => ({
 				key: question.key,
 				kind: question.kind,
 				question: question.question,
-				instruction: question.instruction,
+				// The ONE exception to "the wording comes from the fixture", and it is a mode question,
+				// not a wording preference. A `by-artwork` round is a reconciliation: it shows the reviewer
+				// two of their own answers and asks them to make the pair hold. A reconciliation fixture
+				// reuses the superseded round's question objects verbatim — that is what makes the new
+				// answer a replacement rather than a second, incomparable column — so it also inherits
+				// that round's anti-coherence instruction, "do not try to make your answers across
+				// questions tell one story", into a round asking for exactly that. The stem, the glosses,
+				// the preamble and the framing are still the fixture's own, untouched.
+				instruction: instructionForServeMode(question.instruction, serveMode),
 				// Served so the page can put them above the question on every item of the pass. They are
 				// part of what was asked, not chrome: see OracleQuestion.preamble.
 				preamble: question.preamble ?? null,
