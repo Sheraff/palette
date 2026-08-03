@@ -118,11 +118,14 @@ Runs on MPS or even CPU acceptably. Whole corpus in minutes.
 ### 2.2 Geometry — SAM 3.1
 
 **Do not use Meta's `facebookresearch/sam3` repo directly.** It hard-depends on
-CUDA/Triton and fails on Apple Silicon. Two working routes:
-
-- **`mlx-community/sam3-image`** — native MLX port. Preferred.
-- **`MaximeLglr/sam3-apple-silicon`** — PyTorch fork with the Apple fixes. The
-  underlying MPS failure is a `pin_memory()` conflict; the fork patches it.
+CUDA/Triton and fails on Apple Silicon. *[Corrected 2026-08-03 by the SAM stage
+setup: neither route originally named here is usable — `mlx-community/sam3-image`
+is not pip-installable (weights-only repo requiring a GitHub clone) and
+`MaximeLglr/sam3-apple-silicon` does not exist. The working route is
+**`mlx-vlm`'s native SAM 3.1 implementation** (`mlx_vlm.models.sam3_1`) with
+`mlx-community/sam3.1-bf16` weights — pure pip install. One trap: mlx-vlm's
+`load_model()` double-transposes Conv2d weights on this repo; load manually via
+`Model(ModelConfig) + load_weights(strict=True)`. See research/v3/oracle/sam/.]*
 
 SAM 3 does **promptable concept segmentation**: you give a short noun phrase and it
 returns instance masks for every occurrence of that concept.
