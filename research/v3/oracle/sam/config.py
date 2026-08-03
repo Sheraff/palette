@@ -67,12 +67,48 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
     # §8.3 phrasings "text"/"typography" fire on 0/10 with this model and are replaced
     # by the probe's measured winners. Original §8.3 set preserved in the block below;
     # full probe data in research/v3/data/sam/probe-1.jsonl.
+    #
+    # [REVIEWED, n=15] CONCEPT SET v2 — ratified by the reviewer 2026-08-03 ("new SAM
+    # wording sounds good") after probe 2, the vocabulary-alignment probe the reviewer
+    # asked for at the end of mask-quality round 1. Evidence and the full candidate
+    # table: research/v3/data/sam/VOCAB_PROBE_NOTES.md; rows in
+    # research/v3/data/sam/probe-2-vocabulary.jsonl. Three changes, and nothing else:
+    #
+    #   1. ADD ("parental-advisory", "parental advisory"). Fires on 5/5 confirmed
+    #      parental-advisory covers at 0.81-0.92, on 0/10 non-PA images and 0/2
+    #      negatives; every mask is tight on the badge. Under the old set these marks
+    #      arrived as "sticker" (reviewer note 2) — at the calibrated cut "sticker"
+    #      keeps 0 of the 5, so the category was effectively invisible.
+    #   2. RENAME the tag "album-title" -> "display-text". The PROMPT STRING IS
+    #      UNCHANGED: every alternative main-text phrasing ("title text", "main text",
+    #      "large text", "wordmark") fires on 0/15, so "album title" is the only
+    #      phrasing that works — but it masks the artist name as readily as the title
+    #      (reviewer note 5; on `toxicity` the stronger 0.688 mask is the artist and the
+    #      0.357 one is the title). The mask says "this is main display text"; which
+    #      role that text plays is the VLM's question, not SAM's.
+    #   3. RENAME the tag "logo" -> "emblem". The PROMPT STRING IS UNCHANGED: "emblem"
+    #      as a prompt is 2/15 against "logo"'s 12/15 and finds nothing "logo" misses.
+    #      The rename is reviewer note 1 — the stored word must not claim provenance
+    #      (in-artwork branding vs applied mark) that a mask cannot know.
+    #
+    # "sticker" is kept as-is: once change 1 takes the PA marks, it is no longer being
+    # asked to cover a category the reviewer does not recognise. "explicit content",
+    # "brand mark", "wordmark", "title text", "main text" and "large text" were all
+    # rejected at 0/15; "parental advisory sticker" / "advisory sticker" /
+    # "parental advisory label" were rejected for firing on non-PA stickers and crests
+    # (up to 0.96 on a literal promo sticker) — higher scores, wrong category.
+    #
+    # COST: a tag rename changes concept_set_hash(), which is part of row_key, so
+    # sam-eval-142 MUST BE RE-RUN IN FULL under this set (~391 s / 6.5 min at the last
+    # measured rate) before any round or analysis reads it. The v1 rows in
+    # sam-eval-142.jsonl remain valid evidence for concept set v1 and nothing else.
     ("words", "words"),
     ("letter", "letter"),
     ("lettering", "lettering"),
-    ("album-title", "album title"),
-    ("logo", "logo"),
+    ("display-text", "album title"),
+    ("emblem", "logo"),
     ("sticker", "sticker"),
+    ("parental-advisory", "parental advisory"),
     ("person", "person"),
     ("face", "face"),
 )
@@ -97,8 +133,44 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
 # prompt-set replacement above — it listed "text" and "typography", which can no longer
 # appear in any row, so the group union was being computed over concepts that never fire.
 # selftest.py asserts the two stay in step ("every concept is in exactly one group").
+#
+# [MEASURED, n=15] Re-partitioned 2026-08-03 with concept set v2. Three groups now, and the
+# line between them is drawn by MEASURED CO-FIRING, not by intuition about the words:
+#
+#   * A group's only job is the union. run_sam.py writes one <group>_union_area_fraction per
+#     image, and the union exists so that several words landing on the SAME pixels count once.
+#     Membership should therefore follow which concepts demonstrably mask the same regions.
+#   * probe 2 measured exactly that. On all 5 confirmed parental-advisory covers, "logo"
+#     (stored as `emblem`) masks the PA badge itself at 0.556-0.805, and "sticker" masks it on
+#     2 of the 5. The bbox-IoU novelty analysis found every PA region was already covered by
+#     an incumbent — and the incumbents covering it are logo and sticker, never the glyph
+#     words. The glyph concepts' hits on those same covers are on the title/artist lettering.
+#     So `emblem`, `sticker` and `parental-advisory` are one idea by measurement; `words`,
+#     `letter`, `lettering` and `display-text` are another.
+#   * Consequence of NOT doing this: `parental-advisory` alone in its own group would leave
+#     the very same badge counted a second time inside text_like via emblem and sticker —
+#     the double count the union is there to prevent.
+#   * Consequence of folding `parental-advisory` into text_like instead: that group's fraction
+#     is read as "how much of this cover is display typography", a property of the artwork's
+#     design. A distributor-applied badge of near-constant size in a corner is not that, and
+#     letting it move the number would make the number mean less, not more.
+#
+# NAMING: not "overlay_like". "Overlay" asserts that the thing was added on top — provenance,
+# which reviewer note 1 says a mask cannot know and which is the whole reason `logo` became
+# `emblem` above. It is true of a PA mark and unknown for an emblem or a sticker. "mark_like"
+# names the shape (a self-contained graphic mark) and claims nothing about where it came from.
+# Provenance-exclusion consumers that want the PA area alone still have it: per-concept counts
+# live in `instances_by_concept` and every region is its own row. The group governs the union
+# fraction and nothing else.
+#
+# COST: `emblem` and `sticker` leave text_like, so text_like_union_area_fraction is not
+# comparable across concept sets v1 and v2. Nothing is lost that the v2 re-run does not
+# already invalidate. Round 1's strata (text_like / person_like) are frozen inside
+# data/sam/mask-quality-sample.json and are untouched by this; that round's calibration found
+# no separation between groups anyway, so no calibrated number rests on the old partition.
 CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
-    "text_like": ("words", "letter", "lettering", "album-title", "logo", "sticker"),
+    "text_like": ("words", "letter", "lettering", "display-text"),
+    "mark_like": ("emblem", "sticker", "parental-advisory"),
     "person_like": ("person", "face"),
 }
 

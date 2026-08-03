@@ -94,6 +94,21 @@ def test_concept_groups() -> bool:
                       common.concept_set_hash() == common.concept_set_hash()))
 
 
+def test_overlay_colors() -> bool:
+    """overlay.CONCEPT_COLORS asserts against config on import — but only if something
+    imports it, and the run path never does. Import it here so a concept added to config
+    without a colour fails the model-free self-test instead of the first review round."""
+    import overlay  # noqa: PLC0415 — imported here on purpose, to exercise its assert
+
+    concepts = {c for c, _ in config.CONCEPT_PROMPTS}
+    distinct = len({tuple(v) for v in overlay.CONCEPT_COLORS.values()})
+    return (check("every concept has an overlay colour",
+                  set(overlay.CONCEPT_COLORS) == concepts)
+            and check("no two concepts share a colour",
+                      distinct == len(overlay.CONCEPT_COLORS),
+                      f"{distinct} colours for {len(overlay.CONCEPT_COLORS)} concepts"))
+
+
 def test_union_and_residual() -> bool:
     h, w = 20, 10
     a = np.zeros((h, w), dtype=np.uint8); a[0:10, :] = 1
@@ -129,6 +144,7 @@ def main() -> int:
         test_identity(),
         test_row_key_sensitivity(),
         test_concept_groups(),
+        test_overlay_colors(),
         test_union_and_residual(),
         test_pycocotools_agreement(),
     ]

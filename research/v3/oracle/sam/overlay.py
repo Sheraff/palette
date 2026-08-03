@@ -22,13 +22,20 @@ import config
 # Distinct enough to tell apart on a busy cover. Human-facing only.
 # Keys track config.CONCEPT_PROMPTS (updated 2026-08-03 with the prompt-set
 # replacement — the audit found the old keys would KeyError on every new concept).
+# Re-keyed 2026-08-03 for concept set v2: "album-title" -> "display-text" and
+# "logo" -> "emblem" keep their colours (same prompt, same pixels, only the stored
+# name changed, so an overlay sheet from either set reads the same), and the new
+# "parental-advisory" gets a colour of its own that no other concept is near — it
+# routinely lands on the same badge as `emblem` and `sticker`, and on a small
+# corner mark the reviewer has to be able to tell the three apart at a glance.
 CONCEPT_COLORS = {
     "words": (255, 64, 64),
     "letter": (255, 160, 0),
     "lettering": (255, 232, 0),
-    "album-title": (255, 96, 160),
-    "logo": (0, 200, 255),
+    "display-text": (255, 96, 160),
+    "emblem": (0, 200, 255),
     "sticker": (255, 0, 220),
+    "parental-advisory": (140, 255, 0),
     "person": (0, 255, 120),
     "face": (120, 100, 255),
 }

@@ -167,6 +167,49 @@ mask-quality round ratifies — that round should include the new `parental-advi
 and a handful of `display-text` masks on covers where artist and title compete, since those
 are the two claims a human can actually check.
 
+## Ratified and applied — 2026-08-03
+
+The reviewer ratified the proposal above ("new SAM wording sounds good"). Applied to
+`oracle/sam/config.py` the same day, exactly as tabled — changes 1, 2 and 3, nothing else;
+`sticker`, `words`, `letter`, `lettering`, `person`, `face` untouched. Knock-ons:
+`overlay.py:CONCEPT_COLORS` re-keyed (the two renamed tags keep their colours — same prompt,
+same pixels, only the stored name changed — and `parental-advisory` gets its own), and
+`selftest.py` now imports `overlay` so a concept added without a colour fails the model-free
+self-test rather than the first review round. `selftest.py`: ALL PASS.
+
+**Grouping — one departure from the proposal.** The proposal put all three tags in
+`CONCEPT_GROUPS["text_like"]`. What shipped is a three-group partition:
+
+    text_like    words, letter, lettering, display-text
+    mark_like    emblem, sticker, parental-advisory
+    person_like  person, face
+
+A group's only job is the union — `run_sam.py` writes one `<group>_union_area_fraction` per
+image so that several words landing on the same pixels count once — and this probe measured
+which words land on the same pixels. On all 5 confirmed PA covers, `logo` (now stored as
+`emblem`) masks the PA badge at 0.556–0.805 and `sticker` masks it on 2 of the 5; the bbox-IoU
+novelty analysis above found every PA region was already covered by an incumbent, and the
+incumbents covering it are `logo` and `sticker`, never the glyph words. Leaving those three in
+one group with the glyph concepts would have counted the same badge twice inside a single
+fraction, which is the double count the union exists to prevent. The group is called
+`mark_like` and not `overlay_like` because "overlay" asserts that the thing was added on top —
+provenance, which reviewer note 1 says a mask cannot know, and which is the whole reason `logo`
+became `emblem`. Full reasoning in the comment above `CONCEPT_GROUPS` in `config.py`.
+
+**Consequence, unchanged from the cost estimate above:** `concept_set_hash()` moved, so the
+eval-142 rows under concept set v1 answer a different question and cannot be mixed with v2 rows.
+The re-run writes to a **new stem** rather than appending to `sam-eval-142.jsonl`, so v1 stays
+intact as the evidence behind round 1's calibration:
+
+    cd research/v3/oracle/sam && ./supervise.sh --eval-set --out sam-eval-142-v2
+
+`review_round.py` (round 1's builder) now refuses to rebuild from a run whose concepts are not
+in the current set, so the frozen round-1 manifest cannot be silently regenerated under v2.
+
+The ratification round is built — build-only, not pushed — by `oracle/sam/review_round_2.py`
+(the sample and the overlays) and `oracle/sam/build-ratification-fixture.ts` (the fixture),
+batch `sam-mask-quality-2-v2-ratification`, reading whatever the re-run above produces.
+
 ## Not done here (owned elsewhere)
 
 - The standing-decision record in `research/v3/data/decisions/decisions.json` and the A5

@@ -147,6 +147,20 @@ def item_id(row: dict) -> str:
 def read_run(run: str = SOURCE_RUN) -> tuple[list[dict], dict[str, dict]]:
     rows = common.read_jsonl(DATA_DIR / f"{run}.jsonl")
     regions = [r for r in rows if r.get("record_type") == config.RECORD_TYPE_REGION]
+    # This file was built for concept set v1 and `sam-eval-142` holds v1 rows: `album-title`,
+    # `logo`, and no `parental-advisory`. Under concept set v2 (config.py, 2026-08-03) those
+    # tags are not in CONCEPT_GROUP or CONCEPT_COLORS and every lookup below would KeyError
+    # somewhere unhelpful. Round 1's manifest and fixture are committed and pinned by
+    # tests/sam-mask-quality.test.ts — they are the record of that round and must not be
+    # regenerated. Say so here rather than crash.
+    stale = sorted({r["concept"] for r in regions} - {c for c, _ in config.CONCEPT_PROMPTS})
+    if stale:
+        raise SystemExit(
+            f"{run}.jsonl carries concepts that are not in the current set: {stale}. "
+            "That run predates concept set v2. Round 1 is frozen in "
+            "data/sam/mask-quality-sample.json; for a v2 round use review_round_2.py "
+            "against a run made under the current config."
+        )
     images = {
         r["image_sha256"]: r
         for r in rows
@@ -308,8 +322,16 @@ def draw_locator(panel: Image.Image, row: dict, colour: tuple[int, int, int]) ->
     draw.ellipse(box, outline=colour, width=BBOX_WIDTH_PX)
 
 
-def render_overlay(row: dict, image_row: dict) -> Image.Image:
-    """One panel: the untouched artwork, then the same artwork with this one mask on it."""
+def render_overlay(row: dict, image_row: dict, phrases: dict[str, str] | None = None) -> Image.Image:
+    """One panel: the untouched artwork, then the same artwork with this one mask on it.
+
+    `phrases` overrides what the panel says the mask claims to be. It defaults to the prompt
+    string, which is right whenever the stored tag and the prompt are the same word. Concept
+    set v2 broke that tie on purpose — `display-text` is asked for with the prompt "album
+    title" and `emblem` with "logo" — so a round that means to test the stored name has to be
+    able to print the stored name. review_round_2.py passes its own labels; round 1 does not,
+    and its overlays render byte-identically to before this parameter existed.
+    """
     common.register_image_plugins()
     original = Image.open(config.REPO_ROOT / row["image_path"]).convert("RGB")
     height, width = row["mask_height"], row["mask_width"]
@@ -347,7 +369,7 @@ def render_overlay(row: dict, image_row: dict) -> Image.Image:
     draw.text((2, panel_h + 6), "artwork", fill=SHEET_FG, font=font)
     draw.text(
         (panel_w + PANEL_GAP_PX + 2, panel_h + 6),
-        f'highlighted: "{CONCEPT_PHRASE[row["concept"]]}"',
+        f'highlighted: "{(phrases or CONCEPT_PHRASE)[row["concept"]]}"',
         fill=colour,
         font=font,
     )
