@@ -695,6 +695,56 @@ export function assertAmendablePatch(targetType: RecordType, patch: Record<strin
 	}
 }
 
+/**
+ * Marker for a smoke-test fixture record: the algorithm version a demo batch stamps
+ * on both sides of its verdicts.
+ *
+ * The live warehouse carries two such batches (`demo-batch-0001`,
+ * `demo-calibration-0001`) written while the review server was being built. They are
+ * authored `{kind:"human", id:"flo"}` and carry real artwork paths, so nothing else
+ * in the record distinguishes them from ground truth. Counting them as reviewer
+ * judgments is how "how many verdicts exist in v3" gets answered `8` when the honest
+ * answer is `0`.
+ * [MEASURED] — the only two algorithmVersion values on any verdict in
+ * `data/warehouse/warehouse.jsonl` are `demo-fixture-alpha` and `demo-fixture-bravo`
+ * (2026-08-03; adversarial review F6).
+ */
+export const DEMO_FIXTURE_ALGORITHM_PREFIX = 'demo-fixture-'
+
+/**
+ * A git commit of 40 identical characters is a placeholder, not a commit — the demo
+ * batches use `0000…` and `1111…`. Real hashes never take this form.
+ *
+ * Deliberately NOT a demo test on its own. `fixtures.ts` also stamps `0`×40, and a
+ * bulk import written before the commit was known could too; excluding a record from
+ * the ground-truth count on this evidence alone would hide real reviewer work, which
+ * is the expensive direction. It is reported separately instead (`status`
+ * `placeholder-commits=`), so it is never invisible.
+ * [MEASURED] — both placeholder commits observed on the live demo batches (2026-08-03).
+ */
+export const PLACEHOLDER_COMMIT = /^(.)\1{39}$/
+
+/** Every code fingerprint carried by a record (both sides of a verdict; none elsewhere). */
+export function recordFingerprints(record: WarehouseRecord): CodeFingerprint[] {
+	if (record.type !== 'verdict') return []
+	const sides: Array<VerdictSide | null> = [record.sideA, record.sideB]
+	return sides.filter((side): side is VerdictSide => side !== null).map((side) => side.fingerprint)
+}
+
+/**
+ * True when the record is a demo/smoke-test fixture rather than reviewer ground
+ * truth. Read-path only: the file is never modified and these records stay in the
+ * log — they are simply not counted as evidence.
+ */
+export function isDemoFixtureRecord(record: WarehouseRecord): boolean {
+	return recordFingerprints(record).some((f) => f.algorithmVersion.startsWith(DEMO_FIXTURE_ALGORITHM_PREFIX))
+}
+
+/** True when any fingerprint on the record carries a placeholder git commit. */
+export function hasPlaceholderCommit(record: WarehouseRecord): boolean {
+	return recordFingerprints(record).some((f) => PLACEHOLDER_COMMIT.test(f.gitCommit))
+}
+
 /** The batch a record belongs to, or null when it belongs to none. */
 export function recordBatchId(record: WarehouseRecord): string | null {
 	if (record.type === 'batch-complete') return record.batchId

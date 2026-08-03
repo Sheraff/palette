@@ -10,10 +10,13 @@
  *   node --experimental-strip-types research/v3/src/warehouse/cli.ts <command> [options]
  *
  * Commands:
- *   status                      one line per batch: purpose, items, reviewed, pending, released
+ *   status                      one line per batch: purpose, items, reviewed, pending, released,
+ *                               then `file` (raw counts by type), `demo` (fixture batches, excluded
+ *                               from the totals), and `total`
  *   query                       filtered records (amendments applied, latest wins)
  *   tail --n <N>                the last N records as appended (amendments shown as records)
- *   recheck --decisions <file>  decisions funded by since-amended verdicts
+ *   recheck --decisions <file>  decisions whose funding evidence moved: amended since the
+ *                               decision, retracted, superseded by a re-answer, or missing
  *
  * Common options:
  *   --file <path>      warehouse JSONL (default: research/v3/data/warehouse/warehouse.jsonl)
@@ -22,7 +25,9 @@
  * query options:
  *   --type <t[,t]>     verdict | note | endorsed-sample | veto | amendment | batch-complete | oracle-label
  *   --batch <id[,id]>
- *   --item <id[,id]>
+ *   --item <id[,id]>   a record's own itemId, or an item id from a batch-complete manifest
+ *                      (oracle labels carry no itemId; they are addressed by released id).
+ *                      An id that matches nothing is reported on stderr, never silently empty.
  *   --artwork <s>      sha256 prefix, path substring, or oracle image id substring
  *   --since <iso>      inclusive
  *   --until <iso>      exclusive
@@ -43,16 +48,20 @@ import Color from 'colorjs.io'
 import { closest } from 'colornames-oklab'
 import {
 	RECORD_TYPES,
+	isDemoFixtureRecord,
 	type ArtworkIdentity,
 	type RecordType,
 	type WarehouseRecord,
 } from './records.ts'
 import {
+	addressableItemIds,
 	batchSummaries,
 	filterResolved,
+	findInvalidAmendments,
 	findOrphanAmendments,
 	readAll,
 	recheckFundedBy,
+	releasedItemIndex,
 	resolve,
 	supersededIds,
 	NO_BATCH,
@@ -145,6 +154,11 @@ export function formatRecord(entry: Resolved, chars: number | null, superseded?:
 	if (entry.amendments.length) flags.push(`am=${entry.amendments.length}`)
 	if (entry.retracted) flags.push('RETRACTED')
 	if (superseded?.has(entry.original.id)) flags.push('SUPERSEDED')
+	// A patch that reached outside AMENDABLE_FIELDS was refused at read time. The
+	// record below is what the reviewer was actually shown; the flag says the file
+	// contains a line that tried to change that.
+	if (entry.integrityErrors.length)
+		flags.push(`INTEGRITY-REFUSED=${[...new Set(entry.integrityErrors.flatMap((e) => e.rejectedFields))].join(',')}`)
 	const suffix = flags.length ? ` ${flags.join(' ')}` : ''
 
 	switch (record.type) {
@@ -193,8 +207,30 @@ export function formatRecord(entry: Resolved, chars: number | null, superseded?:
 	}
 }
 
-function asEntry(record: WarehouseRecord): Resolved {
-	return { record, original: record, amendments: [], retracted: false, lastAmendedAt: null, changedFields: [] }
+/**
+ * Wrap a raw record as a resolved entry: the record exactly as appended, no patches
+ * applied.
+ *
+ * `retracted` is still read from the resolved log rather than hardcoded false —
+ * `--raw` means "do not apply amendments", not "pretend the retraction is not there",
+ * and `--type amendment` turns raw mode on implicitly, so `--no-retracted` would
+ * otherwise be silently ignored by a query nobody typed `--raw` on.
+ */
+function asEntry(record: WarehouseRecord, retractedIds?: Set<string>): Resolved {
+	return {
+		record,
+		original: record,
+		amendments: [],
+		retracted: Boolean(retractedIds?.has(record.id)),
+		lastAmendedAt: null,
+		changedFields: [],
+		integrityErrors: [],
+	}
+}
+
+/** Ids of records a retraction amendment withdrew, for raw mode. */
+function retractedIdsOf(records: WarehouseRecord[]): Set<string> {
+	return new Set(resolve(records).filter((entry) => entry.retracted).map((entry) => entry.original.id))
 }
 
 // ---------------------------------------------------------------------------
@@ -209,10 +245,11 @@ export interface CliResult {
 
 const HELP = `warehouse <status|query|tail|recheck> [options]
 
-  status                       one line per batch (purpose, items, reviewed, pending, released)
+  status                       one line per batch (purpose, items, reviewed, pending, released),
+                               then file / demo / total lines
   query [filters]              records with amendments applied (latest wins)
   tail --n <N>                 last N records as appended
-  recheck --decisions <file>   decisions funded by since-amended verdicts
+  recheck --decisions <file>   decisions whose evidence moved (amended, retracted, superseded, missing)
 
   --file <path>    warehouse JSONL (default research/v3/data/warehouse/warehouse.jsonl)
   --json           one JSON object per line
@@ -283,7 +320,13 @@ export function runCli(argv: string[]): CliResult {
 
 function cmdStatus(records: WarehouseRecord[], json: boolean): CliResult {
 	const summaries = batchSummaries(records)
-	if (json) return { code: 0, out: summaries.map((s) => JSON.stringify(s)).join('\n') + (summaries.length ? '\n' : ''), err: '' }
+	const totals = statusTotals(records, summaries)
+	if (json)
+		return {
+			code: 0,
+			out: [...summaries.map((s) => JSON.stringify(s)), JSON.stringify({ kind: 'totals', ...totals })].join('\n') + '\n',
+			err: '',
+		}
 
 	const lines = summaries.map((s) => {
 		const parts = [
@@ -297,21 +340,92 @@ function cmdStatus(records: WarehouseRecord[], json: boolean): CliResult {
 		if (s.notes) parts.push(`notes=${s.notes}`)
 		if (s.endorsed) parts.push(`endorsed=${s.endorsed}`)
 		if (s.vetoes) parts.push(`vetoes=${s.vetoes}`)
-		if (s.labels) parts.push(`labels=${s.labels}`)
+		if (s.labels) parts.push(`labels=${s.labels} unit=${s.labelUnit}`)
 		if (s.amended) parts.push(`amended=${s.amended}`)
 		if (s.retracted) parts.push(`retracted=${s.retracted}`)
+		if (s.demo) parts.push('DEMO')
 		parts.push(`last=${s.lastTs}`)
 		return parts.join(' ')
 	})
 
-	const open = summaries.filter((s) => s.batchId !== NO_BATCH && s.released === null).length
-	const amendments = records.filter((r) => r.type === 'amendment').length
-	const orphans = findOrphanAmendments(records).length
+	// A refused patch is named line by line: "one integer went up" is not enough to
+	// find the record whose identity someone tried to rewrite.
+	const err: string[] = []
+	for (const error of totals.integrity) {
+		lines.push(
+			`integrity amendment=${error.amendmentId} target=${error.targetId} root=${error.rootId} ` +
+				`type=${error.targetType} refused-fields=${error.rejectedFields.join(',')}`,
+		)
+		err.push(`warehouse: amendment ${error.amendmentId} patches ${error.rejectedFields.join(',')} — ${error.reason}; not applied\n`)
+	}
+
 	lines.push(
-		`total batches=${summaries.filter((s) => s.batchId !== NO_BATCH).length} open=${open} records=${records.length} ` +
-			`verdicts=${records.filter((r) => r.type === 'verdict').length} amendments=${amendments} orphan-amendments=${orphans}`,
+		`file records=${totals.fileRecords} types=${
+			Object.entries(totals.byType).map(([type, n]) => `${type}:${n}`).join(',') || '-'
+		}`,
 	)
-	return { code: 0, out: `${lines.join('\n')}\n`, err: '' }
+	// Demo batches are smoke-test fixtures written while the review server was being
+	// built. They are reviewer-authored and carry real artwork paths, so nothing but
+	// the fingerprint tells them apart — and they are 100% of the verdicts in the live
+	// file. Counting them in the headline answers "how many reviewer verdicts exist"
+	// with a number made of fixtures.
+	if (totals.demo.batches)
+		lines.push(
+			`demo batches=${totals.demo.batches} records=${totals.demo.records} verdicts=${totals.demo.verdicts} ` +
+				`ids=${totals.demo.batchIds.join(',')} (fixtures, excluded from totals below)`,
+		)
+	if (totals.placeholderCommits)
+		lines.push(`placeholder-commits records=${totals.placeholderCommits} (counted in totals; fingerprint git commit is a placeholder)`)
+	lines.push(
+		`total batches=${totals.batches} open=${totals.open} records=${totals.records} ` +
+			`verdicts=${totals.verdicts} amendments=${totals.amendments} orphan-amendments=${totals.orphanAmendments} ` +
+			`invalid-amendments=${totals.invalidAmendments}`,
+	)
+	return { code: 0, out: `${lines.join('\n')}\n`, err: err.join('') }
+}
+
+/**
+ * Headline counts, demo fixtures separated out. `file records` stays a plain count of
+ * what is in the file, so the totals block reconciles by hand against `wc -l`.
+ */
+function statusTotals(records: WarehouseRecord[], summaries: ReturnType<typeof batchSummaries>) {
+	const demoBatchIds = new Set(summaries.filter((s) => s.demo).map((s) => s.batchId))
+	const isDemo = (record: WarehouseRecord): boolean => {
+		const batchId = recordBatchIdOf(record)
+		return (batchId !== null && demoBatchIds.has(batchId)) || isDemoFixtureRecord(record)
+	}
+	const real = records.filter((record) => !isDemo(record))
+	const demoRecords = records.filter(isDemo)
+	const byType: Record<string, number> = {}
+	for (const record of records) byType[record.type] = (byType[record.type] ?? 0) + 1
+	const realBatches = summaries.filter((s) => s.batchId !== NO_BATCH && !s.demo)
+	const integrity = findInvalidAmendments(records)
+	return {
+		batches: realBatches.length,
+		open: realBatches.filter((s) => s.released === null).length,
+		records: real.length,
+		fileRecords: records.length,
+		verdicts: real.filter((r) => r.type === 'verdict').length,
+		amendments: real.filter((r) => r.type === 'amendment').length,
+		orphanAmendments: findOrphanAmendments(records).length,
+		invalidAmendments: integrity.length,
+		integrity,
+		byType,
+		placeholderCommits: summaries.reduce((sum, s) => sum + (s.demo ? 0 : s.placeholderCommits), 0),
+		demo: {
+			batches: summaries.filter((s) => s.demo).length,
+			batchIds: summaries.filter((s) => s.demo).map((s) => s.batchId),
+			records: demoRecords.length,
+			verdicts: demoRecords.filter((r) => r.type === 'verdict').length,
+		},
+	}
+}
+
+/** Batch id including the release record's own `batchId`. */
+function recordBatchIdOf(record: WarehouseRecord): string | null {
+	if (record.type === 'batch-complete') return record.batchId
+	if (record.type === 'amendment') return null
+	return (record as { batch?: { id: string } | null }).batch?.id ?? null
 }
 
 function splitList(values: string[] | undefined): string[] | undefined {
@@ -333,12 +447,14 @@ function cmdQuery(records: WarehouseRecord[], values: Values): CliResult {
 	// Amendment records disappear once amendments are applied, so asking for them
 	// implies raw mode.
 	const raw = Boolean(values.raw) || Boolean(types?.includes('amendment'))
-	const entries = raw ? records.map(asEntry) : resolve(records)
+	const retracted = raw ? retractedIdsOf(records) : undefined
+	const entries = raw ? records.map((record) => asEntry(record, retracted)) : resolve(records)
 
+	const itemIds = splitList(values.item as string[] | undefined)
 	const filter: QueryFilter = {
 		types,
 		batchIds: splitList(values.batch as string[] | undefined),
-		itemIds: splitList(values.item as string[] | undefined),
+		itemIds,
 		artwork: values.artwork as string | undefined,
 		since: values.since as string | undefined,
 		until: values.until as string | undefined,
@@ -353,7 +469,8 @@ function cmdQuery(records: WarehouseRecord[], values: Values): CliResult {
 	const superseded = supersededIds(entries)
 	const kept = values.latest ? entries.filter((entry) => !superseded.has(entry.original.id)) : entries
 
-	const matched = filterResolved(kept, filter)
+	const released = releasedItemIndex(records)
+	const matched = filterResolved(kept, filter, released)
 	const limit = values.limit ? Number(values.limit) : QUERY_LIMIT
 	if (!Number.isFinite(limit) || limit < 0) return { code: 1, out: '', err: `bad --limit ${values.limit}\n` }
 	const shown = matched.slice(0, limit)
@@ -364,7 +481,38 @@ function cmdQuery(records: WarehouseRecord[], values: Values): CliResult {
 		? shown.map((entry) => JSON.stringify(entry.record))
 		: shown.map((entry) => formatRecord(entry, chars, superseded))
 	if (matched.length > shown.length) lines.push(`total shown=${shown.length} matched=${matched.length} (raise --limit)`)
-	return { code: 0, out: lines.length ? `${lines.join('\n')}\n` : '', err: '' }
+
+	// An item id that matches nothing gets an explanation, not silence. The failure
+	// this covers: an agent is handed an id from a release manifest, looks it up, and
+	// an empty result reads as "answered nothing" rather than "asked wrongly".
+	const err: string[] = []
+	if (itemIds) {
+		const found = new Set(matched.flatMap((entry) => addressableItemIds(entry.record, released)))
+		for (const itemId of itemIds) {
+			if (found.has(itemId)) continue
+			const batch = releasingBatchOf(records, itemId)
+			err.push(
+				batch
+					? `warehouse: --item ${itemId} matched no record; it was released by batch ${batch} — the answer may be filtered out by another flag\n`
+					: `warehouse: --item ${itemId} matched no record and is named by no batch-complete manifest\n`,
+			)
+		}
+	}
+	for (const error of new Map(
+		shown.flatMap((entry) => entry.integrityErrors).map((error) => [error.amendmentId, error]),
+	).values())
+		err.push(
+			`warehouse: amendment ${error.amendmentId} patches ${error.rejectedFields.join(',')} on ${error.rootId} — ${error.reason}; not applied\n`,
+		)
+
+	return { code: 0, out: lines.length ? `${lines.join('\n')}\n` : '', err: err.join('') }
+}
+
+/** The batch whose release manifest names this item id, or null. */
+function releasingBatchOf(records: WarehouseRecord[], itemId: string): string | null {
+	for (const record of records)
+		if (record.type === 'batch-complete' && record.releasedItemIds?.includes(itemId)) return record.batchId
+	return null
 }
 
 function cmdTail(records: WarehouseRecord[], values: Values): CliResult {
@@ -396,10 +544,14 @@ function cmdRecheck(records: WarehouseRecord[], values: Values): CliResult {
 	const lines = hits.map((hit) => {
 		const stale = hit.stale.map((s) => s.recordId).join(',') || '-'
 		const fields = [...new Set(hit.stale.flatMap((s) => s.changedFields))].join(',') || '-'
-		const retracted = hit.stale.filter((s) => s.retracted).length
 		return (
 			`decision=${hit.decisionId} kind=${orDash(hit.kind)} ts=${orDash(hit.decisionTs)} ` +
-			`stale=${hit.stale.length} retracted=${retracted} missing=${hit.missing.length} ids=${stale} fields=${fields}` +
+			`stale=${hit.stale.length} retracted=${hit.retracted.length} superseded=${hit.superseded.length} ` +
+			`missing=${hit.missing.length} ids=${stale} fields=${fields}` +
+			(hit.retracted.length ? ` retracted-ids=${hit.retracted.join(',')}` : '') +
+			(hit.superseded.length
+				? ` superseded-ids=${hit.superseded.map((s) => `${s.recordId}->${s.replacedById}`).join(',')}`
+				: '') +
 			(hit.missing.length ? ` missing-ids=${hit.missing.join(',')}` : '')
 		)
 	})

@@ -21,15 +21,19 @@ import {
 	type WarehouseRecord,
 } from '../src/warehouse/records.ts'
 import {
+	addressableItemIds,
 	append,
 	appendMany,
 	batchSummaries,
+	filterResolved,
+	findInvalidAmendments,
 	findOrphanAmendments,
 	isBatchReleased,
 	openBatches,
 	readAll,
 	readRecords,
 	recheckFundedBy,
+	releasedItemIndex,
 	resolve,
 	gradesByVariant,
 	preferredVariant,
@@ -43,9 +47,11 @@ import {
 	makeBatch,
 	makeBatchComplete,
 	makeEndorsedSample,
+	makeFingerprint,
 	makeNote,
 	makeOracleLabel,
 	makePalette,
+	makeSide,
 	makeVerdict,
 	makeVeto,
 	stepClock,
@@ -518,7 +524,13 @@ describe('batch status and completion', () => {
 
 		assert.equal(supersededOracleLabelIds(resolve(readAll(file))).size, 0, 'different questions never supersede')
 		const summary = batchSummaries(readAll(file))[0]!
-		assert.equal(summary.reviewed, 2, 'reviewed counts items, and the image id is the item id')
+		// The round asks two questions, so one item is one (image, question) answer —
+		// which is how the batch counted its 4 items and how its release manifest names
+		// them. Counting distinct images here is what reported answered rounds as
+		// permanently pending (adversarial review F1).
+		assert.equal(summary.labelUnit, 'image-question')
+		assert.equal(summary.reviewed, 3, 'three of the four question-image pairs are answered')
+		assert.equal(summary.pending, 1)
 	})
 
 	it('puts a labelled item back in the queue when the answer is retracted', () => {
@@ -580,6 +592,271 @@ describe('batch status and completion', () => {
 		const summary = batchSummaries(readAll(file))[0]!
 		assert.equal(summary.itemCount, 2, 'the release manifest wins over the push-time copy')
 		assert.equal(summary.pending, 1)
+	})
+})
+
+/**
+ * A per-question oracle round, in the shape the live warehouse actually uses:
+ * `itemCount` is images × questions, and the release manifest names one item per
+ * (question, image) as `<prefix>-<questionKey>-<sha256[0:12]>`.
+ * Adversarial review F1/F7.
+ */
+const PER_QUESTION_IMAGES = [
+	makeArtwork({ path: '/corpus/music-artworks/one.jpg', sha256: 'a'.repeat(64) }),
+	makeArtwork({ path: '/corpus/music-artworks/two.jpg', sha256: 'b'.repeat(64) }),
+]
+const PER_QUESTION_KEYS = ['bg_visible', 'has_text', 'grain_or_noise']
+
+function perQuestionRound(options: { answered?: number; release?: boolean } = {}) {
+	const file = tempFile()
+	const det_ = det()
+	const batch = makeBatch({
+		id: 'pq1',
+		purpose: 'oracle-validation',
+		itemCount: PER_QUESTION_IMAGES.length * PER_QUESTION_KEYS.length,
+		fundedBy: [],
+	})
+	const itemIds: string[] = []
+	const pairs: Array<{ artwork: (typeof PER_QUESTION_IMAGES)[number]; questionKey: string }> = []
+	for (const questionKey of PER_QUESTION_KEYS)
+		for (const artwork of PER_QUESTION_IMAGES) {
+			itemIds.push(`pq-${questionKey}-${artwork.sha256.slice(0, 12)}`)
+			pairs.push({ artwork, questionKey })
+		}
+
+	const answered = options.answered ?? pairs.length
+	const written = pairs.slice(0, answered).map(({ artwork, questionKey }) =>
+		append(
+			file,
+			makeOracleLabel({ batch, imageId: artwork.path, artwork, questionKey, answer: 'yes' }),
+			det_,
+		),
+	)
+	if (options.release !== false)
+		append(file, makeBatchComplete('pq1', { purpose: 'oracle-validation', itemCount: batch.itemCount, releasedItemIds: itemIds }), det_)
+	return { file, batch, itemIds, written, options: det_ }
+}
+
+describe('per-question oracle rounds (F1)', () => {
+	it('reports a fully answered released round as pending=0, not one item per image', () => {
+		const { file } = perQuestionRound()
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.itemCount, 6, 'itemCount is images × questions')
+		assert.equal(summary.labels, 6)
+		assert.equal(summary.labelUnit, 'image-question')
+		assert.equal(summary.reviewed, 6, 'every (image, question) answer is one reviewed item')
+		assert.equal(summary.pending, 0, 'a finished, released round has nothing outstanding')
+		assert.equal(summary.releasedItemCount, 6)
+	})
+
+	it('counts only the answers actually given while the round is still open', () => {
+		const { file } = perQuestionRound({ answered: 4, release: false })
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.reviewed, 4)
+		assert.equal(summary.pending, 2, 'genuinely outstanding answers are still reported')
+	})
+
+	it('does not count a re-answer twice', () => {
+		const { file, batch, options } = perQuestionRound()
+		append(
+			file,
+			makeOracleLabel({
+				batch,
+				imageId: PER_QUESTION_IMAGES[0]!.path,
+				artwork: PER_QUESTION_IMAGES[0],
+				questionKey: 'has_text',
+				answer: 'no',
+			}),
+			options,
+		)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.labels, 7, 'the undone answer stays in the log')
+		assert.equal(summary.reviewed, 6)
+		assert.equal(summary.pending, 0)
+	})
+
+	it('keeps the image as the item when the round asks a single question', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'one-q', purpose: 'oracle-validation', itemCount: 2 })
+		append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: true }), options)
+		append(file, makeOracleLabel({ batch, imageId: 'img-2', questionKey: 'same_color', answer: false }), options)
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.labelUnit, 'image')
+		assert.equal(summary.reviewed, 2)
+		assert.equal(summary.pending, 0)
+	})
+})
+
+describe('item ids published by the release manifest (F7)', () => {
+	it('addresses an oracle label by the per-question item id the batch released', () => {
+		const { file, itemIds } = perQuestionRound()
+		const records = readAll(file)
+		const released = releasedItemIndex(records)
+		const wanted = `pq-has_text-${'a'.repeat(12)}`
+		assert.ok(itemIds.includes(wanted))
+
+		const matched = filterResolved(resolve(records), { itemIds: [wanted] }, released)
+		assert.equal(matched.length, 1, 'an id the batch released by name resolves to its answer')
+		const record = matched[0]!.record as { questionKey: string; imageId: string }
+		assert.equal(record.questionKey, 'has_text')
+		assert.equal(record.imageId, PER_QUESTION_IMAGES[0]!.path)
+	})
+
+	it('does not let one question of an image answer for another', () => {
+		const { file } = perQuestionRound()
+		const records = readAll(file)
+		const released = releasedItemIndex(records)
+		for (const questionKey of PER_QUESTION_KEYS) {
+			const matched = filterResolved(resolve(records), { itemIds: [`pq-${questionKey}-${'a'.repeat(12)}`] }, released)
+			assert.equal(matched.length, 1)
+			assert.equal((matched[0]!.record as { questionKey: string }).questionKey, questionKey)
+		}
+	})
+
+	it('addresses a one-question round by its image-only released id', () => {
+		const file = tempFile()
+		const options = det()
+		const artwork = makeArtwork({ path: '/corpus/music-artworks/one.jpg', sha256: 'c'.repeat(64) })
+		const batch = makeBatch({ id: 'gt1', purpose: 'oracle-validation', itemCount: 1 })
+		append(file, makeOracleLabel({ batch, imageId: artwork.path, artwork, questionKey: 'ground_type', answer: 'flat_field' }), options)
+		append(file, makeBatchComplete('gt1', { itemCount: 1, releasedItemIds: [`gt-${'c'.repeat(12)}`] }), options)
+
+		const records = readAll(file)
+		const matched = filterResolved(resolve(records), { itemIds: [`gt-${'c'.repeat(12)}`] }, releasedItemIndex(records))
+		assert.equal(matched.length, 1)
+	})
+
+	it('keeps a record addressable by its own itemId when it has one', () => {
+		const file = tempFile()
+		append(file, makeVerdict({ itemId: 'i1' }), det())
+		const records = readAll(file)
+		assert.deepEqual(addressableItemIds(records[0]!, releasedItemIndex(records)), ['i1'])
+	})
+})
+
+describe('amendment allowlist at query time (F2)', () => {
+	/** The escape hatch documented on `append`: a bulk replay that skips target verification. */
+	const unchecked = (options: ReturnType<typeof det>) => ({ ...options, verifyAmendmentTarget: false })
+
+	function forged() {
+		const file = tempFile()
+		const options = det()
+		const verdict = append(file, makeVerdict({ itemId: 'i1', gradeA: 'strong', comment: 'as shown' }), options)
+		const amendment = append(
+			file,
+			makeAmendment(
+				verdict.id,
+				{
+					artwork: makeArtwork({ path: '/tmp/OTHER.jpg', sha256: 'f'.repeat(64) }),
+					itemId: 'i-FORGED',
+					sideA: { paletteHash: 'FORGED', fingerprint: { algorithmVersion: 'x', preprocessingVersion: 'x', gitCommit: 'x', dirty: false }, variantId: 'A' },
+				},
+				{ reason: 'forge identity' },
+			),
+			unchecked(options),
+		)
+		return { file, verdict, amendment }
+	}
+
+	it('refuses to apply a patch that rewrites identity, item or palette hash', () => {
+		const { file, verdict } = forged()
+		const entry = resolve(readAll(file))[0]!
+		const record = entry.record as VerdictRecord
+
+		assert.equal(record.artwork.path, verdict.artwork.path, 'the artwork the reviewer saw is unchanged')
+		assert.equal(record.artwork.sha256, verdict.artwork.sha256)
+		assert.equal(record.itemId, 'i1')
+		assert.equal(record.sideA.paletteHash, verdict.sideA.paletteHash, 'the palette hash is frozen at append time')
+		assert.deepEqual(entry.changedFields, [], 'nothing was applied')
+	})
+
+	it('names the refusal instead of failing silently', () => {
+		const { file, verdict, amendment } = forged()
+		const entry = resolve(readAll(file))[0]!
+		assert.equal(entry.integrityErrors.length, 1)
+		assert.deepEqual(entry.integrityErrors[0]!.rejectedFields, ['artwork', 'itemId', 'sideA'])
+		assert.equal(entry.integrityErrors[0]!.amendmentId, amendment.id)
+		assert.equal(entry.integrityErrors[0]!.rootId, verdict.id)
+		assert.equal(entry.integrityErrors[0]!.targetType, 'verdict')
+
+		const found = findInvalidAmendments(readAll(file))
+		assert.equal(found.length, 1)
+		assert.equal(found[0]!.amendmentId, amendment.id)
+		assert.match(found[0]!.reason, /not amendable on a verdict record/)
+	})
+
+	it('still applies the amendable half of a mixed patch', () => {
+		const file = tempFile()
+		const options = det()
+		const verdict = append(file, makeVerdict({ gradeA: 'strong' }), options)
+		append(
+			file,
+			makeAmendment(verdict.id, { gradeA: 'weak', paletteHash: 'FORGED', itemId: 'i-FORGED' }),
+			unchecked(options),
+		)
+		const entry = resolve(readAll(file))[0]!
+		assert.equal((entry.record as VerdictRecord).gradeA, 'weak', 'the judgment is a second thought and stands')
+		assert.equal((entry.record as VerdictRecord).itemId, 'i1', 'what the record was about does not move')
+		assert.equal((entry.record as { paletteHash?: string }).paletteHash, undefined)
+		assert.deepEqual(entry.changedFields, ['gradeA'])
+		assert.deepEqual(entry.integrityErrors[0]!.rejectedFields, ['paletteHash', 'itemId'])
+	})
+
+	it('applies a retraction whose patch was refused, because retract is not a patch field', () => {
+		const file = tempFile()
+		const options = det()
+		const verdict = append(file, makeVerdict(), options)
+		append(
+			file,
+			makeAmendment(verdict.id, { itemId: 'i-FORGED' }, { retract: true, reason: 'withdrawn' }),
+			unchecked(options),
+		)
+		const entry = resolve(readAll(file))[0]!
+		assert.equal(entry.retracted, true)
+		assert.equal((entry.record as VerdictRecord).itemId, 'i1')
+		assert.equal(entry.integrityErrors.length, 1)
+	})
+
+	it('reports nothing on a clean log', () => {
+		const file = tempFile()
+		const options = det()
+		const verdict = append(file, makeVerdict(), options)
+		append(file, makeAmendment(verdict.id, { gradeA: 'weak' }), options)
+		assert.deepEqual(findInvalidAmendments(readAll(file)), [])
+		assert.deepEqual(resolve(readAll(file))[0]!.integrityErrors, [])
+	})
+})
+
+describe('demo fixture records (F6)', () => {
+	it('marks a batch whose verdicts carry a demo fingerprint', () => {
+		const file = tempFile()
+		const options = det()
+		const batch = makeBatch({ id: 'demo-batch-0001', purpose: 'mechanism', itemCount: 1 })
+		append(
+			file,
+			makeVerdict({
+				batch,
+				itemId: 'demo-1',
+				sideA: makeSide('trunk', { fingerprint: makeFingerprint({ algorithmVersion: 'demo-fixture-alpha' }) }),
+				sideB: makeSide('arm/foo', { fingerprint: makeFingerprint({ algorithmVersion: 'demo-fixture-bravo' }) }),
+			}),
+			options,
+		)
+		append(file, makeVerdict({ batch: makeBatch({ id: 'real', itemCount: 1 }), itemId: 'r1' }), options)
+		const summaries = batchSummaries(readAll(file))
+		assert.equal(summaries.find((s) => s.batchId === 'demo-batch-0001')!.demo, true)
+		assert.equal(summaries.find((s) => s.batchId === 'real')!.demo, false)
+	})
+
+	it('does not call a record a fixture on a placeholder commit alone', () => {
+		// `fixtures.ts` and any pre-commit import stamp 0×40. Excluding a record from the
+		// ground-truth count on that evidence would hide real reviewer work.
+		const file = tempFile()
+		append(file, makeVerdict({ batch: makeBatch({ id: 'real2' }), itemId: 'r1' }), det())
+		const summary = batchSummaries(readAll(file))[0]!
+		assert.equal(summary.demo, false)
+		assert.equal(summary.placeholderCommits, 1, 'it is reported, not hidden')
 	})
 })
 
@@ -687,5 +964,90 @@ describe('funded-by re-check', () => {
 		assert.equal(hits[0]!.stale.length, 1)
 		assert.equal(hits[0]!.stale[0]!.amendmentIds.length, 2)
 		assert.deepEqual(hits[0]!.stale[0]!.changedFields, ['gradeA', 'comment'])
+	})
+
+	describe('evidence the reviewer replaced (F3)', () => {
+		it('flags a decision funded by a verdict the reviewer re-graded', () => {
+			// Re-answering is the channel the reviewer actually uses; amending is not.
+			const file = tempFile()
+			const options = det()
+			const batch = makeBatch({ id: 'b1', itemCount: 1 })
+			const draft = append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'strong' }), options)
+			const standing = append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
+
+			const hits = recheckFundedBy([{ id: 'd', ts: '2026-08-02T23:00:00.000Z', fundedBy: [draft.id] }], readAll(file))
+			assert.equal(hits.length, 1, 'a decision resting on a replaced draft is not current')
+			assert.equal(hits[0]!.superseded.length, 1)
+			assert.equal(hits[0]!.superseded[0]!.recordId, draft.id)
+			assert.equal(hits[0]!.superseded[0]!.replacedById, standing.id, 'the gate says what stands instead')
+			assert.equal(hits[0]!.superseded[0]!.replacedAt, standing.ts)
+			assert.deepEqual(hits[0]!.stale, [], 'nothing was amended')
+		})
+
+		it('flags a decision funded by an oracle answer the reviewer re-answered', () => {
+			const file = tempFile()
+			const options = det()
+			const batch = makeBatch({ id: 'ob1', purpose: 'oracle-validation', itemCount: 1 })
+			const first = append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: true }), options)
+			const second = append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: false }), options)
+
+			const hits = recheckFundedBy([{ id: 'freeze', fundedBy: [first.id, second.id] }], readAll(file))
+			assert.equal(hits.length, 1)
+			assert.deepEqual(hits[0]!.superseded.map((s) => s.recordId), [first.id])
+			assert.equal(hits[0]!.superseded[0]!.replacedById, second.id)
+		})
+
+		it('does not flag the answer that stands', () => {
+			const file = tempFile()
+			const options = det()
+			const batch = makeBatch({ id: 'ob2', purpose: 'oracle-validation', itemCount: 1 })
+			append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: true }), options)
+			const second = append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: false }), options)
+			assert.deepEqual(recheckFundedBy([{ id: 'ok', fundedBy: [second.id] }], readAll(file)), [])
+		})
+
+		it('leaves a withdrawn re-answer out of it: the earlier answer stands again', () => {
+			const file = tempFile()
+			const options = det()
+			const batch = makeBatch({ id: 'ob3', purpose: 'oracle-validation', itemCount: 1 })
+			const first = append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: true }), options)
+			const second = append(file, makeOracleLabel({ batch, imageId: 'img-1', questionKey: 'same_color', answer: false }), options)
+			append(file, makeAmendment(second.id, {}, { retract: true, reason: 'mis-keyed' }), options)
+			assert.deepEqual(recheckFundedBy([{ id: 'ok', fundedBy: [first.id] }], readAll(file)), [])
+		})
+	})
+
+	describe('evidence that was already withdrawn (F4)', () => {
+		it('flags a decision citing evidence retracted before the decision was made', () => {
+			// The since-filter is guaranteed to miss this case, and it is the worse one:
+			// the evidence was already gone when it was cited.
+			const file = tempFile()
+			const options = det()
+			const verdict = append(file, makeVerdict({ itemId: 'i1' }), options)
+			append(file, { ...makeAmendment(verdict.id, {}, { retract: true, reason: 'wrong rendition shown' }), ts: '2026-08-04T00:00:00.000Z' }, options)
+
+			const hits = recheckFundedBy(
+				[{ id: 'late', ts: '2026-08-05T00:00:00.000Z', kind: 'metric-freeze', fundedBy: [verdict.id] }],
+				readAll(file),
+			)
+			assert.equal(hits.length, 1, 'a retracted record must fund nothing')
+			assert.deepEqual(hits[0]!.retracted, [verdict.id])
+			assert.deepEqual(hits[0]!.stale, [], 'the retraction predates the decision, so it is not "since-amended"')
+		})
+
+		it('flags it whichever side of the decision the retraction falls on', () => {
+			const file = tempFile()
+			const options = det()
+			const verdict = append(file, makeVerdict({ itemId: 'i1' }), options)
+			append(file, { ...makeAmendment(verdict.id, {}, { retract: true, reason: 'withdrawn' }), ts: '2026-08-06T00:00:00.000Z' }, options)
+			const hits = recheckFundedBy([{ id: 'early', ts: '2026-08-05T00:00:00.000Z', fundedBy: [verdict.id] }], readAll(file))
+			assert.deepEqual(hits[0]!.retracted, [verdict.id])
+			assert.equal(hits[0]!.stale.length, 1, 'and it is still reported as amended since')
+		})
+
+		it('says nothing about live evidence', () => {
+			const { file, v1 } = setup()
+			assert.deepEqual(recheckFundedBy([{ id: 'clean', ts: '2026-08-09T00:00:00.000Z', fundedBy: [v1.id] }], readAll(file)), [])
+		})
 	})
 })

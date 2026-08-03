@@ -11,7 +11,10 @@ import { closeSync, createReadStream, existsSync, fsyncSync, mkdirSync, openSync
 import { dirname } from 'node:path'
 import { createInterface } from 'node:readline'
 import {
+	AMENDABLE_FIELDS,
 	assertAmendablePatch,
+	hasPlaceholderCommit,
+	isDemoFixtureRecord,
 	newRecordId,
 	recordArtwork,
 	recordBatchId,
@@ -19,7 +22,9 @@ import {
 	WAREHOUSE_SCHEMA_VERSION,
 	WarehouseFormatError,
 	type AmendmentRecord,
+	type BatchCompleteRecord,
 	type BatchPurpose,
+	type OracleLabelRecord,
 	type RecordInput,
 	type RecordType,
 	type VerdictRecord,
@@ -207,6 +212,31 @@ export interface Resolved<T extends WarehouseRecord = WarehouseRecord> {
 	lastAmendedAt: string | null
 	/** Fields replaced by at least one amendment, in first-changed order. */
 	changedFields: string[]
+	/**
+	 * Patch fields refused at query time because AMENDABLE_FIELDS does not allow them
+	 * on this record's type. Empty on every well-formed chain. Never applied — see
+	 * `resolve`.
+	 */
+	integrityErrors: AmendmentIntegrityError[]
+}
+
+/**
+ * A stored amendment whose patch reaches outside AMENDABLE_FIELDS for its target's
+ * type — identity, provenance, or the palettes actually shown.
+ *
+ * `append()` refuses these, but the warehouse is a plain file written by several
+ * tools, edited by agents and merged in git, and `append()` itself has a documented
+ * escape hatch (`verifyAmendmentTarget: false`). So the allowlist is enforced at the
+ * read door too: the offending fields are dropped, never applied, and reported here.
+ */
+export interface AmendmentIntegrityError {
+	amendmentId: string
+	targetId: string
+	rootId: string
+	targetType: RecordType
+	/** Patch fields that were refused, in patch order. */
+	rejectedFields: string[]
+	reason: string
 }
 
 /** Amendment order: by timestamp, ties broken by append order. */
@@ -223,6 +253,12 @@ function amendmentOrder(a: { ts: string; index: number }, b: { ts: string; index
  * the whole group is applied in timestamp order. Amendment records themselves are
  * not returned. Amendments whose chain has no root record are dropped here — see
  * `findOrphanAmendments`.
+ *
+ * The AMENDABLE_FIELDS allowlist is enforced here as well as in `append()`. A patch
+ * field that is not amendable on the root's type is **not applied**; it is collected
+ * into `integrityErrors` so `status` and `query` can say so out loud. A record's
+ * identity, provenance and shown palettes therefore cannot be rewritten by anything
+ * that lands in the file, whatever wrote it.
  */
 export function resolve(records: Iterable<WarehouseRecord>, options: { includeRetracted?: boolean } = {}): Resolved[] {
 	const all = [...records]
@@ -254,9 +290,22 @@ export function resolve(records: Iterable<WarehouseRecord>, options: { includeRe
 		let current: WarehouseRecord = record
 		let retracted = false
 		const changed: string[] = []
+		const integrityErrors: AmendmentIntegrityError[] = []
 		for (const { amendment } of entries) {
-			current = { ...current, ...amendment.patch } as WarehouseRecord
-			for (const field of Object.keys(amendment.patch)) if (!changed.includes(field)) changed.push(field)
+			const { applied, rejected } = splitPatch(record.type, amendment.patch)
+			if (rejected.length)
+				integrityErrors.push({
+					amendmentId: amendment.id,
+					targetId: amendment.targetId,
+					rootId: record.id,
+					targetType: record.type,
+					rejectedFields: rejected,
+					reason: `not amendable on a ${record.type} record (allowed: ${
+						AMENDABLE_FIELDS[record.type].length ? AMENDABLE_FIELDS[record.type].join(', ') : 'none'
+					})`,
+				})
+			current = { ...current, ...applied } as WarehouseRecord
+			for (const field of Object.keys(applied)) if (!changed.includes(field)) changed.push(field)
 			if (amendment.retract) retracted = true
 		}
 		const amendments = entries.map((e) => e.amendment)
@@ -268,6 +317,7 @@ export function resolve(records: Iterable<WarehouseRecord>, options: { includeRe
 			retracted,
 			lastAmendedAt: amendments.length ? amendments[amendments.length - 1]!.ts : null,
 			changedFields: changed,
+			integrityErrors,
 		})
 	}
 	return out
@@ -282,6 +332,30 @@ function findRoot(amendment: AmendmentRecord, byId: Map<string, WarehouseRecord>
 		cursor = byId.get(cursor.targetId)
 	}
 	return cursor ? cursor.id : null
+}
+
+/** Split a patch into the fields the target's type allows and the fields it does not. */
+function splitPatch(
+	targetType: RecordType,
+	patch: Record<string, unknown>,
+): { applied: Record<string, unknown>; rejected: string[] } {
+	const allowed = AMENDABLE_FIELDS[targetType]
+	const applied: Record<string, unknown> = {}
+	const rejected: string[] = []
+	for (const field of Object.keys(patch)) {
+		if (allowed.includes(field)) applied[field] = patch[field]
+		else rejected.push(field)
+	}
+	return { applied, rejected }
+}
+
+/**
+ * Amendments in the log whose patch reaches outside the allowlist for their target's
+ * type. The read-side counterpart of `findOrphanAmendments`: both name a class of
+ * record that is present in the file and refused at query time.
+ */
+export function findInvalidAmendments(records: Iterable<WarehouseRecord>): AmendmentIntegrityError[] {
+	return resolve(records).flatMap((entry) => entry.integrityErrors)
 }
 
 /** Amendments whose target is missing or whose chain cycles — nothing applies them. */
@@ -404,31 +478,65 @@ export interface StaleEvidence {
 	retracted: boolean
 }
 
+/** A funded record replaced by a later record on the same item. */
+export interface SupersededEvidence {
+	recordId: string
+	/** The record that replaced it — the reviewer's standing position on that item. */
+	replacedById: string
+	/** Batch + item key the two records share. */
+	itemKey: string
+	/** When the replacement was written. */
+	replacedAt: string
+}
+
 export interface RecheckHit {
 	decisionId: string
 	decisionTs: string | null
 	kind: string | null
 	/** Evidence amended after the decision was made. */
 	stale: StaleEvidence[]
+	/**
+	 * Evidence that is retracted, whenever the retraction happened — a retracted
+	 * record must fund nothing (`records.ts`), including when it was already withdrawn
+	 * at citation time.
+	 */
+	retracted: string[]
+	/** Evidence the reviewer re-answered: a later record on the same item stands instead. */
+	superseded: SupersededEvidence[]
 	/** fundedBy ids that are not in the warehouse at all. */
 	missing: string[]
 }
 
 /**
- * The standing gate query (REVIEW_UI.md §1): given decisions that list the verdict
- * ids that funded them, return the decisions funded by since-amended evidence.
+ * The standing gate query (REVIEW_UI.md §1): given decisions that list the record ids
+ * that funded them, return the decisions whose evidence has moved under them.
  *
- * "Since" is relative to the decision's own timestamp when it has one — an amendment
- * that predates the decision was already accounted for. A decision without a
- * timestamp is treated as funded by whatever the evidence said originally, so any
- * amendment at all flags it.
+ * Four ways evidence moves, all reported:
+ *
+ * - **amended since** (`stale`) — relative to the decision's own timestamp when it has
+ *   one; an amendment that predates the decision was already accounted for. A decision
+ *   without a timestamp is treated as funded by whatever the evidence said originally,
+ *   so any amendment at all flags it.
+ * - **retracted** — regardless of when. A retraction that *predates* the decision is
+ *   the one case a since-filter is guaranteed to miss, and citing evidence that was
+ *   already withdrawn is worse than citing evidence that moved afterwards, not better.
+ * - **superseded** — the reviewer re-answered the item, so the cited record is a draft
+ *   and a different record carries their position. This is the channel the reviewer
+ *   actually uses: in the live warehouse every amendment is an agent-authored
+ *   retraction of a derived note and there are zero reviewer amendments, while 11
+ *   records are superseded by re-answers (2026-08-03).
+ * - **missing** — not in the warehouse at all.
  */
 export function recheckFundedBy(decisions: Iterable<FundedDecision>, records: Iterable<WarehouseRecord>): RecheckHit[] {
-	const resolved = resolveById(records)
+	const entries = resolve(records)
+	const resolved = new Map(entries.map((entry) => [entry.original.id, entry]))
+	const standing = standingPositions(entries)
 	const hits: RecheckHit[] = []
 
 	for (const decision of decisions) {
 		const stale: StaleEvidence[] = []
+		const retracted: string[] = []
+		const superseded: SupersededEvidence[] = []
 		const missing: string[] = []
 		for (const recordId of decision.fundedBy) {
 			const entry = resolved.get(recordId)
@@ -436,6 +544,9 @@ export function recheckFundedBy(decisions: Iterable<FundedDecision>, records: It
 				missing.push(recordId)
 				continue
 			}
+			if (entry.retracted) retracted.push(recordId)
+			const replacement = standing.get(recordId)
+			if (replacement) superseded.push({ recordId, ...replacement })
 			const since = decision.ts
 				? entry.amendments.filter((a) => a.ts > decision.ts!)
 				: entry.amendments
@@ -451,16 +562,61 @@ export function recheckFundedBy(decisions: Iterable<FundedDecision>, records: It
 				retracted: since.some((a) => a.retract),
 			})
 		}
-		if (stale.length || missing.length)
+		if (stale.length || retracted.length || superseded.length || missing.length)
 			hits.push({
 				decisionId: decision.id,
 				decisionTs: decision.ts ?? null,
 				kind: decision.kind ?? null,
 				stale,
+				retracted,
+				superseded,
 				missing,
 			})
 	}
 	return hits
+}
+
+/**
+ * For every superseded record, which record replaced it and on what item key.
+ * `supersededIds` answers "was this replaced"; the gate also has to be able to say
+ * *by what*, so a reader can go and look at the standing answer.
+ */
+function standingPositions(
+	entries: Resolved[],
+): Map<string, { replacedById: string; itemKey: string; replacedAt: string }> {
+	const out = new Map<string, { replacedById: string; itemKey: string; replacedAt: string }>()
+	const byKey = new Map<string, Resolved[]>()
+	for (const entry of entries) {
+		if (entry.retracted) continue
+		const key = itemKeyOf(entry)
+		if (key === null) continue
+		const list = byKey.get(key) ?? []
+		list.push(entry)
+		byKey.set(key, list)
+	}
+	const superseded = supersededIds(entries)
+	for (const [key, list] of byKey) {
+		const winner = list.find((entry) => !superseded.has(entry.original.id))
+		if (!winner) continue
+		for (const entry of list) {
+			if (!superseded.has(entry.original.id)) continue
+			out.set(entry.original.id, {
+				replacedById: winner.original.id,
+				itemKey: key,
+				replacedAt: winner.record.ts,
+			})
+		}
+	}
+	return out
+}
+
+/** The (batch, item) key supersession uses, or null for records that have no item. */
+function itemKeyOf(entry: Resolved): string | null {
+	const record = entry.record
+	if (record.type === 'verdict') return `${record.batch.id} ${record.itemId}`
+	if (record.type === 'oracle-label')
+		return `${record.batch?.id ?? NO_BATCH} ${record.imageId} ${record.questionKey}`
+	return null
 }
 
 // ---------------------------------------------------------------------------
@@ -473,17 +629,36 @@ export interface BatchSummary {
 	/** Batch size declared at push time, or null when no record carried it. */
 	itemCount: number | null
 	/**
-	 * Distinct item ids that have been judged. An item counts when it carries the
+	 * Distinct items that have been judged. An item counts when it carries the
 	 * reviewer's standing position in any judging channel: a verdict, a veto, or an
 	 * oracle label (bracketing and oracle-validation rounds produce labels, not
 	 * verdicts). Retracted and superseded records do not count — a vetoed item is
 	 * judged, because ruling an artwork out of the corpus is a decision, not a skip.
+	 *
+	 * What counts as one item for a label round is `labelUnit`.
 	 */
 	reviewed: number
+	/**
+	 * The unit `reviewed` counts for this batch's oracle labels, or null when the
+	 * batch has none. `image-question` when the round asks more than one question —
+	 * the batch then declares `itemCount = images × questions` and releases one item
+	 * id per (question, image). `image` when it asks a single question.
+	 */
+	labelUnit: 'image' | 'image-question' | null
 	/** itemCount − reviewed, or null when itemCount is unknown. */
 	pending: number | null
 	/** Timestamp of the batch-complete record, or null while the batch is open. */
 	released: string | null
+	/** Item ids named by the batch-complete manifest, or null when it named none. */
+	releasedItemCount: number | null
+	/**
+	 * True when the batch is smoke-test fixture data, not reviewer ground truth
+	 * (`isDemoFixtureRecord`). Its counts are reported separately and excluded from
+	 * headline totals.
+	 */
+	demo: boolean
+	/** Records in the batch carrying a placeholder git commit — reported, not excluded. */
+	placeholderCommits: number
 	verdicts: number
 	notes: number
 	endorsed: number
@@ -510,6 +685,8 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 	const order: string[] = []
 	const summaries = new Map<string, BatchSummary>()
 	const reviewedItems = new Map<string, Set<string>>()
+	/** Standing (image, question) answers per batch — keyed after the whole pass, see below. */
+	const standingLabels = new Map<string, Array<{ imageId: string; questionKey: string }>>()
 
 	const get = (batchId: string, ts: string): BatchSummary => {
 		let summary = summaries.get(batchId)
@@ -519,8 +696,12 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 				purpose: null,
 				itemCount: null,
 				reviewed: 0,
+				labelUnit: null,
 				pending: null,
 				released: null,
+				releasedItemCount: null,
+				demo: false,
+				placeholderCommits: 0,
 				verdicts: 0,
 				notes: 0,
 				endorsed: 0,
@@ -533,6 +714,7 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 			}
 			summaries.set(batchId, summary)
 			reviewedItems.set(batchId, new Set())
+			standingLabels.set(batchId, [])
 			order.push(batchId)
 		}
 		if (ts < summary.firstTs) summary.firstTs = ts
@@ -546,6 +728,11 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 		const summary = get(batchId, record.ts)
 		if (entry.amendments.length) summary.amended++
 		if (entry.retracted) summary.retracted++
+		// Demo-ness is a property of the batch: the release record of a demo batch
+		// carries no fingerprint of its own, and a batch is either fixture data or it
+		// is not.
+		if (isDemoFixtureRecord(record)) summary.demo = true
+		if (hasPlaceholderCommit(record)) summary.placeholderCommits++
 
 		switch (record.type) {
 			case 'verdict': {
@@ -572,9 +759,11 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 				summary.labels++
 				// A labelled item is judged. Oracle-validation and bracketing rounds produce
 				// labels instead of verdicts, so without this a fully answered round would
-				// report every item as pending and never look releasable.
+				// report every item as pending and never look releasable. Which key counts
+				// as one item depends on the round — decided below, once every answer in the
+				// batch is known.
 				if (!entry.retracted && !superseded.has(entry.original.id))
-					reviewedItems.get(batchId)!.add(record.imageId)
+					standingLabels.get(batchId)!.push({ imageId: record.imageId, questionKey: record.questionKey })
 				if (record.batch && summary.purpose === null) summary.purpose = record.batch.purpose
 				if (record.batch && summary.itemCount === null) summary.itemCount = record.batch.itemCount
 				break
@@ -584,13 +773,31 @@ export function batchSummaries(records: Iterable<WarehouseRecord>): BatchSummary
 				summary.released = record.ts
 				if (record.purpose !== null) summary.purpose = record.purpose
 				if (record.itemCount !== null) summary.itemCount = record.itemCount
+				if (record.releasedItemIds !== null) summary.releasedItemCount = record.releasedItemIds.length
 				break
 			}
 		}
 	}
 
 	for (const summary of summaries.values()) {
-		summary.reviewed = reviewedItems.get(summary.batchId)!.size
+		// An oracle round's unit of judgment is one answer to one question about one
+		// image. When the round asks several questions it declares
+		// `itemCount = images × questions` and releases one item id per (question,
+		// image) — `pg-<questionKey>-<sha12>` — so keying reviewed items by image alone
+		// tops out at the image count and reports the difference as pending forever.
+		// (Measured 2026-08-03: that read invented 290 outstanding answers across
+		// oracle-probe-gold-1 and bcde-validation-1, both fully answered and released.)
+		// When the round asks a single question the two keys coincide, and the image is
+		// also what the release manifest names (`gt-<sha12>`), so a label and a verdict
+		// on the same item still count once.
+		const labels = standingLabels.get(summary.batchId)!
+		const questions = new Set(labels.map((label) => label.questionKey))
+		summary.labelUnit = labels.length === 0 ? null : questions.size > 1 ? 'image-question' : 'image'
+		const items = reviewedItems.get(summary.batchId)!
+		for (const label of labels)
+			items.add(summary.labelUnit === 'image-question' ? `${label.imageId} ${label.questionKey}` : label.imageId)
+
+		summary.reviewed = items.size
 		summary.pending = summary.itemCount === null ? null : Math.max(0, summary.itemCount - summary.reviewed)
 	}
 
@@ -630,8 +837,64 @@ export interface QueryFilter {
 	excludeRetracted?: boolean
 }
 
-/** Apply a filter to resolved records, preserving append order. */
-export function filterResolved(entries: Resolved[], filter: QueryFilter): Resolved[] {
+/**
+ * Item ids published by `batch-complete` records, indexed batch → artwork hash
+ * prefix → ids.
+ *
+ * Oracle-label records carry no `itemId` (703 of 703 in the live warehouse), but the
+ * release record names every item by an id built from the artwork hash —
+ * `gt-<sha12>` for a one-question round, `pg-<questionKey>-<sha12>` for a
+ * per-question one. Indexing the manifest by that hash prefix is what lets a reader
+ * hand `query --item` an id from a release record and get the answer back.
+ */
+export type ReleasedItemIndex = Map<string, Map<string, string[]>>
+
+/** Number of hex chars of the artwork sha256 that oracle item ids embed. */
+const ITEM_ID_HASH_CHARS = 12
+
+export function releasedItemIndex(records: Iterable<WarehouseRecord>): ReleasedItemIndex {
+	const index: ReleasedItemIndex = new Map()
+	for (const record of records) {
+		if (record.type !== 'batch-complete') continue
+		const complete = record as BatchCompleteRecord
+		if (!complete.releasedItemIds) continue
+		const byHash = index.get(complete.batchId) ?? new Map<string, string[]>()
+		for (const itemId of complete.releasedItemIds) {
+			const hash = itemId.slice(-ITEM_ID_HASH_CHARS)
+			const list = byHash.get(hash) ?? []
+			list.push(itemId)
+			byHash.set(hash, list)
+		}
+		index.set(complete.batchId, byHash)
+	}
+	return index
+}
+
+/**
+ * Every item id this record can be addressed by: its own `itemId` when it has one,
+ * otherwise the released ids that name it.
+ *
+ * When several released ids in the batch share an artwork the manifest is
+ * per-question, and only the id carrying this record's question key names it. When
+ * one id owns the artwork, the round asked a single question and that id names the
+ * record whatever its question key is.
+ */
+export function addressableItemIds(record: WarehouseRecord, released?: ReleasedItemIndex): string[] {
+	const own = (record as { itemId?: string | null }).itemId ?? null
+	if (own) return [own]
+	if (record.type !== 'oracle-label' || !released) return []
+	const label = record as OracleLabelRecord
+	if (!label.artwork || !label.batch) return []
+	const candidates = released.get(label.batch.id)?.get(label.artwork.sha256.slice(0, ITEM_ID_HASH_CHARS)) ?? []
+	if (candidates.length <= 1) return candidates
+	return candidates.filter((itemId) => itemId.slice(0, -ITEM_ID_HASH_CHARS).endsWith(`-${label.questionKey}-`))
+}
+
+/**
+ * Apply a filter to resolved records, preserving append order. Pass the released-item
+ * index to let `itemIds` match records that carry no `itemId` of their own.
+ */
+export function filterResolved(entries: Resolved[], filter: QueryFilter, released?: ReleasedItemIndex): Resolved[] {
 	return entries.filter((entry) => {
 		const record = entry.record
 		if (filter.excludeRetracted && entry.retracted) return false
@@ -641,8 +904,8 @@ export function filterResolved(entries: Resolved[], filter: QueryFilter): Resolv
 			if (!batchId || !filter.batchIds.includes(batchId)) return false
 		}
 		if (filter.itemIds) {
-			const itemId = (record as { itemId?: string | null }).itemId ?? null
-			if (!itemId || !filter.itemIds.includes(itemId)) return false
+			const itemIds = addressableItemIds(record, released)
+			if (!itemIds.some((itemId) => filter.itemIds!.includes(itemId))) return false
 		}
 		if (filter.artwork) {
 			const artwork = recordArtwork(record)

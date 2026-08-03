@@ -25,9 +25,11 @@ import {
 	makeBatch,
 	makeBatchComplete,
 	makeEndorsedSample,
+	makeFingerprint,
 	makeNote,
 	makeOracleLabel,
 	makePalette,
+	makeSide,
 	makeVerdict,
 	makeVeto,
 	stepClock,
@@ -112,8 +114,10 @@ describe('cli status', () => {
 			[
 				'batch=b1 purpose=arm items=3 reviewed=2 pending=1 released=2026-08-02T10:04:00.000Z notes=1 endorsed=1 amended=1 last=2026-08-02T10:04:00.000Z',
 				'batch=b2 purpose=calibration items=2 reviewed=1 pending=1 released=no last=2026-08-02T10:05:00.000Z',
-				'batch=- purpose=- items=- reviewed=1 pending=- released=no vetoes=1 labels=1 last=2026-08-02T10:07:00.000Z',
-				'total batches=2 open=1 records=9 verdicts=3 amendments=1 orphan-amendments=0',
+				'batch=- purpose=- items=- reviewed=1 pending=- released=no vetoes=1 labels=1 unit=image last=2026-08-02T10:07:00.000Z',
+				'file records=9 types=verdict:3,note:1,endorsed-sample:1,batch-complete:1,veto:1,oracle-label:1,amendment:1',
+				'placeholder-commits records=3 (counted in totals; fingerprint git commit is a placeholder)',
+				'total batches=2 open=1 records=9 verdicts=3 amendments=1 orphan-amendments=0 invalid-amendments=0',
 				'',
 			].join('\n'),
 		)
@@ -123,14 +127,25 @@ describe('cli status', () => {
 		const missing = join(tempDir(), 'nothing.jsonl')
 		const result = runCli(['status', '--file', missing])
 		assert.equal(result.code, 0)
-		assert.equal(result.out, 'total batches=0 open=0 records=0 verdicts=0 amendments=0 orphan-amendments=0\n')
+		assert.equal(
+			result.out,
+			[
+				'file records=0 types=-',
+				'total batches=0 open=0 records=0 verdicts=0 amendments=0 orphan-amendments=0 invalid-amendments=0',
+				'',
+			].join('\n'),
+		)
 	})
 
-	it('emits one JSON object per batch with --json', () => {
+	it('emits one JSON object per batch plus a totals object with --json', () => {
 		const file = fixtureWarehouse()
 		const lines = runCli(['status', '--file', file, '--json']).out.trim().split('\n')
-		assert.equal(lines.length, 3)
+		assert.equal(lines.length, 4)
 		assert.equal(JSON.parse(lines[0]!).batchId, 'b1')
+		const totals = JSON.parse(lines[3]!)
+		assert.equal(totals.kind, 'totals')
+		assert.equal(totals.fileRecords, 9)
+		assert.deepEqual(totals.demo, { batches: 0, batchIds: [], records: 0, verdicts: 0 })
 	})
 })
 
@@ -304,8 +319,8 @@ describe('cli recheck', () => {
 		assert.equal(
 			result.out,
 			[
-				'decision=integration-1 kind=integration ts=2026-08-02T10:04:30.000Z stale=1 retracted=0 missing=0 ids=v-1 fields=gradeB',
-				'decision=adjudication-9 kind=- ts=- stale=0 retracted=0 missing=1 ids=- fields=- missing-ids=v-absent',
+				'decision=integration-1 kind=integration ts=2026-08-02T10:04:30.000Z stale=1 retracted=0 superseded=0 missing=0 ids=v-1 fields=gradeB',
+				'decision=adjudication-9 kind=- ts=- stale=0 retracted=0 superseded=0 missing=1 ids=- fields=- missing-ids=v-absent',
 				'total decisions=3 flagged=2',
 				'',
 			].join('\n'),
@@ -327,6 +342,194 @@ describe('cli recheck', () => {
 		const result = runCli(['recheck', '--file', fixtureWarehouse()])
 		assert.equal(result.code, 1)
 		assert.match(result.err, /--decisions/)
+	})
+})
+
+/** A per-question oracle round, released and fully answered. Adversarial review F1/F7. */
+function perQuestionWarehouse(): { file: string; itemIds: string[] } {
+	const file = join(tempDir(), 'warehouse.jsonl')
+	const options = { now: stepClock(), idFactory: counterIds(), fsync: false }
+	const artworks = [
+		makeArtwork({ path: '/corpus/music-artworks/one.jpg', sha256: 'a'.repeat(64) }),
+		makeArtwork({ path: '/corpus/music-artworks/two.jpg', sha256: 'b'.repeat(64) }),
+	]
+	const questions = ['bg_visible', 'has_text', 'grain_or_noise']
+	const batch = makeBatch({ id: 'pg1', purpose: 'oracle-validation', itemCount: artworks.length * questions.length })
+	const itemIds: string[] = []
+	for (const questionKey of questions)
+		for (const artwork of artworks) {
+			itemIds.push(`pg-${questionKey}-${artwork.sha256.slice(0, 12)}`)
+			append(file, makeOracleLabel({ batch, imageId: artwork.path, artwork, questionKey, answer: 'yes' }), options)
+		}
+	append(file, makeBatchComplete('pg1', { purpose: 'oracle-validation', itemCount: batch.itemCount, releasedItemIds: itemIds }), options)
+	return { file, itemIds }
+}
+
+describe('cli status on a per-question round (F1)', () => {
+	it('reports a finished released round as done, not as 4 outstanding answers', () => {
+		const { file } = perQuestionWarehouse()
+		const line = runCli(['status', '--file', file]).out.split('\n')[0]!
+		assert.equal(
+			line,
+			'batch=pg1 purpose=oracle-validation items=6 reviewed=6 pending=0 released=2026-08-02T10:06:00.000Z labels=6 unit=image-question last=2026-08-02T10:06:00.000Z',
+		)
+	})
+})
+
+describe('cli query --item against a release manifest (F7)', () => {
+	it('finds the answer named by a per-question released item id', () => {
+		const { file } = perQuestionWarehouse()
+		const result = runCli(['query', '--file', file, '--item', `pg-has_text-${'a'.repeat(12)}`])
+		assert.equal(result.err, '')
+		const lines = result.out.trim().split('\n')
+		assert.equal(lines.length, 1)
+		assert.match(lines[0]!, /oracle \/corpus\/music-artworks\/one\.jpg has_text=yes/)
+	})
+
+	it('explains an item id that matches nothing instead of printing silence', () => {
+		const { file } = perQuestionWarehouse()
+		const released = runCli(['query', '--file', file, '--item', `pg-has_text-${'a'.repeat(12)}`, '--type', 'verdict'])
+		assert.equal(released.out, '')
+		assert.match(released.err, /matched no record; it was released by batch pg1/)
+
+		const unknown = runCli(['query', '--file', file, '--item', 'pg-nonsense-000000000000'])
+		assert.equal(unknown.out, '')
+		assert.match(unknown.err, /named by no batch-complete manifest/)
+	})
+})
+
+describe('cli integrity of stored amendments (F2)', () => {
+	/** A warehouse with one amendment that reaches outside AMENDABLE_FIELDS. */
+	function forgedWarehouse(): string {
+		const file = fixtureWarehouse()
+		const options = { now: stepClock('2026-08-02T13:00:00.000Z'), idFactory: () => 'am-forged', fsync: false }
+		append(
+			file,
+			makeAmendment(
+				'v-1',
+				{ artwork: makeArtwork({ path: '/tmp/OTHER.jpg', sha256: 'f'.repeat(64) }), itemId: 'i-FORGED' },
+				{ reason: 'forge identity' },
+			),
+			{ ...options, verifyAmendmentTarget: false },
+		)
+		return file
+	}
+
+	it('counts and names the refused patch on status, and warns on stderr', () => {
+		const file = forgedWarehouse()
+		const result = runCli(['status', '--file', file])
+		assert.match(result.out, /^integrity amendment=am-forged target=v-1 root=v-1 type=verdict refused-fields=artwork,itemId$/m)
+		assert.match(result.out, /invalid-amendments=1$/m)
+		assert.match(result.err, /not applied/)
+	})
+
+	it('flags the record in query output and leaves it about the artwork the reviewer saw', () => {
+		const file = forgedWarehouse()
+		const result = runCli(['query', '--file', file, '--type', 'verdict', '--item', 'i1'])
+		assert.match(result.out, /INTEGRITY-REFUSED=artwork,itemId/)
+		assert.match(result.out, /art=aaaaaaaa:kind-of-blue\.jpg/, 'the forged path never reaches the output')
+		assert.doesNotMatch(result.out, /OTHER\.jpg/)
+		assert.match(result.err, /amendment am-forged patches artwork,itemId on v-1/)
+		// The forged item id does not become an alias for the record either.
+		assert.equal(runCli(['query', '--file', file, '--item', 'i-FORGED']).out, '')
+	})
+})
+
+describe('cli demo fixtures (F6)', () => {
+	function demoWarehouse(): string {
+		const file = join(tempDir(), 'warehouse.jsonl')
+		const options = { now: stepClock(), idFactory: counterIds(), fsync: false }
+		const batch = makeBatch({ id: 'demo-batch-0001', purpose: 'mechanism', itemCount: 1 })
+		append(
+			file,
+			makeVerdict({
+				batch,
+				itemId: 'demo-1',
+				sideA: makeSide('trunk', { fingerprint: makeFingerprint({ algorithmVersion: 'demo-fixture-alpha' }) }),
+				sideB: makeSide('arm/foo', { fingerprint: makeFingerprint({ algorithmVersion: 'demo-fixture-bravo', gitCommit: '1'.repeat(40) }) }),
+			}),
+			options,
+		)
+		append(file, makeBatchComplete('demo-batch-0001', { purpose: 'mechanism', itemCount: 1, releasedItemIds: ['demo-1'] }), options)
+		append(file, makeNote({ batch: makeBatch({ id: 'real', itemCount: 1 }), text: 'a real note' }), options)
+		return file
+	}
+
+	it('keeps fixture verdicts out of the headline count and reports them on their own line', () => {
+		const out = runCli(['status', '--file', demoWarehouse()]).out
+		assert.match(out, /^batch=demo-batch-0001 .* DEMO last=/m)
+		assert.match(out, /^file records=3 types=verdict:1,batch-complete:1,note:1$/m)
+		assert.match(out, /^demo batches=1 records=2 verdicts=1 ids=demo-batch-0001 \(fixtures, excluded from totals below\)$/m)
+		assert.match(out, /^total batches=1 open=1 records=1 verdicts=0 /m, 'the honest verdict count is zero')
+	})
+
+	it('still shows the fixture records to anyone who queries for them', () => {
+		const out = runCli(['query', '--file', demoWarehouse(), '--batch', 'demo-batch-0001']).out
+		assert.equal(out.trim().split('\n').length, 2, 'nothing is hidden, only uncounted')
+	})
+})
+
+describe('cli recheck sees replaced and withdrawn evidence (F3, F4)', () => {
+	it('reports superseded and retracted funding ids with what replaced them', () => {
+		const file = join(tempDir(), 'warehouse.jsonl')
+		const options = { now: stepClock(), idFactory: counterIds(), fsync: false }
+		const batch = makeBatch({ id: 'b1', itemCount: 2 })
+		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'strong' }), options)
+		append(file, makeVerdict({ batch, itemId: 'i1', gradeA: 'weak' }), options)
+		append(file, makeVerdict({ batch, itemId: 'i2' }), options)
+		append(file, makeAmendment('v-3', {}, { retract: true, reason: 'wrong rendition shown' }), options)
+
+		const decisionsPath = join(tempDir(), 'decisions.json')
+		writeFileSync(
+			decisionsPath,
+			JSON.stringify([{ id: 'freeze', kind: 'metric-freeze', ts: '2026-08-03T00:00:00.000Z', fundedBy: ['v-1', 'v-3'] }]),
+		)
+		const result = runCli(['recheck', '--file', file, '--decisions', decisionsPath])
+		assert.equal(
+			result.out,
+			[
+				'decision=freeze kind=metric-freeze ts=2026-08-03T00:00:00.000Z stale=0 retracted=1 superseded=1 missing=0 ' +
+					'ids=- fields=- retracted-ids=v-3 superseded-ids=v-1->v-2',
+				'total decisions=1 flagged=1',
+				'',
+			].join('\n'),
+		)
+		assert.equal(runCli(['recheck', '--file', file, '--decisions', decisionsPath, '--fail-on-hit']).code, 1)
+	})
+})
+
+describe('cli raw mode and the retraction filter (F8)', () => {
+	function withRetractedNote(): string {
+		const file = fixtureWarehouse()
+		const options = { now: stepClock('2026-08-02T11:00:00.000Z'), idFactory: counterIds(), fsync: false }
+		append(file, makeAmendment('n-3', {}, { retract: true, reason: 'superseded by a re-derivation' }), options)
+		return file
+	}
+
+	it('honours --no-retracted in raw mode', () => {
+		const file = withRetractedNote()
+		assert.equal(runCli(['query', '--file', file, '--raw', '--type', 'note']).out.trim().split('\n').length, 1)
+		assert.equal(runCli(['query', '--file', file, '--raw', '--no-retracted', '--type', 'note']).out, '')
+	})
+
+	it('marks the record retracted in raw output without applying the patch', () => {
+		const file = fixtureWarehouse()
+		const options = { now: stepClock('2026-08-02T11:00:00.000Z'), idFactory: counterIds(), fsync: false }
+		// v-1 is the verdict the fixture also amends (gradeB weak -> unacceptable).
+		append(file, makeAmendment('v-1', {}, { retract: true, reason: 'wrong rendition shown' }), options)
+
+		const raw = runCli(['query', '--file', file, '--raw', '--type', 'verdict', '--item', 'i1']).out
+		assert.match(raw, / RETRACTED/, 'raw mode knows the record was withdrawn')
+		assert.match(raw, /B=weak@/, 'and still shows the record as appended, patch unapplied')
+		assert.doesNotMatch(raw, / am=1 /)
+		assert.equal(runCli(['query', '--file', file, '--raw', '--no-retracted', '--type', 'verdict', '--item', 'i1']).out, '')
+	})
+
+	it('honours it when --type amendment turns raw mode on implicitly', () => {
+		const file = withRetractedNote()
+		const both = runCli(['query', '--file', file, '--type', 'amendment,note', '--no-retracted']).out.trim().split('\n')
+		assert.ok(!both.some((line) => line.includes(' n-3 ')), 'the retracted note is dropped as asked')
+		assert.ok(both.some((line) => line.includes('amend->n-3')), 'the retracting amendment is itself not retracted')
 	})
 })
 
