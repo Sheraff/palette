@@ -1990,6 +1990,105 @@
     "A12 STAYS OPEN. It waits on the sub-minute CJK GPU micro-run specified in the manifest's gpuGap.exactRunNeeded (roughly 7 covers x 3 prompts, storing mask_rle at the 0.3 floor), which has not been run. No amount of further CPU analysis substitutes for it."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-cjk-script-concepts-adopted-with-a-category-cut",
+   "ts": "2026-08-03T23:11:40Z",
+   "kind": "instrument-design",
+   "draftedAs": "instrument-calibration — the proposal label in mask-quality-3b-analysis.json. Recorded under the README's existing kind vocabulary; the label is the only field that differs from the draft.",
+   "scope": "The SAM concept set and the per-group score-cut table, and nothing else. TWO CONSTANTS MOVE: CONCEPT_PROMPTS gains ('cjk-script', 'chinese characters') and ('kanji', 'kanji') as CONCEPT SET v2.2, CONCEPT_GROUPS gains the group cjk_script holding exactly those two, and CALIBRATED_GROUP_THRESHOLDS gains cjk_script = 0.392655, tagged PROVISIONAL in the file. Nothing else moves: the pooled cut stays 0.578, text_like stays 0.697295, SCORE_THRESHOLD stays 0.3, and the area guard and its exemptions are untouched. It resolves the CONCEPT-ADOPTION half of loose end A12 and does NOT close A12, whose provisional-threshold half stays open. It says NOTHING about scripts outside CJK: Korean, Thai and Malayalam were measured silent by probe 4 on scores, and no mask from any of them has been reviewed.",
+   "decision": "The pre-registered rule's ADOPT arm fired, so cjk-script and kanji join the concept set as one group cjk_script with its own calibrated cut of 0.392655. Funded by 21 decided reviewer answers on masks no human had ever seen: 20 correct, 1 not, a 95.2% accept rate, with 'partly' excluded from both sides as pre-registered. All three gates pass: separation |0.578 - 0.392655| = 0.185345 >= 0.05, J gain 0.500000 - 0.150000 = 0.350000 >= 0.05, n 21 >= 5. The cut is genuinely category-dependent here — the pooled cut keeps 3 of the 20 correct masks and the text_like cut keeps 0 — so the group threshold is what makes the add worth anything, and adding the words without it would have bought nothing. Round 3's truncation trap does NOT apply: this sample was not selected by the cut, it was drawn across score bands strongest-to-weakest per cover and it contains keep-side rows (3 kanji masks score >= 0.578), and the J gain is provably invariant to the 0.3 run floor because both cuts already run specificity 1.000, so below-floor rows can only add true negatives. DOES NOT FUND: the threshold as a settled number. 0.392655 is mechanically the smallest observed score above the ONE rejected mask; the specificity term of J rests on that single answer and can only be 0.0 or 1.0, and the 0.3 run floor removed the score region where false positives live. It also DISCARDS 10 of the 20 masks the reviewer called correct in order to exclude that one, where the run floor runs precision 0.9524 at recall 1.000. The constant lands PROVISIONAL and must be re-fitted once the group holds MORE THAN ONE negative answer. DOES NOT FUND: probe 4's precision claim. No off-target mask — Korean, Thai, Malayalam or a Latin-only cover — was put in front of a reviewer, so 'zero false positives' remains a statement about scores. DOES NOT FUND: that these masks are USEFUL as opposed to correct; the accepted CJK masks have a median area of 0.002679 of the cover, the same 'correct but tiny' caution round 3 raised for hard text. COST: the add changes concept_set_hash(), which is part of row_key. Runs stored under concept set v2.1 and earlier stay VALID EVIDENCE FOR THEIR OWN HASH and stay reproducible; what is forbidden is one analysis reading rows from two hashes at once, and sam-eval-142 must be re-run in full (~6.5 min GPU) before any analysis reads CJK rows alongside the existing ones.",
+   "fundedBy": [
+    "o-msdtw9x2-95f066b7",
+    "o-msdtwdcj-7b78b8f7",
+    "o-msdtwefx-4f97fa2f",
+    "o-msdtwf81-3bc62990",
+    "o-msdtwgeo-2e246a13",
+    "o-msdtwhjs-cd1c9d8b",
+    "o-msdtwib1-dc52c776",
+    "o-msdtwkeq-52851ec8",
+    "o-msdtwlie-fc524217",
+    "o-msdtwmmm-9c17d29a",
+    "o-msdtwoqa-99d30b6b",
+    "o-msdtwpbo-efaf8645",
+    "o-msdtwq6v-f372f857",
+    "o-msdtwrud-e7c04f19",
+    "o-msdtwtr2-075532b4",
+    "o-msdtwuj9-97236743",
+    "o-msdtww90-b5707f31",
+    "o-msdtwwum-9fcac7dd",
+    "o-msdtwxwm-c8c99092",
+    "o-msdtwyj8-663999f6",
+    "o-msdtwzt5-6decaa51"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-3b-analysis.json",
+     "what": "The round-3b analysis: per-concept accept rates, the decision-unit sweep, the four threshold comparisons (fitted / pooled / text_like / run floor), the gate table, the truncation-scope argument, the incumbent check and the proposed config diff. Every number in these records is read from it, and the fundedBy lists here were copied from its proposals block mechanically rather than transcribed."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-3b-sample.json",
+     "what": "The manifest that PRE-REGISTERED the rule this record applies (a12DecisionRule): the decision unit, the primary treatment, the sweep, the gates, and BOTH exits — adopt with a category cut, or close A12 as a category whose evidence did not survive being looked at. It was fixed before the reviewer saw a single mask."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "Reviewer notes, the dated section 'Round 3b — the CJK masks, finally on screen (2026-08-04)': the per-concept table, the fitted cut and what it can and cannot claim, the incumbent check, and the A12 verdict as stated at commit 2e362a3."
+    },
+    {
+     "ref": "research/v3/data/sam/sam-cjk-probe-7.jsonl",
+     "what": "The GPU micro-run behind the round: three prompts (chinese characters, kanji, and words as the incumbent control) over 7 covers at the 0.3 capture floor, storing mask_rle for every region. It is also where the 25 still-ungraded CJK regions live, which is why re-fitting the threshold needs no GPU."
+    },
+    {
+     "ref": "research/v3/data/sam/PROBE4_NOTES.md",
+     "what": "Probe 4, the RECALL half: 'chinese characters' fires on 4/4 CJK covers, and is silent on Korean, Thai and Malayalam — the finding that makes this a SCRIPT concept rather than a not-Latin one. Its zero-false-positive half is scores only and is NOT funded by this round."
+    }
+   ],
+   "fundingCaveats": [
+    "THE GROUP HOLDS EXACTLY ONE NEGATIVE ANSWER. Every property of the fitted cut that depends on specificity — including the J gain that cleared the gate — is estimated from that one answer. This is a boundary LOCATED by one answer, not estimated from a distribution of negatives, and it is why the constant is tagged PROVISIONAL in config.py rather than [MEASURED] alone.",
+    "THE 95.2% ACCEPT RATE IS CONDITIONED ON THE 0.3 RUN FLOOR. Regions scoring below 0.3 were never emitted, and false positives concentrate at low scores. 20-of-21 is the rate AMONG REGIONS THE MODEL ALREADY SCORED >= 0.3, not the concept's error rate.",
+    "THE RE-FIT IS CHEAP AND IS NOT BLOCKED ON GPU. 25 CJK regions from the same sam-cjk-probe-7 run are ungraded and every one carries mask_rle, so overlays render on CPU. What the re-fit needs is reviewer time. Anyone tempted to treat 0.392655 as settled should note the price of not re-fitting is one round of looking.",
+    "THE ADOPTION AND THE NUMBER ARE SEPARABLE. The rule pre-registered a Youden objective, which prices one false positive as heavily as ten false negatives; on a sample with one negative that objective is the whole of the difference between 0.392655 and the run floor. The reviewer answered under the rule, so the rule decides — but a re-fit may move the number a long way without disturbing the adoption this record establishes.",
+    "TWO OF THE SEVEN ROUND-3B COVERS ARE OUT OF SCOPE AND STAY THAT WAY: 10/ab67616d0000b27300103a3729bf589e0dc913ab and images/nobs.jpg carry ZERO regions for all three prompts at the 0.3 floor. No threshold can recover them and no mask exists to review, so they fund nothing in either direction."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-words-does-not-cover-cjk-script",
+   "ts": "2026-08-03T23:11:40Z",
+   "kind": "instrument-design",
+   "draftedAs": "measurement — the proposal label in mask-quality-3b-analysis.json. Recorded under the README's existing kind vocabulary; what stands here is the INCUMBENT CHECK the adoption rule required, and it is a NON-MOVE for text_like.",
+   "scope": "The incumbent-coverage question the pre-registered rule made a precondition of adoption: does the existing `words` concept already cover CJK script, making a new concept redundant. NO CONSTANT MOVES BY THIS RECORD. CALIBRATED_GROUP_THRESHOLDS[\"text_like\"] stays 0.697295 and `words` stays in text_like exactly as before. It says nothing about `words` on Latin covers, where nobody disputes it, and nothing about the quality of text_like masks in general.",
+   "decision": "The incumbent check is settled AGAINST the incumbent, so it does not moot the CJK addition. `words` emits no region at all on 3 of the 5 covers that carry CJK masks, and its best score anywhere in the run is 0.586651 — below its own text_like cut of 0.697295 — so at the threshold actually in force it keeps ZERO masks on ALL 5 covers, against 5 covers where the cjk_script group keeps an accepted mask at its fitted cut. The failure is AVAILABILITY AND SCORE, NOT MASK QUALITY: where `words` does fire its masks are fine, accepted 3 of 4. That distinction is the point of the record — an incumbent whose masks are good but which never fires cannot stand in for a concept. DOES NOT FUND: any change to CALIBRATED_GROUP_THRESHOLDS[\"text_like\"]. The tempting move — that `words` scores well below its cut here, so lower the cut — is exactly what round 3's 55-row pooled sweep already tested and refused: it found a J gain of 0.0000 and remains the authoritative text_like analysis. The 9-row pooled subset computed in this round (round 1's 5 unconditioned rows plus round 3b's 4) is a smaller, differently-drawn population, it is drawn from Latin covers that are not the incumbent question at all, and it MUST NOT be read as re-opening that.",
+   "fundedBy": [
+    "o-msdtx20v-7a979f49",
+    "o-msdtx5wm-958cb491",
+    "o-msdtx9pe-1ad3dda4",
+    "o-msdtxae7-2fbbca92"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-3b-analysis.json",
+     "what": "The round-3b analysis: per-concept accept rates, the decision-unit sweep, the four threshold comparisons (fitted / pooled / text_like / run floor), the gate table, the truncation-scope argument, the incumbent check and the proposed config diff. Every number in these records is read from it, and the fundedBy lists here were copied from its proposals block mechanically rather than transcribed."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-3b-sample.json",
+     "what": "The manifest that PRE-REGISTERED the rule this record applies (a12DecisionRule): the decision unit, the primary treatment, the sweep, the gates, and BOTH exits — adopt with a category cut, or close A12 as a category whose evidence did not survive being looked at. It was fixed before the reviewer saw a single mask."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "Reviewer notes, the dated section 'Round 3b — the CJK masks, finally on screen (2026-08-04)': the per-concept table, the fitted cut and what it can and cannot claim, the incumbent check, and the A12 verdict as stated at commit 2e362a3."
+    },
+    {
+     "ref": "research/v3/data/sam/sam-cjk-probe-7.jsonl",
+     "what": "The GPU micro-run behind the round: three prompts (chinese characters, kanji, and words as the incumbent control) over 7 covers at the 0.3 capture floor, storing mask_rle for every region. It is also where the 25 still-ungraded CJK regions live, which is why re-fitting the threshold needs no GPU."
+    }
+   ],
+   "fundingCaveats": [
+    "FOUR DECIDED ANSWERS, ON TWO COVERS. The mask-quality half of this record (3 of 4 accepted) is thin. The load-bearing half is NOT the accept rate — it is availability, which is counted from the run rather than graded: 0 regions on 3 of 5 covers, and a best score of 0.586651 against a cut of 0.697295. That half does not depend on the 4 answers.",
+    "THE COMPARISON IS AT EACH CONCEPT'S OWN CUT, WHICH IS THE ONLY FAIR ONE AND ALSO THE HARSHEST FOR THE INCUMBENT. At the pooled 0.578 `words` would keep 1 mask on 1 cover. Nothing runs at the pooled cut for a grouped concept, so that column is a sensitivity check and not the finding.",
+    "THIS IS AN ARGUMENT ABOUT COVERAGE, NOT ABOUT PROMPT WORDING. It does not establish that no Latin-glyph phrasing could ever reach CJK script; it establishes that the one in the concept set does not, on the covers where the question arises."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

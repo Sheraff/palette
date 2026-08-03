@@ -41,6 +41,13 @@ CONCEPT_COLORS = {
     # v2.1 add. White, because a barcode mask is a small monochrome strip that every other
     # colour here can sit next to — and nothing else on the sheet is white.
     "barcode": (255, 255, 255),
+    # v2.2 adds, the cjk_script group. render() draws ONE PANEL PER CONCEPT, so these never
+    # have to be told apart within a single image — the assert below only demands they be
+    # distinct. Both are held well away from `words` (255,64,64) and `display-text`
+    # (255,96,160): those are the concepts a CJK panel gets read against, and a reviewer
+    # flipping between panels should not have to ask which one they are looking at.
+    "cjk-script": (0, 128, 128),
+    "kanji": (150, 120, 60),
 }
 assert set(CONCEPT_COLORS) == {tag for tag, _ in config.CONCEPT_PROMPTS}, (
     "CONCEPT_COLORS out of step with config.CONCEPT_PROMPTS"

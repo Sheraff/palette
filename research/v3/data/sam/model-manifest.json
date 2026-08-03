@@ -39,9 +39,17 @@
     [
       "barcode",
       "barcode"
+    ],
+    [
+      "cjk-script",
+      "chinese characters"
+    ],
+    [
+      "kanji",
+      "kanji"
     ]
   ],
-  "concept_set_hash": "9c78298f3c9936781d4922657cae506c72147e13172d2233c801403bb040e5b6",
+  "concept_set_hash": "d49a63c479d4e6724426b955a6428920920569f4e3604acf366f12ed86fa9dd5",
   "concepts": [
     "words",
     "letter",
@@ -52,13 +60,15 @@
     "parental-advisory",
     "person",
     "face",
-    "barcode"
+    "barcode",
+    "cjk-script",
+    "kanji"
   ],
   "config_sha256": "898d892490cdbaefc9a7a6ba2ae5ce5b7f93915a2aa8d6d0d5601417ca0b4b03",
-  "git_head": "5294918bd6a519f48c9418ff578ebe06deb7662e",
+  "git_head": "4d99a9ce7a8b2e9a381deb16a4daad7d0210de52",
   "model_id": "mlx-community/sam3.1-bf16",
   "model_revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
-  "pinned_at": "2026-08-03T19:00:04.521Z",
+  "pinned_at": "2026-08-03T23:18:08.769Z",
   "quantization": "bf16",
   "runtime": {
     "mlx": "0.32.0",

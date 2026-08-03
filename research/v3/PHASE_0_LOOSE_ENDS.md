@@ -48,10 +48,12 @@ closing argument turned out to be circular. It is counted as open above.
 **Counts are UNCHANGED on 2026-08-04, and re-derived by counting the headings: 67 items, 55 open,
 12 closed.** Mask round 3 resolved **half** of A6 — the area guard is scoped off for `person_like`
 — but `mark_like` and `dynamic_subject` came back undecided under the same pre-registered rule, so
-the row stays open and no total moved. A12 was **narrowed** by the round-3b CJK run without moving
-either: the run closes the GPU gap the row named, but round 3b is live and unreleased, so A12 stays
-open pending its answers. A row that half-closes is still an open row; the count only moves when a
-row does.
+the row stays open and no total moved. **A12 has since resolved its own half the same way**: round
+3b was released, answered and its pre-registered rule APPLIED, so the concept-adoption half is done
+— but the threshold it landed is PROVISIONAL on one negative answer, so the row stays open too. A
+row that half-closes is still an open row; the count only moves when a row does. **Two sharp rows
+now sit at exactly half — that is what a night of pre-registered rounds looks like, and it is why
+the totals have not moved in two days of results.**
 
 Closed rows are kept, **struck through, with their original text** — a ledger that deletes its
 closed rows cannot be audited, and in A6's case the closure text is exactly what a later reader
@@ -415,7 +417,7 @@ Original entry kept below for the record.
   under R-1 it is cheaper to discover the mechanism is hard now than at claim time.
 - **Blast radius.** Final claims only; dev work unaffected.
 
-### A12. CJK text is invisible to the SAM stage at the calibrated threshold
+### A12. CJK text is invisible to the SAM stage at the calibrated threshold — **concept half RESOLVED 2026-08-04, row STILL OPEN**
 - **What.** Probe 4: "chinese characters" recalls 4/4 CJK covers with zero false positives, but
   its best score anywhere is 0.472 — below the 0.578 calibrated cut, so every recovery is
   filtered out. "kanji" clears the cut only on the two Japanese covers. The reviewer approved
@@ -466,7 +468,37 @@ Original entry kept below for the record.
   covers in the A12 shape that *no* text prompt can reach are not all recoverable text, and some
   are not display type at all. Evidence: `data/sam/mask-quality-3b-sample.json` →
   `silentCoverYield`, `data/sam/sam-cjk-probe-7.jsonl`.
-- **A12 NEVERTHELESS STAYS OPEN, pending round 3b's verdict being APPLIED.** The run closes the
+- **CONCEPT HALF RESOLVED 2026-08-04 — the verdict has been APPLIED, and the row is now about a
+  number, not about a concept.** Round 3b's pre-registered rule (`mask-quality-3b-sample.json` →
+  `a12DecisionRule`) took its ADOPT arm on 21 decided reviewer answers — 20 correct, 1 not, a 95.2%
+  accept rate — and all three gates passed (separation 0.185345, J gain 0.350000, n 21). Applied to
+  `config.py` as **CONCEPT SET v2.2**: `('cjk-script', 'chinese characters')` and
+  `('kanji', 'kanji')` join `CONCEPT_PROMPTS`, they form their own group `cjk_script` in
+  `CONCEPT_GROUPS`, and `CALIBRATED_GROUP_THRESHOLDS['cjk_script'] = 0.392655`. The incumbent check
+  settled against the incumbent: `words` emits nothing at all on 3 of the 5 CJK covers and keeps
+  **zero** masks on all 5 at its own cut, so it cannot stand in
+  (`d-2026-08-04-sam-cjk-script-concepts-adopted-with-a-category-cut`,
+  `d-2026-08-04-sam-words-does-not-cover-cjk-script`). **A CONSTANT HAS NOW MOVED**, which reverses
+  the "no constant moved" line below: `concept_set_hash()` changes, so **sam-eval-142 must be re-run
+  in full (~6.5 min GPU) before any analysis reads CJK rows alongside existing ones**. Runs stored
+  under v2.1 stay valid evidence for their own hash; only MIXED-HASH analyses are forbidden, and
+  `row_key` carries the hash so the mixing is detectable rather than silent.
+- **WHAT KEEPS THE ROW OPEN, precisely — three things, and the first is the live one.**
+  **(1) The threshold is PROVISIONAL.** `cjk_script = 0.392655` is mechanically the smallest
+  observed score above the **single** rejected mask, so J's specificity term rests on one answer and
+  can only be 0.0 or 1.0. It also discards 10 of the 20 masks the reviewer called correct, where the
+  0.3 run floor runs precision 0.9524 at recall 1.000. **RE-FIT CONDITION: more than one negative
+  answer in the group.** The work is 25 ungraded CJK regions from `sam-cjk-probe-7`, all carrying
+  `mask_rle` — **CPU render plus reviewer time, no GPU**. **(2) Probe 4's PRECISION half is still
+  scores-only**: no off-target mask (Korean, Thai, Malayalam, or a Latin-only cover) has ever been
+  put in front of a reviewer. **(3) Whether the masks are USEFUL as opposed to correct**: median
+  accepted area is 0.002679 of the cover — round 3's "correct but tiny" caution, unanswered.
+  **Already recorded and NOT open:** the 2 covers carrying zero regions for all three prompts at the
+  0.3 floor (`10/ab67616d0000b27300103a3729bf589e0dc913ab`, `images/nobs.jpg`) are out of scope —
+  no threshold can recover them and no mask exists to review. **Revives when:** the 25 ungraded CJK
+  regions are reviewed and the cut is re-fitted.
+- **A12's earlier note, kept for the record — it was written while round 3b was unreleased, and the
+  bullet above is what overtook it.** The run closes the
   *GPU gap*, not the row. When this note was written round 3b was live and unreleased; it has since
   been answered (25 labels, released 2026-08-03T22:57Z) and its pre-registered rule
   (`mask-quality-3b-sample.json` → `a12DecisionRule`) — adopt a `cjk_script` group with its own low

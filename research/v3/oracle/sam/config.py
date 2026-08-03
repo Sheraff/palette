@@ -115,13 +115,41 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
     # static adds => yes, go"). Evidence: probe 4 (data/sam/PROBE4_NOTES.md), "barcode"
     # precision 1.00 with zero false positives on 14 no-barcode covers; 0.94 on the
     # EAN-carrying promo sticker, clearing the calibrated cut with room. Recall 0.50
-    # (n=2): it missed the parcel's shipping-label barcode block. The CJK words from the
-    # same probe are NOT added: "chinese characters" recalls 4/4 with perfect precision
-    # but its best score anywhere is 0.472 — every recovery dies at the 0.578 calibrated
-    # cut. A category-aware threshold plus a CJK mask-quality round must come first
-    # (loose end A12). COST: this ADD changes concept_set_hash(), so any stored run under
-    # v2 must be re-run before an analysis reads it alongside barcode rows.
+    # (n=2): it missed the parcel's shipping-label barcode block. COST: this ADD changes
+    # concept_set_hash(), so any stored run under v2 must be re-run before an analysis
+    # reads it alongside barcode rows.
     ("barcode", "barcode"),
+    # [REVIEWED, n=21] CONCEPT SET v2.2 — the CJK ADD, 2026-08-04. Both preconditions the
+    # v2.1 note set are now met: the category-aware threshold machinery exists
+    # (CALIBRATED_GROUP_THRESHOLDS below) and the CJK mask-quality round has been run and
+    # reviewed (round 3b, data/sam/mask-quality-3b-analysis.json). The round was decided by
+    # a rule pre-registered BEFORE the reviewer saw a mask — data/sam/mask-quality-3b-sample.json
+    # -> `a12DecisionRule`, which fixed the decision unit (the two words as ONE group), the
+    # treatment (`partly` excluded from both sides), the sweep, the gates, and both exits:
+    # adopt with a category cut, or close A12 as a category whose evidence never survived
+    # being looked at. The rule's ADOPT arm fired. 21 decided answers on the cjk_script
+    # group: 20 correct, 1 not — a 95.2% accept rate on masks no human had ever seen. The
+    # pooled cut keeps 3 of the 20 correct masks and the text_like cut keeps 0, so the cut
+    # IS category-dependent for this category; the group threshold below is what makes the
+    # add worth anything.
+    #
+    # WHAT PROBE 4 CONTRIBUTED, and what it did not. Probe 4 (data/sam/PROBE4_NOTES.md) is
+    # the recall finding: "chinese characters" fires on 4/4 CJK covers, and round 3b is the
+    # first time a human confirmed those masks are on the glyphs — 20 of 21. Probe 4 also
+    # measured the words SILENT on Korean, Thai and Malayalam, which is why this is a SCRIPT
+    # concept and not a not-Latin one. But its zero-false-positive half is still SCORES ONLY:
+    # no off-target mask has ever been put in front of a reviewer.
+    #
+    # The tag says what the mask CLAIMS, not what the prompt asks: "chinese characters"
+    # fires on Japanese covers as readily as Chinese ones, so the stored tag is `cjk-script`.
+    #
+    # COST: this ADD changes concept_set_hash(), so sam-eval-142 MUST BE RE-RUN IN FULL
+    # (~6.5 min GPU) before any analysis reads CJK rows alongside the existing ones. Runs
+    # stored under v2.1 and earlier stay VALID EVIDENCE FOR THEIR OWN HASH and stay
+    # reproducible; what is forbidden is a single analysis that reads rows from two hashes
+    # at once. row_key carries the hash, so the mixing is detectable, not silent.
+    ("cjk-script", "chinese characters"),
+    ("kanji", "kanji"),
 )
 
 # [MEASURED, n=10, HELD] probe_prompts.py over the smoke set, 2026-08-03. Of the five
@@ -186,6 +214,14 @@ CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
     # same idea by the co-firing rule that drew these lines.
     "mark_like": ("emblem", "sticker", "parental-advisory", "barcode"),
     "person_like": ("person", "face"),
+    # cjk_script joined with concept set v2.2 as its OWN group, and is deliberately NOT part
+    # of text_like. The co-firing rule that drew every other line here puts it apart: `words`
+    # emits no region at all on 3 of the 5 covers where these two fire (round 3b's incumbent
+    # check, data/sam/mask-quality-3b-analysis.json -> incumbentCheck). They are not masking
+    # the same pixels, because on those covers the incumbent masks nothing. Folding it into
+    # text_like would also drag it under text_like's 0.697295 cut, which keeps 0 of the 20
+    # masks the reviewer called correct — the add would then buy nothing.
+    "cjk_script": ("cjk-script", "kanji"),
 }
 
 # --------------------------------------------------------------------------- thresholds
@@ -355,11 +391,39 @@ def passes_calibrated_cut(score: float, area_fraction: float,
 # is calibrated for text_like. It moves text_like's cut UP, not down, so it does not by itself
 # revive any CJK mask — A12 still needs its own round, and a CJK entry here would need its own
 # evidence. What changes is that A12 no longer waits on machinery that does not exist.
+#
+# THAT ROUND HAS SINCE RUN (2026-08-04). Round 3b put 25 CJK masks in front of the reviewer and
+# its pre-registered rule adopted the `cjk_script` entry below — the "own evidence" this note
+# demanded. A12's concept half is resolved by that; what remains open is the entry's PROVISIONAL
+# status, spelled out at the entry itself.
 CALIBRATED_GROUP_THRESHOLDS: dict[str, float] = {
     # Stored at full precision, unrounded, deliberately: rounding the pooled cut up to 0.578 is
     # exactly the defect finding 3 names, and a new constant must not repeat it. No artifact on
     # disk was computed at this cut, so there is nothing to keep reproducible.
     "text_like": 0.697295,
+    # [MEASURED, n=21, PROVISIONAL] Round 3b, 2026-08-04, applying the pre-registered
+    # `a12DecisionRule`. Sweep over observed scores, primary treatment (`partly` excluded
+    # from both sides), ties to the lowest: own optimum 0.392655 at J 0.500000 against
+    # J 0.150000 at the pooled cut — gain 0.350000 >= PER_GROUP_MIN_J_GAIN, separation
+    # |0.578 - 0.392655| = 0.185345 >= PER_GROUP_MIN_SEPARATION, n 21 >= MIN_CELL_ANSWERS.
+    # Unlike round 3's hard-text section this sample was NOT selected by the cut — it spans
+    # score bands and contains keep-side rows (3 kanji masks score >= 0.578) — so the J gain
+    # is not the round-3 truncation artefact, and it is provably invariant to the 0.3 run
+    # floor: both cuts already run specificity 1.000, so below-floor rows can only add true
+    # negatives and specificity cannot rise above 1.0.
+    #
+    # WHY PROVISIONAL, AND DO NOT QUIETLY DROP THIS WORD. The group holds exactly ONE
+    # negative answer, so the specificity term of J is 0.0 or 1.0 and nothing else, and this
+    # optimum is mechanically "the smallest observed score above that one rejected mask" — a
+    # boundary located by one answer, not estimated from a distribution of negatives. It also
+    # DISCARDS 10 of the 20 masks the reviewer called correct in order to exclude that single
+    # one; at the run floor the same group runs precision 0.9524 at recall 1.000, and the
+    # Youden objective the rule pre-registered is what prices one false positive as heavily as
+    # ten false negatives. 25 CJK regions from sam-cjk-probe-7 are still ungraded and all
+    # carry mask_rle, so re-fitting this is a CPU render plus reviewer time — NO GPU.
+    # RE-FIT CONDITION: more than one negative answer in the group. Until then this number is
+    # the rule's output, not a settled boundary, and nothing may cite it as calibrated.
+    "cjk_script": 0.392655,
 }
 
 
