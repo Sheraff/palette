@@ -1,0 +1,538 @@
+{
+  "analysis": "residual-purity-1",
+  "generatedBy": "research/v3/oracle/sam/analyze_residual_purity_1.py",
+  "generatedAt": "2026-08-03T22:45:46.617Z",
+  "batch": "residual-purity-1",
+  "batchCompleteIds": [
+    "bc-msdtcdh0-d97140ce"
+  ],
+  "labelIds": [
+    "o-msdt3unm-8739ba71",
+    "o-msdt5jom-078cbf3f",
+    "o-msdt5rw0-0d4746ed",
+    "o-msdt6la7-b23c3e6e",
+    "o-msdt7zfr-1e53f99f",
+    "o-msdt83c9-c033a024",
+    "o-msdt88r8-ffa08bc9",
+    "o-msdt8ked-b543ee6f",
+    "o-msdt8pvo-f240fb2c",
+    "o-msdt8rlf-b5f7ebf6",
+    "o-msdt8xp4-b5b7d398",
+    "o-msdt903y-0b74aa45",
+    "o-msdt93gw-d709b5cf",
+    "o-msdt96cy-88bd382b",
+    "o-msdt999w-bbee1914",
+    "o-msdt9kc4-f1b4c6e9",
+    "o-msdt9od2-1186034f",
+    "o-msdt9r3a-6d220c26",
+    "o-msdt9unu-279dcf65",
+    "o-msdt9y25-6cc203ff",
+    "o-msdta50y-210730eb",
+    "o-msdta8bm-b26456c7",
+    "o-msdtaa02-58556eb7",
+    "o-msdtagem-6637e5bb",
+    "o-msdtaiab-b6a0da85",
+    "o-msdtaqak-5d5185a4",
+    "o-msdtatqu-962593b0",
+    "o-msdtavff-f19170d4",
+    "o-msdtax2w-5e6fa354",
+    "o-msdtayaf-4a81bddd",
+    "o-msdtb0fz-fb4ddba4",
+    "o-msdtb1kd-05e8f0a9",
+    "o-msdtb395-8fe52490",
+    "o-msdtb6df-f531ad07",
+    "o-msdtb82w-0bf78109",
+    "o-msdtb9es-749ab1c4",
+    "o-msdtbbv7-87d7e1a0",
+    "o-msdtbdd9-4e3974f8",
+    "o-msdtbelv-012505e5",
+    "o-msdtbgal-dd7cf7ce",
+    "o-msdtbi7x-5ed5e299",
+    "o-msdtbjs2-b15b147f",
+    "o-msdtbkr6-a01375fb",
+    "o-msdtbll0-96842e4c",
+    "o-msdtbtic-f462afae",
+    "o-msdtbvoq-e467056b",
+    "o-msdtbzcm-f917cee1",
+    "o-msdtc4iu-2a20146a",
+    "o-msdtcaj4-b6886f94",
+    "o-msdtcc3p-7c21cabd"
+  ],
+  "nLabels": 50,
+  "nSheets": 25,
+  "supersededLabels": [],
+  "integrityProblems": [],
+  "bar": {
+    "source": "research/v3/oracle/sam/RESIDUAL_EXPERIMENT_NOTES.md \u00a711.11",
+    "preRegistered": true,
+    "aggregateThreshold": 0.75,
+    "stratumFloor": 0.5,
+    "rule": "Adopt R-3's structural claim only if the stratum-reweighted pure_field rate is >= 0.75 in at least one guard variant AND no single stratum falls below 0.50; otherwise the residual stays a field-enriched prior.",
+    "weights": {
+      "noun-fired": 77,
+      "noun-silent": 10,
+      "contaminated": 25,
+      "class-only": 2,
+      "static-only-clean": 28
+    },
+    "weightTotal": 142
+  },
+  "perStratum": {
+    "noun-fired": {
+      "poolSize": 77,
+      "poolWeight": 0.5422535211267606,
+      "variants": {
+        "guard_on": {
+          "n": 8,
+          "counts": {
+            "pure_field": 2,
+            "mostly_field": 4,
+            "not_field": 2
+          },
+          "pureFieldRate": 0.25,
+          "mostlyFieldRate": 0.5,
+          "notFieldRate": 0.25,
+          "pureOrMostlyRate": 0.75
+        },
+        "guard_off": {
+          "n": 8,
+          "counts": {
+            "pure_field": 2,
+            "mostly_field": 2,
+            "not_field": 4
+          },
+          "pureFieldRate": 0.25,
+          "mostlyFieldRate": 0.25,
+          "notFieldRate": 0.5,
+          "pureOrMostlyRate": 0.5
+        }
+      }
+    },
+    "noun-silent": {
+      "poolSize": 10,
+      "poolWeight": 0.07042253521126761,
+      "variants": {
+        "guard_on": {
+          "n": 5,
+          "counts": {
+            "pure_field": 2,
+            "mostly_field": 1,
+            "not_field": 2
+          },
+          "pureFieldRate": 0.4,
+          "mostlyFieldRate": 0.2,
+          "notFieldRate": 0.4,
+          "pureOrMostlyRate": 0.6
+        },
+        "guard_off": {
+          "n": 5,
+          "counts": {
+            "pure_field": 2,
+            "mostly_field": 1,
+            "not_field": 2
+          },
+          "pureFieldRate": 0.4,
+          "mostlyFieldRate": 0.2,
+          "notFieldRate": 0.4,
+          "pureOrMostlyRate": 0.6
+        }
+      }
+    },
+    "contaminated": {
+      "poolSize": 25,
+      "poolWeight": 0.176056338028169,
+      "variants": {
+        "guard_on": {
+          "n": 6,
+          "counts": {
+            "pure_field": 1,
+            "mostly_field": 2,
+            "not_field": 3
+          },
+          "pureFieldRate": 0.16666666666666666,
+          "mostlyFieldRate": 0.3333333333333333,
+          "notFieldRate": 0.5,
+          "pureOrMostlyRate": 0.5
+        },
+        "guard_off": {
+          "n": 6,
+          "counts": {
+            "pure_field": 1,
+            "mostly_field": 2,
+            "not_field": 3
+          },
+          "pureFieldRate": 0.16666666666666666,
+          "mostlyFieldRate": 0.3333333333333333,
+          "notFieldRate": 0.5,
+          "pureOrMostlyRate": 0.5
+        }
+      }
+    },
+    "class-only": {
+      "poolSize": 2,
+      "poolWeight": 0.014084507042253521,
+      "variants": {
+        "guard_on": {
+          "n": 2,
+          "counts": {
+            "pure_field": 0,
+            "mostly_field": 1,
+            "not_field": 1
+          },
+          "pureFieldRate": 0.0,
+          "mostlyFieldRate": 0.5,
+          "notFieldRate": 0.5,
+          "pureOrMostlyRate": 0.5
+        },
+        "guard_off": {
+          "n": 2,
+          "counts": {
+            "pure_field": 0,
+            "mostly_field": 2,
+            "not_field": 0
+          },
+          "pureFieldRate": 0.0,
+          "mostlyFieldRate": 1.0,
+          "notFieldRate": 0.0,
+          "pureOrMostlyRate": 1.0
+        }
+      }
+    },
+    "static-only-clean": {
+      "poolSize": 28,
+      "poolWeight": 0.19718309859154928,
+      "variants": {
+        "guard_on": {
+          "n": 4,
+          "counts": {
+            "pure_field": 1,
+            "mostly_field": 3,
+            "not_field": 0
+          },
+          "pureFieldRate": 0.25,
+          "mostlyFieldRate": 0.75,
+          "notFieldRate": 0.0,
+          "pureOrMostlyRate": 1.0
+        },
+        "guard_off": {
+          "n": 4,
+          "counts": {
+            "pure_field": 1,
+            "mostly_field": 3,
+            "not_field": 0
+          },
+          "pureFieldRate": 0.25,
+          "mostlyFieldRate": 0.75,
+          "notFieldRate": 0.0,
+          "pureOrMostlyRate": 1.0
+        }
+      }
+    }
+  },
+  "aggregates": {
+    "guard_on": {
+      "reweightedPureFieldRate": 0.24237089201877932,
+      "reweightedMostlyFieldRate": 0.4988262910798122,
+      "reweightedPureOrMostlyRate": 0.7411971830985915,
+      "rawPureFieldRate": 0.24,
+      "rawCounts": {
+        "pure_field": 6,
+        "mostly_field": 11,
+        "not_field": 8
+      },
+      "meetsAggregateBar": false,
+      "strataBelowFloor": [
+        "class-only",
+        "contaminated",
+        "noun-fired",
+        "static-only-clean",
+        "noun-silent"
+      ],
+      "meetsFloorClause": false,
+      "verdict": "NOT-ADOPT"
+    },
+    "guard_off": {
+      "reweightedPureFieldRate": 0.24237089201877932,
+      "reweightedMostlyFieldRate": 0.3703051643192488,
+      "reweightedPureOrMostlyRate": 0.6126760563380281,
+      "rawPureFieldRate": 0.24,
+      "rawCounts": {
+        "pure_field": 6,
+        "mostly_field": 10,
+        "not_field": 9
+      },
+      "meetsAggregateBar": false,
+      "strataBelowFloor": [
+        "class-only",
+        "contaminated",
+        "noun-fired",
+        "static-only-clean",
+        "noun-silent"
+      ],
+      "meetsFloorClause": false,
+      "verdict": "NOT-ADOPT"
+    }
+  },
+  "verdict": {
+    "overall": "NOT-ADOPT",
+    "adoptingVariants": [],
+    "perVariant": {
+      "guard_on": "NOT-ADOPT",
+      "guard_off": "NOT-ADOPT"
+    },
+    "consequence": "R-3 NOT adopted on this evidence; the residual stays a field-enriched prior."
+  },
+  "sensitivityCeiling": {
+    "what": "The maximally generous reallocation: count EVERY mostly_field answer as pure_field. This is the ceiling the round could reach if every soft answer were charitable, and it bounds how far the missing escape answer could move the verdict.",
+    "perVariant": {
+      "guard_on": {
+        "reweightedCeiling": 0.7411971830985915,
+        "reachesBar": false
+      },
+      "guard_off": {
+        "reweightedCeiling": 0.6126760563380281,
+        "reachesBar": false
+      }
+    },
+    "conclusion": "Neither variant reaches 0.75 even at the ceiling (guard ON 0.7412, guard OFF 0.6127). The verdict does NOT sit near the bar boundary: no reallocation of the soft answers, and no plausible use of an escape option, turns this round into an ADOPT. The forced-choice caveat qualifies the exact rates, not the verdict."
+  },
+  "guardComparison": {
+    "perStratum": {
+      "noun-fired": {
+        "pureFieldOn": 2,
+        "pureFieldOff": 2,
+        "pureRateOn": 0.25,
+        "pureRateOff": 0.25,
+        "delta": 0.0,
+        "winner": "tie"
+      },
+      "noun-silent": {
+        "pureFieldOn": 2,
+        "pureFieldOff": 2,
+        "pureRateOn": 0.4,
+        "pureRateOff": 0.4,
+        "delta": 0.0,
+        "winner": "tie"
+      },
+      "contaminated": {
+        "pureFieldOn": 1,
+        "pureFieldOff": 1,
+        "pureRateOn": 0.16666666666666666,
+        "pureRateOff": 0.16666666666666666,
+        "delta": 0.0,
+        "winner": "tie"
+      },
+      "class-only": {
+        "pureFieldOn": 0,
+        "pureFieldOff": 0,
+        "pureRateOn": 0.0,
+        "pureRateOff": 0.0,
+        "delta": 0.0,
+        "winner": "tie"
+      },
+      "static-only-clean": {
+        "pureFieldOn": 1,
+        "pureFieldOff": 1,
+        "pureRateOn": 0.25,
+        "pureRateOff": 0.25,
+        "delta": 0.0,
+        "winner": "tie"
+      }
+    },
+    "overall": {
+      "pureFieldOn": 6,
+      "pureFieldOff": 6,
+      "rawWinner": "tie",
+      "reweightedOn": 0.24237089201877932,
+      "reweightedOff": 0.24237089201877932,
+      "reweightedDelta": 0.0
+    },
+    "pairedSheets": {
+      "n": 25,
+      "agree": 22,
+      "guardOnBetter": 2,
+      "guardOffBetter": 1,
+      "agreementRate": 0.88,
+      "disagreements": [
+        {
+          "sheet": "resid4-44b793fb749e",
+          "stratum": "class-only",
+          "guard_on": "not_field",
+          "guard_off": "mostly_field"
+        },
+        {
+          "sheet": "resid4-3d7c266df504",
+          "stratum": "noun-fired",
+          "guard_on": "mostly_field",
+          "guard_off": "not_field"
+        },
+        {
+          "sheet": "resid4-eb77edc406ea",
+          "stratum": "noun-fired",
+          "guard_on": "mostly_field",
+          "guard_off": "not_field"
+        }
+      ]
+    }
+  },
+  "proxyVsHuman": {
+    "claim": {
+      "run": "sam-eval-142-v4-nouns",
+      "cut": "subtraction",
+      "cleanCovers": 117,
+      "totalCovers": 142,
+      "cleanRate": 0.823943661971831,
+      "note": "The proxy's non-clean set IS the `contaminated` stratum (25 covers), so the proxy asserts 0.0 clean there and 1.0 clean in every other stratum. Any human pure_field rate below 1.0 outside `contaminated` is a proxy MISS; any pure_field answer inside `contaminated` is a proxy FALSE ALARM."
+    },
+    "perStratum": {
+      "noun-fired": {
+        "proxyCleanRate": 1.0,
+        "guard_on": {
+          "humanPureFieldRate": 0.25,
+          "gap": -0.75,
+          "direction": "proxy over-claims clean"
+        },
+        "guard_off": {
+          "humanPureFieldRate": 0.25,
+          "gap": -0.75,
+          "direction": "proxy over-claims clean"
+        }
+      },
+      "noun-silent": {
+        "proxyCleanRate": 1.0,
+        "guard_on": {
+          "humanPureFieldRate": 0.4,
+          "gap": -0.6,
+          "direction": "proxy over-claims clean"
+        },
+        "guard_off": {
+          "humanPureFieldRate": 0.4,
+          "gap": -0.6,
+          "direction": "proxy over-claims clean"
+        }
+      },
+      "contaminated": {
+        "proxyCleanRate": 0.0,
+        "guard_on": {
+          "humanPureFieldRate": 0.16666666666666666,
+          "gap": 0.16666666666666666,
+          "direction": "proxy under-claims clean"
+        },
+        "guard_off": {
+          "humanPureFieldRate": 0.16666666666666666,
+          "gap": 0.16666666666666666,
+          "direction": "proxy under-claims clean"
+        }
+      },
+      "class-only": {
+        "proxyCleanRate": 1.0,
+        "guard_on": {
+          "humanPureFieldRate": 0.0,
+          "gap": -1.0,
+          "direction": "proxy over-claims clean"
+        },
+        "guard_off": {
+          "humanPureFieldRate": 0.0,
+          "gap": -1.0,
+          "direction": "proxy over-claims clean"
+        }
+      },
+      "static-only-clean": {
+        "proxyCleanRate": 1.0,
+        "guard_on": {
+          "humanPureFieldRate": 0.25,
+          "gap": -0.75,
+          "direction": "proxy over-claims clean"
+        },
+        "guard_off": {
+          "humanPureFieldRate": 0.25,
+          "gap": -0.75,
+          "direction": "proxy over-claims clean"
+        }
+      }
+    },
+    "aggregate": {
+      "guard_on": {
+        "proxyCleanRate": 0.823943661971831,
+        "humanReweightedPureFieldRate": 0.24237089201877932,
+        "gap": -0.5815727699530517
+      },
+      "guard_off": {
+        "proxyCleanRate": 0.823943661971831,
+        "humanReweightedPureFieldRate": 0.24237089201877932,
+        "gap": -0.5815727699530517
+      }
+    }
+  },
+  "scope": {
+    "population": "eval-142, the 142-cover SAM run set. NOT the corpus and NOT the v3 tuning bench: V3_PLAN.md item 11 records coverage-set-1 (200 artworks, seed 0xc0efface) as superseding eval-142 as the bench. Rates here describe eval-142's distribution.",
+    "populationDetail": {
+      "howBuilt": "eval-142 was never sampled. It is a census with an inclusion filter (data/oracle-premise/eval-set.json, builder oracle/premise/build-eval-set.ts): every artwork whose v2-3 warehouse held at least one palette graded `strong` and still standing under the recency rule. No seed, no quota, no difficulty strata. Its ground truth is an accepted ALGORITHM decision, not an elicited human label \u2014 the reviewer graded palettes, not artworks.",
+      "tierMixNote": "The only tier mix that exists for eval-142 is a RESOLUTION-tier table computed retroactively by the coverage-set build (coverage-set-1.json eval142Overlap.tierMix, COVERAGE_SET.md), as a diagnostic of the set \u2014 not a rule used to build it. There are no difficulty or category tiers anywhere.",
+      "resolutionTierMix": [
+        {
+          "tier": "<=400",
+          "evalCount": 45,
+          "evalPct": 31.69,
+          "universePct": 26.45
+        },
+        {
+          "tier": "401-640",
+          "evalCount": 86,
+          "evalPct": 60.56,
+          "universePct": 61.56
+        },
+        {
+          "tier": "641-1024",
+          "evalCount": 7,
+          "evalPct": 4.93,
+          "universePct": 10.3
+        },
+        {
+          "tier": ">1024",
+          "evalCount": 4,
+          "evalPct": 2.82,
+          "universePct": 1.69
+        }
+      ],
+      "representativeness": "25 of 142 (17.61%) are legacy repo-root covers not in the embedded corpus at all; 4 of 36 clusters (5.36% of the universe) contain no eval-142 artwork; cluster-mix total-variation distance from the corpus is 0.2273 for eval-142 vs 0.0851 for the coverage core (2.67x). COVERAGE_SET.md's verdict: 'eval-142 was never a sample of this corpus.' The reweighting in this analysis corrects for the ROUND's enrichment within eval-142; it cannot and does not correct for eval-142's own drift from the corpus."
+    },
+    "enrichment": "`contaminated` is 6/25 sampled from a pool of 25 (24% of the sample vs 17.6% of the population) \u2014 deliberately over-sampled. Reweighting corrects the aggregate; the raw rate is not a population estimate.",
+    "cut": "Panels render at the SUBTRACTION cut (pooled 0.578 on every group, text_like included), not config.py's shipped precision cut which raises text_like to 0.697295. Not a proposal to change config.py.",
+    "smallCells": "class-only n=2 per variant (the whole pool), noun-silent n=5, static-only-clean n=4. Per-stratum rates in these cells move in steps of 0.50/0.20/0.25; the floor clause is therefore decided by very few answers.",
+    "forcedChoiceCaveat": "The round offered pure_field / mostly_field / not_field and NO escape answer. Post-release the reviewer stated that on genuinely ambiguous figure/ground covers the forced answers are NOT reliable. Every rate here is 'answers as given'. Where a rate sits near a bar boundary the escape-less format could move it either way. GROUND_FREETEXT_SYNTHESIS.md independently found 3 of 9 covers ambiguous in prose."
+  },
+  "rulingContext": {
+    "question": "R-3 / the ground-vocabulary question: can 'everything but the masks' isolate backgrounds well enough to retire ground vocabulary to pixel computation?",
+    "otherArm": "GROUND_FREETEXT_SYNTHESIS.md: on free-text ground descriptions, 6 of 9 covers were palette-decidable in prose (decidable 1,2,3,4,6,8; ambiguous 5,7,9) \u2014 the description fixed both what kind of ground it is and which pixels are ground.",
+    "whoDecides": "The vocabulary-vs-pixels ruling is the REVIEWER'S to make. This analysis supplies the pixel arm only, and it supplies a NOT-ADOPT."
+  },
+  "reviewerFeedback": {
+    "receivedAfterRelease": "2026-08-04",
+    "verbatim": "objects that were not masked out during the everything-but-the-masks round \u2014 a flame \u2014 some residual text \u2014 a cello \u2014 decorations above/below the main text (that would be considered part of the main text). sometimes it's hard to tell what is field and what is subject, so answers for those cases are not reliable (even with human feedback) unless we add an escape answer choice.",
+    "missClasses": [
+      {
+        "class": "secondary depicted object (flame)",
+        "cause": "single-noun elicitation limit \u2014 the noun question asks for THE main thing, so a second depicted object goes unprompted and unmasked",
+        "fix": "list-ALL-things elicitation (v2 proposal)"
+      },
+      {
+        "class": "secondary depicted object (cello)",
+        "cause": "same single-noun elicitation limit",
+        "fix": "list-ALL-things elicitation (v2 proposal)"
+      },
+      {
+        "class": "residual text",
+        "cause": "the known text_below_cut classes \u2014 text scored below the cut and survived subtraction",
+        "fix": "already tracked; the subtraction cut exists for exactly this"
+      },
+      {
+        "class": "text-adjacent decoration",
+        "cause": "ornaments above/below the main text block are not part of any text_like mask and are not a depicted subject either",
+        "fix": "policy: count them as PART of the main text for masking purposes"
+      }
+    ],
+    "embeddedPolicy": "Decorations above/below the main text count as PART of the main text for masking purposes (reviewer: 'that would be considered part of the main text'). This is a labeling rule for text_like mask judgment and for any future ornament prompts.",
+    "instrumentFix": "Future purity rounds add an escape answer ('can't tell what is field here'), consistent with the question set's design rule 8 \u2014 a slot must be able to record the answer. The escape share is itself figure/ground-ambiguity signal, not noise."
+  }
+}
