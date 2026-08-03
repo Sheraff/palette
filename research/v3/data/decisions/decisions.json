@@ -595,6 +595,17 @@
     "research/v3/data/tagging/vocabulary.json"
    ],
    "scope": "tagging vocabulary v2+"
+  },
+  {
+   "id": "d-2026-08-03-review-handoff-convention",
+   "ts": "2026-08-03T17:30:00Z",
+   "kind": "process",
+   "decision": "Review handoffs: the orchestrator owns the server lifecycle (serverctl only); no URL reaches the reviewer until verify-live passes against the live process; the reviewer's only URL is the dashboard at /; whether something awaits review is the dashboard's job; the orchestrator runs watch-batch per open batch so release is the notification.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/src/review-server/README.md"
+   ],
+   "scope": "all reviewer-facing handoffs from 2026-08-03"
   }
  ]
 }

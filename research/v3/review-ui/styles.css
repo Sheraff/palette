@@ -956,3 +956,148 @@ summary {
 		grid-template-areas: "head" "art" "facts";
 	}
 }
+
+/* ---------------------------------------------------------------------------------------------
+ * The landing dashboard (`/`) — the reviewer's single entry point.
+ *
+ * Same two colours as every other page: black paper, white ink, borders instead of fills. The one
+ * shaded thing is the progress bar, and it is shaded by inversion (a solid white run over a black
+ * track), not by a grey.
+ * ------------------------------------------------------------------------------------------- */
+
+.dash-body {
+	max-width: 100ch;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.dash-head {
+	border: 1px solid var(--ink);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.dash-head h1 {
+	font-size: 13px;
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+}
+
+.dash-summary {
+	font-size: 15px;
+}
+
+.dash-main {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dash-empty {
+	border: 1px dashed var(--ink);
+	padding: 16px;
+}
+
+.dash-card {
+	border: 1px solid var(--ink);
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.dash-card-title {
+	font-size: 16px;
+	letter-spacing: 0.04em;
+}
+
+.dash-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: baseline;
+}
+
+.dash-kind,
+.dash-purpose {
+	border: 1px solid var(--ink);
+	padding: 1px 6px;
+	text-transform: uppercase;
+	letter-spacing: 0.14em;
+	font-size: 11px;
+}
+
+.dash-age {
+	opacity: 0.75;
+}
+
+.dash-progress {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.dash-bar {
+	border: 1px solid var(--ink);
+	height: 10px;
+	padding: 1px;
+}
+
+.dash-bar-fill {
+	background: var(--ink);
+	height: 100%;
+}
+
+.dash-open {
+	display: inline-block;
+	border: 1px solid var(--ink);
+	padding: 6px 10px;
+	text-decoration: none;
+}
+
+/* Selection and hover invert, never tint — the same rule the item pages follow. */
+.dash-open:hover,
+.dash-open:focus-visible {
+	background: var(--ink);
+	color: var(--paper);
+}
+
+.dash-section summary {
+	cursor: pointer;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	font-size: 11px;
+	border: 1px solid var(--ink);
+	padding: 8px 10px;
+}
+
+.dash-released {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 10px 0 0;
+}
+
+.dash-released-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: baseline;
+	border-bottom: 1px solid var(--ink);
+	padding-bottom: 4px;
+}
+
+.dash-foot {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.dash-note {
+	max-width: 80ch;
+	opacity: 0.75;
+}

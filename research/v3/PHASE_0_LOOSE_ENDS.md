@@ -116,7 +116,10 @@ area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIE
 - **Blast radius.** Bounded by design — a stricter cut is a query, not a rerun. Listed as sharp
   only because it pairs with A5 and no reviewer round has been scheduled for either.
 
-### A7. The symlink/realpath gap in the review server's path allowlist
+### A7. ~~The symlink/realpath gap in the review server's path allowlist~~ CLOSED 2026-08-03
+**Resolution:** fixed structurally in the handoff-system pass — static serving and batch.ts imagePath containment both check the **realpath**, with tests. See review-server README (handoff convention).
+
+### A7 (original). The symlink/realpath gap in the review server's path allowlist
 - **What.** `src/review-server/batch.ts` `isInside()` is a purely **lexical** `resolve` + `relative`
   check. It does not call `realpath`, so a symlink inside the repo pointing outside it passes the
   allowlist. The surrounding rationale claims the allowlist "keeps a malformed push from turning

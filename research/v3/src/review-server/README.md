@@ -5,13 +5,53 @@ reviewer works through them whenever convenient; an explicit **release** closes 
 the `batch-complete` record that the orchestrator's watcher waits for. Design source:
 `research/v3/REVIEW_UI.md` (all of it) and `research/v3/PHASE_0_DECISIONS.md` §2.
 
+## The handoff convention (read this first)
+
+Five rules. They exist because the handoff broke in five specific ways, each of them reported by the
+reviewer in their own words. Nothing below is style; each line is a fix for something that happened.
+
+1. **The orchestrator owns the server's lifecycle. The reviewer never starts anything.**
+   `serverctl.sh start | stop | restart | status` is the only way it goes up or down.
+   *("i never know if the server has been started already or if i have to start it myself")*
+2. **No URL is handed to the reviewer until `verify-live.ts` passes against the live process.**
+   Not "the tests pass", not "it worked when I pushed it" — a crawl of the process that is listening
+   right now, including every page's asset and module graph and one image per batch. `serverctl.sh
+   start` and `restart` run it automatically and fail if it fails.
+   *("2 times i opened the review URL and got stuck in a loading state with 404 errors in the console")*
+3. **The only URL the reviewer is ever given is <http://127.0.0.1:3010/>.** The dashboard there lists
+   every batch waiting on them, with a direct link to each. No path is ever quoted in a message.
+   *("i never know where a review is (which path like /oracle)")*
+4. **Whether something is waiting is a question the dashboard answers, not the reviewer's memory.**
+   Purpose, item count and progress are on the card, before anything is opened.
+   *("i never know if something is waiting on a review from me")*
+5. **The orchestrator runs `watch-batch.ts --batch <id>` for every open batch, in a background
+   shell.** Release is the notification. The reviewer never tells anyone they have finished.
+   *("i have to notify you every time that i am done reviewing a specific batch")*
+
 ## Start it
+
+```
+research/v3/src/review-server/serverctl.sh start      # starts, waits for it to ANSWER, then verifies
+research/v3/src/review-server/serverctl.sh status     # running / STALE / FOREIGN / not running
+research/v3/src/review-server/serverctl.sh restart    # for a code change; the logs replay, so it is invisible
+research/v3/src/review-server/serverctl.sh stop
+research/v3/src/review-server/serverctl.sh verify     # the live crawl on its own
+```
+
+`start` keeps a pidfile at `research/v3/data/review-server/server.pid` and the process's output at
+`server.log` beside it. It does not return until the server answers `/api/queue` — a pid is not a
+service — and it then runs the live crawl, so a green `start` means the reviewer can be pointed at
+the URL. `status` gives one of four answers and an exit code: running (0), **STALE** (1, the pid is
+alive but the port does not answer), **FOREIGN** (1, something is on the port that this script did
+not start), not running (3). `REVIEW_SERVER_PORT` overrides the port for all of them.
+
+The underlying command, if you need it directly:
 
 ```
 NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/review-server/server.ts
 ```
 
-Then open <http://127.0.0.1:3010/>. It binds to `127.0.0.1` only.
+Either way, open <http://127.0.0.1:3010/>. It binds to `127.0.0.1` only.
 
 | flag | default | meaning |
 |---|---|---|
@@ -24,13 +64,84 @@ Then open <http://127.0.0.1:3010/>. It binds to `127.0.0.1` only.
 | `--no-oracle` | off | do not seed the oracle-validation round |
 
 On start the server replays both files, so a restart is invisible: the queue, every verdict and
-every release come back. It can be killed at any moment; at most the record in flight is lost.
+every release come back — including a batch that was pushed to the *previous* process, with its
+media, because a batch log record carries the materialized artwork paths and the item tokens, not a
+reference to something the running process happened to have in memory.
 
 Run the tests with:
 
 ```
 NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/review-server-*.test.ts
 ```
+
+## The dashboard at `/`
+
+The reviewer's single entry point, and the only URL they are ever given. It lists every batch that
+is waiting on them — name, mode, purpose, item count, progress, how long it has been waiting — with
+a direct link to the page that reviews it, and collapses released rounds underneath. It refreshes
+every five seconds, so a batch pushed while the tab is open appears without a reload, and if it
+cannot reach the server it says exactly that instead of looking like an empty queue.
+
+The links come from the server (`GET /api/dashboard`), not from the page's own idea of where things
+live, so `verify-live.ts` crawls exactly the URLs the reviewer will click. `batchReviewPaths()` in
+`server.ts` is the one place that knows a pairwise batch is reviewed at `/pairwise?batch=…` and an
+oracle round at `/oracle?batch=…`. Every page honours `?batch=`, so a link is unambiguous even with
+several rounds of the same kind open.
+
+The pairwise page that used to be at `/` now lives at `/pairwise`; `/index.html` still serves it, so
+an old link in a note still lands.
+
+## Serving the UI, and the failure that made it a rule
+
+Static files are resolved **from disk, per request**, under `review-ui/` only. Adding a page or a
+shared module needs no restart and no code change.
+
+It used to be a hardcoded table of URL → file. The file *bytes* were read per request, so editing a
+page while the server stood worked — but the table was compiled into the process, so *adding* a file
+did not. On 2026-08-03 that took the reviewer's `/oracle` session down: `keys.js` was extracted as a
+shared module and `oracle.js` was edited to `import "./keys.js"`, and the server standing at the time
+served the **new** `oracle.js` while answering **404** for `/keys.js`. A 404 on an ES module import
+fails the whole module graph silently — no page code runs, the markup's `loading…` stays on screen
+forever, and the only evidence is one line in a console the reviewer has no reason to open. The
+server was up, the API was healthy, the batch was there, and the page was dead. Half-hot-reload is
+worse than none: it looks like it works.
+
+The security property is unchanged and is now enforced by structure rather than by enumeration:
+only regular files under `review-ui/`, only the extensions the UI is made of (`.html .js .css .json
+.svg .png .ico .woff2`), and containment checked on the **real** path — so neither `..` nor a symlink
+planted inside the directory can reach outside it. That last part also closes the symlink note the
+old code carried. Every refusal is the same 404, because a static server that explains why it said
+no is a filesystem oracle. `/api/` and `/media/` never reach the disk lookup, so no file can shadow
+an API route.
+
+## `verify-live.ts` — the last step of every push
+
+**No URL is handed to the reviewer until this passes against the live process.**
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/verify-live.ts --base http://127.0.0.1:3010
+```
+
+It crawls what a browser would actually request, against the process that is actually listening:
+
+1. `/` — the page the reviewer is told to open — and that it is HTML.
+2. `/api/dashboard`, which enumerates every batch and the URL of each one's page.
+3. every page (each mode, plus every link the dashboard publishes), every asset those pages
+   reference, and **the transitive module graph of every script** — the check that would have caught
+   the incident above, and the reason this is a crawler rather than a health check.
+4. every batch's payload endpoint, and one media item per batch that has media, checked for a
+   200 *and* an `image/*` content type (a custody failure serves 409, which fails here too: an item
+   that will not render cannot be judged, whatever the status code says).
+
+Exit **0** when everything passed, **1** otherwise. Each failure prints a **named** check, the URL
+and what happened: `UNREACHABLE`, `ROOT_NOT_OK`, `ROOT_NOT_HTML`, `DASHBOARD_API_NOT_OK`,
+`DASHBOARD_API_MALFORMED`, `PAGE_NOT_OK`, `ASSET_NOT_OK`, `MODULE_NOT_OK`, `BATCH_PAYLOAD_NOT_OK`,
+`MEDIA_NOT_OK`, `MEDIA_NOT_IMAGE`. The names are part of the interface — a test pins the list — so a
+failure can be quoted and acted on without re-deriving anything.
+
+`serverctl.sh start` and `restart` run it on the way up and fail if it fails, which is what makes
+rule 2 of the handoff convention hold by default rather than by discipline.
 
 ## Two files, and why the batch log is not the warehouse
 
@@ -41,7 +152,9 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
   materialized items, the **variant ids the blinding hides**, and the **per-batch blinding salt**.
   It is never served, and it is the only thing standing between a reader and the side order. Do not
   open it while a batch is under review; reading it unblinds you. It should not be committed —
-  `research/v3/data/review-server/` wants a `.gitignore` entry (orchestrator call).
+  `research/v3/data/review-server/` wants a `.gitignore` entry (orchestrator call). **Still open,
+  and now covering three files:** `batches.jsonl`, plus `server.pid` and `server.log`, which
+  `serverctl.sh` writes into the same directory and which are pure runtime state.
 
 ## Endpoints
 
@@ -49,6 +162,7 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
 |---|---|---|
 | `POST` | `/api/batches` | push a pairwise batch (JSON body, see below) |
 | `GET` | `/api/queue` | every batch with its progress and release state |
+| `GET` | `/api/dashboard` | the landing page's data: open batches (oldest first) and released ones, each with the **URL of the page that reviews it** and of its payload |
 | `GET` | `/api/batches/:batchId` | the blinded payload the browser renders |
 | `PUT` | `/api/batches/:batchId/items/:itemId/verdict` | submit or edit one verdict |
 | `PUT` | `/api/batches/:batchId/items/:itemId/veto` | veto the artwork (`{active:false}` withdraws it) |
@@ -68,7 +182,7 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
 | `GET` | `/api/oracle-review/:batchId` | the post-release adjudication payload (**404 unless released**) |
 | `PUT` | `/api/oracle-review/:batchId/items/:token/note` | one optional adjudication annotation (**404 unless released**) |
 | `GET` | `/media/:batchId/:itemId` | the artwork bytes, custody-checked on every request (an oracle-validation batch takes the item's **token** here, not its id) |
-| `GET` | `/`, `/calibration`, `/amend`, `/bracketing`, `/oracle`, `/oracle-review` (+ their `.js`, `/mock.js`, `/composer.js`, `/styles.css`) | the six pages (read from disk per request — edit them while the server stands) |
+| `GET` | anything else | a file under `review-ui/`, resolved from disk per request: `/` is the dashboard, `/pairwise` the pairwise page, `/<name>` finds `<name>.html`, everything else is served by its own name. Add a page or a module and it serves immediately — no restart, no code change. See "Serving the UI" below for what is refused. |
 
 The five **item-level** routes (`veto`, `colors`, `pixel`, `preview`, `endorsement`, `amend`) live under
 `/api/batches/…` for pairwise and calibration items alike. A veto, a composed palette, an eyedropper
@@ -113,9 +227,14 @@ wrong.
 
 `imagePath` must live under the repository root (`imageRoots` option; localhost push is trusted,
 but there is no reason for a batch to reach outside the corpus, and the allowlist keeps a malformed
-push from turning the server into a read-any-file proxy). Within that root, push errors still
+push from turning the server into a read-any-file proxy). The check is on the **real** path:
+`PHASE_0_LOOSE_ENDS` A7 noted that it used to be purely lexical, so a symlink sitting inside the
+allowed root and pointing anywhere at all walked straight through it. That is closed — containment
+means the same thing here as it does for the static files. Within the root, push errors still
 distinguish "cannot read" from "not a decodable image" — a small path-probing oracle, kept because
-it is what makes a bad push diagnosable, and confined to the repository by the allowlist.
+it is what makes a bad push diagnosable, and confined to the repository by the allowlist. A path
+that does not exist is still reported as "cannot read", not as an allowlist refusal: a typo must not
+be dressed up as an attack.
 
 ## The review loop
 
@@ -417,6 +536,13 @@ REVIEW_UI.md §1 asks for completion watching that costs no agent context: a loo
 model's context waits for `batch-complete` and notifies the orchestrator once. Run it from a
 background shell and wait on the process — no polling code, no repeated status checks, nothing in the
 working context:
+
+**The orchestrator starts one of these per open batch, at push time.** That is rule 5 of the handoff
+convention, and it is the whole answer to *"i have to notify you every time that i am done reviewing
+a specific batch"*: pressing **r** on the page appends the `batch-complete` record, the watcher sees
+it within a second and exits with the facts, and the reviewer is never asked to tell anyone anything.
+A watcher started against an already-released batch reports it immediately rather than hanging, so
+the orchestrator can start one at any time without racing the reviewer.
 
 ```
 NODE_NO_WARNINGS=1 node --experimental-strip-types \
@@ -759,6 +885,9 @@ covered; those are judged by the reviewer opening the page.
 | `review-server-amendments.test.ts` | the field allowlist, value validation, retraction, `recheckFundedBy`, replay after restart; then the page by keystroke |
 | `review-server-watch-batch.test.ts` | the watcher's exit codes, its tail-only reading, a torn write, and the real process under a shell |
 | `review-server-gradient.test.ts`, `-bracketing*.test.ts`, `-oracle*.test.ts`, `-probe-gold*.test.ts` | the display mapping and the three answer-only modes |
+| `review-server-dashboard.test.ts` | `/api/dashboard` (progress, links, released moving out of the queue), `batchReviewPaths` per mode, and the real `dashboard.js` rendering a waiting batch, an empty queue, and an unreachable server |
+| `review-server-static.test.ts` | serving from disk — including **a file created after the server started**, which is the 2026-08-03 incident reduced to one assertion — plus traversal, symlink/realpath containment on both the UI root and a pushed `imagePath`, refused kinds, and API routes that no file can shadow |
+| `review-server-verify-live.test.ts` | the live crawl, and that it fails with the right **name** for each way the handoff has broken: a 404'd module import, a missing stylesheet, a missing page, a missing root, a dead process, and media that stopped serving |
 
 The keyboard-only pages are driven by dispatching real key events into the handler the page
 registered, against the real server over HTTP (`test-support.ts`, `openPage`). A form the reviewer

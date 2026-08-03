@@ -15,9 +15,9 @@
  *
  * See README.md in this directory for the endpoint list and what is stubbed.
  */
-import { readFile } from "node:fs/promises"
+import { readFile, realpath, stat } from "node:fs/promises"
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http"
-import { join } from "node:path"
+import { extname, join, resolve, sep } from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
 import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
@@ -199,6 +199,58 @@ function itemKey(batchId: string, itemId: string): string {
  */
 function oracleAnswerKey(batchId: string, questionKey: string, imageId: string): string {
 	return `${batchId} ${questionKey} ${imageId}`
+}
+
+/** Every review mode that can own a batch. The dashboard has to know them all, so they are named. */
+export const BATCH_KINDS = ["pairwise", "calibration", "bracketing", "oracle-validation"] as const
+export type BatchKind = (typeof BATCH_KINDS)[number]
+
+/** One row of `/api/queue`: what the server can say about a batch without opening it. */
+export type QueueEntry = Readonly<{
+	batchId: string
+	kind: BatchKind
+	purpose: string
+	pushedAt: string
+	itemCount: number
+	judgedCount: number
+	released: boolean
+	releasedAt: string | null
+}>
+
+export type BatchReviewPaths = Readonly<{
+	/** The page that reviews this batch — a URL the reviewer can be handed exactly as it stands. */
+	page: string
+	/** The JSON that page loads. `verify-live.ts` crawls it: a page whose payload 404s is a dead link. */
+	payload: string
+	/** Where a released batch is revisited — adjudication for an oracle round, amendment otherwise. */
+	afterRelease: string | null
+}>
+
+export type DashboardEntry = QueueEntry & BatchReviewPaths & Readonly<{ remaining: number }>
+
+/**
+ * Where a batch is reviewed and where its payload lives.
+ *
+ * One function, because these two facts were previously spread across five page scripts and a
+ * README, which is how the reviewer ended up being handed URLs by hand — and how a handed URL could
+ * be wrong. Every page honours `?batch=`, so the link is unambiguous even when several rounds of the
+ * same kind are open at once.
+ */
+export function batchReviewPaths(entry: Pick<QueueEntry, "batchId" | "kind">): BatchReviewPaths {
+	const query = `?batch=${encodeURIComponent(entry.batchId)}`
+	const id = encodeURIComponent(entry.batchId)
+	switch (entry.kind) {
+		case "calibration":
+			return { page: `/calibration${query}`, payload: `/api/calibration/${id}`, afterRelease: `/amend${query}` }
+		case "bracketing":
+			// No after-release page: the amendment view covers pairwise and calibration verdicts only,
+			// and a bracketing answer is amended through the warehouse, not the browser.
+			return { page: `/bracketing${query}`, payload: `/api/bracketing/${id}`, afterRelease: null }
+		case "oracle-validation":
+			return { page: `/oracle${query}`, payload: `/api/oracle-validation/${id}`, afterRelease: `/oracle-review${query}` }
+		default:
+			return { page: `/pairwise${query}`, payload: `/api/batches/${id}`, afterRelease: `/amend${query}` }
+	}
 }
 
 type VerdictState = {
@@ -549,6 +601,31 @@ export class ReviewService {
 			}
 		})
 		return [...pairwise, ...calibration, ...bracketing, ...oracle]
+	}
+
+	/**
+	 * The landing dashboard's data: what is waiting on the reviewer, and where.
+	 *
+	 * The five things the reviewer said they never know — is anything waiting, where is it, how far
+	 * in am I, is the server up (this endpoint answering *is* the answer), and what is already
+	 * done — are all answered from this one payload. The server computes the links rather than the
+	 * page guessing them, so `verify-live.ts` crawls exactly the URLs the reviewer will click.
+	 */
+	dashboard(): { open: DashboardEntry[]; released: DashboardEntry[]; generatedAt: string } {
+		const entries = this.queue().map((entry) => ({
+			...entry,
+			...batchReviewPaths(entry),
+			remaining: Math.max(0, entry.itemCount - entry.judgedCount),
+		}))
+		return {
+			// Oldest first among the open ones: the batch that has been waiting longest is the one the
+			// reviewer is most likely late on. Released, newest first: it is a history, not a queue.
+			open: entries.filter((entry) => !entry.released).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),
+			released: entries
+				.filter((entry) => entry.released)
+				.sort((a, b) => ((a.releasedAt ?? "") > (b.releasedAt ?? "") ? -1 : 1)),
+			generatedAt: new Date().toISOString(),
+		}
 	}
 
 	/**
@@ -1824,34 +1901,99 @@ function parseAmendPatch(target: AmendTarget, value: unknown): Record<string, un
 	return patch
 }
 
-const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
-	["/", { file: "index.html", type: "text/html; charset=utf-8" }],
-	["/index.html", { file: "index.html", type: "text/html; charset=utf-8" }],
-	["/app.js", { file: "app.js", type: "text/javascript; charset=utf-8" }],
-	["/styles.css", { file: "styles.css", type: "text/css; charset=utf-8" }],
-	// Shared modules: the mock player is part of the output contract, so every page that shows one
-	// shows the same one, from one file (`mock.js`), and the composer lives beside it.
-	["/mock.js", { file: "mock.js", type: "text/javascript; charset=utf-8" }],
-	["/composer.js", { file: "composer.js", type: "text/javascript; charset=utf-8" }],
-	// The keyboard map, shared for the same reason: every page binds digits, the reviewer's AZERTY
-	// digit row sends `&é"'(§è!çà`, and a per-page copy is a per-page chance to record a wrong answer.
-	["/keys.js", { file: "keys.js", type: "text/javascript; charset=utf-8" }],
-	["/calibration", { file: "calibration.html", type: "text/html; charset=utf-8" }],
-	["/calibration.html", { file: "calibration.html", type: "text/html; charset=utf-8" }],
-	["/calibration.js", { file: "calibration.js", type: "text/javascript; charset=utf-8" }],
-	["/amend", { file: "amend.html", type: "text/html; charset=utf-8" }],
-	["/amend.html", { file: "amend.html", type: "text/html; charset=utf-8" }],
-	["/amend.js", { file: "amend.js", type: "text/javascript; charset=utf-8" }],
-	["/bracketing", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
-	["/bracketing.html", { file: "bracketing.html", type: "text/html; charset=utf-8" }],
-	["/bracketing.js", { file: "bracketing.js", type: "text/javascript; charset=utf-8" }],
-	["/oracle", { file: "oracle.html", type: "text/html; charset=utf-8" }],
-	["/oracle.html", { file: "oracle.html", type: "text/html; charset=utf-8" }],
-	["/oracle.js", { file: "oracle.js", type: "text/javascript; charset=utf-8" }],
-	["/oracle-review", { file: "oracle-review.html", type: "text/html; charset=utf-8" }],
-	["/oracle-review.html", { file: "oracle-review.html", type: "text/html; charset=utf-8" }],
-	["/oracle-review.js", { file: "oracle-review.js", type: "text/javascript; charset=utf-8" }],
+/* --- serving the UI from disk ---------------------------------------------------------------- */
+
+/*
+ * There used to be a hardcoded table here mapping every URL to a file in `review-ui/`. The file
+ * BYTES were read per request, so editing a page while the server stood worked — but the table
+ * itself was compiled into the running process, so ADDING a file did not. That asymmetry is what
+ * took the reviewer's `/oracle` session down on 2026-08-03: `keys.js` was extracted as a shared
+ * module and `oracle.js` was edited to `import "./keys.js"`, and the server standing at the time
+ * cheerfully served the NEW `oracle.js` while answering 404 for `/keys.js`. A 404 on a module
+ * import kills the whole module graph silently: no page code ever runs, the markup's "loading…"
+ * placeholder stays on screen forever, and the only evidence is one line in a console the reviewer
+ * has no reason to open. Half-hot-reload is worse than none — it looks like it works.
+ *
+ * So the route table is gone. A GET that matched no API route resolves against `review-ui/` on
+ * disk, per request. The allowlist that was actually protecting something — "serve nothing but this
+ * directory" — is enforced by `realpath` containment instead of by enumeration, which also closes
+ * the symlink note the old code carried: a symlink inside `review-ui/` pointing anywhere else
+ * resolves outside the root and is refused.
+ */
+
+/**
+ * Content types for the asset kinds the review UI is made of, by extension.
+ * [REVIEWED] — the extensions `review-ui/` contains today plus the few a page could plausibly grow.
+ * An extension that is not listed is not served at all: the allowlist is now a list of KINDS rather
+ * than of PATHS, which is the half of it that was ever a security property. A path list only
+ * protected against files nobody had written yet.
+ */
+const UI_CONTENT_TYPES = new Map<string, string>([
+	[".html", "text/html; charset=utf-8"],
+	[".js", "text/javascript; charset=utf-8"],
+	[".css", "text/css; charset=utf-8"],
+	[".json", "application/json; charset=utf-8"],
+	[".svg", "image/svg+xml"],
+	[".png", "image/png"],
+	[".ico", "image/x-icon"],
+	[".woff2", "font/woff2"],
 ])
+
+/**
+ * Page paths that are not simply `<name>.html`.
+ *
+ * `/` is the dashboard — the reviewer's single entry point, from which every other URL is a link
+ * (REVIEW_UI.md §1: the reviewer should never have to be told a path). The pairwise page it used to
+ * be keeps working at `/pairwise` and at `/index.html`, so an old link in a note still lands.
+ * Everything else needs no entry: `/oracle` finds `oracle.html` by the general rule below.
+ */
+const UI_PATH_ALIASES = new Map<string, string>([
+	["/", "dashboard.html"],
+	["/pairwise", "index.html"],
+])
+
+/** URL prefixes that are never files: an API miss must 404 as an API miss, not as a missing page. */
+const NON_STATIC_PREFIXES = ["/api/", "/media/"] as const
+
+export type ResolvedUiFile = Readonly<{ path: string; contentType: string }>
+
+/**
+ * The file a URL names inside `review-ui/`, or null when the URL names none.
+ *
+ * Null covers every refusal on purpose — missing, wrong kind, outside the root, not a regular file.
+ * The caller turns all of them into the same 404, because telling a caller *why* a path was refused
+ * is how a static server becomes a filesystem oracle.
+ *
+ * Containment is checked on the REAL path (symlinks resolved), not on the joined string, so neither
+ * `..` nor a symlink planted in the directory can reach outside the UI root.
+ */
+export async function resolveUiFile(uiRoot: string, pathname: string): Promise<ResolvedUiFile | null> {
+	if (!pathname.startsWith("/") || pathname.includes("\0")) return null
+	let decoded: string
+	try {
+		decoded = decodeURIComponent(pathname)
+	} catch {
+		// A malformed percent-escape is not a filename. (`%` alone, `%zz`, a truncated `%2`.)
+		return null
+	}
+	if (decoded.includes("\0")) return null
+	const aliased = UI_PATH_ALIASES.get(decoded)
+	const relative =
+		aliased ?? (extname(decoded) === "" ? `${decoded.replace(/^\/+/u, "")}.html` : decoded.replace(/^\/+/u, ""))
+	if (relative.length === 0) return null
+	const contentType = UI_CONTENT_TYPES.get(extname(relative).toLowerCase())
+	if (contentType === undefined) return null
+
+	const root = await realpath(uiRoot).catch(() => null)
+	if (root === null) return null
+	const target = await realpath(resolve(uiRoot, relative)).catch(() => null)
+	if (target === null) return null
+	const fence = root.endsWith(sep) ? root : root + sep
+	if (!target.startsWith(fence)) return null
+	const info = await stat(target).catch(() => null)
+	if (info === null || !info.isFile()) return null
+	return { path: target, contentType }
+}
 
 export type ReviewServerOptions = ReviewServiceOptions & Readonly<{ uiRoot?: string }>
 
@@ -1873,14 +2015,12 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 			const method = request.method ?? "GET"
 			const path = url.pathname
 
-			if (method === "GET" && STATIC_ROUTES.has(path)) {
-				const route = STATIC_ROUTES.get(path)!
-				// Read per request: the UI can be edited while the server stands.
-				respond(response, 200, await readFile(join(uiRoot, route.file)), route.type)
-				return
-			}
 			if (method === "GET" && path === "/api/queue") {
 				respondJson(response, 200, { batches: service.queue() })
+				return
+			}
+			if (method === "GET" && path === "/api/dashboard") {
+				respondJson(response, 200, service.dashboard())
 				return
 			}
 			if (method === "POST" && path === "/api/batches") {
@@ -2169,6 +2309,17 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 				const media = await service.media(decodeURIComponent(mediaMatch[1]), decodeURIComponent(mediaMatch[2]))
 				respond(response, 200, media.bytes, media.contentType)
 				return
+			}
+
+			// Last, so no page name can ever shadow an API route: anything left that is not an API path
+			// is a request for a file in `review-ui/`, resolved from disk on the spot. A deploy that
+			// adds a page or a shared module needs no restart, and cannot half-land.
+			if (method === "GET" && !NON_STATIC_PREFIXES.some((prefix) => path.startsWith(prefix))) {
+				const file = await resolveUiFile(uiRoot, path)
+				if (file !== null) {
+					respond(response, 200, await readFile(file.path), file.contentType)
+					return
+				}
 			}
 
 			respondJson(response, 404, { error: `No route for ${method} ${path}` })

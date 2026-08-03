@@ -6,3 +6,6 @@ data/embeddings/*.npz
 data/embeddings/shards/
 oracle/**/.venv/
 oracle/**/__pycache__/
+# review-server runtime state (never committed)
+data/review-server/server.pid
+data/review-server/server.log

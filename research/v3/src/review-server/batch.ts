@@ -8,7 +8,7 @@
  * Palettes, fingerprints and artwork identity are the warehouse library's shapes — what is
  * persisted and what is pushed are the same objects, so nothing is translated on the way in.
  */
-import { readFile } from "node:fs/promises"
+import { readFile, realpath } from "node:fs/promises"
 import { basename, dirname, isAbsolute, relative as relative_, resolve as resolvePath } from "node:path"
 import sharp from "sharp"
 import { hashPalette, type ArtworkIdentity, type CodeFingerprint, type PaletteSnapshot } from "../warehouse/records.ts"
@@ -239,6 +239,27 @@ function isInside(root: string, candidate: string): boolean {
 	return relative.length > 0 && !relative.startsWith("..") && !isAbsolute(relative)
 }
 
+/**
+ * The same question, asked of the REAL path.
+ *
+ * Closes PHASE_0_LOOSE_ENDS A7: the lexical check above is happy with a symlink that sits inside the
+ * root and points anywhere at all, which is exactly the hole the allowlist was there to plug. The
+ * static-file half of this server was fixed the same way at the same time, so containment now means
+ * one thing everywhere in it: resolve the symlinks, then compare.
+ *
+ * A candidate that cannot be resolved — it does not exist — falls back to the lexical answer on
+ * purpose. It will fail one line later with "cannot read <path>", and that message is what makes a
+ * bad push diagnosable; turning a typo into "outside the allowlist" would be a worse error, not a
+ * safer one.
+ */
+async function isInsideReal(root: string, candidate: string): Promise<boolean> {
+	if (!isInside(root, candidate)) return false
+	const realRoot = await realpath(root).catch(() => null)
+	const realCandidate = await realpath(candidate).catch(() => null)
+	if (realRoot === null || realCandidate === null) return true
+	return isInside(realRoot, realCandidate)
+}
+
 /** Which corpus a file belongs to, when the pusher did not say. */
 export function deriveCollection(imagePath: string): string {
 	if (imagePath.includes("/music-artworks/")) return "music-artworks"
@@ -268,11 +289,11 @@ export async function readArtworkIdentity(
 	const imageRoots = options.imageRoots ?? []
 	// Push is localhost-only and trusted, but there is no reason for a batch to reach outside the
 	// corpus: an allowlist keeps a malformed or hostile push from turning the server into a
-	// read-any-file proxy.
-	require_(
-		imageRoots.length === 0 || imageRoots.some((root) => isInside(root, imagePath)),
-		`${options.what}: imagePath must live under ${imageRoots.join(" or ")}`,
-	)
+	// read-any-file proxy. Checked on the real path — see `isInsideReal`.
+	const allowed =
+		imageRoots.length === 0 ||
+		(await Promise.all(imageRoots.map((root) => isInsideReal(root, imagePath)))).some(Boolean)
+	require_(allowed, `${options.what}: imagePath must live under ${imageRoots.join(" or ")}`)
 	let bytes: Buffer
 	try {
 		bytes = await readFile(imagePath)
