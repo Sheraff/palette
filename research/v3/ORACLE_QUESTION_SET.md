@@ -117,3 +117,17 @@ in particular encode hypotheses about what matters. The pilot plus the human val
 is where wrong or useless questions get deleted, and the paradigm bake-off (see `V3_PLAN.md`)
 may add questions not foreseeable here. v2-3's failure classes are used as *test cases for the
 questions*, never as their source.
+
+---
+
+## Candidate refinements surfaced during use
+
+- **2026-08-03, premise disambiguation round (reviewer):** `ground_type` has a gap for
+  "one flat field + one shaded field with a blurry meeting line". Resolution applied
+  in-round (recorded here, not changed mid-round — vocabulary is frozen for comparability
+  with the VLM run): the test is *surface identity*, never boundary softness — one surface
+  partly flat/partly shaded → `shaded_field`; two areas with a soft join → 
+  `multiple_distinct_fields`; genuine 5-second ambiguity → answer the gut read (the
+  forced choice is symmetric with the VLM's). Schema v2 candidates: sharpen the
+  definition sentence, or add an explicit value if reviewer notes show the forced choice
+  losing real information.
