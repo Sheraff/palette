@@ -56,8 +56,10 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types --test research/v3/tests/revi
 | `POST` | `/api/oracle-validation` | push an oracle-validation round (body `{fixture?, fundedBy?}`; omit `fixture` for the committed one) |
 | `GET` | `/api/oracle-validation/:batchId` | the by-question payload the browser renders |
 | `PUT` | `/api/oracle-validation/:batchId/items/:token/answer` | record one closed-vocabulary answer |
+| `GET` | `/api/oracle-review/:batchId` | the post-release adjudication payload (**404 unless released**) |
+| `PUT` | `/api/oracle-review/:batchId/items/:token/note` | one optional adjudication annotation (**404 unless released**) |
 | `GET` | `/media/:batchId/:itemId` | the artwork bytes, custody-checked on every request (an oracle-validation batch takes the item's **token** here, not its id) |
-| `GET` | `/`, `/bracketing`, `/oracle` (+ their `.js`, `/styles.css`) | the three pages (read from disk per request — edit them while the server stands) |
+| `GET` | `/`, `/bracketing`, `/oracle`, `/oracle-review` (+ their `.js`, `/styles.css`) | the four pages (read from disk per request — edit them while the server stands) |
 
 ### Pushing a batch
 
@@ -405,10 +407,46 @@ written to be read, not only parsed.
 Scoping is per batch id, for the reason the bracketing analysis learned: a second pass over the same
 artworks is different data and pooling them would move the number with nothing looking wrong.
 
+### The adjudication view (post-release)
+
+<http://127.0.0.1:3010/oracle-review> — a **read-only** browse of a *finished* round, built after the
+reviewer's own report on the answering pass: *"I wasn't very confident in my answers, I feel like the
+line can be pretty blurry between these different tags."* That is a different question from the one
+the round asked, and it needs a different view: for each item, the artwork **large**, then side by
+side the reviewer's own answer, oracle variant A, oracle variant B, the accepted-palette flag
+(gradient/flat) and the computed `sidedWith` outcome — grouped into **sided-with-oracle /
+sided-with-flag / neither**.
+
+**Released batches only, asserted on both endpoints.** An open round has no adjudication view at all
+— not an empty one — because this payload *is* the answering pass's answer key, and serving it mid-
+round would unblind live judging. `GET /api/oracle-review/:batchId` and the note endpoint both 404
+while a batch is unreleased, and answering every item is not releasing: the guard is the
+`batch-complete` record, nothing else.
+
+**One optional keystroke per item.** `d` — *the oracle's answer is also defensible here* · `m` — *the
+oracle misread this* · `s`/`j`/`k` move without recording. Entirely optional per item, no release, no
+completeness check; the record is appended the moment the key is pressed. That turns casual browsing
+into queryable evidence about **where the ontology is blurry versus where the VLM actually misreads**
+— which is exactly the distinction the reviewer's remark leaves open, and which no agreement number
+can separate.
+
+Annotations are `note` records, **never `oracle-label`**: this is an opinion *about* an answer, not a
+second answer, and folding the two together would corrupt every agreement number computed from the
+labels. Tags are `["adjudication-browse", "oracle-defensible" | "oracle-misread"]` — an exactly
+symmetric pair, per §4's symmetric-vocabulary rule, because a page that could only record "the oracle
+misread this" would be measuring willingness to complain. `derived` stays null (that field is for a
+tagging agent's re-derivable records; a keystroke from the reviewer is raw evidence itself), and the
+note joins back to the reviewer's own answer through `batch` + `itemId`. Re-annotating appends a
+second note and the later one is the reviewer's position — nothing is deleted.
+
+Query them with the warehouse CLI on the `adjudication-browse` tag.
+
 ### Tests, including the page itself
 
 `review-server-oracle-validation.test.ts` covers the fixture, the serving, the records, resume,
-release and the analysis. `review-server-oracle-ui.test.ts` drives **the real `review-ui/oracle.js`**
+release and the analysis. `review-server-oracle-review.test.ts` covers the adjudication view: the
+released-only guard on both endpoints, the grouping, the note record's shape, the symmetric
+vocabulary, re-annotation, and the page driven by keystrokes. `review-server-oracle-ui.test.ts` drives **the real `review-ui/oracle.js`**
 over HTTP against the real server by dispatching key events into the handler the page registered:
 every number key writes its own answer for the artwork that was on screen, `u` steps back and
 replaces, an unbound key does nothing, reopening resumes at the first unanswered item, and `r`

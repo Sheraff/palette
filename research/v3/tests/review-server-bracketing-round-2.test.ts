@@ -17,7 +17,6 @@ import assert from "node:assert/strict"
 import { readFile } from "node:fs/promises"
 import { after, before, describe, it } from "node:test"
 import { okLabDistance, rgbToOkLab } from "../src/contract/color.ts"
-import { POOLED_SAME_COLOR_BAR } from "../src/contract/constants.ts"
 import type { OracleLabelRecord } from "../src/warehouse/records.ts"
 import {
 	analyzeBracketing,
@@ -38,6 +37,7 @@ import {
 	ROUND2_DIRECTION_TARGET,
 	ROUND2_LADDER_STEPS,
 	ROUND2_LIGHT_SATURATED_STEPS_PER_THIRD,
+	ROUND2_PRIOR_SAME_COLOR_BAR,
 	ROUND2_PROBE_BASE_MIN_CHROMA,
 	ROUND2_REPEATS_PER_QUADRANT,
 	ROUND_1_INTERVALS,
@@ -85,7 +85,12 @@ describe("bracketing round 2 — design", () => {
 	it("was built against the posteriors it claims, and the committed analysis still says so", async () => {
 		const analysis = JSON.parse(
 			await readFile(new URL("../data/calibration/bracketing-round-1-analysis.json", import.meta.url), "utf8"),
-		) as { part1: { quadrants: { quadrant: string; threshold: number; confidenceInterval: { low: number; high: number } }[] } }
+		) as {
+			part1: {
+				pooled: { threshold: number }
+				quadrants: { quadrant: string; threshold: number; confidenceInterval: { low: number; high: number } }[]
+			}
+		}
 		for (const quadrant of QUADRANTS) {
 			const source = analysis.part1.quadrants.find((entry) => entry.quadrant === quadrant)!
 			const used = ROUND_1_INTERVALS[quadrant]
@@ -96,7 +101,15 @@ describe("bracketing round 2 — design", () => {
 			assert.ok(Math.abs(used.threshold - source.threshold) < 5e-6, `${quadrant} threshold drifted`)
 		}
 		assert.equal(fixture.refinement?.refines, BRACKETING_ACTIVE_BATCH_ID)
-		assert.equal(fixture.prior.sameColorBar, POOLED_SAME_COLOR_BAR, "round 2's prior is round 1's answer")
+		// Round 2's prior is round 1's *own* pooled threshold, taken from the same analysis file as the
+		// windows — not from the contract's `POOLED_SAME_COLOR_BAR`, which the contract re-derives on
+		// its own schedule and which already moved once (0.01582 → 0.01535) while this round was being
+		// built. A committed fixture cannot depend on a number another workstream can change.
+		assert.equal(fixture.prior.sameColorBar, ROUND2_PRIOR_SAME_COLOR_BAR)
+		assert.ok(
+			Math.abs(fixture.prior.sameColorBar - analysis.part1.pooled.threshold) < 5e-6,
+			"the prior drifted from round 1's own pooled threshold",
+		)
 	})
 
 	it("fits the reviewer's budget and is part 1 only", () => {

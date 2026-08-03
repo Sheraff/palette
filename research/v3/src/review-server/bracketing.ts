@@ -32,7 +32,7 @@ import {
 	rgbToHex,
 	rgbToOkLab,
 } from "../contract/color.ts"
-import { APCA_RAW_IDENTICAL_CEILING, POOLED_SAME_COLOR_BAR } from "../contract/constants.ts"
+import { APCA_RAW_IDENTICAL_CEILING } from "../contract/constants.ts"
 import type { OkLab, Rgb8 } from "../contract/types.ts"
 
 /* ------------------------------------------------------------------------------------------- */
@@ -220,6 +220,21 @@ export const ROUND_1_INTERVALS: Readonly<Record<Quadrant, Readonly<{ low: number
 	"light-neutral": { low: 0.01116, high: 0.02380, threshold: 0.01629 },
 	"light-saturated": { low: 0.01153, high: 0.06265, threshold: 0.02687 },
 }
+
+/**
+ * Round 2's prior: round 1's own pooled threshold, 0.01582.
+ *
+ * `[MEASURED]` — the same file every other number here comes from,
+ * `bracketing-round-1-analysis.json`, `part1.pooled.threshold`.
+ *
+ * **Frozen here, deliberately not imported from `../contract/constants.ts`.** The first version of
+ * this constant read `POOLED_SAME_COLOR_BAR`, and that value moved (0.01582 → 0.01535) the same day,
+ * because the contract re-derives its bars on its own schedule — which silently made the committed
+ * fixture non-reproducible and turned a released round's design record into a moving number. A
+ * fixture must be pinned to values that cannot change under it. This is the second time this file
+ * has learned it; see `BRACKETING_PRIOR_SAME_COLOR_BAR`.
+ */
+export const ROUND2_PRIOR_SAME_COLOR_BAR = 0.01582
 
 /** Ladder rungs inside the interval, per quadrant. [UNCALIBRATED] — a budget split, chosen here. */
 export const ROUND2_LADDER_STEPS = 10
@@ -943,7 +958,7 @@ export function generateBracketingRound2Fixture(
 		prompts: PART_PROMPTS,
 		quadrantBoundaries: { lightness: QUADRANT_LIGHTNESS_BOUNDARY, chroma: QUADRANT_CHROMA_BOUNDARY },
 		// Round 2's prior is round 1's answer, not the pre-round-1 translation.
-		prior: { sameColorBar: POOLED_SAME_COLOR_BAR },
+		prior: { sameColorBar: ROUND2_PRIOR_SAME_COLOR_BAR },
 		items,
 		serveOrder: shuffled(items.map((item) => item.itemId), random),
 		refinement: {

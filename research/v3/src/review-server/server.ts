@@ -29,6 +29,7 @@ import {
 	type Author,
 	type BatchCompleteRecord,
 	type Grade,
+	type NoteRecord,
 	type OracleLabelRecord,
 	type Preference,
 	type RecordInput,
@@ -50,14 +51,57 @@ import {
 } from "./bracketing.ts"
 
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
+import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
 import {
 	PREMISE_DISAMBIGUATION_BATCH_ID,
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
 	PREMISE_DISAMBIGUATION_FIXTURE_VERSION,
+	PREMISE_RUN_PATH,
 	itemImagePath,
+	readPremiseRun,
 	validateFixture,
 	type OracleValidationFixture,
 } from "./oracle-validation.ts"
+
+/**
+ * The tag every adjudication note carries, and the two verdicts it can hold.
+ *
+ * Exact opposites by design (REVIEW_UI.md §4's symmetric-vocabulary rule): the question the round
+ * left open is whether the disagreements are a blurry ontology or a misreading VLM, and a vocabulary
+ * that could only express one of those would answer it by construction.
+ */
+export const ADJUDICATION_TAG = "adjudication-browse"
+export const ADJUDICATION_VERDICTS = ["oracle-defensible", "oracle-misread"] as const
+export type AdjudicationVerdict = (typeof ADJUDICATION_VERDICTS)[number]
+
+/** The note's own words. Written out, because a tag alone is not evidence a human can read back. */
+const ADJUDICATION_TEXT: Record<AdjudicationVerdict, (questionKey: string) => string> = {
+	"oracle-defensible": (questionKey) =>
+		`Browsing after release: the oracle's ${questionKey} answer is also defensible for this artwork — ` +
+		"the two readings are both reasonable, so this disagreement is about where the line between the labels sits.",
+	"oracle-misread": (questionKey) =>
+		`Browsing after release: the oracle misread this artwork's ${questionKey} — ` +
+		"this is not a blurry line, the answer is wrong.",
+}
+
+/** The three groups the adjudication page is divided into, in reading order. */
+export const ADJUDICATION_SECTIONS = [
+	{
+		key: "oracle",
+		title: "the reviewer sided with the oracle",
+		blurb: "The reviewer's own reading matched the oracle's, against the gradient decision the algorithm published.",
+	},
+	{
+		key: "flag",
+		title: "the reviewer sided with the published flag",
+		blurb: "The reviewer's reading matched what the algorithm published, against the oracle.",
+	},
+	{
+		key: "neither",
+		title: "neither",
+		blurb: "The reviewer chose a label that makes no prediction about the gradient boolean, so the tie stands open.",
+	},
+] as const
 
 export { PREMISE_DISAMBIGUATION_BATCH_ID }
 import { JsonlAppender, readJsonl } from "./store.ts"
@@ -143,6 +187,9 @@ export class ReviewService {
 	readonly #vetoes = new Map<string, VetoState>()
 	readonly #answers = new Map<string, AnswerState>()
 	readonly #releases = new Map<string, BatchCompleteRecord>()
+	/** Post-release joins for the adjudication view. Frozen data, so computed once per batch. */
+	readonly #adjudicationCache = new Map<string, OracleValidationAnalysis>()
+	#premiseRun: Awaited<ReturnType<typeof readPremiseRun>> | null = null
 
 	constructor(options: ReviewServiceOptions = {}) {
 		this.warehousePath = options.warehousePath ?? DEFAULT_WAREHOUSE_PATH
@@ -722,6 +769,150 @@ export class ReviewService {
 		return { recordId: record.id, revision: state.revision }
 	}
 
+	/* --- oracle validation: the post-release adjudication view --------------------------------- */
+
+	/**
+	 * The three-way join behind the adjudication page, cached per batch.
+	 *
+	 * Answers are frozen once a batch is released, and so is the premise run it is joined against, so
+	 * this is computed once and reused. Notes do not enter it — they are read separately, because
+	 * they keep arriving while the reviewer browses.
+	 */
+	async #adjudication(batchId: string) {
+		const cached = this.#adjudicationCache.get(batchId)
+		if (cached !== undefined) return cached
+		const stored = this.#oracleBatch(batchId)
+		this.#premiseRun ??= await readPremiseRun()
+		const analysis = analyzeOracleValidation(stored.fixture, readAll(this.warehousePath), this.#premiseRun, {
+			warehousePath: this.warehousePath,
+			fixturePath: PREMISE_DISAMBIGUATION_FIXTURE_PATH,
+			premiseRunPath: PREMISE_RUN_PATH,
+			batchId,
+		})
+		this.#adjudicationCache.set(batchId, analysis)
+		return analysis
+	}
+
+	/** The reviewer's latest adjudication note per item. Later notes supersede earlier ones. */
+	#adjudicationNotes(batchId: string): Map<string, string> {
+		const latest = new Map<string, string>()
+		for (const entry of resolveAmendments(readAll(this.warehousePath))) {
+			const record = entry.record
+			if (entry.retracted || record.type !== "note") continue
+			if (record.batch?.id !== batchId || record.itemId === null) continue
+			if (!record.tags.includes(ADJUDICATION_TAG)) continue
+			const verdict = record.tags.find((tag) => (ADJUDICATION_VERDICTS as readonly string[]).includes(tag))
+			if (verdict !== undefined) latest.set(record.itemId, verdict)
+		}
+		return latest
+	}
+
+	/**
+	 * The adjudication payload: every item with the reviewer's answer, both oracle variants, the
+	 * published flag and the outcome, grouped by who the reviewer sided with.
+	 *
+	 * **Released batches only, and this is load-bearing.** Everything this page shows is exactly what
+	 * the answering pass is built to withhold. Serving it for an open batch would unblind live
+	 * judging — so an unreleased batch is not "empty here", it does not exist here.
+	 */
+	async oracleReviewPayload(batchId: string) {
+		const stored = this.#oracleBatch(batchId)
+		const release = this.#releases.get(batchId)
+		if (release === undefined) {
+			throw new NotFound(`Batch ${batchId} is not released; the adjudication view exists only after release`)
+		}
+		const analysis = await this.#adjudication(batchId)
+		const notes = this.#adjudicationNotes(batchId)
+		const tokenFor = new Map(Object.entries(stored.answerTokens).map(([token, itemId]) => [itemId, token]))
+		const question = stored.fixture.questions[0]
+
+		const rows = analysis.perArtwork
+			.filter((entry) => entry.answered)
+			.map((entry) => {
+				const artwork = stored.artworks[entry.itemId]
+				const token = tokenFor.get(entry.itemId)!
+				return {
+					token,
+					media: `/media/${encodeURIComponent(batchId)}/${encodeURIComponent(token)}`,
+					fileName: entry.imagePath,
+					width: artwork.rendition.width,
+					height: artwork.rendition.height,
+					stratum: entry.stratum,
+					reviewer: entry.reviewerGroundType,
+					oracle: Object.entries(entry.oracle).map(([variant, view]) => ({
+						variant,
+						groundType: view.groundType,
+						/** True on the variant whose reading is the one the flag contradicts. */
+						contradicted: view.contradicted,
+						agreesWithReviewer: view.exactMatch === true,
+					})),
+					flag: entry.flagGradient ? "gradient" : "flat",
+					sidedWith: entry.contradictionVerdict,
+					annotation: notes.get(entry.itemId) ?? null,
+				}
+			})
+
+		return {
+			batchId,
+			released: true,
+			releasedAt: release.ts,
+			question: { key: question.key, question: question.question, instruction: question.instruction },
+			verdicts: ADJUDICATION_VERDICTS,
+			sections: ADJUDICATION_SECTIONS.map((section) => ({
+				...section,
+				items: rows.filter((row) => row.sidedWith === section.key),
+			})),
+			totals: {
+				items: rows.length,
+				annotated: rows.filter((row) => row.annotation !== null).length,
+				...Object.fromEntries(ADJUDICATION_VERDICTS.map((verdict) => [verdict, rows.filter((row) => row.annotation === verdict).length])),
+			},
+		}
+	}
+
+	/**
+	 * Record one adjudication note.
+	 *
+	 * A `note` record, not an `oracle-label`: this is not a second answer to the question, it is the
+	 * reviewer's opinion *about* the oracle's answer, and folding the two together would corrupt
+	 * every agreement number computed from the labels. The two tags are exact opposites, per the
+	 * symmetric-vocabulary rule (REVIEW_UI.md §4) — a page that can only record "the oracle misread
+	 * this" would measure the reviewer's willingness to complain.
+	 *
+	 * `derived` stays null. That field is for records a tagging agent re-derived from raw text; a
+	 * keystroke from the reviewer is raw evidence itself. The provenance lives in the tags, and the
+	 * item it is about is `batch` + `itemId` — which is also how it joins back to the reviewer's own
+	 * answer for the same artwork.
+	 */
+	async putAdjudicationNote(batchId: string, token: string, verdict: string): Promise<{ recordId: string; verdict: string }> {
+		const stored = this.#oracleBatch(batchId)
+		if (!this.#releases.has(batchId)) {
+			throw new NotFound(`Batch ${batchId} is not released; the adjudication view exists only after release`)
+		}
+		if (!(ADJUDICATION_VERDICTS as readonly string[]).includes(verdict)) {
+			throw new BadRequest(`verdict must be one of ${ADJUDICATION_VERDICTS.join(" | ")}`)
+		}
+		const itemId = stored.answerTokens[token]
+		if (itemId === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
+		const item = stored.fixture.items.find((entry) => entry.itemId === itemId)!
+		const record = append<NoteRecord>(this.warehousePath, {
+			type: "note",
+			author: this.author,
+			batch: {
+				id: batchId,
+				purpose: stored.purpose,
+				itemCount: stored.fixture.items.length,
+				fundedBy: [...stored.fundedBy],
+			},
+			itemId,
+			artwork: stored.artworks[itemId],
+			text: ADJUDICATION_TEXT[verdict as AdjudicationVerdict](item.questionKey),
+			tags: [ADJUDICATION_TAG, verdict],
+			derived: null,
+		} satisfies RecordInput<NoteRecord>)
+		return { recordId: record.id, verdict }
+	}
+
 	/** Items still missing a judgement. Release is refused while this is non-empty. */
 	pending(batchId: string): string[] {
 		const oracle = this.#oracle.get(batchId)
@@ -939,6 +1130,9 @@ const STATIC_ROUTES = new Map<string, { file: string; type: string }>([
 	["/oracle", { file: "oracle.html", type: "text/html; charset=utf-8" }],
 	["/oracle.html", { file: "oracle.html", type: "text/html; charset=utf-8" }],
 	["/oracle.js", { file: "oracle.js", type: "text/javascript; charset=utf-8" }],
+	["/oracle-review", { file: "oracle-review.html", type: "text/html; charset=utf-8" }],
+	["/oracle-review.html", { file: "oracle-review.html", type: "text/html; charset=utf-8" }],
+	["/oracle-review.js", { file: "oracle-review.js", type: "text/javascript; charset=utf-8" }],
 ])
 
 export type ReviewServerOptions = ReviewServiceOptions & Readonly<{ uiRoot?: string }>
@@ -1037,6 +1231,28 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 						decodeURIComponent(oracleAnswerMatch[1]),
 						decodeURIComponent(oracleAnswerMatch[2]),
 						body.answer,
+					),
+				)
+				return
+			}
+
+			const reviewMatch = /^\/api\/oracle-review\/([^/]+)$/u.exec(path)
+			if (method === "GET" && reviewMatch) {
+				respondJson(response, 200, await service.oracleReviewPayload(decodeURIComponent(reviewMatch[1])))
+				return
+			}
+
+			const reviewNoteMatch = /^\/api\/oracle-review\/([^/]+)\/items\/([^/]+)\/note$/u.exec(path)
+			if (reviewNoteMatch && (method === "PUT" || method === "POST")) {
+				const body = (await requestBody(request)) as Record<string, unknown>
+				if (typeof body.verdict !== "string") throw new BadRequest("verdict must be a string")
+				respondJson(
+					response,
+					200,
+					await service.putAdjudicationNote(
+						decodeURIComponent(reviewNoteMatch[1]),
+						decodeURIComponent(reviewNoteMatch[2]),
+						body.verdict,
 					),
 				)
 				return

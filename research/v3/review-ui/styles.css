@@ -616,3 +616,113 @@ summary {
 	gap: 12px;
 	text-align: center;
 }
+
+/* ---- oracle adjudication: the post-release browse ----
+ * Still a looking task, so the artwork stays large; but this page is read side by side with five
+ * plain facts, and it scrolls. The current item is marked by inverting its heading — there are only
+ * two colours here either.
+ */
+
+.adj-body {
+	padding-bottom: 64px;
+}
+
+.adj-foot {
+	position: fixed;
+	left: 12px;
+	right: 12px;
+	bottom: 12px;
+	background: var(--paper);
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.adj-keys {
+	letter-spacing: 0.02em;
+}
+
+.adj-section {
+	border: 1px solid var(--ink);
+	padding: 10px 12px;
+	margin-bottom: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.adj-section h2 {
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.adj-blurb {
+	max-width: 92ch;
+}
+
+.adj-item {
+	border-top: 1px solid var(--ink);
+	padding-top: 12px;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 0.6fr);
+	grid-template-areas: "head head" "art facts";
+	gap: 12px;
+	align-items: start;
+}
+
+.adj-item-head {
+	grid-area: head;
+	font-size: 13px;
+	font-weight: 400;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	word-break: break-all;
+}
+
+/* The current item, marked by inversion — never by a tint. */
+.adj-current > .adj-item-head {
+	background: var(--ink);
+	color: var(--paper);
+	padding: 2px 6px;
+}
+
+.adj-art {
+	grid-area: art;
+	display: block;
+	width: 100%;
+	max-width: 560px;
+	height: auto;
+	border: 1px solid var(--ink);
+}
+
+.adj-facts {
+	grid-area: facts;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.adj-fact {
+	display: grid;
+	grid-template-columns: 13em minmax(0, 1fr);
+	gap: 10px;
+	align-items: baseline;
+	word-break: break-word;
+}
+
+.adj-fact-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+	.adj-item {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: "head" "art" "facts";
+	}
+}
