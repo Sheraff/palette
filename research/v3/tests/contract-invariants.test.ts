@@ -418,8 +418,9 @@ test("I3 rejects a black-on-black foreground/background", () => {
 })
 
 test("I3 judges each pair against its own region's bar — one distance, two answers", () => {
-	// The same 0.0113 stop separation, in two regions. This is the finding that refuted a single
-	// threshold, expressed as two palettes that must validate differently.
+	// The same 0.0140 stop separation, in two regions. This is the finding that refuted a single
+	// threshold, expressed as two palettes that must validate differently. The distance sits outside
+	// both regions' confidence intervals, so the demonstration does not rest on the point estimates.
 	assert.deepEqual(validateDistinctness(regionalBarDistinctInDarkNeutral), [])
 
 	const violations = validateDistinctness(regionalBarSameInLightSaturated)

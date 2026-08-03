@@ -278,17 +278,23 @@ export const distinctnessNearCollapse: Palette = makePalette({
 /**
  * The regional bar, demonstrated: **the same OKLab distance, judged both ways.**
  *
- * Each of these palettes carries a stop pair 0.0120 ± 0.0002 apart. In dark-neutral, where the
- * reviewer's bar is 0.00876, that is two distinct colours. In light-saturated, where the bar is
- * 0.02687, it is one colour twice. A single threshold cannot produce both answers, which is exactly
- * what the bracketing round measured and what `oneThresholdSurvives: false` records.
+ * Each of these palettes carries a stop pair 0.01400 apart (matched to within 9e-7). In
+ * dark-neutral, where the reviewer's bar is 0.00932, that is two distinct colours. In
+ * light-saturated, where the bar is 0.02293, it is one colour twice. A single threshold cannot
+ * produce both answers, which is what the bracketing rounds measured and what
+ * `oneThresholdSurvives: false` records.
+ *
+ * The distance is chosen to sit outside **both regions' confidence intervals** — above
+ * dark-neutral's high of 0.01137 and below light-saturated's low of 0.01658 — so the demonstration
+ * survives the measurement's own uncertainty rather than depending on the point estimates. It also
+ * clears dark-neutral's 8-bit quantisation floor (±0.00075) by six times.
  */
 export const regionalBarDistinctInDarkNeutral: Palette = makePalette({
 	background: "#101820",
 	surface: "#f2f5f7",
 	foreground: "#e0533a",
 	accent: "#4a6b8a",
-	stops: [["#2b3f57", 0], ["#2e425a", 1]],
+	stops: [["#1e2a38", 0], ["#162a34", 1]],
 })
 
 export const regionalBarSameInLightSaturated: Palette = makePalette({
@@ -296,23 +302,24 @@ export const regionalBarSameInLightSaturated: Palette = makePalette({
 	surface: "#f2f5f7",
 	foreground: "#4a6b8a",
 	accent: "#e0533a",
-	stops: [["#bc4758", 0], ["#c1495a", 1]],
+	stops: [["#bc4758", 0], ["#b74b60", 1]],
 })
 
 /**
  * A pair that straddles a region boundary, chosen so the rule actually decides the outcome.
  *
- * `#00081e` is dark-saturated (bar 0.01764) and `#020a20` is dark-neutral (bar 0.00876) — the chroma
- * boundary runs between them. Their distance is 0.01145, which sits *between* the two bars. So the
- * smaller-bar rule would call them distinct and the larger-bar rule calls them the same colour.
- * `sameColorBar` takes the larger, so this is a violation; see that function for why.
+ * `#0e152e` is dark-saturated (bar 0.01502) and `#111830` is dark-neutral (bar 0.00932) — the chroma
+ * boundary runs between them. Their distance is 0.01217, placed at the exact midpoint of the two
+ * bars (0.00285 clear of each). So the smaller-bar rule would call them distinct and the larger-bar
+ * rule calls them the same colour, with equal room on both sides; `sameColorBar` takes the larger,
+ * so this is a violation. See that function for why.
  */
 export const regionalBarStraddlingPair: Palette = makePalette({
 	background: "#f2f5f7",
 	surface: "#e0533a",
 	foreground: "#4a6b8a",
 	accent: "#9e7397",
-	stops: [["#00081e", 0], ["#020a20", 1]],
+	stops: [["#0e152e", 0], ["#111830", 1]],
 })
 
 /**

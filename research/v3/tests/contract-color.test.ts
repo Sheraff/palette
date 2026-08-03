@@ -186,31 +186,42 @@ test("colorRegion places colors by the bracketing round's own strata boundaries"
 
 test("sameColor uses this pair's regional bar, and the bars are the reviewer's measured values", () => {
 	// One distance, judged two ways — the finding that refuted a single threshold.
-	const darkNeutralPair = [colorFromHex("#2b3f57"), colorFromHex("#2e425a")] as const
-	const lightSaturatedPair = [colorFromHex("#bc4758"), colorFromHex("#c1495a")] as const
+	const darkNeutralPair = [colorFromHex("#1e2a38"), colorFromHex("#162a34")] as const
+	const lightSaturatedPair = [colorFromHex("#bc4758"), colorFromHex("#b74b60")] as const
 	const distance = colorDistance(...darkNeutralPair)
 	assert.ok(Math.abs(distance - colorDistance(...lightSaturatedPair)) < 1e-5, "same distance")
 
 	assert.equal(sameColorBar(...darkNeutralPair), SAME_COLOR_BAR_BY_REGION["dark-neutral"])
 	assert.equal(sameColorBar(...lightSaturatedPair), SAME_COLOR_BAR_BY_REGION["light-saturated"])
-	assert.equal(sameColor(...darkNeutralPair), false, "0.0113 is distinct among dark neutrals")
-	assert.equal(sameColor(...lightSaturatedPair), true, "0.0113 is one color among light saturateds")
+	assert.equal(sameColor(...darkNeutralPair), false, "0.0140 is distinct among dark neutrals")
+	assert.equal(sameColor(...lightSaturatedPair), true, "0.0140 is one color among light saturateds")
 
-	// Tighter in dark-neutral, and the ordering the reviewer produced across all four.
-	assert.ok(SAME_COLOR_BAR_BY_REGION["dark-neutral"] < SAME_COLOR_BAR_BY_REGION["light-neutral"])
-	assert.ok(SAME_COLOR_BAR_BY_REGION["light-neutral"] < SAME_COLOR_BAR_BY_REGION["dark-saturated"])
-	assert.ok(SAME_COLOR_BAR_BY_REGION["dark-saturated"] < SAME_COLOR_BAR_BY_REGION["light-saturated"])
+	// The demonstration survives the measurement's own uncertainty: the distance sits above
+	// dark-neutral's whole confidence interval and below light-saturated's whole interval.
+	assert.ok(distance > 0.01137, "above dark-neutral's CI high")
+	assert.ok(distance < 0.01658, "below light-saturated's CI low")
+
+	// The stable part of the ordering, across both rounds: dark-neutral tightest, light-saturated
+	// loosest, by roughly 2.5x. The middle two are NOT asserted against each other — their intervals
+	// overlap almost entirely and pooling round 2 swapped them, so any order there is noise.
+	const bars = SAME_COLOR_BAR_BY_REGION
+	assert.ok(bars["dark-neutral"] < bars["dark-saturated"])
+	assert.ok(bars["dark-neutral"] < bars["light-neutral"])
+	assert.ok(bars["dark-saturated"] < bars["light-saturated"])
+	assert.ok(bars["light-neutral"] < bars["light-saturated"])
+	assert.ok(bars["light-saturated"] / bars["dark-neutral"] > 2)
 
 	// The bar is overridable, for a future sweep.
 	assert.equal(sameColor(...darkNeutralPair, 0.02), true)
 })
 
 test("a straddling pair takes the larger of the two regions' bars", () => {
-	// #00081e is dark-saturated (bar 0.01764), #020a20 dark-neutral (bar 0.00876); the chroma
-	// boundary runs between them. Their distance, 0.01145, sits between the two bars — so the rule
-	// decides the answer, and the documented choice is the larger.
-	const first = colorFromHex("#00081e")
-	const second = colorFromHex("#020a20")
+	// #0e152e is dark-saturated (bar 0.01502), #111830 dark-neutral (bar 0.00932); the chroma
+	// boundary runs between them. Their distance, 0.01217, is the exact midpoint of the two bars —
+	// so the rule decides the answer with equal room either way, and the documented choice is the
+	// larger.
+	const first = colorFromHex("#0e152e")
+	const second = colorFromHex("#111830")
 	assert.equal(colorRegion(first), "dark-saturated")
 	assert.equal(colorRegion(second), "dark-neutral")
 	const distance = colorDistance(first, second)
@@ -223,10 +234,42 @@ test("a straddling pair takes the larger of the two regions' bars", () => {
 	assert.equal(sameColorBar(second, first), sameColorBar(first, second))
 })
 
+test("the ruler is still one scalar per region — two measured findings are deliberately not encoded", () => {
+	// Tripwire, not a proof. Rounds 1+2 measured two things the contract knowingly does not yet
+	// express; both await a dedicated round before the ruler is allowed to grow dimensions. If a
+	// later change encodes either one, this test should fail and be rewritten on purpose rather
+	// than the findings quietly staying unimplemented forever.
+	//
+	// 1. light-saturated is not one population: by hue third it reads 0.01516 / 0.02074 / 0.03805,
+	//    a 2.5x spread. The single bar below is therefore known to be too loose for warm colours and
+	//    too tight for violets.
+	assert.equal(SAME_COLOR_BAR_BY_REGION["light-saturated"], 0.02293)
+	assert.equal(
+		typeof SAME_COLOR_BAR_BY_REGION["light-saturated"],
+		"number",
+		"still one number per region — no hue dependence yet",
+	)
+	assert.ok(0.01516 < SAME_COLOR_BAR_BY_REGION["light-saturated"], "warm third sits below the single bar")
+	assert.ok(0.03805 > SAME_COLOR_BAR_BY_REGION["light-saturated"], "violet third sits above it")
+
+	// 2. The distance itself looks anisotropic under register-as-same: at a matched 0.015, a
+	//    lightness-only difference read as "same" 4/4, chroma-only 2/4, hue-only 1/4. `sameColorBar`
+	//    takes only the two colours and returns a scalar, so direction cannot influence it — which
+	//    is the simplification being tracked.
+	assert.equal(sameColorBar.length, 2, "the bar is a function of the pair only, not of direction")
+	const lightnessOnly = [colorFromHex("#808080"), colorFromHex("#848484")] as const
+	const hueOnly = [colorFromHex("#bc4758"), colorFromHex("#bc4750")] as const
+	// Same region, so the same bar applies to both, whatever direction they point in.
+	assert.equal(colorRegion(lightnessOnly[0]), colorRegion(lightnessOnly[1]))
+	assert.equal(sameColorBar(...hueOnly), SAME_COLOR_BAR_BY_REGION[colorRegion(hueOnly[0])])
+})
+
 test("the pooled bar is kept as a reference and is not what any pair is judged against", () => {
-	assert.equal(POOLED_SAME_COLOR_BAR, 0.01582)
-	// The measurement that produced it also refuted it: dark-neutral's CI (0.00575-0.01335) excludes it.
-	assert.ok(POOLED_SAME_COLOR_BAR > 0.01335, "pooled sits outside dark-neutral's confidence interval")
+	assert.equal(POOLED_SAME_COLOR_BAR, 0.01535)
+	// The measurement that produced it also refuted it, now from both ends: pooled over rounds 1+2,
+	// dark-neutral's CI (0.00764-0.01137) and light-saturated's (0.01658-0.03170) both exclude it.
+	assert.ok(POOLED_SAME_COLOR_BAR > 0.01137, "above dark-neutral's confidence interval")
+	assert.ok(POOLED_SAME_COLOR_BAR < 0.01658, "below light-saturated's confidence interval")
 	// No region's bar equals it, so nothing silently falls back to it.
 	for (const bar of Object.values(SAME_COLOR_BAR_BY_REGION)) {
 		assert.notEqual(bar, POOLED_SAME_COLOR_BAR)

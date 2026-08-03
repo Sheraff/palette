@@ -1,8 +1,9 @@
 /**
  * Reproduces the translation that produced the same-colour bar's **superseded prior**.
  *
- * **Status: historical.** Reviewer bracketing round 1 (2026-08-02) measured the bar directly, per
- * region, and refuted a single threshold — see `SAME_COLOR_BAR_BY_REGION` in `constants.ts`. This
+ * **Status: historical.** Reviewer bracketing rounds 1 and 2 (2026-08-02/03) measured the bar
+ * directly, per region, and refuted a single threshold twice over — see `SAME_COLOR_BAR_BY_REGION`
+ * in `constants.ts`. This
  * script is kept because its finding still stands and still matters: the translation from v2-3's
  * CIE76 bar into OKLab has no single answer, which is why a translated prior could never have
  * substituted for asking the reviewer. It is the argument for the round having been necessary.
@@ -255,7 +256,7 @@ function main(): void {
 	}
 
 	console.log(`\nSuperseded prior was 0.012 (the exact-\u0394E ray median, rounded).`)
-	console.log(`Measured bars, reviewer bracketing round 1:`)
+	console.log(`Measured bars, reviewer bracketing rounds 1+2 pooled:`)
 	for (const [region, bar] of Object.entries(SAME_COLOR_BAR_BY_REGION)) {
 		console.log(`  ${region.padEnd(16)} ${bar}`)
 	}

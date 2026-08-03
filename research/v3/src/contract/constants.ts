@@ -69,52 +69,74 @@ export const REGION_CHROMA_BOUNDARY = 0.05
 /**
  * **The one ruler, per region.** The same-colour bar as a Euclidean distance in OKLab.
  *
- * `[REVIEWED]` — reviewer bracketing round 1, batch `bracketing-round-1-clarified`, 2026-08-02,
- * criterion **register-as-same** ("not whether you can detect any difference at the seam — if you
- * have to hunt along the boundary to find it, they're the same colour"). Source of truth:
- * `research/v3/data/calibration/bracketing-round-1-analysis.json`. 60 of 60 pairs answered; each
- * threshold is a logistic fit over 14 fitted points per region, with the 95% confidence interval:
+ * `[REVIEWED]` — reviewer bracketing **rounds 1 and 2, pooled**, batches
+ * `bracketing-round-1-clarified` and `bracketing-round-2`, criterion **register-as-same** ("not
+ * whether you can detect any difference at the seam — if you have to hunt along the boundary to find
+ * it, they're the same colour"). Both rounds ran the same criterion, so the analysis pools them
+ * (`criterionMatches: true`, `poolable: true`). Source of truth:
+ * `research/v3/data/calibration/bracketing-round-2-analysis.json`, `pooled.quadrants`. 140 of 140
+ * pairs answered across the two rounds; each threshold is a logistic fit with its 95% interval:
  *
- * | region           | bar     | 95% CI              |
- * |------------------|---------|---------------------|
- * | dark-neutral     | 0.00876 | 0.00575 – 0.01335   |
- * | dark-saturated   | 0.01764 | 0.01274 – 0.02443   |
- * | light-neutral    | 0.01629 | 0.01116 – 0.02380   |
- * | light-saturated  | 0.02687 | 0.01153 – 0.06265   |
+ * | region           | bar     | 95% CI              | n  | from        |
+ * |------------------|---------|---------------------|----|-------------|
+ * | dark-neutral     | 0.00932 | 0.00764 – 0.01137   | 28 | 14 r1 + 14 r2 |
+ * | dark-saturated   | 0.01502 | 0.01137 – 0.01986   | 28 | 14 r1 + 14 r2 |
+ * | light-neutral    | 0.01627 | 0.01308 – 0.02023   | 28 | 14 r1 + 14 r2 |
+ * | light-saturated  | 0.02293 | 0.01658 – 0.03170   | 36 | 14 r1 + 22 r2 |
  *
- * **A single threshold was refuted by this measurement.** `oneThresholdSurvives: false` — the
- * dark-neutral interval excludes the pooled threshold of 0.01582, so one bar does not fit all four
- * regions. §3's proposal of a single ruler survives as *one ruler* (Euclidean OKLab, used
- * everywhere); its *threshold* is regional. The spread is large and in the intuitive direction: the
- * eye separates dark neutrals about three times more finely than light saturated colours.
+ * Round 2 roughly halved every interval. It also **moved the middle two past each other**:
+ * round 1 read dark-saturated (0.01764) as looser than light-neutral (0.01629), and pooled they read
+ * the other way round. Do not build anything on that ordering — their intervals overlap across
+ * almost their whole length (0.01137–0.01986 against 0.01308–0.02023), so the two are statistically
+ * indistinguishable and the swap is noise. What *is* stable across both rounds is the pair at the
+ * ends: dark-neutral is the tightest bar and light-saturated the loosest, by roughly 2.5×.
  *
- * **How much to trust these.** Reviewer repeat consistency on this round was 63% (5 of 8 repeated
- * items answered the same way both times) and all 4 identical-colour controls passed. So the
- * ordering across regions is solid and each individual value carries real noise — which is what the
- * confidence intervals say. `light-saturated`'s interval spans a factor of 5.4 (0.01153–0.06265);
- * treat that bar as the least settled of the four, and prefer widening the round over trusting its
- * third digit.
+ * **A single threshold stays refuted, now twice over.** `oneThresholdSurvives: false` — pooled,
+ * *both* dark-neutral and light-saturated exclude the pooled threshold of 0.01535 (round 1 had only
+ * dark-neutral excluding it). §3's "one ruler" survives as one *ruler* — Euclidean OKLab, used
+ * everywhere — while its *threshold* is regional.
+ *
+ * **How much to trust these.** Reviewer repeat consistency is 63% across both rounds (5 of 8, then
+ * 10 of 16; combined 62.5%), and all identical-colour controls passed. A threshold can never be
+ * sharper than the reviewer's own repeatability, so 63% is the ceiling over everything here. The
+ * 8-bit grid adds its own floor: in dark-neutral the nearest-neighbour step is 0.00150 against a
+ * smallest rung of 0.00605, so rungs there are quantised to about ±0.00075. Every distance quoted is
+ * the achieved one, measured on the two colours actually shown.
+ *
+ * **Two measured findings deliberately not encoded here** — both await a dedicated round before the
+ * ruler is allowed to grow dimensions:
+ *
+ * 1. *`light-saturated` is not one population.* Split into hue thirds it reads 0.01516 at 0–120°
+ *    (pink-red through yellow-green), 0.02074 at 120–240° (green, cyan, blue) and 0.03805 at
+ *    240–360° (blue, violet, magenta, red) — a 2.5× spread, outside at least one interval. The bar
+ *    there depends on hue. Using the single 0.02293 is therefore known to be too loose for warm
+ *    colours and too tight for violets; it is a deliberate placeholder, not an accident.
+ * 2. *OKLab distance looks anisotropic under this criterion.* A direction probe at a fixed 0.01500,
+ *    where the pooled curve predicts 51% "same", got lightness-only differences called "same" 4/4,
+ *    chroma-only 2/4, hue-only 1/4. With four pairs per direction that is a signal, not a number —
+ *    but it says the same Euclidean distance means different things depending on which way it
+ *    points, which no scalar bar can express.
  */
 export const SAME_COLOR_BAR_BY_REGION = {
-	"dark-neutral": 0.00876,
-	"dark-saturated": 0.01764,
-	"light-neutral": 0.01629,
-	"light-saturated": 0.02687,
+	"dark-neutral": 0.00932,
+	"dark-saturated": 0.01502,
+	"light-neutral": 0.01627,
+	"light-saturated": 0.02293,
 } as const
 
 /**
  * The same-colour bar pooled across all four regions.
  *
- * `[REVIEWED]` — same round, `part1.pooled.threshold`: 0.01582 (95% CI 0.01235–0.02025) over 56
- * fitted points.
+ * `[REVIEWED]` — bracketing rounds 1 and 2 pooled, `pooled.fit.threshold`: 0.01535
+ * (95% CI 0.01263–0.01866) over 120 fitted points.
  *
  * **Not for the distinctness invariant.** The measurement that produced it also refuted it as a
- * single bar (dark-neutral's interval excludes it). It exists for the one legitimate use of a scalar
- * here: corpus metrics and dashboards that need to reduce "how different are these palettes?" to one
- * number comparable across runs — agreement rates, mover-set sizes, drift tracking. Any *per-pair*
- * judgement uses `sameColorBar()` instead.
+ * single bar — pooled, both dark-neutral and light-saturated exclude it. It exists for the one
+ * legitimate use of a scalar here: corpus metrics and dashboards that need to reduce "how different
+ * are these palettes?" to one number comparable across runs — agreement rates, mover-set sizes,
+ * drift tracking. Any *per-pair* judgement uses `sameColorBar()` instead.
  */
-export const POOLED_SAME_COLOR_BAR = 0.01582
+export const POOLED_SAME_COLOR_BAR = 0.01535
 
 /**
  * Upper bound on |raw APCA| for two *exactly identical* colours.
