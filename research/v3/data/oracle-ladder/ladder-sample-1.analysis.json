@@ -1,7 +1,7 @@
 {
 	"what": "Resolution-ladder analysis (ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md \u00a77.4.3) and the \u00a77.3 transfer check",
 	"generated_by": "research/v3/oracle/ladder/analyze.py",
-	"generated_at": "2026-08-03T10:11:45Z",
+	"generated_at": "2026-08-03T14:02:20Z",
 	"settings": {
 		"agreement_floor": 0.85,
 		"min_bin_n": 30,
@@ -32,12 +32,13 @@
 	"health": {
 		"result_files": [
 			"../../data/oracle-ladder/ladder-sample-1.jsonl",
+			"../../data/oracle-ladder/ladder-codec-control-1.jsonl",
 			"../../data/oracle-ladder/ladder-pairs-1.jsonl"
 		],
-		"rows": 2943,
-		"work_rows": 2913,
-		"canary_rows": 30,
-		"ok": 2913,
+		"rows": 3136,
+		"work_rows": 3088,
+		"canary_rows": 48,
+		"ok": 3088,
 		"failed": 0,
 		"parse_failed": 0,
 		"attempts_gt_1": 0,
@@ -46,7 +47,7 @@
 			"sample"
 		],
 		"collections": {
-			"music-artworks": 1625,
+			"music-artworks": 1800,
 			"sharded": 1288
 		},
 		"prompt_hashes": [
@@ -59,16 +60,16 @@
 			0
 		],
 		"canary": {
-			"count": 30,
+			"count": 48,
 			"distinct_parsed_answers": 1,
 			"stable": true
 		},
 		"native_resolution": true
 	},
 	"population": {
-		"ladder_comparisons_total": 1225,
+		"ladder_comparisons_total": 1431,
 		"ladder_comparisons_primary": 1190,
-		"codec_control_comparisons": 0,
+		"codec_control_comparisons": 206,
 		"matched_contrast_comparisons": 86,
 		"sharded_pair_comparisons": 644,
 		"artworks_with_an_answered_reference": 400
@@ -172,12 +173,12 @@
 				]
 			},
 			"codec_control_same_size": {
-				"n": 0,
-				"agree": 0,
-				"agreement": null,
+				"n": 206,
+				"agree": 186,
+				"agreement": 0.9029,
 				"ci95": [
-					0.0,
-					1.0
+					0.8548,
+					0.9363
 				]
 			},
 			"by_reference_band": {
@@ -359,12 +360,12 @@
 				]
 			},
 			"codec_control_same_size": {
-				"n": 0,
-				"agree": 0,
-				"agreement": null,
+				"n": 206,
+				"agree": 190,
+				"agreement": 0.9223,
 				"ci95": [
-					0.0,
-					1.0
+					0.8776,
+					0.9516
 				]
 			},
 			"by_reference_band": {
@@ -544,12 +545,12 @@
 				]
 			},
 			"codec_control_same_size": {
-				"n": 0,
-				"agree": 0,
-				"agreement": null,
+				"n": 206,
+				"agree": 198,
+				"agreement": 0.9612,
 				"ci95": [
-					0.0,
-					1.0
+					0.9253,
+					0.9802
 				]
 			},
 			"by_reference_band": {
@@ -732,12 +733,12 @@
 				]
 			},
 			"codec_control_same_size": {
-				"n": 0,
-				"agree": 0,
-				"agreement": null,
+				"n": 63,
+				"agree": 54,
+				"agreement": 0.8571,
 				"ci95": [
-					0.0,
-					1.0
+					0.7503,
+					0.923
 				]
 			},
 			"by_reference_band": {
@@ -919,12 +920,12 @@
 				]
 			},
 			"codec_control_same_size": {
-				"n": 0,
-				"agree": 0,
-				"agreement": null,
+				"n": 150,
+				"agree": 136,
+				"agreement": 0.9067,
 				"ci95": [
-					0.0,
-					1.0
+					0.8494,
+					0.9436
 				]
 			},
 			"by_reference_band": {

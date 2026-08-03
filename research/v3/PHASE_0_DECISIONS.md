@@ -369,12 +369,13 @@ Provenance and caveats, all load-bearing:
 - **The 0.85 agreement floor is `[UNCALIBRATED]`.** It is a CLI flag with no measured basis — the
   analysis prints the whole curve at every bin precisely so a reviewer can move it. Every floor in
   the table above moves with it. Owner: reviewer.
-- **The codec-control noise floor was never populated** (`codec_control_same_size.n = 0` for every
-  question — the run did not pass `--include-duplicate-sizes`). Same-size agreement is the number
-  that says how much of the disagreement is codec noise rather than lost information, and without
-  it a floor above the noise floor is unreachable at any resolution. **Every
-  `unanswerable_below_px` verdict above is therefore provisional** until that control is run. This
-  is the largest single soft spot in the ladder result.
+- ~~The codec-control noise floor was never populated~~ **Populated 2026-08-03**
+  (`ladder-codec-control-1.jsonl`, the `--include-duplicate-sizes` rerun): same-size,
+  different-bytes agreement is **ground_type 0.903 · field_texture 0.922 · enclosure 0.961 ·
+  shading_geometry 0.857** (n=206/206/206/63). Every failing resolution bin sits far below
+  its question's codec ceiling, so the drops are genuine resolution effects, not codec noise.
+  **The `unanswerable_below_px` verdicts are no longer provisional** — settled, scoped as
+  ever to the 0.85 `[UNCALIBRATED]` floor.
 - **`shading_geometry` is weak everywhere**, not merely below 441 px — its pooled agreement is
   0.671, far under the floor. Treat its floor as "the size below which it is hopeless", not as a
   size above which it is reliable.

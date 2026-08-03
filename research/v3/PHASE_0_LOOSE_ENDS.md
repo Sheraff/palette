@@ -20,7 +20,14 @@ future move).
 
 ## A. Sharp — something already depends on these
 
-### A1. The ladder's codec-control noise floor was never populated
+### A1. ~~The ladder's codec-control noise floor was never populated~~ CLOSED 2026-08-03
+**Resolution:** the `--include-duplicate-sizes` rerun (`ladder-codec-control-1.jsonl`)
+populated it: same-size agreement ground_type 0.903 / field_texture 0.922 / enclosure 0.961 /
+shading_geometry 0.857 — every failing resolution bin sits far below its codec ceiling, so
+the floors are genuine resolution effects. `PHASE_0_DECISIONS.md` §7 updated; verdicts no
+longer provisional. Original entry kept below for the record.
+
+### A1 (original). The ladder's codec-control noise floor was never populated
 - **What.** `codec_control_same_size.n = 0` for every question in
   `data/oracle-ladder/ladder-sample-1.analysis.json` — the run did not pass
   `--include-duplicate-sizes`. Same-size agreement is what separates "information was lost at this
