@@ -1,5 +1,5 @@
 ORACLE VLM BAKE-OFF — scores
-generated 2026-08-03T11:06:06.982Z  ·  repo head b907bcc406f1
+generated 2026-08-03T12:29:53.174Z  ·  repo head 454968bc3b2d
 
 ARMS
   qwen3-30b-a3b      mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit
@@ -41,20 +41,20 @@ ARMS
   arm                var       strict   kappa      mapped  agree  c-hard  c-soft  undet
   qwen3-30b-a3b      A         84/137  +0.210       55/77     55       1      18     63
   qwen3-30b-a3b      B         91/137  +0.311       70/94     70       8      12     47
-  qwen3-32b-dense    A          19/30  +0.024       11/19     11       1       5     13
-  qwen3-32b-dense    B          17/30  -0.154       12/21     12       1       6     11
+  qwen3-32b-dense    A         88/137  +0.254       55/67     55       2       5     75
+  qwen3-32b-dense    B         82/137  +0.159       54/69     54       1       6     76
   gemma3-27b         A           7/30  -0.364        7/28      7       3      17      3
   gemma3-27b         B          18/30  -0.216       18/27     18       4       4      4
 
   inter-variant (A vs B) — the subset the dense adjudicator would be sent:
   qwen3-30b-a3b      ground_type agreement 0.708 (kappa +0.610) · binary disagreement 36/137
-  qwen3-32b-dense    ground_type agreement 0.700 (kappa +0.615) · binary disagreement 9/30
+  qwen3-32b-dense    ground_type agreement 0.818 (kappa +0.750) · binary disagreement 23/137
   gemma3-27b         ground_type agreement 0.500 (kappa +0.320) · binary disagreement 15/30
 
   cross-arm agreement (variant A) — are these different instruments?
     gemma3-27b vs qwen3-30b-a3b                  same word 0.567 · same binary 0.567 (n=30)
     gemma3-27b vs qwen3-32b-dense                same word 0.400 · same binary 0.433 (n=30)
-    qwen3-30b-a3b vs qwen3-32b-dense             same word 0.533 · same binary 0.533 (n=30)
+    qwen3-30b-a3b vs qwen3-32b-dense             same word 0.761 · same binary 0.761 (n=142)
 
 SELF-CHECK against the published gold-30 analysis: PASS
 
@@ -62,6 +62,6 @@ HEALTH
   qwen3-30b-a3b      gold30   rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 2.9194s
   qwen3-30b-a3b      eval142  rows  284 ok  284 failed   0 parse_failed   0 retried   0 median 2.9194s
   qwen3-32b-dense    gold30   rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 17.5363s
-  qwen3-32b-dense    eval142  rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 17.5363s
+  qwen3-32b-dense    eval142  rows  284 ok  284 failed   0 parse_failed   0 retried   0 median 18.7351s
   gemma3-27b         gold30   rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 17.0832s
   gemma3-27b         eval142  rows   60 ok   60 failed   0 parse_failed   0 retried   0 median 17.0832s
