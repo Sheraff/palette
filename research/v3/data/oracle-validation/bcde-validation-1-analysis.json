@@ -1,0 +1,2979 @@
+{
+	"generatedAt": "2026-08-03T17:54:14.704Z",
+	"whatThisIs": "The first human answers to any group-BCDE question, beside the pilot's two prompt variants. No number here is an accuracy: the reviewer-vs-model join is three artworks wide, and P6 forbids reading any oracle cross-check as an exact-match test in the first place.",
+	"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/oracle-validation/bcde-validation-1.json",
+	"pilotRunPath": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/group-bcde-pilot-1.jsonl",
+	"batchId": "bcde-validation-1",
+	"labelSchemaVersion": "group-bcde.v1",
+	"scoping": [
+		"NO GROUND TRUTH EXISTED BEFORE THIS ROUND. The pilot measured E against F, which is self-consistency; a model can be perfectly self-consistent and perfectly wrong. These reviewer answers are the first human answer to any group-BCDE question, and they are elicited human labels — PHASE_0_DECISIONS.md §8's primary judge for any oracle comparison.",
+		"THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. Three artworks are in both — two on identical bytes, one at another rendition. No agreement rate computed on three rows is a rate. The two join grades are never pooled: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
+		"WORDING ASYMMETRY, PRE-REGISTERED (§15.9). Every stem and gloss the reviewer read was parsed out of variant E's prompt file. Scoring F against these answers carries a wording caveat that scoring E does not. That asymmetry is the price of two independent renderings; it is stated, not discovered later.",
+		"WHAT THE ROUND IS FOR AT FULL WIDTH: twenty reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
+		"NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against."
+	],
+	"counts": {
+		"artworks": 20,
+		"questions": 8,
+		"items": 160,
+		"answers": 160,
+		"unanswered": 0,
+		"joinExactBytes": 2,
+		"joinOtherRendition": 1,
+		"joinNone": 17
+	},
+	"skipped": {
+		"otherBatch": 540,
+		"machineAuthored": 0,
+		"retracted": 0,
+		"superseded": 3,
+		"unusableAnswer": 0
+	},
+	"questionsOmitted": {
+		"has_text": "kappa 0.9657 with raw agreement 0.993 — E and F differ on one image in 142. There is nothing for 20 reviewer answers to resolve. (Its own FAILURE, 15.6-2a, is that illegible_at_this_size never fires; that is a vocabulary question, not an accuracy question, and 20 more images at this tier mix would not fire it either.)",
+		"physical_media_scan": "kappa 1.0, raw 1.0. Perfect inter-variant agreement on 142 images.",
+		"medium": "kappa 0.8146 and a well-spread distribution; the highest-agreement question with real spread.",
+		"text_roles": "exact-set agreement 0.7817, mean Jaccard 0.9123, no vocabulary value below the kappa floor. §15.9 named it as the multi-select that would need kind:\"multi\" — the kind was built (it is generic, and overlays uses it), but the pilot leaves text_roles nothing to validate."
+	},
+	"perQuestion": [
+		{
+			"key": "grain_or_noise",
+			"kind": "enum",
+			"question": "texture_noise - is there visible grain or noise over large parts of the cover?",
+			"whyAsked": "kappa 0.5255, the second-weakest in the set, and 15.6-2.grain_confound is report_only: the yes-rate on photographs runs 16 points above typography_only with no bar to read it against. Grain is a perceptual judgement at a fixed rendition size, so the reviewer's answer is the only thing that can say whether the model is seeing grain or inferring it from medium.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"no": 17,
+				"yes": 3
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 3,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 1,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 3,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 1,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 3,
+					"disagreement": 0,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 1,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {
+						"E": "no",
+						"F": "no"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "no",
+					"model": {
+						"E": "no",
+						"F": "no"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {
+						"E": "no",
+						"F": "no"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "overlays",
+			"kind": "multi",
+			"question": "stickers - which of these have been added on top of the artwork? List every one you can see.",
+			"whyAsked": "included for coverage AND because it is the round's multi-select. 15.8.multi.overlays.singleton is report_only at 0.9542 — the array returned one value on 95% of rows, which §15.8 says would make the array machinery worthless. Whether that is the corpus or the instrument is a question only a human answering the same list question can settle, and settling it needs kind:\"multi\".",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"none": 14,
+				"label_logo": 5,
+				"watermark": 1
+			},
+			"multi": {
+				"singletonRate": 1,
+				"meanSize": 1,
+				"perValue": {
+					"none": 14,
+					"label_logo": 5,
+					"watermark": 1
+				}
+			},
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": 0.6667,
+					"meanJaccard": 0.6667,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 2,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": 0.3333,
+					"meanJaccard": 0.3333,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.3333,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 2,
+				"buckets": {
+					"agreement": 1,
+					"disagreement": 1,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 2,
+					"raw": 0.5,
+					"reason": "n=2 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 1,
+				"reviewerWithE": 1,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"label_logo"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"label_logo"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"label_logo"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {
+						"E": [
+							"none"
+						],
+						"F": [
+							"none"
+						]
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": 1
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": [
+						"label_logo"
+					],
+					"model": {
+						"E": [
+							"watermark"
+						],
+						"F": [
+							"watermark"
+						]
+					},
+					"bucket": {
+						"E": "disagreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": 0
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"watermark"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {
+						"E": [
+							"none"
+						],
+						"F": [
+							"label_logo"
+						]
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": false,
+					"setOverlap": 1
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"label_logo"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": [
+						"none"
+					],
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "has_dominant_subject",
+			"kind": "enum",
+			"question": "subject_count - how many main subjects does the cover have?",
+			"whyAsked": "kappa 0.6618, the second-lowest of the single-value questions, on a question SAM depends on. Its answer gates subject_kind and subject_area_band, so an error here propagates into two more.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"none": 5,
+				"single": 10,
+				"multiple": 5
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 2,
+					"disagreement": 1,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 0.6667,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "none",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "none",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "multiple",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "multiple",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "none",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "multiple",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "none",
+					"model": {
+						"E": "single",
+						"F": "single"
+					},
+					"bucket": {
+						"E": "disagreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "single",
+					"model": {
+						"E": "single",
+						"F": "single"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {
+						"E": "single",
+						"F": "single"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "multiple",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "none",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "multiple",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "single",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "subject_kind",
+			"kind": "enum",
+			"question": "subject_is - what kind of thing is the subject?",
+			"whyAsked": "§15.8 gives it 'the least standing … it should be the first deleted, not the last', and it is the newest field. Its kappa is high (0.9312) and its distribution is 51% person, which is consistent both with a correct instrument and with a model that answers 'person' by default. Included at lower priority than the four above, per the pilot's ordering.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"abstract_shape": 4,
+				"object": 6,
+				"person": 8,
+				"animal": 2
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 1,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 2,
+					"disagreement": 1,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 0.6667,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "abstract_shape",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "abstract_shape",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "object",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "object",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "animal",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "object",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "abstract_shape",
+					"model": {
+						"E": "object",
+						"F": "object"
+					},
+					"bucket": {
+						"E": "disagreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "object",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "object",
+					"model": {
+						"E": "object",
+						"F": "object"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "animal",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {
+						"E": "person",
+						"F": "person"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "abstract_shape",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "person",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "object",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "subject_area_band",
+			"kind": "enum",
+			"question": "subject_size - roughly how much of the cover do the subjects cover, taken together?",
+			"whyAsked": "kappa 0.607 on a rough-eyeball size judgement. §15.4 flags exactly this shape of question as the one a cheaper computed statistic might reproduce — which cannot be checked without knowing what the right answer was. Asked with has_dominant_subject because it is that question's child.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"not_applicable": 4,
+				"25_60": 9,
+				"under_25": 4,
+				"over_60": 3
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 1
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 1
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 2,
+					"disagreement": 0,
+					"cant_tell": 1
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 0.6667,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "under_25",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "under_25",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "over_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "over_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "under_25",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {
+						"E": "over_60",
+						"F": "over_60"
+					},
+					"bucket": {
+						"E": "cant_tell",
+						"F": "cant_tell"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "under_25",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "25_60",
+					"model": {
+						"E": "25_60",
+						"F": "25_60"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {
+						"E": "25_60",
+						"F": "25_60"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "over_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "25_60",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "has_signature_color",
+			"kind": "enum",
+			"question": "signature_colour - is there one colour that reads as this cover's colour?",
+			"whyAsked": "the pilot's only spread FAILURE among the single-value questions (15.6-2b.has_signature_color: yes on 85.9% of rows, over the 85% bar) and the weakest kappa in the set (0.4865, raw 0.8732 — agreement carried almost entirely by the majority class). Self-consistency cannot tell a well-calibrated yes from a reflex yes; a human can.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"yes": 16,
+				"no": 4
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 3,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 1,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 3,
+						"disagreement": 0,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 1,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 3,
+					"disagreement": 0,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 1,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {
+						"E": "yes",
+						"F": "yes"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "yes",
+					"model": {
+						"E": "yes",
+						"F": "yes"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "no",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {
+						"E": "yes",
+						"F": "yes"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "yes",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "text_dominance",
+			"kind": "enum",
+			"question": "lettering_weight - how much of the cover's design is the text?",
+			"whyAsked": "included for coverage of group B rather than for a failing number: kappa 0.7284, no spread failure. It is the one text question with a graded vocabulary, and asking it costs 20 items.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"not_applicable": 8,
+				"dominant_element": 6,
+				"present_secondary": 5,
+				"minor": 1
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 2,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.3333,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 1,
+						"disagreement": 2,
+						"cant_tell": 0
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.3333,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 3,
+				"buckets": {
+					"agreement": 1,
+					"disagreement": 2,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 3,
+					"raw": 0.3333,
+					"reason": "n=3 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 0,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 0
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "present_secondary",
+					"model": {
+						"E": "present_secondary",
+						"F": "present_secondary"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "present_secondary",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "minor",
+					"model": {
+						"E": "present_secondary",
+						"F": "present_secondary"
+					},
+					"bucket": {
+						"E": "disagreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {
+						"E": "present_secondary",
+						"F": "present_secondary"
+					},
+					"bucket": {
+						"E": "disagreement",
+						"F": "disagreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "present_secondary",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "dominant_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "present_secondary",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "present_secondary",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		},
+		{
+			"key": "signature_carrier",
+			"kind": "enum",
+			"question": "signature_source - which part of the cover carries the signature colour?",
+			"whyAsked": "the accent question §15.8 names as the field's premise — can a model say which lane carries a cover's colour. It passed inter-variant agreement (kappa 0.7091 on the gate-open subset) and contradiction 6 never fired (n=0), so nothing in the pilot can distinguish 'right' from 'consistently wrong'. It is asked with has_signature_color because the two are one decision.",
+			"answered": 20,
+			"unanswered": 0,
+			"reviewerDistribution": {
+				"background": 5,
+				"subject": 6,
+				"small_element": 3,
+				"not_applicable": 5,
+				"text": 1
+			},
+			"multi": null,
+			"perVariant": {
+				"E": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 1
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				},
+				"F": {
+					"buckets": {
+						"agreement": 2,
+						"disagreement": 0,
+						"cant_tell": 1
+					},
+					"exactSetAgreement": null,
+					"meanJaccard": null,
+					"kappa": {
+						"kappa": null,
+						"n": 3,
+						"raw": 0.6667,
+						"reason": "n=3 is below the 10-row floor for a kappa"
+					}
+				}
+			},
+			"variantAgreementSubset": {
+				"n": 2,
+				"buckets": {
+					"agreement": 2,
+					"disagreement": 0,
+					"cant_tell": 0
+				},
+				"kappa": {
+					"kappa": null,
+					"n": 2,
+					"raw": 1,
+					"reason": "n=2 is below the 10-row floor for a kappa"
+				}
+			},
+			"variantSplitSubset": {
+				"n": 1,
+				"reviewerWithE": 0,
+				"reviewerWithF": 0,
+				"reviewerWithNeither": 1
+			},
+			"joinCounts": {
+				"exact_bytes": 2,
+				"same_artwork_other_rendition": 1,
+				"none": 17
+			},
+			"perArtwork": [
+				{
+					"imageId": "ab67616d0000b2730011a326091e7dd7df58b175",
+					"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+					"sha256": "032ea002cee0e30ea94c0c81c24fc021297d1cc379d62c3c0c56e2734a9fecc7",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "background",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "d76d845e33b98c986bb8b1297e49487b.jpg",
+					"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+					"sha256": "03701cc83770ddf1ca56a9d48c98a89d6aafe4a24bfab3f3c71ae7dec5def3d0",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "background",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"imagePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+					"sha256": "1149533670b820982856dca8f7bb5bd856350d5d2f73dd7664f46bb5145a0a8d",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "subject",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"imagePath": "music-artworks/a/6/e/a6ef87d93332870d480ed5bbdf044713.jpeg",
+					"sha256": "11a6d2b55b18730296a3fca8cc430854048c288b506bc7936b22c82cc59d56f0",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "background",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"imagePath": "music-artworks/f/c/9/fc9a8d8e3d3668fb816a317ec92828d3.jpg",
+					"sha256": "11bb8cc34c30eb4a690512be6c158a5df731eef9e2cfc2bdbefc51c37701ce1b",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "subject",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000528de96baaabaa2cf3608",
+					"imagePath": "05/ab67616d0000b273000528de96baaabaa2cf3608",
+					"sha256": "272b5ae0095389c30e7f382b68e666bfff4ad155d7680d27582384a4f6cd729c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "subject",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+					"sha256": "35db4e822f134f93e8ecc2bce17a43d0f744df7989519b1c75b5487bbb5bf480",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "small_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000899b3352ee28935439b14",
+					"imagePath": "08/ab67616d0000b273000899b3352ee28935439b14",
+					"sha256": "517aadc6d3993c4b25a770d54a34f3fddc0e1a0be8f54387dde6120a3a778070",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"imagePath": "02/ab67616d00001e020002653adc4ef57bc46a3680.jpg",
+					"sha256": "5bc626b7736bd7e1c7501d96aaf8456ec9c6c04510b9525f91cdbc0ced2ee2a3",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "background",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e020004ccf0ae91364130886c02",
+					"imagePath": "04/ab67616d00001e020004ccf0ae91364130886c02",
+					"sha256": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "background",
+					"model": {
+						"E": "background",
+						"F": "background"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000b18d965d30345a2754191",
+					"imagePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+					"sha256": "744d3094eb049d7b9de9efc275de9c26f419fdd506b80bbbc3f5d381398f33c6",
+					"stratum": "<=400",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b2730013bebcaee941ebcc13437c",
+					"imagePath": "13/ab67616d0000b2730013bebcaee941ebcc13437c",
+					"sha256": "76977c801ed7177dcd7fbbcc00ebf129b5c1e462dc105fe34b3e231c7aeef29f",
+					"stratum": "401-640",
+					"joinGrade": "same_artwork_other_rendition",
+					"pilotImagePath": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+					"reviewer": "subject",
+					"model": {
+						"E": "subject",
+						"F": "subject"
+					},
+					"bucket": {
+						"E": "agreement",
+						"F": "agreement"
+					},
+					"variantsAgree": true,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b27300137c811595edad61c67781",
+					"imagePath": "13/ab67616d0000b27300137c811595edad61c67781",
+					"sha256": "8840a304b00cbbe03d8bdb17abb6dc1fd59316242ef0a7a4904d5f1f44f42288",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"imagePath": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+					"sha256": "8ca89e51c8baf623645e12c68f63df88b87a60c6576fad12cf5cdb5fbcafa87a",
+					"stratum": "<=400",
+					"joinGrade": "exact_bytes",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {
+						"E": "text",
+						"F": "background"
+					},
+					"bucket": {
+						"E": "cant_tell",
+						"F": "cant_tell"
+					},
+					"variantsAgree": false,
+					"setOverlap": null
+				},
+				{
+					"imageId": "266c6365bde8d74f42e9f603845c7491.jpeg",
+					"imagePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+					"sha256": "9f6797d3bc0f9e243ce450441d62b13dc929e0eccf85c89a13460edb1195a720",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "small_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "862ae92add8a96848aa277840ebccc8b.jpg",
+					"imagePath": "music-artworks/8/6/2/862ae92add8a96848aa277840ebccc8b.jpg",
+					"sha256": "a2f490fb5594818c1c394c1467d645822951e484ace7b53601a8f3b791fd0808",
+					"stratum": "641-1024",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "small_element",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000d0955a0875537c7738df8",
+					"imagePath": "0d/ab67616d0000b273000d0955a0875537c7738df8",
+					"sha256": "ad5ff788e6e2845ce918109f6fe2da3914f6e60ece92862f743b2ef802a8d00c",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "text",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "ab67616d0000b273000ad9116781016bd6e6c21c",
+					"imagePath": "0a/ab67616d0000b273000ad9116781016bd6e6c21c",
+					"sha256": "b709d1cd0e5cff4d12bc2347b769a501862f074cd83551cbbc9d7d44ddce4298",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "not_applicable",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"imagePath": "music-artworks/c/8/0/c8010570617778ff9c5d0afdc4c0fb31.jpeg",
+					"sha256": "d63faaf130d401d805adc37b778da9cb37625d3ca4b967acd90ddcaed00d974d",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "subject",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				},
+				{
+					"imageId": "3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"imagePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+					"sha256": "e228517f3a69deb80e3a651e9dd12e3c294328aa6e526baabc57196f94f74192",
+					"stratum": "401-640",
+					"joinGrade": "none",
+					"pilotImagePath": null,
+					"reviewer": "subject",
+					"model": {},
+					"bucket": {},
+					"variantsAgree": null,
+					"setOverlap": null
+				}
+			]
+		}
+	],
+	"summaryLines": [
+		"Group-BCDE reviewer validation — bcde-validation-1 (group-bcde.v1)",
+		"20 artworks from the coverage-set core x 8 questions = 160 items · 160 answered, 0 not yet",
+		"JOIN TO THE PILOT: 2 artworks on identical bytes, 1 at another rendition, 17 with no model answer at all.",
+		"",
+		"GRAIN_OR_NOISE (enum) — 20/20 answered",
+		"  reviewer said: no 17 · yes 3",
+		"  vs E: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (3 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"OVERLAYS (multi) — 20/20 answered",
+		"  reviewer said: none 14 · label_logo 5 · watermark 1",
+		"  set size: mean 1 · one value only on 1 of rows",
+		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 2 answered rows (1 with the reviewer); they split on 1 (reviewer with E 1, with F 0, with neither 0)",
+		"",
+		"HAS_DOMINANT_SUBJECT (enum) — 20/20 answered",
+		"  reviewer said: single 10 · none 5 · multiple 5",
+		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"SUBJECT_KIND (enum) — 20/20 answered",
+		"  reviewer said: person 8 · object 6 · abstract_shape 4 · animal 2",
+		"  vs E: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 2 agree · 1 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"SUBJECT_AREA_BAND (enum) — 20/20 answered",
+		"  reviewer said: 25_60 9 · not_applicable 4 · under_25 4 · over_60 3",
+		"  vs E: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (2 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"HAS_SIGNATURE_COLOR (enum) — 20/20 answered",
+		"  reviewer said: yes 16 · no 4",
+		"  vs E: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 3 agree · 0 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (3 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"TEXT_DOMINANCE (enum) — 20/20 answered",
+		"  reviewer said: not_applicable 8 · dominant_element 6 · present_secondary 5 · minor 1",
+		"  vs E: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 1 agree · 2 disagree · 0 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 3 answered rows (1 with the reviewer); they split on 0 (reviewer with E 0, with F 0, with neither 0)",
+		"",
+		"SIGNATURE_CARRIER (enum) — 20/20 answered",
+		"  reviewer said: subject 6 · background 5 · not_applicable 5 · small_element 3 · text 1",
+		"  vs E: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  vs F: 2 agree · 0 disagree · 1 can't-tell  (n=3)  kappa — n=3 is below the 10-row floor for a kappa",
+		"  E and F agreed on 2 answered rows (2 with the reviewer); they split on 1 (reviewer with E 0, with F 0, with neither 1)",
+		"",
+		"QUESTIONS DELIBERATELY NOT ASKED, and why (the pilot's own numbers):",
+		"  has_text — kappa 0.9657 with raw agreement 0.993 — E and F differ on one image in 142. There is nothing for 20 reviewer answers to resolve. (Its own FAILURE, 15.6-2a, is that illegible_at_this_size never fires; that is a vocabulary question, not an accuracy question, and 20 more images at this tier mix would not fire it either.)",
+		"  physical_media_scan — kappa 1.0, raw 1.0. Perfect inter-variant agreement on 142 images.",
+		"  medium — kappa 0.8146 and a well-spread distribution; the highest-agreement question with real spread.",
+		"  text_roles — exact-set agreement 0.7817, mean Jaccard 0.9123, no vocabulary value below the kappa floor. §15.9 named it as the multi-select that would need kind:\"multi\" — the kind was built (it is generic, and overlays uses it), but the pilot leaves text_roles nothing to validate.",
+		"",
+		"SCOPING:",
+		"  - NO GROUND TRUTH EXISTED BEFORE THIS ROUND. The pilot measured E against F, which is self-consistency; a model can be perfectly self-consistent and perfectly wrong. These reviewer answers are the first human answer to any group-BCDE question, and they are elicited human labels — PHASE_0_DECISIONS.md §8's primary judge for any oracle comparison.",
+		"  - THE JOIN IS TINY, AND THAT IS THE HEADLINE. The round is drawn from the coverage set's core; the pilot ran on eval-142. Three artworks are in both — two on identical bytes, one at another rendition. No agreement rate computed on three rows is a rate. The two join grades are never pooled: a 300 px and a 640 px rendition are different items (CONVENTIONS.md), and grain in particular can legitimately differ between them.",
+		"  - WORDING ASYMMETRY, PRE-REGISTERED (§15.9). Every stem and gloss the reviewer read was parsed out of variant E's prompt file. Scoring F against these answers carries a wording caveat that scoring E does not. That asymmetry is the price of two independent renderings; it is stated, not discovered later.",
+		"  - WHAT THE ROUND IS FOR AT FULL WIDTH: twenty reviewer labels per question on the corpus bench — the first labels the coverage set has ever carried — and §15.9's real product, which is whether a human can answer each of these questions at all. A question the reviewer finds unanswerable is deleted regardless of what the model did with it.",
+		"  - NEVER ONE ACCURACY NUMBER (PHASE_0_DECISIONS.md §4 P6). Every pair is bucketed agreement / disagreement / can't-tell, and the E-and-F-agree subset is reported apart from the E-and-F-split subset, because on a split row there is no single model answer to be accurate against."
+	]
+}

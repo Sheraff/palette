@@ -802,6 +802,32 @@ the reviewer notes did not show the forced choice losing information — what th
   where they voted differently from the oracle, they could see its point of view — further
   evidence the contested slice is intrinsically ambiguous.
 
+- **2026-08-03, BCDE validation round (reviewer): `has_dominant_subject` has no unit rule.**
+  "What if the main content is just 2 hands holding an object — does it count as 1, 2, or 3?"
+  The shared MAIN SUBJECT block says "take them all together" but never defines what *one*
+  subject is, so `single` vs `multiple` is undecidable for any composite. Proposed v2 rule
+  (NEEDS SIGN-OFF): **count the groups you would circle, not the things you could name** —
+  elements touching or acting together (hands holding an object, a rider on a horse, a band
+  huddled together) are ONE subject; `multiple` means subjects in *separate places* on the
+  cover. Rationale: the question feeds a color-mass/location prior — `subject_area_band`
+  already pools "taken together" and `subject_kind` takes the largest — and spatial
+  separateness is what changes palette structure; nameable-part count changes nothing.
+  Caveat on the round: its 20 `has_dominant_subject` answers (single 10 / multiple 5 /
+  none 5) were given without this rule, as was every E/F model answer.
+
+- **2026-08-03, same round (reviewer): `signature_carrier` forces one answer when the colour
+  has several carriers.** "Some image has both the text and the main subject be the exact same
+  colour which is the signature colour — how do you answer with only 1 answer?" The colour
+  being in two places at once is not ambiguity about the carrier; it is a fact the enum cannot
+  record (design rule 8's shape: a slot that cannot hold the answer it asks for). Proposed v2
+  (NEEDS SIGN-OFF): make `signature_carrier` a **multi-select** — list every carrier; the
+  grammar supports array-of-enum and the review UI's kind:"multi" already exists. A colour
+  carried by text AND subject is a *stronger* signature, and that pervasiveness is signal the
+  single-select was silently discarding. Folds into the already-flagged redesign of this axis
+  (pilot 15.6-2b: `has_signature_color` 85.9% yes, κ.49 — the gate and its dependent get
+  reworked together). Caveat on the round: recorded single answers on multi-carrier covers are
+  forced choices and carry that noise.
+
 ## Appendix V1 — group A as written in v1
 
 *Superseded by §A above. Preserved verbatim because `premise-run-1` and `disambiguation-1` were
