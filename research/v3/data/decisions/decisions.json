@@ -7,24 +7,24 @@
    "id": "d-2026-08-02-embedding-canonical-model",
    "ts": "2026-08-02T21:45:46Z",
    "kind": "instrument-selection",
-   "scope": "every v3 consumer of image embeddings: the near-duplicate census, the holdout component graph, corpus stratification, cluster galleries and visual retrieval. Dev-time only \u2014 embeddings are never a runtime palette component.",
+   "scope": "every v3 consumer of image embeddings: the near-duplicate census, the holdout component graph, corpus stratification, cluster galleries and visual retrieval. Dev-time only — embeddings are never a runtime palette component.",
    "decision": "The canonical embedding instrument is dinov2-vitl14 at its native 224 px input. All embedding-derived artifacts that carry a single primary arm use it; the other five arms stay on disk as cross-arm checks, and the near-duplicate graph deliberately takes the UNION over three arms rather than the primary alone.",
    "fundedBy": [],
    "fundedByArtifacts": [
     {
      "ref": "research/v3/data/embeddings/bakeoff.json",
      "sha256": "ef4cbf93181115213ae3a536e3343d8c6703b888d37df9059a8236ab8e5ca3d3",
-     "what": "Same-artwork-different-rendition retrieval over 24,648 pairs pooled across both collections. dinov2-vitl14 R@1 0.7892 (mean rank 1.497) \u2014 first of six arms, ahead of pe-core-l14 0.7887, dinov3-vitl16 0.7711, dinov3-vith16plus 0.7643, dinov2-vitl14-392 0.7544, siglip2-so400m 0.6766. The resolution confound is settled inside the same file: raising DINOv2 from 224 px to 392 px LOWERED R@1 (McNemar p=2e-81, n=24648), so the arms\u2019 differing input resolutions do not explain the ranking."
+     "what": "Same-artwork-different-rendition retrieval over 24,648 pairs pooled across both collections. dinov2-vitl14 R@1 0.7892 (mean rank 1.497) — first of six arms, ahead of pe-core-l14 0.7887, dinov3-vitl16 0.7711, dinov3-vith16plus 0.7643, dinov2-vitl14-392 0.7544, siglip2-so400m 0.6766. The resolution confound is settled inside the same file: raising DINOv2 from 224 px to 392 px LOWERED R@1 (McNemar p=2e-81, n=24648), so the arms’ differing input resolutions do not explain the ranking."
     },
     {
      "ref": "research/v3/data/embeddings/GALLERY_NOTES.md",
      "sha256": "28940918d33739b99e7a98b8b560a7eb232c268a3cf1dd570687dfbb40f14beb",
-     "what": "Reviewer gallery browse, 2026-08-02. Eliminated pe-core-l14 independent of its R@1 \u2014 it matches by ARTIST rather than by image (semantic leakage that would corrupt near-dup and stratification). Chose the DINO family; left v2-vs-v3 to the tiebreaker."
+     "what": "Reviewer gallery browse, 2026-08-02. Eliminated pe-core-l14 independent of its R@1 — it matches by ARTIST rather than by image (semantic leakage that would corrupt near-dup and stratification). Chose the DINO family; left v2-vs-v3 to the tiebreaker."
     }
    ],
    "fundingCaveats": [
-    "NO WAREHOUSE RECORDS FUND THIS. The reviewer\u2019s gallery observations were relayed conversationally and transcribed into GALLERY_NOTES.md by the orchestrator; the file itself says they are still \u201cto be ported into the warehouse as tagged note records once the tagging flow exists\u201d. `warehouse recheck --decisions` can therefore never flag this decision, however the reviewer later revises those observations.",
-    "GALLERY_NOTES.md closes with v2-vs-v3 pending. The tiebreaker it names went to dinov2 on R@1 and mean rank; dinov3-vitl16 has the better TAIL (worst rank 17 vs dinov2 64). The tail argument was not resolved in favour of dinov2 so much as outvoted by the headline metric \u2014 recorded here because the record should not read cleaner than the evidence."
+    "NO WAREHOUSE RECORDS FUND THIS. The reviewer’s gallery observations were relayed conversationally and transcribed into GALLERY_NOTES.md by the orchestrator; the file itself says they are still “to be ported into the warehouse as tagged note records once the tagging flow exists”. `warehouse recheck --decisions` can therefore never flag this decision, however the reviewer later revises those observations.",
+    "GALLERY_NOTES.md closes with v2-vs-v3 pending. The tiebreaker it names went to dinov2 on R@1 and mean rank; dinov3-vitl16 has the better TAIL (worst rank 17 vs dinov2 64). The tail argument was not resolved in favour of dinov2 so much as outvoted by the headline metric — recorded here because the record should not read cleaner than the evidence."
    ],
    "recordedAt": "2026-08-03"
   },
@@ -39,7 +39,7 @@
     {
      "ref": "research/v3/data/embeddings/near-dup-census.json",
      "sha256": "2140f43667beefea6c9fc5e6035f04e07eaa7fd720795da40e9e9eee85a63a8c",
-     "what": "The leak that voided 1.0.0: 224 of its 414 held-out artworks had a near-identical twin \u2014 same image, different artwork id \u2014 on the other side of the line. Also the census that built the replacement graph (edge wherever ANY of three arms puts a pair at cosine >= 0.95)."
+     "what": "The leak that voided 1.0.0: 224 of its 414 held-out artworks had a near-identical twin — same image, different artwork id — on the other side of the line. Also the census that built the replacement graph (edge wherever ANY of three arms puts a pair at cosine >= 0.95)."
     },
     {
      "ref": "research/v3/data/holdout/holdout.json",
@@ -52,7 +52,7 @@
     }
    ],
    "fundingCaveats": [
-    "NO WAREHOUSE RECORDS FUND THIS. The reviewer authorisation to re-roll (2026-08-02) was given conversationally. It is load-bearing \u2014 HOLDOUT.md states that changing the seed, census or component rule voids every claim made against the old list and must not happen again without the same authorisation \u2014 and it is recorded nowhere a machine can check.",
+    "NO WAREHOUSE RECORDS FUND THIS. The reviewer authorisation to re-roll (2026-08-02) was given conversationally. It is load-bearing — HOLDOUT.md states that changing the seed, census or component rule voids every claim made against the old list and must not happen again without the same authorisation — and it is recorded nowhere a machine can check.",
     "The redraw was free of consequence only because NOTHING HAD YET CONSUMED the holdout. That is the reason the authorisation was cheap to give; it will not be cheap again.",
     "The census is a LOWER BOUND: measured against duplicates the filename ground truth already knows about, it undercounts by 46.3% at cosine 0.95. Component isolation removes the duplicates we can see, not all of them."
    ],
@@ -62,7 +62,7 @@
    "id": "d-2026-08-03-same-color-bar-freeze",
    "ts": "2026-08-03T08:15:42Z",
    "kind": "metric-freeze",
-   "scope": "the one ruler (PHASE_0_DECISIONS.md \u00a73) wherever it is used: agreement, movement, distinctness, invariant 3, and the legacy known-worse gate. Does not cover the accent visibility distance or the P1 excursion bar.",
+   "scope": "the one ruler (PHASE_0_DECISIONS.md §3) wherever it is used: agreement, movement, distinctness, invariant 3, and the legacy known-worse gate. Does not cover the accent visibility distance or the P1 excursion bar.",
    "decision": "Freeze the region-dependent sameColorBar at its per-region POINT estimates (dark-neutral 0.00932, dark-saturated 0.01502, light-neutral 0.01627, light-saturated 0.02293). No bracketing round 3 for this bar. Do NOT adopt the light-saturated hue split.",
    "fundedBy": [
     "o-mscbsw4i-2c0dc45a",
@@ -226,7 +226,7 @@
     {
      "ref": "research/v3/data/calibration-consequence/report.json",
      "sha256": "9cb531eba0eb90956565c53f159beb0be86dc5fe8aae8965dc68173a64f7475e",
-     "what": "Prices the remaining uncertainty. On the roles matrix \u2014 the decisions v3 will certainly make \u2014 554 palettes / 3221 pairs: 0 flips at the CI low end, 2 at the high end, 0 under the hue split. Both high-end flips are one colour pair, and both would newly condemn a palette the reviewer ENDORSED, which \u00a74 says demotes an invariant rather than tightening it. The hue split flips only toward more violations, all on endorsed or accepted palettes."
+     "what": "Prices the remaining uncertainty. On the roles matrix — the decisions v3 will certainly make — 554 palettes / 3221 pairs: 0 flips at the CI low end, 2 at the high end, 0 under the hue split. Both high-end flips are one colour pair, and both would newly condemn a palette the reviewer ENDORSED, which §4 says demotes an invariant rather than tightening it. The hue split flips only toward more violations, all on endorsed or accepted palettes."
     },
     {
      "ref": "research/v3/data/calibration/bracketing-round-2-analysis.json",
@@ -236,8 +236,8 @@
    ],
    "fundingCaveats": [
     "fundedBy lists the 156 reviewer answers the bar is FITTED to (72 from bracketing-round-1-clarified, 84 from bracketing-round-2), so an amendment to any of them flags this decision. The 62 answers of the original bracketing-round-1 are NOT listed: that round was a false start under a detection criterion and was rerun as -clarified. They remain in the warehouse as history.",
-    "The freeze rests on a reviewer whose own measured repeat consistency on this task is 63%. A round 3 cannot buy precision the reviewer does not have \u2014 that is an argument for freezing, not a claim that the bar is precise.",
-    "IF a round 3 is ever justified, the report says aim it at light-saturated and split it by hue (widest interval, 1.9x; the hue split inside it shows a 2.5x spread). The ANISOTROPY finding is NOT priced by this analysis at all \u2014 it is a missing dimension, not a width. See PHASE_0_LOOSE_ENDS.md."
+    "The freeze rests on a reviewer whose own measured repeat consistency on this task is 63%. A round 3 cannot buy precision the reviewer does not have — that is an argument for freezing, not a claim that the bar is precise.",
+    "IF a round 3 is ever justified, the report says aim it at light-saturated and split it by hue (widest interval, 1.9x; the hue split inside it shows a 2.5x spread). The ANISOTROPY finding is NOT priced by this analysis at all — it is a missing dimension, not a width. See PHASE_0_LOOSE_ENDS.md."
    ],
    "recordedAt": "2026-08-03"
   },
@@ -261,7 +261,7 @@
    ],
    "fundingCaveats": [
     "NO WAREHOUSE RECORDS FUND THIS. The reviewer gave the recency rule conversationally on 2026-08-02, SUPERSEDING an orchestrator decision of warn-never-block made the same day. Both answers are preserved in legacy/README.md because the fixtures were built once under each and the counts differ (35 hard-gate entries then, 37 now).",
-    "Recency is a POLICY, not a measurement. It asserts that a later blinded comparison reflects the reviewer\u2019s settled view better than an earlier one. The warehouse epistemology \u2014 censored, relative, rendition-scoped \u2014 gives no evidence either way; a palette can lose a later pairing for reasons that have nothing to do with the reviewer changing their mind.",
+    "Recency is a POLICY, not a measurement. It asserts that a later blinded comparison reflects the reviewer’s settled view better than an earlier one. The warehouse epistemology — censored, relative, rendition-scoped — gives no evidence either way; a palette can lose a later pairing for reasons that have nothing to do with the reviewer changing their mind.",
     "The rule turns 3 palettes from good to gated and 3 from gated to good on a corpus of 37 hard-gate entries. It is an ~8% swing in the gate set decided by a tie-break policy."
    ],
    "recordedAt": "2026-08-03"
@@ -270,8 +270,8 @@
    "id": "d-2026-08-03-oracle-question-set-freeze",
    "ts": "2026-08-03T12:00:00Z",
    "kind": "instrument-freeze",
-   "scope": "the semantic oracle group-A instrument and everything downstream of its labels. Does NOT freeze groups B\u2013F (unpiloted draft) and does not settle which MODEL runs the instrument.",
-   "decision": "Oracle labels are known-noisy CENSUS, FLAG and STRATA instruments \u2014 never per-item truth, never a fitting target, never a gate. The instrument is frozen at the v2 SINGLE-QUESTION group-A form carrying variant B ordering (context questions asked before the critical ground question). The decomposed-probe arm is PARKED with its findings banked; the \u00a7A.5 vocabulary split stays unimplemented. No further instrument change until the bulk-model decision lands.",
+   "scope": "the semantic oracle group-A instrument and everything downstream of its labels. Does NOT freeze groups B–F (unpiloted draft) and does not settle which MODEL runs the instrument.",
+   "decision": "Oracle labels are known-noisy CENSUS, FLAG and STRATA instruments — never per-item truth, never a fitting target, never a gate. The instrument is frozen at the v2 SINGLE-QUESTION group-A form carrying variant B ordering (context questions asked before the critical ground question). The decomposed-probe arm is PARKED with its findings banked; the §A.5 vocabulary split stays unimplemented. No further instrument change until the bulk-model decision lands.",
    "fundedBy": [
     "o-mscwakr9-205bf25c",
     "o-mscwar06-435b9291",
@@ -489,12 +489,12 @@
    "fundedByArtifacts": [
     {
      "ref": "research/v3/data/oracle-premise/premise-run-1.agreement.json",
-     "what": "137 artworks x 2 variants against the accepted gradient flag. Variant B beats A decisively and consistently: exact ground_type match with the reviewer 16/30 vs 7/30, binary agreement 17/24 vs 8/20, strict kappa vs the flag 0.31 vs 0.21, answers landing on a value that predicts nothing 31% vs 44%. Ordering is the mechanism with a story behind it \u2014 under constrained decoding the property order IS the generation order, so B has committed to two cheap facts about the image before answering the hard one."
+     "what": "137 artworks x 2 variants against the accepted gradient flag. Variant B beats A decisively and consistently: exact ground_type match with the reviewer 16/30 vs 7/30, binary agreement 17/24 vs 8/20, strict kappa vs the flag 0.31 vs 0.21, answers landing on a value that predicts nothing 31% vs 44%. Ordering is the mechanism with a story behind it — under constrained decoding the property order IS the generation order, so B has committed to two cheap facts about the image before answering the hard one."
     },
     {
      "ref": "research/v3/data/oracle-validation/probe-gold-1-analysis.json",
      "sha256": "0d80a6a37ef4d1a4f4a4007f7f4f1045002bfb9233f1414ae1f1b15f36f68af3",
-     "what": "The probe arm\u2019s human round, and the measurement that parks it. NO MODEL IS INVOLVED: the reviewer answered 180 probes on the same 30 artworks they had already answered directly. The derivation reproduces their own direct tag on only 13/30 (43.3%) \u2014 against a reviewer self-consistency noise floor of 0.63. Binary agreement 16/20 with 10 unmappable. The unsure channel built to carry ambiguity was used 1 time in 180 (0.6%) while the reviewer reported the questions as ambiguous."
+     "what": "The probe arm’s human round, and the measurement that parks it. NO MODEL IS INVOLVED: the reviewer answered 180 probes on the same 30 artworks they had already answered directly. The derivation reproduces their own direct tag on only 13/30 (43.3%) — against a reviewer self-consistency noise floor of 0.63. Binary agreement 16/20 with 10 unmappable. The unsure channel built to carry ambiguity was used 1 time in 180 (0.6%) while the reviewer reported the questions as ambiguous."
     },
     {
      "ref": "research/v3/data/oracle-bakeoff/scores.json",
@@ -506,16 +506,16 @@
     },
     {
      "ref": "research/v3/oracle/premise/PREMISE_NEXT.md",
-     "what": "\u00a78 the gold-30\u2019s scope, \u00a711 the probe arm\u2019s pre-registered criteria, \u00a714 the sign-off ledger (items 4, 5 and 7 unsigned)."
+     "what": "§8 the gold-30’s scope, §11 the probe arm’s pre-registered criteria, §14 the sign-off ledger (items 4, 5 and 7 unsigned)."
     }
    ],
    "fundingCaveats": [
-    "The GOLD-30 IS THE HARD TAIL BY CONSTRUCTION \u2014 the 30 artworks are exactly those where the oracle and the accepted flag CONTRADICTED. Every rate computed on them is a rate on hard cases. An arm can win here and lose on the corpus, and vice versa.",
-    "ANCHORING CAVEAT, recorded in the analysis itself: the reviewer browsed /oracle-review earlier the same day, which displays their own direct answers for these same 30 artworks. The probe round shows none of them, but the sittings were not separated. The 43.3% is therefore an UPPER BOUND on what two independent sittings would give \u2014 which makes the parking decision stronger, not weaker.",
+    "The GOLD-30 IS THE HARD TAIL BY CONSTRUCTION — the 30 artworks are exactly those where the oracle and the accepted flag CONTRADICTED. Every rate computed on them is a rate on hard cases. An arm can win here and lose on the corpus, and vice versa.",
+    "ANCHORING CAVEAT, recorded in the analysis itself: the reviewer browsed /oracle-review earlier the same day, which displays their own direct answers for these same 30 artworks. The probe round shows none of them, but the sittings were not separated. The 43.3% is therefore an UPPER BOUND on what two independent sittings would give — which makes the parking decision stronger, not weaker.",
     "The probe arm was parked WITHOUT a model ever running it. What was measured is the derivation against a human, not the instrument against a model. Its Q2/Q3/Q4 questions (are the probes easy, does the inconsistency rate earn its place, does bundling contaminate) are unanswered.",
-    "The ground truth in premise-run-1 is an ACCEPTED ALGORITHM DECISION, not an elicited human label, and the reviewer has since ruled (ORACLE_QUESTION_SET.md Appendix R, 2026-08-03) that the published gradient flag is PALETTE-CONDITIONAL \u2014 an artwork can support a valid flat palette and a valid gradient palette. Flag agreement is a secondary signal and must never be called accuracy.",
+    "The ground truth in premise-run-1 is an ACCEPTED ALGORITHM DECISION, not an elicited human label, and the reviewer has since ruled (ORACLE_QUESTION_SET.md Appendix R, 2026-08-03) that the published gradient flag is PALETTE-CONDITIONAL — an artwork can support a valid flat palette and a valid gradient palette. Flag agreement is a secondary signal and must never be called accuracy.",
     "Variant B was chosen on a confound the docs name openly: A and B differ in ORDER and in WORDING, so ordering is not cleanly isolated. The criterion arm (variants C, D) was drafted to deconfound it and has not been run.",
-    "PREMISE_NEXT.md \u00a714 lists eight sign-off items; the probe set wording, the 729-row derivation table and the human probe round are marked as needing reviewer sign-off. The round was run; the sign-off ledger has not been updated to say so."
+    "PREMISE_NEXT.md §14 lists eight sign-off items; the probe set wording, the 729-row derivation table and the human probe round are marked as needing reviewer sign-off. The round was run; the sign-off ledger has not been updated to say so."
    ],
    "recordedAt": "2026-08-03"
   },
@@ -523,14 +523,14 @@
    "id": "d-2026-08-03-sam-prompt-set-replacement",
    "ts": "2026-08-03T10:18:00Z",
    "kind": "instrument-selection",
-   "scope": "oracle/sam/config.py CONCEPT_PROMPTS \u2014 the concept set SAM 3 is run with, and therefore the identity of every mask row (CONCEPT_SET_HASH). Dev-time only.",
-   "decision": "Replace the pipeline \u00a78.3 concept phrasings with the probes measured winners: words, letter, lettering, album title, logo, sticker, person, face. The \u00a78.3 text-side phrasings text and typography are dropped \u2014 they fire on zero images with this model.",
+   "scope": "oracle/sam/config.py CONCEPT_PROMPTS — the concept set SAM 3 is run with, and therefore the identity of every mask row (CONCEPT_SET_HASH). Dev-time only.",
+   "decision": "Replace the pipeline §8.3 concept phrasings with the probes measured winners: words, letter, lettering, album title, logo, sticker, person, face. The §8.3 text-side phrasings text and typography are dropped — they fire on zero images with this model.",
    "fundedBy": [],
    "fundedByArtifacts": [
     {
      "ref": "research/v3/data/sam/probe-1.jsonl",
      "sha256": "76d8ae85449f63097787928f99384a0776517d61049ef2f55ed7ced6b001aba7",
-     "what": "19 candidate phrasings over the 10-image smoke set, per image, with score and area for every instance. Of the five text-side phrasings \u00a78.3 names, three fire on ZERO of 10: text 0/10, typography 0/10, and the variants a text / written text / text overlay 0/10 each; lettering 2/10, logo 3/10, sticker 1/10. Phrasings \u00a78.3 does not name do far better: words 7/10, letter 7/10, word 6/10, letters 6/10, album title 5/10, title 4/10, caption 4/10 \u2014 with pixel-accurate masks on the glyphs."
+     "what": "19 candidate phrasings over the 10-image smoke set, per image, with score and area for every instance. Of the five text-side phrasings §8.3 names, three fire on ZERO of 10: text 0/10, typography 0/10, and the variants a text / written text / text overlay 0/10 each; lettering 2/10, logo 3/10, sticker 1/10. Phrasings §8.3 does not name do far better: words 7/10, letter 7/10, word 6/10, letters 6/10, album title 5/10, title 4/10, caption 4/10 — with pixel-accurate masks on the glyphs."
     },
     {
      "ref": "research/v3/oracle/sam/config.py",
@@ -539,8 +539,8 @@
    ],
    "fundingCaveats": [
     "n=10. This is a smoke set, not a sample. The winners are ranked on ten images.",
-    "NO WAREHOUSE RECORDS FUND THIS, and no reviewer has looked at a single mask produced by the new set. The change was made by the ORCHESTRATOR on measurement; the reviewer\u2019s veto stands over it, because changing the question set is the reviewer\u2019s call. It is ratifiable or reversible in one edit \u2014 but until it is ratified it is an agent-side change to an instrument the reviewer owns.",
-    "STALE COMMENT IN THE CODE: the [MEASURED, n=10, HELD] block still reads \u201cThe set above is left exactly as \u00a78.3 specifies, because changing the question set is the reviewer\u2019s call, not an agent\u2019s.\u201d That sentence described the state BEFORE the replacement and now contradicts the tuple it annotates. Flagged to the oracle workstream; not edited here (path ownership).",
+    "NO WAREHOUSE RECORDS FUND THIS, and no reviewer has looked at a single mask produced by the new set. The change was made by the ORCHESTRATOR on measurement; the reviewer’s veto stands over it, because changing the question set is the reviewer’s call. It is ratifiable or reversible in one edit — but until it is ratified it is an agent-side change to an instrument the reviewer owns.",
+    "STALE COMMENT IN THE CODE: the [MEASURED, n=10, HELD] block still reads “The set above is left exactly as §8.3 specifies, because changing the question set is the reviewer’s call, not an agent’s.” That sentence described the state BEFORE the replacement and now contradicts the tuple it annotates. Flagged to the oracle workstream; not edited here (path ownership).",
     "DANGLING GROUP MEMBERS: CONCEPT_GROUPS[text_like] still lists text and typography, which are no longer in CONCEPT_PROMPTS, so the group union is computed over concepts that can never appear. Flagged to the oracle workstream; not edited here."
    ],
    "recordedAt": "2026-08-03"
@@ -611,7 +611,7 @@
    "id": "d-2026-08-03-sam-concept-set-v2",
    "ts": "2026-08-03T18:20:00Z",
    "kind": "instrument",
-   "decision": "SAM concept set v2 (parental-advisory added; display-text and emblem as provenance-neutral tag names; mark_like group) is ratified by the reviewer's mask round: display-text 9/9 yes, emblem 6/6 yes, parental-advisory 9/10 (the one no from the unconfirmed slice, as designed). Residual-is-field 7y/7p/1n: the subtractive residual is a field-enriched prior, not a pure field extraction \u2014 consumers must treat it so.",
+   "decision": "SAM concept set v2 (parental-advisory added; display-text and emblem as provenance-neutral tag names; mark_like group) is ratified by the reviewer's mask round: display-text 9/9 yes, emblem 6/6 yes, parental-advisory 9/10 (the one no from the unconfirmed slice, as designed). Residual-is-field 7y/7p/1n: the subtractive residual is a field-enriched prior, not a pure field extraction — consumers must treat it so.",
    "fundedBy": [
     "o-msddytom-2d06bc39",
     "o-msddyvuu-c99496fa",
@@ -664,7 +664,7 @@
    "id": "d-2026-08-03-coverage-set-canonical-bench",
    "ts": "2026-08-03T20:10:00Z",
    "kind": "corpus-policy",
-   "decision": "coverage-set-1 (200 core embedding-stratified artworks + 20 labeled enrichment) is the canonical instrument-tuning bench. eval-142 is retained ONLY for truth-anchored comparisons against its existing labels \u2014 measured 2.67x further from the corpus distribution than the core (cluster-mix TVD 0.227 vs 0.085), 17.6% of it outside the embedded corpus entirely, 4 of 36 clusters never touched. New instrument tuning runs on the coverage core; reviewer label rounds accumulate on it toward the stage-4 validation sample.",
+   "decision": "coverage-set-1 (200 core embedding-stratified artworks + 20 labeled enrichment) is the canonical instrument-tuning bench. eval-142 is retained ONLY for truth-anchored comparisons against its existing labels — measured 2.67x further from the corpus distribution than the core (cluster-mix TVD 0.227 vs 0.085), 17.6% of it outside the embedded corpus entirely, 4 of 36 clusters never touched. New instrument tuning runs on the coverage core; reviewer label rounds accumulate on it toward the stage-4 validation sample.",
    "fundedBy": [],
    "fundedByArtifacts": [
     "research/v3/data/coverage-set/coverage-set-1.json",
@@ -676,7 +676,7 @@
    "id": "d-2026-08-03-oracle-multi-kind",
    "ts": "2026-08-03T22:10:00Z",
    "kind": "instrument-design",
-   "decision": "Array-valued oracle questions use kind:'multi' in the oracle-validation mode (digits toggle, Enter/Space commits, one oracle-label record with a sorted string[]), chosen over per-value decomposition (PREMISE_NEXT \u00a715.9 option A). Shape checked before values; empty commits refused (every multi vocabulary carries an explicit none).",
+   "decision": "Array-valued oracle questions use kind:'multi' in the oracle-validation mode (digits toggle, Enter/Space commits, one oracle-label record with a sorted string[]), chosen over per-value decomposition (PREMISE_NEXT §15.9 option A). Shape checked before values; empty commits refused (every multi vocabulary carries an explicit none).",
    "fundedBy": [],
    "fundedByArtifacts": [
     "research/v3/tests/review-server-bcde-validation.test.ts"
@@ -694,6 +694,30 @@
     "research/v3/data/oracle-validation/bcde-validation-1.json"
    ],
    "scope": "reviewer rounds from 2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-sam-concept-set-v2.1-barcode",
+   "ts": "2026-08-03T23:30:00Z",
+   "kind": "instrument-selection",
+   "decision": "SAM concept set v2.1: ADD (\"barcode\", \"barcode\"), grouped mark_like (its one probe-4 hit is the strip inside the sticker that \"sticker\" masks — same pixels, so same idea by the co-firing rule). Reviewer-approved 2026-08-03: \"SAM static adds => yes, go\". The CJK words from the same probe are deliberately NOT added: \"chinese characters\" recalls 4/4 with perfect precision but tops out at 0.472, below the 0.578 calibrated cut — a category-aware threshold plus a CJK mask-quality round must come first (loose end A12). Cost: concept_set_hash changes; v2 stored runs must be re-run before any analysis reads them alongside barcode rows.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/data/sam/PROBE4_NOTES.md",
+    "research/v3/oracle/sam/probe_scripts_objects.py"
+   ],
+   "scope": "all SAM runs from concept set v2.1 onward"
+  },
+  {
+   "id": "d-2026-08-03-bcde-question-rulings-and-rule-9",
+   "ts": "2026-08-03T23:30:00Z",
+   "kind": "question-set-ruling",
+   "decision": "Both bcde-validation-1 reviewer-found defects SIGNED OFF for schema v2, plus a general principle adopted as design rule 9. (1) has_dominant_subject gains a unit criterion: count the groups you would circle, not the things you could name — elements touching or acting together are ONE subject; multiple means subjects in separate places. (2) signature_carrier becomes a multi-select. (3) Rule 9 (reviewer directive, verbatim): \"generally we should design these so there is no possible ambiguity (whether that's a better framed question, or we split one into multiple questions)\" — reframe or split, never patch with a gloss.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+    "research/v3/ORACLE_QUESTION_SET.md"
+   ],
+   "scope": "oracle question schema v2 (bulk-run design); all future question authoring"
   }
  ]
 }

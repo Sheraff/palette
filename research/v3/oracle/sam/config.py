@@ -111,6 +111,17 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
     ("parental-advisory", "parental advisory"),
     ("person", "person"),
     ("face", "face"),
+    # [REVIEWED, n=16] CONCEPT SET v2.1 — one ADD, reviewer-approved 2026-08-03 ("SAM
+    # static adds => yes, go"). Evidence: probe 4 (data/sam/PROBE4_NOTES.md), "barcode"
+    # precision 1.00 with zero false positives on 14 no-barcode covers; 0.94 on the
+    # EAN-carrying promo sticker, clearing the calibrated cut with room. Recall 0.50
+    # (n=2): it missed the parcel's shipping-label barcode block. The CJK words from the
+    # same probe are NOT added: "chinese characters" recalls 4/4 with perfect precision
+    # but its best score anywhere is 0.472 — every recovery dies at the 0.578 calibrated
+    # cut. A category-aware threshold plus a CJK mask-quality round must come first
+    # (loose end A12). COST: this ADD changes concept_set_hash(), so any stored run under
+    # v2 must be re-run before an analysis reads it alongside barcode rows.
+    ("barcode", "barcode"),
 )
 
 # [MEASURED, n=10, HELD] probe_prompts.py over the smoke set, 2026-08-03. Of the five
@@ -170,7 +181,10 @@ CONCEPT_PROMPTS: tuple[tuple[str, str], ...] = (
 # no separation between groups anyway, so no calibrated number rests on the old partition.
 CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
     "text_like": ("words", "letter", "lettering", "display-text"),
-    "mark_like": ("emblem", "sticker", "parental-advisory"),
+    # barcode joined mark_like with concept set v2.1: probe 4's one barcode hit is the strip
+    # INSIDE the promo sticker that "sticker" masks at 0.93 (vocab-probe-15) — same pixels,
+    # same idea by the co-firing rule that drew these lines.
+    "mark_like": ("emblem", "sticker", "parental-advisory", "barcode"),
     "person_like": ("person", "face"),
 }
 

@@ -38,6 +38,9 @@ CONCEPT_COLORS = {
     "parental-advisory": (140, 255, 0),
     "person": (0, 255, 120),
     "face": (120, 100, 255),
+    # v2.1 add. White, because a barcode mask is a small monochrome strip that every other
+    # colour here can sit next to — and nothing else on the sheet is white.
+    "barcode": (255, 255, 255),
 }
 assert set(CONCEPT_COLORS) == {tag for tag, _ in config.CONCEPT_PROMPTS}, (
     "CONCEPT_COLORS out of step with config.CONCEPT_PROMPTS"

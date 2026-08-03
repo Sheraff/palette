@@ -728,6 +728,18 @@ These extend pipeline §8.1's five rules. They are here because a run produced t
    share of answers landing on unmapped values *before* reading any agreement number: at 31–44%
    the agreement figure is describing a minority of the corpus. §A.5.
 
+9. **Design out ambiguity entirely — reframe the question or split it; never patch it with a
+   gloss.** `[REVIEWED]` Reviewer directive 2026-08-03, issued while signing off both Appendix R
+   rulings from `bcde-validation-1`: "generally we should design these so there is no possible
+   ambiguity (whether that's a better framed question, or we split one into multiple
+   questions)." Both live failures were structural, and glossing would not have fixed either:
+   `has_dominant_subject` lacked a *unit* (no gloss can count "two hands holding an object"
+   without a rule for what one subject is), and `signature_carrier`'s single slot could not
+   *hold* a two-carrier answer no matter how it was worded. The order of remedies is therefore:
+   first check the answer *shape* can record every real cover (rule 8), then check the question
+   supplies its own unit/criterion, and only then polish wording. A question that needs a long
+   gloss to be answerable is a question that wants splitting.
+
 ---
 
 ## What is deliberately NOT asked
@@ -805,8 +817,9 @@ the reviewer notes did not show the forced choice losing information — what th
 - **2026-08-03, BCDE validation round (reviewer): `has_dominant_subject` has no unit rule.**
   "What if the main content is just 2 hands holding an object — does it count as 1, 2, or 3?"
   The shared MAIN SUBJECT block says "take them all together" but never defines what *one*
-  subject is, so `single` vs `multiple` is undecidable for any composite. Proposed v2 rule
-  (NEEDS SIGN-OFF): **count the groups you would circle, not the things you could name** —
+  subject is, so `single` vs `multiple` is undecidable for any composite. v2 rule
+  (SIGNED OFF 2026-08-03, under design rule 9 — the fix goes in the question's own criterion,
+  not a gloss): **count the groups you would circle, not the things you could name** —
   elements touching or acting together (hands holding an object, a rider on a horse, a band
   huddled together) are ONE subject; `multiple` means subjects in *separate places* on the
   cover. Rationale: the question feeds a color-mass/location prior — `subject_area_band`
@@ -819,8 +832,9 @@ the reviewer notes did not show the forced choice losing information — what th
   has several carriers.** "Some image has both the text and the main subject be the exact same
   colour which is the signature colour — how do you answer with only 1 answer?" The colour
   being in two places at once is not ambiguity about the carrier; it is a fact the enum cannot
-  record (design rule 8's shape: a slot that cannot hold the answer it asks for). Proposed v2
-  (NEEDS SIGN-OFF): make `signature_carrier` a **multi-select** — list every carrier; the
+  record (design rule 8's shape: a slot that cannot hold the answer it asks for). v2 fix
+  (SIGNED OFF 2026-08-03, under design rule 9): make `signature_carrier` a **multi-select** —
+  list every carrier; the
   grammar supports array-of-enum and the review UI's kind:"multi" already exists. A colour
   carried by text AND subject is a *stronger* signature, and that pervasiveness is signal the
   single-select was silently discarding. Folds into the already-flagged redesign of this axis

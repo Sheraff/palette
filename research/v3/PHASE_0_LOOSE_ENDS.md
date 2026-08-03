@@ -192,6 +192,20 @@ area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIE
   **Revives when:** the first sharded-corpus accuracy claim is drafted.
 - **Blast radius.** Final claims only; dev work unaffected.
 
+### A12. CJK text is invisible to the SAM stage at the calibrated threshold
+- **What.** Probe 4: "chinese characters" recalls 4/4 CJK covers with zero false positives, but
+  its best score anywhere is 0.472 — below the 0.578 calibrated cut, so every recovery is
+  filtered out. "kanji" clears the cut only on the two Japanese covers. The reviewer approved
+  the barcode static add (concept set v2.1, 2026-08-03) but the CJK words were deliberately NOT
+  added: at the current single threshold they would contribute nothing.
+- **Consequence.** Until fixed, any SAM-derived "text location" signal silently excludes CJK
+  covers — the exact class the reviewer's Chinese-character contamination example came from.
+- **Owner.** orchestrator (design a category-aware threshold; then a CJK mask-quality round —
+  needs CJK covers pulled into the sample, the current quality sample has almost none).
+  **Revives when:** SAM masks are first consumed by an algorithm stage, or the next
+  mask-quality round is scheduled, whichever comes first.
+- **Blast radius.** SAM text-location signals only; the VLM questions see CJK text fine.
+
 ## B. Standing — parked with a clear trigger
 
 ### B1. The bulk-model decision (which VLM runs the corpus pass)
