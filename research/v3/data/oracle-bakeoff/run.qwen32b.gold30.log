@@ -1,0 +1,93 @@
+=== supervisor: starting worker (restart 0/20) at 2026-08-03T10:12:19Z
+{
+	"arm": "qwen3-32b-dense",
+	"model": "mlx-community/Qwen3-VL-32B-Instruct-8bit",
+	"revision": "14fd4c76af6bd02d1f3dbe5ea7b03da5a1ae25cf",
+	"item_set": "gold30",
+	"items": 30,
+	"variants": [
+		"group-a.v1/A",
+		"group-a.v1/B"
+	],
+	"already_done": 0,
+	"queued": 60,
+	"poisoned_over_attempt_cap": 0,
+	"out": "/Users/Flo/GitHub/palette/research/v3/data/oracle-bakeoff/qwen3-32b-dense.jsonl",
+	"long_edge_cap": 640,
+	"constrained_decoding": true,
+	"constrained_decoding_reason": "grammar verified for this arm"
+}
+loading mlx-community/Qwen3-VL-32B-Instruct-8bit @ 14fd4c76af6b ...
+Fetching 20 files:   0%|          | 0/20 [00:00<?, ?it/s]Fetching 20 files: 100%|██████████| 20/20 [00:00<00:00, 4804.20it/s]
+model loaded in 5.9s
+canary baseline set: {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thin_border', 'confidence': 'high', 'ambiguity_note': ''}
+[1/60] vvbrown.jpg A ok 15.8s (33.7s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[2/60] vvbrown.jpg B ok 15.3s (24.5s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[3/60] ab67616d00001e02000564718f605c1f326b2ca2 A ok 12.9s (20.6s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[4/60] ab67616d00001e02000564718f605c1f326b2ca2 B ok 13.8s (18.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[5/60] ab67616d0000b27300092c140fe03d08e0dc906a A ok 15.2s (18.2s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[6/60] ab67616d0000b27300092c140fe03d08e0dc906a B ok 14.7s (17.6s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[7/60] meteora.jpg A ok 15.0s (17.2s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[8/60] meteora.jpg B ok 15.4s (17.0s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[9/60] ab67616d00001e020009657a5122a7b3d40458b0 A ok 11.4s (16.4s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[10/60] ab67616d00001e020009657a5122a7b3d40458b0 B ok 11.1s (15.8s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[11/60] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg A ok 14.9s (15.8s/item avg) {'ground_type': 'pattern_or_texture', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[12/60] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg B ok 15.3s (15.7s/item avg) {'ground_type': 'pattern_or_texture', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[13/60] ab67616d00001e02000d457f4b8829a59481e78b A ok 11.6s (15.4s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[14/60] ab67616d00001e02000d457f4b8829a59481e78b B ok 11.8s (15.1s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[15/60] ab67616d00001e020003e50500c5d762da89643a.jpg A ok 11.9s (14.9s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[16/60] ab67616d00001e020003e50500c5d762da89643a.jpg B ok 12.3s (14.8s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[17/60] ab67616d0000b2730010def2c33a308e8bd193f8 A ok 15.7s (14.8s/item avg) {'ground_type': 'pattern_or_texture', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[18/60] ab67616d0000b2730010def2c33a308e8bd193f8 B ok 16.7s (14.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[19/60] ab67616d0000b2730012eb9ade9c1bf4a5411c5d A ok 17.8s (15.1s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[20/60] ab67616d0000b2730012eb9ade9c1bf4a5411c5d B ok 18.0s (15.2s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'distinct_areas', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[21/60] ab67616d0000b273000390c07f75da30b4e8aba8.jpg A ok 17.2s (16.2s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'distinct_areas', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[22/60] ab67616d0000b273000390c07f75da30b4e8aba8.jpg B ok 18.5s (16.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[23/60] ab67616d0000b2730007cc8b341c11227aa7b461 A ok 17.9s (16.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[24/60] ab67616d0000b2730007cc8b341c11227aa7b461 B ok 18.6s (16.4s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[25/60] ab67616d0000b273000442caec7ec8cb724bf265 A ok 19.6s (16.6s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[26/60] ab67616d0000b273000442caec7ec8cb724bf265 B ok 19.9s (16.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[27/60] placebo.jpg A ok 19.6s (16.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'irregular', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[28/60] placebo.jpg B ok 19.7s (16.9s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[29/60] ab67616d0000b2730005230fae1822525e5a5ff6 A ok 18.2s (16.9s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[30/60] ab67616d0000b2730005230fae1822525e5a5ff6 B ok 18.1s (17.0s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[31/60] ab67616d00001e0200079d5a7d92f2bff88570db A ok 14.2s (16.9s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[32/60] ab67616d00001e0200079d5a7d92f2bff88570db B ok 15.4s (16.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[33/60] ab67616d00001e020005a54a9ea60f48619788f1 A ok 14.0s (16.8s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[34/60] ab67616d00001e020005a54a9ea60f48619788f1 B ok 13.3s (16.7s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'linear', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[35/60] ab67616d00001e02000e007955ee2f8b29f5b2b4 A ok 14.3s (16.6s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[36/60] ab67616d00001e02000e007955ee2f8b29f5b2b4 B ok 13.9s (16.5s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[37/60] ab67616d0000b273000a2927c0f27657e4a2aeaa A ok 17.8s (16.5s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[38/60] ab67616d0000b273000a2927c0f27657e4a2aeaa B ok 17.8s (16.6s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[39/60] ab67616d0000b27300075841f68d8cd71db368d8 A ok 17.5s (16.6s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'distinct_areas', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[40/60] ab67616d0000b27300075841f68d8cd71db368d8 B ok 19.5s (16.7s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[41/60] ab67616d0000b2730005a91812c85db291ea5d85 A ok 18.5s (17.2s/item avg) {'ground_type': 'pattern_or_texture', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[42/60] ab67616d0000b2730005a91812c85db291ea5d85 B ok 17.7s (17.2s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[43/60] ab67616d0000b2730001c404b8a04a8789db8dab.jpg A ok 17.8s (17.2s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[44/60] ab67616d0000b2730001c404b8a04a8789db8dab.jpg B ok 17.7s (17.2s/item avg) {'ground_type': 'shaded_field', 'shading_geometry': 'radial_or_vignette', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[45/60] muse.jpg A ok 18.3s (17.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[46/60] muse.jpg B ok 18.3s (17.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[47/60] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg A ok 17.6s (17.3s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[48/60] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg B ok 17.4s (17.3s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[49/60] ab67616d0000b273000a24cc32b3d8b6e31bc161 A ok 17.0s (17.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[50/60] ab67616d0000b273000a24cc32b3d8b6e31bc161 B ok 17.3s (17.3s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[51/60] ab67616d0000b2730006a059abb2a6b7dd4ad461 A ok 18.0s (17.3s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[52/60] ab67616d0000b2730006a059abb2a6b7dd4ad461 B ok 17.5s (17.3s/item avg) {'ground_type': 'flat_field', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'thin_border', 'confidence': 'high', 'ambiguity_note': ''}
+[53/60] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg A ok 18.4s (17.3s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thin_border', 'confidence': 'high', 'ambiguity_note': ''}
+[54/60] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg B ok 19.1s (17.4s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'thick_frame_or_bars', 'confidence': 'high', 'ambiguity_note': ''}
+[55/60] ab67616d0000b2730004515066668684295c41a7 A ok 17.4s (17.4s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'irregular', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[56/60] ab67616d0000b2730004515066668684295c41a7 B ok 17.7s (17.4s/item avg) {'ground_type': 'full_scene', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[57/60] ab67616d0000b2730008c1c08433aa880aad7f30 A ok 18.8s (17.4s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[58/60] ab67616d0000b2730008c1c08433aa880aad7f30 B ok 17.5s (17.4s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'smooth', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[59/60] ab67616d0000b27300116380305ae5fd3607c43b A ok 18.7s (17.4s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+[60/60] ab67616d0000b27300116380305ae5fd3607c43b B ok 18.7s (17.4s/item avg) {'ground_type': 'multiple_distinct_fields', 'shading_geometry': 'not_applicable', 'field_texture': 'one_textured_material', 'enclosure': 'none', 'confidence': 'high', 'ambiguity_note': ''}
+{
+	"arm": "qwen3-32b-dense",
+	"item_set": "gold30",
+	"processed_this_process": 60,
+	"elapsed_seconds": 1046.5,
+	"seconds_per_inference": 17.44,
+	"run_id": "116bdb04-7155-4c96-bde7-50d67efbf6e2",
+	"exit_code": 0
+}
+=== supervisor: worker finished cleanly

@@ -42,9 +42,9 @@ sixth rule**, earned by measurement rather than proposed.
 
 | # | change | where | kind |
 |---|---|---|---|
-| 1 | `ground_type`'s criterion corrected: the axis is **one continuous colour progression vs discrete colour areas**; surface identity is a prior, neither necessary nor sufficient | §A.2 | **needs sign-off** — it is a criterion change, though the reviewer authored both source rulings |
+| 1 | `ground_type`'s criterion corrected: the axis is **one continuous colour progression vs discrete colour areas**; surface identity is a prior, neither necessary nor sufficient | §A.2 | **SIGNED OFF 2026-08-03** (reviewer, incl. the birdsofprey continuous-rainbow case → shaded_field) |
 | 2 | The two reviewer-decided cases written up as canonical examples, in one block that prompt files quote verbatim | §A.2 | mechanical (transcription of recorded rulings) |
-| 3 | Per-value definition sentences added to the `ground_type` vocabulary, and a **precedence rule** saying when *not* to reach for `full_scene` / `pattern_or_texture` / `none_discernible` | §A.1, §A.3 | **needs sign-off** — the precedence rule is new policy, not transcription |
+| 3 | Per-value definition sentences added to the `ground_type` vocabulary, and a **precedence rule** saying when *not* to reach for `full_scene` / `pattern_or_texture` / `none_discernible` | §A.1, §A.3 | **SIGNED OFF 2026-08-03** (reviewer, after plain-language restatement) |
 | 4 | New design rule: **question order matters; ask the context questions before the critical one** | §D | mechanical (states a measured result) |
 | 5 | Expected reliability replaced with measured reliability, per field, per tier | §A.4 | mechanical |
 | 6 | `confidence` recorded as **measured degenerate** (299 rows, 298 said `high`); inter-variant disagreement named as the real uncertainty signal | §A.4, §Meta | mechanical |
@@ -52,7 +52,7 @@ sixth rule**, earned by measurement rather than proposed.
 | 8 | v1's group A preserved verbatim; v1's "candidate refinements" log preserved verbatim | Appendix V1, Appendix R | mechanical |
 | 9 | **Decomposed-probe arm** added: six easy probes replace the six-way question, tag derived by a committed table. Reviewer-initiated 2026-08-03 | §A.6 | **needs sign-off** — it is a new instrument, not a rewording. Nothing is retired for it; it is an arm to be measured against C/D |
 | 10 | The §A.5 split marked **superseded by §A.6** — the probe arm is its generalisation, and if the probes win, the split is subsumed | §A.5, §A.6.7 | mechanical (a pointer, not a decision) |
-| 11 | Probe arm **v1 → v1.1: the referent defect** — reviewer stress test found the probes presupposed a singular background. Referent preamble + whole-region clauses + unsure framing; derivation untouched | §A.6.0, §A.6.1, §A.6.4 case 9 | **needs sign-off** — these are the words the reviewer will answer in the §12 human round |
+| 11 | Probe arm **v1 → v1.1: the referent defect** — reviewer stress test found the probes presupposed a singular background. Referent preamble + whole-region clauses + unsure framing; derivation untouched | §A.6.0, §A.6.1, §A.6.4 case 9 | **SIGNED OFF 2026-08-03** (reviewer: "the six probe wording is ok"; answered in the §12 round before reading the derivation rules — scoping note in the round's analysis) |
 
 Nothing in groups B–F changed. They have not been piloted, so there is nothing to correct them
 with.

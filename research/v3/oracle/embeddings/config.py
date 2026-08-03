@@ -131,6 +131,7 @@ ARM_DINOV2 = "dinov2-vitl14"
 ARM_DINOV2_HIRES = "dinov2-vitl14-392"
 ARM_PE_CORE = "pe-core-l14"
 ARM_DINOV3 = "dinov3-vitl16"
+ARM_DINOV3_HPLUS = "dinov3-vith16plus"
 
 # [MEASURED] DINOv3 is the reviewer's preferred pure-vision arm and access has
 # been requested. Re-probed 2026-08-02 after the request was filed: the repo
@@ -240,6 +241,35 @@ ARMS = {
         "input_side_px": 224,
         # DINOv3 prepends register tokens after CLS; index 0 is still CLS, so the
         # shared DINO encode path applies unchanged.
+        "pooling": "CLS token",
+        "text_aligned": False,
+        "legacy_untagged_paths": False,
+        "gated": True,
+    },
+    ARM_DINOV3_HPLUS: {
+        "loader": "hf_dino",
+        "model_id": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
+        "pretrained": None,
+        "hf_repo": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
+        # [MEASURED] refs/main on 2026-08-02, with the reviewer's token in place.
+        # Gated the same way as the ViT-L/16 repo, and the same acceptance covers
+        # both -- verified by downloading from each before adding this entry.
+        "hf_revision": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+        "weights_filename": "model.safetensors",
+        # [MEASURED] sha256 of the 3.36 GB checkpoint the loader opens, computed
+        # by `embed.py --pin-arm-weights dinov3-vith16plus` on 2026-08-02.
+        "weights_sha256": (
+            "3e1d4d18b9bfa9f28fad8e9de6a783f1313532d3460efa4cd0b12521d81d1a4d"
+        ),
+        # [MEASURED] hidden_size from the repo's config.json: 1280, against the
+        # ViT-L/16's 1024. 32 layers and 20 heads, against 24 and 16.
+        "dim": 1280,
+        # [MEASURED] image_size in config.json is 224, identical to the ViT-L/16
+        # arm. The two DINOv3 arms therefore differ ONLY in model scale, with no
+        # resolution difference to confound the v3-L vs v3-H+ comparison. Its
+        # preprocessor_config.json also has no center crop, so the whole-frame
+        # squash this pipeline already applies matches the official recipe.
+        "input_side_px": 224,
         "pooling": "CLS token",
         "text_aligned": False,
         "legacy_untagged_paths": False,

@@ -1,5 +1,5 @@
 {
-	"generated_at": "2026-08-03T08:22:30.229Z",
+	"generated_at": "2026-08-03T10:44:36.443Z",
 	"generated_by": "research/v3/oracle/bakeoff/score.py",
 	"item_sets": [
 		"gold30",
@@ -24,7 +24,7 @@
 			"architecture": "qwen3_vl",
 			"role": "dense challenger; also the pipeline's planned adjudicator",
 			"blocked_reason": null,
-			"state": "no results yet"
+			"state": "results on disk"
 		},
 		"gemma3-27b": {
 			"hf_repo": "mlx-community/gemma-3-27b-it-8bit",
@@ -34,7 +34,7 @@
 			"architecture": "gemma3",
 			"role": "third arm \u2014 fallback for the blocked InternVL3.5 slot",
 			"blocked_reason": null,
-			"state": "no results yet"
+			"state": "results on disk"
 		}
 	},
 	"per_arm": {
@@ -884,9 +884,860 @@
 					"large_>640": 11
 				}
 			}
+		},
+		"qwen3-32b-dense": {
+			"gold30_results_file": "/Users/Flo/GitHub/palette/research/v3/data/oracle-bakeoff/qwen3-32b-dense.jsonl",
+			"gold30_health": {
+				"rows": 60,
+				"ok": 60,
+				"failed": 0,
+				"parse_failed": 0,
+				"attempts_gt_1": 0,
+				"by_variant": {
+					"A": 30,
+					"B": 30
+				},
+				"constrained_decoding": [
+					true
+				],
+				"model_revisions": [
+					"14fd4c76af6bd02d1f3dbe5ea7b03da5a1ae25cf"
+				],
+				"prompt_hashes": [
+					"b1e58c3af233b91e44cf3832c24eeadedd01792dcc8cd8c72a25c0fe22bbcbd8",
+					"c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+				],
+				"median_generation_seconds": 17.5363
+			},
+			"gold30": {
+				"A": {
+					"n_items": 30,
+					"answered": 30,
+					"exact_vocabulary_match": {
+						"matched": 13,
+						"n": 30,
+						"rate": 0.4333
+					},
+					"binary_agreement_vs_reviewer": {
+						"n": 18,
+						"agreement": 0.7778,
+						"cohens_kappa": 0.5,
+						"matthews_corr": 0.5,
+						"confusion": {
+							"human_gradient_oracle_gradient": 4,
+							"human_flat_oracle_flat": 10,
+							"human_flat_oracle_gradient": 2,
+							"human_gradient_oracle_flat": 2
+						},
+						"oracle_says_gradient_rate": 0.3333,
+						"human_says_gradient_rate": 0.3333,
+						"note": "n < 30: pairs where either side's label predicts nothing are dropped, not scored"
+					},
+					"flag_baseline_vs_reviewer": {
+						"n": 24,
+						"agreement": 0.5833,
+						"cohens_kappa": 0.0625,
+						"matthews_corr": 0.0625,
+						"confusion": {
+							"human_gradient_oracle_gradient": 3,
+							"human_flat_oracle_flat": 11,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 5
+						},
+						"oracle_says_gradient_rate": 0.3333,
+						"human_says_gradient_rate": 0.3333
+					},
+					"dropped": {
+						"oracle_made_no_prediction": 6,
+						"reviewer_made_no_prediction": 6
+					},
+					"who_the_reviewer_agreed_with": {
+						"oracle": 5,
+						"neither": 2,
+						"both": 9,
+						"flag": 2
+					},
+					"reviewer_label_x_oracle_label": {
+						"flat_field->flat_field": 6,
+						"flat_field->full_scene": 1,
+						"flat_field->multiple_distinct_fields": 3,
+						"flat_field->shaded_field": 1,
+						"multiple_distinct_fields->flat_field": 1,
+						"multiple_distinct_fields->full_scene": 3,
+						"multiple_distinct_fields->shaded_field": 1,
+						"none_discernible->full_scene": 1,
+						"pattern_or_texture->full_scene": 1,
+						"pattern_or_texture->pattern_or_texture": 3,
+						"pattern_or_texture->shaded_field": 1,
+						"shaded_field->full_scene": 2,
+						"shaded_field->multiple_distinct_fields": 2,
+						"shaded_field->shaded_field": 4
+					},
+					"reviewer_label_distribution": {
+						"flat_field": 11,
+						"pattern_or_texture": 5,
+						"multiple_distinct_fields": 5,
+						"shaded_field": 8,
+						"none_discernible": 1
+					},
+					"oracle_label_distribution": {
+						"full_scene": 8,
+						"pattern_or_texture": 3,
+						"multiple_distinct_fields": 5,
+						"shaded_field": 7,
+						"flat_field": 7
+					}
+				},
+				"B": {
+					"n_items": 30,
+					"answered": 30,
+					"exact_vocabulary_match": {
+						"matched": 7,
+						"n": 30,
+						"rate": 0.2333
+					},
+					"binary_agreement_vs_reviewer": {
+						"n": 17,
+						"agreement": 0.5882,
+						"cohens_kappa": 0.063,
+						"matthews_corr": 0.0636,
+						"confusion": {
+							"human_gradient_oracle_gradient": 2,
+							"human_flat_oracle_flat": 8,
+							"human_flat_oracle_gradient": 3,
+							"human_gradient_oracle_flat": 4
+						},
+						"oracle_says_gradient_rate": 0.2941,
+						"human_says_gradient_rate": 0.3529,
+						"note": "n < 30: pairs where either side's label predicts nothing are dropped, not scored"
+					},
+					"flag_baseline_vs_reviewer": {
+						"n": 24,
+						"agreement": 0.5833,
+						"cohens_kappa": 0.0625,
+						"matthews_corr": 0.0625,
+						"confusion": {
+							"human_gradient_oracle_gradient": 3,
+							"human_flat_oracle_flat": 11,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 5
+						},
+						"oracle_says_gradient_rate": 0.3333,
+						"human_says_gradient_rate": 0.3333
+					},
+					"dropped": {
+						"oracle_made_no_prediction": 7,
+						"reviewer_made_no_prediction": 6
+					},
+					"who_the_reviewer_agreed_with": {
+						"oracle": 3,
+						"neither": 3,
+						"flag": 4,
+						"both": 7
+					},
+					"reviewer_label_x_oracle_label": {
+						"flat_field->flat_field": 4,
+						"flat_field->full_scene": 2,
+						"flat_field->multiple_distinct_fields": 3,
+						"flat_field->shaded_field": 2,
+						"multiple_distinct_fields->flat_field": 1,
+						"multiple_distinct_fields->full_scene": 3,
+						"multiple_distinct_fields->shaded_field": 1,
+						"none_discernible->multiple_distinct_fields": 1,
+						"pattern_or_texture->flat_field": 1,
+						"pattern_or_texture->full_scene": 1,
+						"pattern_or_texture->pattern_or_texture": 1,
+						"pattern_or_texture->shaded_field": 2,
+						"shaded_field->full_scene": 2,
+						"shaded_field->multiple_distinct_fields": 4,
+						"shaded_field->shaded_field": 2
+					},
+					"reviewer_label_distribution": {
+						"flat_field": 11,
+						"pattern_or_texture": 5,
+						"multiple_distinct_fields": 5,
+						"shaded_field": 8,
+						"none_discernible": 1
+					},
+					"oracle_label_distribution": {
+						"full_scene": 8,
+						"pattern_or_texture": 1,
+						"flat_field": 6,
+						"multiple_distinct_fields": 8,
+						"shaded_field": 7
+					}
+				}
+			},
+			"gold30_vs_accepted_flag": {
+				"A": {
+					"strict_all_labels": {
+						"n": 30,
+						"agreement": 0.6333,
+						"cohens_kappa": 0.0237,
+						"matthews_corr": 0.0238,
+						"confusion": {
+							"human_gradient_oracle_gradient": 2,
+							"human_flat_oracle_flat": 17,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 6
+						},
+						"oracle_says_gradient_rate": 0.2333,
+						"human_says_gradient_rate": 0.2667
+					},
+					"mapped_labels_only": {
+						"n": 19,
+						"agreement": 0.5789,
+						"cohens_kappa": 0.038,
+						"matthews_corr": 0.0391,
+						"confusion": {
+							"human_gradient_oracle_gradient": 2,
+							"human_flat_oracle_flat": 9,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 3
+						},
+						"oracle_says_gradient_rate": 0.3684,
+						"human_says_gradient_rate": 0.2632
+					},
+					"unmapped_label_count": 11,
+					"p6_buckets": {
+						"agreement": 11,
+						"contradiction_soft": 5,
+						"underdetermined": 13,
+						"contradiction_hard": 1
+					},
+					"p6_scored_share": 0.5667,
+					"contingency_ground_type_x_human_gradient": {
+						"flat_field|flat": 6,
+						"flat_field|gradient": 1,
+						"full_scene|flat": 5,
+						"full_scene|gradient": 3,
+						"multiple_distinct_fields|flat": 3,
+						"multiple_distinct_fields|gradient": 2,
+						"pattern_or_texture|flat": 3,
+						"shaded_field|flat": 5,
+						"shaded_field|gradient": 2
+					},
+					"ground_type_distribution": {
+						"flat_field": 7,
+						"shaded_field": 7,
+						"full_scene": 8,
+						"pattern_or_texture": 3,
+						"multiple_distinct_fields": 5
+					}
+				},
+				"B": {
+					"strict_all_labels": {
+						"n": 30,
+						"agreement": 0.5667,
+						"cohens_kappa": -0.1538,
+						"matthews_corr": -0.1545,
+						"confusion": {
+							"human_gradient_oracle_gradient": 1,
+							"human_flat_oracle_flat": 16,
+							"human_flat_oracle_gradient": 6,
+							"human_gradient_oracle_flat": 7
+						},
+						"oracle_says_gradient_rate": 0.2333,
+						"human_says_gradient_rate": 0.2667
+					},
+					"mapped_labels_only": {
+						"n": 21,
+						"agreement": 0.5714,
+						"cohens_kappa": -0.08,
+						"matthews_corr": -0.0857,
+						"confusion": {
+							"human_gradient_oracle_gradient": 1,
+							"human_flat_oracle_flat": 11,
+							"human_flat_oracle_gradient": 6,
+							"human_gradient_oracle_flat": 3
+						},
+						"oracle_says_gradient_rate": 0.3333,
+						"human_says_gradient_rate": 0.1905
+					},
+					"unmapped_label_count": 9,
+					"p6_buckets": {
+						"agreement": 12,
+						"contradiction_soft": 6,
+						"underdetermined": 11,
+						"contradiction_hard": 1
+					},
+					"p6_scored_share": 0.6333,
+					"contingency_ground_type_x_human_gradient": {
+						"flat_field|flat": 5,
+						"flat_field|gradient": 1,
+						"full_scene|flat": 4,
+						"full_scene|gradient": 4,
+						"multiple_distinct_fields|flat": 6,
+						"multiple_distinct_fields|gradient": 2,
+						"pattern_or_texture|flat": 1,
+						"shaded_field|flat": 6,
+						"shaded_field|gradient": 1
+					},
+					"ground_type_distribution": {
+						"flat_field": 6,
+						"shaded_field": 7,
+						"multiple_distinct_fields": 8,
+						"full_scene": 8,
+						"pattern_or_texture": 1
+					}
+				}
+			},
+			"gold30_inter_variant": {
+				"variants": [
+					"A",
+					"B"
+				],
+				"both_answered": 30,
+				"per_question": {
+					"ground_type": {
+						"n": 30,
+						"raw_agreement": 0.7,
+						"cohens_kappa": 0.6154
+					},
+					"shading_geometry": {
+						"n": 30,
+						"raw_agreement": 0.6667,
+						"cohens_kappa": 0.25
+					},
+					"field_texture": {
+						"n": 30,
+						"raw_agreement": 0.7,
+						"cohens_kappa": 0.4727
+					},
+					"enclosure": {
+						"n": 30,
+						"raw_agreement": 0.9,
+						"cohens_kappa": 0.7436
+					},
+					"confidence": {
+						"n": 30,
+						"raw_agreement": 1.0,
+						"cohens_kappa": null
+					}
+				},
+				"binary_disagreement": {
+					"n": 9,
+					"share": 0.3,
+					"note": "pipeline \u00a73 routes exactly this subset to the dense adjudicator; its size is what the adjudicator will cost"
+				}
+			},
+			"gold30_population": {
+				"images_with_at_least_one_answer": 30,
+				"scored_against_flag": 30,
+				"conflicted_truth_excluded": 0,
+				"by_tier": {
+					"large_>640": 2,
+					"thumbnail_<=320": 7,
+					"standard_<=640": 21
+				}
+			},
+			"eval142_results_file": "/Users/Flo/GitHub/palette/research/v3/data/oracle-bakeoff/qwen3-32b-dense.jsonl",
+			"eval142_health": {
+				"rows": 60,
+				"ok": 60,
+				"failed": 0,
+				"parse_failed": 0,
+				"attempts_gt_1": 0,
+				"by_variant": {
+					"A": 30,
+					"B": 30
+				},
+				"constrained_decoding": [
+					true
+				],
+				"model_revisions": [
+					"14fd4c76af6bd02d1f3dbe5ea7b03da5a1ae25cf"
+				],
+				"prompt_hashes": [
+					"b1e58c3af233b91e44cf3832c24eeadedd01792dcc8cd8c72a25c0fe22bbcbd8",
+					"c46f055e873fe7a0b9b569b1fd1444a194d3803ff11196e4f71441b7d07e6fc4"
+				],
+				"median_generation_seconds": 17.5363
+			},
+			"eval142": {
+				"A": {
+					"strict_all_labels": {
+						"n": 30,
+						"agreement": 0.6333,
+						"cohens_kappa": 0.0237,
+						"matthews_corr": 0.0238,
+						"confusion": {
+							"human_gradient_oracle_gradient": 2,
+							"human_flat_oracle_flat": 17,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 6
+						},
+						"oracle_says_gradient_rate": 0.2333,
+						"human_says_gradient_rate": 0.2667
+					},
+					"mapped_labels_only": {
+						"n": 19,
+						"agreement": 0.5789,
+						"cohens_kappa": 0.038,
+						"matthews_corr": 0.0391,
+						"confusion": {
+							"human_gradient_oracle_gradient": 2,
+							"human_flat_oracle_flat": 9,
+							"human_flat_oracle_gradient": 5,
+							"human_gradient_oracle_flat": 3
+						},
+						"oracle_says_gradient_rate": 0.3684,
+						"human_says_gradient_rate": 0.2632
+					},
+					"unmapped_label_count": 11,
+					"p6_buckets": {
+						"agreement": 11,
+						"contradiction_soft": 5,
+						"underdetermined": 13,
+						"contradiction_hard": 1
+					},
+					"p6_scored_share": 0.5667,
+					"contingency_ground_type_x_human_gradient": {
+						"flat_field|flat": 6,
+						"flat_field|gradient": 1,
+						"full_scene|flat": 5,
+						"full_scene|gradient": 3,
+						"multiple_distinct_fields|flat": 3,
+						"multiple_distinct_fields|gradient": 2,
+						"pattern_or_texture|flat": 3,
+						"shaded_field|flat": 5,
+						"shaded_field|gradient": 2
+					},
+					"ground_type_distribution": {
+						"flat_field": 7,
+						"shaded_field": 7,
+						"full_scene": 8,
+						"pattern_or_texture": 3,
+						"multiple_distinct_fields": 5
+					}
+				},
+				"B": {
+					"strict_all_labels": {
+						"n": 30,
+						"agreement": 0.5667,
+						"cohens_kappa": -0.1538,
+						"matthews_corr": -0.1545,
+						"confusion": {
+							"human_gradient_oracle_gradient": 1,
+							"human_flat_oracle_flat": 16,
+							"human_flat_oracle_gradient": 6,
+							"human_gradient_oracle_flat": 7
+						},
+						"oracle_says_gradient_rate": 0.2333,
+						"human_says_gradient_rate": 0.2667
+					},
+					"mapped_labels_only": {
+						"n": 21,
+						"agreement": 0.5714,
+						"cohens_kappa": -0.08,
+						"matthews_corr": -0.0857,
+						"confusion": {
+							"human_gradient_oracle_gradient": 1,
+							"human_flat_oracle_flat": 11,
+							"human_flat_oracle_gradient": 6,
+							"human_gradient_oracle_flat": 3
+						},
+						"oracle_says_gradient_rate": 0.3333,
+						"human_says_gradient_rate": 0.1905
+					},
+					"unmapped_label_count": 9,
+					"p6_buckets": {
+						"agreement": 12,
+						"contradiction_soft": 6,
+						"underdetermined": 11,
+						"contradiction_hard": 1
+					},
+					"p6_scored_share": 0.6333,
+					"contingency_ground_type_x_human_gradient": {
+						"flat_field|flat": 5,
+						"flat_field|gradient": 1,
+						"full_scene|flat": 4,
+						"full_scene|gradient": 4,
+						"multiple_distinct_fields|flat": 6,
+						"multiple_distinct_fields|gradient": 2,
+						"pattern_or_texture|flat": 1,
+						"shaded_field|flat": 6,
+						"shaded_field|gradient": 1
+					},
+					"ground_type_distribution": {
+						"flat_field": 6,
+						"shaded_field": 7,
+						"multiple_distinct_fields": 8,
+						"full_scene": 8,
+						"pattern_or_texture": 1
+					}
+				}
+			},
+			"eval142_by_tier": {
+				"A": {
+					"large_>640": {
+						"strict_all_labels": {
+							"n": 2,
+							"agreement": 1.0,
+							"cohens_kappa": 1.0,
+							"matthews_corr": 1.0,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 1,
+								"human_flat_oracle_gradient": 0,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.5,
+							"human_says_gradient_rate": 0.5
+						},
+						"mapped_labels_only": {
+							"n": 2,
+							"agreement": 1.0,
+							"cohens_kappa": 1.0,
+							"matthews_corr": 1.0,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 1,
+								"human_flat_oracle_gradient": 0,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.5,
+							"human_says_gradient_rate": 0.5
+						},
+						"unmapped_label_count": 0,
+						"p6_buckets": {
+							"agreement": 2
+						},
+						"p6_scored_share": 1.0,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 1,
+							"shaded_field|gradient": 1
+						},
+						"ground_type_distribution": {
+							"flat_field": 1,
+							"shaded_field": 1
+						}
+					},
+					"standard_<=640": {
+						"strict_all_labels": {
+							"n": 21,
+							"agreement": 0.5714,
+							"cohens_kappa": -0.2353,
+							"matthews_corr": -0.2582,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 12,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 6
+							},
+							"oracle_says_gradient_rate": 0.1429,
+							"human_says_gradient_rate": 0.2857
+						},
+						"mapped_labels_only": {
+							"n": 11,
+							"agreement": 0.4545,
+							"cohens_kappa": -0.375,
+							"matthews_corr": -0.375,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 5,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 3
+							},
+							"oracle_says_gradient_rate": 0.2727,
+							"human_says_gradient_rate": 0.2727
+						},
+						"unmapped_label_count": 10,
+						"p6_buckets": {
+							"contradiction_soft": 3,
+							"underdetermined": 12,
+							"contradiction_hard": 1,
+							"agreement": 5
+						},
+						"p6_scored_share": 0.4286,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 3,
+							"flat_field|gradient": 1,
+							"full_scene|flat": 4,
+							"full_scene|gradient": 3,
+							"multiple_distinct_fields|flat": 2,
+							"multiple_distinct_fields|gradient": 2,
+							"pattern_or_texture|flat": 3,
+							"shaded_field|flat": 3
+						},
+						"ground_type_distribution": {
+							"shaded_field": 3,
+							"full_scene": 7,
+							"pattern_or_texture": 3,
+							"flat_field": 4,
+							"multiple_distinct_fields": 4
+						}
+					},
+					"thumbnail_<=320": {
+						"strict_all_labels": {
+							"n": 7,
+							"agreement": 0.7143,
+							"cohens_kappa": 0.3636,
+							"matthews_corr": 0.4714,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 4,
+								"human_flat_oracle_gradient": 2,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.4286,
+							"human_says_gradient_rate": 0.1429
+						},
+						"mapped_labels_only": {
+							"n": 6,
+							"agreement": 0.6667,
+							"cohens_kappa": 0.3333,
+							"matthews_corr": 0.4472,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 3,
+								"human_flat_oracle_gradient": 2,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.5,
+							"human_says_gradient_rate": 0.1667
+						},
+						"unmapped_label_count": 1,
+						"p6_buckets": {
+							"contradiction_soft": 2,
+							"agreement": 4,
+							"underdetermined": 1
+						},
+						"p6_scored_share": 0.8571,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 2,
+							"full_scene|flat": 1,
+							"multiple_distinct_fields|flat": 1,
+							"shaded_field|flat": 2,
+							"shaded_field|gradient": 1
+						},
+						"ground_type_distribution": {
+							"shaded_field": 3,
+							"flat_field": 2,
+							"full_scene": 1,
+							"multiple_distinct_fields": 1
+						}
+					}
+				},
+				"B": {
+					"large_>640": {
+						"strict_all_labels": {
+							"n": 2,
+							"agreement": 0.5,
+							"cohens_kappa": 0.0,
+							"matthews_corr": null,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 1,
+								"human_flat_oracle_gradient": 0,
+								"human_gradient_oracle_flat": 1
+							},
+							"oracle_says_gradient_rate": 0.0,
+							"human_says_gradient_rate": 0.5
+						},
+						"mapped_labels_only": {
+							"n": 2,
+							"agreement": 0.5,
+							"cohens_kappa": 0.0,
+							"matthews_corr": null,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 1,
+								"human_flat_oracle_gradient": 0,
+								"human_gradient_oracle_flat": 1
+							},
+							"oracle_says_gradient_rate": 0.0,
+							"human_says_gradient_rate": 0.5
+						},
+						"unmapped_label_count": 0,
+						"p6_buckets": {
+							"agreement": 1,
+							"underdetermined": 1
+						},
+						"p6_scored_share": 0.5,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 1,
+							"multiple_distinct_fields|gradient": 1
+						},
+						"ground_type_distribution": {
+							"flat_field": 1,
+							"multiple_distinct_fields": 1
+						}
+					},
+					"standard_<=640": {
+						"strict_all_labels": {
+							"n": 21,
+							"agreement": 0.5714,
+							"cohens_kappa": -0.2353,
+							"matthews_corr": -0.2582,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 12,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 6
+							},
+							"oracle_says_gradient_rate": 0.1429,
+							"human_says_gradient_rate": 0.2857
+						},
+						"mapped_labels_only": {
+							"n": 13,
+							"agreement": 0.6154,
+							"cohens_kappa": -0.2264,
+							"matthews_corr": -0.2335,
+							"confusion": {
+								"human_gradient_oracle_gradient": 0,
+								"human_flat_oracle_flat": 8,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 2
+							},
+							"oracle_says_gradient_rate": 0.2308,
+							"human_says_gradient_rate": 0.1538
+						},
+						"unmapped_label_count": 8,
+						"p6_buckets": {
+							"agreement": 8,
+							"underdetermined": 9,
+							"contradiction_soft": 3,
+							"contradiction_hard": 1
+						},
+						"p6_scored_share": 0.5714,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 3,
+							"flat_field|gradient": 1,
+							"full_scene|flat": 3,
+							"full_scene|gradient": 4,
+							"multiple_distinct_fields|flat": 5,
+							"multiple_distinct_fields|gradient": 1,
+							"pattern_or_texture|flat": 1,
+							"shaded_field|flat": 3
+						},
+						"ground_type_distribution": {
+							"multiple_distinct_fields": 6,
+							"full_scene": 7,
+							"pattern_or_texture": 1,
+							"shaded_field": 3,
+							"flat_field": 4
+						}
+					},
+					"thumbnail_<=320": {
+						"strict_all_labels": {
+							"n": 7,
+							"agreement": 0.5714,
+							"cohens_kappa": 0.2222,
+							"matthews_corr": 0.3536,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 3,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.5714,
+							"human_says_gradient_rate": 0.1429
+						},
+						"mapped_labels_only": {
+							"n": 6,
+							"agreement": 0.5,
+							"cohens_kappa": 0.1818,
+							"matthews_corr": 0.3162,
+							"confusion": {
+								"human_gradient_oracle_gradient": 1,
+								"human_flat_oracle_flat": 2,
+								"human_flat_oracle_gradient": 3,
+								"human_gradient_oracle_flat": 0
+							},
+							"oracle_says_gradient_rate": 0.6667,
+							"human_says_gradient_rate": 0.1667
+						},
+						"unmapped_label_count": 1,
+						"p6_buckets": {
+							"contradiction_soft": 3,
+							"agreement": 3,
+							"underdetermined": 1
+						},
+						"p6_scored_share": 0.8571,
+						"contingency_ground_type_x_human_gradient": {
+							"flat_field|flat": 1,
+							"full_scene|flat": 1,
+							"multiple_distinct_fields|flat": 1,
+							"shaded_field|flat": 3,
+							"shaded_field|gradient": 1
+						},
+						"ground_type_distribution": {
+							"shaded_field": 4,
+							"flat_field": 1,
+							"full_scene": 1,
+							"multiple_distinct_fields": 1
+						}
+					}
+				}
+			},
+			"eval142_inter_variant": {
+				"variants": [
+					"A",
+					"B"
+				],
+				"both_answered": 30,
+				"per_question": {
+					"ground_type": {
+						"n": 30,
+						"raw_agreement": 0.7,
+						"cohens_kappa": 0.6154
+					},
+					"shading_geometry": {
+						"n": 30,
+						"raw_agreement": 0.6667,
+						"cohens_kappa": 0.25
+					},
+					"field_texture": {
+						"n": 30,
+						"raw_agreement": 0.7,
+						"cohens_kappa": 0.4727
+					},
+					"enclosure": {
+						"n": 30,
+						"raw_agreement": 0.9,
+						"cohens_kappa": 0.7436
+					},
+					"confidence": {
+						"n": 30,
+						"raw_agreement": 1.0,
+						"cohens_kappa": null
+					}
+				},
+				"binary_disagreement": {
+					"n": 9,
+					"share": 0.3,
+					"note": "pipeline \u00a73 routes exactly this subset to the dense adjudicator; its size is what the adjudicator will cost"
+				}
+			},
+			"eval142_population": {
+				"images_with_at_least_one_answer": 30,
+				"scored_against_flag": 30,
+				"conflicted_truth_excluded": 0,
+				"by_tier": {
+					"large_>640": 2,
+					"thumbnail_<=320": 7,
+					"standard_<=640": 21
+				}
+			}
 		}
 	},
-	"cross_arm": {},
+	"cross_arm": {
+		"gold30": {
+			"qwen3-30b-a3b vs qwen3-32b-dense": {
+				"n": 30,
+				"identical_ground_type": 0.5333,
+				"same_binary_mapping": 0.5333
+			}
+		},
+		"eval142": {
+			"qwen3-30b-a3b vs qwen3-32b-dense": {
+				"n": 30,
+				"identical_ground_type": 0.5333,
+				"same_binary_mapping": 0.5333
+			}
+		}
+	},
 	"notes": [
 		"gold30 is adversarial by construction: every one of its 30 artworks is a case where the premise oracle and the accepted flag contradicted each other. Its own analysis calls the outcome a lean, not a verdict. Rank on eval142.",
 		"eval142's ground truth is an ACCEPTED ALGORITHM DECISION, not an elicited label (eval-set.json meta.groundTruthEpistemology).",
@@ -894,7 +1745,7 @@
 		"`strict_all_labels` forces every label into the binary (unmapped -> flat). `mapped_labels_only` drops the three unmapped siblings entirely. Quote both or neither.",
 		"Arms are compared on identical prompts, schema, resolution cap and decoding temperature; the row-level prompt_hash and prompt_file_sha256 prove it."
 	],
-	"repo_head": "1e58829aee2ed0486e3d6efafd9685b9d1062d16",
+	"repo_head": "e02581038b848aeed210370af38bb8fe40b20c54",
 	"self_check": {
 		"source": "/Users/Flo/GitHub/palette/research/v3/data/oracle-validation/premise-disambiguation-1-analysis.json",
 		"published": {
