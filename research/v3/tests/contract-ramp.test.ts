@@ -34,7 +34,6 @@ import {
 	validGradient,
 } from "../src/contract/fixtures.ts"
 import {
-	firstInvisibleAccentOnRamp,
 	minRawContrastOverRamp,
 	RAMP_INTERPOLATION_SPACE,
 	rampColorAt,
@@ -390,14 +389,20 @@ test("refinement is what buys the shallow-band accuracy, not the coarse pass", (
 })
 
 // ---------------------------------------------------------------------------------------------
-// The accent's two dimensions over the ramp
+// The accent over the ramp, after the metric ruling of 2026-08-04
 // ---------------------------------------------------------------------------------------------
 
-test("the accent's two dimensions are evaluated at the same ramp point, not minimised separately", () => {
-	// The reviewer's whole-ramp ruling applied to a *conjunction* has one correct reading and it is
-	// pointwise. This ramp is built to prove the difference: the accent is isoluminant with one end
-	// and chromatically identical to the other, so minimising the two dimensions independently would
-	// condemn it — while at no single point is it both.
+test("the accent's second dimension is gone: one minimisation now serves both roles", () => {
+	// This test used to pin the opposite, on this exact ramp. The accent's floor was a *conjunction*,
+	// and whole-ramping a conjunction has one correct reading — pointwise — so the ramp below was built
+	// to prove the difference: the accent is isoluminant with one end and chromatically identical to
+	// the other, so minimising the two dimensions independently would condemn it while at no single
+	// point is it both. `firstInvisibleAccentOnRamp` existed for that distinction and is now deleted.
+	//
+	// `[REVIEWED — reviewer's ruling, 2026-08-04]`: contrast pairs are judged by raw APCA alone. The
+	// distinction the old function protected is therefore no longer available to protect this ramp —
+	// it crosses the accent's luminance, so it fails. Pinned here in its new direction because this is
+	// exactly the class the ruling makes stricter, and a silent return to the conjunction should fail.
 	const accent = colorFromHex("#4a6b8a")
 	// End A: the accent's own luminance, a wildly different hue. End B: the accent's own hue, far away
 	// in luminance.
@@ -408,28 +413,27 @@ test("the accent's two dimensions are evaluated at the same ramp point, not mini
 	const luminanceEnd = Math.abs(apcaRaw(accent.rgb, stops[0].color.rgb))
 	assert.ok(luminanceEnd < EPSILON_ACCENT_RAW * 4, `end A is close in luminance (${luminanceEnd})`)
 
-	const invisible = firstInvisibleAccentOnRamp(
-		accent,
-		stops,
-		EPSILON_ACCENT_RAW,
-		ACCENT_VISIBILITY_COLOR_DISTANCE,
+	const minimum = minRawContrastOverRamp(accent, stops)
+	assert.ok(minimum !== null)
+	assert.ok(
+		Math.abs(minimum.raw) < EPSILON_ACCENT_RAW,
+		`the ramp crosses the accent's luminance, so the minimum is under the floor (${minimum.raw})`,
 	)
-	if (invisible !== null) {
-		// If any point does fail, it must fail BOTH dimensions there — that is the contract.
-		assert.ok(Math.abs(invisible.raw) < EPSILON_ACCENT_RAW)
-		assert.ok(invisible.distance < ACCENT_VISIBILITY_COLOR_DISTANCE)
-	}
+	// And at that point the accent is far away in colour — the rescue the conjunction would have
+	// applied, which the ruling removed.
+	assert.ok(
+		minimum.distance > ACCENT_VISIBILITY_COLOR_DISTANCE,
+		`colour would have rescued it (${minimum.distance})`,
+	)
 
-	// And the fixture that genuinely fails both at one point is caught.
-	const failing = firstInvisibleAccentOnRamp(
+	// The fixture built to fail both dimensions at one point is caught the same way, by the same call
+	// the foreground uses — there is no accent-specific path left.
+	const failing = minRawContrastOverRamp(
 		accentInvisibleMidRamp.roles.accent,
 		accentInvisibleMidRamp.gradient!.stops,
-		EPSILON_ACCENT_RAW,
-		ACCENT_VISIBILITY_COLOR_DISTANCE,
 	)
 	assert.ok(failing !== null)
 	assert.ok(Math.abs(failing.raw) < EPSILON_ACCENT_RAW)
-	assert.ok(failing.distance < ACCENT_VISIBILITY_COLOR_DISTANCE)
 	assert.ok(failing.position > 0 && failing.position < 1, "and it is between the stops, not at one")
 })
 

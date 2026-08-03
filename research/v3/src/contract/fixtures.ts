@@ -371,12 +371,20 @@ export const lyingAccentCollapseFlag: Palette = makePalette({
 })
 
 /**
- * The accent's second dimension, in the direction that **rescues**.
+ * The accent's escape, in the direction that **rescues** — and at a distance generous enough to
+ * survive the reviewer's 2026-08-04 tightening.
  *
  * A vivid magenta accent on mid grey: |raw APCA| 2.378, under the epsilon, so luminance says
- * invisible. But the two colours are 0.263 apart in OKLab — three and a half times
- * `ACCENT_VISIBILITY_COLOR_DISTANCE` — and the reviewer's bracketing round says that is plainly
- * visible. Valid palette. Under the pre-bracketing one-dimensional rule this was a violation.
+ * invisible. But the two colours are **0.263** apart in OKLab — 1.8× `ACCENT_FUNCTIONAL_DISTANCE`,
+ * and above the top rung of the reviewer's own equal-luminance ladder (0.24181), which they called
+ * clearly visible. Valid palette.
+ *
+ * This fixture is the *"we want to keep that class of accents"* half of the refinement: the reviewer
+ * did not abolish the escape, they raised its price. A one-dimensional accent floor would condemn
+ * this palette, and the reviewer has twice declined to.
+ *
+ * Its companion `accentJustOverVisibilityDistance` is the other half — an isoluminant accent at
+ * merely *detectable* distance, which used to pass and now does not.
  */
 export const accentRescuedByColor: Palette = makePalette({
 	background: "#808080",
@@ -388,10 +396,13 @@ export const accentRescuedByColor: Palette = makePalette({
 /**
  * The accent's second dimension, in the direction that still **condemns**.
  *
- * A muted green accent on mid grey: |raw APCA| 1.048 *and* only 0.055 apart in OKLab. Both
- * dimensions are undershot, so the accent is genuinely invisible and invariant 4 fires. Note the
- * distance clears invariant 3's bar for this region (0.02687) comfortably — the two invariants are
- * asking different questions, and this fixture sits in the gap between them.
+ * A muted green accent on mid grey: |raw APCA| 1.048 *and* only 0.055 apart in OKLab — under the
+ * detection threshold that governed the escape until 2026-08-04 and, a fortiori, under the functional
+ * one that governs it now. Its verdict has never moved, at either threshold, which is what makes it
+ * the stable reference point among these fixtures.
+ *
+ * Note the distance clears invariant 3's bar for this region (0.02687) comfortably — the two
+ * invariants are asking different questions, and this fixture sits in the gap between them.
  */
 export const accentInvisibleAtEqualLuminance: Palette = makePalette({
 	background: "#808080",
@@ -454,9 +465,11 @@ export const contrastFloorInconsistent: Palette = {
  * which is a different question and the one invariant 4 asks. Before 2026-08-03 this palette returned
  * `{ valid: true, violations: [] }`.
  *
- * Everything else about it is deliberately clean, so the fixture proves the new clause and nothing
- * else: the background and surface are exempt from stop distinctness, and the accent clears every
- * pair.
+ * Everything else about it was deliberately clean, so the fixture proved the new clause and nothing
+ * else: the background and surface are exempt from stop distinctness, and the accent cleared every
+ * pair. Since 2026-08-04 the accent `#e0533a` also trips the ramp floor here — this gradient runs
+ * black to white, so every possible accent crosses it in luminance. See `foregroundInvisibleMidRamp`
+ * for the general statement.
  */
 export const foregroundInvisibleOverStop: Palette = makePalette({
 	background: "#ffffff",
@@ -480,8 +493,14 @@ export const foregroundInvisibleOverStop: Palette = makePalette({
  * content: the foreground is 0.29 and 0.26 from the two stops, seventeen same-colour bars, so the
  * *published colours* really are distinct. It is the colours between them that are not.
  *
- * Deliberately isolated to the foreground: the accent `#e0533a` crosses the same ramp in luminance but
- * is 0.18 from it in OKLab at the crossing, so its chroma rescue holds and it reports nothing.
+ * **No longer isolated to the foreground, and it cannot be.** The accent `#e0533a` crosses the same
+ * ramp in luminance; until 2026-08-04 it was 0.18 from the ramp in OKLab at the crossing and its
+ * chroma rescue held, so it reported nothing. With the rescue gone it reports an
+ * `I4.ramp-below-contrast-floor` of its own, and no choice of accent would prevent that: this ramp
+ * runs `#303030` → `#d0d0d0`, so **any** colour whose luminance falls inside that span crosses it, and
+ * at a crossing APCA's polarity flip puts `|raw|` under every floor the contract can express. A
+ * wide-span ramp condemns every role that lives inside it. That is a real consequence of the ruling,
+ * not a defect in this fixture, and it is recorded here because the fixture used to promise isolation.
  */
 export const foregroundInvisibleMidRamp: Palette = makePalette({
 	background: "#101820",
@@ -501,9 +520,13 @@ export const foregroundInvisibleMidRamp: Palette = makePalette({
  * `#4a6b8a` over a `#16202c` → `#9fb6cc` ramp — a ramp of the accent's own hue, running from well
  * below it to well above it. At the stops the accent is fine on luminance alone (|raw APCA| 24.59 and
  * 37.51). At t ≈ 0.5234 the ramp renders `#596a7b`, where the accent is at |raw APCA| 0.7459 **and**
- * 0.0286 away in OKLab — under the 0.07444 at which colour alone carries an accent. Both dimensions
- * of the two-dimensional floor fail, at the same point on the ramp, which is what the accent clause
- * requires and why a hue-matched ramp is needed to build this at all.
+ * 0.0286 away in OKLab.
+ *
+ * The hue match is why this fixture is built the way it is: under the conjunction that stood until
+ * 2026-08-04 both dimensions had to fail *at the same ramp point*, which a luminance sweep alone
+ * cannot arrange. Since the metric ruling the luminance half suffices and the hue match is no longer
+ * load-bearing — but the fixture is kept as built, because its verdict is unchanged and the
+ * companion fixture below is what isolates the part that did change.
  *
  * Isolated to the accent: the foreground `#f2f5f7` bottoms out at |raw APCA| 41.33 over the same ramp.
  */
@@ -512,6 +535,58 @@ export const accentInvisibleMidRamp: Palette = makePalette({
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#4a6b8a",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
+/**
+ * The accent's escape **over the ramp**: invisible in luminance mid-ramp, and far enough away in
+ * colour there to survive it. A valid palette.
+ *
+ * Companion to `accentInvisibleMidRamp` directly above: same ramp, `#16202c` → `#9fb6cc`, and an
+ * accent of a completely different hue. `#e0533a` is a warm orange; the ramp is blue. At t ≈ 0.7100
+ * the ramp renders `#73879a`, where the accent sits at |raw APCA| **1.0116** — well under the 2.5
+ * epsilon — and **0.2126** away in OKLab, which is **1.46×** `ACCENT_FUNCTIONAL_DISTANCE`.
+ *
+ * This is what makes the pointwise search necessary rather than decorative. A whole-ramp check that
+ * minimised luminance and distance *separately* would condemn this palette: somewhere on the ramp the
+ * accent is isoluminant, and somewhere else on the ramp the accent is close in colour — just never at
+ * the same place. `firstInvisibleAccentOnRamp` evaluates both at one point, so this passes.
+ *
+ * Isolated to the accent, and genuinely so: the foreground `#f2f5f7` is lighter than both stops, so it
+ * never crosses the ramp and bottoms out at |raw APCA| 41.33.
+ */
+export const accentEscapesMidRampByColor: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#16202c", 0], ["#9fb6cc", 1]],
+})
+
+/**
+ * **The reviewer's refinement of 2026-08-04, as a verdict**: an accent invisible mid-ramp at a
+ * distance that is comfortably *detectable* and not *functional*. Valid until that refinement, a
+ * violation after it.
+ *
+ * The same `#16202c` → `#9fb6cc` ramp a third time, with a muted forest-green accent `#2a531e`. It is
+ * comfortable at both stops — |raw APCA| 12.69 and 49.93, five and twenty times the epsilon, so a
+ * per-stop check sees nothing at all. At t ≈ 0.3208 the ramp renders `#3d4c5b`, where the accent sits
+ * at |raw APCA| **0.7525** and **0.10926** away in OKLab.
+ *
+ * That distance is the whole point of the fixture: it is **1.47×** `ACCENT_VISIBILITY_COLOR_DISTANCE`,
+ * so the retired detection threshold rescued it and this palette published clean, and **0.75×**
+ * `ACCENT_FUNCTIONAL_DISTANCE`, so the functional threshold does not.
+ *
+ * It sits in the band the refinement created, and it is the only fixture here that does. If the escape
+ * were ever quietly reverted to the detection threshold, this is what would notice.
+ *
+ * Isolated to the accent: sole violation, and the foreground never crosses the ramp.
+ */
+export const accentInvisibleMidRampAtDetectableDistance: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#2a531e",
 	stops: [["#16202c", 0], ["#9fb6cc", 1]],
 })
 
@@ -586,10 +661,13 @@ export const textFloorJustOverEpsilon: Palette = withHandWrittenContrast({
  * | `accentFloorJustUnderEpsilon` | `#b6123c` | 2.477742 | 0.04926 |
  * | `accentFloorJustOverEpsilon`  | `#b6133c` | 2.506932 | 0.04903 |
  *
- * Both distances are **below** `ACCENT_VISIBILITY_COLOR_DISTANCE`, so the colour rescue is switched
- * off in both and the verdict turns on `EPSILON_ACCENT_RAW` alone — which is the point, since the
- * accent's two clauses are conjunctive and a bracket that let chroma decide would pin nothing. Both
- * distances are also comfortably above the region's same-colour bar, so invariant 3 stays out of it.
+ * Both distances are **below** `ACCENT_FUNCTIONAL_DISTANCE`, so the colour escape is switched off in
+ * both and the verdict turns on `EPSILON_ACCENT_RAW` alone — which is the point, since the accent's
+ * two clauses are conjunctive and a bracket that let colour decide would pin nothing. They were also
+ * below `ACCENT_VISIBILITY_COLOR_DISTANCE`, the threshold the escape ran on until 2026-08-04, so this
+ * bracket survived the refinement untouched — it was built to be decided by the epsilon and it still
+ * is. Both distances are comfortably above the region's same-colour bar, so invariant 3 stays out of
+ * it too.
  */
 export const accentFloorJustUnderEpsilon: Palette = withHandWrittenContrast({
 	background: "#b50f00",
@@ -606,22 +684,29 @@ export const accentFloorJustOverEpsilon: Palette = withHandWrittenContrast({
 })
 
 /**
- * **The accent visibility distance, bracketed by one least-significant bit.**
+ * **The detection distance, straddled — and no longer deciding an accent-vs-field verdict.**
  *
  * Background `#057689` and two accents one LSB apart in the red channel, both at |raw APCA| under 1 —
- * far below the accent epsilon, so luminance condemns both and only the colour rescue can save
- * either:
+ * far below the accent epsilon, so luminance condemns both:
  *
- * | fixture | accent | OKLab distance | \|raw APCA\| |
- * |---|---|---|---|
- * | `accentJustUnderVisibilityDistance` | `#506ca0` | 0.073786 | 0.9007 |
- * | `accentJustOverVisibilityDistance`  | `#516ca0` | 0.074600 | 0.8380 |
+ * | fixture | accent | OKLab distance | \|raw APCA\| | verdict before 2026-08-04 | after |
+ * |---|---|---|---|---|---|
+ * | `accentJustUnderVisibilityDistance` | `#506ca0` | 0.073786 | 0.9007 | invalid | invalid |
+ * | `accentJustOverVisibilityDistance`  | `#516ca0` | 0.074600 | 0.8380 | **valid** | **invalid** |
  *
- * `ACCENT_VISIBILITY_COLOR_DISTANCE` is 0.07444, between them. This is the reviewer's own finding at
- * its own resolution: the pair of fixtures straddles the frozen digit with 0.0007 of room on one side
- * and 0.0002 on the other, so any edit to it is caught. Note that the *measurement* behind the
- * constant is only bracketed to 0.06300–0.08796 — these fixtures pin the **constant**, not the
- * reviewer's eyes, which is the distinction the constant's own comment insists on.
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` is 0.07444, between them. These two used to be the bracket that
+ * pinned that digit against the *field*: the escape ran on it, so an edit flipped one of them.
+ *
+ * **The reviewer's refinement of 2026-08-04 moved the escape onto `ACCENT_FUNCTIONAL_DISTANCE`**,
+ * which is 1.96× larger, so both of these now sit under it and are judged identically. That is the
+ * refinement at its own boundary, and it is what these fixtures now pin — a pair one LSB either side
+ * of the *detection* distance must get the **same** verdict, because detection is no longer the
+ * question. `accentJustOverVisibilityDistance` is also the reviewer's own worry made concrete: an
+ * isoluminant accent you can just about tell from its field, which used to publish clean.
+ *
+ * The two digits are pinned elsewhere, each where it now lives:
+ * `accentFunctionalJustUnder/OverDistance` for the escape, and
+ * `foregroundAccentJustUnder/OverSeparation` for the relocated detection distance.
  */
 export const accentJustUnderVisibilityDistance: Palette = withHandWrittenContrast({
 	background: "#057689",
@@ -635,6 +720,86 @@ export const accentJustOverVisibilityDistance: Palette = withHandWrittenContrast
 	surface: "#101820",
 	foreground: "#f2f5f7",
 	accent: "#516ca0",
+})
+
+/**
+ * **The accent's functional distance, bracketed by one least-significant bit** — the escape's own
+ * threshold, pinned the way the epsilons are.
+ *
+ * Background `#808080` and two accents one LSB apart in the green channel, both isoluminant with it
+ * (|raw APCA| well under the 2.5 epsilon), so luminance condemns both and only the escape can save
+ * either:
+ *
+ * | fixture | accent | OKLab distance | \|raw APCA\| |
+ * |---|---|---|---|
+ * | `accentFunctionalJustUnderDistance` | `#b55ea7` | 0.145106 | 1.6077 |
+ * | `accentFunctionalJustOverDistance`  | `#b55da7` | 0.146718 | 1.8300 |
+ *
+ * `ACCENT_FUNCTIONAL_DISTANCE` is 0.14591, with 0.00080 of room on each side — the most balanced
+ * straddle the 8-bit grid offers against this background, found by search over all 16.7 M colours.
+ * One palette is a violation and the other is clean, and the only thing between them is that constant.
+ *
+ * **This pins the digit, and pins nothing about the reviewer's eyes.** The constant is
+ * `[UNCALIBRATED]`: no stimulus has ever been graded against the functional criterion it is named
+ * for, and the value is an interpolation between two rungs of a ladder that was run under a different
+ * criterion. What this bracket guarantees is that the placeholder cannot drift silently before the
+ * round that replaces it — which is exactly what the epsilons' brackets guarantee, and for the same
+ * reason.
+ */
+export const accentFunctionalJustUnderDistance: Palette = withHandWrittenContrast({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b55ea7",
+})
+
+export const accentFunctionalJustOverDistance: Palette = withHandWrittenContrast({
+	background: "#808080",
+	surface: "#101820",
+	foreground: "#f2f5f7",
+	accent: "#b55da7",
+})
+
+/**
+ * **The foreground↔accent separation distance, bracketed by one least-significant bit** — the digit
+ * pinned where the reviewer's ruling of 2026-08-04 put it.
+ *
+ * Foreground `#f2f5f7` and two accents one LSB apart in the green channel:
+ *
+ * | fixture | accent | OKLab distance from the foreground |
+ * |---|---|---|
+ * | `foregroundAccentJustUnderSeparation` | `#f1d9f9` | 0.073167 |
+ * | `foregroundAccentJustOverSeparation`  | `#f1d8f9` | 0.075718 |
+ *
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE` is 0.07444, with 0.00127 of room on each side — the most
+ * balanced straddle the 8-bit grid offers for this foreground, found by search over all 16.7 M
+ * colours rather than by asking the code what it thought. One palette is a violation
+ * (`I3.foreground-accent-not-separated`) and the other is clean, and the only thing between them is
+ * that constant.
+ *
+ * Both distances are five to eight times the region's same-colour bar, so invariant 3's original
+ * clause is content about both pairs and cannot be what decides them — which is the point, since the
+ * bracket is supposed to pin the *elevated* bar and not the one underneath it. Every other pair in
+ * both palettes clears every check by an order of magnitude.
+ *
+ * **What this bracket does and does not pin.** It pins the constant. It does not pin a reviewer's
+ * judgement: nobody has ever been shown a foreground and an accent at graded separations and asked
+ * where two roles become one. The digit is on loan from the accent-vs-field measurement — see
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE` — so what these two fixtures guarantee is that the loan
+ * cannot be silently repaid at a different value, not that the value is right.
+ */
+export const foregroundAccentJustUnderSeparation: Palette = withHandWrittenContrast({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#f1d9f9",
+})
+
+export const foregroundAccentJustOverSeparation: Palette = withHandWrittenContrast({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#f1d8f9",
 })
 
 /**

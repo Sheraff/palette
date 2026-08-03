@@ -16,6 +16,49 @@
  * An invariant is a claim that a condition is *never* legitimate on any artwork. §4 also says the
  * reviewer outranks the rule: an invariant that ever blocks a palette the reviewer endorses is
  * demoted. Codes are stable strings so that demotion, and the census, can be done by grep.
+ *
+ * ## The metric follows the pair — reviewer ruling, 2026-08-04
+ *
+ * Verbatim: *"the contrast limit between foreground and background/surface/gradient, and between
+ * accent and background/surface/gradient should be about APCA contrast, not APCA **and** color
+ * distance. Color distance is used between background and surface, or between foreground and
+ * accent."*
+ *
+ * So the two rulers are assigned by which pair is being judged, and neither pair type gets both:
+ *
+ * | pair                                            | ruler                    | enforced by |
+ * |-------------------------------------------------|--------------------------|-------------|
+ * | foreground ↔ background, surface, rendered ramp | raw APCA, **alone**      | invariant 4 |
+ * | accent ↔ background, surface, rendered ramp     | raw APCA, with one escape | invariant 4 |
+ * | background ↔ surface                             | OKLab distance, regional bar | invariant 3 |
+ * | foreground ↔ accent                              | OKLab distance, elevated bar | invariant 3 |
+ *
+ * The reviewer refined the accent row the same day, and the refinement is the reason the row is not
+ * simply "raw APCA, alone" too:
+ *
+ * > *"yes, we want to keep that class of accents [isoluminant], but then the color distance must be
+ * > something else than the bracketing calibration tests we've been running. Because if APCA says 0
+ * > (or close to it) and then we use 'minimal OKLab distance at which I can see the difference' those
+ * > accents will still be hardly perceptible (could sometimes be fine for accents, will not be fine
+ * > at all for foreground)."*
+ *
+ * So the accent keeps an escape and the foreground gets none, and the escape runs on a **functional**
+ * distance rather than a detection one — `ACCENT_FUNCTIONAL_DISTANCE`, a new and as-yet-unmeasured
+ * quantity, not the `ACCENT_VISIBILITY_COLOR_DISTANCE` the clause used from 2026-08-02 to 2026-08-04.
+ * The distance the retired threshold measured moved to the foreground↔accent row, where a detection
+ * criterion is the right one.
+ *
+ * The whole-ramp *scope* of the floors — the reviewer's own ruling of 2026-08-03, that a contrast
+ * floor holds over the entire rendered ramp and not merely at the published stops — is untouched by
+ * any of this.
+ *
+ * **One place still judges a contrast pair by distance, deliberately:** invariant 3's distinctness
+ * matrix covers *every* pair of published colours at the same-colour bar, including foreground ↔
+ * background and accent ↔ stops. That is not a contrast limit — it is the degeneracy rule ("a
+ * palette must not publish one colour twice"), separately `[REVIEWED]` on 2026-08-02, and §4
+ * invariant 3 names its clauses explicitly (invisible accent, white-on-white, black-on-black). The
+ * 2026-08-04 ruling is about *limits*, so it was not read as demoting those clauses. Flagged for the
+ * reviewer rather than decided here.
  */
 
 import {
@@ -29,11 +72,12 @@ import {
 	sameColorBar,
 } from "./color.ts"
 import {
-	ACCENT_VISIBILITY_COLOR_DISTANCE,
+	ACCENT_FUNCTIONAL_DISTANCE,
 	CONTENT_HASH_PATTERN,
 	CONTRAST_FLOOR_TOLERANCE,
 	EPSILON_ACCENT_RAW,
 	EPSILON_TEXT_RAW,
+	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	MAX_GRADIENT_STOPS,
 	MIN_GRADIENT_STOPS,
 	POSITION_MAX,
@@ -523,6 +567,31 @@ function pairKey(first: string, second: string): string {
 }
 
 /**
+ * The one cell of the matrix whose bar is **raised above the same-colour bar**: foreground↔accent.
+ *
+ * `[REVIEWED — reviewer's ruling, 2026-08-04]`, verbatim: *"Color distance is used between
+ * background and surface, or between foreground and accent."* The ruling names the two pairs colour
+ * distance governs. Background↔surface needed nothing — it was already a cell of this matrix at the
+ * measured regional bar. Foreground↔accent was too: what it lacked was a bar saying more than "these
+ * are not literally the same colour", and the ruling relocates one to it from the accent floor, which
+ * simultaneously stopped using it.
+ *
+ * **Two bands, two codes, one violation.** Below the same-colour bar the pair is what it always was —
+ * one colour published twice — and keeps its existing code so the census stays countable. Between the
+ * same-colour bar and this one it is a new finding: two distinguishable colours that are still too
+ * close to read as two *roles*. That case reports `I3.foreground-accent-not-separated`.
+ *
+ * The sanctioned collapse still exempts the pair entirely: `accentCollapsed` set over an exact hex
+ * equality means the palette is publishing one role deliberately and saying so, which is a different
+ * statement from publishing two roles that happen to look alike.
+ *
+ * **The threshold is borrowed, and provisionally so** — see
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE`, which carries the whole provenance argument: the digits
+ * were measured for accent-versus-field visibility, not for this pair, and want their own round.
+ */
+const SEPARATED_ROLE_PAIR = pairKey("roles.foreground", "roles.accent")
+
+/**
  * **Invariant 3.** Every pair of published colours is distinct above the same-colour bar, with
  * exactly two exception classes.
  *
@@ -541,10 +610,16 @@ function pairKey(first: string, second: string): string {
  * in — see `sameColorBar()` in `color.ts` for the regional values and for how a straddling pair is
  * resolved. `barFor` overrides the measurement; supply `() => x` to force one bar across the whole
  * matrix, which is what a future bracketing round sweeping the threshold would do.
+ *
+ * **One cell is judged against a higher bar** — foreground↔accent, per the reviewer's ruling of
+ * 2026-08-04. See `SEPARATED_ROLE_PAIR`. It is a separate parameter rather than something `barFor`
+ * folds in, so that a sweep of the same-colour bar and a sweep of the separation distance stay
+ * independent — they answer different questions and their evidence is not the same evidence.
  */
 export function validateDistinctness(
 	palette: Palette,
 	barFor: (first: PaletteColor, second: PaletteColor) => number = sameColorBar,
+	foregroundAccentSeparation: number = FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 ): Violation[] {
 	const violations: Violation[] = []
 	const colors = publishedColors(palette)
@@ -574,17 +649,32 @@ export function validateDistinctness(
 			) continue
 
 			// Exception class 1: a sanctioned collapse that is exact and flagged.
-			const collapse = sanctioned.get(pairKey(a.path, b.path))
+			const key = pairKey(a.path, b.path)
+			const collapse = sanctioned.get(key)
 			if (collapse?.satisfied) continue
 
 			const distance = colorDistance(a.color, b.color)
-			const bar = barFor(a.color, b.color)
+			const sameColor = barFor(a.color, b.color)
+			// The elevated cell. `max` rather than a replacement: a region whose same-colour bar ever
+			// exceeded the separation distance would still be the binding constraint, because two
+			// colours that region calls identical cannot be two roles whatever this number says.
+			const separated = key === SEPARATED_ROLE_PAIR
+			const bar = separated ? Math.max(sameColor, foregroundAccentSeparation) : sameColor
 			if (distance >= bar) continue
+
+			// Which band it failed in decides the code: below the same-colour bar it is the old
+			// finding, above it the new one. Never both — a pair has one distance.
+			const belowSameColorBar = distance < sameColor
+			const code = belowSameColorBar
+				? (collapse === undefined ? "I3.pair-not-distinct" : "I3.collapse-not-sanctioned")
+				: "I3.foreground-accent-not-separated"
 
 			violations.push(violation(
 				"I3",
-				collapse === undefined ? "I3.pair-not-distinct" : "I3.collapse-not-sanctioned",
-				collapse === undefined
+				code,
+				code === "I3.foreground-accent-not-separated"
+					? `${a.path} (${a.color.hex}) and ${b.path} (${b.color.hex}) are distinguishable colors but not two roles (OKLab distance ${distance.toFixed(5)} < the ${bar} foreground/accent separation): the accent must either be plainly a different color from the foreground, or collapse onto it exactly with collapse.${collapse?.flag ?? "accentCollapsed"} set`
+					: collapse === undefined
 					? `${a.path} (${a.color.hex}) and ${b.path} (${b.color.hex}) are the same color by the one ruler (OKLab distance ${distance.toFixed(5)} < ${bar})`
 					: `${a.path} (${a.color.hex}) and ${b.path} (${b.color.hex}) are the same color by the one ruler (OKLab distance ${distance.toFixed(5)} < ${bar}) and the collapse is not sanctioned: it must be exact hex equality with collapse.${collapse.flag} set`,
 				[a.path, b.path],
@@ -593,6 +683,7 @@ export function validateDistinctness(
 					bar,
 					firstRegion: colorRegion(a.color),
 					secondRegion: colorRegion(b.color),
+					...(separated ? { sameColorBar: sameColor, separationBar: foregroundAccentSeparation } : {}),
 				},
 			))
 		}
@@ -615,10 +706,10 @@ export function validateDistinctness(
  * `FOREGROUND_STOP_FLOOR` below rather than by a row here, because the stop count varies per palette.
  */
 const CONTRAST_FLOOR_PAIRS = [
-	{ text: "foreground", field: "background", floor: "minTextContrast", colorRescue: false },
-	{ text: "foreground", field: "surface", floor: "minTextContrast", colorRescue: false },
-	{ text: "accent", field: "background", floor: "minAccentContrast", colorRescue: true },
-	{ text: "accent", field: "surface", floor: "minAccentContrast", colorRescue: true },
+	{ text: "foreground", field: "background", floor: "minTextContrast", colorEscape: false },
+	{ text: "foreground", field: "surface", floor: "minTextContrast", colorEscape: false },
+	{ text: "accent", field: "background", floor: "minAccentContrast", colorEscape: true },
+	{ text: "accent", field: "surface", floor: "minAccentContrast", colorEscape: true },
 ] as const
 
 /**
@@ -655,12 +746,21 @@ const CONTRAST_FLOOR_PAIRS = [
  * One violation is reported per role rather than one per failing stop: the quantity being enforced is
  * a minimum over the ramp, and a minimum has one location. The message quotes it.
  *
+ * ## Two searches, because the two roles are shaped differently
+ *
+ * The foreground is a plain minimisation of `|raw APCA|` over the ramp. The accent's floor is a
+ * conjunction, so it is searched **pointwise** — it fails only where `|raw|` and OKLab distance both
+ * undershoot at the *same* ramp point. Minimising the two halves separately would condemn a ramp that
+ * is isoluminant at one end and same-hued at the other while being functional throughout. See
+ * `firstInvisibleAccentOnRamp`. The 2026-08-04 refinement changed which distance that search is given
+ * (`ACCENT_FUNCTIONAL_DISTANCE`, not the retired detection threshold) and nothing about its shape.
+ *
  * `PHASE_0_LOOSE_ENDS.md` B15's *indistinct fraction* — how much of the ramp sits below the bar — is
  * a different quantity and stays parked. Nothing here measures a length; it measures an extremum.
  */
 const RAMP_FLOOR_ROLES = [
-	{ role: "foreground", floor: "minTextContrast", colorRescue: false },
-	{ role: "accent", floor: "minAccentContrast", colorRescue: true },
+	{ role: "foreground", floor: "minTextContrast", colorEscape: false },
+	{ role: "accent", floor: "minAccentContrast", colorEscape: true },
 ] as const
 
 /**
@@ -676,21 +776,36 @@ const RAMP_FLOOR_ROLES = [
  * parameter at its default and is higher when the caller raised it. That is why the same function
  * serves as both the invariant and the caller's opt-in floor.
  *
- * **The two roles are judged on different numbers of dimensions, and that asymmetry is measured.**
+ * **The two roles are judged on different numbers of dimensions, and that asymmetry is the
+ * reviewer's.**
  *
  * - *Foreground:* luminance alone. A text pair at zero luminance contrast is invalid regardless of
- *   hue. That is a standing reviewer verdict carried over from v2-3 and is not reopened here — there
- *   is no colour rescue for text.
- *   The foreground is held to this floor against **three** fields, per §2's definition of the
- *   parameter: `background`, `surface`, and every published gradient stop
- *   (`FOREGROUND_STOP_FLOOR`).
- * - *Accent:* luminance **and** colour distance, both. An accent-versus-field pair violates only when
- *   `|raw APCA| < ε` *and* the two colours are closer than `ACCENT_VISIBILITY_COLOR_DISTANCE`.
- *   Bracketing round 1 part 2 put equal-luminance chromatic accent pairs in front of the reviewer and
- *   the answer was that chroma alone carries visibility from about 0.074 OKLab apart. An accent is
+ *   hue, at any distance whatsoever. That is a standing reviewer verdict carried over from v2-3,
+ *   restated on 2026-08-04 — *"will not be fine at all for foreground"* — and it is not reopened here.
+ * - *Accent:* luminance, **with one escape**. An accent-versus-field pair violates only when
+ *   `|raw APCA| < ε` *and* the two colours are closer than `ACCENT_FUNCTIONAL_DISTANCE`. An accent is
  *   icons, not prose; it can be read by hue in a way a paragraph cannot.
  *
- * The accent's two pairs are skipped entirely when the accent has genuinely collapsed onto the
+ * Each role is held to its floor against **three** fields, per §2's definition of the parameters:
+ * `background`, `surface`, and the whole rendered gradient ramp (`RAMP_FLOOR_ROLES`).
+ *
+ * ## Which distance the escape runs on, and why it changed
+ *
+ * From 2026-08-02 to 2026-08-04 the escape ran on `ACCENT_VISIBILITY_COLOR_DISTANCE` = 0.07444, from
+ * bracketing round 1 part 2. The reviewer has ruled that threshold unfit for this job — not too small
+ * by some measurable amount, but **answering the wrong question**: it is the distance at which a
+ * difference becomes *detectable*, and *"if APCA says 0 (or close to it) and then we use 'minimal
+ * OKLab distance at which I can see the difference' those accents will still be hardly perceptible"*.
+ * A contrast escape needs a *functional* criterion, which no round has yet run.
+ *
+ * So the escape now runs on `ACCENT_FUNCTIONAL_DISTANCE`, an `[UNCALIBRATED]` placeholder bracketed by
+ * the reviewer's own ladder answers and **1.96× larger** than the threshold it replaces. The escape is
+ * therefore narrower than it was and the accent floor is stricter, deliberately. The retired 0.07444
+ * did not vanish: it moved to the foreground↔accent pair (`FOREGROUND_ACCENT_SEPARATION_DISTANCE`,
+ * enforced by invariant 3), where a detection criterion is the right one, since the question there is
+ * whether two roles are the same colour.
+ *
+ * The accent's pairs are skipped entirely when the accent has genuinely collapsed onto the
  * foreground — see the note in the body.
  */
 export function validateContrastFloors(palette: Palette): Violation[] {
@@ -715,7 +830,7 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 		fieldPath: string
 		field: PaletteColor
 		floor: "minTextContrast" | "minAccentContrast"
-		colorRescue: boolean
+		colorEscape: boolean
 		code: string
 	}[] = []
 
@@ -730,7 +845,7 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			fieldPath: `roles.${pair.field}`,
 			field,
 			floor: pair.floor,
-			colorRescue: pair.colorRescue,
+			colorEscape: pair.colorEscape,
 			code: "I4.below-contrast-floor",
 		})
 	}
@@ -761,30 +876,33 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 		}
 		if (Math.abs(raw) >= floor) continue
 
-		// The accent's second dimension. Chroma rescues an accent that luminance alone condemns:
-		// bracketing round 1 part 2 showed the reviewer equal-luminance chromatic accent pairs and
-		// found them clearly visible from about 0.074 OKLab apart. The foreground gets no such rescue
-		// — text is luminance-driven, and that is a standing reviewer verdict, not an oversight here.
+		// The accent's one escape. Colour carries an isoluminant accent when there is *enough* of it —
+		// the reviewer's refinement of 2026-08-04 keeps the escape and rejects the threshold it used to
+		// run on, because a distance measured by "can you see the difference" leaves accents that are
+		// "hardly perceptible". `ACCENT_FUNCTIONAL_DISTANCE` is the functional-criterion replacement.
 		//
-		// The rescue applies **only at the epsilon**, never to a floor the caller raised. What the
-		// reviewer was asked is "can you see this accent at all?", at zero luminance contrast; the
-		// answer licenses chroma as a substitute for *visibility*. A caller asking for Lc 60 on the
-		// accent is asking for something else entirely, and "but it is a different hue" does not
-		// satisfy a request for luminance contrast. Above the epsilon the clause is one-dimensional
-		// again, which is also what keeps the caller's parameter meaning what it says.
+		// The foreground gets nothing here at any distance — *"will not be fine at all for
+		// foreground"*, which is also the standing v2-3 verdict that text is luminance-driven.
+		//
+		// The escape applies **only at the epsilon**, never to a floor the caller raised. What the
+		// reviewer licensed is colour as a substitute for *visibility*, at zero luminance contrast. A
+		// caller asking for Lc 60 on the accent is asking for something else entirely, and "but it is a
+		// different hue" does not satisfy a request for luminance contrast. Above the epsilon the
+		// clause is one-dimensional again, which is also what keeps the caller's parameter meaning what
+		// it says.
 		const distance = colorDistance(text, field)
-		const rescueAvailable = pair.colorRescue && floor <= epsilon
-		if (rescueAvailable && distance >= ACCENT_VISIBILITY_COLOR_DISTANCE) continue
+		const escapeAvailable = pair.colorEscape && floor <= epsilon
+		if (escapeAvailable && distance >= ACCENT_FUNCTIONAL_DISTANCE) continue
 
 		violations.push(violation(
 			"I4",
 			pair.code,
-			rescueAvailable
+			escapeAvailable
 				? `${pair.textPath} (${text.hex}) on ${pair.fieldPath} (${field.hex}) has |raw APCA| ${
 					Math.abs(raw).toFixed(4)
 				}, below the ${pair.floor} floor of ${floor}, and is only ${
 					distance.toFixed(5)
-				} away in OKLab — under the ${ACCENT_VISIBILITY_COLOR_DISTANCE} at which colour alone makes an accent visible`
+				} away in OKLab — under the ${ACCENT_FUNCTIONAL_DISTANCE} at which colour alone makes an accent functional`
 				: `${pair.textPath} (${text.hex}) on ${pair.fieldPath} (${field.hex}) has |raw APCA| ${
 					Math.abs(raw).toFixed(4)
 				}, below the ${pair.floor} floor of ${floor}`,
@@ -796,7 +914,7 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 				declaredRawMagnitude: declaredUsable ? declared : epsilon,
 				epsilon,
 				colorDistance: distance,
-				...(rescueAvailable ? { visibilityDistance: ACCENT_VISIBILITY_COLOR_DISTANCE } : {}),
+				...(escapeAvailable ? { functionalDistance: ACCENT_FUNCTIONAL_DISTANCE } : {}),
 			},
 		))
 	}
@@ -822,13 +940,13 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			const declaredUsable = typeof declared === "number" && Number.isFinite(declared)
 			const floor = declaredUsable ? Math.max(declared, epsilon) : epsilon
 
-			// The colour rescue is available on the same terms as for a flat field: the accent only,
+			// The colour escape is available on the same terms as for a flat field: the accent only,
 			// and only at the epsilon. Where it applies, both dimensions are evaluated **at the same
 			// ramp point** — see `firstInvisibleAccentOnRamp` for why a conjunction cannot be
 			// whole-ramped by minimising its two halves separately.
-			const rescueAvailable = entry.colorRescue && floor <= epsilon
-			const extremum = rescueAvailable
-				? firstInvisibleAccentOnRamp(subject, stops, floor, ACCENT_VISIBILITY_COLOR_DISTANCE)
+			const escapeAvailable = entry.colorEscape && floor <= epsilon
+			const extremum = escapeAvailable
+				? firstInvisibleAccentOnRamp(subject, stops, floor, ACCENT_FUNCTIONAL_DISTANCE)
 				: minRawContrastOverRamp(subject, stops)
 
 			if (extremum === null) continue
@@ -842,8 +960,8 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 				continue
 			}
 			// `firstInvisibleAccentOnRamp` returns only points that already fail both dimensions, so
-			// this re-test is the one-dimensional path's — and it is a no-op for the rescued path.
-			if (!rescueAvailable && Math.abs(extremum.raw) >= floor) continue
+			// this re-test is the one-dimensional path's — and it is a no-op for the escaped path.
+			if (!escapeAvailable && Math.abs(extremum.raw) >= floor) continue
 
 			const fieldPath = rampPath(extremum)
 			const where = extremum.stopIndex === null
@@ -852,12 +970,12 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			violations.push(violation(
 				"I4",
 				extremum.stopIndex === null ? "I4.ramp-below-contrast-floor" : "I4.stop-below-contrast-floor",
-				rescueAvailable
+				escapeAvailable
 					? `${subjectPath} (${subject.hex}) over ${where} (${extremum.color.hex}) has |raw APCA| ${
 						Math.abs(extremum.raw).toFixed(4)
 					}, below the ${entry.floor} floor of ${floor}, and is only ${
 						extremum.distance.toFixed(5)
-					} away in OKLab — under the ${ACCENT_VISIBILITY_COLOR_DISTANCE} at which colour alone makes an accent visible`
+					} away in OKLab — under the ${ACCENT_FUNCTIONAL_DISTANCE} at which colour alone makes an accent functional`
 					: `${subjectPath} (${subject.hex}) over ${where} (${extremum.color.hex}) has |raw APCA| ${
 						Math.abs(extremum.raw).toFixed(4)
 					}, below the ${entry.floor} floor of ${floor} — this is the minimum over the entire rendered ramp, not a stop-point check`,
@@ -872,7 +990,7 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 					rampPosition: extremum.position,
 					rampColor: extremum.color.hex,
 					...(extremum.stopIndex === null ? {} : { stopIndex: extremum.stopIndex }),
-					...(rescueAvailable ? { visibilityDistance: ACCENT_VISIBILITY_COLOR_DISTANCE } : {}),
+					...(escapeAvailable ? { functionalDistance: ACCENT_FUNCTIONAL_DISTANCE } : {}),
 				},
 			))
 		}
@@ -1089,6 +1207,14 @@ export type ValidatePaletteOptions = Readonly<{
 	 */
 	sameColorBar?: (first: PaletteColor, second: PaletteColor) => number
 	/**
+	 * Override the foreground↔accent separation bar. Separate from `sameColorBar` on purpose: the two
+	 * thresholds answer different questions and rest on different evidence, so a round sweeping one
+	 * must not move the other. Defaults to `FOREGROUND_ACCENT_SEPARATION_DISTANCE`, whose digits are
+	 * borrowed from a neighbouring measurement and are the first thing a dedicated round should
+	 * replace.
+	 */
+	foregroundAccentSeparation?: number
+	/**
 	 * Whether a transparent input throws. Defaults to `true`, which is the policy. Set `false` only
 	 * when deliberately collecting violations across a corpus rather than refusing one file.
 	 */
@@ -1120,7 +1246,11 @@ export function validatePalette(palette: Palette, options: ValidatePaletteOption
 	}
 
 	violations.push(...validateSchema(palette))
-	violations.push(...validateDistinctness(palette, options.sameColorBar ?? sameColorBar))
+	violations.push(...validateDistinctness(
+		palette,
+		options.sameColorBar ?? sameColorBar,
+		options.foregroundAccentSeparation ?? FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	))
 	violations.push(...validateContrastFloors(palette))
 
 	if (options.source !== undefined) {

@@ -65,6 +65,17 @@
  * it, and the floor would then have to be evaluated on the display ramp separately. The mapping is
  * `[REVIEWED]` and pinned, so this is a note for whoever changes it, not a live gap.
  *
+ * ## Two searches, because the two roles are shaped differently
+ *
+ * `minRawContrastOverRamp` is the plain minimisation and serves the **foreground**, which has one
+ * dimension and no escape at any distance. `firstInvisibleAccentOnRamp` serves the **accent**, whose
+ * floor is a conjunction and therefore has to be searched pointwise rather than minimised twice. Both
+ * are the reviewer's whole-ramp ruling of 2026-08-03; the second one's docstring carries the argument
+ * for why a conjunction needs its own search.
+ *
+ * The threshold the accent's search takes changed on 2026-08-04 — from a detection distance to
+ * `ACCENT_FUNCTIONAL_DISTANCE` — without changing either search's shape.
+ *
  * ## Out-of-gamut interpolants
  *
  * The sRGB gamut is not convex in OKLab, so the straight OKLab segment between two in-gamut sRGB
@@ -241,7 +252,14 @@ export type RampExtremum = Readonly<{
 	stopIndex: number | null
 	/** Signed raw pre-clamp APCA of the subject colour against the ramp colour at `position`. */
 	raw: number
-	/** OKLab distance between the subject colour and the ramp colour at `position`. */
+	/**
+	 * OKLab distance between the subject colour and the ramp colour at `position`.
+	 *
+	 * **Judged for the accent, reported for the foreground.** The accent's clause consults it against
+	 * `ACCENT_FUNCTIONAL_DISTANCE`; the foreground's never does, at any value, and carries it through
+	 * to the violation's `measured` block purely so a census can count how close a failing text pair
+	 * was in colour.
+	 */
 	distance: number
 }>
 
@@ -284,31 +302,37 @@ export function minRawContrastOverRamp(
 }
 
 /**
- * The **two-dimensional** accent floor, evaluated over the entire rendered ramp.
+ * The **accent's two-tier floor**, evaluated over the entire rendered ramp.
  *
  * The accent's clause is not one floor but a conjunction: an accent is invisible against a field only
- * when luminance *and* colour both fail (`invariants.ts`, invariant 4; bracketing round 1 part 2).
- * Applying the reviewer's whole-ramp ruling to a conjunction has exactly one correct reading, and it
- * is **pointwise**:
+ * when luminance *and* colour both fail (`invariants.ts`, invariant 4). Applying the reviewer's
+ * whole-ramp ruling to a conjunction has exactly one correct reading, and it is **pointwise**:
  *
  * > the accent is invisible somewhere on the ramp ⟺ **∃ t** such that `|raw(t)| < floor` **and**
- * > `distance(t) < visibility`.
+ * > `distance(t) < functionalDistance`.
  *
  * Both dimensions are therefore evaluated at the *same* ramp point. Minimising them independently and
  * comparing the two minima would be a different, stricter, and wrong test: a ramp that is isoluminant
  * with the accent at one end and the accent's own hue at the other end would fail it while being
- * perfectly visible everywhere. So the answer to "does the visibility distance also need a ramp
- * treatment?" is yes, it gets one, and this is it — the distance is a ramp-wide quantity here, not a
- * stop-wide one, because it is re-measured at every sample.
+ * perfectly visible everywhere. So the answer to "does the distance also need a ramp treatment?" is
+ * yes, it gets one, and this is it — the distance is a ramp-wide quantity here, not a stop-wide one,
+ * because it is re-measured at every sample.
+ *
+ * **Which distance changed on 2026-08-04, and the shape did not.** The threshold passed in used to be
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE`, a *detection* measurement; the reviewer ruled detection the
+ * wrong criterion for a contrast escape and it is now `ACCENT_FUNCTIONAL_DISTANCE`, which is larger.
+ * The pointwise argument above is untouched by that — it is about how a conjunction interacts with a
+ * minimisation, not about what either threshold is worth. The foreground has no second dimension at
+ * any value and never reaches this function.
  *
  * Returns the invisible sample with the smallest `|raw|` (earliest position on a tie), or `null` when
- * the accent is visible everywhere on the ramp.
+ * the accent is functional everywhere on the ramp.
  */
 export function firstInvisibleAccentOnRamp(
 	accent: PaletteColor,
 	stops: readonly GradientStop[],
 	floorRawMagnitude: number,
-	visibilityDistance: number,
+	functionalDistance: number,
 	samplesPerSegment: number = RAMP_SAMPLES_PER_SEGMENT,
 	refinementSamples: number = RAMP_REFINEMENT_SAMPLES,
 ): RampExtremum | null {
@@ -319,7 +343,7 @@ export function firstInvisibleAccentOnRamp(
 		if (!Number.isFinite(raw)) return { ...sample, raw, distance: Number.NaN }
 		if (Math.abs(raw) >= floorRawMagnitude) return null
 		const distance = colorDistance(accent, sample.color)
-		if (distance >= visibilityDistance) return null
+		if (distance >= functionalDistance) return null
 		if (worst !== null && !improves(raw, sample, worst)) return null
 		worst = { ...sample, raw, distance }
 		return null

@@ -189,12 +189,16 @@ export const EPSILON_TEXT_RAW = 2.5
  * `[UNCALIBRATED]` — same status and same placeholder reasoning as `EPSILON_TEXT_RAW`; the corpus
  * measurement of the raw-APCA distribution is still pending.
  *
- * What *is* settled is that this number is no longer the whole accent floor. §6's open question —
- * "a chromatic icon at equal luminance can be visible, so the accent floor may properly live in
- * colour distance" — was put to the reviewer in bracketing round 1 and answered yes. The accent
- * clause of invariant 4 is now two-dimensional: this epsilon **and**
- * `ACCENT_VISIBILITY_COLOR_DISTANCE` must both be undershot. So an imprecise value here is less
- * dangerous than it was, because chroma now rescues the cases it would otherwise mis-flag.
+ * This epsilon is the accent's **primary** floor and, since the reviewer's ruling of 2026-08-04, its
+ * escape is a different constant from the one it used to be. The clause is still a conjunction — an
+ * accent violates only when `|raw APCA| < ε` **and** it is closer than `ACCENT_FUNCTIONAL_DISTANCE` —
+ * but that second threshold is no longer `ACCENT_VISIBILITY_COLOR_DISTANCE`, because the reviewer
+ * ruled a *detection* distance the wrong instrument for the job. See both constants below.
+ *
+ * The escape is narrower than it was: the functional distance is 1.96× the detection one, so the band
+ * of isoluminant accents this epsilon condemns is correspondingly wider. An imprecise value here
+ * therefore matters slightly more than it did, and `PHASE_0_LOOSE_ENDS.md` A3's corpus measurement of
+ * the raw-APCA distribution is still the fix.
  */
 export const EPSILON_ACCENT_RAW = 2.5
 
@@ -233,10 +237,138 @@ export const EPSILON_ACCENT_RAW = 2.5
  * visible, once the two colours are about 0.07444 apart in colour. Below that the reviewer stopped
  * seeing it, even though nothing about the brightness changed."
  *
+ * ## What this constant no longer does — reviewer ruling, 2026-08-04
+ *
+ * **It no longer gates the accent against any field**, and the reason is a criterion problem rather
+ * than a scope one. It enforced exactly what it measured: invariant 4's accent clause fired only when
+ * this distance *and* `EPSILON_ACCENT_RAW` were both undershot. The reviewer's refinement, verbatim:
+ *
+ * > *"if APCA says 0 (or close to it) and then we use 'minimal OKLab distance at which I can see the
+ * > difference' those accents will still be hardly perceptible."*
+ *
+ * The question this number answers — the smallest separation at which a difference is *detected* —
+ * turns out to be the wrong question to hang a contrast escape on. The escape now runs on
+ * `ACCENT_FUNCTIONAL_DISTANCE`, a distinct and as-yet-unmeasured quantity.
+ *
+ * It survives here as **the measurement record**, which is a real thing to be: it is the only number
+ * the reviewer's eyes have ever produced about colour-carried visibility, and its ladder is what
+ * brackets the functional placeholder. Its one live consumer is
+ * `FOREGROUND_ACCENT_SEPARATION_DISTANCE` below, which reuses it **out of its measured context** and
+ * says so — and note that *that* reuse is on much safer ground than the retired one, because
+ * foreground-versus-accent separation is itself a detection-class question ("are these two roles the
+ * same colour?"), which is the class this number was measured on.
+ *
  * Applies to the **accent only**. Text is luminance-driven and gets no colour rescue — that is a
  * standing reviewer verdict from v2-3 and is not up for reinterpretation here.
  */
 export const ACCENT_VISIBILITY_COLOR_DISTANCE = 0.07444
+
+/**
+ * How far apart in OKLab the **foreground and the accent** must be for the palette to be publishing
+ * two roles rather than one.
+ *
+ * `[INHERITED — calibrated for accent-vs-field visibility, relocated by reviewer ruling 2026-08-04;
+ * re-measure for this pair]`
+ *
+ * ## Where the number comes from, and why that is not the same as where it now applies
+ *
+ * This is `ACCENT_VISIBILITY_COLOR_DISTANCE`, and the identity is written as an assignment rather
+ * than a repeated literal so that no reader can mistake it for a second measurement. There is one
+ * measurement and it is that one: bracketing round 1 part 2, 2026-08-02, question *"are the icons
+ * clearly visible on this background?"*, asked about an **accent sitting on a field** at equal
+ * luminance. Nobody has ever been shown a foreground and an accent side by side and asked how far
+ * apart they must be to read as two roles.
+ *
+ * The relocation is the reviewer's, verbatim: *"Color distance is used between background and
+ * surface, or between foreground and accent."* The ruling says which metric governs this pair; it
+ * does not, and could not, say what value the threshold takes — no round has measured this pair. So
+ * the number here is a **placeholder wearing borrowed evidence**: it is the right order of magnitude
+ * from a neighbouring question (roughly 5× the same-colour bar, i.e. "clearly two colours, not merely
+ * distinguishable ones"), and it is not a measurement of foreground-versus-accent separation.
+ * Carrying a calibrated number to a pair it was not calibrated on is reuse of evidence out of its
+ * measured context, and this comment exists so that the reuse is visible at the point of use rather
+ * than inferable from a git log.
+ *
+ * **Loose end: re-measure this pair.** A bracketing round showing the reviewer foreground/accent
+ * pairs at graded OKLab separations — the same protocol as round 1 part 2, different stimulus —
+ * would replace this with a measured threshold and let the `[INHERITED]` tag become `[REVIEWED]`.
+ * Until then, the digits are borrowed and any verdict that turns on them is provisional.
+ *
+ * Background↔surface, the ruling's other distance pair, is not given an elevated bar: it is already
+ * on the distance machinery at the measured regional same-colour bar
+ * (`SAME_COLOR_BAR_BY_REGION`, invariant 3), which *is* calibrated for exactly the question it is
+ * being asked there. Nothing about that pair changed.
+ */
+export const FOREGROUND_ACCENT_SEPARATION_DISTANCE = ACCENT_VISIBILITY_COLOR_DISTANCE
+
+/**
+ * How far apart in OKLab an accent and its field must be for the accent to **work as an accent** at
+ * zero luminance contrast — the one escape from the accent's APCA floor.
+ *
+ * `[UNCALIBRATED — reviewer-mandated two-tier semantics 2026-08-04; must be well above the JND bars;
+ * calibrate via a functional-visibility round, criterion "does this work as an accent at a glance",
+ * NOT the identity criterion]`
+ *
+ * ## Why this is not `ACCENT_VISIBILITY_COLOR_DISTANCE`
+ *
+ * The reviewer's refinement of 2026-08-04, verbatim:
+ *
+ * > *"yes, we want to keep that class of accents [isoluminant], but then the color distance must be
+ * > something else than the bracketing calibration tests we've been running. Because if APCA says 0
+ * > (or close to it) and then we use 'minimal OKLab distance at which I can see the difference' those
+ * > accents will still be hardly perceptible (could sometimes be fine for accents, will not be fine
+ * > at all for foreground)."*
+ *
+ * That is a ruling about **which question was asked**, not about arithmetic. Every distance this
+ * repository has measured — the four regional bars and the 0.07444 — comes from a *detection*
+ * criterion: can you tell these apart, do they register as the same colour. The reviewer is saying a
+ * detection threshold is the wrong instrument for an escape from a contrast floor: a colour you can
+ * just barely tell apart from its field, with no luminance difference at all, is not an accent that
+ * works. Function needs more separation than detection, and nobody has measured how much more.
+ *
+ * So this constant is a **new quantity awaiting its own round**, not a re-derivation of an old one.
+ * It shares nothing with `ACCENT_VISIBILITY_COLOR_DISTANCE` but the units.
+ *
+ * ## Where the placeholder digits come from, and what they are worth
+ *
+ * They are **bracketed by the reviewer's own answers, then interpolated** — a placeholder with two
+ * real anchors, which is the best available before the round runs. The anchors are the rungs of
+ * bracketing round 1 part 2's equal-luminance accent ladder
+ * (`data/calibration/bracketing-round-1.json`, stratum `accent-equal-luminance`), whose ten stimuli
+ * sat at OKLab distances 0.01267, 0.01615, 0.02230, 0.03231, 0.04692, 0.06339, 0.08804, 0.11743,
+ * 0.14813, 0.24181. The reviewer answered "not visible" up to 0.06339 and "clearly visible" from
+ * 0.08804 up — a completely separated ladder, which is why 0.07444 is a gap midpoint rather than a fit.
+ *
+ * - **Lower anchor, 0.08804** — the lowest rung the reviewer called clearly visible, and precisely the
+ *   answer the refinement above retracts as "hardly perceptible". The functional threshold is
+ *   therefore strictly *above* it. This is the one thing the refinement states outright.
+ * - **Upper anchor, 0.24181** — the top rung, called clearly visible and **not** retracted. A
+ *   threshold above it would refuse an accent the reviewer plainly endorses, and the same refinement
+ *   opens with *"we want to keep that class of accents"*.
+ *
+ * `sqrt(0.08804 × 0.24181) = 0.14590302…`, rounded to five decimals. The *geometric* midpoint, and
+ * deliberately so: it is the estimator `ACCENT_VISIBILITY_COLOR_DISTANCE` already uses for exactly
+ * this situation — a value known to lie inside a bracket and nowhere more precisely — so the two
+ * placeholders are at least wrong in the same, documented way. It lands between rungs 08 (0.14813)
+ * and 09 (0.24181), which is to say the carve-out admits the two rungs the reviewer called visible by
+ * a wide margin and refuses the two nearest the boundary they have now doubted.
+ *
+ * **What this is not.** It is not a measurement of functional visibility: no stimulus was ever graded
+ * against the criterion this constant is named for. It is 1.96× the retired 0.07444 and 6.4–15.7× the
+ * regional same-colour bars, which satisfies "well above the JND bars" — but "well above" is a
+ * direction, and a direction is not a number. Treat any verdict that turns on this digit as
+ * provisional. See the proposed functional-visibility round in the loose-end ledger.
+ *
+ * ## Where it applies
+ *
+ * **The accent only, and only at the epsilon.** The foreground gets no escape of any kind, at any
+ * distance — the same refinement says an isoluminant foreground *"will not be fine at all"*, which
+ * matches the standing v2-3 verdict that text is luminance-driven. And a caller who raises
+ * `minAccentContrast` above the epsilon is asking for luminance contrast specifically; "but it is a
+ * different hue" does not answer that request, so above the epsilon the accent clause is
+ * one-dimensional too.
+ */
+export const ACCENT_FUNCTIONAL_DISTANCE = 0.14591
 
 /**
  * How far a palette's declared `effectiveRawMagnitude` may sit from the value its recorded

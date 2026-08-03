@@ -23,7 +23,9 @@ import {
 import {
 	EPSILON_ACCENT_RAW,
 	EPSILON_TEXT_RAW,
+	ACCENT_FUNCTIONAL_DISTANCE,
 	ACCENT_VISIBILITY_COLOR_DISTANCE,
+	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	SAME_COLOR_BAR_BY_REGION,
 	SOURCE_POPULATION_FLOOR,
 } from "../src/contract/constants.ts"
@@ -46,7 +48,11 @@ import {
 	accentFloorJustOverEpsilon,
 	accentFloorJustUnderEpsilon,
 	accentInvisibleAtEqualLuminance,
+	accentEscapesMidRampByColor,
+	accentFunctionalJustOverDistance,
+	accentFunctionalJustUnderDistance,
 	accentInvisibleMidRamp,
+	accentInvisibleMidRampAtDetectableDistance,
 	accentJustOverVisibilityDistance,
 	accentJustUnderVisibilityDistance,
 	accentRescuedByColor,
@@ -60,6 +66,8 @@ import {
 	distinctnessInvisibleAccent,
 	distinctnessNearCollapse,
 	fixtureMetadata,
+	foregroundAccentJustOverSeparation,
+	foregroundAccentJustUnderSeparation,
 	foregroundInvisibleMidRamp,
 	foregroundInvisibleOverStop,
 	HAND_WRITTEN_EPSILON_CONTRAST,
@@ -627,20 +635,66 @@ test("I4 uses the epsilon when the contrast block is missing entirely", () => {
 	assert.ok(hasCode(validateContrastFloors(noContrast), "I4.below-contrast-floor"))
 })
 
-test("I4's accent clause is two-dimensional: chroma rescues an equal-luminance accent", () => {
-	// Bracketing round 1 part 2. The accent is at zero luminance contrast against the background and
-	// would have been a violation under the one-dimensional rule; it is 0.263 apart in OKLab, three
-	// and a half times the measured visibility distance, and the reviewer sees it plainly.
+test("I4's accent clause keeps its escape, at a generous distance", () => {
+	// `[REVIEWED — reviewer's refinement, 2026-08-04]`: "yes, we want to keep that class of accents".
+	// A vivid magenta at zero luminance contrast on mid grey, 0.263 away in OKLab — 1.8x the functional
+	// distance, and above the top rung of the reviewer's own equal-luminance ladder. Valid.
 	const accent = accentRescuedByColor.roles.accent
 	const background = accentRescuedByColor.roles.background
 	assert.ok(Math.abs(apcaRawBetween(accent, background)) < EPSILON_ACCENT_RAW, "luminance says invisible")
-	assert.ok(colorDistance(accent, background) >= ACCENT_VISIBILITY_COLOR_DISTANCE, "colour says visible")
+	assert.ok(colorDistance(accent, background) >= ACCENT_FUNCTIONAL_DISTANCE, "colour says functional")
 
 	assert.deepEqual(validateContrastFloors(accentRescuedByColor), [])
 	assert.deepEqual(validatePalette(accentRescuedByColor).violations, [])
 })
 
-test("I4's accent clause still fires when BOTH dimensions are undershot", () => {
+test("the escape runs on the functional distance, not the detection one", () => {
+	// The other half of the same refinement, and the half that changed a verdict: "if APCA says 0 (or
+	// close to it) and then we use 'minimal OKLab distance at which I can see the difference' those
+	// accents will still be hardly perceptible."
+	//
+	// `accentJustOverVisibilityDistance` is exactly that palette — an isoluminant accent one LSB above
+	// the detection threshold. It used to publish clean. It must not any more.
+	const accent = accentJustOverVisibilityDistance.roles.accent
+	const background = accentJustOverVisibilityDistance.roles.background
+	assert.ok(Math.abs(apcaRawBetween(accent, background)) < EPSILON_ACCENT_RAW)
+	assert.ok(
+		colorDistance(accent, background) >= ACCENT_VISIBILITY_COLOR_DISTANCE,
+		"detectable: the retired threshold would have rescued it",
+	)
+	assert.ok(colorDistance(accent, background) < ACCENT_FUNCTIONAL_DISTANCE, "but not functional")
+
+	const violations = validateContrastFloors(accentJustOverVisibilityDistance)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I4.below-contrast-floor")
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	assert.equal(violations[0].measured?.functionalDistance, ACCENT_FUNCTIONAL_DISTANCE)
+	assert.equal(validatePalette(accentJustOverVisibilityDistance).valid, false)
+
+	// And the ordering that makes the refinement mean anything: the escape's threshold is strictly
+	// above the detection one, and above every JND-class bar in the contract.
+	assert.ok(ACCENT_FUNCTIONAL_DISTANCE > ACCENT_VISIBILITY_COLOR_DISTANCE)
+	for (const bar of Object.values(SAME_COLOR_BAR_BY_REGION)) {
+		assert.ok(ACCENT_FUNCTIONAL_DISTANCE > bar * 6, `functional distance must be well above the ${bar} bar`)
+	}
+})
+
+test("the foreground gets no escape at any distance, isoluminant or not", () => {
+	// "will not be fine at all for foreground". `contrastFloorViolation` is a vivid magenta foreground
+	// on mid grey: 0.307 away in OKLab — beyond even the functional distance — and still a violation.
+	const foreground = contrastFloorViolation.roles.foreground
+	const background = contrastFloorViolation.roles.background
+	assert.ok(colorDistance(foreground, background) > ACCENT_FUNCTIONAL_DISTANCE * 2)
+	const violations = validateContrastFloors(contrastFloorViolation)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].measured?.parameter, "minTextContrast")
+	assert.equal(violations[0].measured?.functionalDistance, undefined, "no escape was offered to text")
+})
+
+test("an accent already condemned by luminance alone is unaffected by the metric ruling", () => {
+	// The companion to the flip above: this fixture undershot both dimensions, so removing one changes
+	// nothing about it. Between them the two fixtures separate "the ruling made this stricter" from
+	// "the ruling touched this at all".
 	const accent = accentInvisibleAtEqualLuminance.roles.accent
 	const background = accentInvisibleAtEqualLuminance.roles.background
 	assert.ok(Math.abs(apcaRawBetween(accent, background)) < EPSILON_ACCENT_RAW)
@@ -653,7 +707,7 @@ test("I4's accent clause still fires when BOTH dimensions are undershot", () => 
 	assert.equal(violations.length, 1, codes(violations).join(", "))
 	assert.equal(violations[0].code, "I4.below-contrast-floor")
 	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
-	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.equal(violations[0].measured?.visibilityDistance, undefined)
 })
 
 test("the foreground gets no colour rescue — text is luminance-driven", () => {
@@ -668,9 +722,10 @@ test("the foreground gets no colour rescue — text is luminance-driven", () => 
 	assert.equal(violations[0].measured?.visibilityDistance, undefined, "no rescue was offered to text")
 })
 
-test("the colour rescue applies at the epsilon only, never to a caller-raised floor", () => {
+test("the colour escape applies at the epsilon only, never to a caller-raised floor", () => {
 	// The reviewer was asked "can you see this accent at all?" at zero luminance contrast. That
-	// licenses chroma as a substitute for visibility, not as a substitute for Lc 60.
+	// licenses colour as a substitute for visibility, not as a substitute for Lc 60. The refinement of
+	// 2026-08-04 raised the escape's price without touching this scope.
 	assert.deepEqual(validateContrastFloors(accentRescuedByColor), [])
 
 	const strict: Palette = {
@@ -678,9 +733,9 @@ test("the colour rescue applies at the epsilon only, never to a caller-raised fl
 		contrast: resolveContrastParameters({ minTextContrast: 0, minAccentContrast: 60 }),
 	}
 	const violations = validateContrastFloors(strict)
-	assert.ok(violations.length > 0, "a raised floor is a luminance request; chroma cannot satisfy it")
+	assert.ok(violations.length > 0, "a raised floor is a luminance request; colour cannot satisfy it")
 	assert.ok(violations.every((entry) => entry.measured?.parameter === "minAccentContrast"))
-	assert.equal(violations[0].measured?.visibilityDistance, undefined)
+	assert.equal(violations[0].measured?.functionalDistance, undefined)
 })
 
 test("I4 flags an exactly identical foreground/background pair", () => {
@@ -714,8 +769,13 @@ test("I4 holds the foreground to minTextContrast against every published stop", 
 	assert.deepEqual(validateDistinctness(foregroundInvisibleOverStop), [])
 	assert.deepEqual(validateSchema(foregroundInvisibleOverStop), [])
 
-	const violations = validateContrastFloors(foregroundInvisibleOverStop)
-	assert.equal(violations.length, 1, codes(violations).join(", "))
+	// One violation *for the foreground*. Since 2026-08-04 the accent trips this black-to-white ramp
+	// too, and necessarily: a ramp spanning the full luminance range is crossed by every colour, so
+	// the fixture can no longer isolate a single role. Filtering by role is what keeps this test about
+	// the clause it was written for.
+	const all = validateContrastFloors(foregroundInvisibleOverStop)
+	const violations = all.filter((entry) => entry.subjects.includes("roles.foreground"))
+	assert.equal(violations.length, 1, codes(all).join(", "))
 	assert.equal(violations[0].measured?.parameter, "minTextContrast")
 	assert.equal(violations[0].measured?.floorRawMagnitude, EPSILON_TEXT_RAW)
 	assert.equal(violations[0].measured?.visibilityDistance, undefined, "no colour rescue for text")
@@ -785,17 +845,17 @@ test("the accent is held to the rendered ramp too — the reviewer overturned th
 	})
 	const accentOverStop = Math.abs(apcaRawBetween(palette.roles.accent, palette.gradient!.stops[0].color))
 	assert.ok(accentOverStop < EPSILON_ACCENT_RAW, "the accent is at zero luminance contrast over stop 0")
-	assert.ok(
-		colorDistance(palette.roles.accent, palette.gradient!.stops[0].color) < ACCENT_VISIBILITY_COLOR_DISTANCE,
-		"and too close in OKLab for chroma to rescue it — both dimensions must fail, or this proves nothing",
-	)
 	assert.deepEqual(validateDistinctness(palette), [], "invariant 3 does not catch it either")
 
 	const violations = validateContrastFloors(palette)
 	assert.deepEqual(violations.map((entry) => entry.code), ["I4.stop-below-contrast-floor"])
 	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
-	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
 	assert.equal(validatePalette(palette).valid, false)
+
+	// This palette was built so both halves of the old conjunction failed at stop 0, because that was
+	// what it took to fire the clause. The scope ruling it pins — accent floors reach the gradient —
+	// is independent of the metric, and holds under the 2026-08-04 metric with the second half gone.
+	assert.equal(violations[0].measured?.visibilityDistance, undefined)
 })
 
 test("a foreground clean at every stop and invisible between them now fails", () => {
@@ -811,7 +871,10 @@ test("a foreground clean at every stop and invisible between them now fails", ()
 	assert.deepEqual(validateDistinctness(foregroundInvisibleMidRamp), [])
 	assert.deepEqual(validateSchema(foregroundInvisibleMidRamp), [])
 
-	const violations = validateContrastFloors(foregroundInvisibleMidRamp)
+	// Filtered to the foreground: this ramp spans `#303030`–`#d0d0d0`, so since 2026-08-04 the accent
+	// crosses it too and reports its own violation. See the fixture's note.
+	const all = validateContrastFloors(foregroundInvisibleMidRamp)
+	const violations = all.filter((entry) => entry.subjects.includes("roles.foreground"))
 	assert.deepEqual(violations.map((entry) => entry.code), ["I4.ramp-below-contrast-floor"])
 	assert.equal(violations[0].measured?.parameter, "minTextContrast")
 	assert.equal(violations[0].measured?.rampColor, "#818181")
@@ -819,9 +882,10 @@ test("a foreground clean at every stop and invisible between them now fails", ()
 	assert.equal(validatePalette(foregroundInvisibleMidRamp).valid, false)
 })
 
-test("an accent clean at every stop and invisible between them now fails, on both its dimensions at once", () => {
-	// See `accentInvisibleMidRamp`. The accent's floor is a conjunction, so the fixture has to fail
+test("an accent clean at every stop and invisible between them fails", () => {
+	// See `accentInvisibleMidRamp`. Built when the accent's floor was a conjunction, so it fails
 	// luminance AND colour at the SAME ramp point — a hue-matched ramp, not just a luminance sweep.
+	// The conjunction is gone; the verdict is not, which is why the fixture is kept as built.
 	const accent = accentInvisibleMidRamp.roles.accent
 	for (const stop of accentInvisibleMidRamp.gradient!.stops) {
 		assert.ok(
@@ -835,11 +899,55 @@ test("an accent clean at every stop and invisible between them now fails, on bot
 	const violations = validateContrastFloors(accentInvisibleMidRamp)
 	assert.deepEqual(violations.map((entry) => entry.code), ["I4.ramp-below-contrast-floor"])
 	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
-	// Both dimensions, measured at the one point.
 	assert.ok(Math.abs(violations[0].measured!.raw as number) < EPSILON_ACCENT_RAW)
-	assert.ok((violations[0].measured!.colorDistance as number) < ACCENT_VISIBILITY_COLOR_DISTANCE)
-	assert.equal(violations[0].measured?.visibilityDistance, ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.equal(violations[0].measured?.visibilityDistance, undefined)
 	assert.equal(validatePalette(accentInvisibleMidRamp).valid, false)
+})
+
+test("an accent invisible mid-ramp fails at a merely detectable distance, and passes at a functional one", () => {
+	// **The refinement of 2026-08-04 over the ramp**, both directions, on one gradient.
+	//
+	// Same `#16202c` -> `#9fb6cc` ramp, two accents. `accentEscapesMidRampByColor` is isoluminant with
+	// the ramp somewhere and 0.2126 away there — above the functional distance, so it escapes and the
+	// palette is valid. `accentInvisibleMidRampAtDetectableDistance` is isoluminant with the ramp
+	// somewhere and 0.11873 away there — 1.6x the retired *detection* threshold, which used to rescue
+	// it, and 0.81x the *functional* one, which does not. It is the only fixture sitting in the band
+	// the refinement created.
+	const escaping = accentEscapesMidRampByColor
+	assert.deepEqual(validateContrastFloors(escaping), [], "far enough in colour at the crossing")
+	assert.deepEqual(validatePalette(escaping).violations, [])
+
+	const palette = accentInvisibleMidRampAtDetectableDistance
+	const accent = palette.roles.accent
+
+	// Clean at both stops, so a per-stop check would still see nothing.
+	for (const stop of palette.gradient!.stops) {
+		assert.ok(
+			Math.abs(apcaRawBetween(accent, stop.color)) > EPSILON_ACCENT_RAW * 5,
+			`stop ${stop.color.hex} must clear the floor, or the fixture is not testing the ramp`,
+		)
+	}
+	assert.deepEqual(validateDistinctness(palette), [], "invariant 3 is content: nothing here is the same colour")
+	assert.deepEqual(validateSchema(palette), [])
+
+	const violations = validateContrastFloors(palette)
+	assert.deepEqual(violations.map((entry) => entry.code), ["I4.ramp-below-contrast-floor"])
+	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+	assert.deepEqual([...violations[0].subjects].sort().slice(1), ["roles.accent"])
+
+	// Both dimensions at the one reported point — which is what the pointwise search guarantees — and
+	// the distance there sits inside the band the refinement created.
+	const distance = violations[0].measured!.colorDistance as number
+	assert.ok(Math.abs(violations[0].measured!.raw as number) < EPSILON_ACCENT_RAW, "APCA fails")
+	assert.ok(distance > ACCENT_VISIBILITY_COLOR_DISTANCE, "the retired detection threshold would have rescued it")
+	assert.ok(distance < ACCENT_FUNCTIONAL_DISTANCE, "the functional threshold does not")
+	assert.equal(violations[0].measured?.functionalDistance, ACCENT_FUNCTIONAL_DISTANCE)
+	const position = violations[0].measured?.rampPosition as number
+	assert.ok(position > 0 && position < 1, "and it is between the stops, not at one")
+
+	// Isolated to the accent, genuinely: the foreground is lighter than both stops and never crosses.
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(validatePalette(palette).valid, false)
 })
 
 test("the ramp clause leaves a legible foreground and a visible accent alone on a real gradient", () => {
@@ -910,24 +1018,119 @@ test("the accent epsilon is bracketed by one least-significant bit", () => {
 	assert.equal(validatePalette(accentFloorJustOverEpsilon).valid, true)
 })
 
-test("the accent visibility distance is bracketed by one least-significant bit", () => {
-	// Same background, two accents one LSB apart in red, both at |raw| under 1 — so luminance condemns
-	// both and only the colour rescue can save either. 0.073786 is under the frozen 0.07444 and
-	// 0.074600 is over it.
+test("the accent visibility distance no longer decides an accent-vs-field verdict", () => {
+	// Same background, two accents one LSB apart in red, straddling the frozen 0.07444 — 0.073786 under
+	// it, 0.074600 over it — and both at |raw| under 1.
+	//
+	// This pair used to be the bracket that pinned the constant: the colour rescue was the only thing
+	// between their verdicts. The 2026-08-04 ruling took the rescue away, so the fact worth pinning
+	// inverted. They must now be judged IDENTICALLY, which is what "about APCA contrast, not APCA and
+	// color distance" means at the boundary. If the rescue ever returned, this would fail.
 	const under = accentJustUnderVisibilityDistance.roles
 	const over = accentJustOverVisibilityDistance.roles
 	assert.equal(under.background.hex, over.background.hex)
+	assert.ok(colorDistance(under.accent, under.background) < ACCENT_VISIBILITY_COLOR_DISTANCE)
+	assert.ok(colorDistance(over.accent, over.background) >= ACCENT_VISIBILITY_COLOR_DISTANCE)
 	assert.ok(Math.abs(colorDistance(under.accent, under.background) - 0.073786) < 1e-6)
 	assert.ok(Math.abs(colorDistance(over.accent, over.background) - 0.074600) < 1e-6)
 	assert.ok(Math.abs(apcaRawBetween(under.accent, under.background)) < 1)
 	assert.ok(Math.abs(apcaRawBetween(over.accent, over.background)) < 1)
 
-	const violations = validateContrastFloors(accentJustUnderVisibilityDistance)
+	for (const palette of [accentJustUnderVisibilityDistance, accentJustOverVisibilityDistance]) {
+		const violations = validateContrastFloors(palette)
+		assert.equal(violations.length, 1, codes(violations).join(", "))
+		assert.equal(violations[0].code, "I4.below-contrast-floor")
+		assert.equal(violations[0].measured?.parameter, "minAccentContrast")
+		assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
+		assert.equal(validatePalette(palette).valid, false)
+	}
+})
+
+test("the accent's functional distance is bracketed by one least-significant bit", () => {
+	// The escape's own threshold, pinned the way the epsilons are. Same background, two accents one LSB
+	// apart in green, both isoluminant with it, straddling `ACCENT_FUNCTIONAL_DISTANCE` with 0.00080 of
+	// room on each side. The distances are recorded here as literals — found by search over all 16.7 M
+	// 8-bit colours — so an edit to the constant in either direction flips one of the two.
+	const under = accentFunctionalJustUnderDistance.roles
+	const over = accentFunctionalJustOverDistance.roles
+	assert.equal(under.background.hex, over.background.hex)
+	assert.ok(Math.abs(colorDistance(under.accent, under.background) - 0.145106) < 1e-6)
+	assert.ok(Math.abs(colorDistance(over.accent, over.background) - 0.146718) < 1e-6)
+	// Both far under the epsilon, so luminance condemns both and only the escape can separate them.
+	assert.ok(Math.abs(apcaRawBetween(under.accent, under.background)) < EPSILON_ACCENT_RAW)
+	assert.ok(Math.abs(apcaRawBetween(over.accent, over.background)) < EPSILON_ACCENT_RAW)
+
+	const violations = validateContrastFloors(accentFunctionalJustUnderDistance)
 	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I4.below-contrast-floor")
 	assert.equal(violations[0].measured?.parameter, "minAccentContrast")
-	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.background"])
-	assert.deepEqual(validateContrastFloors(accentJustOverVisibilityDistance), [])
-	assert.equal(validatePalette(accentJustOverVisibilityDistance).valid, true)
+	assert.equal(violations[0].measured?.functionalDistance, ACCENT_FUNCTIONAL_DISTANCE)
+	assert.equal(validatePalette(accentFunctionalJustUnderDistance).valid, false)
+
+	assert.deepEqual(validateContrastFloors(accentFunctionalJustOverDistance), [])
+	assert.equal(validatePalette(accentFunctionalJustOverDistance).valid, true)
+})
+
+test("the foreground/accent separation distance is bracketed by one least-significant bit", () => {
+	// Where the digit lives now. Same foreground, two accents one LSB apart in green, straddling
+	// `FOREGROUND_ACCENT_SEPARATION_DISTANCE` with 0.00127 of room on each side. The distances are
+	// recorded here as literals — found by search over all 16.7 M 8-bit colours, not read back out of
+	// the code under test — so an edit to the constant in either direction flips one of the two.
+	const under = foregroundAccentJustUnderSeparation.roles
+	const over = foregroundAccentJustOverSeparation.roles
+	assert.equal(under.foreground.hex, over.foreground.hex)
+	assert.ok(Math.abs(colorDistance(under.foreground, under.accent) - 0.073167) < 1e-6)
+	assert.ok(Math.abs(colorDistance(over.foreground, over.accent) - 0.075718) < 1e-6)
+
+	// Invariant 3's original clause cannot be what decides either: both pairs are several same-colour
+	// bars apart, so the elevated bar is the only thing in play.
+	assert.ok(colorDistance(under.foreground, under.accent) > sameColorBar(under.foreground, under.accent) * 2.5)
+
+	const violations = validateDistinctness(foregroundAccentJustUnderSeparation)
+	assert.equal(violations.length, 1, codes(violations).join(", "))
+	assert.equal(violations[0].code, "I3.foreground-accent-not-separated")
+	assert.deepEqual([...violations[0].subjects].sort(), ["roles.accent", "roles.foreground"])
+	assert.equal(violations[0].measured?.bar, FOREGROUND_ACCENT_SEPARATION_DISTANCE)
+	assert.equal(violations[0].measured?.separationBar, FOREGROUND_ACCENT_SEPARATION_DISTANCE)
+	assert.ok((violations[0].measured?.sameColorBar as number) < FOREGROUND_ACCENT_SEPARATION_DISTANCE)
+	assert.equal(validatePalette(foregroundAccentJustUnderSeparation).valid, false)
+
+	assert.deepEqual(validateDistinctness(foregroundAccentJustOverSeparation), [])
+	assert.deepEqual(validatePalette(foregroundAccentJustOverSeparation).violations, [])
+})
+
+test("the foreground/accent bar is elevated only for that pair, and only above the same-colour bar", () => {
+	// Two guards on the relocation. First: no other pair inherits the elevated bar — a background and
+	// surface the same distance apart are fine, because §4 invariant 3 judges them at the measured
+	// regional bar and the ruling did not move that.
+	const fields = makePalette({
+		background: "#f2f5f7",
+		surface: "#f1d9f9",
+		foreground: "#101820",
+		accent: "#e0533a",
+	})
+	assert.ok(
+		colorDistance(fields.roles.background, fields.roles.surface) < FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+		"the two fields are closer than the separation distance",
+	)
+	assert.deepEqual(
+		validateDistinctness(fields).filter((entry) => entry.subjects.includes("roles.surface")),
+		[],
+		"and that is legitimate: background/surface is on the same-colour bar",
+	)
+
+	// Second: a sanctioned collapse still exempts the pair entirely. Publishing one role deliberately,
+	// and saying so with the flag, is a different statement from publishing two that look alike.
+	assert.deepEqual(validateDistinctness(validCollapsed), [])
+	assert.equal(validatePalette(validCollapsed).valid, true)
+
+	// And the threshold is injectable, so a round measuring this pair can sweep it without touching
+	// the same-colour bar — the two rest on different evidence.
+	assert.deepEqual(
+		validateDistinctness(foregroundAccentJustUnderSeparation, sameColorBar, 0.05),
+		[],
+		"a lower separation bar clears the fixture that the frozen one condemns",
+	)
 })
 
 // ---------------------------------------------------------------------------------------------
