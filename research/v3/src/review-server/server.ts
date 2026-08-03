@@ -44,10 +44,12 @@ import {
 	BRACKETING_ACTIVE_BATCH_ID,
 	BRACKETING_FIXTURE_PATH,
 	BRACKETING_FIXTURE_VERSION,
+	BRACKETING_ROUND_2_BATCH_ID,
+	BRACKETING_ROUND_2_FIXTURE_PATH,
 	type BracketingFixture,
 } from "./bracketing.ts"
 
-export { BRACKETING_ACTIVE_BATCH_ID }
+export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import {
 	PREMISE_DISAMBIGUATION_BATCH_ID,
 	PREMISE_DISAMBIGUATION_FIXTURE_PATH,
@@ -1168,6 +1170,31 @@ export async function seedBracketingRound(
 	return pushed.batchId
 }
 
+/**
+ * Push the round-2 refinement pass if it is not in the queue yet. Idempotent by batch id.
+ *
+ * Round 1 is left exactly as it is — released, and still in the queue as evidence. The page lands on
+ * this one because it picks the newest *unreleased* bracketing round.
+ */
+export async function seedBracketingRound2(
+	service: ReviewService,
+	fixturePath = BRACKETING_ROUND_2_FIXTURE_PATH,
+	batchId = BRACKETING_ROUND_2_BATCH_ID,
+): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as BracketingFixture
+	if (service.has(batchId)) return null
+	const pushed = await service.pushBracketing(
+		fixture,
+		[
+			"bracketing round 1 — one threshold did not survive all four quadrants",
+			`refines: ${fixture.refinement?.refines ?? BRACKETING_ACTIVE_BATCH_ID}`,
+			`criterion: ${fixture.criterion}`,
+		],
+		batchId,
+	)
+	return pushed.batchId
+}
+
 /** Push the premise-disambiguation round if it is not in the queue yet. Idempotent by batch id. */
 export async function seedOracleValidationRound(
 	service: ReviewService,
@@ -1215,6 +1242,8 @@ async function main(): Promise<void> {
 	if (values["no-bracketing"] !== true) {
 		const seeded = await seedBracketingRound(handle.service)
 		if (seeded !== null) process.stdout.write(`seeded bracketing round "${seeded}" — http://127.0.0.1:${values.port}/bracketing\n`)
+		const round2 = await seedBracketingRound2(handle.service)
+		if (round2 !== null) process.stdout.write(`seeded bracketing round "${round2}" — http://127.0.0.1:${values.port}/bracketing\n`)
 	}
 	if (values["no-oracle"] !== true) {
 		const seeded = await seedOracleValidationRound(handle.service)

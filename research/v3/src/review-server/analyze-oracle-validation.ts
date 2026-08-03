@@ -356,6 +356,19 @@ export function analyzeOracleValidation(
 			lines.push(`  variant ${variant}: ${entry.agreed} of ${entry.n} (${pct(entry.agreed, entry.n)})`)
 		}
 		lines.push(`  the flag:  ${flagTotals.agreed} of ${flagTotals.n} (${pct(flagTotals.agreed, flagTotals.n)})`)
+		// The comparison the premise verdict actually turns on: judged against the human, is the VLM a
+		// better or worse witness than the decision the algorithm published? Reported per variant,
+		// because the two wordings are two different witnesses and may not be equally good.
+		for (const variant of variants) {
+			const entry = binaryOracle[variant]
+			if (entry.rate === null || flagTotals.rate === null) continue
+			const gap = entry.rate - flagTotals.rate
+			lines.push(
+				`  → variant ${variant} tracks the reviewer ${Math.abs(gap * 100).toFixed(0)} points ` +
+					`${gap >= 0 ? "better" : "worse"} than the published flag does` +
+					(gap >= 0 ? " — on these artworks the oracle is the better witness of the two." : "."),
+			)
+		}
 		lines.push("")
 		lines.push("COUNTING BOTH VARIANTS AT ONCE (an artwork can contradict under one prompt wording and agree")
 		lines.push("under the other, so `both` is reachable — the reviewer agreeing with the flag and with a variant):")

@@ -165,7 +165,8 @@ typing. `?batch=<id>` and `?item=<itemId>` open a specific comparison.
 A second review mode, sharing the same queue, batch log, release flow and warehouse. It measures
 what `PHASE_0_DECISIONS.md` §3 leaves `[UNCALIBRATED]`: the same-colour bar.
 
-**For the reviewer:** <http://127.0.0.1:3010/bracketing> — seeded automatically on start.
+**For the reviewer:** <http://127.0.0.1:3010/bracketing> — seeded automatically on start. The page
+opens the **newest unreleased** round, so once round 2 is in the queue that is what it lands on.
 Keyboard only: **y** yes · **n** no · **u** undo one · **r** release when finished. It auto-advances,
 resumes wherever you stopped, and is meant for ten-minute chunks. 72 items.
 
@@ -243,6 +244,74 @@ Fits a 2-parameter logistic against log distance per quadrant and pooled, and re
 threshold with a confidence interval, whether one threshold survives all four quadrants, repeat
 consistency, control correctness, and part 2's visibility threshold. Writes
 `research/v3/data/calibration/bracketing-round-1-analysis.json` and prints a plain-language summary.
+
+### Round 2 — the refinement round
+
+`bracketing-round-2`, **80 pairs, part 1 only** (round 1 already answered the accent question, and
+re-asking it would spend a fifth of the reviewer's time re-measuring a settled number). Same page,
+same keys, same criterion string verbatim — which is what makes the two rounds poolable. Round 1 is
+left released and byte-identical; a test asserts its fixture still is.
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/bracketing.ts --round 2 [--write]
+```
+
+What round 1 left, and what round 2 does with it:
+
+- **Adaptive ladders (48 pairs).** Round 1 spread 12 rungs over a factor of nine to find the bar at
+  all. Round 2 puts **10 log-spaced rungs inside each quadrant's 95% interval** — dark-neutral
+  0.00575–0.01335, dark-saturated 0.01274–0.02443, light-neutral 0.01116–0.02380, light-saturated
+  0.01153–0.06265 (`ROUND_1_INTERVALS`, `[MEASURED]` from the committed round-1 analysis; a test
+  asserts they have not drifted from it). Outside those intervals every answer is already predicted
+  with near-certainty and buys nothing.
+- **Light-saturated split by hue (its 18 of those 48).** Its interval spans 5.4×, by far the widest,
+  and one live explanation is that "light and saturated" is not one population. Three equal thirds
+  of the OKLab hue circle — **0–120°** (pink-red → yellow-green), **120–240°** (green → blue),
+  **240–360°** (blue → magenta) — each with its own six-rung ladder over the same interval, and both
+  colours of a pair required to sit in the same third. The analysis fits a bar per third and says
+  whether the width is hue heterogeneity or noise.
+- **Direction probe (12 pairs).** Round 1 drew every partner in a random direction, so it can only
+  speak about the *magnitude* of a difference. Twelve pairs at one matched distance (**0.015**, next
+  to round 1's pooled 0.01582) differ along **pure lightness / pure chroma / pure hue**, one per
+  (direction × quadrant). Each is constructed on its axis exactly before 8-bit rounding and then
+  re-measured: the fixture records the achieved decomposition and its `purity`, and a test requires
+  the intended axis to hold at least 70% of the squared difference (achieved: ≥ 0.99). A pure-hue
+  difference is a rotation, so it cannot reach 0.015 below chroma 0.0075 — probe bases are therefore
+  sampled at chroma ≥ 0.02 in every quadrant, including the neutral ones. The probe says nothing
+  about two near-greys, and that limit is recorded in the fixture.
+- **Repeats doubled to 16, controls kept at 4.** Round 1 measured 63% repeat consistency (5 of 8) —
+  the reviewer's own noise floor, and the ceiling on how sharp any threshold can be. Eight repeats
+  put that at roughly ±30 points; sixteen roughly halves it. They are drawn from the rungs nearest
+  each quadrant's round-1 threshold, and light-saturated's four are spread one per hue third.
+- **The 8-bit floor is measured, not assumed.** The fixture records, per quadrant, the distance to
+  the nearest single-channel neighbour over 400 sampled bases (`expressibilityFloor`). Dark-neutral
+  is the tight one: a grid step there is 0.00150 against a smallest rung of 0.00605, so rungs at the
+  bottom of that ladder are quantised to about ±0.00075 — 12% of the rung. Every distance recorded
+  anywhere is the **achieved** one, measured on the two colours actually shown.
+
+**Analysis:**
+
+```
+NODE_NO_WARNINGS=1 node --experimental-strip-types \
+  research/v3/src/review-server/analyze-bracketing.ts --round 2
+```
+
+Writes `research/v3/data/calibration/bracketing-round-2-analysis.json` and prints: **(a)** round 2
+fitted alone, **(b)** rounds 1+2 pooled per quadrant with the point counts each round contributed,
+**(c)** the hue split and the direction probe reported separately, and **(d)**
+one-threshold-survives recomputed on the pooled fit. Round-1 light-saturated pairs are assigned a
+hue third after the fact when both their colours agree on one, and dropped as `mixed` when they
+straddle a boundary — a coin flip is not data.
+
+**Pooling is checked, not assumed.** The two rounds are combined only when their `criterion` strings
+match; when they do not, round 1 contributes zero points and the output says `NOT POOLED` in
+capitals. That is the abandoned first pass's lesson, enforced. The direction-probe pairs are
+excluded from every threshold fit in both rounds: they sit at one distance by design, and fitting
+them would pile a third of the points onto a single x value.
+
+Four pairs per direction is a probe, not a measurement — one flipped answer moves a rate by 25
+points — and the verdict sentence says so whichever way it comes out.
 
 ## The oracle-validation round
 
@@ -354,8 +423,9 @@ covered; those are judged by the reviewer opening the page.
 Working end to end: push, queue, blinded rendering with mock UI and named swatches, gradient
 display mapping, dual grades + preference + comment + confound, artwork veto and its withdrawal,
 free editing before release, release, custody-checked image serving, restart recovery, the
-colour-bracketing round and the oracle-validation round (generation, serving, keyboard answering,
-undo, release, analysis) — the last one driven end to end by real keystrokes in its own test.
+colour-bracketing round (rounds 1 and 2) and the oracle-validation round (generation, serving,
+keyboard answering, undo, release, analysis). Both keyboard-only pages are driven end to end by real
+keystrokes in their own tests.
 
 Not built in this skeleton:
 

@@ -33,11 +33,17 @@ import { parseArgs } from "node:util"
 import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
 import type { OracleLabelRecord, WarehouseRecord } from "../warehouse/records.ts"
 import { readAll, resolve } from "../warehouse/warehouse.ts"
+import { rgbToOkLab } from "../contract/color.ts"
 import {
 	BRACKETING_ACTIVE_BATCH_ID,
 	BRACKETING_FIXTURE_PATH,
+	BRACKETING_ROUND_2_BATCH_ID,
+	BRACKETING_ROUND_2_FIXTURE_PATH,
+	DIRECTION_KINDS,
 	PART2_STRATUM,
 	QUADRANTS,
+	ROUND2_DIRECTION_TARGET,
+	hueThirdOf,
 	type BracketingFixture,
 	type BracketingItem,
 	type Quadrant,
@@ -631,11 +637,16 @@ export function analyzeBracketing(
 
 	/* --- part 1: the same-colour bar ---------------------------------------------------------- */
 
-	const part1Observations = observationsFor(part1Items, answers, (item) => item.truth.okLabDistance)
+	// Direction-probe pairs (round 2) are deliberately all at one distance and stratified by the
+	// *axis* of the difference, not its size. Fitting them into a threshold ladder would pile a
+	// third of the points onto a single x value and, if the axis turns out to matter, make the
+	// response bimodal there. They are reported on their own instead.
+	const ladderItems = part1Items.filter((item) => item.role !== "direction-probe")
+	const part1Observations = observationsFor(ladderItems, answers, (item) => item.truth.okLabDistance)
 	const pooled = fitLogistic(part1Observations, "decreasing")
 
 	const quadrants: QuadrantResult[] = QUADRANTS.map((quadrant: Quadrant) => {
-		const inQuadrant = part1Items.filter((item) => item.stratum === quadrant)
+		const inQuadrant = ladderItems.filter((item) => item.stratum === quadrant)
 		const fit = fitLogistic(
 			observationsFor(inQuadrant, answers, (item) => item.truth.okLabDistance),
 			"decreasing",
@@ -879,6 +890,392 @@ export async function loadFixture(path: string): Promise<BracketingFixture> {
 	return parsed
 }
 
+/* ------------------------------------------------------------------------------------------- */
+/* Round 2 — the refinement round, alone and pooled with round 1                                 */
+/* ------------------------------------------------------------------------------------------- */
+
+/** Where the round-2 analysis is written when `--out` is not given. */
+export const BRACKETING_ROUND_2_ANALYSIS_PATH = fileURLToPath(
+	new URL("../../data/calibration/bracketing-round-2-analysis.json", import.meta.url),
+)
+
+export type PooledQuadrantFit = QuadrantResult & Readonly<{ fromRound1: number; fromRound2: number }>
+
+export type HueThirdResult = Readonly<{
+	third: number
+	label: string
+	rangeDegrees: Interval
+	fit: LogisticFit
+	fromRound1: number
+	fromRound2: number
+}>
+
+export type DirectionResult = Readonly<{
+	kind: string
+	n: number
+	yesCount: number
+	yesRate: number | null
+	meanDistance: number | null
+	minPurity: number | null
+	perQuadrant: readonly Readonly<{ quadrant: string; distance: number; answer: boolean | null }>[]
+}>
+
+export type BracketingRound2Analysis = Readonly<{
+	generatedAt: string
+	warehousePath: string
+	rounds: readonly Readonly<{ batchId: string; fixturePath: string; criterion: string | null }>[]
+	/** Rounds may only be pooled when they were answered under the same criterion string. */
+	criterionMatches: boolean
+	poolable: boolean
+	/** Round 2 fitted on its own, in the same shape as any single round. */
+	round2: BracketingAnalysis
+	pooled: Readonly<{
+		fit: LogisticFit
+		quadrants: readonly PooledQuadrantFit[]
+		oneThresholdSurvives: boolean | null
+		oneThresholdSentence: string
+		fromRound1: number
+		fromRound2: number
+	}>
+	hueSplit: Readonly<{
+		quadrant: string
+		boundariesDegrees: readonly number[]
+		thirds: readonly HueThirdResult[]
+		round1Assigned: number
+		round1Mixed: number
+		verdict: string
+	}>
+	directionProbe: Readonly<{
+		targetDistance: number
+		answered: number
+		total: number
+		predictedYesRate: number | null
+		directions: readonly DirectionResult[]
+		verdict: string
+	}>
+	repeats: Readonly<{ round1: RepeatConsistency; round2: RepeatConsistency; combinedAgreement: number | null }>
+	summaryLines: string[]
+}>
+
+/** P(yes) under a fitted curve at one distance. Null when the round produced no curve. */
+function predictYes(fit: LogisticFit, distance: number): number | null {
+	if (fit.intercept === null || fit.slope === null || distance <= 0) return null
+	return 1 / (1 + Math.exp(-(fit.intercept + fit.slope * Math.log(distance))))
+}
+
+/**
+ * Which hue third a round-1 light-saturated pair belongs to, decided after the fact.
+ *
+ * Round 1 did not sample by hue, so its pairs land wherever they land — and a pair whose two colours
+ * straddle a boundary belongs to neither third. Those are counted as `mixed` and dropped rather than
+ * assigned to one side, which would be a coin flip dressed up as data.
+ */
+function assignedHueThird(item: BracketingItem): number | null {
+	if (item.hueThird !== undefined) return item.hueThird
+	const first = hueThirdOf(rgbToOkLab(item.first))
+	const second = hueThirdOf(rgbToOkLab(item.second))
+	return first === second ? first : null
+}
+
+function ladderObservations(
+	fixture: BracketingFixture,
+	answers: Map<string, BracketingAnswer>,
+	predicate: (item: BracketingItem) => boolean,
+): Observation[] {
+	return observationsFor(
+		fixture.items.filter((item) => item.part === "same-color" && item.role !== "direction-probe" && predicate(item)),
+		answers,
+		(item) => item.truth.okLabDistance,
+	)
+}
+
+/**
+ * Round 2 on its own, rounds 1+2 pooled, the hue split and the direction probe.
+ *
+ * Pooling is not automatic. Two rounds may only be combined when they were answered under the same
+ * criterion, and this checks the criterion strings before doing it — the abandoned first pass is the
+ * standing reminder of what happens otherwise. Round 1 is read at its *clarified* batch id, never
+ * the abandoned one.
+ */
+export function analyzeBracketingRound2(
+	round1: BracketingFixture,
+	round2: BracketingFixture,
+	records: readonly WarehouseRecord[],
+	paths: {
+		warehousePath: string
+		round1FixturePath: string
+		round2FixturePath: string
+		round1BatchId?: string
+		round2BatchId?: string
+	},
+	now: () => Date = () => new Date(),
+): BracketingRound2Analysis {
+	const round1BatchId = paths.round1BatchId ?? BRACKETING_ACTIVE_BATCH_ID
+	const round2BatchId = paths.round2BatchId ?? round2.batchId
+	const answers1 = collectAnswers(records, round1, round1BatchId).byItemId
+	const answers2 = collectAnswers(records, round2, round2BatchId).byItemId
+
+	const criterionMatches = round1.criterion === round2.criterion
+	const round2Alone = analyzeBracketing(round2, records, {
+		warehousePath: paths.warehousePath,
+		fixturePath: paths.round2FixturePath,
+		batchId: round2BatchId,
+	}, now)
+
+	/* --- pooled per quadrant ------------------------------------------------------------------ */
+
+	const poolFor = (predicate: (item: BracketingItem) => boolean) => ({
+		round1: criterionMatches ? ladderObservations(round1, answers1, predicate) : [],
+		round2: ladderObservations(round2, answers2, predicate),
+	})
+	const pooledAll = poolFor(() => true)
+	const pooledFit = fitLogistic([...pooledAll.round1, ...pooledAll.round2], "decreasing")
+
+	const pooledQuadrants: PooledQuadrantFit[] = QUADRANTS.map((quadrant: Quadrant) => {
+		const split = poolFor((item) => item.stratum === quadrant)
+		const observations = [...split.round1, ...split.round2]
+		return {
+			...fitLogistic(observations, "decreasing"),
+			quadrant,
+			answered: observations.length,
+			total: [round1, round2]
+				.flatMap((fixture) => fixture.items)
+				.filter((item) => item.part === "same-color" && item.role !== "direction-probe" && item.stratum === quadrant).length,
+			fromRound1: split.round1.length,
+			fromRound2: split.round2.length,
+		}
+	})
+
+	let oneThresholdSurvives: boolean | null = null
+	let oneThresholdSentence: string
+	if (pooledFit.threshold === null) {
+		oneThresholdSentence = "Not enough pooled answers yet to say whether one threshold covers all four quadrants."
+	} else {
+		const usable = pooledQuadrants.filter((quadrant) => comparableInterval(quadrant) !== null)
+		if (usable.length < pooledQuadrants.length) {
+			const missing = pooledQuadrants
+				.filter((quadrant) => comparableInterval(quadrant) === null)
+				.map((quadrant) => quadrant.quadrant)
+			oneThresholdSentence =
+				`Cannot say yet: ${missing.join(", ")} ${missing.length === 1 ? "has" : "have"} no usable interval even pooled.`
+		} else {
+			const disagreeing = pooledQuadrants.filter((quadrant) => {
+				const interval = comparableInterval(quadrant)!
+				return pooledFit.threshold! < interval.low || pooledFit.threshold! > interval.high
+			})
+			oneThresholdSurvives = disagreeing.length === 0
+			oneThresholdSentence = oneThresholdSurvives
+				? `Yes, on both rounds pooled: every quadrant's interval contains the pooled threshold of ${fmt(pooledFit.threshold)}.`
+				: `No, on both rounds pooled: ${disagreeing.map((quadrant) => quadrant.quadrant).join(", ")} ` +
+					`${disagreeing.length === 1 ? "excludes" : "exclude"} the pooled threshold of ${fmt(pooledFit.threshold)}.`
+		}
+	}
+
+	/* --- the hue split inside light-saturated -------------------------------------------------- */
+
+	const hueQuadrant = round2.refinement?.hueSplit.quadrant ?? "light-saturated"
+	const boundaries = round2.refinement?.hueSplit.boundariesDegrees ?? [0, 120, 240]
+	const labels = round2.refinement?.hueSplit.labels ?? boundaries.map((_, index) => `third ${index}`)
+	let round1Assigned = 0
+	let round1Mixed = 0
+	for (const item of round1.items) {
+		if (item.part !== "same-color" || item.stratum !== hueQuadrant || item.role === "control-identical") continue
+		if (assignedHueThird(item) === null) round1Mixed++
+		else round1Assigned++
+	}
+	const thirds: HueThirdResult[] = boundaries.map((low, index) => {
+		const high = index + 1 < boundaries.length ? boundaries[index + 1] : 360
+		const split = poolFor((item) => item.stratum === hueQuadrant && assignedHueThird(item) === index)
+		return {
+			third: index,
+			label: labels[index] ?? `third ${index}`,
+			rangeDegrees: { low, high },
+			fit: fitLogistic([...split.round1, ...split.round2], "decreasing"),
+			fromRound1: split.round1.length,
+			fromRound2: split.round2.length,
+		}
+	})
+	const fittedThirds = thirds.filter((entry) => entry.fit.threshold !== null)
+	let hueVerdict: string
+	if (fittedThirds.length < 2) {
+		hueVerdict = `Not enough answers yet: ${fittedThirds.length} of ${thirds.length} hue thirds have a threshold.`
+	} else {
+		const overlapping = fittedThirds.every((entry) => {
+			const interval = comparableInterval(entry.fit)
+			return interval === null || fittedThirds.every((other) => other.fit.threshold! >= interval.low && other.fit.threshold! <= interval.high)
+		})
+		const low = fittedThirds.reduce((best, entry) => (entry.fit.threshold! < best.fit.threshold! ? entry : best))
+		const high = fittedThirds.reduce((best, entry) => (entry.fit.threshold! > best.fit.threshold! ? entry : best))
+		const spread = high.fit.threshold! / low.fit.threshold!
+		hueVerdict = overlapping
+			? `The three hue thirds agree within their intervals (spread ${spread.toFixed(1)}×, ` +
+				`lowest ${low.label.split(":")[0]} at ${fmt(low.fit.threshold)}, highest ${high.label.split(":")[0]} at ${fmt(high.fit.threshold)}). ` +
+				"Light-saturated's wide interval looks like noise, not hue heterogeneity."
+			: `The hue thirds do not agree: ${low.label.split(":")[0]} sits at ${fmt(low.fit.threshold)} and ` +
+				`${high.label.split(":")[0]} at ${fmt(high.fit.threshold)}, a spread of ${spread.toFixed(1)}×, ` +
+				"outside at least one interval. Light-saturated is not one population — the bar there depends on hue."
+	}
+
+	/* --- the direction probe ------------------------------------------------------------------- */
+
+	const probeItems = round2.items.filter((item) => item.role === "direction-probe")
+	const probeTarget = round2.refinement?.directionProbe.targetDistance ?? ROUND2_DIRECTION_TARGET
+	const kinds = round2.refinement?.directionProbe.kinds ?? DIRECTION_KINDS
+	const directions: DirectionResult[] = kinds.map((kind) => {
+		const inKind = probeItems.filter((item) => item.direction === kind)
+		const answered = inKind.filter((item) => answers2.has(item.itemId))
+		const yesCount = answered.filter((item) => answers2.get(item.itemId)!.answer).length
+		return {
+			kind,
+			n: answered.length,
+			yesCount,
+			yesRate: answered.length === 0 ? null : yesCount / answered.length,
+			meanDistance:
+				inKind.length === 0 ? null : inKind.reduce((sum, item) => sum + item.truth.okLabDistance, 0) / inKind.length,
+			minPurity: inKind.length === 0 ? null : Math.min(...inKind.map((item) => item.decomposition?.purity ?? 0)),
+			perQuadrant: inKind.map((item) => ({
+				quadrant: item.stratum,
+				distance: item.truth.okLabDistance,
+				answer: answers2.get(item.itemId)?.answer ?? null,
+			})),
+		}
+	})
+	const probeAnswered = directions.reduce((sum, entry) => sum + entry.n, 0)
+	const predictedYesRate = predictYes(pooledFit, probeTarget)
+	const rated = directions.filter((entry) => entry.yesRate !== null)
+	let probeVerdict: string
+	if (rated.length < kinds.length) {
+		probeVerdict = `Not answered yet: ${probeAnswered} of ${probeItems.length} probe pairs.`
+	} else {
+		const lowest = rated.reduce((best, entry) => (entry.yesRate! < best.yesRate! ? entry : best))
+		const highest = rated.reduce((best, entry) => (entry.yesRate! > best.yesRate! ? entry : best))
+		const gap = highest.yesRate! - lowest.yesRate!
+		// Four pairs per direction is a probe, not a measurement: one flipped answer moves a rate by
+		// 25 points. Anything under half the range is inside that noise.
+		probeVerdict =
+			gap >= 0.5
+				? `Direction looks like it matters: at the same distance (${fmt(probeTarget)}), a ${highest.kind} difference ` +
+					`read as "same" ${fmtPercent(highest.yesRate)} of the time and a ${lowest.kind} difference ${fmtPercent(lowest.yesRate)}. ` +
+					"With four pairs per direction this is a signal worth a dedicated round, not a number to use."
+				: `No direction effect visible: the three directions differ by ${fmtPercent(gap)} at the same distance ` +
+					`(${fmt(probeTarget)}), which four pairs per direction cannot separate from noise — one flipped answer is 25 points. ` +
+					"The bar can go on being stated as a distance."
+	}
+
+	/* --- repeats, both rounds ------------------------------------------------------------------ */
+
+	const repeats1 = repeatConsistency(round1.items, answers1)
+	const repeats2 = repeatConsistency(round2.items, answers2)
+	const bothAnswered = repeats1.bothAnswered + repeats2.bothAnswered
+	const combinedAgreement = bothAnswered === 0 ? null : (repeats1.agreed + repeats2.agreed) / bothAnswered
+
+	/* --- plain language ------------------------------------------------------------------------ */
+
+	const lines: string[] = []
+	lines.push(`Same-colour bar — round 2 (${round2BatchId}), refining ${round1BatchId}`)
+	lines.push(`Criterion: ${round2.criterion}`)
+	if (!criterionMatches) {
+		lines.push("")
+		lines.push("NOT POOLED. The two rounds were answered under different criterion strings, so only round 2's")
+		lines.push("own fit is reported below. Pooling answers to two different questions is how a threshold goes")
+		lines.push("quietly wrong.")
+	}
+	lines.push("")
+	lines.push(`Round 2 alone: ${round2Alone.part1.answered} of ${round2Alone.part1.totalItems} pairs answered.`)
+	lines.push(`  threshold ${fmt(round2Alone.part1.pooled.threshold)} (${fmtInterval(round2Alone.part1.pooled.confidenceInterval)})`)
+	lines.push("")
+	lines.push(`Rounds 1+2 pooled: ${pooledFit.n} fitted points (${pooledAll.round1.length} from round 1, ${pooledAll.round2.length} from round 2).`)
+	lines.push(`  pooled threshold ${fmt(pooledFit.threshold)} (${fmtInterval(pooledFit.confidenceInterval)})`)
+	for (const quadrant of pooledQuadrants) {
+		lines.push(
+			`  ${quadrant.quadrant.padEnd(16)} ${fmt(quadrant.threshold)} (${fmtInterval(quadrant.confidenceInterval)}) ` +
+				`from ${quadrant.fromRound1}+${quadrant.fromRound2} points`,
+		)
+	}
+	lines.push(`  ${oneThresholdSentence}`)
+	lines.push("")
+	lines.push(`HUE SPLIT inside ${hueQuadrant} (round 2 sampled it; ${round1Assigned} round-1 pairs were assigned after the`)
+	lines.push(`fact and ${round1Mixed} straddled a boundary and were dropped):`)
+	for (const third of thirds) {
+		lines.push(
+			`  ${third.rangeDegrees.low}–${third.rangeDegrees.high}° ${fmt(third.fit.threshold)} ` +
+				`(${fmtInterval(third.fit.confidenceInterval)}) from ${third.fromRound1}+${third.fromRound2} points — ${third.label}`,
+		)
+	}
+	lines.push(`  ${hueVerdict}`)
+	lines.push("")
+	lines.push(`DIRECTION PROBE at ${fmt(probeTarget)}` + (predictedYesRate === null ? ":" : `, where the pooled curve predicts ${fmtPercent(predictedYesRate)} "same":`))
+	for (const direction of directions) {
+		lines.push(
+			`  ${direction.kind.padEnd(10)} ${direction.yesCount}/${direction.n} said same (${fmtPercent(direction.yesRate)}) ` +
+				`· purity ≥ ${direction.minPurity === null ? "—" : direction.minPurity.toFixed(2)}`,
+		)
+	}
+	lines.push(`  ${probeVerdict}`)
+	lines.push("")
+	lines.push("REVIEWER NOISE (silent repeats):")
+	lines.push(`  round 1 ${repeats1.agreed}/${repeats1.bothAnswered} · round 2 ${repeats2.agreed}/${repeats2.bothAnswered} · ` +
+		`combined ${fmtPercent(combinedAgreement)}`)
+	lines.push("  A threshold can never be sharper than this: it is the ceiling on everything above.")
+	const floors = round2.refinement?.expressibilityFloor
+	if (floors !== undefined) {
+		lines.push("")
+		lines.push("8-BIT FLOOR. The grid, not the eye, sets how finely a pair can be placed:")
+		for (const quadrant of QUADRANTS) {
+			const floor = floors[quadrant]
+			if (floor === undefined) continue
+			const smallest = Math.min(
+				...round2.items
+					.filter((item) => item.stratum === quadrant && item.role === "ladder")
+					.map((item) => item.truth.okLabDistance),
+			)
+			lines.push(
+				`  ${quadrant.padEnd(16)} nearest-neighbour step ${fmt(floor.median)} vs smallest rung ${fmt(smallest)} ` +
+					`— rungs there are quantised to about ±${fmt(floor.median / 2)}`,
+			)
+		}
+		lines.push("  Every distance reported anywhere above is the achieved one, measured on the two colours shown.")
+	}
+
+	return {
+		generatedAt: now().toISOString(),
+		warehousePath: paths.warehousePath,
+		rounds: [
+			{ batchId: round1BatchId, fixturePath: paths.round1FixturePath, criterion: round1.criterion ?? null },
+			{ batchId: round2BatchId, fixturePath: paths.round2FixturePath, criterion: round2.criterion ?? null },
+		],
+		criterionMatches,
+		poolable: criterionMatches,
+		round2: round2Alone,
+		pooled: {
+			fit: pooledFit,
+			quadrants: pooledQuadrants,
+			oneThresholdSurvives,
+			oneThresholdSentence,
+			fromRound1: pooledAll.round1.length,
+			fromRound2: pooledAll.round2.length,
+		},
+		hueSplit: {
+			quadrant: hueQuadrant,
+			boundariesDegrees: [...boundaries],
+			thirds,
+			round1Assigned,
+			round1Mixed,
+			verdict: hueVerdict,
+		},
+		directionProbe: {
+			targetDistance: probeTarget,
+			answered: probeAnswered,
+			total: probeItems.length,
+			predictedYesRate,
+			directions,
+			verdict: probeVerdict,
+		},
+		repeats: { round1: repeats1, round2: repeats2, combinedAgreement },
+		summaryLines: lines,
+	}
+}
+
 async function main(): Promise<void> {
 	const { values } = parseArgs({
 		options: {
@@ -886,9 +1283,32 @@ async function main(): Promise<void> {
 			fixture: { type: "string" },
 			out: { type: "string" },
 			batch: { type: "string" },
+			round: { type: "string", default: "1" },
 		},
 		strict: true,
 	})
+	if (values.round === "2") {
+		const warehousePath = values.warehouse ?? DEFAULT_WAREHOUSE_PATH
+		const round1FixturePath = BRACKETING_FIXTURE_PATH
+		const round2FixturePath = values.fixture ?? BRACKETING_ROUND_2_FIXTURE_PATH
+		const outPath = values.out ?? BRACKETING_ROUND_2_ANALYSIS_PATH
+		const analysis = analyzeBracketingRound2(
+			await loadFixture(round1FixturePath),
+			await loadFixture(round2FixturePath),
+			readAll(warehousePath),
+			{
+				warehousePath,
+				round1FixturePath,
+				round2FixturePath,
+				round2BatchId: values.batch ?? BRACKETING_ROUND_2_BATCH_ID,
+			},
+		)
+		await mkdir(dirname(outPath), { recursive: true })
+		await writeFile(outPath, `${JSON.stringify(analysis, null, "\t")}\n`)
+		process.stdout.write(`${analysis.summaryLines.join("\n")}\n`)
+		process.stdout.write(`\nwrote ${outPath}\n`)
+		return
+	}
 	const warehousePath = values.warehouse ?? DEFAULT_WAREHOUSE_PATH
 	const fixturePath = values.fixture ?? BRACKETING_FIXTURE_PATH
 	const outPath = values.out ?? BRACKETING_ANALYSIS_PATH

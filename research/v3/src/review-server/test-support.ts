@@ -4,6 +4,7 @@
  * Every test gets its own temporary warehouse and batch log, so tests never touch the reviewer's
  * real data and never depend on each other's writes.
  */
+import assert from "node:assert/strict"
 import { mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
@@ -172,6 +173,137 @@ export function makeVariedBatch(batchId: string, itemCount: number): PushedBatch
 				palette: palette(sideIndex === 0 ? index % 2 === 0 : index % 3 === 0),
 			})) as unknown as PushedBatch["items"][number]["sides"],
 		})),
+	}
+}
+
+/* ------------------------------------------------------------------------------------------- */
+/* Driving a review page headlessly, with real keystrokes                                        */
+/* ------------------------------------------------------------------------------------------- */
+
+/**
+ * The smallest DOM a review page can run on.
+ *
+ * The keyboard-only pages (`bracketing.js`, `oracle.js`) are the one place where a server-side test
+ * cannot see the thing that matters: whether the key the reviewer presses records the answer they
+ * meant, for the stimulus in front of them. A mapping that is off by one is invisible everywhere
+ * else and fatal to the data.
+ *
+ * The repository installs no browser driver and `CONVENTIONS.md` forbids adding one, so this
+ * implements the handful of DOM calls those pages make — element creation, text, children, one
+ * keydown listener, `location`, `fetch` — and everything above that line is genuine: the page's own
+ * module code, real HTTP, the real server, real warehouse records. Layout and CSS are not covered;
+ * those are judged by the reviewer opening the page.
+ */
+export class FakeNode {
+	readonly tagName: string
+	className = ""
+	children: FakeNode[] = []
+	src = ""
+	alt = ""
+	width = 0
+	height = 0
+	style: Record<string, string> = {}
+	#text = ""
+
+	constructor(tagName: string) {
+		this.tagName = tagName
+	}
+
+	set textContent(value: unknown) {
+		this.#text = String(value)
+		this.children = []
+	}
+
+	get textContent(): string {
+		return this.#text + this.children.map((child) => child.textContent).join(" ")
+	}
+
+	append(...children: FakeNode[]): void {
+		this.children.push(...children)
+	}
+
+	replaceChildren(...children: FakeNode[]): void {
+		this.#text = ""
+		this.children = children
+	}
+}
+
+export type FakePage = Readonly<{
+	nodes: Record<string, FakeNode>
+	/** Dispatch one key event and wait until something visible changes. Throws if nothing does. */
+	press(key: string): Promise<void>
+	settle(): Promise<void>
+	/** Everything the reviewer can see, as one string — the signal `press` waits on. */
+	visible(): string
+	stage(): FakeNode
+}>
+
+/**
+ * Install the shim, then import the page module. The import runs the page's top-level `await
+ * start()`, so by the time this resolves the page has loaded its batch and rendered item 1.
+ *
+ * The module is imported with a cache-busting query so several passes can run in one test process;
+ * ESM would otherwise hand back the first instance, still bound to the first server.
+ */
+export async function openPage(base: string, modulePath: string, nodeIds: readonly string[]): Promise<FakePage> {
+	const nodes = Object.fromEntries(nodeIds.map((id) => [id, new FakeNode("div")]))
+	const listeners: ((event: unknown) => void)[] = []
+	const realFetch = globalThis.fetch
+
+	const globals = globalThis as unknown as Record<string, unknown>
+	globals.document = {
+		querySelector(selector: string) {
+			return nodes[selector.replace("#", "")] ?? null
+		},
+		createElement(tag: string) {
+			return new FakeNode(tag)
+		},
+		addEventListener(type: string, handler: (event: unknown) => void) {
+			if (type === "keydown") listeners.push(handler)
+		},
+	}
+	globals.location = { href: `${base}/` }
+	// Relative URLs are what a page uses; Node's fetch needs them resolved against the origin.
+	globals.fetch = (input: string, init?: unknown) => realFetch(new URL(String(input), base), init as RequestInit)
+
+	await import(`${modulePath}?pass=${Math.random().toString(36).slice(2)}`)
+
+	// Everything on screen. Two identical answers in a row leave the status line unchanged but move
+	// the progress line, so the whole visible state is what "something happened" means.
+	const visible = () => nodeIds.map((id) => nodes[id].textContent).join("|")
+	const settle = async () => {
+		for (let attempt = 0; attempt < 200; attempt++) {
+			await new Promise((done) => setTimeout(done, 5))
+			if (!nodes[nodeIds.at(-1)!].textContent.startsWith("…")) return
+		}
+	}
+	await settle()
+
+	return {
+		nodes,
+		visible,
+		settle,
+		stage: () => nodes.stage,
+		async press(key: string) {
+			let prevented = false
+			const event = {
+				key,
+				metaKey: false,
+				ctrlKey: false,
+				altKey: false,
+				preventDefault() {
+					prevented = true
+				},
+			}
+			const before = visible()
+			for (const listener of listeners) listener(event)
+			assert.ok(prevented, `the page ignored the ${key} key`)
+			for (let attempt = 0; attempt < 200; attempt++) {
+				await new Promise((done) => setTimeout(done, 5))
+				if (visible() !== before) return
+			}
+			throw new Error(`pressing ${key} produced no visible response (still "${before}")`)
+		},
 	}
 }
 
