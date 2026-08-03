@@ -1,0 +1,165 @@
+{
+  "analysis": "pointing-ground-1",
+  "date": "2026-08-04",
+  "batchId": "pointing-ground-1",
+  "purpose": "oracle-validation",
+  "labelSchemaVersion": "pointing-ground.v1",
+  "questionKey": "pointing_ground",
+
+  "headline": "The pre-registered bar was NOT cleared. dot-right 7/8 clears its half (>=6/8); dot-right-and-wash-right 3/8 misses its half (>=4/8) by one tile. The pointer is exonerated on the only stratum with an answer key (6/6); the SAM wash is where every miss lives (2/6). Both rates are CEILINGS, not estimates, and both come from the hard stratum only.",
+
+  "reviewer_disclosure": {
+    "received": "2026-08-04, after the answers were recorded",
+    "verbatim": "i reviewed the pointing-ground-1 set, since it ran on mostly 'extremely hard background' artworks, i answered as 'could this be considered correct' and not 'is this correct', results might be way better in other artworks but here it wasn't amazing.",
+    "consequence_1_lenient_criterion": "The reviewer applied 'could this be considered correct', not 'is this correct'. Every rate below is therefore an UPPER BOUND. The true rate under the strict criterion the bar was written for is <= the number shown. A FAIL under a lenient criterion is a robust fail; a PASS under a lenient criterion is not a robust pass.",
+    "consequence_2_hard_stratum_only": "The 8 tiles are drawn entirely from the misfit covers. The 6 decidable tiles are exactly the covers where this same reviewer had earlier pressed 'none discernible' in cascade-ground-truth-1 (see oracle/premise/GROUND_FREETEXT_SYNTHESIS.md). NOTHING here generalizes to typical covers. This round measures the hard tail and only the hard tail.",
+    "consequence_3_qualitative_anchor": "The reviewer's own overall read is 'it wasn't amazing'. That is the anchor. No number in this file is to be presented above it."
+  },
+
+  "pre_registration": {
+    "status": "PRESENT ON DISK — this scoring is pre-registered, NOT post-hoc",
+    "file": "research/v3/oracle/sam/POINTING_PHRASING_PREREG.md",
+    "section": "§5, 'The reviewer round, and its bar — fixed now'",
+    "bar_verbatim": "carry pointing forward as a ground route only if dot right >= 6/8 and dot-right-and-wash-right >= 4/8",
+    "bar_is_conjunctive": true,
+    "why_split_verbatim": "The dot and the wash are separated deliberately: a right dot with a bad wash is a SAM candidate-selection problem (probe §2.4), a wrong dot is a pointer problem, and the two have different fixes. Pooling them would hide which one we have.",
+    "provenance_proof": {
+      "prereg_committed_utc": "2026-08-03T23:25:31Z",
+      "prereg_commit": "8c769eca7c5aa7cba9d8d1e713cb5ed1bee15e5c",
+      "first_answer_utc": "2026-08-03T23:42:23.804Z",
+      "batch_complete_utc": "2026-08-03T23:43:43.168Z",
+      "margin": "the bar was committed to git 16 min 52 s before the first answer was recorded"
+    }
+  },
+
+  "winning_phrasing": {
+    "picked": "plain",
+    "what_it_is": "the incumbent bare-noun-phrase imperative; every tile in this round used it",
+    "how_it_won": "8 phrasings x 15 covers x 2 pointers = 240 calls, 11.1 min GPU. Two phrasings cleared the sweep's pre-registered bar (plain, backdrop), tied; the cross-model tie-break picked plain. backdrop matched plain on MolmoPoint (15/15) but not on Qwen (7/15), which is what the tie-break exists to catch.",
+    "honest_framing": "The sweep searched the phrasing space and found NO improvement over the incumbent.",
+    "mechanism_finding": "The §5.1 collapse was mis-attributed to figure/ground. The 2x2 separates the factors on MolmoPoint: plain (bare noun) 15/15, surface (noun elaborated) 4/15, fg_minimal (clause added) 3/15, fg_full (both) 1/15, behind 0/15. Both factors break it independently and about equally. Pointing models answer bare noun-phrase imperatives; ANY elaboration collapses the answer rate. Figure/ground only looked like the cause because it cannot be phrased without elaboration."
+  },
+
+  "method": {
+    "source": "warehouse, supersession respected",
+    "cli": "node --experimental-strip-types research/v3/src/warehouse/cli.ts query --batch pointing-ground-1 --json --latest --no-retracted --limit 500",
+    "consumer_filter": "type == 'oracle-label' AND author.kind == 'human'",
+    "records_returned": 9,
+    "human_oracle_labels": 8,
+    "batch_complete_records": 1,
+    "supersession_observed": "none — all 8 labels are revision 1 with supersedes == null; raw count equals latest count (9), so no drafts were replaced and no record was retracted",
+    "dot_right_definition": "dot_right_wash_right + dot_right_wash_wrong",
+    "cant_tell_handling": "counted as neither dot-right nor both-right; zero occurred"
+  },
+
+  "scoring": {
+    "n": 8,
+    "answer_counts": {
+      "dot_right_wash_right": 3,
+      "dot_right_wash_wrong": 4,
+      "dot_wrong": 1,
+      "cant_tell": 0
+    },
+    "criteria": [
+      {
+        "criterion": "dot-right",
+        "observed": "7/8",
+        "observed_rate": 0.875,
+        "bar": ">= 6/8",
+        "result": "PASS",
+        "caveat": "ceiling under the lenient criterion; a lenient PASS is not a robust pass"
+      },
+      {
+        "criterion": "dot-right-and-wash-right",
+        "observed": "3/8",
+        "observed_rate": 0.375,
+        "bar": ">= 4/8",
+        "result": "FAIL",
+        "margin": "misses by one tile",
+        "caveat": "ceiling under the lenient criterion; a lenient FAIL is a robust fail — the strict rate can only be lower"
+      }
+    ],
+    "conjunctive_verdict": "BAR NOT CLEARED"
+  },
+
+  "per_cover": [
+    { "cover": "00014fb4", "artworkId": "00014fb430dd1b693e653121", "itemId": "pg1-ff38be64bfb8", "stratum": "decidable-six", "answer": "dot_right_wash_wrong", "dot_right": true, "wash_right": false },
+    { "cover": "00030075", "artworkId": "000300752f338b6aedff856c", "itemId": "pg1-d1cf37d028cc", "stratum": "decidable-six", "answer": "dot_right_wash_right", "dot_right": true, "wash_right": true },
+    { "cover": "00066a61", "artworkId": "00066a61bbcbeadd632f7f38", "itemId": "pg1-7857d3d2cb81", "stratum": "decidable-six", "answer": "dot_right_wash_wrong", "dot_right": true, "wash_right": false },
+    { "cover": "00075841", "artworkId": "00075841f68d8cd71db368d8", "itemId": "pg1-3bac21054d40", "stratum": "decidable-six", "answer": "dot_right_wash_wrong", "dot_right": true, "wash_right": false },
+    { "cover": "000f0a78", "artworkId": "000f0a78a1791248aec707e3", "itemId": "pg1-cf6c72a46d63", "stratum": "decidable-six", "answer": "dot_right_wash_wrong", "dot_right": true, "wash_right": false },
+    { "cover": "artofficial", "artworkId": "artofficial", "itemId": "pg1-05f6d86b7af5", "stratum": "decidable-six", "answer": "dot_right_wash_right", "dot_right": true, "wash_right": true },
+    { "cover": "0002dfdc", "artworkId": "0002dfdcde2cb0a75822168c", "itemId": "pg1-eb7a9c835d16", "stratum": "phrasing-disagreement", "maskIoU_pick_vs_rival": 0.409, "answer": "dot_right_wash_right", "dot_right": true, "wash_right": true },
+    { "cover": "elephunk", "artworkId": "elephunk", "itemId": "pg1-585d6009c28e", "stratum": "phrasing-disagreement", "maskIoU_pick_vs_rival": 0.246, "answer": "dot_wrong", "dot_right": false, "wash_right": false }
+  ],
+
+  "by_stratum": {
+    "decidable-six": {
+      "n": 6,
+      "note": "the only tiles with an answer key — the reviewer's own prose from ground-freetext-1 fixes which pixels are ground",
+      "dot_right": "6/6",
+      "both_right": "2/6",
+      "reading": "the pointer did not miss once here; four of the six failures are the wash alone"
+    },
+    "phrasing-disagreement": {
+      "n": 2,
+      "note": "the two covers where the picked phrasing and its closest rival produced the most different masks; included because a human eye is worth most where two sentences disagree",
+      "dot_right": "1/2",
+      "both_right": "1/2",
+      "reading": "the single dot_wrong in the whole round is elephunk, the largest-disagreement tile (IoU 0.246) — exactly the failure these two tiles were placed to catch"
+    }
+  },
+
+  "pre_registered_interpretation": {
+    "source": "POINTING_PROBE_NOTES.md §12.9 'What would change my mind', written before the answers",
+    "branch_that_fired": "branch 2 — 'If dots are right and washes are wrong, it is SAM candidate selection (§2.4), not the pointer, and it is cheap to work on. This is the outcome the two disagreement tiles are there to catch.'",
+    "branch_that_did_not_fire": "branch 3 — 'If dots are wrong on the decidable six, the route is done.' Dots were 6/6 on the decidable six. This branch did NOT fire.",
+    "why_this_matters": "The failing half of the bar is the wash, and the wash is SAM's candidate selection, not the pointer. Recording pointing as dead for a SAM defect would misattribute the failure to the wrong component. That reasoning was written down in advance precisely so it could not be produced after the fact as an excuse."
+  },
+
+  "verdict": {
+    "value": "route-alive-pending-typical-strata-probe",
+    "not_a_pass": "THE BAR FAILED. 'Alive' here means only 'not killable on this evidence' — it does not mean the route works, and it does not license carrying pointing forward as a ground route. The pre-registration's own consequence clause ('carry pointing forward ... only if') is unmet, and it stands.",
+    "why_not_route_dead": "The pointer cleared its half of the bar and missed zero of the six covers with an answer key. Every decidable-six failure is the wash. Killing the pointing route for a SAM candidate-selection defect would blame the wrong component, and §12.9 pre-registered exactly that distinction.",
+    "why_not_unresolved": "The round is fully answered (8/8, no supersession, no can't-tells) and the bar is unambiguously scored against a pre-registration that predates the answers. The result is not missing; it is a fail with a localized cause.",
+    "confidence_limits": "Both a lenient criterion and a hard-stratum sample apply. n = 8. No claim in this file should be carried at more than the strength of 'wasn't amazing'."
+  },
+
+  "recommendation": {
+    "headline": "Do not scale pointing. Do not spend GPU on it next. Work the wash on CPU first, from masks that already exist.",
+    "ordered": [
+      "1. SAM candidate selection, on CPU, from the masks already on disk. Four of six decidable-six covers are dot-right/wash-wrong. No new inference is required to study why the grown mask is wrong — the point, the candidates and the chosen mask are already recorded. This is the cheapest available move and the evidence points straight at it.",
+      "2. Only after (1) shows movement: the typical-strata probe specified below. Probing typical covers before fixing the wash would measure the same defect on easier images and produce a flattering number that decides nothing.",
+      "3. Do not revisit phrasing. The space was searched at 240 calls and the incumbent survived; the mechanism finding (bare nouns only) explains why there is nothing left to turn there."
+    ],
+    "against_spin": "3/8 is the lenient ceiling on the composite bar. The temptation is to lead with dot-right 7/8. Leading with the half that passed, when the conjunction failed, would misreport the round."
+  },
+
+  "typical_strata_probe_spec": {
+    "status": "SPECIFIED, NOT RUN — GPU is held by another task; nothing in this file consumed GPU",
+    "question": "Does the wash failure rate that this round measured on the misfit covers hold on ordinary covers, or is it a property of the hard tail?",
+    "why_it_is_needed": "The reviewer flagged it directly: 'results might be way better in other artworks'. This round cannot answer that, by construction — it has no typical covers in it.",
+    "design": {
+      "sampling": "Draw covers at random from the general corpus with the misfit set EXCLUDED by id, so the two strata are disjoint and comparable. Stratify nothing else — the point is to see the typical rate, and any further stratification would reintroduce the selection this round suffers from.",
+      "n": "16 tiles minimum. n=8 was tolerable for a route already under suspicion; a generalization claim needs more. 16 keeps one reviewer sitting under ~10 minutes at the observed ~11 s/tile pace.",
+      "phrasing": "plain, unchanged. The phrasing question is closed; changing it would confound the strata comparison.",
+      "pointer": "MolmoPoint-8B, unchanged, same pin.",
+      "panel": "identical to pointing-ground-1 — left bare artwork, right green dot + pink wash, no caption, no number, no phrasing, no model name.",
+      "question_and_answers": "identical, verbatim, including the four answer keys on digits 1-4. Any wording change breaks comparability with this round.",
+      "answer_key_caveat": "Typical covers do NOT have the ground-freetext-1 prose behind them, so there is no independent answer key. This probe measures the reviewer's judgement only, and must be labelled that way."
+    },
+    "criterion_instruction_REQUIRED": "The reviewer must be told explicitly, in the round's own framing text, to answer 'is this correct' and NOT 'could this be considered correct'. This round's lenience was undeclared until afterwards and cost it its interpretability. Without this instruction the two rounds are not comparable at all.",
+    "pre_register_before_running": [
+      "the bar, as a conjunction, in the same dot/wash split",
+      "the exact comparison to be made against this round's 7/8 and 3/8, including that this round's numbers are lenient ceilings and the new round's are not, so the comparison is biased AGAINST the new round and a tie should be read as an improvement",
+      "the decision that follows each outcome, written before the round is pushed"
+    ],
+    "cost_estimate": "16 covers x 1 phrasing x 1 pointer = 16 pointer calls plus 16 SAM segmentations. On the measured MolmoPoint rate (120 calls in 8.2 min pointer time) this is well under 2 min of pointer time. Budget the SAM load separately and honestly — see the load_seconds finding below.",
+    "operational_warning": "common.load_sam() sha256-hashes the 3.5 GB weights BEFORE its own timer starts. Every 'load_seconds: 0.2' in these notes excludes it. The first load of a session costs ~8 min of wall clock and presents exactly like a wedged process: low CPU, flat RSS, no output. Budget it, or --no-verify-weights it against a pin verified earlier in the same session."
+  },
+
+  "carried_caveats": [
+    "The only human-free correctness signal available to the sweep (not-on-a-face) fired ZERO times in 120 MolmoPoint calls. It separated nothing. Every automatic comparison in POINTING_PROBE_NOTES.md and the probe above it is an answer-rate comparison wearing a correctness label. This human round is the first actual correctness measurement of the pointing route — and it did not clear its bar.",
+    "n = 8. Every rate here has a confidence interval far wider than the one-tile margin by which the composite bar failed. The fail is not an artifact of the margin — it is a fail — but neither is the 7/8 dot rate precise."
+  ]
+}

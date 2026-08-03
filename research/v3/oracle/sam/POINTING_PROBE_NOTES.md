@@ -843,3 +843,189 @@ correctness label. Trigger: any proposal to scale pointing on the strength of a 
    been a false pass. Scope stated instead.
 3. **No keypress was performed against the live page** (§12.6), with the reason and the compensating
    argument stated rather than the check quietly dropped.
+
+---
+
+# 13. `pointing-ground-1` scored — 2026-08-04
+
+**The round the whole pointing line was built toward. It did not clear its bar.**
+Scored by a different agent from the one that built and pushed it; that agent stalled and died
+after committing `8c769ec` and never reported. Nothing of its work was orphaned — see §13.7.
+
+## 13.1 The one-line answer
+
+**Bar NOT cleared.** The dot half passed, the wash half failed by one tile, and the bar was a
+conjunction.
+
+| criterion | observed | bar | result |
+|---|---|---|---|
+| dot-right | **7/8** | >= 6/8 | PASS |
+| dot-right-and-wash-right | **3/8** | >= 4/8 | **FAIL** — by one tile |
+
+`dot right + wash right` 3 · `dot right + wash wrong` 4 · `dot wrong` 1 · `can't tell` 0.
+
+## 13.2 Two disclosures that govern every number above, and they pull opposite ways
+
+The reviewer disclosed **after answering**, verbatim:
+
+> "i reviewed the pointing-ground-1 set, since it ran on mostly 'extremely hard background'
+> artworks, i answered as 'could this be considered correct' and not 'is this correct', results
+> might be way better in other artworks but here it wasn't amazing."
+
+**(1) The criterion was lenient, so every rate is a CEILING, not an estimate.** The reviewer
+answered *could this be considered correct*, not *is this correct*. The bar in
+`POINTING_PHRASING_PREREG.md` §5 was written for the strict reading. So the true strict rates are
+**at most** 7/8 and **at most** 3/8. This cuts asymmetrically and it matters: **a fail under a
+lenient criterion is a robust fail** — the strict number can only be lower — while **the 7/8 dot
+pass is NOT a robust pass**, because it was bought at the generous reading.
+
+**(2) The sample is the hard stratum, and nothing here generalizes.** The six decidable tiles are
+*exactly* the covers where this same reviewer had earlier pressed **none discernible** in
+`cascade-ground-truth-1` (`oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`). This round measures the
+misfit tail and only the misfit tail. The reviewer says plainly that other artworks may be better,
+and this round has no evidence either way, by construction.
+
+**(3) The qualitative anchor is "it wasn't amazing."** No reading of these numbers is to be carried
+above that sentence. 3/8 on the composite is not a near-miss to be talked upward.
+
+## 13.3 The bar was genuinely pre-registered — provenance, since it was asked
+
+**The pre-registration is on disk and in git.** `POINTING_PHRASING_PREREG.md` §5, committed in
+`8c769ec` at **2026-08-03T23:25:31Z**. The first answer was recorded at **2026-08-03T23:42:23.804Z**
+and the batch completed at **23:43:43.168Z**. The bar was in version control **16 min 52 s before
+the reviewer's first keypress**. This scoring is pre-registered. It is **not** post-hoc.
+
+> **THE BAR, verbatim:** carry pointing forward as a ground route only if **dot right >= 6/8** and
+> **dot-right-and-wash-right >= 4/8**.
+
+## 13.4 Per cover
+
+Answers read through the warehouse CLI with supersession respected:
+
+```
+node --experimental-strip-types research/v3/src/warehouse/cli.ts query \
+  --batch pointing-ground-1 --json --latest --no-retracted --limit 500
+```
+
+then filtered to `type == oracle-label` and `author.kind == human`. **8 labels, all revision 1, no
+`supersedes`, raw count equals latest count — nothing was re-graded, retracted or superseded.**
+
+| cover | stratum | answer | dot | wash |
+|---|---|---|---|---|
+| `00030075` | decidable-six | dot right, wash right | ✓ | ✓ |
+| `artofficial` | decidable-six | dot right, wash right | ✓ | ✓ |
+| `00014fb4` | decidable-six | dot right, wash wrong | ✓ | ✗ |
+| `00066a61` | decidable-six | dot right, wash wrong | ✓ | ✗ |
+| `00075841` | decidable-six | dot right, wash wrong | ✓ | ✗ |
+| `000f0a78` | decidable-six | dot right, wash wrong | ✓ | ✗ |
+| `0002dfdc` | phrasing-disagreement (IoU 0.409) | dot right, wash right | ✓ | ✓ |
+| `elephunk` | phrasing-disagreement (IoU 0.246) | **dot wrong** | ✗ | ✗ |
+
+**By stratum, and this is the finding:**
+
+| stratum | n | dot-right | both-right |
+|---|---|---|---|
+| decidable-six — *the only tiles with an answer key* | 6 | **6/6** | **2/6** |
+| phrasing-disagreement | 2 | 1/2 | 1/2 |
+
+**The pointer did not miss once on the six covers that have an answer key.** All four decidable-six
+failures are the wash alone. The single `dot wrong` in the entire round is `elephunk` — the
+largest-mask-disagreement tile, at IoU 0.246, which is precisely the failure those two tiles were
+placed to catch.
+
+## 13.5 Which pre-registered branch fired
+
+§12.9 wrote the readings down in advance. **Branch 2 fired, verbatim:**
+
+> "If dots are right and washes are wrong, it is SAM candidate selection (§2.4), not the pointer,
+> and it is cheap to work on. This is the outcome the two disagreement tiles are there to catch."
+
+**Branch 3 did not fire:** "If dots are wrong on the decidable six, the route is done" — dots were
+6/6 there. The route is not done on the pointer's account.
+
+That distinction was written before the answers *precisely so it could not be manufactured after
+them*. It is the reason this is not scored as `route-dead`.
+
+## 13.6 Verdict — `route-alive-pending-typical-strata-probe`
+
+**Said plainly first: THE BAR FAILED.** "Alive" means only *not killable on this evidence*. It does
+**not** mean the route works, and it does **not** license carrying pointing forward as a ground
+route — the pre-registration's consequence clause is unmet and it stands.
+
+- **Not `route-dead`**, because the pointer cleared its half and missed zero of six on the stratum
+  with an answer key. Every decidable failure is SAM's mask growth. Recording pointing as dead for a
+  SAM candidate-selection defect would blame the wrong component.
+- **Not `unresolved`**, because the round is fully answered (8/8, no can't-tells, no supersession)
+  and scored against a bar that provably predates it. The result is not missing. It is a fail with a
+  localized cause.
+
+**Recommendation — do not scale pointing, and do not spend the next GPU slot on it.**
+
+1. **Work the wash on CPU, from masks already on disk.** Four of six decidable covers are
+   dot-right/wash-wrong. The point, the candidates and the chosen mask are all already recorded; why
+   the grown mask is wrong needs no new inference. Cheapest available move, and the evidence points
+   straight at it.
+2. **Only then the typical-strata probe** (§13.8). Running it first would measure the same wash
+   defect on easier images and return a flattering number that decides nothing.
+3. **Do not revisit phrasing.** 240 calls searched the space, the incumbent survived, and §12.3
+   explains why there is nothing left to turn.
+
+**Against the obvious spin:** the temptation is to lead with dot-right 7/8. Leading with the half
+that passed, when the conjunction failed and the passing half is a lenient ceiling, would misreport
+the round.
+
+## 13.7 What the builder agent left — recovered state
+
+The agent that ran the sweep and pushed the round **stalled and died before reporting**. Checked:
+
+- **It committed everything.** `8c769ec`, 9 files, 9,770 insertions — the two sweep result sets, the
+  round fixture and sample, both new scripts, the fixture builder, the pre-registration, and its
+  §12 notes append.
+- **Nothing was orphaned.** No untracked files under `research/v3/`, and `POINTING_PROBE_NOTES.md`
+  was byte-identical to HEAD before this section was appended.
+- **The staged set in the index is unrelated parked work** (residual cuts, dynamic concepts,
+  oracle-premise) and was left untouched. This section and the analysis JSON were committed by
+  explicit pathspec.
+- Its `--write` claim holds: the round panels are gitignored build artifacts, as with round 3b.
+
+## 13.8 The typical-strata probe — SPECIFIED, NOT RUN
+
+**Not run: the GPU is held by another task.** Nothing in this scoring pass used GPU.
+
+**Question:** does the wash failure rate measured here on the misfit covers hold on ordinary covers,
+or is it a property of the hard tail? This round cannot answer it — it contains no typical covers.
+
+- **Sampling:** at random from the general corpus with the misfit set **excluded by id**, so the two
+  strata are disjoint. Stratify on nothing else — further stratification would reintroduce exactly
+  the selection problem this round suffers from.
+- **n = 16 minimum.** n=8 was tolerable for a route already under suspicion; a *generalization*
+  claim needs more. 16 keeps one reviewer under ~10 min at the observed ~11 s/tile.
+- **Unchanged, deliberately:** phrasing `plain`, MolmoPoint-8B on the same pin, the identical panel
+  (no caption, no number, no phrasing, no model name), and the question and four answer keys
+  **verbatim**. Any wording change breaks comparability with this round.
+- **Answer-key caveat:** typical covers have no `ground-freetext-1` prose behind them, so there is
+  no independent key. The probe measures reviewer judgement only and must be labelled that way.
+- **REQUIRED, and this is the lesson of §13.2:** the round's own framing text must tell the reviewer
+  explicitly to answer **"is this correct"** and *not* "could this be considered correct". This
+  round's lenience went undeclared until afterwards and cost it its interpretability. Without that
+  instruction the two rounds are not comparable at all.
+- **Pre-register before pushing:** the bar as a conjunction in the same dot/wash split; the exact
+  comparison against this round's 7/8 and 3/8 — **noting that this round's numbers are lenient
+  ceilings and the new round's would not be, so the comparison is biased AGAINST the new round and a
+  tie should be read as an improvement**; and the decision that follows each outcome.
+- **Cost:** 16 pointer calls + 16 SAM segmentations, well under 2 min pointer time at the measured
+  rate. **Budget the SAM load separately and honestly** — §12.7: `common.load_sam()` sha256s 3.5 GB
+  before its own timer starts, the first load of a session costs ~8 min wall, and it presents exactly
+  like a wedged process.
+
+## 13.9 The caveat this round was supposed to retire, and did not
+
+§12.5 recorded that the only human-free correctness signal (not-on-a-face) fired **zero** times in
+120 MolmoPoint calls and therefore separated nothing — every automatic comparison in this document
+is an answer-rate comparison wearing a correctness label. **This round is the first actual
+correctness measurement of the pointing route, and it did not clear its bar.** The caveat stands,
+and it now has a human number behind it rather than a proxy.
+
+**Also standing:** n = 8. Every rate here carries a confidence interval far wider than the one-tile
+margin by which the composite failed. The fail is a fail — a lenient ceiling below the bar is not an
+artifact of margin — but the 7/8 dot rate is not a precise number either.
