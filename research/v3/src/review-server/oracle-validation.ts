@@ -86,7 +86,15 @@ export type OracleAnswerOption = Readonly<{
  * auto-advance UI, and because decomposing a multi-select into per-value yes/no passes would be a
  * different question from the one the model answered.
  */
-export type OracleQuestionKind = "enum" | "boolean" | "multi"
+/**
+ * `freetext` is the one kind with no answer vocabulary at all.
+ *
+ * It exists because a closed list cannot record "none of these, and here is why" — it has only a
+ * refusal value, and a refusal value files the reviewer's silence as their judgement. See
+ * `freetext.ts` for the round that had to be built when that bit. Everything else about a free-text
+ * item is an ordinary item: same custody checks, same opaque token, same supersession on re-answer.
+ */
+export type OracleQuestionKind = "enum" | "boolean" | "multi" | "freetext"
 
 export type OracleQuestion = Readonly<{
 	/** `questionKey` on every record this question produces, e.g. `ground_type`. */
@@ -114,6 +122,17 @@ export type OracleQuestion = Readonly<{
 	preamble?: string
 	/** The unsure framing, likewise on the page above the question. From `unsure_framing`. */
 	framing?: string
+	/**
+	 * How an item's `priorAnswer` is introduced on screen. `freetext` rounds only.
+	 *
+	 * In the fixture rather than in the page because it is not chrome: a previous answer shown with
+	 * no frame reads as something to defend, and the reviewer writes a justification instead of the
+	 * description the round exists to collect. The words that decide that travel with the answers.
+	 */
+	contextLabel?: string
+	/** The second line of the same frame, saying plainly that nothing is being challenged. */
+	contextNote?: string
+	/** Empty on a `freetext` question, and non-empty on every other kind. */
 	answers: readonly OracleAnswerOption[]
 }>
 
@@ -229,6 +248,14 @@ export type OracleValidationItem = Readonly<{
 	stratum: string
 	/** Set on every item of a `by-artwork` round, absent everywhere else. */
 	reconciliation?: OracleItemReconciliation
+	/**
+	 * The reviewer's OWN earlier answer to a different round, shown as labelled context.
+	 *
+	 * Set on every item of a `freetext` round and on none of any other kind. Never a model's answer
+	 * and never a published flag — the same rule `reconciliation` follows, and for the same reason:
+	 * what is on screen beside the question decides what question is actually being asked.
+	 */
+	priorAnswer?: Readonly<{ batchId: string; questionKey: string; answer: string }>
 }>
 
 export type OracleValidationFixture = Readonly<{
@@ -279,6 +306,18 @@ export function validateFixture(fixture: OracleValidationFixture): void {
 	for (const question of fixture.questions) {
 		if (seenQuestions.has(question.key)) throw new Error(`question ${question.key} appears twice`)
 		seenQuestions.add(question.key)
+		// A free-text question is the ONE kind that must offer nothing. Checked as an equality in both
+		// directions: a free-text question that grew an option list would quietly become a closed
+		// question, and a closed question that lost its list would render as an unanswerable page.
+		if (question.kind === "freetext") {
+			if (question.answers.length > 0) {
+				throw new Error(`free-text question ${question.key} offers ${question.answers.length} answer(s); a free-text question offers none`)
+			}
+			if (question.contextLabel !== undefined && question.contextNote === undefined) {
+				throw new Error(`free-text question ${question.key} labels its context but does not say it is not being challenged`)
+			}
+			continue
+		}
 		if (question.answers.length === 0) throw new Error(`question ${question.key} offers no answers`)
 		if (question.kind !== "boolean" && question.answers.length > MAX_ENUM_ANSWERS) {
 			throw new Error(`question ${question.key} offers more than ${MAX_ENUM_ANSWERS} answers; split it in two`)
@@ -321,6 +360,22 @@ export function validateFixture(fixture: OracleValidationFixture): void {
 		const asked = `${item.questionKey} ${item.imageId}`
 		if (seenAsked.has(asked)) throw new Error(`${item.imageId} is asked ${item.questionKey} twice`)
 		seenAsked.add(asked)
+	}
+	// `priorAnswer` is the free-text round's context block and it has nowhere to render anywhere else.
+	// Checked in both directions, like `reconciliation`: context that cannot be drawn is context the
+	// reviewer was promised and never got, and a free-text item without it asks "why did no tag fit"
+	// without saying which tag.
+	const freetextKeys = new Set(fixture.questions.filter((question) => question.kind === "freetext").map((question) => question.key))
+	const strayContext = fixture.items.filter((item) => item.priorAnswer !== undefined && !freetextKeys.has(item.questionKey))
+	if (strayContext.length > 0) {
+		throw new Error(
+			`items ${strayContext.map((item) => item.itemId).join(", ")} carry priorAnswer context on a non-free-text question; ` +
+				"the context is what a free-text round exists to show and it has nowhere to render here",
+		)
+	}
+	const missingContext = fixture.items.filter((item) => freetextKeys.has(item.questionKey) && item.priorAnswer === undefined)
+	if (missingContext.length > 0) {
+		throw new Error(`items ${missingContext.map((item) => item.itemId).join(", ")} are free-text items with no priorAnswer context`)
 	}
 	if (fixture.serveOrder.length !== fixture.items.length || new Set(fixture.serveOrder).size !== fixture.items.length) {
 		throw new Error("serveOrder must list every item exactly once")

@@ -1164,3 +1164,86 @@ summary {
 	max-width: 80ch;
 	opacity: 0.75;
 }
+
+/* --- free-text round (REVIEW_UI.md §4) ---------------------------------------------------- */
+/* Two colours only, flat, no shadows and no gradients — the chrome rule of §3. The artwork is the
+   one thing on the page allowed to carry colour, and it is served at its own size because the
+   reviewer zooms natively rather than through a magnifier. */
+
+.freetext-stage {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 2rem;
+	justify-content: center;
+}
+
+.freetext-frame {
+	margin: 0;
+	flex: 0 1 auto;
+}
+
+.freetext-frame img {
+	display: block;
+	max-width: min(46vw, 640px);
+	height: auto;
+	/* A border, not a shadow: the cover's own edge can be any colour, including the page's black,
+	   and an artwork that bleeds into the background is an artwork whose ground cannot be judged —
+	   which is the exact question this round asks. */
+	border: 1px solid #fff;
+}
+
+.freetext-side {
+	flex: 1 1 22rem;
+	max-width: 34rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.freetext-context {
+	border: 1px solid #fff;
+	padding: 0.75rem 1rem;
+}
+
+.freetext-context-label,
+.freetext-context-note {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.75;
+}
+
+.freetext-context-answer {
+	margin: 0.35rem 0;
+	font-family: ui-monospace, monospace;
+	font-size: 1.1rem;
+}
+
+.freetext-label {
+	font-size: 0.85rem;
+	opacity: 0.75;
+}
+
+.freetext-input {
+	width: 100%;
+	min-height: 12rem;
+	resize: vertical;
+	background: #000;
+	color: #fff;
+	border: 1px solid #fff;
+	padding: 0.75rem;
+	font: inherit;
+	line-height: 1.5;
+}
+
+.freetext-input:focus {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.freetext-saved {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.6;
+	min-height: 1.2em;
+}

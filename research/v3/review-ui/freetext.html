@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>free text</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="oracle-body">
+		<header class="oracle-bar oracle-head">
+			<div class="oracle-prompt">
+				<p id="question">loading…</p>
+				<p id="instruction" class="oracle-instruction"></p>
+			</div>
+			<p id="progress"></p>
+		</header>
+
+		<main id="stage" class="oracle-stage freetext-stage" aria-live="polite">
+			<!-- The artwork. No magnifier: the reviewer zooms natively (REVIEW_UI.md §3), so the image is
+			     served at its own size and the browser's own zoom is the instrument. -->
+			<figure id="frame" class="freetext-frame">
+				<img id="artwork" alt="" />
+			</figure>
+
+			<div id="side" class="freetext-side">
+				<!-- The reviewer's OWN earlier answer. Labelled as context in the fixture's own words,
+				     because an unlabelled previous answer reads as something to defend and the reviewer
+				     writes a justification instead of the description this round exists to collect. -->
+				<aside id="context" class="freetext-context" hidden>
+					<p id="context-label" class="freetext-context-label"></p>
+					<p id="context-answer" class="freetext-context-answer"></p>
+					<p id="context-note" class="freetext-context-note"></p>
+				</aside>
+
+				<label class="freetext-label" for="answer">Your words</label>
+				<textarea
+					id="answer"
+					class="freetext-input"
+					rows="10"
+					spellcheck="true"
+					autocapitalize="sentences"
+					placeholder="what is it, and why did no tag fit?"
+				></textarea>
+				<p id="saved" class="freetext-saved"></p>
+			</div>
+
+			<p id="done" class="oracle-done" hidden></p>
+		</main>
+
+		<footer class="oracle-bar oracle-foot">
+			<p id="pending" class="oracle-pending"></p>
+			<p id="status">…</p>
+			<p class="oracle-keys">
+				<b>enter</b> save &amp; next · <b>shift+enter</b> newline · <b>esc</b> leave the field ·
+				<b id="backkey">←</b> back · <b>r</b> release when finished · <a href="/">all reviews</a>
+			</p>
+		</footer>
+	</body>
+	<script type="module" src="/freetext.js"></script>
+</html>

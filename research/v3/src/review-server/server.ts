@@ -68,6 +68,7 @@ import {
 
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
+import { FREETEXT_LABEL_SCHEMA_VERSION, FREETEXT_MIN_LENGTH, GROUND_FREETEXT_BATCH_ID, GROUND_FREETEXT_FIXTURE_PATH } from "./freetext.ts"
 import {
 	BCDE_VALIDATION_BATCH_ID,
 	BCDE_VALIDATION_FIXTURE_PATH,
@@ -80,6 +81,7 @@ import {
 	PROBE_GOLD_FIXTURE_PATH,
 	instructionForServeMode,
 	itemImagePath,
+	type OracleValidationItem,
 	readPremiseRun,
 	validateFixture,
 	type OracleValidationFixture,
@@ -289,7 +291,11 @@ export function batchReviewPaths(
 			// released rounds did, undetected, because the link was emitted from `kind` alone. The
 			// server knows the schema at dashboard-build time, so it decides here instead.
 			return {
-				page: `/oracle${query}`,
+				// A free-text round shares every server-side path with the closed rounds and none of the
+				// page: `/oracle` is a keystroke-driven grid of answer options, and it renders nothing at
+				// all for a question that has none. Decided from the schema for the same reason the
+				// adjudication link below is: `kind` alone cannot tell two instruments apart.
+				page: entry.labelSchemaVersion === FREETEXT_LABEL_SCHEMA_VERSION ? `/freetext${query}` : `/oracle${query}`,
 				payload: `/api/oracle-validation/${id}`,
 				afterRelease:
 					entry.labelSchemaVersion === ORACLE_LABEL_SCHEMA_VERSION ? `/oracle-review${query}` : null,
@@ -1443,6 +1449,10 @@ export class ReviewService {
 				// part of what was asked, not chrome: see OracleQuestion.preamble.
 				preamble: question.preamble ?? null,
 				framing: question.framing ?? null,
+				// Free-text rounds only; null everywhere else. The page needs the words that frame an
+				// item's `priorAnswer`, and they live in the fixture because they change what is asked.
+				contextLabel: question.contextLabel ?? null,
+				contextNote: question.contextNote ?? null,
 				answers: question.answers.map((answer) => ({
 					key: answer.key,
 					label: answer.label,
@@ -1473,6 +1483,9 @@ export class ReviewService {
 					// tie" is actually enforced — and a field that appears on every round would widen the
 					// allowlist for four rounds that have no use for it.
 					...(item.reconciliation === undefined ? {} : { reconciliation: item.reconciliation }),
+					// OMITTED, not nulled, on every round that has none — same rule as `reconciliation`
+					// above, and enforced by the same exact key-set assertion in the tests.
+					...(item.priorAnswer === undefined ? {} : { priorAnswer: item.priorAnswer }),
 				}
 			}),
 		}
@@ -1499,6 +1512,20 @@ export class ReviewService {
 		if (item === undefined) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
 		const question = stored.fixture.questions.find((entry) => entry.key === item.questionKey)
 		if (question === undefined) throw new NotFound(`Unknown question ${item.questionKey} in batch ${batchId}`)
+		// A free-text answer is prose from an OPEN value space, so every check below it — shape against
+		// `kind`, membership in the vocabulary, sortedness, no-repeats — is meaningless here and would
+		// reject every valid answer. What replaces them is the only thing that can be checked about
+		// prose: that it is a string, that the reviewer actually wrote something, and that it fits the
+		// same comment ceiling every other free-text field on this server is held to.
+		if (question.kind === "freetext") {
+			if (typeof submitted !== "string") throw new BadRequest(`${question.key} takes free text, not a list`)
+			const text = submitted.trim()
+			if (text.length < FREETEXT_MIN_LENGTH) {
+				throw new BadRequest(`${question.key} needs a description; an empty answer records nothing and is not the same as "no ground"`)
+			}
+			if (text.length > MAX_COMMENT_LENGTH) throw new BadRequest(`${question.key} is limited to ${MAX_COMMENT_LENGTH} characters`)
+			return await this.#appendOracleAnswer(stored, item, question, text)
+		}
 		const vocabulary = question.answers.map((entry) => entry.key)
 		// The answer's SHAPE has to match the question's kind before its VALUES are checked: a single
 		// token on a multi-select and a one-element array on an enum are both wrong, and letting either
@@ -1525,6 +1552,25 @@ export class ReviewService {
 		// Sorted, so two reviewers (or the same reviewer twice) who pick the same set write the same
 		// row: an order-sensitive array would make an exact-set comparison depend on click order.
 		const answer: string | string[] = Array.isArray(submitted) ? [...chosen].sort() : (submitted as string)
+		return await this.#appendOracleAnswer(stored, item, question, answer)
+	}
+
+	/**
+	 * Append one oracle answer, whatever validated it.
+	 *
+	 * Shared by the closed-vocabulary path and the free-text one so that supersession, the batch ref
+	 * and the record shape are written in exactly one place. The two paths differ in what a valid
+	 * answer IS and in nothing else; a second copy of this would be the obvious way for a free-text
+	 * re-answer to stop superseding the answer it replaces.
+	 */
+	async #appendOracleAnswer(
+		stored: StoredOracleBatch,
+		item: OracleValidationItem,
+		question: { key: string },
+		answer: string | string[],
+	): Promise<{ recordId: string; revision: number }> {
+		const batchId = stored.batchId
+		const itemId = item.itemId
 		const key = this.#oracleKey(stored, item)
 		// Supersession is keyed by (batch, question, image), so a re-ask in a NEW batch would otherwise
 		// write a first answer and leave two live, contradicting labels for one artwork with nothing
@@ -2633,6 +2679,44 @@ export async function seedBcdeValidationRound(
 	return pushed.batchId
 }
 
+/**
+ * Push the ground free-text round if it is not in the queue yet. Idempotent by batch id.
+ *
+ * The `fundedBy` block is the round's §7 declaration and it is written out in full rather than
+ * summarized: this round exists because a released round's answers turned out to mean something
+ * other than what their token said, and six months from now the only way to know that is to read it
+ * here.
+ */
+export async function seedGroundFreetextRound(
+	service: ReviewService,
+	fixturePath = GROUND_FREETEXT_FIXTURE_PATH,
+	batchId = GROUND_FREETEXT_BATCH_ID,
+): Promise<string | null> {
+	const fixture = JSON.parse(await readFile(fixturePath, "utf8")) as OracleValidationFixture
+	if (service.has(batchId)) return null
+	const pushed = await service.pushOracleValidation(
+		fixture,
+		[
+			"what it tests: WHICH WORDS THE ground_type VOCABULARY IS MISSING — not whether the reviewer " +
+				"accepts a longer list, which is why no list is offered",
+			"funded by research/v3/oracle/premise/CASCADE_POLICY_VERDICT.md and " +
+				"research/v3/data/oracle-premise/cascade-ground-truth-1-analysis.json " +
+				"`verdict.vocabulary_misfit_covers`: 9 covers answered `none_discernible` in cascade-ground-truth-1",
+			'the reviewer, 2026-08-03, on what that token actually meant: "i answered \'none discernible\' but ' +
+				'this is not true, i can see the field, I just don\'t know how to tag it. it you show me the ' +
+				'images with a free text field, i can try to explain for each of them, and that might give us some insight."',
+			"free text is the primary and only channel here (REVIEW_UI.md §4); any tag over these answers is " +
+				"a DERIVED record filed by the tagging agent afterwards, and the prose stays authoritative",
+			"answers are oracle-label rows under the explicit free-text schema marker " +
+				`${FREETEXT_LABEL_SCHEMA_VERSION}; their \`answer\` is prose from an open value space and is not ` +
+				"comparable with any closed-vocabulary round",
+			`selection: ${fixture.selection.rule}`,
+		],
+		batchId,
+	)
+	return pushed.batchId
+}
+
 /** Push the premise-disambiguation round if it is not in the queue yet. Idempotent by batch id. */
 export async function seedOracleValidationRound(
 	service: ReviewService,
@@ -2694,6 +2778,10 @@ async function main(): Promise<void> {
 		if (probes !== null) process.stdout.write(`seeded oracle-validation round "${probes}" — http://127.0.0.1:${values.port}/oracle\n`)
 		const bcde = await seedBcdeValidationRound(handle.service)
 		if (bcde !== null) process.stdout.write(`seeded oracle-validation round "${bcde}" — http://127.0.0.1:${values.port}/oracle\n`)
+		// The free-text round rides the same seeding path and the same `--no-oracle` switch, because it
+		// is the same storage and the same release flow; only the page differs.
+		const freetext = await seedGroundFreetextRound(handle.service)
+		if (freetext !== null) process.stdout.write(`seeded free-text round "${freetext}" — http://127.0.0.1:${values.port}/freetext\n`)
 	}
 	const actual = await handle.listen(port)
 	process.stdout.write(`v3 review server: http://127.0.0.1:${actual}/\n`)
