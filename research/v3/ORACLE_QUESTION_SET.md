@@ -22,7 +22,13 @@ in this document where a human answered the actual question.
 | `group-a.v1` | `prompts/group-a.variant-{a,b}.json` | v1 group-A vocabulary | **frozen**, run once as `premise-run-1`, never to be edited |
 | `group-a.v2` | `prompts/group-a.v2.variant-{c,d}.json` | **identical to v1** | drafted, not run — corrected criterion text + B ordering, vocabulary deliberately untouched |
 | `group-a.v3` | none yet | **split** `ground_type` (§A.5) | proposed 2026-08-03, **superseded the same day** by the probe arm, which generalises it (§A.6.7). Kept for the record; do not implement. |
-| `group-a.probes.v1` | `prompts/group-a.probes.v1.*.json` (2 bundled + 6 solo) + `prompts/derivation.group-a.probes.v1.json` | **no ground_type question at all** — six probes, tag derived | drafted, not run — the **decomposed-probe arm**, reviewer-initiated (§A.6) |
+| `group-a.probes.v1` | — | six probes, tag derived | **superseded before running** by v1.1 (referent defect, §A.6.0). Prompt files deleted; hashes kept in `PREMISE_NEXT.md` §13.2 |
+| `group-a.probes.v1.1` | `prompts/group-a.probes.v1.1.*.json` (2 bundled + 6 solo) + `prompts/derivation.group-a.probes.v1.json` | **no ground_type question at all** — six probes, tag derived | drafted, not run — the **decomposed-probe arm**, reviewer-initiated (§A.6) |
+
+The derivation table keeps the version `group-a.probes.v1` and is shared by both: the v1.1 fix
+changed wording only, so the probe ids, the vocabulary and all 729 rows are unchanged and the file
+is byte-identical (`sha256 da67d5eb…`). **The filename carries the derivation's own version, not
+the prompt version.**
 
 **Companion to:** `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` — that document's §8 holds the
 design rules and explicitly marks its own question list as a placeholder; this document is the
@@ -46,6 +52,7 @@ sixth rule**, earned by measurement rather than proposed.
 | 8 | v1's group A preserved verbatim; v1's "candidate refinements" log preserved verbatim | Appendix V1, Appendix R | mechanical |
 | 9 | **Decomposed-probe arm** added: six easy probes replace the six-way question, tag derived by a committed table. Reviewer-initiated 2026-08-03 | §A.6 | **needs sign-off** — it is a new instrument, not a rewording. Nothing is retired for it; it is an arm to be measured against C/D |
 | 10 | The §A.5 split marked **superseded by §A.6** — the probe arm is its generalisation, and if the probes win, the split is subsumed | §A.5, §A.6.7 | mechanical (a pointer, not a decision) |
+| 11 | Probe arm **v1 → v1.1: the referent defect** — reviewer stress test found the probes presupposed a singular background. Referent preamble + whole-region clauses + unsure framing; derivation untouched | §A.6.0, §A.6.1, §A.6.4 case 9 | **needs sign-off** — these are the words the reviewer will answer in the §12 human round |
 
 Nothing in groups B–F changed. They have not been piloted, so there is nothing to correct them
 with.
@@ -282,24 +289,85 @@ unreliable one.
 The arm asks **no question whose answer is `ground_type`.** That is the whole point. `ground_type`
 and `field_texture` are *derived*.
 
+### A.6.0 v1 → v1.1: the referent defect
+
+**Found by the reviewer, 2026-08-03, before any inference was run**, by stress-testing the probe
+wordings against a made-up hard case: *half blue sky, half red tiled roof, title text over both.*
+
+v1 called the referent "**the** large area behind and around any subject" — **singular**. On that
+artwork the background is plural, and four of the six probes become unanswerable rather than
+merely hard: "is *the background* one colour?" has no true answer when there are two backgrounds,
+and the same goes for `continuous_change`, `motif_or_material` and `depicted_place`. The probe
+that survived is `separate_areas`, because it is the only one already phrased plurally.
+
+This is worth naming precisely, because it is a **different failure from the one the arm was built
+to fix**. §A.5's leak was a *vocabulary* problem — the answer existed but the value set could not
+record it. This was a *presupposition* problem — the question had no answer at all. Decomposition
+does not protect against it; if anything it multiplies the exposure, because six questions carry
+six presuppositions where one carried one. **Every future probe must be checked against a plural
+background before it ships.**
+
+v1.1 fixes it in three places, and nothing else changes:
+
+1. a **referent preamble**, byte-identical in all eight prompt files and in the human review form;
+2. **whole-region clauses** on probes 2, 3, 5 and 6;
+3. an **unsure framing** line, so that an honestly-unanswerable probe has somewhere to go.
+
+**The derivation table is untouched** — same probe ids, same vocabulary, same nine rules, same 729
+rows, byte-identical file. The fix was to the question, not to the inference from the answers,
+which is the smallest repair that could have worked and is evidence the decomposition itself was
+sound.
+
 ### A.6.1 The probes
 
 Every probe is `yes | no | unsure`. Every probe passes the five-second rule standing alone, and
 every probe means something on its own terms — none is the six-way question in disguise.
 
+**The referent preamble, shown once and carried by every prompt** (byte-identical everywhere;
+reviewer's words, verbatim):
+
+> The background means everything behind the main subject and the text, taken AS A WHOLE — even if
+> it has several different parts.
+
+**The unsure framing, same treatment:**
+
+> Unsure is a real answer — some questions won't fit some artworks, and that is measured, not
+> penalized.
+
+**The six probes**, v1.1 wordings, verbatim as they appear in every prompt file:
+
 | # | probe | question |
 |---|---|---|
-| 1 | `bg_visible` | Can you make out a background at all — anything behind and around the subject, lettering or figures? |
-| 2 | `one_colour` | Is the background essentially one single colour all over? |
-| 3 | `continuous_change` | Does the background's colour change continuously — a fade, a glow, a vignette, colours melting into one another — **across the whole background rather than only in one part of it**? |
+| 1 | `bg_visible` | Can you make out a background at all — anything behind the main subject and the text? |
+| 2 | `one_colour` | Is the background essentially one single colour all over? **If different parts have different colours, answer no.** |
+| 3 | `continuous_change` | Does the background's colour change continuously — a fade, a glow, a vignette, colours melting into one another — **across the whole background rather than only in one part of it? If it changes in one part and not in another, answer no.** |
 | 4 | `separate_areas` | Can you point to two or more separate areas of the background, each with its own colour? **A blurry or soft join still counts as two areas.** |
-| 5 | `motif_or_material` | Is the background a repeating motif, or the surface of a material — paper, fabric, film grain, concrete, brush marks? |
-| 6 | `depicted_place` | Does the background show a place with depth — a room, a landscape, a street? |
+| 5 | `motif_or_material` | Is the background **AS A WHOLE** a repeating motif, or the surface of a material — paper, fabric, film grain, concrete, brush marks? **If only one part of it is, answer no.** |
+| 6 | `depicted_place` | **Taken as a whole**, does the background show a place with depth — a room, a landscape, a street? |
 
-**The two bolded clauses are load-bearing and they are the only place the canonical cases touch a
-probe.** Probe 3's "across the whole background" is what makes a gradient sky over flat grass
-answer *no* — the colour changes in one part only. Probe 4's "a blurry or soft join still counts"
-is canonical case 2's ruling, applied locally.
+With the option glosses, which are part of the wording and are also byte-identical across the
+bundled and solo renderings:
+
+| probe | yes | no | unsure |
+|---|---|---|---|
+| `bg_visible` | there is a background you can see | you cannot make out any background | you cannot tell |
+| `one_colour` | one colour, all over | more than one colour is present, **or different parts have different colours** | you cannot tell |
+| `continuous_change` | it changes continuously, across the whole background | it does not, or it only changes in one part | you cannot tell |
+| `separate_areas` | two or more separate areas, each its own colour | you cannot pick out separate areas | you cannot tell |
+| `motif_or_material` | **the whole background** is a repeating motif, or a material surface | neither, **or only one part of it is** | you cannot tell |
+| `depicted_place` | a place with depth is shown | no place is shown | you cannot tell |
+
+**The bolded clauses are load-bearing.** Two kinds, and they should not be confused:
+
+- **Whole-region clauses** (probes 2, 3, 5, 6) are the v1.1 referent fix. They tell you what to do
+  when the background has parts, which is the case that broke v1.
+- **Criterion clauses** (probes 3 and 4) are the only place the canonical cases touch a probe.
+  Probe 3's "across the whole background" is what makes a gradient sky over flat grass answer
+  *no* — the colour changes in one part only. Probe 4's "a blurry or soft join still counts" is
+  canonical case 2's ruling, applied locally.
+
+Probe 3 carries one of each, and they happen to point the same way, which is why its wording did
+the most work in the original design and needed the least repair.
 
 **No probe quotes the corrected criterion or the canonical examples.** Importing the hard construct
 into an "easy question" would make it the same question in more words, and the arm would be a
@@ -375,6 +443,35 @@ where the v2 definition sentences say it should go. Note the second and third ro
 probe vector* and the same answer — the two canonical cases collapse into one rule, which is what a
 correct decomposition looks like.
 
+**Worked case 9 — the reviewer's referent stress test.** Half blue sky, half red tiled roof, title
+text over both. With the v1.1 referent fixed, the expected vector is
+`bg_visible = yes`, `one_colour = no` (different parts, different colours), `continuous_change = no`
+(each part behaves differently), `separate_areas = yes`, `motif_or_material = no or unsure` (the
+roof tiles are a motif but the background as a whole is not), `depicted_place = unsure`.
+
+Checked by lookup against the shipped 729-row table, **all four combinations of the two soft slots
+derive `multiple_distinct_fields`**, disposition `derived`, no tension, `field_texture =
+distinct_areas`:
+
+| vector (`bg`,`one`,`cont`,`areas`,`motif`,`place`) | key | derived |
+|---|---|---|
+| y, n, n, y, **n**, **n** | `ynnynn` | `multiple_distinct_fields` |
+| y, n, n, y, **n**, **u** | `ynnynu` | `multiple_distinct_fields` |
+| y, n, n, y, **u**, **n** | `ynnyun` | `multiple_distinct_fields` |
+| y, n, n, y, **u**, **u** | `ynnyuu` | `multiple_distinct_fields` |
+
+**Rule 6 fires** (`separate_areas == yes`), and it is reached because rules 1–5 all fall through:
+the background is visible, it is not one colour, and it does not change continuously across the
+whole of itself.
+
+Stronger than asked: the answer is stable across **all nine** combinations of probes 5 and 6,
+including both taken to `yes`. Taking `depicted_place = yes` — a defensible reading, since sky over
+a roof *is* a place — still derives `multiple_distinct_fields`, now flagged `areas_vs_place`; taking
+`motif_or_material = yes` adds `areas_vs_material`. So on this artwork the derivation depends only
+on probes 1–4, and the two probes the reviewer found hardest to answer **cannot change the
+answer** — they can only raise a tension flag. That is the decomposition behaving as intended: the
+uncertainty is recorded where it is, and it does not propagate into the tag.
+
 ### A.6.5 Derived `field_texture` and `shading_geometry`
 
 `field_texture`: `motif_or_material == yes` → `one_textured_material`; else `separate_areas == yes`
@@ -429,11 +526,11 @@ What each outcome means:
 Design rule 6 says order matters — measured at 23% → 53%. An arm that claims to be *more reliable*
 has to show its probes are order-robust, so the arm ships in two modes:
 
-- **Bundled** (`bundled-p`, `bundled-q`): all eight fields in one constrained decode. P uses the
+- **Bundled** (`group-a.probes.v1.1.bundled-{p,q}.json`): all eight fields in one constrained decode. P uses the
   §A.6.1 order; Q uses a seeded random permutation of the six probes (seed 20260803, the fixture
   seed), with `enclosure` held first and `shading_direction` held last so P-vs-Q isolates probe
   order and nothing else. 4 of 6 probes move position.
-- **Separate** (`solo-*`, six files): one inference per probe, so no probe can see another's
+- **Separate** (`group-a.probes.v1.1.solo-*.json`, six files): one inference per probe, so no probe can see another's
   answer. Tests whether bundling *contaminates* — whether answering `one_colour: no` pushes the
   next answer. Stems, glosses and framing are byte-identical to the bundled rendering, so the
   comparison measures bundling and not wording. Costs ~4× the bundled arm; gated on the gold-30

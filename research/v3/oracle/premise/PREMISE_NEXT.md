@@ -8,7 +8,7 @@
 | arm | schema | what it changes | §§ |
 |---|---|---|---|
 | **criterion arm** — variants C, D | `group-a.v2` | same six-way question, corrected criterion + precedence rule, B's ordering | 1–7 |
-| **probe arm** — P, Q, six solo | `group-a.probes.v1` | no `ground_type` question at all: six easy probes, tag derived by a committed table | 8–13 |
+| **probe arm** — P, Q, six solo | `group-a.probes.v1.1` | no `ground_type` question at all: six easy probes, tag derived by a committed table | 8–13 |
 
 **Recommended sequence, ~2.5 h of GPU in total:** criterion arm (~50 min) → probe arm bundled
 (~50 min) → probe arm separate on the gold-30 only (~30 min), the last gated on the second. Run
@@ -266,7 +266,7 @@ corpus.
 | what is being scored | valid against gold-30? | caveat |
 |---|---|---|
 | criterion arm (C, D), `group-a.v2` | **yes, as-is** | identical construct, identical vocabulary. Direct comparison with A and B on the same 30 |
-| probe arm, `group-a.probes.v1` | **yes, via the derivation table** | **construct-match caveat:** the reviewer answered the six-way question; the arm answers six probes. The derivation maps the arm onto the reviewer's construct, so a disagreement can be the model, the derivation, or the mapping — three causes, one number. §12's human probe round is what removes this |
+| probe arm, `group-a.probes.v1.1` | **yes, via the derivation table** | **construct-match caveat:** the reviewer answered the six-way question; the arm answers six probes. The derivation maps the arm onto the reviewer's construct, so a disagreement can be the model, the derivation, or the mapping — three causes, one number. §12's human probe round is what removes this |
 | any future `group-a.v3`-style split vocabulary | **no — requires re-elicitation** | different value set, so there is nothing to compare token-for-token. **Cheap: ~3 min.** The reviewer answered 30 six-way items in ~3.5 min of actual answering (07:28:06→07:35:45 wall, less two ~2-min deliberation pauses ≈ 7 s/item). By-question mode re-elicits one question over 30 images at that rate |
 
 The third row is worth acting on rather than fearing: **re-elicitation is three minutes.** Nothing
@@ -429,7 +429,7 @@ batches keyed (batch, question, image), with by-question passes enforced:
 batchId              oracle-probe-gold-1
 purpose              oracle-validation
 fixtureVersion       oracle-validation-1
-labelSchemaVersion   group-a.probes.v1
+labelSchemaVersion   group-a.probes.v1.1
 seed                 20260803
 items                180  = 30 artworks x 6 questions
 serveOrder           six contiguous passes, one per probe, shuffled within each pass
@@ -446,7 +446,12 @@ questions            six, kind: "enum", hotkeys y / n / u
 - **Question `question` and `answers[].gloss` text must be byte-identical to the prompt files'
   rendering of the same probe** (`ORACLE_QUESTION_SET.md` §A.6.1), for the reason the bracketing
   round learned the hard way and `OracleQuestion.instruction`'s own comment states: an answer only
-  means something against the exact words it was answered under.
+  means something against the exact words it was answered under. Every prompt file declares
+  `referent_preamble` and `unsure_framing` as explicit keys so this can be asserted, not eyeballed.
+- **The referent preamble and the unsure framing must be on the page**, once, above the question,
+  on every pass — not only in the fixture's `instruction` string. They are what makes the probes
+  answerable on a plural background (§A.6.0), and a reviewer who scrolls past them is answering
+  v1's question, not v1.1's.
 - **`instruction`**, same on every pass: *"Answer this one question only. Do not try to make your
   answers across questions tell one story. If you cannot tell, answer unsure — it is a real
   answer."* The anti-coherence instruction matters: the reviewer will have seen these artworks
@@ -470,8 +475,8 @@ not the model arm succeeds.
 The probe arm needs **more** than the criterion arm's two lines, because it is the first schema
 group that does not ask `ground_type` at all.
 
-1. `SCHEMA_VERSION = "group-a.probes.v1"` and `PROMPT_GLOB = "group-a.probes.v1.bundled-*.json"`
-   (separate mode: `"group-a.probes.v1.solo-*.json"`).
+1. `SCHEMA_VERSION = "group-a.probes.v1.1"` and `PROMPT_GLOB = "group-a.probes.v1.1.bundled-*.json"`
+   (separate mode: `"group-a.probes.v1.1.solo-*.json"`).
 2. **`CANONICAL_FIELDS` and `VOCABULARIES` must become per-variant, read from the prompt file.**
    Today they are module constants and `load_prompt_variant` asserts every variant covers
    `ground_type`, `shading_geometry`, `field_texture`, `enclosure`, `confidence`, `ambiguity_note`.
@@ -494,8 +499,8 @@ group that does not ask `ground_type` at all.
    pair; the solo set is six and will need its own count.
 6. Write to `../../data/oracle-premise/probe-run-1.jsonl`. Never append to run 1 or run 2.
 
-**All eleven new files are inert until step 1 happens** — no existing glob matches
-`group-a.probes.v1.*` or `derivation.group-a.probes.v1.json`, so A/B and C/D reruns are untouched
+**All nine new probe-arm files are inert until step 1 happens** — no existing glob matches
+`group-a.probes.v1.1.*` or `derivation.group-a.probes.v1.json`, so A/B and C/D reruns are untouched
 today.
 
 ### 13.1 File identity
@@ -505,14 +510,21 @@ sorted keys, compact separators; `file_hash` = `sha256` of the file. Same formul
 
 | file | variant | prompt_hash | schema_hash | file_hash |
 |---|---|---|---|---|
-| `group-a.probes.v1.bundled-p.json` | P | `d50d969cd243fa62…` | `1b1b764ef30a56b3…` | `83fc30567b282acc…` |
-| `group-a.probes.v1.bundled-q.json` | Q | `60dafd0116449d2e…` | `c2b04c3cc8a3ac1d…` | `b85828093f94a3ff…` |
-| `group-a.probes.v1.solo-bg-visible.json` | S-bg_visible | `96183e66e273f5bc…` | `7c5832b4331e695c…` | `b536427b549387e2…` |
-| `group-a.probes.v1.solo-one-colour.json` | S-one_colour | `f1e484604e5c4ff0…` | `23bcf38542ef777b…` | `ce808801d556d2c5…` |
-| `group-a.probes.v1.solo-continuous-change.json` | S-continuous_change | `5aaae24d83a51e5a…` | `8d90894195b2e55c…` | `03173f7104791ae4…` |
-| `group-a.probes.v1.solo-separate-areas.json` | S-separate_areas | `9c2e464c00a14fcc…` | `13544d59af4061f4…` | `935d80c2bcff4546…` |
-| `group-a.probes.v1.solo-motif-or-material.json` | S-motif_or_material | `65a3415393bcead7…` | `add30cf9e47375b4…` | `d486cf3e78e01e7a…` |
-| `group-a.probes.v1.solo-depicted-place.json` | S-depicted_place | `f6d5d9366176ba57…` | `33be8194542ac0c7…` | `bbfb3e4e67a13956…` |
+| `group-a.probes.v1.1.bundled-p.json` | P | `7d30fbf945f765ae…` | `1b1b764ef30a56b3…` | `45dc5dddadc550f2…` |
+| `group-a.probes.v1.1.bundled-q.json` | Q | `fac31935801d6026…` | `c2b04c3cc8a3ac1d…` | `31b956d9ea721860…` |
+| `group-a.probes.v1.1.solo-bg-visible.json` | S-bg_visible | `ed7c82abe3569e90…` | `7c5832b4331e695c…` | `5121c921c4cb7071…` |
+| `group-a.probes.v1.1.solo-one-colour.json` | S-one_colour | `34561290aa4639f2…` | `23bcf38542ef777b…` | `15e57f3e751b9bcf…` |
+| `group-a.probes.v1.1.solo-continuous-change.json` | S-continuous_change | `2947268257917cb9…` | `8d90894195b2e55c…` | `506e3dc203367263…` |
+| `group-a.probes.v1.1.solo-separate-areas.json` | S-separate_areas | `d878c7a7139efa9b…` | `13544d59af4061f4…` | `e204c7f8f95ed22c…` |
+| `group-a.probes.v1.1.solo-motif-or-material.json` | S-motif_or_material | `5b44b31541758111…` | `add30cf9e47375b4…` | `bb9130ab98ebed79…` |
+| `group-a.probes.v1.1.solo-depicted-place.json` | S-depicted_place | `5f08a567803b7b91…` | `33be8194542ac0c7…` | `12d678b525782565…` |
+
+The `schema_hash` column is **unchanged from the deleted v1 files** — the JSON schemas are
+identical, because v1.1 changed wording only. Every `prompt_hash` and `file_hash` changed.
+
+Each prompt file additionally declares `referent_preamble`, `unsure_framing` and
+`derivation_schema_version` as explicit keys, so an implementation can assert the shared blocks
+match without parsing the prompt text.
 
 `derivation.group-a.probes.v1.json` — `sha256`
 `da67d5ebf0aaab0c593f8fb8e040192e0e688f9dccfcc9bb2fe6b2af391a2fc5`, 729 vectors, 119 379 bytes.
@@ -531,6 +543,29 @@ the file says so.
 The six solo prompts render their probe **byte-identically** to the bundled variants (verified), so
 bundled-vs-separate measures bundling and not wording.
 
+### 13.2 Superseded: `group-a.probes.v1` prompt files
+
+The eight v1 prompt files were **deleted, not frozen.** Freezing exists to protect collected data,
+and v1 produced none — no inference, no human answer, no row anywhere. Leaving a known-defective
+variant loadable in `prompts/` is a hazard with no offsetting benefit, and the v1 glob
+(`group-a.probes.v1.bundled-*.json`) now matches nothing, which is the correct state.
+
+Their identities, kept so the record survives the files:
+
+| file (deleted) | prompt_hash | file_hash |
+|---|---|---|
+| `group-a.probes.v1.bundled-p.json` | `d50d969cd243fa62…` | `83fc30567b282acc…` |
+| `group-a.probes.v1.bundled-q.json` | `60dafd0116449d2e…` | `b85828093f94a3ff…` |
+| `group-a.probes.v1.solo-bg-visible.json` | `96183e66e273f5bc…` | `b536427b549387e2…` |
+| `group-a.probes.v1.solo-one-colour.json` | `f1e484604e5c4ff0…` | `ce808801d556d2c5…` |
+| `group-a.probes.v1.solo-continuous-change.json` | `5aaae24d83a51e5a…` | `03173f7104791ae4…` |
+| `group-a.probes.v1.solo-separate-areas.json` | `9c2e464c00a14fcc…` | `935d80c2bcff4546…` |
+| `group-a.probes.v1.solo-motif-or-material.json` | `65a3415393bcead7…` | `d486cf3e78e01e7a…` |
+| `group-a.probes.v1.solo-depicted-place.json` | `f6d5d9366176ba57…` | `bbfb3e4e67a13956…` |
+
+**If any of these hashes ever appears in a results row, that run is invalid** — it was produced by
+a prompt that presupposed a singular background.
+
 ---
 
 # 14. Sign-off ledger
@@ -540,7 +575,7 @@ bundled-vs-separate measures bundling and not wording.
 | 1 | corrected `ground_type` criterion (§A.2) | criterion | reviewer authored both source rulings; the generalisation needs sign-off |
 | 2 | precedence rule (§A.1) | criterion | **new policy** — the one change in C/D the reviewer has not decided in some form |
 | 3 | `confidence` stem trigger | criterion | low stakes |
-| 4 | the probe set and its wordings (§A.6.1) | probe | **new instrument** — needs sign-off before the human round, since the reviewer will answer these words |
+| 4 | the probe set and its wordings, **v1.1** (§A.6.1) | probe | **new instrument** — needs sign-off before the human round, since the reviewer will answer these words. The v1.1 referent preamble, whole-region clauses and unsure framing are reviewer-authored; what needs sign-off is that they are now correct on a plural background |
 | 5 | the derivation table (§A.6.3, 729 rows) | probe | **needs sign-off** — it is where the criterion's judgement now lives, once, instead of on every image |
 | 6 | dropping `confidence` / `ambiguity_note` from the probe arm | probe | measured-driven; reversible in one line |
 | 7 | the human probe round (§12) | probe | **needs reviewer time**, ~15 min, and must not be anchored |
