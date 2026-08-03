@@ -1,0 +1,98 @@
+# Noun-breadth probe set (probe-5-noun-breadth), 32 images.
+# Targeted, not random. Candidates came from a SigLIP2 text query over the committed
+# embeddings (find_noun_covers.py, CPU); every one was then OPENED and its content
+# confirmed by eye before it went on this list. Two candidates changed class at that step:
+# the Two Door Cinema Club cover, retrieved for "cat", turned out to CONTAIN a cat lying
+# under the lettering (a hard positive, not the negative it looked like at thumbnail size),
+# and the "PAST LIFE ANALYSIS" cover is a whole snake in extreme close-up, not a texture.
+# read_list_file() has no inline-comment support, so every note is on its own line.
+#
+# "car" is deliberately absent: probe 4 measured it (5/5 at 0.82-0.93) and this round is
+# about whether that result generalises to the rest of the subject_kind vocabulary.
+
+# --- animal: dog (2) ---------------------------------------------------------
+# Sublime s/t, photo of a dalmatian's head, 200 px cover
+music-artworks/d/d/9/dd95b18ea17e908b574f979a04f9a57e.jpeg
+# "Woofs and Whines", painterly labrador puppy with both paws over a fence rail
+0c/ab67616d0000b273000c069d3bcb8bdf56fa13c6
+
+# --- animal: cat (2) ---------------------------------------------------------
+# 3D-render red cat in a fleece coat and sunglasses, fills the frame
+0a/ab67616d0000b273000af1c11910420097c7c17d
+# Two Door Cinema Club "Tourist History": a dark cat on a tiled floor, seen from above,
+# its face almost entirely covered by the title lettering. HARD POSITIVE.
+music-artworks/0/8/7/0877cba57e0ec2d3c070e98f370f0e14.jpg
+
+# --- animal: bird, horse (2) -------------------------------------------------
+# LANKS: a heron in single-line ink drawing on a cream board. Line art, not photo.
+0a/ab67616d0000b273000a8fbacb36eb7117fc2c9e
+# Black Hole Era: rider on a horse in silhouette, temple ruins behind, heavy blue duotone
+0a/ab67616d0000b273000a83b7c6800384e7844947
+
+# --- animal: wolf + the canid confusion set (3) ------------------------------
+# TAPX: photoreal grey wolf head, front on. The "does dog fire on a wolf" cover.
+08/ab67616d00001e020008d893f0bd46d92879ecfe
+# "AS EK JOU SIEN / JAKKALS VIBES": a JACKAL (fox-like canid) in red sunglasses.
+# CONFUSION: not a dog, not a wolf, and closer to both than anything else in the corpus.
+10/ab67616d0000b27300103a4dcd62e3dd6f76d123
+# Sean Cander "Impending": line-drawn snake head, mouth open, on a pale crackle ground
+06/ab67616d0000b273000607016a75d355ddcda4d5
+
+# --- animal: snake in extreme close-up (1) -----------------------------------
+# "PAST LIFE ANALYSIS": a python filling the whole frame, scales at macro scale, head
+# and coils visible top right. Tests a target with no background to be tight against.
+05/ab67616d0000b2730005165a15d80c563a8d1ec2
+
+# --- vehicle (5 + 1 confusion) -----------------------------------------------
+# Martti Servo ja Napander: man with an acoustic GUITAR sitting on a Triumph MOTORCYCLE.
+# Two nouns, one cover, plus a person — the partitioning test probe 4 ran with car-vs-people.
+music-artworks/f/6/e/f6e43b68717bfa885e0184726050e236.jpg
+# "SOUL RIDER": flat illustrated motorcycle head-on with a rider, orange sunburst ground
+0c/ab67616d0000b273000c24210b3f9176ec11476d
+# Illustrated airliner in a flat blue sky with cartoon clouds
+0a/ab67616d0000b273000a8d65a3ec806f6fc5ee35
+# the motifs "MATCHES": two cut-paper sailboats on lilac. Craft/collage rendering.
+0c/ab67616d0000b273000ca1c3255cc995f1a3164e
+# ALADIAH "Transition": rendered futuristic train on an elevated track, skyscrapers behind
+04/ab67616d0000b27300041272670218ce2846bb53
+# WESTBOUND TRAIN "Transitions": tram RAILS down an empty street and NO TRAIN AT ALL.
+# CONFUSION: the word is in the title, the vehicle is not in the picture.
+music-artworks/0/4/3/043d90c5ece68ff04f6fb5d1840160f4.jpg
+
+# --- object (9) --------------------------------------------------------------
+# "MODERN ROCK Greatest Hits": flat black vector electric guitar with a lightning bolt
+music-artworks/9/a/c/9ac7fdc2642344cbd5a5872280288849.jpg
+# Apocalyptica "Cult": a gold-brown human skull, centred, low key
+music-artworks/c/5/5/c55f2a22c68d239f35fe4759c8418803.jpeg
+# Myomouse "Tam Hoa": one huge rendered yellow lotus, temple roofs and a crowd behind
+13/ab67616d0000b2730013db392206cd6de01f1244
+# The Cat Empire: a CROWN drawn as a flat black logo mark (it also reads as a cat's face)
+music-artworks/f/8/b/f8bc8ebeb35be8ba72204d7e8836cd6f.jpg
+# "Virtues of the Greatest": a broadsword lying on red velvet
+05/ab67616d0000b2730005c56a37733366157bded5
+# "Objectiv's Real McCoy EP": a photoreal cognac bottle on white
+04/ab67616d0000b2730004540907fd374c565be4fe
+# An open hand, high-contrast cutout, on solid black
+music-artworks/f/0/b/f0b30841427761da4a6f4485531ac940.png
+# Macro photograph of a human eye with glitter make-up
+0a/ab67616d0000b273000a771967b5f8e7bac0a72b
+# "Here I am": a small painted EYE inside a torn slit in dark paper. Tiny and occluded.
+music-artworks/c/9/3/c93879d4eb9c7d253c506bcc5a0da824.jpeg
+
+# --- building_or_structure (3) -----------------------------------------------
+# Nada Surf "The Weight Is A Gift": a row of pencil-drawn apartment blocks at night
+music-artworks/f/0/7/f07445c85d91adecbf3041484ceb2bf9.jpg
+# "Sooth Piano / It's a Small World": a photoreal fairy-tale castle at dusk
+0d/ab67616d0000b273000df513b5836ea38782585e
+# The Brown Band "Foundations": a white clapboard church with a steeple and cross
+01/ab67616d0000b2730001f963b2198065ea271e75.jpg
+
+# --- negatives (4): none of the 21 nouns is present --------------------------
+# Spa interior. Concept set v2 found NOTHING at all here (probe 4's negative).
+03/ab67616d00001e02000300752f338b6aedff856c.jpg
+# System of a Down "Toxicity": hillside, display lettering, a radio mast on the ridge
+images/toxicity.jpg
+# [mot]: abstract painted texture, Latin + hangul type, no depicted object of any kind
+00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg
+# HanDXe: a woman's head with wind-blown hair under a Chinese brush title
+03/ab67616d0000b2730003f2b6590090abe420d104.jpg

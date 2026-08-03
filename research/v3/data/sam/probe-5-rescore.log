@@ -1,0 +1,124 @@
+### PRE-REGISTERED ground truth (32 covers) ###
+
+=== per noun, cut 0.578 (calibrated) ===
+noun         class                   n+ fired  TP  FP  FN  prec   rec
+dog          animal                   2     4   2   1   0  0.67  1.00
+cat          animal                   2     2   2   0   0  1.00  1.00
+bird         animal                   1     1   1   0   0  1.00  1.00
+horse        animal                   1     1   1   0   0  1.00  1.00
+wolf         animal                   1     2   1   0   0  1.00  1.00
+snake        animal                   2     1   1   0   1  1.00  0.50
+motorcycle   vehicle                  2     2   2   0   0  1.00  1.00
+airplane     vehicle                  1     1   1   0   0  1.00  1.00
+boat         vehicle                  1     1   1   0   0  1.00  1.00
+train        vehicle                  1     2   1   0   0  1.00  1.00
+guitar       object                   2     2   2   0   0  1.00  1.00
+skull        object                   1     1   1   0   0  1.00  1.00
+flower       object                   1     2   1   1   0  0.50  1.00
+crown        object                   1     1   1   0   0  1.00  1.00
+sword        object                   1     1   1   0   0  1.00  1.00
+bottle       object                   1     1   1   0   0  1.00  1.00
+hand         object                   1     3   1   2   0  0.33  1.00
+eye          object                   2    15   1  13   1  0.07  0.50
+building     building_or_structure    1     5   1   0   0  1.00  1.00
+castle       building_or_structure    1     1   1   0   0  1.00  1.00
+church       building_or_structure    1     2   1   1   0  0.50  1.00
+
+=== per subject_kind class, cut 0.578 (calibrated) ===
+class                  nouns  TP  FP  FN  prec   rec
+animal                     6   8   1   1  0.89  0.89
+vehicle                    4   5   0   0  1.00  1.00
+object                     8   9  16   1  0.36  0.90
+building_or_structure      3   3   1   0  0.75  1.00
+
+
+### AMENDED ground truth (+13 noun-cover pairs verified by eye after the run) ###
+  + flower   on ea17e908b574f979a04f9a57e.jpeg   engraved rose border down the left edge; seen at full size
+  + eye      on ea17e908b574f979a04f9a57e.jpeg   the dalmatian's eye
+  + eye      on 00b273000c069d3bcb8bdf56fa13c6   the labrador's eyes
+  + eye      on a57e0ec2d3c070e98f370f0e14.jpg   the cat's eyes sit inside the two Os of DOOR; seen at full size
+  + eye      on 00b273000a8fbacb36eb7117fc2c9e   the drawn heron's eye
+  + eye      on 001e020008d893f0bd46d92879ecfe   the wolf's eyes
+  + eye      on 00b27300103a4dcd62e3dd6f76d123   the jackal's eyes
+  + eye      on 00b273000607016a75d355ddcda4d5   the drawn snake's eye; the overlay masks exactly it at area 0.00
+  + eye      on beb35be8ba72204d7e8836cd6f.jpg   the crown logo is drawn as a cat's eye
+  + eye      on 00b2730004540907fd374c565be4fe   two eyes on the face embossed in the red wax seal; seen in the overlay
+  + eye      on 730003f2b6590090abe420d104.jpg   the woman's visible eye
+  + hand     on 68717bfa885e0184726050e236.jpg   both hands on the guitar; seen at full size
+  + hand     on 00b273000c24210b3f9176ec11476d   the rider's hands on the handlebars; seen at full size
+
+=== per noun, cut 0.578 (calibrated, amended) ===
+noun         class                   n+ fired  TP  FP  FN  prec   rec
+dog          animal                   2     4   2   1   0  0.67  1.00
+cat          animal                   2     2   2   0   0  1.00  1.00
+bird         animal                   1     1   1   0   0  1.00  1.00
+horse        animal                   1     1   1   0   0  1.00  1.00
+wolf         animal                   1     2   1   0   0  1.00  1.00
+snake        animal                   2     1   1   0   1  1.00  0.50
+motorcycle   vehicle                  2     2   2   0   0  1.00  1.00
+airplane     vehicle                  1     1   1   0   0  1.00  1.00
+boat         vehicle                  1     1   1   0   0  1.00  1.00
+train        vehicle                  1     2   1   0   0  1.00  1.00
+guitar       object                   2     2   2   0   0  1.00  1.00
+skull        object                   1     1   1   0   0  1.00  1.00
+flower       object                   2     2   2   0   0  1.00  1.00
+crown        object                   1     1   1   0   0  1.00  1.00
+sword        object                   1     1   1   0   0  1.00  1.00
+bottle       object                   1     1   1   0   0  1.00  1.00
+hand         object                   3     3   3   0   0  1.00  1.00
+eye          object                  12    15  11   3   1  0.79  0.92
+building     building_or_structure    1     5   1   0   0  1.00  1.00
+castle       building_or_structure    1     1   1   0   0  1.00  1.00
+church       building_or_structure    1     2   1   1   0  0.50  1.00
+
+=== per subject_kind class, cut 0.578 (calibrated, amended) ===
+class                  nouns  TP  FP  FN  prec   rec
+animal                     6   8   1   1  0.89  0.89
+vehicle                    4   5   0   0  1.00  1.00
+object                     8  22   3   1  0.88  0.96
+building_or_structure      3   3   1   0  0.75  1.00
+
+=== max score on the covers that contain the noun ===
+  dog          Sublime, dalmatian hea:0.92/a0.37  labrador puppy over a :0.84/a0.56
+  cat          3D-render cat in a coa:0.80/a0.17  Two Door Cinema Club:0.80/a0.26
+  bird         LANKS:0.92/a0.04
+  horse        rider on a horse, temp:0.90/a0.13
+  wolf         TAPX:0.90/a0.62
+  snake        line-drawn snake head,:none  python in extreme clos:0.85/a0.82
+  motorcycle   man with an acoustic g:0.82/a0.29  SOUL RIDER:0.79/a0.08
+  airplane     illustrated airliner, :0.94/a0.09
+  boat         two cut-paper sailboat:0.89/a0.19
+  train        ALADIAH:0.91/a0.15
+  guitar       man with an acoustic g:0.79/a0.04  MODERN ROCK:0.90/a0.13
+  skull        Apocalyptica Cult:0.78/a0.36
+  flower       Sublime, dalmatian hea:0.75/a0.25  Tam Hoa:0.86/a0.43
+  crown        The Cat Empire:0.80/a0.19
+  sword        broadsword on red velv:0.88/a0.14
+  bottle       photoreal cognac bottl:0.95/a0.32
+  hand         man with an acoustic g:0.84/a0.02  SOUL RIDER:0.83/a0.01  open hand, high-contra:0.83/a0.18
+  eye          Sublime, dalmatian hea:0.87/a0.01  labrador puppy over a :0.86/a0.00  Two Door Cinema Club:0.86/a0.00  LANKS:0.73/a0.00  TAPX:0.79/a0.01  CONFUSION:0.59/a0.02  line-drawn snake head,:0.91/a0.00  The Cat Empire:0.68/a0.41  photoreal cognac bottl:0.87/a0.00  macro photograph of a :0.42/a0.20  Here I am:0.87/a0.03  woman with wind-blown :0.77/a0.00
+  building     Nada Surf:0.75/a0.92
+  castle       photoreal fairy-tale c:0.87/a0.47
+  church       white clapboard church:0.91/a0.10
+
+=== every above-cut firing on a cover that does NOT contain the noun ===
+  eye          0.66  on  3D-render cat in a coat and sunglasses
+  dog          0.86  on  TAPX: photoreal grey wolf head. The dog-confusion cover.
+  eye          0.68  on  SOUL RIDER: flat illustrated motorcycle head-on
+  eye          0.92  on  Apocalyptica Cult: gold-brown human skull
+  church       0.86  on  photoreal fairy-tale castle at dusk
+
+=== marginal pairs (excluded from scoring), where they fired ===
+  building     0.33  on  rider on a horse, temple ruins behind, an eye pictogram in t
+  eye          0.75  on  rider on a horse, temple ruins behind, an eye pictogram in t
+  dog          0.88  on  CONFUSION: a jackal in sunglasses. Canid, but neither dog no
+  wolf         0.88  on  CONFUSION: a jackal in sunglasses. Canid, but neither dog no
+  building     0.77  on  ALADIAH: rendered futuristic train, skyscrapers behind
+  train        0.64  on  CONFUSION: WESTBOUND TRAIN — tram rails down a street, no tr
+  building     0.40  on  CONFUSION: WESTBOUND TRAIN — tram rails down a street, no tr
+  building     0.81  on  Tam Hoa: one huge rendered lotus, temple roofs behind
+  cat          0.00  on  The Cat Empire: a crown as a flat black logo mark; also read
+  building     0.78  on  photoreal fairy-tale castle at dusk
+  building     0.86  on  white clapboard church with a steeple and cross
+  building     0.36  on  spa interior; concept set v2 found nothing at all here
+  building     0.00  on  hillside + display lettering + a radio mast on the ridge

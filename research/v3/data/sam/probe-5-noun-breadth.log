@@ -1,0 +1,164 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 994.50it/s]
+animal                 08b574f979a04f9a57e.jpeg   dog=1 flower=8 eye=2
+animal                 000c069d3bcb8bdf56fa13c6   dog=1 hand=2 eye=2
+animal                 000af1c11910420097c7c17d   cat=1 eye=6
+animal                 c2d3c070e98f370f0e14.jpg   cat=1 eye=2
+animal                 000a8fbacb36eb7117fc2c9e   bird=1 eye=1
+animal                 000a83b7c6800384e7844947   horse=1 hand=2 eye=3 building=1 castle=1 church=1
+animal                 0008d893f0bd46d92879ecfe   dog=1 wolf=1 eye=4
+confusion              00103a4dcd62e3dd6f76d123   dog=1 wolf=1 eye=4
+animal                 000607016a75d355ddcda4d5   wolf=1 eye=1
+animal                 0005165a15d80c563a8d1ec2   bird=1 snake=1
+vehicle                fa885e0184726050e236.jpg   motorcycle=1 guitar=1 hand=3 eye=2
+vehicle                000c24210b3f9176ec11476d   motorcycle=1 hand=4 eye=5
+vehicle                000a8d65a3ec806f6fc5ee35   airplane=1 eye=6
+vehicle                000ca1c3255cc995f1a3164e   boat=2
+vehicle                00041272670218ce2846bb53   train=1 building=23
+confusion              8ff04f6fb5d1840160f4.jpg   train=2 building=2
+object                 44cbd5a5872280288849.jpg   guitar=1
+object                 39f35fe4759c8418803.jpeg   skull=1 eye=2
+object                 0013db392206cd6de01f1244   flower=21 building=10
+object                 e8ba72204d7e8836cd6f.jpg   crown=1 eye=4
+object                 0005c56a37733366157bded5   sword=1
+object                 0004540907fd374c565be4fe   bottle=1 eye=2
+object                 61da4a6f4485531ac940.png   hand=1
+object                 000a771967b5f8e7bac0a72b   eye=2
+object                 d253c506bcc5a0da824.jpeg   bottle=1 eye=1
+building_or_structure  adecbf3041484ceb2bf9.jpg   building=13
+building_or_structure  000df513b5836ea38782585e   building=1 castle=1 church=1
+building_or_structure  f963b2198065ea271e75.jpg   crown=1 building=1 castle=1 church=1
+negative               00752f338b6aedff856c.jpg   building=1
+negative               images/toxicity.jpg        bird=1
+negative               cb591a0d52d8b88692d9.jpg   
+negative               f2b6590090abe420d104.jpg   eye=1
+
+=== per noun, cut 0.3 (stored) ===
+noun         class                   n+ fired  TP  FP  FN  prec   rec
+dog          animal                   2     4   2   1   0  0.67  1.00
+cat          animal                   2     2   2   0   0  1.00  1.00
+bird         animal                   1     3   1   2   0  0.33  1.00
+horse        animal                   1     1   1   0   0  1.00  1.00
+wolf         animal                   1     3   1   1   0  0.50  1.00
+snake        animal                   2     1   1   0   1  1.00  0.50
+motorcycle   vehicle                  2     2   2   0   0  1.00  1.00
+airplane     vehicle                  1     1   1   0   0  1.00  1.00
+boat         vehicle                  1     1   1   0   0  1.00  1.00
+train        vehicle                  1     2   1   0   0  1.00  1.00
+guitar       object                   2     2   2   0   0  1.00  1.00
+skull        object                   1     1   1   0   0  1.00  1.00
+flower       object                   1     2   1   1   0  0.50  1.00
+crown        object                   1     2   1   1   0  0.50  1.00
+sword        object                   1     1   1   0   0  1.00  1.00
+bottle       object                   1     2   1   1   0  0.50  1.00
+hand         object                   1     5   1   4   0  0.20  1.00
+eye          object                   2    18   2  15   0  0.12  1.00
+building     building_or_structure    1     8   1   0   0  1.00  1.00
+castle       building_or_structure    1     3   1   2   0  0.33  1.00
+church       building_or_structure    1     3   1   2   0  0.33  1.00
+
+=== per subject_kind class, cut 0.3 (stored) ===
+class                  nouns  TP  FP  FN  prec   rec
+animal                     6   8   4   1  0.67  0.89
+vehicle                    4   5   0   0  1.00  1.00
+object                     8  10  22   0  0.31  1.00
+building_or_structure      3   3   4   0  0.43  1.00
+
+=== per noun, cut 0.578 (calibrated) ===
+noun         class                   n+ fired  TP  FP  FN  prec   rec
+dog          animal                   2     4   2   1   0  0.67  1.00
+cat          animal                   2     2   2   0   0  1.00  1.00
+bird         animal                   1     1   1   0   0  1.00  1.00
+horse        animal                   1     1   1   0   0  1.00  1.00
+wolf         animal                   1     2   1   0   0  1.00  1.00
+snake        animal                   2     1   1   0   1  1.00  0.50
+motorcycle   vehicle                  2     2   2   0   0  1.00  1.00
+airplane     vehicle                  1     1   1   0   0  1.00  1.00
+boat         vehicle                  1     1   1   0   0  1.00  1.00
+train        vehicle                  1     2   1   0   0  1.00  1.00
+guitar       object                   2     2   2   0   0  1.00  1.00
+skull        object                   1     1   1   0   0  1.00  1.00
+flower       object                   1     2   1   1   0  0.50  1.00
+crown        object                   1     1   1   0   0  1.00  1.00
+sword        object                   1     1   1   0   0  1.00  1.00
+bottle       object                   1     1   1   0   0  1.00  1.00
+hand         object                   1     3   1   2   0  0.33  1.00
+eye          object                   2    15   1  13   1  0.07  0.50
+building     building_or_structure    1     5   1   0   0  1.00  1.00
+castle       building_or_structure    1     1   1   0   0  1.00  1.00
+church       building_or_structure    1     2   1   1   0  0.50  1.00
+
+=== per subject_kind class, cut 0.578 (calibrated) ===
+class                  nouns  TP  FP  FN  prec   rec
+animal                     6   8   1   1  0.89  0.89
+vehicle                    4   5   0   0  1.00  1.00
+object                     8   9  16   1  0.36  0.90
+building_or_structure      3   3   1   0  0.75  1.00
+
+=== max score on the covers that contain the noun ===
+  dog          Sublime, dalmatian hea:0.92/a0.37  labrador puppy over a :0.84/a0.56
+  cat          3D-render cat in a coa:0.80/a0.17  Two Door Cinema Club:0.80/a0.26
+  bird         LANKS:0.92/a0.04
+  horse        rider on a horse, temp:0.90/a0.13
+  wolf         TAPX:0.90/a0.62
+  snake        line-drawn snake head,:none  python in extreme clos:0.85/a0.82
+  motorcycle   man with an acoustic g:0.82/a0.29  SOUL RIDER:0.79/a0.08
+  airplane     illustrated airliner, :0.94/a0.09
+  boat         two cut-paper sailboat:0.89/a0.19
+  train        ALADIAH:0.91/a0.15
+  guitar       man with an acoustic g:0.79/a0.04  MODERN ROCK:0.90/a0.13
+  skull        Apocalyptica Cult:0.78/a0.36
+  flower       Tam Hoa:0.86/a0.43
+  crown        The Cat Empire:0.80/a0.19
+  sword        broadsword on red velv:0.88/a0.14
+  bottle       photoreal cognac bottl:0.95/a0.32
+  hand         open hand, high-contra:0.83/a0.18
+  eye          macro photograph of a :0.42/a0.20  Here I am:0.87/a0.03
+  building     Nada Surf:0.75/a0.92
+  castle       photoreal fairy-tale c:0.87/a0.47
+  church       white clapboard church:0.91/a0.10
+
+=== every above-cut firing on a cover that does NOT contain the noun ===
+  flower       0.75  on  Sublime, dalmatian head, photo, 200 px
+  eye          0.87  on  Sublime, dalmatian head, photo, 200 px
+  eye          0.86  on  labrador puppy over a fence, painterly
+  eye          0.66  on  3D-render cat in a coat and sunglasses
+  eye          0.86  on  Two Door Cinema Club: cat on a tiled floor, face under the l
+  eye          0.73  on  LANKS: heron, single-line ink drawing
+  dog          0.86  on  TAPX: photoreal grey wolf head. The dog-confusion cover.
+  eye          0.79  on  TAPX: photoreal grey wolf head. The dog-confusion cover.
+  eye          0.59  on  CONFUSION: a jackal in sunglasses. Canid, but neither dog no
+  eye          0.91  on  line-drawn snake head, mouth open
+  hand         0.84  on  man with an acoustic guitar sitting on a Triumph motorcycle
+  hand         0.83  on  SOUL RIDER: flat illustrated motorcycle head-on
+  eye          0.68  on  SOUL RIDER: flat illustrated motorcycle head-on
+  eye          0.92  on  Apocalyptica Cult: gold-brown human skull
+  eye          0.68  on  The Cat Empire: a crown as a flat black logo mark; also read
+  eye          0.87  on  photoreal cognac bottle on white
+  church       0.86  on  photoreal fairy-tale castle at dusk
+  eye          0.77  on  woman with wind-blown hair under a Chinese brush title
+
+=== marginal pairs (excluded from scoring), where they fired ===
+  building     0.33  on  rider on a horse, temple ruins behind, an eye pictogram in t
+  eye          0.75  on  rider on a horse, temple ruins behind, an eye pictogram in t
+  dog          0.88  on  CONFUSION: a jackal in sunglasses. Canid, but neither dog no
+  wolf         0.88  on  CONFUSION: a jackal in sunglasses. Canid, but neither dog no
+  building     0.77  on  ALADIAH: rendered futuristic train, skyscrapers behind
+  train        0.64  on  CONFUSION: WESTBOUND TRAIN — tram rails down a street, no tr
+  building     0.40  on  CONFUSION: WESTBOUND TRAIN — tram rails down a street, no tr
+  building     0.81  on  Tam Hoa: one huge rendered lotus, temple roofs behind
+  cat          0.00  on  The Cat Empire: a crown as a flat black logo mark; also read
+  building     0.78  on  photoreal fairy-tale castle at dusk
+  building     0.86  on  white clapboard church with a steeple and cross
+  building     0.36  on  spa interior; concept set v2 found nothing at all here
+  building     0.00  on  hillside + display lettering + a radio mast on the ridge
+
+inference seconds over 32 images x 21 nouns: 208.4
+overlay: ../../data/sam/probe-5-overlays/animal-dog-dalmatian.png
+overlay: ../../data/sam/probe-5-overlays/animal-cat-occluded.png
+overlay: ../../data/sam/probe-5-overlays/confusion-wolf-vs-dog.png
+overlay: ../../data/sam/probe-5-overlays/confusion-jackal.png
+overlay: ../../data/sam/probe-5-overlays/animal-snake-fills-frame.png
+overlay: ../../data/sam/probe-5-overlays/object-guitar-vs-motorcycle.png
+overlay: ../../data/sam/probe-5-overlays/building-castle.png
+overlay: ../../data/sam/probe-5-overlays/building-church.png
+{"noun_class": {"dog": "animal", "cat": "animal", "bird": "animal", "horse": "animal", "wolf": "animal", "snake": "animal", "motorcycle": "vehicle", "airplane": "vehicle", "boat": "vehicle", "train": "vehicle", "guitar": "object", "skull": "object", "flower": "object", "crown": "object", "sword": "object", "bottle": "object", "hand": "object", "eye": "object", "building": "building_or_structure", "castle": "building_or_structure", "church": "building_or_structure"}}
