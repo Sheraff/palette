@@ -2,6 +2,7 @@
 
     .venv/bin/python derive_calibrated_aggregates.py --run sam-eval-142-v2
     .venv/bin/python derive_calibrated_aggregates.py --run sam-eval-142-v2 --no-area-guard
+    .venv/bin/python derive_calibrated_aggregates.py --run sam-eval-142-v2 --uniform-guard
 
 CPU ONLY. No model, no GPU, no network: every number here comes out of the run's own JSONL.
 
@@ -17,6 +18,13 @@ THE STORED JSONL IS NEVER TOUCHED. It is immutable evidence. Output goes to a NE
 `<run>.calibrated-aggregates.jsonl`, one row per image, keyed by `row_key` and `image_sha256` so it
 joins 1:1 back to the run. Both the stored value and the recomputed value are carried in every row,
 so the delta is readable without a second join.
+
+THE GUARD IS NO LONGER UNIFORM (2026-08-04). `config.GUARD_EXEMPT_GROUPS` scopes the area guard
+OFF for `person_like` (mask round 3, loose end A6), and this script honours it by default, so a
+big correct person mask now counts toward the calibrated union and the residual on those covers is
+SMALLER than a derivation made before that date. Every row states the rule it was derived under in
+`calibrated_cut.guard_exempt_groups`; an absent key means the file predates the exemption.
+`--uniform-guard` reproduces the old rule exactly. Nothing under `--no-area-guard` moves.
 
 VERIFICATION. The script first recomputes the UNSUFFIXED aggregates the same way and checks them
 against what the run stored. If those do not reproduce exactly, the arithmetic here is wrong and
@@ -92,6 +100,9 @@ def main() -> int:
                     help="score cut only — reproduces a pre-guard artifact")
     ap.add_argument("--pooled-threshold-only", action="store_true",
                     help="ignore CALIBRATED_GROUP_THRESHOLDS and cut every concept at the pooled value")
+    ap.add_argument("--uniform-guard", action="store_true",
+                    help="apply the area guard to every group, ignoring config.GUARD_EXEMPT_GROUPS "
+                         "— reproduces a guard-on artifact derived before 2026-08-04")
     args = ap.parse_args()
 
     run_path = config.DATA_DIR / f"{args.run}.jsonl"
@@ -101,10 +112,20 @@ def main() -> int:
 
     max_area = None if args.no_area_guard else config.CALIBRATED_MAX_AREA_FRACTION
 
+    # Groups the guard does not apply to, as this invocation will actually behave. Empty when the
+    # guard is off outright (--no-area-guard), when the exemption is suppressed (--uniform-guard),
+    # or when concepts are pooled away (--pooled-threshold-only passes concept=None, so no group is
+    # known and the exemption cannot fire). Recorded per row so a derived file states its own rule.
+    exempt_groups = (
+        [] if (args.no_area_guard or args.uniform_guard or args.pooled_threshold_only)
+        else sorted(config.GUARD_EXEMPT_GROUPS)
+    )
+
     def keeps(row: dict) -> bool:
         concept = None if args.pooled_threshold_only else row["concept"]
         return config.passes_calibrated_cut(row["score"], row["area_fraction"], concept,
-                                            max_area_fraction=max_area)
+                                            max_area_fraction=max_area,
+                                            apply_group_exemptions=not args.uniform_guard)
 
     rows = common.read_jsonl(run_path)
     regions: dict[str, list[dict]] = defaultdict(list)
@@ -166,6 +187,8 @@ def main() -> int:
                     "score_threshold": config.CALIBRATED_SCORE_THRESHOLD,
                     "group_thresholds": {} if args.pooled_threshold_only else dict(config.CALIBRATED_GROUP_THRESHOLDS),
                     "max_area_fraction": max_area,
+                    # Absent key = derived before 2026-08-04, when the guard was uniform.
+                    "guard_exempt_groups": exempt_groups,
                 },
                 "score_threshold_at_run": image.get("score_threshold"),
                 "instances_total_at_run": len(all_rows),

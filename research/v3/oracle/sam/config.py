@@ -263,9 +263,42 @@ CALIBRATED_SWEEP_OPTIMUM_WEIGHTED = 0.643816
 CALIBRATED_MAX_AREA_FRACTION = 0.5
 
 
+# [MEASURED] Concept groups the area guard does NOT apply to. Added 2026-08-04 by mask-quality
+# round 3 (loose end A6), a CENSUS — every region in sam-eval-142-v3-dynamic over the guard, plus
+# every region just under it as context — which asked each one whether it is "a real thing that
+# fills the cover" or "the model outlining most of the picture":
+#
+#   group            over-guard  covers  real  loose  whole  share  verdict
+#   person_like               6       6     6      0      0  1.000  EXEMPT (>= 0.70)
+#   mark_like                 4       3     2      0      2  0.500  undecided, guard stays
+#   dynamic_subject           2       2     2      0      0  1.000  undecided, 2 decided < 3
+#   text_like                 0       0     -      -      -    n/a  no region near the guard
+#
+# The 5 person masks that clear the score cut and die on area alone — the guard's entire corpus
+# effect on this concept — were each answered `yes` (a correct person mask) AND `real-subject`:
+#   3b82cee640a2:person:0  score 0.838555  area 0.5712
+#   89ab247d72c9:person:0  score 0.817568  area 0.5340
+#   7f522b435cdc:person:0  score 0.766371  area 0.6822
+#   dca149beb8a5:person:0  score 0.735899  area 0.5133
+#   5a45dc54f71a:person:0  score 0.687865  area 0.5836
+# The exposure the comment above recorded on 2026-08-03 — "a person filling most of a cover is an
+# ordinary artwork, and those 5 masks may well be correct" — is now MEASURED, and resolved in
+# favour of the masks. The pre-registered contradiction check (mask=yes AND guard=whole-image, the
+# case the guard exists for) found ZERO items in the entire census.
+#
+# WHY PER-GROUP AND NOT A REPEAL. The guard's one in-sample win in round 1 was
+# 8b4f2aadf3b1:sticker:0, a false positive at score 0.678697 / area 0.780706. That region is
+# mark_like, which keeps the guard, so the win is preserved unchanged. mark_like's 0.500 share
+# also rests on only 3 distinct regions: 8b4f2aadf3b1:emblem:0 and 8b4f2aadf3b1:sticker:0 are the
+# same region under two tags (bbox 0.995x0.990 vs 0.997x0.991), called a correct emblem and an
+# incorrect sticker.
+GUARD_EXEMPT_GROUPS: frozenset[str] = frozenset({"person_like"})
+
+
 def passes_calibrated_cut(score: float, area_fraction: float,
                           concept: str | None = None,
-                          max_area_fraction: float | None = CALIBRATED_MAX_AREA_FRACTION) -> bool:
+                          max_area_fraction: float | None = CALIBRATED_MAX_AREA_FRACTION,
+                          apply_group_exemptions: bool = True) -> bool:
     """The calibrated cut as one predicate: score threshold AND area guard.
 
     One place, so a consumer cannot pick up the threshold and miss the guard. Pass
@@ -275,10 +308,18 @@ def passes_calibrated_cut(score: float, area_fraction: float,
 
     `concept` selects the per-group threshold when one is calibrated; leave it None for the
     pooled cut.
+
+    The area guard does not apply to a concept whose group is in GUARD_EXEMPT_GROUPS (mask round
+    3, loose end A6). Pass `apply_group_exemptions=False` to reproduce an artifact computed with
+    the guard applied uniformly — i.e. anything guard-on written before 2026-08-04.
     """
     if score < calibrated_threshold_for(concept):
         return False
-    return max_area_fraction is None or area_fraction <= max_area_fraction
+    if max_area_fraction is None:
+        return True
+    if apply_group_exemptions and concept is not None and group_of(concept) in GUARD_EXEMPT_GROUPS:
+        return True
+    return area_fraction <= max_area_fraction
 
 
 # [MEASURED] Per-group score thresholds, where a group is measurably better off under its own cut

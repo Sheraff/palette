@@ -147,6 +147,11 @@ def summary_row(ref: common.ImageRef, result: common.ImageResult, meta: dict,
             "score_threshold": config.CALIBRATED_SCORE_THRESHOLD,
             "group_thresholds": dict(config.CALIBRATED_GROUP_THRESHOLDS),
             "max_area_fraction": config.CALIBRATED_MAX_AREA_FRACTION,
+            # Groups the area guard is scoped OFF for (mask round 3, loose end A6, 2026-08-04).
+            # Without this key a reader cannot tell a file written before the exemption from one
+            # written after: both carry max_area_fraction 0.5, but a big person mask survives in
+            # only one of them. An absent key means "written before 2026-08-04, guard uniform".
+            "guard_exempt_groups": sorted(config.GUARD_EXEMPT_GROUPS),
         },
         "instances_total_calibrated": len(calibrated),
         "instances_by_concept_calibrated": counts_calibrated,

@@ -272,6 +272,17 @@ CPU analysis substitutes for it.
 
 ## Proposed, NOT applied
 
+> **ADDENDUM 2026-08-04 — the `config.py` diff and all three records in this section HAVE SINCE
+> BEEN APPLIED**, in their own commit, exactly as drafted below and with no threshold moved. The
+> guard is scoped off for `person_like` via `config.GUARD_EXEMPT_GROUPS`; `mark_like` and
+> `dynamic_subject` keep it; the three records are appended to `data/decisions/decisions.json`
+> (`warehouse recheck` steady at its two known flags). The guard-on artifacts that change were
+> re-derived on CPU — `sam-eval-142-v2.calibrated-aggregates.jsonl` and
+> `residual-isolation-analysis.json`, both now stating their rule in
+> `calibrated_cut.guard_exempt_groups`, with the pre-exemption derivation preserved as
+> `sam-eval-142-v2.calibrated-aggregates-uniform-guard.jsonl`. **A6's person half is resolved;
+> A12 is not closed.** The text below is left in its original tense as the proposal it was.
+
 The manifest pre-registered that **no threshold in `config.py` is edited by this round**, and none
 was. Three decision records and one `config.py` diff are proposed in
 `mask-quality-3-analysis.json` (`proposals`), with `fundedBy` ids derived from the warehouse
@@ -387,3 +398,197 @@ Full text with machine-derived `fundedBy` ids in `mask-quality-3-analysis.json` 
 
 A6 can be closed by record 1 once applied. **A12 cannot be closed** — it still waits on the
 sub-minute CJK GPU micro-run described above, which has not been run.
+
+# Round 3b — the CJK masks, finally on screen (2026-08-04)
+
+Batch `sam-mask-quality-3b-cjk`, 25 masks, released 2026-08-03T22:57Z. Answers read through
+`src/warehouse/cli.ts query --batch sam-mask-quality-3b-cjk --json --latest --no-retracted`
+(amendments applied, supersession and retraction respected; the CLI has no author filter, so
+machine-authored labels are dropped by the analyzer). **25 labels, all human, all revision 1, zero
+supersessions, zero retractions, zero amendments, zero `partly`.** Analysis:
+`data/sam/mask-quality-3b-analysis.json`, from `oracle/sam/analyze_mask_quality_3b.py`.
+
+Round 3 ended by saying "no human has ever seen a CJK-prompt mask". That is no longer true.
+
+## Per-concept accept rates
+
+| concept | prompt | yes | no | partly | decided | accept | score range |
+|---|---|---|---|---|---|---|---|
+| `cjk-script` | "chinese characters" | 10 | 1 | 0 | 11 | **90.9%** | 0.3018–0.4720 |
+| `kanji` | "kanji" | 10 | 0 | 0 | 10 | **100.0%** | 0.3078–0.6418 |
+| **`cjk_script` group** | (the decision unit) | **20** | **1** | 0 | **21** | **95.2%** | 0.3018–0.6418 |
+| `words` (incumbent control) | "words" | 3 | 1 | 0 | 4 | 75.0% | 0.3153–0.5867 |
+
+**Probe 4's recall half is confirmed by eye.** The masks these two prompts find on CJK covers are
+correct 20 times out of 21. The single rejection is a `cjk-script` mask at 0.3873.
+
+**And the cut is category-dependent for this category, which was the question.** The pooled cut of
+0.578 keeps **3 of the 20** correct masks, on 2 of 5 covers. The `text_like` cut of 0.697295 keeps
+**0 of 20**, on 0 of 5. The category was effectively invisible.
+
+## The fitted cut, and exactly what it can claim
+
+Pre-registered method (`mask-quality-3b-sample.json` → `a12DecisionRule`): sweep over observed
+scores, maximise Youden J, `partly` excluded from both sides. No `partly` was answered, so that
+treatment is a no-op here.
+
+| cut | kept yes | kept no | precision | recall | J | covers with a kept correct mask |
+|---|---|---|---|---|---|---|
+| 0.301817 (run floor) | 20 | 1 | 0.9524 | 1.000 | 0.000 | 5/5 |
+| **0.392655 (fitted optimum)** | **10** | **0** | **1.000** | **0.500** | **0.500** | **5/5** |
+| 0.578 (pooled, in force) | 3 | 0 | 1.000 | 0.150 | 0.150 | 2/5 |
+| 0.697295 (`text_like`) | 0 | 0 | — | 0.000 | 0.000 | 0/5 |
+
+**All three pre-registered gates PASS:** separation |0.578 − 0.392655| = **0.185345** ≥ 0.05;
+J gain 0.500 − 0.150 = **0.350** ≥ 0.05; decided **21** ≥ 5. The optimum is unique — no ties.
+
+### The truncation lesson from round 3, applied — and this time it comes out the other way
+
+Round 3's hard-text sweep had to be thrown out because section B was selected **by the cut**
+(`score < cut`), so it could not contain a single keep-side row; its J of 1.000 measured where the
+sample was cut. Pooling round 1's 31 unconditioned rows restored the keep side and the gain fell to
+zero. That failure mode does **not** apply here, and the difference is structural, not lucky:
+
+- **Round 3b was not selected by the cut.** It was drawn across score bands, strongest to weakest
+  per cover, and it **contains keep-side rows** — 3 `kanji` masks score at or above 0.578. The side
+  that was missing in round 3 is present here.
+- **The truncation that does remain is left-truncation at the run floor** (`SCORE_THRESHOLD = 0.3`),
+  not selection on the outcome. And it **provably cannot move the J gain**: both the fitted cut and
+  the pooled cut already run specificity 1.000 with zero false positives, so any row below 0.3 is
+  dropped by both and can only add true negatives, which cannot push specificity above 1.0. The
+  analyzer confirms it numerically — injecting 10, 50 or 200 phantom below-floor negatives leaves
+  the gain at exactly 0.350.
+- **The 0.642 ceiling is the concept's, not the sample's.** No `cjk_script` region anywhere in
+  `sam-cjk-probe-7` exceeds 0.641773. The sweep simply has no information above that.
+
+**Can the J be pooled with unconditioned rows, as round 3's was? For the decision unit, no — and
+nothing is missing that would need it.** `chinese characters` and `kanji` are not in
+`CONCEPT_PROMPTS`, so no eval run contains them; probe 4 ran them but stored no `mask_rle` and was
+never reviewed. **This round is the only human evidence about a CJK mask that exists.** There is no
+second sample to restore a side with, and per the proof above no side is missing.
+
+Pooling *was* attempted for the incumbent control, since round 1 holds 5 genuinely unconditioned
+`words` rows (all `yes`, straddling both cuts). Pooled with 3b's 4, the 9-row set sweeps to 0.325296
+at J 1.000. **This is recorded and deliberately not acted on**: round 1 drew from covers with no CJK
+script on them, so it measures `words` on Latin covers — not the incumbent question — and round 3's
+55-row pooled sweep remains the authoritative `text_like` analysis, with its J gain of 0.0000.
+
+### What the fitted cut CANNOT claim — the honest scope
+
+**The number is weakly identified, and this is the one thing not to lose.** The group holds exactly
+**one** negative answer, so the specificity term of J can only be 0.0 or 1.0, and the "optimum" is
+mechanically *the smallest observed score above that single rejected mask*. It is a boundary located
+by one answer, not estimated from a distribution of negatives. Worse for the number, the 0.3 floor
+removed the score region where false positives concentrate, so the 1-in-21 rejection rate is the
+rate **among regions the model already scored ≥ 0.3**, not the concept's error rate.
+
+**And the fitted cut is expensive in the currency the round actually measured.** Adopting 0.392655
+discards **10 of the 20 masks the reviewer called correct** in order to exclude the single one they
+rejected. At the run floor the same group runs precision 0.9524 at recall 1.000. Youden J prices one
+false positive as heavily as ten false negatives; on a sample with one negative, that pricing *is*
+the entire difference between the two rows of the table.
+
+It also cannot claim anything about covers **without** CJK script. Probe 4's "zero false positives,
+silent on Korean, Thai and Malayalam" was measured on scores alone. **No off-target mask was put in
+front of a reviewer in this round**, so the precision half of probe 4's finding remains unreviewed.
+
+## The incumbent check: `words` does not cover the category
+
+Pre-registered: *"if `words` masks are accepted wherever `cjk-script` masks are, the incumbent
+already covers the category and a new concept buys nothing regardless of how the CJK masks score."*
+
+| cover | CJK regions in run | CJK correct kept @0.392655 | `words` regions | `words` best | `words` kept @0.697295 |
+|---|---|---|---|---|---|
+| `03/…e420d104` | 2 | 1 | **0** | — | 0 |
+| `07/…041c6c13` | 2 | 1 | **0** | — | 0 |
+| `08/…dbe92fa0` | 19 | 4 | 5 | 0.4961 | 0 |
+| `10/…c0abde36` | 8 | 3 | 1 | 0.5867 | 0 |
+| `10/…01c16db8` | 15 | 1 | **0** | — | 0 |
+
+**The incumbent is silent on 3 of the 5 covers** — `words` emits no region at all. On the 2 where it
+does fire, its masks are fine (3 of 4 accepted); the failure is availability and score, not mask
+quality. And its best score **anywhere in the run** is 0.586651, below its own `text_like` cut of
+0.697295, so **at the threshold actually in force the incumbent keeps ZERO masks on ALL 5 covers**.
+The proposed CJK cut keeps at least one correct mask on **5 of 5**.
+
+The condition that would moot a new concept is not met on availability, let alone on production
+thresholds. **The incumbent does not cover the category.**
+
+## A12 verdict, per the rule: ADOPT WITH A CATEGORY CUT
+
+Applying `a12DecisionRule` exactly: largely accepted (95.2%) ✔; a sub-0.578 cut fitted (0.392655) ✔;
+all three gates pass ✔; `closeIf` (largely rejected) not triggered ✔; incumbent does not moot it ✔.
+
+**A12's remaining half is decided in favour of adoption.** One qualification the rule does not
+itself carry, recorded so it is not lost: the *concept add* is strongly funded (21 answers, 95.2%
+accept, incumbent decisively ruled out), while the *threshold* is a one-negative fit. They should
+land together, with the constant marked PROVISIONAL — see the proposed diff.
+
+### What closes
+
+- **"Has any human ever seen a CJK mask?"** — closed. 25 rendered, reviewed, released; 21 in the unit.
+- **Probe 4's recall half** — confirmed by eye, 20/21.
+- **"Is the calibrated cut category-dependent?"** — **yes** for this category: pooled keeps 3 of 20,
+  `text_like` keeps 0.
+- **The incumbent question** — settled: `words` cannot stand in for a CJK concept.
+
+### What stays open
+
+- **Probe 4's precision half.** No off-target mask has been reviewed. "Zero false positives" is
+  still a statement about scores, not about masks a human judged.
+- **The threshold's identification.** 25 CJK regions from the same run are ungraded and **all carry
+  `mask_rle`**, so a completion round is a CPU render plus reviewer time — **no GPU**. Until then the
+  specificity term rests on one answer. This is the cheapest thing left to do and it is the one that
+  turns a provisional constant into a settled one.
+- **Correct vs useful.** The accepted CJK masks are small (median area 0.00282 of the cover) — the
+  same "correct but tiny" caution round 3 raised for hard text, and it is still not the question any
+  round has asked.
+- **The re-run cost.** Adding the concepts changes `concept_set_hash()`, so `sam-eval-142` must be
+  re-run in full (~6.5 min GPU) before any analysis reads CJK rows alongside the existing ones.
+
+### Out of scope, as already recorded
+
+The 2 covers where nothing fires at any threshold —
+`10/ab67616d0000b27300103a3729bf589e0dc913ab` and `images/nobs.jpg` — carry zero regions for all
+three prompts. No threshold can recover them and there is no mask to review.
+
+## Proposed, NOT applied
+
+`config.py` is held by a sibling agent this session (the `person_like` guard exemption, A6). **The
+diff below is named for a follow-up commit and must be rebased onto that edit, not applied over it.**
+Full text, with machine-derived `fundedBy` ids, in `mask-quality-3b-analysis.json` → `proposals` and
+`proposedConfigDiff`.
+
+**Follow-up commit name:** `sam: adopt cjk_script concepts with a provisional category cut (A12)`
+
+Three hunks, all in `research/v3/oracle/sam/config.py`:
+
+1. **`CONCEPT_PROMPTS`** — add `("cjk-script", "chinese characters")` and `("kanji", "kanji")`,
+   replacing the A12 note at lines 118–123 (whose two stated preconditions are now both met).
+2. **`CONCEPT_GROUPS`** — add `"cjk_script": ("cjk-script", "kanji")`. **Required by hunk 1**:
+   `selftest.py` asserts every concept is in exactly one group. Deliberately its own group, not
+   `text_like` — the co-firing rule that drew every other line here separates them, and folding it in
+   would drag it under a 0.697295 cut that keeps 0 of 20.
+3. **`CALIBRATED_GROUP_THRESHOLDS`** — add `"cjk_script": 0.392655`, stored unrounded, with the
+   PROVISIONAL caveat and its reason in the comment.
+
+`group_of()` and `calibrated_threshold_for()` need **no change** — they are pure lookups over those
+two dicts. No edit to `CALIBRATED_SCORE_THRESHOLD`, `CALIBRATED_SWEEP_OPTIMUM`,
+`CALIBRATED_MAX_AREA_FRACTION`, `GUARD_EXEMPT_GROUPS` or `SCORE_THRESHOLD`.
+
+Companion obligations: `selftest.py` fails if hunk 1 lands without hunk 2; `sam-eval-142` must be
+re-run before any analysis reads CJK rows alongside existing ones; `run_sam.py`'s stored
+`calibrated_cut` provenance block should gain the new group threshold so a reader can tell which
+rule produced a file.
+
+### Proposed decision records (NOT appended to `decisions.json`)
+
+1. **`d-2026-08-04-sam-cjk-script-concepts-adopted-with-a-category-cut`** (instrument-calibration,
+   21 funding records). Adopts the two concepts as group `cjk_script` with threshold 0.392655.
+   **Does not fund** the threshold as a settled number, nor probe 4's precision claim.
+2. **`d-2026-08-04-sam-words-does-not-cover-cjk-script`** (measurement, 4 funding records). Records
+   that the incumbent is silent on 3 of 5 CJK covers and keeps zero masks at its own cut on all 5.
+   **Does not fund** any change to `CALIBRATED_GROUP_THRESHOLDS["text_like"]`.
+
+**A12 can be closed by record 1 once applied** — with the threshold's provisional status carried
+forward as the completion round named above, not as a new loose end's worth of doubt about the add.

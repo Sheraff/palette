@@ -210,12 +210,29 @@ def test_calibrated_cut() -> bool:
                 config.calibrated_threshold_for("no-such-concept")
                 == config.CALIBRATED_SCORE_THRESHOLD)
     big = config.CALIBRATED_MAX_AREA_FRACTION + 0.01
-    ok &= check("the area guard rejects a high-scoring whole-image mask",
-                not config.passes_calibrated_cut(0.99, big, "person"))
+    # `sticker` is mark_like, which mask round 3 left UNDECIDED — the guard stays on for it, and
+    # the guard's one in-sample win (8b4f2aadf3b1:sticker:0) is exactly this shape. `person` used
+    # to stand here; it is now exempt, which is the assertion two lines down.
+    ok &= check("the area guard rejects a high-scoring whole-image mask of a guarded group",
+                not config.passes_calibrated_cut(0.99, big, "sticker"))
     ok &= check("the area guard can be switched off for a pre-guard artifact",
-                config.passes_calibrated_cut(0.99, big, "person", max_area_fraction=None))
+                config.passes_calibrated_cut(0.99, big, "sticker", max_area_fraction=None))
     ok &= check("a small high-scoring mask passes",
                 config.passes_calibrated_cut(0.99, 0.01, "person"))
+    # Mask round 3 (loose end A6): person_like is exempt from the area guard, everything else is
+    # not, and the pre-2026-08-04 uniform rule stays reproducible.
+    ok &= check("every guard-exempt group names a real group",
+                config.GUARD_EXEMPT_GROUPS <= set(config.CONCEPT_GROUPS),
+                str(sorted(config.GUARD_EXEMPT_GROUPS - set(config.CONCEPT_GROUPS))))
+    ok &= check("a big-area mask of an exempt group survives the guard",
+                config.passes_calibrated_cut(0.99, big, "person"))
+    ok &= check("the exemption can be suppressed to reproduce a uniform-guard artifact",
+                not config.passes_calibrated_cut(0.99, big, "person",
+                                                 apply_group_exemptions=False))
+    ok &= check("the exemption does not rescue a mask below its score cut",
+                not config.passes_calibrated_cut(0.1, big, "person"))
+    ok &= check("the exemption does not reach a group outside GUARD_EXEMPT_GROUPS",
+                not config.passes_calibrated_cut(0.99, big, "emblem"))
     ok &= check("the sweep optimum is below the stored rounded cut",
                 config.CALIBRATED_SWEEP_OPTIMUM < config.CALIBRATED_SCORE_THRESHOLD,
                 f"{config.CALIBRATED_SWEEP_OPTIMUM} < {config.CALIBRATED_SCORE_THRESHOLD}")

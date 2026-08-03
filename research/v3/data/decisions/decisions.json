@@ -1824,6 +1824,172 @@
     "THE GALLERY BROWSE THAT DECIDED THIS SPENT HOLDOUT ARTWORKS. The pages the reviewer looked at rendered 117 of the 413 held-out artworks and 2 quarantined non-candidates, and 3 of the 12 pinned query covers are held out — including covers named in the observations cited here ('johns', 'krafty', 'muse'). Measured 2026-08-03; see HOLDOUT_EXPOSURE.md. Ruled a disclosable fact rather than a defect by d-2026-08-03-reviewer-holdout-purpose-is-algorithm-leakage. Carried forward because it remains true of the evidence this record cites."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-area-guard-scoped-off-for-person-like",
+   "ts": "2026-08-03T23:05:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "instrument-calibration — the proposal label in mask-quality-3-analysis.json. Recorded under the README's existing kind vocabulary; the label is the only field that differs from the draft.",
+   "scope": "Every consumer of stored SAM mask rows that filters through passes_calibrated_cut(): the area guard no longer applies to concepts in the person_like group. It does NOT move any score threshold (CALIBRATED_SCORE_THRESHOLD stays 0.578, CALIBRATED_GROUP_THRESHOLDS[\"text_like\"] stays 0.697295), does NOT move CALIBRATED_MAX_AREA_FRACTION (stays 0.5) or repeal the guard, does NOT exempt mark_like, dynamic_subject or text_like, and does NOT rewrite any stored run JSONL — those stay immutable and their aggregates were re-derived into separate files. It closes the person half of loose end A6 only; the mark_like/dynamic_subject half is open under d-2026-08-04-sam-area-guard-unresolved-for-mark-like-and-dynamic-subject, and A12 is untouched.",
+   "decision": "The area guard is scoped OFF for person_like and stays ON for every other group. The census asked all 6 person_like regions over the guard whether they are a real thing filling the cover; all 6 came back real-subject (share 1.000, >= 0.7), none whole-image, none loose. 5 of the 6 also clear the score cut, which is exactly the set the guard deletes on its own corpus-wide, and the reviewer called all 5 correct person masks. APPLIED 2026-08-04 as config.GUARD_EXEMPT_GROUPS = frozenset({\"person_like\"}) plus an apply_group_exemptions parameter on passes_calibrated_cut, so the pre-2026-08-04 uniform rule stays exactly reproducible; run_sam.py's stored calibrated_cut provenance block gains a guard_exempt_groups key so a file states which rule produced it. The CPU-derivable artifacts were regenerated: on sam-eval-142-v2 the five person masks re-enter the calibrated union on five covers, dropping their residual_field_fraction by 0.458 to 0.607, and in residual-isolation-analysis.json the guard-on arm's guarded-out regions fall from 6 to 1 — the one being the mark_like sticker the guard was adopted for, which is preserved.",
+   "fundedBy": [
+    "o-msdt2ow5-d232a4de",
+    "o-msdt22q6-f8bf5a44",
+    "o-msdt2qm4-9398afc7",
+    "o-msdt2pge-53cd4f94",
+    "o-msdt2fvv-66800aeb",
+    "o-msdt2ii9-1bbc0781",
+    "o-msdt0ri9-09964ff8",
+    "o-msdt0to8-b8e589c3",
+    "o-msdt0vhz-54af2148",
+    "o-msdt0pi0-f85ba25d",
+    "o-msdt0x1y-1a0f4cd6",
+    "o-msdt0sum-30cb76a3"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-analysis.json",
+     "what": "The round-3 analysis: the per-group census table, the pre-registration check (preRegistration.ok = true, zero problems), removedByGuardAlone, the hard-text sweep and the de-truncated pooled sweep. Every number in these records is read from it, and the fundedBy lists here were copied from its proposals block mechanically rather than transcribed."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-sample.json",
+     "what": "The manifest that PRE-REGISTERED the decision rules (guardSection.decisionRule, hardTextDecisionRule) before any answer existed. analyze-mask-quality-3.ts re-reads them on every run and aborts if they have drifted."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "Reviewer notes, the dated section 'Round 3 — the area guard and hard text (2026-08-04)': the census table, the five guard-deleted person masks with their scores and areas, and the reasoning for why the move is per-group and not a repeal."
+    },
+    {
+     "ref": "research/v3/oracle/sam/config.py",
+     "what": "GUARD_EXEMPT_GROUPS and passes_calibrated_cut(..., apply_group_exemptions=True), with the census table and the five mask ids in the constant's comment."
+    },
+    {
+     "ref": "research/v3/data/sam/residual-isolation-analysis.json",
+     "what": "Regenerated 2026-08-04 under the exemption. meta.calibrated_cut.guard_exempt_groups records the rule; the guard_on arm's residual means move 0.8445 -> 0.8261 (static) and 0.8362 -> 0.8178 (dynamic) on 5 of 142 covers, and guard_off is unchanged."
+    },
+    {
+     "ref": "research/v3/data/sam/sam-eval-142-v2.calibrated-aggregates.jsonl",
+     "what": "Re-derived on CPU from the stored RLEs under the exemption; every row carries calibrated_cut.guard_exempt_groups."
+    },
+    {
+     "ref": "research/v3/data/sam/sam-eval-142-v2.calibrated-aggregates-uniform-guard.jsonl",
+     "what": "The same derivation with --uniform-guard, i.e. the pre-2026-08-04 rule. Reproduces the previously committed file row for row (0 of 142 rows differ outside derived_at and the new provenance key), which is the check that the exemption is the only thing that moved."
+    },
+    {
+     "ref": "research/v3/data/decisions/decisions.json",
+     "what": "d-2026-08-03-reviewer-area-guard-scoped-per-concept-group, the reviewer ruling that set the direction and required a round 3 showing big-area person masks before anything was implemented. This record is that round's outcome. It is not marked as superseding it: the ruling's direction stands, and the ruling also proposed exempting dynamic subject nouns, which this round did NOT establish."
+    }
+   ],
+   "fundingCaveats": [
+    "NOT a claim that the guard was wrong. Round 1's single in-sample win was the mark_like sticker 8b4f2aadf3b1:sticker:0, and mark_like keeps the guard, so that win is preserved intact.",
+    "NOT a corpus-wide exemption. text_like has no region anywhere near the guard and was never tested; mark_like and dynamic_subject came back unresolved and keep the guard unchanged.",
+    "THE CENSUS IS SIX REGIONS. person_like's unanimity is 6 of 6 over-guard regions on 6 distinct covers (plus 2 just-under-the-guard context items, also real-subject), drawn from sam-eval-142-v3-dynamic. It is a census of that run rather than a sample, so there is no sampling error to quote — but the population is small, and a corpus with different artwork could hold big-area person masks that are outlines of the whole picture.",
+    "ONE OF THE SIX DOES NOT CLEAR THE SCORE CUT. Five of the 6 are the guard's entire corpus-wide effect on this concept; the sixth is removed by the score cut whatever the guard does, so the exemption changes nothing for it.",
+    "THE REVIEWER ANSWERED TWO QUESTIONS PER ITEM AND BOTH WERE USED. The area verdict (real-subject / loosely outlined / whole-image) decided the group, and the mask verdict (yes/no) is what makes the 5 re-admitted masks correct rather than merely large. The pre-registered contradiction check found no item answered yes AND whole-image.",
+    "GUARD-ON NUMBERS IN ARTIFACTS WRITTEN BEFORE 2026-08-04 ARE THE UNIFORM RULE. They were not retro-corrected. calibrated_cut.guard_exempt_groups is how a reader tells the two apart; an absent key means uniform.",
+    "THE TYPESCRIPT MIRROR IN analyze-mask-quality.ts STILL APPLIES THE GUARD UNIFORMLY, DELIBERATELY. Round 1's published guardEffect numbers are that round's record and must keep reproducing; round 1's sample contains no big-area person mask, so an exemption would change nothing in it. A comment there says so, and a future live recomputation must mirror GUARD_EXEMPT_GROUPS."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-area-guard-unresolved-for-mark-like-and-dynamic-subject",
+   "ts": "2026-08-03T23:05:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "deliberately-open — the proposal label in mask-quality-3-analysis.json. Recorded under the README's existing kind vocabulary; the record is a NON-MOVE and the scope below says so in as many words.",
+   "scope": "The area guard's status for mark_like and dynamic_subject, and nothing else. NOTHING CHANGES: the guard stays ON for both, at CALIBRATED_MAX_AREA_FRACTION = 0.5, exactly as before. The record exists so that 'undecided' is on the ledger rather than inferred from silence, and so that a later round knows what it has to beat. It says nothing about person_like (exempted by d-2026-08-04-sam-area-guard-scoped-off-for-person-like) and nothing about text_like, which the census could not test at all.",
+   "decision": "mark_like (real-subject share 0.500 on 4 decided) and dynamic_subject (2 decided, below the pre-registered minimum of 3) both fall in the undecided band. The guard stays ON for both, unchanged, and both are recorded unresolved rather than moved. A round that cannot separate must say so. dynamic_subject's exemption would be inert today in any case: both its over-guard regions score 0.362 and 0.335, below the pooled cut of 0.578, so the score cut removes them whatever the guard does. text_like is a third state again — NOT TESTED rather than undecided: no region of that group is anywhere near the guard in the whole run, so the census drew none and the round says nothing about it.",
+   "fundedBy": [
+    "o-msdt2kg8-9ae765ab",
+    "o-msdt2nsj-96990f8b",
+    "o-msdt2cjy-c8b224b9",
+    "o-msdt1u2v-e3c8eef8"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-analysis.json",
+     "what": "The round-3 analysis: the per-group census table, the pre-registration check (preRegistration.ok = true, zero problems), removedByGuardAlone, the hard-text sweep and the de-truncated pooled sweep. Every number in these records is read from it, and the fundedBy lists here were copied from its proposals block mechanically rather than transcribed."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-sample.json",
+     "what": "The manifest that PRE-REGISTERED the decision rules (guardSection.decisionRule, hardTextDecisionRule) before any answer existed. analyze-mask-quality-3.ts re-reads them on every run and aborts if they have drifted."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "Reviewer notes, the dated section 'Round 3 — the area guard and hard text (2026-08-04)': the census table, the five guard-deleted person masks with their scores and areas, and the reasoning for why the move is per-group and not a repeal."
+    },
+    {
+     "ref": "research/v3/data/decisions/decisions.json",
+     "what": "d-2026-08-03-reviewer-area-guard-scoped-per-concept-group proposed exempting person_like AND any future dynamic subject noun. Only the first half is established by this round; the dynamic-subject half remains a proposal."
+    }
+   ],
+   "fundingCaveats": [
+    "mark_like's 0.500 SHARE RESTS ON 3 DISTINCT REGIONS, NOT 4. 8b4f2aadf3b1:emblem:0 and 8b4f2aadf3b1:sticker:0 are the same big region on the same cover (bboxes 0.995x0.990 and 0.997x0.991, areas 77.3% and 78.1%) returned under two concept tags; the reviewer called it a correct emblem and an incorrect sticker. One region voting twice is why 0.500 is a genuinely split verdict and not a coin-flip artefact of n=4 — but n is still 4.",
+    "dynamic_subject FAILS ONLY THE COUNT GATE. Its 2 decided answers are both real-subject, a share of 1.000; the pre-registered minimum of 3 is what stops it. A third answer could move it to exempt without any reviewer changing their mind, so this is a measurement gap, not a disagreement.",
+    "THE NON-MOVE IS NOT EVIDENCE THAT THE GUARD IS RIGHT FOR THESE GROUPS. It is evidence that this round could not separate them. The only positive in-sample evidence for the guard anywhere remains the single round-1 false positive 8b4f2aadf3b1:sticker:0, which sits in mark_like and is preserved by keeping the guard on there.",
+    "NO WAREHOUSE RECORD FUNDS THE text_like 'NOT TESTED' LINE, because there is nothing to fund: the census contains zero text_like items, which is itself the finding."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-text-like-cut-discards-correct-text-on-a12-covers",
+   "ts": "2026-08-03T23:05:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "measurement — the proposal label in mask-quality-3-analysis.json. Recorded under the README's existing kind vocabulary; what standing here is the NON-MOVE (the text_like cut is not lowered) plus the finding that funds a future round.",
+   "scope": "The text_like score cut and loose end A12. NO CONSTANT MOVES: CALIBRATED_GROUP_THRESHOLDS[\"text_like\"] stays 0.697295 and the pooled cut stays 0.578. It records what the reviewer's answers measure — the cut discards correct text on the A12 class — and states explicitly that this does not fund a lower number. It does NOT close A12, and it is NOT evidence about CJK text: every mask in the section is an incumbent Latin-glyph concept (letter, lettering, display-text, words), and no human has yet seen a CJK-prompt mask.",
+   "decision": "On the A12 hard-text class the text_like cut of 0.697295 discards correct text: 22 of 23 decided below-cut masks are correct, an accept rate of 95.7%, and every one of the 24 graded masks scores at or below 0.576 — below the pooled cut of 0.578 as well as the group cut. Both cuts keep 0 of 24. The reviewer's yes/no boundary does not sit near either cut; it sits at the run-time floor. DOES NOT FUND: A lowered text_like constant. The pre-registered gates all PASS on the section-B sample, but that sample is truncated at the cut by construction and holds exactly one negative answer, so its \"optimum\" of 0.301998 at J 1.000 measures where the sample was cut, not where the boundary is. Pooling round 1's 31 unconditioned text_like rows back in restores the keep side and the J gain falls to 0.0000 — the J-gain gate FAILS. Moving the global cut down to 0.514847 would buy recall (24.4% -> 46.7%) at a precision cost (100.0% -> 91.3%) for no J gain at all. RECOMMENDS: A per-cover rescue rule rather than a lower global cut — on a cover where NO text_like mask clears the cut, admit that cover's strongest text_like mask down to a floor — fitted on a round that samples both sides of the boundary on hard covers. Not fundable from this round.",
+   "fundedBy": [
+    "o-msdszmja-cab07e29",
+    "o-msdszrn5-0c7c19dd",
+    "o-msdsz94g-fccf47a7",
+    "o-msdsyyiq-a65a2736",
+    "o-msdszk9e-73674f36",
+    "o-msdsyqdt-32e4381c",
+    "o-msdszneu-c428b0d6",
+    "o-msdszd59-5c2a9224",
+    "o-msdszpuf-e3708c34",
+    "o-msdszv2m-35570690",
+    "o-msdszasy-0441744c",
+    "o-msdsyzsu-b68181b9",
+    "o-msdsyvoj-2b95c7aa",
+    "o-msdszyci-77f843ae",
+    "o-msdszi3z-38ee0fd3",
+    "o-msdszglk-9ba1b4c6",
+    "o-msdsymdz-56a565c3",
+    "o-msdsyx0v-03819cc5",
+    "o-msdsynst-498d8c8c",
+    "o-msdszz6u-1d07541b",
+    "o-msdszbst-5d59c25a",
+    "o-msdszpbf-411e05d7",
+    "o-msdszeo8-40b96d0a",
+    "o-msdsz1ty-d72d7110"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-analysis.json",
+     "what": "The round-3 analysis: the per-group census table, the pre-registration check (preRegistration.ok = true, zero problems), removedByGuardAlone, the hard-text sweep and the de-truncated pooled sweep. Every number in these records is read from it, and the fundedBy lists here were copied from its proposals block mechanically rather than transcribed."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-3-sample.json",
+     "what": "The manifest that PRE-REGISTERED the decision rules (guardSection.decisionRule, hardTextDecisionRule) before any answer existed. analyze-mask-quality-3.ts re-reads them on every run and aborts if they have drifted."
+    },
+    {
+     "ref": "research/v3/data/sam/MASK_REVIEW_NOTES.md",
+     "what": "Reviewer notes, the dated section 'Round 3 — the area guard and hard text (2026-08-04)': the census table, the five guard-deleted person masks with their scores and areas, and the reasoning for why the move is per-group and not a repeal."
+    },
+    {
+     "ref": "research/v3/data/sam/mask-quality-analysis.json",
+     "what": "Round 1's 31 unconditioned text_like rows, spanning 0.300-0.928, which de-truncate the round-3 sample and make the honest pooled sweep possible on CPU alone."
+    }
+   ],
+   "fundingCaveats": [
+    "THE SECTION-B SAMPLE IS TRUNCATED BY CONSTRUCTION AND ITS SWEEP MUST NOT BE QUOTED. It was selected as masks BELOW the cut, so it cannot contain a keep-side mask, and it holds exactly one negative answer. Its 'optimum' of 0.301998 at Youden J 1.000 measures where the sample was cut. The pre-registered gates PASS on it, and reporting that PASS without this sentence would be textbook selection bias.",
+    "ON THE DE-TRUNCATED POOL THE J-GAIN GATE FAILS. 55 rows, 54 decided, 9 negatives: incumbent 0.697295 gives precision 1.000 / recall 0.2444 / J 0.2444; the pooled optimum 0.514847 gives precision 0.9130 / recall 0.4667 / J 0.2444. The gain is exactly zero.",
+    "THE MASKS ARE CORRECT BUT MOSTLY TINY, AND THE ROUND NEVER ASKED WHETHER THEY ARE USEFUL. 22 of 24 cover less than 1% of their cover, 14 less than 0.1%, median 0.087%; the 16 letter masks have a median area of 0.04% — single glyphs. Only display-text reaches useful size (median 2.9%, max 10.8%).",
+    "THE ACCEPT RATE IS ON 23 DECIDED ANSWERS FROM 8 COVERS, 3 MASKS PER COVER, STRONGEST TO WEAKEST. It is a rate about hard covers under a deliberately biased draw, not a corpus rate for text_like.",
+    "THE RECOMMENDED PER-COVER RESCUE RULE IS A SHAPE, NOT A NUMBER. Its floor cannot be fitted from this round — that needs a round sampling BOTH sides of the boundary on hard covers — and nothing here authorises implementing it.",
+    "A12 STAYS OPEN. It waits on the sub-minute CJK GPU micro-run specified in the manifest's gpuGap.exactRunNeeded (roughly 7 covers x 3 prompts, storing mask_rle at the 0.3 floor), which has not been run. No amount of further CPU analysis substitutes for it."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

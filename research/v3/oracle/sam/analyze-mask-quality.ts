@@ -112,6 +112,16 @@ export const PER_GROUP_MAX_J_LOSS = 1e-9
  * Mirrors `config.py` `CALIBRATED_MAX_AREA_FRACTION`, and is the same number the sampler used to
  * define the "hallucination signature". Kept as a constant here so the analysis can report what
  * the guard buys instead of asserting that none is needed.
+ *
+ * THE MIRROR IS NO LONGER EXACT, DELIBERATELY (2026-08-04). The Python side now scopes the guard
+ * OFF for the concept groups in `config.GUARD_EXEMPT_GROUPS` — today `person_like` only, from mask
+ * round 3's census of loose end A6 (6/6 big-area person regions answered "a real thing that fills
+ * the cover"). This file applies the guard UNIFORMLY, with no exemption, and that is correct here:
+ * round 1's published `guardEffect` numbers are historical and must keep reproducing as published,
+ * and round 1's sample contains no big-area `person` mask at all, so an exemption would change
+ * nothing in it beyond making it un-reproducible. If a future round recomputes `guardEffect` as a
+ * live claim about the instrument's present behaviour rather than as round 1's record, it must
+ * mirror `GUARD_EXEMPT_GROUPS` too, or the two sides will drift silently.
  * [MEASURED] — `oracle/sam/config.py` CALIBRATED_MAX_AREA_FRACTION; see the `guardEffect` block.
  */
 export const AREA_GUARD_MAX_FRACTION = 0.5

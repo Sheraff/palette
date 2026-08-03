@@ -4,8 +4,8 @@ static-answers-unperturbed check vs sam-eval-142-v2: 137/140 byte-identical, 3 d
 residual_field_fraction, mean / median (higher = more subtracted away is NOT the goal;
 the goal is that what remains is field, which only the review round can say)
 condition                        mean   median      min      max
-static / guard_on              0.8445   0.8835   0.4987   1.0000
-dynamic / guard_on             0.8362   0.8758   0.4987   1.0000
+static / guard_on              0.8261   0.8758   0.2469   1.0000
+dynamic / guard_on             0.8178   0.8609   0.2469   1.0000
 static / guard_off             0.8210   0.8739   0.2193   1.0000
 dynamic / guard_off            0.8128   0.8555   0.2193   1.0000
 
@@ -31,8 +31,7 @@ dynamic concepts: asked vs fired above the calibrated cut (guard_off)
     dyn-watermark    [0.8, 0.69, 0.64, 0.61, 0.6, 0.31, 0.0, 0.0]
 
 area guard: what it removes
-  6 regions removed by the guard, on 6 covers
-    person              5
+  1 regions removed by the guard, on 1 covers
     sticker             1
 
 contaminated residuals (proxy, guard_off — NOT a pixel judgment)

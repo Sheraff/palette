@@ -17,9 +17,21 @@ says so.
 GUARD ON AND GUARD OFF, BOTH REPORTED. `config.CALIBRATED_MAX_AREA_FRACTION = 0.5` rejects any
 region covering more than half the cover. Its own comment records the exposure: corpus-wide, 5 of
 the 6 big-area regions that clear the score cut are `person`, "a person filling most of a cover is
-an ordinary artwork", and whether people should be exempt is loose end A6 — undecided. Residual
-isolation is exactly the use where a big correct subject mask is the point, so neither variant is
-treated as the answer here.
+an ordinary artwork", and whether people should be exempt was loose end A6. Residual isolation is
+exactly the use where a big correct subject mask is the point, so neither variant is treated as
+the answer here.
+
+WHAT `guard_on` MEANS CHANGED ON 2026-08-04, and every number under that key changed with it.
+Mask round 3's census answered the A6 exposure: all 6 big-area `person_like` regions in this very
+run came back "a real thing that fills the cover", so `config.GUARD_EXEMPT_GROUPS` now scopes the
+guard OFF for that group and `passes_calibrated_cut` honours it by default. The `guard_on` arm
+therefore keeps the 5 person masks it used to delete — its residual fractions DROP on those covers
+and `guarded_out` no longer lists them. `guard_off` is unchanged (it passes
+`max_area_fraction=None`, which skips the guard and the exemption alike), so the two arms are
+closer together than they were, and on a cover whose only over-guard regions are people they now
+coincide. Anything quoting a `guard_on` number from an analysis JSON generated before 2026-08-04
+is quoting the uniform-guard rule; `meta.calibrated_cut.guard_exempt_groups` is how a reader tells
+the two apart.
 """
 
 from __future__ import annotations
@@ -64,7 +76,13 @@ def load_run(stem: str) -> tuple[dict[str, dict], dict[str, list[dict]]]:
 
 
 def keep(region: dict, guard: bool) -> bool:
-    """The calibrated cut, with the area guard on or off. Per-group thresholds always apply."""
+    """The calibrated cut, with the area guard on or off. Per-group thresholds always apply.
+
+    `guard=True` is the guard AS CONFIGURED, which since 2026-08-04 means the group exemptions in
+    `config.GUARD_EXEMPT_GROUPS` apply — see the module docstring. It is deliberately not pinned to
+    the old uniform rule: this arm exists to report what the instrument actually does today, and a
+    reader who wants the pre-exemption rule has `apply_group_exemptions=False` in config.py.
+    """
     return config.passes_calibrated_cut(
         region["score"], region["area_fraction"], region["concept"],
         max_area_fraction=config.CALIBRATED_MAX_AREA_FRACTION if guard else None)
@@ -217,6 +235,8 @@ def analyze(run: str, static_run: str, table_name: str) -> dict:
                 "score_threshold": config.CALIBRATED_SCORE_THRESHOLD,
                 "group_thresholds": dict(config.CALIBRATED_GROUP_THRESHOLDS),
                 "max_area_fraction_when_guard_on": config.CALIBRATED_MAX_AREA_FRACTION,
+                # Empty or absent = the uniform guard (anything generated before 2026-08-04).
+                "guard_exempt_groups": sorted(config.GUARD_EXEMPT_GROUPS),
                 "dynamic_concepts_use_pooled_threshold": True,
             },
             "empty_union_fraction": EMPTY_UNION_FRACTION,

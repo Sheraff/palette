@@ -45,6 +45,14 @@ measurement its revival condition names.
 **A6 is REOPENED**, not closed — it was closed on 2026-08-03 and reopened the same day, because its
 closing argument turned out to be circular. It is counted as open above.
 
+**Counts are UNCHANGED on 2026-08-04, and re-derived by counting the headings: 67 items, 55 open,
+12 closed.** Mask round 3 resolved **half** of A6 — the area guard is scoped off for `person_like`
+— but `mark_like` and `dynamic_subject` came back undecided under the same pre-registered rule, so
+the row stays open and no total moved. A12 was **narrowed** by the round-3b CJK run without moving
+either: the run closes the GPU gap the row named, but round 3b is live and unreleased, so A12 stays
+open pending its answers. A row that half-closes is still an open row; the count only moves when a
+row does.
+
 Closed rows are kept, **struck through, with their original text** — a ledger that deletes its
 closed rows cannot be audited, and in A6's case the closure text is exactly what a later reader
 needs in order to understand why artifacts on disk look the way they do.
@@ -163,7 +171,7 @@ Original entry kept below for the record.
   still lists `text` and `typography`, so the group union is computed over concepts that can never
   appear.
 
-### A6. The SAM cut and its area guard — **REOPENED 2026-08-03**
+### A6. The SAM cut and its area guard — **REOPENED 2026-08-03; person half RESOLVED 2026-08-04, row STILL OPEN**
 *(Closed 2026-08-03 on the calibration round; reopened the same day by the adversarial review and
 by a reviewer ruling. The closure text is kept below, struck through, because artifacts were
 computed under it.)*
@@ -217,6 +225,50 @@ computed under it.)*
   and `text_like` at its own cut reaches precision 1.000 / recall 0.4783, lifting overall J from
   0.5140 to 0.5602. Per-group thresholds are now in force
   (`d-2026-08-03-sam-per-group-score-thresholds`).
+- **RESOLVED 2026-08-04, THE PERSON HALF ONLY — mask round 3 ran and this row's trigger fired.**
+  The round put the big-area masks in front of the reviewer as a **census** (every region in
+  `sam-eval-142-v3-dynamic` over the guard, plus every region just under it as context), under a
+  decision rule **pre-registered** in `mask-quality-3-sample.json` before any answer existed.
+  54/54 answered, zero retractions, zero supersessions. The unit of decision is the concept group;
+  only over-guard items vote:
+
+  | group | over-guard | covers | real | loose | whole | decided | real-share | verdict |
+  |---|---|---|---|---|---|---|---|---|
+  | `person_like` | 6 | 6 | 6 | 0 | 0 | 6 | **1.000** | **EXEMPT** (≥ 0.70) |
+  | `mark_like` | 4 | 3 | 2 | 0 | 2 | 4 | 0.500 | UNDECIDED — guard stays ON |
+  | `dynamic_subject` | 2 | 2 | 2 | 0 | 0 | 2 | 1.000 | UNDECIDED — 2 decided, rule needs 3 |
+  | `text_like` | 0 | 0 | — | — | — | 0 | n/a | NOT TESTED — no region near the guard |
+
+  All five person masks the guard deletes corpus-wide — the ones that clear the score cut and die
+  on area alone — were answered **yes (a correct person mask)** *and* **real-subject**; the
+  pre-registered contradiction check (mask `yes` **and** `whole-image`, the case the guard exists
+  for) found **zero** items in the whole census. So the exposure this row has recorded since
+  2026-08-03 is now measured, and it resolves in favour of the masks:
+  `config.GUARD_EXEMPT_GROUPS = frozenset({"person_like"})`, honoured by `passes_calibrated_cut()`
+  through a new `apply_group_exemptions` parameter that keeps the pre-2026-08-04 uniform rule
+  exactly reproducible. Records: `d-2026-08-04-sam-area-guard-scoped-off-for-person-like` and
+  `d-2026-08-04-sam-area-guard-unresolved-for-mark-like-and-dynamic-subject`. Evidence:
+  `data/sam/mask-quality-3-analysis.json` and the dated round-3 section of
+  `data/sam/MASK_REVIEW_NOTES.md`.
+- **WHAT KEEPS THIS ROW OPEN.** Two of the four groups came back **undecided under the same
+  pre-registered rule** and the guard stays on for both, unchanged: `mark_like` at a real-share of
+  **0.500** — dead centre of the undecided band, and on only **3 distinct regions**, since
+  `8b4f2aadf3b1:emblem:0` and `8b4f2aadf3b1:sticker:0` are one region under two tags — and
+  `dynamic_subject` with **2 decided answers against a minimum of 3**, both of them real-subject.
+  `text_like` is a third state, **not tested**: the census drew no region of that group because
+  none is anywhere near the guard. Note also what the exemption did *not* cost: round 1's single
+  in-sample win for the guard is `8b4f2aadf3b1:sticker:0`, which is `mark_like`, so it is preserved
+  intact — that is the whole reason the move is per-group and not a repeal. And R-2's proposal to
+  exempt **any future dynamic subject noun** is explicitly **not** carried out by this round.
+  **Revives when:** a round supplies a **third decided `dynamic_subject`** answer over the guard,
+  or separates `mark_like` — a fourth distinct `mark_like` region over the guard would do it, since
+  today's 0.500 rests on three. Until then the guard is on for everything except `person_like`.
+- **Blast radius of the 2026-08-04 change, measured not assumed.** Only artifacts that filter
+  guard-on move, and only on 5 of 142 covers: in `residual-isolation-analysis.json` the guard-on
+  arm's guarded-out regions fall **6 → 1** (the survivor being the `mark_like` sticker) and its
+  mean residual moves **0.8445 → 0.8261** static / **0.8362 → 0.8178** dynamic; guard-off is
+  unchanged to the digit. Every regenerated file states its rule in
+  `calibrated_cut.guard_exempt_groups`, and an absent key means it predates the exemption.
 
 ### A6 (closure text of 2026-08-03, superseded by the reopen above)
 ~~**Resolution:** calibrated against the same round as A5 (`sam-mask-quality-1`, 60 reviewer
@@ -402,6 +454,29 @@ Original entry kept below for the record.
   type"; and A12's own remedy is unchanged — it still needs **CJK covers deliberately pulled into a
   round**, since this eval set does not contain enough to count. Nothing here weakens the row; it
   sizes it and names what else is hiding inside it.
+- **NARROWED AGAIN 2026-08-04 by the round-3b CJK run — the class is smaller than 11.** The
+  sub-minute GPU micro-run that round 3 specified has now been run (`run_cjk_probe.py`, three
+  prompts — `chinese characters`, `kanji`, and `words` as the incumbent control — over the 7 covers
+  round 3 named, storing `mask_rle` at the 0.3 capture floor). On the **3 covers the static concept
+  set was wholly silent on**, the CJK prompts recovered **1**: the genuinely-CJK cover, one
+  `cjk-script` mask at **0.449**, tight on the single stylised character. **The other 2 returned
+  nothing at all — no region at any threshold, not even at the 0.3 floor** — which is exactly the
+  reading the residual notes above already gave them: incidental scene text on a shirt and a sign,
+  correct for `has_text == yes` and **not display type**. So the upper bound of 11 loosens further:
+  covers in the A12 shape that *no* text prompt can reach are not all recoverable text, and some
+  are not display type at all. Evidence: `data/sam/mask-quality-3b-sample.json` →
+  `silentCoverYield`, `data/sam/sam-cjk-probe-7.jsonl`.
+- **A12 NEVERTHELESS STAYS OPEN, pending round 3b's own review.** The run closes the *GPU gap*, not
+  the row: round 3b is **live and unreleased**, so no reviewer has yet answered whether the CJK
+  masks are correct, and its pre-registered rule (`mask-quality-3b-sample.json` →
+  `a12DecisionRule`) is what decides between adopting a `cjk_script` group with its own low cut and
+  closing A12 as a category whose evidence did not survive being looked at. **No constant moved**:
+  `config.CONCEPT_PROMPTS` is untouched, so every stored run stays reproducible. Separately, round
+  3's section-B answers measured the *incumbent* `text_like` cut on the A12 class — 22 of 23
+  decided below-cut masks are **correct**, a 95.7% accept rate — but the de-truncated sweep's J
+  gain is **exactly zero**, so that funds a finding and **not** a lower cut
+  (`d-2026-08-04-sam-text-like-cut-discards-correct-text-on-a12-covers`; the shape it does support
+  is a per-cover rescue rule, unfitted). **Revives when:** round 3b is released and answered.
 
 ### A13. The oracle collects no free-form subject noun, and the residual route needs one
 *Added 2026-08-03, out of the residual-isolation retry.*
