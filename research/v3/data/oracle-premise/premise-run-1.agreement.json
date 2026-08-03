@@ -32,7 +32,8 @@
 		"count": 15,
 		"distinct_parsed_answers": 1,
 		"distinct_raw_texts": 1,
-		"stable": true
+		"stable": true,
+		"stable_reading": "true/false over the canary rows actually present"
 	},
 	"gradient_map": {
 		"shaded_field": "gradient",
@@ -40,7 +41,8 @@
 		"multiple_distinct_fields": "flat",
 		"full_scene": "unmapped",
 		"pattern_or_texture": "unmapped",
-		"none_discernible": "unmapped"
+		"none_discernible": "unmapped",
+		"underdetermined": "unanswerable"
 	},
 	"p6_buckets_map": {
 		"flat_field|gradient": "contradiction_hard",
@@ -104,6 +106,9 @@
 				"human_says_gradient_rate": 0.4286
 			},
 			"unmapped_label_count": 60,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
 			"p6_buckets": {
 				"agreement": 55,
 				"underdetermined": 63,
@@ -161,6 +166,9 @@
 				"human_says_gradient_rate": 0.4468
 			},
 			"unmapped_label_count": 43,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
 			"p6_buckets": {
 				"agreement": 70,
 				"underdetermined": 47,
@@ -221,6 +229,9 @@
 					"human_says_gradient_rate": 0.5556
 				},
 				"unmapped_label_count": 2,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 8,
 					"underdetermined": 2,
@@ -273,6 +284,9 @@
 					"human_says_gradient_rate": 0.4419
 				},
 				"unmapped_label_count": 42,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 28,
 					"underdetermined": 45,
@@ -330,6 +344,9 @@
 					"human_says_gradient_rate": 0.36
 				},
 				"unmapped_label_count": 16,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 19,
 					"underdetermined": 16,
@@ -385,6 +402,9 @@
 					"human_says_gradient_rate": 0.5
 				},
 				"unmapped_label_count": 1,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 8,
 					"underdetermined": 2,
@@ -436,6 +456,9 @@
 					"human_says_gradient_rate": 0.4483
 				},
 				"unmapped_label_count": 27,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 41,
 					"underdetermined": 29,
@@ -493,6 +516,9 @@
 					"human_says_gradient_rate": 0.4231
 				},
 				"unmapped_label_count": 15,
+				"unanswerable_count": 0,
+				"unanswerable_share": 0.0,
+				"derivation_dispositions": {},
 				"p6_buckets": {
 					"agreement": 21,
 					"underdetermined": 16,
@@ -552,6 +578,9 @@
 				"human_says_gradient_rate": 1.0
 			},
 			"unmapped_label_count": 3,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
 			"p6_buckets": {
 				"underdetermined": 3,
 				"agreement": 2
@@ -599,6 +628,9 @@
 				"human_says_gradient_rate": 0.75
 			},
 			"unmapped_label_count": 1,
+			"unanswerable_count": 0,
+			"unanswerable_share": 0.0,
+			"derivation_dispositions": {},
 			"p6_buckets": {
 				"agreement": 4,
 				"underdetermined": 1

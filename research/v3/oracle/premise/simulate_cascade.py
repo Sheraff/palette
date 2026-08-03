@@ -61,7 +61,8 @@ BULK_D_RESULTS = DATA_DIR / "premise-run-cd.jsonl"
 BULK_D_VARIANT = "D"
 
 # [MEASURED] the bake-off's dense 32B arm. Carries both item sets (gold30 + eval142); variant A
-# is the adjudicator's answer. Coverage of all 142 is asserted at load, not assumed.
+# is the adjudicator's answer. Coverage of all 142 is asserted at load (see the
+# `adjudicator_missing_shas` assert in main()), not assumed.
 ADJUDICATOR_RESULTS = REPO_ROOT / "research" / "v3" / "data" / "oracle-bakeoff" / "qwen3-32b-dense.jsonl"
 ADJUDICATOR_VARIANT = "A"
 
@@ -146,9 +147,11 @@ def cascade(b_ground: str, d_ground: str, a_ground: str | None) -> dict:
         }
 
     if a_ground is None:
-        # No adjudicator row for this item. Asserted impossible at load; kept so a future
-        # partial adjudicator file degrades to "undetermined" rather than to a crash or, worse,
-        # a silent bulk guess.
+        # No adjudicator row for this item. Asserted impossible at load — the assert is real,
+        # beside the bulk-D one in main(); see Phase-0 adversarial review finding 2 for the two
+        # releases in which this comment described an assert that did not exist. Kept as a
+        # second line of defence so that if the assert is ever relaxed, a partial adjudicator
+        # file degrades to "undetermined" rather than to a crash or, worse, a silent bulk guess.
         return {
             "route": route,
             "label_source": "none:adjudicator_missing",
@@ -259,6 +262,21 @@ def main() -> int:
         "adjudicator_extra_shas": sorted(set(a_rows) - set(universe)),
     }
     assert not coverage["bulk_D_missing_shas"], "variant D does not cover the B universe"
+    # Phase-0 adversarial review finding 2. This assert is the one the comments at the top of
+    # this file and at `cascade()`'s `a_ground is None` branch have always claimed existed, and
+    # did not. It matters more than the D one because the adjudicator file lives in
+    # `data/oracle-bakeoff/` — a path this workstream does not own. If it is renamed, re-sharded
+    # or partially regenerated, every uncovered routed item takes `none:adjudicator_missing` and
+    # lands `binary: None`, i.e. undetermined — which is the exact DIRECTION of this report's
+    # headline finding ("when bulk-B abstains the dense adjudicator abstains too, so that route
+    # contributes nothing"). A silently truncated adjudicator file would manufacture a stronger
+    # version of the same conclusion, with only a boolean nobody must read to reveal it.
+    assert not coverage["adjudicator_missing_shas"], (
+        f"the adjudicator file {ADJUDICATOR_RESULTS} does not cover the bulk-B universe: "
+        f"{len(coverage['adjudicator_missing_shas'])} of {len(universe)} items have no "
+        f"adjudicator row (first missing: {coverage['adjudicator_missing_shas'][:3]}). "
+        "A partial adjudicator file inflates the undetermined rate, which is this report's "
+        "headline direction — refusing to run rather than report it.")
 
     meta: dict[str, dict] = {}
     for sha in universe:

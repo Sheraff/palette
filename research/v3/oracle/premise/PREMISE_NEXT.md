@@ -1,23 +1,39 @@
 # Premise test — what to run next
 
-**For:** the orchestrator. **Status (2026-08-03):** both **model** arms are still drafted and unrun,
-and nothing in `common.py` has changed — but they are now **approved and queued** for a GPU slot, and
-the sign-off ledger (§14) is clear. **The human half of the probe arm HAS been run** (§12,
-`oracle-probe-gold-1`): 43% exact agreement against the reviewer's own direct answers, below the 63%
-floor, concentrated on `flat_field`.
-**Reads with:** `README.md` (this directory), `../../ORACLE_QUESTION_SET.md` v2 §A.
+**For:** the orchestrator. **Status (2026-08-03, revised after the run):** the **criterion arm has
+RUN** and its result is adverse — read **`CD_RESULT.md`** in this directory before anything else in
+this file. The **probe arm is still drafted and unrun**. `common.py` has changed since this document
+was first written: it now carries a `PROMPT_SETS` registry rather than the in-place `SCHEMA_VERSION`
+edit §5 proposes. **The human half of the probe arm HAS been run** (§12, `oracle-probe-gold-1`): 43%
+exact agreement against the reviewer's own direct answers, below the 63% floor, concentrated on
+`flat_field`.
+**Reads with:** `CD_RESULT.md` (this directory), `README.md` (this directory),
+`../../ORACLE_QUESTION_SET.md` v2 §A.
 
-**Two model arms are drafted and neither has been run:**
+**Arm status:**
 
-| arm | schema | what it changes | §§ |
-|---|---|---|---|
-| **criterion arm** — variants C, D | `group-a.v2` | same six-way question, corrected criterion + precedence rule, B's ordering | 1–7 |
-| **probe arm** — P, Q, six solo | `group-a.probes.v1.1` | no `ground_type` question at all: six easy probes, tag derived by a committed table | 8–13 |
+| arm | schema | what it changes | §§ | status |
+|---|---|---|---|---|
+| **criterion arm** — variants C, D | `group-a.v2` | same six-way question, corrected criterion + precedence rule, B's ordering | 1–7 | **RUN 2026-08-03**, `premise-run-cd.jsonl`, 284 rows, 0 failed. Adverse: see `CD_RESULT.md` |
+| **probe arm** — P, Q, six solo | `group-a.probes.v1.1` | no `ground_type` question at all: six easy probes, tag derived by a committed table | 8–13 | drafted, **unrun**, approved and queued |
 
-**Recommended sequence, ~2.5 h of GPU in total:** criterion arm (~50 min) → probe arm bundled
-(~50 min) → probe arm separate on the gold-30 only (~30 min), the last gated on the second. Run
-the criterion arm first regardless: it is the baseline the probe arm is scored against, and it is
-the cheapest thing that could make the probe arm unnecessary.
+**What the criterion arm returned, in three lines** (full write-up in `CD_RESULT.md`):
+
+- **Unmapped share went to 0%** under both C and D, from 44% (A) and 31% (B). §4's first gate
+  criterion passes outright — the corrected criterion and the precedence rule worked.
+- **C and D do not agree with each other**: same `ground_type` on 63 of 137 (0.4599), binary
+  disagreement 53% against a pre-registered ≤15%. Two wordings of one corrected rule commit
+  confidently in opposite directions (C piles onto `multiple_distinct_fields`, D onto
+  `shaded_field`).
+- **Neither lands near B against the reviewer**: gold-30 exact match C 11/30, D 9/30, B 16/30. So
+  §4's second gate criterion (≥22/30) is missed by every variant ever run, and design rule 6's
+  pre-registered confirmation test came back **negative**.
+
+**Remaining GPU sequence, ~1.3 h:** probe arm bundled (~50 min) → probe arm separate on the gold-30
+only (~30 min), the last gated on the second. The criterion arm was the baseline the probe arm is
+scored against and is now banked; it was also "the cheapest thing that could make the probe arm
+unnecessary", and it did not — if anything it strengthens the case for the probe arm, because it
+showed the six-way question is what is unstable, not the model.
 
 **The human probe round (§12) is the other half of the probe arm** and costs the reviewer ~10–15
 minutes. Schedule it *before* reading the probe arm's numbers, so the probe arm is scored against a
@@ -626,22 +642,45 @@ run — see §12 for the result. Nothing on this ledger is now blocking.
 | 7 | the human probe round (§12) | probe | **DONE 2026-08-03** — batch `oracle-probe-gold-1`, released and answered in full (180/180), then analyzed. Result: 43% exact agreement with the reviewer's own direct answers, below the 63% floor, concentrated on `flat_field`. Recorded anchoring caveat, so the rate is an upper bound. Full numbers: `research/v3/data/oracle-validation/probe-gold-1-analysis.json` |
 | 8 | §A.5 vocabulary split | — | superseded by the probe arm; nothing to sign |
 
-**Run approvals, as of 2026-08-03.** The **criterion arm (variants C, D)** and the **probe arm's VLM
-runs** are **approved and QUEUED** — they are waiting on a GPU slot from the orchestrator, not on a
-sign-off. The GPU is single-owner (`CONVENTIONS.md`): no agent starts either run. The sequencing in
-the header still governs — criterion arm (~50 min) first, then probe bundled (~50 min), then probe
-separate on the gold-30 (~30 min), the last gated on the second. The human half of the probe arm
-(row 7) is already banked, so the probe-native gold is in place before any model number is read.
+**Run approvals, as of 2026-08-03 (revised after the run).** The **criterion arm (variants C, D) has
+RUN** — `premise-run-cd.jsonl`, 142 artworks × 2 variants, 284 rows, 0 failed, 0 parse failures. Its
+result is written up in `CD_RESULT.md` and it is adverse; the decisions it forces are listed there,
+and none of them needs GPU. The **probe arm's VLM runs** remain **approved and QUEUED** — waiting on
+a GPU slot from the orchestrator, not on a sign-off. The GPU is single-owner (`CONVENTIONS.md`): no
+agent starts either run. Remaining sequence: probe bundled (~50 min), then probe separate on the
+gold-30 (~30 min), the last gated on the second. The human half of the probe arm (row 7) is already
+banked, so the probe-native gold is in place before any model number is read.
+
+**Sign-off rows 1 and 2 have now been tested, not just signed.** Rows 1 (corrected `ground_type`
+criterion) and 2 (precedence rule) are what variants C and D carry. The measured consequence: the
+unmapped leak they were designed to close closed completely (0%), and the answers that used to
+refuse the question now commit — but to different values under different wordings. Read
+`CD_RESULT.md` §2d before treating either row as settled in practice.
 
 ---
 
 # 15. Groups B, C, D and E — the first pilot (`group-bcde.v1`)
 
-**Status (2026-08-03):** drafted, unrun, **not approved** — a new instrument on questions no run has
-ever touched, so it needs the sign-offs in §15.10 and then a GPU slot, in that order. Nothing here
-competes with the two group-A arms; it is a different question set answering different decisions,
-and it should be queued **after** them, because they are already approved and they are the ones that
-decide whether the oracle is worth going corpus-wide with at all.
+**Status (2026-08-03, revised after the run): the pilot HAS RUN.** `group-bcde-pilot-1.jsonl`,
+142 images × variants E and F, 284 non-canary rows + 15 canaries, all `ok`, 0 parse failures.
+Analysis in `data/oracle-premise/bcde-pilot-1-analysis.json`. The paragraph below described the
+pilot as drafted, unrun and not approved; that was true when it was written and is not true now.
+
+**How to read the pilot's verdict tally**, because it was republished on 2026-08-03 after the
+Phase-0 adversarial review and the headline moved: the analysis now separates the **36
+pre-registered bars** (§15.6-1, §15.6-2b, §15.6-3, §15.7 and §15.8's order-domination bar) from the
+**9 reporting obligations and [UNCALIBRATED] priors** §15.6-2a registers, which are flags and were
+never pass/fail of the schema. Its own earlier "42 pass / 3 fail / 4 report_only" is reproduced
+inside the file under `verdict_summary.as_published_2026_08_03`, with the three reasons it was
+wrong. Current standing: **34 of 36 bars pass**, 2 fail (`15.6-2b.text_roles`,
+`15.6-2b.has_signature_color`), 1 §15.8 wrongness condition is met (`overlays` returns a single
+value on 95.4% of rows), and 1 distinct fact is flagged by the reports (`illegible_at_this_size`
+fires nowhere in the run).
+
+The paragraph as originally written, kept because the sequencing argument in it still holds for the
+probe arm: *"a new instrument on questions no run has ever touched, so it needs the sign-offs in
+§15.10 and then a GPU slot, in that order. Nothing here competes with the two group-A arms; it is a
+different question set answering different decisions, and it should be queued after them."*
 
 **Scope note.** An earlier draft of this section covered nine questions as `group-bcd.v1`. The
 reviewer extended it the same day, before anything ran, to fold in **group E** and a **new

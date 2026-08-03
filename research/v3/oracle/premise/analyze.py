@@ -136,8 +136,19 @@ def main() -> int:
                              "boolean and were resolved by recency (default: reported separately)")
     args = parser.parse_args()
 
-    rows = [r for r in read_jsonl(args.results) if not r.get("is_canary")]
+    # Phase-0 adversarial review finding 1: `read_jsonl` now defaults to `require=True`, so a
+    # missing/renamed results file exits non-zero here instead of producing a complete,
+    # well-formed agreement report over zero rows. An empty-but-present file is the same defect
+    # wearing a different hat, so it is refused too.
+    all_rows = read_jsonl(args.results)
+    if not all_rows:
+        raise SystemExit(f"{args.results} holds no rows. Refusing to publish an agreement report "
+                         "computed over an empty file.")
+    rows = [r for r in all_rows if not r.get("is_canary")]
     ok = [r for r in rows if r.get("status") == "ok" and r.get("parsed")]
+    if not rows:
+        raise SystemExit(f"{args.results} holds only canary rows ({len(all_rows)}); there is "
+                         "nothing to analyze.")
 
     health = {
         "rows": len(rows),
@@ -153,12 +164,20 @@ def main() -> int:
         "run_ids": sorted({r.get("run_id", "?") for r in rows}),
     }
 
-    canary_rows = [r for r in read_jsonl(args.results) if r.get("is_canary")]
+    canary_rows = [r for r in all_rows if r.get("is_canary")]
+    # Phase-0 adversarial review finding 1, second half: `stable` used to be
+    # `len({...}) <= 1`, which the EMPTY set satisfies — a §5.3 safety property reporting
+    # itself satisfied from no evidence at all. Zero canary rows is now `None`, i.e. "not
+    # established", and it is never the same value as a real pass.
     canary = {
         "count": len(canary_rows),
         "distinct_parsed_answers": len({json.dumps(r.get("parsed"), sort_keys=True) for r in canary_rows}),
         "distinct_raw_texts": len({r.get("raw_text", "") for r in canary_rows}),
-        "stable": len({r.get("raw_text", "") for r in canary_rows}) <= 1,
+        "stable": (None if not canary_rows
+                   else len({r.get("raw_text", "") for r in canary_rows}) <= 1),
+        "stable_reading": ("no canary rows in this file — stability NOT established"
+                           if not canary_rows else
+                           "true/false over the canary rows actually present"),
     }
 
     # ---- index by (image, variant) ------------------------------------------------

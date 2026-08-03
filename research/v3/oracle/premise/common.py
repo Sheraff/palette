@@ -445,8 +445,22 @@ class JsonlSink:
         self._handle.close()
 
 
-def read_jsonl(path: Path) -> list[dict[str, Any]]:
+# [REVIEWED] Missing-file policy. Phase-0 adversarial review, findings 1 and 7: the old
+# unconditional `return []` on a nonexistent path let `analyze.py` publish a complete, well-formed
+# agreement report — including an affirmative `canary_stable: true` — over zero rows, and let
+# `derive_probes.py` publish an all-zero derivation report, both with exit 0. A missing input is
+# never a legitimate analysis result, so the DEFAULT is now to die loudly. The resume/fresh-run
+# call sites that genuinely mean "nothing written yet" pass `require=False` explicitly, so the
+# intent is visible at every call site rather than assumed from a shared default.
+def read_jsonl(path: Path, *, require: bool = True) -> list[dict[str, Any]]:
     if not path.exists():
+        if require:
+            raise SystemExit(
+                f"read_jsonl: input file does not exist: {path}\n"
+                "Refusing to continue: an analysis over zero rows is not an analysis. "
+                "Pass require=False only where an absent file legitimately means "
+                "'nothing has been written yet' (fresh run / resume)."
+            )
         return []
     rows = []
     with open(path, encoding="utf-8") as handle:
@@ -465,7 +479,9 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 def completed_keys(path: Path) -> set[str]:
     """Keys already carrying a terminal row. `failed` is terminal and queryable (§5.1) —
     the difference between 'not attempted' and 'attempted and failed' survives."""
-    return {r["row_key"] for r in read_jsonl(path)
+    # require=False by design: on a fresh run the output file does not exist yet and "no keys
+    # completed" is the correct answer, not an error.
+    return {r["row_key"] for r in read_jsonl(path, require=False)
             if r.get("status") in ("ok", "failed") and "row_key" in r}
 
 
@@ -479,7 +495,8 @@ class AttemptLedger:
     def __init__(self, path: Path):
         self.path = path
         self.counts: dict[str, int] = {}
-        for row in read_jsonl(path):
+        # require=False by design: a fresh run has no attempt ledger yet.
+        for row in read_jsonl(path, require=False):
             key = row.get("row_key")
             if key:
                 self.counts[key] = max(self.counts.get(key, 0), int(row.get("attempt", 0)))

@@ -34,10 +34,13 @@ import re
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+from typing import Callable
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from analyze import tier_of  # noqa: E402  (the reviewed resolution strata, reused not re-derived)
-from common import DATA_DIR, MAX_TOKENS, PROMPTS_DIR, load_prompt_variant, read_jsonl  # noqa: E402
+from common import (  # noqa: E402
+    DATA_DIR, MAX_TOKENS, PROMPTS_DIR, REPO_ROOT, load_prompt_variant, read_jsonl,
+)
 
 # DATA_DIR is research/v3/data/oracle-premise; the SAM workstream's data sits beside it.
 SAM_PATH_DEFAULT = DATA_DIR.parent / "sam" / "sam-eval-142-v2.jsonl"
@@ -148,17 +151,58 @@ CONDITIONAL_FIELDS: dict[str, str] = {
 RESOLUTION_ESCAPE_VALUE = "illegible_at_this_size"
 NOT_APPLICABLE = "not_applicable"
 
+# [REVIEWED] §15.4's gates, as a per-ROW predicate — the same rule `subset_agreement()` applies
+# to kappa in §15.7, applied here to the §15.6-2b degeneracy bar as well (Phase-0 adversarial
+# review finding 8). `has_text` has three values and only `yes` opens the text fields;
+# `has_dominant_subject`'s gate is "anything but none".
+GATE_OPEN_PREDICATES: dict[str, tuple[str, Callable[[str], bool]]] = {
+    "text_roles": ("has_text", lambda v: v == "yes"),
+    "text_dominance": ("has_text", lambda v: v == "yes"),
+    "subject_kind": ("has_dominant_subject", lambda v: v != "none"),
+    "subject_area_band": ("has_dominant_subject", lambda v: v != "none"),
+    "signature_carrier": ("has_signature_color", lambda v: v == "yes"),
+}
+GATE_OPEN_DESCRIPTIONS: dict[str, str] = {
+    "text_roles": "has_text == yes",
+    "text_dominance": "has_text == yes",
+    "subject_kind": "has_dominant_subject != none",
+    "subject_area_band": "has_dominant_subject != none",
+    "signature_carrier": "has_signature_color == yes",
+}
+
+# [UNCALIBRATED] §15.8's wrongness condition "multi-selects that only ever return one value"
+# is stated as "a singleton on ~every row" and NAMES NO NUMBER. 0.90 is this analyzer's reading
+# of "~every", and it was chosen AFTER the run — disclosed as post-hoc in `ambiguities`. It is
+# reported rather than hidden because the two observed rates are nowhere near it on either side
+# (`text_roles` 0.2324, `overlays` 0.9542), so no plausible reading of "~every row" between
+# ~0.80 and ~0.95 sorts these two fields any differently.
+SINGLETON_NEAR_ONE = 0.90
+
 # ---------------------------------------------------------------- SAM cross-instrument
 
-# [INHERITED] research/v3/oracle/sam/config.py CONCEPT_GROUPS["text_like"], concept set v2.
+# [INHERITED] IMPORTED, not copied, from research/v3/oracle/sam/config.py — which is the single
+# owner of both the concept grouping and the calibrated cut. `sam/config.py` imports no model and
+# says so in its own docstring, so this is safe from an offline report script.
+# Phase-0 adversarial review (SAM arm, findings 3 and 10): the previous hand copy of the group
+# tuple and of the literal 0.578 was the only duplicate of either outside `config.py`, with no
+# import and no assert. Two files could drift apart silently; now they cannot.
+_SAM_CONFIG_PATH = REPO_ROOT / "research" / "v3" / "oracle" / "sam" / "config.py"
+sys.path.insert(0, str(_SAM_CONFIG_PATH.parent))
+import config as sam_config  # noqa: E402
+
 # The four concepts whose masks are display typography; `emblem`/`sticker`/`parental-advisory`
-# are deliberately NOT here (they are mark_like), so a parental-advisory badge cannot make a
-# cover look like it carries readable text.
-SAM_TEXT_LIKE_CONCEPTS = ("words", "letter", "lettering", "display-text")
-# [REVIEWED] research/v3/oracle/sam/config.py CALIBRATED_SCORE_THRESHOLD — the cut the
-# reviewer's 60-mask round calibrated (precision 91%, recall 69%). Stored rows keep the low
-# run-time cut of 0.3, and config.py says plainly that consumers should filter at this one.
-SAM_CALIBRATED_SCORE_THRESHOLD = 0.578
+# are deliberately NOT in this group (they are mark_like), so a parental-advisory badge cannot
+# make a cover look like it carries readable text.
+SAM_TEXT_LIKE_CONCEPTS = tuple(sam_config.CONCEPT_GROUPS["text_like"])
+# [INHERITED] sam/config.py CALIBRATED_SCORE_THRESHOLD. Stored rows keep the low run-time cut of
+# 0.3, and config.py says plainly that consumers should filter at this one.
+# CAVEAT, from the same review (SAM finding 3): the stored constant is a rounded-UP display value.
+# The sweep's winning candidate is the observed score 0.577937 (precision 0.9062 / recall 0.6905 /
+# J 0.5140); rounding to 0.578 moves the boundary-defining mask to the wrong side and the triple
+# becomes 0.9032 / 0.6667 / J 0.4902. Whichever value `config.py` settles on, this file follows it
+# — that is the point of importing rather than copying — but no number here should be read as if
+# the published "precision 91%, recall 69%" holds at the stored constant.
+SAM_CALIBRATED_SCORE_THRESHOLD = sam_config.CALIBRATED_SCORE_THRESHOLD
 # [UNCALIBRATED] §15.6 contradiction 11 names no magnitude for "SAM found text". Two readings
 # are reported side by side rather than one being chosen: ANY surviving text-like mask, and a
 # stricter three-or-more. Text concepts posted 100% reviewer yes-rates at the calibrated cut
@@ -246,7 +290,12 @@ def main() -> int:
     parser.add_argument("--out", type=Path, default=OUT_PATH_DEFAULT)
     args = parser.parse_args()
 
+    # `read_jsonl` defaults to require=True (Phase-0 adversarial review finding 1), so a missing
+    # results file exits non-zero here. This used to crash by ACCIDENT three lines below, at
+    # `max()` over an empty generator, after `ok_rate` had already silently become None.
     all_rows = read_jsonl(args.results)
+    if not all_rows:
+        raise SystemExit(f"{args.results} holds no rows; there is nothing to analyze.")
     canary_rows = [r for r in all_rows if r.get("is_canary")]
     rows = [r for r in all_rows if not r.get("is_canary")]
     ok = [r for r in rows if r.get("status") == "ok" and r.get("parsed") and not r.get("parse_failed")]
@@ -262,9 +311,48 @@ def main() -> int:
 
     verdicts: list[dict] = []
 
-    def verdict(vid: str, section: str, bar: str, observed, passed: bool | None) -> None:
-        verdicts.append({"id": vid, "section": section, "bar": bar, "observed": observed,
-                         "verdict": "report_only" if passed is None else ("pass" if passed else "FAIL")})
+    # Phase-0 adversarial review finding 3. Every §15 item used to be emitted as a pass/fail
+    # verdict regardless of how §15 registered it, so the published tally "42 of 45 bars passed"
+    # counted 9 verdicts that §15.6-2a registers as REPORTS ("is reported as possibly
+    # unanswerable") or as PRIORS ("stated as priors and not as measurements [UNCALIBRATED]",
+    # column headed "what would be alarming"). Both the numerator and the denominator were
+    # inflated. `registered_as` now carries §15's own classification, and `verdict_summary`
+    # publishes the as-registered accounting beside a faithful reproduction of the old one.
+    #
+    #   bar                 — §15 pre-registered a number and a pass/fail on it.
+    #   report              — §15 registered a reporting obligation or an [UNCALIBRATED] prior.
+    #                         Never pass/fail; raising a flag is the whole output.
+    #   wrongness_condition — §15.8 "what would make this schema wrong": a qualitative condition,
+    #                         evaluated against a disclosed reading. A MET condition is a
+    #                         failure and lands in failed_ids.
+    #   observation         — reported with no bar and no condition attached.
+    REGISTRATION_CLASSES = ("bar", "report", "wrongness_condition", "observation")
+
+    def verdict(vid: str, section: str, bar: str, observed, passed: bool | None,
+                *, registered: str = "bar", as_published: str | None = None,
+                same_fact_as: str | None = None, note: str | None = None) -> None:
+        assert registered in REGISTRATION_CLASSES, registered
+        if registered == "report":
+            # `passed` here means "no alarm"; §15.6-2a's column is headed "what would be
+            # alarming", so False is a raised flag, not a failed bar.
+            new = "reported"
+            entry = {"id": vid, "section": section, "registered_as": registered,
+                     "registered_reading": bar, "observed": observed, "verdict": new,
+                     "flag_raised": passed is False}
+        else:
+            new = "report_only" if passed is None else ("pass" if passed else "FAIL")
+            entry = {"id": vid, "section": section, "registered_as": registered,
+                     "bar": bar, "observed": observed, "verdict": new}
+        # What the pre-fix analyzer would have printed for this same row, so the correction is
+        # self-documenting rather than a number that silently moved.
+        entry["verdict_as_published_2026_08_03"] = (
+            as_published if as_published is not None
+            else ("report_only" if passed is None else ("pass" if passed else "FAIL")))
+        if same_fact_as:
+            entry["same_fact_as"] = same_fact_as
+        if note:
+            entry["note"] = note
+        verdicts.append(entry)
 
     # ---- index --------------------------------------------------------------------
     by_image: dict[str, dict[str, dict]] = defaultdict(dict)
@@ -352,8 +440,17 @@ def main() -> int:
     # ================================================================ §15.6-2 distributions
     def field_distribution(field: str) -> dict:
         block: dict = {"is_multi_select": field in multi_select, "vocabulary": vocabularies[field]}
+        scopes = [("pooled", rows_of()), ("E", rows_of("E")), ("F", rows_of("F"))]
+        # Phase-0 adversarial review finding 8: for the five conditional fields the pooled scope
+        # is diluted by rows a gate forced to `not_applicable`. §15.7 already refuses to quote
+        # the all-rows kappa for exactly this reason; the §15.6-2b degeneracy bar needs the same
+        # subset, so it is computed here beside the pooled one rather than instead of it.
+        if field in GATE_OPEN_PREDICATES:
+            gate, keep = GATE_OPEN_PREDICATES[field]
+            scopes.append(("pooled_gate_open", [p for p in rows_of() if keep(p[gate])]))
+            block["gate"] = {"field": gate, "opens_when": GATE_OPEN_DESCRIPTIONS[field]}
         if field in multi_select:
-            for scope, rs in (("pooled", rows_of()), ("E", rows_of("E")), ("F", rows_of("F"))):
+            for scope, rs in scopes:
                 n = len(rs)
                 presence = Counter()
                 for p in rs:
@@ -370,7 +467,7 @@ def main() -> int:
                     "modal_value_presence_rate": pct(max(presence.get(v, 0) for v in vocabularies[field]), n),
                 }
         else:
-            for scope, rs in (("pooled", rows_of()), ("E", rows_of("E")), ("F", rows_of("F"))):
+            for scope, rs in scopes:
                 n = len(rs)
                 c = Counter(p[field] for p in rs)
                 modal = max(vocabularies[field], key=lambda v: c.get(v, 0))
@@ -401,9 +498,13 @@ def main() -> int:
         zeros = [z["value"] for z in d["zero_firing_values"]]
         skew_block[f] = {"zero_firing_values": d["zero_firing_values"],
                          "possibly_unanswerable_values": zeros}
+        # PREMISE_NEXT.md:992 registers this as a REPORTING obligation, in these words: "a value
+        # that fires zero times across 142 images **is reported as possibly unanswerable**, with
+        # its stem quoted". There is no bar here to pass or fail.
         verdict(f"15.6-2a.{f}.zero_cells", "15.6-2a",
-                "every vocabulary value fires at least once across the 142 images",
-                zeros or "none", len(zeros) == 0)
+                "values firing zero times across the 142 images are reported as possibly "
+                "unanswerable, with their stems quoted",
+                zeros or "none", len(zeros) == 0, registered="report")
 
     thumb_images = [s for s in images if meta[s]["tier"] == "thumbnail_<=320"]
     illegible_on_thumbs = sum(1 for s in thumb_images for v in sorted(by_image[s])
@@ -420,44 +521,112 @@ def main() -> int:
         "grain_or_noise_yes_rate": grain_yes_rate,
         "overlays_none_presence_rate": overlays_none_rate,
     }
-    verdict("15.6-2a.has_text_yes", "15.6-2a", f"has_text yes >= {ALARM_HAS_TEXT_YES_FLOOR}",
-            has_text_yes_rate, has_text_yes_rate >= ALARM_HAS_TEXT_YES_FLOOR)
+    # The five §15.6-2a priors. PREMISE_NEXT.md:993-1001 labels the whole table "Priors, stated
+    # as priors and not as measurements [UNCALIBRATED]", with its right-hand column headed "what
+    # would be alarming". These are flags, not pass/fail of the schema — which is what the
+    # [UNCALIBRATED] block above the constants has always said, and what the code used to
+    # contradict four lines later.
+    verdict("15.6-2a.has_text_yes", "15.6-2a",
+            f"prior: majority yes; alarming if has_text yes < {ALARM_HAS_TEXT_YES_FLOOR}",
+            has_text_yes_rate, has_text_yes_rate >= ALARM_HAS_TEXT_YES_FLOOR, registered="report")
     verdict("15.6-2a.illegible_fires_on_thumbs", "15.6-2a",
-            "illegible_at_this_size fires at least once on the thumbnail tier",
-            illegible_on_thumbs, illegible_on_thumbs > 0)
+            "prior: alarming if illegible_at_this_size never fires on any thumbnail-tier image",
+            illegible_on_thumbs, illegible_on_thumbs > 0, registered="report",
+            same_fact_as="15.6-2a.has_text.zero_cells",
+            note=("SAME FACT as 15.6-2a.has_text.zero_cells, not a second one: "
+                  "`illegible_at_this_size` fires 0 times ANYWHERE in the run (0 of 284 rows), "
+                  "so it necessarily fires 0 times on the thumbnail tier. The published "
+                  "2026-08-03 tally counted this one fact as two of its three FAILs "
+                  "(Phase-0 adversarial review finding 3)."))
     verdict("15.6-2a.physical_media_scan", "15.6-2a",
-            f"physical_media_scan yes <= {ALARM_PHYSICAL_MEDIA_SCAN_CEILING}", pms_yes_rate,
-            pms_yes_rate <= ALARM_PHYSICAL_MEDIA_SCAN_CEILING)
+            f"prior: rare; alarming if physical_media_scan yes > {ALARM_PHYSICAL_MEDIA_SCAN_CEILING}",
+            pms_yes_rate, pms_yes_rate <= ALARM_PHYSICAL_MEDIA_SCAN_CEILING, registered="report")
     verdict("15.6-2a.grain_or_noise", "15.6-2a",
-            f"grain_or_noise yes <= {ALARM_GRAIN_OR_NOISE_CEILING}", grain_yes_rate,
-            grain_yes_rate <= ALARM_GRAIN_OR_NOISE_CEILING)
-    verdict("15.6-2a.overlays_can_say_yes", "15.6-2a", "overlays `none` below 100%",
-            overlays_none_rate, overlays_none_rate < 1.0)
+            f"prior: a real minority; alarming if grain_or_noise yes > {ALARM_GRAIN_OR_NOISE_CEILING}",
+            grain_yes_rate, grain_yes_rate <= ALARM_GRAIN_OR_NOISE_CEILING, registered="report")
+    verdict("15.6-2a.overlays_can_say_yes", "15.6-2a",
+            "prior: alarming if overlays `none` is at 100%, i.e. the question can only say no",
+            overlays_none_rate, overlays_none_rate < 1.0, registered="report")
 
     # (b) spread-expected: no single value on more than 85% of rows.
+    # Phase-0 adversarial review finding 8: the bar is now read on the scope where the question
+    # was actually ASKED. For the five conditional fields, rows whose gate forced
+    # `not_applicable` are filler that lowers the modal share and makes the 85% bar easier to
+    # clear — the same inflation §15.7 refuses to tolerate for kappa ("Computed over all rows it
+    # is inflated by agreeing not_applicables, and that number must not be quoted alone"). The
+    # diluted pooled figure is still published beside it, so the correction is visible.
     spread_block: dict = {}
     for f in SPREAD_EXPECTED_FIELDS:
         d = distributions[f]
+        gated = f in GATE_OPEN_PREDICATES
+        scope_key = "pooled_gate_open" if gated else "pooled"
+
+        def read(scope: str) -> tuple[str, float | None, dict]:
+            s = d[scope]
+            if f in multi_select:
+                ex = {"modal_exact_set": max(s["exact_set_distribution"],
+                                             key=lambda k: s["exact_set_distribution"][k]),
+                      "modal_exact_set_share": pct(max(s["exact_set_distribution"].values()),
+                                                   s["n_rows"])}
+                return s["modal_value_by_presence"], s["modal_value_presence_rate"], ex
+            return s["modal_value"], s["modal_share"], {}
+
+        modal, share, extra = read(scope_key)
+        pooled_modal, pooled_share, _ = read("pooled")
+        reading = ("presence rate of the most-present value (see ambiguities: "
+                   "multi_select_degeneracy)" if f in multi_select
+                   else "share of rows holding the modal value")
+        if gated:
+            reading += (f", on the gate-open subset only ({GATE_OPEN_DESCRIPTIONS[f]}); "
+                        "the pooled figure beside it is diluted by gate-forced not_applicables "
+                        "and must not be read against the bar")
+        spread_block[f] = {
+            "scope_the_bar_is_read_on": scope_key,
+            "modal_value": modal, "modal_share": share, "reading": reading,
+            "n_rows": d[scope_key]["n_rows"],
+            "per_variant_modal_share": {v: (d[v]["modal_share"] if f not in multi_select
+                                            else d[v]["modal_value_presence_rate"])
+                                        for v in EXPECTED_VARIANTS},
+            "per_variant_modal_share_scope": ("all of that variant's rows, NOT gate-restricted"
+                                              if gated else "all of that variant's rows"),
+            **extra,
+        }
+        if gated:
+            spread_block[f]["gate"] = {"field": GATE_OPEN_PREDICATES[f][0],
+                                       "opens_when": GATE_OPEN_DESCRIPTIONS[f]}
+            spread_block[f]["pooled_all_rows_diluted_by_gate"] = {
+                "modal_value": pooled_modal, "modal_share": pooled_share,
+                "n_rows": d["pooled"]["n_rows"],
+                "note": ("what the 2026-08-03 publication read the bar on; kept so the "
+                         "correction in Phase-0 adversarial review finding 8 is checkable"),
+            }
+        observed = {"value": modal, "share": share, "n_rows": d[scope_key]["n_rows"],
+                    "scope": scope_key}
+        if gated:
+            observed["share_on_all_pooled_rows_as_published_2026_08_03"] = pooled_share
+        note = None
         if f in multi_select:
-            share = d["pooled"]["modal_value_presence_rate"]
-            modal = d["pooled"]["modal_value_by_presence"]
-            reading = "presence rate of the most-present value (see ambiguities: multi_select_degeneracy)"
-            extra = {"modal_exact_set": max(d["pooled"]["exact_set_distribution"],
-                                            key=lambda k: d["pooled"]["exact_set_distribution"][k]),
-                     "modal_exact_set_share": pct(max(d["pooled"]["exact_set_distribution"].values()),
-                                                  d["pooled"]["n_rows"])}
-        else:
-            share = d["pooled"]["modal_share"]
-            modal = d["pooled"]["modal_value"]
-            reading = "share of rows holding the modal value"
-            extra = {}
-        spread_block[f] = {"modal_value": modal, "modal_share": share, "reading": reading,
-                           "per_variant_modal_share": {v: (d[v]["modal_share"] if f not in multi_select
-                                                           else d[v]["modal_value_presence_rate"])
-                                                       for v in EXPECTED_VARIANTS},
-                           **extra}
-        verdict(f"15.6-2b.{f}", "15.6-2b", f"no single value on more than {NON_DEGENERACY_BAR:.0%} of rows",
-                {"value": modal, "share": share}, share <= NON_DEGENERACY_BAR)
+            # For a set-valued field the registered bar reads as a PRESENCE rate (see
+            # ambiguities: multi_select_degeneracy). A value present on most covers is not the
+            # same defect as one answer repeated on most covers, so the exact-set share travels
+            # with the verdict rather than being left in a distant block.
+            observed["modal_exact_set"] = extra["modal_exact_set"]
+            observed["modal_exact_set_share"] = extra["modal_exact_set_share"]
+            if share is not None and share > NON_DEGENERACY_BAR:
+                note = (f"read under the PRESENCE-rate reading only. The modal exact SET is "
+                        f"'{extra['modal_exact_set']}' on {extra['modal_exact_set_share']} of "
+                        "rows, so the field is not collapsed onto one answer; what the bar is "
+                        "catching is that one value appears in almost every set. Read this "
+                        "verdict with ambiguities: multi_select_degeneracy.")
+        verdict(f"15.6-2b.{f}", "15.6-2b",
+                f"no single value on more than {NON_DEGENERACY_BAR:.0%} of rows"
+                + (f", on the gate-open subset ({GATE_OPEN_DESCRIPTIONS[f]})" if gated else ""),
+                observed,
+                share is not None and share <= NON_DEGENERACY_BAR,
+                # What this bar said on 2026-08-03, when it was read on the diluted pooled rows.
+                as_published=("pass" if (pooled_share is not None
+                                         and pooled_share <= NON_DEGENERACY_BAR) else "FAIL"),
+                note=note)
 
     # ---- the three unconditional breakdowns (§15.6-2) -------------------------------
     has_text_by_tier = {}
@@ -491,7 +660,8 @@ def main() -> int:
     verdict("15.6-2.grain_confound", "15.6-2",
             "grain_or_noise yes-rate on photograph exceeds typography_only by a wide margin "
             "(no numeric bar pre-registered; reported)",
-            grain_by_medium["pooled"]["photograph_minus_typography_only"], None)
+            grain_by_medium["pooled"]["photograph_minus_typography_only"], None,
+            registered="observation")
 
     subject_kind_by_gate = {}
     for scope, vs in (("pooled", EXPECTED_VARIANTS), ("E", ("E",)), ("F", ("F",))):
@@ -601,7 +771,8 @@ def main() -> int:
     verdict("15.6-3.c6_signature_carrier", "15.8",
             "contradiction 6 (signature colour with no carrier) at no material rate — §15.8 names "
             "it as what would make the accent question wrong; no numeric bar pre-registered",
-            contradiction_block["per_contradiction"]["c6_signature_colour_but_no_carrier"]["pooled"], None)
+            contradiction_block["per_contradiction"]["c6_signature_colour_but_no_carrier"]["pooled"], None,
+            registered="observation")
 
     # ================================================================ §15.4 by tier
     tier_block = {}
@@ -731,10 +902,28 @@ def main() -> int:
         verdict(f"15.7.multi.{f}.per_value_floor", "15.7",
                 f"no vocabulary value below kappa {BAR_PER_VALUE_KAPPA_FLOOR}",
                 {"below_floor": below, "kappa_undefined": undefined}, len(below) == 0)
+        # Phase-0 adversarial review finding 9. §15.8 registers "multi-selects that only ever
+        # return one value" as a condition that would make the schema WRONG: "if `text_roles` is
+        # a singleton on ~every row, the array machinery bought nothing and the field should be a
+        # plain enum in v2." §15.8 names `text_roles` and gives no number, and the 2026-08-03
+        # publication filed both singleton rates as `report_only` on that basis — which is
+        # literally true and practically useless, because `report_only` verdicts never reach
+        # `failed_ids` and nothing downstream would ever surface them. `overlays` is a singleton
+        # on 95.4% of rows: the condition §15.8 describes is MET, on a field §15.8 did not think
+        # to name. It is now evaluated, against the disclosed post-hoc reading in
+        # SINGLETON_NEAR_ONE, and a met condition is a failure.
+        singleton_rate = distributions[f]["pooled"]["singleton_rate"]
+        met = singleton_rate is not None and singleton_rate >= SINGLETON_NEAR_ONE
         verdict(f"15.8.multi.{f}.singleton", "15.8",
-                "the multi-select returns more than one value at some material rate (no numeric "
-                "bar pre-registered; a near-1.0 singleton rate means the array bought nothing)",
-                distributions[f]["pooled"]["singleton_rate"], None)
+                f"§15.8 wrongness condition: the multi-select is a singleton on ~every row. "
+                f"§15.8 names no number; read here as singleton rate >= {SINGLETON_NEAR_ONE} "
+                f"(post-hoc reading, see ambiguities: singleton_near_one). MET means the array "
+                f"machinery bought nothing and the field should be a plain enum in v2.",
+                {"singleton_rate": singleton_rate, "condition_met": met,
+                 "field_named_in_15_8": f == "text_roles"},
+                not met, registered="wrongness_condition", as_published="report_only",
+                note=("condition MET — this field should be a plain enum in v2 unless the "
+                      "reviewer overrides" if met else None))
 
     order_domination = {f: single_value_agreement[f]["disagreement_rate"] for f in single_value}
     order_domination.update({f: (None if multi_select_agreement[f]["exact_set_agreement"] is None
@@ -818,6 +1007,17 @@ def main() -> int:
                             "scored as right, and none of this is accuracy."),
         "text_like_concepts": list(SAM_TEXT_LIKE_CONCEPTS),
         "calibrated_score_threshold": SAM_CALIBRATED_SCORE_THRESHOLD,
+        "sam_constants_source": {
+            "file": "research/v3/oracle/sam/config.py",
+            "imported_not_copied": True,
+            "text_like_group": "CONCEPT_GROUPS['text_like']",
+            "threshold": "CALIBRATED_SCORE_THRESHOLD",
+            "caveat": ("the stored 0.578 is a rounded-up display value; the sweep's winning "
+                       "candidate is the observed score 0.577937, and the published "
+                       "precision 0.91 / recall 0.69 / J 0.514 holds there, not at 0.578 "
+                       "(Phase-0 adversarial review, SAM finding 3). This file follows "
+                       "config.py whatever it holds."),
+        },
         "images_missing_from_sam": sam_missing,
         "images_with_no_text_like_mask_at_calibrated_cut":
             sum(1 for s in images if not sam_join[s]["any_text"]),
@@ -943,7 +1143,127 @@ def main() -> int:
          "(43 thumbnail <=320, 88 standard, 11 large >640).",
          "reading": "analyze.py's reviewed tier_of() is imported rather than re-derived, and the "
          "per-tier image counts are reported so the join can be checked against §15.5."},
+        {"key": "singleton_near_one",
+         "where": "§15.8 multi-selects that only ever return one value",
+         "ambiguity": "\"a singleton on ~every row\" names no number, and §15.8 names only "
+         "`text_roles`, not `overlays`.",
+         "reading": f"read as singleton rate >= {SINGLETON_NEAR_ONE}. THIS READING IS POST-HOC — "
+         "it was chosen after the run, by the fix for Phase-0 adversarial review finding 9, and "
+         "is disclosed rather than presented as pre-registered. It is reported because the two "
+         "observed rates are far from the cut on opposite sides (text_roles 0.2324, overlays "
+         "0.9542), so no plausible reading of \"~every row\" sorts them differently. The "
+         "condition is applied to both multi-selects, not only to the one §15.8 names, because "
+         "§15.8's argument (\"the array machinery bought nothing\") is about the machinery, not "
+         "about the field."},
+        {"key": "degeneracy_gate_scope",
+         "where": "§15.6-2b non-degeneracy bar on the five conditional fields",
+         "ambiguity": "§15.6-2b says \"no single value on more than 85% of rows\" and does not "
+         "say whether gate-forced `not_applicable` rows are rows.",
+         "reading": "the bar is read on the gate-open subset, which is the scope on which the "
+         "question was actually asked. Phase-0 adversarial review finding 8: pooling the "
+         "gate-closed rows in adds filler that lowers the modal share and makes the bar EASIER "
+         "to clear, which is the same inflation §15.7 explicitly refuses for kappa. The pooled "
+         "figure is published beside each gated one under "
+         "`pooled_all_rows_diluted_by_gate`; no verdict changes direction between the two."},
     ]
+
+    # ================================================================ verdict accounting
+    # Phase-0 adversarial review finding 3. Two accountings are published side by side: the one
+    # §15 actually registered, and a faithful reproduction of what this script printed on
+    # 2026-08-03, so that "42 of 45 bars passed" can be traced to "35 of 36 bars passed, plus 9
+    # reports and 2 wrongness conditions" without anyone having to re-derive it.
+    def of_class(c: str) -> list[dict]:
+        return [v for v in verdicts if v["registered_as"] == c]
+
+    bars, reports = of_class("bar"), of_class("report")
+    conditions, observations = of_class("wrongness_condition"), of_class("observation")
+    flagged = [v for v in reports if v["flag_raised"]]
+    # An `illegible_at_this_size` that fires nowhere trips both the has_text zero-cell report and
+    # the thumbnail-tier prior. That is one fact about the run, and it is counted once here.
+    distinct_flagged_facts = [v for v in flagged if "same_fact_as" not in v]
+    bars_failed = [v["id"] for v in bars if v["verdict"] == "FAIL"]
+    conditions_met = [v["id"] for v in conditions if v["verdict"] == "FAIL"]
+
+    verdict_summary = {
+        "reading_order": ("`as_registered` is the accounting §15 licenses. `as_published_2026_08_03` "
+                          "is what this script printed before Phase-0 adversarial review finding 3; "
+                          "it is reproduced, not deleted, so the correction is self-documenting."),
+        "as_registered": {
+            "pre_registered_bars": {
+                "n": len(bars),
+                "pass": sum(1 for v in bars if v["verdict"] == "pass"),
+                "fail": len(bars_failed),
+                "undetermined": sum(1 for v in bars if v["verdict"] == "report_only"),
+                "failed_ids": bars_failed,
+            },
+            "section_15_8_wrongness_conditions": {
+                "n": len(conditions),
+                "not_met": sum(1 for v in conditions if v["verdict"] == "pass"),
+                "met": len(conditions_met),
+                "met_ids": conditions_met,
+                "note": ("a MET condition is a failure of the schema, not a report. §15.8 gives "
+                         "no numbers, so each is evaluated against a disclosed post-hoc reading "
+                         "recorded in `ambiguities`."),
+            },
+            "reports_and_priors_15_6_2a": {
+                "n": len(reports),
+                "flags_raised": len(flagged),
+                "flagged_ids": [v["id"] for v in flagged],
+                "distinct_facts_flagged": len(distinct_flagged_facts),
+                "distinct_flagged_ids": [v["id"] for v in distinct_flagged_facts],
+                "note": ("§15.6-2a registers these as a reporting obligation and as "
+                         "[UNCALIBRATED] priors ('what would be alarming'), never as pass/fail "
+                         "of the schema. A raised flag is a thing to look at, not a failed bar. "
+                         "`distinct_facts_flagged` de-duplicates reports that are the same "
+                         "observation seen twice."),
+            },
+            "other_observations": {"n": len(observations),
+                                   "ids": [v["id"] for v in observations]},
+            "failed_ids": bars_failed + conditions_met,
+        },
+        "as_published_2026_08_03": {
+            "pass": sum(1 for v in verdicts if v["verdict_as_published_2026_08_03"] == "pass"),
+            "fail": sum(1 for v in verdicts if v["verdict_as_published_2026_08_03"] == "FAIL"),
+            "report_only": sum(1 for v in verdicts
+                               if v["verdict_as_published_2026_08_03"] == "report_only"),
+            "failed_ids": [v["id"] for v in verdicts
+                           if v["verdict_as_published_2026_08_03"] == "FAIL"],
+            "why_it_was_wrong": [
+                "9 of its 45 pass/fail verdicts were registered by §15.6-2a as reports or as "
+                "[UNCALIBRATED] priors, not as bars — inflating both numerator and denominator.",
+                "2 of its 3 FAILs were one fact counted twice: `illegible_at_this_size` fires 0 "
+                "times in the whole run, which trips both 15.6-2a.has_text.zero_cells and "
+                "15.6-2a.illegible_fires_on_thumbs.",
+                "the §15.8 singleton conditions were filed report_only, so `overlays` meeting a "
+                "pre-registered wrongness condition at a 0.9542 singleton rate reached no "
+                "failed_ids and nothing downstream.",
+            ],
+        },
+        "verdicts_total": len(verdicts),
+        "corrections_applied": [
+            {"finding": "premise-analyses #3",
+             "change": "§15.6-2a's 4 zero-cell reports and 5 [UNCALIBRATED] priors are no longer "
+                       "pass/fail verdicts; the two FAILs that were one `illegible_at_this_size` "
+                       "fact counted twice are linked by `same_fact_as` and de-duplicated in "
+                       "`distinct_facts_flagged`.",
+             "effect": "45 pass/fail verdicts -> 36 pre-registered bars + 9 reports."},
+            {"finding": "premise-analyses #8",
+             "change": "the §15.6-2b degeneracy bar for the five conditional fields is read on "
+                       "the gate-open subset instead of on all pooled rows.",
+             "effect": "one verdict CHANGES DIRECTION: 15.6-2b.text_roles, title_display "
+                       "presence 0.8099 over 284 pooled rows (pass) -> 0.9163 over the 251 "
+                       "gate-open rows (FAIL). The adversarial review re-derived only "
+                       "subject_kind (0.5817) and signature_carrier (0.582), where nothing "
+                       "flips, and therefore reported 'no verdict flips today'; text_roles was "
+                       "not among the fields it re-derived. Read the FAIL with its own note: "
+                       "the modal exact SET is still only 0.3307, so the field is not collapsed."},
+            {"finding": "premise-analyses #9",
+             "change": "the two §15.8 singleton conditions are evaluated instead of filed "
+                       "report_only, against the disclosed post-hoc reading SINGLETON_NEAR_ONE.",
+             "effect": "`overlays` (singleton rate 0.9542) now reaches failed_ids; `text_roles` "
+                       "(0.2324) does not."},
+        ],
+    }
 
     report = {
         "what_this_is": ("Health pilot for group-bcde.v1. NO GROUND TRUTH EXISTS for these thirteen "
@@ -959,12 +1279,7 @@ def main() -> int:
         },
         "ambiguities": ambiguities,
         "verdicts": verdicts,
-        "verdict_summary": {
-            "pass": sum(1 for v in verdicts if v["verdict"] == "pass"),
-            "fail": sum(1 for v in verdicts if v["verdict"] == "FAIL"),
-            "report_only": sum(1 for v in verdicts if v["verdict"] == "report_only"),
-            "failed_ids": [v["id"] for v in verdicts if v["verdict"] == "FAIL"],
-        },
+        "verdict_summary": verdict_summary,
         "health_1_parse_rate": parse_block,
         "health_2_distributions": {
             "per_field": distributions,

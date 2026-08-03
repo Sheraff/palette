@@ -49,6 +49,13 @@ KMEANS_SEED = 20260803
 KMEANS_RESTARTS = 12
 KMEANS_KS = (4, 6, 8, 10)
 
+# [MEASURED] The one residual-geometry rule carried out of the in-class search into the
+# out-of-class (BD-disagree) and settled-items checks. Named once because three call sites and
+# the human summary all have to mean the same rule; Phase-0 adversarial review finding 5 found
+# its numbers typed into the summary by hand.
+ARBITER_RULE_THRESHOLD = 0.90
+ARBITER_RULE_LABEL = f"residual>={ARBITER_RULE_THRESHOLD:.2f}"
+
 # [MEASURED] connected-component structure for the residual field: 8-connectivity, so a
 # field that touches itself only diagonally around a subject still counts as one field.
 CONNECTIVITY_STRUCTURE = np.ones((3, 3), dtype=bool)
@@ -182,7 +189,17 @@ for it in per_item:
         "label_source": it["label_source"],
         "B_confidence": b.get("confidence"),
         "D_confidence": d.get("confidence"),
-        "A_confidence": a.get("confidence"),
+        # Phase-0 adversarial review finding 4. This column used to be published as
+        # `A_confidence`, beside `A_ground_type` and `A_binary` — which come from the CASCADE's
+        # adjudicator, Qwen3-VL-32B-Instruct-8bit. This one does not: it comes from variant A of
+        # `premise-run-1.jsonl`, which is the BULK model, Qwen3-VL-30B-A3B-Instruct-6bit, on its
+        # other group-a.v1 prompt. Two genuinely different instruments — their variant-A
+        # `ground_type` differs on 34 of 142 images. The defect was masked only because
+        # `confidence` is degenerate (both models answer `high` everywhere), so the published
+        # values happened to be identical whichever source was used; it would have become a wrong
+        # published value the moment `confidence` stopped saturating. Renamed so the model is
+        # readable off the column name, and `column_provenance` in the output names both.
+        "bulk_variantA_confidence": a.get("confidence"),
         "B_field_texture": b.get("field_texture"),
         "D_field_texture": d.get("field_texture"),
         "D_shading_geometry": d.get("shading_geometry"),
@@ -538,7 +555,8 @@ def mk(name, pred, note):
 candidates = [
     mk("residual>=0.95", lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.95,
        "almost nothing masked: SAM found no subject at all"),
-    mk("residual>=0.90", lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.90, ""),
+    mk(ARBITER_RULE_LABEL,
+       lambda r: (r.get("sam_residual_field_fraction") or 0) >= ARBITER_RULE_THRESHOLD, ""),
     mk("residual>=0.80", lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.80, ""),
     mk("residual>=0.70", lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.70, ""),
     mk("residual<0.80", lambda r: (r.get("sam_residual_field_fraction") or 0) < 0.80,
@@ -704,7 +722,8 @@ part2["subpopulations"] = {
         "accuracy": pct(sum(1 for r in d_grad if r["D_right"]), len(d_grad)),
         "residual_separation": separation(d_grad, "sam_residual_field_fraction"),
         "rule_residual_ge_090": rule_eval(
-            d_grad, lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.90
+            d_grad,
+            lambda r: (r.get("sam_residual_field_fraction") or 0) >= ARBITER_RULE_THRESHOLD
         ),
     },
     "D_says_flat": {
@@ -724,8 +743,10 @@ scored_disagree = [r for r in disagree if r["D_right"] is not None]
 part2["out_of_class_check_bd_disagree"] = {
     "n": len(scored_disagree),
     "take_D_accuracy": pct(sum(1 for r in scored_disagree if r["D_right"]), len(scored_disagree)),
+    "rule": ARBITER_RULE_LABEL,
     "rule_residual_ge_090": rule_eval(
-        scored_disagree, lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.90
+        scored_disagree,
+        lambda r: (r.get("sam_residual_field_fraction") or 0) >= ARBITER_RULE_THRESHOLD
     ),
     "residual_separation": separation(scored_disagree, "sam_residual_field_fraction"),
     "reading": (
@@ -739,8 +760,10 @@ scored_agree = [r for r in agree_p if r["D_right"] is not None]
 part2["sanity_bulk_agreement"] = {
     "n": len(scored_agree),
     "bulk_label_accuracy": pct(sum(1 for r in scored_agree if r["D_right"]), len(scored_agree)),
+    "rule": ARBITER_RULE_LABEL,
     "rule_residual_ge_090": rule_eval(
-        scored_agree, lambda r: (r.get("sam_residual_field_fraction") or 0) >= 0.90
+        scored_agree,
+        lambda r: (r.get("sam_residual_field_fraction") or 0) >= ARBITER_RULE_THRESHOLD
     ),
     "residual_separation": separation(scored_agree, "sam_residual_field_fraction"),
     "note": (
@@ -985,6 +1008,13 @@ def binom_tail(k, n, p):
 
 d_nonshaded = [r for r in primary_scored if r["D_ground_type"] != "shaded_field"]
 d_shaded = [r for r in primary_scored if r["D_ground_type"] == "shaded_field"]
+# Phase-0 adversarial review finding 11: `flat_prior` is `pct(...)`, i.e. already rounded to 4
+# decimals, and it used to be passed straight into `binom_tail` as the null parameter. Rounding a
+# parameter before a tail probability is a habit worth not keeping: 0.5328 gives 2.33e-07 where
+# the unrounded 73/137 = 0.5328467 gives 2.34e-07. The rounded value is still published (it is
+# the readable one); the test now uses the exact one.
+flat_prior_exact = (sum(1 for r in primary_scored if r["truth_binary"] == "flat")
+                    / len(primary_scored)) if primary_scored else None
 flat_prior = pct(sum(1 for r in primary_scored if r["truth_binary"] == "flat"), len(primary_scored))
 part2["D_ground_type_reliability"]["significance"] = {
     "D_non_shaded_answers": {
@@ -998,12 +1028,65 @@ part2["D_ground_type_reliability"]["significance"] = {
         "accuracy": pct(sum(1 for r in d_shaded if r["D_right"]), len(d_shaded)),
     },
     "flat_base_rate": flat_prior,
+    "flat_base_rate_unrounded": flat_prior_exact,
     "p_non_shaded_beats_flat_base_rate": binom_tail(
-        sum(1 for r in d_nonshaded if r["D_right"]), len(d_nonshaded), flat_prior
+        sum(1 for r in d_nonshaded if r["D_right"]), len(d_nonshaded), flat_prior_exact
+    ),
+    "p_non_shaded_note": (
+        "one-sided exact binomial against the corpus flat base rate, computed with the "
+        "UNROUNDED base rate (Phase-0 adversarial review finding 11; the 2026-08-03 "
+        "publication passed the 4-dp rounded 0.5328 and got 2.33e-07). Read it with the "
+        "definitional caveat below: for a non-shaded D answer, D_right IS truth == flat, "
+        "because both flat_field and multiple_distinct_fields map to flat. So '32 of 34 "
+        "right' is exactly '32 of those 34 covers carry a flat flag', and this binomial "
+        "against the flat base rate is the correct — and applied — correction for that."
     ),
     "p_class_8_of_8_beats_shaded_rate": binom_tail(
         8, 8, pct(sum(1 for r in d_shaded if r["D_right"]), len(d_shaded))
     ),
+    # Phase-0 adversarial review finding 6. Stated here rather than left for a reader to work
+    # out, because this file applies two different standards of evidence to two hypotheses
+    # examined on the same 43 items, and the surviving one got the lenient standard.
+    "p_class_8_of_8_status": {
+        "label": "EXPLORATORY — not a confirmatory p-value",
+        "why": (
+            "plain one-sided binomial, no multiplicity correction of any kind, with the null "
+            "parameter estimated from the same 43 items that suggested the rule. The SAM "
+            "residual-geometry hypothesis this rule replaced was killed by a max-statistic "
+            "permutation test over a 364-rule grid (corrected p 0.2927) — correct practice — "
+            "but GRID_FEATURES holds SAM numeric features only, so THIS rule was never in the "
+            "corrected search space, even though candidate_rules shows D's own answer and D's "
+            "confidence were searched alongside the SAM features."
+        ),
+        "what_should_be_quoted_instead": (
+            "the out-of-class corroboration, which is real held-out evidence and needs no "
+            "correction: the D-vocabulary gate reproduces OUTSIDE this class. See "
+            "D_ground_type_reliability.all_primary and .in_bulk_agreement."
+        ),
+        "out_of_class_corroboration": {
+            "all_primary": {
+                k: part2["D_ground_type_reliability"]["all_primary"].get(k)
+                for k in ("multiple_distinct_fields", "flat_field")
+            },
+            "in_bulk_agreement": {
+                k: part2["D_ground_type_reliability"]["in_bulk_agreement"].get(k)
+                for k in ("multiple_distinct_fields", "flat_field")
+            },
+        },
+        "mirror_test_not_run": (
+            "the mirror of the non-shaded binomial — D's shaded_field answers against the "
+            "gradient base rate — is reported here for symmetry rather than left unstated."
+        ),
+        "mirror_test": {
+            "shaded_right": sum(1 for r in d_shaded if r["D_right"]),
+            "shaded_n": len(d_shaded),
+            "gradient_base_rate": (None if flat_prior_exact is None else round(1 - flat_prior_exact, 4)),
+            "p_shaded_beats_gradient_base_rate": (
+                None if flat_prior_exact is None else binom_tail(
+                    sum(1 for r in d_shaded if r["D_right"]), len(d_shaded), 1 - flat_prior_exact)
+            ),
+        },
+    },
 }
 
 verdict = {
@@ -1067,6 +1150,38 @@ for path, why in PICKS:
         e["why_look_at_this_one"] = why
         reviewer_examples.append(e)
 
+# Phase-0 adversarial review finding 5: every number in `summary_lines` is now interpolated from
+# the computed blocks. These are the lines A10 and this file's own `verdict` quote, and half of
+# each sentence used to be a typed-in literal — so a changed input moved the interpolated half
+# and left the literal half behind, silently.
+_rel_class = part2["D_ground_type_reliability"]["in_class"]
+_rel_primary = part2["D_ground_type_reliability"]["all_primary"]
+_sig = part2["D_ground_type_reliability"]["significance"]
+_class_D = part1["class"]["D_ground_type"]
+_tiers = part1["class_rate_by_tier"]
+_best = part2["best_by_commit_precision"][0] if part2["best_by_commit_precision"] else None
+_best_on_class = next((c["on_class"] for c in part2["candidate_rules"]
+                       if _best and c["rule"] == _best["rule"]), {})
+_ooc = part2["out_of_class_check_bd_disagree"]["rule_residual_ge_090"]
+_settled_auc = part2["sanity_bulk_agreement"]["residual_separation"]["auc_right_above_wrong"]
+
+
+def _acc(block, key):
+    """'8/8' for a by_answer entry, or 'n/a' if D never gave that answer here."""
+    e = block.get(key)
+    return "n/a" if not e else f"{e['right']}/{e['n']}"
+
+
+def _d_reads() -> str:
+    return ", ".join(f"{v} on {n}" for v, n in _class_D.items())
+
+
+def _non_shaded_all_primary() -> str:
+    right = sum(e["right"] for k, e in _rel_primary.items() if k != "shaded_field")
+    n = sum(e["n"] for k, e in _rel_primary.items() if k != "shaded_field")
+    return f"{right}/{n}"
+
+
 summary_lines = [
     f"The class is {len(klass)} of 142 eval images ({len(klass_p)} with usable truth): B answers "
     "an unmapped ground type, D commits.",
@@ -1074,7 +1189,7 @@ summary_lines = [
     f"and pattern_or_texture on {part1['class']['B_ground_type'].get('pattern_or_texture', 0)}; "
     f"the 32B adjudicator independently answers unmapped on {part1['b_and_adjudicator_agree_unmapped']['n']} "
     f"of {len(klass)}, which is why the cascade leaves them undetermined.",
-    f"D reads shaded_field on 36 and multiple_distinct_fields on 8. Take-D would be "
+    f"D reads {_d_reads()}. Take-D would be "
     f"{part2['baseline_take_D']['right']}/{part2['baseline_take_D']['n']} = "
     f"{part2['baseline_take_D']['accuracy']} right, and every error is the same one: gradient "
     "called on a flat cover.",
@@ -1084,18 +1199,35 @@ summary_lines = [
     "cluster at k=4..10.",
     "Nor is it truth-distinctive: gradient-flag rate "
     f"{part1['class']['flag_gradient_rate']} against {part1['not_routed_bulk_agreement']['flag_gradient_rate']} "
-    "on settled items. It is thumbnail-heavy (37% of thumbnails land here vs 9% of large images).",
-    "SAM arbitration verdict: NO. The best residual rule (residual>=0.90) commits 14 with 13 "
+    "on settled items. It is thumbnail-heavy ("
+    f"{_tiers['thumbnail_<=320']['class_rate']:.0%} of thumbnails land here vs "
+    f"{_tiers['large_>640']['class_rate']:.0%} of large images).",
+    f"SAM arbitration verdict: NO. The best residual rule ({_best['rule'] if _best else 'n/a'}) "
+    f"commits {_best_on_class.get('commit_n')} with {_best_on_class.get('commit_D_right')} "
     "right, but the multiplicity-corrected p over the same search space is "
     f"{part2['multiplicity_corrected_search']['p_value_corrected']}, and the rule does not "
-    "reproduce out of class (5/9 on BD-disagree) or on settled items (AUC 0.47).",
+    f"reproduce out of class ({_ooc['commit_D_right']}/{_ooc['commit_n']} on BD-disagree) or on "
+    f"settled items (AUC {_settled_auc}).",
     "SAM text area is a real but weak signal in the wrong sense: it predicts the gradient flag "
     "directly about as well as it predicts D's correctness, so it is a third opinion, not an "
     "arbiter.",
-    "What does split the class is D's own word: multiple_distinct_fields 8/8 right, "
-    "shaded_field 22/35 — the same asymmetry as the whole corpus (non-shaded 32/34).",
-    "Recommendation: commit the 8 D-multiple_distinct_fields items, leave the 35 "
-    "D-shaded_field items undetermined.",
+    "What does split the class is D's own word: multiple_distinct_fields "
+    f"{_acc(_rel_class, 'multiple_distinct_fields')} right, shaded_field "
+    f"{_acc(_rel_class, 'shaded_field')} — the same asymmetry as the whole corpus "
+    f"(non-shaded {_non_shaded_all_primary()}).",
+    "That D-vocabulary split is the argument, and the evidence for it is the out-of-class "
+    f"corroboration, not a p-value: on ALL primary items D reads multiple_distinct_fields "
+    f"{_acc(_rel_primary, 'multiple_distinct_fields')} and flat_field "
+    f"{_acc(_rel_primary, 'flat_field')}; on bulk-agreement items "
+    f"{_acc(part2['D_ground_type_reliability']['in_bulk_agreement'], 'multiple_distinct_fields')} "
+    f"and {_acc(part2['D_ground_type_reliability']['in_bulk_agreement'], 'flat_field')}. The "
+    f"in-class {_acc(_rel_class, 'multiple_distinct_fields')} binomial "
+    f"(p {_sig['p_class_8_of_8_beats_shaded_rate']}) is EXPLORATORY: uncorrected, with its null "
+    "estimated from the same 43 items that suggested the rule, while the SAM hypothesis it "
+    "replaced was held to a 364-rule corrected standard.",
+    f"Recommendation: commit the {_rel_class.get('multiple_distinct_fields', {}).get('n', 0)} "
+    f"D-multiple_distinct_fields items, leave the "
+    f"{_rel_class.get('shaded_field', {}).get('n', 0)} D-shaded_field items undetermined.",
 ]
 
 out = {
@@ -1111,6 +1243,28 @@ out = {
         "embeddings": "dinov2-vitl14 sharded + music_artworks",
     },
     "class_definition": CLASS_ROUTE,
+    # Phase-0 adversarial review finding 4: which instrument each per_item column comes from.
+    # The `A_` prefix is the cascade's ADJUDICATOR; the bulk model's own variant-A answer is a
+    # different model and is now named as such.
+    "column_provenance": {
+        "B_*": {"model": "Qwen3-VL-30B-A3B-Instruct-6bit", "arm": "bulk",
+                "prompt_variant": "B", "source_file": RUN_B},
+        "D_*": {"model": "Qwen3-VL-30B-A3B-Instruct-6bit", "arm": "bulk criterion",
+                "prompt_variant": "D", "source_file": RUN_D},
+        "A_ground_type / A_binary": {"model": "Qwen3-VL-32B-Instruct-8bit", "arm": "adjudicator",
+                                     "prompt_variant": "A", "source_file": CASCADE},
+        "bulk_variantA_confidence": {
+            "model": "Qwen3-VL-30B-A3B-Instruct-6bit", "arm": "bulk",
+            "prompt_variant": "A", "source_file": RUN_B,
+            "renamed_from": "A_confidence",
+            "why": ("published until 2026-08-03 as `A_confidence`, beside two adjudicator "
+                    "columns it does not share a model with. The two models' variant-A "
+                    "ground_type differs on 34 of 142 images; the mix was invisible only "
+                    "because `confidence` saturates at `high` in both."),
+        },
+        "reviewer_*": {"model": None, "arm": "human", "source_file": GOLD},
+        "sam_*": {"model": "SAM3 concept set v2", "arm": "geometry", "source_file": SAM},
+    },
     "verdict": verdict,
     "summary_lines": summary_lines,
     "part_1_characterization": part1,

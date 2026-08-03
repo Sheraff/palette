@@ -132,7 +132,8 @@ def main() -> int:
 
     # §13.2: never append to — or resume — a file carrying a deleted v1 probe prompt.
     # Also refuse to mix schema versions in one output file (pipeline §11).
-    existing_rows = read_jsonl(args.out)
+    # require=False by design: a fresh run's output file does not exist yet.
+    existing_rows = read_jsonl(args.out, require=False)
     assert_rows_not_superseded(existing_rows, str(args.out))
     existing_schema_versions = {r.get("schema_version") for r in existing_rows if r.get("schema_version")}
     assert existing_schema_versions <= {variants[0].schema_version}, (
@@ -255,11 +256,23 @@ def main() -> int:
     # rest of this run, and (below) against any canary rows an earlier run already wrote.
     canary_variant = variants[0]
     canary_baseline: str | None = None
-    prior_canary = [r for r in read_jsonl(args.out)
+    # require=False by design: a fresh run has no prior canary. Phase-0 adversarial review
+    # finding 10: this used to lapse SILENTLY — a renamed/moved output file rebased the canary on
+    # this run's own first answer and lost the cross-run drift signal with nothing in the log.
+    # It can only lose a signal, never fabricate a pass (within-run stability still halts at
+    # §5.3), so the fix is to say out loud which of the two happened.
+    prior_canary = [r for r in read_jsonl(args.out, require=False)
                     if r.get("is_canary") and r.get("prompt_variant") == canary_variant.variant
                     and r.get("status") == "ok"]
     if prior_canary:
         canary_baseline = canary_fingerprint(prior_canary[:1])
+        print(f"canary baseline: inherited from {len(prior_canary)} prior canary row(s) in "
+              f"{args.out.name} — cross-run drift IS being checked", flush=True)
+    else:
+        print(f"canary baseline: NONE inherited ({args.out.name} holds no ok canary row for "
+              f"variant {canary_variant.variant}) — this run will rebase on its own first canary "
+              "answer, so only WITHIN-run stability is checked, not drift against an earlier run",
+              flush=True)
 
     processed = 0
     started = time.time()

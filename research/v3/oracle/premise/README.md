@@ -1,7 +1,17 @@
 # Oracle premise test — setup
 
-**Status:** set up, pre-flighted, **not run**. The full run launches only on reviewer go-ahead
-(PHASE_0_DECISIONS.md §5: "the orchestrator asks before starting or resuming any long run").
+**Status (2026-08-03):** three runs are DONE and one arm is still queued. The "not run" this line
+used to carry described the very first day of the workstream and is long stale.
+
+| run | file | state |
+|---|---|---|
+| group A, variants A/B | `data/oracle-premise/premise-run-1.jsonl` | **done** — 284 rows, analysis in `premise-run-1.agreement.json` |
+| criterion arm, variants C/D | `data/oracle-premise/premise-run-cd.jsonl` | **done** — 284 rows. Result adverse: read **`CD_RESULT.md`** |
+| groups B–E pilot, variants E/F | `data/oracle-premise/group-bcde-pilot-1.jsonl` | **done** — 284 rows + 15 canaries, analysis in `bcde-pilot-1-analysis.json` |
+| probe arm, P/Q/six solo | — | **drafted, unrun**, approved and queued for a GPU slot |
+
+Any further run launches only on reviewer go-ahead (PHASE_0_DECISIONS.md §5: "the orchestrator asks
+before starting or resuming any long run"), and the GPU is single-owner — no agent starts one.
 
 **What it tests.** V3_PLAN.md §5, step 1: run the VLM oracle against the artworks where the
 v2-3 warehouse already holds a human-accepted gradient boolean, before building any oracle

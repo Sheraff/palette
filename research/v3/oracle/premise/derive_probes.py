@@ -45,7 +45,16 @@ def main() -> int:
     parser.add_argument("--report", type=Path, default=None)
     args = parser.parse_args()
 
+    # Phase-0 adversarial review finding 7: `read_jsonl` now defaults to `require=True`, so a
+    # missing results file exits non-zero instead of writing a valid all-zero derivation report.
+    # An empty-but-present file is refused for the same reason: §13 item 4's guarantee ("a row
+    # missing any of its six probes must derive `underdetermined:incomplete` rather than being
+    # silently dropped") is vacuous over zero rows, and a vacuous guarantee that reports itself
+    # as satisfied is worse than no guarantee.
     rows = read_jsonl(args.results)
+    if not rows:
+        raise SystemExit(f"{args.results} holds no rows. Refusing to publish a derivation report "
+                         "over an empty file.")
     # §13.2 — a v1 probe hash anywhere in the file invalidates the whole run.
     checked = assert_rows_not_superseded(rows, str(args.results))
 

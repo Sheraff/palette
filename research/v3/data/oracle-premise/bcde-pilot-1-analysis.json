@@ -44,463 +44,691 @@
 			"where": "§15.4 by tier",
 			"ambiguity": "the tier boundaries are given in §15.5 as counts (43 thumbnail <=320, 88 standard, 11 large >640).",
 			"reading": "analyze.py's reviewed tier_of() is imported rather than re-derived, and the per-tier image counts are reported so the join can be checked against §15.5."
+		},
+		{
+			"key": "singleton_near_one",
+			"where": "§15.8 multi-selects that only ever return one value",
+			"ambiguity": "\"a singleton on ~every row\" names no number, and §15.8 names only `text_roles`, not `overlays`.",
+			"reading": "read as singleton rate >= 0.9. THIS READING IS POST-HOC — it was chosen after the run, by the fix for Phase-0 adversarial review finding 9, and is disclosed rather than presented as pre-registered. It is reported because the two observed rates are far from the cut on opposite sides (text_roles 0.2324, overlays 0.9542), so no plausible reading of \"~every row\" sorts them differently. The condition is applied to both multi-selects, not only to the one §15.8 names, because §15.8's argument (\"the array machinery bought nothing\") is about the machinery, not about the field."
+		},
+		{
+			"key": "degeneracy_gate_scope",
+			"where": "§15.6-2b non-degeneracy bar on the five conditional fields",
+			"ambiguity": "§15.6-2b says \"no single value on more than 85% of rows\" and does not say whether gate-forced `not_applicable` rows are rows.",
+			"reading": "the bar is read on the gate-open subset, which is the scope on which the question was actually asked. Phase-0 adversarial review finding 8: pooling the gate-closed rows in adds filler that lowers the modal share and makes the bar EASIER to clear, which is the same inflation §15.7 explicitly refuses for kappa. The pooled figure is published beside each gated one under `pooled_all_rows_diluted_by_gate`; no verdict changes direction between the two."
 		}
 	],
 	"verdicts": [
 		{
 			"id": "15.6-1.ok_rate",
 			"section": "15.6-1",
+			"registered_as": "bar",
 			"bar": "status ok >= 99%",
 			"observed": 1.0,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.parse_failed",
 			"section": "15.6-1",
+			"registered_as": "bar",
 			"bar": "parse_failed == 0",
 			"observed": 0,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.attempts",
 			"section": "15.6-1",
+			"registered_as": "bar",
 			"bar": "attempts > 1 == 0",
 			"observed": 0,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.token_cap",
 			"section": "15.6-1",
+			"registered_as": "bar",
 			"bar": "generation_tokens at or near 256 == 0",
 			"observed": {
 				"rows_near_cap": 0,
 				"max_seen": 146
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.identity",
 			"section": "15.2",
+			"registered_as": "bar",
 			"bar": "every row carries the §15.2 prompt/schema hashes",
 			"observed": {
 				"prompt": true,
 				"schema": true,
 				"files": true
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.coverage",
 			"section": "15.5",
+			"registered_as": "bar",
 			"bar": "142 images x 2 variants",
 			"observed": {
 				"images": 142,
 				"paired": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-1.canary",
 			"section": "5.3",
+			"registered_as": "bar",
 			"bar": "canary answer identical on every repeat",
 			"observed": 1,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.has_text.zero_cells",
 			"section": "15.6-2a",
-			"bar": "every vocabulary value fires at least once across the 142 images",
+			"registered_as": "report",
+			"registered_reading": "values firing zero times across the 142 images are reported as possibly unanswerable, with their stems quoted",
 			"observed": [
 				"illegible_at_this_size"
 			],
-			"verdict": "FAIL"
+			"verdict": "reported",
+			"flag_raised": true,
+			"verdict_as_published_2026_08_03": "FAIL"
 		},
 		{
 			"id": "15.6-2a.physical_media_scan.zero_cells",
 			"section": "15.6-2a",
-			"bar": "every vocabulary value fires at least once across the 142 images",
+			"registered_as": "report",
+			"registered_reading": "values firing zero times across the 142 images are reported as possibly unanswerable, with their stems quoted",
 			"observed": "none",
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.overlays.zero_cells",
 			"section": "15.6-2a",
-			"bar": "every vocabulary value fires at least once across the 142 images",
+			"registered_as": "report",
+			"registered_reading": "values firing zero times across the 142 images are reported as possibly unanswerable, with their stems quoted",
 			"observed": "none",
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.grain_or_noise.zero_cells",
 			"section": "15.6-2a",
-			"bar": "every vocabulary value fires at least once across the 142 images",
+			"registered_as": "report",
+			"registered_reading": "values firing zero times across the 142 images are reported as possibly unanswerable, with their stems quoted",
 			"observed": "none",
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.has_text_yes",
 			"section": "15.6-2a",
-			"bar": "has_text yes >= 0.6",
+			"registered_as": "report",
+			"registered_reading": "prior: majority yes; alarming if has_text yes < 0.6",
 			"observed": 0.8838,
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.illegible_fires_on_thumbs",
 			"section": "15.6-2a",
-			"bar": "illegible_at_this_size fires at least once on the thumbnail tier",
+			"registered_as": "report",
+			"registered_reading": "prior: alarming if illegible_at_this_size never fires on any thumbnail-tier image",
 			"observed": 0,
-			"verdict": "FAIL"
+			"verdict": "reported",
+			"flag_raised": true,
+			"verdict_as_published_2026_08_03": "FAIL",
+			"same_fact_as": "15.6-2a.has_text.zero_cells",
+			"note": "SAME FACT as 15.6-2a.has_text.zero_cells, not a second one: `illegible_at_this_size` fires 0 times ANYWHERE in the run (0 of 284 rows), so it necessarily fires 0 times on the thumbnail tier. The published 2026-08-03 tally counted this one fact as two of its three FAILs (Phase-0 adversarial review finding 3)."
 		},
 		{
 			"id": "15.6-2a.physical_media_scan",
 			"section": "15.6-2a",
-			"bar": "physical_media_scan yes <= 0.15",
+			"registered_as": "report",
+			"registered_reading": "prior: rare; alarming if physical_media_scan yes > 0.15",
 			"observed": 0.0141,
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.grain_or_noise",
 			"section": "15.6-2a",
-			"bar": "grain_or_noise yes <= 0.6",
+			"registered_as": "report",
+			"registered_reading": "prior: a real minority; alarming if grain_or_noise yes > 0.6",
 			"observed": 0.1972,
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2a.overlays_can_say_yes",
 			"section": "15.6-2a",
-			"bar": "overlays `none` below 100%",
+			"registered_as": "report",
+			"registered_reading": "prior: alarming if overlays `none` is at 100%, i.e. the question can only say no",
 			"observed": 0.5246,
-			"verdict": "pass"
+			"verdict": "reported",
+			"flag_raised": false,
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.text_roles",
 			"section": "15.6-2b",
-			"bar": "no single value on more than 85% of rows",
+			"registered_as": "bar",
+			"bar": "no single value on more than 85% of rows, on the gate-open subset (has_text == yes)",
 			"observed": {
 				"value": "title_display",
-				"share": 0.8099
+				"share": 0.9163,
+				"n_rows": 251,
+				"scope": "pooled_gate_open",
+				"share_on_all_pooled_rows_as_published_2026_08_03": 0.8099,
+				"modal_exact_set": "artist_name+title_display",
+				"modal_exact_set_share": 0.3307
 			},
-			"verdict": "pass"
+			"verdict": "FAIL",
+			"verdict_as_published_2026_08_03": "pass",
+			"note": "read under the PRESENCE-rate reading only. The modal exact SET is 'artist_name+title_display' on 0.3307 of rows, so the field is not collapsed onto one answer; what the bar is catching is that one value appears in almost every set. Read this verdict with ambiguities: multi_select_degeneracy."
 		},
 		{
 			"id": "15.6-2b.text_dominance",
 			"section": "15.6-2b",
-			"bar": "no single value on more than 85% of rows",
+			"registered_as": "bar",
+			"bar": "no single value on more than 85% of rows, on the gate-open subset (has_text == yes)",
 			"observed": {
 				"value": "present_secondary",
-				"share": 0.5493
+				"share": 0.6215,
+				"n_rows": 251,
+				"scope": "pooled_gate_open",
+				"share_on_all_pooled_rows_as_published_2026_08_03": 0.5493
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.has_dominant_subject",
 			"section": "15.6-2b",
+			"registered_as": "bar",
 			"bar": "no single value on more than 85% of rows",
 			"observed": {
 				"value": "single",
-				"share": 0.5599
+				"share": 0.5599,
+				"n_rows": 284,
+				"scope": "pooled"
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.subject_kind",
 			"section": "15.6-2b",
-			"bar": "no single value on more than 85% of rows",
+			"registered_as": "bar",
+			"bar": "no single value on more than 85% of rows, on the gate-open subset (has_dominant_subject != none)",
 			"observed": {
 				"value": "person",
-				"share": 0.5141
+				"share": 0.5817,
+				"n_rows": 251,
+				"scope": "pooled_gate_open",
+				"share_on_all_pooled_rows_as_published_2026_08_03": 0.5141
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.subject_area_band",
 			"section": "15.6-2b",
-			"bar": "no single value on more than 85% of rows",
+			"registered_as": "bar",
+			"bar": "no single value on more than 85% of rows, on the gate-open subset (has_dominant_subject != none)",
 			"observed": {
 				"value": "25_60",
-				"share": 0.4542
+				"share": 0.5139,
+				"n_rows": 251,
+				"scope": "pooled_gate_open",
+				"share_on_all_pooled_rows_as_published_2026_08_03": 0.4542
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.has_signature_color",
 			"section": "15.6-2b",
+			"registered_as": "bar",
 			"bar": "no single value on more than 85% of rows",
 			"observed": {
 				"value": "yes",
-				"share": 0.8592
+				"share": 0.8592,
+				"n_rows": 284,
+				"scope": "pooled"
 			},
-			"verdict": "FAIL"
+			"verdict": "FAIL",
+			"verdict_as_published_2026_08_03": "FAIL"
 		},
 		{
 			"id": "15.6-2b.signature_carrier",
 			"section": "15.6-2b",
-			"bar": "no single value on more than 85% of rows",
+			"registered_as": "bar",
+			"bar": "no single value on more than 85% of rows, on the gate-open subset (has_signature_color == yes)",
 			"observed": {
 				"value": "background",
-				"share": 0.5
+				"share": 0.582,
+				"n_rows": 244,
+				"scope": "pooled_gate_open",
+				"share_on_all_pooled_rows_as_published_2026_08_03": 0.5
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.medium",
 			"section": "15.6-2b",
+			"registered_as": "bar",
 			"bar": "no single value on more than 85% of rows",
 			"observed": {
 				"value": "photograph",
-				"share": 0.493
+				"share": 0.493,
+				"n_rows": 284,
+				"scope": "pooled"
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2b.color_character",
 			"section": "15.6-2b",
+			"registered_as": "bar",
 			"bar": "no single value on more than 85% of rows",
 			"observed": {
 				"value": "limited_palette",
-				"share": 0.5141
+				"share": 0.5141,
+				"n_rows": 284,
+				"scope": "pooled"
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-2.grain_confound",
 			"section": "15.6-2",
+			"registered_as": "observation",
 			"bar": "grain_or_noise yes-rate on photograph exceeds typography_only by a wide margin (no numeric bar pre-registered; reported)",
 			"observed": 0.1618,
-			"verdict": "report_only"
+			"verdict": "report_only",
+			"verdict_as_published_2026_08_03": "report_only"
 		},
 		{
 			"id": "15.6-3.ceiling",
 			"section": "15.6-3",
+			"registered_as": "bar",
 			"bar": "total contradiction rate <= 10% of ok rows (read as: share of rows carrying at least one contradiction)",
 			"observed": {
 				"rows_with_any_rate": 0.0458,
 				"events_per_row": 0.0458
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.6-3.c6_signature_carrier",
 			"section": "15.8",
+			"registered_as": "observation",
 			"bar": "contradiction 6 (signature colour with no carrier) at no material rate — §15.8 names it as what would make the accent question wrong; no numeric bar pre-registered",
 			"observed": {
 				"n": 0,
 				"rate": 0.0
 			},
-			"verdict": "report_only"
+			"verdict": "report_only",
+			"verdict_as_published_2026_08_03": "report_only"
 		},
 		{
 			"id": "15.7.kappa.has_text",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.7 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.9657,
 				"raw": 0.993,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.text_dominance",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.7284,
 				"raw": 0.838,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.physical_media_scan",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.7 on the all 142 paired images",
 			"observed": {
 				"kappa": 1.0,
 				"raw": 1.0,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.has_dominant_subject",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.6618,
 				"raw": 0.8028,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.subject_kind",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.6 on the gate-open subset (both variants)",
 			"observed": {
 				"kappa": 0.9312,
 				"raw": 0.9593,
 				"n": 123
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.subject_area_band",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.607,
 				"raw": 0.7394,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.has_signature_color",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.4865,
 				"raw": 0.8732,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.signature_carrier",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the gate-open subset (both variants)",
 			"observed": {
 				"kappa": 0.7091,
 				"raw": 0.8319,
 				"n": 113
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.medium",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.7 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.8146,
 				"raw": 0.8732,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.color_character",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.7223,
 				"raw": 0.8169,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.kappa.grain_or_noise",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "kappa >= 0.45 on the all 142 paired images",
 			"observed": {
 				"kappa": 0.5255,
 				"raw": 0.8451,
 				"n": 142
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.multi.text_roles.exact_set",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "exact-set agreement >= 0.6",
 			"observed": 0.7817,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.multi.text_roles.jaccard",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "mean Jaccard >= 0.75",
 			"observed": 0.9123,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.multi.text_roles.per_value_floor",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "no vocabulary value below kappa 0.4",
 			"observed": {
 				"below_floor": {},
 				"kappa_undefined": []
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.8.multi.text_roles.singleton",
 			"section": "15.8",
-			"bar": "the multi-select returns more than one value at some material rate (no numeric bar pre-registered; a near-1.0 singleton rate means the array bought nothing)",
-			"observed": 0.2324,
-			"verdict": "report_only"
+			"registered_as": "wrongness_condition",
+			"bar": "§15.8 wrongness condition: the multi-select is a singleton on ~every row. §15.8 names no number; read here as singleton rate >= 0.9 (post-hoc reading, see ambiguities: singleton_near_one). MET means the array machinery bought nothing and the field should be a plain enum in v2.",
+			"observed": {
+				"singleton_rate": 0.2324,
+				"condition_met": false,
+				"field_named_in_15_8": true
+			},
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "report_only"
 		},
 		{
 			"id": "15.7.multi.overlays.exact_set",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "exact-set agreement >= 0.6",
 			"observed": 0.8169,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.multi.overlays.jaccard",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "mean Jaccard >= 0.75",
 			"observed": 0.8345,
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.7.multi.overlays.per_value_floor",
 			"section": "15.7",
+			"registered_as": "bar",
 			"bar": "no vocabulary value below kappa 0.4",
 			"observed": {
 				"below_floor": {},
 				"kappa_undefined": []
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "15.8.multi.overlays.singleton",
 			"section": "15.8",
-			"bar": "the multi-select returns more than one value at some material rate (no numeric bar pre-registered; a near-1.0 singleton rate means the array bought nothing)",
-			"observed": 0.9542,
-			"verdict": "report_only"
+			"registered_as": "wrongness_condition",
+			"bar": "§15.8 wrongness condition: the multi-select is a singleton on ~every row. §15.8 names no number; read here as singleton rate >= 0.9 (post-hoc reading, see ambiguities: singleton_near_one). MET means the array machinery bought nothing and the field should be a plain enum in v2.",
+			"observed": {
+				"singleton_rate": 0.9542,
+				"condition_met": true,
+				"field_named_in_15_8": false
+			},
+			"verdict": "FAIL",
+			"verdict_as_published_2026_08_03": "report_only",
+			"note": "condition MET — this field should be a plain enum in v2 unless the reviewer overrides"
 		},
 		{
 			"id": "15.8.order_domination",
 			"section": "15.8",
+			"registered_as": "bar",
 			"bar": "E and F disagree on more than 35% of rows on MOST questions",
 			"observed": {
 				"questions_over": {},
 				"n_over": 0,
 				"n_questions": 13
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		},
 		{
 			"id": "cross_instrument.join",
 			"section": "15.6-3 c11",
+			"registered_as": "bar",
 			"bar": "every pilot image joins to a SAM image record by sha256",
 			"observed": {
 				"images": 142,
 				"missing": 0
 			},
-			"verdict": "pass"
+			"verdict": "pass",
+			"verdict_as_published_2026_08_03": "pass"
 		}
 	],
 	"verdict_summary": {
-		"pass": 42,
-		"fail": 3,
-		"report_only": 4,
-		"failed_ids": [
-			"15.6-2a.has_text.zero_cells",
-			"15.6-2a.illegible_fires_on_thumbs",
-			"15.6-2b.has_signature_color"
+		"reading_order": "`as_registered` is the accounting §15 licenses. `as_published_2026_08_03` is what this script printed before Phase-0 adversarial review finding 3; it is reproduced, not deleted, so the correction is self-documenting.",
+		"as_registered": {
+			"pre_registered_bars": {
+				"n": 36,
+				"pass": 34,
+				"fail": 2,
+				"undetermined": 0,
+				"failed_ids": [
+					"15.6-2b.text_roles",
+					"15.6-2b.has_signature_color"
+				]
+			},
+			"section_15_8_wrongness_conditions": {
+				"n": 2,
+				"not_met": 1,
+				"met": 1,
+				"met_ids": [
+					"15.8.multi.overlays.singleton"
+				],
+				"note": "a MET condition is a failure of the schema, not a report. §15.8 gives no numbers, so each is evaluated against a disclosed post-hoc reading recorded in `ambiguities`."
+			},
+			"reports_and_priors_15_6_2a": {
+				"n": 9,
+				"flags_raised": 2,
+				"flagged_ids": [
+					"15.6-2a.has_text.zero_cells",
+					"15.6-2a.illegible_fires_on_thumbs"
+				],
+				"distinct_facts_flagged": 1,
+				"distinct_flagged_ids": [
+					"15.6-2a.has_text.zero_cells"
+				],
+				"note": "§15.6-2a registers these as a reporting obligation and as [UNCALIBRATED] priors ('what would be alarming'), never as pass/fail of the schema. A raised flag is a thing to look at, not a failed bar. `distinct_facts_flagged` de-duplicates reports that are the same observation seen twice."
+			},
+			"other_observations": {
+				"n": 2,
+				"ids": [
+					"15.6-2.grain_confound",
+					"15.6-3.c6_signature_carrier"
+				]
+			},
+			"failed_ids": [
+				"15.6-2b.text_roles",
+				"15.6-2b.has_signature_color",
+				"15.8.multi.overlays.singleton"
+			]
+		},
+		"as_published_2026_08_03": {
+			"pass": 42,
+			"fail": 3,
+			"report_only": 4,
+			"failed_ids": [
+				"15.6-2a.has_text.zero_cells",
+				"15.6-2a.illegible_fires_on_thumbs",
+				"15.6-2b.has_signature_color"
+			],
+			"why_it_was_wrong": [
+				"9 of its 45 pass/fail verdicts were registered by §15.6-2a as reports or as [UNCALIBRATED] priors, not as bars — inflating both numerator and denominator.",
+				"2 of its 3 FAILs were one fact counted twice: `illegible_at_this_size` fires 0 times in the whole run, which trips both 15.6-2a.has_text.zero_cells and 15.6-2a.illegible_fires_on_thumbs.",
+				"the §15.8 singleton conditions were filed report_only, so `overlays` meeting a pre-registered wrongness condition at a 0.9542 singleton rate reached no failed_ids and nothing downstream."
+			]
+		},
+		"verdicts_total": 49,
+		"corrections_applied": [
+			{
+				"finding": "premise-analyses #3",
+				"change": "§15.6-2a's 4 zero-cell reports and 5 [UNCALIBRATED] priors are no longer pass/fail verdicts; the two FAILs that were one `illegible_at_this_size` fact counted twice are linked by `same_fact_as` and de-duplicated in `distinct_facts_flagged`.",
+				"effect": "45 pass/fail verdicts -> 36 pre-registered bars + 9 reports."
+			},
+			{
+				"finding": "premise-analyses #8",
+				"change": "the §15.6-2b degeneracy bar for the five conditional fields is read on the gate-open subset instead of on all pooled rows.",
+				"effect": "one verdict CHANGES DIRECTION: 15.6-2b.text_roles, title_display presence 0.8099 over 284 pooled rows (pass) -> 0.9163 over the 251 gate-open rows (FAIL). The adversarial review re-derived only subject_kind (0.5817) and signature_carrier (0.582), where nothing flips, and therefore reported 'no verdict flips today'; text_roles was not among the fields it re-derived. Read the FAIL with its own note: the modal exact SET is still only 0.3307, so the field is not collapsed."
+			},
+			{
+				"finding": "premise-analyses #9",
+				"change": "the two §15.8 singleton conditions are evaluated instead of filed report_only, against the disclosed post-hoc reading SINGLETON_NEAR_ONE.",
+				"effect": "`overlays` (singleton rate 0.9542) now reaches failed_ids; `text_roles` (0.2324) does not."
+			}
 		]
 	},
 	"health_1_parse_rate": {
@@ -622,6 +850,10 @@
 					"incidental_in_scene",
 					"not_applicable"
 				],
+				"gate": {
+					"field": "has_text",
+					"opens_when": "has_text == yes"
+				},
 				"pooled": {
 					"n_rows": 284,
 					"value_presence_counts": {
@@ -791,6 +1023,64 @@
 					"modal_value_by_presence": "title_display",
 					"modal_value_presence_rate": 0.8169
 				},
+				"pooled_gate_open": {
+					"n_rows": 251,
+					"value_presence_counts": {
+						"title_display": 230,
+						"artist_name": 209,
+						"tracklist_or_body": 38,
+						"badge_or_sticker": 43,
+						"label_logo": 78,
+						"incidental_in_scene": 39,
+						"not_applicable": 0
+					},
+					"value_presence_rates": {
+						"title_display": 0.9163,
+						"artist_name": 0.8327,
+						"tracklist_or_body": 0.1514,
+						"badge_or_sticker": 0.1713,
+						"label_logo": 0.3108,
+						"incidental_in_scene": 0.1554,
+						"not_applicable": 0.0
+					},
+					"exact_set_distribution": {
+						"artist_name+title_display": 83,
+						"artist_name+label_logo+title_display": 27,
+						"title_display": 20,
+						"artist_name+title_display+tracklist_or_body": 18,
+						"artist_name+badge_or_sticker+title_display": 17,
+						"artist_name+label_logo+title_display+tracklist_or_body": 15,
+						"artist_name+incidental_in_scene+label_logo+title_display": 13,
+						"artist_name+badge_or_sticker+label_logo+title_display": 9,
+						"artist_name+incidental_in_scene+title_display": 9,
+						"incidental_in_scene": 6,
+						"artist_name": 5,
+						"label_logo+title_display": 4,
+						"artist_name+badge_or_sticker+incidental_in_scene+title_display": 3,
+						"artist_name+badge_or_sticker+title_display+tracklist_or_body": 3,
+						"incidental_in_scene+title_display": 3,
+						"artist_name+badge_or_sticker+incidental_in_scene+label_logo+title_display": 2,
+						"artist_name+incidental_in_scene": 2,
+						"artist_name+label_logo": 2,
+						"badge_or_sticker": 2,
+						"badge_or_sticker+label_logo": 2,
+						"badge_or_sticker+title_display": 2,
+						"artist_name+badge_or_sticker+label_logo+title_display+tracklist_or_body": 1,
+						"badge_or_sticker+label_logo+title_display": 1,
+						"badge_or_sticker+label_logo+tracklist_or_body": 1,
+						"incidental_in_scene+label_logo": 1
+					},
+					"list_length_distribution": {
+						"2": 99,
+						"3": 73,
+						"4": 43,
+						"1": 33,
+						"5": 3
+					},
+					"singleton_rate": 0.1315,
+					"modal_value_by_presence": "title_display",
+					"modal_value_presence_rate": 0.9163
+				},
 				"zero_firing_values": []
 			},
 			"text_dominance": {
@@ -801,6 +1091,10 @@
 					"minor",
 					"not_applicable"
 				],
+				"gate": {
+					"field": "has_text",
+					"opens_when": "has_text == yes"
+				},
 				"pooled": {
 					"n_rows": 284,
 					"counts": {
@@ -851,6 +1145,23 @@
 					},
 					"modal_value": "present_secondary",
 					"modal_share": 0.5986
+				},
+				"pooled_gate_open": {
+					"n_rows": 251,
+					"counts": {
+						"dominant_element": 86,
+						"present_secondary": 156,
+						"minor": 9,
+						"not_applicable": 0
+					},
+					"rates": {
+						"dominant_element": 0.3426,
+						"present_secondary": 0.6215,
+						"minor": 0.0359,
+						"not_applicable": 0.0
+					},
+					"modal_value": "present_secondary",
+					"modal_share": 0.6215
 				},
 				"zero_firing_values": []
 			},
@@ -1073,6 +1384,10 @@
 					"abstract_shape",
 					"not_applicable"
 				],
+				"gate": {
+					"field": "has_dominant_subject",
+					"opens_when": "has_dominant_subject != none"
+				},
 				"pooled": {
 					"n_rows": 284,
 					"counts": {
@@ -1142,6 +1457,29 @@
 					"modal_value": "person",
 					"modal_share": 0.5141
 				},
+				"pooled_gate_open": {
+					"n_rows": 251,
+					"counts": {
+						"person": 146,
+						"animal": 10,
+						"vehicle": 14,
+						"object": 56,
+						"building_or_structure": 17,
+						"abstract_shape": 8,
+						"not_applicable": 0
+					},
+					"rates": {
+						"person": 0.5817,
+						"animal": 0.0398,
+						"vehicle": 0.0558,
+						"object": 0.2231,
+						"building_or_structure": 0.0677,
+						"abstract_shape": 0.0319,
+						"not_applicable": 0.0
+					},
+					"modal_value": "person",
+					"modal_share": 0.5817
+				},
 				"zero_firing_values": []
 			},
 			"subject_area_band": {
@@ -1152,6 +1490,10 @@
 					"over_60",
 					"not_applicable"
 				],
+				"gate": {
+					"field": "has_dominant_subject",
+					"opens_when": "has_dominant_subject != none"
+				},
 				"pooled": {
 					"n_rows": 284,
 					"counts": {
@@ -1202,6 +1544,23 @@
 					},
 					"modal_value": "over_60",
 					"modal_share": 0.4507
+				},
+				"pooled_gate_open": {
+					"n_rows": 251,
+					"counts": {
+						"under_25": 21,
+						"25_60": 129,
+						"over_60": 101,
+						"not_applicable": 0
+					},
+					"rates": {
+						"under_25": 0.0837,
+						"25_60": 0.5139,
+						"over_60": 0.4024,
+						"not_applicable": 0.0
+					},
+					"modal_value": "25_60",
+					"modal_share": 0.5139
 				},
 				"zero_firing_values": []
 			},
@@ -1261,6 +1620,10 @@
 					"small_element",
 					"not_applicable"
 				],
+				"gate": {
+					"field": "has_signature_color",
+					"opens_when": "has_signature_color == yes"
+				},
 				"pooled": {
 					"n_rows": 284,
 					"counts": {
@@ -1317,6 +1680,25 @@
 					},
 					"modal_value": "background",
 					"modal_share": 0.4296
+				},
+				"pooled_gate_open": {
+					"n_rows": 244,
+					"counts": {
+						"text": 71,
+						"subject": 29,
+						"background": 142,
+						"small_element": 2,
+						"not_applicable": 0
+					},
+					"rates": {
+						"text": 0.291,
+						"subject": 0.1189,
+						"background": 0.582,
+						"small_element": 0.0082,
+						"not_applicable": 0.0
+					},
+					"modal_value": "background",
+					"modal_share": 0.582
 				},
 				"zero_firing_values": []
 			},
@@ -1542,87 +1924,164 @@
 		},
 		"spread_expected_15_6_2b": {
 			"text_roles": {
+				"scope_the_bar_is_read_on": "pooled_gate_open",
 				"modal_value": "title_display",
-				"modal_share": 0.8099,
-				"reading": "presence rate of the most-present value (see ambiguities: multi_select_degeneracy)",
+				"modal_share": 0.9163,
+				"reading": "presence rate of the most-present value (see ambiguities: multi_select_degeneracy), on the gate-open subset only (has_text == yes); the pooled figure beside it is diluted by gate-forced not_applicables and must not be read against the bar",
+				"n_rows": 251,
 				"per_variant_modal_share": {
 					"E": 0.8028,
 					"F": 0.8169
 				},
+				"per_variant_modal_share_scope": "all of that variant's rows, NOT gate-restricted",
 				"modal_exact_set": "artist_name+title_display",
-				"modal_exact_set_share": 0.2923
+				"modal_exact_set_share": 0.3307,
+				"gate": {
+					"field": "has_text",
+					"opens_when": "has_text == yes"
+				},
+				"pooled_all_rows_diluted_by_gate": {
+					"modal_value": "title_display",
+					"modal_share": 0.8099,
+					"n_rows": 284,
+					"note": "what the 2026-08-03 publication read the bar on; kept so the correction in Phase-0 adversarial review finding 8 is checkable"
+				}
 			},
 			"text_dominance": {
+				"scope_the_bar_is_read_on": "pooled_gate_open",
 				"modal_value": "present_secondary",
-				"modal_share": 0.5493,
-				"reading": "share of rows holding the modal value",
+				"modal_share": 0.6215,
+				"reading": "share of rows holding the modal value, on the gate-open subset only (has_text == yes); the pooled figure beside it is diluted by gate-forced not_applicables and must not be read against the bar",
+				"n_rows": 251,
 				"per_variant_modal_share": {
 					"E": 0.5,
 					"F": 0.5986
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows, NOT gate-restricted",
+				"gate": {
+					"field": "has_text",
+					"opens_when": "has_text == yes"
+				},
+				"pooled_all_rows_diluted_by_gate": {
+					"modal_value": "present_secondary",
+					"modal_share": 0.5493,
+					"n_rows": 284,
+					"note": "what the 2026-08-03 publication read the bar on; kept so the correction in Phase-0 adversarial review finding 8 is checkable"
 				}
 			},
 			"has_dominant_subject": {
+				"scope_the_bar_is_read_on": "pooled",
 				"modal_value": "single",
 				"modal_share": 0.5599,
 				"reading": "share of rows holding the modal value",
+				"n_rows": 284,
 				"per_variant_modal_share": {
 					"E": 0.4718,
 					"F": 0.6479
-				}
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows"
 			},
 			"subject_kind": {
+				"scope_the_bar_is_read_on": "pooled_gate_open",
 				"modal_value": "person",
-				"modal_share": 0.5141,
-				"reading": "share of rows holding the modal value",
+				"modal_share": 0.5817,
+				"reading": "share of rows holding the modal value, on the gate-open subset only (has_dominant_subject != none); the pooled figure beside it is diluted by gate-forced not_applicables and must not be read against the bar",
+				"n_rows": 251,
 				"per_variant_modal_share": {
 					"E": 0.5141,
 					"F": 0.5141
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows, NOT gate-restricted",
+				"gate": {
+					"field": "has_dominant_subject",
+					"opens_when": "has_dominant_subject != none"
+				},
+				"pooled_all_rows_diluted_by_gate": {
+					"modal_value": "person",
+					"modal_share": 0.5141,
+					"n_rows": 284,
+					"note": "what the 2026-08-03 publication read the bar on; kept so the correction in Phase-0 adversarial review finding 8 is checkable"
 				}
 			},
 			"subject_area_band": {
+				"scope_the_bar_is_read_on": "pooled_gate_open",
 				"modal_value": "25_60",
-				"modal_share": 0.4542,
-				"reading": "share of rows holding the modal value",
+				"modal_share": 0.5139,
+				"reading": "share of rows holding the modal value, on the gate-open subset only (has_dominant_subject != none); the pooled figure beside it is diluted by gate-forced not_applicables and must not be read against the bar",
+				"n_rows": 251,
 				"per_variant_modal_share": {
 					"E": 0.5282,
 					"F": 0.4507
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows, NOT gate-restricted",
+				"gate": {
+					"field": "has_dominant_subject",
+					"opens_when": "has_dominant_subject != none"
+				},
+				"pooled_all_rows_diluted_by_gate": {
+					"modal_value": "25_60",
+					"modal_share": 0.4542,
+					"n_rows": 284,
+					"note": "what the 2026-08-03 publication read the bar on; kept so the correction in Phase-0 adversarial review finding 8 is checkable"
 				}
 			},
 			"has_signature_color": {
+				"scope_the_bar_is_read_on": "pooled",
 				"modal_value": "yes",
 				"modal_share": 0.8592,
 				"reading": "share of rows holding the modal value",
+				"n_rows": 284,
 				"per_variant_modal_share": {
 					"E": 0.9085,
 					"F": 0.8099
-				}
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows"
 			},
 			"signature_carrier": {
+				"scope_the_bar_is_read_on": "pooled_gate_open",
 				"modal_value": "background",
-				"modal_share": 0.5,
-				"reading": "share of rows holding the modal value",
+				"modal_share": 0.582,
+				"reading": "share of rows holding the modal value, on the gate-open subset only (has_signature_color == yes); the pooled figure beside it is diluted by gate-forced not_applicables and must not be read against the bar",
+				"n_rows": 244,
 				"per_variant_modal_share": {
 					"E": 0.5704,
 					"F": 0.4296
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows, NOT gate-restricted",
+				"gate": {
+					"field": "has_signature_color",
+					"opens_when": "has_signature_color == yes"
+				},
+				"pooled_all_rows_diluted_by_gate": {
+					"modal_value": "background",
+					"modal_share": 0.5,
+					"n_rows": 284,
+					"note": "what the 2026-08-03 publication read the bar on; kept so the correction in Phase-0 adversarial review finding 8 is checkable"
 				}
 			},
 			"medium": {
+				"scope_the_bar_is_read_on": "pooled",
 				"modal_value": "photograph",
 				"modal_share": 0.493,
 				"reading": "share of rows holding the modal value",
+				"n_rows": 284,
 				"per_variant_modal_share": {
 					"E": 0.5211,
 					"F": 0.4648
-				}
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows"
 			},
 			"color_character": {
+				"scope_the_bar_is_read_on": "pooled",
 				"modal_value": "limited_palette",
 				"modal_share": 0.5141,
 				"reading": "share of rows holding the modal value",
+				"n_rows": 284,
 				"per_variant_modal_share": {
 					"E": 0.5845,
 					"F": 0.4437
-				}
+				},
+				"per_variant_modal_share_scope": "all of that variant's rows"
 			}
 		},
 		"breakdown_has_text_by_tier": {
@@ -3259,6 +3718,13 @@
 			"display-text"
 		],
 		"calibrated_score_threshold": 0.578,
+		"sam_constants_source": {
+			"file": "research/v3/oracle/sam/config.py",
+			"imported_not_copied": true,
+			"text_like_group": "CONCEPT_GROUPS['text_like']",
+			"threshold": "CALIBRATED_SCORE_THRESHOLD",
+			"caveat": "the stored 0.578 is a rounded-up display value; the sweep's winning candidate is the observed score 0.577937, and the published precision 0.91 / recall 0.69 / J 0.514 holds there, not at 0.578 (Phase-0 adversarial review, SAM finding 3). This file follows config.py whatever it holds."
+		},
 		"images_missing_from_sam": [],
 		"images_with_no_text_like_mask_at_calibrated_cut": 28,
 		"images_with_strong_text_like_masks": 104,
