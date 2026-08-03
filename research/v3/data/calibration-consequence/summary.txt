@@ -1,0 +1,141 @@
+RULER CONSEQUENCE ANALYSIS — does the same-colour bar's remaining uncertainty change anything?
+------------------------------------------------------------------------------------------------
+
+THE QUESTION
+  The same-colour bar is calibrated per region, but each region's threshold is a fitted point
+  inside a 95% interval, and one region (light-saturated) is known not to be one population:
+  split by hue it reads 0.01516 / 0.02074 / 0.03805. Both of those are recorded in
+  constants.ts as open. This analysis prices them: if resolving the uncertainty the other way
+  changes no decision, the bar can be frozen and a third bracketing round is not worth a
+  reviewer's afternoon. If it changes decisions, the flips say which region to aim the round at.
+
+WHAT WAS MEASURED
+  Corpus: 554 real published palettes with reviewer verdicts (37 known-bad, 351 endorsements, 166 acceptable),
+  492 distinct role signatures among them.
+  Every pair the contract's distinctness invariant actually checks was enumerated by calling
+  validateDistinctness() itself — the exemptions (sanctioned collapses, field-role-versus-stop)
+  and the straddle rule are the contract's, not a copy. The invariant was then re-run once per
+  bar variant and the verdicts compared pair by pair.
+
+  Variants: point estimates (today's constants) | per-region CI low | per-region CI high |
+  hue-split (light-saturated replaced by its three hue-third values, other regions unchanged).
+
+MATRIX 1 — ROLES ONLY (the headline)
+  554 palettes, 3221 pairs evaluated.
+  At today's constants: 0 pairs read as the same colour, in 0 palettes.
+  Pairs sitting anywhere inside their region's 95% window: 2 (0.06%).
+
+  ci-low        0 flips (  0.00% of pairs) — 0 to-same, 0 to-distinct; 0 palettes touched; 0 palette validities change (0 clean→violating, 0 violating→clean).
+  ci-high       2 flips (  0.06% of pairs) — 2 to-same, 0 to-distinct; 2 palettes touched; 2 palette validities change (2 clean→violating, 0 violating→clean).
+  hue-split     0 flips (  0.00% of pairs) — 0 to-same, 0 to-distinct; 0 palettes touched; 0 palette validities change (0 clean→violating, 0 violating→clean).
+
+  Every flip, in full — there are few enough to list:
+    ci-high   endorsements/9e05a75cd6956ca0 roles.accent|roles.background
+              #fc8831 Mango vs #fa7b34 Tangerine — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+    ci-high   endorsements/13d692cd730368d0 roles.accent|roles.background
+              #fc8831 Mango vs #fa7b34 Tangerine — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+
+MATRIX 2 — ROLES + RECONSTRUCTED v2-3 GRADIENT (advisory)
+  v2-3 published no stops; it rendered background → midpoint → surface. Reconstructing that
+  as v3 stops is not a reading of what v3 will publish, but it does exercise the stop×stop,
+  stop×foreground and stop×accent cells that the roles-only matrix has none of.
+  231 palettes, 2958 pairs evaluated.
+  At today's constants: 16 pairs read as the same colour, in 15 palettes.
+  Pairs sitting anywhere inside their region's 95% window: 17 (0.57%).
+
+  ci-low        7 flips (  0.24% of pairs) — 0 to-same, 7 to-distinct; 7 palettes touched; 7 palette validities change (0 clean→violating, 7 violating→clean).
+  ci-high      10 flips (  0.34% of pairs) — 10 to-same, 0 to-distinct; 8 palettes touched; 8 palette validities change (8 clean→violating, 0 violating→clean).
+  hue-split     3 flips (  0.10% of pairs) — 3 to-same, 0 to-distinct; 3 palettes touched; 3 palette validities change (3 clean→violating, 0 violating→clean).
+
+  Every flip, in full — there are few enough to list:
+    ci-low    endorsements/c73ae02fbed26232 gradient.stops[0]|gradient.stops[1]
+              #e6eef1 Linen vs #f0f0f0 Linen — distance 0.01467, bar 0.01627 → 0.01308, to-distinct, changes palette validity [light-neutral × light-neutral]
+    ci-low    endorsements/ba9e585d27a147b2 gradient.stops[0]|gradient.stops[1]
+              #e6eef1 Linen vs #f0f0f0 Linen — distance 0.01467, bar 0.01627 → 0.01308, to-distinct, changes palette validity [light-neutral × light-neutral]
+    ci-low    endorsements/e3d27b2eca8f6e5b gradient.stops[0]|gradient.stops[1]
+              #2a0c54 Cotinga Purple vs #2c0b5a Cotinga Purple — distance 0.01149, bar 0.01502 → 0.01137, to-distinct, changes palette validity [dark-saturated × dark-saturated]
+    ci-low    endorsements/89c2a7834d190446 gradient.stops[0]|gradient.stops[1]
+              #2a0c54 Cotinga Purple vs #2c0b5a Cotinga Purple — distance 0.01149, bar 0.01502 → 0.01137, to-distinct, changes palette validity [dark-saturated × dark-saturated]
+    ci-low    acceptable/275ed9ece7193561 gradient.stops[0]|gradient.stops[1]
+              #e6eef1 Linen vs #f0f0f0 Linen — distance 0.01467, bar 0.01627 → 0.01308, to-distinct, changes palette validity [light-neutral × light-neutral]
+    ci-low    acceptable/7928873a0fbf23d5 gradient.stops[0]|gradient.stops[1]
+              #e6eef1 Linen vs #f0f0f0 Linen — distance 0.01467, bar 0.01627 → 0.01308, to-distinct, changes palette validity [light-neutral × light-neutral]
+    ci-low    acceptable/5b3f6971ea4e81aa gradient.stops[0]|gradient.stops[1]
+              #e6eef1 Linen vs #f0f0f0 Linen — distance 0.01467, bar 0.01627 → 0.01308, to-distinct, changes palette validity [light-neutral × light-neutral]
+    ci-high   known-bad/2be6a9dbe54252ce gradient.stops[0]|gradient.stops[1]
+              #ebd4ce Ballet Tights vs #e3cfce Pearl — distance 0.01818, bar 0.01627 → 0.02023, to-same, changes palette validity [light-neutral × light-neutral]
+    ci-high   endorsements/4791ac96cb9a5f19 gradient.stops[0]|gradient.stops[1]
+              #f4d3f0 Sweet Nothings vs #e4d7e9 Velvet Scarf — distance 0.02757, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-neutral]
+    ci-high   endorsements/9e05a75cd6956ca0 roles.accent|roles.background
+              #fc8831 Mango vs #fa7b34 Tangerine — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+    ci-high   endorsements/9e05a75cd6956ca0 gradient.stops[0]|roles.accent
+              #fa7b34 Tangerine vs #fc8831 Mango — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+    ci-high   endorsements/13d692cd730368d0 roles.accent|roles.background
+              #fc8831 Mango vs #fa7b34 Tangerine — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+    ci-high   endorsements/13d692cd730368d0 gradient.stops[0]|roles.accent
+              #fa7b34 Tangerine vs #fc8831 Mango — distance 0.02975, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-saturated]
+    ci-high   acceptable/2551df6bff0a2dab gradient.stops[0]|gradient.stops[1]
+              #f4d3f0 Sweet Nothings vs #e4d7e9 Velvet Scarf — distance 0.02757, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × light-neutral]
+    ci-high   acceptable/fde3585eea9a3217 gradient.stops[1]|gradient.stops[2]
+              #ae8c80 Burnt Marshmallow vs #ac8b6c Khaki — distance 0.02739, bar 0.02293 → 0.03170, to-same, changes palette validity [light-neutral × light-saturated]
+    ci-high   acceptable/c943a12e20783187 gradient.stops[1]|gradient.stops[2]
+              #2a7ab9 Classic Blue vs #1b70b3 Campanula — distance 0.03156, bar 0.02293 → 0.03170, to-same, changes palette validity [light-saturated × dark-saturated]
+    ci-high   acceptable/31ce7002ab4f6f35 gradient.stops[0]|gradient.stops[1]
+              #c8ccd5 Zen vs #c7c7c7 Dim — distance 0.02008, bar 0.01627 → 0.02023, to-same, changes palette validity [light-neutral × light-neutral]
+    hue-split endorsements/4791ac96cb9a5f19 gradient.stops[0]|gradient.stops[1]
+              #f4d3f0 Sweet Nothings vs #e4d7e9 Velvet Scarf — distance 0.02757, bar 0.02293 → 0.03805, to-same, changes palette validity [light-saturated × light-neutral]
+    hue-split acceptable/2551df6bff0a2dab gradient.stops[0]|gradient.stops[1]
+              #f4d3f0 Sweet Nothings vs #e4d7e9 Velvet Scarf — distance 0.02757, bar 0.02293 → 0.03805, to-same, changes palette validity [light-saturated × light-neutral]
+    hue-split acceptable/c943a12e20783187 gradient.stops[1]|gradient.stops[2]
+              #2a7ab9 Classic Blue vs #1b70b3 Campanula — distance 0.03156, bar 0.02293 → 0.03805, to-same, changes palette validity [light-saturated × dark-saturated]
+
+CORPUS-PAIR SUPPLEMENT — where do real artwork pairs land?
+  100000 pixel pairs from 200 sharded artworks, drawn at random and kept when their
+  OKLab distance fell in [0.003, 0.05) — the band that strictly contains every region's window.
+  Acceptance rate 8.95% of attempts; seed 2654435769.
+  Inside the uncertainty window: 16715 of 100000 (16.71%).
+  Below it (settled "same" whatever the calibration): 20750; above it (settled "distinct"): 62535.
+  By the region that governs the pair:
+    dark-neutral      34390 pairs,   8.04% inside the window
+    dark-saturated    19092 pairs,  16.77% inside the window
+    light-neutral     21110 pairs,  15.48% inside the window
+    light-saturated   25408 pairs,  29.44% inside the window, 3906 judged differently by the hue split
+
+WHAT THE NUMBERS SAY
+  1. On the roles matrix — the decisions v3 will certainly make — the uncertainty is nearly inert: 0 flips at the low end,
+     2 at the high end, 0 under the hue split, out of 3221 pairs. Today's constants call none of those 3221
+     pairs the same colour: published role colours simply are not close to each other.
+     Those 2 high-end flips are 1 distinct colour pair: the corpus holds one entry per reviewer verdict, so a
+     palette endorsed twice is counted twice.
+  2. Every flip anywhere is in a light or saturated region. 10 of the 12 high-end flips and all 3 hue-split flips
+     involve a light-saturated colour; the rest are light-neutral pairs, and the low-end flips are light-neutral and
+     dark-saturated stop pairs. Dark-neutral — the tightest and best-determined bar — never flips a single decision.
+  3. The flips are directional. Widening the bar (ci-high, hue split) only ever *adds* violations (15 to-same,
+     0 to-distinct); narrowing it only ever removes them (7 to-distinct, 0 to-same). There is no churn, only a monotone dial.
+  4. 12 of the 20 validity changes (counted per matrix; the two matrices overlap) would newly
+     condemn a palette the reviewer endorsed or accepted.
+     PHASE_0_DECISIONS §4 says an invariant that blocks an endorsed palette is demoted — so the upper end of the
+     interval, and the loosest hue third, are the ends the corpus actively argues against. The lower end costs nothing
+     but silence: its flips only release pairs, and a released pair is never seen again.
+  5. The uncertainty is common in the *world* and rare in the *decisions*: 16.71% of real artwork near-pairs
+     land inside a window (29.44% of light-saturated ones), against 0.34% of published pairs at worst. Published palette
+     colours are chosen to be far apart, so they sit almost entirely outside the range the measurement is unsure about.
+
+RECOMMENDATION — FREEZE the bar at its point estimates. No round 3 for the same-colour bar.
+
+  Freezing costs at most 2 palette verdicts out of 554 on the matrix that matters, and every one of those
+  disagreements is the *loose* end of the interval wanting to condemn a palette the reviewer endorsed. A round 3
+  that halved the intervals again would, on this evidence, change between 0 and 2 role-level verdicts. That is not
+  a reviewer's afternoon well spent, and the reviewer's own repeat consistency is 63% — a third
+  round cannot buy precision the reviewer does not have.
+
+  Three things to keep, not because they change decisions today but because they are cheap:
+  - **If any round 3 is ever run, aim it at light-saturated, and split it by hue.** Every flip that touches the
+    roles matrix is light-saturated, its interval is the widest (0.01658–0.03170, 1.9×), and the hue split inside it
+    is the one finding with a real effect behind it (2.5× spread, third 2 separated). Nothing would be learned by
+    re-measuring dark-neutral: it is the tightest bar and it moves nothing.
+  - **Do not adopt the hue split as it stands.** It flips only toward *more* violations, all of them on endorsed or
+    accepted palettes (3 pairs, all from third 2's 0.03805 — the value that is the middle of a separation gap, not
+    a fitted crossing). Encoding it would make the contract stricter exactly where it is least sure.
+  - **The anisotropy finding is untouched by this analysis.** It is not a width in the bar, it is a missing dimension,
+    and no variant here can price it. If a round 3 is ever justified, that is the better question to spend it on.
