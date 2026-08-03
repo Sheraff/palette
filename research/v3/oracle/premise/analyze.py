@@ -42,6 +42,14 @@ GRADIENT_MAP: dict[str, str] = {
     "full_scene": "unmapped",
     "pattern_or_texture": "unmapped",
     "none_discernible": "unmapped",
+    # [REVIEWED] Probe arm only (group-a.probes.*). `underdetermined` is what the derivation
+    # table returns when the probes contradicted each other, when every probe was negative or
+    # unsure, or when a probe is missing (`underdetermined:incomplete`). It is a NON-ANSWER,
+    # not a claim about the artwork — unlike the three above, which do assert something and so
+    # are legitimately scored as "did not claim one shaded surface". Scoring a non-answer as
+    # `flat` would credit or blame the arm for a row it explicitly declined to label, so these
+    # are excluded from both binaries and counted on their own.
+    "underdetermined": "unanswerable",
 }
 
 # [REVIEWED] PHASE_0_DECISIONS.md §4 P6, applied cell by cell. `underdetermined` is P6's
@@ -156,8 +164,14 @@ def main() -> int:
     # ---- index by (image, variant) ------------------------------------------------
     by_image: dict[str, dict] = defaultdict(dict)
     meta: dict[str, dict] = {}
+    # Probe-arm rows carry the derivation's disposition (derived / contradiction_* / unsure /
+    # all_negative / incomplete). Empty for group-a.v1/v2, which have no derivation step.
+    dispositions_by_image: dict[tuple[str, str], str] = {}
     for r in ok:
         by_image[r["image_sha256"]][r["prompt_variant"]] = r["parsed"]
+        derivation = r.get("derivation")
+        if isinstance(derivation, dict) and derivation.get("disposition"):
+            dispositions_by_image[(r["image_sha256"], r["prompt_variant"])] = derivation["disposition"]
         meta[r["image_sha256"]] = {
             "image_path": r["image_path"],
             "artwork_id": r["artwork_id"],
@@ -176,6 +190,8 @@ def main() -> int:
         buckets: Counter = Counter()
         contingency: Counter = Counter()
         unmapped = 0
+        unanswerable = 0
+        dispositions: Counter = Counter()
         for sha in images:
             parsed = by_image[sha].get(variant)
             if parsed is None:
@@ -184,8 +200,12 @@ def main() -> int:
             ground = parsed["ground_type"]
             contingency[(ground, truth)] += 1
             buckets[P6_BUCKETS.get((ground, truth), "underdetermined")] += 1
+            dispositions[dispositions_by_image.get((sha, variant), "n/a")] += 1
             mapped = GRADIENT_MAP[ground]
-            if mapped == "unmapped":
+            if mapped == "unanswerable":
+                # The arm declined to label this artwork. Counted, never scored.
+                unanswerable += 1
+            elif mapped == "unmapped":
                 unmapped += 1
                 # Strict view still needs a prediction: an unmapped label is scored as "flat"
                 # because none of full_scene / pattern_or_texture / none_discernible is a
@@ -199,6 +219,10 @@ def main() -> int:
             "strict_all_labels": binary_scores(strict),
             "mapped_labels_only": binary_scores(mapped_only),
             "unmapped_label_count": unmapped,
+            # Probe arm only; 0 for group-a.v1/v2, which have no `underdetermined` value.
+            "unanswerable_count": unanswerable,
+            "unanswerable_share": round(unanswerable / max(1, len(images)), 4),
+            "derivation_dispositions": {k: v for k, v in sorted(dispositions.items()) if k != "n/a"},
             "p6_buckets": dict(buckets),
             "p6_scored_share": round(
                 (buckets["agreement"] + buckets["contradiction_hard"] + buckets["contradiction_soft"])
@@ -254,21 +278,32 @@ def main() -> int:
         a, b = variants[0], variants[1]
         both = [s for s in primary_images if a in by_image[s] and b in by_image[s]]
         per_question = {}
-        for field in ("ground_type", "shading_geometry", "field_texture", "enclosure", "confidence"):
-            same = sum(1 for s in both if by_image[s][a][field] == by_image[s][b][field])
-            # Chance-corrected over the observed marginals (multi-class kappa).
-            ca = Counter(by_image[s][a][field] for s in both)
-            cb = Counter(by_image[s][b][field] for s in both)
+        # Which fields exist is a property of the prompt set, not a constant. group-a.v1/v2 ask
+        # confidence; the probe arm deliberately drops it (its `unsure` values are the
+        # confidence) and adds six probe fields. Compare whatever both variants actually
+        # answered, in a stable order: the known group-A fields first, then the rest sorted.
+        shared = {f for f in by_image[both[0]][a] if f in by_image[both[0]][b]} if both else set()
+        known = [f for f in ("ground_type", "shading_geometry", "field_texture", "enclosure",
+                             "confidence") if f in shared]
+        fields = known + sorted(shared - set(known) - {"ambiguity_note"})
+        for field in fields:
+            same = sum(1 for s in both if by_image[s][a].get(field) == by_image[s][b].get(field))
+            # Chance-corrected over the observed marginals (multi-class kappa). The value set
+            # is taken from the data rather than a module constant, so a prompt set with its
+            # own vocabulary needs no change here.
+            ca = Counter(by_image[s][a].get(field) for s in both)
+            cb = Counter(by_image[s][b].get(field) for s in both)
             n = len(both)
-            expected = sum(ca[k] * cb[k] for k in VOCABULARIES[field]) / (n * n) if n else 0
+            values = set(VOCABULARIES.get(field, ())) | set(ca) | set(cb)
+            expected = sum(ca[k] * cb[k] for k in values) / (n * n) if n else 0
             observed = same / n if n else 0
             per_question[field] = {
                 "n": n,
                 "raw_agreement": round(observed, 4),
                 "cohens_kappa": round((observed - expected) / (1 - expected), 4) if n and expected < 1 else None,
                 "disagreement_pairs": dict(Counter(
-                    f"{by_image[s][a][field]}->{by_image[s][b][field]}"
-                    for s in both if by_image[s][a][field] != by_image[s][b][field]).most_common(12)),
+                    f"{by_image[s][a].get(field)}->{by_image[s][b].get(field)}"
+                    for s in both if by_image[s][a].get(field) != by_image[s][b].get(field)).most_common(12)),
             }
         report["inter_variant_agreement"] = {
             "variants": [a, b],
@@ -284,7 +319,9 @@ def main() -> int:
         disagree_binary = [s for s in both if mapped(s, a) != mapped(s, b)]
 
         def scored(images):
-            pairs = [(meta[s]["gradient_truth"], mapped(s, a) == "gradient") for s in images]
+            # Rows the arm declined to label are counted elsewhere, never scored as flat.
+            pairs = [(meta[s]["gradient_truth"], mapped(s, a) == "gradient")
+                     for s in images if mapped(s, a) != "unanswerable"]
             return binary_scores(pairs)
 
         report["variants_agree_breakdown"] = {
@@ -365,7 +402,9 @@ def main() -> int:
 
 
 def scored_for_variant(by_image, meta, images, variant, level) -> dict:
-    subset = [s for s in images if variant in by_image[s] and by_image[s][variant]["confidence"] == level]
+    # `.get` not `[]`: the probe arm has no `confidence` field at all (its per-probe `unsure`
+    # is the confidence), so this cut is simply empty there rather than a crash.
+    subset = [s for s in images if variant in by_image[s] and by_image[s][variant].get("confidence") == level]
     pairs = [(meta[s]["gradient_truth"], GRADIENT_MAP[by_image[s][variant]["ground_type"]] == "gradient")
              for s in subset]
     return binary_scores(pairs)

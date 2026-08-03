@@ -34,7 +34,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (  # noqa: E402
-    DATA_DIR, MAX_ATTEMPTS, RESOLUTION_CAP_PX, EvalItem, Oracle, PromptVariant,
+    DATA_DIR, DEFAULT_PROMPT_SET, MAX_ATTEMPTS, PROMPT_SETS, RESOLUTION_CAP_PX, EvalItem, Oracle, PromptVariant,
     SchemaViolation, default_variants, load_eval_set, load_model_manifest, normalize_image,
     parse_model_text, sha256_bytes, utc_now, validate_and_canonicalize,
 )
@@ -128,7 +128,7 @@ def stage_smoke(args) -> int:
     items, _ = load_eval_set(args.eval_set)
     chosen = pick_smoke(items)
     oracle = Oracle(load_model_manifest())
-    variants = default_variants()
+    variants = default_variants(args.prompt_set)
     rows = []
     for item in chosen:
         for variant in variants:
@@ -186,13 +186,13 @@ def stage_determinism1(args) -> int:
     oracle = Oracle(load_model_manifest())
     rows = []
     for repeat in range(args.repeats):
-        for variant in default_variants():
+        for variant in default_variants(args.prompt_set):
             row = _ask(oracle, item, variant, args.long_edge)
             row["repeat"] = repeat
             rows.append(row)
             print(f"repeat {repeat} variant {variant.variant} -> {row['raw_sha256'][:16]}", flush=True)
     diffs = {}
-    for variant in default_variants():
+    for variant in default_variants(args.prompt_set):
         texts = {r["raw_text"] for r in rows if r["variant"] == variant.variant}
         diffs[variant.variant] = {
             "distinct_raw_texts": len(texts),
@@ -214,7 +214,7 @@ def stage_determinism2(args) -> int:
     items, _ = load_eval_set(args.eval_set)
     item = pick_smoke(items)[args.index]
     oracle = Oracle(load_model_manifest())
-    rows = [_ask(oracle, item, v, args.long_edge) for v in default_variants()]
+    rows = [_ask(oracle, item, v, args.long_edge) for v in default_variants(args.prompt_set)]
     payload = {"stage": "determinism-cross-process", "tag": args.tag, "at": utc_now(),
                "image": item.image_path, "rows": rows,
                "fingerprints": {r["variant"]: r["raw_sha256"] for r in rows}}
@@ -246,7 +246,7 @@ def stage_batchmix(args) -> int:
     probe = smoke[args.index]
     others = [i for i in smoke if i.image_sha256 != probe.image_sha256]
     oracle = Oracle(load_model_manifest())
-    variant = default_variants()[0]
+    variant = default_variants(args.prompt_set)[0]
 
     compositions = {
         "alone": [probe],
@@ -282,9 +282,9 @@ def stage_retry(args) -> int:
     items, _ = load_eval_set(args.eval_set)
     item = pick_smoke(items)[args.index]
     oracle = Oracle(load_model_manifest())
-    variant = default_variants()[0]
+    variant = default_variants(args.prompt_set)[0]
 
-    available = oracle.constrained_decoding_available()
+    available = oracle.constrained_decoding_available(variant)
 
     # 1. constrained, normal: must produce a schema-valid document on attempt 1.
     constrained_row = _ask(oracle, item, variant, args.long_edge)
@@ -388,6 +388,9 @@ def main() -> int:
     parser.add_argument("--stage", required=True, choices=sorted(STAGES))
     parser.add_argument("--eval-set", type=Path, default=DATA_DIR / "eval-set.json")
     parser.add_argument("--long-edge", type=int, default=RESOLUTION_CAP_PX)
+    parser.add_argument("--prompt-set", default=DEFAULT_PROMPT_SET, choices=sorted(PROMPT_SETS),
+                        help="which frozen question set to pre-flight; new keys mean a new "
+                             "grammar, so smoke and retry must be redone per set (§13 item 5)")
     parser.add_argument("--index", type=int, default=3, help="which smoke image to probe")
     parser.add_argument("--repeats", type=int, default=2)
     parser.add_argument("--tag", default="proc1")

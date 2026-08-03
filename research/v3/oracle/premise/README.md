@@ -21,7 +21,30 @@ machinery. *"Poor agreement there = an afternoon spent, not a week."*
 | `run_premise.py` | the worker |
 | `supervise.sh` | the restarting supervisor (§5.1) |
 | `preflight.py` | the §11 checklist, one stage at a time |
+| `derive_probes.py` | probe arm only: looks the six probe answers up in the committed 729-row table, writes rows `analyze.py` reads unchanged |
 | `analyze.py` | oracle-vs-human agreement on the gradient boolean |
+
+## Prompt sets
+
+One process loads exactly one frozen question set (pipeline §11). `--prompt-set` selects it;
+the default is run 1's, so an A/B rerun needs no flag and loads byte-identically.
+
+| `--prompt-set` | schema version | variants | what it is |
+|---|---|---|---|
+| `group-a.v1` *(default)* | `group-a.v1` | A, B | run 1 — the six-way question |
+| `group-a.v2` | `group-a.v2` | C, D | criterion arm (PREMISE_NEXT §5) |
+| `group-a.probes.bundled` | `group-a.probes.v1.1` | P, Q | probe arm, six probes in one answer |
+| `group-a.probes.solo` | `group-a.probes.v1.1` | six `S-*` | probe arm, one probe per inference |
+
+`CANONICAL_FIELDS` and `VOCABULARIES` are read from each prompt document's own
+`canonical_fields` / `vocabularies` blocks, falling back to the module constants when absent —
+which is what keeps A/B and C/D working while letting the probe arm declare eight fields (and a
+solo file exactly one), none of them `ground_type`.
+
+**Superseded prompts are refused.** The eight deleted `group-a.probes.v1` files presupposed a
+singular background (PREMISE_NEXT §13.2). Their `prompt_hash` and `file_hash` prefixes are
+pinned in `common.py`; a variant carrying one cannot load, a results file containing one cannot
+be resumed, appended to, or derived from. Any run carrying one is invalid.
 
 Outputs go to `research/v3/data/oracle-premise/` — the other half of this workstream's owned
 paths. Nothing else in the repo is written.
@@ -85,6 +108,49 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types build-eval-set.ts
 # the answer
 ./.venv/bin/python analyze.py --results ../../data/oracle-premise/premise-run-1.jsonl
 ```
+
+### Probe arm
+
+New keys mean a new grammar, so re-run smoke and retry per prompt set before the run
+(PREMISE_NEXT §13 item 5). `--stage decode` is unaffected — the images are unchanged.
+
+```bash
+# pre-flight the grammar
+./.venv/bin/python preflight.py --stage smoke --prompt-set group-a.probes.bundled
+./.venv/bin/python preflight.py --stage retry --prompt-set group-a.probes.bundled
+
+# bundled P + Q over the full 142  (284 inferences, ~50 min – 1.5 h)
+./supervise.sh --prompt-set group-a.probes.bundled \
+               --out ../../data/oracle-premise/probe-run-1.jsonl
+
+# separate mode over the gold-30 gate  (180 inferences, ~30–50 min)
+./supervise.sh --prompt-set group-a.probes.solo \
+               --item-set ../../data/oracle-validation/premise-disambiguation-1.json \
+               --out ../../data/oracle-premise/probe-solo-gold30.jsonl
+
+# derive the tag, then analyse — analyze.py reads the derived file unchanged
+./.venv/bin/python derive_probes.py --results ../../data/oracle-premise/probe-run-1.jsonl
+./.venv/bin/python analyze.py --results ../../data/oracle-premise/probe-run-1.derived.jsonl
+```
+
+`--item-set` accepts a plain list of image sha256s or an oracle-validation batch file with
+`items[].sha256`, which is what the gold-30 already is. Every hash must be an included
+eval-set entry or the run refuses to start.
+
+**The derivation is a lookup, never a reimplementation.** `derive_probes.py` keys the six
+answers into the six-character `y/n/u` vector and reads `ground_type`, `field_texture`,
+`disposition` and `tensions` straight out of `prompts/derivation.group-a.probes.v1.json`
+(sha256 pinned, 729 rows). The rules are evaluated in exactly one place in this workstream —
+`selftest.py` — purely to prove the shipped table matches its own stated rules, and never on
+the path that produces data. In separate mode the six solo rows for one image are joined
+first; a row missing any probe derives **`underdetermined:incomplete`**, which is counted and
+reported, never silently dropped.
+
+`analyze.py` treats the probe arm's `underdetermined` as **unanswerable**: counted on its own,
+excluded from both binaries. Unlike `full_scene` / `pattern_or_texture` / `none_discernible`,
+which assert something about the artwork and are legitimately scored as "did not claim one
+shaded surface", `underdetermined` is the arm declining to label — scoring it as flat would
+credit or blame it for a non-answer.
 
 `run_premise.py --dry-run` prints the work queue without loading the model. A resumed run
 appends to the same file; a changed prompt writes new rows because `prompt_hash` is part of

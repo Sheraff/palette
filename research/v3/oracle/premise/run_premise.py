@@ -27,11 +27,28 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (  # noqa: E402
-    CANARY_EVERY, DATA_DIR, MAX_ATTEMPTS, RESOLUTION_CAP_PX, USE_CONSTRAINED_DECODING,
+    CANARY_EVERY, DATA_DIR, DEFAULT_PROMPT_SET, MAX_ATTEMPTS, PROMPT_SETS, RESOLUTION_CAP_PX,
+    USE_CONSTRAINED_DECODING,
     AttemptLedger, EvalItem, JsonlSink, Oracle, PromptVariant,
-    completed_keys, default_variants, load_eval_set, load_model_manifest, new_run_id,
-    normalize_image, provenance, read_jsonl, row_key, utc_now,
+    assert_rows_not_superseded, completed_keys, default_variants, load_eval_set,
+    load_model_manifest, new_run_id, normalize_image, provenance, read_jsonl, row_key, utc_now,
 )
+
+
+def read_item_set(path: Path) -> list[str]:
+    """Image sha256s for a restricted run. Accepts either a plain list (one sha per line,
+    `#` comments allowed) or an oracle-validation batch file with `items[].sha256` — which is
+    what the gold-30 lives in (`data/oracle-validation/premise-disambiguation-1.json`)."""
+    text = path.read_text()
+    if text.lstrip().startswith("{"):
+        doc = json.loads(text)
+        shas = [item["sha256"] for item in doc["items"] if "sha256" in item]
+    else:
+        shas = [line.strip() for line in text.splitlines()
+                if line.strip() and not line.lstrip().startswith("#")]
+    unique = list(dict.fromkeys(shas))
+    assert unique, f"{path} yielded no image hashes"
+    return unique
 
 # [REVIEWED] Pipeline §5.3: "Pick a canary that is typical, not pathological." Without the
 # stage-1 embedding clusters (a different workstream), typical is approximated by a pinned,
@@ -69,8 +86,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, required=True, help="results JSONL (appended, never truncated)")
     parser.add_argument("--eval-set", type=Path, default=DATA_DIR / "eval-set.json")
-    parser.add_argument("--variant", action="append", default=None, help="A and/or B; default both")
+    parser.add_argument("--prompt-set", default=DEFAULT_PROMPT_SET, choices=sorted(PROMPT_SETS),
+                        help=f"which frozen question set to load (default {DEFAULT_PROMPT_SET})")
+    parser.add_argument("--variant", action="append", default=None,
+                        help="restrict to these variant ids within the prompt set; default all")
     parser.add_argument("--only-sha", action="append", default=None, help="restrict to these image sha256s")
+    parser.add_argument("--item-set", type=Path, default=None,
+                        help="file of image sha256s (plain list, or an oracle-validation batch "
+                             "JSON with items[].sha256) — e.g. the gold-30")
     parser.add_argument("--limit", type=int, default=None, help="stop after N inferences this process")
     parser.add_argument("--long-edge", type=int, default=RESOLUTION_CAP_PX)
     parser.add_argument("--max-attempts", type=int, default=MAX_ATTEMPTS)
@@ -84,14 +107,38 @@ def main() -> int:
 
     items, eval_meta = load_eval_set(args.eval_set)
     included = [i for i in items if i.included]
+    restrict: set[str] | None = None
+    if args.item_set:
+        restrict = set(read_item_set(args.item_set))
     if args.only_sha:
-        wanted = set(args.only_sha)
-        included = [i for i in included if i.image_sha256 in wanted]
-    variants = default_variants()
+        restrict = (restrict or set()) | set(args.only_sha)
+    if restrict is not None:
+        found = {i.image_sha256 for i in included}
+        unknown = sorted(restrict - found)
+        assert not unknown, (
+            f"{len(unknown)} requested image hash(es) are not included eval-set entries: "
+            f"{[u[:12] for u in unknown[:5]]}")
+        included = [i for i in included if i.image_sha256 in restrict]
+
+    variants = default_variants(args.prompt_set)
     if args.variant:
         wanted_v = set(args.variant)
+        unknown_v = wanted_v - {v.variant for v in variants}
+        assert not unknown_v, (
+            f"variant(s) {sorted(unknown_v)} are not in prompt set {args.prompt_set!r}; "
+            f"available: {sorted(v.variant for v in variants)}")
         variants = [v for v in variants if v.variant in wanted_v]
     assert variants, "no prompt variant selected"
+
+    # §13.2: never append to — or resume — a file carrying a deleted v1 probe prompt.
+    # Also refuse to mix schema versions in one output file (pipeline §11).
+    existing_rows = read_jsonl(args.out)
+    assert_rows_not_superseded(existing_rows, str(args.out))
+    existing_schema_versions = {r.get("schema_version") for r in existing_rows if r.get("schema_version")}
+    assert existing_schema_versions <= {variants[0].schema_version}, (
+        f"{args.out} already holds schema version(s) {sorted(existing_schema_versions)}; this run "
+        f"is {variants[0].schema_version}. Mixing question sets in one file is a reporting trap — "
+        f"write to a new file.")
 
     done = completed_keys(args.out)
     queue: list[tuple[EvalItem, PromptVariant]] = [
@@ -107,6 +154,10 @@ def main() -> int:
 
     print(json.dumps({
         "eval_set": str(args.eval_set),
+        "prompt_set": args.prompt_set,
+        "schema_version": variants[0].schema_version,
+        "presentation_mode": variants[0].presentation_mode,
+        "item_set": str(args.item_set) if args.item_set else None,
         "included_images": len(included),
         "variants": [v.id for v in variants],
         "already_done": len(done),

@@ -106,6 +106,86 @@ VOCABULARIES: dict[str, tuple[str, ...]] = {
     "confidence": ("high", "medium", "low"),
 }
 
+# ---------------------------------------------------------------- prompt sets
+
+# [REVIEWED] PREMISE_NEXT.md §5 and §13.1. One process loads exactly one prompt set: pipeline
+# §11 freezes the question set and schema_version per run, and §5 states plainly that v1 and
+# v2 "cannot be loaded in one process" — that is the intended behaviour, not a limitation.
+#
+# The doc proposes editing SCHEMA_VERSION and a PROMPT_GLOB constant in place. A registry is
+# used instead for one reason: the criterion arm (C/D) and the probe arm must BOTH stay
+# runnable, and an in-place edit makes each new arm break the previous one. The registry keeps
+# the same guarantee — a set's schema_version is asserted against every file it globs — while
+# leaving `group-a.v1` as the default, so an A/B rerun is byte-identical to run 1 with no flag.
+PROMPT_SETS: dict[str, tuple[str, str]] = {
+    # name                    (schema_version,          glob)
+    "group-a.v1": ("group-a.v1", "group-a.variant-*.json"),
+    "group-a.v2": ("group-a.v2", "group-a.v2.variant-*.json"),
+    "group-a.probes.bundled": ("group-a.probes.v1.1", "group-a.probes.v1.1.bundled-*.json"),
+    "group-a.probes.solo": ("group-a.probes.v1.1", "group-a.probes.v1.1.solo-*.json"),
+}
+# [REVIEWED] Run 1's set. Default so nothing that worked before needs a flag.
+DEFAULT_PROMPT_SET = "group-a.v1"
+
+# [REVIEWED] PREMISE_NEXT.md §13.2. The eight `group-a.probes.v1` prompt files were deleted
+# because they presupposed a singular background. "If any of these hashes ever appears in a
+# results row, that run is invalid." Prefixes as published (truncated in the doc's table);
+# matched by prefix, which is what the doc gives and is unambiguous at 16 hex characters.
+SUPERSEDED_PROMPT_HASH_PREFIXES: dict[str, str] = {
+    "d50d969cd243fa62": "group-a.probes.v1.bundled-p.json",
+    "60dafd0116449d2e": "group-a.probes.v1.bundled-q.json",
+    "96183e66e273f5bc": "group-a.probes.v1.solo-bg-visible.json",
+    "f1e484604e5c4ff0": "group-a.probes.v1.solo-one-colour.json",
+    "5aaae24d83a51e5a": "group-a.probes.v1.solo-continuous-change.json",
+    "9c2e464c00a14fcc": "group-a.probes.v1.solo-separate-areas.json",
+    "65a3415393bcead7": "group-a.probes.v1.solo-motif-or-material.json",
+    "f6d5d9366176ba57": "group-a.probes.v1.solo-depicted-place.json",
+}
+SUPERSEDED_FILE_HASH_PREFIXES: dict[str, str] = {
+    "83fc30567b282acc": "group-a.probes.v1.bundled-p.json",
+    "b85828093f94a3ff": "group-a.probes.v1.bundled-q.json",
+    "b536427b549387e2": "group-a.probes.v1.solo-bg-visible.json",
+    "ce808801d556d2c5": "group-a.probes.v1.solo-one-colour.json",
+    "03173f7104791ae4": "group-a.probes.v1.solo-continuous-change.json",
+    "935d80c2bcff4546": "group-a.probes.v1.solo-separate-areas.json",
+    "d486cf3e78e01e7a": "group-a.probes.v1.solo-motif-or-material.json",
+    "bbfb3e4e67a13956": "group-a.probes.v1.solo-depicted-place.json",
+}
+
+SUPERSEDED_REASON = (
+    "produced by a group-a.probes.v1 prompt, which called the background \"the large area\" — a "
+    "SINGULAR referent that makes probes 2, 3, 5 and 6 unanswerable on a plural background. "
+    "PREMISE_NEXT.md §13.2: any run carrying one of these hashes is invalid. Re-run under "
+    "group-a.probes.v1.1."
+)
+
+
+class SupersededPrompt(Exception):
+    pass
+
+
+def assert_not_superseded(prompt_hash: str | None, file_hash: str | None, where: str) -> None:
+    """Refuse anything carrying a deleted v1 probe-prompt identity. Cheap, and the only thing
+    standing between a stale row and a silently invalid analysis."""
+    for value, table, label in ((prompt_hash, SUPERSEDED_PROMPT_HASH_PREFIXES, "prompt_hash"),
+                                (file_hash, SUPERSEDED_FILE_HASH_PREFIXES, "file_hash")):
+        if not value:
+            continue
+        for prefix, origin in table.items():
+            if value.startswith(prefix):
+                raise SupersededPrompt(
+                    f"{where}: {label} {value[:16]}… is {origin}, {SUPERSEDED_REASON}")
+
+
+def assert_rows_not_superseded(rows: Iterable[dict[str, Any]], where: str) -> int:
+    """Scan result rows. Returns the number checked so a caller can report it was done."""
+    checked = 0
+    for row in rows:
+        checked += 1
+        assert_not_superseded(row.get("prompt_hash"), row.get("prompt_file_sha256"),
+                              f"{where} row {row.get('row_key', '?')}")
+    return checked
+
 
 # ---------------------------------------------------------------- small helpers
 
@@ -153,16 +233,40 @@ class PromptVariant:
     prompt_hash: str
     schema_hash: str
     file_hash: str
+    # [REVIEWED] PREMISE_NEXT.md §13 item 2: per-variant, read from the prompt document.
+    # The probe arm is the first schema group that does not ask `ground_type` at all, and a
+    # solo file declares exactly one field, so neither can satisfy a module-level constant.
+    canonical_fields: tuple[str, ...] = CANONICAL_FIELDS
+    vocabularies: dict[str, tuple[str, ...]] = field(default_factory=lambda: dict(VOCABULARIES))
+    # Probe-arm metadata. Absent (None / empty) on every non-probe variant.
+    presentation_mode: str | None = None      # 'bundled' | 'separate'
+    probe_order: tuple[str, ...] = ()
+    derivation_schema_version: str | None = None
+    referent_preamble: str | None = None
+    unsure_framing: str | None = None
 
     @property
     def id(self) -> str:
         return f"{self.schema_version}/{self.variant}"
 
+    @property
+    def is_probe_variant(self) -> bool:
+        return self.derivation_schema_version is not None
 
-def load_prompt_variant(path: Path) -> PromptVariant:
+
+def load_prompt_variant(path: Path, expected_schema_version: str | None = None) -> PromptVariant:
     raw = path.read_bytes()
     doc = json.loads(raw)
     schema = doc["json_schema"]
+
+    # Per-variant vocabularies, falling back to the group-a.v1 module constants so A/B and C/D
+    # load exactly as before (PREMISE_NEXT.md §13 item 2: "fall back to the module constants
+    # when absent").
+    canonical_fields = tuple(doc.get("canonical_fields", CANONICAL_FIELDS))
+    raw_vocabularies = doc.get("vocabularies")
+    vocabularies = ({k: tuple(v) for k, v in raw_vocabularies.items()}
+                    if raw_vocabularies is not None else dict(VOCABULARIES))
+
     variant = PromptVariant(
         path=path,
         variant=doc["prompt_variant"],
@@ -177,25 +281,49 @@ def load_prompt_variant(path: Path) -> PromptVariant:
         prompt_hash=sha256_bytes(("\0".join([doc["system"], doc["prompt"]])).encode("utf-8")),
         schema_hash=sha256_bytes(json.dumps(schema, sort_keys=True, separators=(",", ":")).encode("utf-8")),
         file_hash=sha256_bytes(raw),
+        canonical_fields=canonical_fields,
+        vocabularies=vocabularies,
+        presentation_mode=doc.get("presentation_mode"),
+        probe_order=tuple(doc.get("probe_order") or ()),
+        derivation_schema_version=doc.get("derivation_schema_version"),
+        referent_preamble=doc.get("referent_preamble"),
+        unsure_framing=doc.get("unsure_framing"),
     )
-    assert variant.schema_version == SCHEMA_VERSION, (
+    expected = expected_schema_version if expected_schema_version is not None else SCHEMA_VERSION
+    assert variant.schema_version == expected, (
         f"{path.name} declares schema_version {variant.schema_version!r}, "
-        f"common.py has {SCHEMA_VERSION!r} frozen")
-    missing = set(CANONICAL_FIELDS) - set(variant.field_map.values())
+        f"this prompt set is {expected!r}")
+    # §13.2: a deleted v1 probe prompt must never load, however it got back onto disk.
+    assert_not_superseded(variant.prompt_hash, variant.file_hash, path.name)
+    missing = set(canonical_fields) - set(variant.field_map.values())
     assert not missing, f"{path.name} field_map does not cover {sorted(missing)}"
     # The schema's property order IS the generation order under constrained decoding, so it
     # is part of the variant's identity and must match the keys the field map declares.
     assert set(schema["properties"]) == set(variant.field_map), (
         f"{path.name}: json_schema properties and field_map keys disagree")
     for key, canonical in variant.field_map.items():
-        if canonical in VOCABULARIES:
-            assert tuple(sorted(schema["properties"][key]["enum"])) == tuple(sorted(VOCABULARIES[canonical])), (
-                f"{path.name}: {key} enum does not match the frozen vocabulary for {canonical}")
+        if canonical in vocabularies:
+            assert tuple(sorted(schema["properties"][key]["enum"])) == tuple(sorted(vocabularies[canonical])), (
+                f"{path.name}: {key} enum does not match the declared vocabulary for {canonical}")
     return variant
 
 
-def default_variants() -> list[PromptVariant]:
-    return [load_prompt_variant(p) for p in sorted(PROMPTS_DIR.glob("group-a.variant-*.json"))]
+def prompt_set_paths(prompt_set: str = DEFAULT_PROMPT_SET) -> tuple[str, list[Path]]:
+    assert prompt_set in PROMPT_SETS, (
+        f"unknown prompt set {prompt_set!r}; known: {sorted(PROMPT_SETS)}")
+    schema_version, glob = PROMPT_SETS[prompt_set]
+    return schema_version, sorted(PROMPTS_DIR.glob(glob))
+
+
+def default_variants(prompt_set: str = DEFAULT_PROMPT_SET) -> list[PromptVariant]:
+    schema_version, paths = prompt_set_paths(prompt_set)
+    assert paths, f"prompt set {prompt_set!r} matched no files under {PROMPTS_DIR}"
+    variants = [load_prompt_variant(p, schema_version) for p in paths]
+    # One process, one question set (pipeline §11).
+    assert len({v.schema_version for v in variants}) == 1, (
+        f"prompt set {prompt_set!r} mixes schema versions: "
+        f"{sorted({v.schema_version for v in variants})}")
+    return variants
 
 
 # ---------------------------------------------------------------- images
@@ -364,8 +492,8 @@ def validate_and_canonicalize(payload: Any, variant: PromptVariant) -> dict[str,
     out: dict[str, Any] = {}
     for key, canonical in variant.field_map.items():
         value = payload[key]
-        if canonical in VOCABULARIES:
-            if not isinstance(value, str) or value not in VOCABULARIES[canonical]:
+        if canonical in variant.vocabularies:
+            if not isinstance(value, str) or value not in variant.vocabularies[canonical]:
                 raise SchemaViolation(f"{key}={value!r} is outside the vocabulary for {canonical}")
         else:
             if not isinstance(value, str):
@@ -384,6 +512,134 @@ def parse_model_text(text: str) -> Any:
         if stripped.rstrip().endswith("```"):
             stripped = stripped.rstrip()[:-3]
     return json.loads(stripped)
+
+
+# ---------------------------------------------------------------- probe derivation
+
+# [REVIEWED] PREMISE_NEXT.md §13 item 3 and §13.1. The 729-row table IS the contract:
+# "an implementation that disagrees with any of the 729 entries is wrong, not the table."
+# Everything below is therefore a LOOKUP. The rules are never evaluated here — selftest.py
+# implements them once, purely to prove the shipped table matches its own stated rules.
+DERIVATION_PATH = PROMPTS_DIR / "derivation.group-a.probes.v1.json"
+# [REVIEWED] PREMISE_NEXT.md §13.1, published alongside the file.
+DERIVATION_SHA256 = "da67d5ebf0aaab0c593f8fb8e040192e0e688f9dccfcc9bb2fe6b2af391a2fc5"
+# [MEASURED] 3^6 over {yes,no,unsure}; the file's own self_check asserts totality.
+DERIVATION_TABLE_SIZE = 729
+# [REVIEWED] The file's `encoding` block: "y=yes, n=no, u=unsure".
+PROBE_ANSWER_CODES = {"yes": "y", "no": "n", "unsure": "u"}
+
+# [REVIEWED] PREMISE_NEXT.md §13 item 4: "a row that is missing any of its six probes must
+# derive `underdetermined:incomplete` rather than being silently dropped."
+INCOMPLETE_TAG = "underdetermined"
+INCOMPLETE_DISPOSITION = "incomplete"
+
+
+class ProbeDerivation:
+    """The committed probe→tag table, loaded and verified. Lookup only."""
+
+    def __init__(self, path: Path = DERIVATION_PATH):
+        raw = path.read_bytes()
+        digest = sha256_bytes(raw)
+        if digest != DERIVATION_SHA256:
+            raise RuntimeError(
+                f"{path.name} sha256 {digest} != pinned {DERIVATION_SHA256}. The derivation "
+                f"table is a contract; a changed table is a new schema version, not an edit.")
+        doc = json.loads(raw)
+        self.path = path
+        self.sha256 = digest
+        self.schema_version = doc["schema_version"]
+        self.probe_order: tuple[str, ...] = tuple(doc["probe_order"])
+        self.table: dict[str, dict[str, Any]] = doc["table"]
+        self.rules_in_order = doc["rules_in_order"]
+        self.self_check = doc["self_check"]
+        self.field_texture_derivation = doc["field_texture_derivation"]
+        self.shading_geometry_derivation = doc["shading_geometry_derivation"]
+        assert len(self.table) == DERIVATION_TABLE_SIZE, (
+            f"{path.name} has {len(self.table)} rows, expected {DERIVATION_TABLE_SIZE}")
+        assert len(self.probe_order) == 6, f"probe_order is {self.probe_order}"
+
+    # -- vector ---------------------------------------------------------------
+
+    def vector(self, answers: dict[str, Any]) -> tuple[str | None, list[str]]:
+        """Six characters in `probe_order`. Returns (vector, missing_probe_names).
+
+        A probe answered outside {yes,no,unsure} is treated as missing rather than guessed —
+        constrained decoding makes it impossible, and silently coercing it would be worse.
+        """
+        chars, missing = [], []
+        for probe in self.probe_order:
+            code = PROBE_ANSWER_CODES.get(answers.get(probe))
+            if code is None:
+                missing.append(probe)
+            else:
+                chars.append(code)
+        if missing:
+            return None, missing
+        return "".join(chars), []
+
+    # -- lookup ---------------------------------------------------------------
+
+    def derive(self, answers: dict[str, Any]) -> dict[str, Any]:
+        """Look the answers up. Never computes a tag; the table decides everything."""
+        vector, missing = self.vector(answers)
+        if vector is None:
+            # §13 item 4. Not a drop, not a guess: a named, countable outcome.
+            return {
+                "probe_vector": None,
+                "probe_missing": missing,
+                "ground_type": INCOMPLETE_TAG,
+                "field_texture": INCOMPLETE_TAG,
+                "disposition": INCOMPLETE_DISPOSITION,
+                "derived_tag": f"{INCOMPLETE_TAG}:{INCOMPLETE_DISPOSITION}",
+                "tensions": [],
+                "shading_geometry": None,
+                "shading_geometry_raw": answers.get("shading_direction"),
+                "shading_geometry_source": "not_derived_incomplete",
+                "derivation_sha256": self.sha256,
+                "derivation_schema_version": self.schema_version,
+            }
+        row = self.table[vector]          # KeyError here would mean a non-total table
+        ground_type = row["ground_type"]
+        # The file's shading_geometry_derivation, applied verbatim: take the answer as given,
+        # then force not_applicable when the derived ground_type is not shaded_field. Both
+        # values are reported, as that block requires.
+        raw_shading = answers.get("shading_direction")
+        if raw_shading is None:
+            forced, source = None, "not_asked"
+        elif ground_type == "shaded_field":
+            forced, source = raw_shading, "as_answered"
+        else:
+            forced, source = "not_applicable", "forced_by_ground_type"
+        return {
+            "probe_vector": vector,
+            "probe_missing": [],
+            "ground_type": ground_type,
+            "field_texture": row["field_texture"],
+            "disposition": row["disposition"],
+            "derived_tag": f"{ground_type}:{row['disposition']}",
+            "tensions": list(row["tensions"]),
+            "shading_geometry": forced,
+            "shading_geometry_raw": raw_shading,
+            "shading_geometry_source": source,
+            "derivation_sha256": self.sha256,
+            "derivation_schema_version": self.schema_version,
+        }
+
+
+def join_probe_answers(rows: Iterable[dict[str, Any]]) -> dict[str, Any]:
+    """Merge the parsed answers of one image's rows into a single answer dict.
+
+    Bundled mode passes one row and this is a no-op. Separate mode passes up to six solo rows
+    (§13 item 4: "the six solo rows for one image joined into one vector"). A failed row
+    contributes nothing, which is exactly how a probe goes missing and the join lands on
+    `underdetermined:incomplete`.
+    """
+    answers: dict[str, Any] = {}
+    for row in rows:
+        parsed = row.get("parsed")
+        if isinstance(parsed, dict):
+            answers.update(parsed)
+    return answers
 
 
 # ---------------------------------------------------------------- model manifest
@@ -449,9 +705,9 @@ class Oracle:
         tokenizer = getattr(self.processor, "tokenizer", self.processor)
         return build_json_schema_logits_processor(tokenizer, variant.json_schema)
 
-    def constrained_decoding_available(self) -> bool:
+    def constrained_decoding_available(self, variant: PromptVariant | None = None) -> bool:
         try:
-            self._logits_processor(default_variants()[0])
+            self._logits_processor(variant if variant is not None else default_variants()[0])
             return True
         except Exception:
             return False
