@@ -550,7 +550,21 @@
    "ts": "2026-08-03T15:30:00Z",
    "kind": "instrument-design",
    "decision": "The tagging vocabulary's symmetry law is scoped by axis kind: judgment axes keep the full involution (mutual opposite, same axis, even count); descriptive axes keep totality and surjectivity, drop only self-inversion, and must carry both positive and negative valence tags. A tag asserting 'should have been otherwise' belongs on a judgment axis and owes an opposite.",
-   "fundedBy": [],
+   "fundedBy": [
+    "n-msdbbeqw-3e725512",
+    "n-msdbber4-f9fb1c27",
+    "n-msdbber9-ad958e78",
+    "n-msdbbere-64a4d8b9",
+    "n-msdbberi-99754df1",
+    "n-msdbberm-91b924fc",
+    "n-msdbberq-2c67fe1f",
+    "n-msdbberu-67d3de34",
+    "n-msdbbery-b7288d4a",
+    "n-msdbbes3-f41aed5b",
+    "n-msdbbes8-8471df08",
+    "n-msdbbesd-68bc43d7",
+    "n-msdbbesh-9f87f1b3"
+   ],
    "fundedByArtifacts": [
     "research/v3/data/tagging/vocabulary.json",
     "research/v3/data/tagging/fixtures/v2-validation-pass.json"
@@ -562,7 +576,21 @@
    "ts": "2026-08-03T15:30:00Z",
    "kind": "instrument-design",
    "decision": "The meta tag axis is pairwise-item scoped (claims die with the item). Artwork-level multi-validity is expressed by criterion/both-readings-defensible <-> one-reading-only (artwork scope); tagger-confidence tags are instrument-scoped. Scope is per-axis with per-tag override, descriptive metadata not a gate.",
-   "fundedBy": [],
+   "fundedBy": [
+    "n-msdbbeqw-3e725512",
+    "n-msdbber4-f9fb1c27",
+    "n-msdbber9-ad958e78",
+    "n-msdbbere-64a4d8b9",
+    "n-msdbberi-99754df1",
+    "n-msdbberm-91b924fc",
+    "n-msdbberq-2c67fe1f",
+    "n-msdbberu-67d3de34",
+    "n-msdbbery-b7288d4a",
+    "n-msdbbes3-f41aed5b",
+    "n-msdbbes8-8471df08",
+    "n-msdbbesd-68bc43d7",
+    "n-msdbbesh-9f87f1b3"
+   ],
    "fundedByArtifacts": [
     "research/v3/data/tagging/vocabulary.json"
    ],
