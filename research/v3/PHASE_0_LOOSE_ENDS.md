@@ -466,11 +466,14 @@ Original entry kept below for the record.
   covers in the A12 shape that *no* text prompt can reach are not all recoverable text, and some
   are not display type at all. Evidence: `data/sam/mask-quality-3b-sample.json` →
   `silentCoverYield`, `data/sam/sam-cjk-probe-7.jsonl`.
-- **A12 NEVERTHELESS STAYS OPEN, pending round 3b's own review.** The run closes the *GPU gap*, not
-  the row: round 3b is **live and unreleased**, so no reviewer has yet answered whether the CJK
-  masks are correct, and its pre-registered rule (`mask-quality-3b-sample.json` →
-  `a12DecisionRule`) is what decides between adopting a `cjk_script` group with its own low cut and
-  closing A12 as a category whose evidence did not survive being looked at. **No constant moved**:
+- **A12 NEVERTHELESS STAYS OPEN, pending round 3b's verdict being APPLIED.** The run closes the
+  *GPU gap*, not the row. When this note was written round 3b was live and unreleased; it has since
+  been answered (25 labels, released 2026-08-03T22:57Z) and its pre-registered rule
+  (`mask-quality-3b-sample.json` → `a12DecisionRule`) — adopt a `cjk_script` group with its own low
+  cut, or close A12 as a category whose evidence did not survive being looked at — has a verdict
+  recorded in the round-3b section of `data/sam/MASK_REVIEW_NOTES.md`. **That verdict is the
+  round-3b workstream's to state and apply, and this row is not closed by anyone else quoting it.**
+  **No constant moved by the work this row's 2026-08-04 notes describe**:
   `config.CONCEPT_PROMPTS` is untouched, so every stored run stays reproducible. Separately, round
   3's section-B answers measured the *incumbent* `text_like` cut on the A12 class — 22 of 23
   decided below-cut masks are **correct**, a 95.7% accept rate — but the de-truncated sweep's J
