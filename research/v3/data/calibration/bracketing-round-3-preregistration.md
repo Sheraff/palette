@@ -301,3 +301,120 @@ change. When the round is released and analyzed, the record should be a new entr
 - **What must not happen.** The verdict must not be softened into "leans toward" language, and an
   unresolved result must not be recorded as confirmation of the incumbent. That is the specific
   failure mode finding 1 documents.
+
+---
+
+## 9. Result — 2026-08-04
+
+Round 3 was released 2026-08-03T22:30Z and answered in full: 58 of 58 items, no item unanswered, no
+answer superseded or retracted. The scoring rule of §6 was applied exactly as written by
+`research/v3/data/calibration/analyze-bracketing-round-3.ts`; the machine record is
+`research/v3/data/calibration/bracketing-round-3-analysis.json`.
+
+### The verdict: **anisotropy-confounded**
+
+Not `max`, not `average`, and not "unresolved" in the plain sense — the pre-registered veto fired.
+
+**Validity gates first, as required.** All 3 identical-pair checks came back "same" and all 3
+clearly-distinct checks came back "distinct": **6/6, the round is not void**. The band controls did
+not fire either failure mode, so the bands stand and the round is interpretable.
+
+**The primary count.** `n = 42`, `k = 17` answered "same colour" — a rate of 0.405. Two-sided exact
+binomial against `p = 0.5`: **`p = 0.280`**; 95% Wilson interval **0.270–0.555**, which contains 0.5.
+The realized `n` is the design `n`, so the pre-registered cuts stand unchanged at `k ≥ 28` / `k ≤ 14`
+(the analyzer recomputes them from scratch and lands on 28 and 14, reproducing §6). `k = 17` sits
+inside the unresolved interval [15, 27]. On the global count alone this round is **unresolved**.
+
+**Why the verdict is not simply "unresolved".** The two direction subgroups fall on opposite sides of
+one half, and one of them is decisive:
+
+| subgroup | k / n | "same" rate | exact binomial p | decisive at α = 0.05 |
+|---|---|---|---|---|
+| lightness-dominant | 15 / 21 | 0.714 | 0.078 | no |
+| chroma-dominant | **2 / 21** | **0.095** | **0.00022** | **yes** |
+
+That is the §6 anisotropy veto, exactly: opposite sides of 0.5, at least one subgroup individually
+decisive. So **no global winner is declared**, and the finding is the one the veto was written to
+catch — *the straddle bar depends on the direction of the difference, which neither candidate rule
+can express.* The global 17/42 is not a mild lean toward the average; it is the average of two nearly
+opposite populations, and reporting it as a rule preference would be exactly the error confound 2 was
+declared in advance to prevent. Round 2's direction probe predicted this (lightness "same" 4/4,
+chroma 2/4, hue 1/4 at a fixed 0.01500); round 3 confirms it at 21 items per direction.
+
+The controls say the same thing without being scored: the one band control answered on the wrong side
+was the chroma-dominant below-band item (purity 0.91) at 0.01660, called **distinct** even though it
+sits *below* the smaller of the two regional bars. At the chroma end of this criterion, both
+candidate rules are too loose — not just `Math.max`.
+
+**Reported regardless.**
+
+- **Attention checks:** 6/6 (3/3 identical answered "same", 3/3 obvious answered "distinct").
+- **Silent-repeat consistency: 5/6 = 83.3%**, comfortably above the 62.5% measured across rounds 1–2.
+  The one disagreement is `r3-ds-ls-f80-lightness` (distinct first, same on the repeat). The
+  reviewer was more self-consistent here than the round's own power table assumed.
+- **Sensitivity re-run** (each repeated item's later answer substituted for its first): `k = 18` of
+  `n = 42`, still inside [15, 27], verdict unchanged. Primary and sensitivity **agree**.
+- **Per region pair** (in-band only): dark-neutral × light-neutral 6/8 (0.75); dark-neutral ×
+  dark-saturated 3/6 (0.50); dark-neutral × light-saturated 3/8 (0.375); dark-saturated ×
+  light-saturated 2/6 (0.333); light-neutral × light-saturated 2/8 (0.25); dark-saturated ×
+  light-neutral 1/6 (0.167). Per §2 no within-band trend is read from that last pair.
+- **Per band position:** 0.2 → 5/12, 0.4 → 4/6, 0.5 → 3/6, 0.6 → 2/6, 0.8 → 3/12. The monotone fall
+  is much cleaner once split by direction: lightness runs 4/6, 3/3, 3/3, 2/3, 3/6 (high throughout)
+  while chroma runs 1/6, 1/3, 0/3, 0/3, 0/6 (floor almost everywhere).
+- **Per hue third**, light-saturated pairs only: 0–120° 3/8, 120–240° 1/8, 240–360° 3/6. Consistent
+  with the known placeholder bar, too thin to conclude anything.
+- **Exploratory only, not the headline.** The logistic fit over all 46 ladder items converged, with a
+  50% crossing at **0.01534** (95% CI 0.01257–0.01873). That crossing sits *below* the pooled `avg`
+  of 0.01593 and its interval contains it, so the pre-registered "neither rule — the straddling bar is
+  intermediate" reading is **not** supported. With six different bands pooled into one curve this fit
+  is under-powered by construction and is recorded only because §6 said it would be.
+
+### What this means for the straddle rule in `src/contract/color.ts`
+
+**Nothing changes in code, and that is not a win for the incumbent.** `sameColorBar()` keeps
+`Math.max` for the reason it already had — it is what is there, and ground 1 (asymmetric failure: a
+bar that is too tight wrongly rejects a fine palette, a bar that is too loose lets a real collision
+through) still stands. Ground 2, the withdrawn "measurably most stable" claim, is **not** replaced by
+this round. The docstring's `[HELD]` therefore stays `[HELD]`; it must **not** become `[REVIEWED]`,
+and this round must not be cited as confirmation of `Math.max`. `PHASE_0_LOOSE_ENDS.md` **B13**
+("the straddle rule is a default with a reason, not a finding") **stays open**, with round 3 recorded
+as a completed, valid attempt that returned a real answer to a different question than the one asked.
+
+What the round did settle is that the question was mis-posed. `Math.max` versus the average is a
+choice between two numbers on an axis where the reviewer's actual bar is not one number: at the same
+OKLab distance inside the same band, a lightness difference reads as the same colour about 71% of the
+time and a chroma difference about 10% of the time. No scalar combination of two regional bars can
+represent that, so no amount of further data on this design would resolve it.
+
+**The dormancy finding is part of the verdict, not a footnote.** Measured over the 554-palette
+distilled corpus, 2,582 of 3,309 role pairs are cross-region, and **zero of them land in any
+disagreement band** — the closest cross-region role pair sits at OKLab 0.04664, roughly twice the
+largest bar. So no current palette verdict changes either way, under either rule, and nothing in this
+round licenses re-validating anything. The straddle rule is dormant for role-pair distinctness today;
+this round settles a *rule*, and it settled it as "neither, on this axis".
+
+### What happens next
+
+1. **No contract edit from this workstream.** Any change to `sameColorBar()` is its own decision and
+   belongs to the contract workstream; this round's output is evidence, not a patch.
+2. **B13 stays open**, restated: the open question is no longer "max or average" but "is the
+   same-colour bar direction-dependent, and if so does the contract want to express that?" — a
+   strictly larger question than the one round 3 was built for.
+3. **The natural round 4** is a direction-crossed bar measurement, not another straddle round:
+   separate ladders for lightness-dominant, chroma-dominant and hue-dominant differences within a
+   single region, sized against the 83.3% consistency measured here rather than the 62.5% assumed.
+   That would establish whether a direction-aware bar is worth its complexity before anyone proposes
+   one. It is a proposal, not a commitment.
+4. **Because the rule is dormant**, none of this is urgent, and that should be said plainly rather
+   than letting an open loose end imply a live risk.
+
+### Method note
+
+Answers were read from the warehouse through the repository's existing collector
+(`analyze-bracketing.ts` `collectAnswers`), so retraction and supersession follow the same rule every
+other round uses: per (batch, item, question) the latest non-retracted record is the reviewer's
+position. 58 oracle labels, 58 distinct items, zero superseded, zero retracted; 228 same-schema labels
+from rounds 1–2 were excluded on batch id, as rounds are never pooled. The exploratory curve reuses
+the same `fitLogistic` the earlier rounds used. The primary count was independently recomputed from
+the CLI's dense output and agrees (n = 42, k = 17; 15/21 and 2/21 by direction), and the analyzer's
+binomial reproduces §6's stated `k ≥ 28` / `k ≤ 14` cuts from scratch.
