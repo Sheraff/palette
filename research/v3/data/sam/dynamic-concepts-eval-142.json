@@ -1,0 +1,6184 @@
+{
+  "covers": [
+    {
+      "artwork_id": "0000269ead63cf2376a6b67d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "image_path": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "000060b6aa68cdd9e02567b1",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000060b6aa68cdd9e02567b1.jpg",
+      "image_path": "00/ab67616d00001e02000060b6aa68cdd9e02567b1.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0000e692a330542f8ed14132",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d00001e020000e692a330542f8ed14132.jpg",
+      "image_path": "00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0000ff9a99b8761b17336fa2",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+      "image_path": "00/ab67616d00001e020000ff9a99b8761b17336fa2.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00002947b898e4bd572ac4aa",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle",
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ],
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "6a208a8a60d759ab8dda2e9c4cd847c7166b72cd811705419dfa71193c395515",
+      "image_id": "ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+      "image_path": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "00009f60aeb150a5db45b47b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300009f60aeb150a5db45b47b.jpg",
+      "image_path": "00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0000cb591a0d52d8b88692d9",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+      "image_path": "00/ab67616d0000b2730000cb591a0d52d8b88692d9.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "00015a7a9909e03141e001e3",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+      "image_path": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0001738a49a69ed70ffcbe42",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+      "image_path": "01/ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00018a1e2daf68a53f504cb9",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+      "image_path": "01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00014fb430dd1b693e653121",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300014fb430dd1b693e653121.jpg",
+      "image_path": "01/ab67616d0000b27300014fb430dd1b693e653121.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00015083990110d3b1a4ea8a",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+      "image_path": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00018a0a56bae40350d9fa8e",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+      "image_path": "01/ab67616d0000b27300018a0a56bae40350d9fa8e.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0001c404b8a04a8789db8dab",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+      "image_path": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0002881a851f1e14c374562b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "ab67616d00001e020002881a851f1e14c374562b.jpg",
+      "image_path": "02/ab67616d00001e020002881a851f1e14c374562b.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "0002dc280ccc28cadb7d4ae4",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+      "image_path": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "0002dfdcde2cb0a75822168c",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+      "image_path": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000300752f338b6aedff856c",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+      "image_path": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "00034fd1f86970643e18bf98",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+      "image_path": "03/ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0003e50500c5d762da89643a",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020003e50500c5d762da89643a.jpg",
+      "image_path": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000323957b88112ca49b8ee0",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+      "image_path": "03/ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00034b1c66ddd55a5337f66a",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+      "image_path": "03/ab67616d0000b27300034b1c66ddd55a5337f66a.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00034b60105d8937440211da",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300034b60105d8937440211da.jpg",
+      "image_path": "03/ab67616d0000b27300034b60105d8937440211da.jpg",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0003580bd2766859c4d81e13",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "barcode_or_price"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+      "image_path": "03/ab67616d0000b2730003580bd2766859c4d81e13.jpg",
+      "overlays_agreed": [
+        "barcode_or_price",
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "barcode_or_price",
+          "label_logo"
+        ],
+        "F": [
+          "barcode_or_price",
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "00038e79a0efbc7325db6444",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d0000b27300038e79a0efbc7325db6444.jpg",
+      "image_path": "03/ab67616d0000b27300038e79a0efbc7325db6444.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "000390c07f75da30b4e8aba8",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+      "image_path": "03/ab67616d0000b273000390c07f75da30b4e8aba8.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00044a28a45b7b23d4be2f79",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200044a28a45b7b23d4be2f79",
+      "image_path": "04/ab67616d00001e0200044a28a45b7b23d4be2f79",
+      "overlays_agreed": [
+        "label_logo",
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo",
+          "parental_advisory"
+        ],
+        "F": [
+          "label_logo",
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0004ccf0ae91364130886c02",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d00001e020004ccf0ae91364130886c02",
+      "image_path": "04/ab67616d00001e020004ccf0ae91364130886c02",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00040defaf772cad7a1738ce",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300040defaf772cad7a1738ce",
+      "image_path": "04/ab67616d0000b27300040defaf772cad7a1738ce",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000442caec7ec8cb724bf265",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000442caec7ec8cb724bf265",
+      "image_path": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0004515066668684295c41a7",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730004515066668684295c41a7",
+      "image_path": "04/ab67616d0000b2730004515066668684295c41a7",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000564718f605c1f326b2ca2",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000564718f605c1f326b2ca2",
+      "image_path": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0005a54a9ea60f48619788f1",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020005a54a9ea60f48619788f1",
+      "image_path": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0005fa7c7e0e067474967e41",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020005fa7c7e0e067474967e41",
+      "image_path": "05/ab67616d00001e020005fa7c7e0e067474967e41",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0005230fae1822525e5a5ff6",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730005230fae1822525e5a5ff6",
+      "image_path": "05/ab67616d0000b2730005230fae1822525e5a5ff6",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0005597105ba1e2d38f62cfc",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730005597105ba1e2d38f62cfc",
+      "image_path": "05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0005a91812c85db291ea5d85",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730005a91812c85db291ea5d85",
+      "image_path": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00060491ade88c8893373d9f",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200060491ade88c8893373d9f",
+      "image_path": "06/ab67616d00001e0200060491ade88c8893373d9f",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00066a61bbcbeadd632f7f38",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200066a61bbcbeadd632f7f38",
+      "image_path": "06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0006eb2197bdb0a7b9392108",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020006eb2197bdb0a7b9392108",
+      "image_path": "06/ab67616d00001e020006eb2197bdb0a7b9392108",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000626fb25df8b60c4b97ca4",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "ab67616d0000b273000626fb25df8b60c4b97ca4",
+      "image_path": "06/ab67616d0000b273000626fb25df8b60c4b97ca4",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "000637ffe82ad17bfa0f1073",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "a994c5709816571cbc51912d0f2691cc7a998b79ce5e84718aadd2055a217574",
+      "image_id": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+      "image_path": "06/ab67616d0000b273000637ffe82ad17bfa0f1073",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0006a059abb2a6b7dd4ad461",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730006a059abb2a6b7dd4ad461",
+      "image_path": "06/ab67616d0000b2730006a059abb2a6b7dd4ad461",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0006c5d727b329e4477f4a81",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730006c5d727b329e4477f4a81",
+      "image_path": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00079d5a7d92f2bff88570db",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200079d5a7d92f2bff88570db",
+      "image_path": "07/ab67616d00001e0200079d5a7d92f2bff88570db",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00075841f68d8cd71db368d8",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b27300075841f68d8cd71db368d8",
+      "image_path": "07/ab67616d0000b27300075841f68d8cd71db368d8",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "barcode_or_price",
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0007960724fb77c8041c6c13",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "animal",
+          "tag": "dyn-animal",
+          "value": "animal"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-animal"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-animal",
+          "animal"
+        ]
+      ],
+      "dynamic_set_hash": "b3bc89ba8c127430868dd50f8a1dfe7da063c3b9c127f06cc968065f01b9a6e0",
+      "image_id": "ab67616d0000b2730007960724fb77c8041c6c13",
+      "image_path": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "animal",
+      "subject_kind_by_variant": {
+        "E": "animal",
+        "F": "animal"
+      }
+    },
+    {
+      "artwork_id": "0007cc8b341c11227aa7b461",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730007cc8b341c11227aa7b461",
+      "image_path": "07/ab67616d0000b2730007cc8b341c11227aa7b461",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0007d42f64cb70acce41c71d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b2730007d42f64cb70acce41c71d",
+      "image_path": "07/ab67616d0000b2730007d42f64cb70acce41c71d",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00083a2d455755e4c1116825",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200083a2d455755e4c1116825",
+      "image_path": "08/ab67616d00001e0200083a2d455755e4c1116825",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00087b1314ac8e17bc1c6916",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200087b1314ac8e17bc1c6916",
+      "image_path": "08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00081dec93652e6af2582192",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300081dec93652e6af2582192",
+      "image_path": "08/ab67616d0000b27300081dec93652e6af2582192",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00083cc5b8d8d2e7ca7147cd",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300083cc5b8d8d2e7ca7147cd",
+      "image_path": "08/ab67616d0000b27300083cc5b8d8d2e7ca7147cd",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00088460068752fad04f8541",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b27300088460068752fad04f8541",
+      "image_path": "08/ab67616d0000b27300088460068752fad04f8541",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0008c1c08433aa880aad7f30",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d0000b2730008c1c08433aa880aad7f30",
+      "image_path": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "0009657a5122a7b3d40458b0",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020009657a5122a7b3d40458b0",
+      "image_path": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "000913b3e9ae2c7173d1a8b2",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b273000913b3e9ae2c7173d1a8b2",
+      "image_path": "09/ab67616d0000b273000913b3e9ae2c7173d1a8b2",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00092c140fe03d08e0dc906a",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300092c140fe03d08e0dc906a",
+      "image_path": "09/ab67616d0000b27300092c140fe03d08e0dc906a",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "abstract_shape"
+      }
+    },
+    {
+      "artwork_id": "00093ce40fe3f073dcd87ab5",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300093ce40fe3f073dcd87ab5",
+      "image_path": "09/ab67616d0000b27300093ce40fe3f073dcd87ab5",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0009448702be55dfc86fde67",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b2730009448702be55dfc86fde67",
+      "image_path": "09/ab67616d0000b2730009448702be55dfc86fde67",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000955ccfc1e8da97a09b32d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+      "image_path": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "barcode_or_price",
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00097e55f9a93ceb03afa4b2",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300097e55f9a93ceb03afa4b2",
+      "image_path": "09/ab67616d0000b27300097e55f9a93ceb03afa4b2",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "00099f4221cf6ed5f2440904",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b27300099f4221cf6ed5f2440904",
+      "image_path": "09/ab67616d0000b27300099f4221cf6ed5f2440904",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0009d178a401f9433fdddff2",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b2730009d178a401f9433fdddff2",
+      "image_path": "09/ab67616d0000b2730009d178a401f9433fdddff2",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000a8aa1dafa651976a7bb44",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000a8aa1dafa651976a7bb44",
+      "image_path": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "000a24cc32b3d8b6e31bc161",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b273000a24cc32b3d8b6e31bc161",
+      "image_path": "0a/ab67616d0000b273000a24cc32b3d8b6e31bc161",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000a2927c0f27657e4a2aeaa",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+      "image_path": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000a392cb5a08d9801562845",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000a392cb5a08d9801562845",
+      "image_path": "0a/ab67616d0000b273000a392cb5a08d9801562845",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "label_logo",
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000a8097d86930fb02f5a76d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000a8097d86930fb02f5a76d",
+      "image_path": "0a/ab67616d0000b273000a8097d86930fb02f5a76d",
+      "overlays_agreed": [
+        "label_logo",
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo",
+          "parental_advisory"
+        ],
+        "F": [
+          "label_logo",
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000a8f5a7c2d213002fcd591",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000a8f5a7c2d213002fcd591",
+      "image_path": "0a/ab67616d0000b273000a8f5a7c2d213002fcd591",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "abstract_shape"
+      }
+    },
+    {
+      "artwork_id": "000a9e0be9521986cc08839e",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000a9e0be9521986cc08839e",
+      "image_path": "0a/ab67616d0000b273000a9e0be9521986cc08839e",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000aa22923f3a9064c0e525b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b273000aa22923f3a9064c0e525b",
+      "image_path": "0a/ab67616d0000b273000aa22923f3a9064c0e525b",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000b096f0b03b7745c8e8aab",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d00001e02000b096f0b03b7745c8e8aab",
+      "image_path": "0b/ab67616d00001e02000b096f0b03b7745c8e8aab",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "000ba4a828abadcf3f4642f6",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d0000b273000ba4a828abadcf3f4642f6",
+      "image_path": "0b/ab67616d0000b273000ba4a828abadcf3f4642f6",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "000bc98f315aba36374f9f93",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000bc98f315aba36374f9f93",
+      "image_path": "0b/ab67616d0000b273000bc98f315aba36374f9f93",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "000c3523d80259b49a06ee45",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "unmapped_no_noun",
+          "tag": null,
+          "value": "abstract_shape"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "a994c5709816571cbc51912d0f2691cc7a998b79ce5e84718aadd2055a217574",
+      "image_id": "ab67616d00001e02000c3523d80259b49a06ee45",
+      "image_path": "0c/ab67616d00001e02000c3523d80259b49a06ee45",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "abstract_shape",
+      "subject_kind_by_variant": {
+        "E": "abstract_shape",
+        "F": "abstract_shape"
+      }
+    },
+    {
+      "artwork_id": "000c4d52300a016ee65f1622",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000c4d52300a016ee65f1622",
+      "image_path": "0c/ab67616d00001e02000c4d52300a016ee65f1622",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000c5e69af1d6ce16e2b1a61",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d00001e02000c5e69af1d6ce16e2b1a61",
+      "image_path": "0c/ab67616d00001e02000c5e69af1d6ce16e2b1a61",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "000cd48fb26f462cd33760f6",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000cd48fb26f462cd33760f6",
+      "image_path": "0c/ab67616d00001e02000cd48fb26f462cd33760f6",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000c42c61ba60f69e5a40a29",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000c42c61ba60f69e5a40a29",
+      "image_path": "0c/ab67616d0000b273000c42c61ba60f69e5a40a29",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000d457f4b8829a59481e78b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "animal",
+          "tag": "dyn-animal",
+          "value": "animal"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-animal"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-animal",
+          "animal"
+        ]
+      ],
+      "dynamic_set_hash": "b3bc89ba8c127430868dd50f8a1dfe7da063c3b9c127f06cc968065f01b9a6e0",
+      "image_id": "ab67616d00001e02000d457f4b8829a59481e78b",
+      "image_path": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "animal",
+      "subject_kind_by_variant": {
+        "E": "animal",
+        "F": "animal"
+      }
+    },
+    {
+      "artwork_id": "000d5cdbc67ed815efc360ad",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000d5cdbc67ed815efc360ad",
+      "image_path": "0d/ab67616d0000b273000d5cdbc67ed815efc360ad",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000d8049603d6ab7f5d759bb",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000d8049603d6ab7f5d759bb",
+      "image_path": "0d/ab67616d0000b273000d8049603d6ab7f5d759bb",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "label_logo",
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000dd322ab822869dc34b72a",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000dd322ab822869dc34b72a",
+      "image_path": "0d/ab67616d0000b273000dd322ab822869dc34b72a",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000e007955ee2f8b29f5b2b4",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000e007955ee2f8b29f5b2b4",
+      "image_path": "0e/ab67616d00001e02000e007955ee2f8b29f5b2b4",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000e229142cb6dbae156341c",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000e229142cb6dbae156341c",
+      "image_path": "0e/ab67616d00001e02000e229142cb6dbae156341c",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000ec9e3bb9ee4fc008b018e",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+      "image_path": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "abstract_shape"
+      }
+    },
+    {
+      "artwork_id": "000e440b3d59e91eb43040ee",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object",
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ],
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "29731535aa39b33e27e66f979ab287e344d4dd3d3d57641f1cf49955bf90a465",
+      "image_id": "ab67616d0000b273000e440b3d59e91eb43040ee",
+      "image_path": "0e/ab67616d0000b273000e440b3d59e91eb43040ee",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000e5109c484324cc95a2222",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000e5109c484324cc95a2222",
+      "image_path": "0e/ab67616d0000b273000e5109c484324cc95a2222",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000e91d6c3b44e900d334a78",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000e91d6c3b44e900d334a78",
+      "image_path": "0e/ab67616d0000b273000e91d6c3b44e900d334a78",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000efaac56201fc13ee0724b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000efaac56201fc13ee0724b",
+      "image_path": "0e/ab67616d0000b273000efaac56201fc13ee0724b",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000f0a78a1791248aec707e3",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d00001e02000f0a78a1791248aec707e3",
+      "image_path": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "000f723f36271de0ed3aa893",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e02000f723f36271de0ed3aa893",
+      "image_path": "0f/ab67616d00001e02000f723f36271de0ed3aa893",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "label_logo",
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000f815611cd5966187e2051",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000f815611cd5966187e2051",
+      "image_path": "0f/ab67616d0000b273000f815611cd5966187e2051",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "000fa9b53f161dc999ef557d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273000fa9b53f161dc999ef557d",
+      "image_path": "0f/ab67616d0000b273000fa9b53f161dc999ef557d",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00102a1cdfa1c0f12d6528ea",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200102a1cdfa1c0f12d6528ea",
+      "image_path": "10/ab67616d00001e0200102a1cdfa1c0f12d6528ea",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "001031d1e10290f8e446bd68",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "a994c5709816571cbc51912d0f2691cc7a998b79ce5e84718aadd2055a217574",
+      "image_id": "ab67616d00001e02001031d1e10290f8e446bd68",
+      "image_path": "10/ab67616d00001e02001031d1e10290f8e446bd68",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00106c3252a4c133c0abde36",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e0200106c3252a4c133c0abde36",
+      "image_path": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0010b864b2a925ec6bfaa30e",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d00001e020010b864b2a925ec6bfaa30e",
+      "image_path": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00100a3e9c764acf01c16db8",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300100a3e9c764acf01c16db8",
+      "image_path": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00103a3729bf589e0dc913ab",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300103a3729bf589e0dc913ab",
+      "image_path": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00103a4dcd62e3dd6f76d123",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "animal",
+          "tag": "dyn-animal",
+          "value": "animal"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-animal",
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-animal",
+          "animal"
+        ],
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "02d15f37e2e1a03016b826a1a02dfe3b709d9aeb23386f3f914ed9935782fa92",
+      "image_id": "ab67616d0000b27300103a4dcd62e3dd6f76d123",
+      "image_path": "10/ab67616d0000b27300103a4dcd62e3dd6f76d123",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "animal",
+      "subject_kind_by_variant": {
+        "E": "animal",
+        "F": "animal"
+      }
+    },
+    {
+      "artwork_id": "001063830a2e597293293797",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273001063830a2e597293293797",
+      "image_path": "10/ab67616d0000b273001063830a2e597293293797",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0010bcd17e41331debec2bd5",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730010bcd17e41331debec2bd5",
+      "image_path": "10/ab67616d0000b2730010bcd17e41331debec2bd5",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0010def2c33a308e8bd193f8",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "ab67616d0000b2730010def2c33a308e8bd193f8",
+      "image_path": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00117a3fb2444ed7e04c4721",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "ab67616d00001e0200117a3fb2444ed7e04c4721",
+      "image_path": "11/ab67616d00001e0200117a3fb2444ed7e04c4721",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "001102263870e8b11c13ec31",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b273001102263870e8b11c13ec31",
+      "image_path": "11/ab67616d0000b273001102263870e8b11c13ec31",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00116380305ae5fd3607c43b",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300116380305ae5fd3607c43b",
+      "image_path": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "0011c1dcb3a4a0cd92bdf203",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730011c1dcb3a4a0cd92bdf203",
+      "image_path": "11/ab67616d0000b2730011c1dcb3a4a0cd92bdf203",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "00124d0597059e8987bc4577",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object",
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ],
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "29731535aa39b33e27e66f979ab287e344d4dd3d3d57641f1cf49955bf90a465",
+      "image_id": "ab67616d00001e0200124d0597059e8987bc4577",
+      "image_path": "12/ab67616d00001e0200124d0597059e8987bc4577",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00127e4552b22c761d50c8f5",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300127e4552b22c761d50c8f5",
+      "image_path": "12/ab67616d0000b27300127e4552b22c761d50c8f5",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0012eb9ade9c1bf4a5411c5d",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+      "image_path": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "abstract_shape",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "0013bebcaee941ebcc13437c",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": "watermark",
+          "tag": "dyn-watermark",
+          "value": "watermark"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object",
+        "dyn-watermark"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ],
+        [
+          "dyn-watermark",
+          "watermark"
+        ]
+      ],
+      "dynamic_set_hash": "29731535aa39b33e27e66f979ab287e344d4dd3d3d57641f1cf49955bf90a465",
+      "image_id": "ab67616d00001e020013bebcaee941ebcc13437c",
+      "image_path": "13/ab67616d00001e020013bebcaee941ebcc13437c",
+      "overlays_agreed": [
+        "watermark"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "watermark"
+        ],
+        "F": [
+          "watermark"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "00139c3eeb59e40dba08f5a1",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b27300139c3eeb59e40dba08f5a1",
+      "image_path": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "0013e7782db25f28b59084ec",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "ab67616d0000b2730013e7782db25f28b59084ec",
+      "image_path": "13/ab67616d0000b2730013e7782db25f28b59084ec",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "0014adcd67767097b6fb42e0",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "animal",
+          "tag": "dyn-animal",
+          "value": "animal"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-animal"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-animal",
+          "animal"
+        ]
+      ],
+      "dynamic_set_hash": "b3bc89ba8c127430868dd50f8a1dfe7da063c3b9c127f06cc968065f01b9a6e0",
+      "image_id": "ab67616d00001e020014adcd67767097b6fb42e0",
+      "image_path": "14/ab67616d00001e020014adcd67767097b6fb42e0",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "animal",
+      "subject_kind_by_variant": {
+        "E": "animal",
+        "F": "animal"
+      }
+    },
+    {
+      "artwork_id": "0014cb7f2229ff8195e3ba04",
+      "collection": "sharded",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "ab67616d0000b2730014cb7f2229ff8195e3ba04",
+      "image_path": "14/ab67616d0000b2730014cb7f2229ff8195e3ba04",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "artofficial",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/artofficial.jpg",
+      "image_path": "images/artofficial.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "birdsofprey",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/birdsofprey.jpg",
+      "image_path": "images/birdsofprey.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "disney",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "unmapped_no_noun",
+          "tag": null,
+          "value": "abstract_shape"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/disney.avif",
+      "image_path": "images/disney.avif",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "abstract_shape",
+      "subject_kind_by_variant": {
+        "E": "abstract_shape",
+        "F": "abstract_shape"
+      }
+    },
+    {
+      "artwork_id": "doja",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/doja.jpg",
+      "image_path": "images/doja.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "elephunk",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/elephunk.jpg",
+      "image_path": "images/elephunk.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "franz",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/franz.jpg",
+      "image_path": "images/franz.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "greenday",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "images/greenday.jpg",
+      "image_path": "images/greenday.jpg",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "havana",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/havana.jpg",
+      "image_path": "images/havana.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "horsley",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/horsley.jpg",
+      "image_path": "images/horsley.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "infected",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "barcode_or_price"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "images/infected.jpg",
+      "image_path": "images/infected.jpg",
+      "overlays_agreed": [
+        "barcode_or_price",
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "barcode_or_price",
+          "label_logo"
+        ],
+        "F": [
+          "barcode_or_price",
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "johns",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "images/johns.jpg",
+      "image_path": "images/johns.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "knuckles",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/knuckles.jpg",
+      "image_path": "images/knuckles.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "krafty",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "variants_disagree",
+          "tag": null,
+          "value": null
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/krafty.jpg",
+      "image_path": "images/krafty.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": null,
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "loups",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "animal",
+          "tag": "dyn-animal",
+          "value": "animal"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-animal"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-animal",
+          "animal"
+        ]
+      ],
+      "dynamic_set_hash": "b3bc89ba8c127430868dd50f8a1dfe7da063c3b9c127f06cc968065f01b9a6e0",
+      "image_id": "images/loups.jpg",
+      "image_path": "images/loups.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "animal",
+      "subject_kind_by_variant": {
+        "E": "animal",
+        "F": "animal"
+      }
+    },
+    {
+      "artwork_id": "meteora",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/meteora.jpg",
+      "image_path": "images/meteora.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "muse",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/muse.jpg",
+      "image_path": "images/muse.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "nobs",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "object",
+          "tag": "dyn-object",
+          "value": "object"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-object"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-object",
+          "object"
+        ]
+      ],
+      "dynamic_set_hash": "4640c46ec3bfdcd91c5ad1f070e3d6254103c87898af3147e648777b763fc5a4",
+      "image_id": "images/nobs.jpg",
+      "image_path": "images/nobs.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "object",
+      "subject_kind_by_variant": {
+        "E": "object",
+        "F": "object"
+      }
+    },
+    {
+      "artwork_id": "once",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/once.jpg",
+      "image_path": "images/once.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "orelsan",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/orelsan.jpg",
+      "image_path": "images/orelsan.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "placebo",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/placebo.jpg",
+      "image_path": "images/placebo.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "skap",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "vehicle",
+          "tag": "dyn-vehicle",
+          "value": "vehicle"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-vehicle"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-vehicle",
+          "vehicle"
+        ]
+      ],
+      "dynamic_set_hash": "a3538a7d534b5dc6e7068ea06f22d2a1d0f647ebf1e460f6279158ce6235945e",
+      "image_id": "images/skap.jpg",
+      "image_path": "images/skap.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "vehicle",
+      "subject_kind_by_variant": {
+        "E": "vehicle",
+        "F": "vehicle"
+      }
+    },
+    {
+      "artwork_id": "slim",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "parental_advisory"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/slim.jpg",
+      "image_path": "images/slim.jpg",
+      "overlays_agreed": [
+        "parental_advisory"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "parental_advisory"
+        ],
+        "F": [
+          "parental_advisory"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    },
+    {
+      "artwork_id": "slipknot",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "no_subject",
+          "tag": null,
+          "value": "not_applicable"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "no_overlay",
+          "tag": null,
+          "value": "none"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/slipknot.jpg",
+      "image_path": "images/slipknot.jpg",
+      "overlays_agreed": [
+        "none"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "none"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "not_applicable",
+      "subject_kind_by_variant": {
+        "E": "not_applicable",
+        "F": "not_applicable"
+      }
+    },
+    {
+      "artwork_id": "toxicity",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": "building",
+          "tag": "dyn-building",
+          "value": "building_or_structure"
+        }
+      ],
+      "dynamic_concepts": [
+        "dyn-building"
+      ],
+      "dynamic_prompts": [
+        [
+          "dyn-building",
+          "building"
+        ]
+      ],
+      "dynamic_set_hash": "30ca9affbe24793599292d2313d0288a6a37a631cfa3feec79bebf5aee1dda86",
+      "image_id": "images/toxicity.jpg",
+      "image_path": "images/toxicity.jpg",
+      "overlays_agreed": [],
+      "overlays_by_variant": {
+        "E": [
+          "none"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "building_or_structure",
+      "subject_kind_by_variant": {
+        "E": "building_or_structure",
+        "F": "building_or_structure"
+      }
+    },
+    {
+      "artwork_id": "vvbrown",
+      "collection": "other:images",
+      "derivation": [
+        {
+          "field": "subject_kind",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "person"
+        },
+        {
+          "field": "overlays",
+          "prompt": null,
+          "reason": "already_static",
+          "tag": null,
+          "value": "label_logo"
+        }
+      ],
+      "dynamic_concepts": [],
+      "dynamic_prompts": [],
+      "dynamic_set_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "image_id": "images/vvbrown.jpg",
+      "image_path": "images/vvbrown.jpg",
+      "overlays_agreed": [
+        "label_logo"
+      ],
+      "overlays_by_variant": {
+        "E": [
+          "label_logo"
+        ],
+        "F": [
+          "label_logo"
+        ]
+      },
+      "pilot_answer_present": true,
+      "subject_kind_agreed": "person",
+      "subject_kind_by_variant": {
+        "E": "person",
+        "F": "person"
+      }
+    }
+  ],
+  "meta": {
+    "agreement_variants": [
+      "E",
+      "F"
+    ],
+    "eval_set": "research/v3/data/oracle-premise/eval-set.json",
+    "generated_at": "2026-08-03T21:19:06.811Z",
+    "git_head": "6ad95ec0a582f85ca34a5d9ceced1c983b302605",
+    "multi_select_rule": "intersection",
+    "overlay_mapping": {
+      "barcode_or_price": null,
+      "label_logo": null,
+      "none": null,
+      "parental_advisory": null,
+      "watermark": [
+        "dyn-watermark",
+        "watermark"
+      ]
+    },
+    "rules_version": "sam-dynamic-concepts.v1",
+    "source_run": "research/v3/data/oracle-premise/group-bcde-pilot-1.jsonl",
+    "source_run_sha256": "ae450d999e3563028720eeeb781243e877ec9379e9d5308b4a721bf96bbb83fd",
+    "species_half_unavailable": "PROBE5 recommends species noun + class noun. `subject_kind` is a closed six-value enum and no oracle field on disk carries a free-form noun, so only the class half is derivable. Every dynamic prompt below is a class word.",
+    "static_concept_set_hash": "9c78298f3c9936781d4922657cae506c72147e13172d2233c801403bb040e5b6",
+    "static_concepts": [
+      "words",
+      "letter",
+      "lettering",
+      "display-text",
+      "emblem",
+      "sticker",
+      "parental-advisory",
+      "person",
+      "face",
+      "barcode"
+    ],
+    "subject_kind_mapping": {
+      "abstract_shape": null,
+      "animal": [
+        "dyn-animal",
+        "animal"
+      ],
+      "building_or_structure": [
+        "dyn-building",
+        "building"
+      ],
+      "not_applicable": null,
+      "object": [
+        "dyn-object",
+        "object"
+      ],
+      "person": null,
+      "vehicle": [
+        "dyn-vehicle",
+        "vehicle"
+      ]
+    }
+  }
+}
