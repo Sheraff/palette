@@ -5,8 +5,10 @@
 
 from __future__ import annotations
 
+import importlib
 import json
 import sys
+from pathlib import Path
 
 import numpy as np
 
@@ -109,6 +111,117 @@ def test_overlay_colors() -> bool:
                       f"{distinct} colours for {len(overlay.CONCEPT_COLORS)} concepts"))
 
 
+def test_every_module_imports() -> bool:
+    """Import every module in this package, so every step-lock assert anywhere in it is exercised.
+
+    Round-1 lesson, the expensive way. `overlay.CONCEPT_COLORS` had a step-lock assert and
+    test_overlay_colors below imported it on purpose so the assert would fire in the model-free
+    self-test. `review_round_2.CONCEPT_LABELS` had the same assert and nothing imported it — so
+    when `barcode` was added for concept set v2.1 the assert fired on import, review_round_2 and
+    build-ratification-fixture.ts were both dead, and this file still printed ALL PASS (phase-0
+    adversarial review, finding 5).
+
+    The fix is not "also import review_round_2". It is to stop maintaining a list: import the
+    whole directory, so the NEXT module with its own copy of a config table is covered on the day
+    it is written. Nothing here loads a model — every module imports mlx lazily, inside a
+    function. Files without an `if __name__` guard are scripts, not modules: importing one would
+    run it, so they are skipped by that structural test rather than by name.
+    """
+    here = Path(__file__).resolve().parent
+    ok = True
+    imported = []
+    for path in sorted(here.glob("*.py")):
+        if path.name == Path(__file__).name:
+            continue
+        already_imported = path.stem in sys.modules
+        if not already_imported and "if __name__" not in path.read_text(encoding="utf-8"):
+            print(f"SKIP  import {path.stem} (no __main__ guard — a script, not a module)")
+            continue
+        try:
+            importlib.import_module(path.stem)
+            imported.append(path.stem)
+            detail = ""
+            good = True
+        except Exception as exc:  # noqa: BLE001 — the failure IS the result
+            detail = f"{type(exc).__name__}: {exc}"
+            good = False
+        ok &= check(f"import {path.stem}", good, detail)
+    return ok and check("the import sweep covered every module", len(imported) > 0,
+                        f"{len(imported)} modules")
+
+
+def test_concept_label_step_lock() -> bool:
+    """Every hand-maintained per-concept table covers exactly the current concept set.
+
+    The import sweep above catches the ones that assert on import. This states the invariant
+    directly, so a table that loses its assert is still caught.
+    """
+    import overlay  # noqa: PLC0415
+    import review_round_2  # noqa: PLC0415
+
+    concepts = {c for c, _ in config.CONCEPT_PROMPTS}
+    ok = check("overlay.CONCEPT_COLORS covers the concept set",
+               set(overlay.CONCEPT_COLORS) == concepts,
+               str(sorted(concepts ^ set(overlay.CONCEPT_COLORS))))
+    ok &= check("review_round_2.CONCEPT_LABELS covers the concept set",
+                set(review_round_2.CONCEPT_LABELS) == concepts,
+                str(sorted(concepts ^ set(review_round_2.CONCEPT_LABELS))))
+    ok &= check("every review_round_2 label override names a live concept",
+                set(review_round_2.CONCEPT_LABEL_OVERRIDES) <= concepts)
+    return ok
+
+
+def test_model_manifest_in_step() -> bool:
+    """data/sam/model-manifest.json must pin the concept set the config actually runs.
+
+    Unlocked and rotted until 2026-08-03 (phase-0 adversarial review, finding 11): the manifest
+    still pinned the pre-v1 7-concept §8.3 set two concept-set generations after it was replaced,
+    because pin_model.py writes those fields and nothing ever compared them back. A pin nothing
+    checks is a decoration.
+    """
+    path = config.MODEL_MANIFEST_PATH
+    if not path.exists():
+        return check("model-manifest.json exists", False, str(path))
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    in_step = manifest.get("concept_set_hash") == common.concept_set_hash()
+    ok = check("model-manifest concept_set_hash matches config", in_step,
+               "" if in_step else
+               f"{manifest.get('concept_set_hash', '')[:12]} vs {common.concept_set_hash()[:12]} "
+               "— regenerate with pin_model.py")
+    ok &= check("model-manifest concepts match config",
+                manifest.get("concepts") == [c for c, _ in config.CONCEPT_PROMPTS])
+    ok &= check("model-manifest score_threshold matches config",
+                manifest.get("score_threshold") == config.SCORE_THRESHOLD)
+    return ok
+
+
+def test_calibrated_cut() -> bool:
+    """The calibrated cut is one predicate — a score threshold AND an area guard — and the
+    per-group table only ever names real groups."""
+    ok = check("every calibrated group threshold names a real group",
+               set(config.CALIBRATED_GROUP_THRESHOLDS) <= set(config.CONCEPT_GROUPS),
+               str(sorted(set(config.CALIBRATED_GROUP_THRESHOLDS) - set(config.CONCEPT_GROUPS))))
+    ok &= check("a text_like concept gets the text_like threshold",
+                config.calibrated_threshold_for("letter")
+                == config.CALIBRATED_GROUP_THRESHOLDS["text_like"])
+    ok &= check("an ungrouped group falls back to the pooled cut",
+                config.calibrated_threshold_for("person") == config.CALIBRATED_SCORE_THRESHOLD)
+    ok &= check("an unknown concept falls back to the pooled cut",
+                config.calibrated_threshold_for("no-such-concept")
+                == config.CALIBRATED_SCORE_THRESHOLD)
+    big = config.CALIBRATED_MAX_AREA_FRACTION + 0.01
+    ok &= check("the area guard rejects a high-scoring whole-image mask",
+                not config.passes_calibrated_cut(0.99, big, "person"))
+    ok &= check("the area guard can be switched off for a pre-guard artifact",
+                config.passes_calibrated_cut(0.99, big, "person", max_area_fraction=None))
+    ok &= check("a small high-scoring mask passes",
+                config.passes_calibrated_cut(0.99, 0.01, "person"))
+    ok &= check("the sweep optimum is below the stored rounded cut",
+                config.CALIBRATED_SWEEP_OPTIMUM < config.CALIBRATED_SCORE_THRESHOLD,
+                f"{config.CALIBRATED_SWEEP_OPTIMUM} < {config.CALIBRATED_SCORE_THRESHOLD}")
+    return ok
+
+
 def test_union_and_residual() -> bool:
     h, w = 20, 10
     a = np.zeros((h, w), dtype=np.uint8); a[0:10, :] = 1
@@ -145,6 +258,10 @@ def main() -> int:
         test_row_key_sensitivity(),
         test_concept_groups(),
         test_overlay_colors(),
+        test_every_module_imports(),
+        test_concept_label_step_lock(),
+        test_model_manifest_in_step(),
+        test_calibrated_cut(),
         test_union_and_residual(),
         test_pycocotools_agreement(),
     ]

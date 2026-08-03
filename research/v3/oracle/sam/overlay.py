@@ -55,8 +55,15 @@ def blend(base: np.ndarray, mask: np.ndarray, color, alpha=0.5) -> np.ndarray:
 
 
 def render(rows: list[dict], summary: dict, image_path: Path) -> Image.Image:
-    common.register_image_plugins()
-    original = Image.open(image_path).convert("RGB")
+    # Through common.decode_image, NOT Image.open(...).convert("RGB").
+    #
+    # decode_image applies ImageOps.exif_transpose before inference (common.py), so the masks are
+    # in transposed coordinates. Opening the base file raw here left the base untransposed, and on
+    # any EXIF-rotated image the masks and the artwork would disagree — silently, because a 180°
+    # rotation or a mirror does not even change the image size. Zero eval-142 images carry a
+    # non-trivial orientation tag, so this never bit; it is a corpus-run hazard and it is closed
+    # here rather than left as a trap (phase-0 adversarial review, finding 14).
+    original, _, _ = common.decode_image(image_path)
     base = np.array(original)
     h, w = base.shape[:2]
 

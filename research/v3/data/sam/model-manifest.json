@@ -1,24 +1,32 @@
 {
   "concept_prompts": [
     [
-      "text",
-      "text"
+      "words",
+      "words"
+    ],
+    [
+      "letter",
+      "letter"
     ],
     [
       "lettering",
       "lettering"
     ],
     [
-      "typography",
-      "typography"
+      "display-text",
+      "album title"
     ],
     [
-      "logo",
+      "emblem",
       "logo"
     ],
     [
       "sticker",
       "sticker"
+    ],
+    [
+      "parental-advisory",
+      "parental advisory"
     ],
     [
       "person",
@@ -27,23 +35,30 @@
     [
       "face",
       "face"
+    ],
+    [
+      "barcode",
+      "barcode"
     ]
   ],
-  "concept_set_hash": "5b8f2e69a08a4d2e8cba120177af995f9948c9e057b7c69455563adf56c2359b",
+  "concept_set_hash": "9c78298f3c9936781d4922657cae506c72147e13172d2233c801403bb040e5b6",
   "concepts": [
-    "text",
+    "words",
+    "letter",
     "lettering",
-    "typography",
-    "logo",
+    "display-text",
+    "emblem",
     "sticker",
+    "parental-advisory",
     "person",
-    "face"
+    "face",
+    "barcode"
   ],
   "config_sha256": "898d892490cdbaefc9a7a6ba2ae5ce5b7f93915a2aa8d6d0d5601417ca0b4b03",
-  "git_head": "7a54e9c57d900e7f6a242bb67663167a68514223",
+  "git_head": "5294918bd6a519f48c9418ff578ebe06deb7662e",
   "model_id": "mlx-community/sam3.1-bf16",
   "model_revision": "a992e302ea9b0f03f41dfd93414a4fd0e818f65b",
-  "pinned_at": "2026-08-03T08:18:52.086Z",
+  "pinned_at": "2026-08-03T19:00:04.521Z",
   "quantization": "bf16",
   "runtime": {
     "mlx": "0.32.0",

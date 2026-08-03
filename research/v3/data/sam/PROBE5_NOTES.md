@@ -367,3 +367,20 @@ housekeeping workstream. Nothing was installed and no package file was touched;
 4. **Part-noun vocabulary.** If the VLM stage is built, the prompt needs an explicit list of
    nouns that are parts and must not be emitted as `subject_kind`. This round names four
    (`eye`, `hand`, and by inference `face`, `wing`); the real list is the reviewer's call.
+
+---
+
+## ADDENDUM — phase-0 adversarial review (2026-08-03)
+
+Appended, not edited. Source: `research/v3/reviews/phase-0-adversarial/sam.md`. CPU only.
+
+**All 21 per-noun rows and all 4 per-class rows reproduce exactly**, once `marginal` is read as
+excluded from both sides and the `AMENDMENTS` tuple is applied. The table is fully recomputable
+from `probe-5-noun-breadth.jsonl` plus `probe_noun_breadth.py`.
+
+**The calibrated cut has changed shape since.** `config.py` now carries an area guard
+(`CALIBRATED_MAX_AREA_FRACTION = 0.5`) and a `text_like` threshold of 0.697295 alongside the pooled
+0.578. **Every "cut 0.578 (calibrated)" number above is score-only and pooled** and must stay so to
+be reproducible. For reference: of this probe's hits at or above 0.578, **4** have
+`area_fraction > 0.5` and would be guarded out. Retrofitting is a proposed follow-up, not a silent
+edit.

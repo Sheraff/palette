@@ -309,11 +309,30 @@ def row_key(image_sha256: str) -> str:
     ])
 
 
+# Per-image statuses that mean "this image is settled, do not queue it again". 'failed' is
+# terminal and queryable (§5.1); 'duplicate' records a path whose identical bytes were processed
+# under another path, and is terminal for the same reason.
+TERMINAL_IMAGE_STATUSES = ("ok", "failed", "duplicate")
+
+
 def completed_keys(path: Path) -> set[str]:
-    """Keys carrying a terminal per-image row. 'failed' is terminal and queryable (§5.1)."""
+    """Keys carrying a terminal per-image row."""
     return {r["row_key"] for r in read_jsonl(path)
             if r.get("record_type") == config.RECORD_TYPE_IMAGE
-            and r.get("status") in ("ok", "failed") and "row_key" in r}
+            and r.get("status") in TERMINAL_IMAGE_STATUSES and "row_key" in r}
+
+
+def completed_paths(path: Path) -> set[str]:
+    """Image paths that already carry a terminal per-image row.
+
+    Keyed by path, not by content hash: the resume key is the content hash, so on a collection run
+    two paths with identical bytes share one key and only one of them ever gets a real row. This
+    is how the runner tells "the second path of a duplicate pair, which still needs its own
+    marker" from "a path that already has one".
+    """
+    return {r["image_path"] for r in read_jsonl(path)
+            if r.get("record_type") == config.RECORD_TYPE_IMAGE
+            and r.get("status") in TERMINAL_IMAGE_STATUSES and "image_path" in r}
 
 
 class AttemptLedger:

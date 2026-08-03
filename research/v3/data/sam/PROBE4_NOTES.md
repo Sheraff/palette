@@ -270,3 +270,32 @@ No change to `config.py` (`CONCEPT_PROMPTS`, `CONCEPT_GROUPS`, thresholds all un
 decision record (this is evidence, and the mechanism choice is the reviewer's); no re-run of
 `sam-eval-142`; no edit to `PHASE_0_LOOSE_ENDS.md` or `data/decisions/`, which belong to the
 housekeeping workstream — items 1–4 above are written here for that workstream to pick up.
+
+---
+
+## ADDENDUM — phase-0 adversarial review (2026-08-03)
+
+Appended, not edited. Source: `research/v3/reviews/phase-0-adversarial/sam.md`. CPU only.
+
+**Every cell of the 14-phrasing table above recounts exactly** from
+`probe-4-scripts-objects.jsonl` — fired / fired ≥0.578 / TP / FP / FN — including
+`chinese characters` 4/0/4/0/0, `barcode` 1/1/1/0/1, `text` 0/16 and `words` 12/6/9/3/2, and every
+max-score listing matches to the digit.
+
+**One correction.** The determiner note ("`the car` scores 0.01–0.04 higher on four of five") is
+wrong in both numbers. Recomputed: `the car` scores higher on **5 of 5**, by **0.0061–0.0266**
+(0.8459→0.8725, 0.8893→0.9022, 0.9170→0.9279, 0.9246→0.9330, 0.9253→0.9314). The conclusion — the
+determiner does not matter — is unaffected and if anything is stronger.
+
+**The calibrated cut this file quotes has changed shape.** It is no longer a single score
+threshold: `config.py` now also carries an area guard (`CALIBRATED_MAX_AREA_FRACTION = 0.5`) and a
+per-group threshold for `text_like` (0.697295). **Every "≥0.578" column above is score-only and
+pooled**, which is how it was computed and how it must stay to be reproducible. For reference, this
+probe's rows contain **zero** hits with `area_fraction > 0.5`, so the area guard would change no
+cell here; the per-group threshold would, since `words` is a `text_like` concept.
+
+**The `chinese characters` conclusion is unchanged, and is now unblocked.** Its best score anywhere
+is 0.4720, still below every cut. The per-group threshold machinery loose end A12 was waiting on
+now exists (`config.CALIBRATED_GROUP_THRESHOLDS`) — it moves `text_like` **up**, not down, so it
+revives nothing by itself, but A12 no longer waits on machinery that does not exist. It waits on
+its own round.

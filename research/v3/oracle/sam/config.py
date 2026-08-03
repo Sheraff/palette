@@ -191,14 +191,153 @@ CONCEPT_GROUPS: dict[str, tuple[str, ...]] = {
 # --------------------------------------------------------------------------- thresholds
 
 # [REVIEWED] Calibrated 2026-08-03 by the reviewer's mask-quality round (60 masks,
-# sam-mask-quality-1, analysis in data/sam/mask-quality-analysis.json): the cut that best
-# separates the reviewer's yes from no is 0.578 (precision 91%, recall 69%, J 0.514; the
-# population-weighted alternative is 0.644, J 0.373 — the unweighted optimum is partly an
-# artefact of even-quota sampling, both recorded). All 3 hallucination-signature masks fall
-# below it, so no area-fraction guard is needed. STORED ROWS keep using the low run-time
-# threshold below so raising the cut stays a query, never a re-run; consumers should filter
-# at CALIBRATED_SCORE_THRESHOLD.
+# sam-mask-quality-1, analysis in data/sam/mask-quality-analysis.json). STORED ROWS keep using
+# the low run-time threshold below so raising the cut stays a query, never a re-run; consumers
+# should filter at CALIBRATED_SCORE_THRESHOLD — via passes_calibrated_cut() below, which also
+# applies the area guard.
+#
+# THE STORED VALUE IS THE ROUNDED DISPLAY VALUE, NOT THE SWEEP OPTIMUM. Corrected 2026-08-03
+# after the phase-0 adversarial review (reviews/phase-0-adversarial/sam.md finding 3). The sweep's
+# candidates are the observed scores themselves, so the winning candidate is the observed score
+# 0.577937 (CALIBRATED_SWEEP_OPTIMUM below); the next observed score above it is 0.580005 and
+# there is nothing in between. Rounding up to 0.578 moves the mask that *defines* the boundary to
+# the wrong side and turns one true positive into a false negative. Re-derived, both cuts, primary
+# treatment (`partly` excluded from both sides):
+#
+#   cut       tp  fp  fn  tn   precision  recall    specificity  Youden J
+#   0.577937  29   3  13  14   0.906250   0.690476  0.823529     0.514006   <- the sweep optimum
+#   0.578     28   3  14  14   0.903226   0.666667  0.823529     0.490196   <- this constant
+#
+# The published "precision 91%, recall 69%, J 0.514" is the first row and does NOT hold at the
+# value stored here; the second row is what this constant actually produces.
+#
+# DELIBERATE CHOICE (adversarial-review fix 4, 2026-08-03): keep 0.578, correct this comment.
+# The alternative — storing 0.577937 — was rejected because every artifact already on disk was
+# computed at 0.578: PROBE4_NOTES.md, PROBE5_NOTES.md, VOCAB_PROBE_NOTES.md, SAM_DESIGN_NOTES.md,
+# data/sam/nesting-in-person.json, data/sam/mask-quality-2-sample.json, the probe .log files, and
+# another workstream's committed data/oracle-premise/bcde-pilot-1-analysis.json. Moving the
+# constant by 6.3e-5 would leave all of them silently un-reproducible for a difference that
+# touches, corpus-wide, one boundary mask. Keeping the value makes every consumer's behaviour
+# exactly what is published; the defect was never the behaviour, it was this comment.
+# Anyone reproducing the published J must use CALIBRATED_SWEEP_OPTIMUM.
 CALIBRATED_SCORE_THRESHOLD = 0.578
+
+# [MEASURED] The sweep's actual winning candidate — an observed score, not a rounded value.
+# analyze-mask-quality.ts over sam-mask-quality-1, 2026-08-03. Use this to reproduce the published
+# precision 0.9062 / recall 0.6905 / J 0.5140; use CALIBRATED_SCORE_THRESHOLD to reproduce every
+# stored artifact. The two differ on exactly one mask in the calibration sample.
+CALIBRATED_SWEEP_OPTIMUM = 0.577937
+
+# [MEASURED] The population-weighted alternative, likewise the observed score rather than its
+# rounded display (0.644). Inverse-probability weights over `concept|band` cells: weighted J
+# 0.373214, precision 0.991293, recall 0.456204. The unweighted optimum is partly an artefact of
+# even-quota sampling; both are recorded so neither can be quietly dropped.
+CALIBRATED_SCORE_THRESHOLD_WEIGHTED = 0.644
+CALIBRATED_SWEEP_OPTIMUM_WEIGHTED = 0.643816
+
+# [MEASURED] Area-fraction guard: a region covering more than this share of the image is rejected
+# ALONGSIDE the score cut, not instead of it. Added 2026-08-03 by the phase-0 adversarial review
+# (finding 1), which showed the previous claim — "all 3 hallucination-signature masks fall below
+# the cut, so no area-fraction guard is needed" — was circular. The "hallucination signature" is
+# *defined* as area_fraction > 0.5 AND score < 0.5, so every member of it necessarily scores below
+# any cut >= 0.5; the verdict was computed over that force-included subset alone and could not
+# have produced a counterexample. The evidence the same round actually holds:
+#
+#   * 5 of the 60 masks have area_fraction > 0.5. The reviewer rejected 5 of 5 and accepted none.
+#   * One of them — `8b4f2aadf3b1:sticker:0`, score 0.678697, area 0.780706 — clears the score cut
+#     with room, and is one of only three false positives there. It was never force-included, so
+#     the old verdict never looked at it.
+#   * Adding the guard costs ZERO true positives in-sample and removes that one false positive:
+#       at 0.577937: precision 0.906250 -> 0.935484, specificity 0.823529 -> 0.882353, J 0.514006 -> 0.572829
+#       at 0.578   : precision 0.903226 -> 0.933333, specificity 0.823529 -> 0.882353, J 0.490196 -> 0.549020
+#     (Recall is unchanged at both cuts. The review's headline "0.9062 -> 0.9333" pairs the
+#     precision at 0.577937 with the guarded precision at 0.578; both guarded values are above.)
+#
+# KNOWN EXPOSURE, stated because the sample cannot settle it. Corpus-wide on sam-eval-142-v2:
+# 4,863 regions, 10 with area_fraction > 0.5, of which 3 match the signature and 6 clear the score
+# cut — 5 `person` and the same 0.678697 `sticker`. The calibration sample's big-area masks are
+# 3 `sticker`, 1 `logo`, 1 `face` and contain NO `person` (the largest sampled `person` mask is
+# area 0.302), so the guard's main corpus effect falls on a concept the round never tested at big
+# area. A person filling most of a cover is an ordinary artwork, and those 5 masks may well be
+# correct. This is recorded as a loose end for a round-3 item rather than hidden in a constant.
+CALIBRATED_MAX_AREA_FRACTION = 0.5
+
+
+def passes_calibrated_cut(score: float, area_fraction: float,
+                          concept: str | None = None,
+                          max_area_fraction: float | None = CALIBRATED_MAX_AREA_FRACTION) -> bool:
+    """The calibrated cut as one predicate: score threshold AND area guard.
+
+    One place, so a consumer cannot pick up the threshold and miss the guard. Pass
+    `max_area_fraction=None` to reproduce a score-only artifact made before the guard existed
+    (every probe table and nesting table on disk today is score-only — see the addenda in
+    data/sam/*NOTES.md).
+
+    `concept` selects the per-group threshold when one is calibrated; leave it None for the
+    pooled cut.
+    """
+    if score < calibrated_threshold_for(concept):
+        return False
+    return max_area_fraction is None or area_fraction <= max_area_fraction
+
+
+# [MEASURED] Per-group score thresholds, where a group is measurably better off under its own cut
+# than under the pooled one. Groups not listed here fall back to CALIBRATED_SCORE_THRESHOLD.
+# Added 2026-08-03 by the phase-0 adversarial review (finding 2), which showed the previous
+# conclusion — "the concept groups did not separate, so no per-group threshold is justified" — was
+# a property of an `every()` quantifier, not a measurement. Re-derived over sam-mask-quality-1,
+# primary treatment, candidate set = observed scores, ties to the lowest:
+#
+#   group        n   own optimum  own J     J at pooled 0.577937  gain
+#   text_like    31  0.697295     0.478261  0.358696              +0.119565
+#   person_like  29  0.577937     0.678363  0.678363               0.000000
+#
+# Both of the analysis's own gates pass for text_like: separation |0.697295 - 0.577937| = 0.119358
+# >= PER_GROUP_MIN_SEPARATION 0.05, gain 0.119565 >= PER_GROUP_MIN_J_GAIN 0.05, n = 31 >=
+# MIN_CELL_ANSWERS 5. `person_like` "fails" only because its own optimum IS the pooled optimum —
+# it is the group that drives the pooled cut, so its gain is necessarily zero. A group that is
+# indifferent must not veto a group that gains; the gate in analyze-mask-quality.ts was fixed to
+# say so.
+#
+# What the second number buys, in-sample: text_like at the pooled cut runs precision 0.875 /
+# recall 0.608696; at its own 0.697295 it runs precision 1.000000 / recall 0.478261 (tp 11, fp 0,
+# fn 12, tn 8). Over the whole 60-mask sample, cutting each group at its own threshold gives
+# precision 0.962963 / recall 0.619048 / J 0.560224, against 0.906250 / 0.690476 / 0.514006 for
+# the single pooled cut. It is a precision-for-recall trade, and it lands on the majority of the
+# instrument's output: text_like is 4,165 of 4,863 regions in sam-eval-142-v2 (86%) and 1,968 of
+# the 2,366 that clear the pooled cut.
+#
+# FEEDS LOOSE END A12 (CJK below the cut). A12 is parked because "chinese characters" recalls 4/4
+# CJK covers with zero false positives yet tops out at 0.472, below the pooled cut, and the note
+# in CONCEPT_PROMPTS above says "a category-aware threshold plus a CJK mask-quality round must
+# come first". This table IS that category-aware threshold machinery: the mechanism now exists and
+# is calibrated for text_like. It moves text_like's cut UP, not down, so it does not by itself
+# revive any CJK mask — A12 still needs its own round, and a CJK entry here would need its own
+# evidence. What changes is that A12 no longer waits on machinery that does not exist.
+CALIBRATED_GROUP_THRESHOLDS: dict[str, float] = {
+    # Stored at full precision, unrounded, deliberately: rounding the pooled cut up to 0.578 is
+    # exactly the defect finding 3 names, and a new constant must not repeat it. No artifact on
+    # disk was computed at this cut, so there is nothing to keep reproducible.
+    "text_like": 0.697295,
+}
+
+
+def group_of(concept: str) -> str | None:
+    """The CONCEPT_GROUPS group a stored concept tag belongs to, or None if it is not in the set."""
+    for group, concepts in CONCEPT_GROUPS.items():
+        if concept in concepts:
+            return group
+    return None
+
+
+def calibrated_threshold_for(concept: str | None) -> float:
+    """The score cut for one concept: its group's, if calibrated, else the pooled cut."""
+    if concept is None:
+        return CALIBRATED_SCORE_THRESHOLD
+    group = group_of(concept)
+    if group is None:
+        return CALIBRATED_SCORE_THRESHOLD
+    return CALIBRATED_GROUP_THRESHOLDS.get(group, CALIBRATED_SCORE_THRESHOLD)
 
 # [UNCALIBRATED] Score below which a detection is dropped. mlx-vlm's own README example
 # uses 0.3; the class default is 0.5. Kept low deliberately: §8.3 says recall is the

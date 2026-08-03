@@ -57,25 +57,70 @@ def instance_row(ref: common.ImageRef, inst: common.Instance, meta: dict,
     }
 
 
+def aggregates(instances: list[common.Instance], height: int, width: int,
+               suffix: str = "") -> dict:
+    """Union mask, masked fraction, residual fraction and per-group unions over `instances`.
+
+    Called twice per image: once over every instance the run kept (SCORE_THRESHOLD = 0.3) and once
+    over the instances that pass the calibrated cut. `suffix` names the second set.
+    """
+    pixel_area = float(height * width)
+    union = common.union_mask(instances, height, width)
+    masked_fraction = float(union.sum()) / pixel_area
+
+    out = {
+        f"masked_area_fraction{suffix}": round(masked_fraction, 9),
+        # §8.3: everything not covered by an instance mask is field. This is the number the
+        # colorimetry stage runs on.
+        f"residual_field_fraction{suffix}": round(1.0 - masked_fraction, 9),
+        f"union_mask_rle{suffix}": common.rle_encode(union),
+        f"union_mask_rle_format{suffix}": config.MASK_RLE_FORMAT,
+    }
+    for group, concepts in config.CONCEPT_GROUPS.items():
+        sub = [i for i in instances if i.concept in concepts]
+        group_union = common.union_mask(sub, height, width)
+        out[f"{group}_union_area_fraction{suffix}"] = round(
+            float(group_union.sum()) / pixel_area, 9)
+    return out
+
+
 def summary_row(ref: common.ImageRef, result: common.ImageResult, meta: dict,
                 image_sha256: str, source_long_edge: int, processed_long_edge: int,
                 key: str, attempt: int) -> dict:
     height, width = result.height, result.width
-    pixel_area = float(height * width)
 
-    union = common.union_mask(result.instances, height, width)
-    masked_fraction = float(union.sum()) / pixel_area
-
-    group_fractions = {}
-    for group, concepts in config.CONCEPT_GROUPS.items():
-        sub = [i for i in result.instances if i.concept in concepts]
-        group_union = common.union_mask(sub, height, width)
-        group_fractions[f"{group}_union_area_fraction"] = round(
-            float(group_union.sum()) / pixel_area, 9)
+    # Two sets of aggregates, deliberately.
+    #
+    # The unsuffixed set is computed over EVERY instance the run kept, at the low run-time
+    # SCORE_THRESHOLD (0.3). It is what the schema has always carried and what every stored run to
+    # date holds — but config.py tells consumers to filter at the calibrated cut, and a consumer
+    # that obeys gets regions at the calibrated cut and a residual at 0.3. The summary columns are
+    # not filterable; they can only be recomputed from the per-instance RLEs, and nothing said so.
+    # Phase-0 adversarial review, finding 4: on sam-eval-142-v2 the stored residual differs from
+    # the calibrated one by a mean of 0.0416 and a max of 0.6668, on 70 of 142 images by more than
+    # 0.01 — and round 2 rendered its residual panels from the 0.3 union while selecting its mask
+    # items at the calibrated cut, so the reviewer judged a 0.3 residual.
+    #
+    # The `_calibrated` set closes that for every future run. For runs already on disk,
+    # derive_calibrated_aggregates.py recomputes the same fields from the stored RLEs into a
+    # separate file — the stored JSONLs are immutable evidence and are never rewritten.
+    # SCHEMA_VERSION is deliberately NOT bumped for this. It is part of row_key, so a bump re-runs
+    # every image on the GPU — and the addition is purely additive: no per-region row changes, no
+    # existing summary value changes, and a re-run would reproduce every old column byte for byte.
+    # Paying a full GPU run to add columns that can be derived on CPU from the stored RLEs is the
+    # wrong trade, and the derivation script exists precisely so it is not needed. A stored run
+    # without these columns is not wrong, it is older; `calibrated_cut` below is how a reader tells.
+    calibrated = [
+        inst for inst in result.instances
+        if config.passes_calibrated_cut(inst.score, inst.area_fraction, inst.concept)
+    ]
 
     counts = {c: 0 for c, _ in config.CONCEPT_PROMPTS}
     for inst in result.instances:
         counts[inst.concept] += 1
+    counts_calibrated = {c: 0 for c, _ in config.CONCEPT_PROMPTS}
+    for inst in calibrated:
+        counts_calibrated[inst.concept] += 1
 
     row = {
         "record_type": config.RECORD_TYPE_IMAGE,
@@ -96,17 +141,21 @@ def summary_row(ref: common.ImageRef, result: common.ImageResult, meta: dict,
         "instances_total": len(result.instances),
         "instances_by_concept": counts,
         "concepts_with_zero_instances": sorted(c for c, n in counts.items() if n == 0),
-        "masked_area_fraction": round(masked_fraction, 9),
-        # §8.3: everything not covered by an instance mask is field. This is the number
-        # the colorimetry stage runs on.
-        "residual_field_fraction": round(1.0 - masked_fraction, 9),
-        "union_mask_rle": common.rle_encode(union),
-        "union_mask_rle_format": config.MASK_RLE_FORMAT,
+        # Which cut the `_calibrated` columns below were computed at, so a reader never has to
+        # guess and a later change to the constants is visible in the data.
+        "calibrated_cut": {
+            "score_threshold": config.CALIBRATED_SCORE_THRESHOLD,
+            "group_thresholds": dict(config.CALIBRATED_GROUP_THRESHOLDS),
+            "max_area_fraction": config.CALIBRATED_MAX_AREA_FRACTION,
+        },
+        "instances_total_calibrated": len(calibrated),
+        "instances_by_concept_calibrated": counts_calibrated,
         "seconds_total": round(result.seconds_total, 3),
         "seconds_by_concept": {k: round(v, 3) for k, v in result.seconds_by_concept.items()},
         "decoded_at": common.utc_now(),
     }
-    row.update(group_fractions)
+    row.update(aggregates(result.instances, height, width))
+    row.update(aggregates(calibrated, height, width, suffix="_calibrated"))
     row.update(meta)
     return row
 
@@ -173,6 +222,9 @@ def main() -> int:
     canary_ref = (common.ImageRef.from_rel(args.canary) if args.canary
                   else (refs[0] if refs else None))
     canary_baseline: str | None = None
+    # Paths that already have a terminal row, from this process or an earlier one, so a duplicate
+    # row is written for the SECOND path of a content-duplicate pair and never for the first.
+    seen_paths: set[str] = common.completed_paths(out_path)
     processed = 0
     failed = 0
     started_run = time.time()
@@ -191,13 +243,38 @@ def main() -> int:
                                 "error_class": "FileNotFoundError",
                                 "error_message": str(ref.abs_path), **meta})
                     done.add(missing_key)
+                    seen_paths.add(ref.rel_path)
                     failed += 1
                 continue
 
             image_sha256 = common.sha256_file(ref.abs_path)
             key = common.row_key(image_sha256)
             if key in done:
+                # The resume key is the CONTENT hash, so two different paths holding identical
+                # bytes collide here and the second is skipped. That is right — the answer would
+                # be identical and the GPU time is real — but until 2026-08-03 the second path
+                # left NO row at all, not even a record that it had been seen (phase-0 adversarial
+                # review, finding 15). Immaterial on the 142-image eval set; on a --collection run
+                # over 7,550 sharded files a caller joining paths to rows would find paths with no
+                # row and no way to tell "deduplicated" from "never queued" or "lost".
+                #
+                # A terminal status row, keyed by path so it is written exactly once and a restart
+                # skips it, and carrying the content hash the real rows are under.
+                dedup_key = f"duplicate|{ref.rel_path}"
+                if ref.rel_path not in seen_paths:
+                    sink.write({"record_type": config.RECORD_TYPE_IMAGE, "status": "duplicate",
+                                "image_path": ref.rel_path, "image_id": ref.image_id,
+                                "collection": ref.collection, "artwork_id": ref.artwork_id,
+                                "image_sha256": image_sha256, "row_key": dedup_key,
+                                "duplicate_of_row_key": key, "attempt": 0,
+                                "note": "identical bytes to an image already processed in this "
+                                        "run or an earlier one; its regions are stored under "
+                                        "duplicate_of_row_key",
+                                **meta})
+                    done.add(dedup_key)
+                    seen_paths.add(ref.rel_path)
                 continue
+            seen_paths.add(ref.rel_path)
 
             attempt = ledger.record(key, ref.rel_path)
             if attempt > config.MAX_ATTEMPTS:

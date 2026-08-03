@@ -21,9 +21,12 @@ import { readFile } from "node:fs/promises"
 import { after, before, describe, it } from "node:test"
 import {
 	ANALYSIS_VERSION,
+	AREA_GUARD_MAX_FRACTION,
 	analyze,
 	bestPoint,
 	candidateThresholds,
+	metricsAt,
+	pointAt,
 	summarize,
 	sweep,
 	wilson,
@@ -71,12 +74,39 @@ const fixture = await buildSamMaskQualityFixture()
 const ANSWER_KEY_TOKENS = ["score", "areaFraction", "area_fraction", "forcedSuspicious", "band", "0.30-0.45", "0.80+"]
 
 describe("mask-quality sample", () => {
+	/**
+	 * Round 1 is FROZEN under concept set v1, and this is the assertion that says so.
+	 *
+	 * Until 2026-08-03 nothing in this file mentioned a concept set at all (phase-0 adversarial
+	 * review, finding 8): the cell count was the literal 8, and `[a-z-]+` matched any tag, so the
+	 * whole suite would have gone on passing against a manifest regenerated under a different set.
+	 * The concept set has moved twice since (v2, v2.1) and round 1 must not follow it — its
+	 * overlays are what a human actually looked at.
+	 */
+	it("is pinned to the frozen concept set v1, under the run it was drawn from", () => {
+		assert.equal(manifest.sourceRun, "sam-eval-142", "round 1 is the v1 run; sam-eval-142-v2 is round 2's")
+		assert.deepEqual(
+			[...new Set(manifest.items.map((entry) => entry.concept))].sort(),
+			["album-title", "face", "letter", "lettering", "logo", "person", "sticker", "words"],
+			"round 1's concept set is v1 and is frozen — `album-title` and `logo` were renamed in v2, and `parental-advisory` and `barcode` came later",
+		)
+		assert.deepEqual([...new Set(manifest.items.map((entry) => entry.conceptGroup))].sort(), ["person_like", "text_like"])
+		assert.deepEqual(
+			manifest.scoreBands.map((entry) => entry.band),
+			["0.30-0.45", "0.45-0.60", "0.60-0.80", "0.80+"],
+		)
+	})
+
 	it("is 60 masks, stratified over four score bands and two concept groups", () => {
 		assert.equal(manifest.items.length, 60)
 		assert.equal(manifest.batchId, BATCH)
 		const cells = new Map<string, number>()
 		for (const entry of manifest.items) cells.set(entry.stratum, (cells.get(entry.stratum) ?? 0) + 1)
-		assert.equal(cells.size, 8, "every band x group cell must be represented")
+		// From the manifest's own strata definition, not a literal: the number 8 is 4 bands x 2
+		// groups and has to keep saying so out loud.
+		const expectedCells = manifest.scoreBands.length * new Set(manifest.items.map((entry) => entry.conceptGroup)).size
+		assert.equal(expectedCells, 8)
+		assert.equal(cells.size, expectedCells, "every band x group cell must be represented")
 		for (const [cell, count] of cells) {
 			assert.ok(count >= 5, `${cell} holds only ${count} masks; a cell that thin cannot inform a threshold`)
 		}
@@ -440,6 +470,100 @@ describe("mask-quality statistics", () => {
 		const interval = wilson(8, 10)!
 		assert.ok(interval.low < 0.8 && interval.high > 0.8)
 		assert.equal(wilson(0, 0), null)
+	})
+
+	/**
+	 * The pooled cut is one group's own optimum, so it is usually NOT on another group's candidate
+	 * grid. `pointAt` returns the nearest lower swept point, which keeps masks the pooled cut drops.
+	 * Phase-0 adversarial review, finding 2: this understated `text_like`'s gain by a third.
+	 */
+	it("evaluates a group at the exact pooled threshold, not at the nearest lower swept point", () => {
+		const group = rows([[0.40, "no"], [0.55, "no"], [0.80, "yes"]])
+		const points = sweep(group, 0.3, "excluded", false)
+		// 0.60 is not an observed score here, so the sweep grid has nothing at it.
+		assert.ok(!points.some((point) => point.threshold === 0.6))
+		assert.equal(pointAt(points, 0.6)!.threshold, 0.55, "pointAt lands on the nearest lower candidate")
+		assert.equal(pointAt(points, 0.6)!.keptFalsePositive, 1, "and so keeps a mask that 0.6 would have dropped")
+		const exact = metricsAt(group, 0.6, "excluded", false)
+		assert.equal(exact.threshold, 0.6)
+		assert.equal(exact.keptTruePositive, 1)
+		assert.equal(exact.keptFalsePositive, 0)
+		assert.equal(exact.droppedTrueNegative, 2)
+	})
+
+	/**
+	 * The area guard is part of the classifier. A big-area mask it drops is a mask the instrument
+	 * rejected — it stays in the evaluation as a true or false negative, and is not filtered out of
+	 * the population. Filtering it out shrinks the negative class by exactly the rows the guard
+	 * gets right.
+	 */
+	it("counts an area-guarded mask as rejected, not as absent", () => {
+		const withBigArea: Judged[] = [
+			...rows([[0.9, "yes"], [0.7, "no"]]),
+			{ ...rows([[0.95, "no"]])[0], itemId: "big", maskRowId: "big", areaFraction: 0.9 },
+		]
+		const off = metricsAt(withBigArea, 0.6, "excluded", false)
+		assert.equal(off.keptTruePositive, 1)
+		assert.equal(off.keptFalsePositive, 2)
+		assert.equal(off.droppedTrueNegative, 0)
+		const on = metricsAt(withBigArea, 0.6, "excluded", false, AREA_GUARD_MAX_FRACTION)
+		assert.equal(on.keptTruePositive, 1, "the guard must not cost a true positive here")
+		assert.equal(on.keptFalsePositive, 1, "the big-area false positive is guarded away")
+		assert.equal(on.droppedTrueNegative, 1, "and it is still counted, as a true negative")
+		assert.equal(on.keptTruePositive + on.keptFalsePositive + on.droppedFalseNegative + on.droppedTrueNegative, 3)
+	})
+})
+
+/**
+ * The real round, not the synthetic reviewer: the two conclusions the phase-0 adversarial review
+ * overturned, asserted against the committed answers so they cannot quietly revert.
+ */
+const { DEFAULT_WAREHOUSE_PATH } = await import("../src/warehouse/cli.ts")
+const releasedAnalysis: any = await analyze({ warehousePath: DEFAULT_WAREHOUSE_PATH })
+
+describe("mask-quality analysis — the released round", () => {
+	const analysis = releasedAnalysis
+
+	it("does not let the group that defines the pooled cut veto the group that gains", () => {
+		const groups = new Map(analysis.recommendation.perGroupTest.groups.map((entry: any) => [entry.group, entry]))
+		const definer: any = groups.get("person_like")
+		const gainer: any = groups.get("text_like")
+		assert.equal(definer.definesPooledThreshold, true, "person_like's own optimum is the pooled optimum")
+		assert.equal(definer.gainOverPooled, 0, "which makes its gain zero by construction, not by measurement")
+		assert.ok(gainer.gainOverPooled > 0.1, `text_like gains ${gainer.gainOverPooled} over the pooled cut`)
+		assert.equal(analysis.recommendation.perGroup, true, "one indifferent group must not veto one that gains")
+		assert.equal(typeof analysis.recommendation.scoreThreshold, "object")
+		assert.equal(analysis.recommendation.scoreThreshold.text_like, 0.697295)
+	})
+
+	it("judges the area question over every big-area mask, not over the force-included subset", () => {
+		const big = analysis.hallucination.wholeSampleBigArea
+		assert.equal(big.length, 5)
+		assert.equal(big.filter((entry: any) => entry.forcedSuspicious).length, 3)
+		// The counterexample the old verdict could not see: rejected, big, and above the cut.
+		const survivor = big.find((entry: any) => entry.survivesTheRecommendedThreshold)
+		assert.ok(survivor !== undefined, "the sticker at score 0.679 / area 0.781 is the whole point")
+		assert.equal(survivor.answer, "no")
+		assert.equal(analysis.hallucination.bigArea.acceptedByReviewer, 0, "5 of 5 big-area masks were rejected")
+		assert.match(analysis.hallucination.verdict, /a score threshold alone cannot remove this class/u)
+		assert.equal(analysis.hallucination.guardEffect.truePositivesLost, 0)
+		assert.equal(analysis.hallucination.guardEffect.falsePositivesRemoved, 1)
+		assert.ok(analysis.hallucination.guardEffect.with.precision > analysis.hallucination.guardEffect.without.precision)
+		// The exposure the sample cannot settle, kept visible.
+		assert.ok(analysis.hallucination.guardEffect.untestedConcepts.includes("person"))
+	})
+
+	it("keeps the stored constant and the sweep optimum distinguishable", async () => {
+		// config.py stores 0.578 for reproducibility of everything on disk; the sweep's winner is the
+		// observed score 0.577937 and is what the published precision/recall/J hold at.
+		assert.equal(analysis.recommendation.pooled.threshold, 0.577937)
+		assert.equal(analysis.recommendation.pooled.keptTruePositive, 29)
+		assert.equal(analysis.recommendation.pooled.keptFalsePositive, 3)
+		const config = await readFile(`${REPO_ROOT}/research/v3/oracle/sam/config.py`, "utf8")
+		assert.match(config, /^CALIBRATED_SCORE_THRESHOLD = 0\.578$/mu)
+		assert.match(config, /^CALIBRATED_SWEEP_OPTIMUM = 0\.577937$/mu)
+		assert.match(config, /^CALIBRATED_MAX_AREA_FRACTION = 0\.5$/mu)
+		assert.match(config, /"text_like": 0\.697295,/u)
 	})
 })
 

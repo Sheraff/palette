@@ -11,10 +11,17 @@
  *
  *   1. **What threshold separates yes from no?** A sweep over every observed score, scored by
  *      Youden's J, with `partly` reported separately and never silently folded into either side.
- *   2. **Do the two concept groups need different thresholds?** The same sweep per group, adopted
- *      only if the groups genuinely separate — two numbers where one would do is a liability.
- *   3. **What happens to the hallucination class?** The force-included suspicious shapes are named
- *      individually, with an explicit verdict on whether a score cut can remove them at all.
+ *   2. **Do the concept groups need different thresholds?** The same sweep per group, adopted only
+ *      if the groups genuinely separate — two numbers where one would do is a liability. The group
+ *      whose own optimum defines the pooled cut abstains rather than vetoing (it gains zero by
+ *      construction), and any number of groups is handled, not exactly two.
+ *   3. **What happens to the big-area class?** Every judged mask over the area bar is named
+ *      individually — not only the force-included ones, which are *defined* to score below 0.5 and
+ *      so can never contradict a cut at or above it — with an explicit verdict on whether a score
+ *      cut can remove them at all and what an area guard would cost.
+ *
+ * Fixes 2 and 3 are the phase-0 adversarial review's findings 1, 2 and 7
+ * (`research/v3/reviews/phase-0-adversarial/sam.md`), applied 2026-08-03.
  *
  * Nothing here writes to the warehouse or to `config.py`. Raising `SCORE_THRESHOLD` is the
  * reviewer's edit (PHASE_0_LOOSE_ENDS.md A6); this produces the number and the evidence for it.
@@ -87,6 +94,27 @@ export const TIE_BREAK = "lowest_threshold"
  */
 export const PER_GROUP_MIN_SEPARATION = 0.05
 export const PER_GROUP_MIN_J_GAIN = 0.05
+
+/**
+ * How much worse than the pooled cut a group is allowed to be under its own cut.
+ *
+ * The answer is "none, beyond arithmetic noise". A group's own optimum can never be genuinely
+ * worse than the pooled cut on its own rows — it was chosen by maximising J over a candidate set
+ * that includes every observed score. This bar exists to say that out loud, and to let a group
+ * that is exactly indifferent through.
+ * [REVIEWED] — a consequence of how the optimum is chosen, not a tunable.
+ */
+export const PER_GROUP_MAX_J_LOSS = 1e-9
+
+/**
+ * Area fraction above which a region is rejected regardless of its score.
+ *
+ * Mirrors `config.py` `CALIBRATED_MAX_AREA_FRACTION`, and is the same number the sampler used to
+ * define the "hallucination signature". Kept as a constant here so the analysis can report what
+ * the guard buys instead of asserting that none is needed.
+ * [MEASURED] — `oracle/sam/config.py` CALIBRATED_MAX_AREA_FRACTION; see the `guardEffect` block.
+ */
+export const AREA_GUARD_MAX_FRACTION = 0.5
 
 /**
  * Below this many answered rows a cell's rate is reported but never acted on.
@@ -244,7 +272,21 @@ export function candidateThresholds(rows: readonly Judged[], floor: number): num
 	return [...values].sort((a, b) => a - b)
 }
 
-export function sweep(rows: readonly Judged[], floor: number, treatment: PartlyTreatment, weighted: boolean): SweepPoint[] {
+/**
+ * `maxAreaFraction` is part of the CLASSIFIER, not of the sample.
+ *
+ * A mask the area guard drops is a mask the instrument rejected, so it stays in the evaluation and
+ * lands in `tn` or `fn` — it is not filtered out of the population. Filtering it out instead would
+ * shrink the negative class by exactly the rows the guard gets right and understate what the guard
+ * buys (measured on the real round: specificity 0.8824 the right way, 0.8333 the wrong way).
+ */
+export function sweep(
+	rows: readonly Judged[],
+	floor: number,
+	treatment: PartlyTreatment,
+	weighted: boolean,
+	maxAreaFraction: number | null = null,
+): SweepPoint[] {
 	const weightOf = (row: Judged) => (weighted ? row.weight : 1)
 	return candidateThresholds(rows, floor).map((threshold) => {
 		let tp = 0
@@ -254,7 +296,7 @@ export function sweep(rows: readonly Judged[], floor: number, treatment: PartlyT
 		let partlyKept = 0
 		let partlyDropped = 0
 		for (const row of rows) {
-			const kept = row.score >= threshold
+			const kept = row.score >= threshold && (maxAreaFraction === null || row.areaFraction <= maxAreaFraction)
 			const weight = weightOf(row)
 			let side: "positive" | "negative" | null = null
 			if (row.answer === POSITIVE_ANSWER) side = "positive"
@@ -281,11 +323,32 @@ export function bestPoint(points: readonly SweepPoint[]): SweepPoint | null {
 	return best
 }
 
-/** J at a given threshold, for comparing a group against the pooled recommendation. */
+/**
+ * The last swept point at or below a threshold.
+ *
+ * NOT the metrics *at* that threshold — use `metricsAt` for that. Kept because it is the honest
+ * "where does this threshold land on the curve" lookup, but it is the wrong tool for comparing a
+ * group against the pooled cut: a group's candidate list holds only its own observed scores, so
+ * the pooled cut is usually not on it and this returns a lower point, keeping masks the pooled cut
+ * would drop. Measured cost of that mistake on the real round: it reported `text_like`'s J under
+ * the pooled cut as 0.402174 (the value at 0.551383, the nearest lower text_like score) instead of
+ * 0.358696, understating the gain from a per-group threshold by a third.
+ */
 export function pointAt(points: readonly SweepPoint[], threshold: number): SweepPoint | null {
 	let chosen: SweepPoint | null = null
 	for (const point of points) if (point.threshold <= threshold + 1e-12) chosen = point
 	return chosen
+}
+
+/** The metrics a set of rows actually produces at one exact threshold, on or off the sweep grid. */
+export function metricsAt(
+	rows: readonly Judged[],
+	threshold: number,
+	treatment: PartlyTreatment,
+	weighted: boolean,
+	maxAreaFraction: number | null = null,
+): SweepPoint {
+	return sweep(rows, threshold, treatment, weighted, maxAreaFraction).find((point) => point.threshold === threshold)!
 }
 
 /* ------------------------------------------------------------------------------------------- */
@@ -365,8 +428,10 @@ export async function analyze(options: { warehousePath: string; samplePath?: str
 	const perGroup = groups.map((group) => {
 		const rows = judged.filter((row) => row.group === group)
 		const own = recommendations.excluded[group]
-		const underPooled = pointAt(sweeps.excluded[group], pooledThreshold)
-		const gain = own?.youdenJ !== null && own !== null && underPooled?.youdenJ != null ? own.youdenJ! - underPooled.youdenJ : null
+		// `metricsAt`, not `pointAt`: the pooled cut is an observed score and is almost never on
+		// this group's candidate grid. See `pointAt`'s note.
+		const underPooled = rows.length === 0 ? null : metricsAt(rows, pooledThreshold, "excluded", false)
+		const gain = own?.youdenJ != null && underPooled?.youdenJ != null ? own.youdenJ - underPooled.youdenJ : null
 		return {
 			group,
 			answered: rows.length,
@@ -375,17 +440,45 @@ export async function analyze(options: { warehousePath: string; samplePath?: str
 			ownYoudenJ: own?.youdenJ ?? null,
 			youdenJUnderPooledThreshold: underPooled?.youdenJ ?? null,
 			gainOverPooled: gain,
+			/**
+			 * True when this group's own optimum IS the pooled optimum — it is the group driving
+			 * the pooled cut, so its gain is zero by construction and says nothing about whether
+			 * OTHER groups want their own threshold.
+			 */
+			definesPooledThreshold: own?.threshold !== undefined && own !== null && Math.abs(own.threshold - pooledThreshold) < 1e-12,
 			underpowered: rows.length < MIN_CELL_ANSWERS,
 		}
 	})
-	const separation =
-		perGroup.length === 2 && perGroup.every((entry) => entry.ownThreshold !== null)
-			? Math.abs(perGroup[0].ownThreshold! - perGroup[1].ownThreshold!)
-			: null
-	const perGroupWarranted =
-		separation !== null &&
-		separation >= PER_GROUP_MIN_SEPARATION &&
-		perGroup.every((entry) => !entry.underpowered && (entry.gainOverPooled ?? 0) >= PER_GROUP_MIN_J_GAIN)
+
+	/**
+	 * Separation: the widest gap between any two groups' own optima.
+	 *
+	 * Was `perGroup.length === 2 && …`, which silently returned `null` — printed as "separation n/a
+	 * → one pooled threshold", as though the test had run — the moment a third concept group
+	 * existed. Config has had three groups since concept set v2 (phase-0 adversarial review,
+	 * finding 7). The max pairwise gap is the same number for two groups and is defined for any
+	 * count, so the hardcoded arity is gone.
+	 */
+	const ownThresholds = perGroup.filter((entry) => entry.ownThreshold !== null).map((entry) => entry.ownThreshold!)
+	const separation = ownThresholds.length < 2 ? null : Math.max(...ownThresholds) - Math.min(...ownThresholds)
+
+	/**
+	 * When a second threshold is worth having.
+	 *
+	 * The old rule was `perGroup.every(entry => gainOverPooled >= PER_GROUP_MIN_J_GAIN)`. One group
+	 * always defines the pooled cut — the pooled optimum is by construction some group's optimum —
+	 * so that group's gain is necessarily 0.000 and the `every()` could never pass with two groups.
+	 * The published conclusion "the concept groups did not separate" was a property of the
+	 * quantifier, not a measurement (phase-0 adversarial review, finding 2: `text_like` clears both
+	 * of these bars, with n=31 and a gain of 0.1196).
+	 *
+	 * The rule now: the optima must actually differ, at least one adequately-powered group must
+	 * gain, and no group may lose. A group that is merely indifferent — which is exactly what the
+	 * group defining the pooled cut is — abstains instead of vetoing.
+	 */
+	const gainers = perGroup.filter((entry) => !entry.underpowered && (entry.gainOverPooled ?? 0) >= PER_GROUP_MIN_J_GAIN)
+	const losers = perGroup.filter((entry) => (entry.gainOverPooled ?? 0) < -PER_GROUP_MAX_J_LOSS)
+	const perGroupWarranted = separation !== null && separation >= PER_GROUP_MIN_SEPARATION && gainers.length > 0 && losers.length === 0
 
 	/* --- per band and per concept ------------------------------------------------------------ */
 
@@ -429,10 +522,54 @@ export async function analyze(options: { warehousePath: string; samplePath?: str
 	const forced = judged.filter((row) => row.forcedSuspicious)
 	const forcedRejected = forced.filter((row) => row.answer !== POSITIVE_ANSWER)
 	const forcedSurviving = forcedRejected.filter((row) => row.score >= pooledThreshold)
-	const survivingMinArea = forcedSurviving.length === 0 ? null : Math.min(...forcedSurviving.map((row) => row.areaFraction))
-	const bigAreaRows = judged.filter((row) => row.areaFraction > 0.5)
+	/**
+	 * Every judged mask over the area bar — not just the force-included ones.
+	 *
+	 * This is the fix for the review's critical finding. The "hallucination signature" is *defined*
+	 * as `area_fraction > 0.5 AND score < 0.5`, so every member of it necessarily scores below any
+	 * cut at or above 0.5. Asking "does the recommended cut drop them?" over that subset alone is a
+	 * tautology dressed as a test: it can never produce a counterexample, and "no area guard is
+	 * needed" therefore carried no information. The counterexample was in the sample all along —
+	 * `8b4f2aadf3b1:sticker:0`, area 0.78, score 0.68, rejected by the reviewer, above the cut —
+	 * and it was computed here as `wholeSampleBigArea` and then dropped before the verdict string,
+	 * which is the string that was copied into config.py, MASK_REVIEW_NOTES.md and
+	 * PHASE_0_LOOSE_ENDS.md A6.
+	 */
+	const bigAreaRows = judged.filter((row) => row.areaFraction > AREA_GUARD_MAX_FRACTION)
+	const bigAreaAccepted = bigAreaRows.filter((row) => row.answer === POSITIVE_ANSWER)
+	const bigAreaRejected = bigAreaRows.filter((row) => row.answer === NEGATIVE_ANSWER)
+	const bigAreaRejectedSurviving = bigAreaRejected.filter((row) => row.score >= pooledThreshold)
+	const bigAreaAcceptedSurviving = bigAreaAccepted.filter((row) => row.score >= pooledThreshold)
+	const bigAreaMinSurvivingArea =
+		bigAreaRejectedSurviving.length === 0 ? null : Math.min(...bigAreaRejectedSurviving.map((row) => row.areaFraction))
+
+	/** What the guard is worth: the pooled sweep at the recommended cut, with and without it. */
+	const withoutGuard = metricsAt(judged, pooledThreshold, "excluded", false)
+	const withGuard = metricsAt(judged, pooledThreshold, "excluded", false, AREA_GUARD_MAX_FRACTION)
+	const guardEffect = {
+		maxAreaFraction: AREA_GUARD_MAX_FRACTION,
+		threshold: pooledThreshold,
+		judgedOverBar: bigAreaRows.length,
+		acceptedByReviewer: bigAreaAccepted.length,
+		rejectedByReviewer: bigAreaRejected.length,
+		truePositivesLost: withoutGuard.keptTruePositive - withGuard.keptTruePositive,
+		falsePositivesRemoved: withoutGuard.keptFalsePositive - withGuard.keptFalsePositive,
+		without: withoutGuard,
+		with: withGuard,
+		/**
+		 * The part the sample cannot settle, stated rather than buried: the round's big-area masks
+		 * are stickers, a logo and a face and contain no `person` at all, while corpus-wide the
+		 * masks this guard removes are mostly `person`. Recomputed by the caller if the run path
+		 * changes; the numbers quoted in config.py are for sam-eval-142-v2.
+		 */
+		untestedConcepts: [...new Set(judged.map((row) => row.concept))]
+			.filter((concept) => !bigAreaRows.some((row) => row.concept === concept))
+			.sort(),
+	}
+
 	const hallucination = {
 		definition: "area_fraction > 0.5 and score < 0.5, force-included whole",
+		areaBar: AREA_GUARD_MAX_FRACTION,
 		inSample: forcedInSample.length,
 		answeredCount: forced.length,
 		answered: forced.map((row) => ({
@@ -447,30 +584,58 @@ export async function analyze(options: { warehousePath: string; samplePath?: str
 		rejectedByReviewer: forcedRejected.length,
 		survivingTheRecommendedThreshold: forcedSurviving.length,
 		/**
-		 * The explicit fate. A score threshold can only remove this class if every member of it
+		 * The fate of the FORCE-INCLUDED subset alone. True, and uninformative on its own, because
+		 * the subset is defined to score below 0.5 — kept because the two round-1 documents quote
+		 * it and a reader has to be able to find the sentence they were quoting. `verdict` below is
+		 * the one that answers the reviewer's question.
+		 */
+		forcedSubsetVerdict:
+			forcedSurviving.length === 0
+				? `the recommended threshold ${pooledThreshold.toFixed(3)} drops every rejected suspicious shape`
+				: `${forcedSurviving.length} rejected suspicious shape(s) score at or above ${pooledThreshold.toFixed(3)}`,
+		/**
+		 * The explicit fate, over EVERY judged mask above the area bar.
+		 *
+		 * A score threshold can only remove the big-area class if every rejected member of it
 		 * scores below the threshold; where it cannot, the honest answer is a second predicate, and
 		 * the number to use is stated here rather than left to be invented later.
 		 */
 		verdict:
-			forcedInSample.length === 0
-				? "no suspicious shape reached the round — nothing to decide"
-				: forced.length === 0
-					? `the round holds ${forcedInSample.length} suspicious shape(s), none of them answered yet — no verdict`
-					: primary === null
-						? `${forced.length} suspicious shape(s) answered, but the round has produced no threshold yet — no verdict`
-						: forcedRejected.length === 0
-					? "the reviewer accepted every suspicious shape; the class is not a defect and needs no guard"
-					: forcedSurviving.length === 0
-						? `the recommended threshold ${pooledThreshold.toFixed(3)} drops every rejected suspicious shape; no area guard is needed`
-						: `a score threshold alone cannot remove this class — ${forcedSurviving.length} rejected shape(s) score at or above ` +
-							`${pooledThreshold.toFixed(3)}. Removing them needs a second predicate on area_fraction ` +
-							`(the smallest surviving one covers ${survivingMinArea?.toFixed(3)} of the image), which is a query, not a re-run.`,
+			bigAreaRows.length === 0
+				? `no mask over area ${AREA_GUARD_MAX_FRACTION} reached the round — nothing to decide`
+				: primary === null
+					? `${bigAreaRows.length} big-area mask(s) answered, but the round has produced no threshold yet — no verdict`
+					: bigAreaRejected.length === 0
+						? `the reviewer accepted every big-area mask; the class is not a defect and needs no guard`
+						: bigAreaRejectedSurviving.length === 0
+							? `the recommended threshold ${pooledThreshold.toFixed(3)} drops every rejected suspicious shape and every ` +
+								`other rejected big-area mask; no area guard is needed`
+							: `a score threshold alone cannot remove this class — ${bigAreaRejectedSurviving.length} of ${bigAreaRejected.length} ` +
+								`reviewer-rejected big-area mask(s) score at or above ${pooledThreshold.toFixed(3)} ` +
+								`(the smallest covers ${bigAreaMinSurvivingArea?.toFixed(3)} of the image). An area_fraction > ` +
+								`${AREA_GUARD_MAX_FRACTION} guard removes ${guardEffect.falsePositivesRemoved} false positive(s) at a cost of ` +
+								`${guardEffect.truePositivesLost} true positive(s) in this sample, taking precision from ` +
+								`${withoutGuard.precision?.toFixed(4)} to ${withGuard.precision?.toFixed(4)} and J from ` +
+								`${withoutGuard.youdenJ?.toFixed(4)} to ${withGuard.youdenJ?.toFixed(4)}. It is a query, not a re-run.`,
+		bigArea: {
+			bar: AREA_GUARD_MAX_FRACTION,
+			answered: bigAreaRows.length,
+			acceptedByReviewer: bigAreaAccepted.length,
+			rejectedByReviewer: bigAreaRejected.length,
+			rejectedAndSurvivingTheThreshold: bigAreaRejectedSurviving.length,
+			acceptedAndSurvivingTheThreshold: bigAreaAcceptedSurviving.length,
+		},
+		guardEffect,
 		wholeSampleBigArea: bigAreaRows.map((row) => ({
 			itemId: row.itemId,
+			maskRowId: row.maskRowId,
 			concept: row.concept,
 			score: row.score,
 			areaFraction: row.areaFraction,
 			answer: row.answer,
+			forcedSuspicious: row.forcedSuspicious,
+			survivesTheRecommendedThreshold: row.score >= pooledThreshold,
+			artworkPath: row.artworkPath,
 		})),
 	}
 
@@ -570,6 +735,9 @@ export function summarize(analysis: any): string {
 				: `  per group: ${JSON.stringify(analysis.recommendation.scoreThreshold)}`,
 	)
 	if (best !== null) {
+		if (typeof analysis.recommendation.scoreThreshold !== "number" && analysis.recommendation.scoreThreshold !== null) {
+			lines.push("  the three lines below describe the POOLED cut, which is what the per-group table is measured against")
+		}
 		lines.push(
 			`  at that cut: precision ${pct(best.precision)}, recall ${pct(best.recall)}, ` +
 				`specificity ${pct(best.specificity)}, Youden J ${best.youdenJ?.toFixed(3)}`,
@@ -598,12 +766,13 @@ export function summarize(analysis: any): string {
 	for (const entry of analysis.recommendation.perGroupTest.groups) {
 		lines.push(
 			`  ${String(entry.group).padEnd(12)} n=${String(entry.answered).padStart(3)}  own threshold ${entry.ownThreshold?.toFixed(3) ?? "n/a"}  ` +
-				`J ${entry.ownYoudenJ?.toFixed(3) ?? "n/a"}  gain over pooled ${entry.gainOverPooled?.toFixed(3) ?? "n/a"}`,
+				`J ${entry.ownYoudenJ?.toFixed(3) ?? "n/a"}  gain over pooled ${entry.gainOverPooled?.toFixed(3) ?? "n/a"}` +
+				`${entry.definesPooledThreshold ? "  (defines the pooled cut — abstains, does not veto)" : ""}`,
 		)
 	}
 	lines.push(
-		`  separation ${analysis.recommendation.perGroupTest.separation?.toFixed(3) ?? "n/a"} ` +
-			`(needs >= ${analysis.recommendation.perGroupTest.minSeparation} and a J gain >= ${analysis.recommendation.perGroupTest.minYoudenGain}) ` +
+		`  separation ${analysis.recommendation.perGroupTest.separation?.toFixed(3) ?? "n/a"} over ${analysis.recommendation.perGroupTest.groups.length} group(s) ` +
+			`(needs >= ${analysis.recommendation.perGroupTest.minSeparation}, at least one group gaining >= ${analysis.recommendation.perGroupTest.minYoudenGain}, and none losing) ` +
 			`→ ${analysis.recommendation.perGroup ? "per-group thresholds" : "one pooled threshold"}`,
 	)
 	lines.push("")
@@ -626,6 +795,25 @@ export function summarize(analysis: any): string {
 			`  ${String(entry.concept).padEnd(9)} score ${entry.score.toFixed(3)} area ${entry.areaFraction.toFixed(3)}  ` +
 				`answered ${String(entry.answer).padEnd(6)} ${entry.droppedByRecommendedThreshold ? "dropped" : "SURVIVES"}  ${entry.artworkPath}`,
 		)
+	}
+	lines.push(`  forced subset only: ${analysis.hallucination.forcedSubsetVerdict} (true by construction — see below)`)
+	lines.push("")
+	lines.push(`EVERY MASK OVER AREA ${analysis.hallucination.areaBar} (the question the forced subset cannot answer)`)
+	for (const entry of analysis.hallucination.wholeSampleBigArea) {
+		lines.push(
+			`  ${String(entry.concept).padEnd(9)} score ${entry.score.toFixed(3)} area ${entry.areaFraction.toFixed(3)}  ` +
+				`answered ${String(entry.answer).padEnd(6)} ${entry.survivesTheRecommendedThreshold ? "SURVIVES" : "dropped "}  ` +
+				`${entry.forcedSuspicious ? "forced" : "sampled"}  ${entry.artworkPath}`,
+		)
+	}
+	const guard = analysis.hallucination.guardEffect
+	lines.push(
+		`  guard area <= ${guard.maxAreaFraction}: removes ${guard.falsePositivesRemoved} false positive(s), ` +
+			`costs ${guard.truePositivesLost} true positive(s) — precision ${pct(guard.without.precision)} -> ${pct(guard.with.precision)}, ` +
+			`recall ${pct(guard.without.recall)} -> ${pct(guard.with.recall)}, J ${guard.without.youdenJ?.toFixed(3)} -> ${guard.with.youdenJ?.toFixed(3)}`,
+	)
+	if (guard.untestedConcepts.length > 0) {
+		lines.push(`  no big-area mask of these concepts reached the round: ${guard.untestedConcepts.join(", ")}`)
 	}
 	lines.push(`  verdict: ${analysis.hallucination.verdict}`)
 	if (analysis.warnings.length > 0) {

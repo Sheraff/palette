@@ -237,3 +237,24 @@ competing-text cover could not be in the round.
 - The standing-decision record in `research/v3/data/decisions/decisions.json` and the A5
   entry in `research/v3/PHASE_0_LOOSE_ENDS.md` belong to the housekeeping workstream; this
   probe only supplies the evidence and the file references above.
+
+---
+
+## ADDENDUM — phase-0 adversarial review (2026-08-03)
+
+Appended, not edited. Source: `research/v3/reviews/phase-0-adversarial/sam.md`. CPU only.
+
+**Everything in this file re-derived exactly** — all 16 phrasings × 5 columns, all 16 max scores,
+`parental advisory` 5/5 PA with 0/6 EMB, 0/2 TXT, 0/2 NEG at 0.8087–0.9153, zero false positives on
+both negatives under all 16 phrasings, the calibrated-cut line (`sticker` 3/15, `album title` 6/15,
+`logo` 7/15), the per-image PA-region best-score table under an independent IoU ≥ 0.5 match, and all
+seven rows of the bbox-IoU novelty analysis. "`sticker` keeps 0 of 5 PA marks at the calibrated
+cut" is confirmed: its two PA-region hits are 0.3558 and 0.3912, and the 0.5979 hit on that cover
+is the chain pendant, a different region.
+
+**The calibrated cut has changed shape since.** `config.py` now carries an area guard
+(`CALIBRATED_MAX_AREA_FRACTION = 0.5`) and a `text_like` threshold of 0.697295 alongside the pooled
+0.578. **Every "calibrated cut" number above is score-only and pooled**, which is how it was
+computed and how it must stay to be reproducible. For reference: of this probe's hits at or above
+0.578, **6** have `area_fraction > 0.5` and would be guarded out. Retrofitting the guard here would
+need a re-run and is a proposed follow-up, not a silent edit.

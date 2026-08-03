@@ -95,19 +95,25 @@ SEED = 20260804
 # it has to print them — asking 'is this a correct "album title" mask?' would re-ask round 1's
 # question and could not ratify anything. The prompt string still reaches the reviewer indirectly,
 # in the sense that it decided which pixels are on screen; what is being judged is the name.
-CONCEPT_LABELS: dict[str, str] = {
-    "words": "words",
-    "letter": "letter",
-    "lettering": "lettering",
+# DERIVED, not hand-copied. Corrected 2026-08-03 after the phase-0 adversarial review (finding 5):
+# this dict was a full hand-written copy of the concept set, `barcode` was added to
+# config.CONCEPT_PROMPTS for concept set v2.1 without it, and the step-lock assert below fired on
+# import — so this module, and build-ratification-fixture.ts with it, could not be imported at all
+# while selftest.py still printed ALL PASS. A list that must equal another list should not be
+# written out twice. Only the tags whose panel wording DIFFERS from the stored tag are named here;
+# everything else is its own label, and a new concept can never again break the import.
+CONCEPT_LABEL_OVERRIDES: dict[str, str] = {
     "display-text": "main display text",
-    "emblem": "emblem",
-    "sticker": "sticker",
     "parental-advisory": "parental advisory mark",
-    "person": "person",
-    "face": "face",
 }
-assert set(CONCEPT_LABELS) == {tag for tag, _ in config.CONCEPT_PROMPTS}, (
-    "CONCEPT_LABELS out of step with config.CONCEPT_PROMPTS"
+CONCEPT_LABELS: dict[str, str] = {
+    tag: CONCEPT_LABEL_OVERRIDES.get(tag, tag) for tag, _ in config.CONCEPT_PROMPTS
+}
+# The remaining step-lock, and the only one still possible: an override for a tag that no longer
+# exists is a silent no-op, which is how a rename would rot this table.
+assert set(CONCEPT_LABEL_OVERRIDES) <= set(CONCEPT_LABELS), (
+    "CONCEPT_LABEL_OVERRIDES names tags that are not in config.CONCEPT_PROMPTS: "
+    f"{sorted(set(CONCEPT_LABEL_OVERRIDES) - set(CONCEPT_LABELS))}"
 )
 
 # --------------------------------------------------------------------------------- the sample
@@ -502,7 +508,9 @@ def render_residual(image_row: dict) -> Image.Image:
     is a finding about the pipeline's own number and not about this script's arithmetic.
     """
     common.register_image_plugins()
-    original = Image.open(config.REPO_ROOT / image_row["image_path"]).convert("RGB")
+    # decode_image, so the base is EXIF-transposed exactly as the run's union mask is. See
+    # overlay.py's note (finding 14).
+    original, _, _ = common.decode_image(config.REPO_ROOT / image_row["image_path"])
     height, width = image_row["height"], image_row["width"]
     if original.size != (width, height):
         raise ValueError(f"{image_row['image_path']}: file is {original.size}, the run saw {(width, height)}")

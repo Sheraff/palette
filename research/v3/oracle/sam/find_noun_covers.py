@@ -34,11 +34,69 @@ import sys
 from pathlib import Path
 
 # The embeddings workstream owns these modules; we import them read-only.
+#
+# By file path, under their own names, NOT by putting their directory on sys.path. Both
+# workstreams have a module called `config`, so `sys.path.insert(...); import config` binds
+# whichever one is already in sys.modules — and in any process that touched the SAM config first
+# (selftest.py, or any script that imports this one after `import config`) that is the SAM config,
+# and the very next line dies with `module 'config' has no attribute 'ARM_SIGLIP2'`. Found
+# 2026-08-03 by the new import sweep in selftest.py. Loading by path gives each module a distinct
+# name and makes the collision impossible.
 EMBEDDINGS_DIR = Path(__file__).resolve().parent.parent / "embeddings"
-sys.path.insert(0, str(EMBEDDINGS_DIR))
 
-import config as emb_config  # noqa: E402
-import query as emb_query  # noqa: E402
+
+# The bare module names both workstreams use. While an embeddings module is executing, these must
+# resolve to the EMBEDDINGS ones (they import each other by bare name); afterwards sys.modules is
+# put back exactly as it was, so nothing this file does can change what `import config` means for
+# the rest of the process.
+_SHARED_MODULE_NAMES = ("config", "common")
+
+
+def _load_embeddings_modules(*stems: str) -> dict:
+    """Import research/v3/oracle/embeddings/<stem>.py under distinct names. Read-only.
+
+    One call for the whole set, because they import each other and the sys.modules swap has to
+    span the lot.
+    """
+    import importlib.util  # noqa: PLC0415
+
+    loaded = {stem: sys.modules.get(f"embeddings_{stem}") for stem in stems}
+    if all(module is not None for module in loaded.values()):
+        return loaded
+
+    saved = {name: sys.modules.get(name) for name in _SHARED_MODULE_NAMES}
+    sys.path.insert(0, str(EMBEDDINGS_DIR))
+    try:
+        # Drop our own bindings for the shared names so the embeddings ones load in their place.
+        for name in _SHARED_MODULE_NAMES:
+            sys.modules.pop(name, None)
+        for stem in stems:
+            alias = f"embeddings_{stem}"
+            spec = importlib.util.spec_from_file_location(alias, EMBEDDINGS_DIR / f"{stem}.py")
+            if spec is None or spec.loader is None:
+                raise ImportError(f"cannot load {EMBEDDINGS_DIR / f'{stem}.py'}")
+            module = importlib.util.module_from_spec(spec)
+            sys.modules[alias] = module
+            # Also visible under its bare name for the duration, so a sibling that does
+            # `import config` inside this block gets the embeddings one.
+            if stem in _SHARED_MODULE_NAMES:
+                sys.modules[stem] = module
+            spec.loader.exec_module(module)
+            loaded[stem] = module
+    finally:
+        for name, module in saved.items():
+            if module is None:
+                sys.modules.pop(name, None)
+            else:
+                sys.modules[name] = module
+        if sys.path and sys.path[0] == str(EMBEDDINGS_DIR):
+            sys.path.pop(0)
+    return loaded
+
+
+_embeddings = _load_embeddings_modules("config", "common", "query")
+emb_config = _embeddings["config"]
+emb_query = _embeddings["query"]
 
 # [REVIEWED] The text-aligned arm to search with. SigLIP2 so400m is the pipeline's
 # DEFAULT_ARM and the only text-aligned arm whose weights hash is pinned in

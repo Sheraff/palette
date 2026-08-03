@@ -137,3 +137,34 @@ cross-check** on it, on exactly the photographic covers where the residual is ha
 
 The concept set stays as v2 ratified it. Probe 3 proposed no addition; the vocabulary questions
 are the reviewer's, and an agent's measurement is evidence for that decision, never the decision.
+
+---
+
+## ADDENDUM — phase-0 adversarial review (2026-08-03)
+
+Appended, not edited. Source: `research/v3/reviews/phase-0-adversarial/sam.md`. CPU only.
+
+**The nesting table above still reproduces exactly** — 77 `mark_like` instances on 47 images, 12
+bbox-nested (15.6%), 9 mask-nested (11.7%), 0 inside a person covering >50%, 7 of 142 images — and
+it was re-derived independently, not by re-running this repo's script.
+
+**Two things about it were undisclosed and now are.** `analyze_nesting.py` had no stale-run guard:
+it was run against `sam-eval-142-v2` (concept set v2, 9 concepts) under a v2.1 config (10), and
+`mark_like` has had **4** members since `barcode` joined it, not the 3 the table was computed under.
+The run was never asked for `barcode`, so its absence is not a measured zero. The script now prints
+the mismatch and writes the run's recorded concept set into `nesting-in-person.json`.
+
+**The area guard is off by default here, on purpose.** `data/sam/nesting-in-person.json` and the
+table above were computed score-only, before `config.CALIBRATED_MAX_AREA_FRACTION` existed, and the
+default has to keep reproducing them. With `--max-area-fraction 0.5` the same run gives **76**
+`mark_like` instances on **46** images (one big-area `sticker` guarded out); the nested counts are
+unchanged.
+
+**"All 8 touch an edge" (the parental-advisory section) is tolerance-dependent and the tolerance is
+not stated.** Re-derived over the 8 PA instances at the calibrated cut: **6/8** at a 2% tolerance,
+**6/8** at 3%, **8/8** only at ≥5% — two badges sit 3.4% and 3.7% clear of the bottom edge.
+Everything else in that claim reproduces exactly: 8 instances on 8 covers, area fraction median
+0.89%, min 0.26%, max 2.68%, and the 4 bottom-right-or-left / 2 bottom-centre / 2 top-right
+breakdown under a bbox-centre quadrant rule.
+
+**The probe-3 salience table above reproduces exactly**, all 10 phrasings × 3 columns.

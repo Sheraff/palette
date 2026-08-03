@@ -144,6 +144,72 @@ def item_id(row: dict) -> str:
     return f"smq-{digest[:12]}"
 
 
+def check_run_concept_set(run: str, rows: list[dict], strict: bool = True) -> dict:
+    """The OTHER direction of the stale-run check, and the one that used to be missing.
+
+    The guard in `read_run` computes `{run concepts} - {config concepts}` — it catches a run with
+    EXTRA concepts (a v1 run under a v2 config) and never a config with extra concepts. A v2 run
+    (9 concepts) therefore passed cleanly under a v2.1 config (10): a rebuild would quietly produce
+    3 groups x 4 bands = 12 strata where the round was built on 8, and zero `barcode` masks, with
+    no word said (phase-0 adversarial review, finding 6).
+
+    Every summary row carries the run's own `concept_set_hash` and `concepts`, so the check does
+    not have to be inferred from which tags happened to fire — a run where a concept simply found
+    nothing is indistinguishable from a run that never asked. Compare the recorded identity.
+
+    `strict=True` (building a human round) refuses. `strict=False` (a derived analysis over stored
+    scores) returns the mismatch so the caller can print it and write it into its own output: an
+    analysis is reproducible and its denominator can be disclosed, a human round cannot be re-asked.
+    Returns the run's recorded identity either way.
+    """
+    hashes = {r["concept_set_hash"] for r in rows
+              if r.get("record_type") == config.RECORD_TYPE_IMAGE and r.get("concept_set_hash")}
+    if len(hashes) > 1:
+        raise SystemExit(f"{run}.jsonl mixes concept sets: {sorted(hashes)}. Refusing to build a round on it.")
+    if not hashes:
+        raise SystemExit(
+            f"{run}.jsonl records no concept_set_hash, so there is no way to tell which question "
+            "set it was run under. Refusing to build a round on it."
+        )
+    run_hash = next(iter(hashes))
+    run_concepts = next(
+        (r.get("concepts", []) for r in rows
+         if r.get("record_type") == config.RECORD_TYPE_IMAGE and r.get("concepts")), [])
+    current = [c for c, _ in config.CONCEPT_PROMPTS]
+    identity = {
+        "run": run,
+        "runConceptSetHash": run_hash,
+        "configConceptSetHash": common.concept_set_hash(),
+        "inStep": run_hash == common.concept_set_hash(),
+        "runConcepts": sorted(run_concepts),
+        "configConcepts": sorted(current),
+        "askedByConfigButNotByTheRun": sorted(set(current) - set(run_concepts)),
+        "askedByTheRunButNotByConfig": sorted(set(run_concepts) - set(current)),
+    }
+    if identity["inStep"]:
+        return identity
+    message = (
+        f"{run}.jsonl was run under concept set {run_hash[:12]}, the current config is "
+        f"{common.concept_set_hash()[:12]}.\n"
+        f"  run asked for  : {sorted(run_concepts)}\n"
+        f"  config asks for: {sorted(current)}\n"
+        f"  missing from the run: {identity['askedByConfigButNotByTheRun']}\n"
+    )
+    if strict:
+        raise SystemExit(
+            message
+            + "A round built on this would be stratified by the CURRENT groups over rows that were "
+            "never asked the current questions. Re-run the eval set under this config first "
+            "(a GPU job, the orchestrator's to schedule), or check out the config the run was made "
+            "under. Frozen rounds are in data/sam/mask-quality-sample.json and "
+            "data/sam/mask-quality-2-sample.json and must not be regenerated."
+        )
+    print("[stale-run] " + message.replace("\n", "\n[stale-run] ")
+          + "Every group membership below is the CURRENT one; concepts the run never asked "
+            "contribute nothing and are not a measured zero.", flush=True)
+    return identity
+
+
 def read_run(run: str = SOURCE_RUN) -> tuple[list[dict], dict[str, dict]]:
     rows = common.read_jsonl(DATA_DIR / f"{run}.jsonl")
     regions = [r for r in rows if r.get("record_type") == config.RECORD_TYPE_REGION]
@@ -161,6 +227,7 @@ def read_run(run: str = SOURCE_RUN) -> tuple[list[dict], dict[str, dict]]:
             "data/sam/mask-quality-sample.json; for a v2 round use review_round_2.py "
             "against a run made under the current config."
         )
+    check_run_concept_set(run, rows)
     images = {
         r["image_sha256"]: r
         for r in rows
@@ -333,7 +400,9 @@ def render_overlay(row: dict, image_row: dict, phrases: dict[str, str] | None = 
     and its overlays render byte-identically to before this parameter existed.
     """
     common.register_image_plugins()
-    original = Image.open(config.REPO_ROOT / row["image_path"]).convert("RGB")
+    # decode_image, so the base is EXIF-transposed exactly as the run's masks are. The size check
+    # below catches 90°/270° but never 180° or a mirror. See overlay.py's note (finding 14).
+    original, _, _ = common.decode_image(config.REPO_ROOT / row["image_path"])
     height, width = row["mask_height"], row["mask_width"]
     if original.size != (width, height):
         # The mask is stored at the decoded native size; a mismatch means the file on disk is not

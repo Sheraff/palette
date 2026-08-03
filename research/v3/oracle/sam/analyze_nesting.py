@@ -33,6 +33,7 @@ import numpy as np
 
 import common
 import config
+import review_round  # for the shared stale-run guard; imports no model
 
 # [REVIEWED] The brief's threshold: a mark is "inside" a person when at least this much of it is.
 # Not 1.0 — a blazon on a shield is routinely clipped by the figure's silhouette, and a mark that
@@ -69,10 +70,19 @@ def mask_containment(inner: dict, outer: dict) -> float:
     return 0.0 if total == 0 else float(np.logical_and(a, b).sum()) / total
 
 
-def analyze(run: str, score_cut: float) -> dict:
+def analyze(run: str, score_cut: float, max_area_fraction: float | None = None) -> dict:
     rows = common.read_jsonl(config.DATA_DIR / f"{run}.jsonl")
+    # Stale-run guard. Unlike review_round.py this file had none: pointed at a run made under a
+    # different concept set it would silently index config.CONCEPT_GROUPS with the current
+    # membership over rows that were never asked the current questions, and compute the rate over
+    # a different population without saying so (phase-0 adversarial review, finding 9). The
+    # published table was computed under a 3-member `mark_like`; it has 4 members since v2.1.
+    # Not strict: this is a query over stored scores, so the honest response to a stale run is to
+    # disclose the denominator, not to refuse.
+    concept_set = review_round.check_run_concept_set(run, rows, strict=False)
     regions = [r for r in rows if r.get("record_type") == config.RECORD_TYPE_REGION
-               and r["score"] >= score_cut]
+               and r["score"] >= score_cut
+               and (max_area_fraction is None or r["area_fraction"] <= max_area_fraction)]
     marks_by_concept = set(config.CONCEPT_GROUPS[MARK_GROUP])
     people_by_concept = set(config.CONCEPT_GROUPS[PERSON_GROUP])
 
@@ -138,6 +148,10 @@ def analyze(run: str, score_cut: float) -> dict:
     return {
         "run": run,
         "scoreCut": score_cut,
+        "maxAreaFraction": max_area_fraction,
+        # The denominator, disclosed: which concept set the run was made under, which groups this
+        # analysis applied, and which concepts the run was never asked.
+        "conceptSet": concept_set,
         "containmentThreshold": CONTAINMENT_THRESHOLD,
         "bboxScreen": BBOX_SCREEN,
         "markGroup": sorted(marks_by_concept),
@@ -179,10 +193,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", default="sam-eval-142-v2")
     parser.add_argument("--score-cut", type=float, default=config.CALIBRATED_SCORE_THRESHOLD)
+    # The area guard is OFF by default here, deliberately. data/sam/nesting-in-person.json and the
+    # table in SAM_DESIGN_NOTES.md were computed score-only, before the guard existed, and the
+    # default has to keep reproducing them. Pass the flag to see what the guard changes; an
+    # addendum in SAM_DESIGN_NOTES.md records the difference.
+    parser.add_argument("--max-area-fraction", type=float, default=None,
+                        help=f"area guard (config.CALIBRATED_MAX_AREA_FRACTION is "
+                             f"{config.CALIBRATED_MAX_AREA_FRACTION}); off by default")
     parser.add_argument("--write", action="store_true")
     args = parser.parse_args()
 
-    result = analyze(args.run, args.score_cut)
+    result = analyze(args.run, args.score_cut, args.max_area_fraction)
     report(result)
     if args.write:
         out = config.DATA_DIR / "nesting-in-person.json"
