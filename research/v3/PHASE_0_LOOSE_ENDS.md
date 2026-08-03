@@ -164,6 +164,22 @@ area-fraction guard is needed at this threshold. Numbers in `data/sam/MASK_REVIE
 
 ---
 
+
+### A10. The cascade's B-unmapped route is dead weight — and the adjudicator is same-family
+- **What.** The offline cascade simulation (`data/oracle-premise/cascade-sim-1.json`) measured:
+  when bulk-B abstains (unmapped), the dense adjudicator abstains too on **97.7%** of those
+  items — correlated abstention, both models being Qwen3-VL. That route is 31% of items and
+  62% of dense-model cost for ONE committed item. Dropping it is ~free; the measured
+  alternative (take D's committed answer there, quality 0.698 on that slice) lifts commitment
+  to 94.9%.
+- **Consequence.** The bulk-run architecture should adjudicate ONLY B/D-disagreements (19% of
+  items); and the cascade cannot be fully trusted until an out-of-family adjudicator exists
+  (all measured local candidates failed: Gemma accuracy, InternVL blocked) or the correlated-
+  abstention class is accepted as honest underdetermined.
+- **Owner.** reviewer (policy pick: take-D vs decline on B-unmapped) + orchestrator (out-of-
+  family option scan, low priority). **Revives when:** the bulk run is designed.
+- **Blast radius.** Bulk-run cost (17.5h vs 28h) and label coverage (95% vs 64%).
+
 ## B. Standing — parked with a clear trigger
 
 ### B1. The bulk-model decision (which VLM runs the corpus pass)

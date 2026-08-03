@@ -23,6 +23,7 @@ machinery. *"Poor agreement there = an afternoon spent, not a week."*
 | `preflight.py` | the §11 checklist, one stage at a time |
 | `derive_probes.py` | probe arm only: looks the six probe answers up in the committed 729-row table, writes rows `analyze.py` reads unchanged |
 | `analyze.py` | oracle-vs-human agreement on the gradient boolean |
+| `simulate_cascade.py` | offline replay of the two-stage cascade (bulk B+D, dense-32B adjudicator) from committed results files — runs no inference, writes `data/oracle-premise/cascade-sim-1.json` |
 
 ## Prompt sets
 
@@ -35,7 +36,7 @@ the default is run 1's, so an A/B rerun needs no flag and loads byte-identically
 | `group-a.v2` | `group-a.v2` | C, D | criterion arm (PREMISE_NEXT §5) |
 | `group-a.probes.bundled` | `group-a.probes.v1.1` | P, Q | probe arm, six probes in one answer |
 | `group-a.probes.solo` | `group-a.probes.v1.1` | six `S-*` | probe arm, one probe per inference |
-| `group-bcd.v1` | `group-bcd.v1` | E, F | the nine group-B/C/D questions in one decode, two orderings (PREMISE_NEXT §15) |
+| `group-bcde.v1` | `group-bcde.v1` | E, F | thirteen questions — groups B, C, D and E plus `subject_kind` — in one decode, two orderings (PREMISE_NEXT §15) |
 
 `CANONICAL_FIELDS` and `VOCABULARIES` are read from each prompt document's own
 `canonical_fields` / `vocabularies` blocks, falling back to the module constants when absent —
@@ -44,7 +45,7 @@ solo file exactly one), none of them `ground_type`.
 
 A prompt document may also declare `multi_select_fields`, naming canonical fields whose answer is
 a **list** of vocabulary values rather than one value (`text_roles` and `overlays` in
-`group-bcd.v1`; empty everywhere else). Those fields are rendered as array-of-enum in the JSON
+`group-bcde.v1`; empty everywhere else). Those fields are rendered as array-of-enum in the JSON
 schema, which the constrained-decoding backend supports — `uniqueItems` is the one thing it does
 not, so a repeated value cannot be forbidden by the grammar and is counted by the analysis
 instead. PREMISE_NEXT §15.3 and §15.4.
