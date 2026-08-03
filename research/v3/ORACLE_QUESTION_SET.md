@@ -846,8 +846,12 @@ questions*, never as their source.
 
 ## Appendix R — candidate refinements surfaced during use
 
-*Kept verbatim from v1. Both entries are now folded into §A.2; they stay here as the record of
-what was decided, when, and by whom.*
+*The record of what was decided, when, and by whom. **Six dated entries as of 2026-08-03**; re-derive
+rather than quoting that number —* `awk '/^## Appendix R/,/^## Appendix V1/' ORACLE_QUESTION_SET.md |
+grep -cE '^- \*\*2026-'`*. The first two are kept verbatim from v1 and are folded into §A.2; the
+sentence "both entries" applied when there were two and applies to those two only. **Not every entry
+is applied** — the last two are signed rulings whose v2 fixes are gated on sign-off of the rewrite,
+and the sixth applies nothing at all.*
 
 - **2026-08-03, premise disambiguation round (reviewer):** `ground_type` has a gap for
   "one flat field + one shaded field with a blurry meeting line". Resolution applied
@@ -911,6 +915,56 @@ the reviewer notes did not show the forced choice losing information — what th
   (pilot 15.6-2b: `has_signature_color` 85.9% yes, κ.49 — the gate and its dependent get
   reworked together). Caveat on the round: recorded single answers on multi-carrier covers are
   forced choices and carry that noise.
+
+- **2026-08-03, cascade ground-truth round + free-text follow-up (reviewer): the `ground_type`
+  vocabulary is what failed, and `none_discernible` was never a claim that no ground exists.**
+  Two rounds, in sequence, and **no question is edited by this entry** — the §A.2/§A.5 v2 rewrites
+  stay gated on reviewer sign-off, and the frozen vocabulary is unchanged.
+
+  **Round 1, `cascade-ground-truth-1` (19 covers, 1 question each).** Put to the reviewer under the
+  corrected §A.2 wording, to test a proposed cascade policy — when bulk variant B returns an unmapped
+  answer, take variant D's answer where D said `multiple_distinct_fields`. Pre-registered before
+  scoring. **D matched the reviewer on 1 of the 8 covers the policy would commit** (adoption bar 6)
+  and on 4 of the wider 19; escape values landed on **7 of 8**, firing the ESCALATE branch, with the
+  REJECT thresholds met as well. Verdict **UNDECIDED–ESCALATE: not adopted, and the repair belongs to
+  the vocabulary rather than to the routing.** Across the 19 the reviewer said `none_discernible` 9,
+  `full_scene` 5, `multiple_distinct_fields` 4, `flat_field` 1 — and **`shaded_field` zero times**,
+  which is why the round's flat-vs-gradient agreement is directionally vacuous and must never be
+  quoted alone. Record: `d-2026-08-03-cascade-b-unmapped-take-d-not-adopted`. Write-up:
+  `oracle/premise/CASCADE_POLICY_VERDICT.md`.
+
+  **The reviewer's disclosure, which is the reading key for both rounds:** *"for this round, some
+  images are genuinely hard to rank, and none of the options fit, or maybe several. So I answered
+  'none discernible' but this is not true, i can see the field, I just don't know how to tag it."*
+  A `none_discernible` answer in that round is a statement that **the list does not contain the right
+  word**, not that the ground is absent. It counts neither as backing an abstention nor as
+  contradicting a substantive answer.
+
+  **Round 2, `ground-freetext-1` (9 covers, free text, no options offered).** Served on exactly the 9
+  vocabulary-misfit covers, with the option list deliberately withheld so the round would measure
+  *which words are missing* rather than whether a longer list is acceptable. **All 9 are describable
+  in prose; not one description says there is nothing there.** On the contract's own terms —
+  background and surface roles, not taxonomy — **6 of 9 are palette-decidable in prose** and **3 are
+  genuinely ambiguous even in prose**. What the enum cannot hold, recurring across the nine: nesting
+  (*"those two feel like different fields. However, both of those fields also contain many things …
+  So it's both"*), several ground-types composed in one cover, count and texture sharing one slot
+  (*"is it patterns? many fields? one field?"*), **extent** (area proportions volunteered unprompted
+  on three covers), **scope** (*"almost any description would fit somewhere but not everywhere"*),
+  and — the deepest gap — **the figure/ground line, which this question presupposes and never asks
+  about**. One cover (`000f0a78`) is decisive against a purely lexical reading: the vocabulary
+  **did** contain the right word and the reviewer still could not use it, because one of the three
+  fields is itself a gradient and the single slot forced them to discard that.
+
+  **Disposition: none applied to any question.** The §A.5 vocabulary split (B7) is due but its
+  *shape* is now the open question, since a richer list cannot reach the 3 covers where the prose
+  itself does not converge. The choice between vocabulary v3, retiring the question to pixel
+  computation via the residual route (R-3), or both is **reviewer-owned and unmade** — carried as
+  loose end **B24**, revives when the residual route's first purity measurement exists. The synthesis
+  argues for retirement plus one narrowed human question that is *not* a taxonomy (*which parts of
+  this cover are ground*), and it is an argument, not a ruling. Full synthesis with all nine
+  descriptions verbatim: **`oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`**. Record:
+  `d-2026-08-03-ground-freetext-primary-evidence` — the prose is the primary evidence and any tag
+  derived from it is a derived record (REVIEW_UI.md §4).
 
 ## Appendix V1 — group A as written in v1
 

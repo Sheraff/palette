@@ -18,14 +18,16 @@ B8)". Every one of those numbers was wrong or has since moved, which matters mor
 elsewhere: **a ledger whose headline count is wrong cannot be used as a checklist, and that is its
 only job.**
 
-**55 items, of which 45 are open and 10 are closed.**
+**57 items, of which 46 are open and 11 are closed** — recounted 2026-08-03 (evening) after the
+consolidated post-review pass, which closed **L-b**, added **B24** and **L-i**, and amended A10, B5
+and B7 without changing their state.
 
 | section | items | open | closed |
 |---|---|---|---|
 | **A — sharp** (something downstream is already leaning on them) | A1–A12 = 12 | 7 | 5 — A1, A5, A7, A8, A9 |
-| **B — standing** (parked with a clear trigger) | B1–B23 = 23 | 19 | 4 — B4, B8, B16, B18 |
+| **B — standing** (parked with a clear trigger) | B1–B24 = 24 | 20 | 4 — B4, B8, B16, B18 |
 | **C — latent** (harmless today, harmful under one specific move) | C1–C12 = 12 | 11 | 1 — C11 (resolved by ruling, never a defect) |
-| **L — review-server and round hygiene** (added 2026-08-03) | L-a–L-h = 8 | 8 | 0 |
+| **L — review-server and round hygiene** (added 2026-08-03) | L-a–L-i = 9 | 8 | 1 — L-b |
 
 **A6 is REOPENED**, not closed — it was closed on 2026-08-03 and reopened the same day, because its
 closing argument turned out to be circular. It is counted as open above.
@@ -278,9 +280,25 @@ Original entry kept below for the record.
   items); and the cascade cannot be fully trusted until an out-of-family adjudicator exists
   (all measured local candidates failed: Gemma accuracy, InternVL blocked) or the correlated-
   abstention class is accepted as honest underdetermined.
-- **Owner.** reviewer (policy pick: take-D vs decline on B-unmapped) + orchestrator (out-of-
-  family option scan, low priority). **Revives when:** the bulk run is designed.
+- **Owner.** ~~reviewer (policy pick: take-D vs decline on B-unmapped)~~ **the policy pick is MADE
+  (2026-08-03) — see below** + orchestrator (out-of-family option scan, low priority).
+  **Revives when:** the bulk run is designed.
 - **Blast radius.** Bulk-run cost (17.5h vs 28h) and label coverage (95% vs 64%).
+- **AMENDED 2026-08-03 — the take-D half is decided, and it is NOT ADOPTED.** Record:
+  `d-2026-08-03-cascade-b-unmapped-take-d-not-adopted`, funded on the 19 reviewer answers of
+  `cascade-ground-truth-1`. The offline simulation's "take D's committed answer on the B-unmapped
+  slice" was put to the reviewer on the 19 covers where D uses `multiple_distinct_fields`, under the
+  corrected §A.2 wording D itself was run under. **D matched the reviewer on 1 of the 8 covers the
+  policy would commit** (adoption bar: 6) and on 4 of the wider 19. Escape values landed on 7 of 8, so
+  the pre-registered **ESCALATE** branch fired; the REJECT thresholds were met too. Verdict
+  UNDECIDED–ESCALATE — **the 8 covers stay unlabelled and the repair belongs to the vocabulary, not to
+  the routing.** The `0.698 quality on that slice` figure this row quotes was never a human number: it
+  scored D against the shipped palette's gradient flag, which is a fact about the palette and must
+  never be called accuracy. **What this does NOT touch:** the correlated-abstention finding (97.7%),
+  the same-family adjudicator problem, and the out-of-family option scan are all untouched and still
+  open — this row's *other* half is exactly as open as it was. Full write-up:
+  `oracle/premise/CASCADE_POLICY_VERDICT.md`. Caveats worth carrying: n=8, 75% of the deciding slice is
+  thumbnails, and the round's single match sits on the one cover with a non-comparable prior answer.
 
 
 ### A11. The sharded collection has NO holdout — coverage-set membership is not a claims shield
@@ -402,6 +420,16 @@ would **moot** this row rather than close it — if background structure becomes
 group A's corpus-wide status stops being a question anyone needs answered. Route (a) is the
 fallback if (b) fails a second time.
 
+**Further amended 2026-08-03 — route (a) is now known to be a partial repair, and that is new.** The
+free-text round on the escalation's 9 misfit covers found **6 of 9 palette-decidable in prose and 3
+genuinely ambiguous even in prose**, and found that the words the reviewer actually reaches for are
+positions, proportions and counts rather than categories. A `group-a.v3` vocabulary can relabel the
+covers that were already decidable; it **cannot** reach the three where the prose does not converge,
+because those fail on the figure/ground line the question never asked about. So route (a) is no longer
+a clean fallback for route (b) — it is a repair with a measured ceiling. This does not change B5's
+revival condition, and it does not make route (b) work; the residual route still has **no purity
+measurement**. See B24 and `oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`.
+
 ### B6. Oracle groups B–F are unpiloted draft — **CORRECTED 2026-08-03: B, C, D and E are piloted; only F is not**
 ~~Nothing has touched them.~~ **False against 163 warehouse records.** Groups B, C, D and E were
 piloted **twice** — model side (`group-bcde-pilot-1.jsonl`, 299 rows, 142 images, all ok, with
@@ -417,10 +445,30 @@ are unresolved (see B19). **Nothing may be graded against the `bcde-validation-1
 contradiction rate has a reading.** *Revives when: the pilot's failing bars are adjudicated and a
 second round exists.*
 
-### B7. The §A.5 `ground_type` vocabulary split — proposal, `HELD`, "do not implement"
+### B7. The §A.5 `ground_type` vocabulary split — proposal, `HELD`, "do not implement" — **and the hold is now the live question (2026-08-03)**
 Superseded by the probe arm, which generalises it. Kept for the record. Re-elicitation against a
 new vocabulary costs ~3 minutes of reviewer time, which is the reason nothing should be shaped
 around avoiding it.
+
+**Amended 2026-08-03 — this row stopped being an archived proposal and became the thing two
+independent lines of evidence now point at.** `CD_RESULT.md` §5 concluded from the model side that
+the vocabulary rather than the criterion is the problem; the cascade round's ESCALATE verdict
+(`d-2026-08-03-cascade-b-unmapped-take-d-not-adopted`) reached the same place from the human side.
+So the split is **due** — but the free-text round built on the escalation's own 9 covers has since
+made the *shape* of the repair the open question rather than its timing.
+
+**What `ground-freetext-1` established, and why it complicates the split rather than authorising it.**
+All 9 covers are describable in prose; **6 of 9 are palette-decidable in prose and 3 are genuinely
+ambiguous even there.** The recurring gaps are nesting, composition, count-vs-texture sharing one slot,
+**extent** (the reviewer volunteered area proportions unprompted on three covers), **scope** (two
+covers say explicitly that no global answer exists), and — the deepest one — **the figure/ground line,
+which the question presupposes and never asks about.** Two consequences for this row: a richer
+vocabulary **cannot reach** the 3 covers where the prose itself does not converge; and on `000f0a78`
+the vocabulary **already contained the right word** and the reviewer still could not use it, which
+rules out "the list was too short" as the whole story. Synthesis:
+`oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`; record
+`d-2026-08-03-ground-freetext-primary-evidence`. **The split-versus-retire choice is B24**, and this
+row should not be implemented ahead of it.
 
 ### B8. ~~`PREMISE_NEXT.md` §14 sign-off ledger has three unsigned items~~ CLOSED 2026-08-03
 **Resolution:** §14 has been brought up to date — row 4 (probe wording, v1.1) and row 5 (the
@@ -585,6 +633,39 @@ Cheapest honest fix is a re-hash pass that reports drift without failing.
 *Owner: housekeeping. **Revives when:** anyone relies on a recorded `sha256` to establish that an
 artifact has not moved.*
 
+### B24. Vocabulary v3 versus retiring the ground question to pixels — the choice is open and it is the reviewer's
+*Added 2026-08-03, out of `ground-freetext-1`.* The `ground_type` vocabulary
+(`flat_field | shaded_field | multiple_distinct_fields | full_scene | pattern_or_texture |
+none_discernible`) has failed twice over — the cascade round escalated to it
+(`d-2026-08-03-cascade-b-unmapped-take-d-not-adopted`), and the free-text round showed **what** it is
+missing. Three options are on the table and **none is adopted**:
+
+- **(a) vocabulary v3** — a small *structured* answer rather than a longer list: number of ground
+  regions, layout, per-region character, and an extent. Fixes nesting, composition, count-vs-texture
+  and extent; **cannot** fix scope or the figure/ground line.
+- **(b) retire the question to pixel computation** via the residual route (reviewer direction R-3,
+  `d-2026-08-03-reviewer-background-via-residual-isolation`), keeping the prose descriptions as the
+  **evaluation vocabulary** — the language a human uses to say the computed answer is right, rather
+  than the language they must answer in.
+- **(c) both** — v3 as the near-term label source, pixels as the destination.
+
+**The synthesis argues for (b), plus one narrowed human question that is not a taxonomy** — *which
+parts of this cover are ground* — on the grounds that 8 of 9 descriptions fix the ground's *kind* and
+the failures are all on *which pixels*, and that the quantities the reviewer volunteers (position,
+extent, count, relative brightness) are exactly what a residual pass produces natively. **That is an
+argument, not a ruling.** Nothing may be built against it until the reviewer picks.
+
+*Owner: **reviewer** (the pick) + oracle/premise workstream (whichever route is picked).
+**Revives when:** the residual route's **first purity measurement exists** — before that, option (b)
+cannot be evaluated on evidence and a pick would be a preference. Note the asymmetry in cost of
+waiting: (a) is a redesign plus a re-elicitation round plus a new `labelSchemaVersion`, which reopens
+every downstream comparison, so picking it early is expensive and picking it late is not.*
+*Blast radius: everything that consumes a ground label, and B5's and B7's revival conditions both
+route through this row.*
+Records: `d-2026-08-03-ground-freetext-primary-evidence`,
+`d-2026-08-03-cascade-b-unmapped-take-d-not-adopted`. Synthesis:
+`oracle/premise/GROUND_FREETEXT_SYNTHESIS.md`.
+
 ---
 
 ## C. Latent — harmless today, harmful under one specific move
@@ -654,9 +735,11 @@ recency ruling was given conversationally, which `CONVENTIONS.md` says *must* ca
 `fundedBy`. The same is true of the three reviewer rulings recorded on 2026-08-03. **An empty
 `fundedBy` is only a defect where a warehouse record exists and is not cited.**
 
-**And the port is now two rulings behind.** This row counts "3 Appendix R rulings", and
-`data/tagging/port-reviewer-notes.ts` stops at `appendix-r-3`. Appendix R now carries **five** dated
-entries — the two additions both marked **"SIGNED OFF 2026-08-03"**: `has_dominant_subject` has no
+**And the port is now three rulings behind (recounted 2026-08-03, evening).** This row counts
+"3 Appendix R rulings", and `data/tagging/port-reviewer-notes.ts` stops at `appendix-r-3`. Appendix R
+now carries **six** dated entries — the sixth added by the consolidated post-review pass, recording
+the cascade and free-text rounds and applying nothing. The two before it are both marked
+**"SIGNED OFF 2026-08-03"**: `has_dominant_subject` has no
 unit rule ("count the groups you would circle, not the things you could name"), and
 `signature_carrier` forces one answer, so make it multi-select. **Two signed reviewer rulings
 currently fund nothing and are invisible to `warehouse recheck --decisions`** — while 163 warehouse
@@ -746,7 +829,35 @@ crawl gap is fixed; the **dead links themselves are the open part**, and so is t
 *Owner: review-server workstream. **Revives when:** the next round is released — a reviewer
 following the dashboard hits this immediately.*
 
-### L-b. The bcde round's 45% contradiction rate has NO reading, and nothing may be graded against these rows until it does
+### L-b. ~~The bcde round's 45% contradiction rate has NO reading, and nothing may be graded against these rows until it does~~ CLOSED 2026-08-03
+**Resolution: the reading exists, and it is that the rate was never a defect.** Record:
+`d-2026-08-03-gate-contradictions-are-elicitation-mode-effects`, funded on the 17 standing answers of
+`bcde-gate-reconciliation-1`. **Independent and joint elicitation are two instruments, and neither is
+the other's correction.** Asked question by question, the reviewer's answers contradict the gate table
+**9 times across 8 of 20 artworks = 45%**. Re-asked jointly, **0 remain = 0%**. The ≤10% ceiling was
+registered in `PREMISE_NEXT.md` §15.6-(3) **for the model**, whose constrained decode emits the gate
+first and the dependent in its context — so the model's coherence is **architecture, not virtue**, and
+the number does not transfer to a human answering each question in isolation under an instruction that
+expressly forbade making the answers cohere. The reviewer's own account is the key: *"if you ask me
+'is there a subject?' i might answer 'no', but if you ask me separately 'what is the subject?' i would
+answer 'an animal' … if you ask me jointly … then I will change my answers so they are coherent
+together."* The independent pair carries **more** information than the reconciled one, and what the 45%
+measures is how often the gate's variable and its dependent's variable come apart on real covers —
+which is the argument for splitting them (`d-2026-08-03-schema-v2-split-gated-pairs`, a **proposal**
+awaiting reviewer sign-off), not for grading a human against a decoder's bar.
+
+**The standing prohibition is LIFTED**, on this reading and with three conditions that travel with it:
+every figure must be **labelled with its elicitation mode and the two never blended**; a downstream
+consumer reads the **standing (joint)** state, because it must read exactly one and supersession picks
+it by recency rather than correctness; anything said about what the reviewer *perceives*, or about how
+by-question elicitation *behaves*, reads the **independent** state. **L-h is not closed by this** — the
+served-wording divergence on `bcde-validation-1` is a separate defect and a candidate contributor to
+the 45%, and it is not separable from the elicitation-mode effect by this evidence. The reconciliation
+round carries its own wording defect too, recorded rather than re-run
+(`d-2026-08-03-reconciliation-round-wording-caveat`).
+Original entry kept below for the record.
+
+### L-b (original). The bcde round's 45% contradiction rate has NO reading, and nothing may be graded against these rows until it does
 **The sharpest item in this section.** `PREMISE_NEXT.md` pre-registers a gate-consistency ceiling of
 **"total contradiction rate ≤ 10% of ok rows"**. Recomputed from raw warehouse records for
 `bcde-validation-1` (20 artworks, all four gate pairs served in one round), the **reviewer's own
@@ -834,6 +945,39 @@ rather than pedantic.
 **This must sit on the round's record before its labels are used in any comparison.**
 *Owner: oracle/premise workstream. **Revives before** any use of `bcde-validation-1` labels — same
 gate as L-b.*
+
+### L-i. A review-UI page can crawl clean and be key-dead, and nothing checks that it is not
+*Added 2026-08-03, from a live incident.* `verify-live` establishes that a module is **served**. It
+does not and cannot establish that the module **runs**. Those are different properties and only the
+second one is what the reviewer needs.
+
+**The incident.** `review-ui/freetext.js` called `normalizeKey(event)` where every other page calls
+`normalizeKey(event.key)`. `normalizeKey` opens with `digitFor(key)`, which returns `null` for a
+non-string, so the function handed back the `KeyboardEvent` object unchanged and **every**
+`key === "Enter"` / `"ArrowLeft"` / `"r"` comparison in the handler was false. The handler could not
+fire at all. **The page loaded, rendered, crawled clean, and was completely unresponsive to the
+keyboard — the reviewer was stuck on cover 1 with a fully working save path underneath it.** (The
+autosave/blur path was untouched, so nothing was lost; 530 characters and 7 revisions survived on the
+first cover.) A second defect rode along: `render()` focuses the textarea, so the in-field early
+return made plain arrows unreachable and stepping became Escape-then-arrow. Fixed in commit `6ad95ec`.
+
+**Why every existing check missed it.** All 16 tests around this feature drove the **server**. None
+loaded `freetext.js` and pressed a key. The crawl gap is the same shape as **L-a** — there the crawler
+checked the page and never the JSON the page loads; here it checks the module is delivered and never
+that it executes — but the fix is not the same fix, which is why this is its own row.
+
+**Proposed standing smoke check** (not built, and the proposal is the open part): for **every**
+`review-ui` module, `openPage` it against a **seeded harness batch**, assert the page gets **past its
+loading state**, and assert that its **primary key responds** — one keypress, one observable state
+change. Two guards already landed as a down payment and neither generalises: an executing-page test
+for `/freetext` (`tests/review-server-freetext.test.ts`) and a cross-page static guard that greps for
+`normalizeKey(event)` (`tests/review-server-keymap.test.ts`). The static guard catches this exact
+typo on any page and nothing else; the executing test covers one page of many. Suite went 377 → 385.
+
+*Owner: review-server workstream. **Revives when:** any new review-UI page or interaction mode is
+served to the reviewer — which is every round with a new answer shape. **Blast radius:** reviewer
+bandwidth, the campaign's binding constraint. A key-dead page costs a whole round's scheduling slot
+and it fails in the one way a green `verify-live` teaches everyone to disbelieve.*
 
 ---
 

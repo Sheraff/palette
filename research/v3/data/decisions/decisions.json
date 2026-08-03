@@ -1366,6 +1366,231 @@
     "IT MOOTS A QUESTION BY REPLACING IT, WHICH IS NOT THE SAME AS ANSWERING IT. If background becomes a pixel computation, the corpus-wide group-A question is not settled — it is no longer asked. Anything that later needs a semantic background label is back where it started."
    ],
    "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-cascade-b-unmapped-take-d-not-adopted",
+   "ts": "2026-08-03T20:30:00Z",
+   "kind": "instrument-selection",
+   "scope": "The cascade's B-unmapped route ONLY — the proposed rule \"when bulk variant B returns an unmapped answer, take variant D's answer if and only if D said multiple_distinct_fields, otherwise leave the cover unlabelled\". It binds the 8 covers that rule would have committed, which stay unlabelled. It does NOT condemn variant D as an instrument in general, does NOT revive or condemn any other part of the cascade, does NOT settle the cascade's adjudicator question (A10's out-of-family half), and does NOT decide what the replacement vocabulary looks like — it only says the escalation branch, not the adoption branch, is the one that fired.",
+   "decision": "NOT ADOPTED — escalate to the vocabulary. Round cascade-ground-truth-1 put the 19 covers where variant D uses multiple_distinct_fields in front of the reviewer under the corrected §A.2 wording (the same wording D was run under), 19 answers, one question each. Pre-registered before scoring: ADOPT at >=6/8 exact matches plus directional agreement; REJECT at <=4/8 or directional contradiction on a third; ESCALATE at >=3/8 reviewer answers landing on an escape value (full_scene, pattern_or_texture, none_discernible). D matched the reviewer on 1 of the 8 covers the policy would commit, and on 4 of the wider 19. Escape values landed on 7 of 8 and on 14 of 19, so the ESCALATE trigger fired; the REJECT thresholds were met too, and precedence sends the verdict to UNDECIDED-ESCALATE. Both branches leave the covers unlabelled, so nothing is left hanging. The reviewer's post-hoc disclosure is the reading key and is applied throughout: \"i answered 'none discernible' but this is not true, i can see the field, I just don't know how to tag it\" — so a none_discernible answer in this round is a statement that the vocabulary does not fit, NOT a claim that no ground exists, and is counted neither as backing B's abstention nor as contradicting D. The consequence is that the repair belongs to the vocabulary and not to the routing: the §A.5 / group-a.v3 split is now due, and the free-text follow-up round ground-freetext-1 was built on exactly the 9 vocabulary-misfit covers. On the second half of the same question — was B wrong to abstain — B's refusals cost at most one label out of eight and were independently correct on four, so B's caution is well-founded rather than lazy.",
+   "fundedBy": [
+    "o-msdo11vm-9bedc458",
+    "o-msdo0nyv-faa9f6f8",
+    "o-msdo0jrb-b02dfc4a",
+    "o-msdo1idm-7aae9959",
+    "o-msdo2vfu-01075a11",
+    "o-msdo3421-3e4174a9",
+    "o-msdo3ezj-92ce42d7",
+    "o-msdo1xzy-32aed9cf",
+    "o-msdnwffn-14507a0a",
+    "o-msdny92h-e966e168",
+    "o-msdo1vs3-7c8c211d",
+    "o-msdo2ta3-f58b45f1",
+    "o-msdo1nbq-0f21f242",
+    "o-msdo2j8e-8b0a9e86",
+    "o-msdny7v0-d056c1dd",
+    "o-msdo2y83-b68e5e59",
+    "o-msdo24yc-7c691563",
+    "o-msdo0za1-3329ad66",
+    "o-msdo1d4t-ec3aacc6"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-premise/cascade-ground-truth-1-analysis.json",
+     "what": "The scored analysis: pre-registration and its provenance, per-cover table for all 19, the two slices reported separately and never pooled, the structural caveats, and the warehouse audit (21 records returned, 20 oracle labels, 1 superseded draft dropped, 19 live)."
+    },
+    {
+     "ref": "research/v3/oracle/premise/CASCADE_POLICY_VERDICT.md",
+     "what": "The reviewer-facing write-up of the same numbers, and the source of the caveats recorded below."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/cascade-basis.md",
+     "what": "The adversarial review's finding that the policy's ORIGINAL evidence scored variant D against the shipped palette's gradient flag — a fact about the palette, not a label of the artwork — which is why a human round had to be run at all."
+    },
+    {
+     "ref": "research/v3/oracle/premise/CD_RESULT.md",
+     "what": "§5 concluded independently, from the model side alone, that the vocabulary rather than the criterion is the problem and that the §A.5 split is due. This round reaches the same place from the human side."
+    }
+   ],
+   "fundingCaveats": [
+    "n = 8 ON THE SLICE THAT DECIDES. The policy lives on 8 covers. No threshold on 8 items carries a strong test in either direction, and the reported tail probabilities (0.035 on the 8, 0.0096 on the 19) are scale context against the pre-registered coin bar of 0.5, not a significance claim. The verdict rests on the pre-registered thresholds, not on a p-value.",
+    "THE BINARY FLAT-VS-GRADIENT COMPARISON IS DIRECTIONALLY VACUOUS AND MUST NOT BE QUOTED ALONE. On paper D agreed with the reviewer on every cover where the projection existed (1 of 1 on the 8, 5 of 5 on the 19). D projects to flat by construction on every cover in this round, and the reviewer answered shaded_field zero times out of 19 — so every comparison that existed was flat-against-flat. The number cannot distinguish 'D reads the ground correctly' from 'nothing in this round was on the gradient side'.",
+    "3 OF THE 4 EXACT MATCHES SIT OFF THE POLICY'S ROUTE. Of the 4 covers in the whole round where D's word matched the reviewer's, 3 are covers where B did NOT abstain — covers the policy never touches. D agrees with the human least often exactly where the policy would have used it.",
+    "THE DECIDING SLICE IS 75% THUMBNAILS. 6 of the 8 policy covers are thumbnail_<=320, 2 are standard. The ladder's own resolution floors put ground_type near the edge of answerability at that size, so part of what is being measured may be the rendition rather than the question.",
+    "THE ROUND'S SINGLE MATCH SITS ON THE ONE COVER WITH A PRIOR ANSWER, AND THE TWO ARE NOT COMPARABLE. Cover 0002dfdc had been labelled once before under the older §A.2 wording, where the reviewer answered pattern_or_texture and it was read as contradicting D. Under the corrected wording they gave D's answer. The two wordings are not comparable, so this is not a change of mind — but it is the round's only exact match, and it sits precisely where the criterion correction had the most room to bite.",
+    "THE GRADIENT FLAG SCORES NOTHING HERE, BY RULING. The shipped palette's gradient flag is a fact about the palette and must never be called accuracy; on the 24 covers where a comparison was possible it agrees with the reviewer barely more than a coin. It funds nothing in this record and is named only because it is what the policy's original evidence rested on.",
+    "THE ESCALATION NAMES NO REPLACEMENT. This record says the vocabulary is where the repair belongs. It does not say what the replacement is, and it does not choose between a v3 vocabulary and retiring the question to pixel computation. See d-2026-08-03-ground-freetext-primary-evidence and GROUND_FREETEXT_SYNTHESIS.md; the choice is the reviewer's and is unmade."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-gate-contradictions-are-elicitation-mode-effects",
+   "ts": "2026-08-03T22:30:00Z",
+   "kind": "process",
+   "scope": "How gate/dependent contradiction rates are to be read, for humans and for models. It closes loose end L-b and lifts L-b's standing prohibition on grading anything against the bcde-validation-1 rows, on the reading recorded here. It does NOT retract, amend or downgrade any reviewer answer in either round; it does NOT decide the schema v2 question (see d-2026-08-03-schema-v2-split-gated-pairs, which is a proposal awaiting sign-off); and it does NOT lift the separate wording caveat on the reconciliation round (d-2026-08-03-reconciliation-round-wording-caveat) or L-h's caveat on the served bcde wording.",
+   "decision": "Independent and joint elicitation are two readings of two instruments, and neither is the other's correction. Asked question-by-question in bcde-validation-1, the reviewer's own answers contradict the gate table on 9 occasions across 8 of 20 answered artworks = 45%. Re-asked jointly, with the gate and its dependent on screen together, in bcde-gate-reconciliation-1, 0 contradictions remain = 0%. The 45% figure is NOT a reviewer defect and the comparison against the pre-registered <=10% ceiling is a category error. The ceiling was registered in PREMISE_NEXT.md §15.6-(3) FOR THE MODEL, whose constrained decode generates the gate first and the dependent in the gate's context, so its coherence is structurally forced: the model's low contradiction rate is architecture, not virtue, and it does not transfer to a human answering each question in isolation — least of all under an instruction that expressly forbade making the answers cohere. The reviewer's own account, 2026-08-03: \"on some artworks if you ask me \"is there a subject?\" i might answer \"no\", but if you ask me *separately* \"what is the subject?\" i would answer \"an animal\". So if you ask me to *not make a story* then I will give you those 2 answers, but if you ask me *jointly* (or just one after the other) then I will change my answers so they are coherent together.\" On that account the independent pair carries MORE information than the reconciled one: has_dominant_subject = none with subject_kind = animal decodes as 'nothing dominates, but an animal is present', and the joint format cannot express that at all — forcing coherence collapses two variables onto one and the second is lost. The operating rule that follows: every figure must be labelled with its elicitation mode and the two must never be blended. A downstream consumer of the labels reads the STANDING (joint) state, because it must read exactly one and supersession picks it by recency, not by correctness. Any statement about what the reviewer perceives, or about how by-question elicitation behaves, reads the INDEPENDENT state. What the 45% actually measures is how often the gate's variable (does a dominant X exist) and its dependent's variable (what kind is the best-available X) come apart on real covers.",
+   "fundedBy": [
+    "o-msdnqkxk-eb29bde6",
+    "o-msdnquim-000191bf",
+    "o-msdnr3g2-8b62ce37",
+    "o-msdnr8iw-c33ee77a",
+    "o-msdnre2b-ba5bc456",
+    "o-msdnrkw4-ad3262a4",
+    "o-msdnsa2t-f6498d7a",
+    "o-msdnscu5-bf4f63ac",
+    "o-msdnse8u-b4e4110c",
+    "o-msdnshu8-ebf702e5",
+    "o-msdnslba-d5f290ce",
+    "o-msdnsqqp-1aa270a2",
+    "o-msdnsuyq-74fa26ba",
+    "o-msdnu99m-1627e0f6",
+    "o-msdnufso-83508c7f",
+    "o-msdnui2t-c763bdec",
+    "o-msdnukbt-af45f3b0"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+     "what": "Regenerated under commit b1215ac with cross-batch supersession: gateConsistency (independent, 9/45%), reconciliation.standing (joint, 0/0%), and gateConsistency.reading, which carries the reviewer's clarification verbatim and the two-modes rule."
+    },
+    {
+     "ref": "research/v3/oracle/premise/PREMISE_NEXT.md",
+     "what": "§15.6-(3), where the <=10% ceiling was pre-registered, and §3's 12 numbered gate-consistency rules — the rules whose contradictions are being counted."
+    },
+    {
+     "ref": "research/v3/PHASE_0_LOOSE_ENDS.md",
+     "what": "L-b, the loose end this closes, including its standing prohibition on grading against the bcde-validation-1 rows until a reading existed."
+    }
+   ],
+   "fundingCaveats": [
+    "THE fundedBy LIST IS THE JOINT ROUND ONLY, AND THAT IS HALF THE EVIDENCE. The 17 ids are the standing (superseding) answers of bcde-gate-reconciliation-1. The other half of this decision rests on the 9 contradictions in the INDEPENDENT round, whose records are mechanically superseded by these 17 — so citing them would make recheck report them as drafts, which is the exact misreading this record exists to refute. They are cited through the analysis artifact instead. A reader who wants the independent answers must resolve the supersedes chains backwards from these ids.",
+    "TWO OF THE ROUND'S 19 RECORDS ARE NOT CITED. bcde-gate-reconciliation-1 holds 19 oracle labels over 17 items; two are in-round re-answers on cover 0005165a that are themselves superseded by two of the 17. Only the standing 17 are cited.",
+    "n = 20 ARTWORKS, ONE REVIEWER. Both rates are computed on 20 artworks answered by one person. The direction of the effect is large and unambiguous (45% -> 0%) but its size is not a calibrated quantity and must not be quoted as one.",
+    "THE JOINT ROUND WAS SERVED UNDER A CONTRADICTORY INSTRUCTION. Every answer in the 17 was collected under the inherited anti-story instruction, which tells the reviewer to do the opposite of the reconciliation task. The reviewer flagged it and confirmed they answered the actual task; see d-2026-08-03-reconciliation-round-wording-caveat. The 0% therefore stands on the reviewer's confirmation, not on the served wording.",
+    "THE INDEPENDENT ROUND CARRIES ITS OWN SERVED-WORDING DIVERGENCE (L-h). The round served an extra per-question anti-coherence line that appears zero times in variant E's prompt file, so the reviewer received two anti-coherence instructions and the model received one. That is a candidate contributor to the 45% and is not separable from the elicitation-mode effect by this evidence.",
+    "IT CLOSES L-b BY SUPPLYING THE READING, NOT BY MEASURING ANYTHING NEW ABOUT THE MODEL. Nothing here says the model's gate consistency is good or bad. It says the model's number and the human's number are not on the same scale and must never be compared."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-schema-v2-split-gated-pairs",
+   "ts": "2026-08-03T23:50:00Z",
+   "kind": "instrument-design",
+   "status": "PROPOSAL — NOT ADOPTED. Needs reviewer sign-off before any group-BCDE v2 fixture is built. Recorded now so the proposal is on the record with its evidence and its known residue, not so it can be assumed.",
+   "scope": "PROPOSED shape for the group-BCDE v2 schema's gate/dependent pairs — the subject pair (has_dominant_subject / subject_kind) and the signature pair (has_signature_color / signature_carrier), and any future pair of the same shape. It would bind the v2 fixture and the analyzer's consistency reporting. It does NOT rewrite any v1 question, does NOT touch the frozen question set, does NOT retract any answer already collected, and does NOT by itself settle the signature pair, which needs a second change this proposal does not supply.",
+   "decision": "PROPOSED, pending reviewer sign-off: under design rule 9 — 'design out ambiguity entirely, reframe the question or split it, never patch it with a gloss' — split every gate/dependent pair into two independent questions rather than keeping one conditional on the other. The dependent becomes UNCONDITIONAL and is reframed to ask for the best available answer rather than the answer to a presupposition: 'name the kind of the most subject-like thing in this artwork, if any'. The gate becomes a separate DOMINANCE judgment about the same artwork: whether anything dominates. The two are then answering two different variables, which is what the 45%-vs-0% contradiction evidence shows they were always doing. Consequence for the instrument: gate-consistency rules #9 (has_dominant_subject == none but subject_kind != not_applicable) and #10 (has_dominant_subject != none but subject_kind == not_applicable) stop being violations and are DEMOTED TO DESCRIPTIVE CROSS-TABS — reported, never scored, never counted toward a ceiling, because under the split shape a 'none + animal' pair is a well-formed and informative answer rather than an error. RESIDUE, stated because it is the reason this is a proposal and not a fix: splitting alone is NOT sufficient for the signature pair. Rule #6 (has_signature_color == yes but signature_carrier == not_applicable) — the most decision-relevant contradiction in the set — survives the split, because signature_carrier still has no value for the real case where the signature colour is spread across several elements at once. That gap needs a VALUE, not a split, and the direction is already settled by the reviewer's earlier Appendix R ruling that signature_carrier be multi-select: 'Some image has both the text and the main subject be the exact same colour which is the signature colour — how do you answer with only 1 answer?' A multi-select carrier plus the split is the complete shape; the split alone leaves #6 live.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/bcde-validation-1-analysis.json",
+     "what": "gateConsistency.reading: 'The gate asks about the EXISTENCE OF A DOMINANT X; its dependent asks for the KIND OF THE BEST-AVAILABLE X. Asked apart, both have honest answers that break the rule' — and the explicit conclusion that this is the argument for splitting them in schema v2 under design rule 9."
+    },
+    {
+     "ref": "research/v3/ORACLE_QUESTION_SET.md",
+     "what": "Design rule 9 and its order-of-remedies clause; and Appendix R's signed-off signature_carrier multi-select ruling, which supplies the missing value this proposal cannot supply by splitting."
+    },
+    {
+     "ref": "research/v3/oracle/premise/PREMISE_NEXT.md",
+     "what": "§3's numbered gate-consistency rules — the definitions of #6, #9 and #10 this proposal would change the status of."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS DELIBERATELY EMPTY AND THIS IS THE INTERESTING CASE. The evidence for the split is the 9 contradictions in the INDEPENDENT reading of bcde-validation-1. Those records are mechanically superseded by the joint reconciliation round, so citing them by id would make warehouse recheck report this decision as standing on drafts — which is precisely the misreading d-2026-08-03-gate-contradictions-are-elicitation-mode-effects exists to refute. The citation is therefore in fundedByArtifacts, and the honest consequence is that recheck can never flag this record.",
+    "IT IS A PROPOSAL. No reviewer has signed it. Design rule 9 is a signed reviewer directive; this particular application of it to these two pairs is the orchestrator's reading of that directive and needs its own sign-off.",
+    "THE SPLIT IS NOT SUFFICIENT FOR THE SIGNATURE PAIR. Rule #6 survives it. Anyone who implements the split and stops there will have left the most decision-relevant contradiction in the set live, and will have done so while believing it was addressed.",
+    "DEMOTING #9 AND #10 REMOVES AN INSTRUMENT. Those two rules are also the SAM handoff's tripwire — #9 in particular 'is the shape of a bad concept prompt'. Demoting them to cross-tabs means nothing fails when a model names a subject it just said was absent; the cross-tab must actually be read, and nothing currently forces anyone to read it.",
+    "n = 20 ARTWORKS, ONE REVIEWER, ONE ROUND. The evidence that the two variables come apart on real covers is 9 occasions on 20 artworks. That the variables are distinct is well argued; how often they come apart at corpus scale is unmeasured.",
+    "THE MULTI-SELECT HALF HAS NEVER BEEN EXERCISED BY REAL DATA. Loose end L-f: across the entire warehouse, zero array-valued answers have two or more elements. A multi-select signature_carrier would be the first real test of machinery that only unit tests have touched."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-reconciliation-round-wording-caveat",
+   "ts": "2026-08-03T22:24:00Z",
+   "kind": "process",
+   "scope": "The 17 standing answers of bcde-gate-reconciliation-1 and anything computed from them, including the 0% joint contradiction rate in d-2026-08-03-gate-contradictions-are-elicitation-mode-effects. It does NOT extend to bcde-validation-1, whose own served-wording divergence is loose end L-h and is a different defect with a different shape.",
+   "decision": "The labels stand, with the defect on the record. Every answer in bcde-gate-reconciliation-1 was collected under the inherited per-question instruction 'Answer this one question only. Do not try to make your answers across questions tell one story.' — which is the direct contradiction of what that round asked the reviewer to do, namely look at two of their own answers, be told they do not hold together, and resolve them. The reviewer flagged it during the round and confirmed they had answered the actual task rather than the served instruction. The labels are therefore NOT re-collected and NOT discounted; the defect is recorded as a standing caveat on the round instead, because the alternative — re-running a round whose answers the reviewer has confirmed — would cost reviewer bandwidth, which is the campaign's binding constraint, to buy nothing. The mechanism is fixed going forward: instructions are now selected per serve mode rather than inherited, with a dedicated RECONCILIATION_INSTRUCTION ('Resolve the two answers so they are logically consistent with each other. Answer from the artwork, and do not revisit anything beyond the pair shown.') chosen by instructionForServeMode(). Landed in commit b1215ac and active from the next server restart — so the fix post-dates every answer it would have governed, which is exactly why this caveat has to sit on the round's record rather than being closed by the commit.",
+   "fundedBy": [
+    "o-msdnqkxk-eb29bde6",
+    "o-msdnquim-000191bf",
+    "o-msdnr3g2-8b62ce37",
+    "o-msdnr8iw-c33ee77a",
+    "o-msdnre2b-ba5bc456",
+    "o-msdnrkw4-ad3262a4",
+    "o-msdnsa2t-f6498d7a",
+    "o-msdnscu5-bf4f63ac",
+    "o-msdnse8u-b4e4110c",
+    "o-msdnshu8-ebf702e5",
+    "o-msdnslba-d5f290ce",
+    "o-msdnsqqp-1aa270a2",
+    "o-msdnsuyq-74fa26ba",
+    "o-msdnu99m-1627e0f6",
+    "o-msdnufso-83508c7f",
+    "o-msdnui2t-c763bdec",
+    "o-msdnukbt-af45f3b0"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/review-server/oracle-validation.ts",
+     "what": "BCDE_INSTRUCTION, the inherited anti-story line; RECONCILIATION_INSTRUCTION and instructionForServeMode(), the per-mode fix; and the rationale doc-comment: 'The reviewer was shown two of their own answers, told they do not hold together, asked to resolve them, and told in the same breath not to make their answers tell one story. The reviewer flagged it as contradictory and they are right; it is not a wording nit, it is an instruction to do the opposite of the task.'"
+    },
+    {
+     "ref": "research/v3/PHASE_0_LOOSE_ENDS.md",
+     "what": "L-h, the sibling defect on the bcde-validation-1 round's served wording — the same class, one round earlier, still open."
+    }
+   ],
+   "fundingCaveats": [
+    "THE ROUND'S VALIDITY RESTS ON A CONVERSATIONAL CONFIRMATION. The reviewer said they answered the actual task. That statement is not a warehouse record and warehouse recheck can never test it. If it is ever withdrawn, the 0% joint contradiction rate loses its footing and the round must be re-run, not re-interpreted.",
+    "THE FIX IS UNTESTED AGAINST A REAL ROUND. Per-mode instruction selection landed in b1215ac and is exercised by tests, but no reviewer round has yet been served under RECONCILIATION_INSTRUCTION. The first one that is should be checked, not assumed.",
+    "THE SERVED WORDING WAS NEVER CAPTURED ON THE RECORDS THEMSELVES. The oracle-label rows do not carry the instruction text they were collected under, so the only evidence of what the reviewer read is the code at that commit plus this record. That is a general weakness of every round so far, not a defect of this one.",
+    "IT SAYS NOTHING ABOUT WHETHER THE INSTRUCTION MOVED THE ANSWERS. The claim is that the reviewer answered the task despite the instruction. Nobody has measured what a correctly-instructed reconciliation round would have produced, and on n=17 nobody could."
+   ],
+   "recordedAt": "2026-08-03"
+  },
+  {
+   "id": "d-2026-08-03-ground-freetext-primary-evidence",
+   "ts": "2026-08-03T21:15:00Z",
+   "kind": "process",
+   "scope": "The evidential status of the 9 free-text descriptions from ground-freetext-1, and the reading of the ground_type vocabulary's failure. It binds whatever replaces or retires the ground_type question: these 9 answers are its seed evidence and its evaluation vocabulary. It does NOT choose between a v3 vocabulary and retiring the question to pixel computation — that choice is the reviewer's and is unmade. It does NOT rewrite or retire any question in the frozen set, and it does NOT license deriving tags over the prose and then treating those tags as the reviewer's answer.",
+   "decision": "The 9 prose descriptions are the primary evidence for whatever replaces or retires the ground_type vocabulary, and the prose is authoritative over any tag derived from it. Round ground-freetext-1 served exactly the 9 covers that cascade-ground-truth-1 identified as vocabulary misfits — the covers where the reviewer pressed none_discernible while being able to see the ground — with a free-text box and NO list of options, precisely so the round would measure which words the vocabulary is missing rather than whether the reviewer accepts a longer list. The result: 9 of 9 covers are describable in prose, and none of the nine descriptions says there is nothing there. This confirms, from the human side, that none_discernible in that round meant 'no word fits', not 'no ground exists'. On the contract's own terms — background and surface roles, not taxonomy — 6 of the 9 descriptions fix both the ground's route and the figure/ground line well enough that a palette would take the same path under every reading the description allows; 3 remain genuinely ambiguous in prose (000c4d52, 000fa9b5, krafty), which no vocabulary can repair because the prose itself does not converge. The channel status follows REVIEW_UI.md §4, which already makes free text 'the primary and only required channel' with derived tags 'never overwriting the raw text; raw text stays authoritative'. This round is the first time that channel has carried a result, and it carried more usable structure from 9 prose answers than 19 forced-choice answers carried in cascade-ground-truth-1. Any tagging of these descriptions is a derived record; the prose is the evidence.",
+   "fundedBy": [
+    "o-msdp7f3s-95b4a738",
+    "o-msdpjnga-269ef6ff",
+    "o-msdpl1j9-9fe4f18a",
+    "o-msdpnq19-8b525ed1",
+    "o-msdpq1dh-1e541341",
+    "o-msdpri2p-35a2b76c",
+    "o-msdptr4p-761bd841",
+    "o-msdpwnn3-94a4ebba",
+    "o-msdpzis0-f25c8ba4"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/premise/GROUND_FREETEXT_SYNTHESIS.md",
+     "what": "The synthesis: each description verbatim with the structure it describes, the seven recurring structures the enum cannot express, the stated decidability test and its 6/3 split, and three options for the reviewer to rule on with the evidence's preference argued."
+    },
+    {
+     "ref": "research/v3/oracle/premise/CASCADE_POLICY_VERDICT.md",
+     "what": "The round that produced the 9 covers, the reviewer disclosure that motivated the free-text follow-up, and the escalate-to-vocabulary verdict this round was built to serve."
+    },
+    {
+     "ref": "research/v3/data/oracle-premise/cascade-ground-truth-1-analysis.json",
+     "what": "verdict.vocabulary_misfit_covers — the exact list of 9 artworkIds and image paths this round was served on."
+    },
+    {
+     "ref": "research/v3/REVIEW_UI.md",
+     "what": "§4: free text is the primary and only required channel; derived tags are re-derivable and never overwrite the raw text."
+    }
+   ],
+   "fundingCaveats": [
+    "n = 9, ONE REVIEWER, AND THE 9 ARE A DELIBERATELY ADVERSE SAMPLE. These are the covers where the vocabulary already failed. Nothing here measures how often the vocabulary fails corpus-wide, and no rate computed on these 9 generalises to anything.",
+    "THE 6/3 SPLIT IS AN ORCHESTRATOR'S READING OF THE REVIEWER'S WORDS, NOT THE REVIEWER'S OWN VERDICT. The decidability test is stated explicitly in the synthesis so it can be disagreed with, and one cover (krafty) is marginal: its background colour is invariant across the reviewer's two readings and only the role of the pink layer moves, so on a background-colour-only test the split would be 7/2.",
+    "THE ROUND CARRIES NO TAGS AT ALL, BY DESIGN. No option list was shown, so there is nothing to cross-check the prose against and no agreement figure exists or can be computed for this round.",
+    "AUTOSAVE MEANS THE BATCH HOLDS 63 RECORDS FOR 9 ANSWERS. The 9 cited ids are the standing revisions; the other 54 are superseded autosave drafts of the same nine texts. A reader counting records in this batch will get 63 and should not read it as 63 judgements.",
+    "ONE COVER SHOWS THE FAILURE IS NOT ONLY LEXICAL. On 000f0a78 the vocabulary DID contain the right word (multiple_distinct_fields) and the reviewer still could not use it, because one of the three fields is itself a gradient and the single slot forced them to discard that. A longer list would not have helped there — which is evidence against reading this record as an argument for a bigger vocabulary.",
+    "IT SETTLES NO ROUTE. The successor question — vocabulary v3, pixel retirement via the residual route, or both — is open and reviewer-owned. The residual route has no purity measurement yet, so the option the synthesis argues for cannot currently be evaluated on evidence."
+   ],
+   "recordedAt": "2026-08-03"
   }
  ]
 }
