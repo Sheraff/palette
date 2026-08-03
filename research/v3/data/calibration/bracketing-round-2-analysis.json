@@ -1,0 +1,593 @@
+{
+	"generatedAt": "2026-08-03T08:03:02.266Z",
+	"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"rounds": [
+		{
+			"batchId": "bracketing-round-1-clarified",
+			"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/calibration/bracketing-round-1.json",
+			"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion"
+		},
+		{
+			"batchId": "bracketing-round-2",
+			"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/calibration/bracketing-round-2.json",
+			"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion"
+		}
+	],
+	"criterionMatches": true,
+	"poolable": true,
+	"round2": {
+		"generatedAt": "2026-08-03T08:03:02.264Z",
+		"fixtureVersion": "color-bracketing-1",
+		"batchId": "bracketing-round-2",
+		"criterion": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+		"warehousePath": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+		"fixturePath": "/Users/Flo/GitHub/palette/research/v3/data/calibration/bracketing-round-2.json",
+		"skipped": {
+			"otherLabelSchema": 32,
+			"otherBatch": 134,
+			"unknownItem": 0,
+			"questionKeyMismatch": 0,
+			"nonBooleanAnswer": 0,
+			"retracted": 0,
+			"superseded": 4
+		},
+		"part1": {
+			"question": "Are these two colours the same colour?",
+			"totalItems": 80,
+			"answered": 80,
+			"unanswered": 0,
+			"fittedPoints": 64,
+			"pooled": {
+				"n": 64,
+				"yesCount": 28,
+				"intercept": -6.2657463895659085,
+				"slope": -1.4678757077658866,
+				"threshold": 0.014001637071769922,
+				"fittedThreshold": 0.014001637071769922,
+				"confidenceInterval": {
+					"low": 0.009630382956155061,
+					"high": 0.02035701400267402
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null
+			},
+			"quadrants": [
+				{
+					"n": 14,
+					"yesCount": 8,
+					"intercept": -31.637918935176696,
+					"slope": -6.781234123613175,
+					"threshold": 0.009414441023721937,
+					"fittedThreshold": 0.009414441023721937,
+					"confidenceInterval": {
+						"low": 0.007700944038058599,
+						"high": 0.011509199307398488
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null,
+					"quadrant": "dark-neutral",
+					"answered": 15,
+					"total": 15
+				},
+				{
+					"n": 14,
+					"yesCount": 4,
+					"intercept": 19.135703714034783,
+					"slope": 5.005579847546276,
+					"threshold": null,
+					"fittedThreshold": null,
+					"confidenceInterval": null,
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": "the answers do not run the expected way — pairs further apart were called \"same\" at least as often as close ones, so no threshold is reported from the curve",
+					"quadrant": "dark-saturated",
+					"answered": 15,
+					"total": 15
+				},
+				{
+					"n": 14,
+					"yesCount": 7,
+					"intercept": -18.214860695689733,
+					"slope": -4.423045007878051,
+					"threshold": 0.016274234403058523,
+					"fittedThreshold": 0.016274234403058523,
+					"confidenceInterval": {
+						"low": 0.012560220108658773,
+						"high": 0.021086470070943317
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null,
+					"quadrant": "light-neutral",
+					"answered": 15,
+					"total": 15
+				},
+				{
+					"n": 22,
+					"yesCount": 9,
+					"intercept": -9.61484277590748,
+					"slope": -2.5142983412484563,
+					"threshold": 0.02183882368420332,
+					"fittedThreshold": 0.02183882368420332,
+					"confidenceInterval": {
+						"low": 0.014536431778125945,
+						"high": 0.0328095799016784
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null,
+					"quadrant": "light-saturated",
+					"answered": 23,
+					"total": 23
+				}
+			],
+			"oneThresholdSurvives": null,
+			"oneThresholdSentence": "Cannot say yet: dark-saturated has no usable interval, so the four quadrants cannot be compared.",
+			"repeatConsistency": {
+				"repeats": 16,
+				"bothAnswered": 16,
+				"agreed": 10,
+				"agreement": 0.625
+			},
+			"controls": {
+				"total": 4,
+				"answered": 4,
+				"passed": 4,
+				"failures": [],
+				"checks": [
+					{
+						"itemId": "r2-dark-neutral-control-0",
+						"expected": true,
+						"answered": true,
+						"answer": true,
+						"passed": true
+					},
+					{
+						"itemId": "r2-dark-saturated-control-0",
+						"expected": true,
+						"answered": true,
+						"answer": true,
+						"passed": true
+					},
+					{
+						"itemId": "r2-light-neutral-control-0",
+						"expected": true,
+						"answered": true,
+						"answer": true,
+						"passed": true
+					},
+					{
+						"itemId": "r2-light-saturated-control-0",
+						"expected": true,
+						"answered": true,
+						"answer": true,
+						"passed": true
+					}
+				]
+			},
+			"prior": {
+				"sameColorBar": 0.01582,
+				"measuredOverPrior": 0.8850592333609306
+			}
+		},
+		"part2": {
+			"question": "Are the icons clearly visible on this background?",
+			"totalItems": 0,
+			"answered": 0,
+			"unanswered": 0,
+			"fittedPoints": 0,
+			"fit": {
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			"controls": {
+				"total": 0,
+				"answered": 0,
+				"passed": 0,
+				"failures": [],
+				"checks": []
+			},
+			"finding": "No equal-brightness accent pair has been answered yet — nothing can be said about them."
+		},
+		"summaryLines": [
+			"Same-colour bracketing round — bracketing-round-2",
+			"Criterion: register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+			"Note: this is not the active round (bracketing-round-1-clarified). The criterion line above is the fixture's; what this pass was actually answered under may differ, which is why it is a separate batch.",
+			"Answered: 80 of 80 same-colour pairs, 0 of 0 accent pairs.",
+			"",
+			"PART 1 — where is the same-colour bar?",
+			"  Pooled threshold: 0.01400 (95% confidence interval 0.00963 to 0.02036), from 64 answers.",
+			"  Two colours closer than this were usually called the same; further apart, usually called different.",
+			"  The prior we came in with was 0.01582; the measured bar is 0.89 times that.",
+			"  One threshold for all four quadrants? Cannot say yet: dark-saturated has no usable interval, so the four quadrants cannot be compared.",
+			"",
+			"  Per quadrant:",
+			"    dark-neutral     15/15 answered  threshold 0.00941  interval 0.00770 to 0.01151",
+			"    dark-saturated   15/15 answered  no threshold — the answers do not run the expected way — pairs further apart were called \"same\" at least as often as close ones, so no threshold is reported from the curve",
+			"    light-neutral    15/15 answered  threshold 0.01627  interval 0.01256 to 0.02109",
+			"    light-saturated  23/23 answered  threshold 0.02184  interval 0.01454 to 0.03281",
+			"",
+			"  Repeat consistency: 10 of 16 hidden repeats got the same answer as the first time (63%).",
+			"  That is the reviewer's own noise. No threshold can be sharper than this noise allows.",
+			"  Identical-colour controls: 4 of 4 answered correctly (\"same\").",
+			"",
+			"PART 2 — is a coloured accent visible at the same brightness?",
+			"  0 of 0 answered.",
+			"  No equal-brightness accent pair has been answered yet — nothing can be said about them.",
+			"  Controls: none of the 0 answered yet.",
+			"",
+			"Records read but not counted: otherLabelSchema 32, otherBatch 134, superseded 4."
+		]
+	},
+	"pooled": {
+		"fit": {
+			"n": 120,
+			"yesCount": 63,
+			"intercept": -8.876492715909794,
+			"slope": -2.1253800925599355,
+			"threshold": 0.015353281986231562,
+			"fittedThreshold": 0.015353281986231562,
+			"confidenceInterval": {
+				"low": 0.012634596549413343,
+				"high": 0.018656968335066297
+			},
+			"separated": false,
+			"separationInterval": null,
+			"converged": true,
+			"note": null
+		},
+		"quadrants": [
+			{
+				"n": 28,
+				"yesCount": 13,
+				"intercept": -23.485611177383042,
+				"slope": -5.0227444279945725,
+				"threshold": 0.00931758020917914,
+				"fittedThreshold": 0.00931758020917914,
+				"confidenceInterval": {
+					"low": 0.00763556167638225,
+					"high": 0.01137012634224717
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "dark-neutral",
+				"answered": 28,
+				"total": 30,
+				"fromRound1": 14,
+				"fromRound2": 14
+			},
+			{
+				"n": 28,
+				"yesCount": 14,
+				"intercept": -13.430558465855757,
+				"slope": -3.1992002691963743,
+				"threshold": 0.015024115150741124,
+				"fittedThreshold": 0.015024115150741124,
+				"confidenceInterval": {
+					"low": 0.011368271023973139,
+					"high": 0.019855617057926184
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "dark-saturated",
+				"answered": 28,
+				"total": 30,
+				"fromRound1": 14,
+				"fromRound2": 14
+			},
+			{
+				"n": 28,
+				"yesCount": 16,
+				"intercept": -17.349330888678228,
+				"slope": -4.212610823329608,
+				"threshold": 0.016270084338340096,
+				"fittedThreshold": 0.016270084338340096,
+				"confidenceInterval": {
+					"low": 0.01308218326792408,
+					"high": 0.02023482158561026
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "light-neutral",
+				"answered": 28,
+				"total": 30,
+				"fromRound1": 14,
+				"fromRound2": 14
+			},
+			{
+				"n": 36,
+				"yesCount": 20,
+				"intercept": -9.54774592950902,
+				"slope": -2.52888318211523,
+				"threshold": 0.022926101130389932,
+				"fittedThreshold": 0.022926101130389932,
+				"confidenceInterval": {
+					"low": 0.016578788566068835,
+					"high": 0.031703529539945034
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"quadrant": "light-saturated",
+				"answered": 36,
+				"total": 38,
+				"fromRound1": 14,
+				"fromRound2": 22
+			}
+		],
+		"oneThresholdSurvives": false,
+		"oneThresholdSentence": "No, on both rounds pooled: dark-neutral, light-saturated exclude the pooled threshold of 0.01535.",
+		"fromRound1": 56,
+		"fromRound2": 64
+	},
+	"hueSplit": {
+		"quadrant": "light-saturated",
+		"boundariesDegrees": [
+			0,
+			120,
+			240
+		],
+		"thirds": [
+			{
+				"third": 0,
+				"label": "0–120°: pink-red, orange, yellow, yellow-green",
+				"rangeDegrees": {
+					"low": 0,
+					"high": 120
+				},
+				"fit": {
+					"n": 10,
+					"yesCount": 4,
+					"intercept": -8.656488767437793,
+					"slope": -2.0663208002672824,
+					"threshold": 0.0151565166080473,
+					"fittedThreshold": 0.0151565166080473,
+					"confidenceInterval": {
+						"low": 0.006936491965463724,
+						"high": 0.033117604234787906
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				"fromRound1": 3,
+				"fromRound2": 7
+			},
+			{
+				"third": 1,
+				"label": "120–240°: green, cyan, blue",
+				"rangeDegrees": {
+					"low": 120,
+					"high": 240
+				},
+				"fit": {
+					"n": 18,
+					"yesCount": 10,
+					"intercept": -10.790703416848393,
+					"slope": -2.7841677600607455,
+					"threshold": 0.020739037021832232,
+					"fittedThreshold": 0.020739037021832232,
+					"confidenceInterval": {
+						"low": 0.013325678673076876,
+						"high": 0.03227660422743906
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				"fromRound1": 10,
+				"fromRound2": 8
+			},
+			{
+				"third": 2,
+				"label": "240–360°: blue, violet, magenta, red",
+				"rangeDegrees": {
+					"low": 240,
+					"high": 360
+				},
+				"fit": {
+					"n": 8,
+					"yesCount": 6,
+					"intercept": -54.25016828028944,
+					"slope": -16.576814603467486,
+					"threshold": 0.038051870932729534,
+					"fittedThreshold": 0.03790571539451519,
+					"confidenceInterval": {
+						"low": 0.02645851137751261,
+						"high": 0.05430552154159267
+					},
+					"separated": true,
+					"separationInterval": {
+						"low": 0.0321094486260066,
+						"high": 0.045094043760949665
+					},
+					"converged": true,
+					"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap"
+				},
+				"fromRound1": 1,
+				"fromRound2": 7
+			}
+		],
+		"round1Assigned": 14,
+		"round1Mixed": 0,
+		"verdict": "The hue thirds do not agree: 0–120° sits at 0.01516 and 240–360° at 0.03805, a spread of 2.5×, outside at least one interval. Light-saturated is not one population — the bar there depends on hue."
+	},
+	"directionProbe": {
+		"targetDistance": 0.015,
+		"answered": 12,
+		"total": 12,
+		"predictedYesRate": 0.5123666901503495,
+		"directions": [
+			{
+				"kind": "lightness",
+				"n": 4,
+				"yesCount": 4,
+				"yesRate": 1,
+				"meanDistance": 0.015210943352505134,
+				"minPurity": 0.9932443727842246,
+				"perQuadrant": [
+					{
+						"quadrant": "dark-neutral",
+						"distance": 0.015118652748699932,
+						"answer": true
+					},
+					{
+						"quadrant": "dark-saturated",
+						"distance": 0.015077703796818755,
+						"answer": true
+					},
+					{
+						"quadrant": "light-neutral",
+						"distance": 0.015209376007262191,
+						"answer": true
+					},
+					{
+						"quadrant": "light-saturated",
+						"distance": 0.015438040857239653,
+						"answer": true
+					}
+				]
+			},
+			{
+				"kind": "chroma",
+				"n": 4,
+				"yesCount": 2,
+				"yesRate": 0.5,
+				"meanDistance": 0.014863314321815311,
+				"minPurity": 0.9874900158810035,
+				"perQuadrant": [
+					{
+						"quadrant": "dark-neutral",
+						"distance": 0.014842560088335243,
+						"answer": false
+					},
+					{
+						"quadrant": "dark-saturated",
+						"distance": 0.014664552909684374,
+						"answer": true
+					},
+					{
+						"quadrant": "light-neutral",
+						"distance": 0.014864211470390416,
+						"answer": false
+					},
+					{
+						"quadrant": "light-saturated",
+						"distance": 0.015081932818851208,
+						"answer": true
+					}
+				]
+			},
+			{
+				"kind": "hue",
+				"n": 4,
+				"yesCount": 1,
+				"yesRate": 0.25,
+				"meanDistance": 0.01504926195056165,
+				"minPurity": 0.9955911961925544,
+				"perQuadrant": [
+					{
+						"quadrant": "dark-neutral",
+						"distance": 0.015047459746712679,
+						"answer": false
+					},
+					{
+						"quadrant": "dark-saturated",
+						"distance": 0.014733070994425309,
+						"answer": false
+					},
+					{
+						"quadrant": "light-neutral",
+						"distance": 0.01547380465950066,
+						"answer": false
+					},
+					{
+						"quadrant": "light-saturated",
+						"distance": 0.01494271240160795,
+						"answer": true
+					}
+				]
+			}
+		],
+		"verdict": "Direction looks like it matters: at the same distance (0.01500), a lightness difference read as \"same\" 100% of the time and a hue difference 25%. With four pairs per direction this is a signal worth a dedicated round, not a number to use."
+	},
+	"repeats": {
+		"round1": {
+			"repeats": 8,
+			"bothAnswered": 8,
+			"agreed": 5,
+			"agreement": 0.625
+		},
+		"round2": {
+			"repeats": 16,
+			"bothAnswered": 16,
+			"agreed": 10,
+			"agreement": 0.625
+		},
+		"combinedAgreement": 0.625
+	},
+	"summaryLines": [
+		"Same-colour bar — round 2 (bracketing-round-2), refining bracketing-round-1-clarified",
+		"Criterion: register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+		"",
+		"Round 2 alone: 80 of 80 pairs answered.",
+		"  threshold 0.01400 (0.00963 to 0.02036)",
+		"",
+		"Rounds 1+2 pooled: 120 fitted points (56 from round 1, 64 from round 2).",
+		"  pooled threshold 0.01535 (0.01263 to 0.01866)",
+		"  dark-neutral     0.00932 (0.00764 to 0.01137) from 14+14 points",
+		"  dark-saturated   0.01502 (0.01137 to 0.01986) from 14+14 points",
+		"  light-neutral    0.01627 (0.01308 to 0.02023) from 14+14 points",
+		"  light-saturated  0.02293 (0.01658 to 0.03170) from 14+22 points",
+		"  No, on both rounds pooled: dark-neutral, light-saturated exclude the pooled threshold of 0.01535.",
+		"",
+		"HUE SPLIT inside light-saturated (round 2 sampled it; 14 round-1 pairs were assigned after the",
+		"fact and 0 straddled a boundary and were dropped):",
+		"  0–120° 0.01516 (0.00694 to 0.03312) from 3+7 points — 0–120°: pink-red, orange, yellow, yellow-green",
+		"  120–240° 0.02074 (0.01333 to 0.03228) from 10+8 points — 120–240°: green, cyan, blue",
+		"  240–360° 0.03805 (0.02646 to 0.05431) from 1+7 points — 240–360°: blue, violet, magenta, red",
+		"  The hue thirds do not agree: 0–120° sits at 0.01516 and 240–360° at 0.03805, a spread of 2.5×, outside at least one interval. Light-saturated is not one population — the bar there depends on hue.",
+		"",
+		"DIRECTION PROBE at 0.01500, where the pooled curve predicts 51% \"same\":",
+		"  lightness  4/4 said same (100%) · purity ≥ 0.99",
+		"  chroma     2/4 said same (50%) · purity ≥ 0.99",
+		"  hue        1/4 said same (25%) · purity ≥ 1.00",
+		"  Direction looks like it matters: at the same distance (0.01500), a lightness difference read as \"same\" 100% of the time and a hue difference 25%. With four pairs per direction this is a signal worth a dedicated round, not a number to use.",
+		"",
+		"REVIEWER NOISE (silent repeats):",
+		"  round 1 5/8 · round 2 10/16 · combined 63%",
+		"  A threshold can never be sharper than this: it is the ceiling on everything above.",
+		"",
+		"8-BIT FLOOR. The grid, not the eye, sets how finely a pair can be placed:",
+		"  dark-neutral     nearest-neighbour step 0.00150 vs smallest rung 0.00605 — rungs there are quantised to about ±0.00075",
+		"  dark-saturated   nearest-neighbour step 0.00107 vs smallest rung 0.01262 — rungs there are quantised to about ±0.00053",
+		"  light-neutral    nearest-neighbour step 0.00136 vs smallest rung 0.01145 — rungs there are quantised to about ±0.00068",
+		"  light-saturated  nearest-neighbour step 0.00088 vs smallest rung 0.01069 — rungs there are quantised to about ±0.00044",
+		"  Every distance reported anywhere above is the achieved one, measured on the two colours shown."
+	]
+}
