@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T21:09:49.300Z",
+		"generatedAt": "2026-08-04T21:26:25.666Z",
 		"roots": [
 			"oracle",
 			"prototypes",
@@ -10,10 +10,10 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T21:09:49.300Z",
+			"generatedAt": "2026-08-04T21:26:25.666Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "07c2ad200ae51c1a24d59021b1c4efbacc725e09",
+				"gitCommit": "efcd48616b40327f05a644f6d8a71ac7e1ac09ac",
 				"gitBranch": "proto/p3-fields",
 				"gitDirty": true,
 				"node": "v25.8.1"
@@ -35,11 +35,11 @@
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "584155aa4cb6882ac959e16c922346ff080db4e9d2dcb7981a4b014bcf2528ad",
+	"bodyHash": "26531a52c71e37bad6b91afc7730df25049e6e22a4ae07be158d3b89e73c31da",
 	"body": {
 		"corpus": {
 			"files": 257,
-			"lines": 107273,
+			"lines": 107322,
 			"byLanguage": {
 				"py": {
 					"files": 98,
@@ -48,7 +48,7 @@
 				},
 				"ts": {
 					"files": 159,
-					"lines": 68735,
+					"lines": 68784,
 					"fidelity": "ast"
 				}
 			}
@@ -261,8 +261,8 @@
 			{
 				"area": "prototypes/p3-fields",
 				"gate": "INFORMATIONAL",
-				"configured": false,
-				"workstream": "unassigned",
+				"configured": true,
+				"workstream": "phase-2 prototype orchestrators",
 				"files": 37,
 				"tunableSites": 1069,
 				"tagged": 44,
@@ -16403,7 +16403,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 70,
+				"line": 71,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -16417,7 +16417,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 72,
+				"line": 73,
 				"column": 33,
 				"value": 10,
 				"text": "10",
@@ -68294,7 +68294,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 46,
+				"line": 47,
 				"column": 69,
 				"value": 24,
 				"text": "24",
@@ -68308,7 +68308,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 73,
+				"line": 74,
 				"column": 27,
 				"value": 1,
 				"text": "1",
@@ -68320,7 +68320,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 73,
+				"line": 74,
 				"column": 63,
 				"value": 10,
 				"text": "10",
@@ -68332,7 +68332,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 73,
+				"line": 74,
 				"column": 74,
 				"value": 1,
 				"text": "1",

@@ -2,7 +2,7 @@
 
 **Generated file. Do not edit by hand** — regenerate with `node --experimental-strip-types src/honesty/cli.ts` from `research/v3`.
 
-Measured at **2026-08-04T21:09:49.300Z**. Body hash `584155aa4cb6882a`.
+Measured at **2026-08-04T21:26:25.666Z**. Body hash `26531a52c71e37ba`.
 
 Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1). It exists because v2-3 carried roughly 900 tunable sites against 11 human-anchored values — quantified overfitting. This page counts the first number and the provenance behind it. It does **not** measure the third number, the reviewed-vs-unseen perturbation-stability ratio; that needs a pipeline and belongs at the Phase 2 entry condition.
 
@@ -13,7 +13,7 @@ Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1
 - **Anchored: 465 (6.6%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
 - **Untagged: 6288** — no provenance of any kind. This is the dishonesty measure.
 
-Scanned 257 files, 107273 lines, 11614 numeric literals, of which 4556 were excluded by a named rule (listed below, none silent).
+Scanned 257 files, 107322 lines, 11614 numeric literals, of which 4556 were excluded by a named rule (listed below, none silent).
 
 **Read the fraction as a lower bound.** Exclusion rules are deliberately narrow: when it is unclear whether a number is structural or tunable it is counted, which inflates the denominator and pushes the fraction down. The tree is at least this honest, never less.
 
@@ -22,7 +22,7 @@ Scanned 257 files, 107273 lines, 11614 numeric literals, of which 4556 were excl
 | language | files | lines | parser fidelity |
 |---|---:|---:|---|
 | py | 98 | 38538 | lexical |
-| ts | 159 | 68735 | ast |
+| ts | 159 | 68784 | ast |
 
 ## Provenance of the tunable sites
 
@@ -54,7 +54,7 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `oracle/ladder` | INFORMATIONAL | oracle — ladder | 7 | 368 | 88 | 280 | 23.9% |
 | `oracle/premise` | INFORMATIONAL | oracle — premise | 20 | 675 | 59 | 616 | 8.7% |
 | `oracle/sam` | INFORMATIONAL | oracle — SAM | 57 | 1460 | 174 | 1286 | 11.9% |
-| `prototypes/p3-fields` ⚠️ | INFORMATIONAL | unassigned | 37 | 1069 | 44 | 1025 | 4.1% |
+| `prototypes/p3-fields` | INFORMATIONAL | phase-2 prototype orchestrators | 37 | 1069 | 44 | 1025 | 4.1% |
 | `src/adjudication` | INFORMATIONAL | adjudication | 7 | 74 | 0 | 74 | 0.0% |
 | `src/calibration-consequence` | INFORMATIONAL | calibration consequence | 5 | 96 | 18 | 78 | 18.8% |
 | `src/contract` | INFORMATIONAL | contract schema + gates | 18 | 717 | 52 | 665 | 7.2% |
@@ -69,8 +69,6 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `src/stats` | INFORMATIONAL | shared statistics (no CONVENTIONS row) | 12 | 328 | 45 | 283 | 13.7% |
 | `src/tagging` | INFORMATIONAL | tagging | 5 | 43 | 0 | 43 | 0.0% |
 | `src/warehouse` | INFORMATIONAL | warehouse + query CLI | 4 | 48 | 10 | 38 | 20.8% |
-
-⚠️ 1 area(s) are not listed in `src/honesty/areas.ts`: `prototypes/p3-fields`. A directory appeared under a scan root without anyone deciding which workstream owns it or whether it should be gated.
 
 ## Exclusions — every rule, every count
 
