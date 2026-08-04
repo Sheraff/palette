@@ -97,7 +97,13 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    ramp** (the resolved `minAccentContrast`, same machinery as foreground's text floor — no new
    constant). Evidence: v0.2 published accent `#00000b` on background `#010000` (|raw| 0.615, two
    I4 failures); the reviewer's whole round-1 lesson is that legibility outranks distance. No
-   surviving candidate ⇒ declared collapse to foreground.
+   surviving candidate ⇒ declared collapse to foreground. *Endorsed reading (P5 orchestrator,
+   2026-08-04): the floor is the contract's pointwise **conjunction** (`|raw|` low AND distance
+   low at the same ramp point), not a plain `|raw|` minimum — measured on the saturated-red case:
+   an `|raw|`-only reading rejects vivid accents the invariant itself accepts, i.e. a filter must
+   never be stricter than the invariant it exists to satisfy. Selection-density constants (64/64)
+   are compute-budget only; the invariant re-measures at contract density. Independently
+   corroborated by another arm's round: accent readability graded against both fields.*
    (b) **The Pareto front is dropped.** Front membership — displacement vs local field — excluded
    the artwork's white on `2376a6b67d` (min-dist 0.2181, largest in a 223-cluster set) because
    displacement measures departure magnitude from the ground while every reviewer accent note
