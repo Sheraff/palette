@@ -1,0 +1,4091 @@
+{
+	"header": {
+		"analysis": "M1 term attribution",
+		"prototype": "p1-mdl",
+		"reads": "data/falsifier/m1-results.json",
+		"sourceRunGitCommit": "08ad43dd05b55633a4ba9be96515fc63d2c55ff9",
+		"sourceRunAsOf": "2026-08-04",
+		"lambda": 1,
+		"pureReader": true,
+		"rng": "none",
+		"preRegistered": false,
+		"statisticalNote": "every test in this file is post-hoc, two-sided, and uncorrected; the pre-registered numbers are in m1-summary.json",
+		"clause": "DESIGN.md §Milestones M1 / arm-a-prime.md §7 — 'no rank signal, no single term culpable, at any λ in the sweep'",
+		"dominanceRule": "a term is culpable only if it is the largest contributor to the margin in ≥2/3 of losing pairs AND its median share of the margin is ≥0.5; otherwise the loss is spread",
+		"termSumCheck": {
+			"note": "terms are stored at λ=1 and must sum to totals['1'] exactly; if these are not 0 the per-term deltas below are not a decomposition of the compared margin",
+			"maxAbsoluteResidualP1a": 0,
+			"maxAbsoluteResidualP1ap": 0
+		}
+	},
+	"q1TermAttribution": [
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1a",
+			"unit": "nats",
+			"pairs": 14,
+			"counts": {
+				"wins": 8,
+				"losses": 6,
+				"ties": 0
+			},
+			"losses": {
+				"n": 6,
+				"meanDeltaTotal": 0.7732565266632796,
+				"medianDeltaTotal": 0.5351406377528445,
+				"terms": [
+					{
+						"term": "field",
+						"n": 6,
+						"meanDelta": -0.019656229602175317,
+						"medianDelta": -0.019629164656693066,
+						"meanShare": -0.07465624811882075,
+						"medianShare": -0.06621618904160453,
+						"meanAbsShareOfGrossMovement": 0.11412608122573364,
+						"medianAbsShareOfGrossMovement": 0.1099843001484,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "ink",
+						"n": 6,
+						"meanDelta": 0.12624608959878814,
+						"medianDelta": 0.11180347191067105,
+						"meanShare": 0.6059593517604497,
+						"medianShare": 0.542050170757428,
+						"meanAbsShareOfGrossMovement": 0.47435046602965064,
+						"medianAbsShareOfGrossMovement": 0.4855715689486241,
+						"argmaxCount": 3,
+						"againstGoodCount": 5
+					},
+					{
+						"term": "structural",
+						"n": 6,
+						"meanDelta": 0.6666666666666666,
+						"medianDelta": 0.5,
+						"meanShare": 0.46869689635836304,
+						"medianShare": 0.41213270498527005,
+						"meanAbsShareOfGrossMovement": 0.4115234527446157,
+						"medianAbsShareOfGrossMovement": 0.3422282761324069,
+						"argmaxCount": 3,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "escape",
+						"n": 6,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "ink",
+					"argmaxFraction": 0.5,
+					"medianShareOfTop": 0.542050170757428,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 8,
+				"meanDeltaTotal": -1.0170207732560668,
+				"medianDeltaTotal": -0.8243112205121554,
+				"terms": [
+					{
+						"term": "field",
+						"n": 8,
+						"meanDelta": -0.29316637008529467,
+						"medianDelta": 0.011112572217855776,
+						"meanShare": -1.405264047073386,
+						"medianShare": 0.4048758856956617,
+						"meanAbsShareOfGrossMovement": 0.5283217257362962,
+						"medianAbsShareOfGrossMovement": 0.4696171446401314,
+						"argmaxCount": 4,
+						"againstGoodCount": 4
+					},
+					{
+						"term": "ink",
+						"n": 8,
+						"meanDelta": -0.4738544031707722,
+						"medianDelta": -0.4949544048363508,
+						"meanShare": 2.2561493815072238,
+						"medianShare": 0.4982176350000227,
+						"meanAbsShareOfGrossMovement": 0.31818308612776824,
+						"medianAbsShareOfGrossMovement": 0.31275397160822704,
+						"argmaxCount": 2,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "structural",
+						"n": 8,
+						"meanDelta": -0.25,
+						"medianDelta": 0,
+						"meanShare": 0.1491146655661643,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.15349518813593546,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 2,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "escape",
+						"n": 8,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "field",
+					"argmaxFraction": 0.5,
+					"medianShareOfTop": 0.4982176350000227,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 6,
+				"flippableInGrid": 0,
+				"flippableAnyPositiveLambda": 1,
+				"structuralTied": 3,
+				"crossings": [
+					-0.21320146145128271,
+					-0.05827720402023662,
+					0.04121248735849292
+				]
+			}
+		},
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1ap",
+			"unit": "bits",
+			"pairs": 14,
+			"counts": {
+				"wins": 5,
+				"losses": 7,
+				"ties": 2
+			},
+			"losses": {
+				"n": 7,
+				"meanDeltaTotal": 6404.916200072471,
+				"medianDeltaTotal": 308.53505811071955,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 7,
+						"meanDelta": -293.68169435719216,
+						"medianDelta": 0,
+						"meanShare": -0.9967213636557187,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.14848544252300028,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 7,
+						"meanDelta": -116.87591585138672,
+						"medianDelta": 0,
+						"meanShare": -0.6260013633072445,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.05396302549633599,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkColorBits",
+						"n": 7,
+						"meanDelta": -28648.986023616268,
+						"medianDelta": 0,
+						"meanShare": -1.8290704762113015,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.1824646091911877,
+						"medianAbsShareOfGrossMovement": 0.25314453719209307,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 7,
+						"meanDelta": -9565.6935939852,
+						"medianDelta": 0,
+						"meanShare": -0.5595497636015752,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.07671906276369643,
+						"medianAbsShareOfGrossMovement": 0.10298340811201652,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "genericBits",
+						"n": 7,
+						"meanDelta": 45021.86771359701,
+						"medianDelta": 3322.185056161601,
+						"meanShare": 4.621472361710151,
+						"medianShare": 6.529460010737477,
+						"meanAbsShareOfGrossMovement": 0.5105654396714192,
+						"medianAbsShareOfGrossMovement": 0.5240660458091566,
+						"argmaxCount": 5,
+						"againstGoodCount": 5
+					},
+					{
+						"term": "paletteBits",
+						"n": 7,
+						"meanDelta": 8.285714285714286,
+						"medianDelta": 0,
+						"meanShare": 0.38987060509898624,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.0278024203543604,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.7142857142857143,
+					"medianShareOfTop": 6.529460010737477,
+					"verdict": "single term: genericBits"
+				}
+			},
+			"wins": {
+				"n": 5,
+				"meanDeltaTotal": -16126.07658687979,
+				"medianDeltaTotal": -6660.359203630127,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 5,
+						"meanDelta": -49295.6387625516,
+						"medianDelta": 0,
+						"meanShare": 1.5837710724456653,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.05602945740328803,
+						"medianAbsShareOfGrossMovement": 0.002122657714283461,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 5,
+						"meanDelta": -18643.985539571277,
+						"medianDelta": 0,
+						"meanShare": 0.6978129565184701,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.017946601185480596,
+						"medianAbsShareOfGrossMovement": 0.0011319618019453768,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkColorBits",
+						"n": 5,
+						"meanDelta": 162780.7456348958,
+						"medianDelta": 126040.88207438184,
+						"meanShare": 15.536685384817906,
+						"medianShare": -6.363741802732264,
+						"meanAbsShareOfGrossMovement": 0.37880929441377614,
+						"medianAbsShareOfGrossMovement": 0.36282641495595236,
+						"argmaxCount": 2,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 5,
+						"meanDelta": 48081.171638413296,
+						"medianDelta": 33939.494508525015,
+						"meanShare": 6.547687421867387,
+						"medianShare": -1.9059363965587477,
+						"meanAbsShareOfGrossMovement": 0.10432212401576853,
+						"medianAbsShareOfGrossMovement": 0.10866626763527268,
+						"argmaxCount": 0,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "genericBits",
+						"n": 5,
+						"meanDelta": -159051.1695580665,
+						"medianDelta": -187064.78313361667,
+						"meanShare": -23.181786696267256,
+						"medianShare": 9.212550819686339,
+						"meanAbsShareOfGrossMovement": 0.4422561189414885,
+						"medianAbsShareOfGrossMovement": 0.49526758968713175,
+						"argmaxCount": 2,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "paletteBits",
+						"n": 5,
+						"meanDelta": 2.8,
+						"medianDelta": 0,
+						"meanShare": -0.18417013938165516,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.0006364040401981472,
+						"medianAbsShareOfGrossMovement": 0.00002087462665384234,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "inkColorBits",
+					"topByArgmax": "inkColorBits",
+					"argmaxFraction": 0.4,
+					"medianShareOfTop": -6.363741802732264,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 7,
+				"flippableInGrid": 1,
+				"flippableAnyPositiveLambda": 2,
+				"structuralTied": 5,
+				"crossings": [
+					0.07017351056520756,
+					0.39526788689545356
+				]
+			}
+		},
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "all-pairs",
+			"arm": "p1a",
+			"unit": "nats",
+			"pairs": 47,
+			"counts": {
+				"wins": 19,
+				"losses": 25,
+				"ties": 3
+			},
+			"losses": {
+				"n": 25,
+				"meanDeltaTotal": 0.7485020521486515,
+				"medianDeltaTotal": 0.9587875126415071,
+				"terms": [
+					{
+						"term": "field",
+						"n": 25,
+						"meanDelta": 0.03999881856585622,
+						"medianDelta": -0.018420150325034523,
+						"meanShare": 0.23119224269791216,
+						"medianShare": -0.04600207437256089,
+						"meanAbsShareOfGrossMovement": 0.17459243758005932,
+						"medianAbsShareOfGrossMovement": 0.09671731102430957,
+						"argmaxCount": 3,
+						"againstGoodCount": 9
+					},
+					{
+						"term": "ink",
+						"n": 25,
+						"meanDelta": 0.14850323358279519,
+						"medianDelta": 0.18723851169646177,
+						"meanShare": 0.3059493539033288,
+						"medianShare": 0.17407114072985294,
+						"meanAbsShareOfGrossMovement": 0.4197671412109253,
+						"medianAbsShareOfGrossMovement": 0.3214771895724114,
+						"argmaxCount": 9,
+						"againstGoodCount": 20
+					},
+					{
+						"term": "structural",
+						"n": 25,
+						"meanDelta": 0.56,
+						"medianDelta": 1,
+						"meanShare": 0.46285840339875706,
+						"medianShare": 0.7011318056164496,
+						"meanAbsShareOfGrossMovement": 0.40564042120901544,
+						"medianAbsShareOfGrossMovement": 0.44183820750030983,
+						"argmaxCount": 13,
+						"againstGoodCount": 13
+					},
+					{
+						"term": "escape",
+						"n": 25,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "structural",
+					"topByArgmax": "structural",
+					"argmaxFraction": 0.52,
+					"medianShareOfTop": 0.7011318056164496,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 19,
+				"meanDeltaTotal": -1.0446549524655182,
+				"medianDeltaTotal": -0.5761613354081563,
+				"terms": [
+					{
+						"term": "field",
+						"n": 19,
+						"meanDelta": -0.08288717630110452,
+						"medianDelta": 0.10723956130477674,
+						"meanShare": -1.444774506731702,
+						"medianShare": -0.40340513134234174,
+						"meanAbsShareOfGrossMovement": 0.39740435652522027,
+						"medianAbsShareOfGrossMovement": 0.3865141121838835,
+						"argmaxCount": 4,
+						"againstGoodCount": 12
+					},
+					{
+						"term": "ink",
+						"n": 19,
+						"meanDelta": -0.3828204077433613,
+						"medianDelta": -0.25812732263152743,
+						"meanShare": 2.040662292120537,
+						"medianShare": 0.5826039485090674,
+						"meanAbsShareOfGrossMovement": 0.34922786615464696,
+						"medianAbsShareOfGrossMovement": 0.32878005676178235,
+						"argmaxCount": 7,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "structural",
+						"n": 19,
+						"meanDelta": -0.5789473684210527,
+						"medianDelta": 0,
+						"meanShare": 0.40411221461116437,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.2533677773201328,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 8,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "escape",
+						"n": 19,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "structural",
+					"argmaxFraction": 0.42105263157894735,
+					"medianShareOfTop": 0.5826039485090674,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 25,
+				"flippableInGrid": 0,
+				"flippableAnyPositiveLambda": 4,
+				"structuralTied": 12,
+				"crossings": [
+					-0.4262653498093405,
+					-0.3151384217494062,
+					-0.287068555568899,
+					-0.21320146145128271,
+					-0.19190867880087747,
+					-0.1831092891313526,
+					-0.14525911411903447,
+					-0.1448699033697265,
+					-0.05827720402023662,
+					0.027300184520022697,
+					0.030019647404286864,
+					0.030019647404286864,
+					0.04121248735849292
+				]
+			}
+		},
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "all-pairs",
+			"arm": "p1ap",
+			"unit": "bits",
+			"pairs": 47,
+			"counts": {
+				"wins": 11,
+				"losses": 31,
+				"ties": 5
+			},
+			"losses": {
+				"n": 31,
+				"meanDeltaTotal": 57833.131032638856,
+				"medianDeltaTotal": 25573.98453024216,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 31,
+						"meanDelta": -56046.912293195484,
+						"medianDelta": 0,
+						"meanShare": -1.6441579527349317,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.12298752000389794,
+						"medianAbsShareOfGrossMovement": 0.00018064378259412776,
+						"argmaxCount": 4,
+						"againstGoodCount": 7
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 31,
+						"meanDelta": -6063.417073645553,
+						"medianDelta": 0,
+						"meanShare": -0.7839449639464,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.04731966815334737,
+						"medianAbsShareOfGrossMovement": 0.000057081354138332453,
+						"argmaxCount": 0,
+						"againstGoodCount": 7
+					},
+					{
+						"term": "inkColorBits",
+						"n": 31,
+						"meanDelta": -86692.42631154892,
+						"medianDelta": -21.343229598765525,
+						"meanShare": -0.7411526909719469,
+						"medianShare": -0.7067539353735824,
+						"meanAbsShareOfGrossMovement": 0.2200261262492024,
+						"medianAbsShareOfGrossMovement": 0.23646859577679433,
+						"argmaxCount": 4,
+						"againstGoodCount": 9
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 31,
+						"meanDelta": -33218.63869277978,
+						"medianDelta": -25.457637380991763,
+						"meanShare": -0.43562897913537546,
+						"medianShare": -0.2701861051616889,
+						"meanAbsShareOfGrossMovement": 0.08983290089062805,
+						"medianAbsShareOfGrossMovement": 0.10298340811201652,
+						"argmaxCount": 0,
+						"againstGoodCount": 9
+					},
+					{
+						"term": "genericBits",
+						"n": 31,
+						"meanDelta": 239852.33185542154,
+						"medianDelta": 4903.561381936073,
+						"meanShare": 4.45161302742431,
+						"medianShare": 4.0665656339689,
+						"meanAbsShareOfGrossMovement": 0.5112218752861613,
+						"medianAbsShareOfGrossMovement": 0.5268632069254032,
+						"argmaxCount": 23,
+						"againstGoodCount": 24
+					},
+					{
+						"term": "paletteBits",
+						"n": 31,
+						"meanDelta": 2.193548387096774,
+						"medianDelta": 0,
+						"meanShare": 0.1532715593699087,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.008611909416762828,
+						"medianAbsShareOfGrossMovement": 0.0000014766376027411396,
+						"argmaxCount": 0,
+						"againstGoodCount": 11
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.7419354838709677,
+					"medianShareOfTop": 4.0665656339689,
+					"verdict": "single term: genericBits"
+				}
+			},
+			"wins": {
+				"n": 11,
+				"meanDeltaTotal": -12463.225556237454,
+				"medianDeltaTotal": -3123.9007096718997,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 11,
+						"meanDelta": -22423.351905350482,
+						"medianDelta": 0,
+						"meanShare": -2.208102357858005,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.05963193243085749,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 11,
+						"meanDelta": -8477.763130354477,
+						"medianDelta": 0,
+						"meanShare": -0.608067131109838,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.018950612872756196,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "inkColorBits",
+						"n": 11,
+						"meanDelta": 108678.96686920882,
+						"medianDelta": 1504.6015934547759,
+						"meanShare": 5.566592678591895,
+						"medianShare": -1.71567477417883,
+						"meanAbsShareOfGrossMovement": 0.30520435873217705,
+						"medianAbsShareOfGrossMovement": 0.36264994858486876,
+						"argmaxCount": 3,
+						"againstGoodCount": 6
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 11,
+						"meanDelta": 32455.435705849504,
+						"medianDelta": 876.4525485545892,
+						"meanShare": 2.375401092468037,
+						"medianShare": -0.9994057794842102,
+						"meanAbsShareOfGrossMovement": 0.08700955468172099,
+						"medianAbsShareOfGrossMovement": 0.10411006138061045,
+						"argmaxCount": 0,
+						"againstGoodCount": 6
+					},
+					{
+						"term": "genericBits",
+						"n": 11,
+						"meanDelta": -122699.60400468213,
+						"medianDelta": -3282.027806307189,
+						"meanShare": -4.1305899807848006,
+						"medianShare": 9.193496885965821,
+						"meanAbsShareOfGrossMovement": 0.4376194318582643,
+						"medianAbsShareOfGrossMovement": 0.5058285949299728,
+						"argmaxCount": 6,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "paletteBits",
+						"n": 11,
+						"meanDelta": 3.090909090909091,
+						"medianDelta": 0,
+						"meanShare": 0.004765698724889173,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.09158410942422403,
+						"medianAbsShareOfGrossMovement": 0.00002087462665384234,
+						"argmaxCount": 1,
+						"againstGoodCount": 3
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "inkColorBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.5454545454545454,
+					"medianShareOfTop": -1.71567477417883,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 31,
+				"flippableInGrid": 2,
+				"flippableAnyPositiveLambda": 8,
+				"structuralTied": 15,
+				"crossings": [
+					-36328.07768621715,
+					-36289.14030284388,
+					-33056.78453076212,
+					-14734.392920705839,
+					-1536.165636784077,
+					-1536.1570983524725,
+					-276.77023018492036,
+					-1.7281820341013372,
+					0.07017351056520756,
+					0.39526788689545356,
+					0.39526788689545356,
+					1153.8531840880512,
+					1153.9042920672664,
+					2095.2258554609384,
+					2095.2769634401534,
+					4769.055156935895
+				]
+			}
+		},
+		{
+			"family": "a-endorsed-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1a",
+			"unit": "nats",
+			"pairs": 10,
+			"counts": {
+				"wins": 5,
+				"losses": 5,
+				"ties": 0
+			},
+			"losses": {
+				"n": 5,
+				"meanDeltaTotal": 0.6855947471833085,
+				"medianDeltaTotal": 0.9699803525957131,
+				"terms": [
+					{
+						"term": "field",
+						"n": 5,
+						"meanDelta": -0.02389894555626304,
+						"medianDelta": -0.006521045065220221,
+						"meanShare": -0.014727389571261957,
+						"medianShare": -0.043033996986225564,
+						"meanAbsShareOfGrossMovement": 0.10351125173399264,
+						"medianAbsShareOfGrossMovement": 0.09671731102430957,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "ink",
+						"n": 5,
+						"meanDelta": 0.10949369273957159,
+						"medianDelta": 0.07286740132841202,
+						"meanShare": 0.4674759984700671,
+						"medianShare": 0.24534702144600215,
+						"meanAbsShareOfGrossMovement": 0.4176724353008586,
+						"medianAbsShareOfGrossMovement": 0.1777158309372555,
+						"argmaxCount": 2,
+						"againstGoodCount": 5
+					},
+					{
+						"term": "structural",
+						"n": 5,
+						"meanDelta": 0.6,
+						"medianDelta": 1,
+						"meanShare": 0.5472513911011857,
+						"medianShare": 0.760376233757807,
+						"meanAbsShareOfGrossMovement": 0.47881631296514876,
+						"medianAbsShareOfGrossMovement": 0.6844565522648138,
+						"argmaxCount": 3,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "escape",
+						"n": 5,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "structural",
+					"topByArgmax": "structural",
+					"argmaxFraction": 0.6,
+					"medianShareOfTop": 0.760376233757807,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 5,
+				"meanDeltaTotal": -0.8780284055376398,
+				"medianDeltaTotal": -0.647726004065504,
+				"terms": [
+					{
+						"term": "field",
+						"n": 5,
+						"meanDelta": -0.09635289694888086,
+						"medianDelta": -0.17756270863715207,
+						"meanShare": -0.179429693728458,
+						"medianShare": 0.22005824484640304,
+						"meanAbsShareOfGrossMovement": 0.5206063661965367,
+						"medianAbsShareOfGrossMovement": 0.4354087732116236,
+						"argmaxCount": 2,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "ink",
+						"n": 5,
+						"meanDelta": -0.18167550858875908,
+						"medianDelta": -0.02150772559807157,
+						"meanShare": 0.8252800994066669,
+						"medianShare": 0.008298149465324948,
+						"meanAbsShareOfGrossMovement": 0.24368311359521658,
+						"medianAbsShareOfGrossMovement": 0.29672788645467174,
+						"argmaxCount": 1,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "structural",
+						"n": 5,
+						"meanDelta": -0.6,
+						"medianDelta": 0,
+						"meanShare": 0.3541495943217911,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.23571052020824673,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 2,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "escape",
+						"n": 5,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "field",
+					"argmaxFraction": 0.4,
+					"medianShareOfTop": 0.008298149465324948,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 5,
+				"flippableInGrid": 0,
+				"flippableAnyPositiveLambda": 1,
+				"structuralTied": 2,
+				"crossings": [
+					-0.3151384217494062,
+					-0.05827720402023662,
+					0.030019647404286864
+				]
+			}
+		},
+		{
+			"family": "a-endorsed-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1ap",
+			"unit": "bits",
+			"pairs": 10,
+			"counts": {
+				"wins": 3,
+				"losses": 7,
+				"ties": 0
+			},
+			"losses": {
+				"n": 7,
+				"meanDeltaTotal": 21313.552723426954,
+				"medianDeltaTotal": 11730.028196713887,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 7,
+						"meanDelta": -69152.57007686779,
+						"medianDelta": 0,
+						"meanShare": -0.9414695184012151,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.15052067015477247,
+						"medianAbsShareOfGrossMovement": 0.00018064378259412776,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 7,
+						"meanDelta": -12013.397090239205,
+						"medianDelta": 0,
+						"meanShare": -0.40337249227914057,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.04394486157263291,
+						"medianAbsShareOfGrossMovement": 0.000057081354138332453,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkColorBits",
+						"n": 7,
+						"meanDelta": -8599.758448997794,
+						"medianDelta": -21.343229598765525,
+						"meanShare": -1.107287354230776,
+						"medianShare": -0.7208397162100423,
+						"meanAbsShareOfGrossMovement": 0.19812426896383267,
+						"medianAbsShareOfGrossMovement": 0.21177614960959992,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 7,
+						"meanDelta": -4950.167494104819,
+						"medianDelta": -25.457637380991763,
+						"meanShare": -0.7936525369590031,
+						"medianShare": -0.27914852079624736,
+						"meanAbsShareOfGrossMovement": 0.08642430072398989,
+						"medianAbsShareOfGrossMovement": 0.10298340811201652,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "genericBits",
+						"n": 7,
+						"meanDelta": 116029.44583363684,
+						"medianDelta": 113.55897571146488,
+						"meanShare": 4.009669770605292,
+						"medianShare": 6.529460010737477,
+						"meanAbsShareOfGrossMovement": 0.5124478002052423,
+						"medianAbsShareOfGrossMovement": 0.5268209644545836,
+						"argmaxCount": 5,
+						"againstGoodCount": 5
+					},
+					{
+						"term": "paletteBits",
+						"n": 7,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0.23611213129776742,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.008538098379529799,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.7142857142857143,
+					"medianShareOfTop": 6.529460010737477,
+					"verdict": "single term: genericBits"
+				}
+			},
+			"wins": {
+				"n": 3,
+				"meanDeltaTotal": -3269.4044730321816,
+				"medianDeltaTotal": -3121.9007096718997,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 3,
+						"meanDelta": 6046.718951859316,
+						"medianDelta": 0,
+						"meanShare": -0.9078667932149432,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.016452170404327355,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 3,
+						"meanDelta": 771.9634971669872,
+						"medianDelta": 0,
+						"meanShare": -0.11590418377829237,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.0021003911546784325,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkColorBits",
+						"n": 3,
+						"meanDelta": 28106.00210366897,
+						"medianDelta": -2806.0757688908197,
+						"meanShare": 33.88701225203966,
+						"medianShare": 12.465739180594928,
+						"meanAbsShareOfGrossMovement": 0.3838109183089065,
+						"medianAbsShareOfGrossMovement": 0.3591310990523093,
+						"argmaxCount": 2,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 3,
+						"meanDelta": 8959.873963430371,
+						"medianDelta": -1113.6578428466164,
+						"meanShare": 13.23955305476509,
+						"medianShare": 1.9046777358951337,
+						"meanAbsShareOfGrossMovement": 0.10117781545325914,
+						"medianAbsShareOfGrossMovement": 0.09234402186317742,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "genericBits",
+						"n": 3,
+						"meanDelta": -47151.29632249164,
+						"medianDelta": 3869.7801059428602,
+						"meanShare": -44.79615232435887,
+						"medianShare": -13.370416916489868,
+						"meanAbsShareOfGrossMovement": 0.4954058152107215,
+						"medianAbsShareOfGrossMovement": 0.49526758968713175,
+						"argmaxCount": 1,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "paletteBits",
+						"n": 3,
+						"meanDelta": -2.6666666666666665,
+						"medianDelta": 0,
+						"meanShare": -0.30664200545178466,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.001052889468107046,
+						"medianAbsShareOfGrossMovement": 0.00008706696261723729,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "inkColorBits",
+					"topByArgmax": "inkColorBits",
+					"argmaxFraction": 0.6666666666666666,
+					"medianShareOfTop": 12.465739180594928,
+					"verdict": "single term: inkColorBits"
+				}
+			},
+			"lambdaFlip": {
+				"n": 7,
+				"flippableInGrid": 1,
+				"flippableAnyPositiveLambda": 2,
+				"structuralTied": 4,
+				"crossings": [
+					-36328.07768621715,
+					0.39526788689545356,
+					1153.9042920672664
+				]
+			}
+		},
+		{
+			"family": "b-endorsed-vs-acceptable",
+			"selection": "best-of-side",
+			"arm": "p1a",
+			"unit": "nats",
+			"pairs": 48,
+			"counts": {
+				"wins": 15,
+				"losses": 23,
+				"ties": 10
+			},
+			"losses": {
+				"n": 23,
+				"meanDeltaTotal": 0.3060281687195555,
+				"medianDeltaTotal": 0.23412694864292405,
+				"terms": [
+					{
+						"term": "field",
+						"n": 23,
+						"meanDelta": -0.08331005565468785,
+						"medianDelta": -0.009004847322136023,
+						"meanShare": 0.7848322582799427,
+						"medianShare": -0.2689085584452293,
+						"meanAbsShareOfGrossMovement": 0.3978992794646514,
+						"medianAbsShareOfGrossMovement": 0.3466095393621297,
+						"argmaxCount": 6,
+						"againstGoodCount": 9
+					},
+					{
+						"term": "ink",
+						"n": 23,
+						"meanDelta": 0.08499039828728691,
+						"medianDelta": 0.030637611209587412,
+						"meanShare": -0.48658791087118536,
+						"medianShare": 0.2622646880273634,
+						"meanAbsShareOfGrossMovement": 0.4060001510219874,
+						"medianAbsShareOfGrossMovement": 0.4674731916809614,
+						"argmaxCount": 10,
+						"againstGoodCount": 17
+					},
+					{
+						"term": "structural",
+						"n": 23,
+						"meanDelta": 0.30434782608695654,
+						"medianDelta": 0,
+						"meanShare": 0.7017556525912552,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.1961005695133612,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 7,
+						"againstGoodCount": 7
+					},
+					{
+						"term": "escape",
+						"n": 23,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "field",
+					"topByArgmax": "ink",
+					"argmaxFraction": 0.43478260869565216,
+					"medianShareOfTop": -0.2689085584452293,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 15,
+				"meanDeltaTotal": -0.45162840342262794,
+				"medianDeltaTotal": -0.1537804865403043,
+				"terms": [
+					{
+						"term": "field",
+						"n": 15,
+						"meanDelta": -0.11890328841007554,
+						"medianDelta": 0.0014716140474897443,
+						"meanShare": 7.433587031461901,
+						"medianShare": -0.005348595729316425,
+						"meanAbsShareOfGrossMovement": 0.39736255484435995,
+						"medianAbsShareOfGrossMovement": 0.24854534120882626,
+						"argmaxCount": 6,
+						"againstGoodCount": 8
+					},
+					{
+						"term": "ink",
+						"n": 15,
+						"meanDelta": 0.0006082183207807845,
+						"medianDelta": -0.025797126684105,
+						"meanShare": -1.998910270935966,
+						"medianShare": 0.17868954906014162,
+						"meanAbsShareOfGrossMovement": 0.38986253081354433,
+						"medianAbsShareOfGrossMovement": 0.27005743379150693,
+						"argmaxCount": 5,
+						"againstGoodCount": 6
+					},
+					{
+						"term": "structural",
+						"n": 15,
+						"meanDelta": -0.3333333333333333,
+						"medianDelta": 0,
+						"meanShare": -4.434676760525945,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.21277491434209572,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 4,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "escape",
+						"n": 15,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "field",
+					"topByArgmax": "field",
+					"argmaxFraction": 0.4,
+					"medianShareOfTop": -0.005348595729316425,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 23,
+				"flippableInGrid": 5,
+				"flippableAnyPositiveLambda": 5,
+				"structuralTied": 16,
+				"crossings": [
+					-0.20364465888522432,
+					-0.03913406968371458,
+					0.30853517326216906,
+					0.4328383816241028,
+					0.49112634727619575,
+					0.5207390902663764,
+					0.858880418304325
+				]
+			}
+		},
+		{
+			"family": "b-endorsed-vs-acceptable",
+			"selection": "best-of-side",
+			"arm": "p1ap",
+			"unit": "bits",
+			"pairs": 48,
+			"counts": {
+				"wins": 9,
+				"losses": 21,
+				"ties": 18
+			},
+			"losses": {
+				"n": 21,
+				"meanDeltaTotal": 10025.55073734574,
+				"medianDeltaTotal": 1968.7548562409356,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 21,
+						"meanDelta": -26389.00696735067,
+						"medianDelta": 0,
+						"meanShare": -2.7311392234097354,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.10675382429071731,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 21,
+						"meanDelta": -5568.089351112222,
+						"medianDelta": 0,
+						"meanShare": -0.7458823067222604,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.03165215221014325,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "inkColorBits",
+						"n": 21,
+						"meanDelta": -23061.801637858716,
+						"medianDelta": -378.5042087480542,
+						"meanShare": -3.7037697234637466,
+						"medianShare": -1.8105936631774633,
+						"meanAbsShareOfGrossMovement": 0.19920792754581718,
+						"medianAbsShareOfGrossMovement": 0.27042419167922327,
+						"argmaxCount": 2,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 21,
+						"meanDelta": -8518.783578880499,
+						"medianDelta": -216.86313713865093,
+						"meanShare": -1.3310553784682608,
+						"medianShare": -0.7146276247488301,
+						"meanAbsShareOfGrossMovement": 0.09451983499661526,
+						"medianAbsShareOfGrossMovement": 0.10758474047712503,
+						"argmaxCount": 0,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "genericBits",
+						"n": 21,
+						"meanDelta": 73557.51798683366,
+						"medianDelta": 7010.816745705903,
+						"meanShare": 9.300706965071173,
+						"medianShare": 7.444289615569541,
+						"meanAbsShareOfGrossMovement": 0.4701908826290558,
+						"medianAbsShareOfGrossMovement": 0.5154056608889226,
+						"argmaxCount": 17,
+						"againstGoodCount": 17
+					},
+					{
+						"term": "paletteBits",
+						"n": 21,
+						"meanDelta": 5.714285714285714,
+						"medianDelta": 0,
+						"meanShare": 0.21113966699384118,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.09767537832765127,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 2,
+						"againstGoodCount": 7
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.8095238095238095,
+					"medianShareOfTop": 7.444289615569541,
+					"verdict": "single term: genericBits"
+				}
+			},
+			"wins": {
+				"n": 9,
+				"meanDeltaTotal": -4322.0730769739275,
+				"medianDeltaTotal": -249.8370670613367,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 9,
+						"meanDelta": 32223.07341715128,
+						"medianDelta": 0,
+						"meanShare": -1.1877270307670877,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.17567513241018792,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 9,
+						"meanDelta": 8796.712398235513,
+						"medianDelta": 0,
+						"meanShare": -0.6711401542362201,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.0403507649195794,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "inkColorBits",
+						"n": 9,
+						"meanDelta": 4850.104965746028,
+						"medianDelta": 0,
+						"meanShare": -26.99955910089027,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.19021369331544344,
+						"medianAbsShareOfGrossMovement": 0.2805216262891798,
+						"argmaxCount": 1,
+						"againstGoodCount": 4
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 9,
+						"meanDelta": 1699.5611595501448,
+						"medianDelta": 0,
+						"meanShare": -20.664557151212037,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.08374509656735538,
+						"medianAbsShareOfGrossMovement": 0.12102911808310693,
+						"argmaxCount": 0,
+						"againstGoodCount": 4
+					},
+					{
+						"term": "genericBits",
+						"n": 9,
+						"meanDelta": -51891.52501765692,
+						"medianDelta": -3944.274132565828,
+						"meanShare": 50.411958669794956,
+						"medianShare": 11.785877648547777,
+						"meanAbsShareOfGrossMovement": 0.3989003763748519,
+						"medianAbsShareOfGrossMovement": 0.5093339669884008,
+						"argmaxCount": 6,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "paletteBits",
+						"n": 9,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0.11102476734237339,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.11111493641258195,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.6666666666666666,
+					"medianShareOfTop": 11.785877648547777,
+					"verdict": "single term: genericBits"
+				}
+			},
+			"lambdaFlip": {
+				"n": 21,
+				"flippableInGrid": 1,
+				"flippableAnyPositiveLambda": 3,
+				"structuralTied": 12,
+				"crossings": [
+					-32742.61999356374,
+					-151.48443390548346,
+					-47.106746517674765,
+					-1.6239571284531849,
+					0,
+					0,
+					0.5068945226521464,
+					609.723858374753,
+					1153.9042920672664
+				]
+			}
+		},
+		{
+			"family": "b-acceptable-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1a",
+			"unit": "nats",
+			"pairs": 9,
+			"counts": {
+				"wins": 5,
+				"losses": 4,
+				"ties": 0
+			},
+			"losses": {
+				"n": 4,
+				"meanDeltaTotal": 0.9174087893153553,
+				"medianDeltaTotal": 0.5658692357473369,
+				"terms": [
+					{
+						"term": "field",
+						"n": 4,
+						"meanDelta": 0.017147930012320955,
+						"medianDelta": -0.025578717286600217,
+						"meanShare": -0.1067805689225152,
+						"medianShare": -0.07032475567393223,
+						"meanAbsShareOfGrossMovement": 0.097835871086384,
+						"medianAbsShareOfGrossMovement": 0.07666464477547756,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "ink",
+						"n": 4,
+						"meanDelta": 0.15026085930303407,
+						"medianDelta": 0.17105532583556554,
+						"meanShare": 0.6399682255781234,
+						"medianShare": 0.6083563132845361,
+						"meanAbsShareOfGrossMovement": 0.4559930878628959,
+						"medianAbsShareOfGrossMovement": 0.4518174423287683,
+						"argmaxCount": 2,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "structural",
+						"n": 4,
+						"meanDelta": 0.75,
+						"medianDelta": 0.5,
+						"meanShare": 0.4668123433443907,
+						"medianShare": 0.41213270498527005,
+						"meanAbsShareOfGrossMovement": 0.44617104105072014,
+						"medianAbsShareOfGrossMovement": 0.41213270498527016,
+						"argmaxCount": 2,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "escape",
+						"n": 4,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "ink",
+					"argmaxFraction": 0.5,
+					"medianShareOfTop": 0.6083563132845361,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 5,
+				"meanDeltaTotal": -1.2793911246998186,
+				"medianDeltaTotal": -1.3911021387551736,
+				"terms": [
+					{
+						"term": "field",
+						"n": 5,
+						"meanDelta": -0.4469725785694226,
+						"medianDelta": 0.19978785307286362,
+						"meanShare": -2.699080069675285,
+						"medianShare": -0.10875968424492022,
+						"meanAbsShareOfGrossMovement": 0.45580179859314274,
+						"medianAbsShareOfGrossMovement": 0.45874404281113346,
+						"argmaxCount": 2,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "ink",
+						"n": 5,
+						"meanDelta": -0.6324185461303962,
+						"medianDelta": -0.9508123448852464,
+						"meanShare": 3.660317477953562,
+						"medianShare": 0.5826039485090674,
+						"meanAbsShareOfGrossMovement": 0.3799876994599528,
+						"medianAbsShareOfGrossMovement": 0.3398971155623396,
+						"argmaxCount": 2,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "structural",
+						"n": 5,
+						"meanDelta": -0.2,
+						"medianDelta": 0,
+						"meanShare": 0.038762591721726206,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.1642105019469044,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "escape",
+						"n": 5,
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"meanShare": 0,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "ink",
+					"topByArgmax": "field",
+					"argmaxFraction": 0.4,
+					"medianShareOfTop": 0.5826039485090674,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 4,
+				"flippableInGrid": 0,
+				"flippableAnyPositiveLambda": 1,
+				"structuralTied": 2,
+				"crossings": [
+					-0.21320146145128271,
+					0.04121248735849292
+				]
+			}
+		},
+		{
+			"family": "b-acceptable-vs-known-bad",
+			"selection": "best-of-side",
+			"arm": "p1ap",
+			"unit": "bits",
+			"pairs": 9,
+			"counts": {
+				"wins": 2,
+				"losses": 5,
+				"ties": 2
+			},
+			"losses": {
+				"n": 5,
+				"meanDeltaTotal": 6619.392378000868,
+				"medianDeltaTotal": 308.53505811071955,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 5,
+						"meanDelta": -396.4205369498349,
+						"medianDelta": 0,
+						"meanShare": 0.5893957408773766,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.14081455454453243,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 5,
+						"meanDelta": -157.132984958063,
+						"medianDelta": 0,
+						"meanShare": -0.0016851152434255389,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.04599222420607743,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkColorBits",
+						"n": 5,
+						"meanDelta": -32179.685115160606,
+						"medianDelta": 0,
+						"meanShare": -1.8847501365700885,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.1906011936094686,
+						"medianAbsShareOfGrossMovement": 0.25314453719209307,
+						"argmaxCount": 1,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 5,
+						"meanDelta": -10267.213986656958,
+						"medianDelta": 0,
+						"meanShare": -0.5169801094844788,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.08184976327874532,
+						"medianAbsShareOfGrossMovement": 0.10298340811201652,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					},
+					{
+						"term": "genericBits",
+						"n": 5,
+						"meanDelta": 49608.24500172632,
+						"medianDelta": 3322.185056161601,
+						"meanShare": 2.268200773279278,
+						"medianShare": 6.529460010737477,
+						"meanAbsShareOfGrossMovement": 0.5018188758650717,
+						"medianAbsShareOfGrossMovement": 0.5240660458091566,
+						"argmaxCount": 3,
+						"againstGoodCount": 3
+					},
+					{
+						"term": "paletteBits",
+						"n": 5,
+						"meanDelta": 11.6,
+						"medianDelta": 0,
+						"meanShare": 0.5458188471385808,
+						"medianShare": 0,
+						"meanAbsShareOfGrossMovement": 0.03892338849610456,
+						"medianAbsShareOfGrossMovement": 0,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "genericBits",
+					"argmaxFraction": 0.6,
+					"medianShareOfTop": 6.529460010737477,
+					"verdict": "spread"
+				}
+			},
+			"wins": {
+				"n": 2,
+				"meanDeltaTotal": -35411.0847576512,
+				"medianDeltaTotal": -35411.0847576512,
+				"terms": [
+					{
+						"term": "fieldColorBits",
+						"n": 2,
+						"meanDelta": -132309.175334168,
+						"medianDelta": -132309.17533416796,
+						"meanShare": 5.321227870936578,
+						"medianShare": 5.3212278709365775,
+						"meanAbsShareOfGrossMovement": 0.11539538790172904,
+						"medianAbsShareOfGrossMovement": 0.11539538790172904,
+						"argmaxCount": 1,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "fieldSupportBits",
+						"n": 2,
+						"meanDelta": -47767.909094678675,
+						"medianDelta": -47767.909094678675,
+						"meanShare": 1.9183886669636137,
+						"medianShare": 1.9183886669636139,
+						"meanAbsShareOfGrossMovement": 0.04171591623168384,
+						"medianAbsShareOfGrossMovement": 0.041715916231683844,
+						"argmaxCount": 0,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "inkColorBits",
+						"n": 2,
+						"meanDelta": 364792.86093173607,
+						"medianDelta": 364792.86093173607,
+						"meanShare": -11.988804916014718,
+						"medianShare": -11.988804916014718,
+						"meanAbsShareOfGrossMovement": 0.3713068585710806,
+						"medianAbsShareOfGrossMovement": 0.3713068585710806,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "inkSupportBits",
+						"n": 2,
+						"meanDelta": 106763.11815088768,
+						"medianDelta": 106763.11815088768,
+						"meanShare": -3.4901110274791662,
+						"medianShare": -3.4901110274791662,
+						"meanAbsShareOfGrossMovement": 0.10903858685953259,
+						"medianAbsShareOfGrossMovement": 0.10903858685953259,
+						"argmaxCount": 0,
+						"againstGoodCount": 2
+					},
+					{
+						"term": "genericBits",
+						"n": 2,
+						"meanDelta": -326900.9794114288,
+						"medianDelta": -326900.9794114288,
+						"meanShare": 9.23976174587017,
+						"medianShare": 9.23976174587017,
+						"meanAbsShareOfGrossMovement": 0.36253157453763907,
+						"medianAbsShareOfGrossMovement": 0.36253157453763907,
+						"argmaxCount": 1,
+						"againstGoodCount": 0
+					},
+					{
+						"term": "paletteBits",
+						"n": 2,
+						"meanDelta": 11,
+						"medianDelta": 11,
+						"meanShare": -0.00046234027646089356,
+						"medianShare": -0.00046234027646089356,
+						"meanAbsShareOfGrossMovement": 0.000011675898334799368,
+						"medianAbsShareOfGrossMovement": 0.00001167589833479937,
+						"argmaxCount": 0,
+						"againstGoodCount": 1
+					}
+				],
+				"dominance": {
+					"topByMeanShare": "genericBits",
+					"topByArgmax": "fieldColorBits",
+					"argmaxFraction": 0.5,
+					"medianShareOfTop": 9.23976174587017,
+					"verdict": "spread"
+				}
+			},
+			"lambdaFlip": {
+				"n": 5,
+				"flippableInGrid": 1,
+				"flippableAnyPositiveLambda": 2,
+				"structuralTied": 3,
+				"crossings": [
+					0.07017351056520756,
+					0.39526788689545356
+				]
+			}
+		}
+	],
+	"q2Reconstruction": {
+		"note": "positive delta = the left (good/endorsed) side pays more; 'path' = p1a {field, structural}, p1ap {fieldColorBits, fieldSupportBits, paletteBits}",
+		"crossTabByPairSet": [
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 4,
+						"wins": 2,
+						"losses": 2,
+						"ties": 0,
+						"winRateOfDecided": 0.5,
+						"meanDeltaTotal": -0.15587214302990304,
+						"medianDeltaTotal": -0.29068982390115616,
+						"meanPathDelta": 0.006959077872130348,
+						"medianPathDelta": -0.13909664120173093
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 2.4264029229025654,
+						"medianDeltaTotal": 2.4264029229025654,
+						"meanPathDelta": 2.1589949342512327,
+						"medianPathDelta": 2.1589949342512327
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.8779944915101314,
+						"medianDeltaTotal": -2.8779944915101314,
+						"meanPathDelta": -1.6869902278447384,
+						"medianPathDelta": -1.6869902278447384
+					},
+					{
+						"cell": "flat-flat",
+						"n": 8,
+						"wins": 5,
+						"losses": 3,
+						"ties": 0,
+						"winRateOfDecided": 0.625,
+						"meanDeltaTotal": -0.3026933606677098,
+						"medianDeltaTotal": -0.06615533947880659,
+						"meanPathDelta": -0.12038866952380312,
+						"medianPathDelta": -0.018153013350283853
+					}
+				]
+			},
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 5,
+						"wins": 1,
+						"losses": 3,
+						"ties": 1,
+						"winRateOfDecided": 0.25,
+						"meanDeltaTotal": 1019.2887468984351,
+						"medianDeltaTotal": 7.423313789069653,
+						"meanPathDelta": 4119.158814733941,
+						"medianPathDelta": 0
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 24.175488725304604,
+						"medianDeltaTotal": 24.175488725304604,
+						"meanPathDelta": 26,
+						"medianPathDelta": 26
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -46032.07244952861,
+						"medianDeltaTotal": -46032.07244952861,
+						"meanPathDelta": -2629.6916768145584,
+						"medianPathDelta": -2629.6916768145584
+					},
+					{
+						"cell": "flat-flat",
+						"n": 7,
+						"wins": 3,
+						"losses": 3,
+						"ties": 1,
+						"winRateOfDecided": 0.5,
+						"meanDeltaTotal": 730.7833846313546,
+						"medianDeltaTotal": 0,
+						"meanPathDelta": -51498.87531127565,
+						"medianPathDelta": 0
+					}
+				]
+			},
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "all-pairs",
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 19,
+						"wins": 4,
+						"losses": 13,
+						"ties": 2,
+						"winRateOfDecided": 0.23529411764705882,
+						"meanDeltaTotal": 0.32186824622806104,
+						"medianDeltaTotal": 0.17527876152332134,
+						"meanPathDelta": 0.30903729320759155,
+						"medianPathDelta": 0.10723956130477674
+					},
+					{
+						"cell": "grad-flat",
+						"n": 6,
+						"wins": 0,
+						"losses": 6,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 1.3607998925115197,
+						"medianDeltaTotal": 1.3011034886591526,
+						"meanPathDelta": 1.1051435725143064,
+						"medianPathDelta": 1.1487157467431373
+					},
+					{
+						"cell": "flat-grad",
+						"n": 7,
+						"wins": 7,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.0270677623031235,
+						"medianDeltaTotal": -2.5918701136855633,
+						"meanPathDelta": -1.5037380579999735,
+						"medianPathDelta": -1.6869902278447384
+					},
+					{
+						"cell": "flat-flat",
+						"n": 15,
+						"wins": 8,
+						"losses": 6,
+						"ties": 1,
+						"winRateOfDecided": 0.5714285714285714,
+						"meanDeltaTotal": -0.08178096602726471,
+						"medianDeltaTotal": -0.0186370173650392,
+						"meanPathDelta": 0.029914034293010427,
+						"medianPathDelta": 0.0029397529281807167
+					}
+				]
+			},
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "all-pairs",
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 19,
+						"wins": 3,
+						"losses": 13,
+						"ties": 3,
+						"winRateOfDecided": 0.1875,
+						"meanDeltaTotal": 60873.41995896786,
+						"medianDeltaTotal": 19.351427619345486,
+						"meanPathDelta": 1118.3474266337987,
+						"medianPathDelta": 0
+					},
+					{
+						"cell": "grad-flat",
+						"n": 6,
+						"wins": 0,
+						"losses": 6,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 52713.47505750492,
+						"medianDeltaTotal": 69347.924833606,
+						"meanPathDelta": -378835.7190982939,
+						"medianPathDelta": -568225.8535627931
+					},
+					{
+						"cell": "flat-grad",
+						"n": 7,
+						"wins": 3,
+						"losses": 4,
+						"ties": 0,
+						"winRateOfDecided": 0.42857142857142855,
+						"meanDeltaTotal": 24520.982410388202,
+						"medianDeltaTotal": 39197.00825899374,
+						"meanPathDelta": 49613.02458764448,
+						"medianPathDelta": -2
+					},
+					{
+						"cell": "flat-flat",
+						"n": 15,
+						"wins": 5,
+						"losses": 8,
+						"ties": 2,
+						"winRateOfDecided": 0.38461538461538464,
+						"meanDeltaTotal": 747.2582970037358,
+						"medianDeltaTotal": 7.1802929028635845,
+						"meanPathDelta": -24050.395626307763,
+						"medianPathDelta": 0
+					}
+				]
+			},
+			{
+				"family": "a-endorsed-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 4,
+						"wins": 2,
+						"losses": 2,
+						"ties": 0,
+						"winRateOfDecided": 0.5,
+						"meanDeltaTotal": -0.15307393304135153,
+						"medianDeltaTotal": -0.29068982390115616,
+						"meanPathDelta": 0.0047078660415963425,
+						"medianPathDelta": -0.13909664120173093
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 1.3151384217494062,
+						"medianDeltaTotal": 1.3151384217494062,
+						"meanPathDelta": 1.127196651776357,
+						"medianPathDelta": 1.127196651776357
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.5918701136855633,
+						"medianDeltaTotal": -2.5918701136855633,
+						"meanPathDelta": -2.570362388087492,
+						"medianPathDelta": -2.570362388087492
+					},
+					{
+						"cell": "flat-flat",
+						"n": 4,
+						"wins": 2,
+						"losses": 2,
+						"ties": 0,
+						"winRateOfDecided": 0.5,
+						"meanDeltaTotal": 0.23171478308247662,
+						"medianDeltaTotal": -0.02041497508260015,
+						"meanPathDelta": 0.2057687649047576,
+						"medianPathDelta": 0.10100286205325659
+					}
+				]
+			},
+			{
+				"family": "a-endorsed-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 4,
+						"wins": 1,
+						"losses": 3,
+						"ties": 0,
+						"winRateOfDecided": 0.25,
+						"meanDeltaTotal": 1274.1109336230438,
+						"medianDeltaTotal": 13.38737070420757,
+						"meanPathDelta": 5148.948518417426,
+						"medianPathDelta": 138.94119425567874
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 72658.1553724343,
+						"medianDeltaTotal": 72658.1553724343,
+						"meanPathDelta": -568225.8535627931,
+						"medianPathDelta": -568225.8535627931
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 39198.745930287056,
+						"medianDeltaTotal": 39198.745930287056,
+						"meanPathDelta": -107.6633335466918,
+						"medianPathDelta": -107.6633335466918
+					},
+					{
+						"cell": "flat-flat",
+						"n": 4,
+						"wins": 2,
+						"losses": 2,
+						"ties": 0,
+						"winRateOfDecided": 0.5,
+						"meanDeltaTotal": 5608.3276519196515,
+						"medianDeltaTotal": -9.386606445827056,
+						"meanPathDelta": 6,
+						"medianPathDelta": 0
+					}
+				]
+			},
+			{
+				"family": "b-endorsed-vs-acceptable",
+				"selection": "best-of-side",
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 21,
+						"wins": 4,
+						"losses": 13,
+						"ties": 4,
+						"winRateOfDecided": 0.23529411764705882,
+						"meanDeltaTotal": 0.14538500103443802,
+						"medianDeltaTotal": 0.011192839954206057,
+						"meanPathDelta": 0.1164978978548622,
+						"medianPathDelta": 0
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 1.2036446588852243,
+						"medianDeltaTotal": 1.2036446588852243,
+						"meanPathDelta": 1.1664424314051054,
+						"medianPathDelta": 1.1664424314051054
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.7434174417001254,
+						"medianDeltaTotal": -2.7434174417001254,
+						"meanPathDelta": -2.2531974161590025,
+						"medianPathDelta": -2.2531974161590025
+					},
+					{
+						"cell": "flat-flat",
+						"n": 25,
+						"wins": 10,
+						"losses": 9,
+						"ties": 6,
+						"winRateOfDecided": 0.5263157894736842,
+						"meanDeltaTotal": -0.04996361638791761,
+						"medianDeltaTotal": 0,
+						"meanPathDelta": -0.1223752590562865,
+						"medianPathDelta": 0
+					}
+				]
+			},
+			{
+				"family": "b-endorsed-vs-acceptable",
+				"selection": "best-of-side",
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 22,
+						"wins": 5,
+						"losses": 7,
+						"ties": 10,
+						"winRateOfDecided": 0.4166666666666667,
+						"meanDeltaTotal": 1138.8755567810624,
+						"medianDeltaTotal": 0,
+						"meanPathDelta": -1553.7957438474034,
+						"medianPathDelta": 0
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 65487.23998712748,
+						"medianDeltaTotal": 65487.23998712748,
+						"meanPathDelta": -568225.8535627931,
+						"medianPathDelta": -568225.8535627931
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 39198.745930287056,
+						"medianDeltaTotal": 39198.745930287056,
+						"meanPathDelta": -107.6633335466918,
+						"medianPathDelta": -107.6633335466918
+					},
+					{
+						"cell": "flat-flat",
+						"n": 24,
+						"wins": 4,
+						"losses": 12,
+						"ties": 8,
+						"winRateOfDecided": 0.25,
+						"meanDeltaTotal": 1745.6941510373872,
+						"medianDeltaTotal": 3.5901464514317922,
+						"meanPathDelta": 12529.83637132263,
+						"medianPathDelta": 0
+					}
+				]
+			},
+			{
+				"family": "b-acceptable-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 0.9587875126415071,
+						"medianDeltaTotal": 0.9587875126415071,
+						"meanPathDelta": 0.9672627157518341,
+						"medianPathDelta": 0.9672627157518341
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 2.4264029229025654,
+						"medianDeltaTotal": 2.4264029229025654,
+						"meanPathDelta": 2.1589949342512327,
+						"medianPathDelta": 2.1589949342512327
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.8779944915101314,
+						"medianDeltaTotal": -2.8779944915101314,
+						"meanPathDelta": -1.6869902278447384,
+						"medianPathDelta": -1.6869902278447384
+					},
+					{
+						"cell": "flat-flat",
+						"n": 6,
+						"wins": 4,
+						"losses": 2,
+						"ties": 0,
+						"winRateOfDecided": 0.6666666666666666,
+						"meanDeltaTotal": -0.5390860683786022,
+						"medianDeltaTotal": -0.06615533947880659,
+						"meanPathDelta": -0.2675897658260262,
+						"medianPathDelta": -0.028832964976891473
+					}
+				]
+			},
+			{
+				"family": "b-acceptable-vs-known-bad",
+				"selection": "best-of-side",
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 2,
+						"wins": 0,
+						"losses": 1,
+						"ties": 1,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 9.675713809672743,
+						"medianDeltaTotal": 9.675713809672743,
+						"meanPathDelta": 138.94119425567874,
+						"medianPathDelta": 138.94119425567874
+					},
+					{
+						"cell": "grad-flat",
+						"n": 1,
+						"wins": 0,
+						"losses": 1,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 24.175488725304604,
+						"medianDeltaTotal": 24.175488725304604,
+						"meanPathDelta": 26,
+						"medianPathDelta": 26
+					},
+					{
+						"cell": "flat-grad",
+						"n": 1,
+						"wins": 1,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -46032.07244952861,
+						"medianDeltaTotal": -46032.07244952861,
+						"meanPathDelta": -2629.6916768145584,
+						"medianPathDelta": -2629.6916768145584
+					},
+					{
+						"cell": "flat-flat",
+						"n": 5,
+						"wins": 1,
+						"losses": 3,
+						"ties": 1,
+						"winRateOfDecided": 0.25,
+						"meanDeltaTotal": 1652.66758157718,
+						"medianDeltaTotal": 308.53505811071955,
+						"meanPathDelta": -72103.22543578592,
+						"medianPathDelta": 0
+					}
+				]
+			}
+		],
+		"crossTabPooledGoodVsBad": [
+			{
+				"arm": "p1a",
+				"unit": "nats",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 19,
+						"wins": 4,
+						"losses": 13,
+						"ties": 2,
+						"winRateOfDecided": 0.23529411764705882,
+						"meanDeltaTotal": 0.32186824622806104,
+						"medianDeltaTotal": 0.17527876152332134,
+						"meanPathDelta": 0.30903729320759155,
+						"medianPathDelta": 0.10723956130477674
+					},
+					{
+						"cell": "grad-flat",
+						"n": 6,
+						"wins": 0,
+						"losses": 6,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 1.3607998925115197,
+						"medianDeltaTotal": 1.3011034886591526,
+						"meanPathDelta": 1.1051435725143064,
+						"medianPathDelta": 1.1487157467431373
+					},
+					{
+						"cell": "flat-grad",
+						"n": 7,
+						"wins": 7,
+						"losses": 0,
+						"ties": 0,
+						"winRateOfDecided": 1,
+						"meanDeltaTotal": -2.0270677623031235,
+						"medianDeltaTotal": -2.5918701136855633,
+						"meanPathDelta": -1.5037380579999735,
+						"medianPathDelta": -1.6869902278447384
+					},
+					{
+						"cell": "flat-flat",
+						"n": 15,
+						"wins": 8,
+						"losses": 6,
+						"ties": 1,
+						"winRateOfDecided": 0.5714285714285714,
+						"meanDeltaTotal": -0.08178096602726471,
+						"medianDeltaTotal": -0.0186370173650392,
+						"meanPathDelta": 0.029914034293010427,
+						"medianPathDelta": 0.0029397529281807167
+					}
+				]
+			},
+			{
+				"arm": "p1ap",
+				"unit": "bits",
+				"cells": [
+					{
+						"cell": "grad-grad",
+						"n": 19,
+						"wins": 3,
+						"losses": 13,
+						"ties": 3,
+						"winRateOfDecided": 0.1875,
+						"meanDeltaTotal": 60873.41995896786,
+						"medianDeltaTotal": 19.351427619345486,
+						"meanPathDelta": 1118.3474266337987,
+						"medianPathDelta": 0
+					},
+					{
+						"cell": "grad-flat",
+						"n": 6,
+						"wins": 0,
+						"losses": 6,
+						"ties": 0,
+						"winRateOfDecided": 0,
+						"meanDeltaTotal": 52713.47505750492,
+						"medianDeltaTotal": 69347.924833606,
+						"meanPathDelta": -378835.7190982939,
+						"medianPathDelta": -568225.8535627931
+					},
+					{
+						"cell": "flat-grad",
+						"n": 7,
+						"wins": 3,
+						"losses": 4,
+						"ties": 0,
+						"winRateOfDecided": 0.42857142857142855,
+						"meanDeltaTotal": 24520.982410388202,
+						"medianDeltaTotal": 39197.00825899374,
+						"meanPathDelta": 49613.02458764448,
+						"medianPathDelta": -2
+					},
+					{
+						"cell": "flat-flat",
+						"n": 15,
+						"wins": 5,
+						"losses": 8,
+						"ties": 2,
+						"winRateOfDecided": 0.38461538461538464,
+						"meanDeltaTotal": 747.2582970037358,
+						"medianDeltaTotal": 7.1802929028635845,
+						"meanPathDelta": -24050.395626307763,
+						"medianPathDelta": 0
+					}
+				]
+			}
+		],
+		"gradientMatched": [
+			{
+				"arm": "p1a",
+				"family": "a-good-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 12,
+				"matchedWins": 7,
+				"matchedLosses": 5,
+				"matchedTies": 0,
+				"matchedWinRate": 0.5833333333333334,
+				"matchedTest": {
+					"summary": "7/12 (58.3%) vs null p=0.5: p=0.7744",
+					"honest": "p1a a-good-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 7/12 (58.3%) vs null p=0.5: p=0.7744 | n=12 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 7,
+					"trials": 12,
+					"pValue": 0.7744140624999958,
+					"interval": "7/12 = 58.3% (95% CI 32.0%-80.7%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1a a-good-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1ap",
+				"family": "a-good-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 12,
+				"matchedWins": 4,
+				"matchedLosses": 6,
+				"matchedTies": 2,
+				"matchedWinRate": 0.4,
+				"matchedTest": {
+					"summary": "4/10 (40.0%) vs null p=0.5: p=0.7539",
+					"honest": "p1ap a-good-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 4/10 (40.0%) vs null p=0.5: p=0.7539 | n=10 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 4,
+					"trials": 10,
+					"pValue": 0.7539062500000009,
+					"interval": "4/10 = 40.0% (95% CI 16.8%-68.7%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1ap a-good-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1a",
+				"family": "a-good-vs-known-bad",
+				"selection": "all-pairs",
+				"matchedPairs": 34,
+				"matchedWins": 12,
+				"matchedLosses": 19,
+				"matchedTies": 3,
+				"matchedWinRate": 0.3870967741935484,
+				"matchedTest": {
+					"summary": "12/31 (38.7%) vs null p=0.5: p=0.2810",
+					"honest": "p1a a-good-vs-known-bad/all-pairs: good side lower on gradient-matched pairs: 12/31 (38.7%) vs null p=0.5: p=0.2810 | n=31 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 12,
+					"trials": 31,
+					"pValue": 0.28104151505976827,
+					"interval": "12/31 = 38.7% (95% CI 23.7%-56.2%)"
+				},
+				"mismatchedDecided": 13,
+				"flatSideWon": 13,
+				"flatSideWonTest": {
+					"summary": "13/13 (100.0%) vs null p=0.5: p=0.0002",
+					"honest": "p1a a-good-vs-known-bad/all-pairs: on gradient-mismatched pairs the flat side is the cheaper one: 13/13 (100.0%) vs null p=0.5: p=0.0002 | n=13 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 13,
+					"trials": 13,
+					"pValue": 0.00024414062500000016,
+					"interval": "13/13 = 100.0% (95% CI 77.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1ap",
+				"family": "a-good-vs-known-bad",
+				"selection": "all-pairs",
+				"matchedPairs": 34,
+				"matchedWins": 8,
+				"matchedLosses": 21,
+				"matchedTies": 5,
+				"matchedWinRate": 0.27586206896551724,
+				"matchedTest": {
+					"summary": "8/29 (27.6%) vs null p=0.5: p=0.0241",
+					"honest": "p1ap a-good-vs-known-bad/all-pairs: good side lower on gradient-matched pairs: 8/29 (27.6%) vs null p=0.5: p=0.0241 | n=29 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 8,
+					"trials": 29,
+					"pValue": 0.02411954477429376,
+					"interval": "8/29 = 27.6% (95% CI 14.7%-45.7%)"
+				},
+				"mismatchedDecided": 13,
+				"flatSideWon": 9,
+				"flatSideWonTest": {
+					"summary": "9/13 (69.2%) vs null p=0.5: p=0.2668",
+					"honest": "p1ap a-good-vs-known-bad/all-pairs: on gradient-mismatched pairs the flat side is the cheaper one: 9/13 (69.2%) vs null p=0.5: p=0.2668 | n=13 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 9,
+					"trials": 13,
+					"pValue": 0.26684570312499967,
+					"interval": "9/13 = 69.2% (95% CI 42.4%-87.3%)"
+				}
+			},
+			{
+				"arm": "p1a",
+				"family": "a-endorsed-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 8,
+				"matchedWins": 4,
+				"matchedLosses": 4,
+				"matchedTies": 0,
+				"matchedWinRate": 0.5,
+				"matchedTest": {
+					"summary": "4/8 (50.0%) vs null p=0.5: p=1.0000",
+					"honest": "p1a a-endorsed-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 4/8 (50.0%) vs null p=0.5: p=1.0000 | n=8 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 4,
+					"trials": 8,
+					"pValue": 1,
+					"interval": "4/8 = 50.0% (95% CI 21.5%-78.5%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1a a-endorsed-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1ap",
+				"family": "a-endorsed-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 8,
+				"matchedWins": 3,
+				"matchedLosses": 5,
+				"matchedTies": 0,
+				"matchedWinRate": 0.375,
+				"matchedTest": {
+					"summary": "3/8 (37.5%) vs null p=0.5: p=0.7266",
+					"honest": "p1ap a-endorsed-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 3/8 (37.5%) vs null p=0.5: p=0.7266 | n=8 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 3,
+					"trials": 8,
+					"pValue": 0.7265625,
+					"interval": "3/8 = 37.5% (95% CI 13.7%-69.4%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 1,
+				"flatSideWonTest": {
+					"summary": "1/2 (50.0%) vs null p=0.5: p=1.0000",
+					"honest": "p1ap a-endorsed-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 1/2 (50.0%) vs null p=0.5: p=1.0000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 1,
+					"trials": 2,
+					"pValue": 1,
+					"interval": "1/2 = 50.0% (95% CI 9.5%-90.5%)"
+				}
+			},
+			{
+				"arm": "p1a",
+				"family": "b-endorsed-vs-acceptable",
+				"selection": "best-of-side",
+				"matchedPairs": 46,
+				"matchedWins": 14,
+				"matchedLosses": 22,
+				"matchedTies": 10,
+				"matchedWinRate": 0.3888888888888889,
+				"matchedTest": {
+					"summary": "14/36 (38.9%) vs null p=0.5: p=0.2430",
+					"honest": "p1a b-endorsed-vs-acceptable/best-of-side: good side lower on gradient-matched pairs: 14/36 (38.9%) vs null p=0.5: p=0.2430 | n=36 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 14,
+					"trials": 36,
+					"pValue": 0.24298495403491022,
+					"interval": "14/36 = 38.9% (95% CI 24.8%-55.1%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1a b-endorsed-vs-acceptable/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1ap",
+				"family": "b-endorsed-vs-acceptable",
+				"selection": "best-of-side",
+				"matchedPairs": 46,
+				"matchedWins": 9,
+				"matchedLosses": 19,
+				"matchedTies": 18,
+				"matchedWinRate": 0.32142857142857145,
+				"matchedTest": {
+					"summary": "9/28 (32.1%) vs null p=0.5: p=0.0872",
+					"honest": "p1ap b-endorsed-vs-acceptable/best-of-side: good side lower on gradient-matched pairs: 9/28 (32.1%) vs null p=0.5: p=0.0872 | n=28 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 9,
+					"trials": 28,
+					"pValue": 0.08715855330228706,
+					"interval": "9/28 = 32.1% (95% CI 17.9%-50.7%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 1,
+				"flatSideWonTest": {
+					"summary": "1/2 (50.0%) vs null p=0.5: p=1.0000",
+					"honest": "p1ap b-endorsed-vs-acceptable/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 1/2 (50.0%) vs null p=0.5: p=1.0000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 1,
+					"trials": 2,
+					"pValue": 1,
+					"interval": "1/2 = 50.0% (95% CI 9.5%-90.5%)"
+				}
+			},
+			{
+				"arm": "p1a",
+				"family": "b-acceptable-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 7,
+				"matchedWins": 4,
+				"matchedLosses": 3,
+				"matchedTies": 0,
+				"matchedWinRate": 0.5714285714285714,
+				"matchedTest": {
+					"summary": "4/7 (57.1%) vs null p=0.5: p=1.0000",
+					"honest": "p1a b-acceptable-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 4/7 (57.1%) vs null p=0.5: p=1.0000 | n=7 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 4,
+					"trials": 7,
+					"pValue": 1,
+					"interval": "4/7 = 57.1% (95% CI 25.0%-84.2%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1a b-acceptable-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			},
+			{
+				"arm": "p1ap",
+				"family": "b-acceptable-vs-known-bad",
+				"selection": "best-of-side",
+				"matchedPairs": 7,
+				"matchedWins": 1,
+				"matchedLosses": 4,
+				"matchedTies": 2,
+				"matchedWinRate": 0.2,
+				"matchedTest": {
+					"summary": "1/5 (20.0%) vs null p=0.5: p=0.3750",
+					"honest": "p1ap b-acceptable-vs-known-bad/best-of-side: good side lower on gradient-matched pairs: 1/5 (20.0%) vs null p=0.5: p=0.3750 | n=5 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 1,
+					"trials": 5,
+					"pValue": 0.37500000000000133,
+					"interval": "1/5 = 20.0% (95% CI 3.6%-62.4%)"
+				},
+				"mismatchedDecided": 2,
+				"flatSideWon": 2,
+				"flatSideWonTest": {
+					"summary": "2/2 (100.0%) vs null p=0.5: p=0.5000",
+					"honest": "p1ap b-acceptable-vs-known-bad/best-of-side: on gradient-mismatched pairs the flat side is the cheaper one: 2/2 (100.0%) vs null p=0.5: p=0.5000 | n=2 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 2,
+					"trials": 2,
+					"pValue": 0.5000000000000004,
+					"interval": "2/2 = 100.0% (95% CI 34.2%-100.0%)"
+				}
+			}
+		],
+		"withinArtwork": {
+			"p1a": {
+				"artworksWithBothStates": 15,
+				"decided": 15,
+				"gradientCostsMore": 13,
+				"test": {
+					"summary": "13/15 (86.7%) vs null p=0.5: p=0.0074",
+					"honest": "p1a: reconstructed ramp costs more than the flat sibling on the same artwork: 13/15 (86.7%) vs null p=0.5: p=0.0074 | n=15 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 13,
+					"trials": 15,
+					"pValue": 0.007385253906249972,
+					"interval": "13/15 = 86.7% (95% CI 62.1%-96.3%)"
+				},
+				"meanDeltaTotal": 1.3520873744110509,
+				"medianDeltaTotal": 1.2755253296697386,
+				"perTerm": [
+					{
+						"term": "field",
+						"meanDelta": -0.3768641177550497,
+						"medianDelta": -0.4439682168422969,
+						"gradHigherCount": 6
+					},
+					{
+						"term": "ink",
+						"meanDelta": 0.3289514921661004,
+						"medianDelta": 0.3000709423761915,
+						"gradHigherCount": 12
+					},
+					{
+						"term": "structural",
+						"meanDelta": 1.4,
+						"medianDelta": 1,
+						"gradHigherCount": 14
+					},
+					{
+						"term": "escape",
+						"meanDelta": 0,
+						"medianDelta": 0,
+						"gradHigherCount": 0
+					}
+				],
+				"rows": [
+					{
+						"artworkSha": "12805f2a9fb55a04ce7cc2258ce05d657c894f45d071ddbb81f7b9f7f9c132cc",
+						"stratum": "structured",
+						"gradEntryId": "ef6972723f6f19cc",
+						"flatEntryId": "b2402057e00d9c44",
+						"deltaTotal": -0.019462409695981453,
+						"deltaTerms": {
+							"field": -1.319533352072173,
+							"ink": 0.3000709423761915,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+						"stratum": "structured",
+						"gradEntryId": "d497968beed67cf1",
+						"flatEntryId": "5eac583ef3807214",
+						"deltaTotal": 2.8779944915101314,
+						"deltaTerms": {
+							"field": -0.3130097721552616,
+							"ink": 1.191004263665393,
+							"structural": 2,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+						"stratum": "structured",
+						"gradEntryId": "6495b2d9bb504d1b",
+						"flatEntryId": "52447da991e701ad",
+						"deltaTotal": 0.526814815907553,
+						"deltaTerms": {
+							"field": -0.4439682168422969,
+							"ink": 0.97078303274985,
+							"structural": 0,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "49d0579daaf642d7bf46d23f8ec358c76812c9aec31d46e28abd1172956b714f",
+						"stratum": "structured",
+						"gradEntryId": "d67b3bf575ff7169",
+						"flatEntryId": "c7f9c376922a3301",
+						"deltaTotal": 2.0699172682921625,
+						"deltaTerms": {
+							"field": 0.3968429536813938,
+							"ink": 0.6730743146107693,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "4f1b075b80032b3785835112ea3900809046b01e7fc72c7744fe0db62979620d",
+						"stratum": "degenerate",
+						"gradEntryId": "370d39efaea614e3",
+						"flatEntryId": "b02a910af8025534",
+						"deltaTotal": 0.38117939685751345,
+						"deltaTerms": {
+							"field": -1.1010943576280252,
+							"ink": 0.482273754485539,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+						"stratum": "structured",
+						"gradEntryId": "e8998963e0ccfe11",
+						"flatEntryId": "c9bb3b7bf6e592b5",
+						"deltaTotal": 0.5761613354081563,
+						"deltaTerms": {
+							"field": -0.6493282082686407,
+							"ink": 0.2254895436767972,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "57b9084d7072895d074886aa6fc9330d348c0651e9f6d08fa47332ace7ef0594",
+						"stratum": "structured",
+						"gradEntryId": "9f6ee5d48b396025",
+						"flatEntryId": "79b1340af1dc3a31",
+						"deltaTotal": 2.3785260667502066,
+						"deltaTerms": {
+							"field": 0.7223053318425716,
+							"ink": -0.3437792650923652,
+							"structural": 2,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "6d4528b797a383f9ad2d0110a3b30d2891e7688318e14966d18e599b5c67f079",
+						"stratum": "structured",
+						"gradEntryId": "e1d690f088f85888",
+						"flatEntryId": "83064f45a5e4adcd",
+						"deltaTotal": 0.9348071906282227,
+						"deltaTerms": {
+							"field": -0.46845027543862017,
+							"ink": 0.403257466066843,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+						"stratum": "degenerate",
+						"gradEntryId": "721cb1a232472ea7",
+						"flatEntryId": "282f8581be33c9ba",
+						"deltaTotal": 0.9923371587950136,
+						"deltaTerms": {
+							"field": 0.1985209249155675,
+							"ink": -0.20618376612055378,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "99061086ccc24c37f431ef0d5a23e04c23d9a875f0a6c7de36b772c3b0143bd0",
+						"stratum": "degenerate",
+						"gradEntryId": "5e1835e893786b8a",
+						"flatEntryId": "be5255ea987060df",
+						"deltaTotal": -0.10443650895445522,
+						"deltaTerms": {
+							"field": -2.2340260721673513,
+							"ink": 0.12958956321289528,
+							"structural": 2,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "a650d5956f45cf93556c6be1027e21f70f1fac39843fb34c1ca607a133735c58",
+						"stratum": "degenerate",
+						"gradEntryId": "e714ef5a252d250c",
+						"flatEntryId": "7eb68b9fbadc978d",
+						"deltaTotal": 1.2755253296697386,
+						"deltaTerms": {
+							"field": 0.2818862840922689,
+							"ink": -0.006360954422530457,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "b5efe5083d55967bdd226b1e1ab4cf6391362b67474f1cd06d5d2bbebb589b84",
+						"stratum": "structured",
+						"gradEntryId": "f1af39113cd82949",
+						"flatEntryId": "4ed7133379e81f83",
+						"deltaTotal": 1.8678169104281173,
+						"deltaTerms": {
+							"field": -0.4533672940889977,
+							"ink": 0.3211842045171154,
+							"structural": 2,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "d0221bcc5bdf885e29e2d10d7b6b57159dbc10047c4d1321b7de26af06dce39b",
+						"stratum": "structured",
+						"gradEntryId": "e3f59ac43a6b4998",
+						"flatEntryId": "de5480d8199685c6",
+						"deltaTotal": 2.7434174417001254,
+						"deltaTerms": {
+							"field": -0.7468025838409975,
+							"ink": 0.49022002554112276,
+							"structural": 3,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "d87bda0008c4b94be55765588c57d658bcca04e53a88f16015ff6a68849918e8",
+						"stratum": "structured",
+						"gradEntryId": "ad4f4ca73c9fa8c0",
+						"flatEntryId": "b1e69dc9d564c6bb",
+						"deltaTotal": 1.3543092059666924,
+						"deltaTerms": {
+							"field": 0.31806793739358463,
+							"ink": 0.0362412685731075,
+							"structural": 1,
+							"escape": 0
+						}
+					},
+					{
+						"artworkSha": "dcae765bccc77600c0a4bebfce054444127a1b2b6432c88fcb1011b0126a2bc0",
+						"stratum": "degenerate",
+						"gradEntryId": "3360c4b97c9caeeb",
+						"flatEntryId": "3032108863483ea5",
+						"deltaTotal": 2.4264029229025654,
+						"deltaTerms": {
+							"field": 0.15899493425123268,
+							"ink": 0.26740798865133225,
+							"structural": 2,
+							"escape": 0
+						}
+					}
+				]
+			},
+			"p1ap": {
+				"artworksWithBothStates": 15,
+				"decided": 15,
+				"gradientCostsMore": 12,
+				"test": {
+					"summary": "12/15 (80.0%) vs null p=0.5: p=0.0352",
+					"honest": "p1ap: reconstructed ramp costs more than the flat sibling on the same artwork: 12/15 (80.0%) vs null p=0.5: p=0.0352 | n=15 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+					"successes": 12,
+					"trials": 15,
+					"pValue": 0.03515625000000001,
+					"interval": "12/15 = 80.0% (95% CI 54.8%-93.0%)"
+				},
+				"meanDeltaTotal": 48960.32289946272,
+				"medianDeltaTotal": 26,
+				"perTerm": [
+					{
+						"term": "fieldColorBits",
+						"meanDelta": -35617.512458722325,
+						"medianDelta": 0,
+						"gradHigherCount": 3
+					},
+					{
+						"term": "fieldSupportBits",
+						"meanDelta": -16733.925257755836,
+						"medianDelta": 0,
+						"gradHigherCount": 3
+					},
+					{
+						"term": "inkColorBits",
+						"meanDelta": -25023.93242285698,
+						"medianDelta": 0,
+						"gradHigherCount": 4
+					},
+					{
+						"term": "inkSupportBits",
+						"meanDelta": -8004.729295938264,
+						"medianDelta": 0,
+						"gradHigherCount": 4
+					},
+					{
+						"term": "genericBits",
+						"meanDelta": 134322.95566806948,
+						"medianDelta": 933.464269873919,
+						"gradHigherCount": 9
+					},
+					{
+						"term": "paletteBits",
+						"meanDelta": 17.466666666666665,
+						"medianDelta": 2,
+						"gradHigherCount": 15
+					}
+				],
+				"rows": [
+					{
+						"artworkSha": "12805f2a9fb55a04ce7cc2258ce05d657c894f45d071ddbb81f7b9f7f9c132cc",
+						"stratum": "structured",
+						"gradEntryId": "02e791dadbc7ba4a",
+						"flatEntryId": "b2402057e00d9c44",
+						"deltaTotal": 233.63311442174017,
+						"deltaTerms": {
+							"fieldColorBits": -1453.6894332111615,
+							"fieldSupportBits": -332.5662822538349,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": 1985.8888298869133,
+							"paletteBits": 34
+						}
+					},
+					{
+						"artworkSha": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+						"stratum": "structured",
+						"gradEntryId": "804ea50218a4a54a",
+						"flatEntryId": "ea9e8706790c5e50",
+						"deltaTotal": -39198.745930287056,
+						"deltaTerms": {
+							"fieldColorBits": 55.97566750100572,
+							"fieldSupportBits": 17.687666045686093,
+							"inkColorBits": -141493.18908924743,
+							"inkSupportBits": -33040.01746033915,
+							"genericBits": 135226.79728575237,
+							"paletteBits": 34
+						}
+					},
+					{
+						"artworkSha": "4312a7e734147e0cdf7bb3671429a48ab277c849ab6b227182ee85b0e3e3f301",
+						"stratum": "structured",
+						"gradEntryId": "005ce4940254ef5f",
+						"flatEntryId": "52447da991e701ad",
+						"deltaTotal": 66115.56906152423,
+						"deltaTerms": {
+							"fieldColorBits": -484131.82735717273,
+							"fieldSupportBits": -84096.0262056204,
+							"inkColorBits": 40680.09662859709,
+							"inkSupportBits": 7022.99549443883,
+							"genericBits": 586638.3305012817,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "49d0579daaf642d7bf46d23f8ec358c76812c9aec31d46e28abd1172956b714f",
+						"stratum": "structured",
+						"gradEntryId": "d67b3bf575ff7169",
+						"flatEntryId": "c7f9c376922a3301",
+						"deltaTotal": 46032.07244952861,
+						"deltaTerms": {
+							"fieldColorBits": 1713.7763664035895,
+							"fieldSupportBits": 913.9153104109691,
+							"inkColorBits": -292936.2237134654,
+							"inkSupportBits": -87734.20229058577,
+							"genericBits": 424072.80677676573,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "4f1b075b80032b3785835112ea3900809046b01e7fc72c7744fe0db62979620d",
+						"stratum": "degenerate",
+						"gradEntryId": "370d39efaea614e3",
+						"flatEntryId": "b02a910af8025534",
+						"deltaTotal": 9.936598610365763,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": -667.6971217395276,
+							"inkSupportBits": -257.8305495239674,
+							"genericBits": 933.464269873919,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "511467663e2bae555f23a452552f3badcb038d74138b155bcf1b3ed7611c94ea",
+						"stratum": "structured",
+						"gradEntryId": "e8998963e0ccfe11",
+						"flatEntryId": "c9bb3b7bf6e592b5",
+						"deltaTotal": 3123.9007096718997,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": 38916.799994484114,
+							"inkSupportBits": 5946.214775387285,
+							"genericBits": -41741.11406019889,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "57b9084d7072895d074886aa6fc9330d348c0651e9f6d08fa47332ace7ef0594",
+						"stratum": "structured",
+						"gradEntryId": "9f6ee5d48b396025",
+						"flatEntryId": "79b1340af1dc3a31",
+						"deltaTotal": 36.777294313535094,
+						"deltaTerms": {
+							"fieldColorBits": 707.3797640135167,
+							"fieldSupportBits": 486.78344207427165,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": -1191.3859117748216,
+							"paletteBits": 34
+						}
+					},
+					{
+						"artworkSha": "6d4528b797a383f9ad2d0110a3b30d2891e7688318e14966d18e599b5c67f079",
+						"stratum": "structured",
+						"gradEntryId": "e1d690f088f85888",
+						"flatEntryId": "83064f45a5e4adcd",
+						"deltaTotal": 33592.64275975339,
+						"deltaTerms": {
+							"fieldColorBits": -48127.703674168486,
+							"fieldSupportBits": -20038.927614064072,
+							"inkColorBits": -19761.00320312765,
+							"inkSupportBits": -10612.674833210389,
+							"genericBits": 132130.95208432432,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "6e3ed0aa2c701178fa791c8a356ea302efbd51d540167462e014ec2f40696e95",
+						"stratum": "degenerate",
+						"gradEntryId": "721cb1a232472ea7",
+						"flatEntryId": "282f8581be33c9ba",
+						"deltaTotal": 2,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": 0,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "99061086ccc24c37f431ef0d5a23e04c23d9a875f0a6c7de36b772c3b0143bd0",
+						"stratum": "degenerate",
+						"gradEntryId": "5e1835e893786b8a",
+						"flatEntryId": "be5255ea987060df",
+						"deltaTotal": 26,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": 0,
+							"paletteBits": 26
+						}
+					},
+					{
+						"artworkSha": "a650d5956f45cf93556c6be1027e21f70f1fac39843fb34c1ca607a133735c58",
+						"stratum": "degenerate",
+						"gradEntryId": "e714ef5a252d250c",
+						"flatEntryId": "7eb68b9fbadc978d",
+						"deltaTotal": 2,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": 0,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "b5efe5083d55967bdd226b1e1ab4cf6391362b67474f1cd06d5d2bbebb589b84",
+						"stratum": "structured",
+						"gradEntryId": "7f0824bb9e07e254",
+						"flatEntryId": "4ed7133379e81f83",
+						"deltaTotal": -10.485511837759987,
+						"deltaTerms": {
+							"fieldColorBits": -388.47634978579686,
+							"fieldSupportBits": -5.229694325652417,
+							"inkColorBits": 0,
+							"inkSupportBits": 0,
+							"genericBits": 349.22053227364086,
+							"paletteBits": 34
+						}
+					},
+					{
+						"artworkSha": "d0221bcc5bdf885e29e2d10d7b6b57159dbc10047c4d1321b7de26af06dce39b",
+						"stratum": "structured",
+						"gradEntryId": "e3f59ac43a6b4998",
+						"flatEntryId": "de5480d8199685c6",
+						"deltaTotal": -3267.9745811950415,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": -10477.366675342113,
+							"inkSupportBits": -3298.0824180874333,
+							"genericBits": 10449.47451223433,
+							"paletteBits": 58
+						}
+					},
+					{
+						"artworkSha": "d87bda0008c4b94be55765588c57d658bcca04e53a88f16015ff6a68849918e8",
+						"stratum": "structured",
+						"gradEntryId": "ad4f4ca73c9fa8c0",
+						"flatEntryId": "b1e69dc9d564c6bb",
+						"deltaTotal": 627683.3420387115,
+						"deltaTerms": {
+							"fieldColorBits": -2638.121864414907,
+							"fieldSupportBits": -147954.51548860452,
+							"inkColorBits": 10330.829150088903,
+							"inkSupportBits": 1869.013986656846,
+							"genericBits": 766074.1362549849,
+							"paletteBits": 2
+						}
+					},
+					{
+						"artworkSha": "dcae765bccc77600c0a4bebfce054444127a1b2b6432c88fcb1011b0126a2bc0",
+						"stratum": "degenerate",
+						"gradEntryId": "3360c4b97c9caeeb",
+						"flatEntryId": "3032108863483ea5",
+						"deltaTotal": 24.175488725304604,
+						"deltaTerms": {
+							"fieldColorBits": 0,
+							"fieldSupportBits": 0,
+							"inkColorBits": 48.76768689738492,
+							"inkSupportBits": 33.6438561897744,
+							"genericBits": -84.23605436179787,
+							"paletteBits": 26
+						}
+					}
+				]
+			}
+		},
+		"perEntryTermShares": {
+			"p1a": {
+				"gradient": {
+					"n": 227,
+					"meanGradientRateStops": 2.462555066079295,
+					"terms": [
+						{
+							"term": "field",
+							"n": 227,
+							"meanShareOfDataPart": -0.8327714861220645,
+							"medianShareOfDataPart": -0.8453163606094612
+						},
+						{
+							"term": "ink",
+							"n": 227,
+							"meanShareOfDataPart": -0.1672285138779357,
+							"medianShareOfDataPart": -0.15468363939053872
+						},
+						{
+							"term": "structural",
+							"n": 227,
+							"meanShareOfDataPart": 0.7627883018408429,
+							"medianShareOfDataPart": 0.7166573298808361
+						},
+						{
+							"term": "escape",
+							"n": 227,
+							"meanShareOfDataPart": 0,
+							"medianShareOfDataPart": 0
+						}
+					]
+				},
+				"flat": {
+					"n": 231,
+					"meanGradientRateStops": 0,
+					"terms": [
+						{
+							"term": "field",
+							"n": 231,
+							"meanShareOfDataPart": -0.7510580075032856,
+							"medianShareOfDataPart": -0.7752370418753661
+						},
+						{
+							"term": "ink",
+							"n": 231,
+							"meanShareOfDataPart": -0.24894199249671461,
+							"medianShareOfDataPart": -0.22476295812463387
+						},
+						{
+							"term": "structural",
+							"n": 231,
+							"meanShareOfDataPart": 0.37441518341756747,
+							"medianShareOfDataPart": 0.39912593379858285
+						},
+						{
+							"term": "escape",
+							"n": 231,
+							"meanShareOfDataPart": 0,
+							"medianShareOfDataPart": 0
+						}
+					]
+				}
+			},
+			"p1ap": {
+				"gradient": {
+					"n": 227,
+					"meanGradientRateStops": 2.462555066079295,
+					"terms": [
+						{
+							"term": "fieldColorBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.0009913703654265886,
+							"medianShareOfDataPart": 0.000023349016247947936
+						},
+						{
+							"term": "fieldSupportBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.00031179407675470497,
+							"medianShareOfDataPart": 0.000006767522220878276
+						},
+						{
+							"term": "inkColorBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.015952936657237494,
+							"medianShareOfDataPart": 0.010031030276069487
+						},
+						{
+							"term": "inkSupportBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.005892422705422182,
+							"medianShareOfDataPart": 0.0038586584427858523
+						},
+						{
+							"term": "genericBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.976851476195159,
+							"medianShareOfDataPart": 0.9846055756229916
+						},
+						{
+							"term": "paletteBits",
+							"n": 227,
+							"meanShareOfDataPart": 0.000044115327639554376,
+							"medianShareOfDataPart": 0.00002205307307468335
+						}
+					]
+				},
+				"flat": {
+					"n": 231,
+					"meanGradientRateStops": 0,
+					"terms": [
+						{
+							"term": "fieldColorBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.010457482030457058,
+							"medianShareOfDataPart": 9.45247565446778e-7
+						},
+						{
+							"term": "fieldSupportBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.019245147569085217,
+							"medianShareOfDataPart": 0.0000029221338786462296
+						},
+						{
+							"term": "inkColorBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.017252084254855696,
+							"medianShareOfDataPart": 0.00942979532645319
+						},
+						{
+							"term": "inkSupportBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.0070460787106908975,
+							"medianShareOfDataPart": 0.003674544904427019
+						},
+						{
+							"term": "genericBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.9459992074349116,
+							"medianShareOfDataPart": 0.9761606710937593
+						},
+						{
+							"term": "paletteBits",
+							"n": 231,
+							"meanShareOfDataPart": 0.000040427964432761365,
+							"medianShareOfDataPart": 0.00002124418990570873
+						}
+					]
+				}
+			}
+		}
+	},
+	"q3Degeneracy": {
+		"strataCensus": {
+			"degenerate": 59,
+			"structured": 138
+		},
+		"degenerateEntries": 135,
+		"serializationDecidedAllPairSets": {
+			"all": {
+				"pairs": 128,
+				"ties": 27,
+				"decided": 101,
+				"decidedByPaletteBitsAlone": 4,
+				"decidedByPaletteBitsAloneRate": 0.039603960396039604,
+				"pairsWithNonZeroPaletteBitsDelta": 49,
+				"cheaperPaletteWon": 33,
+				"cheaperPaletteWonRate": 0.673469387755102,
+				"medianPaletteBitsShareOfMargin": 0,
+				"meanPaletteBitsShareOfMargin": 0.20920102016715927,
+				"marginsAbove99PercentPaletteBits": 13
+			},
+			"degenerate": {
+				"pairs": 23,
+				"ties": 9,
+				"decided": 14,
+				"decidedByPaletteBitsAlone": 0,
+				"decidedByPaletteBitsAloneRate": 0,
+				"pairsWithNonZeroPaletteBitsDelta": 4,
+				"cheaperPaletteWon": 4,
+				"cheaperPaletteWonRate": 1,
+				"medianPaletteBitsShareOfMargin": 0,
+				"meanPaletteBitsShareOfMargin": 0.25663949002889874,
+				"marginsAbove99PercentPaletteBits": 3
+			},
+			"structured": {
+				"pairs": 105,
+				"ties": 18,
+				"decided": 87,
+				"decidedByPaletteBitsAlone": 4,
+				"decidedByPaletteBitsAloneRate": 0.04597701149425287,
+				"pairsWithNonZeroPaletteBitsDelta": 45,
+				"cheaperPaletteWon": 29,
+				"cheaperPaletteWonRate": 0.6444444444444445,
+				"medianPaletteBitsShareOfMargin": 0.000027526159861178887,
+				"meanPaletteBitsShareOfMargin": 0.20156724340779886,
+				"marginsAbove99PercentPaletteBits": 10
+			}
+		},
+		"serializationDecidedByPairSet": [
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "best-of-side",
+				"all": {
+					"pairs": 14,
+					"ties": 2,
+					"decided": 12,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 6,
+					"cheaperPaletteWon": 4,
+					"cheaperPaletteWonRate": 0.6666666666666666,
+					"medianPaletteBitsShareOfMargin": 0.00002172398388311627,
+					"meanPaletteBitsShareOfMargin": 0.30497007665708215,
+					"marginsAbove99PercentPaletteBits": 2
+				},
+				"degenerate": {
+					"pairs": 2,
+					"ties": 1,
+					"decided": 1,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 1,
+					"cheaperPaletteWon": 1,
+					"cheaperPaletteWonRate": 1,
+					"medianPaletteBitsShareOfMargin": 1.0754694680809358,
+					"meanPaletteBitsShareOfMargin": 1.0754694680809358,
+					"marginsAbove99PercentPaletteBits": 1
+				},
+				"structured": {
+					"pairs": 12,
+					"ties": 1,
+					"decided": 11,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 5,
+					"cheaperPaletteWon": 3,
+					"cheaperPaletteWonRate": 0.6,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0.23492467743673184,
+					"marginsAbove99PercentPaletteBits": 1
+				}
+			},
+			{
+				"family": "a-good-vs-known-bad",
+				"selection": "all-pairs",
+				"all": {
+					"pairs": 47,
+					"ties": 5,
+					"decided": 42,
+					"decidedByPaletteBitsAlone": 1,
+					"decidedByPaletteBitsAloneRate": 0.023809523809523808,
+					"pairsWithNonZeroPaletteBitsDelta": 23,
+					"cheaperPaletteWon": 15,
+					"cheaperPaletteWonRate": 0.6521739130434783,
+					"medianPaletteBitsShareOfMargin": 0.000028902877502151578,
+					"meanPaletteBitsShareOfMargin": 0.1598993122964942,
+					"marginsAbove99PercentPaletteBits": 4
+				},
+				"degenerate": {
+					"pairs": 6,
+					"ties": 1,
+					"decided": 5,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 2,
+					"cheaperPaletteWon": 2,
+					"cheaperPaletteWonRate": 1,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0.2884027848485422,
+					"marginsAbove99PercentPaletteBits": 1
+				},
+				"structured": {
+					"pairs": 41,
+					"ties": 4,
+					"decided": 37,
+					"decidedByPaletteBitsAlone": 1,
+					"decidedByPaletteBitsAloneRate": 0.02702702702702703,
+					"pairsWithNonZeroPaletteBitsDelta": 21,
+					"cheaperPaletteWon": 13,
+					"cheaperPaletteWonRate": 0.6190476190476191,
+					"medianPaletteBitsShareOfMargin": 0.00003025006104294267,
+					"meanPaletteBitsShareOfMargin": 0.14253397816783908,
+					"marginsAbove99PercentPaletteBits": 3
+				}
+			},
+			{
+				"family": "a-endorsed-vs-known-bad",
+				"selection": "best-of-side",
+				"all": {
+					"pairs": 10,
+					"ties": 0,
+					"decided": 10,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 5,
+					"cheaperPaletteWon": 3,
+					"cheaperPaletteWonRate": 0.6,
+					"medianPaletteBitsShareOfMargin": 0.000013763079930589444,
+					"meanPaletteBitsShareOfMargin": 0.25840547761629146,
+					"marginsAbove99PercentPaletteBits": 1
+				},
+				"degenerate": {
+					"pairs": 1,
+					"ties": 0,
+					"decided": 1,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 0,
+					"cheaperPaletteWon": 0,
+					"cheaperPaletteWonRate": null,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0,
+					"marginsAbove99PercentPaletteBits": 0
+				},
+				"structured": {
+					"pairs": 9,
+					"ties": 0,
+					"decided": 9,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 5,
+					"cheaperPaletteWon": 3,
+					"cheaperPaletteWonRate": 0.6,
+					"medianPaletteBitsShareOfMargin": 0.000027526159861178887,
+					"meanPaletteBitsShareOfMargin": 0.2871171973514349,
+					"marginsAbove99PercentPaletteBits": 1
+				}
+			},
+			{
+				"family": "b-endorsed-vs-acceptable",
+				"selection": "best-of-side",
+				"all": {
+					"pairs": 48,
+					"ties": 18,
+					"decided": 30,
+					"decidedByPaletteBitsAlone": 3,
+					"decidedByPaletteBitsAloneRate": 0.1,
+					"pairsWithNonZeroPaletteBitsDelta": 11,
+					"cheaperPaletteWon": 8,
+					"cheaperPaletteWonRate": 0.7272727272727273,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0.18132434707336886,
+					"marginsAbove99PercentPaletteBits": 4
+				},
+				"degenerate": {
+					"pairs": 12,
+					"ties": 6,
+					"decided": 6,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 0,
+					"cheaperPaletteWon": 0,
+					"cheaperPaletteWonRate": null,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0,
+					"marginsAbove99PercentPaletteBits": 0
+				},
+				"structured": {
+					"pairs": 36,
+					"ties": 12,
+					"decided": 24,
+					"decidedByPaletteBitsAlone": 3,
+					"decidedByPaletteBitsAloneRate": 0.125,
+					"pairsWithNonZeroPaletteBitsDelta": 11,
+					"cheaperPaletteWon": 8,
+					"cheaperPaletteWonRate": 0.7272727272727273,
+					"medianPaletteBitsShareOfMargin": 0,
+					"meanPaletteBitsShareOfMargin": 0.22665543384171108,
+					"marginsAbove99PercentPaletteBits": 4
+				}
+			},
+			{
+				"family": "b-acceptable-vs-known-bad",
+				"selection": "best-of-side",
+				"all": {
+					"pairs": 9,
+					"ties": 2,
+					"decided": 7,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 4,
+					"cheaperPaletteWon": 3,
+					"cheaperPaletteWonRate": 0.75,
+					"medianPaletteBitsShareOfMargin": 0.00004344796776623254,
+					"meanPaletteBitsShareOfMargin": 0.39001511602590827,
+					"marginsAbove99PercentPaletteBits": 2
+				},
+				"degenerate": {
+					"pairs": 2,
+					"ties": 1,
+					"decided": 1,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 1,
+					"cheaperPaletteWon": 1,
+					"cheaperPaletteWonRate": 1,
+					"medianPaletteBitsShareOfMargin": 1.0754694680809358,
+					"meanPaletteBitsShareOfMargin": 1.0754694680809358,
+					"marginsAbove99PercentPaletteBits": 1
+				},
+				"structured": {
+					"pairs": 7,
+					"ties": 1,
+					"decided": 6,
+					"decidedByPaletteBitsAlone": 0,
+					"decidedByPaletteBitsAloneRate": 0,
+					"pairsWithNonZeroPaletteBitsDelta": 3,
+					"cheaperPaletteWon": 2,
+					"cheaperPaletteWonRate": 0.6666666666666666,
+					"medianPaletteBitsShareOfMargin": 0.00002172398388311627,
+					"meanPaletteBitsShareOfMargin": 0.275772724016737,
+					"marginsAbove99PercentPaletteBits": 1
+				}
+			}
+		],
+		"tieAnatomy": {
+			"p1a": {
+				"ties": 13,
+				"sameDeclaredShape": 13,
+				"everyTermIdentical": 12,
+				"differentShapeButEqualTotal": 0,
+				"identicalConfigurationsByTierPair": {
+					"acceptable = known-bad": 1,
+					"endorsed = acceptable": 10,
+					"endorsed = known-bad": 1
+				},
+				"identicalConfigurationsAcrossGoodAndKnownBad": 2
+			},
+			"p1ap": {
+				"ties": 27,
+				"sameDeclaredShape": 27,
+				"everyTermIdentical": 27,
+				"differentShapeButEqualTotal": 0,
+				"identicalConfigurationsByTierPair": {
+					"acceptable = known-bad": 7,
+					"endorsed = acceptable": 18,
+					"endorsed = known-bad": 2
+				},
+				"identicalConfigurationsAcrossGoodAndKnownBad": 9
+			}
+		},
+		"endorsedVsAcceptableInversion": {
+			"p1a": {
+				"arm": "p1a",
+				"all": {
+					"outcome": "all",
+					"n": 48,
+					"meanDeltaPaletteBits": 1.5,
+					"meanDeltaOmega": 0.041666666666666664,
+					"meanDeltaStops": 0.0625,
+					"endorsedHasMoreCollapses": 4,
+					"acceptableHasMoreCollapses": 3,
+					"acceptableCheaperInPaletteBits": 8
+				},
+				"losses": {
+					"outcome": "loss (acceptable cheaper)",
+					"n": 23,
+					"meanDeltaPaletteBits": 7.739130434782608,
+					"meanDeltaOmega": 0.30434782608695654,
+					"meanDeltaStops": 0.2608695652173913,
+					"endorsedHasMoreCollapses": 0,
+					"acceptableHasMoreCollapses": 2,
+					"acceptableCheaperInPaletteBits": 7
+				},
+				"wins": {
+					"outcome": "win (endorsed cheaper)",
+					"n": 15,
+					"meanDeltaPaletteBits": -7.066666666666666,
+					"meanDeltaOmega": -0.3333333333333333,
+					"meanDeltaStops": -0.2,
+					"endorsedHasMoreCollapses": 4,
+					"acceptableHasMoreCollapses": 1,
+					"acceptableCheaperInPaletteBits": 1
+				},
+				"ties": {
+					"outcome": "tie",
+					"n": 10,
+					"meanDeltaPaletteBits": 0,
+					"meanDeltaOmega": 0,
+					"meanDeltaStops": 0,
+					"endorsedHasMoreCollapses": 0,
+					"acceptableHasMoreCollapses": 0,
+					"acceptableCheaperInPaletteBits": 0
+				}
+			},
+			"p1ap": {
+				"arm": "p1ap",
+				"all": {
+					"outcome": "all",
+					"n": 48,
+					"meanDeltaPaletteBits": 2.5,
+					"meanDeltaOmega": 0.08333333333333333,
+					"meanDeltaStops": 0.0625,
+					"endorsedHasMoreCollapses": 2,
+					"acceptableHasMoreCollapses": 3,
+					"acceptableCheaperInPaletteBits": 8
+				},
+				"losses": {
+					"outcome": "loss (acceptable cheaper)",
+					"n": 21,
+					"meanDeltaPaletteBits": 5.714285714285714,
+					"meanDeltaOmega": 0.19047619047619047,
+					"meanDeltaStops": 0.14285714285714285,
+					"endorsedHasMoreCollapses": 1,
+					"acceptableHasMoreCollapses": 2,
+					"acceptableCheaperInPaletteBits": 7
+				},
+				"wins": {
+					"outcome": "win (endorsed cheaper)",
+					"n": 9,
+					"meanDeltaPaletteBits": 0,
+					"meanDeltaOmega": 0,
+					"meanDeltaStops": 0,
+					"endorsedHasMoreCollapses": 1,
+					"acceptableHasMoreCollapses": 1,
+					"acceptableCheaperInPaletteBits": 1
+				},
+				"ties": {
+					"outcome": "tie",
+					"n": 18,
+					"meanDeltaPaletteBits": 0,
+					"meanDeltaOmega": 0,
+					"meanDeltaStops": 0,
+					"endorsedHasMoreCollapses": 0,
+					"acceptableHasMoreCollapses": 0,
+					"acceptableCheaperInPaletteBits": 0
+				}
+			}
+		},
+		"genericBitsShareOfLikelihood": {
+			"all": {
+				"n": 458,
+				"mean": 0.9612906157505798,
+				"median": 0.9828705731285697,
+				"min": 0.4874905826588994
+			},
+			"degenerate": {
+				"n": 135,
+				"mean": 0.996789120021792,
+				"median": 0.9969820210086577,
+				"min": 0.9857927691653936
+			},
+			"structured": {
+				"n": 323,
+				"mean": 0.9464537796000738,
+				"median": 0.968971186962372,
+				"min": 0.4874905826588994
+			}
+		}
+	},
+	"q4InkSupport": [
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "best-of-side",
+			"losses": {
+				"n": 6,
+				"meanInkGood": 0.16996873359449274,
+				"medianInkGood": 0.1574911924621823,
+				"meanInkBad": 0.1916836453087177,
+				"medianInkBad": 0.19178044630086044,
+				"meanDeltaInk": -0.02171491171422496,
+				"medianDeltaInk": 0,
+				"badSideHasMoreInk": 2
+			},
+			"wins": {
+				"n": 8,
+				"meanInkGood": 0.32170834114704516,
+				"medianInkGood": 0.3298896131112253,
+				"meanInkBad": 0.2305928822380671,
+				"medianInkBad": 0.23398168393419,
+				"meanDeltaInk": 0.09111545890897804,
+				"medianDeltaInk": 0.13585732966215913,
+				"badSideHasMoreInk": 1
+			},
+			"lossTest": {
+				"summary": "2/6 (33.3%) vs null p=0.5: p=0.6875",
+				"honest": "p1a losing pairs where the known-bad side carries the larger inkMassFraction: 2/6 (33.3%) vs null p=0.5: p=0.6875 | n=6 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+				"successes": 2,
+				"trials": 6,
+				"pValue": 0.6875000000000013,
+				"interval": "2/6 = 33.3% (95% CI 9.7%-70.0%)"
+			},
+			"correlationDeltaInkVsDeltaTotal": -0.46056946235282886,
+			"correlationN": 14
+		},
+		{
+			"family": "a-good-vs-known-bad",
+			"selection": "all-pairs",
+			"losses": {
+				"n": 25,
+				"meanInkGood": 0.21854736183232773,
+				"medianInkGood": 0.21267635444245636,
+				"meanInkBad": 0.22359364590974468,
+				"medianInkBad": 0.21267635444245636,
+				"meanDeltaInk": -0.005046284077416949,
+				"medianDeltaInk": 0,
+				"badSideHasMoreInk": 6
+			},
+			"wins": {
+				"n": 19,
+				"meanInkGood": 0.30279475563169617,
+				"medianInkGood": 0.31594953654651003,
+				"meanInkBad": 0.21378082753395158,
+				"medianInkBad": 0.21267635444245636,
+				"meanDeltaInk": 0.08901392809774462,
+				"medianDeltaInk": 0.12545641317652034,
+				"badSideHasMoreInk": 1
+			},
+			"lossTest": {
+				"summary": "6/25 (24.0%) vs null p=0.5: p=0.0146",
+				"honest": "p1a losing pairs where the known-bad side carries the larger inkMassFraction: 6/25 (24.0%) vs null p=0.5: p=0.0146 | n=25 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+				"successes": 6,
+				"trials": 25,
+				"pValue": 0.01463329792022687,
+				"interval": "6/25 = 24.0% (95% CI 11.5%-43.4%)"
+			},
+			"correlationDeltaInkVsDeltaTotal": -0.391926715039764,
+			"correlationN": 47
+		},
+		{
+			"family": "a-endorsed-vs-known-bad",
+			"selection": "best-of-side",
+			"losses": {
+				"n": 5,
+				"meanInkGood": 0.19201151538155192,
+				"medianInkGood": 0.21267635444245636,
+				"meanInkBad": 0.2072475523906177,
+				"medianInkBad": 0.21267635444245636,
+				"meanDeltaInk": -0.015236037009065794,
+				"medianDeltaInk": 0,
+				"badSideHasMoreInk": 1
+			},
+			"wins": {
+				"n": 5,
+				"meanInkGood": 0.28768156591033434,
+				"medianInkGood": 0.31594953654651003,
+				"meanInkBad": 0.2225371300382736,
+				"medianInkBad": 0.19950350164990927,
+				"meanDeltaInk": 0.06514443587206076,
+				"medianDeltaInk": 0,
+				"badSideHasMoreInk": 0
+			},
+			"lossTest": {
+				"summary": "1/5 (20.0%) vs null p=0.5: p=0.3750",
+				"honest": "p1a losing pairs where the known-bad side carries the larger inkMassFraction: 1/5 (20.0%) vs null p=0.5: p=0.3750 | n=5 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+				"successes": 1,
+				"trials": 5,
+				"pValue": 0.37500000000000133,
+				"interval": "1/5 = 20.0% (95% CI 3.6%-62.4%)"
+			},
+			"correlationDeltaInkVsDeltaTotal": -0.32629104368350226,
+			"correlationN": 10
+		},
+		{
+			"family": "b-acceptable-vs-known-bad",
+			"selection": "best-of-side",
+			"losses": {
+				"n": 4,
+				"meanInkGood": 0.20570050449277816,
+				"medianInkGood": 0.22553323904551947,
+				"meanInkBad": 0.21922782580278335,
+				"medianInkBad": 0.22553323904551947,
+				"meanDeltaInk": -0.013527321310005197,
+				"medianDeltaInk": 0,
+				"badSideHasMoreInk": 1
+			},
+			"wins": {
+				"n": 5,
+				"meanInkGood": 0.3324500327479792,
+				"medianInkGood": 0.3286944158983901,
+				"meanInkBad": 0.22671845173037095,
+				"medianInkBad": 0.26845986621847073,
+				"meanDeltaInk": 0.10573158101760818,
+				"medianDeltaInk": 0.14625824614779792,
+				"badSideHasMoreInk": 1
+			},
+			"lossTest": {
+				"summary": "1/4 (25.0%) vs null p=0.5: p=0.6250",
+				"honest": "p1a losing pairs where the known-bad side carries the larger inkMassFraction: 1/4 (25.0%) vs null p=0.5: p=0.6250 | n=4 | exact binomial, two-sided by the method of small p-values, null p=0.5 | EXPLORATORY: post-hoc decomposition of an already-null pre-registered result; two-sided, no direction fixed in advance, no multiplicity correction across this file's decompositions because a post-hoc family has no honest size.",
+				"successes": 1,
+				"trials": 4,
+				"pValue": 0.6249999999999993,
+				"interval": "1/4 = 25.0% (95% CI 4.6%-69.9%)"
+			},
+			"correlationDeltaInkVsDeltaTotal": -0.3947738921955237,
+			"correlationN": 9
+		}
+	],
+	"q5TierCensus": [
+		{
+			"tier": "endorsed",
+			"stratum": "all",
+			"entries": 255,
+			"artworks": 144,
+			"gradientRate": 0.5098039215686274,
+			"surfaceCollapsedRate": 0.1568627450980392,
+			"accentCollapsedRate": 0.01568627450980392,
+			"anyCollapseRate": 0.1607843137254902,
+			"meanStops": 1.231372549019608,
+			"medianStops": 2,
+			"meanPaletteBits": 102.65490196078431,
+			"medianPaletteBits": 101,
+			"meanOmega": 2.549019607843137,
+			"meanExplainedMassFraction": 0.061099650535862554,
+			"meanInkMassFractionP1a": 0.24358884173097084,
+			"meanFieldMassFractionP1a": 0.7564111582690286
+		},
+		{
+			"tier": "endorsed",
+			"stratum": "degenerate",
+			"entries": 88,
+			"artworks": 44,
+			"gradientRate": 0.5340909090909091,
+			"surfaceCollapsedRate": 0.13636363636363635,
+			"accentCollapsedRate": 0.011363636363636364,
+			"anyCollapseRate": 0.14772727272727273,
+			"meanStops": 1.2159090909090908,
+			"medianStops": 2,
+			"meanPaletteBits": 101.25,
+			"medianPaletteBits": 101,
+			"meanOmega": 2.534090909090909,
+			"meanExplainedMassFraction": 0.0033891373161184443,
+			"meanInkMassFractionP1a": 0.19175619055834386,
+			"meanFieldMassFractionP1a": 0.8082438094416559
+		},
+		{
+			"tier": "endorsed",
+			"stratum": "structured",
+			"entries": 167,
+			"artworks": 100,
+			"gradientRate": 0.49700598802395207,
+			"surfaceCollapsedRate": 0.16766467065868262,
+			"accentCollapsedRate": 0.017964071856287425,
+			"anyCollapseRate": 0.16766467065868262,
+			"meanStops": 1.2395209580838322,
+			"medianStops": 0,
+			"meanPaletteBits": 103.39520958083833,
+			"medianPaletteBits": 99,
+			"meanOmega": 2.55688622754491,
+			"meanExplainedMassFraction": 0.09150998085524867,
+			"meanInkMassFractionP1a": 0.27090185552253476,
+			"meanFieldMassFractionP1a": 0.7290981444774648
+		},
+		{
+			"tier": "acceptable",
+			"stratum": "all",
+			"entries": 166,
+			"artworks": 89,
+			"gradientRate": 0.5,
+			"surfaceCollapsedRate": 0.10240963855421686,
+			"accentCollapsedRate": 0.018072289156626505,
+			"anyCollapseRate": 0.12048192771084337,
+			"meanStops": 1.2710843373493976,
+			"medianStops": 1,
+			"meanPaletteBits": 105.78313253012048,
+			"medianPaletteBits": 99,
+			"meanOmega": 2.6506024096385543,
+			"meanExplainedMassFraction": 0.05932534578446058,
+			"meanInkMassFractionP1a": 0.2636858836433098,
+			"meanFieldMassFractionP1a": 0.7363141163566901
+		},
+		{
+			"tier": "acceptable",
+			"stratum": "degenerate",
+			"entries": 41,
+			"artworks": 25,
+			"gradientRate": 0.43902439024390244,
+			"surfaceCollapsedRate": 0.04878048780487805,
+			"accentCollapsedRate": 0,
+			"anyCollapseRate": 0.04878048780487805,
+			"meanStops": 1.1219512195121952,
+			"medianStops": 0,
+			"meanPaletteBits": 106.51219512195122,
+			"medianPaletteBits": 99,
+			"meanOmega": 2.6341463414634148,
+			"meanExplainedMassFraction": 0.003320356961382114,
+			"meanInkMassFractionP1a": 0.24118778989444523,
+			"meanFieldMassFractionP1a": 0.7588122101055546
+		},
+		{
+			"tier": "acceptable",
+			"stratum": "structured",
+			"entries": 125,
+			"artworks": 64,
+			"gradientRate": 0.52,
+			"surfaceCollapsedRate": 0.12,
+			"accentCollapsedRate": 0.024,
+			"anyCollapseRate": 0.144,
+			"meanStops": 1.32,
+			"medianStops": 2,
+			"meanPaletteBits": 105.544,
+			"medianPaletteBits": 101,
+			"meanOmega": 2.656,
+			"meanExplainedMassFraction": 0.07769498211843032,
+			"meanInkMassFractionP1a": 0.2710652583929377,
+			"meanFieldMassFractionP1a": 0.7289347416070627
+		},
+		{
+			"tier": "known-bad",
+			"stratum": "all",
+			"entries": 37,
+			"artworks": 26,
+			"gradientRate": 0.3783783783783784,
+			"surfaceCollapsedRate": 0.2972972972972973,
+			"accentCollapsedRate": 0,
+			"anyCollapseRate": 0.2972972972972973,
+			"meanStops": 0.918918918918919,
+			"medianStops": 0,
+			"meanPaletteBits": 97.8108108108108,
+			"medianPaletteBits": 99,
+			"meanOmega": 2.2432432432432434,
+			"meanExplainedMassFraction": 0.0589185629527008,
+			"meanInkMassFractionP1a": 0.3017675558820169,
+			"meanFieldMassFractionP1a": 0.6982324441179829
+		},
+		{
+			"tier": "known-bad",
+			"stratum": "degenerate",
+			"entries": 6,
+			"artworks": 4,
+			"gradientRate": 0,
+			"surfaceCollapsedRate": 0.6666666666666666,
+			"accentCollapsedRate": 0,
+			"anyCollapseRate": 0.6666666666666666,
+			"meanStops": 0,
+			"medianStops": 0,
+			"meanPaletteBits": 83,
+			"medianPaletteBits": 75,
+			"meanOmega": 1.3333333333333333,
+			"meanExplainedMassFraction": 0.0019204626012731482,
+			"meanInkMassFractionP1a": 0.12948669373330376,
+			"meanFieldMassFractionP1a": 0.8705133062666962
+		},
+		{
+			"tier": "known-bad",
+			"stratum": "structured",
+			"entries": 31,
+			"artworks": 22,
+			"gradientRate": 0.45161290322580644,
+			"surfaceCollapsedRate": 0.22580645161290322,
+			"accentCollapsedRate": 0,
+			"anyCollapseRate": 0.22580645161290322,
+			"meanStops": 1.096774193548387,
+			"medianStops": 0,
+			"meanPaletteBits": 100.6774193548387,
+			"medianPaletteBits": 99,
+			"meanOmega": 2.4193548387096775,
+			"meanExplainedMassFraction": 0.0699504533432997,
+			"meanInkMassFractionP1a": 0.3351122388785421,
+			"meanFieldMassFractionP1a": 0.6648877611214579
+		}
+	]
+}
