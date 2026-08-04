@@ -161,6 +161,14 @@ P5-round-2 addendum (relayed 2026-08-04, M2 emitter in flight):
   energy than known-bad for the same artwork — no rank signal, no single term culpable, at any λ
   in the sweep — the currency is wrong, and that is reportable evidence, not a tuning prompt.
   (Legacy verdicts are weak evidence by construction; the result guides, the reviewer judges.)
+  **M1 OUTCOME (recorded 2026-08-04, both runs committed under data/falsifier and
+  data/falsifier-m1b):** no pre-registered signal for either prior at any λ, before or after
+  the DESIGN-9 fix (arm A 0.1.0 and 0.2.0 give identical primary W/L). Attribution: p1a spread;
+  p1ap single culprit genericBits — the residual pays for coverage, the reviewer pays for
+  identity. Reconstruction artifact real but controlled-out. Standing interpretation, per
+  handoff §5: legacy verdicts are weak evidence under old priors; this negative sharpens what
+  M3 must probe (coverage-vs-identity, salience) but does not by itself falsify the mechanism.
+  The paradigm verdict waits on fresh palettes under current priors — M3.
 - **M2 — v0 emitter** over demo-20 → scorecard, adjudication, robustness on both priors.
 - **M3 — prior comparison + first review round** (pairwise p1a vs p1ap on the same artworks
   where they differ, or calibration if they agree).
