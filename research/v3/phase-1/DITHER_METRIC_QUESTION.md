@@ -307,16 +307,235 @@ here in advance so it cannot be blurred afterwards.
 
 ### 5.2 Results
 
-*Filled in after the run. Empty at the pre-registration commit.*
+Run 2026-08-04. All 100 covers processed, 0 skipped. Every cover is a 3-channel JPEG; median size
+409,600 px (640 × 640); median 37,056 distinct exact triples per artwork (range 256 – 227,311).
+
+**The T5 guarantee held on all 100 covers: 0 violations.** Every lost triple had at least one of its
+two blue neighbours present in the dithered image, as the argument said it must. This is a
+consistency check on the reasoning, not a finding.
+
+#### Availability of exact triples after the dither
+
+| measure | result over 100 covers |
+| --- | --- |
+| **T1** — modal triple still present | **55 survive, 45 lost** |
+| **T2** — of the 16 most frequent triples, how many survive | median **7 of 16**; all 16 survive on 3 covers; **0 of 16** survive on 13 covers |
+| **T3** — pixel mass whose exact colour is still available | median **27.5%**; range 0.0002% – 85.2% |
+| **T4** — distinct triples surviving | median **14.4%**; range 0.4% – 28.1% — **never above 28% on any cover** |
+
+**Reading.** The dither is *destructive of exact colours as a population*: on a typical artwork about
+**86% of its distinct colours cease to exist** as exact triples, and about **73% of its pixels** no
+longer wear a colour that survives anywhere. That is a large effect and it is the true part of F′'s
+intuition. But it is emphatically **not** "no conforming system can republish an identical triple":
+the single most common colour of the artwork — the one a naive exact-pixel system is most likely to
+publish — **survives on 55 of 100 covers**, and *every* cover retained some triples.
+
+The two covers with the least survival are the two with the fewest distinct triples in the whole set
+(280 and 256 — near-grayscale or heavily posterised artwork): `00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg`
+at T3 = 0.0002% and `music-artworks/8/c/b/8cb054bbb6f33407425c93e120a9b193.jpg` at T3 = 0.04%. This
+is the mechanism, and it is intelligible: survival of `(r, g, b)` requires the artwork to *already*
+contain `(r, g, b ± 1)` at the right checkerboard parity. Photographic JPEG noise supplies those
+neighbours abundantly; a flat or synthetic image does not. **The class where F′'s claim is nearly
+true is low-colour-diversity artwork; the class where it is plainly false is ordinary photographic
+album art.**
+
+Modal-triple survival is **not** explained by flatness in this set: covers whose modal colour covers
+> 5% of the artwork lose it 13 times in 31, and covers whose modal colour covers ≤ 1% lose it 16
+times in 37. Both rates are near the 45% base rate.
+
+#### The size of the forced move
+
+| measure | result |
+| --- | --- |
+| **T5** — pixel-weighted 99th percentile of the forced move, worst cover | **0.008527** |
+| T5 p99, median across covers | 0.002251 |
+| T5 p99, deciles across covers | 0.0017 · 0.0019 · 0.0020 · 0.0022 · 0.0023 · 0.0028 · 0.0036 · 0.0050 · 0.0067 |
+| T5, worst single triple on any cover | 0.036958 |
+| pixel mass whose forced move reaches its own pair's regional bar | **0.000476%** of all pixels in the set; worst single cover **0.0078%** |
+| covers whose T5 p99 reaches the smallest regional bar (0.00932) | **0 of 100** |
+
+**Reading.** When an exact triple is lost, the replacement one blue LSB away is, for essentially all
+of the artwork, a fraction of the same-colour bar away — a typical p99 of 0.0023 against bars of
+0.00932–0.02293, i.e. **about a fifth of the tightest bar**. The exceptions are real but microscopic
+and confined to near-black.
+
+That confinement is a general fact about the colour space, not a property of this corpus. Sweeping
+**all 16,711,680** adjacent-blue pairs in the 8-bit cube and comparing each step against that pair's
+own regional bar: **27 pairs — 1.6 × 10⁻⁶ of the cube — have a blue-LSB step at or above their bar,
+and every one of them has all three channels ≤ 10.** The maximum is `(0,0,0) → (0,0,1)` at 0.036958,
+which is where the cube root in the OKLab transform is steepest. Away from pure black, one blue LSB
+is never a same-colour-bar-sized step.
+
+#### The live contrast, on the instrument itself
+
+To show the size of the metric effect on a real run rather than by argument, the harness was run
+twice on its own frozen perturbation set with the dev loop's toy candidate — the same run the README
+documents — changing **only** the bar mode. Reports written outside the repository; nothing in
+`src/robustness/` or `data/` was modified.
+
+| arm | `--bar-mode regional` (default) | `--bar-mode exact-hex` |
+| --- | --- | --- |
+| `jpeg-q92` | 69.0% | 5.0% |
+| `jpeg-q85` | 51.0% | 6.0% |
+| `jpeg-q75` | 45.0% | 7.0% |
+| **`dither-lsb1`** | **92.0%** | **0.0% (0 of 100)** |
+
+The regional column reproduces `README.md:113-120` exactly, so the instrument is reproducible. The
+exact-hex column reproduces **v2-3's "0 of 114"** — as 0 of 100 — on a completely different candidate
+and a completely different sample. Two things follow. First, *"a ±1-LSB dither moved every palette"*
+is substantially a statement about the **relation**, not about the algorithm that was measured.
+Second, exact-hex carries almost no signal: under it the JPEG arms stop decaying monotonically with
+quality (5%, 6%, 7%) because they are all pinned at the floor, whereas under the regional bar they
+decay cleanly (69%, 51%, 45%). *(Caveat: `toy-median-offsets` publishes a median plus fixed offsets
+and does not itself satisfy the exact-pixel rule. It demonstrates the metric's behaviour, not any
+conforming design's.)*
+
+#### Verdicts, against the pre-registered rules
+
+**F′'s claim — "no conforming system can republish an identical triple": TRUE FOR A CLASS, and as
+stated, overstated.** The pre-registered "true for a class" band is hit exactly: 45 covers lose their
+modal triple and 55 keep it, both far above the threshold of 20. The "strictly true" band required
+≥ 95 losses and median T4 ≤ 0.05; neither holds. The "overstated" band required ≥ 80 modal
+survivals; that does not hold either. So the honest statement is the middle one: **most colours do
+vanish, most artworks nonetheless retain their principal colour, and the artworks where nothing
+survives are the low-colour-diversity ones.** F′'s reasoning about the mechanism is correct; the
+universal quantifier ("any conforming system") is not supported.
+
+**Does it bind the harness? NO — decisively, on the pre-registered rule.** "Does not bind" required
+the worst cover's pixel-weighted T5 p99 to sit below 0.00932; it is 0.008527, and 0 of 100 covers
+reach the bar. "Binds" required more than 1% of pixel mass at or above its own bar; the measured
+figure is 0.000476%, four orders of magnitude below the threshold. **A ±1-LSB dither cannot force an
+exact-pixel-conforming system across the same-colour bar**, except on near-black pixels amounting to
+five parts in a million of the corpus. The metric the harness actually uses is therefore *achievable*
+under the exact-pixel rule, and the standing rule in `PHASE_0_DECISIONS.md:225-226` — that an
+instrument which refuses what the contract requires is the thing that gives way — is not triggered,
+because this instrument refuses nothing the contract requires.
 
 ---
 
 ## 6. Options
 
-*Filled in after §5.2.*
+**No change to `src/robustness/` is warranted by N4.** The options below are ordered by how much
+they cost; only the first two are recommended.
+
+### Option 1 — change nothing in the harness; correct two sentences in its README
+
+Fix `src/robustness/README.md:104` and `:131-134`, the only places where an ε-metric figure and an
+identity-metric figure are printed as one row.
+
+- `:104` — *"The baselines: re-encode **72.8%**, dither **0 of 114** unchanged"* → say which relation
+  each figure is on, and add the dither arm's ε figure (86 of 114, 75.4%) so a reader can compare
+  like with like.
+- `:131-134` — *"The toy survives the dither far better than v2-3 did (92% vs 0 of 114)"* → the
+  comparable v2-3 number is 75.4%, not 0. The claim survives; its magnitude drops from a 92-point gap
+  to a 17-point one.
+
+**Cost:** a documentation edit of two sentences, plus locating and citing the v2-3 ε figure (done
+here — §4). **What it invalidates:** nothing measured. Every number the harness has produced was
+produced under `regional` and remains exactly as reported. **What it changes:** the rhetorical force
+of a claim in the brief, not its direction.
+
+### Option 2 — state the answer to N4 once, where authors will read it
+
+The packet already carried the answer (§3.5), and at least three authors still pre-registered against
+relations they had to guess at. The efficient fix is a single sentence wherever robustness
+pre-registrations are collected in Phase 2: *"the harness scores every arm as all four role colours
+within their regional same-colour bar; exact-hex is diagnosis only."*
+
+**Cost:** one sentence. **What it invalidates:** nothing — but it **rescues** the pre-registrations
+of A, E′ and F′, which were stated on the bar and would have been read against a bar those authors
+explicitly disclaimed. B′'s *"more than 10% of palettes move"* remains unresolvable without asking
+B′, and should be recorded as such rather than assigned a relation.
+
+### Option 3 — report exact-hex alongside regional, as a labelled report-only second column
+
+Compute both relations per trial and print both, with exact-hex marked non-blocking — the pattern
+`src/contract/challengers.ts` already uses for the perception bars.
+
+**Cost:** a second comparison per trial (cheap; both relations are available from the same distance
+computation), a report-schema change, and updates across the module's 50 tests. **What it gains:** the
+metric distinction becomes visible in the artifact instead of in a README that turned out to be
+readable-but-unread. **What it risks:** a second number in a report invites being quoted as a gate;
+§5.2 shows exact-hex would read 0.0% on the dither arm for a candidate the regional bar scores at
+92%, which is precisely the misreading N4 was worried about. If taken, it must be labelled at least
+as loudly as the challenger bars are. **What it invalidates:** nothing; existing reports would lack
+the new field.
+
+### Option 4 — adopt F′'s decision-stability verdict
+
+Fold `collapseAgrees` and `gradientPresenceAgrees` — already computed (`compare.ts:99-102`) — plus
+stop count and escape flags into the trial verdict.
+
+**Cost:** new comparison code for stop count and escape; a report-schema change; tests. **Note the
+direction:** this makes the harness **stricter**, since it adds conjuncts to an already-conjunctive
+verdict. It is not the relief the "unsatisfiable metric" argument was asking for. **What it
+invalidates:** the reviewer approved *"same-palette = every role within its regional same-colour
+bar"* (`compare.ts:29-34`), so this is a reviewer decision, not a cleanup. Every number produced
+before the change — including the demo run and any Phase 2 pre-registration stated on role colours —
+becomes incomparable with every number produced after.
+
+### Option 5 — score the dither arm on a different relation from the other arms
+
+**Not recommended, and nobody asked for it.** The harness's single most useful diagnostic property is
+that one relation runs across all five arms, which is what makes the monotone JPEG decay
+(69% → 51% → 45%) legible as evidence the instrument measures something real. A per-arm relation
+destroys that. **Cost:** low to implement, high to interpret. **What it invalidates:** cross-arm
+comparison, permanently.
+
+### Incidental finding, outside N4's scope
+
+`phase-1/packet/PHASE_1_AUTHOR_BRIEF.md:308` describes the robustness harness as covering
+*"re-encode, quality change, resize, 1-px crop, dither, id relabeling, and the matched real-rendition
+pairs"*. The harness has re-encode at three qualities, dither, and rendition pairs. **Resize, 1-px
+crop and id relabeling do not exist**; `README.md:169-170` confirms relabel invariance — *"the third
+perturbation gate, which moved 55.85% of v2-3's corpus"* — is not built. The row's status column
+does say `in flight`, so this is a plan read as an inventory rather than a false claim, but authors
+reasoned about arms that are not there.
 
 ---
 
-## 7. Measurement versus judgement
+## 7. What is measurement here and what is judgement
 
-*Filled in after §5.2.*
+**Measurement — reproducible from this document without asking anyone.**
+
+- Every `file:line` citation in §3 and §4. The code says what it says.
+- The v2-3 provenance and the two-column structure of its scorer: `git show
+  56506d0:research/v2-3-experiments/resolution-pairs/perturbation.mjs` and `…/EXPERIMENT.md` §6, §6.1.
+- The v2-3 dither figures 0 of 114 (byte-identical) and 86 of 114 / 75.4% (within ε = 0.04): both in
+  that document's §6.1 table.
+- All of §5.2's T1–T5 numbers, over all 100 frozen covers, with the measures and thresholds fixed in
+  §5.1 before the run.
+- The 8-bit-cube sweep: 27 of 16,711,680, all channels ≤ 10.
+- The regional-vs-exact-hex harness contrast, produced by running the committed harness twice with
+  only `--bar-mode` changed, reports written outside the repository.
+
+**Judgement — mine, and arguable.**
+
+- That the "true for a class" band is the *right* summary of F′'s claim rather than a technicality.
+  The 45/55 split is what the pre-registration called for, but someone could reasonably say that
+  losing 86% of an artwork's distinct colours makes the claim substantially true, and I would not
+  call that wrong — only differently framed. **My framing:** F′'s mechanism is right and his
+  quantifier is wrong, and the quantifier is what the argument rested on.
+- That the correct target for correction is the README's two sentences rather than the harness. This
+  follows from the harness already doing the right thing, but choosing to correct wording rather than
+  add an option-3 column is a judgement about where readers actually look.
+- That the T5 "does not bind" result should be read as *the metric is achievable*, not *candidates
+  will achieve it*. This was stated in the pre-registration precisely so it could not be blurred
+  afterwards, and it is worth repeating: **§5 measures the availability of colours, not the behaviour
+  of algorithms.** A design can still fail the dither arm badly — by flipping a tie, crossing a
+  cluster boundary, or changing an argmax — and nothing here says it will not. What is now
+  established is that when it fails, **it cannot blame the exact-pixel rule.**
+- That the harness's `92% vs 0 of 114` sentence is a category error rather than the calibration
+  difference decision 1 already discloses. Decision 1's warning ("magnitude and direction, not decimal
+  places") is a fair cover for 69.0% against 72.8%; I judge it not to cover a distance criterion
+  against an identity criterion, because those two do not differ in decimal places — they differ in
+  kind.
+
+**Not measured, and left open on purpose.**
+
+- Whether any *conforming* Phase 2 design actually holds the regional bar under the dither. No
+  conforming design exists yet; §5.2's live contrast used a non-conforming toy.
+- What B′'s *"more than 10% of palettes move"* was stated against. Only B′ knows.
+- Whether the near-black exception (27 cube pairs) ever matters. It bounds at five parts in a million
+  of this corpus's pixels, which is why it is a footnote rather than a finding — but an artwork that
+  is *mostly* pure black would sit in the exception, and none of the 100 covers is.
