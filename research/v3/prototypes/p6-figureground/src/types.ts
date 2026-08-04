@@ -138,9 +138,14 @@ export type FieldHypothesis = Readonly<{
 /**
  * Ranked field hypotheses (best first, small fixed number carried — SPEC: the count is a [HELD]
  * parameter). The energy evaluates the full tuple under each; the field decision is NOT taken
- * here (proposal §2.5).
+ * here (proposal §2.5). Takes the exchange-rate registry because the DL rate (free parameter 6)
+ * lives there and nowhere else — amended per SPEC "Integration directives" item 3.
  */
-export type BuildFieldHypotheses = (substrate: Substrate, lattice: Lattice) => readonly FieldHypothesis[]
+export type BuildFieldHypotheses = (
+	substrate: Substrate,
+	lattice: Lattice,
+	rates: ExchangeRates,
+) => readonly FieldHypothesis[]
 
 // ---------------------------------------------------------------------------------------------
 // Energy + solver (W4)

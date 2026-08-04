@@ -43,6 +43,30 @@ Wave 2 (separate workers): integration + end-to-end contract-valid palette on `d
 independent verifier re-deriving W4's bound admissibility by brute force on small synthetic
 images; `tools/sensitivity.ts`. Nothing in wave 2 starts until wave 1 reports.
 
+## Integration directives — wave 2 (recorded 2026-08-04 after W1/W3 reports, before integration)
+
+1. **Field-likeness scale band (mechanism repair, recorded as such).** The proposal's §2.1 defines
+   field as "displacement near zero at *every* scale" — measured to be self-contradictory: a
+   full-frame ramp's ends displace ~20 bars from the coarsest surround, so `fieldWeight` is 0 at
+   the ends of exactly the gradients §2.3 exists to model (W3: synthetic 256² ramp rows 0/255 → 0;
+   W1 independently hit the same on dark fields). Repair: field-likeness is a **fine/mid-scale**
+   question — compute `fieldWeight` excluding coarse rungs; coarse rungs still serve ground/
+   surround statistics. The excluded-rung count is chosen by a checkable anchor, not taste: the
+   smallest exclusion such that (a) a full-frame synthetic ramp's end rows get fieldWeight within
+   2× of its middle rows and (b) white-on-black synthetic text still gets ≈0. Tag `[MEASURED]`
+   with both anchors in the doc comment. This deviates from the proposal's words to save its
+   mechanism; say so where the constant lives.
+2. **`rates.fieldDescriptionLength` default must sit inside the reachable band.** W3 measured the
+   band (0.139, 0.797) — above it *no artwork can ever be a gradient* (max gain ≈3.98 nats), below
+   it steps are free. Set the default to ≈0.33 (geometric mean), still `[UNCALIBRATED]`; the
+   sensitivity harness sweeps it. A default outside the band silently deletes the gradient arm of
+   the whole design.
+3. **`BuildFieldHypotheses` takes rates as a 3rd argument** — types.ts amended accordingly
+   (orchestrator edit); W3's adapter is the interim.
+4. **Excursion multiplier is not exported by `src/contract/constants.ts`** — W3 declared it
+   locally as `[INHERITED]` 2.5×. Do not fork it a second time: wave-2 modules import W3's. Hoisting
+   into the shared contract is reported upward, not done locally.
+
 ## Performance envelope
 
 Proposal §5 prices 1000×1000 at ≈0.4 s single-threaded. Treat >2 s at that size as a defect to
