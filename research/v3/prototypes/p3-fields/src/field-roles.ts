@@ -8,13 +8,14 @@
  * The five steps, in order, each a pure order statistic:
  *
  * 1. **m**, the cascade pixel of the field set F — the field's median colour, an actual pixel.
- * 2. **e₁**, the pixel of F at the (1 − τ) quantile of OKLab distance from m. The field's far end, read
- *    at a trimmed rank rather than at the maximum.
+ * 2. **e₁**, the **cascade pixel of the band of F ending at the (1 − τ) quantile** of OKLab distance from
+ *    m (0.3.0; single-rank at 0.1.0–0.2.0). The field's far end, read as a population rather than as one
+ *    pixel.
  * 3. **u**, the unit direction from m's colour toward e₁'s colour. A direction is three numbers and is
  *    *not* colour-bearing: never published, never compared to a pixel, never a proxy for one. Arm-d
  *    draws that line explicitly rather than quietly, and so does this file.
- * 4. **e₂**, the pixel of F at the τ quantile of the projection of F's colours onto u — the opposite end
- *    of the same progression.
+ * 4. **e₂**, the cascade pixel of the band of F starting at the τ quantile of the projection of F's
+ *    colours onto u — the opposite end of the same progression, read the same way.
  * 5. **Prevalence rank, with a tie band (0.2.0).** Count, for each end, the pixels of F within the
  *    same-colour bar of it. Larger count is the background; the other is the surface. When the two
  *    counts sit within `BACKGROUND_PREVALENCE_TIE_BAND` relative of each other the count is declared
@@ -26,46 +27,125 @@
  * *exactly*, the flag is set, and no gradient is publishable — the contract's own consequence, arrived
  * at rather than encoded.
  *
- * ## A tension worth naming rather than smoothing
+ * ## 0.3.0 — band-then-cascade, and the tension it resolves
  *
- * Steps 2 and 4 select a **single pixel at a rank**, which is what §2.3 says. §2.5 and §2.6 instead take
- * the cascade pixel of a *sub-population* at a rank. The single-pixel form is the more literal reading of
- * §2.3 and is what "step the rank" in §2.7 presumes, so it is what is implemented; but it is also the
- * one place in this pipeline where a published colour rests on one pixel rather than on a population,
- * and if the ends turn out to move under re-encode, this is the first line to look at.
+ * 0.2.0's docstring named this file's own weak point and said *"if the ends turn out to move under
+ * re-encode, this is the first line to look at"*. They do, and it was.
+ * `measurements/attribution/ATTRIBUTION.md` attributes **87 of 122** first divergences to the field-ends
+ * block, **68** to `e1-colour` alone, and **17 of the 19 whole-palette flips** to `e1-colour`; `fg-cascade`
+ * produces **zero** all-four flips. Inside those 68 rows, **36** have the field's own cascade pixel *m*
+ * holding by the contract's bar while the rank-(1 − τ) pixel under it lands on a different colour — the
+ * single-pixel read moving with nothing else moving.
+ *
+ * So steps 2 and 4 no longer redeem a rank against *one pixel*. Each takes the **trimmed band** of its
+ * ordering — τ·`ENDS_BAND_TAU_MULTIPLE` of the field set, with its far edge at the rank that used to be
+ * published — and publishes that band's **cascade pixel**, which is the primitive §2.5 and §2.6 already
+ * use and the one the rest of this pipeline trusts. Nothing about the *ordering* changed; only where the
+ * order is cut and what is redeemed at the cut, which is arm-d §4's own account of what tuning may touch.
+ *
+ * **The lump clause.** A band is a contiguous slice of *ranks*, not of *values*, so it can still straddle
+ * two density lumps — and a cascade pixel is a median, which lands in whichever lump holds more pixels,
+ * which on a balanced cover is the coin-flip one layer down. When the band's own scalar has a decile gap
+ * wide enough to call it two lumps (`LUMP_GAP_RATIO`, `ATTRIBUTION.md`'s own probe statistic), the cascade
+ * is restricted to the **dominant** lump; when the two lumps' masses sit within `LUMP_MASS_TIE_BAND` the
+ * **farther** lump wins instead, because an end is asked to be an end. Both rules are comparisons of
+ * counts and of order statistics of one scalar field — no colour is created, compared to an average, or
+ * indexed.
+ *
+ * ## The degenerate-depth membership rule (0.3.0)
+ *
+ * The other half of the same measurement: field-set size drifts by a **median 5.5 % and a maximum
+ * 2789.9 %** between a cover and its re-encode. A band over a population that changes by 28× is a band
+ * over noise. `computeFieldSet` therefore states the case where the β cut carries no information — the
+ * β-quantile depth at or under one pixel of the distance transform — and falls back to a wider membership
+ * rule there rather than ranking the noise. See that function.
  */
 
 import {
 	BACKGROUND_PREVALENCE_TIE_BAND,
+	DEGENERATE_DEPTH_FLOOR_PX,
+	ENDS_BAND_TAU_MULTIPLE,
 	FIELD_DEPTH_QUANTILE,
+	LUMP_GAP_RATIO,
+	LUMP_MASS_TIE_BAND,
 	RANK_STEP_FRACTION,
 	TRIM_LEVEL,
 } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import type { DepthField } from "./fields.ts"
-import { cascadePixel, labDistance, quantileIndex, sortByKey } from "./primitives.ts"
+import {
+	cascadePixel,
+	labDistance,
+	quantileIndex,
+	sortByKey,
+	splitAtLargestDecileGap,
+} from "./primitives.ts"
+
+/** Which rule decided F's membership. Recorded so a divergence in the rule is countable. */
+export type FieldSetRule = "beta-quantile" | "degenerate-depth"
 
 /**
- * The **field set F**: the eligible pixels whose depth exceeds the β quantile of depth.
+ * The **field set F**: the eligible pixels whose depth exceeds the β quantile of depth — except on
+ * artwork where that cut carries no information, which 0.3.0 states and handles.
  *
  * Strictly-greater is what §2.3 says. When depth is heavily tied — a poster-flat artwork where most of
  * the image sits at the same distance from the nearest edge — strictly-greater can return the empty set,
  * and an empty field set is not a finding about the artwork, it is an artifact of a tie. So the fallback
  * is the same quantile read inclusively, which is the same rank with the ties kept.
+ *
+ * ## The degenerate case (0.3.0), stated as a criterion rather than found by symptom
+ *
+ * `ATTRIBUTION.md` measured F's size drifting by up to **2789.9 %** between a cover and its re-encode.
+ * That is not a rank slipping; it is the *population* the ranks are read over being manufactured by
+ * noise. It happens on artwork with no field in it: a busy photograph or a heavily textured cover has
+ * edges everywhere, so depth is a few pixels everywhere, and "the deepest quarter" is a ranking of which
+ * pixels happened to fall furthest from a JPEG-dependent edge map.
+ *
+ * The measurable criterion is **the β-quantile depth itself, read back in pixels**. Depth is an exact
+ * Euclidean distance transform divided by the long edge (`fields.ts`), so multiplying back recovers the
+ * transform's own units, and `depth·longEdge ≤ DEGENERATE_DEPTH_FLOOR_PX` at the cut says *the pixel at
+ * the β rank is a direct neighbour of an edge*. There is no plateau above the cut because there is
+ * nothing above the cut — only which pixels happened not to be adjacent to an edge map that a ±1-LSB
+ * dither rewrites.
+ *
+ * The fallback is **the wider membership rule**: every eligible pixel with any depth at all, i.e. every
+ * pixel that is not itself a seed. It is wider by construction, it is a set the perturbation cannot
+ * resize by 28× (a dither moves which pixels are edges, not whether four-fifths of the image is
+ * non-edge), and it makes no rank decision — which is the point, because the rank decision was the noise.
+ *
+ * **Reported rather than smoothed:** `threshold` is *not* lowered in the fallback, and `foreground.ts`
+ * uses it as the ink band's upper bound. So on a degenerate cover the ink band and F overlap, where
+ * normally they are disjoint. That is deliberate — the ink band is a statement about stroke geometry and
+ * should not be widened because the field rule changed — but it does mean a pixel can be both a field
+ * member and an ink candidate on exactly these covers, which it cannot be anywhere else.
  */
 export function computeFieldSet(
 	image: DecodedImage,
 	depth: DepthField,
-): Readonly<{ indices: Int32Array; threshold: number }> {
+): Readonly<{ indices: Int32Array; threshold: number; rule: FieldSetRule }> {
 	const eligible = image.eligibleIndices
 	const sorted = sortByKey(eligible, (index) => depth.depth[index])
 	const threshold = depth.depth[sorted[quantileIndex(sorted.length, FIELD_DEPTH_QUANTILE)]]
+
+	// The degenerate case, tested before the rank is redeemed. See the docstring.
+	if (threshold * image.longEdge <= DEGENERATE_DEPTH_FLOOR_PX) {
+		const wide: number[] = []
+		for (let i = 0; i < eligible.length; i += 1) {
+			if (depth.depth[eligible[i]] > 0) wide.push(eligible[i])
+		}
+		if (wide.length > 0) {
+			return { indices: Int32Array.from(wide), threshold, rule: "degenerate-depth" }
+		}
+		// Every eligible pixel is a seed: there is no non-edge pixel anywhere. The whole eligible set is
+		// then the only honest population, and §2.3's collapse test decides what it means.
+		return { indices: Int32Array.from(eligible), threshold, rule: "degenerate-depth" }
+	}
 
 	const strict: number[] = []
 	for (let i = 0; i < eligible.length; i += 1) {
 		if (depth.depth[eligible[i]] > threshold) strict.push(eligible[i])
 	}
-	if (strict.length > 0) return { indices: Int32Array.from(strict), threshold }
+	if (strict.length > 0) return { indices: Int32Array.from(strict), threshold, rule: "beta-quantile" }
 
 	const inclusive: number[] = []
 	for (let i = 0; i < eligible.length; i += 1) {
@@ -74,6 +154,73 @@ export function computeFieldSet(
 	return {
 		indices: Int32Array.from(inclusive.length > 0 ? inclusive : Array.from(eligible)),
 		threshold,
+		rule: "beta-quantile",
+	}
+}
+
+/**
+ * How a band's cascade pixel was arrived at. Scalars and counts only; recorded for attribution.
+ */
+export type EndBandRecord = Readonly<{
+	/** How many pixels the band held before the lump clause. */
+	bandSize: number
+	/** `null` when the band was one lump. */
+	gapRatio: number | null
+	/** Masses of the two lumps, `[farther, nearer]` in the band's own extremity sense. */
+	lumpMasses: readonly [number, number] | null
+	/** Which lump the cascade ran over. */
+	chosen: "whole-band" | "dominant-lump" | "farther-lump"
+	/** How many pixels the cascade actually ran over. */
+	cascadedOver: number
+}>
+
+/**
+ * **The band-then-cascade end read** (0.3.0). Publishes the cascade pixel of `band`, restricted to one
+ * density lump when the band has two.
+ *
+ * `key` is the band's own ordering scalar and `extremeIsHigh` says which direction along it is *further
+ * from the field's middle* — high distance-from-m for e₁, low projection-onto-u for e₂. Every decision
+ * below is a comparison of counts or of order statistics of that one scalar.
+ */
+function bandEndPixel(
+	image: DecodedImage,
+	band: Int32Array,
+	key: (index: number) => number,
+	extremeIsHigh: boolean,
+): Readonly<{ pixel: number; record: EndBandRecord }> {
+	const { lab, rgb } = image
+	const split = splitAtLargestDecileGap(band, key, LUMP_GAP_RATIO)
+	if (split === null) {
+		return {
+			pixel: cascadePixel(band, band.length, lab, rgb),
+			record: {
+				bandSize: band.length,
+				gapRatio: null,
+				lumpMasses: null,
+				chosen: "whole-band",
+				cascadedOver: band.length,
+			},
+		}
+	}
+
+	const farther = extremeIsHigh ? split.upper : split.lower
+	const nearer = extremeIsHigh ? split.lower : split.upper
+	const larger = Math.max(farther.length, nearer.length)
+	const massGap = larger === 0 ? 0 : Math.abs(farther.length - nearer.length) / larger
+	// Dominant lump by default; the farther lump when the two masses are not far enough apart to be
+	// evidence. See `LUMP_MASS_TIE_BAND` for why the tie goes to the farther one and not to a fixed
+	// dark/light convention.
+	const tied = massGap < LUMP_MASS_TIE_BAND
+	const chosen = tied ? farther : (farther.length >= nearer.length ? farther : nearer)
+	return {
+		pixel: cascadePixel(chosen, chosen.length, lab, rgb),
+		record: {
+			bandSize: band.length,
+			gapRatio: split.gapRatio,
+			lumpMasses: [farther.length, nearer.length],
+			chosen: tied ? "farther-lump" : "dominant-lump",
+			cascadedOver: chosen.length,
+		},
 	}
 }
 
@@ -111,6 +258,10 @@ export type FieldEnds = Readonly<{
 	prevalenceTieBandFired: boolean
 	/** Which end became the background. */
 	farIsBackground: boolean
+	/** How e₁'s band was read (0.3.0). `null` on the no-extent path, which selects no band. */
+	farBand: EndBandRecord | null
+	/** How e₂'s band was read (0.3.0). */
+	nearBand: EndBandRecord | null
 }>
 
 function prevalenceOf(image: DecodedImage, fieldSet: Int32Array, end: number): number {
@@ -126,10 +277,12 @@ function prevalenceOf(image: DecodedImage, fieldSet: Int32Array, end: number): n
 }
 
 /**
- * Steps 1–5, with `step` walking e₁ down its ordering (§2.7's "step the rank").
+ * Steps 1–5, with `step` walking both bands down their orderings (§2.7's "step the rank").
  *
  * Each step moves `RANK_STEP_FRACTION` of the field set — small enough that a stepped end is still the
- * same end, large enough not to be swallowed by a run of tied distances.
+ * same end, large enough not to be swallowed by a run of tied distances. What a step moves at 0.3.0 is
+ * the band's far edge; the band's *width* is fixed at τ·`ENDS_BAND_TAU_MULTIPLE`, so a stepped end is
+ * still the cascade pixel of a population of the same size.
  */
 export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step: number): FieldEnds {
 	const { lab, bar, rgb } = image
@@ -137,11 +290,21 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 
 	const median = cascadePixel(fieldSet, n, lab, rgb)
 
-	// Step 2 — the far end at the (1 − τ) rank of distance from m.
-	const byDistance = sortByKey(fieldSet, (index) => labDistance(lab, index, median))
+	// Step 2 — the far end: the cascade pixel of the band of F whose far edge is the (1 − τ) rank of
+	// distance from m. One rank at 0.1.0–0.2.0; see the module docstring for the 68/122 that changed it.
+	const distanceFromMedian = (index: number): number => labDistance(lab, index, median)
+	const byDistance = sortByKey(fieldSet, distanceFromMedian)
 	const stepSize = Math.max(1, Math.round(RANK_STEP_FRACTION * n))
-	const farRank = Math.max(0, quantileIndex(n, 1 - TRIM_LEVEL) - step * stepSize)
-	const farEnd = byDistance[farRank]
+	const bandSize = Math.max(1, Math.ceil(ENDS_BAND_TAU_MULTIPLE * TRIM_LEVEL * n))
+	const farTop = Math.max(0, quantileIndex(n, 1 - TRIM_LEVEL) - step * stepSize)
+	const farBandFrom = Math.max(0, farTop - bandSize + 1)
+	const far = bandEndPixel(
+		image,
+		byDistance.subarray(farBandFrom, farTop + 1),
+		distanceFromMedian,
+		true,
+	)
+	const farEnd = far.pixel
 
 	// Step 3 — the direction. Three numbers, never published, never compared to a pixel.
 	const dl = lab[farEnd * 3] - lab[median * 3]
@@ -167,6 +330,8 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 			prevalenceRelativeGap: 0,
 			prevalenceTieBandFired: false,
 			farIsBackground: true,
+			farBand: far.record,
+			nearBand: null,
 		}
 	}
 
@@ -178,15 +343,24 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 			(lab[at + 2] - lab[median * 3 + 2]) * u[2]
 	}
 
-	// Step 4 — the opposite end at the τ rank of the projection.
-	const byProjection = sortByKey(fieldSet, (index) => {
+	// Step 4 — the opposite end: the cascade pixel of the band of F whose far edge is the τ rank of the
+	// projection. The mirror of step 2, and "farther" here means *lower* projection, since the τ end of
+	// this ordering is the one furthest from m in the −u direction.
+	const projectionOnU = (index: number): number => {
 		const at = index * 3
 		return (lab[at] - lab[median * 3]) * u[0] +
 			(lab[at + 1] - lab[median * 3 + 1]) * u[1] +
 			(lab[at + 2] - lab[median * 3 + 2]) * u[2]
-	})
-	const nearRank = Math.min(n - 1, quantileIndex(n, TRIM_LEVEL) + step * stepSize)
-	const nearEnd = byProjection[nearRank]
+	}
+	const byProjection = sortByKey(fieldSet, projectionOnU)
+	const nearBottom = Math.min(n - 1, quantileIndex(n, TRIM_LEVEL) + step * stepSize)
+	const near = bandEndPixel(
+		image,
+		byProjection.subarray(nearBottom, Math.min(n, nearBottom + bandSize)),
+		projectionOnU,
+		false,
+	)
+	const nearEnd = near.pixel
 
 	// The collapse test, measured rather than encoded.
 	const endsBar = Math.max(bar[farEnd], bar[nearEnd])
@@ -247,5 +421,7 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 		prevalenceRelativeGap: relativeGap,
 		prevalenceTieBandFired: tieBandFired,
 		farIsBackground,
+		farBand: far.record,
+		nearBand: near.record,
 	}
 }

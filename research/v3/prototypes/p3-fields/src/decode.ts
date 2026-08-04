@@ -94,6 +94,8 @@ export async function decodeImage(imagePath: string): Promise<DecodedImage> {
 	// so a 1-channel JPEG arrives here as sRGB rather than as a channel-count special case.
 	const { data, info } = await handle.toColourspace("srgb").raw().toBuffer({ resolveWithObject: true })
 	const channels = info.channels
+	// [INHERITED] — 3 and 4 are sRGB and sRGB+alpha, the only two layouts `toColourspace("srgb").raw()`
+	// can hand back. A buffer shape, not a parameter: there is no third value to choose.
 	if (channels !== 3 && channels !== 4) {
 		throw new P3DecodeError(`unsupported channel count ${channels} for ${imagePath}`)
 	}
@@ -121,6 +123,8 @@ export async function decodeImage(imagePath: string): Promise<DecodedImage> {
 		rgb[to + 1] = green
 		rgb[to + 2] = blue
 
+		// [INHERITED] — 255 is full opacity in an 8-bit alpha channel, and arm-d §2.0's rule is *fully*
+		// opaque or ineligible: anything below is composited-if-used, and compositing creates a colour.
 		const opaque = channels === 3 || data[from + 3] === 255
 		if (!opaque) {
 			transparentCount += 1
@@ -131,6 +135,8 @@ export async function decodeImage(imagePath: string): Promise<DecodedImage> {
 		eligible[index] = 1
 		eligibleCount += 1
 
+		// [INHERITED] — 16 and 8 are the bit widths of an 8-bit RGB triple packed into one integer key.
+		// A memo key's layout, fixed by the channel depth; nothing here is choosable.
 		const packed = (red << 16) | (green << 8) | blue
 		let region = regionOfColor.get(packed)
 		if (region === undefined) {
@@ -158,6 +164,8 @@ export async function decodeImage(imagePath: string): Promise<DecodedImage> {
 		}
 	}
 
+	// [INHERITED] — the literals in this block are the same buffer-shape facts as above: `channels === 4`
+	// is "the decoder gave us an alpha plane", and the comparisons against zero are emptiness tests.
 	return {
 		width,
 		height,

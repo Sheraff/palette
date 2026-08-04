@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T21:26:25.666Z",
+		"generatedAt": "2026-08-04T21:56:30.037Z",
 		"roots": [
 			"oracle",
 			"prototypes",
@@ -10,10 +10,10 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T21:26:25.666Z",
+			"generatedAt": "2026-08-04T21:56:30.037Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "efcd48616b40327f05a644f6d8a71ac7e1ac09ac",
+				"gitCommit": "1064d62d92b6b544fe55ae80595e61b8ff70af03",
 				"gitBranch": "proto/p3-fields",
 				"gitDirty": true,
 				"node": "v25.8.1"
@@ -35,11 +35,11 @@
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "26531a52c71e37bad6b91afc7730df25049e6e22a4ae07be158d3b89e73c31da",
+	"bodyHash": "d6c5f4ad3ced8d0630f4d8db97d8ad679dae0cccfc3a3f44a909391a4de1d8fa",
 	"body": {
 		"corpus": {
 			"files": 257,
-			"lines": 107322,
+			"lines": 108190,
 			"byLanguage": {
 				"py": {
 					"files": 98,
@@ -48,42 +48,42 @@
 				},
 				"ts": {
 					"files": 159,
-					"lines": 68784,
+					"lines": 69652,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 11614,
-			"excluded": 4556,
-			"tunableSites": 7058,
-			"tagged": 769,
+			"candidates": 11652,
+			"excluded": 4573,
+			"tunableSites": 7079,
+			"tagged": 863,
 			"decisionTraced": 1,
 			"decisionDangling": 0,
-			"untagged": 6288
+			"untagged": 6215
 		},
 		"headline": {
-			"documentedFraction": 0.1091,
-			"anchoredFraction": 0.0659
+			"documentedFraction": 0.1221,
+			"anchoredFraction": 0.0658
 		},
 		"byTag": {
 			"REVIEWED": 279,
-			"MEASURED": 184,
+			"MEASURED": 185,
 			"FITTED": 1,
 			"n=1": 2,
-			"INHERITED": 119,
-			"UNCALIBRATED": 170,
+			"INHERITED": 190,
+			"UNCALIBRATED": 192,
 			"HELD": 14
 		},
 		"byAnchorStrength": {
-			"anchored": 465,
-			"weak": 135,
-			"unanchored": 6458
+			"anchored": 466,
+			"weak": 206,
+			"unanchored": 6407
 		},
 		"tagAttribution": {
 			"trailing": 1,
-			"leading": 650,
-			"shared-doc-block": 119
+			"leading": 739,
+			"shared-doc-block": 124
 		},
 		"decisionCitations": {
 			"recheckable": 3,
@@ -119,7 +119,7 @@
 			{
 				"id": "emptiness-comparison",
 				"rationale": "A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`.",
-				"count": 459
+				"count": 465
 			},
 			{
 				"id": "not-found-sentinel",
@@ -134,12 +134,12 @@
 			{
 				"id": "loop-header",
 				"rationale": "An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy.",
-				"count": 584
+				"count": 592
 			},
 			{
 				"id": "accumulator-init",
 				"rationale": "A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted.",
-				"count": 389
+				"count": 390
 			},
 			{
 				"id": "counter-increment",
@@ -154,7 +154,7 @@
 			{
 				"id": "unit-clamp",
 				"rationale": "A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit.",
-				"count": 156
+				"count": 158
 			},
 			{
 				"id": "display-format",
@@ -264,14 +264,14 @@
 				"configured": true,
 				"workstream": "phase-2 prototype orchestrators",
 				"files": 37,
-				"tunableSites": 1069,
-				"tagged": 44,
+				"tunableSites": 1090,
+				"tagged": 138,
 				"decisionTraced": 0,
-				"documented": 44,
-				"untagged": 1025,
-				"anchored": 0,
-				"documentedFraction": 0.0412,
-				"anchoredFraction": 0
+				"documented": 138,
+				"untagged": 952,
+				"anchored": 1,
+				"documentedFraction": 0.1266,
+				"anchoredFraction": 0.0009
 			},
 			{
 				"area": "src/adjudication",
@@ -1249,57 +1249,57 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/constants.ts",
-				"tunableSites": 25,
-				"documented": 21,
-				"untagged": 4
+				"tunableSites": 32,
+				"documented": 32,
+				"untagged": 0
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
 				"tunableSites": 24,
-				"documented": 0,
-				"untagged": 24
+				"documented": 9,
+				"untagged": 15
 			},
 			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
 				"tunableSites": 6,
-				"documented": 0,
-				"untagged": 6
+				"documented": 5,
+				"untagged": 1
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"tunableSites": 34,
+				"tunableSites": 38,
 				"documented": 0,
-				"untagged": 34
+				"untagged": 38
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
 				"tunableSites": 42,
-				"documented": 0,
-				"untagged": 42
+				"documented": 18,
+				"untagged": 24
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"tunableSites": 16,
+				"tunableSites": 17,
 				"documented": 0,
-				"untagged": 16
+				"untagged": 17
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
 				"tunableSites": 73,
-				"documented": 0,
-				"untagged": 73
+				"documented": 23,
+				"untagged": 50
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
 				"tunableSites": 58,
-				"documented": 0,
-				"untagged": 58
+				"documented": 8,
+				"untagged": 50
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"tunableSites": 75,
-				"documented": 0,
-				"untagged": 75
+				"tunableSites": 84,
+				"documented": 18,
+				"untagged": 66
 			},
 			{
 				"file": "prototypes/p3-fields/src/tools/measure-edge-rank.ts",
@@ -1310,8 +1310,8 @@
 			{
 				"file": "prototypes/p3-fields/src/verify.ts",
 				"tunableSites": 5,
-				"documented": 0,
-				"untagged": 5
+				"documented": 2,
+				"untagged": 3
 			},
 			{
 				"file": "src/adjudication/adjudicate.ts",
@@ -8231,21 +8231,6 @@
 			{
 				"file": "prototypes/p3-fields/review-rounds/round-1-calibration/_pinned-cb760d7/fields.ts",
 				"line": 175,
-				"column": 19,
-				"value": 100000000000000000000,
-				"text": "1e20",
-				"name": "infinity",
-				"functionName": "computeDepthField",
-				"snippet": "const infinity = 1e20",
-				"suspicion": 4,
-				"flags": [
-					"exponential",
-					"named-constant"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 176,
 				"column": 19,
 				"value": 100000000000000000000,
 				"text": "1e20",
@@ -16205,7 +16190,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 116,
+				"line": 140,
 				"column": 26,
 				"value": 1,
 				"text": "1",
@@ -16219,7 +16204,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 123,
+				"line": 147,
 				"column": 21,
 				"value": 2,
 				"text": "2",
@@ -16232,122 +16217,8 @@
 				]
 			},
 			{
-				"file": "prototypes/p3-fields/src/constants.ts",
-				"line": 110,
-				"column": 26,
-				"value": 3,
-				"text": "3",
-				"name": "EDGE_RANK",
-				"functionName": null,
-				"snippet": "export const EDGE_RANK = 3",
-				"suspicion": 3,
-				"flags": [
-					"named-constant",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/constants.ts",
-				"line": 129,
-				"column": 44,
-				"value": 1,
-				"text": "1",
-				"name": null,
-				"functionName": "edgeRankInUse",
-				"snippet": "if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) {",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/constants.ts",
-				"line": 129,
-				"column": 58,
-				"value": 8,
-				"text": "8",
-				"name": null,
-				"functionName": "edgeRankInUse",
-				"snippet": "if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) {",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/constants.ts",
-				"line": 255,
-				"column": 37,
-				"value": 512,
-				"text": "512",
-				"name": "SPREAD_POSITION_BINS",
-				"functionName": null,
-				"snippet": "export const SPREAD_POSITION_BINS = 512",
-				"suspicion": 3,
-				"flags": [
-					"named-constant",
-					"screaming-case-name"
-				]
-			},
-			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 97,
-				"column": 19,
-				"value": 3,
-				"text": "3",
-				"name": null,
-				"functionName": "decodeImage",
-				"snippet": "if (channels !== 3 && channels !== 4) {",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 97,
-				"column": 37,
-				"value": 4,
-				"text": "4",
-				"name": null,
-				"functionName": "decodeImage",
-				"snippet": "if (channels !== 3 && channels !== 4) {",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 124,
-				"column": 31,
-				"value": 3,
-				"text": "3",
-				"name": "opaque",
-				"functionName": "decodeImage",
-				"snippet": "const opaque = channels === 3 || data[from + 3] === 255",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 124,
-				"column": 55,
-				"value": 255,
-				"text": "255",
-				"name": "opaque",
-				"functionName": "decodeImage",
-				"snippet": "const opaque = channels === 3 || data[from + 3] === 255",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 148,
+				"line": 154,
 				"column": 24,
 				"value": 0,
 				"text": "0",
@@ -16361,7 +16232,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 155,
+				"line": 161,
 				"column": 27,
 				"value": 1,
 				"text": "1",
@@ -16374,36 +16245,8 @@
 				]
 			},
 			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 172,
-				"column": 34,
-				"value": 4,
-				"text": "4",
-				"name": "hasAlphaChannel",
-				"functionName": "decodeImage",
-				"snippet": "hasAlphaChannel: channels === 4,",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 173,
-				"column": 45,
-				"value": 0,
-				"text": "0",
-				"name": "hasTransparentPixels",
-				"functionName": "decodeImage",
-				"snippet": "hasTransparentPixels: transparentCount > 0,",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
 				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 71,
+				"line": 79,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -16416,23 +16259,22 @@
 				]
 			},
 			{
-				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 73,
-				"column": 33,
-				"value": 10,
-				"text": "10",
+				"file": "prototypes/p3-fields/src/field-roles.ts",
+				"line": 134,
+				"column": 35,
+				"value": 0,
+				"text": "0",
 				"name": null,
-				"functionName": "deciles",
-				"snippet": "for (let decile = 0; decile <= 10; decile += 1) {",
+				"functionName": "computeFieldSet",
+				"snippet": "if (depth.depth[eligible[i]] > 0) wide.push(eligible[i])",
 				"suspicion": 3,
 				"flags": [
-					"comparison-operand",
-					"loop-header"
+					"comparison-operand"
 				]
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 153,
+				"line": 316,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -16446,7 +16288,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 218,
+				"line": 392,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -16460,237 +16302,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 4,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 8,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 13,
-				"value": 0,
-				"text": "0",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 17,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 22,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 50,
-				"column": 26,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, -1], [0, -1], [1, -1],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 51,
-				"column": 4,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 0], [1, 0],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 51,
-				"column": 7,
-				"value": 0,
-				"text": "0",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 0], [1, 0],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 51,
-				"column": 12,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 0], [1, 0],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 51,
-				"column": 15,
-				"value": 0,
-				"text": "0",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 0], [1, 0],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 4,
-				"value": -1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"negative",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 7,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 12,
-				"value": 0,
-				"text": "0",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 15,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 20,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 52,
-				"column": 23,
-				"value": 1,
-				"text": "1",
-				"name": "NEIGHBOUR_OFFSETS",
-				"functionName": null,
-				"snippet": "[-1, 1], [0, 1], [1, 1],",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 85,
+				"line": 93,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -16704,7 +16316,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 91,
+				"line": 99,
 				"column": 14,
 				"value": 0,
 				"text": "0",
@@ -16718,7 +16330,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 91,
+				"line": 99,
 				"column": 24,
 				"value": 0,
 				"text": "0",
@@ -16732,7 +16344,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 93,
+				"line": 101,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -16746,7 +16358,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 97,
+				"line": 105,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -16760,7 +16372,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 104,
+				"line": 112,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -16774,7 +16386,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 180,
+				"line": 191,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -16788,7 +16400,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 180,
+				"line": 191,
 				"column": 67,
 				"value": 0,
 				"text": "0",
@@ -16802,7 +16414,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 186,
+				"line": 197,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -16816,7 +16428,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 155,
+				"line": 207,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -16830,7 +16442,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 166,
+				"line": 218,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -16844,7 +16456,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 166,
+				"line": 218,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -16858,7 +16470,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 168,
+				"line": 220,
 				"column": 32,
 				"value": 0,
 				"text": "0",
@@ -16872,7 +16484,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 310,
+				"line": 478,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -16886,7 +16498,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 318,
+				"line": 486,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -16956,49 +16568,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 19,
-				"value": 0,
-				"text": "0",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 17,
-				"value": 0,
-				"text": "0",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 139,
-				"column": 26,
-				"value": 0,
-				"text": "0",
-				"name": "angleDegrees",
-				"functionName": "geometry",
-				"snippet": "angleDegrees: rho >= 0 ? angle : angle + 180,",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 234,
+				"line": 243,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -17012,7 +16582,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 273,
+				"line": 282,
 				"column": 56,
 				"value": 0,
 				"text": "0",
@@ -17026,7 +16596,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 276,
+				"line": 285,
 				"column": 25,
 				"value": 0,
 				"text": "0",
@@ -17040,7 +16610,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 276,
+				"line": 285,
 				"column": 48,
 				"value": 1,
 				"text": "1",
@@ -17054,35 +16624,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 159,
-				"column": 29,
-				"value": 2,
-				"text": "2",
-				"name": "SEARCH_CURSOR_LIMIT",
-				"functionName": null,
-				"snippet": "const SEARCH_CURSOR_LIMIT = 2 * (MAX_RANK_STEPS + 1)",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 159,
-				"column": 51,
-				"value": 1,
-				"text": "1",
-				"name": "SEARCH_CURSOR_LIMIT",
-				"functionName": null,
-				"snippet": "const SEARCH_CURSOR_LIMIT = 2 * (MAX_RANK_STEPS + 1)",
-				"suspicion": 3,
-				"flags": [
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 254,
+				"line": 267,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -17096,7 +16638,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 287,
+				"line": 300,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -17110,7 +16652,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 322,
+				"line": 342,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -17124,7 +16666,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 372,
+				"line": 454,
 				"column": 58,
 				"value": 0,
 				"text": "0",
@@ -17138,7 +16680,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 374,
+				"line": 456,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -17152,7 +16694,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 99,
+				"line": 105,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -17166,7 +16708,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 118,
+				"line": 124,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -17180,7 +16722,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 118,
+				"line": 124,
 				"column": 45,
 				"value": 0,
 				"text": "0",
@@ -17194,7 +16736,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 136,
+				"line": 142,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -17208,7 +16750,35 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 180,
+				"line": 210,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "if (!(spread > 0)) return null",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 223,
+				"column": 20,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "if (widestIndex < 0) return null",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 280,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -17222,7 +16792,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 185,
+				"line": 285,
 				"column": 34,
 				"value": 3,
 				"text": "3",
@@ -17237,7 +16807,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 256,
+				"line": 359,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -17251,7 +16821,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 256,
+				"line": 359,
 				"column": 45,
 				"value": 0,
 				"text": "0",
@@ -17265,7 +16835,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 289,
+				"line": 392,
 				"column": 10,
 				"value": 2,
 				"text": "2",
@@ -17279,7 +16849,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 303,
+				"line": 406,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -17293,7 +16863,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 303,
+				"line": 406,
 				"column": 29,
 				"value": 0,
 				"text": "0",
@@ -33160,7 +32730,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 167,
+				"line": 330,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -33174,7 +32744,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 368,
+				"line": 536,
 				"column": 60,
 				"value": -1,
 				"text": "1",
@@ -33189,7 +32759,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 368,
+				"line": 536,
 				"column": 73,
 				"value": -1,
 				"text": "1",
@@ -33204,7 +32774,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 368,
+				"line": 536,
 				"column": 84,
 				"value": -1,
 				"text": "1",
@@ -33247,7 +32817,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 222,
+				"line": 231,
 				"column": 34,
 				"value": 0,
 				"text": "0",
@@ -33261,7 +32831,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 223,
+				"line": 232,
 				"column": 31,
 				"value": 1,
 				"text": "1",
@@ -33275,7 +32845,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 228,
+				"line": 237,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -33289,7 +32859,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 228,
+				"line": 237,
 				"column": 41,
 				"value": 0,
 				"text": "0",
@@ -33303,7 +32873,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 228,
+				"line": 237,
 				"column": 52,
 				"value": -1,
 				"text": "1",
@@ -33318,7 +32888,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 428,
+				"line": 517,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -33332,7 +32902,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 431,
+				"line": 520,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -33346,7 +32916,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 433,
+				"line": 522,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -33360,7 +32930,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 434,
+				"line": 523,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -33374,7 +32944,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 435,
+				"line": 524,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -33388,7 +32958,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 438,
+				"line": 527,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -33402,7 +32972,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 439,
+				"line": 528,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -33416,7 +32986,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 440,
+				"line": 530,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -33430,7 +33000,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 441,
+				"line": 531,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -33444,7 +33014,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 444,
+				"line": 534,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -33458,7 +33028,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 449,
+				"line": 540,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -33472,7 +33042,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 503,
+				"line": 596,
 				"column": 97,
 				"value": 0,
 				"text": "0",
@@ -33486,7 +33056,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 571,
+				"line": 670,
 				"column": 41,
 				"value": 0,
 				"text": "0",
@@ -33500,7 +33070,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 573,
+				"line": 672,
 				"column": 38,
 				"value": 1,
 				"text": "1",
@@ -41098,496 +40668,6 @@
 			},
 			{
 				"file": "prototypes/p3-fields/review-rounds/round-1-calibration/_pinned-cb760d7/verify.ts",
-				"line": 56,
-				"column": 29,
-				"value": 0.75,
-				"text": "0.75",
-				"name": "highTarget",
-				"functionName": "binQuantileExtent",
-				"snippet": "const highTarget = total * 0.75",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 24,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 39,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 57,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 72,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 22,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 37,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 55,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 70,
-				"value": 0.5,
-				"text": "0.5",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 144,
-				"column": 55,
-				"value": 0.5,
-				"text": "0.5",
-				"name": null,
-				"functionName": "parameteriseField",
-				"snippet": "for (const [id, origin] of [[\"radial-image-centre\", [0.5, 0.5]], [\"radial-field-cascade\", centre]] as const) {",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 144,
-				"column": 60,
-				"value": 0.5,
-				"text": "0.5",
-				"name": null,
-				"functionName": "parameteriseField",
-				"snippet": "for (const [id, origin] of [[\"radial-image-centre\", [0.5, 0.5]], [\"radial-field-cascade\", centre]] as const) {",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 463,
-				"column": 24,
-				"value": 255,
-				"text": "255",
-				"name": "white",
-				"functionName": "extractPalette",
-				"snippet": "const white: Rgb8 = [255, 255, 255]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 463,
-				"column": 29,
-				"value": 255,
-				"text": "255",
-				"name": "white",
-				"functionName": "extractPalette",
-				"snippet": "const white: Rgb8 = [255, 255, 255]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 463,
-				"column": 34,
-				"value": 255,
-				"text": "255",
-				"name": "white",
-				"functionName": "extractPalette",
-				"snippet": "const white: Rgb8 = [255, 255, 255]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 464,
-				"column": 24,
-				"value": 0,
-				"text": "0",
-				"name": "black",
-				"functionName": "extractPalette",
-				"snippet": "const black: Rgb8 = [0, 0, 0]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 464,
-				"column": 27,
-				"value": 0,
-				"text": "0",
-				"name": "black",
-				"functionName": "extractPalette",
-				"snippet": "const black: Rgb8 = [0, 0, 0]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 464,
-				"column": 30,
-				"value": 0,
-				"text": "0",
-				"name": "black",
-				"functionName": "extractPalette",
-				"snippet": "const black: Rgb8 = [0, 0, 0]",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 59,
-				"column": 4,
-				"value": 0,
-				"text": "0",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[0, 0, 0],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 59,
-				"column": 7,
-				"value": 0,
-				"text": "0",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[0, 0, 0],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 59,
-				"column": 10,
-				"value": 0,
-				"text": "0",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[0, 0, 0],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 60,
-				"column": 4,
-				"value": 255,
-				"text": "255",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[255, 255, 255],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 60,
-				"column": 9,
-				"value": 255,
-				"text": "255",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[255, 255, 255],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 60,
-				"column": 14,
-				"value": 255,
-				"text": "255",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[255, 255, 255],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 61,
-				"column": 4,
-				"value": 17,
-				"text": "17",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[17, 34, 51],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 61,
-				"column": 8,
-				"value": 34,
-				"text": "34",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[17, 34, 51],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 61,
-				"column": 12,
-				"value": 51,
-				"text": "51",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[17, 34, 51],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 62,
-				"column": 4,
-				"value": 200,
-				"text": "200",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[200, 30, 90],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 62,
-				"column": 9,
-				"value": 30,
-				"text": "30",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[200, 30, 90],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 62,
-				"column": 13,
-				"value": 90,
-				"text": "90",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[200, 30, 90],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 63,
-				"column": 4,
-				"value": 9,
-				"text": "9",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[9, 9, 10],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 63,
-				"column": 7,
-				"value": 9,
-				"text": "9",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[9, 9, 10],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 63,
-				"column": 10,
-				"value": 10,
-				"text": "10",
-				"name": "probes",
-				"functionName": "assertRulerAgrees",
-				"snippet": "[9, 9, 10],",
-				"suspicion": 1,
-				"flags": [
-					"in-numeric-sequence"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 228,
-				"column": 39,
-				"value": 0.5,
-				"text": "0.5",
-				"name": null,
-				"functionName": "spatialCascade",
-				"snippet": "if (population.length === 0) return [0.5, 0.5]",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 228,
-				"column": 44,
-				"value": 0.5,
-				"text": "0.5",
-				"name": null,
-				"functionName": "spatialCascade",
-				"snippet": "if (population.length === 0) return [0.5, 0.5]",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/verify.ts",
-				"line": 55,
-				"column": 28,
-				"value": 0.25,
-				"text": "0.25",
-				"name": "lowTarget",
-				"functionName": "binQuantileExtent",
-				"snippet": "const lowTarget = total * 0.25",
-				"suspicion": 1,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/verify.ts",
 				"line": 56,
 				"column": 29,
 				"value": 0.75,
@@ -67982,7 +67062,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 83,
+				"line": 107,
 				"column": 22,
 				"value": 3,
 				"text": "3",
@@ -67994,7 +67074,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 84,
+				"line": 108,
 				"column": 23,
 				"value": 3,
 				"text": "3",
@@ -68006,7 +67086,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 86,
+				"line": 110,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -68018,7 +67098,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 86,
+				"line": 110,
 				"column": 56,
 				"value": 1,
 				"text": "1",
@@ -68030,7 +67110,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 86,
+				"line": 110,
 				"column": 69,
 				"value": 2,
 				"text": "2",
@@ -68042,7 +67122,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 86,
+				"line": 110,
 				"column": 83,
 				"value": 2,
 				"text": "2",
@@ -68054,7 +67134,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 103,
+				"line": 127,
 				"column": 8,
 				"value": 1,
 				"text": "1",
@@ -68066,7 +67146,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 103,
+				"line": 127,
 				"column": 12,
 				"value": 2,
 				"text": "2",
@@ -68078,7 +67158,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 113,
+				"line": 137,
 				"column": 8,
 				"value": 1,
 				"text": "1",
@@ -68090,7 +67170,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/accent.ts",
-				"line": 113,
+				"line": 137,
 				"column": 12,
 				"value": 2,
 				"text": "2",
@@ -68138,7 +67218,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 104,
+				"line": 106,
 				"column": 37,
 				"value": 3,
 				"text": "3",
@@ -68150,7 +67230,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 105,
+				"line": 107,
 				"column": 39,
 				"value": 3,
 				"text": "3",
@@ -68162,7 +67242,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 117,
+				"line": 119,
 				"column": 29,
 				"value": 1,
 				"text": "1",
@@ -68174,7 +67254,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 118,
+				"line": 120,
 				"column": 28,
 				"value": 2,
 				"text": "2",
@@ -68186,7 +67266,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 119,
+				"line": 121,
 				"column": 22,
 				"value": 3,
 				"text": "3",
@@ -68198,7 +67278,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 121,
+				"line": 123,
 				"column": 12,
 				"value": 1,
 				"text": "1",
@@ -68210,7 +67290,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 122,
+				"line": 124,
 				"column": 12,
 				"value": 2,
 				"text": "2",
@@ -68222,19 +67302,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 124,
-				"column": 48,
-				"value": 3,
-				"text": "3",
-				"name": "opaque",
-				"functionName": "decodeImage",
-				"snippet": "const opaque = channels === 3 || data[from + 3] === 255",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 131,
+				"line": 135,
 				"column": 21,
 				"value": 1,
 				"text": "1",
@@ -68246,31 +67314,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 134,
-				"column": 26,
-				"value": 16,
-				"text": "16",
-				"name": "packed",
-				"functionName": "decodeImage",
-				"snippet": "const packed = (red << 16) | (green << 8) | blue",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 134,
-				"column": 42,
-				"value": 8,
-				"text": "8",
-				"name": "packed",
-				"functionName": "decodeImage",
-				"snippet": "const packed = (red << 16) | (green << 8) | blue",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 144,
+				"line": 150,
 				"column": 12,
 				"value": 1,
 				"text": "1",
@@ -68282,7 +67326,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/decode.ts",
-				"line": 145,
+				"line": 151,
 				"column": 12,
 				"value": 2,
 				"text": "2",
@@ -68293,70 +67337,56 @@
 				"flags": []
 			},
 			{
-				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 47,
-				"column": 69,
-				"value": 24,
-				"text": "24",
-				"name": "createHash(\"sha1\").update(imagePath).digest(\"hex\").slice",
-				"functionName": "diagnosticsKey",
-				"snippet": "return createHash(\"sha1\").update(imagePath).digest(\"hex\").slice(0, 24)",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 74,
-				"column": 27,
-				"value": 1,
-				"text": "1",
-				"name": "Math.min",
-				"functionName": "deciles",
-				"snippet": "const at = Math.min(n - 1, Math.max(0, Math.round((decile / 10) * (n - 1))))",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 74,
-				"column": 63,
-				"value": 10,
-				"text": "10",
-				"name": "Math.round",
-				"functionName": "deciles",
-				"snippet": "const at = Math.min(n - 1, Math.max(0, Math.round((decile / 10) * (n - 1))))",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/diagnostics.ts",
-				"line": 74,
-				"column": 74,
-				"value": 1,
-				"text": "1",
-				"name": "Math.round",
-				"functionName": "deciles",
-				"snippet": "const at = Math.min(n - 1, Math.max(0, Math.round((decile / 10) * (n - 1))))",
+				"file": "prototypes/p3-fields/src/field-roles.ts",
+				"line": 209,
+				"column": 33,
+				"value": 0,
+				"text": "0",
+				"name": "massGap",
+				"functionName": "bandEndPixel",
+				"snippet": "const massGap = larger === 0 ? 0 : Math.abs(farther.length - nearer.length) / larger",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 143,
-				"column": 47,
+				"line": 299,
+				"column": 46,
 				"value": 1,
 				"text": "1",
 				"name": "quantileIndex",
 				"functionName": "chooseFieldEnds",
-				"snippet": "const farRank = Math.max(0, quantileIndex(n, 1 - TRIM_LEVEL) - step * stepSize)",
+				"snippet": "const farTop = Math.max(0, quantileIndex(n, 1 - TRIM_LEVEL) - step * stepSize)",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 147,
+				"line": 300,
+				"column": 54,
+				"value": 1,
+				"text": "1",
+				"name": "Math.max",
+				"functionName": "chooseFieldEnds",
+				"snippet": "const farBandFrom = Math.max(0, farTop - bandSize + 1)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/field-roles.ts",
+				"line": 303,
+				"column": 45,
+				"value": 1,
+				"text": "1",
+				"name": "byDistance.subarray",
+				"functionName": "chooseFieldEnds",
+				"snippet": "byDistance.subarray(farBandFrom, farTop + 1),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/field-roles.ts",
+				"line": 310,
 				"column": 26,
 				"value": 3,
 				"text": "3",
@@ -68368,7 +67398,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 147,
+				"line": 310,
 				"column": 44,
 				"value": 3,
 				"text": "3",
@@ -68380,7 +67410,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 148,
+				"line": 311,
 				"column": 26,
 				"value": 3,
 				"text": "3",
@@ -68392,7 +67422,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 148,
+				"line": 311,
 				"column": 30,
 				"value": 1,
 				"text": "1",
@@ -68404,7 +67434,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 148,
+				"line": 311,
 				"column": 48,
 				"value": 3,
 				"text": "3",
@@ -68416,7 +67446,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 148,
+				"line": 311,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -68428,7 +67458,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 149,
+				"line": 312,
 				"column": 26,
 				"value": 3,
 				"text": "3",
@@ -68440,7 +67470,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 149,
+				"line": 312,
 				"column": 30,
 				"value": 2,
 				"text": "2",
@@ -68452,7 +67482,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 149,
+				"line": 312,
 				"column": 48,
 				"value": 3,
 				"text": "3",
@@ -68464,7 +67494,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 149,
+				"line": 312,
 				"column": 52,
 				"value": 2,
 				"text": "2",
@@ -68476,7 +67506,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 175,
+				"line": 340,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -68488,7 +67518,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 176,
+				"line": 341,
 				"column": 43,
 				"value": 3,
 				"text": "3",
@@ -68500,7 +67530,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 177,
+				"line": 342,
 				"column": 14,
 				"value": 1,
 				"text": "1",
@@ -68512,7 +67542,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 177,
+				"line": 342,
 				"column": 32,
 				"value": 3,
 				"text": "3",
@@ -68524,7 +67554,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 177,
+				"line": 342,
 				"column": 36,
 				"value": 1,
 				"text": "1",
@@ -68536,7 +67566,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 178,
+				"line": 343,
 				"column": 14,
 				"value": 2,
 				"text": "2",
@@ -68548,7 +67578,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 178,
+				"line": 343,
 				"column": 32,
 				"value": 3,
 				"text": "3",
@@ -68560,7 +67590,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 178,
+				"line": 343,
 				"column": 36,
 				"value": 2,
 				"text": "2",
@@ -68572,115 +67602,115 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 183,
+				"line": 350,
 				"column": 22,
 				"value": 3,
 				"text": "3",
 				"name": "at",
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "const at = index * 3",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 184,
+				"line": 351,
 				"column": 34,
 				"value": 3,
 				"text": "3",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "return (lab[at] - lab[median * 3]) * u[0] +",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 185,
+				"line": 352,
 				"column": 14,
 				"value": 1,
 				"text": "1",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 1] - lab[median * 3 + 1]) * u[1] +",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 185,
+				"line": 352,
 				"column": 32,
 				"value": 3,
 				"text": "3",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 1] - lab[median * 3 + 1]) * u[1] +",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 185,
+				"line": 352,
 				"column": 36,
 				"value": 1,
 				"text": "1",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 1] - lab[median * 3 + 1]) * u[1] +",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 186,
+				"line": 353,
 				"column": 14,
 				"value": 2,
 				"text": "2",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 2] - lab[median * 3 + 2]) * u[2]",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 186,
+				"line": 353,
 				"column": 32,
 				"value": 3,
 				"text": "3",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 2] - lab[median * 3 + 2]) * u[2]",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 186,
+				"line": 353,
 				"column": 36,
 				"value": 2,
 				"text": "2",
 				"name": null,
-				"functionName": null,
+				"functionName": "projectionOnU",
 				"snippet": "(lab[at + 2] - lab[median * 3 + 2]) * u[2]",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 188,
-				"column": 32,
+				"line": 356,
+				"column": 34,
 				"value": 1,
 				"text": "1",
 				"name": "Math.min",
 				"functionName": "chooseFieldEnds",
-				"snippet": "const nearRank = Math.min(n - 1, quantileIndex(n, TRIM_LEVEL) + step * stepSize)",
+				"snippet": "const nearBottom = Math.min(n - 1, quantileIndex(n, TRIM_LEVEL) + step * stepSize)",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 218,
+				"line": 392,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -68692,7 +67722,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 227,
+				"line": 401,
 				"column": 29,
 				"value": 3,
 				"text": "3",
@@ -68704,7 +67734,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/field-roles.ts",
-				"line": 228,
+				"line": 402,
 				"column": 31,
 				"value": 3,
 				"text": "3",
@@ -68716,19 +67746,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 79,
-				"column": 37,
-				"value": 8,
-				"text": "8",
-				"name": "Float64Array",
-				"functionName": "computeEdgeField",
-				"snippet": "const distances = new Float64Array(8)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 97,
+				"line": 105,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -68740,7 +67758,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 98,
+				"line": 106,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -68752,7 +67770,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 107,
+				"line": 115,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -68764,7 +67782,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 111,
+				"line": 119,
 				"column": 21,
 				"value": 1,
 				"text": "1",
@@ -68776,7 +67794,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 135,
+				"line": 143,
 				"column": 9,
 				"value": 0,
 				"text": "0",
@@ -68788,7 +67806,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 139,
+				"line": 147,
 				"column": 57,
 				"value": 2,
 				"text": "2",
@@ -68800,7 +67818,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 139,
+				"line": 147,
 				"column": 65,
 				"value": 2,
 				"text": "2",
@@ -68812,7 +67830,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 142,
+				"line": 150,
 				"column": 54,
 				"value": 2,
 				"text": "2",
@@ -68824,7 +67842,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 142,
+				"line": 150,
 				"column": 62,
 				"value": 2,
 				"text": "2",
@@ -68836,7 +67854,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 147,
+				"line": 155,
 				"column": 9,
 				"value": 1,
 				"text": "1",
@@ -68848,7 +67866,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 149,
+				"line": 157,
 				"column": 6,
 				"value": 0,
 				"text": "0",
@@ -68860,7 +67878,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 182,
+				"line": 193,
 				"column": 26,
 				"value": 0,
 				"text": "0",
@@ -68872,7 +67890,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 187,
+				"line": 198,
 				"column": 14,
 				"value": 1,
 				"text": "1",
@@ -68886,7 +67904,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 194,
+				"line": 205,
 				"column": 37,
 				"value": 1,
 				"text": "1",
@@ -68898,7 +67916,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/fields.ts",
-				"line": 195,
+				"line": 206,
 				"column": 39,
 				"value": 2,
 				"text": "2",
@@ -68910,7 +67928,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 132,
+				"line": 184,
 				"column": 17,
 				"value": 2,
 				"text": "2",
@@ -68922,7 +67940,19 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 286,
+				"line": 329,
+				"column": 67,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "lightnessOf",
+				"snippet": "const lightnessOf = (index: number): number => image.lab[index * 3]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/foreground.ts",
+				"line": 454,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -68934,7 +67964,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 341,
+				"line": 509,
 				"column": 32,
 				"value": 3,
 				"text": "3",
@@ -68946,7 +67976,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 347,
+				"line": 515,
 				"column": 31,
 				"value": 3,
 				"text": "3",
@@ -68958,7 +67988,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 360,
+				"line": 528,
 				"column": 48,
 				"value": 0,
 				"text": "0",
@@ -68972,7 +68002,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 361,
+				"line": 529,
 				"column": 33,
 				"value": -1,
 				"text": "1",
@@ -68986,7 +68016,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/foreground.ts",
-				"line": 367,
+				"line": 535,
 				"column": 29,
 				"value": 1,
 				"text": "1",
@@ -69118,127 +68148,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 122,
-				"column": 39,
-				"value": 180,
-				"text": "180",
-				"name": "radians",
-				"functionName": "parameteriseField",
-				"snippet": "const radians = (angle * Math.PI) / 180",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 36,
-				"value": 2,
-				"text": "2",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 51,
-				"value": 2,
-				"text": "2",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 69,
-				"value": 2,
-				"text": "2",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 137,
-				"column": 84,
-				"value": 2,
-				"text": "2",
-				"name": "start",
-				"functionName": "geometry",
-				"snippet": "start: rho >= 0 ? [0.5 - cos / 2, 0.5 - sin / 2] : [0.5 + cos / 2, 0.5 + sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 34,
-				"value": 2,
-				"text": "2",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 49,
-				"value": 2,
-				"text": "2",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 67,
-				"value": 2,
-				"text": "2",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 138,
-				"column": 82,
-				"value": 2,
-				"text": "2",
-				"name": "end",
-				"functionName": "geometry",
-				"snippet": "end: rho >= 0 ? [0.5 + cos / 2, 0.5 + sin / 2] : [0.5 - cos / 2, 0.5 - sin / 2],",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 139,
-				"column": 46,
-				"value": 180,
-				"text": "180",
-				"name": "angleDegrees",
-				"functionName": "geometry",
-				"snippet": "angleDegrees: rho >= 0 ? angle : angle + 180,",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 169,
+				"line": 178,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -69250,7 +68160,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 200,
+				"line": 209,
 				"column": 36,
 				"value": -1,
 				"text": "1",
@@ -69264,7 +68174,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 232,
+				"line": 241,
 				"column": 56,
 				"value": 1,
 				"text": "1",
@@ -69276,7 +68186,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 237,
+				"line": 246,
 				"column": 21,
 				"value": 2,
 				"text": "2",
@@ -69288,7 +68198,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 239,
+				"line": 248,
 				"column": 33,
 				"value": 1,
 				"text": "1",
@@ -69300,7 +68210,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 241,
+				"line": 250,
 				"column": 7,
 				"value": 0,
 				"text": "0",
@@ -69312,7 +68222,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 259,
+				"line": 268,
 				"column": 27,
 				"value": 3,
 				"text": "3",
@@ -69324,7 +68234,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 260,
+				"line": 269,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -69336,7 +68246,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 261,
+				"line": 270,
 				"column": 23,
 				"value": 3,
 				"text": "3",
@@ -69348,7 +68258,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 264,
+				"line": 273,
 				"column": 21,
 				"value": 1,
 				"text": "1",
@@ -69360,7 +68270,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 264,
+				"line": 273,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -69372,7 +68282,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 264,
+				"line": 273,
 				"column": 69,
 				"value": 1,
 				"text": "1",
@@ -69384,7 +68294,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 264,
+				"line": 273,
 				"column": 88,
 				"value": 1,
 				"text": "1",
@@ -69396,7 +68306,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 265,
+				"line": 274,
 				"column": 21,
 				"value": 2,
 				"text": "2",
@@ -69408,7 +68318,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 265,
+				"line": 274,
 				"column": 40,
 				"value": 2,
 				"text": "2",
@@ -69420,7 +68330,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 265,
+				"line": 274,
 				"column": 69,
 				"value": 2,
 				"text": "2",
@@ -69432,7 +68342,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 265,
+				"line": 274,
 				"column": 88,
 				"value": 2,
 				"text": "2",
@@ -69444,7 +68354,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 282,
+				"line": 291,
 				"column": 27,
 				"value": 3,
 				"text": "3",
@@ -69456,7 +68366,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 283,
+				"line": 292,
 				"column": 29,
 				"value": 3,
 				"text": "3",
@@ -69468,7 +68378,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 286,
+				"line": 295,
 				"column": 20,
 				"value": 1,
 				"text": "1",
@@ -69480,7 +68390,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 286,
+				"line": 295,
 				"column": 39,
 				"value": 1,
 				"text": "1",
@@ -69492,7 +68402,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 287,
+				"line": 296,
 				"column": 20,
 				"value": 2,
 				"text": "2",
@@ -69504,7 +68414,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 287,
+				"line": 296,
 				"column": 39,
 				"value": 2,
 				"text": "2",
@@ -69516,7 +68426,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 299,
+				"line": 308,
 				"column": 26,
 				"value": 1,
 				"text": "1",
@@ -69530,7 +68440,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/gradient.ts",
-				"line": 299,
+				"line": 308,
 				"column": 30,
 				"value": -1,
 				"text": "1",
@@ -69545,7 +68455,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 109,
+				"line": 118,
 				"column": 14,
 				"value": 1,
 				"text": "1",
@@ -69557,7 +68467,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 109,
+				"line": 118,
 				"column": 18,
 				"value": 2,
 				"text": "2",
@@ -69569,7 +68479,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 133,
+				"line": 144,
 				"column": 41,
 				"value": 3,
 				"text": "3",
@@ -69581,7 +68491,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 134,
+				"line": 145,
 				"column": 50,
 				"value": 1,
 				"text": "1",
@@ -69593,7 +68503,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 134,
+				"line": 145,
 				"column": 82,
 				"value": 2,
 				"text": "2",
@@ -69605,7 +68515,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 189,
+				"line": 201,
 				"column": 70,
 				"value": 1,
 				"text": "1",
@@ -69617,7 +68527,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 251,
+				"line": 264,
 				"column": 51,
 				"value": 1,
 				"text": "1",
@@ -69629,13 +68539,13 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 286,
+				"line": 299,
 				"column": 52,
 				"value": 0,
 				"text": "0",
 				"name": "chooseForeground",
 				"functionName": "searchForeground",
-				"snippet": "const choice = chooseForeground(image, ordering, 0)",
+				"snippet": "const choice = chooseForeground(image, ordering, 0, inkPreference)",
 				"suspicion": 0,
 				"flags": [
 					"call-argument"
@@ -69643,7 +68553,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 288,
+				"line": 301,
 				"column": 61,
 				"value": 1,
 				"text": "1",
@@ -69655,7 +68565,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 317,
+				"line": 337,
 				"column": 22,
 				"value": 1,
 				"text": "1",
@@ -69667,7 +68577,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 317,
+				"line": 337,
 				"column": 25,
 				"value": 2,
 				"text": "2",
@@ -69679,7 +68589,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 319,
+				"line": 339,
 				"column": 27,
 				"value": 1,
 				"text": "1",
@@ -69691,7 +68601,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 319,
+				"line": 339,
 				"column": 50,
 				"value": 1,
 				"text": "1",
@@ -69703,7 +68613,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 372,
+				"line": 454,
 				"column": 80,
 				"value": 3,
 				"text": "3",
@@ -69715,7 +68625,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 385,
+				"line": 467,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -69727,7 +68637,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 430,
+				"line": 519,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -69739,7 +68649,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 430,
+				"line": 519,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -69751,7 +68661,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 503,
+				"line": 596,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -69763,7 +68673,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 503,
+				"line": 596,
 				"column": 83,
 				"value": 0,
 				"text": "0",
@@ -69775,7 +68685,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 583,
+				"line": 682,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -69787,7 +68697,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 627,
+				"line": 734,
 				"column": 18,
 				"value": 1,
 				"text": "1",
@@ -69799,7 +68709,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 661,
+				"line": 771,
 				"column": 49,
 				"value": 0,
 				"text": "0",
@@ -69811,7 +68721,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 668,
+				"line": 795,
 				"column": 59,
 				"value": 3,
 				"text": "3",
@@ -69823,7 +68733,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 673,
+				"line": 800,
 				"column": 62,
 				"value": 1,
 				"text": "1",
@@ -69835,7 +68745,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 683,
+				"line": 813,
 				"column": 53,
 				"value": 1,
 				"text": "1",
@@ -69847,7 +68757,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 710,
+				"line": 851,
 				"column": 50,
 				"value": 1,
 				"text": "1",
@@ -69859,7 +68769,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 728,
+				"line": 869,
 				"column": 59,
 				"value": 0,
 				"text": "0",
@@ -69871,7 +68781,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 728,
+				"line": 869,
 				"column": 95,
 				"value": 2,
 				"text": "2",
@@ -69883,7 +68793,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 738,
+				"line": 891,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -69895,7 +68805,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 742,
+				"line": 895,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -69907,7 +68817,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/pipeline.ts",
-				"line": 743,
+				"line": 896,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -69919,7 +68829,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 39,
+				"line": 40,
 				"column": 20,
 				"value": 3,
 				"text": "3",
@@ -69931,7 +68841,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 40,
+				"line": 41,
 				"column": 21,
 				"value": 3,
 				"text": "3",
@@ -69943,7 +68853,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 41,
+				"line": 42,
 				"column": 45,
 				"value": 1,
 				"text": "1",
@@ -69955,7 +68865,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 41,
+				"line": 42,
 				"column": 58,
 				"value": 1,
 				"text": "1",
@@ -69967,7 +68877,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 41,
+				"line": 42,
 				"column": 70,
 				"value": 2,
 				"text": "2",
@@ -69979,7 +68889,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 41,
+				"line": 42,
 				"column": 83,
 				"value": 2,
 				"text": "2",
@@ -69991,19 +68901,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 65,
-				"column": 49,
-				"value": 3,
-				"text": "3",
-				"name": "Float64Array",
-				"functionName": "assertRulerAgrees",
-				"snippet": "const plane = new Float64Array(probes.length * 3)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 68,
+				"line": 74,
 				"column": 17,
 				"value": 3,
 				"text": "3",
@@ -70015,7 +68913,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 69,
+				"line": 75,
 				"column": 17,
 				"value": 3,
 				"text": "3",
@@ -70027,7 +68925,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 69,
+				"line": 75,
 				"column": 21,
 				"value": 1,
 				"text": "1",
@@ -70039,7 +68937,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 70,
+				"line": 76,
 				"column": 17,
 				"value": 3,
 				"text": "3",
@@ -70051,7 +68949,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 70,
+				"line": 76,
 				"column": 21,
 				"value": 2,
 				"text": "2",
@@ -70063,7 +68961,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 99,
+				"line": 105,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -70075,7 +68973,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 100,
+				"line": 106,
 				"column": 22,
 				"value": 1,
 				"text": "1",
@@ -70087,7 +68985,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 100,
+				"line": 106,
 				"column": 57,
 				"value": 1,
 				"text": "1",
@@ -70099,7 +68997,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 118,
+				"line": 124,
 				"column": 50,
 				"value": -1,
 				"text": "1",
@@ -70113,7 +69011,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 118,
+				"line": 124,
 				"column": 54,
 				"value": 1,
 				"text": "1",
@@ -70125,7 +69023,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 136,
+				"line": 142,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -70137,7 +69035,96 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 152,
+				"line": 159,
+				"column": 44,
+				"value": 1,
+				"text": "1",
+				"name": "Math.floor",
+				"functionName": "medianOfKey",
+				"snippet": "return values[Math.floor((values.length - 1) / 2)]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 159,
+				"column": 49,
+				"value": 2,
+				"text": "2",
+				"name": "Math.floor",
+				"functionName": "medianOfKey",
+				"snippet": "return values[Math.floor((values.length - 1) / 2)]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 209,
+				"column": 39,
+				"value": 0,
+				"text": "0",
+				"name": "at",
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "const spread = at(LUMP_DECILES) - at(0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 213,
+				"column": 21,
+				"value": -1,
+				"text": "1",
+				"name": "widestIndex",
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "let widestIndex = -1",
+				"suspicion": 0,
+				"flags": [
+					"accumulator-init",
+					"negative"
+				]
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 215,
+				"column": 27,
+				"value": 1,
+				"text": "1",
+				"name": "at",
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "const gap = at(decile + 1) - at(decile)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 227,
+				"column": 56,
+				"value": 1,
+				"text": "1",
+				"name": "at",
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "const threshold = (at(widestIndex) + at(widestIndex + 1)) / 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 227,
+				"column": 62,
+				"value": 2,
+				"text": "2",
+				"name": "threshold",
+				"functionName": "splitAtLargestDecileGap",
+				"snippet": "const threshold = (at(widestIndex) + at(widestIndex + 1)) / 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p3-fields/src/primitives.ts",
+				"line": 252,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -70149,7 +69136,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 153,
+				"line": 253,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -70161,7 +69148,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 154,
+				"line": 254,
 				"column": 34,
 				"value": 0,
 				"text": "0",
@@ -70173,7 +69160,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 180,
+				"line": 280,
 				"column": 26,
 				"value": -1,
 				"text": "1",
@@ -70187,7 +69174,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 186,
+				"line": 286,
 				"column": 76,
 				"value": 3,
 				"text": "3",
@@ -70199,7 +69186,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 187,
+				"line": 287,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -70213,7 +69200,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 189,
+				"line": 289,
 				"column": 44,
 				"value": 1,
 				"text": "1",
@@ -70225,7 +69212,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 189,
+				"line": 289,
 				"column": 49,
 				"value": 2,
 				"text": "2",
@@ -70237,7 +69224,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 192,
+				"line": 292,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -70249,7 +69236,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 205,
+				"line": 305,
 				"column": 25,
 				"value": 3,
 				"text": "3",
@@ -70261,7 +69248,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 206,
+				"line": 306,
 				"column": 20,
 				"value": 3,
 				"text": "3",
@@ -70273,7 +69260,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 209,
+				"line": 309,
 				"column": 35,
 				"value": 1,
 				"text": "1",
@@ -70285,7 +69272,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 209,
+				"line": 309,
 				"column": 48,
 				"value": 1,
 				"text": "1",
@@ -70297,7 +69284,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 210,
+				"line": 310,
 				"column": 14,
 				"value": 1,
 				"text": "1",
@@ -70309,7 +69296,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 210,
+				"line": 310,
 				"column": 29,
 				"value": 1,
 				"text": "1",
@@ -70321,7 +69308,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 210,
+				"line": 310,
 				"column": 43,
 				"value": 2,
 				"text": "2",
@@ -70333,7 +69320,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 210,
+				"line": 310,
 				"column": 56,
 				"value": 2,
 				"text": "2",
@@ -70345,7 +69332,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 232,
+				"line": 335,
 				"column": 46,
 				"value": 1,
 				"text": "1",
@@ -70357,7 +69344,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 232,
+				"line": 335,
 				"column": 51,
 				"value": 2,
 				"text": "2",
@@ -70369,7 +69356,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 236,
+				"line": 339,
 				"column": 46,
 				"value": 1,
 				"text": "1",
@@ -70381,7 +69368,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 236,
+				"line": 339,
 				"column": 51,
 				"value": 2,
 				"text": "2",
@@ -70393,7 +69380,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 256,
+				"line": 359,
 				"column": 50,
 				"value": -1,
 				"text": "1",
@@ -70407,7 +69394,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 256,
+				"line": 359,
 				"column": 54,
 				"value": 1,
 				"text": "1",
@@ -70419,7 +69406,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 264,
+				"line": 367,
 				"column": 28,
 				"value": 2,
 				"text": "2",
@@ -70431,7 +69418,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 266,
+				"line": 369,
 				"column": 11,
 				"value": 1,
 				"text": "1",
@@ -70443,7 +69430,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 289,
+				"line": 392,
 				"column": 43,
 				"value": 0,
 				"text": "0",
@@ -70455,7 +69442,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 292,
+				"line": 395,
 				"column": 20,
 				"value": 1,
 				"text": "1",
@@ -70467,7 +69454,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 292,
+				"line": 395,
 				"column": 25,
 				"value": 2,
 				"text": "2",
@@ -70479,7 +69466,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/primitives.ts",
-				"line": 303,
+				"line": 406,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -70661,7 +69648,7 @@
 			},
 			{
 				"file": "prototypes/p3-fields/src/verify.ts",
-				"line": 59,
+				"line": 62,
 				"column": 27,
 				"value": 1,
 				"text": "1",

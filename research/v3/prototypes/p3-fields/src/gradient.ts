@@ -119,6 +119,8 @@ export function parameteriseField(
 	const entries: Entry[] = []
 
 	for (const angle of SPATIAL_DICTIONARY_ANGLES) {
+		// [INHERITED] — 180 is degrees-per-π. A unit conversion, fixed by the choice to write the
+		// dictionary in degrees (`SPATIAL_DICTIONARY_ANGLES`), which is where the tunable actually lives.
 		const radians = (angle * Math.PI) / 180
 		const cos = Math.cos(radians)
 		const sin = Math.sin(radians)
@@ -129,6 +131,10 @@ export function parameteriseField(
 			const x = pixel - y * width
 			values[i] = (x / width) * cos + (y / height) * sin
 		}
+		// [INHERITED] — the `0.5`s below are the *centre of the normalized frame* and the `2`s halve a unit
+		// direction so the reported chord is centred on it; `180` is the degree measure of a reversal. The
+		// contract's `GradientGeometry` is expressed in [0, 1] image coordinates, so every one of these is
+		// fixed by that coordinate system. This block is `opportunistic` output and nothing reads it back.
 		entries.push({
 			id: `linear-${angle}`,
 			values,
@@ -141,6 +147,9 @@ export function parameteriseField(
 		})
 	}
 
+	// [INHERITED] — `[0.5, 0.5]` is the centre of the normalized image frame, the same [0, 1] coordinate
+	// system the contract's `GradientGeometry` is written in. The dictionary's *members* are the choice
+	// (`SPATIAL_DICTIONARY_ANGLES` and these two origins); the number 0.5 is what "centre" means.
 	for (const [id, origin] of [["radial-image-centre", [0.5, 0.5]], ["radial-field-cascade", centre]] as const) {
 		const values = new Float64Array(n)
 		for (let i = 0; i < n; i += 1) {

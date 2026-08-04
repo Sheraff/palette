@@ -29,6 +29,7 @@
  */
 
 import { okLabDistance, rgbToOkLab } from "../../../src/contract/color.ts"
+import { LUMP_DECILES } from "./constants.ts"
 
 // ---------------------------------------------------------------------------------------------
 // The ruler
@@ -55,6 +56,11 @@ export function labDistance(lab: Float64Array, first: number, second: number): n
  * the same expression or not, so a grid buys nothing a few pairs do not.
  */
 function assertRulerAgrees(): void {
+	// [UNCALIBRATED] — five probe triples, chosen here, and *not* a parameter of the algorithm: nothing
+	// they touch is published. They are the fixture of an identity assertion (`labDistance` must be the
+	// contract's `okLabDistance`), which is either the same expression or not, so the set only has to
+	// cover the two gamut corners, a mid-chroma colour, a saturated one and a near-neutral pair. **Anchor
+	// plan:** none — the assertion fails or it does not; a different five would prove the same thing.
 	const probes: [number, number, number][] = [
 		[0, 0, 0],
 		[255, 255, 255],
@@ -138,6 +144,100 @@ export function topWindow(sorted: Int32Array, fraction: number, step: number): I
 	const to = Math.max(size, n - step * size)
 	const from = Math.max(0, to - size)
 	return sorted.subarray(from, to)
+}
+
+/**
+ * The **lower median of a scalar key** over a population. A value some pixel attains, never an
+ * interpolation — the same choice `cascadePixel` makes, for the same reason.
+ *
+ * `NaN` for an empty population, which every caller guards before asking.
+ */
+export function medianOfKey(population: Int32Array, key: (index: number) => number): number {
+	if (population.length === 0) return Number.NaN
+	const values = Float64Array.from(population, key).sort()
+	// The lower median: `floor((n − 1) / 2)` of the sorted run, so it is attained rather than averaged.
+	return values[Math.floor((values.length - 1) / 2)]
+}
+
+// ---------------------------------------------------------------------------------------------
+// Density lumps in a scalar ordering (0.3.0)
+// ---------------------------------------------------------------------------------------------
+
+export type LumpSplit = Readonly<{
+	/** Pixels whose key sits below the gap. */
+	lower: Int32Array
+	/** Pixels whose key sits above it. */
+	upper: Int32Array
+	/** `largest adjacent-decile gap / (decile₁₀ − decile₀)`, the quantity compared against g_lump. */
+	gapRatio: number
+	/** The gap's midpoint — a scalar threshold derived from two order statistics. */
+	threshold: number
+}>
+
+/**
+ * **Split a population at the largest adjacent-decile gap of a scalar key, when there is one.**
+ *
+ * The heuristic is `ATTRIBUTION.md`'s bimodal probe, moved from the diagnostic into the selection
+ * path: read the eleven nearest-rank deciles of the key, take the largest gap between adjacent
+ * deciles, and call the population two lumps when that gap is more than `gapRatio` of the whole
+ * decile spread. `null` means one lump — no gap large enough, no spread at all, or too few pixels to
+ * read a decile of.
+ *
+ * **Everything here is scalar.** The deciles are order statistics of a number-per-pixel field; the
+ * threshold is the midpoint of two of those numbers; membership is a comparison of each pixel's own
+ * scalar against it. No colour is created, averaged, or indexed, and the returned lumps are sets of
+ * artwork pixels. The one thing to be honest about: the threshold is a *derived* number that no
+ * pixel need attain. It is never published, never compared to a colour, and never leaves this
+ * function except as a diagnostic — it is a cut in a scalar ordering, which is the object the
+ * discipline line's "quantiles and trimmed ranks of scalar fields" clause allows.
+ *
+ * Permutation-invariant: the deciles are a function of the multiset of keys, and membership is by
+ * value, so the two lumps are functions of the set of pixels and not of the order they arrived in.
+ */
+export function splitAtLargestDecileGap(
+	population: Int32Array,
+	key: (index: number) => number,
+	gapRatio: number,
+): LumpSplit | null {
+	const n = population.length
+	// Fewer pixels than deciles and the "deciles" are repeats of the same handful of values, which
+	// manufactures gaps of zero width and ratios of one. A band that small is one lump by fiat.
+	if (n <= LUMP_DECILES) return null
+
+	const sorted = Float64Array.from(population, key).sort()
+	const at = (decile: number): number => sorted[quantileIndex(n, decile / LUMP_DECILES)]
+	const spread = at(LUMP_DECILES) - at(0)
+	if (!(spread > 0)) return null
+
+	let widest = 0
+	let widestIndex = -1
+	for (let decile = 0; decile < LUMP_DECILES; decile += 1) {
+		const gap = at(decile + 1) - at(decile)
+		// Strictly greater keeps the *earliest* widest gap, so the winner is a function of the values
+		// and not of which way the loop runs.
+		if (gap > widest) {
+			widest = gap
+			widestIndex = decile
+		}
+	}
+	if (widestIndex < 0) return null
+	const ratio = widest / spread
+	if (ratio < gapRatio) return null
+
+	const threshold = (at(widestIndex) + at(widestIndex + 1)) / 2
+	const lower: number[] = []
+	const upper: number[] = []
+	for (let i = 0; i < n; i += 1) {
+		if (key(population[i]) < threshold) lower.push(population[i])
+		else upper.push(population[i])
+	}
+	if (lower.length === 0 || upper.length === 0) return null
+	return {
+		lower: Int32Array.from(lower),
+		upper: Int32Array.from(upper),
+		gapRatio: ratio,
+		threshold,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -225,6 +325,9 @@ export function spatialCascade(
 	width: number,
 	height: number,
 ): readonly [number, number] {
+	// [INHERITED] — the centre of the normalized frame, in the contract's [0, 1] geometry coordinates.
+	// The empty-population answer has to be *somewhere* and the frame's own centre is the only position
+	// that is not a statement about an artwork this function was handed none of.
 	if (population.length === 0) return [0.5, 0.5]
 	let set = Int32Array.from(population)
 

@@ -33,6 +33,30 @@
  *
  * Incidentally, tier 1's preference for lightness-moving accents is also the colour-vision-deficient
  * choice, since lightness contrast survives all common CVD types and hue contrast does not.
+ *
+ * ## 0.3.0 — feasibility gains a contrast term; the ordering does not
+ *
+ * Round 1, item-07: *"accent is hard to read on top of surface or background"*
+ * (`review-rounds/round-1-calibration/VERDICTS.md`). The published accent was `#e4e8cd` against a
+ * `#ededed` surface. The complaint is exact and the cause is structural: **the accent ordering has no
+ * contrast term at all** — it ranks by OKLab distance from the nearer field end, and OKLab distance is
+ * not readability.
+ *
+ * The fix is deliberately the *smaller* of the two available ones. The ranking stays lexicographic and
+ * distance-first, because `perception-4` said to read the lightness result as a direction and not as a
+ * coefficient, and folding contrast into the rank would be the coefficient. What changes is
+ * **feasibility**: `pipeline.ts`'s accent search now requires the candidate's minimum |raw APCA| over
+ * the published ramp to clear `minAccentContrast`, which is the contract's own accent-versus-field
+ * metric. A candidate that fails steps the rank; a tier that runs out collapses, which §2.6 already
+ * defines as the honest answer when no valid accent exists.
+ *
+ * **What that buys at the default floor, stated before anyone quotes the paragraph above as a result:**
+ * the contract's default `minAccentContrast` resolves to 2.5 raw units, and item-07's accent measures
+ * 4.71 — so at defaults **this predicate does not fire on the cover that motivated it**. That is the
+ * zero-collateral rule working as designed rather than a fix landing: the floor is now *reachable* by
+ * the accent, so raising it moves the accent instead of doing nothing, and the number at which item-07
+ * changes is measurable rather than hypothetical. The judgment about where the floor belongs is a review
+ * round's, not this file's.
  */
 
 import { TRIM_LEVEL } from "./constants.ts"

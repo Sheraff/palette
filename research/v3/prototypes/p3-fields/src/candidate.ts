@@ -28,9 +28,18 @@
  * deviation, with the reason: an APCA against a lerped colour is not rewritable over pixel differences,
  * so it stays a *verification* quantity (`validatePalette`'s whole-ramp check) and never a selection one.
  *
- * **The constants are `[UNCALIBRATED]`.** All five of arm-d §4's free parameters and the three 0.2.0 tie
- * bands run at declared-provisional values chosen by this author; only k has had its anchoring plan
- * executed. See `constants.ts`, which says so per parameter, with its plan.
+ * **0.3.0 adds one object to the vocabulary, and it is a scalar threshold rather than a colour.**
+ * `splitAtLargestDecileGap` cuts a population at the midpoint of two deciles of a *scalar* field — the
+ * band's own ordering key, or OKLab L. It is a number derived from two order statistics, consumed only
+ * as a comparison threshold, never published, never compared to a colour, and no pixel need attain it.
+ * Every published colour is still the cascade pixel of an actual sub-population of the artwork, and the
+ * band-then-cascade change at the field ends moves *toward* that discipline rather than away: e₁ and e₂
+ * were this pipeline's only single-pixel reads and are now populations like every other role.
+ *
+ * **The constants are `[UNCALIBRATED]`.** All five of arm-d §4's free parameters, the three 0.2.0 tie
+ * bands and the five 0.3.0 band/lump/depth constants run at declared-provisional values chosen by this
+ * author; only k has had its anchoring plan executed, and ρ* has moved once on a *measured distribution*
+ * that is explicitly not its anchor. See `constants.ts`, which says so per parameter, with its plan.
  *
  * ## Shape
  *

@@ -20,7 +20,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.2.0"
+export const CANDIDATE_ID = "p3-fields-0.3.0"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -28,7 +28,7 @@ export const CANDIDATE_ID = "p3-fields-0.2.0"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.2.0"
+export const ALGORITHM_VERSION = "p3-fields-0.3.0"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -59,7 +59,7 @@ export const TRIM_LEVEL = 0.05
 /**
  * **k** — the rank order of the local difference filter (arm-d §2.1).
  *
- * **[MEASURED — the anchor ran, and it does not select a k. Value unchanged at 3.]**
+ * **[MEASURED]** — the anchor ran, and it does not select a k. Value unchanged at 3.
  *
  * Script: `src/tools/measure-edge-rank.ts`. Report:
  * `measurements/edge-rank-k.json`. Command and protocol are in the script's docstring; 20 covers, the
@@ -126,6 +126,8 @@ export function edgeRankInUse(): number {
 	const override = process.env.P3_EDGE_RANK
 	if (override === undefined || override.length === 0) return EDGE_RANK
 	const parsed = Number(override)
+	// [INHERITED] — 1…8 is the 8-neighbourhood's size: there are eight neighbour distances to take a
+	// k-th largest of, so the range is the data's shape and not a policy about which k are sensible.
 	if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) {
 		throw new Error(`P3_EDGE_RANK must be an integer in 1..8 (the 8-neighbourhood's size); got ${override}`)
 	}
@@ -146,11 +148,37 @@ export const FIELD_DEPTH_QUANTILE = 0.75
 /**
  * **ρ\*** — the rank-correlation level above which a field is called a gradient (arm-d §2.4).
  *
- * [UNCALIBRATED] — provisional 0.6, chosen here. **Anchoring plan (arm-d §4 row 4):** reviewer verdicts
- * on flat-vs-gradient palette *pairs* for the same artwork; it has to be pairs, because §6 rules the
- * gradient flag palette-conditional rather than an artwork label. Not run.
+ * [UNCALIBRATED] — provisional **0.62** at 0.3.0 (0.6 at 0.1.0–0.2.0). **The anchoring plan is
+ * unchanged and still the real anchor (arm-d §4 row 4):** reviewer verdicts on flat-vs-gradient palette
+ * *pairs* for the same artwork; it has to be pairs, because §6 rules the gradient flag
+ * palette-conditional rather than an artwork label. **Still not run.** Nothing below is a substitute for
+ * it, and 0.62 must not be quoted as a calibrated value.
+ *
+ * ## Why it moved, and by exactly how much
+ *
+ * Round 1's pre-registered **false-gradient watch triggered**: on item-11 the reviewer wrote *"i'm not
+ * sure i recognize a gradient in that artwork"* (`review-rounds/round-1-calibration/VERDICTS.md` §4),
+ * hedged, at zero grade cost. Per the watch, ρ* calibration jumps the queue — so the distribution was
+ * measured rather than guessed at.
+ *
+ * **Probe:** demo-20 plus a deterministic 44-image slice of the coverage set — `coverage-set-1.json`'s
+ * `artworks` array in file order, every fifth entry (indices 0, 5, …, 215) — run under `P3_DIAG`, 64
+ * images, `gradient.bestSpearmanRho` read off the decision chain. `bestSpearmanRho` is computed before
+ * ρ* is applied and does not depend on it, so one run measures the whole curve.
+ *
+ * **What it says.** Item-11's best ρ is **0.6040** — the *lowest* of the 26 fields this candidate
+ * publishes a gradient for. The published tail runs 0.6040, 0.6134, 0.6228, 0.6553, …; the non-published
+ * side tops out at 0.5974. So the reviewer's doubt lands exactly on the boundary case, which is the
+ * outcome that makes a boundary worth moving and not the outcome that condemns the discriminator.
+ *
+ * **0.62** is the smallest two-decimal value that clears item-11's 0.6040 *and its nearest published
+ * neighbour* 0.6134, so the cut does not sit between two ρ values that a fourth-decimal perturbation
+ * could reorder. It costs two gradients of 26 on the probe — published rate 40.6 % → 37.5 %, against the
+ * 0.2.0 candidate's 43.8 % on the same 64 images — which is inside the gradient-rate neutrality the
+ * design constraint asks for. A larger move was available and refused: the widest gap in the published
+ * tail is 0.6228 → 0.6553, and cutting there would drop three.
  */
-export const GRADIENT_RANK_CORRELATION = 0.6
+export const GRADIENT_RANK_CORRELATION = 0.62
 
 /**
  * **The ink annulus ratio** — surround radius as a multiple of stroke depth (arm-d §2.5).
@@ -239,6 +267,16 @@ export const EXCURSION_BAND_HALF_WIDTH = 0.03
 export const MAX_GUIDE_STOPS = 2
 
 /**
+ * The **decile count** the lump heuristic reads a scalar distribution at.
+ *
+ * [INHERITED] — from `measurements/attribution/ATTRIBUTION.md`'s bimodal probe, which scored
+ * bimodality as *largest adjacent-decile gap / (decile₁₀ − decile₀)* over eleven nearest-rank
+ * deciles. 0.3.0 consumes that same reading in the selection path, so the resolution is taken from
+ * the instrument that produced the evidence rather than re-chosen here.
+ */
+export const LUMP_DECILES = 10
+
+/**
  * The spatial-spread floor of the verification pass, as an interquartile extent in normalized
  * coordinates summed over the two axes.
  *
@@ -251,7 +289,15 @@ export const MAX_GUIDE_STOPS = 2
  */
 export const SPATIAL_SPREAD_FLOOR = 0.01
 
-/** How many position bins per axis the spread measurement accumulates into. */
+/**
+ * How many position bins per axis the spread measurement accumulates into.
+ *
+ * [UNCALIBRATED] — a resolution, chosen here. 512 bins per axis put every quantile of position to
+ * within 1/512 of the image's extent, which is finer than the spread floor can act on; the whole
+ * point of binning is that a colour occupying half the artwork must not cost an array of half a
+ * million coordinates. **Anchor plan:** none needed — a resolution is refuted by showing that the
+ * measured spread moves when it doubles, which is a one-line check, not a review round.
+ */
 export const SPREAD_POSITION_BINS = 512
 
 /**
@@ -366,6 +412,134 @@ export const BACKGROUND_PREVALENCE_TIE_BAND = 0.1
  * the smallest margin. A quarter of the floor is a guess at how much slack that lever needs.
  */
 export const INK_REGIME_SUPPORT_MARGIN = 0.25
+
+// ---------------------------------------------------------------------------------------------
+// 0.3.0 — the ends band, the lump split, the degenerate-depth fallback
+// ---------------------------------------------------------------------------------------------
+//
+// `measurements/attribution/ATTRIBUTION.md` measured where the 0.2.0 disagreements are *born*, and
+// the answer is not where the 0.2.0 tie bands were aimed: **87 of 122 first divergences are the
+// field-ends block** (`e1-colour` 68, `e2-colour` 11, `prevalence-order` 4, `ends-step` 4), with
+// **17 of the 19 whole-palette flips born at `e1-colour` alone** and **zero** at `fg-cascade`. Two
+// facts inside that number set the shape of every constant below:
+//
+// 1. **e₁ and e₂ were single-pixel reads.** In 36 of the 68 `e1-colour` rows the field's own cascade
+//    pixel *m* was the same colour on both sides and the rank-(1 − τ) pixel under it was still a
+//    different colour — the order statistic itself moving, with nothing else moving. A single rank
+//    is the one place in this pipeline a published colour rested on one pixel; 0.3.0 replaces it
+//    with the **cascade pixel of a band**, which is the primitive every other role already uses.
+// 2. **The population the ranks are read over is itself drifting** — field-set size drift median
+//    5.5 %, **max 2789.9 %** across a pair. A band over a population that changes by 28× is still a
+//    band over noise, so the membership rule gets a stated degenerate case of its own.
+//
+// None of these values is a measurement. Each is a declared operating point with the anchor that
+// would settle it, exactly like arm-d §4's five and 0.2.0's three tie bands.
+
+/**
+ * **w_ends** — the width of the band whose cascade pixel is published as a field end, as a multiple
+ * of τ.
+ *
+ * [UNCALIBRATED] — provisional 1.0, chosen here. **Anchor plan:** the robustness plateau — sweep
+ * w_ends over the harness's four perturbation arms and take the smallest multiple at which
+ * background/surface agreement stops rising, the same one-dimensional knee arm-d §4 row 1 specifies
+ * for τ. Not run.
+ *
+ * 1.0 is the operating point because it makes the band *exactly the trim that was being discarded*:
+ * the (1 − τ) rank is the top of the band and τ·n pixels sit under it, so the published end is the
+ * cascade pixel of the same window `topWindow(·, τ, 1)` would hand the foreground. Expressing it as
+ * a multiple of τ rather than as its own fraction keeps the pipeline's "one trim level everywhere"
+ * property (arm-d §3(6)) — there is still one number to sweep, and this one says how many trims wide
+ * the end is.
+ */
+export const ENDS_BAND_TAU_MULTIPLE = 1
+
+/**
+ * **g_lump** — the largest-adjacent-decile-gap ratio above which a scalar band is called two lumps.
+ *
+ * [INHERITED] — 0.25, carried unchanged from `ATTRIBUTION.md`'s bimodal probe, where it is declared
+ * `[UNCALIBRATED]` and justified as 2.5× the ≈ 0.10 an adjacent decile pair of a *uniform*
+ * population spans. It arrives here as an inherited reading convention, and the inheritance is the
+ * thing to be suspicious of: in the probe nothing consumed it, and now the selection path does.
+ *
+ * **Anchor plan:** the robustness plateau, jointly with `ENDS_BAND_TAU_MULTIPLE` — the two interact,
+ * because a wider band is more likely to span a gap. Not run.
+ *
+ * Carry the probe's own caveat with the number: **bimodality by this test is the normal case** (98
+ * of 122 disagreeing pairs), so g_lump is not a discriminator between stable and unstable covers. It
+ * is only the rule that decides *which* lump a band that has two of them is cascaded over.
+ */
+export const LUMP_GAP_RATIO = 0.25
+
+/**
+ * **δ_lump** — the relative mass difference below which two lumps are declared equally populated,
+ * and the *farther* lump wins instead of the *larger* one.
+ *
+ * [UNCALIBRATED] — provisional 0.10, chosen here, and set equal to `BACKGROUND_PREVALENCE_TIE_BAND`
+ * on purpose: both are "two counts over the same population are this close, so the difference
+ * between them is not evidence", and two different numbers for one question would be two levers
+ * where the design has one. **Anchor plan:** the same sweep as δ_bs. Not run.
+ *
+ * Why the *farther* lump breaks the tie, rather than a fixed dark/light convention: a field end is
+ * asked to be an end. When the band spans two lumps of equal mass, the one further along the band's
+ * own ordering is the one that answers the question that was asked; mass is the tie-break only
+ * because a sparse lump of a hundred pixels is a worse population to take a cascade pixel of than a
+ * dense one of ten thousand.
+ */
+export const LUMP_MASS_TIE_BAND = 0.1
+
+/**
+ * **d_min** — the depth, *in pixels*, at or under which the β cut is declared to carry no
+ * information and F falls back to the wider membership rule.
+ *
+ * [UNCALIBRATED] — provisional 1 px, chosen here. **Anchor plan:** the fallback fires on a *nameable*
+ * population, so the measurement is direct — run the perturbation arms and take the largest d_min at
+ * which the membership-rule label (`beta-quantile` vs `degenerate-depth`) agrees between a cover and
+ * its ±1-LSB dither on ≥ 99 % of covers, then read the rule's own field-set-size drift against
+ * 0.2.0's median 5.5 % / max 2789.9 %. Needs no reviewer and no palette comparison. Not run.
+ *
+ * **Pixels and not a fraction of the long edge, against `CONVENTIONS.md`'s scale-free default — the
+ * same exemption `INK_ANNULUS_MIN_RADIUS_PX` takes, for the same reason: the quantity is the
+ * measurement grid itself.** Depth is an exact Euclidean distance transform, so its non-zero values
+ * are `1, √2, 2, √5, …` pixels divided by the long edge; a cut at one pixel means *the pixel at the
+ * β rank is a direct neighbour of an edge*. Measured on the 64-image probe (demo-20 + the coverage-44
+ * slice), the β-quantile depths are 0 px on 14 covers and exactly 1 px on 14 more — the criterion is
+ * reading the transform's own quantisation, and a scale-free fraction cannot: 0.01 of the long edge
+ * is 3 px at 300² and 10 px at 1024², so it would call one resolution tier degenerate three times
+ * more readily than another. That reading was measured before this line was written: at 0.01 the
+ * fallback fired on 39 of 64 and moved 20 of 44 coverage palettes with no scorecard change and a
+ * gradient-rate drop of 20 → 15, which is a redesign of F wearing a fallback's clothes.
+ *
+ * At 1 px the rule fires on 28 of 64 and **changes F on 14 of them** — the other 14 have a β-quantile
+ * depth of exactly zero, where §2.3's strictly-greater branch already returns the same set, so the
+ * fallback is a no-op there by arithmetic rather than by intent.
+ */
+export const DEGENERATE_DEPTH_FLOOR_PX = 1
+
+/**
+ * **The L axis's midpoint**, against which the ink lump's extremity is measured.
+ *
+ * [INHERITED] — OKLab L is bounded [0, 1] by the space's own definition, so its midpoint is 0.5 and
+ * there is nothing to calibrate. It is named rather than written as a bare literal because it is
+ * doing selection work: "the designer's ink is the L-extreme lump, not the mid-tone between the
+ * lumps" is implemented as *distance from this point*.
+ */
+export const LIGHTNESS_AXIS_MIDPOINT = 0.5
+
+/**
+ * **δ_ink** — the extremity tie band for the ink regime's lump choice, in OKLab L units.
+ *
+ * [UNCALIBRATED] — provisional 0.05, chosen here. **Anchor plan:** the ink annulus sweep of arm-d §4
+ * row 5 already scores ink-mask agreement against the reviewer's foreground endorsements; δ_ink
+ * rides along on it, because the quantity it decides is which lump the published ink comes from.
+ * Not run.
+ *
+ * 0.05 L is the operating point because it is the scale at which two lumps' median lightnesses stop
+ * being distinguishable as "one is the extreme one": the same-colour bar the contract calibrates is
+ * of that order in L for a neutral pair. Inside the band the **darker** lump wins, matching
+ * `field-roles.ts`'s darker-end background convention and `foreground.ts`'s darker-band polarity
+ * convention — three stated conventions that cannot pull a palette in opposite directions.
+ */
+export const INK_LUMP_EXTREMITY_TIE_BAND = 0.05
 
 /**
  * The fixed dictionary of linear spatial parameterisations, in degrees (arm-d §2.4).

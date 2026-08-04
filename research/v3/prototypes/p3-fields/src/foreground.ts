@@ -101,21 +101,73 @@
  * The annulus is sampled at fixed angles rather than rasterised exactly: a rasterised ring is a different
  * population at every radius, and the score is a *fraction*, so a fixed sample count makes the score
  * comparable between a 2-pixel stroke and a 20-pixel one.
+ *
+ * ## 0.3.0 — the ink regime: identity first, legibility second
+ *
+ * Round 1's two weak ink verdicts are the same defect twice
+ * (`review-rounds/round-1-calibration/VERDICTS.md`): *"foreground is hard to read on top of surface"* on
+ * items 00 and 02, and on item-02 the published foreground was `#c8c8c8` **on a cover whose ink is
+ * black**. Until 0.3.0 the ink regime published its cascade pixel with contrast entering only through
+ * near-zero verification floors one layer later. Two clauses close it, and **their order is the whole
+ * design**:
+ *
+ * 1. **Lump-aware cascade — which lump is the ink.** `#c8c8c8` is not a colour anybody chose; it is the
+ *    *median of a window that straddles two lumps*, black type and light ground, the same
+ *    cascade-over-a-bimodal-band defect `ATTRIBUTION.md` traces at the field ends. So the top-τ window is
+ *    split at its largest adjacent-decile gap in **L** (`LUMP_GAP_RATIO`) and the cascade runs over the
+ *    **L-extreme** lump — the one further from the lightness axis's midpoint — because the designer's ink
+ *    is an extreme and the thing between the lumps is an artefact of averaging ranks. Within
+ *    `INK_LUMP_EXTREMITY_TIE_BAND` the darker lump wins, matching this file's and `field-roles.ts`'s
+ *    other two conventions. **This step consults no contrast quantity at all.**
+ * 2. **Contrast as a preference *inside* the chosen lump.** Among the ink pixels, those whose **minimum
+ *    |raw APCA| over the published field ramp** clears the contract's text floor are preferred — the
+ *    cascade runs over them instead of over the whole lump. If *none* of the ink clears the floor, the
+ *    whole lump is still the answer: the artwork's own ink is published at whatever contrast it has.
+ *
+ * **The regime is never left on a contrast failure.** Falling through to the luminance ordering happens
+ * only where it always did, on the source-support test (§2.5 / `clearsInkRegimeMargin`). An earlier draft
+ * of this iteration made clause 2 a hard feasibility mask that could empty the population and evict the
+ * regime; that is the wrong direction, and the evidence says so.
+ *
+ * ### The tension, named rather than resolved here
+ *
+ * Round 1 graded items 00 and 02 **weak for foreground readability** — legibility over identity. A P5
+ * round then produced the opposite verdict on the same axis: **identity outranked legibility**, with a
+ * reviewer demanding a *white* foreground on a light field because the title text on that cover is
+ * white. Both are human verdicts and they pull opposite ways. This file resolves the conflict by
+ * *publishing the designer's ink and preferring the legible part of it*, which satisfies the P5 case
+ * exactly and the round-1 case whenever the ink has any legible part — and it declines to invent a
+ * third answer on covers where the ink has none. **Round 2 re-grades items 00 and 02 and settles it
+ * empirically**; nothing in this docstring should be read as having settled it.
+ *
+ * The one deviation declared above applies unchanged: the ramp is its **stop pixels**, never its
+ * interpolants.
  */
 
 import { apcaRaw } from "../../../src/contract/color.ts"
 import { SOURCE_POPULATION_FLOOR } from "../../../src/contract/constants.ts"
+import type { Rgb8 } from "../../../src/contract/types.ts"
 import {
 	FOREGROUND_POLARITY_TIE_BAND,
 	INK_ANNULUS_MIN_RADIUS_PX,
 	INK_ANNULUS_MIN_SAMPLES,
 	INK_ANNULUS_RATIO,
 	INK_ANNULUS_SAMPLES,
+	INK_LUMP_EXTREMITY_TIE_BAND,
 	INK_REGIME_SUPPORT_MARGIN,
+	LIGHTNESS_AXIS_MIDPOINT,
+	LUMP_GAP_RATIO,
 	TRIM_LEVEL,
 } from "./constants.ts"
 import { pixelRgb, type DecodedImage } from "./decode.ts"
-import { cascadePixel, labDistance, sortByKey, topWindow } from "./primitives.ts"
+import {
+	cascadePixel,
+	labDistance,
+	medianOfKey,
+	sortByKey,
+	splitAtLargestDecileGap,
+	topWindow,
+} from "./primitives.ts"
 
 export type InkField = Readonly<{
 	/** Pixels that are a coherent mark on a coherent ground, ascending by index. */
@@ -207,7 +259,123 @@ export type ForegroundChoice = Readonly<{
 	 * this window*, and a hypothesis about a population cannot be tested from a summary of it.
 	 */
 	window: Int32Array
+	/** How the ink regime's lump clause and contrast preference landed (0.3.0). `null` for luminance. */
+	inkRefinement: InkRefinement | null
 }>
+
+/**
+ * What the ink regime's two 0.3.0 clauses did to the top-τ window. Counts and scalars only.
+ */
+export type InkRefinement = Readonly<{
+	/** The top-τ window's size, before either clause. */
+	windowSize: number
+	/** How many pixels the chosen L-lump held. */
+	lumpSize: number
+	/** How many of those cleared the min-ramp |APCA| floor. Never used to empty the population. */
+	legibleSize: number
+	/** `null` when the window was one lump. */
+	gapRatio: number | null
+	/** Lower and upper lump masses, or `null`. */
+	lumpMasses: readonly [number, number] | null
+	/** Median L of each lump, or `null`. */
+	lumpMedianL: readonly [number, number] | null
+	chosen: "whole-population" | "extreme-lump" | "darker-convention"
+	/** True when the contrast preference actually narrowed the lump. */
+	contrastPreferenceApplied: boolean
+	/** How many pixels the cascade actually ran over. */
+	cascadedOver: number
+}>
+
+/**
+ * The ink regime's ramp anchors and floor, as the pipeline resolves them. A *preference*, not a mask:
+ * `refineInkWindow` narrows the ink lump toward these and never empties it.
+ *
+ * Pixel triples rather than pixel indices because `apcaRaw` takes triples, and the anchors are read
+ * once per ends step and consulted once per candidate pixel.
+ */
+export type InkContrastPreference = Readonly<{ anchorRgb: readonly Rgb8[]; floor: number }>
+
+/**
+ * The contract's text-versus-field metric for one pixel: **min |raw APCA| over the ramp's stops**.
+ *
+ * Exported because three sites consume the same quantity at 0.3.0 — the ink preference here, the accent's
+ * feasibility floor, and the fg↔accent comparator — and three spellings of one metric is how two of
+ * them end up disagreeing.
+ */
+export function minRampContrast(image: DecodedImage, pixel: number, anchorRgb: readonly Rgb8[]): number {
+	const rgb = pixelRgb(image, pixel)
+	let smallest = Number.POSITIVE_INFINITY
+	for (const anchor of anchorRgb) {
+		const magnitude = Math.abs(apcaRaw(rgb, anchor))
+		if (magnitude < smallest) smallest = magnitude
+	}
+	return smallest
+}
+
+/**
+ * The ink regime's two clauses, applied to one top-τ window. **Identity first, legibility second.**
+ * See the module docstring for the ordering and the evidence behind it.
+ *
+ * Never returns an empty population, and never `null`: the ink regime is left only by the
+ * source-support test, never by a contrast one.
+ */
+function refineInkWindow(
+	image: DecodedImage,
+	window: Int32Array,
+	preference: InkContrastPreference,
+): Readonly<{ population: Int32Array; record: InkRefinement }> {
+	// 1. The lump clause, on L — which lump is the artwork's *ink*. Run first, over the whole window,
+	//    so no contrast test can decide it.
+	const lightnessOf = (index: number): number => image.lab[index * 3]
+	const split = splitAtLargestDecileGap(window, lightnessOf, LUMP_GAP_RATIO)
+
+	let population: Int32Array = window
+	let chosen: InkRefinement["chosen"] = "whole-population"
+	let lumpMasses: readonly [number, number] | null = null
+	let lumpMedianL: readonly [number, number] | null = null
+	if (split !== null) {
+		const lowerL = medianOfKey(split.lower, lightnessOf)
+		const upperL = medianOfKey(split.upper, lightnessOf)
+		// Extremity is distance from the lightness axis's own midpoint: OKLab L is bounded [0, 1], so this
+		// is an absolute, scale-free quantity and not a statistic of this corpus. A cover with black type
+		// on white puts the ink lump at |0 − 0.5| and the ground lump at |0.83 − 0.5|; a cover with white
+		// type on black puts them the other way round. Both cases pick the type, which is the point.
+		const lowerExtremity = Math.abs(lowerL - LIGHTNESS_AXIS_MIDPOINT)
+		const upperExtremity = Math.abs(upperL - LIGHTNESS_AXIS_MIDPOINT)
+		const tied = Math.abs(lowerExtremity - upperExtremity) < INK_LUMP_EXTREMITY_TIE_BAND
+		population = tied ? split.lower : (lowerExtremity > upperExtremity ? split.lower : split.upper)
+		chosen = tied ? "darker-convention" : "extreme-lump"
+		lumpMasses = [split.lower.length, split.upper.length]
+		lumpMedianL = [lowerL, upperL]
+	}
+
+	// 2. Contrast, as a **preference inside** the chosen lump and never as an eviction from it. If some
+	//    of the ink clears the contract's text floor against the ramp, the cascade runs over that part;
+	//    if none of it does, the whole lump is still the answer and the artwork's own ink is published
+	//    at whatever contrast it has.
+	const legibleList: number[] = []
+	for (let i = 0; i < population.length; i += 1) {
+		if (minRampContrast(image, population[i], preference.anchorRgb) >= preference.floor) legibleList.push(population[i])
+	}
+	const legible = legibleList.length > 0 && legibleList.length < population.length
+		? Int32Array.from(legibleList)
+		: population
+
+	return {
+		population: legible,
+		record: {
+			windowSize: window.length,
+			lumpSize: population.length,
+			legibleSize: legibleList.length,
+			gapRatio: split === null ? null : split.gapRatio,
+			lumpMasses,
+			lumpMedianL,
+			chosen,
+			contrastPreferenceApplied: legible !== population,
+			cascadedOver: legible.length,
+		},
+	}
+}
 
 /**
  * An ordering, computed once and redeemed at as many ranks as the verify-and-step loop asks for.
@@ -419,19 +587,38 @@ export function luminanceOrdering(
 	}
 }
 
-/** Redeem one rank of an ordering: the cascade pixel of its top-τ sub-population, stepped. */
+/**
+ * Redeem one rank of an ordering: the cascade pixel of its top-τ sub-population, stepped.
+ *
+ * `inkPreference` is the ink regime's 0.3.0 contrast pressure and is ignored by the luminance regime, whose
+ * ordering is already the ramp minimum. `null` means "no ramp available" — the escape path and any
+ * caller without a published ramp — and reproduces 0.2.0's behaviour exactly.
+ */
 export function chooseForeground(
 	image: DecodedImage,
 	ordering: ForegroundOrdering,
 	step: number,
+	inkPreference: InkContrastPreference | null = null,
 ): ForegroundChoice | null {
 	const window = topWindow(ordering.sorted, TRIM_LEVEL, step)
 	if (window.length === 0) return null
+
+	let population: Int32Array = window
+	let inkRefinement: InkRefinement | null = null
+	if (ordering.regime === "ink" && inkPreference !== null) {
+		const refined = refineInkWindow(image, window, inkPreference)
+		population = refined.population
+		inkRefinement = refined.record
+	}
+
 	return {
-		pixel: cascadePixel(window, window.length, image.lab, image.rgb),
+		pixel: cascadePixel(population, population.length, image.lab, image.rgb),
 		regime: ordering.regime,
-		populationSize: window.length,
+		populationSize: population.length,
 		polarity: ordering.polarity,
-		window,
+		// The population the cascade actually ran over, not the window it started from: a hypothesis
+		// about the cascade cannot be tested from a summary of a population the cascade did not see.
+		window: population,
+		inkRefinement,
 	}
 }

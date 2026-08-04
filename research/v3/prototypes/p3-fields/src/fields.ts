@@ -45,7 +45,13 @@ import { edgeRankInUse } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import { labDistance } from "./primitives.ts"
 
-/** The 8-neighbourhood, in a fixed order. Fixed iteration order is part of the determinism promise. */
+/**
+ * The 8-neighbourhood, in a fixed order. Fixed iteration order is part of the determinism promise.
+ *
+ * [INHERITED] — arm-d §2.1 says *the eight pixels of its 3×3 neighbourhood*, and these are the eight
+ * offsets that phrase names. Not a radius anyone could widen: the k-th-largest rank filter is defined
+ * over exactly this set, and `EDGE_RANK`'s 1…8 range is its size.
+ */
 const NEIGHBOUR_OFFSETS: readonly (readonly [number, number])[] = [
 	[-1, -1], [0, -1], [1, -1],
 	[-1, 0], [1, 0],
@@ -76,6 +82,8 @@ export function computeEdgeField(image: DecodedImage, rank: number = edgeRankInU
 	const count = width * height
 	const isEdge = new Uint8Array(count)
 	const localDifference = new Float64Array(count)
+	// [INHERITED] — 8 is the size of the 8-neighbourhood `NEIGHBOUR_OFFSETS` enumerates, so this is the
+	// scratch buffer's exact capacity rather than a limit anyone could tune.
 	const distances = new Float64Array(8)
 	let edgeCount = 0
 
@@ -173,6 +181,9 @@ export type DepthField = Readonly<{
 export function computeDepthField(image: DecodedImage, edges: EdgeField): DepthField {
 	const { width, height, eligible } = image
 	const count = width * height
+	// [INHERITED] — Felzenszwalb–Huttenlocher's own "large value" sentinel for a non-seed cell. It has to
+	// exceed any attainable squared distance (< 2·1024² ≈ 2.1e6 here) and stay far from Float64 overflow
+	// when the parabola arithmetic adds q² to it; 1e20 is the value the reference implementation uses.
 	const infinity = 1e20
 	const grid = new Float64Array(count)
 	let seeds = 0

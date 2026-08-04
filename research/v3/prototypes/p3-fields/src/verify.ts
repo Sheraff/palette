@@ -52,6 +52,9 @@ export type SupportVerdict = Readonly<{
 
 function binQuantileExtent(bins: Uint32Array, total: number): number {
 	if (total === 0) return 0
+	// [INHERITED] — the quartiles. §2.7 asks for an *interquartile* extent, so 0.25 and 0.75 are the
+	// definition of the statistic rather than a window anyone chose; the tunable is the floor the result
+	// is compared against (`SPATIAL_SPREAD_FLOOR`), which carries its own tag and its own caveat.
 	const lowTarget = total * 0.25
 	const highTarget = total * 0.75
 	let running = 0

@@ -42,8 +42,16 @@ export function diagnosticsEnabled(): boolean {
 	return DIAG_DIR !== null
 }
 
-/** The record's filename stem: a hash of the **path**, not of the bytes, so twins never collide. */
+/**
+ * The record's filename stem: a hash of the **path**, not of the bytes, so twins never collide.
+ *
+ * [UNCALIBRATED] — 24 hex characters (96 bits) is a filename length, chosen here. It is a collision
+ * budget for a few hundred paths per sweep, where 96 bits is many orders of magnitude of headroom, and
+ * nothing downstream reads meaning out of the stem. **Anchor plan:** none — a collision is detectable
+ * (two images, one file) and the fix is more characters.
+ */
 export function diagnosticsKey(imagePath: string): string {
+	// [UNCALIBRATED] — 24 hex characters, i.e. 96 bits of the digest. See the docstring above.
 	return createHash("sha1").update(imagePath).digest("hex").slice(0, 24)
 }
 
@@ -70,7 +78,10 @@ export function deciles(values: readonly number[] | Float64Array): number[] {
 	const n = sorted.length
 	if (n === 0) return []
 	const out: number[] = []
+	// [INHERITED] — ten is what "decile" means; the eleven cut points are q = 0, 0.1, … 1. It is the
+	// same resolution `LUMP_DECILES` names for the selection path, and it is a definition, not a choice.
 	for (let decile = 0; decile <= 10; decile += 1) {
+		// [INHERITED] — ten, again: the divisor turns a decile index into a quantile.
 		const at = Math.min(n - 1, Math.max(0, Math.round((decile / 10) * (n - 1))))
 		out.push(sorted[at])
 	}
