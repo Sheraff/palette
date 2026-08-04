@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "contract": "v2-3",
+    "purpose": "SYNTHETIC test fixture for the adjudication consumer. Not real reviewer evidence.",
+    "cases": {
+      "k1": "sits one LSB per channel from endorsement e4 — a candidate can match both at once",
+      "k2": "an ordinary hard-gate entry on its own file"
+    }
+  },
+  "entries": [
+    {
+      "contract": "v2-3",
+      "entryId": "k1",
+      "artwork": {
+        "imagePath": "fixtures/artwork-b.jpg",
+        "contentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#303030" },
+          "surface": { "hex": "#404040" },
+          "foreground": { "hex": "#f0f0f0" },
+          "accent": { "hex": "#a03030" }
+        }
+      },
+      "roleSignature": "#303030,#404040,#f0f0f0,#a03030",
+      "grades": ["weak-fallback"],
+      "worstGrade": "weak-fallback",
+      "standingGrade": "weak-fallback",
+      "resolvedByRecency": false,
+      "contested": false,
+      "resolution": {
+        "distinctGrades": ["weak-fallback"],
+        "latestGrade": "weak-fallback",
+        "latestRecordedAt": "2026-07-31T09:30:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-31T09:30:00.000Z", "grade": "weak-fallback", "batch": "fixture", "label": "near" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-31T09:30:00.000Z", "batch": "fixture", "label": "near", "notes": "flat, muddy" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "k2",
+      "artwork": {
+        "imagePath": "fixtures/artwork-c.jpg",
+        "contentSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#001122" },
+          "surface": { "hex": "#112233" },
+          "foreground": { "hex": "#ddeeff" },
+          "accent": { "hex": "#ff0000" }
+        }
+      },
+      "roleSignature": "#001122,#112233,#ddeeff,#ff0000",
+      "grades": ["unacceptable"],
+      "worstGrade": "unacceptable",
+      "standingGrade": "unacceptable",
+      "resolvedByRecency": false,
+      "contested": false,
+      "resolution": {
+        "distinctGrades": ["unacceptable"],
+        "latestGrade": "unacceptable",
+        "latestRecordedAt": "2026-07-29T14:00:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-29T14:00:00.000Z", "grade": "unacceptable", "batch": "fixture", "label": "v2-2" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-29T14:00:00.000Z", "batch": "fixture", "label": "v2-2", "notes": "the accent is a fire alarm" }
+      ]
+    }
+  ]
+}

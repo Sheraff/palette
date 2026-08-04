@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "contract": "v2-3",
+    "purpose": "SYNTHETIC test fixture for the adjudication consumer. Not real reviewer evidence.",
+    "cases": {
+      "ac1": "the same file and the same exact palette as endorsement e5 — a tier overlap",
+      "ac2": "an acceptable-tier entry whose standing grade is `strong` — the tier and the grade disagree"
+    }
+  },
+  "entries": [
+    {
+      "contract": "v2-3",
+      "entryId": "ac1",
+      "kind": "grade-acceptable",
+      "artwork": {
+        "imagePath": "fixtures/artwork-b.jpg",
+        "contentSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#123456" },
+          "surface": { "hex": "#234567" },
+          "foreground": { "hex": "#eeeeee" },
+          "accent": { "hex": "#ff8800" }
+        }
+      },
+      "roleSignature": "#123456,#234567,#eeeeee,#ff8800",
+      "standingGrade": "acceptable",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": false,
+      "resolution": {
+        "distinctGrades": ["acceptable"],
+        "latestGrade": "acceptable",
+        "latestRecordedAt": "2026-07-31T10:30:00.000Z",
+        "gradeHistory": [
+          { "recordedAt": "2026-07-31T10:30:00.000Z", "grade": "acceptable", "batch": "fixture", "label": "overlap" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-07-31T10:30:00.000Z", "batch": "fixture", "label": "overlap", "notes": "" }
+      ]
+    },
+    {
+      "contract": "v2-3",
+      "entryId": "ac2",
+      "kind": "grade-acceptable",
+      "artwork": {
+        "imagePath": "fixtures/artwork-e.jpg",
+        "contentSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "rendition": { "format": "jpeg", "width": 640, "height": 640 }
+      },
+      "palette": {
+        "completeness": "full",
+        "roles": {
+          "background": { "hex": "#444444" },
+          "surface": { "hex": "#555555" },
+          "foreground": { "hex": "#dddddd" },
+          "accent": { "hex": "#ffaa00" }
+        }
+      },
+      "roleSignature": "#444444,#555555,#dddddd,#ffaa00",
+      "standingGrade": "strong",
+      "contested": false,
+      "resolvedByRecency": false,
+      "supersededByLaterGrade": true,
+      "resolution": {
+        "distinctGrades": ["strong"],
+        "latestGrade": "strong",
+        "latestRecordedAt": "2026-08-01T16:00:00.000Z",
+        "supersededByLaterGrade": true,
+        "gradeHistory": [
+          { "recordedAt": "2026-08-01T16:00:00.000Z", "grade": "strong", "batch": "fixture", "label": "late" }
+        ]
+      },
+      "evidence": [
+        { "recordedAt": "2026-08-01T16:00:00.000Z", "batch": "fixture", "label": "late", "notes": "graded strong but distilled into the baseline tier" }
+      ]
+    }
+  ]
+}
