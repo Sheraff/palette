@@ -1,0 +1,208 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "p2-field-gradient-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "p2-field-gradient.v1",
+	"seed": 20260804,
+	"generatedBy": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+	"builtFrom": [
+		"research/v3/data/oracle-premise/eval-set.json",
+		"research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+		"research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/ROUND.md"
+	],
+	"selection": {
+		"rule": "Eight artworks, chosen before any of them was looked at. One is the artwork the reviewer commented on in round 1, whose comment opened this question; it is the anchor and it is drawn first. The other seven come from a committed set of covers whose automatic field reading changes when a single parameter of that reading is moved to its literal value — the change under consideration. Those covers are split by what the legacy corpus records about them: three where the legacy record says the field is a progression and the change would stop calling it one (the costliest error the change can make), two where the legacy record says the field is flat and the change would stop calling it a progression, and two that carry no legacy record at all. Within each group the artworks are taken first by sorted image path, so none was chosen for how it looks; the anchor is removed from the later groups so no artwork is drawn twice. The source file that produced the seven, the per-artwork legacy record, and the parameter under consideration are named in ROUND.md and deliberately not here: this round is the primary judge answering about an artwork, and nothing that could tell them what to answer travels with the items.",
+		"counts": {
+			"anchor": 1,
+			"legacy_progression_group": 3,
+			"legacy_flat_group": 2,
+			"no_legacy_record_group": 2,
+			"backfilled": 0,
+			"selected": 8
+		}
+	},
+	"questions": [
+		{
+			"key": "field-gradient",
+			"kind": "enum",
+			"question": "Look at this artwork's background field. Which of these is it?",
+			"instruction": "Answer this one artwork only, from your first read. Do not deliberate, and do not try to make your answers across the eight artworks tell one story.",
+			"preamble": "The BACKGROUND FIELD is the large area behind and around whatever is in front of it — subject, figures, lettering, logo. Judge that area and nothing else, and judge it AS A WHOLE, even when it is made of several parts.",
+			"framing": "The test is what the field DOES across itself, not what it is a picture of. One colour all over is flat — and near enough to one colour that you would happily describe the whole field with a single colour still counts as flat. A continuous progression is a gradient: a fade, a glow, a vignette, colours melting into one another, even a subtle one, even between two colours that are close together. Two or more separate colour areas meeting each other is NEITHER, however soft or blurry the join between them looks — softness of a join is never the test. A repeating pattern, a material like paper or concrete, or a field you simply cannot read as having any overall colour behaviour is also neither. If the artwork does not give you a field you can judge at all, \"can't tell\" is a real answer; it is measured, not penalized.",
+			"answers": [
+				{
+					"key": "flat",
+					"label": "flat",
+					"gloss": "one colour — or close enough that a single colour represents the whole field",
+					"hotkey": "1"
+				},
+				{
+					"key": "gradient",
+					"label": "gradient",
+					"gloss": "a continuous progression between two or more colours, across the field",
+					"hotkey": "2"
+				},
+				{
+					"key": "neither",
+					"label": "neither",
+					"gloss": "several distinct colour areas, a pattern or material texture, or no readable field at all",
+					"hotkey": "3"
+				},
+				{
+					"key": "cant_tell",
+					"label": "can't tell",
+					"gloss": "you cannot tell",
+					"hotkey": "u"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "fg-377b1cc24ef3",
+			"questionKey": "field-gradient",
+			"imagePath": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"sha256": "377b1cc24ef36613c9847781596ddff76ff761cd8cfa3c8bcef1dac7962f41c4",
+			"imageId": "ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"artworkId": "00001448e1c8dadd225466f4",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"sourceEntryId": "377b1cc24ef36613",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "fg-37a9174a754c",
+			"questionKey": "field-gradient",
+			"imagePath": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+			"sha256": "37a9174a754c2b0441e00b354fdb3d870100158ccdf8e75eb26cac06835ad82d",
+			"imageId": "ab67616d00001e02000a8aa1dafa651976a7bb44",
+			"artworkId": "000a8aa1dafa651976a7bb44",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "fcd317fa1a3ef9dc",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "fg-4fa6dcef2404",
+			"questionKey": "field-gradient",
+			"imagePath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+			"sha256": "4fa6dcef2404938c7828fc696856d1996b9351851583c4ff836c2ba1d5f4636b",
+			"imageId": "ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+			"artworkId": "00015a7a9909e03141e001e3",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "4818afd22acacf04",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "fg-6db5579b6d14",
+			"questionKey": "field-gradient",
+			"imagePath": "images/doja.jpg",
+			"sha256": "6db5579b6d143c716ac1658937fe60587a47812251c13524fb8cd580512e54ef",
+			"imageId": "doja.jpg",
+			"artworkId": "doja",
+			"collection": "images",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "7e6bb2e8a3e43b1d",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "fg-7b3b6cd56203",
+			"questionKey": "field-gradient",
+			"imagePath": "02/ab67616d00001e02000200344e34f02b55e8292a.jpg",
+			"sha256": "7b3b6cd56203653128e6295b1b46f431383d96edb70da955c654cbfba0104eda",
+			"imageId": "ab67616d00001e02000200344e34f02b55e8292a.jpg",
+			"artworkId": "000200344e34f02b55e8292a",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"sourceEntryId": "7b3b6cd562036531",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		},
+		{
+			"itemId": "fg-ac7ca45674c6",
+			"questionKey": "field-gradient",
+			"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"sha256": "ac7ca45674c6b77c6d8f051e34bc9b52c19d89bb6fe59ff6d12a20af24cb22f0",
+			"imageId": "ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "512c790575835be7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "fg-ef4671233211",
+			"questionKey": "field-gradient",
+			"imagePath": "0c/ab67616d0000b273000c42c61ba60f69e5a40a29",
+			"sha256": "ef46712332119f40bfdc366377c1489495506d6b6af656ddc032dc34c45ebaad",
+			"imageId": "ab67616d0000b273000c42c61ba60f69e5a40a29",
+			"artworkId": "000c42c61ba60f69e5a40a29",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/oracle-premise/eval-set.json",
+				"sourceEntryId": "b4dd957a7c82fbb4",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "standard_<=640"
+		},
+		{
+			"itemId": "fg-fc39e6beb57f",
+			"questionKey": "field-gradient",
+			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"sha256": "fc39e6beb57fd26320400d95ed9e4a4bb7fef583307b4ee2064567671cebefcd",
+			"imageId": "ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"artworkId": "000018e9b0ec8fc5ac790164",
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/prototypes/p2-tree/review-rounds/round-2-flat-vs-ramp/build.ts",
+				"sourceEntryId": "fc39e6beb57fd263",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "thumbnail_<=320"
+		}
+	],
+	"serveOrder": [
+		"fg-ef4671233211",
+		"fg-fc39e6beb57f",
+		"fg-6db5579b6d14",
+		"fg-ac7ca45674c6",
+		"fg-7b3b6cd56203",
+		"fg-377b1cc24ef3",
+		"fg-37a9174a754c",
+		"fg-4fa6dcef2404"
+	]
+}
