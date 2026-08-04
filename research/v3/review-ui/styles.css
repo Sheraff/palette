@@ -1247,3 +1247,54 @@ summary {
 	opacity: 0.6;
 	min-height: 1.2em;
 }
+
+/* --- round kit (round-kit.js) -------------------------------------------------------------- */
+/* Every class the kit emits has a rule here, and a test reads this file to prove it. The
+   endorsement page invented `oracle-answer`, matched no rule, and its hotkey grid collapsed into a
+   run-on line on the reviewer's screen while every textContent assertion passed — the harness has
+   no CSS engine, so an unstyled class is invisible to it and catastrophic in the browser. */
+
+.round-keymap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1.25rem;
+	margin: 0;
+}
+
+.round-key {
+	white-space: nowrap;
+}
+
+.round-key b {
+	font-weight: 700;
+}
+
+/* The failure surface. A page that cannot load says so here rather than sitting on "loading…",
+   which is indistinguishable from a slow network and sends the reviewer away. */
+.round-error {
+	border: 1px solid #fff;
+	padding: 1rem 1.25rem;
+	max-width: 40rem;
+}
+
+.round-error p {
+	margin: 0 0 0.5rem;
+}
+
+.round-error p:last-child {
+	margin-bottom: 0;
+	opacity: 0.7;
+}
+
+.round-text-panel {
+	max-width: 42rem;
+	line-height: 1.6;
+	white-space: pre-wrap;
+}
+
+.round-composite {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	align-items: center;
+}

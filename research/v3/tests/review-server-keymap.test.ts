@@ -243,7 +243,11 @@ describe("the normalizeKey call shape, across every page", () => {
 		const offenders: string[] = []
 		for (const name of modules) {
 			const source = await readFile(join(uiRoot, name), "utf8")
-			for (const [index, line] of source.split("\n").entries()) {
+			// Comments are stripped first. `round-kit.js` and `freetext.js` both QUOTE the bad call in
+			// their headers — naming the bug they exist to prevent — and a guard that cannot tell a
+			// warning from an instance is a guard people delete.
+			const code = source.replace(/\/\*[\s\S]*?\*\//gu, "").replace(/^\s*\/\/.*$/gmu, "")
+			for (const [index, line] of code.split("\n").entries()) {
 				// `normalizeKey(event)` / `normalizeKey(e)` / `normalizeKey(evt)` — an identifier that is
 				// plainly the event rather than a property of it.
 				if (/normalizeKey\(\s*(event|evt|e)\s*\)/u.test(line)) offenders.push(`${name}:${index + 1}`)

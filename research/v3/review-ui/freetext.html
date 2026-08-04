@@ -50,11 +50,11 @@
 		<footer class="oracle-bar oracle-foot">
 			<p id="pending" class="oracle-pending"></p>
 			<p id="status">…</p>
-			<p class="oracle-keys">
-				<b>enter</b> save &amp; next · <b>shift+enter</b> newline ·
-				<b>esc</b> then <b id="backkey">←</b> back (<b>c</b> to type again) ·
-				<b>esc</b> then <b>r</b> release when finished · <a href="/">all reviews</a>
-			</p>
+			<!-- The keymap is rendered by the kit from the same table its dispatcher reads, so a bound
+			     key is always on screen and an on-screen key is always bound. Both shipped incidents
+			     had keys that were one or the other. -->
+			<p id="keymap" class="oracle-keys round-keymap"></p>
+			<p class="oracle-keys"><a href="/">all reviews</a></p>
 		</footer>
 	</body>
 	<script type="module" src="/freetext.js"></script>

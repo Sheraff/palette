@@ -339,6 +339,18 @@ export async function openPage(
 		querySelector(selector: string) {
 			return nodes[selector.replace("#", "")] ?? null
 		},
+		/**
+		 * The other spelling of the same lookup.
+		 *
+		 * A browser treats `getElementById("x")` and `querySelector("#x")` as the same thing; this
+		 * harness used to implement only the second, so a page written with the first found nothing,
+		 * rendered nothing, and was untestable — which is exactly the corner both broken pages were
+		 * shipped from. Both spellings exist here now so the harness cannot silently disagree with the
+		 * browser about whether a page can find its own nodes.
+		 */
+		getElementById(id: string) {
+			return nodes[id] ?? null
+		},
 		createElement(tag: string) {
 			return new FakeNode(tag)
 		},
