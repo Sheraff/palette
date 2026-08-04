@@ -83,6 +83,65 @@ not prevented. That is the honest state of the enforcement.
 **General knowledge is not anchoring.** Authors may use everything they know about colour science,
 image processing and optimisation. The blind is on *this campaign's conclusions*, not on the field.
 
+### 3.1 What the packet became, and why it is smaller than §5 of the brief promises
+
+**The first build measured the hole, and the hole was most of the wall.** Every packet file was
+flagged for whether it states what this campaign *found*, and **10 of 11 came back true**. The
+brief's §7 promises authors do not receive the instruments' conclusions, while its §5 points those
+same authors at READMEs that state them. Both cannot hold.
+
+The trim resolves it toward §7, on two grounds. First, the governing record
+(`d-2026-08-04-phase-1-authors-receive-a-tool-catalog`) says authors receive "a catalog of every
+instrument that exists — **one line each**". The catalog *is* §5's table; it was never a promise of
+the campaign's document library, so trimming moves the packet **closer** to the record. Second, the
+asymmetry: a leaky packet that turns out wrong voids the arms unrecoverably, because an author
+cannot unread a conclusion, while a trimmed packet that turns out wrong is repaired by handing the
+document over. **The trim is the recoverable error.**
+
+What changed, and the reasoning that is *not* symmetric across the four:
+
+- **`PHASE_0_DECISIONS.md` cut to §§1–6.** Pure faithfulness repair. The brief's §3 table makes
+  §§1–5 normative and its §6 is cited for what the oracle's labels are; **§7, §7.1 and §8 were
+  never promised to an author**, and §7's measured resolution floors and §8's open-items ledger are
+  conclusions. The whole-file copy was the orchestrator's instruction and it overshot.
+- **Four documents replaced by stubs** — `REVIEW_UI.md`, `src/review-server/README.md`,
+  `ORACLE_QUESTION_SET.md`, `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md`. Each stub quotes the
+  document's own §5 catalog row verbatim, states plainly that the document is withheld and why, and
+  **invites the author to name what they needed**. The two review-channel documents cost the phase
+  close to nothing: that instrument is how a proposal is *judged*, not something a proposal designs
+  against. The oracle documents are a real cost and the stubs say so.
+- **Seven flagged files kept anyway**, and the asymmetry is deliberate rather than an oversight.
+  The incumbent's figures in the robustness and honesty READMEs (72.8%, the 114 dithered palettes,
+  ~900 sites against 11 anchors, 1.61×) are **already in the brief's §2 verbatim and on purpose** —
+  §2 says outright they "are here because they define the target, not as a diagnosis of what went
+  wrong". Re-reading them in a README tells an author nothing §2 did not. Removing them would be
+  theatre.
+- **`ORACLE_QUESTION_INVENTORY.md` built**, restoring what the oracle stub over-removed: 28
+  question ids with their full wording and closed vocabularies, 4 listed by id alone, and every
+  accuracy, κ, agreement rate, variant comparison, replication verdict and reliability grade
+  stripped. The distinction it honours is the brief's own — **what an instrument measures is on the
+  author's side of the line; what it found is not.** The whole "decision it feeds" column was cut
+  rather than filtered cell by cell, which costs the ~10 clean cells; that is the single most
+  judgment-laden call in the packet and it is recorded as such.
+- **`PERCEPTION_VERDICT.md` added to the full packet only.** §3.1 of the brief names it "Canonical
+  text" for open question 3, and a dead pointer in a normative section is worse than the material
+  it withholds. It was **also added to the blind packet and then removed**: at 25,809 bytes against
+  a 16,525-byte extract it would have made arm F's packet **61% one perception-round document**,
+  and a control that is mostly a single campaign artifact measures that artifact. `Canonical text:`
+  is a provenance citation, not a reading instruction, and §3.1 is self-contained on the question.
+
+**A confinement hazard the trim exposed rather than created.** That file cites five live paths
+outside the packet (`data/calibration/`, `data/decisions/`, `data/contract/`). Arms A–E receive it,
+and confinement is by instruction. The citations are left in place — the body is verbatim — and the
+hazard is answered twice over: in the file's own provenance header, and by name in every author's
+launch instruction.
+
+**The seam this opens, stated because it is the orchestrator's to hold.** Four stubs promise that a
+request will be "adjudicated", and nothing in the packet says by whom or how fast. Authors run in
+one pass and cannot wait for an answer, so each launch instruction tells them to name the gap,
+**state the assumption they proceeded under, and keep writing**. An author who names a gap is
+signal about whether the trim cost anything; an author who silently designs around one is not.
+
 ## 4. What each author returns
 
 One markdown document at `phase-1/proposals/arm-<letter>.md`, roughly 1,500–4,000 words. Longer is
@@ -130,16 +189,38 @@ out (Phase 3 brings the guide back as the winner's audit checklist anyway); comm
 six land, as a deliberately-anchored seventh arm that is marked as such; or drop it entirely as a
 recorded decision. **This is the reviewer's call and it can be made any time before Phase 2.**
 
-**(b) The challenger counter's trigger has not fired, and one cheap run would fire it.**
+**(b) The challenger counter's trigger could never have fired, and the run that proved it is done.**
 `PHASE_1_HANDOFF.md` §5(b) says to read `data/contract/challenger-disagreements.json` before
-commissioning anything. Read 2026-08-04: `totals: []`, `entries: []` — **empty**, because no
-palette run has ever exercised the pair invariants. The counter is not waiting on a v3 pipeline,
-though: the 554 legacy palettes in `data/legacy/` are real palettes over real artwork, and
-validating them would populate it today. That run is commissioned here as authoring-slack work,
-with its price-the-round threshold **pre-registered before the run** per the project's standing
-rule, and with the honest scope label it needs — a legacy-fixture run is not a v3-pipeline run, and
-both challenger bars were measured in `dark-neutral` alone, so `disagreedByRegion` is read before
-any total is quoted.
+commissioning anything, and to wait for "a real corpus run" to populate it. Read 2026-08-04:
+`totals: []`, `entries: []`.
+
+**The stated reason for that emptiness was wrong.** The accumulation was never wired — the ledger's
+`accumulate`/`saveLedger` had no caller anywhere outside their own test file — and challengers are
+not evaluated at all unless an observation sink is passed, because `observe?.({…})` short-circuits
+its whole argument list. No corpus run could ever have populated that file. Waiting on the trigger
+as written would have waited forever. Recorded as
+`d-2026-08-04-challenger-accumulation-was-never-wired`, which corrects the same wrong verb in three
+places: handoff §5(b), clause (3) of `d-2026-08-04-perception-4-package-signed-off`, and `B42`.
+
+The run went ahead over the legacy fixtures — real palettes over real artwork — with its
+price-the-round thresholds **pre-registered and committed before any data was seen**. Result:
+**0 disagreements across 2,857 judged pairs** over 492 distinct palettes (the familiar "554" is
+fixture entries, not palettes), and the pre-registered rule mechanically returns **keep the
+deferred round deferred**.
+
+**The verdict is right and its usual reading is not available.** The pre-registration's low-rate
+branch reads "the frozen scalar does no harm where it actually gets used"; this run does **not**
+establish that. The zero comes from the population rather than the bar — the closest judged pair in
+the whole corpus sits at 1.30× its regional bar, only one pair is under 2×, and there is
+essentially no mass in the band where the frozen and direction-aware rules can differ at all. A
+positive control fired 1/6 through the identical code path, so the instrument counts. The trigger
+is therefore **re-armed, not spent**, and firing it again on the first genuine v3 corpus run
+requires a **deliberate runner invocation** — the counter still does not populate itself.
+
+Two limits found in passing: `ChallengerTally` carries `disagreedByRegion` but no
+`judgedByRegion`, so a per-region *rate* is not computable from the ledger alone (`B44`); and
+`dark-neutral`, the only region either challenger bar was ever measured in, carries **4.2%** of the
+judged exposure here.
 
 ## 7. What this document does not decide
 
