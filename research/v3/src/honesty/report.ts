@@ -16,6 +16,7 @@ import { createHash } from "node:crypto"
 import type { ExclusionRule, ProvenanceTag, ScannedFile, Site } from "./types.ts"
 import { PROVENANCE_TAGS, TAG_ANCHOR_STRENGTH } from "./types.ts"
 import { EXCLUSION_RULES, classify, type DecisionIndex } from "./classify.ts"
+import { areaOf, gateFor, type AreaGate } from "./areas.ts"
 
 /** A tunable site with no provenance, as it appears in the backlog list. */
 export interface UntaggedEntry {
@@ -29,6 +30,31 @@ export interface UntaggedEntry {
 	snippet: string
 	suspicion: number
 	flags: string[]
+}
+
+/**
+ * One working area's slice of the census.
+ *
+ * `untagged` is the number the growth rule watches, and it is deliberately the same quantity
+ * `byFile` reports: tunable sites carrying no provenance *or* a dangling decision citation. A
+ * dangling citation reads as provenance and is not, so counting it as documented here would let an
+ * area improve its gated number by citing decision ids that do not exist.
+ */
+export interface AreaRow {
+	area: string
+	gate: AreaGate
+	/** False when the area is not listed in `areas.ts` — a directory nobody has classified yet. */
+	configured: boolean
+	workstream: string
+	files: number
+	tunableSites: number
+	tagged: number
+	decisionTraced: number
+	documented: number
+	untagged: number
+	anchored: number
+	documentedFraction: number
+	anchoredFraction: number
 }
 
 export interface HonestyBody {
@@ -67,6 +93,11 @@ export interface HonestyBody {
 	 * pile of untagged constants.
 	 */
 	skippedFiles: { file: string; reason: string }[]
+	/**
+	 * Per working area, sorted by area name. The unit a workstream can act on, and the unit the
+	 * growth rule in `growth.ts` compares across runs.
+	 */
+	byArea: AreaRow[]
 	byFile: { file: string; tunableSites: number; documented: number; untagged: number }[]
 	worstOffenders: UntaggedEntry[]
 	untagged: UntaggedEntry[]
@@ -242,6 +273,60 @@ export function buildReport(
 		})
 		.filter((row) => row.tunableSites > 0)
 
+	// Per-area aggregation. Files come from the scan (so an area with zero tunable sites still shows
+	// its file count rather than disappearing), counts come from the classified tunable sites.
+	const areaFiles = new Map<string, number>()
+	for (const file of scanned) {
+		const area = areaOf(file.file)
+		areaFiles.set(area, (areaFiles.get(area) ?? 0) + 1)
+	}
+	const areaCounts = new Map<
+		string,
+		{ tunableSites: number; tagged: number; decisionTraced: number; anchored: number }
+	>()
+	for (const site of tunable) {
+		const area = areaOf(site.file)
+		const row = (areaCounts.get(area) ?? { tunableSites: 0, tagged: 0, decisionTraced: 0, anchored: 0 })
+		row.tunableSites += 1
+		const p = site.provenance
+		if (p.kind === "tagged") {
+			row.tagged += 1
+			if (TAG_ANCHOR_STRENGTH[p.tag as ProvenanceTag] === "anchored") row.anchored += 1
+		} else if (p.kind === "decision-traced") {
+			row.decisionTraced += 1
+			row.anchored += 1
+		}
+		areaCounts.set(area, row)
+	}
+	const byArea: AreaRow[] = [...new Set([...areaFiles.keys(), ...areaCounts.keys()])]
+		.sort()
+		.map((area) => {
+			const counts = areaCounts.get(area) ?? {
+				tunableSites: 0,
+				tagged: 0,
+				decisionTraced: 0,
+				anchored: 0,
+			}
+			const { gate, workstream, configured } = gateFor(area)
+			const documentedHere = counts.tagged + counts.decisionTraced
+			const denom = counts.tunableSites || 1
+			return {
+				area,
+				gate,
+				configured,
+				workstream,
+				files: areaFiles.get(area) ?? 0,
+				tunableSites: counts.tunableSites,
+				tagged: counts.tagged,
+				decisionTraced: counts.decisionTraced,
+				documented: documentedHere,
+				untagged: counts.tunableSites - documentedHere,
+				anchored: counts.anchored,
+				documentedFraction: round4(documentedHere / denom),
+				anchoredFraction: round4(counts.anchored / denom),
+			}
+		})
+
 	const untaggedEntries = tunable
 		.filter(
 			(s) => s.provenance.kind === "untagged" || s.provenance.kind === "decision-dangling",
@@ -285,6 +370,7 @@ export function buildReport(
 		skippedFiles: [...(options.skippedFiles ?? [])].sort((a, b2) =>
 			a.file.localeCompare(b2.file),
 		),
+		byArea,
 		byFile,
 		worstOffenders: untaggedEntries.slice(0, WORST_OFFENDER_COUNT),
 		untagged: untaggedEntries,
@@ -414,6 +500,31 @@ export function renderMarkdown(report: HonestyReport): string {
 		`**How the tags were attributed:** ${b.tagAttribution.leading} from the site's own doc comment, ${b.tagAttribution.trailing} from a trailing same-line comment, ${b.tagAttribution["shared-doc-block"]} inherited from an adjacent declaration's doc block. That last number is the instrument's weakest inference — discount it if you are being strict.`,
 	)
 	lines.push("")
+
+	lines.push("## Per working area")
+	lines.push("")
+	lines.push(
+		"One row per top-level directory under a scan root — the granularity `CONVENTIONS.md` assigns ownership at, so each row has exactly one owner. **Gate** says what a growth in `untagged` means: `GATED` areas fail the local growth test (`tests/honesty-area-growth.test.ts`) when the count rises, `INFORMATIONAL` areas are reported and never fail anything. Phase 0 sets every area informational — the machinery is live, the gating is opt-in, one word per area in `src/honesty/areas.ts`.",
+	)
+	lines.push("")
+	lines.push("| area | gate | workstream | files | tunable | documented | untagged | documented % |")
+	lines.push("|---|---|---|---:|---:|---:|---:|---:|")
+	for (const row of b.byArea) {
+		const area = row.configured ? `\`${row.area}\`` : `\`${row.area}\` ⚠️`
+		lines.push(
+			`| ${area} | ${row.gate} | ${row.workstream} | ${row.files} | ${row.tunableSites} | ${row.documented} | ${row.untagged} | ${pct(row.documentedFraction)} |`,
+		)
+	}
+	lines.push("")
+	const unconfigured = b.byArea.filter((r) => !r.configured)
+	if (unconfigured.length > 0) {
+		lines.push(
+			`⚠️ ${unconfigured.length} area(s) are not listed in \`src/honesty/areas.ts\`: ${unconfigured
+				.map((r) => `\`${r.area}\``)
+				.join(", ")}. A directory appeared under a scan root without anyone deciding which workstream owns it or whether it should be gated.`,
+		)
+		lines.push("")
+	}
 
 	lines.push("## Exclusions — every rule, every count")
 	lines.push("")
