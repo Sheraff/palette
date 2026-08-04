@@ -1597,9 +1597,9 @@ export class ReviewService {
 					// OMITTED, not nulled, on every round that has none — same rule as `reconciliation`
 					// above, and enforced by the same exact key-set assertion in the tests.
 					...(item.priorAnswer === undefined ? {} : { priorAnswer: item.priorAnswer }),
-					// A short, stable name the reviewer can copy into a message. See ITEM_FIELD_ALLOWLIST
-					// for why this one field is allowed to carry a form of two join keys.
-					itemRef: `${batchId}/${item.itemId}#${item.sha256.slice(0, 8)}`,
+					// A short, stable name the reviewer can copy into a message — built from the OPAQUE
+					// TOKEN, never from the fixture's item id. See ITEM_FIELD_ALLOWLIST for why.
+					itemRef: `${batchId}/${tokenFor.get(item.itemId)!}`,
 					// Their own standing note, so the page can show that one exists and reload it.
 					...(this.#itemNotes.get(itemKey(batchId, item.itemId)) === undefined
 						? {}
@@ -1782,7 +1782,8 @@ export class ReviewService {
 			derived: null,
 		} satisfies RecordInput<NoteRecord>)
 		this.#itemNotes.set(itemKey(batchId, itemId), { record, recordId: record.id })
-		return { recordId: record.id, itemRef: `${batchId}/${itemId}#${item.sha256.slice(0, 8)}` }
+		// The same opaque form the payload serves, so a note's echo matches what is on screen.
+		return { recordId: record.id, itemRef: `${batchId}/${token}` }
 	}
 
 	/* --- oracle validation: the post-release adjudication view --------------------------------- */

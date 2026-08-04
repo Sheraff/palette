@@ -416,7 +416,10 @@ describe("residual-purity round in the review server", () => {
 		}
 		// A by-question round carries neither block, and the page must not be handed either.
 		for (const item of payload.body.items) {
-			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "media", "questionKey", "revision", "token", "width"])
+			// `itemRef` is `<batch>/<token>`: the opaque handle again, so the reviewer can name a panel in
+			// a message without the page ever showing which arm it came from. An id-based ref would have
+			// leaked exactly that — these item ids end in `.guard_on` / `.guard_off`.
+			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "itemRef", "media", "questionKey", "revision", "token", "width"])
 		}
 	})
 
@@ -1000,7 +1003,10 @@ describe("residual-purity-2 round in the review server", () => {
 		for (const item of payload.body.items) {
 			assert.match(item.media, /^\/media\//u)
 			assert.ok(item.width > 0 && item.height > 0)
-			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "media", "questionKey", "revision", "token", "width"])
+			// `itemRef` is `<batch>/<token>`: the opaque handle again, so the reviewer can name a panel in
+			// a message without the page ever showing which arm it came from. An id-based ref would have
+			// leaked exactly that — these item ids end in `.guard_on` / `.guard_off`.
+			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "itemRef", "media", "questionKey", "revision", "token", "width"])
 		}
 	})
 

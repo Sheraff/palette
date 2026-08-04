@@ -68,21 +68,23 @@ export const ITEM_FIELD_ALLOWLIST = [
 	 */
 	"note",
 	/**
-	 * A short, stable, human-quotable name for this item — `<batch>/<itemId>#<sha8>`.
+	 * A short, stable, human-quotable name for this item — `<batch>/<token>`.
 	 *
-	 * **A deliberate relaxation of the rules above, and worth stating plainly.** `itemId` and the
-	 * content hash are both on the leak list, because each is a join key: to the round's own selection
-	 * counts, to the contradiction buckets, to the oracle's rows. This field carries a form of both.
+	 * Built from the OPAQUE PER-ITEM TOKEN, never from the fixture's item id or the content hash.
+	 * That is not fastidiousness; an id-based ref was written first and `residual-purity-1` proved it
+	 * unsafe. Its item ids end in `.guard_on` / `.guard_off` — a 25/25 split of the exact experimental
+	 * arm the round exists to blind — so showing the id would have printed the answer above the
+	 * question. And a hash-based ref cannot replace it there either: both arms of a sheet are the same
+	 * bytes, so `#<sha8>` names two different items at once.
 	 *
-	 * It is served anyway because of what the reviewer could not do without it (verbatim, 2026-08-04):
-	 * *"i often want to give feedback about a specific thing and we currently have no way of doing
-	 * that, which prevents accidental discovery of information."* A reviewer who cannot name the item
-	 * in front of them cannot report anything about it, and the incidental observations that get lost
-	 * that way are exactly the ones no round was designed to collect.
+	 * The token has neither problem, on any round, present or future: it is random per batch, carries
+	 * no meaning, and is already the public handle for an item — `media` is addressed by it. So this
+	 * field needs no per-round audit and grants the browser nothing it did not already have.
 	 *
-	 * The trade is narrow and it holds: this string identifies the item, it does not reveal the truth
-	 * about it. It carries no answer, no model output, no published flag, and nothing the reviewer is
-	 * being asked to judge. Reading it back requires the fixture, which the browser does not have.
+	 * It exists because of what the reviewer could not do without it (verbatim, 2026-08-04): *"i often
+	 * want to give feedback about a specific thing and we currently have no way of doing that, which
+	 * prevents accidental discovery of information."* An agent resolves a pasted ref through the batch
+	 * log's `answerTokens`, which is the same lookup the server does on every answer.
 	 */
 	"itemRef",
 ] as const

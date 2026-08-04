@@ -349,8 +349,12 @@ describe("the kit, executed as a page", () => {
 			payload.body.items.some((item: { itemRef?: string }) => item.itemRef === shown),
 			`the rendered id ${shown} is not one the payload serves`,
 		)
-		// Short, stable, and shaped so it can be grepped in a fixture and in the warehouse.
-		assert.match(shown, /^ground-freetext-1\/gf-[0-9a-f]{12}#[0-9a-f]{8}$/u)
+		// Built from the OPAQUE TOKEN, never the fixture's item id — `residual-purity-1` proved an
+		// id-based ref unsafe, its item ids ending in `.guard_on` / `.guard_off`. So the ref must carry
+		// neither an item id nor a content hash on ANY round.
+		assert.match(shown, /^ground-freetext-1\/[0-9a-f]{16}$/u)
+		const item = payload.body.items.find((entry: { itemRef?: string }) => entry.itemRef === shown)!
+		assert.equal(shown, `ground-freetext-1/${item.token}`, "the ref is not the item's own opaque token")
 		// Selectable by construction, so a click-drag is not needed to copy it.
 		assert.match(readFileSync(STYLESHEET, "utf8"), /\.round-itemref[\s\S]*?user-select: all/u)
 	})

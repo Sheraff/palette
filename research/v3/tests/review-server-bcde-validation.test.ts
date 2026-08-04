@@ -324,14 +324,11 @@ describe("bcde-validation round in the review server", () => {
 
 	it("is unanchored: no model answer, no join key, no selection counts", async () => {
 		const payload = await call(harness.base, "GET", `/api/oracle-validation/${BATCH}`)
-		// `itemRef` is the ONE field allowed to carry a form of a join key, added 2026-08-04 so the
-		// reviewer can name the item in front of them ("i often want to give feedback about a specific
-		// thing and we currently have no way of doing that"). It is stripped before the leak scan below,
-		// so the scan still proves nothing ELSE carries an id or a hash — see ITEM_FIELD_ALLOWLIST for
-		// why identifying an item is not revealing the truth about it.
-		const scanned = JSON.stringify(payload.body, (key, value) => (key === "itemRef" ? undefined : value))
+		// `itemRef` is `<batch>/<token>` — the opaque handle, not the fixture's id — so the leak scan
+		// below needs no exception for it and this payload is scanned whole.
+		const text = JSON.stringify(payload.body)
 		for (const forbidden of ["sha256", "imagePath", "artworkId", "cluster", "selection", "pilot", "counts", ...fixture.items.map((item) => item.itemId)]) {
-			assert.ok(!scanned.includes(forbidden), `the served payload leaks ${forbidden}`)
+			assert.ok(!text.includes(forbidden), `the served payload leaks ${forbidden}`)
 		}
 		for (const item of payload.body.items) {
 			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "itemRef", "media", "questionKey", "revision", "token", "width"])

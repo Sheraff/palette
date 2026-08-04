@@ -244,10 +244,9 @@ describe("oracle-validation round in the review server", () => {
 			GROUND_TYPE_QUESTION.answers.map((answer) => [answer.hotkey, answer.key]),
 		)
 
-		// `itemRef` is the ONE field allowed to carry a form of a join key, added 2026-08-04 so the
-		// reviewer can name the item in front of them. It is stripped before the leak scan, so the scan
-		// still proves nothing ELSE carries an id or a hash — see ITEM_FIELD_ALLOWLIST for the reasoning.
-		const text = JSON.stringify(payload.body, (key, value) => (key === "itemRef" ? undefined : value))
+		// `itemRef` is `<batch>/<token>` — the opaque handle, not the fixture's id — so the leak scan
+		// below needs no exception for it and this payload is scanned whole.
+		const text = JSON.stringify(payload.body)
 		for (const forbidden of [
 			// What the oracle said, and the words that would give it away one item at a time.
 			"gradient_truth",
