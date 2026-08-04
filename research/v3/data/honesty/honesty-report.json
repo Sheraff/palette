@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T21:09:48.749Z",
+		"generatedAt": "2026-08-04T21:26:39.494Z",
 		"roots": [
 			"oracle",
 			"prototypes",
@@ -10,12 +10,12 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T21:09:48.749Z",
+			"generatedAt": "2026-08-04T21:26:39.494Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "6c475c6a25661101e0caadfce6651eddfe3c6353",
+				"gitCommit": "282010e845bf5abe79873971621ca0257a579d20",
 				"gitBranch": "proto/p6-figureground",
-				"gitDirty": false,
+				"gitDirty": true,
 				"node": "v25.8.1"
 			},
 			"packages": {
@@ -35,11 +35,11 @@
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "6030c02c4130636b3b3929a0ff1e3238ddab9eaabd5dcca32d4352761cf32714",
+	"bodyHash": "648401f21b30eb6b39a01e1c7707ab62a85c7b36388f852053df2aceed55b43c",
 	"body": {
 		"corpus": {
-			"files": 252,
-			"lines": 108528,
+			"files": 253,
+			"lines": 109256,
 			"byLanguage": {
 				"py": {
 					"files": 98,
@@ -47,24 +47,24 @@
 					"fidelity": "lexical"
 				},
 				"ts": {
-					"files": 154,
-					"lines": 69990,
+					"files": 155,
+					"lines": 70718,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 12542,
-			"excluded": 4762,
-			"tunableSites": 7780,
+			"candidates": 12685,
+			"excluded": 4871,
+			"tunableSites": 7814,
 			"tagged": 771,
 			"decisionTraced": 1,
 			"decisionDangling": 0,
-			"untagged": 7008
+			"untagged": 7042
 		},
 		"headline": {
-			"documentedFraction": 0.0992,
-			"anchoredFraction": 0.0614
+			"documentedFraction": 0.0988,
+			"anchoredFraction": 0.0612
 		},
 		"byTag": {
 			"REVIEWED": 286,
@@ -78,7 +78,7 @@
 		"byAnchorStrength": {
 			"anchored": 478,
 			"weak": 158,
-			"unanchored": 7144
+			"unanchored": 7178
 		},
 		"tagAttribution": {
 			"trailing": 1,
@@ -109,7 +109,7 @@
 			{
 				"id": "exit-code",
 				"rationale": "A process exit code. It is an operating-system protocol value, not a parameter of the algorithm.",
-				"count": 23
+				"count": 24
 			},
 			{
 				"id": "http-status",
@@ -119,7 +119,7 @@
 			{
 				"id": "emptiness-comparison",
 				"rationale": "A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`.",
-				"count": 418
+				"count": 422
 			},
 			{
 				"id": "not-found-sentinel",
@@ -129,27 +129,27 @@
 			{
 				"id": "index-access",
 				"rationale": "An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes.",
-				"count": 1746
+				"count": 1764
 			},
 			{
 				"id": "loop-header",
 				"rationale": "An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy.",
-				"count": 548
+				"count": 552
 			},
 			{
 				"id": "accumulator-init",
 				"rationale": "A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted.",
-				"count": 413
+				"count": 418
 			},
 			{
 				"id": "counter-increment",
 				"rationale": "A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous.",
-				"count": 369
+				"count": 370
 			},
 			{
 				"id": "unit-conversion",
 				"rationale": "A multiply or divide by a unit constant — ms per second, seconds per minute, the 8-bit channel maximum, bytes per KiB. An identity of the units, not a choice.",
-				"count": 64
+				"count": 65
 			},
 			{
 				"id": "unit-clamp",
@@ -159,17 +159,17 @@
 			{
 				"id": "display-format",
 				"rationale": "A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes.",
-				"count": 440
+				"count": 487
 			},
 			{
 				"id": "display-interpolation",
 				"rationale": "A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted.",
-				"count": 272
+				"count": 298
 			},
 			{
 				"id": "slice-origin",
 				"rationale": "A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice.",
-				"count": 53
+				"count": 55
 			}
 		],
 		"skippedFiles": [
@@ -261,17 +261,17 @@
 			{
 				"area": "prototypes/p6-figureground",
 				"gate": "INFORMATIONAL",
-				"configured": false,
-				"workstream": "unassigned",
-				"files": 32,
-				"tunableSites": 1791,
+				"configured": true,
+				"workstream": "phase-2 prototype orchestrators",
+				"files": 33,
+				"tunableSites": 1825,
 				"tagged": 46,
 				"decisionTraced": 0,
 				"documented": 46,
-				"untagged": 1745,
+				"untagged": 1779,
 				"anchored": 13,
-				"documentedFraction": 0.0257,
-				"anchoredFraction": 0.0073
+				"documentedFraction": 0.0252,
+				"anchoredFraction": 0.0071
 			},
 			{
 				"area": "src/adjudication",
@@ -1141,9 +1141,9 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/rates.ts",
-				"tunableSites": 12,
+				"tunableSites": 11,
 				"documented": 6,
-				"untagged": 6
+				"untagged": 5
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/solve.ts",
@@ -1261,9 +1261,9 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"tunableSites": 216,
+				"tunableSites": 215,
 				"documented": 0,
-				"untagged": 216
+				"untagged": 215
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/fieldmodel.test.ts",
@@ -1279,15 +1279,21 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"tunableSites": 135,
+				"tunableSites": 138,
 				"documented": 0,
-				"untagged": 135
+				"untagged": 138
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/substrate.test.ts",
 				"tunableSites": 416,
 				"documented": 0,
 				"untagged": 416
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"tunableSites": 33,
+				"documented": 0,
+				"untagged": 33
 			},
 			{
 				"file": "src/adjudication/adjudicate.ts",
@@ -2204,7 +2210,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 276,
+				"line": 283,
 				"column": 61,
 				"value": 0.001,
 				"text": "1e-3",
@@ -2220,7 +2226,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 283,
+				"line": 290,
 				"column": 37,
 				"value": 0.001,
 				"text": "1e-3",
@@ -2236,7 +2242,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 340,
+				"line": 347,
 				"column": 35,
 				"value": 0.000001,
 				"text": "1e-6",
@@ -2252,39 +2258,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 392,
-				"column": 48,
-				"value": 0.001,
-				"text": "1e-3",
-				"name": "assert.ok",
-				"functionName": null,
-				"snippet": "assert.ok(Math.abs(saturatingSide - 0.4082) < 1e-3, `saturating side fraction ${saturatingSide}`)",
-				"suspicion": 8,
-				"flags": [
-					"comparison-operand",
-					"exponential",
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 393,
-				"column": 53,
-				"value": 0.001,
-				"text": "1e-3",
-				"name": "assert.ok",
-				"functionName": null,
-				"snippet": "assert.ok(Math.abs(saturatingSide ** 2 - 0.1667) < 1e-3, \"…which is a sixth of the frame's area\")",
-				"suspicion": 8,
-				"flags": [
-					"comparison-operand",
-					"exponential",
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 417,
+				"line": 425,
 				"column": 40,
 				"value": 0.0001,
 				"text": "1e-4",
@@ -2300,7 +2274,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 418,
+				"line": 426,
 				"column": 42,
 				"value": 0.0001,
 				"text": "1e-4",
@@ -2451,6 +2425,38 @@
 				"name": "assert.ok",
 				"functionName": null,
 				"snippet": "assert.ok(Math.abs(field.fieldWeight[0] - 0.5) < 1e-4, `excluded ${excluded}: weight ${field.fieldWeight[0]}`)",
+				"suspicion": 8,
+				"flags": [
+					"comparison-operand",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 228,
+				"column": 58,
+				"value": 0.001,
+				"text": "1e-3",
+				"name": null,
+				"functionName": null,
+				"snippet": "}, > 1e-3 on ${coincidences.filter((value) => value > 1e-3).length}, > 0.5 on ${",
+				"suspicion": 8,
+				"flags": [
+					"comparison-operand",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 393,
+				"column": 41,
+				"value": 0.001,
+				"text": "1e-3",
+				"name": null,
+				"functionName": null,
+				"snippet": ".filter((entry) => entry.presence >= 1e-3)",
 				"suspicion": 8,
 				"flags": [
 					"comparison-operand",
@@ -4595,7 +4601,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 662,
+				"line": 669,
 				"column": 26,
 				"value": 0.000001,
 				"text": "1e-6",
@@ -4611,7 +4617,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 662,
+				"line": 669,
 				"column": 32,
 				"value": 0.0001,
 				"text": "1e-4",
@@ -4627,7 +4633,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 662,
+				"line": 669,
 				"column": 38,
 				"value": 0.0191,
 				"text": "1.91e-2",
@@ -5034,7 +5040,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 161,
+				"line": 168,
 				"column": 30,
 				"value": 0.01,
 				"text": "0.01",
@@ -5050,7 +5056,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 424,
+				"line": 432,
 				"column": 58,
 				"value": 0.005,
 				"text": "0.005",
@@ -6767,7 +6773,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/rates.ts",
-				"line": 283,
+				"line": 297,
 				"column": 32,
 				"value": 0.406,
 				"text": "0.406",
@@ -7099,28 +7105,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 412,
-				"column": 55,
-				"value": 0.2,
-				"text": "0.2",
-				"name": "spatialSpread",
-				"functionName": "noSecondFieldExists",
-				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
-				"suspicion": 5,
-				"flags": [
-					"float",
-					"named-constant"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 412,
-				"column": 76,
+				"line": 419,
+				"column": 74,
 				"value": 1.5,
 				"text": "1.5",
 				"name": "borderAffinity",
 				"functionName": "noSecondFieldExists",
-				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 5,
 				"flags": [
 					"float",
@@ -7129,13 +7120,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 412,
-				"column": 91,
+				"line": 419,
+				"column": 89,
 				"value": 0.05,
 				"text": "0.05",
 				"name": "presence",
 				"functionName": "noSecondFieldExists",
-				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 5,
 				"flags": [
 					"float",
@@ -7144,28 +7135,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 421,
-				"column": 56,
-				"value": 0.2,
-				"text": "0.2",
-				"name": "spatialSpread",
-				"functionName": "secondFieldExists",
-				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
-				"suspicion": 5,
-				"flags": [
-					"float",
-					"named-constant"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 421,
-				"column": 77,
+				"line": 428,
+				"column": 75,
 				"value": 1.5,
 				"text": "1.5",
 				"name": "borderAffinity",
 				"functionName": "secondFieldExists",
-				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 5,
 				"flags": [
 					"float",
@@ -7174,13 +7150,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 421,
-				"column": 92,
+				"line": 428,
+				"column": 90,
 				"value": 0.05,
 				"text": "0.05",
 				"name": "presence",
 				"functionName": "secondFieldExists",
-				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 5,
 				"flags": [
 					"float",
@@ -7189,7 +7165,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 482,
+				"line": 489,
 				"column": 13,
 				"value": 0.4,
 				"text": "0.4",
@@ -7204,7 +7180,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 483,
+				"line": 490,
 				"column": 15,
 				"value": 0.4,
 				"text": "0.4",
@@ -7219,7 +7195,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 487,
+				"line": 494,
 				"column": 18,
 				"value": 0.9,
 				"text": "0.9",
@@ -7234,7 +7210,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 488,
+				"line": 495,
 				"column": 18,
 				"value": 0.2,
 				"text": "0.2",
@@ -7249,7 +7225,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 489,
+				"line": 496,
 				"column": 19,
 				"value": 1.2,
 				"text": "1.2",
@@ -7264,7 +7240,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 490,
+				"line": 497,
 				"column": 21,
 				"value": 0.001,
 				"text": "0.001",
@@ -7279,7 +7255,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 498,
+				"line": 505,
 				"column": 14,
 				"value": 0.015,
 				"text": "0.015",
@@ -7294,7 +7270,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 664,
+				"line": 671,
 				"column": 29,
 				"value": 0.0191,
 				"text": "1.91e-2",
@@ -7310,7 +7286,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 665,
+				"line": 672,
 				"column": 57,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -7326,7 +7302,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 676,
+				"line": 683,
 				"column": 57,
 				"value": 0.0191,
 				"text": "1.91e-2",
@@ -7342,7 +7318,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 682,
+				"line": 689,
 				"column": 18,
 				"value": 0.8,
 				"text": "0.8",
@@ -7357,7 +7333,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 687,
+				"line": 696,
 				"column": 50,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -7373,7 +7349,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 722,
+				"line": 731,
 				"column": 33,
 				"value": 1e-9,
 				"text": "1e-9",
@@ -7389,7 +7365,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 736,
+				"line": 745,
 				"column": 32,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -7527,7 +7503,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 181,
+				"line": 188,
 				"column": 44,
 				"value": 0.4,
 				"text": "0.4",
@@ -7542,7 +7518,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 181,
+				"line": 188,
 				"column": 55,
 				"value": 0.1,
 				"text": "0.1",
@@ -7557,7 +7533,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 181,
+				"line": 188,
 				"column": 67,
 				"value": 0.2,
 				"text": "0.2",
@@ -7572,7 +7548,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 182,
+				"line": 189,
 				"column": 43,
 				"value": 0.4,
 				"text": "0.4",
@@ -7587,7 +7563,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 182,
+				"line": 189,
 				"column": 54,
 				"value": 0.1,
 				"text": "0.1",
@@ -7602,7 +7578,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 182,
+				"line": 189,
 				"column": 66,
 				"value": 0.2,
 				"text": "0.2",
@@ -7617,7 +7593,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 183,
+				"line": 190,
 				"column": 45,
 				"value": 0.05,
 				"text": "0.05",
@@ -7632,7 +7608,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 183,
+				"line": 190,
 				"column": 67,
 				"value": 0.9,
 				"text": "0.9",
@@ -7647,7 +7623,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 235,
+				"line": 242,
 				"column": 55,
 				"value": 0.000001,
 				"text": "1e-6",
@@ -7663,7 +7639,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 357,
+				"line": 367,
 				"column": 13,
 				"value": 0.1,
 				"text": "0.1",
@@ -7864,6 +7840,70 @@
 				"suspicion": 5,
 				"flags": [
 					"comparison-operand",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 122,
+				"column": 55,
+				"value": 1e-30,
+				"text": "1e-30",
+				"name": "Math.max",
+				"functionName": "probeOne",
+				"snippet": "inkPerMass: one.inkEnergy / Math.max(one.presence, 1e-30),",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 343,
+				"column": 58,
+				"value": 1e-30,
+				"text": "1e-30",
+				"name": "Math.max",
+				"functionName": "probe",
+				"snippet": "const value = one.inkEnergy / Math.max(one.presence, 1e-30)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 352,
+				"column": 70,
+				"value": 1e-30,
+				"text": "1e-30",
+				"name": "Math.max",
+				"functionName": null,
+				"snippet": "clamp((stats[index].inkEnergy / Math.max(stats[index].presence, 1e-30)) / maxInkPerMass) *",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 355,
+				"column": 70,
+				"value": 1e-30,
+				"text": "1e-30",
+				"name": "Math.max",
+				"functionName": null,
+				"snippet": "clamp((stats[index].inkEnergy / Math.max(stats[index].presence, 1e-30)) / maxInkPerMass)],",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
 					"exponential",
 					"float"
 				]
@@ -10558,7 +10598,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 155,
+				"line": 162,
 				"column": 21,
 				"value": 20,
 				"text": "20",
@@ -10573,7 +10613,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 155,
+				"line": 162,
 				"column": 25,
 				"value": 20,
 				"text": "20",
@@ -10588,7 +10628,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 155,
+				"line": 162,
 				"column": 29,
 				"value": 20,
 				"text": "20",
@@ -10603,7 +10643,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 156,
+				"line": 163,
 				"column": 20,
 				"value": 90,
 				"text": "90",
@@ -10618,7 +10658,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 156,
+				"line": 163,
 				"column": 24,
 				"value": 90,
 				"text": "90",
@@ -10633,7 +10673,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 156,
+				"line": 163,
 				"column": 28,
 				"value": 90,
 				"text": "90",
@@ -10648,7 +10688,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 157,
+				"line": 164,
 				"column": 21,
 				"value": 160,
 				"text": "160",
@@ -10663,7 +10703,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 157,
+				"line": 164,
 				"column": 26,
 				"value": 160,
 				"text": "160",
@@ -10678,7 +10718,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 157,
+				"line": 164,
 				"column": 31,
 				"value": 160,
 				"text": "160",
@@ -10693,7 +10733,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 158,
+				"line": 165,
 				"column": 22,
 				"value": 240,
 				"text": "240",
@@ -10708,7 +10748,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 158,
+				"line": 165,
 				"column": 27,
 				"value": 240,
 				"text": "240",
@@ -10723,7 +10763,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 158,
+				"line": 165,
 				"column": 32,
 				"value": 240,
 				"text": "240",
@@ -10738,7 +10778,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 300,
+				"line": 307,
 				"column": 29,
 				"value": 0.5,
 				"text": "0.5",
@@ -11350,6 +11390,21 @@
 				"flags": [
 					"float",
 					"in-numeric-sequence"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 229,
+				"column": 44,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": null,
+				"snippet": "coincidences.filter((value) => value > 0.5).length",
+				"suspicion": 4,
+				"flags": [
+					"comparison-operand",
+					"float"
 				]
 			},
 			{
@@ -17848,7 +17903,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/terms.ts",
-				"line": 183,
+				"line": 190,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -17862,7 +17917,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/terms.ts",
-				"line": 183,
+				"line": 190,
 				"column": 73,
 				"value": 1,
 				"text": "1",
@@ -20009,7 +20064,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 411,
+				"line": 418,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -20023,7 +20078,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 420,
+				"line": 427,
 				"column": 16,
 				"value": 5,
 				"text": "5",
@@ -20037,7 +20092,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 484,
+				"line": 491,
 				"column": 14,
 				"value": 0.5,
 				"text": "0.5",
@@ -20052,7 +20107,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 485,
+				"line": 492,
 				"column": 15,
 				"value": 0.5,
 				"text": "0.5",
@@ -20067,7 +20122,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 670,
+				"line": 677,
 				"column": 32,
 				"value": 0,
 				"text": "0",
@@ -20082,7 +20137,22 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 684,
+				"line": 690,
+				"column": 18,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "spatialSpread",
+				"functionName": null,
+				"snippet": "spatialSpread: 0.5, // half a uniform frame-wide fill (the statistic arrives normalised)",
+				"suspicion": 3,
+				"flags": [
+					"float",
+					"named-constant"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/energy.test.ts",
+				"line": 691,
 				"column": 19,
 				"value": 0.5,
 				"text": "0.5",
@@ -20097,7 +20167,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 687,
+				"line": 696,
 				"column": 43,
 				"value": 0.2,
 				"text": "0.2",
@@ -20111,7 +20181,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 735,
+				"line": 744,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -20125,7 +20195,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 774,
+				"line": 783,
 				"column": 20,
 				"value": 0,
 				"text": "0",
@@ -20938,7 +21008,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 176,
+				"line": 183,
 				"column": 14,
 				"value": 64,
 				"text": "64",
@@ -20953,7 +21023,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 177,
+				"line": 184,
 				"column": 20,
 				"value": 4,
 				"text": "4",
@@ -20968,7 +21038,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 178,
+				"line": 185,
 				"column": 20,
 				"value": 8,
 				"text": "8",
@@ -20983,7 +21053,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 212,
+				"line": 219,
 				"column": 46,
 				"value": 0.4,
 				"text": "0.4",
@@ -20997,7 +21067,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 213,
+				"line": 220,
 				"column": 45,
 				"value": 0.4,
 				"text": "0.4",
@@ -21011,7 +21081,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 214,
+				"line": 221,
 				"column": 47,
 				"value": 0.1,
 				"text": "0.1",
@@ -21025,7 +21095,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 215,
+				"line": 222,
 				"column": 46,
 				"value": 0.1,
 				"text": "0.1",
@@ -21039,7 +21109,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 220,
+				"line": 227,
 				"column": 52,
 				"value": 0.4,
 				"text": "0.4",
@@ -21054,7 +21124,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 221,
+				"line": 228,
 				"column": 52,
 				"value": 0.4,
 				"text": "0.4",
@@ -21069,7 +21139,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 222,
+				"line": 229,
 				"column": 53,
 				"value": 0.1,
 				"text": "0.1",
@@ -21084,7 +21154,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 242,
+				"line": 249,
 				"column": 49,
 				"value": 0.4,
 				"text": "0.4",
@@ -21098,7 +21168,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 254,
+				"line": 261,
 				"column": 47,
 				"value": 0.1,
 				"text": "0.1",
@@ -21112,7 +21182,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 254,
+				"line": 261,
 				"column": 78,
 				"value": 0.4,
 				"text": "0.4",
@@ -21126,7 +21196,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 267,
+				"line": 274,
 				"column": 39,
 				"value": 0.2,
 				"text": "0.2",
@@ -21141,7 +21211,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 268,
+				"line": 275,
 				"column": 40,
 				"value": 0.9,
 				"text": "0.9",
@@ -21156,7 +21226,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 270,
+				"line": 277,
 				"column": 52,
 				"value": 0.2,
 				"text": "0.2",
@@ -21171,7 +21241,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 274,
+				"line": 281,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -21186,7 +21256,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 284,
+				"line": 291,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -21200,7 +21270,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 311,
+				"line": 318,
 				"column": 24,
 				"value": 0,
 				"text": "0",
@@ -21214,7 +21284,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 327,
+				"line": 334,
 				"column": 44,
 				"value": 0.02,
 				"text": "0.02",
@@ -21229,7 +21299,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 330,
+				"line": 337,
 				"column": 56,
 				"value": 0.05,
 				"text": "0.05",
@@ -21244,7 +21314,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 335,
+				"line": 342,
 				"column": 79,
 				"value": 0.02,
 				"text": "0.02",
@@ -21259,7 +21329,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 339,
+				"line": 346,
 				"column": 45,
 				"value": 0.02,
 				"text": "0.02",
@@ -21274,7 +21344,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 349,
+				"line": 357,
 				"column": 60,
 				"value": 0.02,
 				"text": "0.02",
@@ -21289,35 +21359,22 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 392,
-				"column": 38,
-				"value": 0.4082,
-				"text": "0.4082",
-				"name": "Math.abs",
+				"line": 408,
+				"column": 94,
+				"value": 0.05,
+				"text": "0.05",
+				"name": "close",
 				"functionName": null,
-				"snippet": "assert.ok(Math.abs(saturatingSide - 0.4082) < 1e-3, `saturating side fraction ${saturatingSide}`)",
+				"snippet": "close(fieldFitness({ ...statsWithSpread(block.spatialSpread) }), BLOCK_SIDE_FRACTION ** 2, 0.05),",
 				"suspicion": 3,
 				"flags": [
+					"call-argument",
 					"float"
 				]
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 393,
-				"column": 43,
-				"value": 0.1667,
-				"text": "0.1667",
-				"name": "Math.abs",
-				"functionName": null,
-				"snippet": "assert.ok(Math.abs(saturatingSide ** 2 - 0.1667) < 1e-3, \"…which is a sixth of the frame's area\")",
-				"suspicion": 3,
-				"flags": [
-					"float"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 416,
+				"line": 424,
 				"column": 45,
 				"value": 0.00932,
 				"text": "0.00932",
@@ -21331,7 +21388,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 417,
+				"line": 425,
 				"column": 29,
 				"value": 0.13863,
 				"text": "0.13863",
@@ -21345,7 +21402,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 418,
+				"line": 426,
 				"column": 31,
 				"value": 0.79645,
 				"text": "0.79645",
@@ -21821,6 +21878,205 @@
 				"name": null,
 				"functionName": null,
 				"snippet": "(x, y) => [10, 20, 30, x === 3 && y === 3 ? 254 : 255],",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 75,
+				"column": 19,
+				"value": 20,
+				"text": "20",
+				"name": "SURVIVORS",
+				"functionName": null,
+				"snippet": "const SURVIVORS = 20",
+				"suspicion": 3,
+				"flags": [
+					"named-constant",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 243,
+				"column": 27,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "probe",
+				"snippet": "if (backgroundIndex >= 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 278,
+				"column": 80,
+				"value": 45,
+				"text": "45",
+				"name": null,
+				"functionName": null,
+				"snippet": "const readable = foregroundRows.filter((row) => row.apcaAgainstBackground >= 45)",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 310,
+				"column": 19,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "probe",
+				"snippet": "if (fgIndex >= 0 && acIndex >= 0 && fgIndex !== acIndex) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 310,
+				"column": 35,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "probe",
+				"snippet": "if (fgIndex >= 0 && acIndex >= 0 && fgIndex !== acIndex) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 346,
+				"column": 54,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "clamp",
+				"snippet": "const clamp = (value: number): number => value <= 0 ? 0 : value >= 1 ? 1 : value",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 346,
+				"column": 71,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "clamp",
+				"snippet": "const clamp = (value: number): number => value <= 0 ? 0 : value >= 1 ? 1 : value",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 370,
+				"column": 86,
+				"value": 45,
+				"text": "45",
+				"name": null,
+				"functionName": null,
+				"snippet": "Math.abs(apcaRaw(lattice.triples[entry.index].rgb, solution.background.rgb)) >= 45",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 379,
+				"column": 56,
+				"value": 0,
+				"text": "0",
+				"name": "console.log",
+				"functionName": "probe",
+				"snippet": "} — cheapest |APCA| ≥ 45 at rank ${readableRank < 0 ? \"none\" : readableRank + 1}${",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand",
+					"display-interpolation"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 380,
+				"column": 22,
+				"value": 0,
+				"text": "0",
+				"name": "console.log",
+				"functionName": "probe",
+				"snippet": "readableRank < 0 ? \"\" : ` (+${f(ranked[readableRank].unary - ranked[0].unary)} over the leader)`",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand",
+					"display-interpolation"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 606,
+				"column": 48,
+				"value": 5,
+				"text": "5",
+				"name": null,
+				"functionName": null,
+				"snippet": "`< 5 on ${sorted.filter((value) => value < 5).length}/${sorted.length}`,",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 623,
+				"column": 62,
+				"value": 5,
+				"text": "5",
+				"name": null,
+				"functionName": null,
+				"snippet": "const clustered = sortedMargins.filter((margin) => margin < 5).length",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 635,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "if (runIndex >= 0) await report(argv[runIndex + 1])",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 636,
+				"column": 24,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "else if (probeIndex >= 0) {",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -36905,7 +37161,21 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/rates.ts",
-				"line": 236,
+				"line": 239,
+				"column": 24,
+				"value": 1,
+				"text": "1",
+				"name": "uniformSpatialSpread",
+				"functionName": null,
+				"snippet": "uniformSpatialSpread: 1,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/src/energy/rates.ts",
+				"line": 250,
 				"column": 25,
 				"value": 1,
 				"text": "1",
@@ -37325,13 +37595,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 412,
+				"line": 419,
 				"column": 37,
 				"value": 1,
 				"text": "1",
 				"name": "fieldLikeness",
 				"functionName": "noSecondFieldExists",
-				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 2,
 				"flags": [
 					"named-constant"
@@ -37339,7 +37609,21 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 414,
+				"line": 419,
+				"column": 55,
+				"value": 1,
+				"text": "1",
+				"name": "spatialSpread",
+				"functionName": "noSecondFieldExists",
+				"snippet": "return { ...stats, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/energy.test.ts",
+				"line": 421,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -37353,7 +37637,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 414,
+				"line": 421,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -37367,7 +37651,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 414,
+				"line": 421,
 				"column": 73,
 				"value": 0,
 				"text": "0",
@@ -37381,13 +37665,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 421,
+				"line": 428,
 				"column": 38,
 				"value": 1,
 				"text": "1",
 				"name": "fieldLikeness",
 				"functionName": "secondFieldExists",
-				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }",
+				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
 				"suspicion": 2,
 				"flags": [
 					"named-constant"
@@ -37395,7 +37679,21 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 457,
+				"line": 428,
+				"column": 56,
+				"value": 1,
+				"text": "1",
+				"name": "spatialSpread",
+				"functionName": "secondFieldExists",
+				"snippet": "return { ...shaped, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/energy.test.ts",
+				"line": 464,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -37409,7 +37707,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 464,
+				"line": 471,
 				"column": 13,
 				"value": 1000,
 				"text": "1000",
@@ -37423,7 +37721,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 478,
+				"line": 485,
 				"column": 93,
 				"value": 100,
 				"text": "100",
@@ -37437,7 +37735,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 504,
+				"line": 511,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -37451,7 +37749,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 504,
+				"line": 511,
 				"column": 78,
 				"value": 1,
 				"text": "1",
@@ -37465,7 +37763,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 504,
+				"line": 511,
 				"column": 95,
 				"value": 0,
 				"text": "0",
@@ -37479,7 +37777,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 662,
+				"line": 669,
 				"column": 47,
 				"value": 0.5,
 				"text": "0.5",
@@ -37494,7 +37792,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 691,
+				"line": 700,
 				"column": 18,
 				"value": 1,
 				"text": "1",
@@ -37508,7 +37806,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 692,
+				"line": 701,
 				"column": 18,
 				"value": 10,
 				"text": "10",
@@ -37522,7 +37820,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 693,
+				"line": 702,
 				"column": 19,
 				"value": 10,
 				"text": "10",
@@ -37929,7 +38227,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 164,
+				"line": 171,
 				"column": 81,
 				"value": 1e-9,
 				"text": "1e-9",
@@ -37945,7 +38243,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 183,
+				"line": 190,
 				"column": 57,
 				"value": 0,
 				"text": "0",
@@ -37959,7 +38257,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 303,
+				"line": 310,
 				"column": 46,
 				"value": 0,
 				"text": "0",
@@ -37973,7 +38271,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 303,
+				"line": 310,
 				"column": 55,
 				"value": 0,
 				"text": "0",
@@ -37987,7 +38285,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 303,
+				"line": 310,
 				"column": 65,
 				"value": 1,
 				"text": "1",
@@ -38001,7 +38299,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 304,
+				"line": 311,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -38015,7 +38313,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 304,
+				"line": 311,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -38029,7 +38327,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 304,
+				"line": 311,
 				"column": 63,
 				"value": 1,
 				"text": "1",
@@ -38043,7 +38341,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 305,
+				"line": 312,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -38057,7 +38355,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 305,
+				"line": 312,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -38071,7 +38369,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 305,
+				"line": 312,
 				"column": 63,
 				"value": 1,
 				"text": "1",
@@ -38085,7 +38383,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 358,
+				"line": 368,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -38099,7 +38397,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 359,
+				"line": 369,
 				"column": 14,
 				"value": 0,
 				"text": "0",
@@ -38113,7 +38411,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 360,
+				"line": 370,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -38127,7 +38425,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 362,
+				"line": 372,
 				"column": 18,
 				"value": 1,
 				"text": "1",
@@ -38141,7 +38439,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 364,
+				"line": 374,
 				"column": 19,
 				"value": 1,
 				"text": "1",
@@ -38155,7 +38453,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 365,
+				"line": 375,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -45778,7 +46076,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 42,
 				"value": 40,
 				"text": "40",
@@ -45792,7 +46090,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 46,
 				"value": 40,
 				"text": "40",
@@ -45806,7 +46104,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 50,
 				"value": 40,
 				"text": "40",
@@ -45820,7 +46118,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 56,
 				"value": 41,
 				"text": "41",
@@ -45834,7 +46132,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 60,
 				"value": 41,
 				"text": "41",
@@ -45848,7 +46146,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 512,
+				"line": 519,
 				"column": 64,
 				"value": 41,
 				"text": "41",
@@ -45862,7 +46160,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 42,
 				"value": 255,
 				"text": "255",
@@ -45876,7 +46174,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 47,
 				"value": 255,
 				"text": "255",
@@ -45890,7 +46188,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 52,
 				"value": 255,
 				"text": "255",
@@ -45904,7 +46202,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 59,
 				"value": 254,
 				"text": "254",
@@ -45918,7 +46216,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 64,
 				"value": 254,
 				"text": "254",
@@ -45932,7 +46230,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 566,
+				"line": 573,
 				"column": 69,
 				"value": 254,
 				"text": "254",
@@ -45946,7 +46244,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 577,
+				"line": 584,
 				"column": 22,
 				"value": 1,
 				"text": "1",
@@ -45960,7 +46258,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 577,
+				"line": 584,
 				"column": 25,
 				"value": 2,
 				"text": "2",
@@ -45974,7 +46272,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 577,
+				"line": 584,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -45988,7 +46286,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 596,
+				"line": 603,
 				"column": 22,
 				"value": 1,
 				"text": "1",
@@ -46002,7 +46300,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 596,
+				"line": 603,
 				"column": 25,
 				"value": 2,
 				"text": "2",
@@ -46016,7 +46314,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 596,
+				"line": 603,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -46030,7 +46328,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -46044,7 +46342,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 25,
 				"value": 0,
 				"text": "0",
@@ -46058,7 +46356,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -46072,7 +46370,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -46086,7 +46384,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -46100,7 +46398,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 39,
 				"value": 1,
 				"text": "1",
@@ -46114,7 +46412,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -46128,7 +46426,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -46142,7 +46440,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 50,
 				"value": 0,
 				"text": "0",
@@ -46156,7 +46454,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 55,
 				"value": 1,
 				"text": "1",
@@ -46170,7 +46468,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 58,
 				"value": 0,
 				"text": "0",
@@ -46184,7 +46482,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 61,
 				"value": 0,
 				"text": "0",
@@ -46198,7 +46496,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 66,
 				"value": 255,
 				"text": "255",
@@ -46212,7 +46510,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 71,
 				"value": 255,
 				"text": "255",
@@ -46226,7 +46524,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 647,
+				"line": 654,
 				"column": 76,
 				"value": 255,
 				"text": "255",
@@ -46240,7 +46538,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 24,
 				"value": 0,
 				"text": "0",
@@ -46254,7 +46552,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -46268,7 +46566,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 30,
 				"value": 1,
 				"text": "1",
@@ -46282,7 +46580,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 48,
 				"value": 0,
 				"text": "0",
@@ -46296,7 +46594,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 51,
 				"value": 1,
 				"text": "1",
@@ -46310,7 +46608,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 652,
+				"line": 659,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -46324,7 +46622,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 24,
 				"value": 0,
 				"text": "0",
@@ -46338,7 +46636,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 27,
 				"value": 1,
 				"text": "1",
@@ -46352,7 +46650,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 30,
 				"value": 0,
 				"text": "0",
@@ -46366,7 +46664,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 48,
 				"value": 1,
 				"text": "1",
@@ -46380,7 +46678,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 51,
 				"value": 0,
 				"text": "0",
@@ -46394,7 +46692,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 653,
+				"line": 660,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -46408,7 +46706,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 654,
+				"line": 661,
 				"column": 27,
 				"value": 255,
 				"text": "255",
@@ -46422,7 +46720,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 654,
+				"line": 661,
 				"column": 32,
 				"value": 255,
 				"text": "255",
@@ -46436,7 +46734,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 654,
+				"line": 661,
 				"column": 37,
 				"value": 255,
 				"text": "255",
@@ -46450,7 +46748,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 662,
+				"line": 669,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -46464,7 +46762,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -46478,7 +46776,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 26,
 				"value": 5,
 				"text": "5",
@@ -46492,7 +46790,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 29,
 				"value": 12,
 				"text": "12",
@@ -46506,7 +46804,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 33,
 				"value": 19,
 				"text": "19",
@@ -46520,7 +46818,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 37,
 				"value": 26,
 				"text": "26",
@@ -46534,7 +46832,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 41,
 				"value": 33,
 				"text": "33",
@@ -46548,7 +46846,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 732,
+				"line": 741,
 				"column": 45,
 				"value": 40,
 				"text": "40",
@@ -47500,7 +47798,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 244,
+				"line": 251,
 				"column": 59,
 				"value": 0.5,
 				"text": "0.5",
@@ -47515,7 +47813,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 260,
+				"line": 267,
 				"column": 62,
 				"value": 0.5,
 				"text": "0.5",
@@ -47530,7 +47828,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 361,
+				"line": 371,
 				"column": 20,
 				"value": 0,
 				"text": "0",
@@ -47544,7 +47842,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 361,
+				"line": 371,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -47558,7 +47856,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 361,
+				"line": 371,
 				"column": 26,
 				"value": 0,
 				"text": "0",
@@ -47572,13 +47870,13 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 373,
-				"column": 44,
+				"line": 385,
+				"column": 47,
 				"value": 0.25,
 				"text": "0.25",
 				"name": "statsWithSpread",
 				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(0.25)), 1, \"and for the centred half-frame block\")",
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(0.25)), 0.25), \"the centred half-frame block scores 0.25\")",
 				"suspicion": 1,
 				"flags": [
 					"call-argument",
@@ -47587,7 +47885,22 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 416,
+				"line": 385,
+				"column": 55,
+				"value": 0.25,
+				"text": "0.25",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(0.25)), 0.25), \"the centred half-frame block scores 0.25\")",
+				"suspicion": 1,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 424,
 				"column": 19,
 				"value": 0.5,
 				"text": "0.5",
@@ -47601,7 +47914,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 416,
+				"line": 424,
 				"column": 38,
 				"value": 0.25,
 				"text": "0.25",
@@ -71402,30 +71715,6 @@
 				"flags": []
 			},
 			{
-				"file": "prototypes/p6-figureground/src/energy/rates.ts",
-				"line": 225,
-				"column": 24,
-				"value": 1,
-				"text": "1",
-				"name": "uniformSpatialSpread",
-				"functionName": null,
-				"snippet": "uniformSpatialSpread: 1 / 6,",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/src/energy/rates.ts",
-				"line": 225,
-				"column": 28,
-				"value": 6,
-				"text": "6",
-				"name": "uniformSpatialSpread",
-				"functionName": null,
-				"snippet": "uniformSpatialSpread: 1 / 6,",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
 				"file": "prototypes/p6-figureground/src/energy/solve.ts",
 				"line": 199,
 				"column": 20,
@@ -72131,7 +72420,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/terms.ts",
-				"line": 183,
+				"line": 190,
 				"column": 46,
 				"value": 0,
 				"text": "0",
@@ -72143,7 +72432,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/terms.ts",
-				"line": 183,
+				"line": 190,
 				"column": 77,
 				"value": 1,
 				"text": "1",
@@ -72155,7 +72444,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/src/energy/terms.ts",
-				"line": 273,
+				"line": 280,
 				"column": 21,
 				"value": 1,
 				"text": "1",
@@ -75665,7 +75954,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 429,
+				"line": 436,
 				"column": 35,
 				"value": 11,
 				"text": "11",
@@ -75679,7 +75968,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 429,
+				"line": 436,
 				"column": 39,
 				"value": 40,
 				"text": "40",
@@ -75693,7 +75982,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 440,
+				"line": 447,
 				"column": 38,
 				"value": 11,
 				"text": "11",
@@ -75707,7 +75996,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 440,
+				"line": 447,
 				"column": 42,
 				"value": 40,
 				"text": "40",
@@ -75721,7 +76010,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 449,
+				"line": 456,
 				"column": 58,
 				"value": 0,
 				"text": "0",
@@ -75735,7 +76024,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 453,
+				"line": 460,
 				"column": 38,
 				"value": 11,
 				"text": "11",
@@ -75749,7 +76038,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 453,
+				"line": 460,
 				"column": 42,
 				"value": 40,
 				"text": "40",
@@ -75763,7 +76052,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 501,
+				"line": 508,
 				"column": 29,
 				"value": 200,
 				"text": "200",
@@ -75777,7 +76066,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 501,
+				"line": 508,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -75791,7 +76080,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 557,
+				"line": 564,
 				"column": 57,
 				"value": 0,
 				"text": "0",
@@ -75803,7 +76092,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 578,
+				"line": 585,
 				"column": 44,
 				"value": 50,
 				"text": "50",
@@ -75817,7 +76106,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 597,
+				"line": 604,
 				"column": 44,
 				"value": 50,
 				"text": "50",
@@ -75831,7 +76120,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 619,
+				"line": 626,
 				"column": 36,
 				"value": 9,
 				"text": "9",
@@ -75845,7 +76134,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 619,
+				"line": 626,
 				"column": 39,
 				"value": 40,
 				"text": "40",
@@ -75859,7 +76148,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 654,
+				"line": 661,
 				"column": 44,
 				"value": 16777215,
 				"text": "0xffffff",
@@ -75873,7 +76162,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 671,
+				"line": 678,
 				"column": 60,
 				"value": 10,
 				"text": "10",
@@ -75885,31 +76174,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 683,
-				"column": 18,
-				"value": 1,
-				"text": "1",
-				"name": "spatialSpread",
-				"functionName": null,
-				"snippet": "spatialSpread: 1 / 12, // exactly half the uniform-over-frame trace",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 683,
-				"column": 22,
-				"value": 12,
-				"text": "12",
-				"name": "spatialSpread",
-				"functionName": null,
-				"snippet": "spatialSpread: 1 / 12, // exactly half the uniform-over-frame trace",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 695,
+				"line": 704,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -75923,7 +76188,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 699,
+				"line": 708,
 				"column": 37,
 				"value": 7,
 				"text": "7",
@@ -75937,7 +76202,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 699,
+				"line": 708,
 				"column": 40,
 				"value": 50,
 				"text": "50",
@@ -75951,7 +76216,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 701,
+				"line": 710,
 				"column": 74,
 				"value": 0,
 				"text": "0",
@@ -75965,7 +76230,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 722,
+				"line": 731,
 				"column": 28,
 				"value": 1,
 				"text": "1",
@@ -75977,7 +76242,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 726,
+				"line": 735,
 				"column": 37,
 				"value": 8,
 				"text": "8",
@@ -75991,7 +76256,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 726,
+				"line": 735,
 				"column": 40,
 				"value": 50,
 				"text": "50",
@@ -76005,7 +76270,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 728,
+				"line": 737,
 				"column": 74,
 				"value": 0,
 				"text": "0",
@@ -76019,7 +76284,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 757,
+				"line": 766,
 				"column": 37,
 				"value": 5,
 				"text": "5",
@@ -76033,7 +76298,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 757,
+				"line": 766,
 				"column": 40,
 				"value": 50,
 				"text": "50",
@@ -76047,7 +76312,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/energy.test.ts",
-				"line": 765,
+				"line": 774,
 				"column": 44,
 				"value": 1,
 				"text": "1",
@@ -78047,7 +78312,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 200,
+				"line": 207,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -78059,7 +78324,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 200,
+				"line": 207,
 				"column": 38,
 				"value": 16,
 				"text": "16",
@@ -78071,7 +78336,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 201,
+				"line": 208,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -78083,7 +78348,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 201,
+				"line": 208,
 				"column": 38,
 				"value": 8,
 				"text": "8",
@@ -78095,7 +78360,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 202,
+				"line": 209,
 				"column": 35,
 				"value": 13,
 				"text": "13",
@@ -78107,7 +78372,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 202,
+				"line": 209,
 				"column": 40,
 				"value": 16,
 				"text": "16",
@@ -78119,7 +78384,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 203,
+				"line": 210,
 				"column": 51,
 				"value": 2,
 				"text": "2",
@@ -78133,103 +78398,103 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 212,
+				"line": 219,
 				"column": 36,
 				"value": 1,
 				"text": "1",
 				"name": "close",
 				"functionName": null,
 				"snippet": "assert.ok(close(small.inkEnergy, (1 / 16) * 0.4), `small inkEnergy ${small.inkEnergy} vs 0.025`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 212,
-				"column": 40,
-				"value": 16,
-				"text": "16",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(small.inkEnergy, (1 / 16) * 0.4), `small inkEnergy ${small.inkEnergy} vs 0.025`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 213,
-				"column": 36,
-				"value": 1,
-				"text": "1",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(large.inkEnergy, (1 / 8) * 0.4), `large inkEnergy ${large.inkEnergy} vs 0.05`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 213,
-				"column": 40,
-				"value": 8,
-				"text": "8",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(large.inkEnergy, (1 / 8) * 0.4), `large inkEnergy ${large.inkEnergy} vs 0.05`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 214,
-				"column": 37,
-				"value": 1,
-				"text": "1",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(small.markEnergy, (1 / 16) * 0.1), `small markEnergy ${small.markEnergy}`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 214,
-				"column": 41,
-				"value": 16,
-				"text": "16",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(small.markEnergy, (1 / 16) * 0.1), `small markEnergy ${small.markEnergy}`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 215,
-				"column": 37,
-				"value": 1,
-				"text": "1",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(large.markEnergy, (1 / 8) * 0.1), `large markEnergy ${large.markEnergy}`)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 215,
-				"column": 41,
-				"value": 8,
-				"text": "8",
-				"name": "close",
-				"functionName": null,
-				"snippet": "assert.ok(close(large.markEnergy, (1 / 8) * 0.1), `large markEnergy ${large.markEnergy}`)",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
 				"line": 219,
+				"column": 40,
+				"value": 16,
+				"text": "16",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(small.inkEnergy, (1 / 16) * 0.4), `small inkEnergy ${small.inkEnergy} vs 0.025`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 220,
+				"column": 36,
+				"value": 1,
+				"text": "1",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(large.inkEnergy, (1 / 8) * 0.4), `large inkEnergy ${large.inkEnergy} vs 0.05`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 220,
+				"column": 40,
+				"value": 8,
+				"text": "8",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(large.inkEnergy, (1 / 8) * 0.4), `large inkEnergy ${large.inkEnergy} vs 0.05`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 221,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(small.markEnergy, (1 / 16) * 0.1), `small markEnergy ${small.markEnergy}`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 221,
+				"column": 41,
+				"value": 16,
+				"text": "16",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(small.markEnergy, (1 / 16) * 0.1), `small markEnergy ${small.markEnergy}`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 222,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(large.markEnergy, (1 / 8) * 0.1), `large markEnergy ${large.markEnergy}`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 222,
+				"column": 41,
+				"value": 8,
+				"text": "8",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(large.markEnergy, (1 / 8) * 0.1), `large markEnergy ${large.markEnergy}`)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 226,
 				"column": 53,
 				"value": 2,
 				"text": "2",
@@ -78243,7 +78508,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 235,
+				"line": 242,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -78257,7 +78522,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 242,
+				"line": 249,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -78269,7 +78534,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 242,
+				"line": 249,
 				"column": 44,
 				"value": 8,
 				"text": "8",
@@ -78281,7 +78546,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 243,
+				"line": 250,
 				"column": 59,
 				"value": 1,
 				"text": "1",
@@ -78295,7 +78560,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 248,
+				"line": 255,
 				"column": 46,
 				"value": 2,
 				"text": "2",
@@ -78307,7 +78572,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 259,
+				"line": 266,
 				"column": 62,
 				"value": 1,
 				"text": "1",
@@ -78321,7 +78586,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 306,
+				"line": 313,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -78333,7 +78598,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 306,
+				"line": 313,
 				"column": 62,
 				"value": 2,
 				"text": "2",
@@ -78345,7 +78610,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 311,
+				"line": 318,
 				"column": 18,
 				"value": 2,
 				"text": "2",
@@ -78357,7 +78622,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 327,
+				"line": 334,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -78371,7 +78636,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 330,
+				"line": 337,
 				"column": 53,
 				"value": 2,
 				"text": "2",
@@ -78383,7 +78648,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 335,
+				"line": 342,
 				"column": 72,
 				"value": 1,
 				"text": "1",
@@ -78395,7 +78660,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 335,
+				"line": 342,
 				"column": 76,
 				"value": 6,
 				"text": "6",
@@ -78407,7 +78672,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 339,
+				"line": 346,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -78421,7 +78686,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 341,
+				"line": 348,
 				"column": 53,
 				"value": 1,
 				"text": "1",
@@ -78435,31 +78700,21 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 347,
+				"line": 355,
 				"column": 52,
 				"value": 1,
 				"text": "1",
 				"name": "assert.equal",
 				"functionName": null,
-				"snippet": "assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, 1 / 6)",
+				"snippet": "assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, 1)",
 				"suspicion": 0,
-				"flags": []
+				"flags": [
+					"call-argument"
+				]
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 347,
-				"column": 56,
-				"value": 6,
-				"text": "6",
-				"name": "assert.equal",
-				"functionName": null,
-				"snippet": "assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, 1 / 6)",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 349,
+				"line": 357,
 				"column": 57,
 				"value": 1,
 				"text": "1",
@@ -78473,105 +78728,25 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 351,
+				"line": 359,
 				"column": 15,
 				"value": 1,
 				"text": "1",
 				"name": "assert.equal",
 				"functionName": null,
-				"snippet": "assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 6)",
+				"snippet": "assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 1)",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 351,
+				"line": 359,
 				"column": 56,
-				"value": 6,
-				"text": "6",
-				"name": "assert.equal",
-				"functionName": null,
-				"snippet": "assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 6)",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 371,
-				"column": 44,
-				"value": 1,
-				"text": "1",
-				"name": "statsWithSpread",
-				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(1 / 6)), 1, \"saturated at a sixth of a uniform fill\")",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 371,
-				"column": 48,
-				"value": 6,
-				"text": "6",
-				"name": "statsWithSpread",
-				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(1 / 6)), 1, \"saturated at a sixth of a uniform fill\")",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 371,
-				"column": 53,
 				"value": 1,
 				"text": "1",
 				"name": "assert.equal",
 				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(1 / 6)), 1, \"saturated at a sixth of a uniform fill\")",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 372,
-				"column": 44,
-				"value": 1,
-				"text": "1",
-				"name": "statsWithSpread",
-				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(1)), 1, \"and at a uniform fill — indistinguishable\")",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 372,
-				"column": 49,
-				"value": 1,
-				"text": "1",
-				"name": "assert.equal",
-				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(1)), 1, \"and at a uniform fill — indistinguishable\")",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 373,
-				"column": 52,
-				"value": 1,
-				"text": "1",
-				"name": "assert.equal",
-				"functionName": null,
-				"snippet": "assert.equal(fieldFitness(statsWithSpread(0.25)), 1, \"and for the centred half-frame block\")",
+				"snippet": "assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 1)",
 				"suspicion": 0,
 				"flags": [
 					"call-argument"
@@ -78580,62 +78755,112 @@
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
 				"line": 383,
-				"column": 32,
+				"column": 47,
 				"value": 1,
 				"text": "1",
 				"name": "statsWithSpread",
 				"functionName": null,
-				"snippet": "fieldFitness(statsWithSpread(1 / 6)),",
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6), \"a sixth of a uniform fill scores a sixth\")",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
 				"line": 383,
-				"column": 36,
+				"column": 51,
 				"value": 6,
 				"text": "6",
 				"name": "statsWithSpread",
 				"functionName": null,
-				"snippet": "fieldFitness(statsWithSpread(1 / 6)),",
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6), \"a sixth of a uniform fill scores a sixth\")",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 383,
+				"column": 56,
+				"value": 1,
+				"text": "1",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6), \"a sixth of a uniform fill scores a sixth\")",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 383,
+				"column": 60,
+				"value": 6,
+				"text": "6",
+				"name": "close",
+				"functionName": null,
+				"snippet": "assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6), \"a sixth of a uniform fill scores a sixth\")",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
 				"line": 384,
+				"column": 44,
+				"value": 1,
+				"text": "1",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "assert.equal(fieldFitness(statsWithSpread(1)), 1, \"a uniform fill scores full marks\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 384,
+				"column": 49,
+				"value": 1,
+				"text": "1",
+				"name": "assert.equal",
+				"functionName": null,
+				"snippet": "assert.equal(fieldFitness(statsWithSpread(1)), 1, \"a uniform fill scores full marks\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 390,
 				"column": 32,
 				"value": 1,
 				"text": "1",
 				"name": "statsWithSpread",
 				"functionName": null,
-				"snippet": "fieldFitness(statsWithSpread(1)),",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 393,
-				"column": 39,
-				"value": 2,
-				"text": "2",
-				"name": "Math.abs",
-				"functionName": null,
-				"snippet": "assert.ok(Math.abs(saturatingSide ** 2 - 0.1667) < 1e-3, \"…which is a sixth of the frame's area\")",
+				"snippet": "fieldFitness(statsWithSpread(1 / 6)) < fieldFitness(statsWithSpread(1)),",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 400,
-				"column": 3,
+				"line": 390,
+				"column": 36,
+				"value": 6,
+				"text": "6",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "fieldFitness(statsWithSpread(1 / 6)) < fieldFitness(statsWithSpread(1)),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 390,
+				"column": 71,
 				"value": 1,
 				"text": "1",
-				"name": "assert.equal",
+				"name": "statsWithSpread",
 				"functionName": null,
-				"snippet": "1,",
+				"snippet": "fieldFitness(statsWithSpread(1 / 6)) < fieldFitness(statsWithSpread(1)),",
 				"suspicion": 0,
 				"flags": [
 					"call-argument"
@@ -78643,7 +78868,113 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 416,
+				"line": 394,
+				"column": 38,
+				"value": 1,
+				"text": "1",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "close(fieldFitness(statsWithSpread(1)) / fieldFitness(statsWithSpread(1 / 6)), 6),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 394,
+				"column": 73,
+				"value": 1,
+				"text": "1",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "close(fieldFitness(statsWithSpread(1)) / fieldFitness(statsWithSpread(1 / 6)), 6),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 394,
+				"column": 77,
+				"value": 6,
+				"text": "6",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "close(fieldFitness(statsWithSpread(1)) / fieldFitness(statsWithSpread(1 / 6)), 6),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 394,
+				"column": 82,
+				"value": 6,
+				"text": "6",
+				"name": "close",
+				"functionName": null,
+				"snippet": "close(fieldFitness(statsWithSpread(1)) / fieldFitness(statsWithSpread(1 / 6)), 6),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 400,
+				"column": 44,
+				"value": 10,
+				"text": "10",
+				"name": "statsWithSpread",
+				"functionName": null,
+				"snippet": "assert.equal(fieldFitness(statsWithSpread(10)), 1, \"and above a uniform fill it saturates\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 400,
+				"column": 50,
+				"value": 1,
+				"text": "1",
+				"name": "assert.equal",
+				"functionName": null,
+				"snippet": "assert.equal(fieldFitness(statsWithSpread(10)), 1, \"and above a uniform fill it saturates\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 402,
+				"column": 31,
+				"value": 1,
+				"text": "1",
+				"name": "assert.equal",
+				"functionName": null,
+				"snippet": "assert.equal(saturatingSide, 1, \"a centred square reads s², so saturation begins at s = 1: the frame\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 408,
+				"column": 91,
+				"value": 2,
+				"text": "2",
+				"name": "close",
+				"functionName": null,
+				"snippet": "close(fieldFitness({ ...statsWithSpread(block.spatialSpread) }), BLOCK_SIDE_FRACTION ** 2, 0.05),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
+				"line": 424,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -78655,7 +78986,7 @@
 			},
 			{
 				"file": "prototypes/p6-figureground/tests/semantics.test.ts",
-				"line": 416,
+				"line": 424,
 				"column": 56,
 				"value": 2,
 				"text": "2",
@@ -80824,6 +81155,161 @@
 				"name": "assert.equal",
 				"functionName": null,
 				"snippet": "assert.equal(substrate.ladder.sigmas[0], 64 * LADDER_COARSEST_SHORT_EDGE_FRACTION)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 116,
+				"column": 22,
+				"value": 1,
+				"text": "1",
+				"name": "roleMisfit",
+				"functionName": "probeOne",
+				"snippet": "const roleMisfit = 1 - fitness",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 154,
+				"column": 58,
+				"value": 2,
+				"text": "2",
+				"name": "value.toExponential",
+				"functionName": "e",
+				"snippet": "const e = (value: number): string => value.toExponential(2)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 319,
+				"column": 53,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "unary",
+				"snippet": "return rates.belonging * belongingCost(one) + (1 - fitness) +",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 346,
+				"column": 58,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "clamp",
+				"snippet": "const clamp = (value: number): number => value <= 0 ? 0 : value >= 1 ? 1 : value",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 346,
+				"column": 75,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "clamp",
+				"snippet": "const clamp = (value: number): number => value <= 0 ? 0 : value >= 1 ? 1 : value",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 364,
+				"column": 9,
+				"value": 1,
+				"text": "1",
+				"name": "unary",
+				"functionName": null,
+				"snippet": "(1 - fitnessOf(index)) +",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 368,
+				"column": 33,
+				"value": 5,
+				"text": "5",
+				"name": "ranked.slice",
+				"functionName": "probe",
+				"snippet": "const top = ranked.slice(0, 5)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 434,
+				"column": 40,
+				"value": 1,
+				"text": "1",
+				"name": "position",
+				"functionName": "quantile",
+				"snippet": "const position = q * (sorted.length - 1)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 530,
+				"column": 48,
+				"value": -1,
+				"text": "1",
+				"name": "row.imagePath.split(\"/\").slice",
+				"functionName": "report",
+				"snippet": "const name = row.imagePath.split(\"/\").slice(-1)[0].slice(0, 12)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument",
+					"negative"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 530,
+				"column": 63,
+				"value": 12,
+				"text": "12",
+				"name": "row.imagePath.split(\"/\").slice(-1)[0].slice",
+				"functionName": "report",
+				"snippet": "const name = row.imagePath.split(\"/\").slice(-1)[0].slice(0, 12)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 632,
+				"column": 33,
+				"value": 2,
+				"text": "2",
+				"name": "process.argv.slice",
+				"functionName": null,
+				"snippet": "const argv = process.argv.slice(2)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p6-figureground/tools/first-palettes.ts",
+				"line": 635,
+				"column": 49,
+				"value": 1,
+				"text": "1",
+				"name": "report",
+				"functionName": null,
+				"snippet": "if (runIndex >= 0) await report(argv[runIndex + 1])",
 				"suspicion": 0,
 				"flags": []
 			},
