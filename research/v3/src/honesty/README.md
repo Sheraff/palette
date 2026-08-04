@@ -1,7 +1,9 @@
 # Parameter honesty — the instrument
 
-Counts the numbers in `research/v3/src` and `research/v3/oracle` that could be changed to change
-behaviour, and how many of them carry a provenance story.
+Counts the numbers in `research/v3/src`, `research/v3/oracle` and `research/v3/prototypes` that
+could be changed to change behaviour, and how many of them carry a provenance story.
+`prototypes/` is where Phase 2 prototype worktrees live; it is scanned wherever it exists and
+costs nothing where it does not.
 
 **Why it exists.** Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md`
 §1), defined against v2-3's roughly 900 tunable sites justified by 11 human anchors. The
