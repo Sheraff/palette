@@ -16,14 +16,20 @@
  *
  * | statistic | producer (`src/lattice/index.ts`) | consumer (`src/energy/terms.ts`) | verdict |
  * |---|---|---|---|
- * | `presence` | neighbourhood mass / frame area | `belongingCost`, `accentDensity` denominator | **confirmed** |
- * | `inkEnergy` | unnormalised area integral | `foregroundFitness`, `accentEnergy` — unnormalised | **confirmed** |
- * | `markEnergy` | unnormalised area integral | `accentEnergy` — unnormalised | **confirmed** |
+ * | `presence` | neighbourhood mass / frame area | `belongingCost`, the per-mass denominator | **confirmed** |
+ * | `inkEnergy` | unnormalised area integral | `inkDensity` — **divided by presence** | **confirmed (consumer changed 2026-08-04)** |
+ * | `markEnergy` | unnormalised area integral | `accentDensity` — **divided by presence** | **confirmed (consumer changed 2026-08-04)** |
  * | `fieldLikeness` | mass-weighted mean, [0,1] | clamped to [0,1] | **confirmed** |
  * | `borderAffinity` | annulus share / annulus area share, 1.0 = chance | `ratio(·, 1.0)` | **confirmed** |
  * | `habitualGround` | mass-weighted mean surround | distance to field path | **confirmed** |
  * | `centroidDistance` | OKLab distance | divided by the pooled bar | **confirmed** |
  * | `spatialSpread` | trace **already divided by 1/6**, 1.0 = frame-wide | `ratio(·, 1.0)` | **confirmed (was a MISMATCH; fixed 2026-08-04)** |
+ *
+ * The seam itself never moved: the producer still ships unnormalised integrals and still documents
+ * "divide by `presence` for a per-mass mean". What changed on 2026-08-04 is that the role-fitness
+ * terms now *perform* that division — an interpretation correction to the energy, recorded at
+ * `src/energy/terms.ts:inkDensity` and `:accentFitness`, not a renegotiation of the interface. The
+ * tests in §1 below therefore keep measuring both forms and pin which one each side uses.
  *
  * ## The one mismatch this file found, and the fix that closed it
  *
@@ -76,6 +82,7 @@ import {
 	fieldFitness,
 	foregroundFitness,
 	groundCoincidence,
+	inkDensity,
 } from "../src/energy/terms.ts"
 import type { CandidateStats, Substrate } from "../src/types.ts"
 
@@ -229,7 +236,17 @@ test("inkEnergy and markEnergy are UNNORMALISED area integrals — presence is t
 	assert.ok(close(large.markEnergy / large.presence, 0.1))
 })
 
-test("terms.ts consumes the energies unnormalised, and forms its own per-mass mean where it wants one", () => {
+test("terms.ts consumes the energies PER UNIT MASS — area buys no role fitness", () => {
+	// FLIPPED 2026-08-04 (interpretation correction, `src/energy/terms.ts:inkDensity`). WHAT WAS,
+	// kept as comments so the flip is legible in the diff rather than silent:
+	//   assert.ok(close(scales.maxInkEnergy, (1 / 8) * 0.4))
+	//   assert.ok(close(foregroundFitness(large, field, scales), 1), "the largest ink INTEGRAL sets the scale")
+	//   assert.ok(close(foregroundFitness(small, field, scales), 0.5), "half the area, half the fitness")
+	//   assert.ok(close(accentFitness(large, field, scaled, rates), 1))
+	//   assert.ok(close(accentFitness(small, field, scaled, rates), 0.5))
+	// i.e. two colours with IDENTICAL ink per pixel scored 2:1 in the text role because one covered
+	// twice the area. Measured on real covers, that is the rule that hands the foreground role to the
+	// background (`reports/first-palettes.md` §2.2).
 	const { small, large, filler } = inkFixture()
 	const rates = DEFAULT_EXCHANGE_RATES
 	const all = [small, large, filler]
@@ -242,16 +259,26 @@ test("terms.ts consumes the energies unnormalised, and forms its own per-mass me
 		assert.ok(close(groundCoincidence(stats, field), 1, 1e-6), "ground coincidence must not confound")
 	}
 
-	// (a) `foregroundFitness` reads the UNNORMALISED integral: twice the area of the same ink is
-	//     twice the foreground fitness. That is `terms.ts`'s stated intent — "the role-fitness term
-	//     wants *how much ink of this colour there is*, not the mean ink energy of however few
-	//     pixels carry it" (`src/lattice/index.ts:32`) — so producer and consumer agree.
-	assert.ok(close(scales.maxInkEnergy, (1 / 8) * 0.4), `scale ${scales.maxInkEnergy}`)
-	assert.ok(close(foregroundFitness(large, field, scales), 1), "the largest ink integral sets the scale")
-	assert.ok(close(foregroundFitness(small, field, scales), 0.5), "half the area, half the fitness")
+	// (a) The producer's side is unchanged and re-pinned right here, so the seam stays legible: the
+	//     integrals still scale with area (the test above), and the consumer divides them out.
+	assert.ok(close(inkDensity(small), 0.4), `small ink/mass ${inkDensity(small)}`)
+	assert.ok(close(inkDensity(large), 0.4), `large ink/mass ${inkDensity(large)}`)
+	assert.ok(close(scales.maxInkDensity, 0.4), `scale ${scales.maxInkDensity}`)
 
-	// (b) `accentEnergy` is likewise unnormalised, and `accentDensity` is the per-mass mean formed by
-	//     dividing by presence — exactly the operation W2 documents, performed on the consumer side.
+	// (b) `foregroundFitness` reads the DENSITY: same ink per pixel, same fitness, whatever the area.
+	//     "The artwork's own lettering colour is the natural winner" (proposal §2.4) — and lettering
+	//     is small-area, so the term may not reward area.
+	assert.ok(close(foregroundFitness(large, field, scales), 1), "the densest ink sets the scale")
+	assert.ok(
+		close(foregroundFitness(small, field, scales), foregroundFitness(large, field, scales)),
+		`the same ink at half the area scores the same: ${foregroundFitness(small, field, scales)}`,
+	)
+	// The filler carries an eighth of the ink per pixel and scores an eighth — the factor still
+	// discriminates, it just discriminates on ink-likeness rather than on size.
+	assert.ok(close(foregroundFitness(filler, field, scales), 0.05 / 0.4), "and it still discriminates")
+
+	// (c) `accentEnergy` is still the unnormalised combination `E_C + λ·E_L`, and `accentDensity` is
+	//     the per-mass mean formed from it — exactly the operation W2 documents, on the consumer side.
 	assert.ok(close(accentEnergy(large, rates), 2 * accentEnergy(small, rates)), "energy scales with area")
 	assert.ok(
 		close(accentDensity(small, rates), accentDensity(large, rates)),
@@ -260,11 +287,39 @@ test("terms.ts consumes the energies unnormalised, and forms its own per-mass me
 	// λ = accentAnisotropy, so the density is (mark + λ·ink) per unit mass = 0.1 + λ·0.4.
 	assert.ok(close(accentDensity(small, rates), 0.1 + rates.accentAnisotropy * 0.4))
 
-	// (c) So accent fitness separates the two only through the unnormalised factor. If either side
-	//     ever normalised the other way, both factors would go flat and this would read 1.
+	// (d) So accent fitness cannot separate them either: a small vivid mark must not lose to a large
+	//     dull one by area (`REVIEWER_EVIDENCE.md` row 3 — pure red at M = 0.116 published as #fafafa).
 	const scaled = computeFitnessScales(all, rates)
 	assert.ok(close(accentFitness(large, field, scaled, rates), 1))
-	assert.ok(close(accentFitness(small, field, scaled, rates), 0.5))
+	assert.ok(
+		close(accentFitness(small, field, scaled, rates), accentFitness(large, field, scaled, rates)),
+		"half the area, the same accent fitness",
+	)
+})
+
+test("the per-mass division is deterministic at zero mass, in both role terms", () => {
+	// The zero-presence guard, pinned rather than left to float: a candidate the artwork has no mass
+	// near (an escape colour, and every barrier that scores one) must produce 0, not NaN and not a
+	// number manufactured by dividing by the presence floor.
+	const absent: CandidateStats = {
+		presence: 0,
+		groundMass: 0,
+		inkEnergy: 0,
+		markEnergy: 0,
+		habitualGround: [0, 0, 0],
+		fieldLikeness: 0,
+		spatialSpread: 0,
+		borderAffinity: 0,
+		centroidDistance: 0,
+	}
+	const rates = DEFAULT_EXCHANGE_RATES
+	assert.equal(inkDensity(absent), 0)
+	assert.equal(accentDensity(absent, rates), 0)
+	// And a floored-but-nonzero mass divides rather than saturating: the floor is the same anchor
+	// `belongingCost` uses, so the two terms cannot disagree about what "no mass" means.
+	const faint: CandidateStats = { ...absent, presence: ENERGY_ANCHORS.presenceFloor, inkEnergy: 1e-30 }
+	assert.equal(inkDensity(faint), 1)
+	assert.ok(Number.isFinite(inkDensity({ ...absent, presence: 1e-300, inkEnergy: 1e-300 })))
 })
 
 test("fieldLikeness, habitualGround and centroidDistance are per-mass means, as both sides assume", () => {

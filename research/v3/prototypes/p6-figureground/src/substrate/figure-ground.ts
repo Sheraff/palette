@@ -53,7 +53,11 @@ import {
 } from "../../../../src/contract/constants.ts"
 import type { ColorRegion } from "../../../../src/contract/types.ts"
 import type { FigureGroundField, ImagePlanes, SurroundLadder } from "../types.ts"
-import { FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS, FIELD_WEIGHT_SOFTNESS_BARS } from "./constants.ts"
+import {
+	FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS,
+	FIELD_WEIGHT_SOFTNESS_BARS,
+	HABITUAL_GROUND_RUNG,
+} from "./constants.ts"
 
 /**
  * Which measured region an OKLab point falls in.
@@ -101,19 +105,28 @@ export function decomposeDisplacement(
 /**
  * Summarise the ladder into the per-pixel figure–ground field.
  *
- * The `ground` planes are the **coarsest** rung — `levels[0]`, σ ≈ shortEdge/2 — which is
- * `types.ts`'s "the colour this pixel is sitting on". They are returned by reference rather than
- * copied: the ladder outlives the substrate and nothing downstream writes to it.
+ * The `ground` planes are the **coarsest local** rung — `levels[HABITUAL_GROUND_RUNG]`,
+ * σ ≈ shortEdge/8 — which is `types.ts`'s "the colour this pixel is sitting on". They are returned
+ * by reference rather than copied: the ladder outlives the substrate and nothing downstream writes
+ * to it.
  *
- * `excludedCoarseRungs` is a parameter only so the anchor measurement in `tests/substrate.test.ts`
- * can sweep it; the pipeline never passes it and the default is the `[MEASURED]` constant. It is
- * clamped to `levelCount − 1`, so the finest rung always survives and a hand-built one-rung ladder
- * still measures that rung.
+ * **Interpretation correction, 2026-08-04.** This published `levels[0]` (σ ≈ shortEdge/2) until W7
+ * measured what that does to the one consumer: at the coarsest rung the surround is a near-global
+ * average, `groundCoincidence` reads it through a one-same-colour-bar kernel, and the factor died to
+ * <1e-3 on 10 of 18 real covers, taking foreground *and* accent fitness to identically zero with it.
+ * The rung is now the coarsest one that is still a *neighbourhood* (±2σ must not span the short
+ * edge). The full measurement, the criterion and the rung table live at `HABITUAL_GROUND_RUNG`.
+ *
+ * `excludedCoarseRungs` and `habitualGroundRung` are parameters only so the anchor measurements in
+ * `tests/substrate.test.ts` can sweep them; the pipeline never passes them and the defaults are the
+ * `[MEASURED]` constants. Both are clamped to `levelCount − 1`, so the finest rung always survives
+ * and a hand-built one-rung ladder still measures that rung.
  */
 export function buildFigureGround(
 	planes: ImagePlanes,
 	ladder: SurroundLadder,
 	excludedCoarseRungs: number = FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS,
+	habitualGroundRung: number = HABITUAL_GROUND_RUNG,
 ): FigureGroundField {
 	const count = planes.width * planes.height
 	const levelCount = ladder.levels.length
@@ -121,8 +134,12 @@ export function buildFigureGround(
 	if (!Number.isInteger(excludedCoarseRungs) || excludedCoarseRungs < 0) {
 		throw new RangeError(`excludedCoarseRungs must be a non-negative integer, got ${excludedCoarseRungs}`)
 	}
+	if (!Number.isInteger(habitualGroundRung) || habitualGroundRung < 0) {
+		throw new RangeError(`habitualGroundRung must be a non-negative integer, got ${habitualGroundRung}`)
+	}
 	// Levels are coarsest-first (`ladder.ts`), so the excluded rungs are the leading ones.
 	const firstFieldLevel = Math.min(excludedCoarseRungs, levelCount - 1)
+	const groundLevel = Math.min(habitualGroundRung, levelCount - 1)
 
 	const fieldWeight = new Float32Array(count)
 	const inkEnergy = new Float32Array(count)
@@ -170,6 +187,10 @@ export function buildFigureGround(
 		fieldWeight,
 		inkEnergy,
 		markEnergy,
-		ground: { L: ladder.levels[0].L, a: ladder.levels[0].a, b: ladder.levels[0].b },
+		ground: {
+			L: ladder.levels[groundLevel].L,
+			a: ladder.levels[groundLevel].a,
+			b: ladder.levels[groundLevel].b,
+		},
 	}
 }

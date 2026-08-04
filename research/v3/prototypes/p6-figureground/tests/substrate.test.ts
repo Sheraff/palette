@@ -57,6 +57,9 @@ import {
 	SRGB_TO_LINEAR,
 	SubstrateRefusal,
 } from "../src/substrate/index.ts"
+// Not re-exported by the module index (which is not this worker's path): imported from its own
+// definition site, the same way `tests/semantics.test.ts` imports the lattice's constants.
+import { HABITUAL_GROUND_RUNG } from "../src/substrate/constants.ts"
 
 // ---------------------------------------------------------------------------------------------
 // Fixtures
@@ -957,11 +960,149 @@ test("the same file twice produces byte-identical planes, ladder and field", asy
 	assert.deepEqual(first.ladder.sigmas, second.ladder.sigmas)
 })
 
-test("the ground planes are the coarsest rung, by reference", async () => {
+test("the ground planes are the coarsest LOCAL rung, by reference", async () => {
+	// Flipped 2026-08-04 from "the coarsest rung" — the interpretation correction recorded at
+	// `HABITUAL_GROUND_RUNG`. WHAT WAS: `ground` was `levels[0]`, σ = shortEdge/2, whose ±2σ kernel
+	// spans twice the frame, so the "colour this pixel sits on" was a near-global average and
+	// `groundCoincidence` died on 10 of 18 real covers.
 	const path = await writePng("ground.png", 64, 64, (x, y) => [x * 4, y * 4, 128])
 	const substrate = await buildSubstrate(path)
-	assert.equal(substrate.figureGround.ground.L, substrate.ladder.levels[0].L)
-	assert.equal(substrate.figureGround.ground.a, substrate.ladder.levels[0].a)
-	assert.equal(substrate.figureGround.ground.b, substrate.ladder.levels[0].b)
+	const rung = HABITUAL_GROUND_RUNG
+	assert.equal(substrate.figureGround.ground.L, substrate.ladder.levels[rung].L)
+	assert.equal(substrate.figureGround.ground.a, substrate.ladder.levels[rung].a)
+	assert.equal(substrate.figureGround.ground.b, substrate.ladder.levels[rung].b)
+	assert.notEqual(substrate.figureGround.ground.L, substrate.ladder.levels[0].L)
 	assert.equal(substrate.ladder.sigmas[0], 64 * LADDER_COARSEST_SHORT_EDGE_FRACTION)
+	assert.equal(substrate.ladder.sigmas[rung], 64 / 8)
+})
+
+test("the habitual ground is the coarsest LOCAL rung: ±2σ must not span the short edge", () => {
+	// The geometric criterion re-derived from the ladder itself rather than quoted, exactly as the
+	// field-likeness exclusion is re-derived above. A rung is a *surround* only while its kernel's
+	// ±2σ reach stays inside the frame; the habitual ground is the coarsest such rung, because
+	// "habitual" wants the page a whole letterform sits on, not the inside of one stroke.
+	const shortEdge = 512
+	const sigmas = ladderSigmas(shortEdge, shortEdge)
+	const nonLocal = sigmas.filter((sigma) => 4 * sigma >= shortEdge).length
+	assert.equal(HABITUAL_GROUND_RUNG, nonLocal, "the coarsest local rung is the first local one")
+	assert.equal(HABITUAL_GROUND_RUNG, 2)
+	assert.ok(4 * sigmas[HABITUAL_GROUND_RUNG] < shortEdge, "the shipped rung is local")
+	assert.ok(4 * sigmas[HABITUAL_GROUND_RUNG - 1] >= shortEdge, "and it is the coarsest one that is")
+	// Scale-free, like every other geometric decision in this module: the criterion is a ratio.
+	for (const edge of [128, 300, 1000, 3000]) {
+		const count = ladderSigmas(edge, edge).filter((sigma) => 4 * sigma >= edge).length
+		assert.equal(count, HABITUAL_GROUND_RUNG, `short edge ${edge}`)
+	}
+	// The two constants coincide numerically because they are the two sides of one cut. Pinned so
+	// that a future ladder change which separates them cannot do it silently.
+	assert.equal(HABITUAL_GROUND_RUNG, FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS)
+})
+
+/**
+ * Anchors for `HABITUAL_GROUND_RUNG`, on the white-on-black lettering fixture the scale-band anchors
+ * already use. Two questions, one sweep, because each alone selects only one side of the band:
+ *
+ * - **the ink's ground is the page** — the stroke's habitual ground must be nearer the page colour
+ *   than it is to the ink's own colour, or "what this ink sits on" has become "the inside of this
+ *   stroke". This is what the *fine* end fails.
+ * - **the field's own ground is itself** — a field pixel sits on its own colour, within the kernel
+ *   `groundCoincidence` reads the distance through (one pooled same-colour bar, 0.01535). This is
+ *   what the *coarse* end fails, and it is the defect W7 measured on real covers verbatim: on
+ *   `00007e97…` even the background's own habitual ground was 0.1655 away — **ten bars** — so the
+ *   coincidence factor read ~1e-24 for every candidate on the cover.
+ *
+ * Measured here, mean OKLab distances over the strokes and over the distant black field:
+ *
+ * | rung | σ (px) | stroke d(ground, page) | stroke d(ground, ink) | field d(ground, itself) | in bars |
+ * |---|---|---|---|---|---|
+ * | 0 | 96 | 0.174 | 0.826 | **0.1673** | **10.9** |
+ * | 1 | 48 | 0.235 | 0.765 | **0.1371** | **8.9** |
+ * | **2** | **24** | **0.322** | **0.678** | **0.0263** | **1.7** |
+ * | 3 | 12 | 0.414 | 0.586 | 0.0000 | 0.0 |
+ * | 4 | 6 | **0.555** | **0.445** | 0.0000 | 0.0 |
+ * | 5 | 3 | **0.711** | **0.289** | 0.0000 | 0.0 |
+ *
+ * The two anchors bracket the ladder from both ends and leave `{2, 3}`; the geometric criterion
+ * ("the coarsest rung that is still local") picks 2 out of that pair without introducing a digit.
+ *
+ * One honest note, because it is the reason this fixture cannot carry the anchor alone: the *stroke*
+ * column looks best at rung 0. That is an artefact of the fixture being 99.3% black — its global
+ * mean nearly IS the page — and it is precisely why the defect had to be found on real covers.
+ * What the fixture does show, at rung 0, is the cube root doing the damage anyway: 0.7% white
+ * content puts the *field's own* surround eleven bars off the field.
+ */
+test("a letterform's habitual ground is the page it sits on; the field's is itself", async () => {
+	const size = INK_SIZE
+	const path = await writePng(
+		"ink-ground.png",
+		size,
+		size,
+		(x, y) => (isInkStroke(x, y) ? [255, 255, 255] : [0, 0, 0]),
+	)
+	const decoded = await decodePlanes(path)
+	const ladder = buildSurroundLadder(decoded.linear, size, size)
+	const page = rgbToOkLab([0, 0, 0])
+	const ink = rgbToOkLab([255, 255, 255])
+
+	const measure = (rung: number) => {
+		const field = buildFigureGround(decoded.planes, ladder, FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS, rung)
+		let strokeToPage = 0
+		let strokeToInk = 0
+		let strokes = 0
+		let fieldToItself = 0
+		let fields = 0
+		for (let index = 0; index < field.ground.L.length; index += 1) {
+			const x = index % size
+			const y = Math.floor(index / size)
+			const ground: [number, number, number] = [
+				field.ground.L[index],
+				field.ground.a[index],
+				field.ground.b[index],
+			]
+			if (isInkStroke(x, y)) {
+				strokeToPage += okLabDistance(ground, page)
+				strokeToInk += okLabDistance(ground, ink)
+				strokes += 1
+			} else if (y < size / 8) {
+				fieldToItself += okLabDistance(ground, page)
+				fields += 1
+			}
+		}
+		return {
+			strokeToPage: strokeToPage / strokes,
+			strokeToInk: strokeToInk / strokes,
+			fieldToItself: fieldToItself / fields,
+		}
+	}
+
+	const bar = SAME_COLOR_BAR_BY_REGION[colorRegion(colorFromRgb([0, 0, 0]))]
+	const shipped = measure(HABITUAL_GROUND_RUNG)
+	const coarsest = measure(0)
+	const finest = measure(LADDER_LEVELS - 1)
+
+	// Anchor 1, at the shipped rung: the ink sits on the page, not on itself.
+	assert.ok(
+		shipped.strokeToPage < shipped.strokeToInk,
+		`stroke ground ${shipped.strokeToPage} from the page vs ${shipped.strokeToInk} from the ink`,
+	)
+	// And the fine end is where that fails — the ground becomes the stroke's own interior.
+	assert.ok(finest.strokeToInk < finest.strokeToPage, "the finest rung reads the ink, not the page")
+
+	// Anchor 2, at the shipped rung: a field pixel sits on its own colour, inside the kernel the
+	// energy reads this through. `groundCoincidence` is exp(−½(d/0.01535)²).
+	assert.ok(shipped.fieldToItself < 3 * bar, `field ground is ${shipped.fieldToItself / bar} bars off itself`)
+	// And the coarse end is where THAT fails — this is the measured defect, in one number.
+	assert.ok(
+		coarsest.fieldToItself > 10 * bar,
+		`the coarsest rung puts the field ${coarsest.fieldToItself / bar} bars off its own colour`,
+	)
+	assert.ok(
+		coarsest.fieldToItself > shipped.fieldToItself * 5,
+		`${coarsest.fieldToItself} → ${shipped.fieldToItself}`,
+	)
+
+	// The consequence for the consumer, stated as the consumer states it: dead versus alive.
+	const coincidence = (distance: number) => Math.exp(-0.5 * (distance / 0.01535) ** 2)
+	assert.ok(coincidence(coarsest.fieldToItself) < 1e-20, `coarsest rung coincidence ${coincidence(coarsest.fieldToItself)}`)
+	assert.ok(coincidence(shipped.fieldToItself) > 0.1, `shipped rung coincidence ${coincidence(shipped.fieldToItself)}`)
 })

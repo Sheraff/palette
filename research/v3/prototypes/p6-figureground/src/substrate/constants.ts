@@ -139,10 +139,14 @@ export const FIELD_WEIGHT_SOFTNESS_BARS = 1
  * independently on dark fields, where the coarsest rung of a dark cover carrying 0.7% bright
  * content sits ~20 dark-neutral bars off the field). SPEC "Integration directives — wave 2" item 1
  * records the repair: field-likeness is a **fine/mid-scale** question. The coarse rungs are not
- * discarded — they still supply `FigureGroundField.ground` (which *is* `levels[0]`), the habitual
- * ground the energy scores "sits on the field" with, and both energy densities. They are excluded
- * from this one weight and nowhere else. That much is a deviation from the proposal's words which
- * the directive ordered, to save the proposal's mechanism.
+ * discarded — they still supply both energy densities (`inkEnergy`/`markEnergy` average over all six
+ * rungs, which is what says a stroke is displaced from the page it sits on). They are excluded from
+ * this one weight and nowhere else. That much is a deviation from the proposal's words which the
+ * directive ordered, to save the proposal's mechanism.
+ *
+ * *(Amended 2026-08-04: this paragraph used to add "they still supply `FigureGroundField.ground`,
+ * which IS `levels[0]`". That is no longer true and the reason is the same locality criterion this
+ * constant is selected by — see `HABITUAL_GROUND_RUNG` below.)*
  *
  * ## Anchor (b) — white-on-black text still gets ≈0. Passes, everywhere.
  *
@@ -234,6 +238,99 @@ export const FIELD_WEIGHT_SOFTNESS_BARS = 1
  * `buildFigureGround` clamps the count to `levelCount − 1`, so the finest rung always survives.
  */
 export const FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS = 2
+
+// ---------------------------------------------------------------------------------------------
+// The habitual ground
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Which ladder rung is published as `FigureGroundField.ground` — the colour a pixel "sits on".
+ *
+ * `[MEASURED — 2026-08-04, two anchors: W7's dead-coincidence census (`reports/first-palettes.md`
+ * §2.1) and the geometric locality criterion below, re-run as `tests/substrate.test.ts` "the habitual
+ * ground is the coarsest LOCAL rung" + "a letterform's habitual ground is the page it sits on"]`
+ * **2** — σ = shortEdge/8, the same rung index the field-likeness exclusion above lands on, and for
+ * the same reason.
+ *
+ * ## Interpretation correction, recorded as such
+ *
+ * Until 2026-08-04 this module published `ladder.levels[0]` — the **coarsest** rung, σ ≈ shortEdge/2
+ * — because `types.ts` said "the colour this pixel is sitting on" and the coarsest surround is the
+ * most surround-like thing in the ladder if one reads it as a scale ordering. Measured, that reading
+ * defeats the mechanism it feeds. `src/energy/terms.ts:groundCoincidence` reads this colour through
+ * a Gaussian **one same-colour bar wide** — the contract's statement about when two colours are the
+ * same colour — and at σ = shortEdge/2 the surround of a 300² cover is a near-global average, which
+ * on any artwork that is not near-uniform is tens of bars from every candidate's own colour. W7
+ * measured the consequence over every distinct triple of three real covers:
+ *
+ * | cover | triples | max coincidence over ALL triples | triples > 1e-3 | min d(B, field) in bars |
+ * |---|---|---|---|---|
+ * | `00007e97…` | 24 615 | **8.55e-24** | **0** | 9.7 |
+ * | `…000000d8…` | 256 | **1.07e-41** | **0** | 22.6 |
+ * | `…00000133…` (near-uniform) | 604 | 1.00 | 604 | 0.0 |
+ *
+ * and over demo-20: **10 of 18 covers had a maximum coincidence below 1e-3**, two more below 1e-2.
+ * Because `groundCoincidence` multiplies *both* `foregroundFitness` and `accentFitness`, a dead
+ * coincidence makes both role fitnesses identically ~0, so `roleMisfit = 1` for every candidate and
+ * the foreground and accent are chosen by `belonging` alone — which is monotone decreasing in mass
+ * and therefore hands the text role to the artwork's largest area. That is P6's central claim (roles
+ * read out of one energy) going vacuous on ten covers out of eighteen: the swap gap between
+ * (fg, accent) and its reverse was **exactly zero** on five of them, an identity rather than a tie.
+ *
+ * The factor was never behaving as "how much of this ink's ground is the field". It was a near-1/0
+ * indicator of whether the artwork happens to be near-uniform.
+ *
+ * ## What the corrected value is, and why it introduces no digit
+ *
+ * `types.ts`'s amended doc fixes the rule: the ground is **the coarsest rung that is still local** —
+ * the same criterion W6 used to select the field-likeness exclusion, applied to the same ladder. A
+ * rung's kernel reaches ±2σ, so rung k spans `4σ_k = shortEdge/2^(k−1)`:
+ *
+ * | rung | σ | ±2σ span | local? |
+ * |---|---|---|---|
+ * | 0 | S/2 | 2·S | no — twice the frame |
+ * | 1 | S/4 | 1·S | no — exactly the frame |
+ * | **2** | **S/8** | **S/2** | **yes — the coarsest that is** |
+ * | 3…5 | S/16 … S/64 | S/4 … S/16 | yes, but progressively less "the page" |
+ *
+ * Held against a two-sided synthetic bracket rather than fitted to it (`tests/substrate.test.ts`,
+ * "a letterform's habitual ground is the page it sits on; the field's is itself"). On the 192²
+ * white-on-black lettering fixture, mean OKLab distances by rung — the *fine* end fails because the
+ * ground becomes the stroke's own interior, the *coarse* end fails because the field stops sitting
+ * on itself inside the kernel the energy reads it through (one pooled bar, 0.01535):
+ *
+ * | rung | σ | stroke ground: nearer the page than the ink? | field's own ground, in dark bars |
+ * |---|---|---|---|
+ * | 0 | S/2 | yes (0.174 vs 0.826) | **10.9** — coincidence 2e-26, dead |
+ * | 1 | S/4 | yes (0.235 vs 0.765) | **8.9** — dead |
+ * | **2** | **S/8** | **yes (0.322 vs 0.678)** | **1.7 — coincidence 0.23, alive** |
+ * | 3 | S/16 | yes (0.414 vs 0.586) | 0.0 |
+ * | 4 | S/32 | **no (0.555 vs 0.445)** | 0.0 |
+ * | 5 | S/64 | **no (0.711 vs 0.289)** | 0.0 |
+ *
+ * The bracket leaves `{2, 3}`; the geometric criterion picks 2 out of that pair without adding a
+ * digit. (The fixture's own limitation is recorded at the test: being 99.3% black, its global mean
+ * nearly *is* its page, so the stroke column flatters rung 0 — which is exactly why the defect had
+ * to be found on real covers and why the census above is the primary anchor.)
+ *
+ * A surround must be local to be a surround: rungs 0 and 1 answer "how does this pixel differ from
+ * the whole image", which is not a question about what anything sits on. Rung 2 is the coarsest that
+ * answers the neighbourhood question, and coarsest is what "habitual" wants — it is the ground of a
+ * whole letterform rather than of a stroke's own interior. So the value is the *maximum* index the
+ * criterion permits, where `FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS` is the *minimum* exclusion it
+ * permits; the two constants coincide numerically because they are the two sides of the same cut,
+ * and they are written separately because they would move apart if the criterion ever selected a
+ * band rather than a boundary. `tests/substrate.test.ts` re-derives the cut from `ladderSigmas`
+ * rather than trusting either digit.
+ *
+ * The coarse rungs are not discarded: `inkEnergy` and `markEnergy` still average over **all six**,
+ * which is what says a stroke is displaced from the page it sits on.
+ *
+ * A count rather than a fraction because `LADDER_LEVELS` is `[HELD]` at six; if the ladder's length
+ * or extent moves, the criterion above re-derives this. `buildFigureGround` clamps it to
+ * `levelCount − 1`, so a hand-built one-rung ladder still measures that rung.
+ */
+export const HABITUAL_GROUND_RUNG = 2
 
 // ---------------------------------------------------------------------------------------------
 // Decode

@@ -62,6 +62,7 @@ import {
 	fieldFitness,
 	foregroundFitness,
 	groundCoincidence,
+	inkDensity,
 	representativenessCost,
 } from "../src/energy/terms.ts"
 import { buildFieldHypotheses } from "../src/fieldmodel/index.ts"
@@ -117,7 +118,7 @@ function probeOne(
 			presence: one.presence,
 			inkEnergy: one.inkEnergy,
 			markEnergy: one.markEnergy,
-			inkPerMass: one.inkEnergy / Math.max(one.presence, 1e-30),
+			inkPerMass: inkDensity(one),
 			groundCoincidence: groundCoincidence(one, field),
 			fitness,
 			belonging,
@@ -336,24 +337,26 @@ async function probe(imagePaths: readonly string[], brief = false): Promise<void
 		// factor replaced by its stated alternative, evaluated to attribute the failure. Moving a rate
 		// on the strength of them is the documented relapse (`REVIEWER_EVIDENCE.md` header).
 		if (!brief) {
-			let maxInkPerMass = 0
+			let maxInkIntegral = 0
 			for (const one of stats) {
-				const value = one.inkEnergy / Math.max(one.presence, 1e-30)
-				if (value > maxInkPerMass) maxInkPerMass = value
+				if (one.inkEnergy > maxInkIntegral) maxInkIntegral = one.inkEnergy
 			}
 			const clamp = (value: number): number => value <= 0 ? 0 : value >= 1 ? 1 : value
+			// "As implemented" is now the per-mass form (the 2026-08-04 interpretation correction); the
+			// area integral is kept as the REVERSE counterfactual, so the report can still show what the
+			// pre-fix term ranked. Neither direction may move a rate: these attribute, they do not decide.
 			const variants: readonly [string, (index: number) => number][] = [
-				["as implemented", (index) =>
-					clamp(stats[index].inkEnergy / scales.maxInkEnergy) * coincidences[index]],
-				["coincidence forced to 1", (index) => clamp(stats[index].inkEnergy / scales.maxInkEnergy)],
-				["ink per unit mass, coincidence as measured", (index) =>
-					clamp((stats[index].inkEnergy / Math.max(stats[index].presence, 1e-30)) / maxInkPerMass) *
-					coincidences[index]],
+				["as implemented (ink per unit mass)", (index) =>
+					clamp(inkDensity(stats[index]) / scales.maxInkDensity) * coincidences[index]],
 				["ink per unit mass, coincidence forced to 1", (index) =>
-					clamp((stats[index].inkEnergy / Math.max(stats[index].presence, 1e-30)) / maxInkPerMass)],
+					clamp(inkDensity(stats[index]) / scales.maxInkDensity)],
+				["PRE-FIX: ink as an area integral, coincidence as measured", (index) =>
+					clamp(stats[index].inkEnergy / maxInkIntegral) * coincidences[index]],
+				["PRE-FIX: ink as an area integral, coincidence forced to 1", (index) =>
+					clamp(stats[index].inkEnergy / maxInkIntegral)],
 			]
 			console.log(`\n### foreground counterfactuals — top 5 by unary cost under each fitness form\n`)
-			console.log(`max inkEnergy ${e(scales.maxInkEnergy)} (integral), max ink/mass ${f(maxInkPerMass)}`)
+			console.log(`max inkEnergy ${e(maxInkIntegral)} (integral), max ink/mass ${f(scales.maxInkDensity)}`)
 			for (const [label, fitnessOf] of variants) {
 				const ranked = stats
 					.map((one, index) => ({
