@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T21:07:58.572Z",
+		"generatedAt": "2026-08-04T21:24:37.444Z",
 		"roots": [
 			"oracle",
 			"prototypes",
@@ -10,10 +10,10 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T21:07:58.572Z",
+			"generatedAt": "2026-08-04T21:24:37.444Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "c3c922d929173bafc7e71b8f8cc274dfdec96be8",
+				"gitCommit": "14916221dcca6863efc2356a34153c518f4f36c1",
 				"gitBranch": "research/palette-0.9-checkpoint",
 				"gitDirty": true,
 				"node": "v25.8.1"
@@ -35,11 +35,11 @@
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "99c70a8b9fadb539a0455601d32929b4dc94e8bcea4b97cb06a0483ab29433bb",
+	"bodyHash": "a4d54d6838cffefa506e44b9ee8f8bea9533937b12cb834fd8d88a661860a42f",
 	"body": {
 		"corpus": {
 			"files": 220,
-			"lines": 98499,
+			"lines": 98547,
 			"byLanguage": {
 				"py": {
 					"files": 98,
@@ -48,7 +48,7 @@
 				},
 				"ts": {
 					"files": 122,
-					"lines": 59961,
+					"lines": 60009,
 					"fidelity": "ast"
 				}
 			}
