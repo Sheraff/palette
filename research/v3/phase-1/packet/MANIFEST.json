@@ -1,0 +1,149 @@
+{
+	"packet": "phase-1/packet",
+	"description": "The full Phase 1 author packet. Arms A-E receive exactly this directory.",
+	"commit": "71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2",
+	"builtOn": "2026-08-04",
+	"notes": [
+		"Every file carries a prepended provenance header (an HTML comment). `kind` describes the body below that header, not the file including it — hence `bytes`/`sha256` (packet copy, header included) differ from `sourceBytes`/`sourceSha256` (source file as-is).",
+		"MANIFEST.json is not listed among its own files.",
+		"`mayContainCampaignConclusions` is a leakage flag, not a redaction: the brief promises authors will not receive \"our failure analyses, the instruments' conclusions, or the field guide\" (§7), while §5 points them at instrument READMEs that may state what the instrument found. Nothing has been redacted — faithfulness to the frozen brief outranks the flag. The flag records the size of the hole."
+	],
+	"files": [
+		{
+			"path": "PHASE_1_AUTHOR_BRIEF.md",
+			"sourcePath": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 29760,
+			"sha256": "dc5f84a2661453bbded60047d1305d74a89c507aeef8f3175e568ffaddf189fb",
+			"sourceBytes": 29492,
+			"sourceSha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd",
+			"mayContainCampaignConclusions": true,
+			"note": "The brief itself. §2 quotes the incumbent's measured failures (72.8% palette agreement on re-encode, a ±1-LSB dither moving all 114 test palettes, ~900 tunable sites against 11 human anchors, 1.61× overfitting) and §3.1 carries perception-4's measured same-colour thresholds and the accent-lightness result (0.750 vs 0.361). Delivered as-is by design — the brief is frozen and faithfulness to it outranks this flag."
+		},
+		{
+			"path": "PHASE_0_DECISIONS.md",
+			"sourcePath": "research/v3/PHASE_0_DECISIONS.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 62833,
+			"sha256": "7a46eb5a3d0916a69fc5ce2b53f01ab4c3eb3ea80cb703229c95ccd0d27b395f",
+			"sourceBytes": 62118,
+			"sourceSha256": "b8b3c1febd393065adbd4e23cad906d65989ca92438a83890233c77127f08dd0",
+			"mayContainCampaignConclusions": true,
+			"note": "§6.1 carries the SAM determinism measurement (144 inferences, 5,148 regions, zero differing bytes) and the ~6.2 s cold-call cost; §7 is \"Measured resolution floors (ladder-sample-1)\" and §7.1 re-scores them against a capped answer key, stating what survives and what does not; §8 is an open-items ledger. Copied whole on instruction, because extraction risks silently dropping normative content."
+		},
+		{
+			"path": "catalog/src/devloop/README.md",
+			"sourcePath": "research/v3/src/devloop/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 13742,
+			"sha256": "c56eea22614deffaa4632e826c23544d76ab7010a1e250d79b3d84ab528a0aa5",
+			"sourceBytes": 13476,
+			"sourceSha256": "ea44e28e9235c4492bfc0c6c7ca80089cf80575ff4abff9f455f6793b0cbda38",
+			"mayContainCampaignConclusions": false
+		},
+		{
+			"path": "catalog/src/robustness/README.md",
+			"sourcePath": "research/v3/src/robustness/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 11401,
+			"sha256": "60e026f858f9a2347fbe67db22d74296fc90d669683d661dffadab2800e4f85f",
+			"sourceBytes": 11132,
+			"sourceSha256": "99ad9c1cfe167c00303e60f2ba97fd5a543b9d8f797a4641e862c3dfaca06487",
+			"mayContainCampaignConclusions": true,
+			"note": "States v2-3's measured 72.8% re-encode palette agreement and that a ±1-LSB dither moved all 114 test palettes — i.e. the incumbent's robustness conclusion, not just the harness's capability."
+		},
+		{
+			"path": "catalog/src/stats/README.md",
+			"sourcePath": "research/v3/src/stats/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 8866,
+			"sha256": "ba00cffbe7bd95386d34827cb35963159af757157bc243c11be6e50b209c5735",
+			"sourceBytes": 8602,
+			"sourceSha256": "e42fc89f427420e8843c9ece7f4f7184795b6b9e50110cab9da1213f2952cb39",
+			"mayContainCampaignConclusions": true,
+			"note": "Its worked example is a real study result rather than an invented one: the gap-scan at p 0.2927 corrected against 0.0172 raw on the same 43 items."
+		},
+		{
+			"path": "catalog/src/adjudication/README.md",
+			"sourcePath": "research/v3/src/adjudication/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 15144,
+			"sha256": "2ecddc20f3c7385dc1ddf59bea5789a2dfc378380aefd7975644db4d2809ab2e",
+			"sourceBytes": 14873,
+			"sourceSha256": "98a33f75c8025eb5ad43cf8d8bd3f1d3e096ded756fe25369bf5bc06fe949c85",
+			"mayContainCampaignConclusions": true,
+			"note": "States the standing v3-era evidence position (\"zero standing palette verdicts\") and legacy tier-overlap counts (31 keys, 9 strong-graded-acceptable)."
+		},
+		{
+			"path": "catalog/src/honesty/README.md",
+			"sourcePath": "research/v3/src/honesty/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 7362,
+			"sha256": "e7355f2ec692f3574f17c2060874e7746a351dcb4775066aa3f1536e81e29099",
+			"sourceBytes": 7096,
+			"sourceSha256": "d7a7c7b68aabdb45effd7d9f0e767c16e77936b4e7d7aeab38c74953bda8f1f3",
+			"mayContainCampaignConclusions": true,
+			"note": "Cites v2-3's headline parameter-honesty findings as calibration context: roughly 900 tunable sites justified by 11 human anchors, and a 1.61× overfitting alarm against a target of ~1.0."
+		},
+		{
+			"path": "catalog/src/review-server/README.md",
+			"sourcePath": "research/v3/src/review-server/README.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 72978,
+			"sha256": "227c93d6e599c99cc24249f27854543e0998446335e496ca49f4a8326671e0da",
+			"sourceBytes": 72706,
+			"sourceSha256": "d36fdf6ff391eea504cbfa5b6cc8e50620c3c197bfa77ff5e27cf42c78410087",
+			"mayContainCampaignConclusions": true,
+			"note": "Reports measured results of adversarial unblinding attacks on the review channel: 24/24 via the gradient field, and, before the salt fix, all 120 palette hashes reconstructed with 28 of 60 items unblinded with certainty."
+		},
+		{
+			"path": "catalog/REVIEW_UI.md",
+			"sourcePath": "research/v3/REVIEW_UI.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 21503,
+			"sha256": "59073643a2f1b0f8c6a31b49ab9224c96dcb0fb58f371ddae9ab3c00ae12c8b1",
+			"sourceBytes": 21246,
+			"sourceSha256": "db28e3fa8db1ae75a9e2030c3bbc2bfd5ea7ef391b64762e1e99adb5a582fa42",
+			"mayContainCampaignConclusions": true,
+			"note": "Documents v2-3 review failure analysis and its measured consequences: all 14 gradient notes asked for more gradient with no way to record the opposite objection, three arms misdirected, 5 of 19 endorsed accents reachable."
+		},
+		{
+			"path": "catalog/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"sourcePath": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 53537,
+			"sha256": "ddbaf1b3d886290243c761fbe43ce5bb3e5b0a3f7c49c00ddf5c36f7cefc51d4",
+			"sourceBytes": 53251,
+			"sourceSha256": "0659f162c4afd4001de3f8619e8b72e59f2ba8ad62543793af96683510e2d981",
+			"mayContainCampaignConclusions": true,
+			"note": "§7 presents measured corpus-survey findings as results (0.00% of images exceed 768 px; filename prefixes predict rendition size; §7.2, 644 artworks present in both resolution tiers)."
+		},
+		{
+			"path": "catalog/ORACLE_QUESTION_SET.md",
+			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+			"kind": "verbatim-whole-file",
+			"bytes": 81233,
+			"sha256": "85496e3538b565b0503ac81837ce0e007fac60c994df6606991bbad6161957b0",
+			"sourceBytes": 80966,
+			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
+			"mayContainCampaignConclusions": true,
+			"note": "Reports measured oracle accuracy and agreement as findings: `ground_type` exact match 23% (variant A) against 53% (variant B), κ 0.21–0.31, and a pre-registered replication recorded as FAILED."
+		}
+	],
+	"catalogEntriesWithNoDoc": [
+		{
+			"catalogEntry": "Contract invariants (`src/contract/`)",
+			"briefSection": "PHASE_1_AUTHOR_BRIEF.md §5",
+			"sourcePath": "research/v3/src/contract/",
+			"status": "no README exists",
+			"note": "The §5 row is labelled `built` but names no README; it points at `import` from `src/contract/` and `tests/contract-*.test.ts`. src/contract/ contains BELONGS_STUDY.md, PERCEPTION_MODEL_STUDY.md and PERCEPTION_VERDICT.md, none of which is a README and none of which was substituted."
+		},
+		{
+			"catalogEntry": "Warehouse (`src/warehouse/`)",
+			"briefSection": "PHASE_1_AUTHOR_BRIEF.md §5",
+			"sourcePath": "research/v3/src/warehouse/",
+			"status": "no README exists",
+			"note": "The §5 row is labelled `built` but names no README; it points at the CLI only. src/warehouse/ contains no markdown at all. Nothing was substituted."
+		}
+	]
+}

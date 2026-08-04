@@ -1,0 +1,23 @@
+{
+	"packet": "phase-1/packet-blind",
+	"description": "The blind Phase 1 author packet (arm F). One file: §2 and §3 of the author brief only.",
+	"commit": "71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2",
+	"builtOn": "2026-08-04",
+	"notes": [
+		"Every file carries a prepended provenance header (an HTML comment). `kind` describes the body below that header, not the file including it.",
+		"MANIFEST.json is not listed among its own files.",
+		"Extract line ranges in research/v3/PHASE_1_AUTHOR_BRIEF.md at the commit above: 1 (title), 11-14 (\"Who this is for\"), 38-252 (§2 through the end of §3, §3.1 included).",
+		"`mayContainCampaignConclusions` is deliberately not carried here: the flag is a property of the full packet, and recording it in the blind packet would tell arm F something about what the full packet contains."
+	],
+	"files": [
+		{
+			"path": "PHASE_1_AUTHOR_BRIEF_SECTIONS_2_AND_3.md",
+			"sourcePath": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+			"kind": "verbatim-extract",
+			"bytes": 16525,
+			"sha256": "c91a106b26962b3e536758cceb64c9cfd4225c5cc9d2c199f414bc15ed8eca55",
+			"sourceBytes": 29492,
+			"sourceSha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd"
+		}
+	]
+}
