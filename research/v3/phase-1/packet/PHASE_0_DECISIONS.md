@@ -2,13 +2,21 @@
      source: research/v3/PHASE_0_DECISIONS.md
      commit: 71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2
      date:   2026-08-04
-     This file is a verbatim copy of the source above, assembled for a Phase 1 author packet.
+     This file is a verbatim extract of §§1-6 of the source above (through the end of
+     §6.1, ending exactly where §7 begins), assembled for a Phase 1 author packet.
      
-     Pointed at by PHASE_1_AUTHOR_BRIEF.md §3, whose table makes §§1-5 of this file
-     normative for the output contract (§1 input policy, §2 output contract, §3 metrics,
-     §4 contract invariants and pathology census, §5 corpus/holdout/legacy policy).
-     §6 states what the semantic oracle's labels are and are not; §6.1 carries the SAM
-     conditions. Copied whole rather than extracted, so that nothing is silently dropped.
+     PHASE_1_AUTHOR_BRIEF.md §3's table makes §§1-5 normative for the output contract (§1 input
+     policy, §2 output contract, §3 metrics, §4 contract invariants and pathology census, §5
+     corpus/holdout/legacy policy). §6 states what the semantic oracle's labels are and are not and
+     is cited by the §5 catalog row for the oracle; §6.1 carries the SAM conditions and is cited by
+     §3.1.
+     
+     §7, §7.1 and §8 of the source are DELIBERATELY WITHHELD, and this is where they would have
+     been. They are not part of the output contract and were never promised to an author: §7 and
+     §7.1 are measured instrument results — what an earlier instrument found, and what survived a
+     re-scoring — and §8 is an open-items ledger. PHASE_1_AUTHOR_BRIEF.md §7 says authors do not
+     receive the instruments' conclusions, and that withholding is the design of Phase 1. If you
+     need something from them, name it in your proposal and it will be adjudicated.
 -->
 
 # V3 Phase 0 — Working Decisions
@@ -613,207 +621,3 @@ Recorded as `data/decisions/decisions.json` →
 `d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`. Condition 2's measurement is recorded in the
 same file as `d-2026-08-04-sam-determinism-measured-and-satisfied-for-a-pinned-stack` and
 `d-2026-08-04-sam-cross-run-identity-priors-agree-with-the-dedicated-test`.
-
-## 7. Measured resolution floors (ladder-sample-1, 2026-08-03)
-
-The resolution ladder answers a question the whole corpus depends on: **below what size does a
-question stop being answerable at all?** Measured by running the frozen instrument down a ladder
-of renditions of the same artwork and comparing each rendition's answer to the largest rendition's
-(**3,088 work rows** — 3,136 rows less 48 canary; **1,431 ladder comparisons** in total, of which
-**1,190** are the primary scope; **400 artworks** with an answered reference; native resolution,
-canary stable, zero failed or reparsed rows). *Corrected 2026-08-03:* the earlier "2,913 work rows"
-was the **planned image count** from `cost-scoping.json`, a plan quoted as an execution, and the
-earlier "1,225 ladder comparisons" was `ground_type.pooled_unrestricted.n` — **one question's**
-count quoted as a population. Both were near-right before the codec-control rerun regenerated the
-analysis; the sentence was not updated when the codec-control bullet below it was. The floors
-themselves are exact and unaffected — `ladder-sample-1.analysis.json` is the authority.
-
-| question | agreement floor | lowest passing bin | **unanswerable below** | pooled agreement |
-|---|---|---|---|---|
-| `ground_type` (feeds the **gradient boolean**) | 0.85 | 241–340 px | **~241 px** | 0.830 |
-| `gradient_boolean` (derived) | 0.85 | 241–340 px | **~241 px** | 0.863 |
-| `field_texture` | 0.85 | 241–340 px | **~241 px** | 0.856 |
-| `shading_geometry` | 0.85 | 441–560 px | **~441 px** | 0.671 |
-| `enclosure` | 0.85 | — | answerable at every measured size | 0.922 |
-
-**The action these floors compel:** record `below_resolution` for a question on any rendition
-under its floor. **Never a confident negative.** A small rendition that cannot support the question
-must not be counted as evidence that the answer is "no".
-
-### 7.1 Re-scored against a capped answer key (2026-08-03) — what survives and what does not
-
-The table above grades every small rendition against each artwork's **largest** rendition. For
-**223 of the 400 sampled artworks that largest rendition is bigger than 640 px** — up to 3,000 px —
-while the instrument is hard-capped at 640 (`RESOLUTION_CAP_PX`, downscale-only) and the sharded
-corpus tops out there too. So the published key was allowed to see paper grain, canvas weave and
-faint gradients that **no consumer of the label and no viewer ever sees**, and renditions were
-marked wrong for failing to report them. The last bullet of the original §7 called for the reference
-to be capped at a viewing-plausible size and the ladder re-scored, "the run does not need repeating,
-only the analysis". **That analysis has now run** — no GPU, no model, zero new inferences —
-and this subsection is its result. Record: `d-2026-08-03-ladder-capped-reference-key`. Write-up:
-`oracle/ladder/CAPPED_REFERENCE_NOTES.md`. Data:
-`data/oracle-ladder/ladder-sample-1.capped-reference.analysis.json`.
-
-**`ladder-sample-1.analysis.json` remains the authority for the published floors.** Both keys are
-reported side by side, always; the capped column is a second reading of the same rows, not a
-replacement.
-
-| question | published floor | **capped floor** | moved? |
-|---|---|---|---|
-| `ground_type` | ~241 px | **~241 px** | no |
-| `gradient_boolean` | ~241 px | **~241 px** | no |
-| `field_texture` | ~241 px | **~341 px** | yes — one bin worse, and *unresolved* (see below) |
-| `enclosure` | answerable at every size | **~241 px** | yes — gains a floor, also unresolved |
-| `shading_geometry` | ~441 px | **never clears the floor** | yes — the published floor was an artifact |
-
-**The two floors anything downstream leans on did not move.** `ground_type` and the
-`gradient_boolean` derived from it — the input to the palette's gradient decision — hold at ~241 px
-under the honest key, and the gradient boolean's pooled agreement gets *better*, not worse
-(0.863 → **0.877**), which is what you would expect once the key stops seeing gradients that are not
-there. The corpus-inclusion decision does not flip either: at 300 px the gradient boolean clears the
-floor under **both** keys (0.872 published / 0.878 capped), so keeping the **2,270 300 px-only
-artworks** stays correct.
-
-**The over-sized key was biased, and the direction is now known.** Of the 40 `ground_type`
-disagreements between the two keys, **23** are "the big file sees structure (`shaded_field` /
-`pattern_or_texture`) where every viewable file sees `flat_field`" against **2** the other way —
-**11.5 to 1** — and 20 of the 23 are exactly `shaded_field → flat_field`. The bias runs toward
-**hallucinated structure**: the published key was calling gradients invisible at any size the
-pipeline can be given.
-
-**`shading_geometry`'s floor was never a resolution result.** Its same-size codec control **under
-the cap is 0.796** — two byte-different encodings of *identical pixels* agree 80% of the time — so
-the 0.85 floor sits **above this question's own noise ceiling** and no resolution could ever clear
-it. §7's warning to "treat its floor as the size below which it is hopeless" was too generous: the
-~441 px figure must not be cited as a size at which the question becomes reliable. A1's conclusion —
-failing bins sit below their codec ceilings, so the drops are genuine resolution effects — **survives
-for four of five questions and does not survive for this one**:
-
-| question | published control | capped control (≤640 px) | vs the 0.85 floor |
-|---|---|---|---|
-| `ground_type` | 0.903 (n=206) | **0.885** (n=156) | ceiling above the floor — floor reachable |
-| `field_texture` | 0.922 | **0.949** | reachable |
-| `enclosure` | 0.961 | **0.955** | reachable |
-| `gradient_boolean` | 0.907 | **0.887** | reachable |
-| `shading_geometry` | 0.857 (n=63) | **0.796** (n=44) | **floor is ABOVE the ceiling — unreachable** |
-
-**The one action that changes:** the per-question blind-spot list that travels with a 300 px
-rendition. Under the honest key such a rendition supports `ground_type`, `gradient_boolean` and
-`enclosure`, and must be tagged `below_resolution` for **`field_texture`** (newly) as well as
-`shading_geometry` (already). The corpus was never the problem; the tagging was one question too
-generous.
-
-**Four limits, stated because two of them are load-bearing:**
-
-- **The capped key is a proxy, not a downscale.** The pipeline would take the 3,000 px file and
-  resample it to 640; that image was never inferred. The key used is the CDN's *own* ~483 px or
-  ~333 px rendition — a different resampler and codec arriving near the same size. The size of that
-  proxy error is the codec control above (0.80–0.95 by question). Carried as loose end **B26**.
-- **`REFERENCE_MIN_LONG_EDGE_PX = 500` cannot survive the cap, and the deviation is stamped rather
-  than hidden.** **Zero** of the 223 affected artworks own a rendition between 500 and 640 px — the
-  CDN derives ~147 / ~333 / ~483 and then jumps to the original, which is also why the 561–680 bin is
-  structurally empty. The headline capped column therefore uses **441 px**, a published bin edge, and
-  the JSON reports 500 / 441 / 300 / 0 side by side.
-- **Most verdicts are not settled at 0.85 under either key.** Most decisive bins have a 95% interval
-  that *contains* 0.85 — including both bins behind the `field_texture` and `enclosure` moves. Read
-  those two as "no longer supported by this data", never as "proven bad". The floor is still
-  `[UNCALIBRATED]` (**A2**), and `floor_fragility` in the JSON flags every bin as settled or not.
-- **Power is lower, honestly.** 1,190 → 669 primary comparisons; 373 → 193 artworks. **49 artworks
-  leave the analysis entirely** because their only rendition at or below the cap is their smallest
-  (~147 px), so they own a key with no rung beneath it.
-
-**And the reassuring result: the transfer check is untouched.** Its rows were already all ≤ 640 px
-(a ~300 rung against a ~640 key), so capping changes nothing — predicted 0.834 against observed
-0.818, n=145 identical. The argument that lets the ladder curve be used corpus-wide never rested on
-the contaminated key.
-
-Provenance and caveats, all load-bearing:
-
-- **The 0.85 agreement floor is `[UNCALIBRATED]`.** It is a CLI flag with no measured basis — the
-  analysis prints the whole curve at every bin precisely so a reviewer can move it. Every floor in
-  the table above moves with it. Owner: reviewer.
-- ~~The codec-control noise floor was never populated~~ **Populated 2026-08-03**
-  (`ladder-codec-control-1.jsonl`, the `--include-duplicate-sizes` rerun): same-size,
-  different-bytes agreement is **ground_type 0.903 · field_texture 0.922 · enclosure 0.961 ·
-  shading_geometry 0.857** (n=206/206/206/63). Every failing resolution bin sits far below
-  its question's codec ceiling, so the drops are genuine resolution effects, not codec noise.
-  **The `unanswerable_below_px` verdicts are no longer provisional** — settled, scoped as
-  ever to the 0.85 `[UNCALIBRATED]` floor.
-- **`shading_geometry` is weak everywhere**, not merely below 441 px — its pooled agreement is
-  0.671, far under the floor. Treat its floor as "the size below which it is hopeless", not as a
-  size above which it is reliable. **Superseded by §7.1 (2026-08-03), which is stronger:** under a
-  capped key its own codec ceiling (0.796) falls *beneath* the 0.85 floor, so the ~441 px figure is
-  an artifact of an over-sized answer key and is not a resolution result at all.
-- **Three bins are thin**, not two. Against the analysis's own `min_bin_n = 30` rule its
-  `thin_bins` list names 161–240 px (n=4), 681–900 px (n=4) **and 901–1400 px (n=15)** — plus
-  341–440 px for `shading_geometry` specifically. The 561–680 px bin is empty under every scope.
-  The earlier "two bins" understated thinness in the direction of confidence, in the section whose
-  whole job is to say how far the ladder can be trusted; and 901–1400 px is the bin nearest the
-  "is 640 px enough?" question. The ladder is consequently **silent on whether 640 px is enough**,
-  which needs a different collection rather than a bigger scope.
-- **The transfer check holds**, which is what lets the curve be used corpus-wide: the ladder curve
-  predicts 0.834 and the matched-contrast control 0.814 against the 644 real sharded pairs'
-  observed 0.818.
-- ~~**The answer key may be wrong at the very top.** At 3,000 px the model called an artwork
-  `pattern_or_texture` where every smaller rendition said `flat_field` — seeing paper grain
-  invisible at any size a user will ever view. If that turns out to be common, the reference
-  rendition should be capped at a viewing-plausible size and the ladder **re-scored**; the run
-  does not need repeating, only the analysis.~~ **MEASURED 2026-08-03 — it is common, it runs in one
-  direction, and the analysis has been done: see §7.1.** It affects 223 of 400 sampled artworks;
-  the bias is 11.5 to 1 toward hallucinated structure; the two floors anything downstream leans on
-  do not move; `shading_geometry`'s floor does not survive.
-
-## 8. Open items
-
-**The full ledger, with owners and revival conditions, is `PHASE_0_LOOSE_ENDS.md`.** This section
-keeps only the items that change a decision in this document.
-
-- ~~Same-color-bar bracketing round~~ **Settled and FROZEN (2026-08-03).** Two rounds ran; the bar
-  is region-dependent (§3) and is frozen at its per-region **point estimates**. **No round 3.**
-  The freeze was priced, not assumed: over 554 real palettes and 3,221 role pairs, the remaining
-  95%-interval uncertainty produces 0 decision flips at the low end, 2 at the high end, 0 under
-  the hue split — and both high-end flips would newly condemn a palette the reviewer *endorsed*,
-  which §4 says demotes a rule rather than tightening it. Recorded as
-  `d-2026-08-03-same-color-bar-freeze`.
-  - **The light-saturated hue split is NOT adopted.** It flips only toward more violations, all on
-    endorsed or accepted palettes, and its 0.03805 third is the middle of a separation gap rather
-    than a fitted crossing.
-  - **The anisotropy finding is not priced by any of this.** OKLab distance looks anisotropic under
-    the reviewer's criterion (at a fixed distance: lightness-only pairs read "same" 4/4,
-    chroma-only 2/4, hue-only 1/4) — that is a **missing dimension, not a width in the bar**, and
-    no scalar bar can express it. If a round 3 is ever justified, this is the better question to
-    spend it on. Both findings are held by a deliberate tripwire test that fails if either is ever
-    quietly encoded.
-- **Still open from that round:** the excursion bar recalibration (P1, still inherited at 2.5×
-  same-color) and flat equal-luminance chromatic accent pairs. The accent *visibility* distance
-  was measured (0.0744) but under **complete separation** — the reported value is the middle of a
-  0.06300–0.08796 band, bracketed rather than pinned.
-- Foreground exact-zero epsilon: **still measurement-only, still not measured.** `EPSILON_TEXT_RAW`
-  and `EPSILON_ACCENT_RAW` both sit `[UNCALIBRATED]` at 2.5 — a placeholder chosen only to clear
-  the **1.98152** identical-colors ceiling (§4; the refuted 1.9815 is not the bound). §4 requires
-  them derived from the raw-APCA distribution over corpus pairs; that run has not happened.
-  *When it does:* `HAND_WRITTEN_EPSILON_CONTRAST` and the six bracket fixtures must be
-  **re-derived**, not adjusted — they are pinned to 2.5 by test and will fail loudly first, by
-  design. Loose end A3 carries the trigger.
-- **Bulk-model decision — PENDING, and the blocker is now reviewer bandwidth, not GPU.** Which VLM
-  runs the corpus-wide oracle pass is undecided. *Corrected 2026-08-03:* **two of the three arms
-  now have full eval-142 runs** — the incumbent `qwen3-30b-a3b` (6-bit MoE, 284 rows / 142 images /
-  137 scored / 0 failed) **and** the dense challenger `qwen3-32b-dense` (8-bit, the pipeline's
-  planned adjudicator; 236 eval142-tagged rows / 137 scored / 0 failed / 0 parse_failed). Only
-  `gemma3-27b` (8-bit) is still gold-30-only. InternVL3.5 is **blocked** — no runtime supports it.
-  On the hard-case gold-30 the arms disagree in opposite directions (the dense challenger wins
-  under variant A and loses under variant B; cross-arm agreement **0.533**, i.e. **these are
-  meaningfully different instruments**), so the gold-30 cannot settle it — but the same pair on
-  **eval-142 agrees 0.761 (n=142)**, a materially different picture of how far apart they are, and
-  exactly the number the ledger said was needed. What remains outstanding is the **reviewer visual
-  evaluations alone.** That is a much smaller ask than "challenger runs in progress" implied, and
-  it is reviewer-bandwidth-shaped rather than GPU-shaped — which matters, because reviewer
-  bandwidth is this campaign's stated binding constraint. No bulk run starts before it lands, and
-  the GPU queue is the orchestrator's, one job at a time.
-- ~~Contrast-parameter defaults~~ **Settled (2026-08-02, after two rounds of relitigation):**
-  the contrast parameters are **always set** — default = minimum = the experimentally
-  determined ε of §4 invariant 4, in raw APCA units near zero. Callers can only raise the
-  floor. Runtime enforcement is therefore: (1) the algorithm's reviewer-calibrated judgment +
-  (2) the invariants (which include the parameters at their ε floors); anything above ε is
-  caller opt-in. The pathology census remains a lab-only instrument (see §4), always active
-  during development, never part of the shipped algorithm's runtime for any caller.
