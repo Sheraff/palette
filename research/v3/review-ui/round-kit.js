@@ -124,7 +124,11 @@ export function textPanel({ item, config }) {
  */
 export async function mockPlayer({ item, config }) {
 	const mock = await import("/mock.js")
-	return mock.renderSide(item.media, config.sideName ?? "", config.sideOf?.(item) ?? item.side)
+	// `sideName: null` means "no heading" and has to survive the default. A pairwise round needs the
+	// "side A" / "side B" labels; a page showing ONE palette has nothing to label, and `?? ""` would
+	// have forced it to render an empty heading or invent a word for it.
+	const sideName = config.sideName === undefined ? "" : config.sideName
+	return mock.renderSide(item.media, sideName, config.sideOf?.(item) ?? item.side)
 }
 
 /** Several panels, stacked. The composite is a renderer like any other, so it nests. */
@@ -305,6 +309,43 @@ export const freeText = {
 	},
 }
 
+/**
+ * The widget for a page that asks nothing — **browse mode**.
+ *
+ * Set `browse: true` on the config and the shell installs this instead of whatever `answerWidget`
+ * says. It binds no keys, renders no mapping, and answers nothing; navigation, the stimulus renderers
+ * and the visible-failure guarantee all still work exactly as they do on a round.
+ *
+ * **Why the kit grew a mode instead of the dev loop growing a page.** The standing rule is that no
+ * review page is written outside the kit (`ROUND_KIT.md`), and the reason is not tidiness: every page
+ * that reimplemented payload fetch, navigation and key handling got a fresh chance to get one of them
+ * wrong, and three did in three days. A read-only viewer needs the same fetch, the same navigation,
+ * the same "a page that renders is not a page that works" protection — it just has nothing to record.
+ * That is a *missing widget*, not a missing framework.
+ *
+ * **"Records nothing" is structural here, not a promise.** In browse mode `post` throws before it can
+ * build a URL, `answer` and `save` return early, and `release` refuses. A browse page cannot write
+ * through the kit even by mistake, which matters because the pages that use it are pointed at a
+ * developer's own dev server rather than at the reviewer's, and a stray POST there would be a
+ * reviewer answer nobody made.
+ */
+export const browseOnly = {
+	kind: "browse",
+	ownsTextEntry: false,
+	bindings() {
+		return []
+	},
+	render({ nodes }) {
+		// A round's mapping lists the answer keys. There are none, so the list is emptied rather than
+		// left holding whatever the previous page put there.
+		nodes.mapping?.replaceChildren()
+		return null
+	},
+	onKey() {
+		return false
+	},
+}
+
 /* ------------------------------------------------------------------------------------------- */
 /* The shell                                                                                      */
 /* ------------------------------------------------------------------------------------------- */
@@ -323,7 +364,10 @@ export async function startRound(config) {
 	// Both spellings, so a round can say `nodes.contextLabel` or `nodes["context-label"]`.
 	for (const id of config.nodeIds ?? []) nodes[id] = node(id)
 
-	const widget = config.answerWidget ?? enumKeys
+	// Browse mode is decided here and nowhere else, so every branch below reads one flag. A page
+	// cannot be half in it: the widget is replaced outright, not merely asked to behave.
+	const browse = config.browse === true
+	const widget = browse ? browseOnly : (config.answerWidget ?? enumKeys)
 	const renderStimulus = config.stimulusRenderer ?? imagePanel
 
 	let batch = null
@@ -364,6 +408,17 @@ export async function startRound(config) {
 		// from what the keys actually do. It is generated, never hand-written — the endorsement page's
 		// footer was hand-written and said things the page had stopped doing.
 		const canNavigate = config.itemNavigation !== false
+		// Browse mode advertises exactly what it does: move, and nothing else. No undo, because there is
+		// nothing to undo; no release, because there is no round to end; no note, because a dev viewer
+		// writes nowhere. The footer is generated from this list, so what is on screen is the whole truth.
+		if (browse) {
+			return canNavigate
+				? [
+						{ key: "k / ←", label: "back", kind: "nav" },
+						{ key: "j / →", label: "forward", kind: "nav" },
+					]
+				: []
+		}
 		const navigation = widget.ownsTextEntry
 			? [
 					...(canNavigate ? [{ key: "esc then ←/k", label: "back", kind: "nav" }, { key: "esc then →/j", label: "forward", kind: "nav" }] : []),
@@ -465,6 +520,9 @@ export async function startRound(config) {
 			.join(" · ")
 
 	function progressText() {
+		// Browse counts position only. "3 / 20 · 0 done" on a page that cannot record anything would be
+		// advertising a tally that will never move.
+		if (browse) return `${Math.min(index + 1, batch.items.length)} / ${batch.items.length}`
 		const answered = batch.items.filter((item) => item.answer !== null && item.answer !== undefined).length
 		const unit = config.unitPlural ?? "items"
 		void unit
@@ -472,7 +530,9 @@ export async function startRound(config) {
 	}
 
 	function renderPending() {
-		if (nodes.pending == null || widget.kind === "multiToggle") return
+		// In browse mode the `pending` node belongs to the page (via `renderContext`) — there are no
+		// blanks to count, and overwriting it with "0 item(s) still blank" would erase what it does say.
+		if (nodes.pending == null || browse || widget.kind === "multiToggle") return
 		const remaining = batch.items.filter((item) => item.answer === null || item.answer === undefined).length
 		nodes.pending.textContent =
 			remaining === 0 ? config.allAnsweredText ?? "every item has an answer" : `${remaining} ${config.unitSingular ?? "item"}(s) still blank`
@@ -538,6 +598,9 @@ export async function startRound(config) {
 
 	/** Post one answer. The token is all the page ever knows an item by. */
 	async function post(value) {
+		// The structural half of "browse records nothing". Not a guard that can be reasoned around: the
+		// only function in the kit that writes an answer refuses before it has a URL to write to.
+		if (browse) throw new Error("browse mode records nothing")
 		const item = batch.items[index]
 		await api(`${config.answerPath ?? `/api/oracle-validation/${encodeURIComponent(batch.batchId)}/items`}/${encodeURIComponent(item.token)}/answer`, {
 			method: "PUT",
@@ -549,6 +612,10 @@ export async function startRound(config) {
 
 	/** Record an answer and advance. Used by every widget that does not own text entry. */
 	async function answer(value) {
+		if (browse) {
+			status(config.browseNoticeText ?? "this is a read-only view — nothing is recorded here")
+			return
+		}
 		if (busy || index >= batch.items.length) return
 		busy = true
 		try {
@@ -569,6 +636,7 @@ export async function startRound(config) {
 	 * Returns true when the item now holds this text. Never writes an empty answer.
 	 */
 	async function save({ quiet = false } = {}) {
+		if (browse) return false
 		if (busy || batch === null || index >= batch.items.length) return false
 		const item = batch.items[index]
 		const text = widget.value?.({ nodes }) ?? ""
@@ -670,6 +738,10 @@ export async function startRound(config) {
 	}
 
 	async function release() {
+		if (browse) {
+			status(config.browseNoticeText ?? "this is a read-only view — there is no round to release")
+			return
+		}
 		flushTimer()
 		if (widget.ownsTextEntry) await save({ quiet: true })
 		try {
@@ -733,7 +805,7 @@ export async function startRound(config) {
 		// `f` opens the note, and only when no text field owns the keyboard — otherwise it is a letter
 		// the reviewer is typing. On a free-text round that means Escape first, the same shape as
 		// `esc then r` and `esc then j/k`, and the footer says so.
-		if (!inField && letter === "f" && config.itemNotes !== false && index < batch.items.length) {
+		if (!browse && !inField && letter === "f" && config.itemNotes !== false && index < batch.items.length) {
 			event.preventDefault()
 			noteOpen = true
 			status("note box open — enter saves, esc closes without saving")
@@ -750,7 +822,7 @@ export async function startRound(config) {
 		if (inField) return
 		// Undo steps back AND is the documented way to replace an answer, so it stays distinct from
 		// plain navigation even though both move by one.
-		if (key === "Backspace" || letter === (config.undoKey ?? "u")) {
+		if (!browse && (key === "Backspace" || letter === (config.undoKey ?? "u"))) {
 			event.preventDefault()
 			void back()
 			return
@@ -765,12 +837,14 @@ export async function startRound(config) {
 			void navigate(1)
 			return
 		}
-		if (key === "Enter" && !widget.ownsTextEntry) {
+		if (!browse && key === "Enter" && !widget.ownsTextEntry) {
 			event.preventDefault()
 			void next()
 			return
 		}
-		if (letter === "r") {
+		// Unbound in browse: `r` releases a round, and a read-only view has no round to end. Left
+		// unhandled rather than swallowed, so the key reaches the browser like any other letter.
+		if (!browse && letter === "r") {
 			event.preventDefault()
 			void release()
 		}
@@ -800,9 +874,15 @@ export async function startRound(config) {
 			return shell
 		}
 		batch = await api(`${config.payloadPath ?? "/api/oracle-validation"}/${encodeURIComponent(chosen.batchId)}`)
-		index = firstUnanswered()
+		// A round resumes where the reviewer stopped. A browse page has no "stopped": it opens at the
+		// first item, which for a diff is the biggest change and is the whole reason to open it.
+		index = browse ? 0 : firstUnanswered()
 		await render()
-		status(`${batch.batchId} — resuming at ${config.unitSingular ?? "item"} ${Math.min(index + 1, batch.items.length)}`)
+		status(
+			browse
+				? `${batch.batchId} — ${batch.items.length} ${config.unitPlural ?? "items"}, read-only`
+				: `${batch.batchId} — resuming at ${config.unitSingular ?? "item"} ${Math.min(index + 1, batch.items.length)}`,
+		)
 	} catch (error) {
 		// Visible, always. A page that sits on "loading…" is indistinguishable from a slow network and
 		// sends the reviewer away instead of to the orchestrator.

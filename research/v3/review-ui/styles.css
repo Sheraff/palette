@@ -1402,3 +1402,57 @@ summary {
 	opacity: 0.7;
 	font-style: italic;
 }
+
+/* ---- dev loop (read-only developer views) ----
+ * Added 2026-08-04 with `devloop-run.js` / `devloop-diff.js`. These two pages are on the kit and in
+ * browse mode: they record nothing, so they carry no answer chrome at all. Chrome stays black and
+ * white and flat (REVIEW_UI.md §3) — the artwork and the palette are the only colour on screen, which
+ * matters more here than anywhere, since the whole page exists to show what a candidate produced.
+ */
+
+/* The before/after pair reads as a comparison only if the two mocks are beside each other. The kit's
+ * composite stacks by default, which is right for a stimulus above a caption and wrong for a diff. */
+.devloop-stage .round-composite {
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* Path, timing and the change metric. Monospace because it is mostly numbers and hashes, and
+ * pre-wrap because the diff summary is deliberately two lines: headline, then the per-role numbers. */
+.devloop-context {
+	margin: 0;
+	font-family: ui-monospace, monospace;
+	font-size: 0.78rem;
+	opacity: 0.75;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.devloop-index {
+	max-width: 60rem;
+	display: block;
+	line-height: 1.6;
+}
+
+.devloop-index ul {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.devloop-index small {
+	font-family: ui-monospace, monospace;
+	opacity: 0.65;
+}
+
+/* Says out loud what this server is not. A developer view that looks like a review page is one
+ * screenshot away from being quoted as one. */
+.devloop-warning {
+	border: 1px solid var(--ink);
+	padding: 0.5rem 0.75rem;
+	font-size: 0.85rem;
+}
