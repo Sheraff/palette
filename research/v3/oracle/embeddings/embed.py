@@ -310,8 +310,17 @@ def arm_manifest_entry(out_dir: Path, tag: str, device: str, batch_size: int,
         "collections": {},
     }
 
-    for collection in config.COLLECTIONS:
+    # [REVIEWED] 2026-08-04, fresh-shard import drill (loose end A11). This loop
+    # used to iterate config.COLLECTIONS, so a collection outside the pinned pair
+    # was embedded with NO provenance record in the manifest at all -- the drill
+    # found its own 378 vectors undocumented. It now iterates every enumerable
+    # collection but skips the ones with no store in this out-dir, so a manifest
+    # written over the pinned data directory is byte-equivalent to before (no
+    # fresh-shard store lives there) while a fresh-shard out-dir gets its entry.
+    for collection in config.ALL_COLLECTIONS:
         store = common.EmbeddingStore(out_dir, collection, arm_tag=tag)
+        if collection not in config.COLLECTIONS and not store.ids_path.exists():
+            continue
         # Never repair from here: a manifest rewrite can run while a job is live.
         recovery = store.recover(read_only=True)
         try:
@@ -319,9 +328,16 @@ def arm_manifest_entry(out_dir: Path, tag: str, device: str, batch_size: int,
         except FileNotFoundError:
             enumerated = None
         entry["collections"][collection] = {
+            # [MEASURED] 2026-08-04: the sharded root glob is spelled out here as
+            # a human-readable provenance string. It is a THIRD written form of
+            # the shard list (after embeddings/config.py and sam/config.py) and
+            # must be updated by hand if `15/` is ever promoted into the pinned
+            # sharded collection.
             "root": (
                 "{00..09,0a..0f,10..14}/"
                 if collection == config.COLLECTION_SHARDED
+                else "/ ".join(config.SHARDED_FRESH_15_DIR_NAMES) + "/"
+                if collection == config.COLLECTION_SHARDED_FRESH_15
                 else config.MUSIC_ARTWORKS_DIR_NAME + "/"
             ),
             "files_enumerated": enumerated,
@@ -444,8 +460,11 @@ def main() -> int:
         "weights_sha256 line to paste into config.ARMS",
     )
     parser.add_argument(
+        # [REVIEWED] 2026-08-04, fresh-shard import drill (loose end A11):
+        # choices widen to every enumerable collection, the DEFAULT stays the two
+        # pinned ones. An unqualified `embed.py` embeds exactly what it always did.
         "--collections", nargs="+", default=list(config.COLLECTIONS),
-        choices=list(config.COLLECTIONS),
+        choices=list(config.ALL_COLLECTIONS),
     )
     parser.add_argument("--out-dir", default=str(config.DATA_DIR))
     parser.add_argument("--device", default="auto")

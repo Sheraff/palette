@@ -71,8 +71,17 @@ def enumerate_collection(collection: str, repo_root: Path | None = None,
     root = repo_root or config.REPO_ROOT
     paths: list[str] = []
 
-    if collection == config.COLLECTION_SHARDED:
-        for dir_name in config.SHARDED_DIR_NAMES:
+    if collection in (config.COLLECTION_SHARDED, config.COLLECTION_SHARDED_FRESH_15):
+        # [REVIEWED] 2026-08-04, fresh-shard import drill (loose end A11). The
+        # fresh shard is enumerated by the same code as the pinned corpus — same
+        # sort, same dotfile skip, same relative paths — but over its own
+        # directory list, so the pinned collection's file count is untouched.
+        dir_names = (
+            config.SHARDED_DIR_NAMES
+            if collection == config.COLLECTION_SHARDED
+            else config.SHARDED_FRESH_15_DIR_NAMES
+        )
+        for dir_name in dir_names:
             shard_dir = root / dir_name
             if not shard_dir.is_dir():
                 raise FileNotFoundError(f"missing shard directory: {shard_dir}")

@@ -4,6 +4,12 @@
 data/embeddings/*.npy
 data/embeddings/*.npz
 data/embeddings/shards/
+# Fresh-shard import drill, 2026-08-04 (loose end A11). Same policy as the pinned
+# embeddings directory: the .ids.jsonl index and the manifest ARE committed, the
+# vectors and the append-only write-ahead shards are not.
+data/embeddings-fresh-15/*.npy
+data/embeddings-fresh-15/*.npz
+data/embeddings-fresh-15/shards/
 oracle/**/.venv/
 oracle/**/__pycache__/
 # review-server runtime state (never committed)

@@ -49,6 +49,36 @@ COLLECTION_SHARDED = "sharded"
 COLLECTION_MUSIC_ARTWORKS = "music_artworks"
 COLLECTIONS = (COLLECTION_SHARDED, COLLECTION_MUSIC_ARTWORKS)
 
+# [MEASURED] Fresh-shard import drill, 2026-08-04 (loose end A11). The reviewer
+# added shard directory `15/` at the repo root: 378 files, all JPEG by magic
+# bytes, zero exact byte-duplicates against the 7,550 pinned files.
+#
+# It is deliberately NOT added to SHARDED_DIR_NAMES and NOT added to COLLECTIONS.
+# Widening either one would move the denominator behind every completeness check
+# in this package (`common.enumerate_collection`, `eval_pairs.discover_arms`,
+# `embed.py`, `query.py`), which would retroactively mark all five already-
+# embedded arms incomplete and would silently recompute the bake-off pool, the
+# near-duplicate census pool and the coverage-set universe over 7,928 files while
+# every committed number was measured over 7,550. A fresh shard is therefore
+# imported as its OWN collection, which lands in its own
+# `<collection>.<arm>.npy` / `.ids.jsonl` sidecar and touches nothing existing.
+#
+# Promoting `15/` into the pinned `sharded` collection is a separate, deliberate
+# act: it means appending "15" to SHARDED_DIR_NAMES, re-pinning
+# EXPECTED_FILE_COUNTS[COLLECTION_SHARDED] to 7928, re-pinning
+# EXPECTED_SHARDED_FILES in src/coverage-set/corpus.ts, and regenerating every
+# downstream artifact. See src/coverage-set/FRESH_SHARD_DRILL.md.
+COLLECTION_SHARDED_FRESH_15 = "sharded_fresh_15"
+
+# [MEASURED] The one directory the fresh-shard collection enumerates, 2026-08-04.
+SHARDED_FRESH_15_DIR_NAMES = ("15",)
+
+# [REVIEWED] Every collection this package knows how to enumerate, as opposed to
+# COLLECTIONS, which is the set a default run embeds. `embed.py` offers this as
+# its `--collections` choices while keeping COLLECTIONS as the default, so an
+# unqualified `embed.py` behaves exactly as it did before the fresh shard existed.
+ALL_COLLECTIONS = COLLECTIONS + (COLLECTION_SHARDED_FRESH_15,)
+
 # [MEASURED] The 21 shard directories that exist at the repository root, listed
 # 2026-08-02: 00-09, 0a-0f, 10-14. 7,550 files total, matching spec section 7.
 SHARDED_DIR_NAMES = (
@@ -74,9 +104,16 @@ MUSIC_ARTWORKS_DIR_NAME = "music-artworks"
 # partial sync silently lowered the denominator and a truncated arm certified
 # itself complete. 7,550 + 8,595 = 16,145, the pool size every bake-off and
 # census number is computed over.
+# The two pinned numbers below are UNCHANGED by the 2026-08-04 fresh-shard
+# import; `15/` is a separate collection precisely so they stay put.
 EXPECTED_FILE_COUNTS = {
     COLLECTION_SHARDED: 7550,
     COLLECTION_MUSIC_ARTWORKS: 8595,
+    # [MEASURED] `ls 15 | wc -l` on 2026-08-04: 378 files, no subdirectories, no
+    # dotfiles, no zero-byte files. Pinned the day the shard arrived so a partial
+    # re-sync of a FRESH shard fails the same way a partial sync of the pinned
+    # corpus does.
+    COLLECTION_SHARDED_FRESH_15: 378,
 }
 
 # [MEASURED] The root those counts were measured under, captured at import and
