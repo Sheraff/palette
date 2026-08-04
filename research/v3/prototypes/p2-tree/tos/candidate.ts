@@ -15,19 +15,38 @@
  * The mechanism itself is in `pipeline.ts` and `tree.ts`; this file is the contract adapter.
  */
 
-import { CONTRACT_VERSION, FOREGROUND_ACCENT_SEPARATION_DISTANCE } from "../../../src/contract/constants.ts"
-import { colorFromRgb, okLabDistance, rgbToOkLab } from "../../../src/contract/color.ts"
+import { CONTRACT_VERSION } from "../../../src/contract/constants.ts"
+import { colorFromRgb } from "../../../src/contract/color.ts"
 import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
 import type { GradientStop, Palette, Rgb8 } from "../../../src/contract/types.ts"
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../../src/devloop/types.ts"
 import { ALGORITHM_VERSION, MAX_ASSEMBLY_ATTEMPTS, PREPROCESSING_VERSION } from "./constants.ts"
+import { resolveRoles, roleSwapImproves } from "./roles/assemble.ts"
 import { runPipeline } from "./pipeline.ts"
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
 export const candidateId = "p2-tos"
 
-export const paletteOf: CandidatePalette = async (imagePath) => {
+/**
+ * What the assembly decided, beside the palette it decided it for.
+ *
+ * The dev loop only ever reads `candidateId` and `paletteOf`. This exists so that a regression test can
+ * assert things the published `Palette` cannot show — whether the foreground came from a text group,
+ * whether the walk exhausted, whether the role-swap check fired — without a second run of the pipeline
+ * or a copy of this file's assembly closure in the test.
+ */
+export type CandidateDiagnostics = Readonly<{
+	palette: Palette
+	parse: Awaited<ReturnType<typeof runPipeline>>["parse"]
+	/** Notes from the twin-matrix walk (`roles/assemble.ts`). */
+	notes: readonly string[]
+	/** Whether the role-swap check both fired and produced a palette the contract accepted. */
+	swapped: boolean
+	attempts: number
+}>
+
+export async function paletteWithDiagnostics(imagePath: string): Promise<CandidateDiagnostics> {
 	const { image, parse } = await runPipeline(imagePath)
 	const inputContentHash = await hashFileBytes(imagePath)
 
@@ -68,52 +87,45 @@ export const paletteOf: CandidatePalette = async (imagePath) => {
 		} satisfies Palette
 	}
 
-	// **The repair, arm-b′ §2.7, literally.** *"A violated invariant at assembly is repaired by taking
-	// the next item in the same ranking, never by inventing or adjusting a colour… and the whole
-	// palette is re-validated after it."* So: walk the parse's two rankings, assemble, re-validate,
-	// stop at the first pair the contract accepts. Nothing is nudged, no colour is synthesised, and the
-	// characteristic failure stays "a different valid palette" rather than an invalid one.
+	// **The repair, arm-b′ §2.7, with cycle 2's twin matrix on top.** *"A violated invariant at assembly
+	// is repaired by taking the next item in the same ranking, never by inventing or adjusting a
+	// colour… and the whole palette is re-validated after it."* `roles/assemble.ts` owns the walk; what
+	// changed this cycle is that it also owns the reviewer's **forbidden outcome** — a foreground or an
+	// accent inside a field role's same-colour bar has no sanctioned collapse and is therefore not a
+	// candidate at all, and cycle 1's "publish the first choice anyway" exhaustion path, which was the
+	// one way this prototype could ship twins, is gone.
 	//
-	// Source support (invariant 2) is not checked here — it needs the decoded image and every colour
-	// in both pools is already an exact triple of it by construction — so the walk is deciding
+	// Source support (invariant 2) is not checked in the walk — it needs the decoded image and every
+	// colour in both pools is already an exact triple of it by construction — so the walk is deciding
 	// distinctness and contrast, which are the two the first run of this prototype failed.
-	// **The walk is per role**, which is also arm-b′ §2.7's word for it. First settle the foreground
-	// against a collapsed accent, so the only thing being decided is the foreground's own contrast
-	// against the field; then walk the accent ranking with that foreground fixed. Two short walks
-	// instead of one product: a cross-product of both rankings spends its whole budget re-testing the
-	// first foreground against sixteen accents when the foreground is what the contract objected to.
 	const foregrounds = parse.foregroundPool.length > 0 ? parse.foregroundPool : [parse.roles.foreground]
 	const accents = parse.accentPool.length > 0 ? parse.accentPool : [parse.roles.accent]
-	const first = assemble(foregrounds[0], parse.roles.accent)
-	let attempts = 0
+	const resolved = resolveRoles({
+		background: parse.roles.background,
+		surface: parse.roles.surface,
+		foregroundPool: foregrounds,
+		accentPool: accents,
+		assemble,
+		maxAttempts: MAX_ASSEMBLY_ATTEMPTS,
+	})
 
-	let settled: Palette | null = null
-	let settledForeground = foregrounds[0]
-	for (const foreground of foregrounds) {
-		if (attempts >= MAX_ASSEMBLY_ATTEMPTS) break
-		attempts += 1
-		// The accent collapsed onto the foreground: the palette the contract judges is then a statement
-		// about the foreground alone.
-		const palette = assemble(foreground, foreground)
-		if (validatePalette(palette).violations.length === 0) {
-			settled = palette
-			settledForeground = foreground
-			break
+	// **The role-swap check**, last, on the settled pair: if each colour ranks better in the *other*
+	// role's ordering, the assignment was backwards and the swap is published — but only when the
+	// swapped palette also validates, so the repair cannot relocate the defect.
+	if (
+		roleSwapImproves({
+			foreground: resolved.foreground,
+			accent: resolved.accent,
+			foregroundPool: foregrounds,
+			accentPool: accents,
+		})
+	) {
+		const swapped = assemble(resolved.accent, resolved.foreground)
+		if (validatePalette(swapped).violations.length === 0) {
+			return { palette: swapped, parse, notes: resolved.notes, swapped: true, attempts: resolved.attempts }
 		}
 	}
-	if (settled === null) return first
-
-	// Now the accent, against the foreground that just cleared. Anything that cannot clear the
-	// contract's own foreground/accent separation is not a candidate at all — choosing under a tighter
-	// rule is what made the first run of this prototype fail 7 of 20 on `I3`.
-	for (const accent of accents) {
-		if (attempts >= MAX_ASSEMBLY_ATTEMPTS) break
-		if (okLabDistance(rgbToOkLab(accent), rgbToOkLab(settledForeground)) < FOREGROUND_ACCENT_SEPARATION_DISTANCE) continue
-		attempts += 1
-		const palette = assemble(settledForeground, accent)
-		if (validatePalette(palette).violations.length === 0) return palette
-	}
-	// Nothing in the accent ranking cleared, so it stays collapsed — which is a sanctioned outcome and
-	// a declared flag, not a repair.
-	return settled
+	return { palette: resolved.palette, parse, notes: resolved.notes, swapped: false, attempts: resolved.attempts }
 }
+
+export const paletteOf: CandidatePalette = async (imagePath) => (await paletteWithDiagnostics(imagePath)).palette

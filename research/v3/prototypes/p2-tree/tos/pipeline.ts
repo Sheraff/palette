@@ -36,7 +36,6 @@ import {
 	LAMINARITY_CUT,
 	LARGEST_SAME_COLOR_BAR,
 	L_LEVEL_COUNT,
-	MARK_NODE_LIMIT,
 	MIN_LAMINAR_CHAIN_LENGTH,
 	MIN_NODE_AREA_FRACTION,
 	MONOTONE_MIGRATION_FRACTION,
@@ -46,6 +45,9 @@ import {
 	STABILITY_WINDOW_LEVELS,
 	UNREADABLE_COVERAGE_FRACTION,
 } from "./constants.ts"
+import { COMPONENT_CHAIN_AREA_AGREEMENT, TEXT_COMPONENT_LIMIT } from "./roles/constants.ts"
+import { minFieldContrast, rankByFieldContrast, renderedFieldOf } from "./roles/rank.ts"
+import { findTextGroups, strokeWidthFromDistanceField, type TextComponent, type TextGroup } from "./roles/text.ts"
 import { buildTreeOfShapes, type ShapeTree } from "./tree.ts"
 
 /** Thrown when the input is one the contract refuses. Surfaces as a failed row, never a silent skip. */
@@ -446,28 +448,50 @@ function distanceTransform1d(source: Float64Array, length: number, stride: numbe
 	for (let q = 0; q < length; q += 1) source[offset + q * stride] = scratch[q]
 }
 
+/** A mask's exact squared Euclidean distance transform, over the mask padded by one on every side. */
+export type DistanceField = Readonly<{ squared: Float64Array; width: number; height: number }>
+
 /**
- * The largest inscribed radius of a mask, in pixels, from an exact Euclidean distance transform.
+ * The exact squared Euclidean distance transform of a mask, padded by one on every side.
  *
- * The mask is padded by one so the frame counts as outside — a region touching the image edge should
- * not be credited with unbounded thickness.
+ * The padding is what makes the frame count as outside: a region touching the image edge must not be
+ * credited with unbounded thickness. Squared distances, because that is what the
+ * Felzenszwalb–Huttenlocher pass produces and every consumer here either compares them (the ridge
+ * test, which is monotone in the square) or takes one square root at the end.
+ *
+ * **One transform, two answers.** Cycle 2 needs both the inradius (thinness, arm-b′ §2.6) and the
+ * median ridge distance (stroke width, arm-b §2.4) for every component. They are two readings of the
+ * same field, and computing the field once is the difference between one distance transform per
+ * component and two.
  */
-export function inradiusOf(mask: Uint8Array, width: number, height: number): number {
+export function distanceFieldOf(mask: Uint8Array, width: number, height: number): DistanceField {
 	const paddedWidth = width + 2
 	const paddedHeight = height + 2
-	const field = new Float64Array(paddedWidth * paddedHeight)
+	const squared = new Float64Array(paddedWidth * paddedHeight)
 	const far = (paddedWidth + paddedHeight) ** 2
 	for (let y = 0; y < paddedHeight; y += 1) {
 		for (let x = 0; x < paddedWidth; x += 1) {
 			const inside = y > 0 && x > 0 && y <= height && x <= width && mask[(y - 1) * width + (x - 1)] === 1
-			field[y * paddedWidth + x] = inside ? far : 0
+			squared[y * paddedWidth + x] = inside ? far : 0
 		}
 	}
 	const scratch = new Float64Array(Math.max(paddedWidth, paddedHeight))
-	for (let x = 0; x < paddedWidth; x += 1) distanceTransform1d(field, paddedHeight, paddedWidth, x, scratch)
-	for (let y = 0; y < paddedHeight; y += 1) distanceTransform1d(field, paddedWidth, 1, y * paddedWidth, scratch)
+	for (let x = 0; x < paddedWidth; x += 1) distanceTransform1d(squared, paddedHeight, paddedWidth, x, scratch)
+	for (let y = 0; y < paddedHeight; y += 1) distanceTransform1d(squared, paddedWidth, 1, y * paddedWidth, scratch)
+	return { squared, width: paddedWidth, height: paddedHeight }
+}
+
+/**
+ * The largest inscribed radius of a mask, in pixels, from an exact Euclidean distance transform.
+ */
+export function inradiusOf(mask: Uint8Array, width: number, height: number): number {
+	return inradiusFromDistanceField(distanceFieldOf(mask, width, height))
+}
+
+/** The inradius read off an already-computed distance field. */
+export function inradiusFromDistanceField(field: DistanceField): number {
 	let best = 0
-	for (let index = 0; index < field.length; index += 1) if (field[index] > best) best = field[index]
+	for (let index = 0; index < field.squared.length; index += 1) if (field.squared[index] > best) best = field.squared[index]
 	return Math.sqrt(best)
 }
 
@@ -488,11 +512,24 @@ export type ParsedNode = {
 	readonly centroidX: number
 	readonly centroidY: number
 	readonly growth: number
-	/** `inradius / √area`, from an exact distance transform. Computed for marks only. */
+	/** `inradius / √area`, from an exact distance transform. Computed for components only. */
 	thinness: number | null
+	/** Twice the median ridge distance of the node's mask, in pixels. Components only (arm-b §2.4). */
+	strokeWidth: number | null
 	readonly repr: Rgb8
 	readonly kind: "field" | "mark"
 }
+
+/** What the parse says about one text-shaped group, for the dump and for a regression test to read. */
+export type ParsedTextGroup = Readonly<{
+	/** Parsed node ids of the coherent components, ascending. */
+	nodeIds: readonly number[]
+	rows: number
+	areaFraction: number
+	repr: Rgb8
+	/** Minimum |raw APCA| of `repr` over the whole rendered field. */
+	fieldContrast: number
+}>
 
 export type Parse = Readonly<{
 	width: number
@@ -505,6 +542,11 @@ export type Parse = Readonly<{
 	coverage: number
 	nodes: ParsedNode[]
 	roles: Readonly<{ background: Rgb8; surface: Rgb8; foreground: Rgb8; accent: Rgb8 }>
+	/**
+	 * The text-shaped groups arm-b §2.4 found, best first: total coherent area, then readability
+	 * against the rendered field, then parsed node id. Their representatives lead `foregroundPool`.
+	 */
+	textGroups: readonly ParsedTextGroup[]
 	/** Foreground candidates, best first — the ranking a repair walks down (arm-b′ §2.7). */
 	foregroundPool: readonly Rgb8[]
 	/** Accent candidates, best first, under the accent ordering rather than the text-ness one. */
@@ -624,6 +666,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 			centroidY: tree.nodeCentroidY[treeNodeId] / image.height,
 			growth: stability.growth[treeNodeId],
 			thinness: null,
+			strokeWidth: null,
 			repr: representativeColor(cloud),
 			kind: areaFraction >= FIELD_AREA_FRACTION ? "field" : "mark",
 		}
@@ -744,15 +787,72 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		surface = fallback.length > 1 ? fallback[1].repr : background
 		notes.push(`fallback-field-roles:${verdict}`)
 	}
+
+	// **The field pair's twin collapse** — the first of the four cells in `roles/assemble.ts`'s matrix,
+	// and the one that has to happen here rather than at assembly, because the pools below are ranked
+	// against the field that will actually be published.
+	//
+	// Round 1's forbidden outcome is a pair of indistinguishable roles. `surface` inside `background`'s
+	// same-colour bar without being exactly equal is that pair, and it is the case cycle 1's assembly
+	// could not repair at all: no choice of foreground fixes a defect in the field, so the walk
+	// exhausted on every candidate and published the twin. `surfaceCollapsed` is the contract's
+	// sanctioned answer, and it requires *exact* equality — invariant 3 refuses to let the flag launder
+	// a near-identical pair — so the collapse assigns the identical triple.
+	if (
+		colorFromRgb(background).hex !== colorFromRgb(surface).hex &&
+		okLabDistance(rgbToOkLab(background), rgbToOkLab(surface)) <
+			sameColorBar(colorFromRgb(background), colorFromRgb(surface))
+	) {
+		notes.push("field-collapsed:same-color-bar")
+		surface = background
+	}
 	if (colorFromRgb(background).hex === colorFromRgb(surface).hex) gradient = false
 
-	// ---- marks, clusters, foreground and accent ------------------------------------------------
+	// ---- components, clusters, foreground and accent --------------------------------------------
+	//
+	// **Chain collapse, and why cycle 1's mark population could not carry a text detector.** The tree
+	// of shapes names one glyph once per quantised L level between the level at which it separates from
+	// its field and the level at which it is fully dark: on `…d859a69094` one letter of the title is
+	// twenty retained nodes, each with a plausible area, bounding box and representative colour. The
+	// stability filter drops only *exact*-area duplicates, so the whole chain survives, and the sixty-four
+	// largest marks on that cover are all slices of one grey swoosh with not one glyph among them.
+	//
+	// A **component** is therefore a retained mark node with no retained mark strictly beneath it
+	// covering at least `COMPONENT_CHAIN_AREA_AGREEMENT` of its area — the deepest node of each chain,
+	// which is the glyph at its darkest and most complete. 512 marks become 95 components on that cover
+	// and the title's letters are nine of them, at their near-black exact triples.
+	//
+	// The rule is local to the role stage: `stability.retained`, which is what the dump publishes and
+	// what the reachability falsifier and the verifier read, is untouched.
 	const chainSet = new Set(groundChain)
+	const isMarkNode = (node: ParsedNode): boolean => node.kind === "mark" && !chainSet.has(node.id)
+	const largestMarkBeneath = new Float64Array(nodes.length)
+	{
+		const order: number[] = []
+		const stack: number[] = [0]
+		while (stack.length > 0) {
+			const nodeId = stack.pop() as number
+			order.push(nodeId)
+			for (const childId of parsedChildren[nodeId]) stack.push(childId)
+		}
+		for (let position = order.length - 1; position >= 0; position -= 1) {
+			const nodeId = order[position]
+			let best = 0
+			for (const childId of parsedChildren[nodeId]) {
+				const beneath = Math.max(isMarkNode(nodes[childId]) ? nodes[childId].areaFraction : 0, largestMarkBeneath[childId])
+				if (beneath > best) best = beneath
+			}
+			largestMarkBeneath[nodeId] = best
+		}
+	}
 	const marks = nodes
-		.filter((node) => node.kind === "mark" && !chainSet.has(node.id))
+		.filter((node) => isMarkNode(node) && largestMarkBeneath[node.id] < COMPONENT_CHAIN_AREA_AGREEMENT * node.areaFraction)
 		.sort((first, second) => second.areaFraction - first.areaFraction || first.id - second.id)
-		.slice(0, MARK_NODE_LIMIT)
+		.slice(0, TEXT_COMPONENT_LIMIT)
 
+	// One distance transform per component, read twice: the inradius gives arm-b′ §2.6's thinness, the
+	// median ridge distance gives arm-b §2.4's stroke width.
+	const componentHeight = new Map<number, number>()
 	for (const mark of marks) {
 		const treeNodeId = mark.treeNodeId
 		const minX = tree.nodeMinX[treeNodeId]
@@ -760,6 +860,7 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		const boxWidth = tree.nodeMaxX[treeNodeId] - minX + 1
 		const boxHeight = tree.nodeMaxY[treeNodeId] - minY + 1
 		if (boxWidth <= 0 || boxHeight <= 0) continue
+		componentHeight.set(mark.id, boxHeight)
 		const mask = new Uint8Array(boxWidth * boxHeight)
 		for (let y = 0; y < boxHeight; y += 1) {
 			for (let x = 0; x < boxWidth; x += 1) {
@@ -768,13 +869,17 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 				if (inside) mask[y * boxWidth + x] = 1
 			}
 		}
-		const inradius = inradiusOf(mask, boxWidth, boxHeight)
+		const distances = distanceFieldOf(mask, boxWidth, boxHeight)
+		const inradius = inradiusFromDistanceField(distances)
 		const area = tree.nodeSubtreeArea[treeNodeId]
 		mark.thinness = area > 0 ? inradius / Math.sqrt(area) : null
+		mark.strokeWidth = strokeWidthFromDistanceField(distances.squared, distances.width, distances.height)
 	}
 
-	// Clusters: marks whose representative colours are the same colour by the contract's own bar.
+	// Clusters: components whose representative colours are the same colour by the contract's own bar.
 	// Union-find over an ascending scan, so the clustering is a function of node id and of nothing else.
+	// This is also arm-b §2.4's fourth grouping clause — "colours the same under the bar" — so the text
+	// detector inherits it structurally rather than re-testing it.
 	const parentOf = marks.map((_unused, index) => index)
 	const find = (index: number): number => {
 		let root = index
@@ -805,10 +910,12 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		if (bucket === undefined) clusterOf.set(root, [index])
 		else bucket.push(index)
 	}
+	const clusterIndexOfComponent = new Int32Array(marks.length).fill(-1)
 	const clusters = Array.from(clusterOf.keys())
 		.sort((first, second) => first - second)
-		.map((root) => {
+		.map((root, clusterIndex) => {
 			const members = (clusterOf.get(root) ?? []).slice().sort((first, second) => first - second)
+			for (const index of members) clusterIndexOfComponent[index] = clusterIndex
 			const thicknesses = members.map((index) => marks[index].thinness).filter((value): value is number => value !== null)
 			const thinness = thicknesses.length > 0 ? thicknesses.reduce((sum, value) => sum + value, 0) / thicknesses.length : 1
 			const geometryOfCluster = collinearityResidual(members.map((index) => [marks[index].centroidX, marks[index].centroidY] as const))
@@ -825,16 +932,27 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 			}
 		})
 
-	// arm-b′ §2.6: ranked lexicographically — thinness, then member count, then centroid collinearity.
-	// No weighted score, therefore no mixing weights to tune.
-	clusters.sort(
-		(first, second) =>
-			first.thinness - second.thinness ||
-			second.count - first.count ||
-			first.collinearity - second.collinearity ||
-			second.areaFraction - first.areaFraction ||
-			first.firstMarkId - second.firstMarkId,
-	)
+	// ---- the text detector, arm-b §2.4 ----------------------------------------------------------
+	//
+	// Cycle 1 ranked the foreground by arm-b′ §2.6's *text-ness* order — thinness, member count,
+	// centroid collinearity — which contains no contrast term at all, and the reviewer called the
+	// result unreadable on 7 of 10 unacceptable sides. Cycle 2 replaces the proxy with the thing it was
+	// proxying for: find the components that are *manufactured as type*, and let the artwork's own text
+	// colour lead. `roles/text.ts` carries the graft and its deviations; the cluster's thinness and
+	// collinearity are still computed because the dump publishes them, but nothing orders a role by them
+	// any more.
+	const textComponents: TextComponent[] = marks.map((mark, index) => ({
+		nodeId: mark.id,
+		clusterId: clusterIndexOfComponent[index],
+		strokeWidth: mark.strokeWidth ?? 0,
+		height: componentHeight.get(mark.id) ?? 0,
+		centroidX: mark.centroidX * image.width,
+		centroidY: mark.centroidY * image.height,
+		areaFraction: mark.areaFraction,
+		repr: mark.repr,
+	}))
+	const textGroups: TextGroup[] = findTextGroups(textComponents)
+	const textClusterIds = new Set(textGroups.map((group) => group.clusterId))
 
 	// ---- the ordered pools the roles are drawn from --------------------------------------------
 	//
@@ -883,15 +1001,61 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		return kept
 	}
 
-	// Foreground: the clusters in the text-ness ranking already computed above, then the residual.
-	const foregroundPool = dedupe([...clusters.map((cluster) => cluster.repr), ...residualPool])
-	// Accent: the clusters re-ranked by chromatic distance from the field with lightness movement as
-	// the tie-break — `perception-4`'s direction, taken as a direction and never as a coefficient.
+	// The rendered field every candidate is judged against: both field roles and, when a gradient is
+	// published, every point of the OKLab interpolation between them. `roles/rank.ts` measures it with
+	// the contract's own `minRawContrastOverRamp`, which is the function invariant 4 itself calls.
+	const renderedField = renderedFieldOf(background, surface, gradient)
+	// Memoised per exact triple: a ramp minimum costs `RAMP_SAMPLES_PER_SEGMENT +
+	// RAMP_REFINEMENT_SAMPLES` APCA evaluations, both rankings score overlapping candidate sets, and
+	// the score is a pure function of the triple and the field.
+	const contrastCache = new Map<number, number>()
+	const packOfColor = (color: Rgb8): number => (color[0] << 16) | (color[1] << 8) | color[2]
+	const contrastOf = (color: Rgb8): number => {
+		const key = packOfColor(color)
+		let score = contrastCache.get(key)
+		if (score === undefined) {
+			score = minFieldContrast(color, renderedField)
+			contrastCache.set(key, score)
+		}
+		return score
+	}
+
+	// **Foreground.** The artwork's own text colour leads — round 1, verbatim, on the acceptance case:
+	// *"black is the artwork's text → fg should be black"*. Text groups first (arm-b §2.6: "text-shaped
+	// groups first by total area fraction"), with readability against the rendered field as the
+	// tie-break; then every remaining candidate ranked by that readability alone.
+	//
+	// The ranking is not a gate. The contract's floors stay where the constraint sheet puts them; what
+	// this chooses is the most readable of the artwork's *own* candidates, every one of them still an
+	// exact triple of the source.
+	const rankedTextGroups = textGroups
+		.map((group) => ({ group, contrast: contrastOf(group.repr) }))
+		.sort(
+			(first, second) =>
+				second.group.areaFraction - first.group.areaFraction ||
+				second.contrast - first.contrast ||
+				first.group.firstNodeId - second.group.firstNodeId,
+		)
+	if (rankedTextGroups.length === 0) notes.push("no-text-groups:contrast-ranking-only")
+	const nonTextClusterReprs = clusters
+		.filter((_cluster, index) => !textClusterIds.has(index))
+		.map((cluster) => cluster.repr)
+	const foregroundPool = dedupe([
+		...rankedTextGroups.map((entry) => entry.group.repr),
+		...rankByFieldContrast([...nonTextClusterReprs, ...residualPool], renderedField, (color) => contrastOf(color)),
+	])
+
+	// **Accent.** Same readability measurement as the foreground, over the same rendered field — the
+	// reviewer grades the accent against *both* field roles, so the accent's order is the foreground's
+	// order minus the text-first clause. Chroma from the field and lightness movement survive as
+	// tie-breaks: arm-b′ §2.6's direction, kept as a direction and never as a coefficient, so an accent
+	// that has to choose between two equally readable candidates still takes the vivid one.
 	const accentPool = dedupe([
 		...clusters
 			.slice()
 			.sort(
 				(first, second) =>
+					contrastOf(second.repr) - contrastOf(first.repr) ||
 					chromaFromField(second.repr) - chromaFromField(first.repr) ||
 					lightnessMove(second.repr) - lightnessMove(first.repr) ||
 					first.firstMarkId - second.firstMarkId,
@@ -919,6 +1083,13 @@ export function parseTree(image: DecodedImage, tree: ShapeTree): Parse {
 		coverage,
 		nodes,
 		roles: { background, surface, foreground, accent },
+		textGroups: rankedTextGroups.map((entry) => ({
+			nodeIds: entry.group.members.map((index) => marks[index].id).sort((first, second) => first - second),
+			rows: entry.group.rows,
+			areaFraction: entry.group.areaFraction,
+			repr: entry.group.repr,
+			fieldContrast: entry.contrast,
+		})),
 		foregroundPool,
 		accentPool,
 		gradient,
