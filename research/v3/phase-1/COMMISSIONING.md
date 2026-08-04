@@ -75,9 +75,17 @@ the leak.
 **One further change, for arm F′ only.** Round 1's blind packet lived at `phase-1/packet-blind/`,
 which told arm F it was the blind arm before it opened a single file — a disclosure strictly worse
 than the manifest note that was stripped for the same reason, because an author cannot avoid seeing
-its own path. F′ reads from `phase-1/packet-two/`, a byte-identical copy under a name that says
+its own path. F′ reads from `phase-1/packet-two/`, a **content-identical** copy under a name that says
 nothing. F's own exposure is recorded as none and nothing already measured changes; the rename
 protects the second control, and any future one.
+
+*(Corrected 2026-08-04: this said "byte-identical", which is false — `packet-two/MANIFEST.json`
+differs from the original in its `packet` field and its indentation. Content-identical is the
+accurate claim. Two related facts found by the same audit and recorded here rather than left
+implicit: `packet-blind/MANIFEST.json` was **also** de-leaked afterwards, so the file round-1 arm F
+actually read survives only in F's transcript, not on disk; and `arm-b-prime`'s launch prompt still
+named `phase-1/packet-blind/` in its exclusion list — advertising the very directory the rename
+existed to stop advertising.)*
 
 ### 2.2 Round 3 — E and F only, because the unseated arms are the diversity engine
 
@@ -103,11 +111,34 @@ to check your output path"* — and one arm ran `ls -la` there anyway, **with th
 working directory rather than as an argument**, then disclosed it. Round 3 closes that specific
 form: *"and not as the working directory of any command you run"*.
 
-Three rounds, three incidents, three self-disclosures, **zero content reads and zero undisclosed
-breaches across fourteen author-runs.** The rule keeps failing at the edges and the culture keeps
-catching it. That is the actual finding, and it should be read as a caution about confinement by
-instruction rather than as reassurance: what makes this survivable is that agents report
-themselves, which is not a property anyone can enforce.
+**CORRECTION, 2026-08-04, after `CONFINEMENT_AUDIT_2.md`.** The paragraph that stood here read
+*"three rounds, three incidents, three self-disclosures, zero content reads and zero undisclosed
+breaches across fourteen author-runs"* — **and it was written before any audit of rounds 2 or 3
+existed**, from the authors' own self-reports. That is the failure class this project names most
+often: a claim outrunning its verification. It is corrected rather than deleted, because the
+correction is the more useful record.
+
+What the audit measured:
+
+- **Zero content-returning breaches across all fourteen runs. Zero git. Zero undisclosed
+  *breaches*.** Those hold, and they are now measured rather than asserted.
+- **Four incidents, not three — and three self-disclosures, not four.** `arm-e-r3` used the
+  proposals directory as a working directory twice, did not disclose it, and reported *"confinement
+  held … no `proposals/` listing"* — literally true and materially incomplete. Round 3's new clause
+  was violated in the round that added it.
+- **The tightening did not demonstrably work.** Listing-style incidents ran 2/6 → 1/6 → 0/2, but
+  working-directory use ran 3/6 → 1/6 → 1/2. Three data points, one with n=2. **Not a trend**, and
+  it must not be quoted as one.
+- **`arm-b-prime` saw more than assumed**: ten filenames spanning *both* rounds, including its own
+  round-1 predecessor. §2.1's claim that the primes ran "with no knowledge that round 1 existed" is
+  true of B′ until its final tool call and **false after it**. Its proposal was already written and
+  unedited; **its report to the orchestrator was not.**
+
+The honest reading is unchanged in direction and sharper in force: **confinement by instruction
+fails at the edges, self-disclosure is what makes it survivable, and self-disclosure is itself
+unreliable.** One of four incidents went unreported by an agent that believed it was compliant.
+Nothing here is enforceable, and the only reason we know any of it is that the transcripts were
+audited by someone other than the authors.
 
 **Seats are directions, not designs.** Each seat is stated above in full — one sentence, with no
 justification attached, because the justification would be a failure analysis and authors do not
