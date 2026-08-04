@@ -666,6 +666,16 @@ summary {
 	background: var(--paper);
 }
 
+/*
+ * Perception round 4 mixes two stimulus kinds on one kit page, and the kit's stage is padded more
+ * tightly than the bracketing rounds' was. A patch pair drawn there takes this rule instead, so it
+ * fills the same share of the screen as the 184 identity pairs whose answers round 4 pools with —
+ * `.oracle-stage.pair-stage` outranks `.oracle-stage` on specificity, not on source order.
+ */
+.oracle-stage.pair-stage {
+	padding: 0 6vw 4vh;
+}
+
 /* Part 2: accent shapes on the field colour, at the size a player UI would use them. */
 .accent-stage {
 	width: 100%;

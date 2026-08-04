@@ -89,7 +89,7 @@ export type LiveReport = Readonly<{
 }>
 
 /** Every review mode's page, checked whether or not a batch of that kind is currently queued. */
-const MODE_PAGES = ["/", "/pairwise", "/calibration", "/amend", "/bracketing", "/oracle", "/oracle-review"] as const
+const MODE_PAGES = ["/", "/pairwise", "/calibration", "/amend", "/bracketing", "/oracle", "/oracle-review", "/perception-4"] as const
 
 /** Asset extensions worth following out of a page. Anything else is not this crawler's business. */
 const ASSET_EXTENSIONS = [".js", ".css", ".svg", ".png", ".ico", ".woff2"] as const

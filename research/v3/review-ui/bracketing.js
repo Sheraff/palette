@@ -13,6 +13,7 @@
 // Relative: a relative specifier resolves against the importing MODULE's URL — `/bracketing.js` —
 // which is this directory, whatever route the document was served from.
 import { renderAccentPanel } from "./accent-panel.js"
+import { renderPatchPair } from "./patch-pair.js"
 
 /*
  * The wording is served with the batch, never hardcoded here: the reviewer's first pass was
@@ -56,14 +57,14 @@ function firstUnanswered() {
 	return at < 0 ? batch.items.length - 1 : at
 }
 
+/**
+ * The patch pair now lives in `patch-pair.js`, so that `perception-4`'s arm A and arm B pairs — which
+ * carry this round's question and instruction byte for byte, and whose answers pool with these — are
+ * drawn by this code and not by a copy of it. Behaviour is unchanged: `first` and `second` are the
+ * two colours, exactly as before.
+ */
 function renderPair(item) {
-	const pair = el("div", { class: "pair" })
-	const first = el("div", { class: "pair-field" })
-	first.style.background = item.first
-	const second = el("div", { class: "pair-field" })
-	second.style.background = item.second
-	pair.append(first, el("div", { class: "pair-divider" }), second)
-	return pair
+	return renderPatchPair({ firstHex: item.first, secondHex: item.second }, el)
 }
 
 /**

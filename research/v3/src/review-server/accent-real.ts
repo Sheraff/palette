@@ -405,7 +405,7 @@ const MIN_REPEAT_SEPARATION = 12
 
 type EndorsementRole = Readonly<{ hex: string; rgb: readonly number[]; name: string }>
 
-type EndorsementEntry = Readonly<{
+export type EndorsementEntry = Readonly<{
 	entryId: string
 	kind: string
 	artwork: Readonly<{
@@ -419,13 +419,22 @@ type EndorsementEntry = Readonly<{
 	roleSignature: string
 }>
 
-async function readEndorsements(): Promise<readonly EndorsementEntry[]> {
+export async function readEndorsements(): Promise<readonly EndorsementEntry[]> {
 	const parsed = JSON.parse(await readFile(ENDORSEMENTS_PATH, "utf8")) as { entries: EndorsementEntry[] }
 	return parsed.entries.filter((entry) => entry.palette.completeness === "full")
 }
 
 /* ------------------------------------------------------------------------------------------- */
 /* Isoluminant construction — the heart of the round                                             */
+/*                                                                                               */
+/* `equalLuminanceAccent`, `measurePair`, `placementProfile`, `mockPageItem`, `oracleItem` and    */
+/* `readEndorsements` are EXPORTED rather than module-private because `perception-4.ts` builds    */
+/* its accent arm out of them. That is deliberate and it is the cheaper of the two options: this  */
+/* file already re-states `accent-functional.ts`'s solver "arithmetic for arithmetic" and pays    */
+/* for it with a paragraph explaining why the copy is safe. A THIRD copy would need a third such  */
+/* paragraph and would be a third thing to keep in step — and round 4's whole claim is that its   */
+/* accent items are the same KIND of object as this round's, which only holds if they come off    */
+/* the same arithmetic. Exporting changes no behaviour here.                                     */
 /* ------------------------------------------------------------------------------------------- */
 
 function chromaOf(lab: OkLab): number {
@@ -444,7 +453,7 @@ function chromaOf(lab: OkLab): number {
  * Lightness is **solved for, not chosen**: moving in chroma alone changes Y, so L is bisected until
  * APCA's Y matches the field's. What survives 8-bit rounding is then measured, never assumed.
  */
-function equalLuminanceAccent(field: Rgb8, target: number, angle: number): Rgb8 | null {
+export function equalLuminanceAccent(field: Rgb8, target: number, angle: number): Rgb8 | null {
 	const fieldLab = rgbToOkLab(field)
 	const fieldY = rgbToApcaY(field)
 	const a = fieldLab[1] + Math.cos(angle) * target
@@ -492,7 +501,7 @@ export type PairTruth = Readonly<{
 	identical: boolean
 }>
 
-function measurePair(fieldRole: string, field: Rgb8, accent: Rgb8): PairTruth {
+export function measurePair(fieldRole: string, field: Rgb8, accent: Rgb8): PairTruth {
 	const fieldLab = rgbToOkLab(field)
 	const accentLab = rgbToOkLab(accent)
 	return {
@@ -520,7 +529,7 @@ export const MOCK_ACCENT_PLACEMENTS = [
 	{ fieldRole: "background", elements: 2, what: "the two progress-rail fills, on a background-coloured track" },
 ] as const
 
-function placementProfile(
+export function placementProfile(
 	roles: Readonly<Record<string, string>>,
 	accent: Rgb8,
 ): readonly PairTruth[] {
@@ -1074,7 +1083,7 @@ export async function buildAccentRealFixture(
 
 const ROLE_ORDER = ["background", "surface", "foreground", "accent"] as const
 
-function mockPageItem(questionKey: string, roles: Readonly<Record<string, string>>): AccentRealPageItem {
+export function mockPageItem(questionKey: string, roles: Readonly<Record<string, string>>): AccentRealPageItem {
 	const names = nameHexes(ROLE_ORDER.map((role) => roles[role]))
 	return {
 		questionKey,
@@ -1096,7 +1105,7 @@ function mockPageItem(questionKey: string, roles: Readonly<Record<string, string
 	}
 }
 
-function oracleItem(
+export function oracleItem(
 	entry: EndorsementEntry,
 	itemId: string,
 	questionKey: string,
