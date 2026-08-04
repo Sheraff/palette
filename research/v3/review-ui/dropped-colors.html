@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>dropped colours</title>
+		<link rel="stylesheet" href="/styles.css" />
+	</head>
+	<body class="oracle-body">
+		<header class="oracle-bar oracle-head">
+			<div class="oracle-prompt">
+				<!-- Which colour the rule would drop, and the two measurements behind it. Served from
+				     the fixture, never written here: an answer only means something against the exact
+				     words it was answered under. -->
+				<p id="preamble" class="oracle-preamble"></p>
+				<p id="framing" class="oracle-preamble"></p>
+				<p id="question">loading…</p>
+				<p id="instruction" class="oracle-instruction"></p>
+			</div>
+			<p id="progress"></p>
+		</header>
+
+		<!-- The mock player goes here, rendered by the one renderer (`/mock.js`), plus a callout for
+		     the colour under question and the measured numbers behind the drop line. -->
+		<main id="stage" class="oracle-stage" aria-live="polite"></main>
+
+		<footer class="oracle-bar oracle-foot">
+			<ul id="mapping" class="oracle-mapping"></ul>
+			<p id="status">…</p>
+			<!-- Every key this page binds, in the markup rather than drawn by JS, so the affordance
+			     does not depend on a fetch having succeeded (the lesson of the recheck round's first
+			     revision: "no way for me to answer"). -->
+			<p class="oracle-keys">
+				<b>1</b> belongs · <b>2</b> does not belong · <b>3</b> can't tell ·
+				<b>j</b>/<b>k</b> or <b>←</b>/<b>→</b> move between colours ·
+				<b>u</b> undo one · <b>r</b> release when finished · <a href="/">all reviews</a>
+			</p>
+		</footer>
+	</body>
+	<script type="module" src="/dropped-colors.js"></script>
+</html>
