@@ -83,6 +83,18 @@ images; `tools/sensitivity.ts`. Nothing in wave 2 starts until wave 1 reports.
    640 px — a full 600-trial run can be hours. First runs use `--limit` and `--skip-pairs` to
    size the cost before committing to the full set.
 
+8. **`spatialSpread` double normalisation — fix owed in `terms.ts` (W6 finding, 2026-08-04).**
+   `lattice/index.ts:105` already normalises (1.0 = uniform frame-wide fill); `energy/terms.ts:181`
+   divides by `ENERGY_ANCHORS.uniformSpatialSpread` (1/6) again, so the field-fitness spread
+   factor saturates at 17% of frame area and the upper ⅚ of the scale is collapsed. Fix on the
+   consumer side: terms.ts consumes the normalised value directly and the anchor is retired or
+   redefined; `tests/semantics.test.ts` pins both WHAT-IS and WHAT-SHOULD-BE — flip the pins when
+   fixing. Assigned to the first wave-2B worker to touch terms.ts (after W5 lands; solve.ts
+   imports terms and mid-flight edits would race).
+9. **Blur padding convention at frame edges** biases coarse-scale displacement on full-frame
+   ramps (W6's analytic account: edge-clamp bias ∝ σ·slope). Not currently load-bearing after
+   the scale-band repair; revisit only if gradient-end fidelity shows up in review verdicts.
+
 ## Performance envelope
 
 Proposal §5 prices 1000×1000 at ≈0.4 s single-threaded. Treat >2 s at that size as a defect to
