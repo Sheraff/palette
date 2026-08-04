@@ -3458,6 +3458,165 @@
     "The definition counts a SAM mask grade as exposure to the artwork. That is deliberate and debatable; it is stated in the set files' `reviewednessDefinition` field so a reader never has to infer it."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-gradient-ends-are-the-field-roles",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "contract",
+   "decision": "THE ENDS OF A PUBLISHED GRADIENT ARE THE FIELD ROLES. Reviewer, verbatim: \"when the field is a gradient, the first stop is the `background` and the last stop is the `surface`. A gradient can have 2 or 3 stops (4 is negociable if proven utility). The acceptable reasons for adding stops is recorded somewhere in phase 0 and should be included in the constraints as well.\" So `stops[0].color` == `roles.background` and `stops[last].color` == `roles.surface`, as EXACT hex equality - the same exactness the collapse flags are held to, because a ramp that starts NEAR its background is a field carrying five colours. This NARROWS but does not repeal the decoupling agreed in V3_PLAN.md 2 (`render stops decoupled from role colors`): the INTERIOR of a ramp stays decoupled, the two ends no longer are. The recorded stop-justification the ruling points at is PHASE_0_DECISIONS.md 2's guide-stop bullet, quoted verbatim into the contract and into the Phase 1 constraint sheet: a 3rd stop when the artwork genuinely has a 3-colour linear gradient; stops 3-4 otherwise GUIDES existing only to pull the rendered OKLab interpolation onto the artwork when the 2-stop straight line demonstrably passes through off-artwork colours; \"Never to expand colorspace coverage or fit a metric... excursion reduction justifies a stop; meandering is forbidden.\" MAX_GRADIENT_STOPS stays 4; what changes is that reaching it is an argument rather than an option.",
+   "scope": "Binds the output contract's gradient shape, invariant 1, and every fitter that publishes a ramp. Enforced as `I1.first-stop-not-background` and `I1.last-stop-not-surface` in research/v3/src/contract/invariants.ts. Two consequences fall out and are recorded with it: invariant 3's field-roles-versus-stops exemption becomes MANDATORY rather than permissive, and a palette with `surfaceCollapsed` set CANNOT publish a gradient (both ends would be one colour, which invariant 3 refuses as degenerate) - such a field publishes `gradient: null`. It does NOT settle: the number of stops a fitter should choose, what evidence makes a 4th stop's utility `proven`, or anything about gradient GEOMETRY, which remains opportunistic. It does NOT change MIN/MAX_GRADIENT_STOPS. It does NOT touch the whole-ramp contrast floors of d-2026-08-03-reviewer-whole-ramp-contrast-floors, which are unaffected and remain coherent: the ramp the floors are minimised over is now, explicitly, the field.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/types.ts",
+     "what": "GradientStop and GradientSpec carry the ruling verbatim, with the recorded stop-justification quoted in full"
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "the two endpoint codes, in validateSchema"
+    },
+    {
+     "ref": "research/v3/tests/contract-invariants.test.ts",
+     "what": "six tests: both codes independently, exactness at one 8-bit step, every legal stop count, the interior staying decoupled, no double-report of a malformed colour, and the collapsed-surface consequence"
+    },
+    {
+     "ref": "research/v3/src/contract/fixtures.ts",
+     "what": "schemaGradientEndpointsNotFieldRoles and schemaLastStopNotSurface; eleven pre-existing gradient fixtures reshaped so their ends are the field roles"
+    },
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "2 and 4 invariants 1 and 3, amended in place with the date"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "The ruling reverses a contract change that V3_PLAN.md 2 listed as `already-agreed` before design started. Nothing was built on the decoupled-endpoint reading except fixtures and the dev-loop toy candidate, both reconciled here; but a reader of the older text will find it contradicted, which is why 2 carries a dated amendment rather than a silent edit.",
+    "`4 is negociable if proven utility` is recorded as-is. No standard for `proven` was set, and none is invented here."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-v2-3-acceptability-number-withdrawn",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "process",
+   "decision": "V2-3'S HEADLINE ACCEPTABILITY FIGURE IS WITHDRAWN AND MUST NEVER BE QUOTED. The reviewer judged the number fake. It is replaced by the reviewer's verdicts, with NO inherited numeric anchor: v3 is matched against the reviewer's judgment, not against a figure. What survives the withdrawal is the SHAPE of the finding, which is what actually set the goals - single-verdict noise was measured at ~12% (reviewer regrade agreement 88%), so acceptability is not a direction v3 can meaningfully move in, and the three real goals (robustness, parameter honesty, structural completeness) are unchanged.",
+   "scope": "Binds every document that cites v2-3's quality as a target or a baseline. Four citation sites were swept and replaced, in V3_PLAN.md 1 (goals paragraph and success statement) and PHASE_1_AUTHOR_BRIEF.md 2 (same two), each carrying a dated withdrawal note so a reader of an older draft knows the figure was removed rather than lost. It does NOT touch the ~12% noise band or the 88% regrade agreement, which are separate measurements and still stand. It does NOT touch numerically similar figures elsewhere that are about something else entirely - the oracle's dense-model concurrence, the SAM residual fractions, the correlated-abstention rate, the corpus's 3,097 square artworks - none of which are v2-3 quality claims. It does NOT retire the legacy verdict evidence in data/legacy/, which is unaffected.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/V3_PLAN.md",
+     "what": "1, goals paragraph and success statement"
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "2, goals paragraph and success statement"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "The reviewer stated the number was fake; no reason was given and none is invented here. A reader wanting to know WHY it was fake will not find the answer in this record.",
+    "`match the reviewer's verdicts` is not yet operationalised as a success test. Phase 3 owns that; until then the success statement is deliberately unquantified, which is a real loss of precision accepted in exchange for not carrying a number the reviewer disowns."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sanctioned-collapses-restated-unchanged",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "contract",
+   "decision": "THE TWO SANCTIONED COLLAPSES ARE RESTATED AND UNCHANGED. Reviewer: the accent may collapse to exactly the foreground colour when genuinely no valid accent exists, and the surface may collapse to exactly the background when genuinely no valid surface exists. Verified against the implementation: SANCTIONED_COLLAPSE_PAIRS in research/v3/src/contract/invariants.ts already contained exactly those two pairs and no others, exact hex equality with the flag set, and invariant 1 already enforced flag/equality consistency in both directions. NO CODE CHANGE was required. This record exists so that the check is on the record rather than the absence of a change being read later as the reviewer never having ruled.",
+   "scope": "Confirms invariant 3's first exception class and invariant 1's collapse-flag consistency. It does NOT settle what makes an accent or a surface `genuinely` invalid - that is the algorithm's judgment and no invariant checks it. It does NOT add a third collapse. It does NOT bear on the non-source escape, which is a separate ruling recorded as d-2026-08-04-one-non-source-color-escape, though the two interact: the escape REQUIRES the corresponding collapse.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "SANCTIONED_COLLAPSE_PAIRS and validateSchema's collapse-flag block, verified to match the ruling exactly"
+    },
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "2, collapse-flags bullet, annotated `Confirmed unchanged 2026-08-04`"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "A restatement that matches the code is the weakest kind of evidence that the code is right: it confirms the two agree, not that either is what the reviewer would say about a hard case."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-one-non-source-color-escape",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "contract",
+   "decision": "A PALETTE MAY INTRODUCE EXACTLY ONE COLOUR NOT PRESENT IN THE ARTWORK. Reviewer, verbatim: a palette may introduce \"EXACTLY ONE color not present in the artwork: pure white (#ffffff) or pure black (#000000) only, used as background or foreground only (with surface or accent collapsed correspondingly), only when there is genuinely no other way to produce a 2-color palette.\" This is the sole exception to invariant 2's existence clause, which is otherwise unchanged and stays hard. It is DECLARED, NOT INFERRED (`palette.escape`), on the same reasoning as the collapse flags - an escape reconstructed by re-reading the artwork is an escape nobody can count - and the default is FAIL-SAFE: an undeclared invented colour fails invariant 2 exactly as before, so the field may be absent and forgetting to declare buys nothing. Four conditions are checked. Invariant 1: the colour is EXACTLY one of the two literals (near-white is an invention like any other), the role is one of the two permitted, the named role actually publishes that colour, and the partner is genuinely collapsed. Invariant 2: the colour is GENUINELY ABSENT from the artwork - an escape declared over a colour the image contains is `I2.escape-not-needed`, a violation, because the palette should have published the source pixel and said nothing. A malformed declaration buys no exemption; every structural condition is re-checked where the exemption is granted, so a broken escape block cannot trip invariant 1 and simultaneously dodge invariant 2. There is at most one, structurally: a single optional field, not a list.",
+   "scope": "Binds invariant 2's existence clause and invariant 1's schema check, and adds `escape` to the published palette type. The permitted set is two literals (ESCAPE_COLORS) and two roles - narrow by construction rather than by threshold, so there is nothing here to calibrate and nothing that can drift. It does NOT weaken existence for anything else: any other absent colour remains an invention. It does NOT permit the escape at surface or accent. It does NOT permit two. It does NOT check the reviewer's own condition `only when there is genuinely no other way to produce a 2-color palette`, which is not computable from a published palette and is deliberately not faked - the partner-collapsed and genuinely-absent conditions are its checkable shadow, and they are strictly weaker.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/types.ts",
+     "what": "NonSourceColorEscape, EscapeRole, and the optional `escape` field on Palette, with all four conditions and the uncheckable fifth documented"
+    },
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "ESCAPE_COLORS and ESCAPE_ROLE_PARTNERS"
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "five I1 escape codes, I2.escape-not-needed, and sanctionedEscape() which decides when a declaration may weaken the existence rule"
+    },
+    {
+     "ref": "research/v3/tests/contract-invariants.test.ts",
+     "what": "thirteen tests, both ways: legal escape at both roles accepted and exempted; the same palette refused over an image that contains the colour; a second absent colour still reported; each of the four structural conditions rejected on its own; a malformed declaration buying no exemption; and the undeclared case still failing"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "The load-bearing condition - `no other way to produce a 2-color palette` - is the one the contract cannot check. A palette can satisfy all four checked conditions and still have reached for the escape lazily. Nothing in the invariants will catch that; only a reviewer will.",
+    "No corpus measurement exists of how often the escape would legitimately be needed. It is granted on the reviewer's judgment that the case is real, not on a count."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-at-runtime-is-conditionally-admissible",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-selection",
+   "decision": "RUNTIME MODELS ARE BANNED, EXCEPT SAM, CONDITIONALLY. No model runs in the shipped pipeline. The single exception the reviewer has left open is SAM, admissible only if ALL of: (1) NO UPSTREAM MODEL FEEDS IT - no VLM nouns, no model-derived prompts, nothing making the pipeline transitively depend on a second model; (2) PROVABLY DETERMINISTIC - the same file yields byte-identical masks across runs, to be TESTED BEFORE ANYTHING RELIES ON IT rather than assumed; (3) FAST ENOUGH; (4) plain-code methods are EXHAUSTED, or SAM is DEMONSTRABLY MORE RELIABLE than them. The conditions are conjunctive and the burden is on the proposal. This is a DOCUMENTED CONSTRAINT ONLY - no code was written, nothing was built, and nothing is approved for use.",
+   "scope": "Binds Phase 1 proposals and any later design that wants a model at runtime; recorded in PHASE_0_DECISIONS.md 6.1 and in the Phase 1 constraint sheet. It does NOT approve SAM at runtime - it states the only route by which it could become approvable. It does NOT touch the oracle's DEV-TIME use of SAM, which is a separate matter and is unaffected. It does NOT specify what `fast enough` means, what would count as having exhausted plain code, or how the determinism test should be built; all three are open and are the proposal's to argue. No determinism test exists today, so condition 2 is currently unsatisfied by default.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "6.1, the constraint as written"
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "3.1, the constraint sheet a proposal author reads"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "SAM's determinism is UNKNOWN, not assumed-good. No byte-identity test has been run. Anyone reading this record as evidence that SAM is deterministic is reading it backwards: it is the requirement that someone prove it.",
+    "The ruling names SAM specifically. Whether the same four conditions would admit a different model was not asked and is not decided here."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-phase-1-constraint-sheet-carries-the-rulings",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "process",
+   "decision": "THE PHASE 1 AUTHOR BRIEF CARRIES A CONSTRAINT SHEET, AND THE FOUR OPEN QUESTIONS ARE STATED IN PLAIN LANGUAGE. PHASE_1_AUTHOR_BRIEF.md gains 3.1, gathering everything a proposal must satisfy in one place: the gradient endpoints and the recorded stop-justification quoted verbatim; the exact-pixel existence rule; the two collapses and the one bounded non-source escape; and the SAM-at-runtime conditional. The reviewer explicitly required NO INVENTED TECHNICAL TERMS for the open questions, so they are written as: (1) the accent escape is being measured; (2) no computable rule matches the reviewer's sense of which colours belong to an artwork; (3) whether the same-colour threshold should depend on direction is parked; (4) how a pixels-first route actually computes its answer is Phase 1's problem. Naming any of these with a coined term would make a live question look decided.",
+   "scope": "Binds PHASE_1_AUTHOR_BRIEF.md and what a proposal author is held to. The sheet sits INSIDE 3, so the blind arm - which receives 2 and 3 only, per d-2026-08-04-phase-1-authors-receive-a-tool-catalog - receives the constraints too. That is deliberate: the constraints are the contract, not a hint about how to satisfy it. It does NOT add any instrument, conclusion or corpus fact to the brief, and so does not widen the hole in the blind that 7 and 8 already describe. It does NOT resolve any of the four open questions; it states them so an author knows what is not settled.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "3.1, the constraint sheet, and the amended 2 and 3"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README's rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "Plain language was required and is a real trade: `no computable rule matches the reviewer's belongs judgment` is longer and vaguer than a coined term would be, and two authors may read it slightly differently. That was judged the lesser risk against a coined term reading as settled vocabulary.",
+    "The four open questions are the ones known on 2026-08-04. The list is not claimed to be exhaustive; PHASE_0_LOOSE_ENDS.md is the authority on what is open."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

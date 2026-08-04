@@ -49,19 +49,46 @@ chaotic → ~0.
 ## 2. Output contract
 
 - Roles `{background, surface, foreground, accent}` (flat colors, exact source pixels) +
-  `gradient: null | {stops: [2..4]}` (source pixels) — stops decoupled from role colors.
+  `gradient: null | {stops: [2..4]}` (source pixels) — stops decoupled from role colors,
+  **except the two ends**.
+  *Amended 2026-08-04 by reviewer ruling*, verbatim: *"when the field is a gradient, the first
+  stop is the `background` and the last stop is the `surface`. A gradient can have 2 or 3 stops
+  (4 is negociable if proven utility)."* So `stops[0].color == background` and
+  `stops[last].color == surface`, as **exact** hex equality; the decoupling survives for the
+  *interior* of a ramp only. Enforced as invariant 1's `I1.first-stop-not-background` and
+  `I1.last-stop-not-surface`. Two consequences: the invariant-3 exemption of field roles against
+  stop colors becomes **mandatory rather than permissive**, and a palette with `surfaceCollapsed`
+  set **cannot publish a gradient** (both ends would be one color — a degenerate ramp).
 - **Guide-stop semantics for stops 3–4.** A 3rd stop is allowed when the artwork genuinely has
   a 3-color linear gradient. Stops 3–4 are otherwise *guides*: they exist only to pull the
   rendered OKLab interpolation onto the artwork when the 2-stop straight line demonstrably
   passes through off-artwork colors. Never to expand colorspace coverage or fit a metric.
   Curvature carries a banding cost when rendered, so the winning gradient is the **flattest
   path that stays on-artwork** — excursion reduction justifies a stop; meandering is forbidden.
+  *Re-affirmed 2026-08-04* by the endpoint ruling above, which the reviewer asked to be read
+  alongside this bullet: the 4th stop is **negotiable on proven utility** rather than granted,
+  so reaching for it owes evidence that three could not do the job. `MAX_GRADIENT_STOPS`
+  is unchanged at 4.
 - **Geometry is opportunistic.** Detection is geometry-agnostic (linear, radial, conic — all
   publish a t-parameterized color path; the consumer renders it as a 135° linear gradient). An
   optional `geometry` field is populated only when fitting computed it anyway; never computed
   for the sake of the output.
 - **Explicit collapse flags** (`surfaceCollapsed`, `accentCollapsed`) — makes collapse
-  countable instead of implicit hex equality.
+  countable instead of implicit hex equality. *Confirmed unchanged 2026-08-04:* the reviewer
+  restated both sanctioned collapses in the same terms — the accent may collapse to exactly the
+  foreground when genuinely no valid accent exists, the surface to exactly the background when
+  genuinely no valid surface exists — and the machinery already matched.
+- **The one sanctioned non-source color** (`escape`). *Added 2026-08-04 by reviewer ruling*: a
+  palette may introduce **exactly one** color not present in the artwork — pure white
+  (`#ffffff`) or pure black (`#000000`) **only**, used as **background or foreground only**
+  (with surface or accent collapsed correspondingly), **only when there is genuinely no other
+  way to produce a 2-color palette.** This is the sole exception to invariant 2's existence
+  clause and it is **declared, not inferred**: an undeclared invented color fails invariant 2
+  exactly as before, so forgetting to declare is fail-safe. Four conditions are checked — the
+  color is exactly one of the two literals, the role is one of the two permitted, the partner is
+  genuinely collapsed (invariant 1), and the color is **genuinely absent from the artwork**
+  (invariant 2, `I2.escape-not-needed`). The unquantifiable condition — "no other way" — is
+  deliberately not faked; the last two are its checkable shadow.
 - **Metadata block:** algorithm version, preprocessing version, input content hash, source
   rendition + processed size. This is what keeps every verdict permanently scopable.
 - **The review-UI preview renderer is part of the contract** — gradient verdicts are verdicts
@@ -206,15 +233,24 @@ reviewer outranks the rule. Meta-rules: **validation runs on the final published
    positions spanning exactly [0,1] (first = 0, last = 1 — positions are normalized over the
    ramp's own span; hard stops/plateaus are not expressible, consistent with
    flattest-path-on-artwork), collapse flags consistent, metadata block complete.
+   *Added 2026-08-04:* **gradient ends are the field roles** — first stop exactly the
+   `background`, last stop exactly the `surface` — and, when an `escape` is declared, its
+   structural legality (permitted color, permitted role, the role actually publishes it, partner
+   collapsed).
 2. **Source support.** Every published color (roles and stops) is an exact pixel of the input,
    meeting the population floor and spatial-spread test (thresholds need provenance; shape
-   settled).
+   settled). *Amended 2026-08-04:* **one exception**, the declared non-source escape — pure white
+   or pure black, at background or foreground, partner collapsed — and an escape declared over a
+   color the artwork *does* contain is itself a violation (`I2.escape-not-needed`). A malformed
+   declaration buys no exemption.
 3. **Palette-wide distinctness.** Every pair of published colors distinct above the same-color
    bar, with exactly two exception classes:
    - *Sanctioned collapses:* surface→background and accent→foreground — **exact** equality with
      the collapse flag set; near-identical-but-unequal, or equal-without-flag, are violations.
-   - *Field roles vs stops:* background/surface may coincide with stop colors (with decoupled
-     stops this is the natural case).
+   - *Field roles vs stops:* background/surface may coincide with stop colors. *Amended
+     2026-08-04:* under the endpoint ruling this exemption is **mandatory rather than
+     permissive** — the two ends of a ramp *are* the background and the surface, so those
+     coincidences are required, and this clause is what keeps them legal.
    Subsumes: stop distinctness, invisible accent (invariant per reviewer 2026-08-02: an
    invisible accent is never valid), foreground-matches-a-stop ("white on white"),
    black-on-black fg/bg, and non-degenerate-gradient (distinct stops ⇒ distinct endpoints).
@@ -457,6 +493,28 @@ weaker one.
 
 Recorded as `data/decisions/decisions.json` → `d-2026-08-03-oracle-question-set-freeze`, funded by
 212 reviewer answers and rechecked against the warehouse.
+
+### 6.1 Models at runtime — banned, with one conditional exception (reviewer ruling, 2026-08-04)
+
+Everything above is about **dev-time** labels. This is about the shipped algorithm, and it is a
+constraint on proposals, **not** a licence to build anything: nothing here has been built, tested or
+approved for use.
+
+**No model runs in the shipped pipeline.** The single exception the reviewer has left open is
+**SAM**, and it is admissible only if **all** of the following hold:
+
+1. **No upstream model feeds it.** No VLM nouns, no model-derived prompts, nothing that would make
+   the pipeline transitively depend on a second model.
+2. **Provably deterministic** — the same file yields **byte-identical masks across runs**. This is a
+   property to be **tested before anything relies on it**, not assumed. Until that test exists and
+   passes, SAM-at-runtime is not admissible on this criterion.
+3. **Fast enough.**
+4. **Plain-code methods are exhausted, or SAM is demonstrably more reliable than them.** "We reached
+   for it first" does not satisfy this.
+
+The conditions are conjunctive and the burden is on the proposal. A design that wants SAM at runtime
+should say which conditions it can already argue and which it would have to establish. The oracle's
+**dev-time** use of SAM is a separate matter and is untouched by this.
 
 ## 7. Measured resolution floors (ladder-sample-1, 2026-08-03)
 

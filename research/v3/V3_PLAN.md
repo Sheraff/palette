@@ -21,10 +21,13 @@ not),
 
 ## 1. What v3 is for — and what it cannot be for
 
-v2-3 ended at ~97% acceptable-or-better on its calibration set, with a measured ~12%
-single-verdict noise band (reviewer regrade agreement 88%). **v3 cannot meaningfully beat that
-number — we are at the measurement ceiling.** Chasing acceptability points means chasing
-reviewer noise. The rewrite's actual goals, which double as its success criteria:
+**v2-3's headline acceptability figure is withdrawn. There is no inherited numeric anchor.**
+*(2026-08-04 — the reviewer's ruling: the number was fake and must never be quoted. What stands in
+its place is the reviewer's verdicts, which is the only ground truth this campaign ever had.)* What
+survives is the *shape* of the finding, and it is enough to set the goals: single-verdict noise was
+measured at ~12% (reviewer regrade agreement 88%), so **acceptability points are not a direction v3
+can meaningfully move in — we are at the measurement ceiling.** Chasing them means chasing reviewer
+noise. The rewrite's actual goals, which double as its success criteria:
 
 1. **Robustness.** v2-3 is stable per file but collapses across encodings: 72.8% palette
    agreement on re-encode, a ±1-LSB dither moved all 114 test palettes, an ASCII id relabeling
@@ -38,7 +41,10 @@ reviewer noise. The rewrite's actual goals, which double as its success criteria
    identity coverage first-class; the semantic classes (frames, overlays, giant text) handled
    structurally rather than as patches.
 
-Success statement: **match ~97% with a smaller, more stable, structurally complete system.**
+Success statement: **hold the reviewer's judgment at least as well as v2-3 did, with a smaller, more
+stable, structurally complete system.** Deliberately not a number: the figure that used to sit here
+was withdrawn on 2026-08-04, and success is measured against the reviewer's verdicts rather than
+against an inherited anchor.
 
 ## 2. What carries over — and in what capacity
 
@@ -47,8 +53,10 @@ Fixed before design starts (these are about the *problem*, not any solution):
 - **The problem spec.** Four roles (background, surface, foreground, accent) + gradient boolean
   + stops; role semantics (foreground is text, accent is icons/UI, fields are large areas);
   contrast deliberately low with the hard minimum a user parameter defaulting ~0; Flo's judgment
-  as the only ground truth. One already-agreed contract change: **render stops decoupled from
-  role colors**, multi-stop capable.
+  as the only ground truth. Multi-stop capable, with **render stops decoupled from role colors —
+  except the two ends**: the reviewer's ruling of 2026-08-04 pins the first stop to the
+  `background` and the last to the `surface`. The decoupling agreed here survives for the
+  *interior* of a ramp and nowhere else.
 - **The evaluation assets.** The verdict warehouse (~495 records), the blinded review harness,
   the corpus, the calibration-with-repeats protocol. Crucially, **destination adjudication runs
   against the old warehouse before any human review** — a large fraction of early v3 iteration

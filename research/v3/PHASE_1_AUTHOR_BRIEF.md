@@ -37,14 +37,18 @@ Two rules about the shape of the answer:
 
 ## 2. The goals
 
-From `V3_PLAN.md` §1. These are the success criteria, and they are the only place in this brief
-where numbers about the previous system appear — they are here because they define the target, not
-as a diagnosis of what went wrong.
+From `V3_PLAN.md` §1. These are the success criteria, and the numbers about the previous system that
+appear below are here because they define the target, not as a diagnosis of what went wrong.
 
-The previous system reached ~97% acceptable-or-better against a measured ~12% single-verdict noise
-band. **v3 cannot meaningfully beat that number; we are at the measurement ceiling**, and chasing
-acceptability points means chasing reviewer noise. The rewrite's goals are therefore not "score
-higher":
+**There is no inherited acceptability number, and you should not go looking for one.** The previous
+system's headline figure was withdrawn on **2026-08-04** by the reviewer, who judged it fake. What
+you are matched against is **the reviewer's verdicts** — the only ground truth this campaign has
+ever had. If you find that figure quoted in an older document, the quote is stale.
+
+What survives the withdrawal is the shape of the finding, and it is enough to set the goals:
+single-verdict noise was measured at ~12%. **Acceptability is therefore not a direction v3 can
+meaningfully move in; we are at the measurement ceiling**, and chasing acceptability points means
+chasing reviewer noise. The rewrite's goals are therefore not "score higher":
 
 1. **Robustness.** The incumbent is stable per file and collapses across encodings: 72.8% palette
    agreement on re-encode, a ±1-LSB dither moved all 114 test palettes, an ASCII id relabeling moved
@@ -59,7 +63,8 @@ higher":
    the semantic classes (frames, overlays, giant text) are handled structurally rather than as
    patches.
 
-**Success statement: match ~97% with a smaller, more stable, structurally complete system.**
+**Success statement: hold the reviewer's judgment at least as well as the previous system did, with a
+smaller, more stable, structurally complete system.** Deliberately not a number.
 
 ## 3. The output contract
 
@@ -68,7 +73,7 @@ contract from anything else here.
 
 | what | where |
 |---|---|
-| Output contract — roles, gradient boolean, stops, decoupled render stops | `PHASE_0_DECISIONS.md` **§2** |
+| Output contract — roles, gradient boolean, stops, guide-stop semantics | `PHASE_0_DECISIONS.md` **§2**, as amended by the rulings in §3.1 below |
 | Input policy — what the system is given and in what form | `PHASE_0_DECISIONS.md` **§1** |
 | Metrics — what is tracked and how success is measured | `PHASE_0_DECISIONS.md` **§3** |
 | Contract invariants and the pathology census — the gates a palette passes | `PHASE_0_DECISIONS.md` **§4**, implemented in `src/contract/` |
@@ -77,12 +82,91 @@ contract from anything else here.
 The fixed problem shape, from `V3_PLAN.md` §2: **four roles** (background, surface, foreground,
 accent) plus a **gradient boolean** and **stops**; foreground is text, accent is icons/UI, fields
 are large areas; **contrast is deliberately low**, with the hard minimum a user parameter defaulting
-near zero; **render stops are decoupled from role colours** and multi-stop capable.
+near zero; multi-stop capable, with render stops decoupled from role colours **except the two ends**
+(see the constraint sheet below).
 
 **One standing rule about the gates, worth knowing before you design around them**
 (`PHASE_0_DECISIONS.md` §4): *an invariant that ever blocks an endorsed palette is demoted — the
 reviewer outranks the rule.* Gates are instruments, not axioms. If your paradigm is refused by one,
 that is a fact about the gate as much as about your paradigm, and it is admissible as an argument.
+
+### 3.1 The constraint sheet
+
+**Everything your paradigm must satisfy, in one place.** The pointers above are the normative text;
+this is the summary you can design against without re-reading them. Every item is the reviewer's,
+and the ones dated **2026-08-04** were ruled that day and are the newest thing in this brief.
+
+**The field, when it is a gradient.** Reviewer, 2026-08-04, verbatim:
+
+> when the field is a gradient, the first stop is the `background` and the last stop is the
+> `surface`. A gradient can have 2 or 3 stops (4 is negociable if proven utility).
+
+So the ramp's two ends *are* the two field roles — exactly, not approximately — and a fitter does not
+get to choose them independently. Enforced as `I1.first-stop-not-background` and
+`I1.last-stop-not-surface`. One consequence worth designing around: **a collapsed surface means no
+gradient**, because both ends would be the same colour.
+
+**What justifies a stop beyond the second.** Recorded in `PHASE_0_DECISIONS.md` §2 and re-affirmed by
+the ruling above; quoted here because the reviewer asked for it to travel with the constraint:
+
+> **Guide-stop semantics for stops 3–4.** A 3rd stop is allowed when the artwork genuinely has a
+> 3-color linear gradient. Stops 3–4 are otherwise *guides*: they exist only to pull the rendered
+> OKLab interpolation onto the artwork when the 2-stop straight line demonstrably passes through
+> off-artwork colors. Never to expand colorspace coverage or fit a metric. Curvature carries a
+> banding cost when rendered, so the winning gradient is the **flattest path that stays on-artwork**
+> — excursion reduction justifies a stop; meandering is forbidden.
+
+One admissible reason to add a stop (**excursion reduction**), plus the genuine three-colour ramp.
+Three named inadmissible ones: colourspace coverage, metric fitting, meandering. The fourth stop is
+additionally **negotiable on proven utility** rather than granted, so reaching for it is an argument
+you owe evidence for.
+
+**Every published colour is an exact pixel of the artwork** — the same three 8-bit channel values,
+not the nearest bin. This is what makes the whole contract falsifiable against the image.
+
+**Collapses, and the one escape from that rule.** Reviewer, 2026-08-04:
+
+- The **accent may collapse to exactly the foreground colour** when genuinely no valid accent exists.
+- The **surface may collapse to exactly the background** when genuinely no valid surface exists.
+- **New, and strictly bounded:** a palette may introduce **exactly one** colour not present in the
+  artwork — **pure white (`#ffffff`) or pure black (`#000000`) only**, used as **background or
+  foreground only**, with surface or accent collapsed correspondingly, and **only when there is
+  genuinely no other way to produce a 2-colour palette**.
+
+Collapses are *declared* (`collapse.surfaceCollapsed`, `collapse.accentCollapsed`) and must be exact
+hex equality — a near-match is not a collapse, it is two colours that look alike. The escape is
+declared the same way (`palette.escape`) and is checked against four conditions: the colour is
+exactly one of those two literals, the role is one of those two, the partner is genuinely collapsed,
+and **the colour is genuinely absent from the artwork** (an escape over a colour the image contains
+is a violation, not a free pass). If your paradigm never needs the escape, that is the normal case.
+
+**Runtime models are banned, with one conditional exception.** No model runs in the shipped pipeline.
+The single exception the reviewer has left open is **SAM**, and it is admissible only if *all* of
+these hold: (1) **nothing upstream feeds it** — no VLM nouns, no model-derived prompts; (2) it is
+**provably deterministic**, meaning the same file yields byte-identical masks across runs, and this
+must be **tested before anything relies on it**; (3) it is **fast enough**; and (4) plain-code methods
+have been **exhausted**, or SAM is **demonstrably more reliable** than them. A proposal that wants
+SAM at runtime should say which of these it can already argue and which it would have to establish.
+The oracle's dev-time use of SAM is a separate thing and is not affected.
+
+**Four questions are genuinely open.** They are stated plainly, on purpose — none of them has a
+settled technical name yet, and inventing one would make a live question look decided:
+
+1. **The accent escape is being measured.** An accent is allowed to survive having almost no
+   brightness difference from what is behind it, if it is different *enough* in colour. How different
+   is enough is currently a placeholder number, and a review round is running to replace it.
+2. **No computable rule matches the reviewer's sense of which colours belong to an artwork.** The
+   rule that used to drop colours for being too rare was tested against the reviewer's own judgments
+   and had no discriminating power at any setting, so it was demoted to a reported figure. Nothing
+   has replaced it. If your paradigm needs to decide whether a colour "belongs", that decision is
+   yours to justify and there is no instrument to lean on.
+3. **Whether the same-colour threshold should depend on direction is parked.** Two colours can be
+   judged "the same" or "different" and the answer may not be symmetric — it may depend on which one
+   you start from. This was noticed, not resolved, and no current measurement accounts for it.
+4. **How a pixels-first route actually computes its answer is Phase 1's problem.** Working directly
+   from the pixels, rather than from any intermediate summary, is a legitimate paradigm and nobody
+   has written down the computation it would need. If that is your route, that computation *is* your
+   proposal.
 
 ## 4. Corpus facts
 

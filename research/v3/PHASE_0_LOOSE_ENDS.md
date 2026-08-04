@@ -61,6 +61,14 @@ specialist was tried end to end, and its pre-registered bar failed).
 **Counts moved once more on 2026-08-04, in the re-sign pass: 75 items, 57 open, 18 closed.** Exactly
 one row moved — **B34**, closed by re-signing the unsigned run. Every commit on the branch now
 carries a `gpgsig` header. Nothing else in this table changed.
+**Counts moved again on 2026-08-04, applying the reviewer's six constraint rulings: 77 items, 59
+open, 18 closed.** Two rows added, none closed — **B38** (what the gradient-endpoint ruling leaves
+unfinished outside the contract) and **B39** (the non-source escape's load-bearing condition is the
+one nothing checks). Both are the price of a ruling landing, not defects found by an audit: the
+invariants that *could* be enforced were, and these are what could not be. **A16 is untouched** —
+the accent round it tracks is a different escape from the ruling's, and the ruling does not move
+`ACCENT_FUNCTIONAL_DISTANCE`.
+
 Added: **A16** (the functional-visibility round a live `[UNCALIBRATED]` constant already
 forward-references — the citation was dangling until this row existed), **A17** (the source-support
 invariant refuses 96.9% of the reviewer's own endorsed palettes, measured), **A18** (opened and
@@ -1986,6 +1994,68 @@ investigation.*
   are migrate-on-next-use or delete.*
 - **Blast radius.** One page, and only while it is served. Listed because "known and parked" is a
   respectable state and "known to the kit's README but to no ledger" is not.
+
+### B38. The gradient-endpoint ruling leaves three things unfinished, none of them in the contract
+*Added 2026-08-04, from the contract workstream's reconciliation of the reviewer's endpoint ruling
+(`d-2026-08-04-gradient-ends-are-the-field-roles`). The invariant landed and is tested; this row is
+the residue that the invariant does **not** cover.*
+- **What the ruling did.** *"when the field is a gradient, the first stop is the `background` and the
+  last stop is the `surface`"* — enforced exactly, as `I1.first-stop-not-background` and
+  `I1.last-stop-not-surface`. The downstream sweep came back better than expected: the review-UI
+  composer already builds `background → [midpoint] → surface`, the display mapping already calls stop
+  0 "the background endpoint", and the legacy reconstruction in
+  `src/calibration-consequence/decision-corpus.ts` already places background at t=0 and surface at
+  t=1. **The one consumer that genuinely violated it was the dev-loop toy candidate**, which fitted
+  two independent `[UNCALIBRATED]` offsets; it now publishes the role colours and one fewer made-up
+  constant.
+- **Open 1 — "4 is negociable if proven utility" has no standard of proof.** `MAX_GRADIENT_STOPS`
+  stays 4 and the recorded justification (excursion reduction; never colourspace coverage, never
+  metric fitting, never meandering) is quoted into the contract and the Phase 1 sheet. But nothing
+  says what evidence makes a 4th stop's utility *proven*, and no instrument measures excursion today
+  — the P1 off-artwork-ramp pathology is specified in `PHASE_0_DECISIONS.md` §4 and unbuilt. So a
+  fitter that reaches for a 4th stop cannot currently be argued with on the record.
+- **Open 2 — a collapsed surface now forbids a gradient, and nothing announces that to a fitter.**
+  It falls out rather than being stated as a rule: both ends would be one colour, which invariant 3
+  refuses as degenerate. It is documented in the contract, in `PHASE_0_DECISIONS.md` §2 and in the
+  Phase 1 sheet, and it is tested — but it is a *consequence*, and consequences are what people
+  rediscover the hard way.
+- **Open 3 — one stale comment in the review UI, deliberately not edited.**
+  `review-ui/composer.js` (~:133) still says *"A shown palette may carry stops that are not its
+  background and surface — the contract allows that and the algorithm sometimes does it."* The
+  contract no longer allows it. The **code** is already correct — the composer constructs the ends
+  from the roles — so this is a comment that will mislead the next reader and nothing more. Left
+  untouched because the review-ui path was being edited by another workstream at the time.
+- *Owner: **contract workstream** for opens 1 and 2, **review-server workstream** for open 3.
+  **Revives when:** any fitter publishes a 4-stop ramp (open 1), any paradigm proposes a collapsed
+  field with a gradient (open 2), or the composer is next touched (open 3).*
+- **Blast radius.** Open 1: a 4th stop admitted on assertion rather than evidence, which is exactly
+  the "fit a metric" failure the guide-stop rule was written against. Open 2: a fitter that emits a
+  collapsed field with a ramp gets an invariant-3 violation that reads as a distinctness bug rather
+  than as "you cannot have both". Open 3: one misleading sentence, no behaviour.
+
+### B39. The non-source escape's load-bearing condition is the one nothing checks
+*Added 2026-08-04, from `d-2026-08-04-one-non-source-color-escape`. The row exists because the
+contract's own docstrings say the gap out loud, and a stated gap still needs an owner.*
+- **What.** The reviewer granted exactly one non-source colour — pure white or pure black, at
+  background or foreground, partner collapsed — *"only when there is genuinely no other way to
+  produce a 2-color palette."* Four conditions are checked. **That last clause is not one of them**,
+  and cannot be: the validator sees a published palette, not the search that produced it. What stands
+  in for it is strictly weaker — the partner must be genuinely collapsed, and the colour must be
+  genuinely absent from the artwork (`I2.escape-not-needed` fires if it is not).
+- **So the failure mode is a palette that satisfies all four checks and reached for the escape
+  lazily.** Nothing in the invariants will catch that. Only a reviewer will, and only if the palette
+  reaches one.
+- **Second gap: no corpus measurement.** The escape is granted on the reviewer's judgment that the
+  case is real, not on a count of how often artwork genuinely admits no two-colour palette. Nobody
+  knows whether the right number of escapes on the corpus is 3 or 300, so there is no baseline
+  against which an over-eager fitter would look wrong.
+- *Owner: **reviewer** (the judgment) and the **contract workstream** (the count). **Revives when:**
+  the first candidate pipeline publishes an escape — at which point the honest first move is to
+  count them on the coverage set and put a sample in front of the reviewer, before anything relies
+  on the escape being rare.*
+- **Blast radius.** An escape used as a shortcut looks identical to an escape used as a last resort,
+  in every instrument this repository has. Overuse would be invisible until someone looks at the
+  pictures.
 
 ---
 
