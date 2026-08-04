@@ -1,0 +1,927 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "pointing-typical-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "pointing-ground.v1",
+	"seed": 20260805,
+	"generatedBy": "research/v3/oracle/sam/build-pointing-typical-fixture.ts",
+	"builtFrom": [
+		"research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md",
+		"research/v3/data/sam/pointing-typical-1-run.json",
+		"research/v3/data/sam/pointing-typical-1-sample.json"
+	],
+	"selection": {
+		"rule": "Forty-eight tiles: 16 covers x 3 mask-selection policies. The covers are drawn AT RANDOM from the 142-image premise eval set with all 15 covers of the pointing test set excluded by id, so this stratum is disjoint from `pointing-ground-1`. Nothing else is stratified on. What this decides: `pointing-ground-1` failed its bar on the MISFIT TAIL — the covers this same reviewer had already called 'none discernible' — and every one of its decidable failures was the wash, never the dot. Two questions follow. Does the wash fail on ORDINARY covers too, or was that the hard tail? And WHICH of three candidate mask-selection policies is right? Each cover's three tiles are grown from IDENTICAL points, so the dots are the same on all three and the difference between them is the policy alone — which is the comparison the last round's dot/wash split was built to make and could not. THE BAR, fixed in POINTING_TYPICAL_PREREG.md §6 and committed before the GPU run produced a single point: dot-right >= 12/16 AND, for at least one policy, dot-right-and-wash-right >= 8/16. The previous round's 7/8 and 3/8 were answered leniently and are ceilings; this round is answered strictly, so the comparison is biased AGAINST this round and a tie reads as an improvement. Typical covers have no free-text prose behind them, so there is NO independent answer key here: this round measures reviewer judgement only. No panel prints a number, a phrasing, a model name or a policy name.",
+		"counts": {
+			"tiles": 48,
+			"covers": 16,
+			"policy_containing": 16,
+			"policy_ground": 16,
+			"policy_union": 16
+		}
+	},
+	"questions": [
+		{
+			"key": "pointing_ground",
+			"kind": "enum",
+			"question": "The pink wash is what the model called the background. It was grown from the green dot — the single pixel the model pointed at. Is the dot on the background? Is the wash the background?",
+			"instruction": "Answer \"is this correct\" — NOT \"could this be considered correct\". This is the one thing that changed since the last round: it was answered charitably, and that cost it its meaning. Be strict about WHICH pixels the wash claims. Stay relaxed about the exact edge — a ragged boundary around the right region is still right, and the wrong region is still wrong however neat its edge. Judge the pixels, not the wording. If it is genuinely a coin flip, answer with your first read; do not deliberate.",
+			"preamble": "Left is the artwork. Right is the same artwork with the model's answer drawn on it: green dots where it pointed, and a pink wash over everything it then called background. Two separate judgements, in one keypress. The DOT is the model's aim. The WASH is what it grew from that aim. They fail differently and they are fixed differently, which is why they are asked apart. Every cover in this round comes round three times, with the SAME dots under three different washes — that is the experiment. Judge each tile on its own; do not try to remember or match what you pressed on the others.",
+			"framing": "The question below says \"the green dot — the single pixel\". It is kept word for word from the previous round so the two can be compared; this round simply shows several dots rather than one. They are all points the model pointed at, and the pink wash was grown from all of them together. `can't tell` is a real answer and it is not a failure to decide. Some covers genuinely have no background — that finding is what started this whole line of work, and it is recorded, not penalised. Use it whenever you could not draw the background yourself.",
+			"answers": [
+				{
+					"key": "dot_right_wash_right",
+					"label": "dot right, wash right",
+					"gloss": "the dot is on background, and the pink wash is (roughly) the background area",
+					"hotkey": "1"
+				},
+				{
+					"key": "dot_right_wash_wrong",
+					"label": "dot right, wash wrong",
+					"gloss": "the dot is on background, but the pink wash covers the wrong pixels — too much, too little, or the wrong region",
+					"hotkey": "2"
+				},
+				{
+					"key": "dot_wrong",
+					"label": "dot wrong",
+					"gloss": "the dot is not on background at all — it is on a subject, a figure or an object",
+					"hotkey": "3"
+				},
+				{
+					"key": "cant_tell",
+					"label": "can't tell",
+					"gloss": "this cover has no answer — you cannot say which pixels are background here, so neither can anyone else",
+					"hotkey": "4"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "pt1-59b607e9e40d",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-59b607e9e40d.png",
+			"sha256": "613cf26e7d0ae28cd48d974aaf697e13a0c2f85662f42d5179ce774b51d4196e",
+			"imageId": "00060491ade88c8893373d9f|containing",
+			"artworkId": "00060491ade88c8893373d9f",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-59b607e9e40d",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-238b32427542",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-238b32427542.png",
+			"sha256": "613cf26e7d0ae28cd48d974aaf697e13a0c2f85662f42d5179ce774b51d4196e",
+			"imageId": "00060491ade88c8893373d9f|ground",
+			"artworkId": "00060491ade88c8893373d9f",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-238b32427542",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-5d710ff33e4d",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-5d710ff33e4d.png",
+			"sha256": "3642eb42f5a09cabcf9e2ce7a886c302bdada9b4705f483882cba33e83f13118",
+			"imageId": "00060491ade88c8893373d9f|union",
+			"artworkId": "00060491ade88c8893373d9f",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-5d710ff33e4d",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-564938e1c432",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-564938e1c432.png",
+			"sha256": "afde544b329557c664f38aa45d65333c6d5476d8734e52e6c120bc0b5bc8e111",
+			"imageId": "0012eb9ade9c1bf4a5411c5d|containing",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-564938e1c432",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-40416feb9ac4",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-40416feb9ac4.png",
+			"sha256": "afde544b329557c664f38aa45d65333c6d5476d8734e52e6c120bc0b5bc8e111",
+			"imageId": "0012eb9ade9c1bf4a5411c5d|ground",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-40416feb9ac4",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-f2a4fb8545d1",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-f2a4fb8545d1.png",
+			"sha256": "a2c057a225bedef01a025f119912534f2d7280e923dceb446e788a39063af58f",
+			"imageId": "0012eb9ade9c1bf4a5411c5d|union",
+			"artworkId": "0012eb9ade9c1bf4a5411c5d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-f2a4fb8545d1",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-cca4426afce4",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-cca4426afce4.png",
+			"sha256": "8c59edce9222ed979ddfeaedf34b5baaee8a96b74456ff8de4146b8df5cb3991",
+			"imageId": "00034b60105d8937440211da|containing",
+			"artworkId": "00034b60105d8937440211da",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-cca4426afce4",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-e5225940c2c1",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-e5225940c2c1.png",
+			"sha256": "6eb6c71c4b15ee03423c861eb6e52a38be865d1e77255907d0313fef7a7f5b4f",
+			"imageId": "00034b60105d8937440211da|ground",
+			"artworkId": "00034b60105d8937440211da",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-e5225940c2c1",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-83500bd872b7",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-83500bd872b7.png",
+			"sha256": "e0963e66638da62e81cdbcc1d62c414a070b32248f0d3d92be7794d566784984",
+			"imageId": "00034b60105d8937440211da|union",
+			"artworkId": "00034b60105d8937440211da",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-83500bd872b7",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-8aee36f8b237",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-8aee36f8b237.png",
+			"sha256": "ec567378f3c8fbd2b1964ddd4afd89f70d23e4490faea6f188223af07528ebe9",
+			"imageId": "0004515066668684295c41a7|containing",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-8aee36f8b237",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-3355adf25ddb",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-3355adf25ddb.png",
+			"sha256": "ec567378f3c8fbd2b1964ddd4afd89f70d23e4490faea6f188223af07528ebe9",
+			"imageId": "0004515066668684295c41a7|ground",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-3355adf25ddb",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-93c75731c68a",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-93c75731c68a.png",
+			"sha256": "1eb4314b0f6695d2d26bf9e45afcdd9ce2b45628a7ca2a863bb9b73676524a9e",
+			"imageId": "0004515066668684295c41a7|union",
+			"artworkId": "0004515066668684295c41a7",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-93c75731c68a",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-bf9da750d451",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-bf9da750d451.png",
+			"sha256": "35ad71427ae52a3b558290b80445b9197de5bcb46f1d789437bb1f94a7af5b98",
+			"imageId": "000955ccfc1e8da97a09b32d|containing",
+			"artworkId": "000955ccfc1e8da97a09b32d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-bf9da750d451",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-c1c2823baa67",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-c1c2823baa67.png",
+			"sha256": "35ad71427ae52a3b558290b80445b9197de5bcb46f1d789437bb1f94a7af5b98",
+			"imageId": "000955ccfc1e8da97a09b32d|ground",
+			"artworkId": "000955ccfc1e8da97a09b32d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-c1c2823baa67",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-6c6316a4218a",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-6c6316a4218a.png",
+			"sha256": "3d1dd739c31d30f3a16d2daff09de9a98fe52c9b058f66641be0a6980c081e08",
+			"imageId": "000955ccfc1e8da97a09b32d|union",
+			"artworkId": "000955ccfc1e8da97a09b32d",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-6c6316a4218a",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-3cb1cb465069",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-3cb1cb465069.png",
+			"sha256": "9f3b2a68c53b50d0853a5ce795f62e3855bb742d45a5dc1b1f9a93543bc2b3f3",
+			"imageId": "0007cc8b341c11227aa7b461|containing",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-3cb1cb465069",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-6dc87377f298",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-6dc87377f298.png",
+			"sha256": "202c6b65449b4356ae01479a9a113f36d13c5b2b61de289e23549d0f708142f8",
+			"imageId": "0007cc8b341c11227aa7b461|ground",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-6dc87377f298",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-941bd2f1724b",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-941bd2f1724b.png",
+			"sha256": "d0972bd0280bce8f6dafa2bf5656638caa073059a7dbe813eb7b025e743ac656",
+			"imageId": "0007cc8b341c11227aa7b461|union",
+			"artworkId": "0007cc8b341c11227aa7b461",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-941bd2f1724b",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-c0caeed0167b",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-c0caeed0167b.png",
+			"sha256": "12fcac525bd84ddf952d3cb55613d5178033c1bd32b07ac51438cd917c9e712a",
+			"imageId": "0010b864b2a925ec6bfaa30e|containing",
+			"artworkId": "0010b864b2a925ec6bfaa30e",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-c0caeed0167b",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-34c92044f311",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-34c92044f311.png",
+			"sha256": "12fcac525bd84ddf952d3cb55613d5178033c1bd32b07ac51438cd917c9e712a",
+			"imageId": "0010b864b2a925ec6bfaa30e|ground",
+			"artworkId": "0010b864b2a925ec6bfaa30e",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-34c92044f311",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-12d826da8ab2",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-12d826da8ab2.png",
+			"sha256": "8f10b230165b1c278e521d378a9ae549308055240c3e24461221032e86bfa551",
+			"imageId": "0010b864b2a925ec6bfaa30e|union",
+			"artworkId": "0010b864b2a925ec6bfaa30e",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-12d826da8ab2",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-be223549712e",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-be223549712e.png",
+			"sha256": "0bfffd57c5964f3c6411eb19cbe2478b305b41530ae0acb7b2e6f6c8ce7b5f69",
+			"imageId": "00124d0597059e8987bc4577|containing",
+			"artworkId": "00124d0597059e8987bc4577",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-be223549712e",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-189bd382f6d6",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-189bd382f6d6.png",
+			"sha256": "0bfffd57c5964f3c6411eb19cbe2478b305b41530ae0acb7b2e6f6c8ce7b5f69",
+			"imageId": "00124d0597059e8987bc4577|ground",
+			"artworkId": "00124d0597059e8987bc4577",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-189bd382f6d6",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-b8363058773e",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-b8363058773e.png",
+			"sha256": "77f47359c0c8d36750973ac9a8cf5f66b7963d3cd8004005b35bb2ca73945257",
+			"imageId": "00124d0597059e8987bc4577|union",
+			"artworkId": "00124d0597059e8987bc4577",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-b8363058773e",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-6d64fad75bba",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-6d64fad75bba.png",
+			"sha256": "3ad3ec110c0bd7e4fdb06883352845e97620478f247f1c2d6ada891a619e4308",
+			"imageId": "00117a3fb2444ed7e04c4721|containing",
+			"artworkId": "00117a3fb2444ed7e04c4721",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-6d64fad75bba",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-0ab3741ca497",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-0ab3741ca497.png",
+			"sha256": "a9f48a86408a9b05a2dfa79e42c6f735edef05b9936a3caed8bce38bb2dfafe3",
+			"imageId": "00117a3fb2444ed7e04c4721|ground",
+			"artworkId": "00117a3fb2444ed7e04c4721",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-0ab3741ca497",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-5d7c80c182e3",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-5d7c80c182e3.png",
+			"sha256": "a8c4eb31ae620b5faa131f861dd5a4d3a8f4369e82332edf4fa3628f95d33555",
+			"imageId": "00117a3fb2444ed7e04c4721|union",
+			"artworkId": "00117a3fb2444ed7e04c4721",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-5d7c80c182e3",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-a49bdb9d1ee8",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-a49bdb9d1ee8.png",
+			"sha256": "0795744c11dd01b18c3493057c6e2251073616b57b37020157811bd842225dae",
+			"imageId": "001063830a2e597293293797|containing",
+			"artworkId": "001063830a2e597293293797",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-a49bdb9d1ee8",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-0c212ae3034a",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-0c212ae3034a.png",
+			"sha256": "371a7d171058e461aa589d4fd17e26d0160a264e0679e58709eb0bc999e224dd",
+			"imageId": "001063830a2e597293293797|ground",
+			"artworkId": "001063830a2e597293293797",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-0c212ae3034a",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-49b67cfb121e",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-49b67cfb121e.png",
+			"sha256": "069d695e4864f74e56f2b0d79db336b5259bc5de2b5f97c8091e692427d50d73",
+			"imageId": "001063830a2e597293293797|union",
+			"artworkId": "001063830a2e597293293797",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-49b67cfb121e",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-064c4177b3f1",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-064c4177b3f1.png",
+			"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+			"imageId": "0000cb591a0d52d8b88692d9|containing",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-064c4177b3f1",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-7bb197c449e5",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-7bb197c449e5.png",
+			"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+			"imageId": "0000cb591a0d52d8b88692d9|ground",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-7bb197c449e5",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-00bd5c2e9798",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-00bd5c2e9798.png",
+			"sha256": "5c87b83b6140d3c97f5fe2383b51caac5dcdd08c45fa83aaa970af0d14077ef9",
+			"imageId": "0000cb591a0d52d8b88692d9|union",
+			"artworkId": "0000cb591a0d52d8b88692d9",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-00bd5c2e9798",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-9c6a23581c22",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-9c6a23581c22.png",
+			"sha256": "38fa2f5b22c34f7ceb7d8ba2b63df4a17f3feaf5a3c7f6136fa98b56d1b6685a",
+			"imageId": "00103a3729bf589e0dc913ab|containing",
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-9c6a23581c22",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-4df140ef7816",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-4df140ef7816.png",
+			"sha256": "cfdf2b2692253b31258f0bcb169b68bccbfab1a15e0eec55fde2be3f6a743d0d",
+			"imageId": "00103a3729bf589e0dc913ab|ground",
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-4df140ef7816",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-b794f9224409",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-b794f9224409.png",
+			"sha256": "4f1c450c2fd1d951a89ed1f72d9b4f612b8d7997bf108ace5dad9719fb08c27c",
+			"imageId": "00103a3729bf589e0dc913ab|union",
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-b794f9224409",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-cebfd9778f29",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-cebfd9778f29.png",
+			"sha256": "2a5fadf7033e6344e76b8e0b50246e5f379b58e9ce2ac227578698fb80879840",
+			"imageId": "0005597105ba1e2d38f62cfc|containing",
+			"artworkId": "0005597105ba1e2d38f62cfc",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-cebfd9778f29",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-fd1fb569af78",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-fd1fb569af78.png",
+			"sha256": "090a96c63c5b1ae637abeffe6e6d3a9ae847a23c231fc31e6f0ec5a9b8f642dd",
+			"imageId": "0005597105ba1e2d38f62cfc|ground",
+			"artworkId": "0005597105ba1e2d38f62cfc",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-fd1fb569af78",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-f8ee43b406d6",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-f8ee43b406d6.png",
+			"sha256": "5e52d18359b1c47630019eec53d8399545a76d14a0d7eba80a6b1d0b7b48c117",
+			"imageId": "0005597105ba1e2d38f62cfc|union",
+			"artworkId": "0005597105ba1e2d38f62cfc",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-f8ee43b406d6",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-54677f71feb1",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-54677f71feb1.png",
+			"sha256": "6d5d51248212811570cb86c98a273563df4416f5858cc5304188773e82175f55",
+			"imageId": "0014adcd67767097b6fb42e0|containing",
+			"artworkId": "0014adcd67767097b6fb42e0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-54677f71feb1",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-8c14d9749966",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-8c14d9749966.png",
+			"sha256": "ba62fb3186610903dea75828ad260b2faf5f6b22c9c22539799e02add5427eb8",
+			"imageId": "0014adcd67767097b6fb42e0|ground",
+			"artworkId": "0014adcd67767097b6fb42e0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-8c14d9749966",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-c325340b2a8f",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-c325340b2a8f.png",
+			"sha256": "e91263c3a47677bf777d3f6bdb0b55f0832bc8739454bdf59068447986939508",
+			"imageId": "0014adcd67767097b6fb42e0|union",
+			"artworkId": "0014adcd67767097b6fb42e0",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-c325340b2a8f",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-ca257e3f8175",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-ca257e3f8175.png",
+			"sha256": "81662b0bfab22d8e6d90c1b17b37fb4ec471afd0fe672f000b5e2d040daa7c12",
+			"imageId": "000564718f605c1f326b2ca2|containing",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-ca257e3f8175",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-7a7d951cc2b2",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-7a7d951cc2b2.png",
+			"sha256": "883fd3ea1073f8d519d35d39a9dabd0f1c0a1f952458bb69b1be5a0be7be55c5",
+			"imageId": "000564718f605c1f326b2ca2|ground",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-7a7d951cc2b2",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-3f3b04126ecb",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-3f3b04126ecb.png",
+			"sha256": "9cd20dcb50691a9f2bff58f485366e74605ffeb53e5dcb58e5ec411b243e088e",
+			"imageId": "000564718f605c1f326b2ca2|union",
+			"artworkId": "000564718f605c1f326b2ca2",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-3f3b04126ecb",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-39a902542259",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-39a902542259.png",
+			"sha256": "26493d471cafa44ae7bcf78c017f3f273c4def81c0f255a915724ecc1d1bed45",
+			"imageId": "00083a2d455755e4c1116825|containing",
+			"artworkId": "00083a2d455755e4c1116825",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-39a902542259",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-8e5fe6ba9d91",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-8e5fe6ba9d91.png",
+			"sha256": "3c071edcfb5eb6c691e5d23371957d0dce80b5af5a4cb2d589e6612123f5e375",
+			"imageId": "00083a2d455755e4c1116825|ground",
+			"artworkId": "00083a2d455755e4c1116825",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-8e5fe6ba9d91",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		},
+		{
+			"itemId": "pt1-486052324575",
+			"questionKey": "pointing_ground",
+			"imagePath": "research/v3/data/sam/review-panels-typical-1/pt1-486052324575.png",
+			"sha256": "03bcd3ca91ba733924c3f8048a2671c3bcc7fa1021d2444f13e0a31045bfa698",
+			"imageId": "00083a2d455755e4c1116825|union",
+			"artworkId": "00083a2d455755e4c1116825",
+			"collection": "sam-review-overlay",
+			"rendition": {
+				"source": "research/v3/data/sam/pointing-typical-1-sample.json",
+				"sourceEntryId": "pt1-486052324575",
+				"longEdgePx": 972,
+				"width": 972,
+				"height": 480
+			},
+			"stratum": "typical"
+		}
+	],
+	"serveOrder": [
+		"pt1-34c92044f311",
+		"pt1-064c4177b3f1",
+		"pt1-6d64fad75bba",
+		"pt1-3f3b04126ecb",
+		"pt1-f2a4fb8545d1",
+		"pt1-8c14d9749966",
+		"pt1-cca4426afce4",
+		"pt1-7a7d951cc2b2",
+		"pt1-5d7c80c182e3",
+		"pt1-189bd382f6d6",
+		"pt1-e5225940c2c1",
+		"pt1-c1c2823baa67",
+		"pt1-fd1fb569af78",
+		"pt1-7bb197c449e5",
+		"pt1-8aee36f8b237",
+		"pt1-b794f9224409",
+		"pt1-6dc87377f298",
+		"pt1-a49bdb9d1ee8",
+		"pt1-bf9da750d451",
+		"pt1-9c6a23581c22",
+		"pt1-f8ee43b406d6",
+		"pt1-6c6316a4218a",
+		"pt1-941bd2f1724b",
+		"pt1-c325340b2a8f",
+		"pt1-39a902542259",
+		"pt1-49b67cfb121e",
+		"pt1-5d710ff33e4d",
+		"pt1-59b607e9e40d",
+		"pt1-3cb1cb465069",
+		"pt1-486052324575",
+		"pt1-54677f71feb1",
+		"pt1-12d826da8ab2",
+		"pt1-be223549712e",
+		"pt1-238b32427542",
+		"pt1-564938e1c432",
+		"pt1-0ab3741ca497",
+		"pt1-b8363058773e",
+		"pt1-ca257e3f8175",
+		"pt1-cebfd9778f29",
+		"pt1-40416feb9ac4",
+		"pt1-93c75731c68a",
+		"pt1-c0caeed0167b",
+		"pt1-0c212ae3034a",
+		"pt1-4df140ef7816",
+		"pt1-3355adf25ddb",
+		"pt1-83500bd872b7",
+		"pt1-8e5fe6ba9d91",
+		"pt1-00bd5c2e9798"
+	]
+}

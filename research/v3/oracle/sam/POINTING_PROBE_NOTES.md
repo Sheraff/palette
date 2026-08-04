@@ -1197,3 +1197,147 @@ so the comparison is biased against the new round and a tie reads as an improvem
 **The anchor from §13 stands unmoved: "it wasn't amazing."** Nothing here raises it. Two covers of
 six had a better mask sitting in the recorded set, and that is a real defect worth fixing; it is
 not a working route.
+
+# 15. The typical-strata round, recovered and pushed — 2026-08-04
+
+**The agent that ran `pointing_typical_probe.py` died after its GPU run completed and before it
+built or pushed anything.** This section is the recovery: what it left, what was verified, what was
+adopted unchanged, and the two disclosures the round goes up carrying. **No inference was re-run.**
+Every dot and every mask below comes from the JSON that agent wrote at 00:40:56Z.
+
+## 15.1 What the dead agent left
+
+Unlike §13.7's stall, this one **committed nothing after its pre-registration** and left four files
+orphaned:
+
+| file | state |
+|---|---|
+| `data/sam/pointing-typical-1-run.json` | complete — 16 covers, 3 policies each, 1.1 MB |
+| `data/sam/pointing-typical-1-candidates.json` | complete — 4.1 MB, every candidate mask with pixels |
+| `oracle/sam/pointing_typical_round.py` | complete and correct — step 2, the panel renderer |
+| `oracle/sam/build-pointing-typical-fixture.ts` | complete and correct — step 3, the fixture builder |
+
+`POINTING_PROBE_NOTES.md` was **byte-identical to HEAD** before this section, so nothing it had
+written was lost. The pre-registration and the probe were already safe in `bafcc53`.
+
+**Neither builder was half-written.** Both were read end to end before being run and **neither was
+edited** — no fix was needed and none was invented. The two `.get()` calls in
+`pointing_typical_round.py` that look like they read missing keys (`strategy`,
+`same_candidate_as_containing`) are deliberately tolerant: `strategy` exists only on `union` and
+`same_candidate_as_containing` only on `ground`, which is exactly the shape the run file has.
+
+## 15.2 The run, verified against the pre-registration
+
+Checked on CPU before a panel was drawn. Every clause of `POINTING_TYPICAL_PREREG.md` that the run
+file can evidence:
+
+| clause | prereg | on disk | ✓ |
+|---|---|---|---|
+| batch id | `pointing-typical-1` | same | ✓ |
+| run pinned to the prereg commit | after `bafcc53` | `git_head` = `bafcc53` | ✓ |
+| draw seed | `random.Random(20260804)` | `seed` 20260804, method string verbatim | ✓ |
+| frame | eval-142 `included` | `frame_size` 142 | ✓ |
+| exclusion | all 15 `pointing_covers.COVERS` by id | 15 excluded, **all 15 hit in frame**, `eligible_size` 127 | ✓ |
+| n | 16 sampled, 4 reserves | 16 + 4 | ✓ |
+| covers | 16 | 16 rows, ids match the candidates file exactly | ✓ |
+| draw 1 | temperature 0.0, the shipped point | `is_shipped_point` on draw 1 of all 16, T=0.0 | ✓ |
+| draws 2+ | T 0.7, `top_p` 0.95, seed `20260804+k` | `mx_seed` ∈ {20260806…20260809} | ✓ |
+| stop rule | stop at 3 distinct, max 5 draws | holds on all 16, recomputed independently | ✓ |
+| substitution | only on **zero** in-frame points | every draw returned an in-frame point; `substitutions` `[]` | ✓ |
+| candidates persisted | §14.7 addition 1, every decode | 4 multipoint + 4×K per-point on all 16 | ✓ |
+| policies renderable | 3 per cover | 48 masks, all RLEs decode, all at native cover size | ✓ |
+| budget | stop at ~25 min | 268 s wall, `aborted_on_budget` false | ✓ |
+
+Cross-file: `points_pixels` identical between run and candidates on all 16 covers, per-point
+candidate groups equal to `n_distinct_points` on all 16, mask dimensions equal to cover dimensions
+on all 48. **No inconsistency found.**
+
+## 15.3 The two disclosures this round carries
+
+Both are properties of the completed run, not of the recovery, and neither is repairable without
+re-running inference — which the pre-registration forbids after the fact.
+
+**1. Five of sixteen covers fell short of ≥3 distinct points.** §14.7 addition 2 asks for ≥3;
+`points_shortfall` is `true` on `00045150` (2), `000955cc` (2), `0010b864` (2), `0005597105` (2)
+and `0000cb59` (**1**). The prereg anticipated this exactly — "a cover proceeds with however many
+distinct points it has after at most 5 draws … fewer than 3 is a reported shortfall, not a silent
+one" — and it is reported here rather than discovered later. The cause is visible in the draws:
+MolmoPoint at T 0.7 kept re-emitting the same pixel, so 5 draws bought fewer than 3 distinct points.
+
+**2. Eight of the forty-eight tiles are byte-identical to another tile in the round.** On the 7
+covers where `SELECT_GROUND` picked the same candidate as `SELECT_CONTAINING`, the two panels are
+the same image; on `0000cb59` — the single-point cover — **all three policies collapse to one mask**
+(area 0.1724) and the reviewer sees the same panel three times. **40 distinct images, 48 tiles.**
+
+This is not a defect and it was not repaired. Where the policies genuinely agree the tile is
+legitimately the same, and dropping or merging duplicates would break the pre-registered 16-per-
+policy scoring that §6's B2 and B4 are written against. Two consequences, stated before any answer
+is seen:
+
+- **The policy comparison has content on 9 covers, not 16** — the 9 where `ground` differs from
+  `containing`. `union` differs from `containing` on 15. `0000cb59` contributes nothing to B4.
+- **It is an unplanned intra-reviewer consistency check.** Identical images should draw identical
+  keypresses; where they do not, that is the round's own noise floor, measured for free. It is
+  *read* that way, not designed that way, and it is recorded here so the reading is not invented
+  afterwards.
+
+**A third, smaller one.** §5 says the shuffle is "so … a cover's three tiles do not sit adjacent".
+A plain seeded shuffle cannot guarantee that, and it did not: positions **27–28** are both
+`00060491ade8` (`union` then `containing`, different images). The seed and the method were
+pre-registered and **the shuffle was not re-rolled to fix this** — re-rolling after seeing the
+result is the exact post-hoc discretion the pre-registration exists to remove. The clause overstated
+what its own mechanism delivers; the mechanism stands.
+
+## 15.4 The round — BUILT and PUSHED
+
+`pointing-typical-1`, live on `http://127.0.0.1:3010/`, **48 tiles, 1 question, 4 answers**, open.
+16 covers × 3 policies, tile order shuffled with seed 20260805, **no panel names its policy**.
+
+**Gates, all green:**
+
+| check | result |
+|---|---|
+| render | 48 panels, 4.5 s CPU, no model loaded |
+| fixture | 48 tiles · 16 covers · `containing` 16 / `ground` 16 / `union` 16 |
+| push | `201 {"batchId":"pointing-typical-1","itemCount":48}` |
+| `verify-live` | **OK** — 30 pages, 11 modules, 20 batches, 81 requests |
+| live-payload key smoke, this batch | **pass** — `token,questionKey,media,width,height,answer,revision`; answers `1..4` |
+| answer-key leak scan of the live payload | **none** — 15 forbidden manifest fields, string-scanned |
+| policy identity absent from payload | `containing` / `union` / `policy` / `coverId` all absent | 
+| media | `200 image/png 648,068 bytes`, decodes 972×480 RGB |
+| live-payload key smoke, all batches | **12/12** enum/by-question oracle rounds (`ground-freetext-1` is `freetext`, `bcde-gate-reconciliation-1` is `by-artwork` — different shapes, out of scope) |
+| review-ui modules added or changed | **none** — the incumbent `oracle.js`, as in §12.6 |
+
+**Carried from §12.6 and still true:** the one part of the convention that cannot be performed from
+a shell is pressing an answer hotkey, because the only live answer path writes a real answer into
+the open round. No `review-ui` module changed, so the keyboard path is the one 12 oracle batches
+have been answered through. **Flagged, not claimed.**
+
+**Watch command — reported, NOT started, per the task:**
+
+```
+NODE_NO_WARNINGS=1 nohup node --experimental-strip-types \
+  research/v3/src/review-server/watch-batch.ts --batch pointing-typical-1 \
+  >/tmp/watch-pointing-typical-1.log 2>&1 &
+```
+
+## 15.5 One unrelated file, committed with this
+
+`data/sam/point-gate-coord-convention.json` was dirty in the tree. Its diff is **two lines** —
+`generated` and `git_head` — with every measured value byte-identical: a re-run of
+`gate_point_coords.py` on 2026-08-03 that changed no fact. Committed with the recovery rather than
+left dirty, and identified here so it is not later mistaken for evidence of a second run.
+
+## 15.6 What this round still cannot answer
+
+Unchanged by the recovery, and worth restating where the numbers will land next to it:
+
+- **No independent answer key.** Typical covers have no `ground-freetext-1` prose. This measures
+  **reviewer judgement only**, and §13.9's caveat — every automatic "correctness" number in this
+  document is an answer-rate wearing a correctness label — is not retired by it.
+- **The candidate-level counterfactual is now answerable but not answered.** §14.8's first clause
+  needs the persisted candidates to be *analysed*; this round only makes them exist. That analysis
+  is CPU work and is not done here.
+- **The anchor from §13 stands unmoved: "it wasn't amazing."** Nothing in the recovery raises it,
+  and the bar in `POINTING_TYPICAL_PREREG.md` §6 was fixed in `bafcc53` before the run produced a
+  single point.
