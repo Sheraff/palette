@@ -18,7 +18,7 @@ import { ESCAPE_COST_BITS } from "../../emit/cost.ts"
  * [UNCALIBRATED] — a label, not a measurement. Bumped by hand when a term is added, removed or
  * redefined, so a stored energy can never be silently compared against one from a different model.
  */
-export const ENERGY_A_VERSION = "p1a-energy-0.1.0"
+export const ENERGY_A_VERSION = "p1a-energy-0.2.0"
 
 /**
  * **λ — the model-order cost, in nats per unit image mass per structural element.**
@@ -42,6 +42,10 @@ export const DEFAULT_LAMBDA = 1.0
  * own resolution. No sharper value is defensible and a much softer one erases the distinction."*
  * The logistic is taken in **rung** units (see `split.ts`, which maps the extent statistic onto the
  * ladder's own geometric scale), so "one octave" is literally 1 here and carries no free digits.
+ *
+ * It is used twice, and the second use spends no additional freedom: `support.ts`'s two extent
+ * densities are exponentials of rate `1/2w`, which is the **only** rate whose posterior membership is
+ * the logistic above. The joint extent code therefore inherits this constant rather than adding one.
  */
 export const FIELD_INK_SOFTNESS_OCTAVES = 1
 
@@ -80,14 +84,46 @@ export const GAMUT_VOLUME_GRID = 16
 export const DENSITY_TRUNCATION_BANDWIDTHS = 8
 
 /**
- * Floor (and, by symmetry, ceiling) on a mixture weight.
+ * Floor (and, by symmetry, ceiling) on the **residual mixing weight ε**.
  *
- * Derived-and-stated: this is what makes the energy **total**. Without it a residual weight driven to
- * exactly zero by the EM profile would give `−log 0 = ∞` for any triple the model puts no density on,
- * and `DESIGN.md` requires the energy to be finite for every contract-shaped configuration. At 1e-9
- * the worst per-triple surprisal is bounded by `−log(1e-9 · ρ₀) ≈ 17.8` nats, and no real image gives
- * a population weight anywhere near this floor — the field and ink weights on the corpus sit between
- * 1e-3 and 1, six orders above it.
+ * ## What it governs — restated honestly, 2026-08-04
+ *
+ * This constant is clamped in exactly one place, `mixture.ts: profileResidualWeight`, onto exactly one
+ * quantity: **ε**, the weight of the uniform-gamut residual in `(1−ε)ρ_model + ε·ρ₀`. It governs
+ * nothing else. An earlier revision of this comment defended the value by observing that *"the field
+ * and ink weights on the corpus sit between 1e-3 and 1, six orders above it"* — the field and ink
+ * weights are `π`, `1−π` and the within-population mixture weights, none of which this constant
+ * touches, so that sentence was evidence about the wrong numbers. `DESIGN.md` decision 9 records the
+ * debt; this is the payment.
+ *
+ * ## It is load-bearing, and here is the measurement
+ *
+ * The EM profile is unconstrained-optimal at **ε = 0** on images the four-colour model explains well,
+ * so ε does not merely stay above this floor — it *lands on it*. `tests/verify-energy/eps-probe.ts`,
+ * the verifier's own instrument, on its four fixtures: **ε pins to the floor on 3 of 4** (the fourth,
+ * the flat 64×64, profiles to 1.95e-3). Re-measured across floor values 1e-12, 1e-9, 1e-6 and 1e-3,
+ * the pinned fixtures return the floor value itself every time — so on most images this constant is
+ * the *operating value* of ε, not a guard that never fires.
+ *
+ * ## What changing it would do
+ *
+ * Two effects, in opposite directions, both measured rather than asserted:
+ *
+ * 1. **The totality bound moves.** A triple no kernel reaches has `ρ_model` exactly 0 (the density is
+ *    truncated at `DENSITY_TRUNCATION_BANDWIDTHS`), so its surprisal is exactly `−log(ε·ρ₀)`: **17.81
+ *    nats at 1e-9**, 15.51 at 1e-8, 20.11 at 1e-10. This is the bound `DESIGN.md`'s "finite for every
+ *    contract-shaped configuration" rests on, and it is the only thing the value has to buy.
+ * 2. **The energies barely move.** On the two-band fixture (`orderings.test.ts` case b, where ε pins),
+ *    the two-flat total is −5.741284 at both 1e-12 and 1e-9, −5.741283 at 1e-6 and −5.740288 at 1e-3;
+ *    the flat/two-flat gap is 1.757367, 1.757367, 1.757366 and 1.756371. Refining below 1e-9 changes
+ *    nothing at double precision; coarsening to 1e-3 costs 1e-3 nats. The reason the two facts
+ *    coexist: EM pins ε *because* the model already explains the mass, so almost none of the image is
+ *    priced at the residual and the weight it is priced at hardly matters.
+ *
+ * So the value is chosen as the smallest that keeps the surprisal bound comfortably inside double
+ * precision while being provably inert on the answers (effect 2). Anything from 1e-12 to 1e-6 would
+ * do; 1e-3 would start to be visible in the fourth decimal. Derived-and-stated, with the derivation
+ * being effect 1 and the licence to stop worrying being effect 2.
  */
 export const MIXTURE_WEIGHT_FLOOR = 1e-9
 

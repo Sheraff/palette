@@ -12,6 +12,12 @@
  * *ramp rather than two flat areas* (1), *each interior stop* (1 each), *accent distinct from
  * foreground* (1).
  *
+ * Two arithmetic departures from that line are recorded below and both are load-bearing: the data
+ * term is the **log of the mixture** rather than the mixture of logs, and each population is a
+ * **joint** density over (colour, extent) rather than a colour density conditioned on a free extent
+ * map. The second is `DESIGN.md` decision 9's fix and is the reason a broad band can no longer be
+ * bought as ink.
+ *
  * ## What this function is, and what it is not
  *
  * **It only evaluates.** `DESIGN.md`, "The mechanism": *"The energy is a function of any
@@ -106,6 +112,34 @@
  * quantity being minimised is different, and if the reviewer wants arm A's literal expression the
  * change is confined to the fifteen lines around `attributeCost` and `profileResidualWeight`.
  *
+ * ## The second deviation, and the defect it repairs: the populations are joints over (colour, extent)
+ *
+ * `DESIGN.md` decision 9 records the verifier's finding that arm A's ink term **priced no support**:
+ * on a clean diptych the configuration *flat field, second band as foreground* (Ω = 0) undercut the
+ * true two-flat description at every λ in the mandatory sweep, because 62% of a solid band's mass
+ * could be moved into the ink population by choosing a fine split scale, at no charge. The extent
+ * statistic existed to say *"this mass is broad"* and the ink term did not listen.
+ *
+ * The repair is in `support.ts` and its full derivation lives there. In one line: each population is
+ * a **joint** kernel over colour *and* extent, `ρ_field(c, ê) = ρ_field(c)·q_field(ê)` and
+ * `ρ_ink(c, ê) = ρ_ink(c)·q_ink(ê)`, with `q_field ∝ exp(−ê/2w)` anchored at the ladder's coarse end
+ * and `q_ink ∝ exp(−(S−ê)/2w)` at its fine end — arm A §2.2's *"the ink is small, high-frequency and
+ * marks-like"*, written as a density. The joint factorises as `m(ê)·ρ(c | ê)`; `ρ(c | ê)` is exactly
+ * the conditional this module already charged, and `m(ê) = π₀q_field + (1−π₀)q_ink` is the term that
+ * was missing. Three properties make it a repair rather than a penalty:
+ *
+ * - the rate `1/2w` is forced, not chosen: it is the only one whose **posterior** `π₀q_field/m(ê)` is
+ *   `σ((ŝ* − ê)/w)`, arm A §2.2's own logistic at §4.2's one-octave softness, so `split.ts` is
+ *   unchanged and `ŝ*` is still what the profile grid runs over (`π₀ = σ((ŝ* − S/2)/w)`);
+ * - no new constant enters — `w` is `[INHERITED]`, `S` comes from the measurement's ladder;
+ * - `−log m(ê)` carries no λ and is bounded (≈ 8.7 nats at `S = 8`), so λ-multiplicativity and
+ *   totality both survive.
+ *
+ * What changes behaviourally: a split scale is now paid for. A configuration that wants half an
+ * image's broad mass in its ink population must move `π₀` towards ink, and `m(ê)` then charges every
+ * broad triple in the image for it. The diptych flips — `tests/energy-a/support.test.ts` is the
+ * regression, using the verifier's own fixture and configurations.
+ *
  * ## Two further stated deviations
  *
  * 1. **Positional coupling comes from the joint, not from the per-triple moments.** Arm A §2.3 gets
@@ -156,10 +190,17 @@ import {
 	rungToExtent,
 	splitScaleGrid,
 } from "./split.ts"
+import { extentFieldPrior, extentSupportNats, weightedSupportCost } from "./support.ts"
 import type { EnergyOptions, EnergyResult } from "./types.ts"
 
 export { residualDensity, sRgbGamutVolumeOkLab, computeSRgbGamutVolumeOkLab } from "./gamut.ts"
 export { extentRung, rungToExtent, extentLadderOf } from "./split.ts"
+export {
+	extentDensities,
+	extentFieldPrior,
+	extentSupportNats,
+	weightedSupportCost,
+} from "./support.ts"
 export { buildColorPath, samplePath } from "./path.ts"
 export { profileResidualWeight } from "./mixture.ts"
 export * from "./constants.ts"
@@ -346,21 +387,28 @@ function pointDensityAtBin(
 /**
  * Split the data cost between the two populations, exactly.
  *
- * The cost of a triple is `−log ρ(c)` with
+ * The cost of a triple is `−log ρ(c, ê_c)`, the **joint** over colour and extent (`support.ts`),
+ * which factorises as `m(ê)·ρ(c | ê)` with
  *
- *     ρ(c) = π·[(1−ε)ρ_field + ε·ρ₀]  +  (1−π)·[(1−ε)ρ_ink + ε·ρ₀]
+ *     ρ(c | ê) = π·[(1−ε)ρ_field + ε·ρ₀]  +  (1−π)·[(1−ε)ρ_ink + ε·ρ₀]
  *
- * so each population's *contribution to the density* is its bracket times its prior, and those two
- * contributions sum to `ρ(c)` identically. Splitting the triple's cost in that ratio therefore makes
- * `terms.field + terms.ink` equal the data cost **exactly**, with no residue and no third bucket —
- * the residual is shared between the two populations by the same prior π that governs everything
- * else, rather than being reported as a term nobody can act on.
+ * so each population's *contribution to the joint density* is `m(ê)` times its bracket times its
+ * prior, and those two contributions sum to `ρ(c, ê)` identically. Splitting the triple's cost in
+ * that ratio therefore makes `terms.field + terms.ink` equal the data cost **exactly**, with no
+ * residue and no third bucket — the residual is shared between the two populations by the same prior
+ * π that governs everything else, rather than being reported as a term nobody can act on.
+ *
+ * `m(ê)` is a common factor of both contributions, so it does not move the *ratio* — it moves the
+ * *size* of each triple's cost, by `−log m(ê_c)` nats per unit mass, and that premium is then split
+ * by the same responsibilities. A triple the profile has called ink and whose extent says it is broad
+ * therefore pays its support price inside `terms.ink`, which is `DESIGN.md` decision 9's requirement.
  */
 function attributeCost(
 	massShare: Float64Array,
 	membership: Float64Array,
 	fieldDensity: Float64Array,
 	inkDensity: Float64Array,
+	supportNats: Float64Array,
 	residualWeight: number,
 	residualValue: number,
 ): { field: number; ink: number } {
@@ -375,7 +423,7 @@ function attributeCost(
 		const fieldPart = share * (modelShare * fieldDensity[row] + residualPart)
 		const inkPart = (1 - share) * (modelShare * inkDensity[row] + residualPart)
 		const total = fieldPart + inkPart
-		const cost = mass * -Math.log(total)
+		const cost = mass * (-Math.log(total) + supportNats[row])
 		const fieldFraction = fieldPart / total
 		field += cost * fieldFraction
 		ink += cost * (1 - fieldFraction)
@@ -537,6 +585,7 @@ export function energyOfA(
 	const inkModel = new Float64Array(colorCount)
 	const combined = new Float64Array(colorCount)
 	const fieldMass = new Float64Array(colorCount)
+	const supportNats = new Float64Array(colorCount)
 
 	// The two ink kernels are mixed at equal weight when the accent is declared distinct.
 	//
@@ -569,11 +618,19 @@ export function energyOfA(
 		fieldMassFraction: 0,
 		weightBackground: 1,
 		weightSurface: 0,
+		supportCost: 0,
+		fieldPrior: 0,
 	}
 
 	for (let gridIndex = 0; gridIndex < grid.length; gridIndex += 1) {
 		const splitScaleRung = grid[gridIndex]
 		fieldMembership(rungs, splitScaleRung, membership)
+		// The extent half of the joint code (`support.ts`). It depends on the split scale and on the
+		// image's own extents, and on nothing the configuration names — which is exactly why it can
+		// stop a configuration from buying a convenient split scale for free.
+		extentSupportNats(rungs, splitScaleRung, ladder, supportNats)
+		const supportCost = weightedSupportCost(massShare, supportNats)
+		const fieldPrior = extentFieldPrior(splitScaleRung, ladder)
 		let fieldMassFraction = 0
 		for (let row = 0; row < colorCount; row += 1) {
 			const field = membership[row] * massShare[row]
@@ -607,16 +664,21 @@ export function energyOfA(
 				const share = membership[row]
 				combined[row] = share * field[row] + (1 - share) * inkModel[row]
 			}
+			// ε is profiled on the *conditional* colour code alone, and legitimately so: `m(ê)` is a
+			// factor of the joint that does not contain ε, so it is an additive constant in the
+			// log-likelihood being maximised and cannot move the fixed point. The support cost is added
+			// afterwards, which is an identity and not an approximation.
 			const fit = profileResidualWeight(massShare, combined, residual)
+			const jointCost = fit.cost + supportCost
 
 			// Strict `<`: a tie is kept by the earlier grid point, so the profile's answer is a function
 			// of the grid order and not of floating-point noise between equal candidates.
-			if (fit.cost < best.energy) {
+			if (jointCost < best.energy) {
 				const attributed = attributeCost(
-					massShare, membership, field, inkModel, fit.residualWeight, residual,
+					massShare, membership, field, inkModel, supportNats, fit.residualWeight, residual,
 				)
 				best = {
-					energy: fit.cost,
+					energy: jointCost,
 					splitScaleRung,
 					geometry: order === "ramp" ? rampCandidates[candidate].geometry : "none",
 					direction: order === "ramp" ? rampCandidates[candidate].direction : "none",
@@ -627,6 +689,8 @@ export function energyOfA(
 					fieldMassFraction,
 					weightBackground,
 					weightSurface,
+					supportCost,
+					fieldPrior,
 				}
 			}
 		}
@@ -657,6 +721,11 @@ export function energyOfA(
 			geometryDirection: best.direction,
 			splitScaleRung: best.splitScaleRung,
 			splitScaleExtent: rungToExtent(best.splitScaleRung, ladder),
+			// π₀ — the split scale read as the joint model's population prior (`support.ts`), and the
+			// support term it buys. `extentSupportCost` is already *inside* `terms.field + terms.ink`;
+			// it is reported so the two halves of the joint code can be read apart.
+			fieldPrior: best.fieldPrior,
+			extentSupportCost: best.supportCost,
 			fieldMassFraction: best.fieldMassFraction,
 			inkMassFraction: 1 - best.fieldMassFraction,
 			residualWeight: best.residualWeight,

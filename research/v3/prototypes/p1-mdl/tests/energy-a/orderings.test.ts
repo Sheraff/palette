@@ -16,6 +16,18 @@
  * - so **explaining a unit of mass rather than leaving it unexplained is worth ≈ 5–7 nats**, and one
  *   structural element at λ = 1 costs 1 nat. A structural element has to explain about a sixth of
  *   the image to pay for itself.
+ *
+ * ## Why the extent code does not enter these four predictions
+ *
+ * Since `DESIGN.md` decision 9's fix, each triple also pays `−log m(ê_c)` for its *extent* — the
+ * second half of the joint (colour, extent) code in `src/energy/a/support.ts`, worth 0.7 to 8.7 nats
+ * depending on the split scale. That term is a function of the image and of `ŝ*` **and of nothing the
+ * configuration names**, so between two configurations whose profiles settle on the same `ŝ*` it is a
+ * common additive and cancels exactly, leaving the arithmetic below as it was written. Each case now
+ * asserts that agreement rather than assuming it; the case where it does *not* cancel — because the
+ * two configurations need different split scales — is the diptych, and that is `support.test.ts`
+ * case (g). Measured split scales here: `ŝ* = 8` in (a) and (d), `ŝ* = 7` in (b) and (c), on the
+ * ladder's `S = 8` rungs.
  */
 
 import assert from "node:assert/strict"
@@ -70,6 +82,10 @@ describe("(a) a flat image prefers the collapsed configuration", () => {
 
 		assert.equal(collapsed.nuisance.omega, 0)
 		assert.equal(fourColour.nuisance.omega, 2)
+		// Same split scale, so the extent code's charge is common to both and the gap below is a
+		// colour-and-structure comparison exactly as the arithmetic above states it.
+		assert.equal(collapsed.nuisance.splitScaleRung, fourColour.nuisance.splitScaleRung)
+		assert.equal(collapsed.nuisance.extentSupportCost, fourColour.nuisance.extentSupportCost)
 		assert.ok(
 			collapsed.total < fourColour.total,
 			`collapsed ${collapsed.total} vs four-colour ${fourColour.total}`,
@@ -123,6 +139,9 @@ describe("(b) a two-band image prefers two flat areas", () => {
 			["flat", "two-flat", "ramp"],
 		)
 		assert.deepEqual([flat.nuisance.omega, twoFlat.nuisance.omega, ramp.nuisance.omega], [0, 1, 2])
+		// All three settle on the same split scale, so the extent code cancels across the comparison.
+		assert.equal(twoFlat.nuisance.extentSupportCost, flat.nuisance.extentSupportCost)
+		assert.equal(twoFlat.nuisance.extentSupportCost, ramp.nuisance.extentSupportCost)
 		assert.ok(twoFlat.total < flat.total, `two-flat ${twoFlat.total} vs flat ${flat.total}`)
 		assert.ok(twoFlat.total < ramp.total, `two-flat ${twoFlat.total} vs ramp ${ramp.total}`)
 	})
@@ -160,6 +179,7 @@ describe("(c) an image that is a rendered ramp prefers the ramp", () => {
 			],
 		}))
 
+		assert.equal(ramp.nuisance.extentSupportCost, flat.nuisance.extentSupportCost)
 		assert.ok(ramp.total < flat.total, `ramp ${ramp.total} vs flat ${flat.total}`)
 		assert.ok(flat.total - ramp.total > 2, `gap ${flat.total - ramp.total} should clear 2λ`)
 		// The profile is expected to read this image's position parameter in the linear geometry — the
@@ -201,6 +221,9 @@ describe("(d) a small vivid patch is a better accent than a second dull colour",
 
 		assert.equal(vividAccent.nuisance.omega, dullAccent.nuisance.omega)
 		assert.equal(vividAccent.terms.structural, dullAccent.terms.structural)
+		// λ cancels because Ω agrees; the extent code cancels because the split scale agrees. What is
+		// left is the ink term, which is the whole point of this case.
+		assert.equal(vividAccent.nuisance.extentSupportCost, dullAccent.nuisance.extentSupportCost)
 		assert.ok(
 			vividAccent.total < dullAccent.total,
 			`vivid accent ${vividAccent.total} vs dull accent ${dullAccent.total}`,
