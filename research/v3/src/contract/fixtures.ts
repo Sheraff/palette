@@ -869,9 +869,13 @@ export function iterableSource(accessor: PixelAccessor): PixelIterable {
 }
 
 /**
- * A field of one colour with `rareCount` pixels of another sprinkled into the first row. Used to
- * drive a published colour below the population floor without removing it from the image — the
- * distinction invariant 2 has to make between "not there" and "not there enough".
+ * A field of one colour with `rareCount` pixels of another sprinkled into the first row. Drives a
+ * published colour below the population floor without removing it from the image.
+ *
+ * That distinction — "not there" versus "not there enough" — used to be a distinction invariant 2
+ * *enforced*. Since the reviewer's ruling of 2026-08-04 it enforces only the first half: absence is
+ * a violation, rarity is a reported figure (see `validateSourceSupport`). The helper is kept because
+ * the second half is still *measured*, and these fixtures are how the report-only path is tested.
  */
 export function sparseSource(
 	fieldHex: string,

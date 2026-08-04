@@ -114,6 +114,70 @@ function violation(
 		: { invariant, code, message, subjects, measured }
 }
 
+// ---------------------------------------------------------------------------------------------
+// Observations — the report mode's raw material
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * One numeric judgment an invariant made: what was measured, what it was measured against, and how
+ * much room there was.
+ *
+ * ## Why this exists rather than a second implementation
+ *
+ * The report mode (`scorecard.ts`, build item 21) needs the margin on checks that **passed** — how
+ * close was this palette to failing? A violation list cannot answer that: it only contains failures.
+ *
+ * The obvious alternative is for the scorecard to re-walk the same pairs and recompute the same
+ * distances. That was rejected: it would duplicate every threshold, every exemption, and every
+ * skip rule, and the two copies would drift on the first ruling that changed one of them. The
+ * scorecard would then confidently report margins for a rule the validator no longer enforces.
+ *
+ * So the checks emit observations as they go, and the scorecard aggregates. One implementation, one
+ * set of thresholds, and a margin that is by construction the margin the validator actually used.
+ *
+ * ## Cost when nobody is listening
+ *
+ * The sink is optional and every emission site is guarded. With no sink the checks allocate nothing
+ * and behave identically — hard mode is untouched, which is the requirement.
+ */
+export type InvariantObservation = Readonly<{
+	invariant: Violation["invariant"]
+	/** The violation code this judgment would produce (or did produce) if it failed. */
+	check: string
+	subjects: readonly string[]
+	/** What was measured, named so a reader never has to guess the units. */
+	quantity:
+		| "oklab-distance"
+		| "apca-raw-magnitude"
+		| "source-population-fraction"
+		| "source-occurrences"
+	measured: number
+	/** The threshold `measured` was judged against. */
+	bar: number
+	/**
+	 * `measured - bar`, in the units of `quantity`. Positive means room to spare, negative means the
+	 * bar was not cleared. **Not comparable across quantities** — an OKLab distance margin and an APCA
+	 * margin are different rulers, and the scorecard never pools them.
+	 */
+	margin: number
+	/** Whether this judgment produced no violation. */
+	passed: boolean
+	/**
+	 * Set when the check passed for a reason other than clearing its bar — currently only the accent's
+	 * functional-distance escape. Such an observation has `passed: true` with a negative `margin`,
+	 * which is the honest record: the palette is below the contrast floor and licensed anyway.
+	 */
+	escape?: string
+	/**
+	 * Set when the quantity is computed for the record and can never, by itself, make a palette
+	 * invalid. The population floor is the only one (see `validateSourceSupport`).
+	 */
+	reportOnly?: boolean
+}>
+
+/** Where observations go. Optional everywhere; absent means the checks emit nothing. */
+export type ObservationSink = (observation: InvariantObservation) => void
+
 function isPositiveInteger(value: unknown): value is number {
 	return typeof value === "number" && Number.isInteger(value) && value > 0
 }
@@ -620,6 +684,7 @@ export function validateDistinctness(
 	palette: Palette,
 	barFor: (first: PaletteColor, second: PaletteColor) => number = sameColorBar,
 	foregroundAccentSeparation: number = FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	observe?: ObservationSink,
 ): Violation[] {
 	const violations: Violation[] = []
 	const colors = publishedColors(palette)
@@ -660,6 +725,20 @@ export function validateDistinctness(
 			// colours that region calls identical cannot be two roles whatever this number says.
 			const separated = key === SEPARATED_ROLE_PAIR
 			const bar = separated ? Math.max(sameColor, foregroundAccentSeparation) : sameColor
+
+			// Emitted for every pair the matrix actually judged — passes included, which is the point.
+			// Pairs skipped by an exception class are not judgments and are deliberately not recorded.
+			observe?.({
+				invariant: "I3",
+				check: separated ? "I3.foreground-accent-not-separated" : "I3.pair-not-distinct",
+				subjects: [a.path, b.path],
+				quantity: "oklab-distance",
+				measured: distance,
+				bar,
+				margin: distance - bar,
+				passed: distance >= bar,
+			})
+
 			if (distance >= bar) continue
 
 			// Which band it failed in decides the code: below the same-colour bar it is the old
@@ -808,7 +887,7 @@ const RAMP_FLOOR_ROLES = [
  * The accent's pairs are skipped entirely when the accent has genuinely collapsed onto the
  * foreground — see the note in the body.
  */
-export function validateContrastFloors(palette: Palette): Violation[] {
+export function validateContrastFloors(palette: Palette, observe?: ObservationSink): Violation[] {
 	const violations: Violation[] = []
 
 	// A genuinely collapsed accent *is* the foreground and has no independent existence, so it is
@@ -874,7 +953,19 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			))
 			continue
 		}
-		if (Math.abs(raw) >= floor) continue
+		if (Math.abs(raw) >= floor) {
+			observe?.({
+				invariant: "I4",
+				check: pair.code,
+				subjects: [pair.textPath, pair.fieldPath],
+				quantity: "apca-raw-magnitude",
+				measured: Math.abs(raw),
+				bar: floor,
+				margin: Math.abs(raw) - floor,
+				passed: true,
+			})
+			continue
+		}
 
 		// The accent's one escape. Colour carries an isoluminant accent when there is *enough* of it —
 		// the reviewer's refinement of 2026-08-04 keeps the escape and rejects the threshold it used to
@@ -892,7 +983,34 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 		// it says.
 		const distance = colorDistance(text, field)
 		const escapeAvailable = pair.colorEscape && floor <= epsilon
-		if (escapeAvailable && distance >= ACCENT_FUNCTIONAL_DISTANCE) continue
+		if (escapeAvailable && distance >= ACCENT_FUNCTIONAL_DISTANCE) {
+			// Below the contrast floor and licensed anyway. Recorded with the real (negative) APCA
+			// margin and the escape named, because a scorecard that showed this as a clean pass would
+			// hide exactly the palettes the escape was invented to permit.
+			observe?.({
+				invariant: "I4",
+				check: pair.code,
+				subjects: [pair.textPath, pair.fieldPath],
+				quantity: "apca-raw-magnitude",
+				measured: Math.abs(raw),
+				bar: floor,
+				margin: Math.abs(raw) - floor,
+				passed: true,
+				escape: "accent-functional-distance",
+			})
+			continue
+		}
+
+		observe?.({
+			invariant: "I4",
+			check: pair.code,
+			subjects: [pair.textPath, pair.fieldPath],
+			quantity: "apca-raw-magnitude",
+			measured: Math.abs(raw),
+			bar: floor,
+			margin: Math.abs(raw) - floor,
+			passed: false,
+		})
 
 		violations.push(violation(
 			"I4",
@@ -949,6 +1067,12 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 				? firstInvisibleAccentOnRamp(subject, stops, floor, ACCENT_FUNCTIONAL_DISTANCE)
 				: minRawContrastOverRamp(subject, stops)
 
+			// No extremum means the check passed with nothing to measure: on the escaped path
+			// `firstInvisibleAccentOnRamp` returns null precisely when *no* ramp point fails both
+			// dimensions, so there is no single point whose margin would be the binding one. No
+			// observation is emitted, and `scorecard.ts` documents this as the one pass it cannot put a
+			// margin on. Inventing one here (say, the ramp's APCA minimum) would be a number of a
+			// different rule than the one that actually ran.
 			if (extremum === null) continue
 			if (!Number.isFinite(extremum.raw)) {
 				violations.push(violation(
@@ -961,9 +1085,38 @@ export function validateContrastFloors(palette: Palette): Violation[] {
 			}
 			// `firstInvisibleAccentOnRamp` returns only points that already fail both dimensions, so
 			// this re-test is the one-dimensional path's — and it is a no-op for the escaped path.
-			if (!escapeAvailable && Math.abs(extremum.raw) >= floor) continue
+			if (!escapeAvailable && Math.abs(extremum.raw) >= floor) {
+				// The ramp minimum cleared the floor, so the whole ramp did. This is the tightest point
+				// on the ramp by construction, which makes it exactly the margin worth reporting.
+				observe?.({
+					invariant: "I4",
+					check: extremum.stopIndex === null
+						? "I4.ramp-below-contrast-floor"
+						: "I4.stop-below-contrast-floor",
+					subjects: [subjectPath, rampPath(extremum)],
+					quantity: "apca-raw-magnitude",
+					measured: Math.abs(extremum.raw),
+					bar: floor,
+					margin: Math.abs(extremum.raw) - floor,
+					passed: true,
+				})
+				continue
+			}
 
 			const fieldPath = rampPath(extremum)
+			observe?.({
+				invariant: "I4",
+				check: extremum.stopIndex === null
+					? "I4.ramp-below-contrast-floor"
+					: "I4.stop-below-contrast-floor",
+				subjects: [subjectPath, fieldPath],
+				quantity: "apca-raw-magnitude",
+				measured: Math.abs(extremum.raw),
+				bar: floor,
+				margin: Math.abs(extremum.raw) - floor,
+				passed: false,
+			})
+
 			const where = extremum.stopIndex === null
 				? `the rendered ramp at t=${extremum.position.toFixed(6)}`
 				: `${fieldPath}`
@@ -1048,20 +1201,77 @@ export type SourceSupportResult = Readonly<{
 }>
 
 /**
- * **Invariant 2.** Every published colour is an exact pixel of the input, meeting the population
- * floor.
+ * **Invariant 2.** Every published colour is an exact pixel of the input. The population floor is
+ * measured and reported, and is **not** a validity verdict.
  *
  * "Exact pixel" is literal: the same three 8-bit channel values, not the nearest quantised bin. This
  * is the invariant that makes the whole contract falsifiable against the artwork — a palette colour
- * that is not in the image is an invention, whatever it looks like.
+ * that is not in the image is an invention, whatever it looks like. That half is **hard** and
+ * unchanged.
  *
- * The population floor is scale-free (a fraction of the image, `SOURCE_POPULATION_FLOOR`), so the
- * check means the same thing on a 350 px thumbnail and a 3000 px master.
+ * ## The population floor stopped being a verdict — reviewer's ruling, 2026-08-04
+ *
+ * Verbatim, mid-review of the `dropped-colors-1` round: *"i stopped reviewing, your color maths is
+ * fucked, everything i've seen belongs"*. The reviewer abandoned a review round because every colour
+ * the floor was dropping was a colour they judged to belong to the artwork.
+ *
+ * `BELONGS_STUDY.md` is the quantified version of that reaction, and it is not marginal:
+ *
+ * - The floor has **no discriminating power at any threshold** — there is no value of
+ *   `SOURCE_POPULATION_FLOOR` that separates colours the reviewer endorsed from colours they
+ *   rejected. Sweeping the threshold does not trade sensitivity for specificity; it trades nothing
+ *   for nothing.
+ * - Of **1,397 endorsed colours, exactly one** was completely absent from its artwork. Absence is
+ *   real, vanishingly rare, and catchable — which is precisely the existence clause, and precisely
+ *   why that clause stays hard.
+ * - The floor was refusing **340 of 351** palettes whose colours the reviewer endorsed. A rule that
+ *   rejects 97% of the work a human accepts is not measuring quality; it is measuring its own
+ *   threshold.
+ *
+ * A colour occupying a hundredth of a percent of an artwork is a *small* colour, not an *invented*
+ * one. The instrument was reading rarity as illegitimacy, and album artwork is full of legitimate
+ * rare colours — a logo, a spine, a rim light, the one saturated accent the whole cover is built
+ * around.
+ *
+ * So the clause is **kept, computed, and reported** rather than deleted. Deleting it would throw away
+ * a measurement that is still interesting per-palette (it is genuinely useful to know that an accent
+ * covers 0.02% of its artwork) and would make the retirement invisible to anyone reading later. What
+ * it no longer does is decide validity. The figure travels in `ValidationResult` nowhere — it travels
+ * in the observation stream, and `scorecard.ts` surfaces it under `reportOnly`.
+ *
+ * **`I2.population-below-floor` is retired as a violation code.** It is never emitted. The code
+ * string is deliberately not reused for anything else, so a census over historical results keeps
+ * meaning what it meant when those results were written — the same convention
+ * `ACCENT_VISIBILITY_COLOR_DISTANCE` follows, and the reason `invariants.ts`'s header says codes are
+ * stable strings "so that demotion, and the census, can be done by grep".
+ *
+ * ## Two forms of the floor, and which one this function ever enforced
+ *
+ * The ruling names the population floor "in both its exact-triple and neighbourhood forms". Only the
+ * **exact-triple** form was ever a verdict, and it was here. The **neighbourhood** form — the share
+ * of artwork pixels within the pair's regional same-colour bar — has only ever lived in study and
+ * round machinery (`belongs-study.ts`, `src/review-server/dropped-colors.ts`), where it selects
+ * what to ask a reviewer about. It emits no violation code and never has, so there is nothing in the
+ * contract to demote; what changes for it is that the round it powered is retired.
+ *
+ * **Known divergence from the study's recommendation, left open deliberately.**
+ * `BELONGS_STUDY.md` recommends that the figure this function reports be the *neighbourhood* share,
+ * on the ground that it is the better measure of "how much of the artwork is this colour" — the
+ * exact-triple share mostly measures how much of a histogram spike a colour happens to sit on.
+ * What is reported here is still the **exact-triple** fraction. Computing the neighbourhood share
+ * needs the artwork's full colour histogram and a regional-bar comparison per published colour,
+ * which is a different and much more expensive pass than the one this function makes, and switching
+ * measures silently would mean the number under the same name changed meaning between runs. Flagged
+ * for the reviewer, not decided here.
  *
  * One pass over the pixels, counting by hex. Colours published in more than one role are counted
  * once and reported against every path that published them.
  */
-export function validateSourceSupport(palette: Palette, source: PixelSource): SourceSupportResult {
+export function validateSourceSupport(
+	palette: Palette,
+	source: PixelSource,
+	observe?: ObservationSink,
+): SourceSupportResult {
 	const violations: Violation[] = []
 	const colors = publishedColors(palette).filter((entry) => isRgb8(entry.color?.rgb))
 
@@ -1102,7 +1312,19 @@ export function validateSourceSupport(palette: Palette, source: PixelSource): So
 
 	for (const [key, paths] of pathsByHex) {
 		const count = counts.get(key) ?? 0
+
+		// --- EXISTENCE: hard. A colour that is not in the image is an invention. ---
 		if (count === 0) {
+			observe?.({
+				invariant: "I2",
+				check: "I2.color-absent-from-source",
+				subjects: paths,
+				quantity: "source-occurrences",
+				measured: 0,
+				bar: 1,
+				margin: -1,
+				passed: false,
+			})
 			violations.push(violation(
 				"I2",
 				"I2.color-absent-from-source",
@@ -1112,16 +1334,34 @@ export function validateSourceSupport(palette: Palette, source: PixelSource): So
 			))
 			continue
 		}
+
+		observe?.({
+			invariant: "I2",
+			check: "I2.color-absent-from-source",
+			subjects: paths,
+			quantity: "source-occurrences",
+			measured: count,
+			bar: 1,
+			margin: count - 1,
+			passed: true,
+		})
+
+		// --- POPULATION: report-only since 2026-08-04. Measured for every colour, never a verdict. ---
+		// `reportOnly` is what stops this from ever reaching a violation list, and it is set
+		// unconditionally rather than only when the fraction is low: a scorecard reader wants the
+		// share of *every* published colour, not just the ones an abandoned rule would have dropped.
 		const fraction = count / total
-		if (fraction < SOURCE_POPULATION_FLOOR) {
-			violations.push(violation(
-				"I2",
-				"I2.population-below-floor",
-				`${key} covers ${(fraction * 100).toFixed(4)}% of the input, below the ${SOURCE_POPULATION_FLOOR * 100}% population floor`,
-				paths,
-				{ hex: key, fraction, floor: SOURCE_POPULATION_FLOOR, occurrences: count },
-			))
-		}
+		observe?.({
+			invariant: "I2",
+			check: "I2.population-below-floor",
+			subjects: paths,
+			quantity: "source-population-fraction",
+			measured: fraction,
+			bar: SOURCE_POPULATION_FLOOR,
+			margin: fraction - SOURCE_POPULATION_FLOOR,
+			passed: true,
+			reportOnly: true,
+		})
 	}
 
 	return { violations, deferred: [DEFERRED_SPATIAL_SPREAD] }
@@ -1219,6 +1459,12 @@ export type ValidatePaletteOptions = Readonly<{
 	 * when deliberately collecting violations across a corpus rather than refusing one file.
 	 */
 	throwOnTransparentInput?: boolean
+	/**
+	 * Receives every numeric judgment the checks make, passes included. Supplying it changes nothing
+	 * about the verdict — it is how `scorecard.ts` builds the report mode without a second
+	 * implementation of any threshold. Omit it and the checks emit nothing.
+	 */
+	observe?: ObservationSink
 }>
 
 /**
@@ -1250,11 +1496,12 @@ export function validatePalette(palette: Palette, options: ValidatePaletteOption
 		palette,
 		options.sameColorBar ?? sameColorBar,
 		options.foregroundAccentSeparation ?? FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+		options.observe,
 	))
-	violations.push(...validateContrastFloors(palette))
+	violations.push(...validateContrastFloors(palette, options.observe))
 
 	if (options.source !== undefined) {
-		const support = validateSourceSupport(palette, options.source)
+		const support = validateSourceSupport(palette, options.source, options.observe)
 		violations.push(...support.violations)
 		deferred.push(...support.deferred)
 	} else {

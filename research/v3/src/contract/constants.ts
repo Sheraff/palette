@@ -381,14 +381,30 @@ export const ACCENT_FUNCTIONAL_DISTANCE = 0.14591
 export const CONTRAST_FLOOR_TOLERANCE = 1e-9
 
 /**
- * Fraction of the artwork a published colour must occupy for its source support to count
- * (`PHASE_0_DECISIONS.md` §4 invariant 2).
+ * Fraction of the artwork a published colour occupies, the value the **report-only** population
+ * figure is quoted against. **Retired as a gate on 2026-08-04** — it no longer decides validity.
  *
  * `[INHERITED]` — v2-3's `RAMP_SUPPORT_MINIMUM_POPULATION_FRACTION`
- * (`research/v2-3/src/internal/ramp-midpoint.ts:55`). Its stated reasoning transfers unchanged: one
- * thousandth of the artwork is roughly 400 pixels on a 640×640 master and roughly 120 on a 350 px
- * thumbnail, two orders of magnitude above the noise floor at either scale, so JPEG ringing in the
- * shadows cannot certify a colour. Scale-free by construction, as `CONVENTIONS.md` requires.
+ * (`research/v2-3/src/internal/ramp-midpoint.ts:55`). The digits are unchanged and deliberately so:
+ * a retired threshold keeps its value so a census over historical results still means what it meant.
+ *
+ * **Its stated reasoning did not survive contact with data, and is recorded here rather than
+ * deleted.** The inherited argument was that one thousandth of the artwork is ~400 pixels on a
+ * 640×640 master and ~120 on a 350 px thumbnail, two orders of magnitude above the noise floor, so
+ * JPEG ringing in the shadows could not certify a colour. `BELONGS_STUDY.md` refutes the mechanism
+ * directly: ringing *shatters* a colour's exact-triple count rather than inflating it, so the floor
+ * was never protecting against the thing it named.
+ *
+ * What the study measured (see `validateSourceSupport` for the ruling that acted on it): the floor
+ * has no discriminating power at any threshold — endorsed and known-bad colours have the *same
+ * support*, minimum neighbourhood share 6.59e-5 versus 5.86e-5 — and as shipped it refused 340 of
+ * 351 palettes whose colours the reviewer endorsed.
+ *
+ * Still scale-free by construction, as `CONVENTIONS.md` requires; that part was always right.
+ *
+ * **Do not restore this as a gate without new evidence.** If a hard noise guard is ever wanted,
+ * `BELONGS_STUDY.md` recommends 5e-5 — below the minimum observed on any tier — and requires its
+ * docstring to say in terms that it is a noise guard and not a quality signal.
  */
 export const SOURCE_POPULATION_FLOOR = 0.001
 

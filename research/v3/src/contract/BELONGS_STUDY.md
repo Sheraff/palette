@@ -8,16 +8,31 @@ NODE_NO_WARNINGS=1 node --experimental-strip-types research/v3/src/contract/belo
 
 Data file: `research/v3/data/contract/belongs-study.json`. Script: `research/v3/src/contract/belongs-study.ts`.
 
-**This study does not change the contract.** It measures. The recommendation at the end is a
-proposal for the reviewer, and the round `dropped-colors-1` exists to fund it.
+**This study did not itself change the contract.** It measures. The recommendation at the end was a
+proposal for the reviewer, and the round `dropped-colors-1` existed to fund it.
+
+> **Outcome, 2026-08-04 — the recommendation was adopted, by a route the study did not anticipate.**
+> The reviewer stopped `dropped-colors-1` partway through and ruled from the chair: *"i stopped
+> reviewing, your color maths is fucked, everything i've seen belongs"* — 11 of 20 items answered,
+> every one of them `belongs`. `validateSourceSupport` now enforces exact-pixel existence only; the
+> population figure is computed and reported and is never a `Violation`. `I2.population-below-floor`
+> is retired as a violation code and deliberately not reused. `dropped-colors-1` is retired with its
+> partial answers retained as valid colour-level labels.
+>
+> **One divergence from what this document recommends, still open.** The study argues the reported
+> figure should be the *same-colour-bar neighbourhood* share, not the exact-triple share. What ships
+> reports the **exact-triple** fraction: the neighbourhood share needs the artwork's full colour
+> histogram and a per-colour regional-bar comparison, a much more expensive pass than the one
+> `validateSourceSupport` makes. Flagged for the reviewer rather than switched silently, since the
+> number under an unchanged name would otherwise change meaning between runs.
 
 ---
 
 ## The question, and how it was reframed
 
-Invariant 2 (`validateSourceSupport`, `src/contract/invariants.ts:1064`) requires every published
-colour to be an exact 8-bit pixel of the artwork occupying at least `SOURCE_POPULATION_FLOOR` of
-it. `reviews/toolbox-review/bias-audit.md` B1 measured that this refuses **96.9% of the reviewer's
+Invariant 2 (`validateSourceSupport` in `src/contract/invariants.ts`) required, at the time this
+study was written, every published colour to be an exact 8-bit pixel of the artwork occupying at
+least `SOURCE_POPULATION_FLOOR` of it — see the outcome note above for what it requires now. `reviews/toolbox-review/bias-audit.md` B1 measured that this refuses **96.9% of the reviewer's
 own endorsed palettes**, and proposed measuring population within the calibrated same-colour bar
 instead.
 

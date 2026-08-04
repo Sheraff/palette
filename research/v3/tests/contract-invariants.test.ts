@@ -101,6 +101,7 @@ import {
 	validPalettes,
 } from "../src/contract/fixtures.ts"
 import type { Palette, Violation } from "../src/contract/types.ts"
+import type { InvariantObservation } from "../src/contract/invariants.ts"
 
 function codes(violations: readonly Violation[]): string[] {
 	return violations.map((entry) => entry.code).sort()
@@ -1222,8 +1223,14 @@ test("I2 is exact, not nearest: a colour one LSB away is absent", () => {
 	assert.ok(hasCode(result.violations, "I2.color-absent-from-source"))
 })
 
-test("I2 rejects a colour present but below the population floor", () => {
-	// 20 pixels of 40,000 is 0.0005 — present, and half the floor.
+/**
+ * The reviewer's ruling of 2026-08-04: *"i stopped reviewing, your color maths is fucked, everything
+ * i've seen belongs"*. The population floor no longer decides validity — see `validateSourceSupport`
+ * and `BELONGS_STUDY.md`. These two tests previously asserted the opposite; they now pin the split.
+ */
+test("I2 no longer rejects a colour present but below the population floor", () => {
+	// 20 pixels of 40,000 is 0.0005 — present, and half the floor. Before the ruling this was a
+	// violation; a colour occupying a hundredth of a percent of an artwork is small, not invented.
 	const source = sparseSource("#101820", "#e0533a", 20)
 	const palette = makePalette({
 		background: "#101820",
@@ -1232,16 +1239,48 @@ test("I2 rejects a colour present but below the population floor", () => {
 		accent: "#e0533a",
 	})
 	const result = validateSourceSupport(palette, source)
-	assert.ok(hasCode(result.violations, "I2.population-below-floor"), codes(result.violations).join(", "))
-	const floorViolation = result.violations.find((entry) => entry.code === "I2.population-below-floor")!
-	assert.equal(floorViolation.measured?.occurrences, 20)
-	assert.ok((floorViolation.measured?.fraction as number) < SOURCE_POPULATION_FLOOR)
-	// The foreground is genuinely absent, which is a different code.
+	assert.equal(
+		hasCode(result.violations, "I2.population-below-floor"),
+		false,
+		`the population code is retired and must never be emitted: ${codes(result.violations).join(", ")}`,
+	)
+	// The foreground is genuinely absent from this source, and that half stays hard.
 	assert.ok(hasCode(result.violations, "I2.color-absent-from-source"))
+	assert.deepEqual(
+		result.violations.map((entry) => entry.code),
+		["I2.color-absent-from-source"],
+		"existence is the only source-support verdict left",
+	)
 })
 
-test("I2 accepts a colour exactly at the population floor", () => {
-	// 40 pixels of 40,000 is exactly 0.001.
+test("the retired population figure is still measured, and reaches the report mode", () => {
+	const source = sparseSource("#101820", "#e0533a", 20)
+	const palette = makePalette({
+		background: "#101820",
+		surface: "#101820",
+		foreground: "#101820", // present, so nothing is absent and the palette is I2-clean
+		accent: "#e0533a",
+	})
+	const observations: InvariantObservation[] = []
+	const result = validateSourceSupport(palette, source, (o) => observations.push(o))
+	assert.deepEqual(result.violations, [], "nothing about population is a violation any more")
+
+	const population = observations.filter((o) => o.quantity === "source-population-fraction")
+	assert.equal(population.length, 2, "one per distinct published colour")
+	const accent = population.find((o) => o.subjects.includes("roles.accent"))!
+	assert.equal(accent.reportOnly, true, "report-only is what keeps it out of every verdict")
+	assert.equal(accent.passed, true)
+	assert.equal(accent.measured, 20 / 40_000)
+	assert.ok(
+		accent.measured < SOURCE_POPULATION_FLOOR,
+		"the fixture is deliberately below the retired floor, and is reported rather than refused",
+	)
+	assert.equal(accent.check, "I2.population-below-floor")
+})
+
+test("a colour exactly at the retired floor is unremarkable either way", () => {
+	// 40 pixels of 40,000 is exactly 0.001. Kept as a regression fixture: it passed before the ruling
+	// and passes after, so it pins that the change did not invert anything.
 	const source = sparseSource("#101820", "#e0533a", 40)
 	const palette = makePalette({
 		background: "#101820",
@@ -1250,7 +1289,19 @@ test("I2 accepts a colour exactly at the population floor", () => {
 		accent: "#e0533a",
 	})
 	const result = validateSourceSupport(palette, source)
-	assert.equal(hasCode(result.violations, "I2.population-below-floor"), false, codes(result.violations).join(", "))
+	assert.deepEqual(result.violations, [])
+})
+
+test("existence stays hard: a colour absent entirely still fails, ruling or no ruling", () => {
+	const observations: InvariantObservation[] = []
+	const result = validateSourceSupport(validFlat, missingAccentSource, (o) => observations.push(o))
+	assert.ok(hasCode(result.violations, "I2.color-absent-from-source"))
+	const absent = observations.find(
+		(o) => o.quantity === "source-occurrences" && o.passed === false,
+	)!
+	assert.equal(absent.measured, 0)
+	assert.equal(absent.bar, 1)
+	assert.equal(absent.reportOnly, undefined, "existence is enforced, not merely reported")
 })
 
 test("I2 is scale-free: the same palette and the same source content pass at both sizes", () => {
