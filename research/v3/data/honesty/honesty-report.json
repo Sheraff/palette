@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T07:52:37.139Z",
+		"generatedAt": "2026-08-04T08:49:55.653Z",
 		"roots": [
 			"oracle",
 			"src"
@@ -9,10 +9,10 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T07:52:37.139Z",
+			"generatedAt": "2026-08-04T08:49:55.653Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "d391b6fe6a08226d9a20871a7417e35ae0d98984",
+				"gitCommit": "a4152087b082b4f5f16ad9780f25262ca0c8add4",
 				"gitBranch": "research/palette-0.9-checkpoint",
 				"gitDirty": true,
 				"node": "v25.8.1"
@@ -27,65 +27,65 @@
 			"inputs": [
 				{
 					"path": "research/v3/data/decisions/decisions.json",
-					"sha256": "4eb1a51fb4ef08d0eafc49f21d3a3d6cf917c5dcba53aff88a1bf8f9ae82081e",
-					"bytes": 251518
+					"sha256": "c2186f480a384e28419c32365f79acfa2eb7cb013cdab1b6347f0f0e44ae4cb3",
+					"bytes": 337108
 				}
 			],
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "4e9a2df0c8cd54f1a2a70bf7acc3b08029a6ee5141dc830d0a76d38824665b8f",
+	"bodyHash": "5205668f73bac7425763e3ae0da774eb805642650f223d3a10fde52a1d73d6fa",
 	"body": {
 		"corpus": {
-			"files": 195,
-			"lines": 85862,
+			"files": 207,
+			"lines": 89937,
 			"byLanguage": {
 				"py": {
-					"files": 92,
-					"lines": 36424,
+					"files": 95,
+					"lines": 37931,
 					"fidelity": "lexical"
 				},
 				"ts": {
-					"files": 103,
-					"lines": 49438,
+					"files": 112,
+					"lines": 52006,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 8231,
-			"excluded": 3160,
-			"tunableSites": 5071,
-			"tagged": 710,
+			"candidates": 8632,
+			"excluded": 3310,
+			"tunableSites": 5322,
+			"tagged": 722,
 			"decisionTraced": 0,
 			"decisionDangling": 0,
-			"untagged": 4361
+			"untagged": 4600
 		},
 		"headline": {
-			"documentedFraction": 0.14,
-			"anchoredFraction": 0.0897
+			"documentedFraction": 0.1357,
+			"anchoredFraction": 0.0861
 		},
 		"byTag": {
-			"REVIEWED": 274,
+			"REVIEWED": 277,
 			"MEASURED": 181,
 			"FITTED": 0,
 			"n=1": 2,
-			"INHERITED": 112,
-			"UNCALIBRATED": 128,
-			"HELD": 13
+			"INHERITED": 115,
+			"UNCALIBRATED": 133,
+			"HELD": 14
 		},
 		"byAnchorStrength": {
-			"anchored": 455,
-			"weak": 127,
-			"unanchored": 4489
+			"anchored": 458,
+			"weak": 131,
+			"unanchored": 4733
 		},
 		"tagAttribution": {
 			"trailing": 1,
-			"leading": 592,
-			"shared-doc-block": 117
+			"leading": 603,
+			"shared-doc-block": 118
 		},
 		"decisionCitations": {
-			"recheckable": 0,
+			"recheckable": 2,
 			"conversational": 0,
 			"dangling": []
 		},
@@ -108,7 +108,7 @@
 			{
 				"id": "exit-code",
 				"rationale": "A process exit code. It is an operating-system protocol value, not a parameter of the algorithm.",
-				"count": 16
+				"count": 22
 			},
 			{
 				"id": "http-status",
@@ -118,7 +118,7 @@
 			{
 				"id": "emptiness-comparison",
 				"rationale": "A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`.",
-				"count": 348
+				"count": 358
 			},
 			{
 				"id": "not-found-sentinel",
@@ -128,47 +128,47 @@
 			{
 				"id": "index-access",
 				"rationale": "An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes.",
-				"count": 1066
+				"count": 1083
 			},
 			{
 				"id": "loop-header",
 				"rationale": "An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy.",
-				"count": 210
+				"count": 236
 			},
 			{
 				"id": "accumulator-init",
 				"rationale": "A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted.",
-				"count": 250
+				"count": 262
 			},
 			{
 				"id": "counter-increment",
 				"rationale": "A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous.",
-				"count": 320
+				"count": 334
 			},
 			{
 				"id": "unit-conversion",
 				"rationale": "A multiply or divide by a unit constant — ms per second, seconds per minute, the 8-bit channel maximum, bytes per KiB. An identity of the units, not a choice.",
-				"count": 49
+				"count": 51
 			},
 			{
 				"id": "unit-clamp",
 				"rationale": "A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit.",
-				"count": 116
+				"count": 129
 			},
 			{
 				"id": "display-format",
 				"rationale": "A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes.",
-				"count": 305
+				"count": 325
 			},
 			{
 				"id": "display-interpolation",
 				"rationale": "A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted.",
-				"count": 230
+				"count": 257
 			},
 			{
 				"id": "slice-origin",
 				"rationale": "A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice.",
-				"count": 35
+				"count": 38
 			}
 		],
 		"skippedFiles": [
@@ -232,15 +232,15 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "oracle — premise",
-				"files": 19,
-				"tunableSites": 657,
+				"files": 20,
+				"tunableSites": 675,
 				"tagged": 59,
 				"decisionTraced": 0,
 				"documented": 59,
-				"untagged": 598,
+				"untagged": 616,
 				"anchored": 52,
-				"documentedFraction": 0.0898,
-				"anchoredFraction": 0.0791
+				"documentedFraction": 0.0874,
+				"anchoredFraction": 0.077
 			},
 			{
 				"area": "oracle/sam",
@@ -292,15 +292,15 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "contract schema + gates",
-				"files": 9,
-				"tunableSites": 285,
+				"files": 10,
+				"tunableSites": 293,
 				"tagged": 48,
 				"decisionTraced": 0,
 				"documented": 48,
-				"untagged": 237,
+				"untagged": 245,
 				"anchored": 14,
-				"documentedFraction": 0.1684,
-				"anchoredFraction": 0.0491
+				"documentedFraction": 0.1638,
+				"anchoredFraction": 0.0478
 			},
 			{
 				"area": "src/coverage-set",
@@ -322,14 +322,14 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "dev loop / code version (no CONVENTIONS row)",
-				"files": 7,
-				"tunableSites": 83,
-				"tagged": 20,
+				"files": 9,
+				"tunableSites": 107,
+				"tagged": 21,
 				"decisionTraced": 0,
-				"documented": 20,
-				"untagged": 63,
+				"documented": 21,
+				"untagged": 86,
 				"anchored": 0,
-				"documentedFraction": 0.241,
+				"documentedFraction": 0.1963,
 				"anchoredFraction": 0
 			},
 			{
@@ -382,12 +382,12 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "result fingerprints",
-				"files": 1,
-				"tunableSites": 1,
+				"files": 2,
+				"tunableSites": 3,
 				"tagged": 0,
 				"decisionTraced": 0,
 				"documented": 0,
-				"untagged": 1,
+				"untagged": 3,
 				"anchored": 0,
 				"documentedFraction": 0,
 				"anchoredFraction": 0
@@ -398,44 +398,44 @@
 				"configured": true,
 				"workstream": "review server",
 				"files": 26,
-				"tunableSites": 825,
-				"tagged": 82,
+				"tunableSites": 819,
+				"tagged": 81,
 				"decisionTraced": 0,
-				"documented": 82,
-				"untagged": 743,
-				"anchored": 26,
-				"documentedFraction": 0.0994,
-				"anchoredFraction": 0.0315
+				"documented": 81,
+				"untagged": 738,
+				"anchored": 25,
+				"documentedFraction": 0.0989,
+				"anchoredFraction": 0.0305
 			},
 			{
 				"area": "src/robustness",
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "robustness comparison (no CONVENTIONS row)",
-				"files": 4,
-				"tunableSites": 33,
-				"tagged": 9,
+				"files": 9,
+				"tunableSites": 67,
+				"tagged": 16,
 				"decisionTraced": 0,
-				"documented": 9,
-				"untagged": 24,
-				"anchored": 2,
-				"documentedFraction": 0.2727,
-				"anchoredFraction": 0.0606
+				"documented": 16,
+				"untagged": 51,
+				"anchored": 3,
+				"documentedFraction": 0.2388,
+				"anchoredFraction": 0.0448
 			},
 			{
 				"area": "src/stats",
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "shared statistics (no CONVENTIONS row)",
-				"files": 10,
-				"tunableSites": 157,
-				"tagged": 40,
+				"files": 12,
+				"tunableSites": 328,
+				"tagged": 45,
 				"decisionTraced": 0,
-				"documented": 40,
-				"untagged": 117,
-				"anchored": 5,
-				"documentedFraction": 0.2548,
-				"anchoredFraction": 0.0318
+				"documented": 45,
+				"untagged": 283,
+				"anchored": 8,
+				"documentedFraction": 0.1372,
+				"anchoredFraction": 0.0244
 			},
 			{
 				"area": "src/tagging",
@@ -666,6 +666,12 @@
 				"tunableSites": 28,
 				"documented": 0,
 				"untagged": 28
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"tunableSites": 18,
+				"documented": 0,
+				"untagged": 18
 			},
 			{
 				"file": "oracle/premise/analyze_gold30_variants.py",
@@ -1167,15 +1173,21 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"tunableSites": 14,
+				"tunableSites": 19,
 				"documented": 0,
-				"untagged": 14
+				"untagged": 19
 			},
 			{
 				"file": "src/contract/ramp.ts",
 				"tunableSites": 14,
 				"documented": 0,
 				"untagged": 14
+			},
+			{
+				"file": "src/contract/scorecard.ts",
+				"tunableSites": 3,
+				"documented": 0,
+				"untagged": 3
 			},
 			{
 				"file": "src/coverage-set/build-coverage-set.ts",
@@ -1210,8 +1222,8 @@
 			{
 				"file": "src/devloop/cache.ts",
 				"tunableSites": 2,
-				"documented": 1,
-				"untagged": 1
+				"documented": 2,
+				"untagged": 0
 			},
 			{
 				"file": "src/devloop/candidates/toy-median-offsets.ts",
@@ -1227,15 +1239,21 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"tunableSites": 12,
+				"tunableSites": 13,
 				"documented": 0,
-				"untagged": 12
+				"untagged": 13
 			},
 			{
 				"file": "src/devloop/run.ts",
 				"tunableSites": 16,
 				"documented": 0,
 				"untagged": 16
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"tunableSites": 23,
+				"documented": 0,
+				"untagged": 23
 			},
 			{
 				"file": "src/devloop/worker.ts",
@@ -1292,6 +1310,12 @@
 				"untagged": 41
 			},
 			{
+				"file": "src/provenance/decode_py.py",
+				"tunableSites": 2,
+				"documented": 0,
+				"untagged": 2
+			},
+			{
 				"file": "src/provenance/header.ts",
 				"tunableSites": 1,
 				"documented": 0,
@@ -1305,9 +1329,9 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"tunableSites": 81,
-				"documented": 14,
-				"untagged": 67
+				"tunableSites": 75,
+				"documented": 13,
+				"untagged": 62
 			},
 			{
 				"file": "src/review-server/analyze-bracketing.ts",
@@ -1436,6 +1460,12 @@
 				"untagged": 9
 			},
 			{
+				"file": "src/robustness/check.ts",
+				"tunableSites": 6,
+				"documented": 1,
+				"untagged": 5
+			},
+			{
 				"file": "src/robustness/compare.ts",
 				"tunableSites": 1,
 				"documented": 0,
@@ -1443,9 +1473,9 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"tunableSites": 21,
+				"tunableSites": 25,
 				"documented": 5,
-				"untagged": 16
+				"untagged": 20
 			},
 			{
 				"file": "src/robustness/perturb.ts",
@@ -1454,16 +1484,28 @@
 				"untagged": 7
 			},
 			{
+				"file": "src/robustness/perturbation-set.ts",
+				"tunableSites": 16,
+				"documented": 4,
+				"untagged": 12
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"tunableSites": 8,
+				"documented": 2,
+				"untagged": 6
+			},
+			{
 				"file": "src/stats/agreement.ts",
-				"tunableSites": 5,
-				"documented": 0,
-				"untagged": 5
+				"tunableSites": 9,
+				"documented": 1,
+				"untagged": 8
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"tunableSites": 25,
+				"tunableSites": 28,
 				"documented": 2,
-				"untagged": 23
+				"untagged": 26
 			},
 			{
 				"file": "src/stats/bootstrap.ts",
@@ -1484,6 +1526,12 @@
 				"untagged": 5
 			},
 			{
+				"file": "src/stats/mcnemar.ts",
+				"tunableSites": 8,
+				"documented": 0,
+				"untagged": 8
+			},
+			{
 				"file": "src/stats/multiplicity.ts",
 				"tunableSites": 7,
 				"documented": 0,
@@ -1494,6 +1542,12 @@
 				"tunableSites": 83,
 				"documented": 32,
 				"untagged": 51
+			},
+			{
+				"file": "src/stats/stats.py",
+				"tunableSites": 156,
+				"documented": 4,
+				"untagged": 152
 			},
 			{
 				"file": "src/stats/truncation.ts",
@@ -1662,7 +1716,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 247,
+				"line": 277,
 				"column": 15,
 				"value": 0.0001,
 				"text": "1e-4",
@@ -1677,27 +1731,27 @@
 				]
 			},
 			{
-				"file": "src/contract/calibration/same-color-bar-translation.ts",
-				"line": 38,
-				"column": 26,
-				"value": 0.95047,
-				"text": "0.95047",
-				"name": "D65_WHITE_POINT",
-				"functionName": null,
-				"snippet": "const D65_WHITE_POINT = [0.95047, 1, 1.08883] as const",
-				"suspicion": 7,
+				"file": "src/stats/stats.py",
+				"line": 352,
+				"column": 35,
+				"value": 0.0001,
+				"text": "1e-4",
+				"name": null,
+				"functionName": "format_p",
+				"snippet": "return \"<0.0001\" if p_value < 1e-4 else f\"{p_value:.4f}\"",
+				"suspicion": 8,
 				"flags": [
-					"float",
-					"in-numeric-sequence",
-					"screaming-case-name"
+					"comparison-operand",
+					"exponential",
+					"float"
 				]
 			},
 			{
 				"file": "src/contract/calibration/same-color-bar-translation.ts",
 				"line": 38,
-				"column": 38,
-				"value": 1.08883,
-				"text": "1.08883",
+				"column": 26,
+				"value": 0.95047,
+				"text": "0.95047",
 				"name": "D65_WHITE_POINT",
 				"functionName": null,
 				"snippet": "const D65_WHITE_POINT = [0.95047, 1, 1.08883] as const",
@@ -1827,13 +1881,29 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 247,
+				"line": 277,
 				"column": 15,
 				"value": 0.0001,
 				"text": "1e-4",
 				"name": null,
 				"functionName": "formatP",
 				"snippet": "if (pValue < 1e-4) return \"<0.0001\"",
+				"suspicion": 8,
+				"flags": [
+					"comparison-operand",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 352,
+				"column": 35,
+				"value": 0.0001,
+				"text": "1e-4",
+				"name": null,
+				"functionName": "format_p",
+				"snippet": "return \"<0.0001\" if p_value < 1e-4 else f\"{p_value:.4f}\"",
 				"suspicion": 8,
 				"flags": [
 					"comparison-operand",
@@ -1967,6 +2037,22 @@
 					"float",
 					"in-numeric-sequence",
 					"screaming-case-name"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 942,
+				"column": 78,
+				"value": 1e-12,
+				"text": "1e-12",
+				"name": "tolerance",
+				"functionName": "check",
+				"snippet": "def check(label: str, actual: float, expected: float, tolerance: float = 1e-12) -> None:",
+				"suspicion": 7,
+				"flags": [
+					"exponential",
+					"float",
+					"parameter-default"
 				]
 			},
 			{
@@ -4442,22 +4528,6 @@
 				]
 			},
 			{
-				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 787,
-				"column": 31,
-				"value": 1e-12,
-				"text": "1e-12",
-				"name": null,
-				"functionName": "cohenKappa",
-				"snippet": "if (Math.abs(1 - expected) < 1e-12) {",
-				"suspicion": 5,
-				"flags": [
-					"comparison-operand",
-					"exponential",
-					"float"
-				]
-			},
-			{
 				"file": "src/review-server/bracketing.ts",
 				"line": 563,
 				"column": 14,
@@ -4718,7 +4788,7 @@
 			},
 			{
 				"file": "src/stats/agreement.ts",
-				"line": 75,
+				"line": 100,
 				"column": 15,
 				"value": 0.95,
 				"text": "0.95",
@@ -4733,7 +4803,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 185,
+				"line": 210,
 				"column": 80,
 				"value": 0.95,
 				"text": "0.95",
@@ -4744,6 +4814,131 @@
 				"flags": [
 					"float",
 					"parameter-default"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 304,
+				"column": 70,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "confidence",
+				"functionName": "wilson_interval",
+				"snippet": "def wilson_interval(successes: int, trials: int, confidence: float = 0.95) -> WilsonInterval | Refusal:",
+				"suspicion": 5,
+				"flags": [
+					"float",
+					"parameter-default"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 328,
+				"column": 31,
+				"value": 0,
+				"text": "0",
+				"name": "low",
+				"functionName": "wilson_interval",
+				"snippet": "low = 0.0 if successes == 0 else max(0.0, centre - half)",
+				"suspicion": 5,
+				"flags": [
+					"comparison-operand",
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 520,
+				"column": 68,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "confidence",
+				"functionName": "bucketed_agreement",
+				"snippet": "def bucketed_agreement(buckets: Sequence[str], confidence: float = 0.95) -> BucketedAgreement:",
+				"suspicion": 5,
+				"flags": [
+					"float",
+					"parameter-default"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 965,
+				"column": 85,
+				"value": 1e-9,
+				"text": "1e-9",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(f\"round3 p {successes}/{trials}\", round(result.p_value, 6), expected, 1e-9)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 970,
+				"column": 87,
+				"value": 1e-9,
+				"text": "1e-9",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(f\"round3 wilson low {successes}/{trials}\", round(interval.low, 4), low, 1e-9)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 971,
+				"column": 90,
+				"value": 1e-9,
+				"text": "1e-9",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(f\"round3 wilson high {successes}/{trials}\", round(interval.high, 4), high, 1e-9)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 973,
+				"column": 58,
+				"value": 1e-9,
+				"text": "1e-9",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"z_for(0.95)\", z_for(0.95), 1.959963984540054, 1e-9)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 995,
+				"column": 77,
+				"value": 1e-9,
+				"text": "1e-9",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"historical uncorrected p\", round(historical.p_value, 4), 0.0172, 1e-9)",
+				"suspicion": 5,
+				"flags": [
+					"call-argument",
+					"exponential",
+					"float"
 				]
 			},
 			{
@@ -6542,6 +6737,229 @@
 				"flags": [
 					"comparison-operand",
 					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 142,
+				"column": 21,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": "z_for",
+				"snippet": "if confidence < 0.5:",
+				"suspicion": 4,
+				"flags": [
+					"comparison-operand",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 948,
+				"column": 21,
+				"value": 0.00390625,
+				"text": "0.00390625",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(9, 9, 0.5, 0.00390625),",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 949,
+				"column": 22,
+				"value": 0.34375,
+				"text": "0.34375",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(7, 10, 0.5, 0.34375),",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 950,
+				"column": 24,
+				"value": 0.056887933640982,
+				"text": "0.056887933640982",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(60, 100, 0.5, 0.056887933640982),",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 962,
+				"column": 50,
+				"value": 0.279956,
+				"text": "0.279956",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, expected in [(17, 42, 0.279956), (15, 21, 0.078354), (2, 21, 0.000221), (18, 42, 0.440799)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 962,
+				"column": 70,
+				"value": 0.078354,
+				"text": "0.078354",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, expected in [(17, 42, 0.279956), (15, 21, 0.078354), (2, 21, 0.000221), (18, 42, 0.440799)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 962,
+				"column": 89,
+				"value": 0.000221,
+				"text": "0.000221",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, expected in [(17, 42, 0.279956), (15, 21, 0.078354), (2, 21, 0.000221), (18, 42, 0.440799)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 962,
+				"column": 109,
+				"value": 0.440799,
+				"text": "0.440799",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, expected in [(17, 42, 0.279956), (15, 21, 0.078354), (2, 21, 0.000221), (18, 42, 0.440799)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 51,
+				"value": 0.2704,
+				"text": "0.2704",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 59,
+				"value": 0.5551,
+				"text": "0.5551",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 77,
+				"value": 0.5004,
+				"text": "0.5004",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 85,
+				"value": 0.8619,
+				"text": "0.8619",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 102,
+				"value": 0.0265,
+				"text": "0.0265",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 967,
+				"column": 110,
+				"value": 0.2891,
+				"text": "0.2891",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "for successes, trials, low, high in [(17, 42, 0.2704, 0.5551), (15, 21, 0.5004, 0.8619), (2, 21, 0.0265, 0.2891)]:",
+				"suspicion": 4,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
 				]
 			},
 			{
@@ -8840,6 +9258,50 @@
 				"snippet": "and (agree8 / comp8 >= 2 / 3 if comp8 else False)",
 				"suspicion": 3,
 				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 83,
+				"column": 17,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "norm",
+				"snippet": "if len(w) > 3 and w.endswith(\"s\") and not w.endswith(\"ss\"):",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 197,
+				"column": 81,
+				"value": 0,
+				"text": "0.0",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"covers_with_zero_overlap\": sum(1 for r in noun_rows if r[\"jaccard\"] == 0.0),",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 198,
+				"column": 73,
+				"value": 1,
+				"text": "1.0",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"covers_identical\": sum(1 for r in noun_rows if r[\"jaccard\"] == 1.0),",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
 					"comparison-operand"
 				]
 			},
@@ -12569,7 +13031,7 @@
 			},
 			{
 				"file": "src/contract/constants.ts",
-				"line": 546,
+				"line": 562,
 				"column": 41,
 				"value": 2048,
 				"text": "2048",
@@ -12584,7 +13046,7 @@
 			},
 			{
 				"file": "src/contract/constants.ts",
-				"line": 565,
+				"line": 581,
 				"column": 40,
 				"value": 4096,
 				"text": "4096",
@@ -12599,7 +13061,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 118,
+				"line": 182,
 				"column": 73,
 				"value": 0,
 				"text": "0",
@@ -12613,7 +13075,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 360,
+				"line": 424,
 				"column": 62,
 				"value": 2,
 				"text": "2",
@@ -12627,7 +13089,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 429,
+				"line": 493,
 				"column": 64,
 				"value": 0,
 				"text": "0",
@@ -12641,7 +13103,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 438,
+				"line": 502,
 				"column": 85,
 				"value": 0,
 				"text": "0",
@@ -12655,7 +13117,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 926,
+				"line": 1044,
 				"column": 62,
 				"value": 2,
 				"text": "2",
@@ -12669,7 +13131,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1087,
+				"line": 1297,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -12683,7 +13145,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1105,
+				"line": 1317,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -13104,21 +13566,6 @@
 				]
 			},
 			{
-				"file": "src/devloop/cache.ts",
-				"line": 73,
-				"column": 29,
-				"value": 1,
-				"text": "1",
-				"name": "CACHE_FORMAT",
-				"functionName": null,
-				"snippet": "export const CACHE_FORMAT = 1",
-				"suspicion": 3,
-				"flags": [
-					"named-constant",
-					"screaming-case-name"
-				]
-			},
-			{
 				"file": "src/devloop/candidates/toy-median-offsets.ts",
 				"line": 126,
 				"column": 19,
@@ -13191,7 +13638,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 140,
+				"line": 142,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -13205,7 +13652,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 158,
+				"line": 160,
 				"column": 72,
 				"value": 0,
 				"text": "0",
@@ -13219,7 +13666,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 165,
+				"line": 167,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -13233,7 +13680,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 214,
+				"line": 216,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -13247,7 +13694,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 295,
+				"line": 309,
 				"column": 51,
 				"value": 0,
 				"text": "0",
@@ -13261,7 +13708,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 348,
+				"line": 362,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -13275,7 +13722,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 481,
+				"line": 495,
 				"column": 17,
 				"value": -1,
 				"text": "1",
@@ -13290,7 +13737,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 523,
+				"line": 537,
 				"column": 30,
 				"value": 0,
 				"text": "0",
@@ -13300,6 +13747,35 @@
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 273,
+				"column": 25,
+				"value": 2,
+				"text": "2",
+				"name": null,
+				"functionName": null,
+				"snippet": "if (ids.length !== 2) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 371,
+				"column": 27,
+				"value": -1,
+				"text": "1",
+				"name": "runsRoot",
+				"functionName": null,
+				"snippet": "const runsRoot = at === -1 ? process.env.DEVLOOP_RUNS : process.argv[at + 1]",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand",
+					"negative"
 				]
 			},
 			{
@@ -14757,7 +15233,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 238,
+				"line": 247,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -14771,7 +15247,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 392,
+				"line": 401,
 				"column": 32,
 				"value": 64,
 				"text": "64",
@@ -14786,7 +15262,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 763,
+				"line": 772,
 				"column": 2,
 				"value": 11,
 				"text": "11",
@@ -14800,7 +15276,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 764,
+				"line": 773,
 				"column": 2,
 				"value": 12,
 				"text": "12",
@@ -14814,21 +15290,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 779,
-				"column": 12,
-				"value": 0,
-				"text": "0",
-				"name": null,
-				"functionName": "cohenKappa",
-				"snippet": "if (n === 0) return { kappa: null, n, raw: null, reason: \"no comparable rows\" }",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1284,
+				"line": 1302,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -14842,7 +15304,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1523,
+				"line": 1541,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -14856,7 +15318,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1690,
+				"line": 1708,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -14870,7 +15332,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1754,
+				"line": 1772,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -14884,7 +15346,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1797,
+				"line": 1815,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -14898,7 +15360,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1827,
+				"line": 1845,
 				"column": 20,
 				"value": 0,
 				"text": "0",
@@ -14912,7 +15374,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1836,
+				"line": 1854,
 				"column": 20,
 				"value": 0,
 				"text": "0",
@@ -14926,7 +15388,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1836,
+				"line": 1854,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -14940,7 +15402,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1880,
+				"line": 1898,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -14954,7 +15416,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1880,
+				"line": 1898,
 				"column": 75,
 				"value": 0,
 				"text": "0",
@@ -17451,6 +17913,48 @@
 				]
 			},
 			{
+				"file": "src/robustness/check.ts",
+				"line": 342,
+				"column": 80,
+				"value": 0,
+				"text": "0",
+				"name": "ratio",
+				"functionName": "stabilityRatioOver",
+				"snippet": "const ratio = reviewed.rate !== null && unseen.rate !== null && unseen.rate > 0 ? reviewed.rate / unseen.rate : null",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/check.ts",
+				"line": 364,
+				"column": 56,
+				"value": 0,
+				"text": "0",
+				"name": "rate",
+				"functionName": null,
+				"snippet": "return { role, disagreed, compared, rate: compared > 0 ? disagreed / compared : null }",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/check.ts",
+				"line": 423,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "errors",
+				"functionName": "formatRate",
+				"snippet": "const errors = rate.errored > 0 ? `, ${rate.errored} errored` : \"\"",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
 				"file": "src/robustness/compare.ts",
 				"line": 90,
 				"column": 67,
@@ -17466,7 +17970,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 228,
+				"line": 260,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -17480,7 +17984,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 228,
+				"line": 260,
 				"column": 30,
 				"value": 0,
 				"text": "0",
@@ -17521,8 +18025,64 @@
 				]
 			},
 			{
+				"file": "src/robustness/stats.ts",
+				"line": 34,
+				"column": 16,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "wilsonInterval",
+				"snippet": "if (trials <= 0) return null",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"line": 58,
+				"column": 20,
+				"value": 0,
+				"text": "0",
+				"name": "rate",
+				"functionName": "agreementRate",
+				"snippet": "rate: compared > 0 ? agreed / compared : null,",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
 				"file": "src/stats/agreement.ts",
-				"line": 99,
+				"line": 129,
+				"column": 13,
+				"value": 0,
+				"text": "0",
+				"name": "decidedRateReliable",
+				"functionName": "bucketedAgreement",
+				"snippet": "total === 0 ? false : cantTell / total <= ESCAPE_SHARE_NO_RELIABLE_RATE_ABOVE && decided > 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 129,
+				"column": 94,
+				"value": 0,
+				"text": "0",
+				"name": "decidedRateReliable",
+				"functionName": "bucketedAgreement",
+				"snippet": "total === 0 ? false : cantTell / total <= ESCAPE_SHARE_NO_RELIABLE_RATE_ABOVE && decided > 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 132,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -17536,22 +18096,8 @@
 			},
 			{
 				"file": "src/stats/agreement.ts",
-				"line": 104,
+				"line": 137,
 				"column": 18,
-				"value": 0,
-				"text": "0",
-				"name": null,
-				"functionName": "bucketedAgreement",
-				"snippet": "if (decided === 0 && total > 0) {",
-				"suspicion": 3,
-				"flags": [
-					"comparison-operand"
-				]
-			},
-			{
-				"file": "src/stats/agreement.ts",
-				"line": 104,
-				"column": 31,
 				"value": 0,
 				"text": "0",
 				"name": null,
@@ -17565,6 +18111,34 @@
 			{
 				"file": "src/stats/agreement.ts",
 				"line": 137,
+				"column": 31,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "bucketedAgreement",
+				"snippet": "if (decided === 0 && total > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 140,
+				"column": 14,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "bucketedAgreement",
+				"snippet": "if (total > 0 && cantTell / total > ESCAPE_SHARE_NO_RELIABLE_RATE_ABOVE) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 178,
 				"column": 25,
 				"value": 0,
 				"text": "0",
@@ -17578,7 +18152,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 76,
+				"line": 95,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -17592,7 +18166,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 76,
+				"line": 95,
 				"column": 32,
 				"value": 0,
 				"text": "0",
@@ -17606,7 +18180,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 79,
+				"line": 98,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -17620,7 +18194,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 79,
+				"line": 98,
 				"column": 51,
 				"value": 1,
 				"text": "1",
@@ -17634,7 +18208,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 87,
+				"line": 106,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -17648,7 +18222,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 148,
+				"line": 173,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -17662,7 +18236,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 148,
+				"line": 173,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -17676,7 +18250,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 149,
+				"line": 174,
 				"column": 12,
 				"value": 1,
 				"text": "1",
@@ -17690,7 +18264,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 189,
+				"line": 214,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -17704,7 +18278,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 189,
+				"line": 214,
 				"column": 32,
 				"value": 0,
 				"text": "0",
@@ -17718,13 +18292,27 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 193,
+				"line": 218,
 				"column": 17,
 				"value": 0,
 				"text": "0",
 				"name": null,
 				"functionName": "wilsonInterval",
 				"snippet": "if (trials === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/binomial.ts",
+				"line": 236,
+				"column": 28,
+				"value": 0,
+				"text": "0",
+				"name": "low",
+				"functionName": "wilsonInterval",
+				"snippet": "const low = successes === 0 ? 0 : clampUnit(centre - halfWidth)",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -17802,7 +18390,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 67,
+				"line": 85,
 				"column": 43,
 				"value": 0,
 				"text": "0",
@@ -17816,7 +18404,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 90,
+				"line": 116,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -17830,7 +18418,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 97,
+				"line": 123,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -17844,7 +18432,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 97,
+				"line": 123,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -17858,7 +18446,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 97,
+				"line": 123,
 				"column": 52,
 				"value": 0,
 				"text": "0",
@@ -17872,7 +18460,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 97,
+				"line": 123,
 				"column": 71,
 				"value": 0,
 				"text": "0",
@@ -17886,7 +18474,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 138,
+				"line": 164,
 				"column": 25,
 				"value": 0,
 				"text": "0",
@@ -17900,7 +18488,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 138,
+				"line": 164,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -17914,7 +18502,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 138,
+				"line": 164,
 				"column": 47,
 				"value": 0,
 				"text": "0",
@@ -17928,7 +18516,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 138,
+				"line": 164,
 				"column": 58,
 				"value": 0,
 				"text": "0",
@@ -17952,6 +18540,78 @@
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 76,
+				"column": 43,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "mcnemarExact",
+				"snippet": "if (!Number.isInteger(value) || value < 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 96,
+				"column": 21,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "mcnemarExact",
+				"snippet": "if (totalPairs === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 99,
+				"column": 26,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "mcnemarExact",
+				"snippet": "if (discordantPairs === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 114,
+				"column": 23,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "nullProbability",
+				"functionName": "mcnemarExact",
+				"snippet": "nullProbability: 0.5,",
+				"suspicion": 3,
+				"flags": [
+					"float",
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 121,
+				"column": 23,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "nullProbability",
+				"functionName": "mcnemarExact",
+				"snippet": "nullProbability: 0.5,",
+				"suspicion": 3,
+				"flags": [
+					"float",
+					"named-constant"
 				]
 			},
 			{
@@ -18207,8 +18867,593 @@
 				]
 			},
 			{
+				"file": "src/stats/stats.py",
+				"line": 105,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "log_choose",
+				"snippet": "if k < 0 or k > n:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 112,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "if k < 0 or k > n:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 114,
+				"column": 13,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "if p == 0.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 115,
+				"column": 28,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 116,
+				"column": 13,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "if p == 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 128,
+				"column": 12,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "probit",
+				"snippet": "if not 0.0 < p < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 128,
+				"column": 22,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "probit",
+				"snippet": "if not 0.0 < p < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 140,
+				"column": 12,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "z_for",
+				"snippet": "if not 0.0 < confidence < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 140,
+				"column": 31,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "z_for",
+				"snippet": "if not 0.0 < confidence < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 206,
+				"column": 20,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "exact_binomial_test",
+				"snippet": "if successes < 0 or trials < 0 or successes > trials:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 206,
+				"column": 34,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "exact_binomial_test",
+				"snippet": "if successes < 0 or trials < 0 or successes > trials:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 208,
+				"column": 12,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "exact_binomial_test",
+				"snippet": "if not 0.0 <= null_probability <= 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 208,
+				"column": 39,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "exact_binomial_test",
+				"snippet": "if not 0.0 <= null_probability <= 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 232,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "exact_binomial_test",
+				"snippet": "if trials == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 274,
+				"column": 13,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "if p == 0.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 275,
+				"column": 28,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 276,
+				"column": 13,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "if p == 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 313,
+				"column": 20,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "wilson_interval",
+				"snippet": "if successes < 0 or trials < 0 or successes > trials:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 313,
+				"column": 34,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "wilson_interval",
+				"snippet": "if successes < 0 or trials < 0 or successes > trials:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 316,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "wilson_interval",
+				"snippet": "if trials == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 419,
+				"column": 13,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "cohens_kappa",
+				"snippet": "if n == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 624,
+				"column": 20,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisher_exact_2x2",
+				"snippet": "if value < 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 640,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisher_exact_2x2",
+				"snippet": "if total == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 741,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "mcnemar_exact",
+				"snippet": "if total == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 743,
+				"column": 22,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "mcnemar_exact",
+				"snippet": "if discordant == 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 833,
+				"column": 26,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "sweep_then_test",
+				"snippet": "if comparisons_run < 0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 835,
+				"column": 12,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "sweep_then_test",
+				"snippet": "if not 0.0 < alpha < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 835,
+				"column": 26,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "sweep_then_test",
+				"snippet": "if not 0.0 < alpha < 1.0:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 959,
+				"column": 57,
+				"value": 0.0546875,
+				"text": "0.0546875",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"binomial one-sided 8/10\", one_sided.p_value, 0.0546875)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 973,
+				"column": 32,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "z_for",
+				"functionName": "_selftest",
+				"snippet": "check(\"z_for(0.95)\", z_for(0.95), 1.959963984540054, 1e-9)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 973,
+				"column": 39,
+				"value": 1.959963984540054,
+				"text": "1.959963984540054",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"z_for(0.95)\", z_for(0.95), 1.959963984540054, 1e-9)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 978,
+				"column": 46,
+				"value": 0.4857142857142857,
+				"text": "0.4857142857142857",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"fisher tea-tasting\", tea.p_value, 0.4857142857142857)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 984,
+				"column": 46,
+				"value": 0.22,
+				"text": "0.22",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"kappa worked table\", kappa.kappa, 0.22 / 0.42)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 984,
+				"column": 53,
+				"value": 0.42,
+				"text": "0.42",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"kappa worked table\", kappa.kappa, 0.22 / 0.42)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 993,
+				"column": 44,
+				"value": 0.6019,
+				"text": "0.6019",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "historical = exact_binomial_test(8, 8, 0.6019, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 995,
+				"column": 69,
+				"value": 0.0172,
+				"text": "0.0172",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"historical uncorrected p\", round(historical.p_value, 4), 0.0172, 1e-9)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 997,
+				"column": 41,
+				"value": 0.0172,
+				"text": "0.0172",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "[(\"D-multiple-distinct-fields\", 0.0172)],",
+				"suspicion": 3,
+				"flags": [
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1000,
+				"column": 15,
+				"value": 0.05,
+				"text": "0.05",
+				"name": "sweep_then_test",
+				"functionName": "_selftest",
+				"snippet": "alpha=0.05,",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1015,
+				"column": 32,
+				"value": 420,
+				"text": "420",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "if mcnemar.provenance.n != 420:",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1021,
+				"column": 64,
+				"value": 0.4,
+				"text": "0.4",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"agreement of all\", counted.agreement_of_all or 0.0, 0.4)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1022,
+				"column": 72,
+				"value": 0.8,
+				"text": "0.8",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"agreement of decided\", counted.agreement_of_decided or 0.0, 0.8)",
+				"suspicion": 3,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
 				"file": "src/stats/truncation.ts",
-				"line": 91,
+				"line": 116,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -18222,7 +19467,7 @@
 			},
 			{
 				"file": "src/stats/truncation.ts",
-				"line": 92,
+				"line": 117,
 				"column": 28,
 				"value": 0,
 				"text": "0",
@@ -18236,7 +19481,7 @@
 			},
 			{
 				"file": "src/stats/truncation.ts",
-				"line": 113,
+				"line": 143,
 				"column": 29,
 				"value": 0,
 				"text": "0",
@@ -18250,7 +19495,7 @@
 			},
 			{
 				"file": "src/stats/truncation.ts",
-				"line": 118,
+				"line": 148,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -19822,6 +21067,20 @@
 				"name": "pooled",
 				"functionName": "main",
 				"snippet": "n_rows_scope = {\"pooled\": 0, \"E\": 0, \"F\": 0}",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 186,
+				"column": 53,
+				"value": 1,
+				"text": "1.0",
+				"name": "jac",
+				"functionName": "main",
+				"snippet": "jac = len(inter) / len(union) if union else 1.0",
 				"suspicion": 2,
 				"flags": [
 					"named-constant"
@@ -22856,7 +24115,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 224,
+				"line": 288,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -22870,7 +24129,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 225,
+				"line": 289,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -22884,13 +24143,70 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1111,
+				"line": 1323,
+				"column": 15,
+				"value": 0,
+				"text": "0",
+				"name": "measured",
+				"functionName": "validateSourceSupport",
+				"snippet": "measured: 0,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/contract/invariants.ts",
+				"line": 1324,
+				"column": 10,
+				"value": 1,
+				"text": "1",
+				"name": "bar",
+				"functionName": "validateSourceSupport",
+				"snippet": "bar: 1,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/contract/invariants.ts",
+				"line": 1325,
+				"column": 14,
+				"value": -1,
+				"text": "1",
+				"name": "margin",
+				"functionName": "validateSourceSupport",
+				"snippet": "margin: -1,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant",
+					"negative"
+				]
+			},
+			{
+				"file": "src/contract/invariants.ts",
+				"line": 1333,
 				"column": 30,
 				"value": 0,
 				"text": "0",
 				"name": "occurrences",
 				"functionName": "validateSourceSupport",
 				"snippet": "{ hex: key, occurrences: 0 },",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/contract/invariants.ts",
+				"line": 1344,
+				"column": 9,
+				"value": 1,
+				"text": "1",
+				"name": "bar",
+				"functionName": "validateSourceSupport",
+				"snippet": "bar: 1,",
 				"suspicion": 2,
 				"flags": [
 					"named-constant"
@@ -22997,7 +24313,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 285,
+				"line": 299,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -23011,7 +24327,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 285,
+				"line": 299,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -23025,7 +24341,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 285,
+				"line": 299,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -23039,7 +24355,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 285,
+				"line": 299,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -23584,6 +24900,20 @@
 				]
 			},
 			{
+				"file": "src/provenance/decode_py.py",
+				"line": 48,
+				"column": 29,
+				"value": 3,
+				"text": "3",
+				"name": "channels",
+				"functionName": "decode",
+				"snippet": "\"channels\": 3,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
 				"file": "src/review-server/accent-functional.ts",
 				"line": 276,
 				"column": 34,
@@ -23613,7 +24943,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 426,
+				"line": 435,
 				"column": 56,
 				"value": 0,
 				"text": "0",
@@ -23627,7 +24957,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 426,
+				"line": 435,
 				"column": 76,
 				"value": 0,
 				"text": "0",
@@ -23641,7 +24971,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 426,
+				"line": 435,
 				"column": 90,
 				"value": 0,
 				"text": "0",
@@ -23655,7 +24985,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 426,
+				"line": 435,
 				"column": 105,
 				"value": 0,
 				"text": "0",
@@ -23669,7 +24999,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 426,
+				"line": 435,
 				"column": 124,
 				"value": 0,
 				"text": "0",
@@ -23683,7 +25013,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1130,
+				"line": 1148,
 				"column": 71,
 				"value": 0,
 				"text": "0",
@@ -23697,7 +25027,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1130,
+				"line": 1148,
 				"column": 88,
 				"value": 0,
 				"text": "0",
@@ -23711,7 +25041,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1130,
+				"line": 1148,
 				"column": 102,
 				"value": 0,
 				"text": "0",
@@ -23725,7 +25055,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1358,
+				"line": 1376,
 				"column": 63,
 				"value": 0,
 				"text": "0",
@@ -23739,7 +25069,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1358,
+				"line": 1376,
 				"column": 96,
 				"value": 0,
 				"text": "0",
@@ -23753,7 +25083,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1358,
+				"line": 1376,
 				"column": 105,
 				"value": 0,
 				"text": "0",
@@ -23767,7 +25097,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1363,
+				"line": 1381,
 				"column": 52,
 				"value": 0,
 				"text": "0",
@@ -23781,7 +25111,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1397,
+				"line": 1415,
 				"column": 65,
 				"value": 0,
 				"text": "0",
@@ -23795,7 +25125,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1397,
+				"line": 1415,
 				"column": 98,
 				"value": 0,
 				"text": "0",
@@ -23809,7 +25139,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1397,
+				"line": 1415,
 				"column": 107,
 				"value": 0,
 				"text": "0",
@@ -23823,7 +25153,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1402,
+				"line": 1420,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -23837,7 +25167,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1403,
+				"line": 1421,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -23851,7 +25181,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1403,
+				"line": 1421,
 				"column": 62,
 				"value": 0,
 				"text": "0",
@@ -23865,7 +25195,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1403,
+				"line": 1421,
 				"column": 80,
 				"value": 0,
 				"text": "0",
@@ -23879,7 +25209,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1403,
+				"line": 1421,
 				"column": 104,
 				"value": 0,
 				"text": "0",
@@ -23893,7 +25223,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1403,
+				"line": 1421,
 				"column": 125,
 				"value": 0,
 				"text": "0",
@@ -23907,7 +25237,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1581,
+				"line": 1599,
 				"column": 17,
 				"value": 0,
 				"text": "0",
@@ -23921,7 +25251,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1582,
+				"line": 1600,
 				"column": 22,
 				"value": 0,
 				"text": "0",
@@ -24756,6 +26086,323 @@
 				"snippet": "status: 0,",
 				"suspicion": 2,
 				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/check.ts",
+				"line": 115,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": "millis",
+				"functionName": null,
+				"snippet": "public millis = 0",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/check.ts",
+				"line": 489,
+				"column": 15,
+				"value": 0,
+				"text": "0",
+				"name": "relabelled",
+				"functionName": "check",
+				"snippet": "relabelled: 0,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 330,
+				"column": 61,
+				"value": 0,
+				"text": "0",
+				"name": "non-square",
+				"functionName": "buildPairSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 330,
+				"column": 82,
+				"value": 0,
+				"text": "0",
+				"name": "thumbnail-only",
+				"functionName": "buildPairSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 330,
+				"column": 106,
+				"value": 0,
+				"text": "0",
+				"name": "real-transparency",
+				"functionName": "buildPairSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 155,
+				"column": 61,
+				"value": 0,
+				"text": "0",
+				"name": "non-square",
+				"functionName": "buildPerturbationSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0, \"held-out\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 155,
+				"column": 82,
+				"value": 0,
+				"text": "0",
+				"name": "thumbnail-only",
+				"functionName": "buildPerturbationSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0, \"held-out\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 155,
+				"column": 106,
+				"value": 0,
+				"text": "0",
+				"name": "real-transparency",
+				"functionName": "buildPerturbationSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0, \"held-out\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 155,
+				"column": 121,
+				"value": 0,
+				"text": "0",
+				"name": "held-out",
+				"functionName": "buildPerturbationSet",
+				"snippet": "const dropCounts: Record<string, number> = { \"non-square\": 0, \"thumbnail-only\": 0, \"real-transparency\": 0, \"held-out\": 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 328,
+				"column": 11,
+				"value": 0,
+				"text": "0.0",
+				"name": "low",
+				"functionName": "wilson_interval",
+				"snippet": "low = 0.0 if successes == 0 else max(0.0, centre - half)",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 329,
+				"column": 12,
+				"value": 1,
+				"text": "1.0",
+				"name": "high",
+				"functionName": "wilson_interval",
+				"snippet": "high = 1.0 if successes == trials else min(1.0, centre + half)",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 669,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": "zero_cell",
+				"functionName": "fisher_exact_2x2",
+				"snippet": "zero_cell = 0 in (a, b, c, d)",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 948,
+				"column": 16,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(9, 9, 0.5, 0.00390625),",
+				"suspicion": 2,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 949,
+				"column": 17,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(7, 10, 0.5, 0.34375),",
+				"suspicion": 2,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 950,
+				"column": 19,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(60, 100, 0.5, 0.056887933640982),",
+				"suspicion": 2,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 951,
+				"column": 17,
+				"value": 0.5,
+				"text": "0.5",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "(5, 10, 0.5, 1.0),",
+				"suspicion": 2,
+				"flags": [
+					"float",
+					"in-numeric-sequence",
+					"loop-header"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 981,
+				"column": 32,
+				"value": 6,
+				"text": "6",
+				"name": "pairs",
+				"functionName": "_selftest",
+				"snippet": "pairs = [(\"yes\", \"yes\")] * 6 + [(\"no\", \"no\")] * 2 + [(\"yes\", \"no\"), (\"no\", \"yes\")]",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 981,
+				"column": 53,
+				"value": 2,
+				"text": "2",
+				"name": "pairs",
+				"functionName": "_selftest",
+				"snippet": "pairs = [(\"yes\", \"yes\")] * 6 + [(\"no\", \"no\")] * 2 + [(\"yes\", \"no\"), (\"no\", \"yes\")]",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1019,
+				"column": 31,
+				"value": 8,
+				"text": "8",
+				"name": "buckets",
+				"functionName": "_selftest",
+				"snippet": "buckets = [\"agreement\"] * 8 + [\"disagreement\"] * 2 + [\"cant_tell\"] * 10",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1019,
+				"column": 54,
+				"value": 2,
+				"text": "2",
+				"name": "buckets",
+				"functionName": "_selftest",
+				"snippet": "buckets = [\"agreement\"] * 8 + [\"disagreement\"] * 2 + [\"cant_tell\"] * 10",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1019,
+				"column": 74,
+				"value": 10,
+				"text": "10",
+				"name": "buckets",
+				"functionName": "_selftest",
+				"snippet": "buckets = [\"agreement\"] * 8 + [\"disagreement\"] * 2 + [\"cant_tell\"] * 10",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1033,
+				"column": 14,
+				"value": 31,
+				"text": "31",
+				"name": "checks",
+				"functionName": "_selftest",
+				"snippet": "checks = 31",
+				"suspicion": 2,
+				"flags": [
+					"accumulator-init",
 					"named-constant"
 				]
 			},
@@ -29095,6 +30742,51 @@
 				"snippet": "const q = p - 0.5",
 				"suspicion": 1,
 				"flags": [
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 755,
+				"column": 9,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "exact_binomial_test",
+				"functionName": "mcnemar_exact",
+				"snippet": "0.5,",
+				"suspicion": 1,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 957,
+				"column": 44,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "one_sided = exact_binomial_test(8, 10, 0.5, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 1,
+				"flags": [
+					"call-argument",
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 963,
+				"column": 57,
+				"value": 0.5,
+				"text": "0.5",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "result = exact_binomial_test(successes, trials, 0.5, \"two-sided\")",
+				"suspicion": 1,
+				"flags": [
+					"call-argument",
 					"float"
 				]
 			},
@@ -37295,6 +38987,200 @@
 			{
 				"file": "oracle/premise/analyze_cascade_ground_truth.py",
 				"line": 458,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 44,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": "sys.path.insert",
+				"functionName": null,
+				"snippet": "sys.path.insert(0, str(Path(__file__).resolve().parent))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 193,
+				"column": 35,
+				"value": 3,
+				"text": "3",
+				"name": "round",
+				"functionName": "main",
+				"snippet": "\"jaccard\": round(jac, 3),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 196,
+				"column": 53,
+				"value": 3,
+				"text": "3",
+				"name": "round",
+				"functionName": "main",
+				"snippet": "\"mean_jaccard\": round(jac_sum / len(order), 3),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 197,
+				"column": 41,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"covers_with_zero_overlap\": sum(1 for r in noun_rows if r[\"jaccard\"] == 0.0),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 198,
+				"column": 33,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"covers_identical\": sum(1 for r in noun_rows if r[\"jaccard\"] == 1.0),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 199,
+				"column": 89,
+				"value": 2,
+				"text": "2",
+				"name": "round",
+				"functionName": "main",
+				"snippet": "\"mean_len_glm\": round(sum(len(r[\"glm_J\"]) for r in noun_rows) / len(noun_rows), 2),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 200,
+				"column": 91,
+				"value": 2,
+				"text": "2",
+				"name": "round",
+				"functionName": "main",
+				"snippet": "\"mean_len_qwen\": round(sum(len(r[\"qwen_J\"]) for r in noun_rows) / len(noun_rows), 2),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 243,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "qk.split",
+				"functionName": "main",
+				"snippet": "tag = qk.split(\".\", 1)[1]",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 314,
+				"column": 58,
+				"value": 3,
+				"text": "3",
+				"name": "round",
+				"functionName": "main",
+				"snippet": "round(both_wrong / (both_wrong + qwen_only), 3) if (both_wrong + qwen_only) else None),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 322,
+				"column": 26,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"n\": sum(1 for s in scored if s[\"item_type\"] == t),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 323,
+				"column": 36,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"glm_correct\": sum(1 for s in scored if s[\"item_type\"] == t and s[\"glm_correct\"]),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 324,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"qwen_correct\": sum(1 for s in scored if s[\"item_type\"] == t and s[\"qwen_correct\"]),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 325,
+				"column": 35,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "main",
+				"snippet": "\"both_wrong\": sum(1 for s in scored",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "oracle/premise/analyze_glm_probe.py",
+				"line": 372,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -51361,7 +53247,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 328,
+				"line": 392,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -51373,7 +53259,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1077,
+				"line": 1287,
 				"column": 55,
 				"value": 0,
 				"text": "0",
@@ -51387,7 +53273,7 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1084,
+				"line": 1294,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -51399,13 +53285,25 @@
 			},
 			{
 				"file": "src/contract/invariants.ts",
-				"line": 1104,
+				"line": 1314,
 				"column": 36,
 				"value": 0,
 				"text": "0",
 				"name": "count",
 				"functionName": "validateSourceSupport",
 				"snippet": "const count = counts.get(key) ?? 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/contract/invariants.ts",
+				"line": 1345,
+				"column": 20,
+				"value": 1,
+				"text": "1",
+				"name": "margin",
+				"functionName": "validateSourceSupport",
+				"snippet": "margin: count - 1,",
 				"suspicion": 0,
 				"flags": []
 			},
@@ -51502,6 +53400,44 @@
 				"name": "minRawContrastOverRamp",
 				"functionName": "firstInvisibleAccentOnRamp",
 				"snippet": "const closest = minRawContrastOverRamp(accent, stops, samplesPerSegment, 0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/contract/scorecard.ts",
+				"line": 187,
+				"column": 85,
+				"value": 0,
+				"text": "0",
+				"name": "map.set",
+				"functionName": null,
+				"snippet": "const codes = [...failures.reduce((map, v) => map.set(v.code, (map.get(v.code) ?? 0) + 1), new Map<string, number>())]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/contract/scorecard.ts",
+				"line": 187,
+				"column": 90,
+				"value": 1,
+				"text": "1",
+				"name": "map.set",
+				"functionName": null,
+				"snippet": "const codes = [...failures.reduce((map, v) => map.set(v.code, (map.get(v.code) ?? 0) + 1), new Map<string, number>())]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/contract/scorecard.ts",
+				"line": 231,
+				"column": 61,
+				"value": 0,
+				"text": "0",
+				"name": "invariants.reduce",
+				"functionName": "scorePalette",
+				"snippet": "judgments: invariants.reduce((n, i) => n + i.judgments, 0),",
 				"suspicion": 0,
 				"flags": [
 					"call-argument"
@@ -53191,7 +55127,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 108,
+				"line": 110,
 				"column": 13,
 				"value": -1,
 				"text": "1",
@@ -53206,7 +55142,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 159,
+				"line": 161,
 				"column": 61,
 				"value": 0,
 				"text": "0",
@@ -53218,7 +55154,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 160,
+				"line": 162,
 				"column": 10,
 				"value": -1,
 				"text": "1",
@@ -53232,7 +55168,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 166,
+				"line": 168,
 				"column": 92,
 				"value": 1,
 				"text": "1",
@@ -53244,7 +55180,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 166,
+				"line": 168,
 				"column": 97,
 				"value": -1,
 				"text": "1",
@@ -53258,7 +55194,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 167,
+				"line": 169,
 				"column": 45,
 				"value": -1,
 				"text": "1",
@@ -53272,7 +55208,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 167,
+				"line": 169,
 				"column": 84,
 				"value": 1,
 				"text": "1",
@@ -53284,7 +55220,7 @@
 			},
 			{
 				"file": "src/devloop/diff.ts",
-				"line": 167,
+				"line": 169,
 				"column": 88,
 				"value": 0,
 				"text": "0",
@@ -53295,8 +55231,22 @@
 				"flags": []
 			},
 			{
+				"file": "src/devloop/diff.ts",
+				"line": 270,
+				"column": 53,
+				"value": 2,
+				"text": "2",
+				"name": "process.argv.slice",
+				"functionName": null,
+				"snippet": "const [beforePath, afterPath] = process.argv.slice(2)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
 				"file": "src/devloop/run.ts",
-				"line": 295,
+				"line": 309,
 				"column": 44,
 				"value": 25,
 				"text": "25",
@@ -53308,7 +55258,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 481,
+				"line": 495,
 				"column": 43,
 				"value": 1,
 				"text": "1",
@@ -53320,7 +55270,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 490,
+				"line": 504,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -53332,7 +55282,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 496,
+				"line": 510,
 				"column": 10,
 				"value": 1,
 				"text": "1",
@@ -53344,7 +55294,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 506,
+				"line": 520,
 				"column": 10,
 				"value": 2,
 				"text": "2",
@@ -53356,7 +55306,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 523,
+				"line": 537,
 				"column": 34,
 				"value": 1,
 				"text": "1",
@@ -53368,7 +55318,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 523,
+				"line": 537,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -53380,7 +55330,7 @@
 			},
 			{
 				"file": "src/devloop/run.ts",
-				"line": 527,
+				"line": 541,
 				"column": 51,
 				"value": 2,
 				"text": "2",
@@ -53391,6 +55341,282 @@
 				"flags": [
 					"call-argument"
 				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 105,
+				"column": 58,
+				"value": 0,
+				"text": "0",
+				"name": "width",
+				"functionName": null,
+				"snippet": "width: row.palette?.metadata.sourceRendition.width ?? 0,",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 106,
+				"column": 60,
+				"value": 0,
+				"text": "0",
+				"name": "height",
+				"functionName": null,
+				"snippet": "height: row.palette?.metadata.sourceRendition.height ?? 0,",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 159,
+				"column": 106,
+				"value": 0,
+				"text": "0",
+				"name": "width",
+				"functionName": null,
+				"snippet": "width: entry.after?.metadata.sourceRendition.width ?? entry.before?.metadata.sourceRendition.width ?? 0,",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 160,
+				"column": 109,
+				"value": 0,
+				"text": "0",
+				"name": "height",
+				"functionName": null,
+				"snippet": "height: entry.after?.metadata.sourceRendition.height ?? entry.before?.metadata.sourceRendition.height ?? 0,",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 210,
+				"column": 41,
+				"value": 1,
+				"text": "1",
+				"name": "runs.slice",
+				"functionName": "diffPairs",
+				"snippet": "const before = runs.slice(position + 1).find((candidate) => candidate.header.setHash === after.header.setHash)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 230,
+				"column": 11,
+				"value": 405,
+				"text": "405",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(405, \"the dev loop viewer is read-only\", \"text/plain; charset=utf-8\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 257,
+				"column": 15,
+				"value": 200,
+				"text": "200",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(200, { batches })",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 264,
+				"column": 16,
+				"value": 404,
+				"text": "404",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(404, { error: \"no such run\" })",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 267,
+				"column": 15,
+				"value": 200,
+				"text": "200",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(200, runPayload(run))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 274,
+				"column": 16,
+				"value": 400,
+				"text": "400",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(400, { error: `a diff id is <before>${DIFF_ID_SEPARATOR}<after>` })",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 280,
+				"column": 16,
+				"value": 404,
+				"text": "404",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(404, { error: \"one of those runs is not on disk\" })",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 283,
+				"column": 15,
+				"value": 200,
+				"text": "200",
+				"name": "sendJson",
+				"functionName": null,
+				"snippet": "sendJson(200, diffPayload(before, after))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 292,
+				"column": 12,
+				"value": 404,
+				"text": "404",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(404, \"no such row\", \"text/plain; charset=utf-8\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 295,
+				"column": 11,
+				"value": 200,
+				"text": "200",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(200, await readFile(row.imagePath), CONTENT_TYPES[extname(row.imagePath).toLowerCase()] ?? \"application/octet-stream\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 300,
+				"column": 11,
+				"value": 200,
+				"text": "200",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(200, await indexPage(await loadRuns(), diffPairs), CONTENT_TYPES[\".html\"])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 309,
+				"column": 11,
+				"value": 403,
+				"text": "403",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(403, \"no\", \"text/plain; charset=utf-8\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 312,
+				"column": 10,
+				"value": 200,
+				"text": "200",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send(200, await readFile(target), CONTENT_TYPES[extname(target).toLowerCase()] ?? \"application/octet-stream\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 315,
+				"column": 63,
+				"value": 404,
+				"text": "404",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send((error as NodeJS.ErrnoException).code === \"ENOENT\" ? 404 : 500, message, \"text/plain; charset=utf-8\")",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 315,
+				"column": 69,
+				"value": 500,
+				"text": "500",
+				"name": "send",
+				"functionName": null,
+				"snippet": "send((error as NodeJS.ErrnoException).code === \"ENOENT\" ? 404 : 500, message, \"text/plain; charset=utf-8\")",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 371,
+				"column": 76,
+				"value": 1,
+				"text": "1",
+				"name": "runsRoot",
+				"functionName": null,
+				"snippet": "const runsRoot = at === -1 ? process.env.DEVLOOP_RUNS : process.argv[at + 1]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/serve.ts",
+				"line": 373,
+				"column": 55,
+				"value": 8791,
+				"text": "8791",
+				"name": "Number",
+				"functionName": null,
+				"snippet": "const requested = Number(process.env.DEVLOOP_PORT ?? 8791)",
+				"suspicion": 0,
+				"flags": []
 			},
 			{
 				"file": "src/holdout/freeze-holdout.ts",
@@ -55479,6 +57705,18 @@
 				"flags": []
 			},
 			{
+				"file": "src/provenance/decode_py.py",
+				"line": 86,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/provenance/header.ts",
 				"line": 177,
 				"column": 82,
@@ -55750,7 +57988,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 231,
+				"line": 240,
 				"column": 49,
 				"value": 0,
 				"text": "0",
@@ -55764,7 +58002,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 232,
+				"line": 241,
 				"column": 59,
 				"value": 0,
 				"text": "0",
@@ -55778,7 +58016,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 234,
+				"line": 243,
 				"column": 61,
 				"value": 2,
 				"text": "2",
@@ -55790,7 +58028,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 519,
+				"line": 528,
 				"column": 98,
 				"value": 1,
 				"text": "1",
@@ -55802,7 +58040,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 547,
+				"line": 556,
 				"column": 31,
 				"value": 1,
 				"text": "1",
@@ -55814,7 +58052,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 555,
+				"line": 564,
 				"column": 111,
 				"value": -1,
 				"text": "1",
@@ -55828,7 +58066,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 555,
+				"line": 564,
 				"column": 115,
 				"value": 1,
 				"text": "1",
@@ -55840,7 +58078,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 594,
+				"line": 603,
 				"column": 31,
 				"value": 1,
 				"text": "1",
@@ -55852,45 +58090,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 786,
-				"column": 93,
-				"value": 0,
-				"text": "0",
-				"name": "values.reduce",
-				"functionName": "cohenKappa",
-				"snippet": "const expected = values.reduce((sum, value) => sum + left.get(value)! * right.get(value)!, 0)",
-				"suspicion": 0,
-				"flags": [
-					"call-argument"
-				]
-			},
-			{
-				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 787,
-				"column": 15,
-				"value": 1,
-				"text": "1",
-				"name": "Math.abs",
-				"functionName": "cohenKappa",
-				"snippet": "if (Math.abs(1 - expected) < 1e-12) {",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 790,
-				"column": 53,
-				"value": 1,
-				"text": "1",
-				"name": "Number",
-				"functionName": "cohenKappa",
-				"snippet": "return { kappa: Number(((agreed / n - expected) / (1 - expected)).toFixed(4)), n, raw, reason: null }",
-				"suspicion": 0,
-				"flags": []
-			},
-			{
-				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1171,
+				"line": 1189,
 				"column": 41,
 				"value": 0,
 				"text": "0",
@@ -55902,7 +58102,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1172,
+				"line": 1190,
 				"column": 51,
 				"value": 0,
 				"text": "0",
@@ -55914,7 +58114,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1175,
+				"line": 1193,
 				"column": 60,
 				"value": 0,
 				"text": "0",
@@ -55926,7 +58126,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1192,
+				"line": 1210,
 				"column": 79,
 				"value": 0,
 				"text": "0",
@@ -55938,7 +58138,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1192,
+				"line": 1210,
 				"column": 127,
 				"value": 0,
 				"text": "0",
@@ -55950,7 +58150,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1398,
+				"line": 1416,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -55962,7 +58162,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1409,
+				"line": 1427,
 				"column": 45,
 				"value": -1,
 				"text": "1",
@@ -55976,7 +58176,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1409,
+				"line": 1427,
 				"column": 49,
 				"value": 1,
 				"text": "1",
@@ -55988,7 +58188,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1418,
+				"line": 1436,
 				"column": 69,
 				"value": 0,
 				"text": "0",
@@ -56000,7 +58200,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1418,
+				"line": 1436,
 				"column": 74,
 				"value": 1,
 				"text": "1",
@@ -56012,7 +58212,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1419,
+				"line": 1437,
 				"column": 73,
 				"value": 0,
 				"text": "0",
@@ -56024,7 +58224,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1419,
+				"line": 1437,
 				"column": 78,
 				"value": 1,
 				"text": "1",
@@ -56036,7 +58236,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1542,
+				"line": 1560,
 				"column": 73,
 				"value": 0,
 				"text": "0",
@@ -56050,7 +58250,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1597,
+				"line": 1615,
 				"column": 108,
 				"value": 0,
 				"text": "0",
@@ -56062,7 +58262,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1597,
+				"line": 1615,
 				"column": 113,
 				"value": 1,
 				"text": "1",
@@ -56074,7 +58274,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1656,
+				"line": 1674,
 				"column": 86,
 				"value": 0,
 				"text": "0",
@@ -56086,7 +58286,7 @@
 			},
 			{
 				"file": "src/review-server/analyze-bcde-validation.ts",
-				"line": 1722,
+				"line": 1740,
 				"column": 38,
 				"value": 1,
 				"text": "1",
@@ -59768,7 +61968,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 226,
+				"line": 258,
 				"column": 61,
 				"value": 0,
 				"text": "0",
@@ -59782,7 +61982,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 229,
+				"line": 261,
 				"column": 54,
 				"value": 0,
 				"text": "0",
@@ -59796,7 +61996,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 246,
+				"line": 278,
 				"column": 28,
 				"value": -1,
 				"text": "1",
@@ -59810,7 +62010,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 246,
+				"line": 278,
 				"column": 32,
 				"value": 1,
 				"text": "1",
@@ -59822,7 +62022,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 253,
+				"line": 285,
 				"column": 39,
 				"value": 1,
 				"text": "1",
@@ -59834,7 +62034,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 307,
+				"line": 385,
 				"column": 50,
 				"value": -1,
 				"text": "1",
@@ -59848,7 +62048,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 307,
+				"line": 385,
 				"column": 76,
 				"value": 1,
 				"text": "1",
@@ -59860,7 +62060,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 307,
+				"line": 385,
 				"column": 80,
 				"value": 0,
 				"text": "0",
@@ -59872,7 +62072,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 340,
+				"line": 418,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -59884,7 +62084,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 342,
+				"line": 420,
 				"column": 49,
 				"value": -1,
 				"text": "1",
@@ -59898,7 +62098,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 342,
+				"line": 420,
 				"column": 53,
 				"value": 1,
 				"text": "1",
@@ -59910,7 +62110,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 346,
+				"line": 424,
 				"column": 47,
 				"value": -1,
 				"text": "1",
@@ -59924,7 +62124,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 346,
+				"line": 424,
 				"column": 73,
 				"value": 1,
 				"text": "1",
@@ -59936,7 +62136,7 @@
 			},
 			{
 				"file": "src/robustness/pair-set.ts",
-				"line": 346,
+				"line": 424,
 				"column": 77,
 				"value": 0,
 				"text": "0",
@@ -59945,6 +62145,20 @@
 				"snippet": "drawn.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
 				"suspicion": 0,
 				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 454,
+				"column": 106,
+				"value": 0,
+				"text": "0",
+				"name": "[...grouped.values()].reduce",
+				"functionName": "buildPairSet",
+				"snippet": "fileLevelPairsAfterHoldoutExclusion: [...grouped.values()].reduce((sum, g) => sum + g.records.length, 0),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
 			},
 			{
 				"file": "src/robustness/perturb.ts",
@@ -60011,8 +62225,158 @@
 				]
 			},
 			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 108,
+				"column": 72,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "const sorted = [...pool].sort((x, y) => (x.artworkId < y.artworkId ? -1 : x.artworkId > y.artworkId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 108,
+				"column": 104,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "const sorted = [...pool].sort((x, y) => (x.artworkId < y.artworkId ? -1 : x.artworkId > y.artworkId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 108,
+				"column": 108,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "const sorted = [...pool].sort((x, y) => (x.artworkId < y.artworkId ? -1 : x.artworkId > y.artworkId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 121,
+				"column": 31,
+				"value": 0,
+				"text": "0",
+				"name": "ideal",
+				"functionName": "drawStratifiedByTier",
+				"snippet": "const ideal = total === 0 ? 0 : Math.floor((population.length * quota) / total)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 138,
+				"column": 54,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "picked.sort((x, y) => (x.artworkId < y.artworkId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 138,
+				"column": 58,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "picked.sort((x, y) => (x.artworkId < y.artworkId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 187,
+				"column": 49,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "].sort((x, y) => (x.artworkId < y.artworkId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/perturbation-set.ts",
+				"line": 187,
+				"column": 53,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "].sort((x, y) => (x.artworkId < y.artworkId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"line": 37,
+				"column": 22,
+				"value": 1,
+				"text": "1",
+				"name": "denominator",
+				"functionName": "wilsonInterval",
+				"snippet": "const denominator = 1 + z2 / trials",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"line": 38,
+				"column": 36,
+				"value": 2,
+				"text": "2",
+				"name": "centre",
+				"functionName": "wilsonInterval",
+				"snippet": "const centre = proportion + z2 / (2 * trials)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"line": 39,
+				"column": 46,
+				"value": 1,
+				"text": "1",
+				"name": "Math.sqrt",
+				"functionName": "wilsonInterval",
+				"snippet": "const spread = z * Math.sqrt((proportion * (1 - proportion)) / trials + z2 / (4 * trials * trials))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/stats.ts",
+				"line": 39,
+				"column": 80,
+				"value": 4,
+				"text": "4",
+				"name": "Math.sqrt",
+				"functionName": "wilsonInterval",
+				"snippet": "const spread = z * Math.sqrt((proportion * (1 - proportion)) / trials + z2 / (4 * trials * trials))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/stats/binomial.ts",
-				"line": 91,
+				"line": 110,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -60026,7 +62390,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 148,
+				"line": 173,
 				"column": 32,
 				"value": 1,
 				"text": "1",
@@ -60038,7 +62402,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 148,
+				"line": 173,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -60050,7 +62414,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 149,
+				"line": 174,
 				"column": 32,
 				"value": 1,
 				"text": "1",
@@ -60062,7 +62426,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 149,
+				"line": 174,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -60074,7 +62438,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 151,
+				"line": 176,
 				"column": 32,
 				"value": 1,
 				"text": "1",
@@ -60086,7 +62450,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 197,
+				"line": 222,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -60100,7 +62464,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 203,
+				"line": 228,
 				"column": 41,
 				"value": 2,
 				"text": "2",
@@ -60112,7 +62476,7 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 205,
+				"line": 230,
 				"column": 90,
 				"value": 4,
 				"text": "4",
@@ -60124,7 +62488,31 @@
 			},
 			{
 				"file": "src/stats/binomial.ts",
-				"line": 253,
+				"line": 236,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "low",
+				"functionName": "wilsonInterval",
+				"snippet": "const low = successes === 0 ? 0 : clampUnit(centre - halfWidth)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/binomial.ts",
+				"line": 237,
+				"column": 38,
+				"value": 1,
+				"text": "1",
+				"name": "high",
+				"functionName": "wilsonInterval",
+				"snippet": "const high = successes === trials ? 1 : clampUnit(centre + halfWidth)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/binomial.ts",
+				"line": 283,
 				"column": 31,
 				"value": 100,
 				"text": "100",
@@ -60186,7 +62574,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 94,
+				"line": 120,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -60200,7 +62588,7 @@
 			},
 			{
 				"file": "src/stats/fisher.ts",
-				"line": 122,
+				"line": 148,
 				"column": 33,
 				"value": 1,
 				"text": "1",
@@ -60261,6 +62649,48 @@
 				"snippet": "const kappa = (rawAgreement - expectedAgreement) / (1 - expectedAgreement)",
 				"suspicion": 0,
 				"flags": []
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 97,
+				"column": 93,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "mcnemarExact",
+				"snippet": "return refuse(\"no-pairs\", \"McNemar not computed: there are no pairs.\", provenance(method, 0, inputs))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 103,
+				"column": 23,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "mcnemarExact",
+				"snippet": "provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/mcnemar.ts",
+				"line": 129,
+				"column": 76,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "mcnemarExact",
+				"snippet": "return refuse(\"no-discordant-pairs\", binomial.detail, provenance(method, 0, inputs))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
 			},
 			{
 				"file": "src/stats/multiplicity.ts",
@@ -60675,8 +63105,964 @@
 				"flags": []
 			},
 			{
+				"file": "src/stats/stats.py",
+				"line": 107,
+				"column": 28,
+				"value": 1,
+				"text": "1",
+				"name": "math.lgamma",
+				"functionName": "log_choose",
+				"snippet": "return math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 107,
+				"column": 49,
+				"value": 1,
+				"text": "1",
+				"name": "math.lgamma",
+				"functionName": "log_choose",
+				"snippet": "return math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 107,
+				"column": 74,
+				"value": 1,
+				"text": "1",
+				"name": "math.lgamma",
+				"functionName": "log_choose",
+				"snippet": "return math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 113,
+				"column": 16,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 115,
+				"column": 16,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 115,
+				"column": 35,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 117,
+				"column": 16,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 1.0 if k == n else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 117,
+				"column": 35,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "binomial_pmf",
+				"snippet": "return 1.0 if k == n else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 147,
+				"column": 19,
+				"value": 1,
+				"text": "1.0",
+				"name": "probit",
+				"functionName": "z_for",
+				"snippet": "return probit(1.0 - (1.0 - confidence) / 2.0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 147,
+				"column": 26,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "z_for",
+				"snippet": "return probit(1.0 - (1.0 - confidence) / 2.0)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 147,
+				"column": 46,
+				"value": 2,
+				"text": "2.0",
+				"name": "probit",
+				"functionName": "z_for",
+				"snippet": "return probit(1.0 - (1.0 - confidence) / 2.0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 229,
+				"column": 89,
+				"value": 0,
+				"text": "0",
+				"name": "int",
+				"functionName": "exact_binomial_test",
+				"snippet": "\"distinctUnits\": trials if trials_are_distinct_units else int(distinct_units or 0),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 237,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "exact_binomial_test",
+				"snippet": "Provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 241,
+				"column": 109,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "exact_binomial_test",
+				"snippet": "p_value = _stable_sum([binomial_pmf(i, trials, null_probability) for i in range(successes, trials + 1)])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 243,
+				"column": 89,
+				"value": 0,
+				"text": "0",
+				"name": "range",
+				"functionName": "exact_binomial_test",
+				"snippet": "p_value = _stable_sum([binomial_pmf(i, trials, null_probability) for i in range(0, successes + 1)])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 243,
+				"column": 104,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "exact_binomial_test",
+				"snippet": "p_value = _stable_sum([binomial_pmf(i, trials, null_probability) for i in range(0, successes + 1)])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 275,
+				"column": 16,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 275,
+				"column": 35,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "return 1.0 if k == 0 else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 277,
+				"column": 16,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "return 1.0 if k == n else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 277,
+				"column": 35,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "return 1.0 if k == n else 0.0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 279,
+				"column": 29,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "_two_sided",
+				"snippet": "threshold = observed * (1.0 + EXTREMENESS_RELATIVE_SLACK)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 281,
+				"column": 65,
+				"value": 0,
+				"text": "0",
+				"name": "range",
+				"functionName": "_two_sided",
+				"snippet": "[mass for mass in (binomial_pmf(i, n, p) for i in range(0, n + 1)) if mass <= threshold]",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 281,
+				"column": 72,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "_two_sided",
+				"snippet": "[mass for mass in (binomial_pmf(i, n, p) for i in range(0, n + 1)) if mass <= threshold]",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 320,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "wilson_interval",
+				"snippet": "Provenance(method, 0, {\"successes\": successes, \"trials\": trials, \"confidence\": confidence}),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 325,
+				"column": 39,
+				"value": 2,
+				"text": "2.0",
+				"name": null,
+				"functionName": "wilson_interval",
+				"snippet": "centre = (successes + z_squared / 2.0) / denominator",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 326,
+				"column": 98,
+				"value": 4,
+				"text": "4.0",
+				"name": "math.sqrt",
+				"functionName": "wilson_interval",
+				"snippet": "half = (z / denominator) * math.sqrt(successes * (trials - successes) / trials + z_squared / 4.0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 423,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "cohens_kappa",
+				"snippet": "Provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 425,
+				"column": 15,
+				"value": 0,
+				"text": "0",
+				"name": "KappaRefusal",
+				"functionName": "cohens_kappa",
+				"snippet": "n=0,",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 429,
+				"column": 18,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "cohens_kappa",
+				"snippet": "agreed = sum(1 for left, right in pairs if left == right)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 448,
+				"column": 30,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "cohens_kappa",
+				"snippet": "left_share = {value: sum(1 for left, _ in pairs if left == value) / n for value in categories}",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 449,
+				"column": 31,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "cohens_kappa",
+				"snippet": "right_share = {value: sum(1 for _, right in pairs if right == value) / n for value in categories}",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 452,
+				"column": 12,
+				"value": 1,
+				"text": "1.0",
+				"name": "abs",
+				"functionName": "cohens_kappa",
+				"snippet": "if abs(1.0 - expected) < DEGENERATE_EXPECTED_TOLERANCE:",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 463,
+				"column": 45,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "cohens_kappa",
+				"snippet": "kappa=(raw_agreement - expected) / (1.0 - expected),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 527,
+				"column": 21,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "bucketed_agreement",
+				"snippet": "agreement = sum(1 for bucket in buckets if bucket == \"agreement\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 528,
+				"column": 24,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "bucketed_agreement",
+				"snippet": "disagreement = sum(1 for bucket in buckets if bucket == \"disagreement\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 529,
+				"column": 21,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "bucketed_agreement",
+				"snippet": "cant_tell = sum(1 for bucket in buckets if bucket == \"cant_tell\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 641,
+				"column": 108,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "fisher_exact_2x2",
+				"snippet": "return Refusal(\"empty-table\", \"Fisher exact not computed: the table is empty.\", Provenance(method, 0, inputs))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 642,
+				"column": 8,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisher_exact_2x2",
+				"snippet": "if 0 in (row_one, row_two, column_one, column_two):",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 659,
+				"column": 71,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "fisher_exact_2x2",
+				"snippet": "p_value = _stable_sum([mass_at(x) for x in range(a, highest + 1)])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 661,
+				"column": 70,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "fisher_exact_2x2",
+				"snippet": "p_value = _stable_sum([mass_at(x) for x in range(lowest, a + 1)])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 663,
+				"column": 35,
+				"value": 1,
+				"text": "1.0",
+				"name": null,
+				"functionName": "fisher_exact_2x2",
+				"snippet": "threshold = mass_at(a) * (1.0 + EXTREMENESS_RELATIVE_SLACK)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 665,
+				"column": 76,
+				"value": 1,
+				"text": "1",
+				"name": "range",
+				"functionName": "fisher_exact_2x2",
+				"snippet": "[mass for mass in (mass_at(x) for x in range(lowest, highest + 1)) if mass <= threshold]",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 742,
+				"column": 100,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "mcnemar_exact",
+				"snippet": "return Refusal(\"no-pairs\", \"McNemar not computed: there are no pairs.\", Provenance(method, 0, inputs))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 749,
+				"column": 32,
+				"value": 0,
+				"text": "0",
+				"name": "Provenance",
+				"functionName": "mcnemar_exact",
+				"snippet": "Provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 875,
+				"column": 21,
+				"value": 1,
+				"text": "1",
+				"name": "sum",
+				"functionName": "sweep_then_test",
+				"snippet": "survivors = sum(1 for cell in corrected if cell.survives_correction)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 913,
+				"column": 17,
+				"value": 0,
+				"text": "0.0",
+				"name": null,
+				"functionName": "_adjust",
+				"snippet": "adjusted = [0.0] * len(cells)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 930,
+				"column": 81,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "_adjust",
+				"snippet": "running = min(running, min(1.0, cells[index][1] * family_size / (rank + 1)))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 957,
+				"column": 37,
+				"value": 8,
+				"text": "8",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "one_sided = exact_binomial_test(8, 10, 0.5, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 957,
+				"column": 40,
+				"value": 10,
+				"text": "10",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "one_sided = exact_binomial_test(8, 10, 0.5, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 976,
+				"column": 28,
+				"value": 3,
+				"text": "3",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "tea = fisher_exact_2x2(3, 1, 1, 3, \"two-sided\", pairing=\"independent-groups\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 976,
+				"column": 31,
+				"value": 1,
+				"text": "1",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "tea = fisher_exact_2x2(3, 1, 1, 3, \"two-sided\", pairing=\"independent-groups\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 976,
+				"column": 34,
+				"value": 1,
+				"text": "1",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "tea = fisher_exact_2x2(3, 1, 1, 3, \"two-sided\", pairing=\"independent-groups\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 976,
+				"column": 37,
+				"value": 3,
+				"text": "3",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "tea = fisher_exact_2x2(3, 1, 1, 3, \"two-sided\", pairing=\"independent-groups\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 993,
+				"column": 38,
+				"value": 8,
+				"text": "8",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "historical = exact_binomial_test(8, 8, 0.6019, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 993,
+				"column": 41,
+				"value": 8,
+				"text": "8",
+				"name": "exact_binomial_test",
+				"functionName": "_selftest",
+				"snippet": "historical = exact_binomial_test(8, 8, 0.6019, \"greater\", direction_fixed_in_advance=\"selftest\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 995,
+				"column": 65,
+				"value": 4,
+				"text": "4",
+				"name": "round",
+				"functionName": "_selftest",
+				"snippet": "check(\"historical uncorrected p\", round(historical.p_value, 4), 0.0172, 1e-9)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 998,
+				"column": 25,
+				"value": 364,
+				"text": "364",
+				"name": "sweep_then_test",
+				"functionName": "_selftest",
+				"snippet": "comparisons_run=364,",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1008,
+				"column": 31,
+				"value": 20012,
+				"text": "20012",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "paired = fisher_exact_2x2(20012, 4636, 20008, 4640, \"two-sided\", pairing=\"paired\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1008,
+				"column": 38,
+				"value": 4636,
+				"text": "4636",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "paired = fisher_exact_2x2(20012, 4636, 20008, 4640, \"two-sided\", pairing=\"paired\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1008,
+				"column": 44,
+				"value": 20008,
+				"text": "20008",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "paired = fisher_exact_2x2(20012, 4636, 20008, 4640, \"two-sided\", pairing=\"paired\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1008,
+				"column": 51,
+				"value": 4640,
+				"text": "4640",
+				"name": "fisher_exact_2x2",
+				"functionName": "_selftest",
+				"snippet": "paired = fisher_exact_2x2(20012, 4636, 20008, 4640, \"two-sided\", pairing=\"paired\")",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1013,
+				"column": 29,
+				"value": 19800,
+				"text": "19800",
+				"name": "mcnemar_exact",
+				"functionName": "_selftest",
+				"snippet": "mcnemar = mcnemar_exact(19800, 212, 208, 4428)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1013,
+				"column": 36,
+				"value": 212,
+				"text": "212",
+				"name": "mcnemar_exact",
+				"functionName": "_selftest",
+				"snippet": "mcnemar = mcnemar_exact(19800, 212, 208, 4428)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1013,
+				"column": 41,
+				"value": 208,
+				"text": "208",
+				"name": "mcnemar_exact",
+				"functionName": "_selftest",
+				"snippet": "mcnemar = mcnemar_exact(19800, 212, 208, 4428)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1013,
+				"column": 46,
+				"value": 4428,
+				"text": "4428",
+				"name": "mcnemar_exact",
+				"functionName": "_selftest",
+				"snippet": "mcnemar = mcnemar_exact(19800, 212, 208, 4428)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1021,
+				"column": 59,
+				"value": 0,
+				"text": "0.0",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"agreement of all\", counted.agreement_of_all or 0.0, 0.4)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1022,
+				"column": 67,
+				"value": 0,
+				"text": "0.0",
+				"name": "check",
+				"functionName": "_selftest",
+				"snippet": "check(\"agreement of decided\", counted.agreement_of_decided or 0.0, 0.8)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1027,
+				"column": 53,
+				"value": 4,
+				"text": "4",
+				"name": "bucketed_agreement",
+				"functionName": "_selftest",
+				"snippet": "above_half = bucketed_agreement([\"agreement\"] * 4 + [\"cant_tell\"] * 6)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1027,
+				"column": 73,
+				"value": 6,
+				"text": "6",
+				"name": "bucketed_agreement",
+				"functionName": "_selftest",
+				"snippet": "above_half = bucketed_agreement([\"agreement\"] * 4 + [\"cant_tell\"] * 6)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1035,
+				"column": 12,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "return 1 if failures else 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/stats.py",
+				"line": 1035,
+				"column": 31,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "_selftest",
+				"snippet": "return 1 if failures else 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/stats/truncation.ts",
-				"line": 95,
+				"line": 120,
 				"column": 6,
 				"value": 0,
 				"text": "0",
