@@ -56,6 +56,15 @@ Shared machinery, two energies, two candidateIds:
 6. **Escape branch:** search in-artwork feasible set; only if EMPTY, evaluate the two escape
    configurations. Expected to essentially never fire (1,396/1,397 endorsed role colours are
    exact source triples).
+7. **Arm A's data term is the log of the field/ink/residual mixture, not the proposal's literal
+   mass-weighted sum of logs** (decided 2026-08-04 after implementation). The literal §2.3 form
+   double-counts: mass the field explains still enters the ink term at weight 1−π, so an ink
+   colour adjacent to a large field colour harvests the leak — measured to invert the arm's own
+   vivid-accent prediction (test d) by 2.6e-3 nats. The mixture is the genuine code length; the
+   split form is its Jensen upper bound. Same mechanism, correct arithmetic. Not escalated, per
+   the principles-bind-numbers-don't standard.
+8. **Ramp direction is profiled per evaluation** (the measurement's axis sign is a
+   measurement-side convention); the renderer's 135° rule governs presentation, not the energy.
 
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
