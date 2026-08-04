@@ -1,0 +1,356 @@
+{
+	"r2-item-0": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ed6ed5",
+				"name": "Passion Potion",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#0f0319",
+				"name": "Black Metal",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#fcffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#8b7156",
+				"name": "Dusty Khaki",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#ed6ed5",
+					"name": "Passion Potion",
+					"publishedPosition": 0,
+					"displayPosition": 0.1
+				},
+				{
+					"hex": "#4e273c",
+					"name": "Fruitcake",
+					"publishedPosition": 0.6875,
+					"displayPosition": 0.71875
+				},
+				{
+					"hex": "#1f3b12",
+					"name": "Forbidden Forest",
+					"publishedPosition": 0.71875,
+					"displayPosition": 0.746875
+				},
+				{
+					"hex": "#0f0319",
+					"name": "Black Metal",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #ed6ed5 10%, #4e273c 71.88%, #1f3b12 74.69%, #0f0319 100%)"
+	},
+	"r2-item-1": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#dedede",
+				"name": "Ivory",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#010000",
+				"name": "Pitch Black",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#c5c5c5",
+				"name": "Dim",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#ffffff",
+					"name": "Snow",
+					"publishedPosition": 0,
+					"displayPosition": 0.35
+				},
+				{
+					"hex": "#dedede",
+					"name": "Ivory",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #ffffff 35%, #dedede 100%)"
+	},
+	"r2-item-2": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#fdc99a",
+				"name": "Wheat",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#e55032",
+				"name": "Kimchi",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#96483c",
+				"name": "Auburn",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#f0a17a",
+				"name": "Bisque",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#fdc99a"
+	},
+	"r2-item-3": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#fdd001",
+				"name": "Taxi Yellow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#fe0000",
+				"name": "Torch Red",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#010101",
+				"name": "Soot",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#fbfcff",
+				"name": "Snow",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#fdd001"
+	},
+	"r2-item-4": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#4b4b4b",
+				"name": "Tuna",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#7a7a7a",
+				"name": "Sleepy Koala",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#f7fef6",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#000000",
+				"name": "Pitch Black",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#4b4b4b",
+					"name": "Tuna",
+					"publishedPosition": 0,
+					"displayPosition": 0.35
+				},
+				{
+					"hex": "#7a7a7a",
+					"name": "Sleepy Koala",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #4b4b4b 35%, #7a7a7a 100%)"
+	},
+	"r2-item-5": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#e9e6df",
+				"name": "Ivory",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#fb3f00",
+				"name": "Flame Scarlet",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#a1190d",
+				"name": "Ripasso",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#ee9269",
+				"name": "Salmon Nigiri",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#e9e6df"
+	},
+	"r2-item-6": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#5a0905",
+				"name": "Dark Rust",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#d4d0cd",
+				"name": "Zen",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#180f0a",
+				"name": "Iron Black",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#c2475c",
+				"name": "Tandoori",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#5a0905",
+					"name": "Dark Rust",
+					"publishedPosition": 0,
+					"displayPosition": 0.1
+				},
+				{
+					"hex": "#c00029",
+					"name": "Cherry Red",
+					"publishedPosition": 0.28125,
+					"displayPosition": 0.353125
+				},
+				{
+					"hex": "#77705e",
+					"name": "Secret Passage",
+					"publishedPosition": 0.4375,
+					"displayPosition": 0.49375
+				},
+				{
+					"hex": "#d4d0cd",
+					"name": "Zen",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #5a0905 10%, #c00029 35.31%, #77705e 49.38%, #d4d0cd 100%)"
+	},
+	"r2-item-7": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ededed",
+				"name": "Linen",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#f6f6f6",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#df525a",
+				"name": "Spritz",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#dee4c2",
+				"name": "Lamb's Ear",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#ededed"
+	},
+	"r2-item-8": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#170a02",
+				"name": "Asphalt",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#374d0d",
+				"name": "Pickle Brine",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#2a1e06",
+				"name": "Blackened Bronze",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#170a02"
+	}
+}
