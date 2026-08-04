@@ -10,6 +10,13 @@
  * The split form leaves one thing unstated: how ε is profiled. Both readings are reported —
  * ε minimising the split cost itself, and ε taken from the mixture profile — so the finding does not
  * turn on the choice.
+ *
+ * **Standing at energy `p1a-energy-0.2.0`.** The shipped side now carries the joint (colour, extent)
+ * code and the split form reimplemented here does not, so the two columns' *absolute* levels are no
+ * longer on one scale. The finding is unaffected, and checkably so: decision 7 is a statement about
+ * the sign of a gap *within* each form, and the two configurations compared differ only in the accent
+ * colour — they profile to the same split-scale rung (printed below), so the extent charge is a
+ * common additive that cancels out of both gaps. Read the two gaps, not the two levels.
  */
 
 import { mkdtemp, rm } from "node:fs/promises"
@@ -190,7 +197,9 @@ try {
 	console.log("  shipped mixture form:")
 	console.log(`    accent=VIVID  ${mv.total.toFixed(9)}   accent=DULL_SECOND ${md.total.toFixed(9)}`)
 	console.log(
-		`    winner ${mv.total < md.total ? "VIVID" : "DULL"}, gap ${Math.abs(mv.total - md.total).toExponential(3)} nats`,
+		`    winner ${mv.total < md.total ? "VIVID" : "DULL"}, gap ${Math.abs(mv.total - md.total).toExponential(3)} nats` +
+			`   profiled rung: VIVID ${mv.nuisance.splitScaleRung} DULL ${md.nuisance.splitScaleRung}` +
+			`   extent charge ${(mv.nuisance.extentSupportCost as number).toFixed(6)} / ${(md.nuisance.extentSupportCost as number).toFixed(6)}`,
 	)
 	console.log("\n  arm A §2.3 literal split form (ε profiled on the split cost):")
 	console.log(`    accent=VIVID  ${sv.total.toFixed(9)}   accent=DULL_SECOND ${sd.total.toFixed(9)}`)

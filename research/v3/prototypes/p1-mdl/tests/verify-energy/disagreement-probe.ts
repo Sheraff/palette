@@ -1,10 +1,17 @@
 /**
- * VERIFIER — follow-up on the three cross-energy ordering disagreements.
+ * VERIFIER — follow-up on the cross-energy ordering disagreements.
  *
  * Question 1: is the arm A ranking on the clean diptych an accident of λ = 1, or does it survive the
  * mandatory sweep λ ∈ {¼, ½, 1, 2, 4}?
  * Question 2: is it a property of arm A′'s fixture, or of arm A's energy? Probe arm A's *own*
  * two-band fixture with a flat configuration whose foreground names the second band.
+ *
+ * **Standing at energy `p1a-energy-0.2.0` (re-run 2026-08-04).** These two questions produced
+ * `DESIGN.md` decision 9; the joint (colour, extent) code answers them. The diptych now ranks
+ * two-flat first for λ ≤ 1 and the disagreement with arm A′ is gone — the sweep is kept because it is
+ * the shape of the finding, and because λ ≥ 2 flipping the diptych back is λ doing its job (Ω differs
+ * by 1 and the data gap is 1.2748) rather than the defect returning. The reproduction of the defect
+ * itself, measured by an implementation that never had the fix, is `diptych.ts`'s pre-fix control.
  */
 
 import { mkdtemp, rm } from "node:fs/promises"
@@ -84,7 +91,7 @@ try {
 			t1.terms.field + t1.terms.ink
 		).toFixed(6)}  → two-flat's data is better by ${(
 			f1.terms.field + f1.terms.ink - (t1.terms.field + t1.terms.ink)
-		).toFixed(6)} nats, i.e. it repays only λ < 0.0715.`,
+		).toFixed(6)} nats, which is the λ it repays up to (Ω differs by exactly 1).`,
 	)
 	console.log(
 		`  arm A nuisance: flat fieldMass ${f1.nuisance.fieldMassFraction.toFixed(4)} ink ${f1.nuisance.inkMassFraction.toFixed(

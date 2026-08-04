@@ -29,6 +29,13 @@ export function barOf(lab: readonly [number, number, number]): number {
 const TWO_PI_32 = (2 * Math.PI) ** 1.5
 const TRUNC_SQ = 8 * 8
 
+/**
+ * `w` — arm A §4.2's softness, "one ladder octave", stated with no digits attached
+ * (`constants.ts: FIELD_INK_SOFTNESS_OCTAVES`). Written here rather than imported: this file rebuilds
+ * the energy from the modules' *stated* formulas and must not inherit their arithmetic.
+ */
+const SOFTNESS_OCTAVES = 1
+
 // ============================================================================================
 // ARM A
 // ============================================================================================
@@ -47,6 +54,40 @@ export type ArmAResult = {
 	residualWeight: number
 	gamutVolume: number
 	dataCost: number
+	/** `Σ_c u_c·(−log m(ê_c))` — the extent half of the joint code, at the winning split scale. */
+	supportCost: number
+	/** `π₀ = σ((ŝ* − S/2)/w)` — the split scale read as the joint model's population prior. */
+	fieldPrior: number
+	/** `Σ_c π(c)·u_c` — the share of image mass the winning split scale puts in the field. */
+	fieldMassFraction: number
+}
+
+/**
+ * The extent half of arm A's joint (colour, extent) code, rebuilt from `support.ts`'s *stated*
+ * densities rather than from its arithmetic.
+ *
+ *     q_field(ê) = e^{−ê/2w} / Z      q_ink(ê) = e^{−(S−ê)/2w} / Z      Z = ∫₀^S e^{−u/2w} du
+ *     m(ê)       = π₀·q_field(ê) + (1−π₀)·q_ink(ê)          π₀ = σ((ŝ* − S/2)/w)
+ *
+ * `Z` is written in its closed form `2w(1 − e^{−S/2w})`, which is the integral above and not the
+ * `(1 − e^{−S·r})/r` the module happens to type. Returns `−log m(ê)` in nats.
+ */
+export function extentSupportNats(
+	rungs: Float64Array,
+	splitScaleRung: number,
+	rungCount: number,
+): { nats: Float64Array; fieldPrior: number } {
+	const w = SOFTNESS_OCTAVES
+	const S = rungCount
+	const Z = 2 * w * (1 - Math.exp(-S / (2 * w)))
+	const fieldPrior = 1 / (1 + Math.exp(-(splitScaleRung - S / 2) / w))
+	const nats = new Float64Array(rungs.length)
+	for (let r = 0; r < rungs.length; r += 1) {
+		const qField = Math.exp(-rungs[r] / (2 * w)) / Z
+		const qInk = Math.exp(-(S - rungs[r]) / (2 * w)) / Z
+		nats[r] = -Math.log(fieldPrior * qField + (1 - fieldPrior) * qInk)
+	}
+	return { nats, fieldPrior }
 }
 
 /** V, by the Kuhn-tetrahedra definition `gamut.ts` states, at the grid `constants.ts` names. */
@@ -152,7 +193,14 @@ export function armA(
 	measurement: Measurement,
 	config: Configuration,
 	lambda = 1.0,
+	/**
+	 * `withSupport: false` rebuilds the **pre-0.2.0** arm A — colour coded *given* a free extent map,
+	 * which is `DESIGN.md` decision 9's defect. Kept so the fix's before/after can be measured on one
+	 * fixture by one implementation, rather than compared against numbers quoted from a report.
+	 */
+	options: { withSupport?: boolean } = {},
 ): ArmAResult {
+	const withSupport = options.withSupport ?? true
 	const { colorCount: K, counts, pixelCount, lab } = measurement.triples
 	const rho0 = residualDensity()
 
@@ -276,6 +324,15 @@ export function armA(
 			fieldMass[r] = pi[r] * massShare[r]
 			fieldFraction += fieldMass[r]
 		}
+		// The extent half of the joint code. It depends on the split scale and the image's extents only,
+		// so it is computed once per grid point and added to the conditional colour cost.
+		const support = extentSupportNats(rungs, s, rungCount)
+		if (!withSupport) support.nats.fill(0)
+		let supportCost = 0
+		for (let r = 0; r < K; r += 1) {
+			if (massShare[r] === 0) continue
+			supportCost += massShare[r] * support.nats[r]
+		}
 		const candidateCount = order === "ramp" ? rampCands.length : 1
 		for (let cand = 0; cand < candidateCount; cand += 1) {
 			let fieldDensity: Float64Array
@@ -334,7 +391,12 @@ export function armA(
 				}
 			}
 
-			if (best === null || cost < best.dataCost) {
+			// ε is profiled on the conditional colour code alone — `m(ê)` has no ε in it, so it is an
+			// additive constant in the log-likelihood the EM maximises. The profile then *selects* on the
+			// joint cost, which is what makes a convenient split scale unaffordable.
+			const jointCost = cost + supportCost
+
+			if (best === null || jointCost < best.dataCost) {
 				// attribute the data cost to the two populations, exactly as `attributeCost` does
 				const modelShare = 1 - eps
 				const residualPart = eps * rho0
@@ -345,7 +407,10 @@ export function armA(
 					const fp = pi[r] * (modelShare * fieldDensity[r] + residualPart)
 					const ip = (1 - pi[r]) * (modelShare * inkModel[r] + residualPart)
 					const tot = fp + ip
-					const c = massShare[r] * -Math.log(tot)
+					// The joint's per-triple cost: `−log ρ(c|ê) + (−log m(ê))`. `m(ê)` is a common factor of
+					// both populations' contributions, so it does not move the ratio — it enlarges the cost
+					// that ratio then splits, which is how a broad triple called ink pays inside `terms.ink`.
+					const c = massShare[r] * (-Math.log(tot) + support.nats[r])
 					fieldCost += c * (fp / tot)
 					inkCost += c * (1 - fp / tot)
 				}
@@ -362,7 +427,10 @@ export function armA(
 					direction: order === "ramp" ? rampCands[cand].direction : "none",
 					residualWeight: eps,
 					gamutVolume: cachedVolume as number,
-					dataCost: cost,
+					dataCost: jointCost,
+					supportCost,
+					fieldPrior: support.fieldPrior,
+					fieldMassFraction: fieldFraction,
 				}
 			}
 		}
