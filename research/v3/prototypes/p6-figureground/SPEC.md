@@ -67,6 +67,15 @@ images; `tools/sensitivity.ts`. Nothing in wave 2 starts until wave 1 reports.
    locally as `[INHERITED]` 2.5×. Do not fork it a second time: wave-2 modules import W3's. Hoisting
    into the shared contract is reported upward, not done locally.
 
+5. **CandidateStats normalisation semantics (W2 → W4, must be confirmed at integration).**
+   `inkEnergy`/`markEnergy` are *unnormalised* area integrals — divide by `presence` for a
+   per-mass mean; `spatialSpread` is normalised so 1.0 = uniform frame-wide fill. The energy's
+   role-fitness terms must state which form they consume; a silent mismatch rescales two terms
+   against the rest and would masquerade as an exchange-rate problem.
+6. **Splat cost scales with distinct-triple count** (W2): heavily dithered covers K≈4×10⁵ →
+   ~660 ms, adversarial full-gamut noise → 1.6 s. Under the 2 s defect line, over the proposal's
+   price; integration measures the real demo-20/coverage distribution and reports the tail.
+
 ## Performance envelope
 
 Proposal §5 prices 1000×1000 at ≈0.4 s single-threaded. Treat >2 s at that size as a defect to
