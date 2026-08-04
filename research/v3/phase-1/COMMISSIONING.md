@@ -39,6 +39,46 @@ six have landed.
 | **E** | full | **None.** No direction is given. E is the control on the seats: if E lands somewhere none of A–D would have reached, the seats cost us a paradigm; if it lands on top of one of them, the seats bought spread for free. |
 | **F** | **blind** — §2 and §3 of the brief only | **None.** F is the control on the brief itself, per `PHASE_1_AUTHOR_BRIEF.md` §8. |
 
+### 2.1 Round 2 — the primes, commissioned on the reviewer's direction
+
+**Reviewer, 2026-08-04, after round 1 landed and a replication of arm B alone was proposed:**
+*"if you're re-running B, we might as well re-run every other arm. It will give us more diversity
+in the result, doubling our pool of ideas."*
+
+So every arm runs a second time — `arm-a-prime` … `arm-f-prime` — twelve proposals in total. The
+directive is about the idea pool, and it also buys a measurement nobody had commissioned: **whether
+a seat determines its paradigm, or merely narrows it.** If A and A′ land on the same mechanism, the
+seat did the work; if they diverge, the space inside that seat is wider than one proposal showed.
+Round 1 already indicates the variance is large — E and B landed structurally adjacent from
+completely different prompts — so identical prompts were expected to produce diversity on their
+own.
+
+**The primes are therefore prompt-identical to their originals, deliberately.** Varying the prompts
+would have bought a little more spread at the cost of the replication read, and the spread was
+coming anyway. **Three differences exist and are listed here rather than discovered later:**
+
+1. **The packet's manifests are de-leaked.** Round 1's `packet/MANIFEST.json` disclosed withheld
+   findings and the roster (§3.2). Round 2 runs against a packet verified clean against 73
+   disclosure markers. This is the single most consequential difference and it is the one that
+   makes B′ worth running at all.
+2. **The confinement rule now names the proposals directory explicitly** — "not even to check your
+   output path". Two round-1 arms tripped exactly there, both self-disclosing; the rule was
+   ambiguous rather than the arms careless.
+3. **Cost sections must state the pixel count being priced.** Round 1's six cost figures were not
+   comparable — three arms named no image size at all, and the blind arm's estimate looked 2–4×
+   worse than its peers only because it had priced a larger cover.
+
+Fixes 2 and 3 repair defects round 1 exposed. They mean the primes are **not a pure replication**,
+and any B-versus-B′ comparison must carry that caveat rather than attributing every difference to
+the leak.
+
+**One further change, for arm F′ only.** Round 1's blind packet lived at `phase-1/packet-blind/`,
+which told arm F it was the blind arm before it opened a single file — a disclosure strictly worse
+than the manifest note that was stripped for the same reason, because an author cannot avoid seeing
+its own path. F′ reads from `phase-1/packet-two/`, a byte-identical copy under a name that says
+nothing. F's own exposure is recorded as none and nothing already measured changes; the rename
+protects the second control, and any future one.
+
 **Seats are directions, not designs.** Each seat is stated above in full — one sentence, with no
 justification attached, because the justification would be a failure analysis and authors do not
 receive those (`PHASE_1_AUTHOR_BRIEF.md` §7). An author may reshape a seat and must say so if they
