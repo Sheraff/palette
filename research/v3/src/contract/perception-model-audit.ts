@@ -78,6 +78,122 @@ export const AUDIT_ROWS: readonly AuditRow[] = [
 			"question and it remains the cheapest thing that could retire the tripwire. PART 2 designs it.",
 		relatedLedger: ["B9", "B10", "B12", "d-2026-08-03-same-color-bar-freeze"],
 	},
+	// ---------------------------------------------------------------------------------------------
+	// The three challenger constants. Report-only by construction (`challengers.ts`), and audited
+	// anyway — an unenforced number that escapes the census is exactly the "constraint discovered
+	// late" the ruling that commissioned this table is about, and "it cannot affect a verdict today"
+	// is the same argument as "nobody has complained", which this table does not accept.
+	// ---------------------------------------------------------------------------------------------
+	{
+		id: "SAME_COLOR_DIRECTION_WEIGHTS",
+		value: "{ chroma: 8.29, hue: 7.39 }",
+		site: "src/contract/constants.ts:195",
+		quantity:
+			"relative weights on the chroma and hue components of an OKLab difference, under " +
+			"d^2 = dL^2 + dC^2 + dH^2, for the report-only direction-aware same-colour bar",
+		classification: "possibly-dependent",
+		reasoning:
+			"POSSIBLY DEPENDENT, AND PROVISIONAL BY DESIGN - the two are separate statements and both " +
+			"hold. Dependent: the weights were measured in dark-neutral ONLY, on three 12-rung ladders " +
+			"(perception-4 arm B), and nothing measured says the ratio holds in the other three regions " +
+			"- which is position dependence of the weights themselves, one level up from the position " +
+			"dependence SAME_COLOR_BAR_BY_REGION already encodes. Provisional: arm B was declared " +
+			"under-powered for adoption BEFORE it ran, and it is. The ratios 2.88 [1.91, 4.39] and 2.72 " +
+			"[1.65, 5.90] are Holm-clean over the round's declared family of 13 and are the only " +
+			"Holm-clean identity results the round produced, but 12 rungs confirms a ratio and cannot " +
+			"distinguish 2x from 4x (prereg 3.4 priced 30 rungs for that); the intervals contain 2, 2.9 " +
+			"and the study's pooled prediction of 4.2 alike. The study's own pooled shape-(d) fit gives " +
+			"17.4 and 14.8 on this parametrisation, about DOUBLE these - two independent analyses " +
+			"agreeing qualitatively and disagreeing numerically, which is the honest reason the reviewer " +
+			"signed this off provisionally rather than adopting it. Evidence the other way, i.e. that " +
+			"the bar is direction-INVARIANT: none, from any round, ever. Round 3's pre-registered " +
+			"anisotropy veto fired and round 2's four-pair probe pointed the same way.",
+		whatWouldSettleIt:
+			"Two things, both named in PERCEPTION_VERDICT.md as preconditions for landing the shape: a " +
+			"second region's ladders (so the weights stop being a dark-neutral claim applied globally), " +
+			"and 30 rungs per ladder (so the ratio is pinned rather than confirmed). The disagreement " +
+			"counter in challengers.ts is what decides whether that round is worth commissioning - the " +
+			"reviewer deferred it and made the counter the trigger.",
+		relatedLedger: [
+			"B9",
+			"d-2026-08-04-identity-anisotropy-measured",
+			"d-2026-08-04-identity-metric-shape-not-space",
+			"d-2026-08-04-perception-4-package-signed-off",
+		],
+	},
+	{
+		id: "SAME_COLOR_BAR_LIGHTNESS_AXIS",
+		value: '{ "dark-neutral": 0.02063 }',
+		site: "src/contract/constants.ts:210",
+		quantity:
+			"the scale of the report-only direction-aware same-colour bar - the pure-lightness crossing " +
+			"in dark-neutral",
+		classification: "possibly-dependent",
+		reasoning:
+			"POSSIBLY DEPENDENT, AND PROVISIONAL BY DESIGN. It is a threshold on exactly the perceptual " +
+			"quantity SAME_COLOR_BAR_BY_REGION is a threshold on, measured the same way, and that " +
+			"quantity is the one constant in this file already KNOWN to be position-dependent - four " +
+			"values exist because a single one was measured and refuted twice. The record deliberately " +
+			"carries one key rather than four: arm B ran three ladders in dark-neutral and none " +
+			"anywhere else, and the three absent keys are the measurement that was not made rather than " +
+			"a claim of invariance. It is the sharpest available statement of what the frozen scalar " +
+			"costs: the committed dark-neutral bar of 0.00932 sits BETWEEN the measured chroma " +
+			"threshold (0.00717) and this lightness one (0.02063) - too loose for chroma and less than " +
+			"half of what lightness needs. 95% CI [0.01606, 0.02666], from a 12-rung ladder, so the " +
+			"same under-powering that qualifies the weights qualifies this. Evidence for independence: " +
+			"none.",
+		whatWouldSettleIt:
+			"The same round as the weights above - this is that round's other output, not a separate " +
+			"question. Landing it would additionally force a decision the measurement cannot make: " +
+			"invariant 3 consumes sameColorBar() as a SCALAR, and a direction-aware rule has no single " +
+			"bar to return, so either invariant 3 changes shape or the scalar survives beside it. " +
+			"PERCEPTION_VERDICT.md calls that the real cost and says it must be decided before any " +
+			"constant lands.",
+		relatedLedger: [
+			"B9",
+			"d-2026-08-04-identity-anisotropy-measured",
+			"d-2026-08-04-identity-metric-shape-not-space",
+			"d-2026-08-04-perception-4-package-signed-off",
+		],
+	},
+	{
+		id: "ICTCP_GLOBAL_SAME_COLOR_BAR",
+		value: "0.01026",
+		site: "src/contract/constants.ts:236",
+		quantity:
+			"ICtCp distance (BT.2124 halved Ct, 720 scale omitted) below which the report-only " +
+			"ICtCp-global challenger calls two colours the same",
+		classification: "possibly-dependent",
+		reasoning:
+			"POSSIBLY DEPENDENT, AND PROVISIONAL BY DESIGN - and its dependence is the best-measured of " +
+			"the three, because the round was built to measure it. This is a SINGLE GLOBAL constant on " +
+			"the identity quantity, and a single global constant on that quantity has been refuted " +
+			"twice in OKLab (rounds 1 and 2, which is why four regional bars exist). The claim ICtCp " +
+			"makes is that its own space absorbs that position dependence so one constant suffices; the " +
+			"round tested that claim and it FAILED the round's own multiplicity correction - 28/40, " +
+			"exact binomial p = 0.0166 and decisive on the pre-registered arm rule, Holm-adjusted " +
+			"p = 0.0995 against the declared family of 13. Worse for the constant's own shape: ICtCp's " +
+			"entire margin came from lightness-dominant disagreements (16/20, p = 0.0118) while " +
+			"chroma-dominant ones split 12/20 (p = 0.5034), so the arm that was supposed to vindicate a " +
+			"direction-free global constant is itself DIRECTION-dependent. Its support in the held-out " +
+			"model comparison exists only in the configuration containing the arm selected on the very " +
+			"disagreement that comparison measures; drop arm A and it sits at adjusted p = 1.000. " +
+			"Evidence for independence: the arm win, which is real and which its own correction refused. " +
+			"FITTED, not measured directly - exp(-b0/b1) over the identity x ictcp x global-constant " +
+			"cell, exact value 0.010264506875655147, carried here at this file's five-decimal " +
+			"convention.",
+		whatWouldSettleIt:
+			"Nothing cheap, and deliberately so: PERCEPTION_VERDICT.md refuses the space change and the " +
+			"reviewer signed that refusal. What would reopen it is the disagreement counter showing " +
+			"ICtCp-global parting company with the frozen bar often, on real palettes, in a direction " +
+			"the frozen bar gets wrong - i.e. an unenriched sample, which is exactly what arm A was not. " +
+			"Until then this constant exists to be counted against, not to be adopted.",
+		relatedLedger: [
+			"B9",
+			"d-2026-08-04-identity-metric-shape-not-space",
+			"d-2026-08-04-perception-4-package-signed-off",
+		],
+	},
 	{
 		id: "REGION_LIGHTNESS_BOUNDARY",
 		value: "0.55",

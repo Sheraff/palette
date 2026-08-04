@@ -199,17 +199,53 @@ lands. Cheap plain code needs no defence; anything approaching seconds needs one
 **Four questions are genuinely open.** They are stated plainly, on purpose — none of them has a
 settled technical name yet, and inventing one would make a live question look decided:
 
-1. **The accent escape is being measured.** An accent is allowed to survive having almost no
+1. **The accent escape refused measurement, twice.** An accent is allowed to survive having almost no
    brightness difference from what is behind it, if it is different *enough* in colour. How different
-   is enough is currently a placeholder number, and a review round is running to replace it.
+   is enough is still the placeholder `ACCENT_FUNCTIONAL_DISTANCE = 0.14591`, `[UNCALIBRATED]`, and
+   **the round that was running to replace it has now run and declined to** (`perception-4`,
+   2026-08-04) — for the second time, on fresh covers, for the same pre-registered reason as
+   `accent-real-1`: one hue third identifies no threshold anywhere in the claim domain, so the
+   quantity is `stratum-dependent` and a single constant is refused. What the round did add is the
+   axis nobody could measure before: at matched OKLab distance, an accent that **also moves in
+   lightness** does its job about twice as often (0.750 against 0.361). Read that as a direction and
+   not as a coefficient — it is confounded with stratum by design. **Design implication: an accent
+   that differs from its field only in hue and chroma is the fragile case**, and there is no number
+   that will tell you when it is fragile enough to matter.
 2. **No computable rule matches the reviewer's sense of which colours belong to an artwork.** The
    rule that used to drop colours for being too rare was tested against the reviewer's own judgments
    and had no discriminating power at any setting, so it was demoted to a reported figure. Nothing
    has replaced it. If your paradigm needs to decide whether a colour "belongs", that decision is
    yours to justify and there is no instrument to lean on.
-3. **Whether the same-colour threshold should depend on direction is parked.** Two colours can be
-   judged "the same" or "different" and the answer may not be symmetric — it may depend on which one
-   you start from. This was noticed, not resolved, and no current measurement accounts for it.
+3. **The same-colour threshold does depend on direction — measured, provisionally adopted, and
+   gated on a counter.** This bullet used to say the question was parked. It is not: `perception-4`
+   (2026-08-04) measured it and the reviewer signed off on a package the same day.
+
+   **What is now known.** Whether two colours read as "the same" depends on *which way* they differ,
+   not only how far apart they are. In `dark-neutral`, a pure **lightness** step has to reach 0.02063
+   before it registers as a different colour, where a pure **chroma** step needs only 0.00717 and a
+   pure **hue** step 0.00759 — so a lightness difference must be roughly **2.9×** larger to be
+   noticed. Both ratios survive multiplicity correction and are the only such results the round
+   produced. The contract's committed `dark-neutral` bar of 0.00932 sits *between* those thresholds:
+   too loose for chroma, less than half of what lightness needs.
+
+   **What was adopted, and what "provisional" means here.** The shape — a direction-aware
+   (ellipsoidal) bar, `√(ΔL² + 8.29·ΔC² + 7.39·ΔH²) < 0.02063` — is **adopted provisionally**, which
+   in this repo means *encoded and not enforced*. It runs as a **report-only challenger** beside the
+   frozen bars (`src/contract/challengers.ts`), together with the ICtCp-global rule the round
+   refused, and the two are counted against the frozen rule on every pair invariant 3 judges. **No
+   verdict changes.** `sameColorBar()` is still a scalar, invariant 3 still consumes it as one, and
+   the confirming round is **deferred** — the disagreement counter decides whether it ever runs.
+
+   **What you should design against.** Treat "these two colours are the same" as a rule that is
+   currently *conservative in the chroma direction and permissive in the lightness direction*, and do
+   not build anything that depends on the bar's exact value in either. Two further warnings travel
+   with it: the ratios are measured in **`dark-neutral` only** and applied everywhere, and the
+   **functional** criterion is anisotropic in the *opposite* direction — a lightness step is worth
+   about 3.9× a chromatic one for making an accent findable. Same space, same decomposition,
+   opposite anisotropy. **Never share one ruler between "is this the same colour?" and "does this
+   work as an accent?"**
+
+   Canonical text: `src/contract/PERCEPTION_VERDICT.md` (signed-off header).
 4. **How a pixels-first route actually computes its answer is Phase 1's problem.** Working directly
    from the pixels, rather than from any intermediate summary, is a legitimate paradigm and nobody
    has written down the computation it would need. If that is your route, that computation *is* your

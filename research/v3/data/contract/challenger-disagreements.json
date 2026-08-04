@@ -1,0 +1,7 @@
+{
+	"what": "Accumulated disagreements between the frozen OKLab same-colour bar and its two report-only challengers (src/contract/challengers.ts). PROVISIONAL - perception-4, reviewer-signed 2026-08-04. Nothing here has ever affected a validation verdict. This counter is the instrument the reviewer's sign-off makes decisive for whether the deferred confirming round runs; it is not itself evidence that any bar should change.",
+	"note": "Report-only challengers to the frozen same-colour bar (src/contract/challengers.ts). [PROVISIONAL - perception-4, reviewer-signed 2026-08-04, adoption gated on the disagreement counter.] These verdicts never affect `valid` and never produce a violation: validatePalette computes the verdict from the frozen OKLab bars alone. Both challenger bars were measured in dark-neutral only and are applied globally, so a disagreement outside dark-neutral is a difference between two rules, not evidence that the frozen bar is wrong there - read disagreedByRegion before quoting a total.",
+	"updatedAt": "",
+	"totals": [],
+	"entries": []
+}

@@ -85,10 +85,13 @@ import {
 	POSITION_MAX,
 	POSITION_MIN,
 	ROLE_NAMES,
+	SAME_COLOR_BAR_BY_REGION,
 	SOURCE_POPULATION_FLOOR,
 } from "./constants.ts"
+import { compareChallengers, type ChallengerComparison } from "./challengers.ts"
 import { firstInvisibleAccentOnRamp, minRawContrastOverRamp, rampPath } from "./ramp.ts"
 import type {
+	ColorRegion,
 	ContrastParameters,
 	Palette,
 	PaletteColor,
@@ -175,6 +178,18 @@ export type InvariantObservation = Readonly<{
 	 * invalid. The population floor is the only one (see `validateSourceSupport`).
 	 */
 	reportOnly?: boolean
+	/**
+	 * **Rival answers to this judgment, for the record only.** Present on invariant 3's identity
+	 * judgments and nowhere else.
+	 *
+	 * `[PROVISIONAL — perception-4, reviewer-signed 2026-08-04, adoption gated on the disagreement
+	 * counter]` — see `challengers.ts`. These are computed beside the frozen bars and **never
+	 * consulted by anything that returns a `Violation`**: the field rides the observation sink,
+	 * which exists to be reported, and `passed` above is decided by the frozen bar before this is
+	 * populated. A challenger that disagreed with every judgment on a palette would change neither
+	 * `valid` nor a single violation.
+	 */
+	challengers?: ChallengerComparison
 }>
 
 /** Where observations go. Optional everywhere; absent means the checks emit nothing. */
@@ -762,6 +777,22 @@ function pairKey(first: string, second: string): string {
 const SEPARATED_ROLE_PAIR = pairKey("roles.foreground", "roles.accent")
 
 /**
+ * Which region's bar actually governed a pair — the larger of the two, matching `sameColorBar()`'s
+ * `Math.max`. Recorded on the challenger comparison so a disagreement can be attributed.
+ *
+ * It exists only for the report: the challengers were measured in `dark-neutral` alone and are
+ * applied everywhere, so "which region was this judged in" is the difference between a disagreement
+ * that bears on the measured claim and one that does not. Nothing enforced consults it.
+ */
+function governingRegion(first: PaletteColor, second: PaletteColor): ColorRegion {
+	const firstRegion = colorRegion(first)
+	const secondRegion = colorRegion(second)
+	return SAME_COLOR_BAR_BY_REGION[firstRegion] >= SAME_COLOR_BAR_BY_REGION[secondRegion]
+		? firstRegion
+		: secondRegion
+}
+
+/**
  * **Invariant 3.** Every pair of published colours is distinct above the same-colour bar, with
  * exactly two exception classes.
  *
@@ -834,6 +865,16 @@ export function validateDistinctness(
 
 			// Emitted for every pair the matrix actually judged — passes included, which is the point.
 			// Pairs skipped by an exception class are not judgments and are deliberately not recorded.
+			//
+			// The challengers ride this sink and nothing else. They are computed only when someone is
+			// listening, they are computed *after* `bar` and `passed` are already decided, and no branch
+			// below reads them — which is what makes "report-only" a property of the code rather than a
+			// promise in a comment. See `challengers.ts`.
+			//
+			// They are compared against `sameColor` — the same-colour bar — and never against the
+			// elevated `bar` of the foreground↔accent cell: the challengers are rival answers to "are
+			// these the same colour?", and judging one against a bar deliberately raised for one cell
+			// would book the separation ruling's work as a disagreement about perception.
 			observe?.({
 				invariant: "I3",
 				check: separated ? "I3.foreground-accent-not-separated" : "I3.pair-not-distinct",
@@ -843,6 +884,7 @@ export function validateDistinctness(
 				bar,
 				margin: distance - bar,
 				passed: distance >= bar,
+				challengers: compareChallengers(a.color, b.color, distance, sameColor, governingRegion(a.color, b.color)),
 			})
 
 			if (distance >= bar) continue

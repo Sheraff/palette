@@ -43,6 +43,12 @@
  * would be a units error with a confident face.
  */
 
+import {
+	CHALLENGER_NOTE,
+	tallyChallengers,
+	type ChallengerComparison,
+	type ChallengerTally,
+} from "./challengers.ts"
 import { validatePalette, type InvariantObservation, type ValidatePaletteOptions } from "./invariants.ts"
 import type { Palette, ValidationResult, Violation } from "./types.ts"
 
@@ -108,6 +114,22 @@ export interface Scorecard {
 	/** The verdict hard mode returned. Carried, never recomputed. */
 	valid: boolean
 	invariants: InvariantScore[]
+	/**
+	 * **How the report-only challengers did against the frozen same-colour bar on this palette.**
+	 *
+	 * `[PROVISIONAL — perception-4, reviewer-signed 2026-08-04, adoption gated on the disagreement
+	 * counter]` — see `challengers.ts`. This is the counter the reviewer's sign-off makes the
+	 * deciding instrument: the confirming round is deferred, and whether it ever runs is a question
+	 * about how often these two rules and the frozen one part company on real palettes.
+	 *
+	 * It sits beside `valid` and has no path to it. `valid` above is the boolean hard mode computed
+	 * from the frozen bars; every number here is derived from observations that were emitted after
+	 * that boolean was already decided. Read `challengerNote` before quoting a total — both bars
+	 * were measured in `dark-neutral` only.
+	 */
+	challengers: readonly ChallengerTally[]
+	/** The caveat that belongs in the same breath as the counts. Verbatim `CHALLENGER_NOTE`. */
+	challengerNote: string
 	totals: {
 		judgments: number
 		violations: number
@@ -223,10 +245,19 @@ export function scorePalette(
 		}
 	})
 
+	// The challenger fold. Every comparison the distinctness matrix emitted, tallied per challenger.
+	// Note this reads `observations` — the sink's contents — and never `result`, so there is no code
+	// path by which a tally could reach the verdict even if someone later edited this function.
+	const comparisons = observations
+		.map((observation) => observation.challengers)
+		.filter((comparison): comparison is ChallengerComparison => comparison !== undefined)
+
 	return {
 		scorecard: {
 			valid: result.valid,
 			invariants,
+			challengers: tallyChallengers(comparisons),
+			challengerNote: CHALLENGER_NOTE,
 			totals: {
 				judgments: invariants.reduce((n, i) => n + i.judgments, 0),
 				violations: result.violations.length,

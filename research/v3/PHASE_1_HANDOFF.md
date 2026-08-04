@@ -88,31 +88,50 @@ load-bearing ones, as the reviewer phrased them:
   never per-item truth. Ground-structure is a PIXEL question (vocabulary route retired;
   residual = enriched prior at measured 24–56% purity; pointing stood down; depth rejected).
 
-## 5. Owed / pending at handoff
+## 5. The don't-forget inventory
 
-- **Flo sign-offs outstanding**: the perception package (provisional direction-aware shape +
-  defer-the-confirming-round recommendation); the force-push (origin/PR#5 diverged after the
-  history re-sign — `--force-with-lease` owed or an explicit decision not to).
-- **Report-only challengers to wire** (cheap, high-value): the direction-aware identity bar and
-  ICtCp-global beside the frozen OKLab bars — count disagreements on every real palette; the
-  counter decides whether the confirming round ever runs.
-- **Excursion bar**: now its own `[UNCALIBRATED]` question — needs a ramp-stimulus round design
-  (displaced interior stops, "does this ramp introduce a color that isn't the artwork's?").
-  The 2.5× multiplier is known-arbitrary.
+**Phase 0's goal is complete; nothing here is unfinished Phase 0 work — this is the don't-forget
+inventory the project's no-completion-narrative rule requires.** Phase 0 is formally closed on the
+reviewer's own sentence, recorded as `d-2026-08-04-phase-0-closed`. Everything below is either
+work that only makes sense *during* Phase 1 authoring, or trivia that costs minutes. Each item
+names the trigger that should make someone pick it up; none of them gates starting.
+
+*(The subsection that used to sit here, "landing now", is empty by design: the report-only
+challengers, the perception-4 records and the phase-0-closed record all landed 2026-08-04.)*
+
+### (b) Phase 1-time work, by design — build when the named trigger fires, during authoring slack
+
+- **The challenger counter's first review.** The direction-aware identity bar and ICtCp-global now
+  run report-only beside the frozen OKLab bars (`src/contract/challengers.ts`), counting
+  disagreements on every pair invariant 3 judges and accumulating into
+  `data/contract/challenger-disagreements.json`. **Trigger: once a real corpus run has populated
+  that file** — read it before commissioning anything. A high, *concentrated* disagreement rate
+  prices the deferred confirming round (a second region's ladders at 30 rungs); a low or evenly
+  smeared one says the frozen scalar does no harm where it actually gets used and the round stays
+  deferred. Query with `queryLedger`; read `disagreedByRegion` before quoting a total, because both
+  challenger bars were measured in `dark-neutral` alone.
+- **Excursion bar**: its own `[UNCALIBRATED]` question — needs a ramp-stimulus round design
+  (displaced interior stops, "does this ramp introduce a color that isn't the artwork's?"). The
+  2.5× multiplier is known-arbitrary. **Trigger: a paradigm whose gradients lean on interior
+  stops.** Note it must not be allowed to change as a side effect of the same-colour bar moving.
 - **Deferred tools with named triggers** (chat-adjudication-map items 22–26, 28): smoothness
   profiler (first prototype exists), failure tracker (version history exists), corpus-drift
   (collection changes), instrument pricing (proposals arrive), second-layout mock check
   (immediately before the bake-off, once), warehouse deep-check (idle time).
 - **Schema v2** (`oracle/premise/SCHEMA_V2_PROPOSAL.md`): applied rulings baked in; the carrier
-  question is measured-broken (models read it as "name the regions") and needs redesign before
-  any 200-cover pilot; prompt files load-fixed but DRAFT — NOT SIGNED OFF.
-- **Housekeeping**: `dropped-colors.js` owes a kit migration; `data/decisions/decisions.json`
-  awaits the perception-4 proposed records + a formal phase-0-closed record quoting the
-  reviewer; loose-ends header counts should be generated, not hand-typed (three hand-recount
-  errors on record); `gpg.ssh.allowedSignersFile` unset means `%G?` shows N for signed commits
-  — check `gpgsig` headers directly.
+  question is measured-broken (models read it as "name the regions") and needs redesign.
+  **Trigger: before any 200-cover pilot.** Prompt files load-fixed but DRAFT — NOT SIGNED OFF.
 - **Fresh shards**: `15/` (348 artworks, clean, mapped) is reserved evaluation material; the
-  import is a procedure not a command (A11 open — runbook owed).
+  import is a procedure not a command. **Trigger: when held-out evaluation material is actually
+  needed** (A11 open — runbook owed then, not now).
+
+### (c) Trivia — minutes each, no gate
+
+- `dropped-colors.js` owes a kit migration.
+- Loose-ends header counts should be generated, not hand-typed (three hand-recount errors on
+  record).
+- `gpg.ssh.allowedSignersFile` is unset, so `%G?` shows `N` for correctly signed commits — a local
+  verification-config gap, not a signing gap. Check `gpgsig` headers on the commit object directly.
 
 ## 6. How we work — rules earned by failures (do not relearn these)
 

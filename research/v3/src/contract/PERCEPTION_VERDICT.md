@@ -1,8 +1,40 @@
 # What `perception-4` decided — and what it refused
 
-**For the reviewer. Nothing here has been applied.** No constant moved, no decisions file was
-edited, no invariant was touched. This document says what the 148 answers support, what they refuse,
-and exactly what a contract change would have to look like — for sign-off, not as a fait accompli.
+> ## ✅ SIGNED OFF — 2026-08-04
+>
+> The reviewer signed off on the recommended package below, verbatim:
+> **"yes i sign off on your decision about the color thing"**
+>
+> | what | disposition |
+> |---|---|
+> | the colour space | **keep OKLab.** The space change is refused; `colorDistance()`, `okLabFromColor()` and the region partition are untouched. |
+> | the direction-aware identity bar | **adopted PROVISIONALLY** — `√(ΔL² + 8.29·ΔC² + 7.39·ΔH²) < 0.02063`, `dark-neutral`-derived. Provisional means **encoded and not enforced**: it landed as a *report-only challenger*, never as a verdict. |
+> | the confirming round | **DEFERRED.** Not cancelled, not scheduled. The report-only challengers decide whether it ever runs. |
+> | `ACCENT_FUNCTIONAL_DISTANCE` | **stays 0.14591**, audit status `[UNCALIBRATED]` unchanged. Second refusal stands. |
+> | every refusal in the table below | **stands**, as written. |
+>
+> **What actually changed in the code**, and it is less than the diff sketch below proposes:
+> `src/contract/challengers.ts` computes the direction-aware bar **and** ICtCp-global beside the
+> frozen OKLab bars on every pair invariant 3 judges, counts how often they disagree, and surfaces
+> the counter in the scorecard and in `data/contract/challenger-disagreements.json`. Three constants
+> entered `constants.ts` (`SAME_COLOR_DIRECTION_WEIGHTS`, `SAME_COLOR_BAR_LIGHTNESS_AXIS`,
+> `ICTCP_GLOBAL_SAME_COLOR_BAR`), each with an audit row. **No enforced bar moved, no verdict
+> changed, and invariant 3 still consumes a scalar** — the §"Invariants affected" cost below has
+> *not* been paid, because the shape was not adopted, only counted.
+>
+> ICtCp is carried as the **second** challenger despite losing: it is counted against, not adopted,
+> which is the only status its own multiplicity correction leaves available to it.
+>
+> Records: `d-2026-08-04-perception-4-package-signed-off`, plus the three proposed records below,
+> all appended unamended to `data/decisions/decisions.json`.
+> Provenance tag on everything the sign-off added:
+> `[PROVISIONAL — perception-4, reviewer-signed 2026-08-04, adoption gated on the disagreement counter]`
+
+**Written for the reviewer, before any of it was applied.** The body below is preserved in its
+pre-sign-off tense: at the time of writing no constant had moved, no decisions file had been edited
+and no invariant had been touched. Read the diff sketch near the end as **the proposal that was
+signed**, not as a description of the tree — the header above says what landed, and the difference
+between the two is deliberate and is the whole meaning of "provisional".
 
 - Round: `perception-4`, 148 items, one sitting, one reviewer, scored 2026-08-04
 - Pre-registered at `4c7c891` — every threshold, critical value and refusal condition below was
@@ -266,9 +298,21 @@ express. **What this round funds for quantity 2 is a better-specified next round
 
 ---
 
-## The concrete contract-change proposal — **diff sketch only, NOT APPLIED**
+## The concrete contract-change proposal — **diff sketch only, PARTIALLY APPLIED**
 
-For sign-off. Nothing below has been written to any file.
+For sign-off. Nothing below had been written to any file when it was written; the sign-off of
+2026-08-04 applied **part** of it, and the part it did not apply is the important one.
+
+- **Applied**: the two constants below (plus a third the sketch does not name,
+  `ICTCP_GLOBAL_SAME_COLOR_BAR`, needed to run the ICtCp challenger), each with an audit row.
+- **Applied in a different form**: `sameColorDirectionAware()` exists, but as one of two challengers
+  in `src/contract/challengers.ts` rather than as a loose function in `color.ts`, and it is wired
+  into invariant 3's observation sink so that it is *counted* on every judged pair.
+- **NOT applied**: anything that changes a verdict. The "Invariants affected" section below prices
+  the adoption, and that price has not been paid — invariant 3 still consumes `sameColorBar()` as a
+  scalar, `POOLED_SAME_COLOR_BAR` is untouched, the P1 excursion bar has inherited nothing, and
+  `tests/contract-invariants.test.ts`'s distinctness cases are unchanged because they did not need
+  to change.
 
 ### Spaces
 
@@ -368,7 +412,11 @@ Adopting the shape (not just landing the constant) touches more than two lines:
 ## Proposed decision records
 
 Three, in `data/decisions/proposed-perception-4.json`, all funded by the round's 148 label ids plus
-its `batch-complete` record. **None is placed.**
+its `batch-complete` record. ~~**None is placed.**~~ **All three were placed unamended on
+2026-08-04**, on the sign-off in the header, alongside
+`d-2026-08-04-perception-4-package-signed-off` (which records the disposition and carries an empty
+`fundedBy`, the sign-off being one conversational sentence) and `d-2026-08-04-phase-0-closed`.
+`recheck` reports `total decisions=102 flagged=2` — the two long-standing flags, none added.
 
 | id | what it records |
 |---|---|

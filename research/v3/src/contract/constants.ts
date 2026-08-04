@@ -157,6 +157,89 @@ export const SAME_COLOR_BAR_BY_REGION = {
 	"light-saturated": 0.02293,
 } as const
 
+// ---------------------------------------------------------------------------------------------
+// The challenger bars. Report-only — see `challengers.ts`.
+//
+// `[PROVISIONAL — perception-4, reviewer-signed 2026-08-04, adoption gated on the disagreement
+// counter]` on all three. The reviewer signed off on the package in `PERCEPTION_VERDICT.md`:
+// **keep OKLab, adopt the direction-aware shape PROVISIONALLY, and defer the confirming round —
+// the report-only challengers decide whether it ever runs.** None of these three numbers is
+// enforced. Nothing below can make a palette invalid, and `challengers.ts` is structured so that
+// it cannot: the challenger verdicts are computed beside the frozen bars and never returned to
+// the gate. The three constants exist so the challenge is *auditable* rather than hidden in a
+// report generator — which is also why they sit in this file and carry audit rows in
+// `perception-model-audit.ts` rather than escaping the census.
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * Direction weights for the challenger same-colour bar, under `Δ² = ΔL² + ΔC² + ΔH²` with ΔH
+ * residual — the decomposition the perception-model study and round 4 both use.
+ *
+ * `[MEASURED]` — perception-4 arm B: three 12-rung pure-direction ladders inside `dark-neutral`
+ * (purity ≥ 0.928). A pure lightness step crosses the same-colour criterion at 0.02063, chroma at
+ * 0.00717, hue at 0.00759. The ratios are 2.88 (95% cluster-bootstrap CI [1.91, 4.39]) for
+ * lightness over chroma and 2.72 ([1.65, 5.90]) for lightness over hue; both intervals exclude 1
+ * and both survive Holm over the round's declared family of 13. **They are the only Holm-clean
+ * identity results the round produced.** The weights below are those ratios squared:
+ * 2.88² = 8.29, 2.72² = 7.39.
+ *
+ * *(Exactly: 2.88² = 8.2944 and 2.72² = 7.3984. The second pair is the reviewer-signed package's
+ * digits, which truncate where they could have rounded — 7.39 rather than 7.40 — and are carried as
+ * signed rather than silently corrected. The 0.0084 discrepancy is nothing beside the interval it
+ * sits in: squaring the ratio's own 95% CI [1.65, 5.90] gives [2.72, 34.81].)*
+ *
+ * **Three things this is not.** (1) It is **not pinned** — §3.4 priced 12 rungs as enough to
+ * *confirm* a ratio and not to distinguish 2× from 4×, and the intervals contain 2, 2.9 and the
+ * study's own pooled prediction of 4.2 alike. The study's pooled shape-(d) fit gives 17.4 and 14.8
+ * on this same parametrisation, about double these; both analyses agree qualitatively and disagree
+ * numerically, which is the honest reason this is provisional. (2) It is **`dark-neutral` only** —
+ * nothing measured says the ratio holds in the other three regions. (3) It is **not the functional
+ * anisotropy**, which points the opposite way (a lightness step is worth ~3.9× a chromatic one for
+ * making an accent findable). `PERCEPTION_VERDICT.md` §5.5: never pool the two criteria.
+ */
+export const SAME_COLOR_DIRECTION_WEIGHTS = { chroma: 8.29, hue: 7.39 } as const
+
+/**
+ * The challenger direction-aware bar's scale — the pure-lightness crossing in `dark-neutral`.
+ *
+ * `[MEASURED]` — perception-4 arm B, the lightness ladder: 0.02063, 95% CI [0.01606, 0.02666].
+ *
+ * Read it beside the committed bar it challenges. `SAME_COLOR_BAR_BY_REGION["dark-neutral"]` is
+ * **0.00932**, which sits *between* the measured chroma threshold (0.00717) and this one — too
+ * loose for chroma and less than half of what lightness needs. That gap is the whole content of
+ * the challenge: it is what a scalar does to a quantity that has a direction.
+ *
+ * Deliberately a one-key record rather than a bare number, and deliberately not extended to the
+ * other three regions with a guess. The missing three keys are the measurement arm B did not run.
+ */
+export const SAME_COLOR_BAR_LIGHTNESS_AXIS = { "dark-neutral": 0.02063 } as const
+
+/**
+ * The challenger ICtCp global bar — one constant, no regional partition.
+ *
+ * `[FITTED]` — `exp(-b0/b1)` over the `identity × ictcp × global-constant` cell of
+ * `data/contract/perception-model-study.json`, the same derivation
+ * `src/review-server/perception-4.ts:ictcpGlobalThreshold()` uses to build arm A. The exact fit
+ * gives 0.010264506875655147; this is that value at the five decimal places every other bar in
+ * this file carries. The rounding moves no reported verdict that the round's own quantisation does
+ * not already move, and it can move nothing at all in the gate, because this number is never
+ * consulted by one.
+ *
+ * **Why it is here at all, given that the round refused it.** Arm A came back 28/40 (70.0%) for
+ * ICtCp-with-one-constant, decisive on its own pre-registered rule (two-sided exact binomial
+ * p = 0.0166, bar k ≥ 27) — and then **failed the round's own multiplicity correction**, Holm-
+ * adjusted p = 0.0995. Its support in the held-out model comparison exists only in the
+ * configuration that includes the arm selected on the very disagreement that comparison measures;
+ * drop arm A and `ICtCp × global-constant` sits at adjusted p = 1.000. So the space question lost,
+ * `OKLab` is retained, and this constant is carried **as the challenger it lost as** — the counter
+ * is how we find out whether the 28/40 was telling the truth about real palettes.
+ *
+ * The distance it is compared against uses BT.2124's halved Ct and omits the conventional 720
+ * scale, matching `perception-model-spaces.ts` exactly; `contract-challengers.test.ts` pins the
+ * conversion against `colorjs.io` coordinate-for-coordinate.
+ */
+export const ICTCP_GLOBAL_SAME_COLOR_BAR = 0.01026
+
 /**
  * The same-colour bar pooled across all four regions.
  *

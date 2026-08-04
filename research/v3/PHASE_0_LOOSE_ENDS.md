@@ -103,10 +103,24 @@ locked again and this pass's own commit is unsigned, which is why one row closed
 and the closed total did not move. **The unsigned commit has since been re-signed — a second
 surgery, eight commits rewritten, mapping in B34 — and the counts still do not move, because the row
 was reopened against the *cause* and a re-sign does not touch it. That surgery did rewrite pushed
-history, so a force-push is owed and was left to the reviewer.** Re-derived by counting the headings, not by
+history, so a force-push was owed and was left to the reviewer — **RESOLVED 2026-08-04: the reviewer
+pushed the branch. No push is owed by anyone; this debt is discharged.** Re-derived by counting the headings, not by
 adding to the previous number. **Four rows added, one closed**, and the per-section split is now
 A1–A19 = 19 (9 open, 10 closed) · B1–B37 = 37 (31 open, 6 closed) · C1–C13 = 13 (12 open, 1 closed) ·
 L-a–L-j = 10 (9 open, 1 closed).
+
+**Counts moved again on 2026-08-04, in the perception-4 sign-off pass, and this note deliberately
+re-derives only what it can.** Counting the row headings now gives **84 items** — A = 19 · **B = 42**
+· C = 13 · L = 10 — against the 79 above. Two things account for the gap and only one of them is
+this pass: **this pass added exactly one row, `B42`** (the deferred confirming round for the
+direction-aware bar and the counter that triggers it), and amended **B9** without changing its state
+(from `measured, unencoded` to `provisional, encoded as a challenger`). The other four arrived from
+other passes between the two readings. **The open/closed split above was NOT re-derived here** and is
+therefore stale by at least this pass's one addition — `B42` is open. It is left stale rather than
+adjusted by arithmetic, because adding one to a remembered number is exactly the habit that produced
+the three hand-recount errors this document already records; the split is re-derived by reading the
+rows, and this pass did not read all 84. *Re-derive before quoting it.*
+
 Closed: **A17**, the source-support population floor, demoted to report-only on a reviewer ruling
 given mid-round. Added: **A19** (two endorsements retired as quality evidence, and the adjudication
 consumer does not know), **B36** (the toolbox adjudication's numbering matches no file, and five
@@ -1164,6 +1178,39 @@ not substitute for that measurement, and the tripwire in `tests/contract-color.t
 *Revives when: unchanged — a round aimed at anisotropy itself. It is now the best-evidenced unrun
 round in this ledger, and the cheapest thing that could retire the tripwire.*
 
+**AMENDED 2026-08-04 (second time today) — the round was run, and this row moves from
+`measured, unencoded` to `PROVISIONAL, ENCODED AS A CHALLENGER`.** `perception-4` arm B is the round
+this row had been asking for since it was opened: three pure-direction 12-rung ladders **inside a
+single region** (`dark-neutral`, purity ≥ 0.928), which is B9's own question rather than the straddle
+rule's. Lightness crosses at **0.02063** [0.01606, 0.02666], chroma at **0.00717** [0.00530, 0.00970],
+hue at **0.00759** [0.00460, 0.01253]; the ratios **2.88** [1.91, 4.39] and **2.72** [1.65, 5.90] both
+exclude 1 and both **survive Holm** over the round's declared family of 13 — the only Holm-clean
+identity results the round produced. The four-pair probe's 4/4 · 2/4 · 1/4 is now measured on
+twelve-rung ladders, and the committed `dark-neutral` bar of 0.00932 is confirmed to sit *between*
+the chroma and lightness thresholds: too loose for one, less than half of what the other needs.
+
+**What changed in the tree, and it is deliberately less than adoption.** The reviewer signed off
+(`d-2026-08-04-perception-4-package-signed-off`) on adopting the direction-aware shape
+**provisionally**, which here means *encoded and not enforced*: `√(ΔL² + 8.29·ΔC² + 7.39·ΔH²) <
+0.02063` now runs as a **report-only challenger** in `src/contract/challengers.ts`, beside the frozen
+bars and beside a second challenger (ICtCp-global), on every pair invariant 3 judges. Three constants
+entered `constants.ts` with audit rows. **No verdict changed and no enforced bar moved.**
+
+***The tripwire in `tests/contract-color.test.ts` stays, and it still passes — which is the point.***
+It asserts that `sameColorBar` remains a function of the pair alone (`sameColorBar.length === 2`) and
+that each region is still one number. All of that is still true: the challenger does not give the
+*enforced* ruler a direction, it computes a rival answer next to it. The tripwire was written to fire
+if a finding were ever "quietly staying unimplemented forever" **or** if one were encoded without
+being rewritten on purpose; neither has happened, and a reader who expected it to fire should read
+the challenger wiring instead.
+
+**The row stays OPEN**, for two reasons that are now sharper than "unmeasured": the ratios are
+**`dark-neutral` only** and are applied in all four regions by the challenger, and 12 rungs
+**confirms** a ratio without **pinning** one (§3.4 priced 30 rungs to tell 2× from 4×; the study's own
+pooled fit says ~4.2 where round 4 says ~2.9). *Revives when: the disagreement counter says the
+question reaches real palettes — see **B42**, which owns the deferred confirming round and its
+trigger.*
+
 ### B10. The light-saturated hue split is unencoded and tripwired
 0.01516 / 0.02074 / 0.03805 by hue third — a 2.5× spread, and the single 0.02293 is "a deliberate
 placeholder, not an accident". **Not adopted**: it flips only toward more violations, all on
@@ -1854,14 +1901,21 @@ trusted). The new HEAD's tree is `7137f987…`, **byte-identical** to the pre-re
 `git diff` between the pre-surgery ref and the new HEAD is empty. The pre-surgery HEAD is kept at
 **`refs/backup/pre-resign-2`** = `4b46513`.
 
-**Unlike the first surgery, this one rewrote published history — a force-push is owed.** The first
+**RESOLVED 2026-08-04 — the reviewer pushed the branch. Nothing below is outstanding.** The
+paragraph is kept in its original tense because it records why the divergence existed and how it was
+verified, but the debt it ends on is discharged: no force-push is owed, and no agent owes anyone a
+decision about one. The two orphaned commits (`43c7b13`, `be3dc0c`) are superseded on the remote.
+*Do not re-raise this as an open item.*
+
+**Unlike the first surgery, this one rewrote published history — a force-push was owed.** The first
 surgery could say *"nothing published was touched"* because the upstream sat below the rebase base.
 It does not this time: `origin/research/palette-0.9-checkpoint` (PR #5) sits at **`be3dc0c`**, which
 is row 2 of the table above. Two rewritten commits — `43c7b13` and `be3dc0c` — had already been
 pushed, so the branch has **diverged**: 8 ahead, 2 behind, and the old tip is no longer an ancestor.
 **The push was deliberately not made here.** Force-pushing a shared branch is the reviewer's call,
 not an agent's, and the two orphaned commits stay reachable on the remote until someone decides.
-*Owed: `git push --force-with-lease`, or an explicit decision not to.* **This is the fact the first
+*~~Owed: `git push --force-with-lease`, or an explicit decision not to.~~ **Discharged 2026-08-04 —
+the reviewer pushed.*** **This is the fact the first
 surgery's timing hid: the row's own warning — *"it should be done before anything is pushed or
 branched from"* — was satisfied by luck last time and is violated now.**
 
@@ -2114,6 +2168,49 @@ contract's own docstrings say the gap out loud, and a stated gap still needs an 
   running.
 
 ---
+
+### B42. The confirming round for the direction-aware bar is DEFERRED, and a counter decides whether it runs
+**Opened 2026-08-04**, by the same sign-off that provisionally adopted the shape
+(`d-2026-08-04-perception-4-package-signed-off`). This row exists so that a *deferral* is not
+mistaken for either a decision or an oversight — it is neither.
+
+**What is deferred.** `PERCEPTION_VERDICT.md` names three preconditions before the direction-aware
+bar could ever land as the *enforced* rule, and none is met: **(1) a second region** — arm B ran in
+`dark-neutral` alone, so the weights are a one-region claim currently applied to four; **(2) more
+rungs** — 12 per ladder confirms a ratio and cannot distinguish 2× from 4×, and the two independent
+estimates sit at ~2.9× and ~4.2×, so §3.4's 30-rung design is what would pin it; **(3) a decision on
+invariant 3's shape**, which is the part no measurement can supply. That third one is the real cost:
+invariant 3 consumes `sameColorBar()` as a **scalar**, and a direction-aware rule has no single bar
+to return, so either invariant 3 changes shape or the scalar goes on existing beside it. The verdict
+says explicitly that this must be decided *before* any constant lands enforced.
+
+**The trigger, stated so nobody has to guess it.** The round is **not scheduled and not cancelled**.
+Both rival rules — the direction-aware bar and ICtCp-global — now run **report-only** on every pair
+invariant 3 judges (`src/contract/challengers.ts`), and their disagreements with the frozen bar
+accumulate into `data/contract/challenger-disagreements.json`. *Revives when: that file has been
+populated by a real corpus run and read.* What to read for:
+
+- **A high and *concentrated* disagreement rate** — a few subjects carrying most of it — prices the
+  round and argues for spending it. Use `queryLedger(..., { minRate })`; the rows sort worst-first
+  precisely so a stratum cannot hide behind a mean.
+- **A low or evenly smeared rate** says the frozen scalar does no harm where it actually gets used,
+  and the round stays deferred. That is a real answer, not a null result.
+- **`incumbentSaysSameChallengerDistinct` is the count to weight most.** Those are pairs the frozen
+  bar would call the same colour and a rival would not — collisions the contract ships silently.
+  The opposite direction produces flags the reviewer sees and can demote, and `color.ts`'s straddle
+  docstring explains at length why the two are not interchangeable.
+
+**Two things the counter cannot do, and both are easy to over-read.** It is **not evidence about
+perception**: a disagreement is two rules parting company, and no reviewer has said either is right
+about any pair it counts. And it is **structurally biased toward disagreement outside
+`dark-neutral`**, because both challenger bars were measured there and are applied everywhere — which
+is why the tally carries a per-region split and why a total quoted without one is not usable.
+
+*Owner: orchestrator (read the counter), reviewer (commission the round, and decide invariant 3's
+shape). **Blast radius:** the same-colour bar, and — by accident if nobody stops it — the P1
+excursion bar, which is 2.5× the same-colour bar and would inherit every dependence the bar acquires.
+§7.1 named that in advance; it needs its own round with ramp stimuli and must not move as a side
+effect (see the excursion row).*
 
 ## C. Latent — harmless today, harmful under one specific move
 
