@@ -20,6 +20,7 @@ import { scanTypeScriptFile } from "./scan-ts.ts"
 import { scanPythonFile } from "./scan-py.ts"
 import { buildDecisionIndex } from "./classify.ts"
 import { buildReport, renderMarkdown, type HonestyReport } from "./report.ts"
+import { writeHeader } from "../provenance/header.ts"
 import type { ScannedFile } from "./types.ts"
 
 /** `research/v3`, derived from this file's location so the tool works from any cwd. */
@@ -116,24 +117,48 @@ export function discoverAndScan(root: string, roots: readonly string[]): Discove
 	return { scanned, skipped }
 }
 
-/** Builds the report for a tree. Exported so tests can run the whole pipeline without writing. */
-export function runCensus(root: string = V3_ROOT, generatedAt?: string): HonestyReport {
+/**
+ * Builds the report for a tree. Exported so tests can run the whole pipeline without writing.
+ *
+ * `withProvenance` attaches the standard result fingerprint (`src/provenance/header.ts`). Off by
+ * default because it shells out to git: the CLI wants it, and a test comparing two bodies does not
+ * — `meta` is excluded from `bodyHash`, so the fingerprint changes nothing a test looks at.
+ */
+export function runCensus(
+	root: string = V3_ROOT,
+	generatedAt?: string,
+	withProvenance = false,
+): HonestyReport {
 	const { scanned, skipped } = discoverAndScan(root, SCAN_ROOTS)
 
+	const decisionsPath = join(root, "data/decisions/decisions.json")
 	let decisions = buildDecisionIndex(null)
 	try {
-		decisions = buildDecisionIndex(
-			JSON.parse(readFileSync(join(root, "data/decisions/decisions.json"), "utf8")),
-		)
+		decisions = buildDecisionIndex(JSON.parse(readFileSync(decisionsPath, "utf8")))
 	} catch {
 		// No decision file is a legitimate state for a fresh tree or a test fixture. Every citation
 		// then reads as dangling, which is the correct and visible outcome rather than a crash.
 	}
 
+	const at = generatedAt ?? new Date().toISOString()
 	return buildReport(scanned, decisions, {
 		roots: [...SCAN_ROOTS],
-		generatedAt: generatedAt ?? new Date().toISOString(),
+		generatedAt: at,
 		skippedFiles: skipped,
+		...(withProvenance
+			? {
+					provenance: writeHeader({
+						what: "Parameter-honesty census over the v3 source tree.",
+						generatedBy: "research/v3/src/honesty/cli.ts",
+						generatedAt: at,
+						// The decision ledger is the census's one external input: it decides whether a
+						// cited decision id resolves or dangles, so the same tree against a different
+						// ledger is a genuinely different result. The scanned source itself needs no
+						// fingerprint here — bodyHash already is one.
+						inputs: [{ absolute: decisionsPath, display: "research/v3/data/decisions/decisions.json" }],
+					}),
+				}
+			: {}),
 	})
 }
 
@@ -144,7 +169,7 @@ function main(argv: string[]): void {
 	const jsonPath = join(outDir, "honesty-report.json")
 	const mdPath = join(outDir, "HONESTY.md")
 
-	const report = runCensus()
+	const report = runCensus(V3_ROOT, undefined, !check)
 
 	if (check) {
 		let previous: HonestyReport

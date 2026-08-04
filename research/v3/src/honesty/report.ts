@@ -17,6 +17,7 @@ import type { ExclusionRule, ProvenanceTag, ScannedFile, Site } from "./types.ts
 import { PROVENANCE_TAGS, TAG_ANCHOR_STRENGTH } from "./types.ts"
 import { EXCLUSION_RULES, classify, type DecisionIndex } from "./classify.ts"
 import { areaOf, gateFor, type AreaGate } from "./areas.ts"
+import type { ResultHeader } from "../provenance/header.ts"
 
 /** A tunable site with no provenance, as it appears in the backlog list. */
 export interface UntaggedEntry {
@@ -110,6 +111,15 @@ export interface HonestyReport {
 		generatedAt: string
 		roots: string[]
 		note: string
+		/**
+		 * The standard result fingerprint (`src/provenance/header.ts`, build item 17): which commit,
+		 * which package versions, which inputs. Optional because `buildReport` is called directly by
+		 * tests over synthetic trees, where a git hash would be noise.
+		 *
+		 * It lives in `meta` **because `meta` is excluded from `bodyHash`** — a fingerprint inside the
+		 * hash would change it on every commit and the hash would stop meaning anything.
+		 */
+		provenance?: ResultHeader
 	}
 	bodyHash: string
 	body: HonestyBody
@@ -185,6 +195,7 @@ export function buildReport(
 		generatedAt: string
 		extraLimitations?: readonly string[]
 		skippedFiles?: readonly { file: string; reason: string }[]
+		provenance?: ResultHeader
 	},
 ): HonestyReport {
 	const sites = classify(
@@ -384,6 +395,7 @@ export function buildReport(
 			generatedAt: options.generatedAt,
 			roots: [...options.roots].sort(),
 			note: "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
+			...(options.provenance ? { provenance: options.provenance } : {}),
 		},
 		bodyHash: hashBody(body),
 		body,

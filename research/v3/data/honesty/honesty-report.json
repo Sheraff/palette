@@ -1,18 +1,44 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T07:49:17.357Z",
+		"generatedAt": "2026-08-04T07:52:37.139Z",
 		"roots": [
 			"oracle",
 			"src"
 		],
-		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash."
+		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
+		"provenance": {
+			"what": "Parameter-honesty census over the v3 source tree.",
+			"generatedAt": "2026-08-04T07:52:37.139Z",
+			"generatedBy": "research/v3/src/honesty/cli.ts",
+			"code": {
+				"gitCommit": "d391b6fe6a08226d9a20871a7417e35ae0d98984",
+				"gitBranch": "research/palette-0.9-checkpoint",
+				"gitDirty": true,
+				"node": "v25.8.1"
+			},
+			"packages": {
+				"sharp": "0.33.5",
+				"sharp-modern": "0.35.3",
+				"apca-w3": "0.1.9",
+				"colorjs.io": "0.5.2",
+				"colornames-oklab": "0.6.0"
+			},
+			"inputs": [
+				{
+					"path": "research/v3/data/decisions/decisions.json",
+					"sha256": "4eb1a51fb4ef08d0eafc49f21d3a3d6cf917c5dcba53aff88a1bf8f9ae82081e",
+					"bytes": 251518
+				}
+			],
+			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
+		}
 	},
-	"bodyHash": "417ae5f434815a18318dc8bcf2f49158ec5797fe4927a4612d8fdf7cf2ee6634",
+	"bodyHash": "4e9a2df0c8cd54f1a2a70bf7acc3b08029a6ee5141dc830d0a76d38824665b8f",
 	"body": {
 		"corpus": {
-			"files": 185,
-			"lines": 83084,
+			"files": 195,
+			"lines": 85862,
 			"byLanguage": {
 				"py": {
 					"files": 92,
@@ -20,42 +46,42 @@
 					"fidelity": "lexical"
 				},
 				"ts": {
-					"files": 93,
-					"lines": 46660,
+					"files": 103,
+					"lines": 49438,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 8071,
-			"excluded": 3086,
-			"tunableSites": 4985,
-			"tagged": 699,
+			"candidates": 8231,
+			"excluded": 3160,
+			"tunableSites": 5071,
+			"tagged": 710,
 			"decisionTraced": 0,
 			"decisionDangling": 0,
-			"untagged": 4286
+			"untagged": 4361
 		},
 		"headline": {
-			"documentedFraction": 0.1402,
-			"anchoredFraction": 0.0905
+			"documentedFraction": 0.14,
+			"anchoredFraction": 0.0897
 		},
 		"byTag": {
-			"REVIEWED": 270,
+			"REVIEWED": 274,
 			"MEASURED": 181,
 			"FITTED": 0,
 			"n=1": 2,
-			"INHERITED": 110,
-			"UNCALIBRATED": 124,
-			"HELD": 12
+			"INHERITED": 112,
+			"UNCALIBRATED": 128,
+			"HELD": 13
 		},
 		"byAnchorStrength": {
-			"anchored": 451,
-			"weak": 124,
-			"unanchored": 4410
+			"anchored": 455,
+			"weak": 127,
+			"unanchored": 4489
 		},
 		"tagAttribution": {
 			"trailing": 1,
-			"leading": 581,
+			"leading": 592,
 			"shared-doc-block": 117
 		},
 		"decisionCitations": {
@@ -87,12 +113,12 @@
 			{
 				"id": "http-status",
 				"rationale": "An HTTP status code. Fixed by RFC 9110; the choice of which status to send is logic, but the number itself is not tunable. Covers the review server's own respond(res, status, ...) helper as well as the writeHead/statusCode shapes the scanner recognises directly.",
-				"count": 28
+				"count": 29
 			},
 			{
 				"id": "emptiness-comparison",
 				"rationale": "A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`.",
-				"count": 335
+				"count": 348
 			},
 			{
 				"id": "not-found-sentinel",
@@ -102,22 +128,22 @@
 			{
 				"id": "index-access",
 				"rationale": "An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes.",
-				"count": 1059
+				"count": 1066
 			},
 			{
 				"id": "loop-header",
 				"rationale": "An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy.",
-				"count": 201
+				"count": 210
 			},
 			{
 				"id": "accumulator-init",
 				"rationale": "A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted.",
-				"count": 239
+				"count": 250
 			},
 			{
 				"id": "counter-increment",
 				"rationale": "A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous.",
-				"count": 308
+				"count": 320
 			},
 			{
 				"id": "unit-conversion",
@@ -127,22 +153,22 @@
 			{
 				"id": "unit-clamp",
 				"rationale": "A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit.",
-				"count": 112
+				"count": 116
 			},
 			{
 				"id": "display-format",
 				"rationale": "A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes.",
-				"count": 296
+				"count": 305
 			},
 			{
 				"id": "display-interpolation",
 				"rationale": "A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted.",
-				"count": 223
+				"count": 230
 			},
 			{
 				"id": "slice-origin",
 				"rationale": "A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice.",
-				"count": 34
+				"count": 35
 			}
 		],
 		"skippedFiles": [
@@ -296,14 +322,14 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "dev loop / code version (no CONVENTIONS row)",
-				"files": 5,
-				"tunableSites": 55,
+				"files": 7,
+				"tunableSites": 83,
 				"tagged": 20,
 				"decisionTraced": 0,
 				"documented": 20,
-				"untagged": 35,
+				"untagged": 63,
 				"anchored": 0,
-				"documentedFraction": 0.3636,
+				"documentedFraction": 0.241,
 				"anchoredFraction": 0
 			},
 			{
@@ -352,26 +378,11 @@
 				"anchoredFraction": 0.0889
 			},
 			{
-				"area": "src/review-server",
+				"area": "src/provenance",
 				"gate": "INFORMATIONAL",
 				"configured": true,
-				"workstream": "review server",
-				"files": 25,
-				"tunableSites": 823,
-				"tagged": 82,
-				"decisionTraced": 0,
-				"documented": 82,
-				"untagged": 741,
-				"anchored": 26,
-				"documentedFraction": 0.0996,
-				"anchoredFraction": 0.0316
-			},
-			{
-				"area": "src/robustness",
-				"gate": "INFORMATIONAL",
-				"configured": true,
-				"workstream": "robustness comparison (no CONVENTIONS row)",
-				"files": 2,
+				"workstream": "result fingerprints",
+				"files": 1,
 				"tunableSites": 1,
 				"tagged": 0,
 				"decisionTraced": 0,
@@ -382,19 +393,49 @@
 				"anchoredFraction": 0
 			},
 			{
+				"area": "src/review-server",
+				"gate": "INFORMATIONAL",
+				"configured": true,
+				"workstream": "review server",
+				"files": 26,
+				"tunableSites": 825,
+				"tagged": 82,
+				"decisionTraced": 0,
+				"documented": 82,
+				"untagged": 743,
+				"anchored": 26,
+				"documentedFraction": 0.0994,
+				"anchoredFraction": 0.0315
+			},
+			{
+				"area": "src/robustness",
+				"gate": "INFORMATIONAL",
+				"configured": true,
+				"workstream": "robustness comparison (no CONVENTIONS row)",
+				"files": 4,
+				"tunableSites": 33,
+				"tagged": 9,
+				"decisionTraced": 0,
+				"documented": 9,
+				"untagged": 24,
+				"anchored": 2,
+				"documentedFraction": 0.2727,
+				"anchoredFraction": 0.0606
+			},
+			{
 				"area": "src/stats",
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "shared statistics (no CONVENTIONS row)",
-				"files": 6,
-				"tunableSites": 134,
-				"tagged": 38,
+				"files": 10,
+				"tunableSites": 157,
+				"tagged": 40,
 				"decisionTraced": 0,
-				"documented": 38,
-				"untagged": 96,
-				"anchored": 3,
-				"documentedFraction": 0.2836,
-				"anchoredFraction": 0.0224
+				"documented": 40,
+				"untagged": 117,
+				"anchored": 5,
+				"documentedFraction": 0.2548,
+				"anchoredFraction": 0.0318
 			},
 			{
 				"area": "src/tagging",
@@ -1185,6 +1226,18 @@
 				"untagged": 2
 			},
 			{
+				"file": "src/devloop/diff.ts",
+				"tunableSites": 12,
+				"documented": 0,
+				"untagged": 12
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"tunableSites": 16,
+				"documented": 0,
+				"untagged": 16
+			},
+			{
 				"file": "src/devloop/worker.ts",
 				"tunableSites": 2,
 				"documented": 0,
@@ -1237,6 +1290,12 @@
 				"tunableSites": 45,
 				"documented": 4,
 				"untagged": 41
+			},
+			{
+				"file": "src/provenance/header.ts",
+				"tunableSites": 1,
+				"documented": 0,
+				"untagged": 1
 			},
 			{
 				"file": "src/review-server/accent-functional.ts",
@@ -1342,9 +1401,9 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"tunableSites": 57,
+				"tunableSites": 59,
 				"documented": 0,
-				"untagged": 57
+				"untagged": 59
 			},
 			{
 				"file": "src/review-server/store.ts",
@@ -1383,6 +1442,18 @@
 				"untagged": 1
 			},
 			{
+				"file": "src/robustness/pair-set.ts",
+				"tunableSites": 21,
+				"documented": 5,
+				"untagged": 16
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"tunableSites": 11,
+				"documented": 4,
+				"untagged": 7
+			},
+			{
 				"file": "src/stats/agreement.ts",
 				"tunableSites": 5,
 				"documented": 0,
@@ -1393,6 +1464,12 @@
 				"tunableSites": 25,
 				"documented": 2,
 				"untagged": 23
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"tunableSites": 11,
+				"documented": 2,
+				"untagged": 9
 			},
 			{
 				"file": "src/stats/fisher.ts",
@@ -1407,10 +1484,22 @@
 				"untagged": 5
 			},
 			{
+				"file": "src/stats/multiplicity.ts",
+				"tunableSites": 7,
+				"documented": 0,
+				"untagged": 7
+			},
+			{
 				"file": "src/stats/numeric.ts",
 				"tunableSites": 83,
 				"documented": 32,
 				"untagged": 51
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"tunableSites": 5,
+				"documented": 0,
+				"untagged": 5
 			},
 			{
 				"file": "src/tagging/build-tags-md.ts",
@@ -13101,6 +13190,119 @@
 				]
 			},
 			{
+				"file": "src/devloop/diff.ts",
+				"line": 140,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "gradientDiffers",
+				"snippet": "if (distance > 0) changed = true",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 158,
+				"column": 72,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "changeRank",
+				"snippet": "if (entry.maxRolePairDistance !== null && entry.maxRolePairDistance > 0) return entry.maxRolePairDistance",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 165,
+				"column": 21,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "if (difference !== 0 && Number.isFinite(difference)) return difference",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 214,
+				"column": 23,
+				"value": 0,
+				"text": "0",
+				"name": "status",
+				"functionName": "compareRows",
+				"snippet": "status: roles.max > 0 || gradient.changed || collapseChanged ? \"changed\" : \"unchanged\",",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 295,
+				"column": 51,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "drain",
+				"snippet": "if (options.quiet !== true && written % 25 === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 348,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "if (live === 0) finish()",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 481,
+				"column": 17,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": "flag",
+				"snippet": "return at === -1 ? undefined : argv[at + 1]",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand",
+					"negative"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 523,
+				"column": 30,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return footer.failedCount > 0 ? 1 : 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
 				"file": "src/holdout/freeze-holdout.ts",
 				"line": 360,
 				"column": 27,
@@ -13412,7 +13614,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 275,
+				"line": 286,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -13426,7 +13628,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 461,
+				"line": 473,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -13440,7 +13642,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 576,
+				"line": 588,
 				"column": 31,
 				"value": 0,
 				"text": "0",
@@ -16914,7 +17116,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 520,
+				"line": 563,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -16928,7 +17130,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 536,
+				"line": 579,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -16942,7 +17144,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1952,
+				"line": 2093,
 				"column": 24,
 				"value": 8,
 				"text": "8",
@@ -16956,7 +17158,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2005,
+				"line": 2146,
 				"column": 22,
 				"value": 3,
 				"text": "3",
@@ -16970,7 +17172,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2005,
+				"line": 2146,
 				"column": 40,
 				"value": 255,
 				"text": "0xff",
@@ -16984,7 +17186,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2005,
+				"line": 2146,
 				"column": 61,
 				"value": 216,
 				"text": "0xd8",
@@ -16998,7 +17200,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2005,
+				"line": 2146,
 				"column": 82,
 				"value": 255,
 				"text": "0xff",
@@ -17012,7 +17214,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2006,
+				"line": 2147,
 				"column": 22,
 				"value": 8,
 				"text": "8",
@@ -17026,7 +17228,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2008,
+				"line": 2149,
 				"column": 19,
 				"value": 12,
 				"text": "12",
@@ -17040,7 +17242,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2014,
+				"line": 2155,
 				"column": 22,
 				"value": 12,
 				"text": "12",
@@ -17054,7 +17256,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2856,
+				"line": 3016,
 				"column": 44,
 				"value": 0,
 				"text": "0",
@@ -17068,7 +17270,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2856,
+				"line": 3016,
 				"column": 56,
 				"value": 65535,
 				"text": "65_535",
@@ -17257,6 +17459,62 @@
 				"name": null,
 				"functionName": null,
 				"snippet": ".filter((c) => c.distance !== null && c.bar !== null && c.bar > 0)",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 228,
+				"column": 16,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "allocate",
+				"snippet": "if (total === 0 || quota <= 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 228,
+				"column": 30,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "allocate",
+				"snippet": "if (total === 0 || quota <= 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 122,
+				"column": 17,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "if (channels < 3) throw new Error(`dither needs at least 3 channels, got ${channels}`)",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 128,
+				"column": 33,
+				"value": 0,
+				"text": "0",
+				"name": "delta",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "const delta = (x + y) % 2 === 0 ? 1 : -1",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -17473,6 +17731,76 @@
 				]
 			},
 			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 95,
+				"column": 34,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "confidence",
+				"functionName": "bootstrapCI",
+				"snippet": "confidence: spec.confidence ?? 0.95,",
+				"suspicion": 3,
+				"flags": [
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 132,
+				"column": 34,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "confidence",
+				"functionName": "clusterBootstrapCI",
+				"snippet": "confidence: spec.confidence ?? 0.95,",
+				"suspicion": 3,
+				"flags": [
+					"float"
+				]
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 168,
+				"column": 21,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "runBootstrap",
+				"snippet": "if (!(confidence > 0 && confidence < 1)) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 168,
+				"column": 39,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "runBootstrap",
+				"snippet": "if (!(confidence > 0 && confidence < 1)) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 240,
+				"column": 24,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "runBootstrap",
+				"snippet": "if (degenerateDraws > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
 				"file": "src/stats/fisher.ts",
 				"line": 67,
 				"column": 43,
@@ -17621,6 +17949,76 @@
 				"name": null,
 				"functionName": "cohensKappa",
 				"snippet": "if (n === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 119,
+				"column": 60,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "sweepThenTest",
+				"snippet": "if (!Number.isInteger(comparisonsRun) || comparisonsRun < 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 122,
+				"column": 16,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "sweepThenTest",
+				"snippet": "if (!(alpha > 0 && alpha < 1)) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 122,
+				"column": 29,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "sweepThenTest",
+				"snippet": "if (!(alpha > 0 && alpha < 1)) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 126,
+				"column": 24,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "sweepThenTest",
+				"snippet": "if (!(cell.pValue >= 0 && cell.pValue <= 1)) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 126,
+				"column": 44,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "sweepThenTest",
+				"snippet": "if (!(cell.pValue >= 0 && cell.pValue <= 1)) {",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -17803,6 +18201,62 @@
 				"name": null,
 				"functionName": "clampUnit",
 				"snippet": "if (value > 1) return 1",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"line": 91,
+				"column": 28,
+				"value": 0,
+				"text": "0",
+				"name": "observedMin",
+				"functionName": "assessSupport",
+				"snippet": "const observedMin = n === 0 ? null : Math.min(...support.observedValues)",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"line": 92,
+				"column": 28,
+				"value": 0,
+				"text": "0",
+				"name": "observedMax",
+				"functionName": "assessSupport",
+				"snippet": "const observedMax = n === 0 ? null : Math.max(...support.observedValues)",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"line": 113,
+				"column": 29,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "assessSupport",
+				"snippet": "if (rangeRestricted && n > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"line": 118,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "assessSupport",
+				"snippet": "if (n === 0) annotations.push(\"the sample is empty; there is no support for any claim\")",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -22542,6 +22996,62 @@
 				]
 			},
 			{
+				"file": "src/devloop/run.ts",
+				"line": 285,
+				"column": 22,
+				"value": 0,
+				"text": "0",
+				"name": "ok",
+				"functionName": "runCandidate",
+				"snippet": "const tally = { ok: 0, failed: 0, hits: 0, misses: 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 285,
+				"column": 33,
+				"value": 0,
+				"text": "0",
+				"name": "failed",
+				"functionName": "runCandidate",
+				"snippet": "const tally = { ok: 0, failed: 0, hits: 0, misses: 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 285,
+				"column": 42,
+				"value": 0,
+				"text": "0",
+				"name": "hits",
+				"functionName": "runCandidate",
+				"snippet": "const tally = { ok: 0, failed: 0, hits: 0, misses: 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 285,
+				"column": 53,
+				"value": 0,
+				"text": "0",
+				"name": "misses",
+				"functionName": "runCandidate",
+				"snippet": "const tally = { ok: 0, failed: 0, hits: 0, misses: 0 }",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
 				"file": "src/devloop/worker.ts",
 				"line": 77,
 				"column": 15,
@@ -22571,7 +23081,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 201,
+				"line": 212,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -22585,7 +23095,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 202,
+				"line": 213,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -22599,7 +23109,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 211,
+				"line": 222,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -22613,7 +23123,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 211,
+				"line": 222,
 				"column": 48,
 				"value": 0,
 				"text": "0",
@@ -22627,7 +23137,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 211,
+				"line": 222,
 				"column": 63,
 				"value": 0,
 				"text": "0",
@@ -22641,7 +23151,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 213,
+				"line": 224,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -22655,7 +23165,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 214,
+				"line": 225,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -22669,7 +23179,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 215,
+				"line": 226,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -22683,7 +23193,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 290,
+				"line": 301,
 				"column": 56,
 				"value": 0,
 				"text": "0",
@@ -22697,7 +23207,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 290,
+				"line": 301,
 				"column": 67,
 				"value": 0,
 				"text": "0",
@@ -22711,7 +23221,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 290,
+				"line": 301,
 				"column": 86,
 				"value": 0,
 				"text": "0",
@@ -22725,7 +23235,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 290,
+				"line": 301,
 				"column": 99,
 				"value": 0,
 				"text": "0",
@@ -22739,7 +23249,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 306,
+				"line": 317,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -22753,7 +23263,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 307,
+				"line": 318,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -22767,7 +23277,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 308,
+				"line": 319,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -22781,7 +23291,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 309,
+				"line": 320,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -52680,6 +53190,209 @@
 				"flags": []
 			},
 			{
+				"file": "src/devloop/diff.ts",
+				"line": 108,
+				"column": 13,
+				"value": -1,
+				"text": "1",
+				"name": "max",
+				"functionName": "roleDistances",
+				"snippet": "let max = -1",
+				"suspicion": 0,
+				"flags": [
+					"accumulator-init",
+					"negative"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 159,
+				"column": 61,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "changeRank",
+				"snippet": "if (entry.gradientChanged || entry.collapseChanged) return 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 160,
+				"column": 10,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": "changeRank",
+				"snippet": "return -1",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 166,
+				"column": 92,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "if (changeRank(right) !== changeRank(left)) return changeRank(right) > changeRank(left) ? 1 : -1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 166,
+				"column": 97,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "if (changeRank(right) !== changeRank(left)) return changeRank(right) > changeRank(left) ? 1 : -1",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 167,
+				"column": 45,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "return left.imagePath < right.imagePath ? -1 : left.imagePath > right.imagePath ? 1 : 0",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 167,
+				"column": 84,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "return left.imagePath < right.imagePath ? -1 : left.imagePath > right.imagePath ? 1 : 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/diff.ts",
+				"line": 167,
+				"column": 88,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "compareEntries",
+				"snippet": "return left.imagePath < right.imagePath ? -1 : left.imagePath > right.imagePath ? 1 : 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 295,
+				"column": 44,
+				"value": 25,
+				"text": "25",
+				"name": null,
+				"functionName": "drain",
+				"snippet": "if (options.quiet !== true && written % 25 === 0) {",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 481,
+				"column": 43,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "flag",
+				"snippet": "return at === -1 ? undefined : argv[at + 1]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 490,
+				"column": 11,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 496,
+				"column": 10,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return 1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 506,
+				"column": 10,
+				"value": 2,
+				"text": "2",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 523,
+				"column": 34,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return footer.failedCount > 0 ? 1 : 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 523,
+				"column": 38,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "main",
+				"snippet": "return footer.failedCount > 0 ? 1 : 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/run.ts",
+				"line": 527,
+				"column": 51,
+				"value": 2,
+				"text": "2",
+				"name": "process.argv.slice",
+				"functionName": null,
+				"snippet": "process.exitCode = await main(process.argv.slice(2))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
 				"file": "src/holdout/freeze-holdout.ts",
 				"line": 185,
 				"column": 19,
@@ -53303,7 +54016,7 @@
 			},
 			{
 				"file": "src/honesty/cli.ts",
-				"line": 194,
+				"line": 219,
 				"column": 78,
 				"value": 2,
 				"text": "2",
@@ -53317,7 +54030,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 210,
+				"line": 221,
 				"column": 50,
 				"value": 0,
 				"text": "0",
@@ -53329,7 +54042,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 282,
+				"line": 293,
 				"column": 47,
 				"value": 0,
 				"text": "0",
@@ -53341,7 +54054,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 282,
+				"line": 293,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -53353,7 +54066,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 313,
+				"line": 324,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -53365,7 +54078,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 319,
+				"line": 330,
 				"column": 35,
 				"value": 0,
 				"text": "0",
@@ -53377,7 +54090,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 339,
+				"line": 350,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -53389,7 +54102,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 344,
+				"line": 355,
 				"column": 49,
 				"value": 0,
 				"text": "0",
@@ -53403,7 +54116,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 542,
+				"line": 554,
 				"column": 83,
 				"value": 0,
 				"text": "0",
@@ -53415,7 +54128,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 542,
+				"line": 554,
 				"column": 88,
 				"value": 1,
 				"text": "1",
@@ -53427,7 +54140,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 578,
+				"line": 590,
 				"column": 10,
 				"value": 0,
 				"text": "0",
@@ -54762,6 +55475,18 @@
 				"name": null,
 				"functionName": null,
 				"snippet": ".sort((a, b) => (a.imagePath + a.roleSignature < b.imagePath + b.roleSignature ? -1 : 1)),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/provenance/header.ts",
+				"line": 177,
+				"column": 82,
+				"value": 1,
+				"text": "1",
+				"name": "absolute.slice",
+				"functionName": "relativeToRepo",
+				"snippet": "return absolute.startsWith(`${REPO_ROOT}/`) ? absolute.slice(REPO_ROOT.length + 1) : absolute",
 				"suspicion": 0,
 				"flags": []
 			},
@@ -58344,7 +59069,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 442,
+				"line": 484,
 				"column": 45,
 				"value": 0,
 				"text": "0",
@@ -58356,7 +59081,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 442,
+				"line": 484,
 				"column": 50,
 				"value": 1,
 				"text": "1",
@@ -58368,7 +59093,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 480,
+				"line": 522,
 				"column": 45,
 				"value": 0,
 				"text": "0",
@@ -58380,7 +59105,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 480,
+				"line": 522,
 				"column": 50,
 				"value": 1,
 				"text": "1",
@@ -58392,13 +59117,13 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 721,
-				"column": 96,
+				"line": 779,
+				"column": 114,
 				"value": -1,
 				"text": "1",
 				"name": null,
 				"functionName": null,
-				"snippet": "open: entries.filter((entry) => !entry.released).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),",
+				"snippet": "open: entries.filter((entry) => !entry.released && !entry.retired).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),",
 				"suspicion": 0,
 				"flags": [
 					"negative"
@@ -58406,19 +59131,19 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 721,
-				"column": 100,
+				"line": 779,
+				"column": 118,
 				"value": 1,
 				"text": "1",
 				"name": null,
 				"functionName": null,
-				"snippet": "open: entries.filter((entry) => !entry.released).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),",
+				"snippet": "open: entries.filter((entry) => !entry.released && !entry.retired).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),",
 				"suspicion": 0,
 				"flags": []
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 724,
+				"line": 782,
 				"column": 69,
 				"value": -1,
 				"text": "1",
@@ -58432,7 +59157,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 724,
+				"line": 782,
 				"column": 73,
 				"value": 1,
 				"text": "1",
@@ -58444,7 +59169,33 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 772,
+				"line": 783,
+				"column": 115,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "retired: entries.filter((entry) => entry.retired).sort((a, b) => ((a.retiredAt ?? \"\") > (b.retiredAt ?? \"\") ? -1 : 1)),",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/review-server/server.ts",
+				"line": 783,
+				"column": 119,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "retired: entries.filter((entry) => entry.retired).sort((a, b) => ((a.retiredAt ?? \"\") > (b.retiredAt ?? \"\") ? -1 : 1)),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/review-server/server.ts",
+				"line": 849,
 				"column": 36,
 				"value": -1,
 				"text": "1",
@@ -58459,7 +59210,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 831,
+				"line": 908,
 				"column": 50,
 				"value": -1,
 				"text": "1",
@@ -58474,7 +59225,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 885,
+				"line": 962,
 				"column": 50,
 				"value": -1,
 				"text": "1",
@@ -58489,7 +59240,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 952,
+				"line": 1029,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -58501,7 +59252,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 952,
+				"line": 1029,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -58513,7 +59264,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 997,
+				"line": 1074,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -58525,7 +59276,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 997,
+				"line": 1074,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -58537,7 +59288,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1213,
+				"line": 1290,
 				"column": 30,
 				"value": 1,
 				"text": "1",
@@ -58549,7 +59300,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1321,
+				"line": 1398,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -58561,7 +59312,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1365,
+				"line": 1442,
 				"column": 81,
 				"value": 0,
 				"text": "0",
@@ -58573,7 +59324,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1365,
+				"line": 1442,
 				"column": 86,
 				"value": 1,
 				"text": "1",
@@ -58585,7 +59336,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1453,
+				"line": 1530,
 				"column": 108,
 				"value": 0,
 				"text": "0",
@@ -58597,7 +59348,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1453,
+				"line": 1530,
 				"column": 113,
 				"value": 1,
 				"text": "1",
@@ -58609,7 +59360,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1496,
+				"line": 1573,
 				"column": 45,
 				"value": 0,
 				"text": "0",
@@ -58621,7 +59372,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1510,
+				"line": 1587,
 				"column": 38,
 				"value": 0,
 				"text": "0",
@@ -58633,7 +59384,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1651,
+				"line": 1728,
 				"column": 37,
 				"value": 0,
 				"text": "0",
@@ -58645,7 +59396,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1651,
+				"line": 1728,
 				"column": 42,
 				"value": 1,
 				"text": "1",
@@ -58657,7 +59408,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1659,
+				"line": 1736,
 				"column": 81,
 				"value": 0,
 				"text": "0",
@@ -58669,7 +59420,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 1659,
+				"line": 1736,
 				"column": 86,
 				"value": 1,
 				"text": "1",
@@ -58681,7 +59432,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2006,
+				"line": 2147,
 				"column": 42,
 				"value": 0,
 				"text": "0",
@@ -58695,7 +59446,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2006,
+				"line": 2147,
 				"column": 45,
 				"value": 8,
 				"text": "8",
@@ -58709,7 +59460,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2009,
+				"line": 2150,
 				"column": 18,
 				"value": 0,
 				"text": "0",
@@ -58723,7 +59474,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2009,
+				"line": 2150,
 				"column": 21,
 				"value": 4,
 				"text": "4",
@@ -58737,7 +59488,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2010,
+				"line": 2151,
 				"column": 18,
 				"value": 8,
 				"text": "8",
@@ -58751,7 +59502,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2010,
+				"line": 2151,
 				"column": 21,
 				"value": 12,
 				"text": "12",
@@ -58765,7 +59516,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2014,
+				"line": 2155,
 				"column": 43,
 				"value": 4,
 				"text": "4",
@@ -58779,7 +59530,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2014,
+				"line": 2155,
 				"column": 46,
 				"value": 8,
 				"text": "8",
@@ -58793,7 +59544,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2015,
+				"line": 2156,
 				"column": 32,
 				"value": 8,
 				"text": "8",
@@ -58807,7 +59558,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2015,
+				"line": 2156,
 				"column": 35,
 				"value": 12,
 				"text": "12",
@@ -58821,7 +59572,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2626,
+				"line": 2786,
 				"column": 47,
 				"value": 404,
 				"text": "404",
@@ -58833,7 +59584,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2626,
+				"line": 2786,
 				"column": 81,
 				"value": 409,
 				"text": "409",
@@ -58845,7 +59596,7 @@
 			},
 			{
 				"file": "src/review-server/server.ts",
-				"line": 2626,
+				"line": 2786,
 				"column": 87,
 				"value": 400,
 				"text": "400",
@@ -59016,6 +59767,250 @@
 				]
 			},
 			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 226,
+				"column": 61,
+				"value": 0,
+				"text": "0",
+				"name": "cells.reduce",
+				"functionName": "allocate",
+				"snippet": "const total = cells.reduce((sum, c) => sum + c.population, 0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 229,
+				"column": 54,
+				"value": 0,
+				"text": "0",
+				"name": "allocation.set",
+				"functionName": "allocate",
+				"snippet": "for (const cell of cells) allocation.set(cell.key, 0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 246,
+				"column": 28,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "return x.key < y.key ? -1 : 1",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 246,
+				"column": 32,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "return x.key < y.key ? -1 : 1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 253,
+				"column": 39,
+				"value": 1,
+				"text": "1",
+				"name": "allocation.set",
+				"functionName": "allocate",
+				"snippet": "allocation.set(cell.key, current + 1)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 307,
+				"column": 50,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "eligible.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 307,
+				"column": 76,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "eligible.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 307,
+				"column": 80,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "eligible.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 340,
+				"column": 39,
+				"value": 0,
+				"text": "0",
+				"name": "take",
+				"functionName": "buildPairSet",
+				"snippet": "const take = allocation.get(key) ?? 0",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 342,
+				"column": 49,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "picked.sort((x, y) => (x.pairId < y.pairId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 342,
+				"column": 53,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "picked.sort((x, y) => (x.pairId < y.pairId ? -1 : 1))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 346,
+				"column": 47,
+				"value": -1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "drawn.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 346,
+				"column": 73,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": null,
+				"snippet": "drawn.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/pair-set.ts",
+				"line": 346,
+				"column": 77,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": null,
+				"snippet": "drawn.sort((x, y) => (x.pairId < y.pairId ? -1 : x.pairId > y.pairId ? 1 : 0))",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 128,
+				"column": 27,
+				"value": 2,
+				"text": "2",
+				"name": "delta",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "const delta = (x + y) % 2 === 0 ? 1 : -1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 128,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "delta",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "const delta = (x + y) % 2 === 0 ? 1 : -1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 128,
+				"column": 42,
+				"value": -1,
+				"text": "1",
+				"name": "delta",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "const delta = (x + y) % 2 === 0 ? 1 : -1",
+				"suspicion": 0,
+				"flags": [
+					"negative"
+				]
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 129,
+				"column": 36,
+				"value": 2,
+				"text": "2",
+				"name": "index",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "const index = pixel * channels + 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/robustness/perturb.ts",
+				"line": 130,
+				"column": 38,
+				"value": 255,
+				"text": "255",
+				"name": "Math.min",
+				"functionName": "ditherBlueChannelLsb",
+				"snippet": "data[index] = Math.max(0, Math.min(255, data[index]! + delta))",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
 				"file": "src/stats/binomial.ts",
 				"line": 91,
 				"column": 23,
@@ -59140,6 +60135,56 @@
 				"flags": []
 			},
 			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 194,
+				"column": 23,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "runBootstrap",
+				"snippet": "provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 230,
+				"column": 16,
+				"value": 1,
+				"text": "1",
+				"name": "tail",
+				"functionName": "runBootstrap",
+				"snippet": "const tail = (1 - confidence) / 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 230,
+				"column": 34,
+				"value": 2,
+				"text": "2",
+				"name": "tail",
+				"functionName": "runBootstrap",
+				"snippet": "const tail = (1 - confidence) / 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/bootstrap.ts",
+				"line": 232,
+				"column": 37,
+				"value": 1,
+				"text": "1",
+				"name": "quantileSorted",
+				"functionName": "runBootstrap",
+				"snippet": "const high = quantileSorted(draws, 1 - tail)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/stats/fisher.ts",
 				"line": 94,
 				"column": 23,
@@ -59214,6 +60259,32 @@
 				"name": "kappa",
 				"functionName": "cohensKappa",
 				"snippet": "const kappa = (rawAgreement - expectedAgreement) / (1 - expectedAgreement)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 248,
+				"column": 56,
+				"value": 0,
+				"text": "0",
+				"name": "new Array<number>(cells.length).fill",
+				"functionName": "adjustPValues",
+				"snippet": "const adjusted = new Array<number>(cells.length).fill(0)",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/multiplicity.ts",
+				"line": 277,
+				"column": 66,
+				"value": 1,
+				"text": "1",
+				"name": "clampUnit",
+				"functionName": "adjustPValues",
+				"snippet": "const scaled = clampUnit((entry.pValue * familySize) / (rank + 1))",
 				"suspicion": 0,
 				"flags": []
 			},
@@ -59600,6 +60671,18 @@
 				"name": null,
 				"functionName": "clampUnit",
 				"snippet": "if (value > 1) return 1",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/truncation.ts",
+				"line": 95,
+				"column": 6,
+				"value": 0,
+				"text": "0",
+				"name": "domainCoverage",
+				"functionName": "assessSupport",
+				"snippet": "? 0",
 				"suspicion": 0,
 				"flags": []
 			},
