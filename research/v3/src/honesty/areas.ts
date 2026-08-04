@@ -27,6 +27,10 @@
  * `configured: false`, which is a reader-facing signal that a directory appeared without anyone
  * deciding what it is. A derived-only design would absorb new directories silently, which is the
  * failure mode this whole instrument exists to prevent.
+ *
+ * The one exception is `AREA_PREFIX_CONFIG`, for a root whose subdirectories are minted by the
+ * campaign rather than named here; the reasoning for why explicitness buys nothing there is on that
+ * declaration.
  */
 
 /**
@@ -43,6 +47,19 @@ export interface AreaConfig {
 	area: string
 	gate: AreaGate
 	/** The `CONVENTIONS.md` path-ownership row this area belongs to, for the report's blame column. */
+	workstream: string
+}
+
+/**
+ * A rule that configures every area under one scan root at once, by path prefix.
+ *
+ * The exception to "the list is explicit": see `AREA_PREFIX_CONFIG` for when that is the honest
+ * shape and when it is not.
+ */
+export interface AreaPrefixConfig {
+	/** POSIX prefix an area name must start with, e.g. `prototypes/`. Include the trailing slash. */
+	prefix: string
+	gate: AreaGate
 	workstream: string
 }
 
@@ -84,6 +101,31 @@ export const AREA_CONFIG: readonly AreaConfig[] = [
 ]
 
 /**
+ * Areas configured by prefix rather than by name, for roots whose subdirectories are created by the
+ * campaign rather than by this table.
+ *
+ * `[REVIEWED]` — added 2026-08-04, after `prototypes/` joined `SCAN_ROOTS` (commit 1491622). Phase 2
+ * prototypes live at `prototypes/<slug>/`, one slug per prototype worktree, and the slugs are minted
+ * when `PHASE_2_HANDOFF.md` §6's six orchestrators are spawned — they are not knowable here, so an
+ * explicit row per slug would be a table that is always one prototype out of date, and every slug
+ * would arrive reported as `unassigned`.
+ *
+ * The explicitness argument in this file's header does not apply to this root, and the difference is
+ * the point. Under `src/` and `oracle/`, a new directory means *someone made an ownership decision
+ * nobody recorded*, which is worth a warning. Under `prototypes/`, a new directory means a prototype
+ * orchestrator started work — the ownership decision was already made, in the brief, and it is the
+ * same decision for every slug: the orchestrator owns its own subtree
+ * (`phase-2/PROTOTYPE_ORCHESTRATOR_BRIEF.md`, and `PHASE_2_HANDOFF.md` §6.2 on per-prototype path
+ * ownership). A warning that fires identically for all six carries no information.
+ *
+ * `INFORMATIONAL` like every other area in Phase 0, and doubly so here: a prototype's constants are
+ * *supposed* to churn while it is being written, which is the exact case the gate opt-in exists for.
+ */
+export const AREA_PREFIX_CONFIG: readonly AreaPrefixConfig[] = [
+	{ prefix: "prototypes/", gate: "INFORMATIONAL", workstream: "phase-2 prototype orchestrators" },
+]
+
+/**
  * How many path segments make an area: `src/contract/invariants.ts` -> `src/contract`.
  *
  * `[REVIEWED]` — one level under a scan root is exactly the granularity `CONVENTIONS.md` assigns
@@ -111,12 +153,18 @@ const AREA_INDEX = new Map(AREA_CONFIG.map((entry) => [entry.area, entry]))
 /**
  * The configured gate for an area.
  *
- * An unlisted area is `INFORMATIONAL` and `configured: false`. Defaulting an unknown area to
- * `GATED` would be the stricter choice and the wrong one — it would fail a build the moment someone
- * creates a directory, which teaches people to avoid the census rather than to tag constants.
+ * Named entries win over prefix rules, so a prefix root can still have one slug called out by name
+ * later without deleting the rule.
+ *
+ * An area matched by neither is `INFORMATIONAL` and `configured: false`. Defaulting an unknown area
+ * to `GATED` would be the stricter choice and the wrong one — it would fail a build the moment
+ * someone creates a directory, which teaches people to avoid the census rather than to tag
+ * constants.
  */
 export function gateFor(area: string): { gate: AreaGate; workstream: string; configured: boolean } {
 	const found = AREA_INDEX.get(area)
 	if (found) return { gate: found.gate, workstream: found.workstream, configured: true }
+	const prefixed = AREA_PREFIX_CONFIG.find((entry) => area.startsWith(entry.prefix))
+	if (prefixed) return { gate: prefixed.gate, workstream: prefixed.workstream, configured: true }
 	return { gate: "INFORMATIONAL", workstream: "unassigned", configured: false }
 }
