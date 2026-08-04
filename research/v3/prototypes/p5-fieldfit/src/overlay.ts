@@ -5,12 +5,19 @@
  * module reads what the fit *rejected*. Nothing here segments, thresholds an area, or looks at
  * shape. A pixel's contribution to the overlay is `1 − w(x)` and nothing else.
  *
- * Implements SPEC decisions 6 (bar-neighbourhood agglomeration), 7 (foreground), 8 (accent) and the
- * foreground half of 10 (escape), **as amended by the rulings of 2026-08-04**: every comparison on
- * published representatives; the foreground ranked by minimum |raw APCA| over the rendered ramp; the
- * accent floored by the caller's `minAccentContrast` over that same ramp and ranked by its distance
- * from everything already published, with the Pareto front removed. Design sources:
- * `phase-1/proposals/arm-f-r3.md`
+ * Implements SPEC decisions 6 (bar-neighbourhood agglomeration), 7 and 13 (foreground), 8 and 14
+ * (accent) and the foreground half of 10 (escape), **as amended by the rulings of 2026-08-04**.
+ * Both roles now read the same way — *the artwork's own colour, above a gate* — and the gates are
+ * where all the evidence went:
+ *
+ *  - every comparison runs on published representatives, never on cluster centres;
+ *  - **foreground** = argmax overlay mass among candidates clearing `FOREGROUND_MIN_RAW_APCA` over
+ *    the published ramp (decision 13, resolved by measurement);
+ *  - **accent** = argmax overlay mass among candidates clearing the contract's accent floor, distinct
+ *    from both ends, and outside the foreground's twin radius (decision 14, measured).
+ *
+ * The Pareto front and the min-distance criterion both lived here and were both removed by reviewer
+ * evidence; the history is in the accent block. Design sources: `phase-1/proposals/arm-f-r3.md`
  * §2.5 (overlay mass, the Pareto front, `accentChromaOnly`) and `arm-e-r3.md` §2.4
  * (bar-neighbourhood agglomeration, descending-mass order, packed-int tie-break) — **§2.4 only**.
  * Arm E's five-level lexicographic role ranking is excluded by SPEC decision 12 and is not here.
@@ -46,6 +53,7 @@
  */
 
 import {
+	colorDistance,
 	colorFromRgb,
 	okLabDistance,
 	okLabToRgb,
@@ -373,34 +381,54 @@ function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
 // and needs no structure of its own. The history is in `readOverlay`'s accent block.
 
 // ---------------------------------------------------------------------------------------------
-// SPEC decision 13 — the foreground experiment (temporary)
+// SPEC decisions 13 and 14 — the two measured constants
 // ---------------------------------------------------------------------------------------------
 
 /**
- * **Two candidate foreground rules, both implemented, one shipped. This is temporary.**
+ * **The foreground's legibility floor**, in |raw APCA| over the published ramp.
  *
- * SPEC decision 13 (round-2 items 1 and 7) states the open question: the foreground principle is *the
- * artwork's own ink, provided it registers* — not maximum contrast. Item 7 wants the white title on a
- * light field, where `apca-max` picks the black shadows instead; item 1's black is *also* the
- * artwork's ink, and `apca-max` gets that one right. The two rules therefore disagree in a way no
- * argument settles, so both exist here and `fg-compare.ts` measures them.
+ * `[UNCALIBRATED]` — but *bracketed by reviewer evidence*, which is why the number is 15 and not a
+ * round guess. SPEC decision 13, resolved from the pass-7 comparison table (22 covers, 15 of which
+ * the two candidate rules disagreed on):
  *
- * The gates are **identical** for both — representative-level distinctness from both published ends,
- * and the caller's text floor over the published ramp. Only the ranking among survivors differs:
+ *  - mass-led's reviewer-**endorsed** win — round-2 item 7, the white title on the sky-ramp cover —
+ *    sits at |raw| **28.9**;
+ *  - mass-led's reviewer-**refuted** picks sit at **3.7, 4.9, 7.7 and 10.6**, the 4.9 being verbatim
+ *    the round-1 UNACCEPTABLE `#e4e4e4` *"foreground barely registers"*.
  *
- *  - `apca-max`: argmax `min|raw APCA|` over the ramp. Legibility first.
- *  - `mass-led`: argmax overlay mass. Presence first, legibility as a gate.
+ * So every floor in the open interval **(10.6, 28.9]** honours all current evidence, and 15 is chosen
+ * inside that bracket. Round 3 may tighten it; what it may not do is quietly widen it, because the
+ * two endpoints are reviewer verdicts on named covers rather than intuitions.
  *
- * `DEFAULT_FOREGROUND_RULE` is what `candidate.ts` ships and it is deliberately **not** a parameter
- * anywhere in the candidate: `src/devloop/types.ts` is explicit that a candidate with a knob is two
- * candidates. This option exists for the comparison script and is expected to be deleted, along with
- * the losing branch, once the orchestrator has picked from the table.
+ * This is the prototype's own floor and it is combined with — never substituted for — the caller's
+ * `minTextContrast`: the effective floor is the larger of the two, so a caller can raise it and
+ * cannot lower it below the evidence.
  */
-export type ForegroundRule = "apca-max" | "mass-led"
+const FOREGROUND_MIN_RAW_APCA = 15
 
-export const DEFAULT_FOREGROUND_RULE: ForegroundRule = "apca-max"
-
-export type OverlayOptions = Readonly<{ foregroundRule?: ForegroundRule }>
+/**
+ * **The accent's twin-exclusion multiple**: a candidate within
+ * `ACCENT_FG_EXCLUSION_MULTIPLE × sameColorBar(candidate, foreground)` of the published foreground is
+ * the foreground's family, not a second colour.
+ *
+ * `[MEASURED — SPEC decision 14]`, and measured is the operative word: the value is the smallest
+ * integer that excludes all three evidenced twin pairs with at least 20% margin. The pairs are the
+ * ones this prototype actually published and a reviewer actually called indistinguishable, with
+ * their measured `distance / sameColorBar` ratios:
+ *
+ *  - `#fed078` / `#febf6f` (round-1 item 7, `908479200b`) — d 0.04050, bar 0.02293, ratio **1.766**
+ *  - `#fffce1` / `#fee2ba` (pass-7, `16a8247378`) — d 0.06851, bar 0.02293, ratio **2.988**
+ *  - `#000000` / `#000100` (pass-7, the second round-2 fresh cover) — d 0.06151, bar 0.00932,
+ *    ratio **6.599**
+ *
+ * Largest ratio 6.599 × 1.2 = 7.919, so the smallest qualifying integer is **8**. The spread across
+ * the three (1.8 to 6.6) is itself the finding, and it is a statement about the *formula* rather than
+ * about this prototype: the same-colour bar is far tighter near black than a viewer is. That is
+ * reported upward as calibration input, and this multiple is superseded automatically by any
+ * recalibration of `sameColorBar` — it exists only to stand in for a bar that does not yet match the
+ * reviewer's eye.
+ */
+const ACCENT_FG_EXCLUSION_MULTIPLE = 8
 
 // ---------------------------------------------------------------------------------------------
 // Entry point
@@ -423,9 +451,7 @@ export function readOverlay(
 	inventory: Inventory,
 	contrast: ResolvedContrastFloors,
 	publishedRamp: readonly GradientStop[],
-	options: OverlayOptions = {},
 ): OverlayReading {
-	const foregroundRule = options.foregroundRule ?? DEFAULT_FOREGROUND_RULE
 	if (publishedRamp.length < 2) {
 		throw new RangeError(`readOverlay needs at least two published stops, got ${publishedRamp.length}`)
 	}
@@ -501,24 +527,16 @@ export function readOverlay(
 		legibility.set(cluster, raw)
 	}
 
+	// The floor is the larger of the caller's request and the prototype's evidence-bracketed one, so
+	// raising `minTextContrast` tightens the gate and nothing can loosen it below the bracket.
+	const foregroundFloor = Math.max(textFloor, FOREGROUND_MIN_RAW_APCA)
 	let foreground: OverlayCluster | null = null
-	let bestLegibility = -1
 	for (const cluster of feasible) {
-		const raw = legibility.get(cluster)!
-		// The gate, identical under both rules: below the caller's floor is not a foreground at all.
-		if (raw < textFloor) continue
-		if (foreground === null) {
-			foreground = cluster
-			bestLegibility = raw
-			continue
-		}
-		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so under
-		// `mass-led` the first survivor is already the answer and under `apca-max` the incumbent
-		// already holds both tie-breaks. Only a strict improvement in legibility can displace it.
-		if (foregroundRule === "apca-max" && raw > bestLegibility) {
-			foreground = cluster
-			bestLegibility = raw
-		}
+		if (legibility.get(cluster)! < foregroundFloor) continue
+		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so the first
+		// survivor *is* argmax mass with the packed int as tie-break.
+		foreground = cluster
+		break
 	}
 
 	if (foreground === null) {
@@ -570,8 +588,14 @@ export function readOverlay(
 	for (const cluster of feasible) {
 		if (cluster === resolvedForeground) continue
 		const color = published.get(cluster)!
-		// Distinctness from the two ends came with `feasible`; this is the third published colour.
-		if (sameColor(color, foregroundColor)) continue
+		// Distinctness from the two ends came with `feasible`; this is the third published colour —
+		// and for this one pair `sameColor` is not enough. SPEC decision 14: a candidate inside
+		// `ACCENT_FG_EXCLUSION_MULTIPLE` bars of the foreground is the foreground's family, however
+		// the formula scores it, because a reviewer twice called such pairs indistinguishable.
+		if (
+			colorDistance(color, foregroundColor) <
+				ACCENT_FG_EXCLUSION_MULTIPLE * sameColorBar(color, foregroundColor)
+		) continue
 		// Invisible anywhere on the ramp ⇒ not an accent. `null` means no such point exists. Same
 		// selection-density budget as the foreground's ranking, and for the same reason: at the
 		// contract's default 2048/4096 this call alone took the demo-20 run from 0.8 s to 6.8 s.

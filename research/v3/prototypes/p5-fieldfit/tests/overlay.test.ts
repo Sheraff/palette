@@ -378,23 +378,21 @@ function paretoScene(lightnessPatchSize: number): Scene {
 }
 
 /**
- * **This scene's expected winners have now changed three times, and every change was evidence.**
+ * **This scene's expected winners have changed four times. The constants have never moved.**
  *
- * The constants have never moved. The rules have:
+ *  - *v0.1*: fg = heaviest feasible (`BLUE_MARK`); accent = heaviest on the Pareto front.
+ *  - *v0.2*: fg = most legible feasible (`LIGHTNESS_ONLY`); accent = front member furthest from what
+ *    is published.
+ *  - *v0.3*: front dropped; accent = furthest from `{fg, bg, sf}`.
+ *  - *v0.4*: distance retired; accent = argmax mass above the gates.
+ *  - *v0.4.1*: **fg = argmax mass above a raised legibility floor** (decision 13), so `BLUE_MARK`
+ *    takes it back — not because mass returned unchecked, but because it clears |raw| 15 (23.1) while
+ *    the tiny 3-pixel `LIGHTNESS_ONLY` no longer outranks it for being *more* legible.
  *
- *  - *v0.1*: foreground = heaviest feasible cluster (`BLUE_MARK`, 40 px); accent = heaviest member of
- *    the Pareto front (`CHROMA_ONLY`).
- *  - *v0.2*: foreground = most legible feasible cluster (`LIGHTNESS_ONLY`); accent = front member
- *    furthest from what is published.
- *  - *v0.3*: the front dropped; accent = feasible, floor-clearing candidate furthest from
- *    `{foreground, background, surface}`.
- *  - *v0.4*: **distance retired entirely** (round 2 refuted it on both covers where it disagreed with
- *    the reviewer). Accent = argmax overlay mass above the gates.
- *
- * `BLUE_MARK` has won the accent since v0.2, but never twice for the same reason, so the assertions
- * check the criterion rather than the answer: here it wins because it is the *heaviest* survivor.
+ * The floor is what makes this different from v0.1, and `CHROMA_ONLY` is the proof: at |raw| 8.5 it
+ * is now below the foreground floor even though it was above the old 2.5 one.
  */
-test("accent selection: mass leads, above the gates", () => {
+test("both roles: mass leads above the gates", () => {
 	const scene = paretoScene(3)
 	const reading = readOverlay(
 		scene.fit,
@@ -412,25 +410,22 @@ test("accent selection: mass leads, above the gates", () => {
 	const chroma = byTriple.get(pack(CHROMA_ONLY))!
 	const blue = byTriple.get(pack(BLUE_MARK))!
 
-	// --- foreground: legibility, not mass (decision 7's round-1 ruling, still in force) ---
-	assert.ok(blue.overlayMass > lightness.overlayMass)
 	const rawAgainstField = (rgb: Rgb8) => Math.abs(apcaRaw(rgb, FLAT_FIELD_RGB))
-	assert.ok(
-		rawAgainstField(LIGHTNESS_ONLY) > rawAgainstField(BLUE_MARK),
-		"the fixture must make the small patch the more legible one",
-	)
-	assert.equal(reading.foreground?.representative, pack(LIGHTNESS_ONLY))
 
-	// `CHROMA_ONLY` sits below the *text* floor against this field (|raw| ≈ 2.29 < 2.5), so it is not
-	// a foreground at any mass — while remaining a legitimate accent candidate, which is the whole
-	// reason the two roles are held to different floors.
-	assert.ok(rawAgainstField(CHROMA_ONLY) < DEFAULT_CONTRAST.minTextContrast.effectiveRawMagnitude)
-
-	// --- accent: the heaviest survivor of the gates ---
+	// --- foreground: the heaviest cluster that clears the floor ---
 	assert.ok(blue.overlayMass > dominated.overlayMass)
+	assert.ok(rawAgainstField(BLUE_MARK) >= 15, "the heaviest mark must clear the evidence floor")
+	assert.equal(reading.foreground?.representative, pack(BLUE_MARK))
+	// `LIGHTNESS_ONLY` is strictly more legible and still loses: legibility is a gate now, not a rank.
+	assert.ok(rawAgainstField(LIGHTNESS_ONLY) > rawAgainstField(BLUE_MARK))
+	assert.ok(blue.overlayMass > lightness.overlayMass)
+	// `CHROMA_ONLY` is isoluminant with this field by construction, so it is no foreground at any
+	// mass — the floor is what says so, and it says so far more loudly than the contract's 2.5 did.
+	assert.ok(rawAgainstField(CHROMA_ONLY) < 15)
+
+	// --- accent: the heaviest survivor that is not the foreground's family ---
 	assert.ok(dominated.overlayMass > chroma.overlayMass)
-	assert.equal(reading.accent?.representative, pack(BLUE_MARK))
-	assert.equal(reading.accentChromaOnly, false)
+	assert.equal(reading.accent?.representative, pack(DOMINATED))
 })
 
 // ---------------------------------------------------------------------------------------------
@@ -552,7 +547,9 @@ test("accent identity: the artwork's white beats a more distant dark", () => {
 
 	// The field is the background block; the surface block is published but the marks sit on one
 	// ground, which is all `readOverlay` needs — the ramp it measures against is passed in.
-	const scene = flatScene(20, BACKGROUND, [[INK, 40], [WHITE, 60], [DISTANT_DARK, 20]])
+	// The ink is the heaviest mark, so mass-led picks it as the foreground and the test is about the
+	// accent choice between the remaining two.
+	const scene = flatScene(20, BACKGROUND, [[INK, 90], [WHITE, 60], [DISTANT_DARK, 20]])
 	const stops: GradientStop[] = [
 		{ color: colorFromRgb(BACKGROUND), position: 0 },
 		{ color: colorFromRgb(SURFACE), position: 1 },
@@ -611,11 +608,13 @@ test("accent identity: the artwork's white beats a more distant dark", () => {
  * same ramp point. `INVISIBLE` fails both at once; `VISIBLE` fails neither, and wins despite being
  * the nearer candidate.
  */
-test("accent floor: a near-background invisible candidate loses to a visible nearer one", () => {
+test("accent floor: a near-background invisible candidate loses to a lighter visible one", () => {
 	const FIELD: Rgb8 = [1, 0, 0]
 	const FOREGROUND_MARK: Rgb8 = [235, 235, 235]
 	const INVISIBLE: Rgb8 = [0, 0, 11]
-	const VISIBLE: Rgb8 = [220, 220, 220]
+	// Not a pale grey: at 0.046 from the foreground that would now be excluded as its twin
+	// (decision 14), which is a different rule from the one under test here.
+	const VISIBLE: Rgb8 = [80, 140, 200]
 
 	const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])
 	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
@@ -629,18 +628,22 @@ test("accent floor: a near-background invisible candidate loses to a visible nea
 
 	assert.equal(reading.foreground?.representative, pack(FOREGROUND_MARK))
 
-	// The fixture is the trap it claims to be: the invisible candidate is *further* from everything
-	// published than the visible one, and carries more mass, so both pre-(a) rules would take it.
-	const published = [colorFromRgb(FOREGROUND_MARK), colorFromRgb(FIELD)]
-	const minDistance = (rgb: Rgb8) =>
-		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
-	assert.ok(
-		minDistance(INVISIBLE) > minDistance(VISIBLE),
-		`the trap needs the invisible candidate to be further: ${minDistance(INVISIBLE)} vs ${minDistance(VISIBLE)}`,
-	)
+	// The fixture is the trap it claims to be: the invisible candidate carries **more mass** than the
+	// visible one, so the v0.4 ranking would take it outright, and it is far enough from the
+	// foreground that decision 14's twin exclusion does not catch it either. Only the floor does.
 	const invisible = reading.clusters.find((c) => c.representative === pack(INVISIBLE))!
 	const visible = reading.clusters.find((c) => c.representative === pack(VISIBLE))!
-	assert.ok(invisible.overlayMass > visible.overlayMass)
+	assert.ok(
+		invisible.overlayMass > visible.overlayMass,
+		`the trap needs the invisible candidate to be heavier: ${invisible.overlayMass} vs ${visible.overlayMass}`,
+	)
+	for (const rgb of [INVISIBLE, VISIBLE]) {
+		assert.ok(
+			colorDistance(colorFromRgb(rgb), colorFromRgb(FOREGROUND_MARK)) >=
+				8 * sameColorBar(colorFromRgb(rgb), colorFromRgb(FOREGROUND_MARK)),
+			`${JSON.stringify(rgb)} must not be the foreground's twin, or a different rule is doing the work`,
+		)
+	}
 	// ...and it is genuinely distinct by the bar, so distinctness alone would not have caught it.
 	assert.ok(!sameColor(colorFromRgb(INVISIBLE), colorFromRgb(FIELD)))
 
@@ -665,6 +668,97 @@ test("accent floor: a near-background invisible candidate loses to a visible nea
 	)
 
 	assert.equal(reading.accent?.representative, pack(VISIBLE))
+})
+
+/**
+ * **Regression, decision 13 (item-7 class): a title that registers wins even at moderate contrast.**
+ *
+ * Round-2 item 7 is the sky-ramp cover: a white title on a light field, |raw| **28.9** over the
+ * published ramp, which `apca-max` passed over in favour of a 71-pixel black speck at |raw| 73.5.
+ * The reviewer wanted the title. The floor is set at 15 precisely so that a 28.9 survives it, so this
+ * fixture is built at that magnitude rather than at an easy one.
+ */
+test("foreground floor: a moderate-contrast massive title beats a high-contrast speck", () => {
+	// A light sky field: white reads at |raw| 31.3 — just above the item-7 evidence point of 28.9 —
+	// while black reads at 81.2. The old rule took the black.
+	const FIELD: Rgb8 = [190, 210, 230]
+	const TITLE: Rgb8 = [255, 255, 255]
+	const SPECK: Rgb8 = [0, 0, 0]
+
+	const scene = flatScene(18, FIELD, [[TITLE, 120], [SPECK, 6]])
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	const titleRaw = Math.abs(apcaRaw(TITLE, FIELD))
+	const speckRaw = Math.abs(apcaRaw(SPECK, FIELD))
+	// The fixture reproduces the evidence shape: the speck is the more legible colour by a wide
+	// margin, the title is moderate, and the title still clears the floor.
+	assert.ok(speckRaw > titleRaw, `${speckRaw} must exceed ${titleRaw}`)
+	assert.ok(titleRaw >= 15, `the title must clear the floor, got ${titleRaw}`)
+	assert.ok(titleRaw < 35, `and must sit near the item-7 evidence point, got ${titleRaw}`)
+
+	const title = reading.clusters.find((c) => c.representative === pack(TITLE))!
+	const speck = reading.clusters.find((c) => c.representative === pack(SPECK))!
+	assert.ok(title.overlayMass > speck.overlayMass * 10)
+
+	assert.equal(reading.foreground?.representative, pack(TITLE))
+})
+
+/**
+ * **Regression, decision 14: the foreground's twin is excluded, and the next identity colour wins.**
+ *
+ * Built from the evidenced pair on `908479200b` — foreground `#fed078`, accent `#febf6f`, measured
+ * `distance / sameColorBar` = **1.766**, which `sameColor` passes and a reviewer called
+ * indistinguishable. `ACCENT_FG_EXCLUSION_MULTIPLE` is 8, so the twin is excluded and the accent
+ * falls to the next-heaviest candidate outside the foreground's family.
+ */
+test("accent twin exclusion: the evidenced twin is excluded and the next colour wins", () => {
+	const FIELD: Rgb8 = [0x23, 0x1f, 0x20]
+	const INK: Rgb8 = [0xfe, 0xd0, 0x78]
+	const TWIN: Rgb8 = [0xfe, 0xbf, 0x6f]
+	const OTHER: Rgb8 = [0x5a, 0x8f, 0xc0]
+
+	const scene = flatScene(20, FIELD, [[INK, 90], [TWIN, 60], [OTHER, 20]])
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	assert.equal(reading.foreground?.representative, pack(INK))
+
+	// The measured ratio this constant was derived from, asserted here so the derivation cannot drift
+	// away from the code silently.
+	const ratio = colorDistance(colorFromRgb(TWIN), colorFromRgb(INK)) /
+		sameColorBar(colorFromRgb(TWIN), colorFromRgb(INK))
+	assert.ok(ratio > 1.7 && ratio < 1.8, `the evidenced ratio is 1.766, got ${ratio}`)
+	// `sameColor` passes the pair — which is exactly why decision 14 exists.
+	assert.ok(!sameColor(colorFromRgb(TWIN), colorFromRgb(INK)))
+
+	// The twin carries three times the other candidate's mass and still loses.
+	const twin = reading.clusters.find((c) => c.representative === pack(TWIN))!
+	const other = reading.clusters.find((c) => c.representative === pack(OTHER))!
+	assert.ok(twin.overlayMass > other.overlayMass)
+
+	assert.equal(reading.accent?.representative, pack(OTHER))
+})
+
+/**
+ * **Regression, decision 14: when only the twin is available, the accent collapses.**
+ *
+ * The same scene minus the third colour. Decision 14's terminal clause — *"if none survives, accent
+ * collapses, declared"* — is `readOverlay` returning a null accent, which `candidate.ts` turns into
+ * `accentCollapsed`.
+ */
+test("accent twin exclusion: with only the twin available the accent collapses", () => {
+	const FIELD: Rgb8 = [0x23, 0x1f, 0x20]
+	const INK: Rgb8 = [0xfe, 0xd0, 0x78]
+	const TWIN: Rgb8 = [0xfe, 0xbf, 0x6f]
+
+	const scene = flatScene(20, FIELD, [[INK, 90], [TWIN, 60]])
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const reading = readOverlay(scene.fit, scene.raster, scene.inventory, DEFAULT_CONTRAST, stops)
+
+	assert.equal(reading.foreground?.representative, pack(INK))
+	assert.equal(reading.accent, null)
+	assert.equal(reading.accentChromaOnly, false)
 })
 
 // ---------------------------------------------------------------------------------------------
