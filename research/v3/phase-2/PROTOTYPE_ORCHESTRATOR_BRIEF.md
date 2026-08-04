@@ -89,6 +89,14 @@ When you have palettes worth human eyes:
    round, never more**), and what you will do differently for each possible outcome.
 3. End your turn with a REVIEW-READY report. The main orchestrator installs and queues rounds
    centrally, owns verify-live, and owns reviewer notifications.
+4. When your round releases, the main orchestrator sends you a content-free signal ("batch <id>
+   released") and nothing else. YOU then spawn your own Opus analyst to fetch the released
+   payload, de-blind it via the server batch log (`data/review-server/batches.jsonl`, readable
+   only after release) joined with your private mapping, verify the decode, and act on the
+   verdicts. The main orchestrator never reads payloads, batch logs, or verdicts for
+   single-prototype rounds (reviewer ruling, 2026-08-04); cross-arm evidence travels upward only
+   through your §7 reports. Rounds spanning multiple prototypes are the exception — those are
+   analyzed at the main tier.
 
 Round kinds already implemented (ask for one of these before proposing a new one): pairwise
 (two blinded sides on the real mock, 4-grade + preference + veto), calibration (single palette,
