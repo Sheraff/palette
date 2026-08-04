@@ -13,6 +13,8 @@ B/C/D/E piloted 2026-08-03 on both the model and the human side, group F still u
 `PHASE_0_DECISIONS.md` (input policy, output contract, metrics — working decisions),
 `REVIEW_UI.md` (review server, verdict model, warehouse, oracle-validation mode),
 `PHASE_0_LOOSE_ENDS.md` (every deliberately-open item, with owner and revival condition),
+`PHASE_1_AUTHOR_BRIEF.md` (what a Phase 1 proposal author receives — and what they deliberately do
+not),
 `data/decisions/` (standing decision records, machine-recheckable against the warehouse).
 
 ---
@@ -247,6 +249,34 @@ scope limit.
 Several subagents each produce an architecture proposal **from the problem spec and raw verdict
 data only — not the field guide** — so v2-3's ontology cannot anchor them. The orchestrator
 then stress-tests each proposal against the field guide as adversarial checklist.
+
+**What each author receives is written down, and it was written down before any proposal existed**
+(2026-08-04): **`PHASE_1_AUTHOR_BRIEF.md`**. Authors get the goals (§1's three criteria), the output
+contract by section pointer, corpus facts as **measured distributions with no conclusions attached**,
+and a **tool catalog** — every instrument that exists, one line each, what it measures and how to
+invoke it. They do **not** get our failure analyses, the instruments' conclusions, or the field
+guide.
+**The catalog is the reviewer's own addition to the proposal** (`d-2026-08-04-phase-1-authors-receive-a-tool-catalog`),
+and the distinction it rests on is between knowing *what can be measured* and knowing *what we
+concluded*. An author who does not know a robustness harness exists will not design for robustness
+and will be judged by it anyway — that is not anti-anchoring, it is a hidden rubric.
+**One arm runs blind: goals and the output contract only**, no catalog and no corpus facts. It is
+the control on everything above, including on the catalog itself — which is a real hole in the
+blind, since naming the instruments tells an author what this campaign thinks is worth measuring.
+**Authors are asked to show their work** — what they expect to fail at, and what would falsify the
+approach — as a **template line with no enforcement**. The reviewer was explicitly unsure it is
+worth anything, and that uncertainty is the decision rather than a footnote to it; if it produces
+nothing across Phase 1, delete the line (`d-2026-08-04-show-your-work-is-a-template-line-not-a-gate`).
+
+**Two questions are deliberately left to the authors rather than pre-decided as instruments**
+(`d-2026-08-04-alpha-matte-and-cvd-are-algorithm-material`): how transparent images are flattened
+(what matte an alpha region gets), and how colour-blind legibility is treated. Reviewer, verbatim:
+*"part of the algorithm, not tooling"*. Deciding the matte in advance quietly decides what "the
+image" **is** for every author; shipping a CVD diagnostic in advance quietly makes it a scoring axis
+nobody voted for.
+
+**Nothing built for Phase 1 may be ported from v2-3** — see `CONVENTIONS.md`, and
+`d-2026-08-04-no-v2-3-code-enters-v3`. The evidence carries over; the code does not.
 
 ### Phase 2 — bake-off
 

@@ -121,6 +121,18 @@ pass reports contradictions in them, it does not edit them.
   `git commit -- <your paths>` and leave the rest of the index exactly as found. This tightens
   the "no git commands / the orchestrator commits" rule above — it is the rule for whoever *is*
   committing, orchestrator included.
+- **No v2-3 code ever enters v3** (reviewer ruling, 2026-08-04 — `d-2026-08-04-no-v2-3-code-enters-v3`).
+  Not copied, not ported, not "adapted". Anything v3 needs is **built fresh in v3**, on v3's own
+  foundations — a review page on the round kit, a runner on v3's contract types. **This binds code and
+  only code.** v2-3's *evidence* is not merely allowed but load-bearing: the distilled verdict
+  fixtures (`data/legacy/`), every number measured off v2-3, and the field guide as an adversarial
+  checklist all stay exactly as they are.
+  The ruling was given knowing the price, which is what makes it a rule rather than a preference:
+  `reviews/toolbox-review/gap-scan.md` had argued that `research/v2-3-eval/`'s 1,580 LOC was
+  "already reusable" and that treating it as a build "would waste most of the budget", and the same
+  argument was put to the reviewer a second time as `TB-02`. **Both are void.** If porting something
+  looks obviously cheaper, that is the situation this rule was written for — say so and build it
+  anyway.
 - **A standing decision gets a record.** Anything later work is entitled to assume without
   re-deriving — an instrument choice, a freeze, a corpus policy, a gate rule — goes into
   `research/v3/data/decisions/decisions.json` (schema and rules in that directory's `README.md`).

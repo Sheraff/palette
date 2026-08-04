@@ -86,6 +86,19 @@ judged, and it is internally inconsistent by four times the bar set for the mach
 right reading is — question ambiguity, gate-pair wording, reviewer fatigue at ~2.9 s median per
 answer — it must be on the record before any model is graded against these rows.
 
+> **CAVEAT ADDED 2026-08-04 — the fatigue reading is withdrawn, and the timing it rests on may not be
+> used.** Reviewer ruling: answer timestamps mean nothing and are used for nothing — *"breaks make
+> times meaningless"*. A gap between two answers is not a thinking time; the reviewer gets up, does
+> something else and comes back, and no record distinguishes that from deliberation. So *"reviewer
+> fatigue at ~2.9 s median per answer"* is not an available hypothesis, here or anywhere.
+> **The finding this paragraph opens is unaffected**, and so is its demand: the 45% contradiction
+> rate was real and did need a reading before anything was graded against these rows. **It got one,
+> and it does not use timing** — the contradictions are an *elicitation-mode effect* (independent
+> 45% against joint 0% on `bcde-gate-reconciliation-1`), recorded as
+> `d-2026-08-03-gate-contradictions-are-elicitation-mode-effects` and closed as ledger row **L-b**.
+> The timing reading was already superseded on the merits before it was forbidden on policy.
+> Left in place rather than rewritten: see `d-2026-08-04-answer-timestamps-are-not-evidence`.
+
 ### CR-3. `analyze-bcde-validation.ts`'s own pre-registered scoping claim is false of every statistic it emits. CONFIRMED.
 
 `src/review-server/analyze-bcde-validation.ts:336-340` emits into `scoping[1]` the claim that the two
@@ -409,6 +422,16 @@ Recorded because an adversarial pass that only lists defects misrepresents the i
 - **Kappa correctly refuses at n=3 < 10** everywhere; no coefficient is quoted.
 - **Reviewer timing is plausible**: 15.73 min total, median inter-answer gap 2.91 s, min 0.83 s, no
   sub-0.5 s answers, no implausible burst.
+  > **CAVEAT ADDED 2026-08-04 — this check is retired and may not be repeated.** Reviewer ruling:
+  > answer timestamps mean nothing and are used for nothing (*"breaks make times meaningless"*),
+  > which restores `REVIEW_UI.md` §4's standing *"No timing of the reviewer"* — a rule this line
+  > broke in good faith, and the breach was flagged as unreconciled by
+  > `reviews/toolbox-review/bias-audit.md` before the ruling settled it.
+  > **This is the honest casualty of the ruling.** "No sub-0.5 s answers, no implausible burst" was a
+  > real integrity check on whether a batch was answered by a human paying attention, and it is
+  > removed with nothing in its place. The line stays as written because rewriting history to make a
+  > superseded reading disappear is a worse defect than the reading was. See
+  > `d-2026-08-04-answer-timestamps-are-not-evidence`.
 
 ---
 

@@ -2731,6 +2731,659 @@
     "Same duplicate correlation as the previous record: the +1 margins and the 'breaks 0 / breaks 1' counts are computed over 16 covers of which only 9 carry any policy contrast, and both of the broken/gained covers outside those 9 are duplicate-tile answer noise. The band statistics (16/16 vs 13/16 in band) are PROXIES from the run file, not reviewer answers; the prereg is explicit that the bar is human and the proxies decide nothing."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-accent-functional-round-1-refuses-its-own-fit-and-excludes-the-placeholder",
+   "ts": "2026-08-04T07:04:34Z",
+   "kind": "instrument-design",
+   "draftedAs": "verdict - accent-functional-round-1-preregistration.md sec 6 froze the gates, the estimator, the fitting population and all four refusal conditions BEFORE the batch was pushed and therefore before any answer to it could exist. The analyzer was run UNMODIFIED (it did not crash; nothing in it was touched). Refusal condition 1 fired. The record transcribes the pre-registered consequence rather than composing a new one, and sec 6.3's straddles-zero clause is quoted verbatim in the decision because that clause was written in advance and is the one that fired.",
+   "scope": "The value and tag of ACCENT_FUNCTIONAL_DISTANCE (research/v3/src/contract/constants.ts:371) and the standing of PHASE_0_LOOSE_ENDS.md A16. NO CODE CHANGE AND NO CONSTANT MOVES: 0.14591 stays, [UNCALIBRATED] stays, the declaration and its provenance are untouched, and NO constants.ts diff is proposed. It does NOT settle the constant - it refuses one candidate value and excludes the incumbent at 95% without supplying a replacement. It does NOT resolve endorsement-recheck item 2 (the Sunshine #fac751 on Beige #d5cebe accent at OKLab 0.121): the escape rule (escapeDenied = pair.distance < ACCENT_FUNCTIONAL_DISTANCE, research/v3/src/review-server/endorsement-recheck.ts:289) is unchanged, 0.121 < 0.14591 still denies the escape, and that item's premise stands as a live reviewer question. It does NOT touch the foreground, which gets no escape at any distance, nor B31 (the foreground-accent bar), nor anything above the epsilon. It does not retire A16; it repairs A16's dangling citation in one direction and moves the open question from the CITATION to the PREDICTION.",
+   "decision": "THE FUNCTIONAL-VISIBILITY ROUND RAN CLEANLY AND ITS FIT IS REFUSED BY ITS OWN PRE-REGISTERED GUARDRAIL. ACCENT_FUNCTIONAL_DISTANCE STAYS 0.14591 AND STAYS [UNCALIBRATED]. Verdict `contradicts-retraction` (preregistration sec 6.4 refusal condition 1): the fitted threshold is 0.04554, below the 0.08804 lower anchor the reviewer retracted as \"hardly perceptible\", so no value is proposed. THE ROUND IS NOT INVALID - IT IS THE CLEANEST ROUND THIS REPOSITORY HAS RUN. All three validity gates pass with no slack: 39 of 39 items answered in one pass, controls 4/4 correct (both obvious yes, both identical no), repeats 4/4 agreed (agreement 1.00), coverage 31/31 fitted against a floor of 28, and answer hygiene clean on every counter (0 unknown-item, 0 question-key-mismatch, 0 non-boolean, 0 retracted, 0 superseded). The refusal is a finding about colour, not about the pass. THE CRITERION GAP IS NEGATIVE AND ITS INTERVAL STRADDLES ZERO: gap = 0.04554 - 0.07444 = -0.02890, and the functional threshold's 95% CI [0.01826, 0.11356] CONTAINS the detection threshold 0.07444. Sec 6.3 pre-registered this exact outcome, before any answer existed, as meaning \"the reviewer does not in fact distinguish the two criteria on these stimuli - a real and publishable outcome, and one that would put the entire two-tier semantics back on the table rather than merely re-tuning a digit\". THAT IS THE CLAUSE THAT FIRED. The refinement of 2026-08-04 predicted a POSITIVE gap; the round measured a negative one. THE ANCHOR 2x2 COLLAPSED ONTO ITS DIAGONAL. Four round-1 stimuli were replayed PIXEL FOR PIXEL with one word of the question changed: 0.06339 no/no, 0.08804 yes/yes, 0.14813 yes/yes, 0.24181 yes/yes. ZERO OFF-DIAGONAL CELLS, flippedYesToNo = 0. The pre-registered crux - sec 3.3 nominated p2-ladder-06 at 0.08804 as the cell where detection's yes would become function's no - DID NOT FLIP. On identical pixels the reviewer gave the same answer 4 times out of 4. TWO READINGS SURVIVE AND THIS ROUND CANNOT SEPARATE THEM, WHICH IS THE REVIEWER'S CALL AND THE MOST VALUABLE THING THEY COULD SAY NEXT: (1) THE WORDING DID NOT LAND - the reviewer answered the detection question anyway; the repair is a re-worded round. (2) THE WORDING LANDED AND THE RETRACTION WAS A PRIORI - the retraction was prose about a CLASS of accents, written not in front of the stimulus; shown the actual 0.08804 stimulus and asked whether it does an accent's job, the reviewer said yes, and the thing to revise is the PREDICTION, not the number. Perfect controls prove ATTENTION, not CRITERION ADOPTION, so the gates cannot decide this. Reading 1 costs a re-worded round; reading 2 reopens the two-tier semantics itself. WHAT THE ROUND DOES SETTLE, IN THE NEGATIVE DIRECTION: THE PLACEHOLDER 0.14591 IS EXCLUDED AT 95% - it lies OUTSIDE the pooled CI [0.01826, 0.11356]. The round cannot say what the number is; it can say the number IN FORCE TODAY is not supported by the only stimuli ever graded against the criterion it is named for, and that the evidence points DOWNWARD. Its own placeholder record already flagged every verdict turning on this digit as provisional; this is the first evidence that the flag was warranted. AND IN THE POSITIVE DIRECTION: THE ISOLUMINANT ACCENT CLASS IS REAL AND WANTED - 28 of 31 stimuli carrying EXACTLY ZERO luminance contrast (apcaLc == 0 on every item) were called working accents, across all three lightness bands and all three hue thirds. An escape clause of some kind is warranted; sec 5's refusal to extend any of this to the FOREGROUND is untouched and nothing here licenses a foreground escape at any distance. REFUSAL CONDITIONS 2, 3 AND 4 DID NOT FIRE, and condition 3's pass is WEAK rather than clean: three of the six strata (band dark, band light, hue third 0) produced NO threshold to compare at all, and hue third 2's interval [0.00067, 3.08650] could not have disagreed with anything. Absence of evidence is not agreement. The two strata that separate cleanly agree closely (band mid 0.06664, hue third 1 0.06672) and both land near the empirical switch rather than near the pooled fit. The light band RAN BACKWARDS (slope -0.0410, no threshold) - the only cut where more distance did not buy more yeses, and where the round's lone high-distance no (0.13564) sits. n=9 with one dissenter: a hint, labelled exploratory by sec 6.5, changing no verdict. THE POOLED 0.04554 IS PARTLY AN ESTIMATOR ARTEFACT AND THE REFUSAL IS ROBUST TO IT. The single no at 0.13564 flattens the pooled slope to 2.76 (against 18.9 and 22.3 in the two clean strata) and drags the fitted 50% point BELOW EVERY OBSERVED NO. The empirical switch sits between 0.06339 (no) and 0.07332 (yes), geometric midpoint 0.06817. THAT CHANGES NOTHING: 0.06817 is still below 0.08804 and still below 0.07444, so the verdict AND the sign of the gap hold under the most favourable reading of the answers available. The headline stays fit.threshold = 0.04554 because that is what sec 6.2 pre-registered. CONSEQUENCE FOR A REPAIR ROUND, IF ONE IS BUILT: DO NOT SIMPLY RE-WORD AND RE-RUN. 26 of 31 items bought no information - they were answered yes and were never in doubt. The informative region is now known to be BELOW 0.075, not the 0.06-0.30 span this round spent 27 items on. Concentrate rungs in 0.04-0.10, and adjudicate the two readings above FIRST, because a round built on reading 1 is wasted effort if reading 2 is the truth.",
+   "fundedBy": [
+    "o-mseb9cd4-b15d0c6a",
+    "o-mseb9eeu-5d061074",
+    "o-mseb9fg9-bbe57399",
+    "o-mseb9g7y-50a73da8",
+    "o-mseb9gs7-395f1bd5",
+    "o-mseb9h7s-1439ab1b",
+    "o-mseb9hvx-6f81433b",
+    "o-mseb9ibz-45072b89",
+    "o-mseb9iv2-8952666b",
+    "o-mseb9jr0-61ba5c24",
+    "o-mseb9v9e-4f67d280",
+    "o-mseb9yww-1f2c0cba",
+    "o-mseba1sw-4113e5a0",
+    "o-mseba3ra-5d4cd6a2",
+    "o-mseba49u-632b8c9b",
+    "o-mseba9b1-90eb315b",
+    "o-mseba9wg-a0ecdc42",
+    "o-msebaaqy-71d1e497",
+    "o-msebabzt-bc7f91f1",
+    "o-msebaci3-b4dac478",
+    "o-msebaczp-a77add32",
+    "o-msebadcf-c73d379c",
+    "o-msebadr7-c954865f",
+    "o-msebaevq-d4dff842",
+    "o-msebagk4-13b05228",
+    "o-msebah80-3be48304",
+    "o-msebahs1-915c52d4",
+    "o-msebaibn-92dbd8b3",
+    "o-msebaiu8-7a38c44b",
+    "o-msebaj80-f98cbfc4",
+    "o-msebajmc-aed82be2",
+    "o-mseban4b-98dbe01d",
+    "o-msebaoag-5f6b5364",
+    "o-msebaonc-cd60a95e",
+    "o-msebarw8-c0c54bfe",
+    "o-msebaswq-1e9b12e1",
+    "o-msebb0p5-71a0afbf",
+    "o-msebb1f5-f579d1e6",
+    "o-msebb1w2-f68e5d37",
+    "bc-msebb32w-50bf1dcb"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-analysis.json",
+     "what": "The scored round, schema accent-functional-round-1-analysis/v1: verdict, the three gates, the pooled fit with its CI, the anchor 2x2, the per-band and per-hue fits, and answerHygiene."
+    },
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-preregistration.md",
+     "what": "Sec 1-7 the pre-registered design, criterion wording and fitting rule; sec 8 the dated results write-up appended by this scoring pass."
+    },
+    {
+     "ref": "research/v3/data/calibration/analyze-accent-functional-round-1.ts",
+     "what": "The analyzer, run as committed and unmodified. The gate order, the guardrail constants and the DECISION PENDING convention are in the code, not in this record's discretion."
+    },
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1.json",
+     "what": "The fixture: the 9-rung 0.05915-0.30218 ladder, the 3x3 stratification, the four pixel-identical anchor replays of bracketing-round-1-clarified, 4 repeats and 4 controls; and the isoluminance budget (apcaLc == 0 on every fitted item)."
+    },
+    {
+     "ref": "research/v3/data/calibration/bracketing-round-1.json",
+     "what": "Stratum accent-equal-luminance - round 1 part 2's detection answers, the other half of the anchor 2x2 and the source of the 0.07444 the gap is measured against."
+    },
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "The declaration at line 371 that this record leaves untouched, and the [UNCALIBRATED] tag naming the round that has now run."
+    }
+   ],
+   "fundingCaveats": [
+    "THIS IS ONE REVIEWER, ONE PASS, n=31 FITTED ITEMS. The gap's sign rests on a 31-item logistic whose 95% CI is 0.0953 wide - 1.78x round 1 part 2's pooled interval. The round can say the two criteria were NOT SEPARATED on these stimuli; it cannot say they are identical, and a wider or better-placed ladder could still find a positive gap.",
+    "THE POOLED THRESHOLD 0.04554 SITS BELOW EVERY OBSERVED NO and is dragged there by a single dissenting answer at 0.13564 flattening the slope. It is reported as the headline only because sec 6.2 pre-registered fit.threshold and a scoring pass may not substitute a nicer statistic after seeing the data. The empirical switch (0.06817) and the two clean strata (~0.0666) are the better description of where the answers actually turn, and the verdict is unchanged under all three.",
+    "THE CENTRAL AMBIGUITY IS UNRESOLVED AND IS NOT A DETAIL: this round cannot distinguish 'the substituted question did not change the reviewer's behaviour' from 'the question landed and the a priori retraction was wrong'. Perfect controls and 4/4 repeats prove attention, not criterion adoption. Every downstream reading of this record depends on which is true, and only the reviewer can say.",
+    "THE THREE STRATUM PASSES ARE NOT EVIDENCE OF HOMOGENEITY. Guardrail 3 did not fire largely because half the strata could not produce a threshold (two were all-yes degenerate, one ran backwards) and a fourth had an effectively unbounded interval. Stratum independence is UNTESTED by this round, not confirmed by it.",
+    "THE LIGHT-BAND REVERSAL is n=9 resting on one answer. Reported because sec 6.5 requires the exploratory cuts be reported in full and because suppressing the one cut that disagrees would be the exact bias the pre-registration exists to prevent - not because it is a result.",
+    "THE 0.121 EVIDENCE FOR ENDORSEMENT-RECHECK ITEM 2 IS DIRECTIONAL, NOT A RULING. The three ladder items nearest 0.121 (0.10916, 0.10977, 0.11147) were all answered yes, and every reading of this round puts 0.121 above the functional bar - but NO VALUE IS ADOPTED, so the item's premise is unchanged and it remains a live reviewer question.",
+    "PLACED 2026-08-04 by the fourth batched ledger pass, from data/decisions/proposed-accent-functional-1.json, with this line added at placement and nothing else changed. The refusal STANDS and is now read together with d-2026-08-04-accent-calibration-is-a-stimulus-realism-problem, which diagnoses why the round's evidence points downward while the reviewer's real-cover judgement the same day points upward: the synthetic flat-field stimuli flatter isoluminant accents. That diagnosis does not rescue the fitted value and does not change the constant - it explains the round and it specifies the replacement, which is rebuilt on real covers."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-no-v2-3-code-enters-v3",
+   "ts": "2026-08-04T08:00:00Z",
+   "kind": "process",
+   "draftedAs": "not drafted anywhere - this ruling has no source document. Both written proposals it overturns argued the opposite, which is why it is filed first in this pass rather than in item order.",
+   "scope": "Every instrument, harness, viewer and helper built for v3, in Phase 0 and after. It binds CODE. It does NOT bind evidence, measurements or lessons: the v2-3 verdict distillation (data/legacy/), the field guide as an adversarial checklist, and every number measured off v2-3 stay exactly as they are and keep being cited. It does not say v2-3's code is bad; it says importing it is not how v3 gets built. It says nothing about what the palette algorithm itself should do.",
+   "decision": "NO v2-3 CODE EVER ENTERS v3. Reviewer ruling, 2026-08-04, given in conversation as a red alert against the direction two written proposals were pushing. Anything v3 needs is BUILT FRESH in v3, on v3's own foundations. THE CONCRETE CASE THAT PROVOKED IT: the development viewer. It is built fresh on the ROUND-KIT (review-ui/round-kit.js), the shell every review page now sits on, and NOT by porting v2-3's serve-review.ts. THIS OVERTURNS TWO STANDING WRITTEN RECOMMENDATIONS, AND THE CONFLICT IS THE POINT OF THE RECORD. (a) reviews/toolbox-review/gap-scan.md item (1) called the dev harness 'not missing; unported', pointed at research/v2-3-eval/'s 1,580 LOC as 'already reusable', and warned that 'framing this as a build would waste most of the budget' - its section 5 goes further, calling such scoping 'the largest single misallocation available here'. (b) The toolbox round put the same argument to the reviewer as TB-02, 'Reuse the old evaluation harness instead of writing a new one', carrying the orchestrator's own recommendation 'build-now' with the reason 'Scoping this as a new build is the single largest way to waste the budget here.' BOTH ARE VOID. The reviewer was shown the cost argument and ruled against it anyway, which is the only sequence under which a cost argument can be honestly overruled. THE CONVERSATIONAL RULING IS CANONICAL AND THE WRITTEN RECOMMENDATIONS ARE NOT - see d-2026-08-04-chat-rulings-outrank-in-round-answers. The reviewer's reason is not recorded here because it was not stated in words this pass can quote; what IS recorded is that the reviewer knew the price and paid it.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Source review A, 2026-08-04: 24 tiered tools, items (1)-(9) and (A)-(L), with agent-hour costs."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/toolbox-adjudication-1.json",
+     "what": "The pushed round the chat superseded: 42 items, labelSchemaVersion toolbox-adjudication.v1, never answered."
+    },
+    {
+     "ref": "research/v3/review-ui/round-kit.js",
+     "what": "The shell the fresh dev viewer is built on."
+    },
+    {
+     "ref": "research/v3/review-ui/ROUND_KIT.md",
+     "what": "The kit's contract and its grandfather list."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy, and it cannot be otherwise: this is a conversational ruling with no reviewer sentence relayed to this pass in quotation marks. Nothing can fund it, `warehouse recheck` can never flag it, and no later revision of the reviewer's view will show up here. That is what the empty field is for.",
+    "The cost the ruling accepts is real and was measured by the review that argued against it: about 1,580 LOC of working v2-3 evaluation code, plus the perturbation primitives and the CPU-time profiler, are now out of reach as source. The gap scan's estimate that most of the harness budget was 'really a porting budget' is not disputed by this record - it is overruled.",
+    "This pass did not verify that every instrument built on 2026-08-04 complies. src/devloop/, src/robustness/ and src/stats/ were untracked and in flight while this record was written. Compliance is the building agents' to assert, not this record's to claim."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-toolbox-adjudication-disposition",
+   "ts": "2026-08-04T08:05:00Z",
+   "kind": "process",
+   "draftedAs": "adjudication - the source is a conversation, not a document. The 42-item round built to collect exactly this (toolbox-adjudication-1) was never answered; the reviewer went through the list point by point in chat instead.",
+   "scope": "What gets BUILT out of the two toolbox reviews, and what does not. It is a work-scheduling decision. It does NOT rule on whether any finding is correct - a dropped item is dropped as an instrument, not refuted as an observation - and it does not bind the palette algorithm. Two items are carried out of it entirely, into Phase 1 idea-pile: see d-2026-08-04-alpha-matte-and-cvd-are-algorithm-material.",
+   "decision": "THE REVIEWER ADJUDICATED THE TOOLBOX PROPOSALS IN CONVERSATION, POINT BY POINT, ON 2026-08-04. The disposition, as relayed to this pass and in the conversation's own item numbering: ITEM 4 - the development viewer: BUILD, FRESH, on the round-kit. Not ported (see d-2026-08-04-no-v2-3-code-enters-v3). ITEM 5 - BUILD. ITEM 6 - CONFIRMED AS AN EXISTING PLAN, not a new build: it is already the tuned-vs-unseen perturbation-stability ratio carried by V3_PLAN.md section 6 rows 4/5, the Phase 2 entry condition and ledger row B30. ITEM 7 - BUILD, as a RENAMED BATCH RUNNER, and NEVER a full-corpus-per-iteration runner. The rename is the decision: the instrument runs a batch, and an iteration that sweeps the whole corpus is the failure mode being designed out. ITEM 8 - BUILD. ITEM 9 - FOLDED INTO ITEM 8, not built separately, AND ITS HEADLINE CONSTRAINT IS REJECTED: hue equivariance is a made-up constraint (see d-2026-08-04-metamorphic-checks-fold-into-property-fixtures). ITEM 10 - DROPPED. ITEM 11 - BUILD. ITEM 12 - WEAK FORM ONLY: a line in the proposal template, no enforcement anywhere. The reviewer was explicitly unsure it is worth anything (see d-2026-08-04-show-your-work-is-a-template-line-not-a-gate). ITEMS 13 AND 14 - NOT TOOLING AT ALL. Reviewer, verbatim: 'part of the algorithm, not tooling'. Nothing is pre-built; both become Phase 1 idea-pile entries. ITEM 15 - BUILD, WITH PER-AREA SCOPING, AND NO RELIANCE ON CI. Reviewer on the areas: the research and instrument areas \"don't really matter in phase 0\". ITEM 16 - DROPPED. Reviewer, verbatim: 'not possible'. ITEM 17 - BUILD. ITEM 18 - BUILD. ITEM 19 - HUMAN ROUNDS ONLY. VLMs cannot fill it, so no model-filled variant is built. ITEM 20 - ADOPTED, PLUS THE REVIEWER'S OWN ADDITION: Phase 1 proposal authors also receive a TOOL CATALOG (see d-2026-08-04-phase-1-authors-receive-a-tool-catalog). ITEM 21 - BUILD. ITEMS 22-26 - DEFERRED, each with a named trigger. ITEM 27 - BUILD NOW, reviewer yes. ITEMS 28-34 - as previously listed, with 29, 30, 31, 32, 33 and 34 DROPPED. ITEM 35 - SUPERSEDED BY A STRONGER RULING THAN THE ITEM ASKED FOR: answer timestamps mean nothing and are used for nothing (see d-2026-08-04-answer-timestamps-are-not-evidence). THE ITEM NUMBERS ABOVE ARE THE CONVERSATION'S, AND THIS PASS COULD NOT MAP THEM ONTO THE ROUND'S TB-01..TB-42 IDS. They are recorded exactly as relayed rather than renumbered into a mapping nobody verified. Reconciliation is owed and is a ledger row.",
+   "fundedBy": [
+    "n-msecyw37-820c2b95",
+    "n-msecyw3b-b9fb8d05",
+    "n-msecyw3j-baf9d04e",
+    "n-msecyw3n-6710dc60"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/toolbox-adjudication-1.json",
+     "what": "The pushed round the chat superseded: 42 items, labelSchemaVersion toolbox-adjudication.v1, never answered."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Source review A, 2026-08-04: 24 tiered tools, items (1)-(9) and (A)-(L), with agent-hour costs."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    }
+   ],
+   "fundingCaveats": [
+    "The four cited notes carry the reviewer's words for four of the thirty-odd dispositions. EVERY OTHER LINE ABOVE IS A DISPOSITION WITHOUT A SENTENCE - 'build', 'drop', 'defer' - and nothing funds those. `warehouse recheck` will report this record as funded, and it is only funded on four items.",
+    "THE ITEM NUMBERING IS UNRECONCILED. The chat's numbers 4-35 do not line up with adjudication-items.json's TB-01..TB-42, and no list on disk uses the chat's numbering. Two anchors are established by the ruling text itself and by nothing else: the dev-viewer ruling overturns gap-scan item (1) and TB-02, and the timestamps ruling answers TB-42's subject. Every other number here should be treated as an index into a conversation, not into a file.",
+    "ITEMS 22-26 ARE RECORDED AS DEFERRED WITH NAMED TRIGGERS, BUT THE TRIGGERS THEMSELVES WERE NOT RELAYED TO THIS PASS. A deferral whose trigger is not written down is exactly the state PHASE_0_LOOSE_ENDS.md exists to prevent, so this is filed as owed rather than guessed.",
+    "Item 28's disposition is stated as 'as previously listed' and this pass has no record of what that list said for 28 specifically; only 29-34's drops were relayed explicitly.",
+    "The dispositions are scheduling, not verdicts on the findings. bias-audit.md and gap-scan.md remain readable and their measurements stand; being dropped as a build is not being refuted."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-chat-rulings-outrank-in-round-answers",
+   "ts": "2026-08-04T08:10:00Z",
+   "kind": "process",
+   "draftedAs": "precedence rule - not proposed by any document; extracted from three rulings that all landed the same way on one day.",
+   "scope": "How to resolve a CONFLICT between something the reviewer said in conversation and something the same reviewer recorded inside a review round. It does NOT demote round answers in general: rounds remain the instrument, their answers remain the data, and an unconflicted round answer is not weakened by this rule. It does not license an agent to reinterpret a round answer it merely dislikes - only an explicit later statement by the reviewer triggers it.",
+   "decision": "WHERE A CONVERSATIONAL RULING AND A RECORDED ROUND ANSWER CONFLICT, THE CHAT IS CANONICAL. The round is an instrument for eliciting the reviewer's judgement; when the reviewer states the judgement directly, the instrument's reading of it is not a second opinion. THREE CASES ON ONE DAY ESTABLISHED THIS: (1) the toolbox adjudication was settled in chat while its 42-item round sat pushed and unanswered; (2) endorsement-recheck-1 was overridden in chat after being answered - 'ignore my review of endorsement-recheck, the rule is right in both cases'; (3) dropped-colors-1 was stopped mid-round and settled in chat. THE CONFLICTING ANSWERS ARE ANNOTATED, NEVER DELETED AND NEVER RETRACTED. A dated `note` record is filed against the affected item saying what superseded it and why; the answer stays in the log, resolves normally, and keeps counting wherever it counted. An agent retracting a reviewer's answer is a move nobody has authorised. AND THE ROUND STILL HAS TO BE EXPLAINED. In all three cases the chat did not merely outrank the round - it revealed something wrong with it: an unanswered round asked 42 questions the reviewer preferred to answer in one pass, an answered item had been served without the explanation it needed, and a third round was built on a measurement the reviewer rejected outright. A chat override is a signal to inspect the instrument, not a licence to stop building instruments.",
+   "fundedBy": [
+    "n-msecyw2t-e0e85e38",
+    "n-msecyw32-bfcce1ed"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/toolbox-adjudication-1.json",
+     "what": "The pushed round the chat superseded: 42 items, labelSchemaVersion toolbox-adjudication.v1, never answered."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/dropped-colors-1.json",
+     "what": "The round stopped mid-flight, 11 of 20 answered, never released."
+    },
+    {
+     "ref": "research/v3/data/decisions/port-chat-rulings-2026-08-04.ts",
+     "what": "The port that put the two quotes in the warehouse, and the caveat notes filed against the affected items."
+    }
+   ],
+   "fundingCaveats": [
+    "The two cited notes are instances of the rule being exercised, not statements of the rule. The reviewer never said 'chat outranks rounds'; this pass inferred a precedence rule from three same-day cases and wrote it down so the next agent does not have to re-derive it. If the inference is wrong, it is wrong in a record rather than in someone's assumption.",
+    "n=3, all on one day, all with the same reviewer and the same orchestrator. Nothing here establishes that the pattern holds under different conditions."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-answer-timestamps-are-not-evidence",
+   "ts": "2026-08-04T08:15:00Z",
+   "kind": "process",
+   "draftedAs": "policy ruling - the toolbox round asked a narrower question (item 35 / TB-42: withdraw the reading, or authorise a named order-effect analysis). The reviewer answered a wider one.",
+   "scope": "Every use of the wall-clock times on warehouse records as evidence about the reviewer: fatigue, rushing, attention, order effects, session effects, AND round sizing. It does NOT touch the timestamps themselves - they stay on every record, they order the log, they drive recency and supersession, and `recheck` compares them against decision dates. What is forbidden is inferring anything about the HUMAN from the gaps between them.",
+   "decision": "ANSWER TIMESTAMPS MEAN NOTHING AND ARE USED FOR NOTHING. Reviewer, 2026-08-04, verbatim: 'breaks make times meaningless'. A gap between two answers is not a thinking time - the reviewer gets up, does something else, and comes back, and no record distinguishes that from deliberation. THIS IS STRONGER THAN THE QUESTION ASKED. The item on the table offered two options: withdraw the existing fatigue reading, or authorise a named order/session-effect analysis. The ruling takes the first and forecloses the second - there is no sanctioned timing analysis, now or later. IT ALSO KILLS ROUND-SIZING BY TIMING: the proposal for a reviewer-budget planner that would price a round in reviewer-minutes cannot use answer timestamps for its estimates. Round sizes are chosen some other way, or not chosen numerically. IT RESTORES REVIEW_UI.md section 4's standing rule - 'No timing of the reviewer' - which had been quietly contradicted in practice: a Phase 0 review derived a 2.91-second median inter-answer gap from record timestamps and used it BOTH as a plausibility check (answers were not rushed) and as a fatigue hypothesis for a 45% contradiction rate. bias-audit.md flagged that tension as unreconciled; this ruling reconciles it against the timing. CONSEQUENCE, AND IT IS DELIBERATELY MINIMAL: THE EXISTING CITATIONS ARE ANNOTATED, NOT REWRITTEN. A dated caveat goes on the analysis that derived the median. The four documents that cite it downstream keep their text - rewriting history to make a superseded reading disappear is a worse defect than the reading was. Nothing that was concluded FROM the timing survives, but the fact that it was concluded does.",
+   "fundedBy": [
+    "n-msecyw3n-6710dc60"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/review-server.md",
+     "what": "Where the 2.91s median was derived and used twice - as a plausibility check (the 'what I verified and it held' list) and as a fatigue hypothesis (finding CR-2). This is the file that gets the dated caveat."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Flagged the contradiction between REVIEW_UI's no-timing policy and the derived median as 'unreconciled'. This record is the reconciliation."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/SUMMARY.md",
+     "what": "Cites the ~2.9s median as an elicitation-design finding. Left as written."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Section (C) used the median to argue for a round-size instrument. That argument is void."
+    }
+   ],
+   "fundingCaveats": [
+    "The ruling is one sentence and it is about MEANING, not about mechanism. The reviewer said breaks make times meaningless; the sweep to 'used for nothing including round-sizing' is this pass's reading of it, relayed as the ruling's scope. It is a wide reading of a short sentence, and it is recorded here so a narrower one can be argued for.",
+    "The 45% contradiction rate that the fatigue hypothesis was invented to explain already has a better explanation that does not use timing at all - it is an elicitation-mode effect (independent 45% against joint 0% on bcde-gate-reconciliation-1), recorded as d-2026-08-03-gate-contradictions-are-elicitation-mode-effects and closed as ledger row L-b. So this ruling costs nothing that was load-bearing: the timing reading was already superseded on the merits before it was forbidden on policy.",
+    "The plausibility use is the honest casualty. 'No sub-0.5s answers, no implausible burst' was a real integrity check on whether a batch was answered by a human paying attention, and this ruling removes it with nothing in its place."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-metamorphic-checks-fold-into-property-fixtures",
+   "ts": "2026-08-04T08:20:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "build disposition - the two proposals were put to the reviewer as separate items (metamorphic harness; property-based fixtures). The ruling merges them and rejects the first one's headline constraint.",
+   "scope": "The metamorphic-test proposal and the hand-made property-fixture proposal, as instruments. It does NOT forbid checking how a palette moves when the input moves - that is what the perturbation and robustness work does, on transformations that are supposed to be IMPERCEPTIBLE. What is rejected is requiring a specific, predictable output change under a transformation that visibly changes the artwork.",
+   "decision": "THE METAMORPHIC CHECKS ARE FOLDED INTO THE PROPERTY-FIXTURE INSTRUMENT AND ARE NOT BUILT SEPARATELY, AND HUE EQUIVARIANCE IS REJECTED AS A MADE-UP CONSTRAINT. The proposal was to hue-rotate an artwork by 30 degrees, mirror it, brighten it, and require the palette to move correspondingly. THE REQUIREMENT IS INVENTED. Nobody has ever asked this system for a palette that commutes with hue rotation; no reviewer verdict expresses it; no user-facing behaviour depends on it. Its own proposal already conceded that legitimate methods fail it - anything carrying a learned prior about what album covers look like will, correctly, not rotate its answer with the hue wheel. An instrument whose failures are pre-excused is not measuring anything. WHAT SURVIVES IS THE SHAPE, NOT THE CONSTRAINT: the useful half of the metamorphic idea is that an expectation can be stated as a PROPERTY rather than as an expected palette, and that is exactly the property-fixture instrument - a two-tone poster has two areas, a black frame yields no accent, a fade is a gradient. Those properties come from the artwork and from the contract. Fold the machinery in there and drop the hue-wheel arm. MIRRORING IS THE ONE WORTH KEEPING AND IT IS ALREADY COVERED: a horizontal flip should not move a palette at all, which is a relabel/perturbation invariance, and it belongs with the robustness work rather than here.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Source review A, 2026-08-04: 24 tiered tools, items (1)-(9) and (A)-(L), with agent-hour costs."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy - a conversational disposition with no quoted sentence. The phrase 'made-up constraint' is the ruling as relayed, not a transcribed quotation.",
+    "The claim that no verdict expresses a hue-equivariance expectation is an argument from the absence of such a verdict, not a query anybody ran. It would be cheap to check and was not checked.",
+    "Folding is scheduling, not deletion. If a Phase 1 paradigm turns out to claim equivariance of some kind as a design property, testing THAT claim is fair game and this record does not forbid it - what is rejected is imposing the constraint on paradigms that never claimed it."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-alpha-matte-and-cvd-are-algorithm-material",
+   "ts": "2026-08-04T08:25:00Z",
+   "kind": "process",
+   "draftedAs": "build disposition - both were put as tooling proposals (a transparency-flattening study; colour-blind simulation as a diagnostic column). The ruling reclassifies rather than schedules them.",
+   "scope": "The two proposals only, and only as a question of WHO decides them and WHEN. It does not settle either question: no matte is chosen, no CVD treatment is chosen. It does not remove them from the campaign - it moves them from the toolbox to the Phase 1 idea pile.",
+   "decision": "TWO TOOLBOX PROPOSALS ARE NOT TOOLING. Reviewer, 2026-08-04, verbatim: 'part of the algorithm, not tooling'. They are the transparency-flattening study (what matte an alpha region gets: white, black, or a blend) and colour-blind simulation of palettes. NOTHING IS PRE-BUILT FOR EITHER. Both are recorded as PHASE 1 IDEA-PILE ENTRIES: a proposal author may take either up as part of their architecture, and the choice they make is part of their proposal to be judged, not a fixture handed to them. THE RATIONALE IS AVAILABILITY BIAS, AND IT IS THE SAME ARGUMENT THAT GOVERNS THE WHOLE PHASE 1 DESIGN. An instrument built before the proposals exist is not neutral: it is a ready-made answer sitting on the shelf, and the paradigm that happens to fit it gets a free pass while the paradigm that would have solved the same problem differently has to argue against a working tool. Deciding the standard matte in advance quietly decides what 'the image' IS for every author. Shipping a CVD diagnostic column in advance quietly makes colour-blind legibility a scoring axis nobody voted for. Both are real questions; both belong to whoever is designing the thing that answers them.",
+   "fundedBy": [
+    "n-msecyw37-820c2b95"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Source review A, 2026-08-04: 24 tiered tools, items (1)-(9) and (A)-(L), with agent-hour costs."
+    }
+   ],
+   "fundingCaveats": [
+    "The quoted sentence is the reclassification. THE AVAILABILITY-BIAS RATIONALE IS THE ORCHESTRATOR'S, not the reviewer's - it is why the ruling makes sense, not evidence that it was the reviewer's reason.",
+    "Alpha handling is not currently a live gap: the holdout draw already excluded 324 square real-transparency files from the candidate set, so the corpus in use is largely opaque. That is why deferring costs little TODAY, and it is not an argument that it will keep costing little.",
+    "'Idea pile' has no machinery behind it. These two entries live in the Phase 1 author brief and nowhere else; nothing checks that an author ever saw them."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-constant-provenance-scoped-per-area-no-ci",
+   "ts": "2026-08-04T08:30:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "build disposition with a scoping amendment - the proposal as put asked for an authoring-time constant API plus a CI check refusing new undeclared literals.",
+   "scope": "The constant-provenance instrument's scope and enforcement mechanism. It does NOT weaken the standing convention that every constant carries a provenance tag - that rule is unchanged and applies everywhere. It changes what is MEASURED and MEASURABLE, and it removes one proposed enforcement route.",
+   "decision": "BUILD THE CONSTANT-PROVENANCE INSTRUMENT WITH PER-AREA SCOPING, AND DO NOT RELY ON CI. Reviewer, 2026-08-04, on the areas the census sweeps: the research and instrument areas \"don't really matter in phase 0\". So the instrument reports per area rather than as one corpus-wide number, and the areas that matter are the ones carrying the algorithm - not the analysis scripts, the round builders or the review pages, whose literals were never the thing parameter honesty is about. A single pooled percentage over all of them measures mostly housekeeping and reads as if it measured the system. NO CI RELIANCE. The proposal's second half - a continuous-integration check that refuses new undeclared literals - is not built and is not depended on. Enforcement stays where it already is: the convention, code review, and the census that reports the backlog. THIS IS CONTINUOUS WITH THE 2026-08-03 RULING that the untagged backlog is a Phase 1 obligation rather than Phase 0 debt ('tunable sites do not matter much in v3 Phase 0'). Same reviewer, same direction, one day apart: the measurement is worth having, the backlog is not worth stopping for, and the areas that generate most of the backlog are not the areas the criterion is about.",
+   "fundedBy": [
+    "n-msecyw3b-b9fb8d05"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    },
+    {
+     "ref": "research/v3/src/honesty/README.md",
+     "what": "The existing census instrument - what it counts and how, and the authority for its status."
+    }
+   ],
+   "fundingCaveats": [
+    "The quoted phrase is about the AREAS. That per-area scoping is the right response to it, and that CI is dropped rather than merely deprioritised, are the orchestrator's reading of a short remark.",
+    "'The areas that matter' is not defined here, and the instrument's owner has to define it. A scoping rule that is chosen after the numbers are visible is the classic way to make a metric flatter its subject - the split should be declared before it is measured.",
+    "Dropping CI leaves the instrument purely descriptive. Nothing prevents the backlog growing; the census will simply report that it did."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-phase-1-authors-receive-a-tool-catalog",
+   "ts": "2026-08-04T08:35:00Z",
+   "kind": "process",
+   "draftedAs": "adopted proposal plus a reviewer addition - the proposal asked only that Phase 1's reading list be written down and one arm run blind.",
+   "scope": "What Phase 1 proposal authors are given, and what they are deliberately not given. It binds the contents of research/v3/PHASE_1_AUTHOR_BRIEF.md. It does NOT decide how proposals are judged, how many authors there are, or what the blind arm is compared against.",
+   "decision": "PHASE 1'S READING LIST IS WRITTEN DOWN BEFORE THE PROPOSALS EXIST, AND AUTHORS ALSO RECEIVE A TOOL CATALOG. The reading list was the proposal; the catalog is the REVIEWER'S OWN ADDITION to it, 2026-08-04. AUTHORS RECEIVE: the goals (V3_PLAN.md section 1's three success criteria), the output contract by section pointer, corpus facts as measured distributions with no conclusions attached, and A CATALOG OF EVERY INSTRUMENT THAT EXISTS - one line each, saying what it measures and how to invoke it. AUTHORS DO NOT RECEIVE: our failure analyses, the instruments' own conclusions, or the field guide. The reason is anti-anchoring, which is the entire design of Phase 1 - a proposal written after reading why v2-3 failed is a repair of v2-3, and V3_PLAN.md section 2 is explicit that using the field guide as a blueprint 'reproduces v2-3 with better hygiene - incremental at best'. WHY THE CATALOG DOES NOT BREAK THE ANTI-ANCHORING: there is a real difference between knowing WHAT CAN BE MEASURED and knowing WHAT WE CONCLUDED. An author who does not know a robustness harness exists will not design for robustness and will be judged by it anyway - that is not anti-anchoring, it is a hidden rubric. The catalog says the instrument exists and what it measures; it does not say what it found. THE BLIND ARM RECEIVES GOALS AND THE OUTPUT CONTRACT ONLY - no catalog, no corpus facts. It is the control on everything above, including on the catalog itself.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "The brief this record specifies, written in the same ledger pass."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy - conversational, no quoted sentence relayed for either the adoption or the addition.",
+    "The catalog is a hole in the blind by construction, and the record should not pretend otherwise. Naming the instruments tells an author what this campaign thinks is worth measuring, which is itself an anchor - a weaker one than the conclusions, but not zero. The blind arm is the only measurement of how much that costs, and with one arm it is an anecdote, not a measurement.",
+    "bias-audit.md's timing argument applies to this record specifically: written after the proposals exist, it would look like moving the goalposts. It is written before, which is worth exactly as much as the date on it."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-show-your-work-is-a-template-line-not-a-gate",
+   "ts": "2026-08-04T08:40:00Z",
+   "kind": "process",
+   "draftedAs": "weakened proposal - the proposal as put asked each proposal to pre-register its expected failures and its falsifier, with gates made advisory alongside.",
+   "scope": "The show-your-work requirement on Phase 1 proposals, and its enforcement. It does not bind what a proposal must CONTAIN to be considered, and it creates no gate, no check and no rejection condition.",
+   "decision": "SHOW-YOUR-WORK IS A LINE IN THE PROPOSAL TEMPLATE AND NOTHING MORE. The weak form only: authors are ASKED to state what they expect their approach to fail at, and what would falsify it. Nothing enforces it, no proposal is rejected for omitting it, and no instrument reads it. THE REVIEWER WAS EXPLICITLY UNSURE IT IS WORTH ANYTHING, and that uncertainty is the decision rather than a footnote to it. It is recorded because the cheap version costs one line and might surface a self-aware failure prediction; it is unenforced because a requirement the reviewer doubts should not become a hurdle authors have to clear. IF IT PRODUCES NOTHING USEFUL ACROSS PHASE 1, DELETE THE LINE. That is the honest exit and it is stated here so that keeping it is a choice rather than an inheritance.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "Carries the template line in the form this record specifies."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy - conversational. The reviewer's doubt is relayed, not quoted.",
+    "An unenforced template line has a known failure mode: it gets filled in with something plausible and unfalsifiable, and then cited later as if the author had pre-registered a real prediction. Nothing here prevents that.",
+    "The proposal's other half - that no-regression gates report rather than block for prototypes - is NOT settled by this record and is not carried by it."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-source-support-does-not-discriminate-quality",
+   "ts": "2026-08-04T07:20:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "measurement / study report - BELONGS_STUDY.md is an analysis, and this record carries only its result. Recorded separately from the policy change it funds, because the measurement stands whatever is done about it.",
+   "scope": "What the belongs study measured about invariant 2's source-support test, and nothing about what to do next - the policy is the next record. It does NOT touch invariant 2's spatial-spread half, which is permanently deferred (ledger row A4). It does not establish that the failing colours are GOOD; it establishes that this test cannot tell.",
+   "decision": "NO PIXEL-LEVEL SUPPORT FEATURE SEPARATES ENDORSED FROM KNOWN-BAD COLOURS - AT ANY CALIBRATION TESTED. The study measured five candidate features per published colour against its artwork (exact-triple share; same-colour-bar neighbourhood share; OKLab distance to the nearest substantial mode; hue distance with tone free; a tone-relaxed family between them), over 877 distinct endorsed (artwork, hex) units against 107 known-bad, with the grids declared BEFORE measurement and AUC by Mann-Whitney with a 2,000-resample cluster bootstrap over artworks, seed 20260804. EVERY ONE OF THE 24 PRE-DECLARED GRID CELLS HAS A 95% CI CONTAINING 0.5. Best cell anywhere 0.525, worst 0.440. Exact share AUC 0.509 [0.453, 0.566]; neighbourhood share 0.479 [0.423, 0.534]. Those two are MEASURED NULLS - strong separation is excluded, not merely unfound. The three distance features are UNDERPOWERED rather than refuted, and hue distance is additionally undefined for 48.5% of endorsed colours because they sit on the near-neutral axis. THE FAILURE RATES POINT MARGINALLY THE WRONG WAY. Colour-level: exact rule fails 78.2% of endorsed against 79.4% of known-bad; neighbourhood rule 6.0% against 4.7%. A floor sweep across two orders of magnitude never separates them, and the minimum neighbourhood share is 6.59e-5 for endorsed against 5.86e-5 for known-bad - THE SAME SUPPORT, so there is no threshold anywhere to calibrate. IT REPRODUCES THE B1 AUDIT TO THE DIGIT: exact rule refuses 340/351 endorsed palettes (96.9%), neighbourhood rule 62/351 (17.7%); colour pass rate 24.6% to 94.8%. AND IT LOCATES WHO PAYS. Of 53 residual failing units, accent 30/271 (11.1%) against surface 2/244 (0.8%), with a median mode distance of 0.093 against 0.012 overall - the failing colours are roughly 8x further from the artwork's modes than endorsed colours generally, WHICH IS THE DEFINITION OF AN ACCENT AND NOT A DEFECT IN ONE.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/BELONGS_STUDY.md",
+     "what": "The belongs study report: five candidate features, 24 pre-declared grid cells, the AUC table, the floor sweep and the 53 residuals."
+    },
+    {
+     "ref": "research/v3/data/contract/belongs-study.json",
+     "what": "The study's measurements: meta, residuals, contingency, 24 separation cells, 53 neighbourhoodFailures, 1,423 rows."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    },
+    {
+     "ref": "research/v3/src/contract/belongs-study.ts",
+     "what": "The measurement script: feature definitions, the declared grids, the bootstrap and the seed."
+    },
+    {
+     "ref": "research/v3/data/legacy/endorsements.json",
+     "what": "351 reviewer-endorsed v2-3 palettes, 1,397 role colours - the positive class."
+    },
+    {
+     "ref": "research/v3/data/legacy/known-bad.json",
+     "what": "37 palettes, 148 role colours - the negative class, and the source of the study's governing caveat."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy BY CONSTRUCTION. The study measures the LEGACY FIXTURE FILES, which are distilled v2-3 verdicts and not v3 warehouse records - there is nothing for `recheck` to resolve. The fixtures are cited as artifacts instead.",
+    "THE GOVERNING CAVEAT IS THE STUDY'S OWN: known-bad.json grades PALETTES, not COLOURS. A rejected palette's individual colours may each be fine, so the negative class is diluted and every null here is a LOWER bound on the true separation. The study says so up front.",
+    "The negative class is small - 107 units from 26 artworks against 877 from 173. The two measured nulls are solid; the three underpowered features would need a bigger known-bad set to refute properly, and that set does not exist.",
+    "The 8x mode-distance finding on the 53 residuals is a description of the boundary population, not a defence of it. It says the failing colours are off-mode, which is what an accent is - it does not say each of those 53 colours is well chosen."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-source-support-population-floor-demoted-to-report-only",
+   "ts": "2026-08-04T07:50:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "reviewer ruling on a pending recommendation - BELONGS_STUDY.md's recommendation section proposed exactly this and left the act to the reviewer, per PHASE_0_DECISIONS.md section 4. The reviewer performed the act mid-round.",
+   "scope": "Invariant 2's POPULATION FLOOR, in both its exact-triple and its same-colour-bar neighbourhood form. The EXISTENCE half is untouched and stays a hard gate. It does not touch the spatial-spread half (permanently deferred, ledger row A4). It does not license publishing colours that are not in the image, and it does not license snapping to the nearest modal triple, which is the naive pixel-snapping the design constraints rule out.",
+   "decision": "THE POPULATION FLOOR IS DEMOTED TO REPORT-ONLY. EXACT-PIXEL PROVENANCE STAYS A HARD GATE. Reviewer ruling, 2026-08-04, given mid-round after answering 11 of the 20 items of dropped-colors-1, verbatim: 'i stopped reviewing, your color maths is fucked, everything i've seen belongs'. All 11 answers given before they stopped were `belongs`. WHAT STAYS HARD: a published colour must be an exact 8-bit triple present in the input. Measured cost of keeping it: it fires on 1 of 1,397 endorsed role colours. A gate that refuses once in 1,397 on work the reviewer praised is cheap, is not limiting, and catches the one thing the invariant's docstring is right about - a colour that is not in the image is an invention. WHAT IS DEMOTED: the population floor. validateSourceSupport keeps COMPUTING population - on the same-colour-bar neighbourhood, which is strictly the better measure of how much of the artwork a colour accounts for - and REPORTS it as an advisory finding alongside the deferred spatial-spread. It never returns a Violation. It stays visible, stays regenerable, and stops refusing publication. THREE MEASURED REASONS, none of them taste: (1) it does not discriminate quality at any calibration - see d-2026-08-04-source-support-does-not-discriminate-quality, where endorsed and known-bad colours have the same support and indistinguishable failure rates; (2) it is structurally biased against the role that matters most - accent fails at 11.1% against surface's 0.8%, and keeping it hard re-erects the candidacy wall V3_PLAN.md was written to remove, one layer down; (3) THE CAMPAIGN'S OWN META-RULE ALREADY DECIDED IT - PHASE_0_DECISIONS.md section 4: 'an invariant that ever blocks an endorsed palette is demoted - the reviewer outranks the rule.' It blocked 340 of 351. THE CONTRACT EDIT IS NOT THIS RECORD'S. It is made in src/contract/invariants.ts by the workstream that owns it; this record is the authority the edit cites, not the edit. THIS CLOSES LEDGER ROW A17.",
+   "fundedBy": [
+    "o-msecslje-f9adf3d6",
+    "o-msecsqtd-ca8fb30e",
+    "o-msect7kn-a2ee5a2f",
+    "o-msectbk1-2a708b09",
+    "o-msectnpo-37684abe",
+    "o-msectqz0-f1202d55",
+    "o-msectvm1-82941763",
+    "o-msecucls-8540c277",
+    "o-msecugwe-e208cec4",
+    "o-msecuq33-5c71c093",
+    "o-msecussm-6a2c57bd",
+    "n-msecyw32-bfcce1ed"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/BELONGS_STUDY.md",
+     "what": "The belongs study report: five candidate features, 24 pre-declared grid cells, the AUC table, the floor sweep and the 53 residuals."
+    },
+    {
+     "ref": "research/v3/data/contract/belongs-study.json",
+     "what": "The study's measurements: meta, residuals, contingency, 24 separation cells, 53 neighbourhoodFailures, 1,423 rows."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    },
+    {
+     "ref": "research/v3/data/oracle-validation/dropped-colors-1.json",
+     "what": "The round: 20 of the 53 residual failures, taken as an even stride across the margin-sorted list rather than the worst 20. Stopped at 11, never released."
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "Where the demotion is implemented, by the contract workstream."
+    },
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "Section 4's meta-rule, which this ruling applies rather than overrides."
+    }
+   ],
+   "fundingCaveats": [
+    "THE ROUND IS 11 OF 20, NOT 20 OF 20, and it was stopped BECAUSE the reviewer had seen enough - which is a biased stopping rule in the strict sense. It is also the strongest form the answer could have taken: 11 of 11 `belongs`, on items deliberately sampled across the whole margin rather than from the worst end. A round that had run to 20 could have weakened this; it could not have made it much stronger.",
+    "The 9 unanswered items are a real unknown. They sit at the stride positions nobody reached, and nothing here says how they would have been answered.",
+    "'Your color maths is fucked' is the reviewer's verdict on the MEASURE, and this record treats it as a ruling on the FLOOR specifically, because that is what the round was about and what the study recommended. It is a wide sentence given a narrow reading. If the reviewer meant something wider - about OKLab distances, the same-colour bar, or the residual selection - that is not captured here and would be a separate finding.",
+    "The demotion removes the only hard gate that was pushing back on colours with almost no presence in the artwork. Nothing replaces it. The study's own fallback - a 5e-5 noise guard documented as a noise guard rather than a quality signal - was NOT adopted, and no floor of any size is in force.",
+    "This pass did not verify the invariants.ts edit. The claim that the contract now reports rather than blocks is a statement of what was decided, and the contract workstream's README is the authority on what the code does."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-dropped-colors-1-retired-with-its-partial-answers-standing",
+   "ts": "2026-08-04T07:55:00Z",
+   "kind": "process",
+   "draftedAs": "round disposition - no document proposed retiring it; the round was stopped by the reviewer mid-flight and the question it existed to ask was answered by the act of stopping.",
+   "scope": "The standing of batch dropped-colors-1 and of the 11 answers in it. It does not affect the belongs study that built it, and it does not affect the ruling those answers funded.",
+   "decision": "dropped-colors-1 IS RETIRED, UNRELEASED, WITH ITS 11 ANSWERS STANDING AS VALID DATA. The round asked, of 20 colours drawn from the 53 residual floor failures, 'does this colour belong in this artwork's palette?'. The reviewer answered 11, all `belongs`, and stopped. IT IS NOT ABANDONED AND IT IS NOT INVALID. The 11 answers are real reviewer judgements on real stimuli and they fund the demotion (d-2026-08-04-source-support-population-floor-demoted-to-report-only). What is retired is the ROUND - the remaining 9 items will not be served, the batch will not be released, and no completion rate will ever be quoted for it. IT IS RETIRED THROUGH THE RETIRE-BATCH ACTION, which is append-only and records a reason, so the retirement is a fact in the log rather than a batch that silently stopped moving. AN OPEN BATCH THAT NOBODY INTENDS TO FINISH IS A LIE THE STATUS OUTPUT TELLS EVERY TIME IT RUNS - `warehouse status` reported it as open with 9 pending, which reads as work in progress. Retirement is how a round says it is over.",
+   "fundedBy": [
+    "o-msecslje-f9adf3d6",
+    "o-msecsqtd-ca8fb30e",
+    "o-msect7kn-a2ee5a2f",
+    "o-msectbk1-2a708b09",
+    "o-msectnpo-37684abe",
+    "o-msectqz0-f1202d55",
+    "o-msectvm1-82941763",
+    "o-msecucls-8540c277",
+    "o-msecugwe-e208cec4",
+    "o-msecuq33-5c71c093",
+    "o-msecussm-6a2c57bd",
+    "n-msecyw32-bfcce1ed"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/dropped-colors-1.json",
+     "what": "The round fixture."
+    },
+    {
+     "ref": "research/v3/src/review-server/dropped-colors.ts",
+     "what": "The builder: selection rule, seed 20260804, and the refusal to build a colour that no longer fails."
+    }
+   ],
+   "fundingCaveats": [
+    "STOPPING WAS NOT RANDOM. The reviewer stopped because the answers were all going one way, so the 11 are not a random 11 of 20 and must not be treated as an unbiased sample of the 53 residuals - still less of the corpus.",
+    "The retire-batch action was being built while this record was written. If the retirement does not appear in the log, the round is still open and this record is describing an intention."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-toolbox-adjudication-1-deprecated",
+   "ts": "2026-08-04T08:45:00Z",
+   "kind": "process",
+   "draftedAs": "round disposition - the round was pushed as the instrument for collecting exactly the adjudication that then happened in conversation instead.",
+   "scope": "The standing of batch toolbox-adjudication-1 and of the recommendations recorded inside it. It does not retract the two source reviews - gap-scan.md and bias-audit.md stay readable and their measurements stand.",
+   "decision": "toolbox-adjudication-1 IS DEPRECATED AND RETIRED, UNANSWERED. The reviewer adjudicated the toolbox in conversation instead, and the chat adjudication is canonical (d-2026-08-04-toolbox-adjudication-disposition). The round was pushed 2026-08-04T07:30:52Z with 42 items and never received an answer. ITS RECOMMENDATIONS ARE VOID WHEREVER THEY CONTRADICT THE CHAT. The file carries the ORCHESTRATOR'S own recommendation and reason per item - 27 build-now, 8 defer, 3 drop, 4 discuss - and those were the thing the reviewer was being asked to overrule. Two named casualties: TB-02, 'reuse the old evaluation harness instead of writing a new one', is void against the no-v2-3-code ruling; and TB-25, the browsable page of past verdicts, is DROPPED and was NEVER BUILT. THE BROWSABLE-VERDICTS ITEM CAUSED A CONFUSION WORTH RECORDING RATHER THAN TIDYING AWAY: it was raised as though it were something the campaign had or was committed to, and it is neither. It was a proposal, it was dropped, and no such page exists. A reader who finds TB-25 in the items file and assumes a verdict browser is available will be wrong. RETIRED THROUGH THE SAME APPEND-ONLY RETIRE-BATCH ACTION as dropped-colors-1, with the reason recorded, so it stops showing up as a round awaiting the reviewer.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/toolbox-adjudication-1.json",
+     "what": "The pushed round the chat superseded: 42 items, labelSchemaVersion toolbox-adjudication.v1, never answered."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/adjudication-items.json",
+     "what": "The 42 proposals as put to the reviewer, ids TB-01..TB-42, each with the orchestrator's own recommendation and reason. The chat adjudication's item numbers are NOT these ids - see the disposition record."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/gap-scan.md",
+     "what": "Source review A, 2026-08-04: 24 tiered tools, items (1)-(9) and (A)-(L), with agent-hour costs."
+    },
+    {
+     "ref": "research/v3/reviews/toolbox-review/bias-audit.md",
+     "what": "Source review B, 2026-08-04: findings B1-B10 on whether the instruments bias the following phases."
+    },
+    {
+     "ref": "research/v3/data/review-server/batches.jsonl",
+     "what": "The push record: pushedAt 2026-08-04T07:30:52.495Z."
+    }
+   ],
+   "fundingCaveats": [
+    "EMPTY fundedBy, and unusually so: the round generated no answers at all, so there is literally nothing to cite. That is the record's own subject.",
+    "Deprecating the round does not tell anyone which of the 42 items the chat actually covered. The disposition record carries 4-35 in the conversation's numbering and cannot be mapped back onto TB ids - so this pass cannot say whether TB-01 or TB-42 were addressed at all.",
+    "The orchestrator's per-item recommendations remain in the file and remain readable. They are void as decisions, not deleted as arguments - the reason text on several of them is the best surviving statement of what each proposal was for."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-round-kit-note-and-item-id-are-the-standing-feedback-channels",
+   "ts": "2026-08-04T09:34:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "feature request adopted as a standing rule - the reviewer asked for either of two things and received both, as kit-level defaults rather than per-round options.",
+   "scope": "Every review round built on the kit, of every type, present and future. It does NOT change what any round MEASURES: a note is never an answer, never counts toward `reviewed`, never moves a completion count and never blocks a release. It does not create a tagging obligation - notes are raw text and tags are derived later.",
+   "decision": "THE PER-ITEM NOTE AND THE COPYABLE ITEM ID ARE STANDING FEEDBACK CHANNELS ON EVERY ROUND, NOT PER-ROUND FEATURES. Both live in the kit shell, so a round type cannot ship without them and no round author has to remember them. Reviewer, 2026-08-04, asking for either: 'the review UI should either - have an optional free text box on every item in a batch - have IDs that I can copy paste to you to give feedback about a specific item in a batch. i often want to give feedback about a specific thing and we currently have no way of doing that, which prevents accidental discovery of information.' THE LAST CLAUSE IS THE JUSTIFICATION AND IT IS THE REVIEWER'S OWN: an instrument that can only record the answer it was designed to ask for cannot discover anything it did not anticipate, and the observations lost that way are exactly the ones no round was designed to collect. This is the same failure that produced two rounds governed by a criterion the reviewer chose privately and disclosed only afterwards. MECHANICS AS SHIPPED: `f` opens a free-text box on the current item, Enter saves, Escape closes without saving; empty notes are never recorded; the note survives a restart and is accepted after release. Storage is a `note` record tied to (batch, itemId, artwork) with the reviewer's text VERBATIM and `tags: []` - a tag on a raw note is the page pre-judging what the reviewer meant. ONE PAGE IS OUT OF COMPLIANCE AND OWES A MIGRATION: review-ui/dropped-colors.js wires its own keys and does not use the kit. It is NOT grandfathered - it was written after the standing rule landed, and the kit's own guard caught it the same day.",
+   "fundedBy": [
+    "n-msecyw3s-405ca43f"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/review-ui/round-kit.js",
+     "what": "The shell both features live in."
+    },
+    {
+     "ref": "research/v3/review-ui/ROUND_KIT.md",
+     "what": "The kit contract, the grandfather list, and the statement that dropped-colors.js is owed a migration."
+    },
+    {
+     "ref": "research/v3/review-ui/dropped-colors.js",
+     "what": "The non-compliant page."
+    },
+    {
+     "ref": "research/v3/REVIEW_UI.md",
+     "what": "Section 4, where the channels are recorded as reviewer input."
+    }
+   ],
+   "fundingCaveats": [
+    "The quote is a feature REQUEST. That both halves became kit-level defaults rather than options, and that they bind future round types, is the orchestrator's decision on top of it.",
+    "NEITHER CHANNEL HAS BEEN EXERCISED BY A REAL ROUND YET. They shipped 2026-08-04 and no note record has been filed through them. Everything above is design, verified by tests and not by use.",
+    "The channel makes it cheap to say something the round did not ask; it does nothing to make sure anyone READS what gets said. Nothing routes notes to a human or an agent today."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-accent-calibration-is-a-stimulus-realism-problem",
+   "ts": "2026-08-04T08:50:00Z",
+   "kind": "instrument-design",
+   "draftedAs": "diagnosis - no document proposed it. It reconciles two same-day reviewer positions that a reader would otherwise have to treat as the reviewer contradicting themselves.",
+   "scope": "The accent-visibility calibration programme: why round 1 refused its own fit, and what the replacement round must be built on. It does NOT change ACCENT_FUNCTIONAL_DISTANCE, which stays 0.14591 and stays [UNCALIBRATED]. It does not settle which of the round's two readings is true - it says the round could not have settled it. It does not touch the foreground, which gets no escape at any distance.",
+   "decision": "THE REVIEWER'S TWO ACCENT POSITIONS OF 2026-08-04 ARE NOT A CONTRADICTION - THEY ARE A STIMULUS-REALISM EFFECT. On the same day: in accent-functional-1, isoluminant accents at distances around 0.06-0.09 on synthetic panels were called WORKING accents, 28 of 31 stimuli carrying exactly zero luminance contrast; and on a real cover, an accent at OKLab distance 0.121 - roughly TWICE the distance of the synthetic ones - was called UNREADABLE. THE DIAGNOSIS IS THE STIMULUS, NOT THE WORDING AND NOT THE CRITERION. Synthetic flat-field panels flatter isoluminant accents: a uniform field gives the eye an uninterrupted edge and no competing structure, so a colour difference that survives there is doing far less work than the same difference on real artwork. Real artwork surfaces have texture, gradient, noise and neighbouring colour, and they eat exactly this kind of contrast. The round did not measure a threshold that was too low; it measured a threshold ON THE WRONG SURFACE. CONSEQUENCES, ALL THREE: (1) accent-functional-1's refusal STANDS, with this diagnosis attached - see d-2026-08-04-accent-functional-round-1-refuses-its-own-fit-and-excludes-the-placeholder. It was a clean round and its fit is still correctly refused. (2) THE RECALIBRATION ROUND IS REBUILT ON REAL COVERS - a mock player over real artwork surfaces, with a few synthetic anchors retained SOLELY to measure the lab-versus-real gap, which is now a quantity worth having rather than an artefact to avoid. (3) ACCENT_FUNCTIONAL_DISTANCE STAYS 0.14591 AND STAYS [UNCALIBRATED] MEANWHILE. AND THE TWO BODIES OF EVIDENCE POINT IN OPPOSITE DIRECTIONS, WHICH IS THE HONEST STATE. The synthetic round excluded the placeholder at 95% from BELOW - its evidence says the number should come DOWN. The real-cover judgement says an accent at 0.121 is unreadable, so the number should go UP, toward the placeholder or past it. GENUINELY UNRESOLVED UNTIL THE REAL-STIMULUS ROUND RUNS. Nobody should quote either direction as the campaign's position.",
+   "fundedBy": [
+    "n-msecyw2t-e0e85e38",
+    "o-msec3nne-e72a484d",
+    "o-mseclvwb-918e1221",
+    "n-msecyw46-8e8ce784",
+    "n-msed14i5-68ffaa5d"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-analysis.json",
+     "what": "The synthetic round: verdict contradicts-retraction, pooled fit 0.04554 with CI [0.01826, 0.11356], the anchor 2x2 collapsed onto its diagonal, and 28 of 31 zero-luminance-contrast stimuli called working."
+    },
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-preregistration.md",
+     "what": "Sections 1-7 pre-registered before the batch was pushed; section 8's results write-up, including the two surviving readings this record does not choose between."
+    },
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "ACCENT_FUNCTIONAL_DISTANCE, unchanged at 0.14591 and still [UNCALIBRATED]."
+    },
+    {
+     "ref": "research/v3/PHASE_0_LOOSE_ENDS.md",
+     "what": "Row A16, which stays open and now carries this diagnosis."
+    }
+   ],
+   "fundingCaveats": [
+    "THE DIAGNOSIS IS A HYPOTHESIS, NOT A MEASUREMENT. Nobody has run the same accent at the same distance on a flat panel and on a real cover and compared the answers. That experiment is precisely what consequence (2) builds, so the diagnosis is currently funded by its own plausibility plus the direction of the disagreement - which is exactly the shape of reasoning this campaign distrusts elsewhere.",
+    "n=1 ON THE REAL SIDE. One cover, one accent, one judgement, at one distance. The synthetic side has 31 fitted items and four perfect controls. The evidence is lopsided in favour of the reading this record sets aside.",
+    "Two rival explanations are not excluded and were not tested: the round's own reading 2 (the wording landed and the earlier retraction was a priori prose written away from the stimulus), and a straightforward surface-versus-field effect where what matters is the SURFACE ROLE the accent sits on rather than realism as such. The 0.121 case is an accent on SURFACE; most synthetic rungs were accents on a field.",
+    "'Real covers' is not yet a specification. Which covers, how many, stratified how, and what the mock player looks like are all undecided, and a badly drawn mock player is just another synthetic stimulus with more pixels."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-endorsement-recheck-1-resolved-by-chat-two-endorsements-retired",
+   "ts": "2026-08-04T07:45:00Z",
+   "kind": "corpus-policy",
+   "draftedAs": "round override plus an evidence-status change - the round was built to ask whether two endorsements should survive a new metric ruling, and the answer arrived outside it.",
+   "scope": "The evidential standing of two specific legacy endorsements, and how mechanical consumers must treat them. It does NOT delete them, does NOT edit data/legacy/*.json (those are fixtures), and does NOT generalise to any other endorsement. It does not change the metric ruling itself, which is confirmed rather than modified.",
+   "decision": "THE 2026-08-04 METRIC RULING IS CONFIRMED AGAINST BOTH CONTESTED ENDORSEMENTS, AND BOTH ARE RETIRED AS QUALITY EVIDENCE. Reviewer, in conversation, overriding the round: 'ignore my review of endorsement-recheck, the rule is right in both cases - item 1: foreground and accent *are too close* - item 2: accent on surface *is unreadable*'. THE TWO PALETTES: e7c9419abc1df0dd and 22e959d5164750bd. ONLY ONE ANSWER ACTUALLY MOVED, AND THE LOG MUST KEEP THAT STRAIGHT. Item 1 was answered `keep_the_endorsement` in the round and IS overridden. Item 2 was answered `the_rule_is_right` in the round and is CONFIRMED, not reversed - the reviewer agreed with the rule there all along. Calling both 'superseded' would invent a reversal that never happened. WHY ITEM 1 MOVED: it was served without the explanation of what the rule was objecting to, so the round asked the reviewer to defend an endorsement without showing them the charge against it. That is an instrument defect, not a change of mind. WHAT RETIREMENT MEANS MECHANICALLY: the two entries stay in data/legacy/endorsements.json, unedited, and stay readable as history. But NO CONSUMER MAY COUNT A MATCH TO THEM AS A WIN - not the auto-adjudication consumer (src/adjudication/), not any known-worse gate, not any concordance or reachability dashboard. A candidate palette that reproduces either of these is not thereby validated. THE PROPOSED MECHANISM IS A RETIRED-LIST SIDECAR that the adjudication evidence loader reads - a small file naming retired entries with their reason and date, applied at load time so every consumer inherits it. It is proposed here, not built here; the fixtures are not to be edited, and a flag baked into a fixture would be a silent change to a file other workstreams treat as frozen. Wiring it belongs to the adjudication workstream and is a ledger row.",
+   "fundedBy": [
+    "n-msecyw2t-e0e85e38",
+    "o-msec3nne-e72a484d",
+    "o-mseclvwb-918e1221",
+    "n-msecyw46-8e8ce784",
+    "n-msed14i5-68ffaa5d"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/oracle-validation/endorsement-recheck-1.json",
+     "what": "The round: two endorsed palettes the 2026-08-04 metric ruling newly fails."
+    },
+    {
+     "ref": "research/v3/data/legacy/endorsements.json",
+     "what": "Where both entries live. A FIXTURE - not edited by this decision."
+    },
+    {
+     "ref": "research/v3/src/adjudication/evidence.ts",
+     "what": "The evidence loader that must learn to read the retired list."
+    },
+    {
+     "ref": "research/v3/src/review-server/endorsement-recheck.ts",
+     "what": "The round builder, and the escape rule the items turned on."
+    }
+   ],
+   "fundingCaveats": [
+    "TWO PALETTES. This is not a policy about endorsements in general and must not be read as one - it is two entries whose standing the reviewer changed by name.",
+    "The two in-round answers are cited alongside the chat note because the decision is fitted to the conflict between them. `recheck` will not flag either as superseded, because nothing in the warehouse amends them - the override lives in a note. That is deliberate, and it means the machine cannot see this override; only a reader can.",
+    "THE SIDECAR DOES NOT EXIST YET. Until it is wired, the auto-adjudication consumer will happily count a match to either palette as a win, and nothing warns anyone. That gap is the reason this record exists today rather than when the mechanism lands.",
+    "Retiring an endorsement removes evidence FOR a palette; it does not create evidence against it. Neither palette becomes known-bad, and neither belongs in the known-worse gate."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

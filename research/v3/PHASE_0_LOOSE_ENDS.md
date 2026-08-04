@@ -35,6 +35,11 @@ closure created a new assumption. The row a reader might expect to have closed �
 ground-vocabulary pick — did not, because the residual retry produced a *proxy* and not the purity
 measurement its revival condition names.
 
+*The table immediately below is the **2026-08-03 (late)** reading and is kept at that date, like every
+other count in this header. It is four passes behind; the current totals are the last dated paragraph
+in this section. Re-derive rather than reading any of them — count the `###` headings, skipping the
+`(original)` and `(closure text)` duplicates.*
+
 | section | items | open | closed |
 |---|---|---|---|
 | **A — sharp** (something downstream is already leaning on them) | A1–A18 = 18 | 9 | 9 — A1, A5, A7, A8, A9, A13, A14, A15, A18 |
@@ -83,6 +88,37 @@ the row stays open and no total moved. **A12 has since resolved its own half the
 row that half-closes is still an open row; the count only moves when a row does. **Two sharp rows
 now sit at exactly half — that is what a night of pre-registered rounds looks like, and it is why
 the totals have not moved in two days of results.**
+
+**Counts moved again on 2026-08-04, in the fourth batched ledger pass: 79 items, 61 open, 18
+closed** — against 75 / 57 / 18 earlier the same day. **B34 is REOPENED**, not closed: the vault
+locked again and this pass's own commit is unsigned, which is why one row closed and one reopened
+and the closed total did not move. Re-derived by counting the headings, not by
+adding to the previous number. **Four rows added, one closed**, and the per-section split is now
+A1–A19 = 19 (9 open, 10 closed) · B1–B37 = 37 (31 open, 6 closed) · C1–C13 = 13 (12 open, 1 closed) ·
+L-a–L-j = 10 (9 open, 1 closed).
+Closed: **A17**, the source-support population floor, demoted to report-only on a reviewer ruling
+given mid-round. Added: **A19** (two endorsements retired as quality evidence, and the adjudication
+consumer does not know), **B36** (the toolbox adjudication's numbering matches no file, and five
+deferrals have no trigger), **B37** (`dropped-colors.js` sits outside the round kit and is not
+grandfathered) and **L-j** (the kit's copyable item id contradicts three blinding tests; the suite
+is red). Amended without changing state: **A16** (the accent round ran and refused its own fit) and
+**B33** (the toolbox review was adjudicated in chat).
+**L-j was found by running the suite, not by being told about it**, which is the one thing this pass
+did that a purely documentary pass would not have. A ledger pass that only writes down what it is
+handed will never add a row like that — and the row it added is a live blinding question, not
+housekeeping.
+**This is the first pass whose additions are mostly the cost of an ADJUDICATION rather than of a
+measurement.** Two of the three new rows exist because a decision was made in conversation and the
+conversation was not fully transcribed — a numbering nobody wrote down, five triggers nobody wrote
+down, a sidecar nobody has built yet. That is a different failure from the usual one. Measurement
+opens rows because the world turned out to be more complicated; **this pass opened rows because a
+ruling arrived faster than the ledger could absorb it**, which is a cheaper problem and a more
+embarrassing one.
+**The warning from the last pass held again, and harder.** Three rulings arrived *while this pass
+was being written* — two by mid-pass addendum — and each rewrote something already drafted: A17 went
+from "recommendation pending the reviewer" to closed, `dropped-colors-1` went from a live round to a
+retired one, and the toolbox round went from pushed to deprecated. **Re-read the log and re-ask for
+the current rulings immediately before committing a ledger pass.**
 
 Closed rows are kept, **struck through, with their original text** — a ledger that deletes its
 closed rows cannot be audited, and in A6's case the closure text is exactly what a later reader
@@ -681,9 +717,52 @@ Original entry kept below for the record.
 - **Blast radius.** Everything downstream of A14. A wrong convention produces confident masks in the
   wrong place, which is the failure shape that looks like a model result.
 
-### A16. The functional-visibility calibration round is proposed, unrun, and a live constant depends on it
+### A16. The functional-visibility calibration round — **RUN 2026-08-04, FIT REFUSED, ROW STILL OPEN**
 *Added 2026-08-04, from the contract workstream's 2026-08-04 change
-(`d-2026-08-04-accent-functional-distance-is-a-bracketed-placeholder`).*
+(`d-2026-08-04-accent-functional-distance-is-a-bracketed-placeholder`). **Amended 2026-08-04
+(late): the round is no longer "unrun". It ran, it refused its own fit, and the constant did not
+move** — so the row stays open with a different open question than the one it was written with.*
+
+**What the round did.** `accent-functional-1`, 39 items, one pass. It is the cleanest round this
+repository has run and that matters for reading the result: all three validity gates passed with no
+slack — controls 4/4, repeats 4/4 (agreement 1.00), coverage 31/31 against a floor of 28, answer
+hygiene clean on every counter. **The fit was then refused by the round's own pre-registered
+guardrail**: the fitted threshold 0.04554 sits *below* 0.08804, the rung the reviewer had retracted
+as *"hardly perceptible"*, so adopting it would contradict an answer already given. Verdict
+`contradicts-retraction`, `proposal: null`. **`ACCENT_FUNCTIONAL_DISTANCE` stays 0.14591 and stays
+`[UNCALIBRATED]`; there is no `constants.ts` diff.** Recorded as
+`d-2026-08-04-accent-functional-round-1-refuses-its-own-fit-and-excludes-the-placeholder`, placed
+in the fourth ledger pass from the proposal file the scoring pass left pending.
+
+**What it settled, in the negative direction:** **the placeholder 0.14591 is excluded at 95%** — it
+lies outside the pooled CI [0.01826, 0.11356]. The round cannot say what the number is; it can say
+the number in force today is not supported by the only stimuli ever graded against the criterion it
+is named for. **And in the positive direction:** the isoluminant accent class is real — 28 of 31
+stimuli carrying *exactly zero* luminance contrast were called working accents — so an escape
+clause of some kind is warranted.
+
+**The new open question, and it is not the one this row was opened with.** The same day, on a
+**real cover**, the reviewer called an accent at OKLab distance **0.121 — roughly twice** the
+distance of the synthetic accents they had just called working — **unreadable**. Diagnosis:
+**stimulus realism, not wording and not criterion.** Synthetic flat-field panels flatter
+isoluminant accents; real artwork surfaces have texture, gradient and neighbouring colour, and they
+eat exactly this kind of contrast. Recorded as
+`d-2026-08-04-accent-calibration-is-a-stimulus-realism-problem`.
+**So the two bodies of evidence point in opposite directions** — the synthetic round says the
+number should come *down*, the real-cover judgement says it should go *up*, toward the placeholder
+or past it — **and that is genuinely unresolved.** Nobody should quote either direction as the
+campaign's position.
+**The replacement round is therefore rebuilt on real covers**: a mock player over real artwork
+surfaces, with a few synthetic anchors retained *solely* to measure the lab-versus-real gap, which
+is now a quantity worth having rather than an artefact to avoid. *Caveat carried openly: the
+diagnosis is a hypothesis, n=1 on the real side against 31 fitted items on the synthetic side, and
+a rival explanation — surface-role rather than realism, since the 0.121 case is an accent on
+**surface** while most synthetic rungs were accents on a **field** — is untested.*
+
+**What the original entry below still gets right:** the constant is live and decides verdicts
+today; the criterion is functional rather than detection; and the wording, the stimulus surface,
+the item count and whether the round should also settle **B31** remain the reviewer's to fix. What
+it gets wrong is only the word "unrun".
 - **What.** `ACCENT_FUNCTIONAL_DISTANCE = 0.14591` is **in force** in invariant 4's accent escape and
   is `[UNCALIBRATED]`. Its own provenance tag names the round that would replace it — *"calibrate via
   a functional-visibility round, criterion `does this work as an accent at a glance`, NOT the identity
@@ -716,7 +795,54 @@ Original entry kept below for the record.
   any Phase 1 paradigm whose accents are chromatic rather than luminance-driven, which is the class
   `V3_PLAN.md` §1 criterion 3 says v2-3 made structurally unpublishable.
 
-### A17. The source-support invariant's population floor refuses 96.9% of the reviewer's own endorsed palettes
+### A17. ~~The source-support invariant's population floor refuses 96.9% of the reviewer's own endorsed palettes~~ CLOSED 2026-08-04
+**Resolution: the floor is demoted to report-only; exact-pixel provenance stays a hard gate.**
+Reviewer ruling, 2026-08-04, given **mid-round** after answering 11 of the 20 items of
+`dropped-colors-1` — verbatim: *"i stopped reviewing, your color maths is fucked, everything i've
+seen belongs"*. All 11 answers were `belongs`. Recorded as
+`d-2026-08-04-source-support-population-floor-demoted-to-report-only`; the contract edit is the
+contract workstream's, in `src/contract/invariants.ts`, and that workstream's README is the
+authority on what the code now does.
+
+**This row was opened and closed within one day, and the sequence is the point.** The audit
+(finding B1) measured the defect; the **belongs study** then tested whether the invariant could be
+*rescued* rather than demoted — five candidate features, 24 pre-declared grid cells, cluster
+bootstrap over artworks — and found that **nothing separates endorsed from known-bad colours at any
+calibration**. Every cell's 95% CI contains 0.5; the two share features are *measured nulls*, not
+merely unfound effects; endorsed and known-bad have the **same minimum support**, so there is no
+threshold anywhere to calibrate. Recorded as
+`d-2026-08-04-source-support-does-not-discriminate-quality`, write-up in
+`src/contract/BELONGS_STUDY.md`.
+**So the demotion is not a concession to the reviewer's impatience — the measurement had already
+closed off every alternative to it**, and the round was built to ask the one question the study
+could not answer from fixtures: whether a human thinks the boundary colours belong. Eleven
+unanimous answers later, they do.
+
+**What stays hard:** a published colour must be an exact 8-bit triple present in the input. It
+fires on **1 of 1,397** endorsed role colours — cheap, not limiting, and it catches the one thing
+the invariant's docstring is right about.
+**What is now advisory:** the population floor, in both its exact and its neighbourhood form.
+`validateSourceSupport` still *computes* population — on the same-colour-bar neighbourhood, which
+is the better measure — and reports it alongside the permanently-deferred spatial-spread half
+(**A4**, unchanged). It never returns a `Violation`.
+
+**Three riders, none of which reopen this row.**
+- **Nothing replaces the floor.** The study's own fallback — a 5e-5 noise guard, documented as a
+  noise guard rather than a quality signal — was **not** adopted. No floor of any size is in force.
+- **The stopping rule was biased and says so.** The reviewer stopped *because* the answers were all
+  going one way, so the 11 are not a random 11 of 20. It is also the strongest shape the answer
+  could have taken: the 20 were sampled as an even stride across the whole margin, not from the
+  worst end, so a full round could have weakened this and could not have much strengthened it.
+- **The quote is wider than the reading taken from it.** *"Your color maths is fucked"* is a
+  verdict on the measure; this row applies it to the **floor**, because that is what the round
+  asked about. If the reviewer meant something wider — the same-colour bar itself, the OKLab
+  distances, the residual selection — that is a separate finding and nobody has looked for it.
+
+The round that funded this is retired unreleased with its partial answers standing
+(`d-2026-08-04-dropped-colors-1-retired-with-its-partial-answers-standing`).
+Original entry kept below for the record.
+
+### A17 (original). The source-support invariant's population floor refuses 96.9% of the reviewer's own endorsed palettes
 *Added 2026-08-04, from `reviews/toolbox-review/bias-audit.md` finding **B1** — measured by that
 audit, not by the invariant's own workstream.*
 - **What, measured.** Invariant 2 (`validateSourceSupport`) requires every published colour to be an
@@ -808,6 +934,40 @@ declared it rather than leaving it to be found.*
   **Revives when:** the parked set lands. It is already revived in the weaker sense that the selftest
   is red now.
 - **Blast radius.** The premise workstream's own regression guard, and nothing else today.
+
+### A19. Two endorsements are retired as quality evidence, and no consumer knows it
+*Added 2026-08-04, from the chat ruling that resolved `endorsement-recheck-1`
+(`d-2026-08-04-endorsement-recheck-1-resolved-by-chat-two-endorsements-retired`).*
+- **What.** The reviewer confirmed the 2026-08-04 metric ruling against both contested endorsements
+  — verbatim: *"ignore my review of endorsement-recheck, the rule is right in both cases — item 1:
+  foreground and accent *are too close* — item 2: accent on surface *is unreadable*"* — and both
+  palettes, `e7c9419abc1df0dd` and `22e959d5164750bd`, are **retired as quality evidence**. They
+  stay in `data/legacy/endorsements.json`, unedited, because that file is a **fixture**. Nothing in
+  the loading path knows they are retired.
+- **Why it is sharp rather than standing.** The consumer already exists. `src/adjudication/` loads
+  `endorsements.json` as the endorsement tier and reports landing on an endorsement as a **win**;
+  the known-worse gate keys on role signatures from the same era. So a candidate palette that
+  reproduces either of these two gets **credited today**, for reproducing something the reviewer has
+  since said is wrong — and no warning fires anywhere. This is the exact failure mode
+  `data/decisions/README.md` calls "a decision outliving its evidence", except running in the
+  opposite direction: the evidence moved and the consumer did not.
+- **The proposed mechanism, and why it is a sidecar.** A **retired-list sidecar** — a small file
+  naming retired entries with their reason and date — read by the adjudication **evidence loader**
+  at load time, so every consumer downstream inherits it without knowing it exists. *Do not edit the
+  legacy JSONs.* They are fixtures other workstreams treat as frozen, and a flag baked into one is a
+  silent change to a file people diff against. `src/adjudication/evidence.ts` already raises
+  `tier-overlap` conflicts rather than de-duplicating them away, which is the same instinct: make
+  the corpus's own contradictions visible instead of resolving them quietly.
+- **Owner.** **adjudication workstream** (wire the sidecar; the shape is proposed, not built).
+  **Revives when:** immediately — the consumer is built and the miscrediting is live. It is not
+  urgent in the sense that nothing is being adjudicated *this hour*; it is urgent in the sense that
+  the first real candidate run will silently bank two false wins.
+- **Blast radius.** Every auto-adjudication report and every known-worse gate decision that touches
+  those two artworks; and, more broadly, the credibility of "landing on an endorsement = win", which
+  is the mechanism `V3_PLAN.md` §2 calls the engine of early v3 velocity.
+- *Not a general policy.* Two palettes, retired by name. Nothing here says anything about the other
+  349 endorsements, and retiring an endorsement removes evidence **for** a palette without creating
+  evidence **against** it — neither becomes known-bad.
 
 ## B. Standing — parked with a clear trigger
 
@@ -1547,7 +1707,48 @@ elicitation, since a residual contaminated by a 9th unnamed object is indistingu
 contaminated by a masking failure.* **A sibling follow-up rides with it:** a second variant (K) for an
 agreement signal, ~5 minutes of GPU, still absent — a J list is one reading, not a corroborated one.
 
-### B33. The toolbox review's two reports are unprioritized, and the review itself is not on any plan
+### B33. The toolbox review's two reports are unprioritized, and the review itself is not on any plan — **ADJUDICATED 2026-08-04, row NARROWED not closed**
+*Added 2026-08-04. **Amended 2026-08-04 (late): the reviewer adjudicated the toolbox point by point
+in conversation.** The prioritizer this row said nobody had assigned turned out to be the reviewer,
+working from chat rather than from either report's ranking.*
+
+**What is now settled.** The full disposition is recorded as
+`d-2026-08-04-toolbox-adjudication-disposition` — builds, drops, deferrals, two items reclassified
+out of tooling entirely, and one ruling that overturned both reports at once. **The single most
+consequential outcome is not on either report's shortlist:** *no v2-3 code ever enters v3*
+(`d-2026-08-04-no-v2-3-code-enters-v3`), which voids `gap-scan.md` item (1)'s port recommendation
+and the round's own `TB-02`. Both had argued, with costs attached, that porting the 1,580-LOC v2-3
+eval harness was the cheap path; the reviewer was shown the price and paid it. **The dev viewer is
+built fresh on the round-kit.**
+**The sharp item this row split out — A17, the source-support floor — is CLOSED** the same day.
+**The round built to collect this adjudication was never answered and is deprecated**
+(`d-2026-08-04-toolbox-adjudication-1-deprecated`); the chat is canonical
+(`d-2026-08-04-chat-rulings-outrank-in-round-answers`).
+
+**Why the row does not close.** Three things the adjudication left in an unfinished state, all of
+them transcription rather than judgement:
+- **The item numbering is unreconciled** — the conversation's numbers 4–35 do not map onto
+  `adjudication-items.json`'s `TB-01`…`TB-42`, and no list on disk uses the conversation's
+  numbering. Carried as **B36**.
+- **Items 22–26 were deferred "with named triggers" and the triggers were not written down.** A
+  deferral without its trigger is precisely the state this ledger exists to prevent. Also **B36**.
+- **`gap-scan.md` §4(H)'s budget question is untouched** — *"somebody must state the budget"*, still
+  unattributed, and nothing in the adjudication named a runtime or memory budget.
+
+**And one thing this row predicted correctly, which is worth keeping visible now that it has
+happened.** The row argued that several of `bias-audit.md`'s cheap mitigations *stop being credible
+the moment Phase 1 proposals exist* — that timing is most of the cost. Two of them landed in time:
+the Phase 1 reading list and the tool catalog are written down **before** any proposal exists
+(`d-2026-08-04-phase-1-authors-receive-a-tool-catalog`,
+`research/v3/PHASE_1_AUTHOR_BRIEF.md`), which is worth exactly as much as the date on them and no
+more.
+
+*Owner: **orchestrator** (transcribe the numbering and the triggers) + **reviewer** (the budget in
+§4(H), which is the one thing no agent may state). **Revives when:** the next agent needs to know
+what item 23 was.* **Blast radius:** unchanged — the reports are read-only; what is at stake is
+which instruments Phase 1 is judged through, and that is now mostly decided.
+
+### B33 (original text of 2026-08-04, before the adjudication)
 *Added 2026-08-04.* `reviews/toolbox-review/` holds two reports, both dated 2026-08-04, neither
 commissioned by any row in this ledger: **`bias-audit.md`** (10 findings, B1–B10, answering the
 reviewer's question *"are the tools we are providing introducing bias in the following phases?"*) and
@@ -1574,7 +1775,36 @@ cost.**
 worth much less afterwards, and three of them are worth nothing.* **Blast radius:** the reports
 themselves are read-only; what is at stake is the instruments Phase 1 will be judged through.
 
-### B34. ~~An unsigned run of commits, because 1Password stayed locked~~ CLOSED 2026-08-04 by a re-sign rebase
+### B34. An unsigned run of commits, because 1Password stayed locked — **REOPENED 2026-08-04, same day it closed**
+**REOPENED by the fourth ledger pass.** The vault locked again, and this pass's own commit is
+unsigned: `ssh-add -l` reports *"The agent has no identities"*, `git commit -S` fails with
+*"1Password: agent returned an error"*, and the commit was made without a signature rather than
+parking a finished ledger pass in a working tree that three other agents are writing to.
+
+**One commit so far** — this pass's, *"ledger pass 4: record the reviewer's toolbox adjudication…"*.
+The fix is the one this row already specified and already executed once:
+
+```sh
+git rebase --autostash --exec 'git commit --amend --no-edit -S' <last-signed>
+```
+
+**What the closure got wrong, and it is worth stating rather than quietly re-doing.** The row was
+closed as if the defect were the six unsigned commits. It was not — **the defect is that an
+unattended agent cannot sign, and nothing detects that until a commit is attempted.** Re-signing
+cleaned the history and changed nothing about the condition, so the row closed while its cause was
+still live, and the cause recurred within the day. **Do not close it again on a re-sign alone.**
+Closing it properly needs one of: the vault staying unlocked for the duration of agent work
+(reviewer's call), or a pre-flight check that fails loudly *before* an agent does an hour of work it
+cannot sign.
+
+*Owner: **reviewer** (the vault) + orchestrator (the re-sign, and the pre-flight check if wanted).
+**Revives when:** it is live now. **Blast radius:** signature continuity on the branch, and the
+reviewer's stated preference — *"yes fully signed history please"*.*
+
+**Closure text of 2026-08-04 kept below, including its table, because eight commits changed hash
+under it and anyone reading old hashes needs the mapping.**
+
+### B34 (closure text of 2026-08-04, superseded by the reopen above)
 *Added 2026-08-04. **Closed 2026-08-04**, the same day, by the mechanical fix this row specified.*
 Six consecutive commits carried no signature because the 1Password SSH agent was locked and
 unreachable throughout — `ssh-add -l` reported *"The agent has no identities"*. With the vault
@@ -1648,6 +1878,60 @@ ruling to the code will find what looks like a contradiction with no note attach
 pair ruling against invariant 3's matrix and cannot tell whether the overlap is intended — which is
 the first thing an adversarial reader will do.* **Blast radius:** three violation codes and the
 pathology census's countability across them.
+
+### B36. The toolbox adjudication is recorded in a numbering that matches no file, and five of its deferrals have no trigger
+*Added 2026-08-04, by the ledger pass that recorded the adjudication and could not finish
+transcribing it.*
+- **What.** The reviewer's disposition arrived in a numbering of its own — items **4 through 35** —
+  and `d-2026-08-04-toolbox-adjudication-disposition` records it exactly as relayed, **unmapped**.
+  The pushed round's canonical list is `reviews/toolbox-review/adjudication-items.json`, ids
+  `TB-01`…`TB-42`, and the two do not line up: item 15's subject is the constant-provenance work,
+  which is `TB-20`; item 35's is answer timestamps, which is `TB-42`. Different offsets, so it is
+  not a shifted index. **No list on disk uses the conversation's numbering.**
+- **Why it was not guessed.** Two anchors are established by the ruling text itself — the dev-viewer
+  ruling names what it overturns (`gap-scan.md` item (1) and `TB-02`), and the timestamps ruling
+  answers `TB-42`'s subject. Everything else would have been inference, and a fabricated mapping in
+  a decision record is worse than an admitted gap: it reads as provenance and is not, which is the
+  `decision-dangling` shape **B29** calls sharper than a plain omission.
+- **The second half, and it is the more expensive one.** Items **22–26 are deferred "with named
+  triggers" and the triggers were not relayed.** A parked item whose revival condition nobody wrote
+  down is not parked, it is forgotten on a schedule — the exact state this ledger's *"Revives when"*
+  field exists to make impossible. Five items are currently in it.
+- **Cheapest fix.** One pass over the conversation with `adjudication-items.json` open: write the
+  `TB-` id beside each of items 4–35, and write the five triggers. It needs the conversation, so
+  only the orchestrator who held it can do it, and it gets harder every day.
+- *Owner: **orchestrator**. **Revives when:** anyone needs to know what a numbered item was — which
+  is the first thing that happens when someone picks up a "build" item and asks what it is.*
+- **Blast radius.** The disposition record's usability, and five deferred instruments that nothing
+  will ever bring back. Not the builds already in flight, which were briefed directly.
+
+### B37. `dropped-colors.js` is the one review page outside the round kit, and it is not grandfathered
+*Added 2026-08-04. Declared by the kit's own documentation rather than found by an audit —
+`review-ui/ROUND_KIT.md` says it plainly, which is why this row is a pointer and not an
+investigation.*
+- **What.** `review-ui/dropped-colors.js` imports `./mock.js` and `./keys.js` directly and wires its
+  own key handling; it does not touch `round-kit.js`. It is on the kit's grandfather list but
+  **explicitly not grandfathered**: it was written *after* the standing rule landed, on the same
+  day, and the kit's guard caught it immediately. **It is owed a migration.**
+- **Why it matters more than tidiness.** The kit exists because three review pages shipped broken in
+  three days, all three the same failure wearing different clothes — a page that *renders* is
+  indistinguishable from a page that *works* until the reviewer is sitting in front of it, and
+  `verify-live` checks that a module is served, not that it runs. Every page outside the kit gets a
+  fresh chance to get navigation, autosave, undo, resume or release wrong. **And the two standing
+  feedback channels — the per-item note and the copyable item id — live in the kit**
+  (`d-2026-08-04-round-kit-note-and-item-id-are-the-standing-feedback-channels`), so a page outside
+  it silently has no way for the reviewer to say anything the round did not ask.
+- **Live consequence, already observed.** `dropped-colors-1` is the round the reviewer stopped
+  partway through with a verdict the round had no field for — *"your color maths is fucked"* — and
+  it had to arrive in chat. **That is precisely the observation the note channel was built to
+  catch**, on the one page that does not have it. It cost nothing this time because the reviewer
+  said it anyway; the failure mode is the time they do not.
+- *Owner: **review-server workstream**. **Revives when:** the page is served again — and note that
+  the round it was built for is now retired
+  (`d-2026-08-04-dropped-colors-1-retired-with-its-partial-answers-standing`), so the honest options
+  are migrate-on-next-use or delete.*
+- **Blast radius.** One page, and only while it is served. Listed because "known and parked" is a
+  respectable state and "known to the kit's README but to no ledger" is not.
 
 ---
 
@@ -2030,6 +2314,38 @@ typo on any page and nothing else; the executing test covers one page of many. S
 served to the reviewer — which is every round with a new answer shape. **Blast radius:** reviewer
 bandwidth, the campaign's binding constraint. A key-dead page costs a whole round's scheduling slot
 and it fails in the one way a green `verify-live` teaches everyone to disbelieve.*
+
+### L-j. The round kit's copyable item id contradicts three blinding tests, and the suite is red
+*Added 2026-08-04 by the fourth ledger pass, which found it by running the suite rather than by
+being told. **Found, not caused** — the pass changed no code.*
+- **What, measured.** `node --experimental-strip-types --test research/v3/tests/*.test.ts` fails
+  **6** tests on 2026-08-04. Five are one defect: `round-kit.ts` gives every item a short,
+  human-quotable public name — `<batch>/<itemId>#<sha8>` — and three older round tests assert the
+  opposite, that the served payload **leaks no item id** (`sam-mask-quality`,
+  `residual-purity`, `residual-purity-2`), while two more assert the payload carries the served
+  items *"and nothing else"*. The sixth is unrelated and belongs to the in-flight robustness
+  workstream (`data/robustness/pair-set-1.json`, an untracked artifact, 165 pairs against an
+  expected 200).
+- **Why it is not simply a stale test.** The kit's own source calls the exposure *"a deliberate
+  relaxation of the rules above"*, so the collision was seen and accepted by whoever wrote it — but
+  the accepted trade is not obviously right for **every** round. For `sam-mask-quality` the item id
+  is `smq-<hex>`, which **joins to the score and the band**: it is answer-key material, and the test
+  that now fails was written to keep exactly that join out of the browser. **A blinding rule and a
+  usability feature disagree, and right now the usability feature is winning silently, by breaking a
+  test rather than by anyone deciding.**
+- **The thing not to do.** Do not delete the three assertions to make the suite green. Either the
+  exposed name is safe for these rounds — in which case say why, per round type, and change the
+  tests to assert the *new* rule — or it is not, and the kit needs a per-round switch. The standing
+  decision that made the id a universal channel is
+  `d-2026-08-04-round-kit-note-and-item-id-are-the-standing-feedback-channels`, and it did not
+  consider blinding.
+- **A red suite that everyone knows is red stops being a suite** — the same argument that made A18
+  sharp, and the reason this is filed the day it was found rather than left for whoever next runs
+  the tests and assumes it was always like this.
+- *Owner: **review-server workstream** (the five kit failures) + **robustness workstream** (the pair
+  set). **Revives when:** immediately — it is red now.*
+- **Blast radius.** The blinding guarantee on any round whose item id joins to grading data, and the
+  suite's usefulness as a gate for every workstream that runs it before committing.
 
 ---
 

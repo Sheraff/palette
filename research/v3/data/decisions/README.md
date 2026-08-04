@@ -4,8 +4,31 @@
 were made between 2026-08-02 and 2026-08-03, this file was not. Every record says so via
 `recordedAt`.
 
-**Counts in this document are as of 2026-08-04 (late) and are re-derived, not remembered.** The file
-holds **63 decisions**, of which **22** carry a non-empty `fundedBy`. **The most recent 10 were
+**Counts in this document are as of 2026-08-04 (fourth batched ledger pass) and are re-derived, not
+remembered.** The file holds **83 decisions**, of which **36** carry a non-empty `fundedBy`. Across
+all 83 the `kind` distribution is `instrument-design` 39 · `process` 21 · `instrument-selection` 8 ·
+`corpus-policy` 6 · `question-set-ruling` 5 · one each of `metric-freeze`, `instrument-freeze`,
+`instrument` and `fixture-policy`; `draftedAs` is on 30 records; 1,035 ids are cited, 822 of them
+distinct. **The vocabulary still has not changed in 68 records** — the fourth pass added 17 and
+invented none.
+
+**The fourth batched pass is the one to read for how a CONVERSATION becomes a ledger**, because
+almost all of it came from chat rather than from rounds. Seventeen records: the reviewer's toolbox
+adjudication (a disposition over ~30 proposals, plus the red-alert ruling that no v2-3 code ever
+enters v3, which overturned two written recommendations that had argued the opposite with costs
+attached), the source-support floor demoted to report-only, two rounds retired, and the accent
+programme's two-sided evidence problem. **Seven reviewer statements were ported to the warehouse
+first** (`port-chat-rulings-2026-08-04.ts`) so that nine of the seventeen could cite something.
+**The eight that stay empty are the honest core of the pass**: a disposition arrives as "build",
+"drop", "defer" — dispositions, not sentences — and nothing can fund those.
+**One caution the pass earned, and it is about this file's own reliability.** The disposition record
+carries the reviewer's item numbers 4–35 **unmapped** to the round's own `TB-01`…`TB-42` ids,
+because the two do not line up and no list on disk uses the conversation's numbering. It is recorded
+as a gap rather than guessed (ledger row **B36**). A fabricated mapping would have read as
+provenance and been none — which is the failure mode this whole directory exists to prevent, and it
+was one inference away.
+
+**Before that pass the file held 63 decisions, of which 22 were funded.** **The most recent 10 were
 appended in the third batched ledger pass**, and their shape is worth reading before the history
 below, because it is the first pass where the *ported-note* mechanism did real work rather than
 demonstrating itself: three reviewer statements — the residual-purity post-release feedback, its
@@ -215,6 +238,15 @@ have been superseded, and cannot be missing. **So a fresh append that DOES add a
 signal — investigate it before committing**, because it means the record is citing something that had
 already moved when it was written.
 
+**It is STILL those same two at 83 decisions (checked 2026-08-04, fourth batched pass).** Twenty more
+records since that reading, seventeen of them in one pass, and the file now cites 1,035 ids of which
+822 are distinct — **still not one new flag**, which is again the prediction rather than a
+reassurance. Worth noting *why* this pass could not have added one even in principle: nine of its
+funded records cite notes that were **created by the same pass, minutes earlier**, and evidence
+recorded today cannot be stale, superseded or missing. **That is a weakness of the check, not a
+strength of the records** — `recheck` is silent on freshly-ported evidence by construction, so a
+same-day port buys citability and buys no verification at all.
+
 Because `missing` is a real signal, `fundedBy` must never be used for prose or for file paths —
 those would show up as missing evidence forever and train everyone to ignore the output. File
 references go in `fundedByArtifacts`, which no tool checks and which is therefore honest about
@@ -242,7 +274,17 @@ numbers. Quote the right-hand column.
 
 ## The honest part
 
-**41 of the 63 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
+**47 of the 83 decisions have an empty `fundedBy` (2026-08-04, fourth batched pass).** The ratio
+improved again — 56.6% empty against 65.1% — and it improved the same way it did last time, by
+porting seven reviewer statements into the warehouse *before* writing the records that cite them.
+**But read the split inside the pass, because it is the more honest number:** of its seventeen
+records, **nine are funded and eight are not**, and the eight are not an oversight. A toolbox
+adjudication arrives as a list of dispositions — build, drop, defer — and a disposition is not a
+sentence. There is nothing to port. The same is true of the rule that no v2-3 code enters v3, which
+is the single most consequential decision in the pass and carries an **empty** `fundedBy`: the
+reviewer's reason was never stated in words anyone transcribed, so no machine will ever be able to
+flag it, however the judgement behind it later moves.
+**The historical reading, before that pass: 41 of the 63 decisions had an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
 that evening, the exceptions being the two SAM threshold records; then 2 of 5, all 7 of the second
 batched ledger pass, 5 of the 5 SAM records appended 2026-08-04, and 6 of the 10 in the third batched
 pass; the 2026-08-04 funding amendment is funded). This is not an oversight and must not be quietly
