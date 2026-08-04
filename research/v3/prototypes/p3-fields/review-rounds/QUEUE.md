@@ -2,8 +2,11 @@
 
 1. **round-2-calibration** — after W8 (0.3.0) + full re-measure. Re-grade the round-1 failure
    classes on the new candidate: the two ink covers (00, 02), the accent cover (07), item-19
-   (swap check), plus fresh covers for breadth (4–10 items total). Question: did the evidence-
-   driven fixes move the grades without breaking what was strong.
+   (swap check), plus fresh covers for breadth (4–10 items total; fresh items drawn from BEYOND
+   demo-20 — coverage-set — per the overfitting flag that fired for P5, EVIDENCE item 9).
+   Question: did the evidence-driven fixes move the grades without breaking what was strong.
+   Watch: any "that colour is just a shadow/artifact" note = the salience principle firing on us
+   (EVIDENCE item 6); the 00/02 grades arbitrate identity-vs-legibility (EVIDENCE item 8).
 2. **flat-vs-gradient pairwise — APPROVED, stage after W8's re-measure** (main's recommendation,
    adopted: the pair selection needs 0.3.0's Spearman distribution data anyway, and the round
    then anchors the live ρ*). ~8 pairs, same artwork flat-vs-gradient as blinded sides,
