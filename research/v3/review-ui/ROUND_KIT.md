@@ -95,6 +95,8 @@ error if anything fails.
 | autosave | debounce + blur flush; never writes an empty answer | `""` and "I see nothing" are different answers |
 | undo | `u` / Backspace — steps back, deletes nothing; re-answering supersedes | the log is append-only |
 | resume | opens at the first unanswered item | ten-minute chunks (REVIEW_UI §1) |
+| **per-item note** | `f` opens an optional free-text box on the current item; Enter saves, Escape closes without saving; never required, never blocks | the reviewer had no way to report anything a round did not think to ask |
+| **copyable item id** | every item shows `<batch>/<itemId>#<sha8>`, click-to-select | *"i often want to give feedback about a specific thing and we currently have no way of doing that"* |
 
 ### Stimulus renderers
 
@@ -104,6 +106,51 @@ error if anything fails.
 
 `enumKeys` (one keystroke, auto-advance) · `multiToggle` (toggle, commit on Enter/Space) ·
 `freeText` (textarea, Enter saves and advances)
+
+---
+
+## The per-item note, and the free-text edge
+
+**Every round of every kind gets an optional note box.** The reviewer, 2026-08-04:
+
+> *"the review UI should either — have an optional free text box on every item in a batch — have IDs
+> that I can copy paste to you to give feedback about a specific item in a batch. i often want to give
+> feedback about a specific thing and we currently have no way of doing that, which prevents
+> accidental discovery of information."*
+
+Both, as it turns out — the id names the item, the note carries what there is to say about it.
+
+- **Key:** `f` (feedback). It is added to `RESERVED_LETTER_KEYS` in `keys.js`, so the collision test
+  keeps its word: it does not shadow `u` undo, `r` release, `j`/`k` navigation, the digit rows, or
+  any letter another page already binds. It is not one of the AZERTY digit-row characters.
+- **Storage:** a `note` record tied to `(batch, itemId, artwork)` with the reviewer's text **verbatim**
+  and `tags: []`. Raw notes carry no tags — a tag on a raw note is the page pre-judging what the
+  reviewer meant. Tags are DERIVED records filed later; the prose stays authoritative (REVIEW_UI §4).
+- **It is not an answer.** It never counts toward `reviewed`, never blocks release, never appears in
+  the `judgedCount`, and is accepted **after release** — a second thought about an *answer* must be an
+  amendment because decisions cite answers, but a note cites nothing, so refusing it would only mean
+  losing the observation.
+- Empty notes are never recorded. A blank row makes "had nothing to say" indistinguishable from
+  "said nothing".
+
+### The edge: a free-text ANSWER round has two textareas
+
+On `/freetext` the answer is itself a textarea, and `Escape` means something in both boxes. They are
+kept **distinct, not merged**, and the collision is resolved **by construction**:
+
+1. `f` only opens the note when **no text field owns the keyboard**. On a free-text round that means
+   `esc` first — the same shape as `esc then r` and `esc then j/k`, and the footer prints `esc then f`.
+2. While the note box is open it holds the keyboard: `Enter` saves it, `Escape` closes it, and every
+   other key belongs to the note textarea.
+3. With the note closed, `Escape` goes back to meaning "leave the answer field".
+
+Only one box can hold focus at a time, so the scope of `Escape` is never ambiguous — no rule to
+remember, and nothing to get wrong.
+
+**Why not merge them into one box?** Because they are different records about different things. The
+answer is the round's datum; the note is commentary the round never asked for — *"this rendition looks
+upscaled"*, *"this question does not fit this cover"*. Merging would file the second kind of statement
+in the first kind's column, which is exactly what `none_discernible` cost this project once already.
 
 ---
 
@@ -137,5 +184,17 @@ error if anything fails.
 | `amend.js` | pending |
 | `oracle-review.js` | pending — post-release adjudication, not an answering round |
 
+**Pre-kit pages get the per-item note box and the copyable item id when they migrate.** They are kit
+features, not page features: nothing is back-ported by hand, and a migrated page gets both for free
+along with everything else in the table above. Until a page migrates, feedback about one of its items
+has nowhere to go — which is the strongest argument for working down this list.
+
 A page comes off the grandfather list only when it is migrated, and the test fails if a name on the
 list no longer wires its own keys — a stale exemption is a hole the guard cannot see through.
+
+### `dropped-colors.js` — arrived after the kit, 2026-08-04
+
+It is on the grandfather list but it is **not grandfathered**: it was written outside the kit *after*
+the standing rule landed, and the guard caught it the same day. It is listed only so the suite stays
+green for every other agent while its owner migrates it. It is owed a migration, and nothing else may
+be added on that basis.

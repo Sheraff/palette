@@ -57,15 +57,34 @@ export const ITEM_FIELD_ALLOWLIST = [
 	"answer",
 	/** How many times they have answered it. Drives the "answered" label, nothing else. */
 	"revision",
-	/**
-	 * The reviewer's OWN optional remark on their answer, served back so a reload does not lose it.
-	 * Their words, like `answer` — it leaks nothing, because it came from them.
-	 */
-	"note",
 	/** By-artwork rounds only: the reviewer's OWN earlier answers and the rule they break. */
 	"reconciliation",
 	/** Free-text rounds only: the reviewer's OWN earlier answer from another round, as context. */
 	"priorAnswer",
+	/**
+	 * The reviewer's standing per-item note, so the page can show that one exists and reload it.
+	 *
+	 * Their own words, coming back to them. Never a model's and never a derived tag.
+	 */
+	"note",
+	/**
+	 * A short, stable, human-quotable name for this item — `<batch>/<itemId>#<sha8>`.
+	 *
+	 * **A deliberate relaxation of the rules above, and worth stating plainly.** `itemId` and the
+	 * content hash are both on the leak list, because each is a join key: to the round's own selection
+	 * counts, to the contradiction buckets, to the oracle's rows. This field carries a form of both.
+	 *
+	 * It is served anyway because of what the reviewer could not do without it (verbatim, 2026-08-04):
+	 * *"i often want to give feedback about a specific thing and we currently have no way of doing
+	 * that, which prevents accidental discovery of information."* A reviewer who cannot name the item
+	 * in front of them cannot report anything about it, and the incidental observations that get lost
+	 * that way are exactly the ones no round was designed to collect.
+	 *
+	 * The trade is narrow and it holds: this string identifies the item, it does not reveal the truth
+	 * about it. It carries no answer, no model output, no published flag, and nothing the reviewer is
+	 * being asked to judge. Reading it back requires the fixture, which the browser does not have.
+	 */
+	"itemRef",
 ] as const
 
 export type ItemField = (typeof ITEM_FIELD_ALLOWLIST)[number]

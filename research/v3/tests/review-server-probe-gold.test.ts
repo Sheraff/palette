@@ -233,7 +233,10 @@ describe("probe-gold round in the review server", () => {
 
 	it("is unanchored: no earlier answer, no model answer, no flag", async () => {
 		const payload = await call(harness.base, "GET", `/api/oracle-validation/${BATCH}`)
-		const text = JSON.stringify(payload.body)
+		// `itemRef` is the ONE field allowed to carry a form of a join key, added 2026-08-04 so the
+		// reviewer can name the item in front of them. It is stripped before the leak scan, so the scan
+		// still proves nothing ELSE carries an id or a hash — see ITEM_FIELD_ALLOWLIST for the reasoning.
+		const text = JSON.stringify(payload.body, (key, value) => (key === "itemRef" ? undefined : value))
 		for (const forbidden of [
 			// The reviewer's own direct six-way answers, and the round they live in.
 			"ground_type",
@@ -252,7 +255,7 @@ describe("probe-gold round in the review server", () => {
 			assert.ok(!text.includes(forbidden), `the served payload leaks ${forbidden}`)
 		}
 		for (const item of payload.body.items) {
-			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "media", "questionKey", "revision", "token", "width"])
+			assert.deepEqual(Object.keys(item).sort(), ["answer", "height", "itemRef", "media", "questionKey", "revision", "token", "width"])
 			assert.equal(item.answer, null)
 		}
 	})

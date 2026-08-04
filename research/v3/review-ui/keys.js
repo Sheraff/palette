@@ -44,6 +44,8 @@ export const RESERVED_LETTER_KEYS = [
 	"y", "u", "r",
 	// oracle-review.js
 	"d", "m",
+	// round-kit.js — the per-item note box, on every round of every kind
+	"f",
 	// amend.js
 	// (s, x, e, j, k above)
 ]

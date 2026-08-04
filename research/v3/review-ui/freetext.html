@@ -42,6 +42,15 @@
 					placeholder="what is it, and why did no tag fit?"
 				></textarea>
 				<p id="saved" class="freetext-saved"></p>
+				<p id="notemark" class="round-notemark"></p>
+				<p id="itemref" class="round-itemref" title="click to select"></p>
+			</div>
+
+			<!-- Optional per-item note, on every round of every kind. Distinct from the answer box: the
+			     answer is this round's datum, the note is commentary the round never asked for. -->
+			<div id="notebox" class="round-notebox" hidden>
+				<label class="round-note-label" for="noteinput">Note on this item — enter saves, esc closes</label>
+				<textarea id="noteinput" class="round-note-input" rows="4"></textarea>
 			</div>
 
 			<p id="done" class="oracle-done" hidden></p>

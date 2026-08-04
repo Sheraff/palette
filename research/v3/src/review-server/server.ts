@@ -68,6 +68,7 @@ import {
 
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
+import { DROPPED_COLORS_LABEL_SCHEMA_VERSION } from "./dropped-colors.ts"
 import { ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION } from "./endorsement-recheck.ts"
 import { TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION } from "./toolbox-adjudication.ts"
 import { FREETEXT_LABEL_SCHEMA_VERSION, FREETEXT_MIN_LENGTH, GROUND_FREETEXT_BATCH_ID, GROUND_FREETEXT_FIXTURE_PATH } from "./freetext.ts"
@@ -304,14 +305,18 @@ export function batchReviewPaths(
 				// A toolbox-adjudication round has no stimulus to look at at all: the item IS the words,
 				// and `/oracle` would render its carrier panel — a flat grey rectangle — where the
 				// artwork goes, above a question about a tool. Same reason as the two lines below it.
+				// A dropped-colors round judges one ROLE COLOUR of a palette on the mock player, and
+				// needs the whole palette drawn to do it — same reason as the recheck line below it.
 				page:
 					entry.labelSchemaVersion === TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION
 						? `/toolbox-adjudication${query}`
-						: entry.labelSchemaVersion === ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION
-							? `/endorsement-recheck${query}`
-							: entry.labelSchemaVersion === FREETEXT_LABEL_SCHEMA_VERSION
-								? `/freetext${query}`
-								: `/oracle${query}`,
+						: entry.labelSchemaVersion === DROPPED_COLORS_LABEL_SCHEMA_VERSION
+							? `/dropped-colors${query}`
+							: entry.labelSchemaVersion === ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION
+								? `/endorsement-recheck${query}`
+								: entry.labelSchemaVersion === FREETEXT_LABEL_SCHEMA_VERSION
+									? `/freetext${query}`
+									: `/oracle${query}`,
 				payload: `/api/oracle-validation/${id}`,
 				afterRelease:
 					entry.labelSchemaVersion === ORACLE_LABEL_SCHEMA_VERSION ? `/oracle-review${query}` : null,
@@ -379,6 +384,14 @@ export class ReviewService {
 	readonly #verdicts = new Map<string, VerdictState>()
 	readonly #vetoes = new Map<string, VetoState>()
 	readonly #answers = new Map<string, AnswerState>()
+	/**
+	 * The reviewer's standing per-item note, by `itemKey(batchId, itemId)`.
+	 *
+	 * Separate from `#answers` because a note is not an answer: it never counts toward `reviewed`, it
+	 * never blocks release, and it exists on rounds whose answer is a single token. Latest wins,
+	 * append-only underneath.
+	 */
+	readonly #itemNotes = new Map<string, { record: NoteRecord; recordId: string }>()
 	readonly #endorsements = new Map<string, EndorsementState[]>()
 	readonly #releases = new Map<string, BatchCompleteRecord>()
 	readonly #releaseIds = new Map<string, string>()
@@ -470,6 +483,11 @@ export class ReviewService {
 				} else {
 					this.#answers.set(key, { record, recordId: entry.original.id, revision })
 				}
+			} else if (record.type === "note" && record.batch !== null && record.itemId !== null && !entry.retracted) {
+				// Per-item reviewer notes, so a note survives a restart and comes back on screen. Notes
+				// from other surfaces (release notes, adjudication annotations) carry no `itemId` against
+				// a round item and never land here.
+				this.#itemNotes.set(itemKey(record.batch.id, record.itemId), { record, recordId: entry.original.id })
 			} else if (record.type === "batch-complete") {
 				this.#releases.set(record.batchId, record)
 				this.#releaseIds.set(record.batchId, entry.original.id)
@@ -1502,6 +1520,13 @@ export class ReviewService {
 					// OMITTED, not nulled, on every round that has none — same rule as `reconciliation`
 					// above, and enforced by the same exact key-set assertion in the tests.
 					...(item.priorAnswer === undefined ? {} : { priorAnswer: item.priorAnswer }),
+					// A short, stable name the reviewer can copy into a message. See ITEM_FIELD_ALLOWLIST
+					// for why this one field is allowed to carry a form of two join keys.
+					itemRef: `${batchId}/${item.itemId}#${item.sha256.slice(0, 8)}`,
+					// Their own standing note, so the page can show that one exists and reload it.
+					...(this.#itemNotes.get(itemKey(batchId, item.itemId)) === undefined
+						? {}
+						: { note: this.#itemNotes.get(itemKey(batchId, item.itemId))!.record.text }),
 				}
 			}),
 		}
@@ -1634,6 +1659,53 @@ export class ReviewService {
 		const state = { record, recordId: record.id, revision: (previous?.revision ?? 0) + 1 }
 		this.#answers.set(key, state)
 		return { recordId: record.id, revision: state.revision }
+	}
+
+	/**
+	 * Record one per-item reviewer note.
+	 *
+	 * **Why every round has this.** The reviewer, 2026-08-04: *"i often want to give feedback about a
+	 * specific thing and we currently have no way of doing that, which prevents accidental discovery
+	 * of information."* Every round until now could only record the answer it was designed to ask
+	 * for, so anything the reviewer noticed that the round did not anticipate had nowhere to go — and
+	 * the observations that get lost that way are precisely the ones no round was designed to collect.
+	 * REVIEW_UI.md §4 makes free text the primary channel; this extends it from the one round that
+	 * asked an open question to every round of every kind.
+	 *
+	 * A `note`, not an `oracle-label`, and that is the right way round here: this is commentary about
+	 * an item, not an answer to its question. It never counts toward `reviewed`, never blocks release,
+	 * and cannot be confused with the round's own data by anything reading labels. Tags over it are
+	 * DERIVED records filed later by the tagging agent; the prose stays authoritative.
+	 *
+	 * Allowed after release, unlike an answer. A second thought about an ANSWER has to be an amendment
+	 * because downstream decisions cite answers; a note cites nothing and funds nothing, so refusing
+	 * one after release would only mean the reviewer's observation is lost.
+	 */
+	async putItemNote(batchId: string, token: string, text: string): Promise<{ recordId: string; itemRef: string }> {
+		const stored = this.#oracleBatch(batchId)
+		const itemId = stored.answerTokens[token]
+		if (itemId === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
+		const item = stored.fixture.items.find((entry) => entry.itemId === itemId)
+		if (item === undefined) throw new NotFound(`Unknown item ${itemId} in batch ${batchId}`)
+		const trimmed = typeof text === "string" ? text.trim() : ""
+		// An empty note is not a note. Recording one would put a blank row against an item and make
+		// "the reviewer had nothing to say" indistinguishable from "the reviewer said nothing".
+		if (trimmed.length === 0) throw new BadRequest("an empty note is not recorded")
+		if (trimmed.length > MAX_COMMENT_LENGTH) throw new BadRequest(`a note is limited to ${MAX_COMMENT_LENGTH} characters`)
+		const record = append<NoteRecord>(this.warehousePath, {
+			type: "note",
+			author: this.author,
+			batch: { id: batchId, purpose: stored.purpose, itemCount: stored.fixture.items.length, fundedBy: [...stored.fundedBy] },
+			itemId,
+			artwork: stored.artworks[itemId],
+			text: trimmed,
+			// Empty by design. A tag on a RAW note would be the page pre-judging what the reviewer meant,
+			// which defeats the point of collecting prose; tags arrive as derived records.
+			tags: [],
+			derived: null,
+		} satisfies RecordInput<NoteRecord>)
+		this.#itemNotes.set(itemKey(batchId, itemId), { record, recordId: record.id })
+		return { recordId: record.id, itemRef: `${batchId}/${itemId}#${item.sha256.slice(0, 8)}` }
 	}
 
 	/* --- oracle validation: the post-release adjudication view --------------------------------- */
@@ -2302,6 +2374,21 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 			const oracleMatch = /^\/api\/oracle-validation\/([^/]+)$/u.exec(path)
 			if (method === "GET" && oracleMatch) {
 				respondJson(response, 200, service.oracleValidationPayload(decodeURIComponent(oracleMatch[1])))
+				return
+			}
+
+			const oracleNoteMatch = /^\/api\/oracle-validation\/([^/]+)\/items\/([^/]+)\/note$/u.exec(path)
+			if (oracleNoteMatch && (method === "PUT" || method === "POST")) {
+				const body = (await requestBody(request)) as { note?: unknown; text?: unknown }
+				respondJson(
+					response,
+					200,
+					await service.putItemNote(
+						decodeURIComponent(oracleNoteMatch[1]),
+						decodeURIComponent(oracleNoteMatch[2]),
+						typeof body.note === "string" ? body.note : typeof body.text === "string" ? body.text : "",
+					),
+				)
 				return
 			}
 

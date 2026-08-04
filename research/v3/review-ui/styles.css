@@ -802,6 +802,55 @@ summary {
 	line-height: 1.45;
 }
 
+/* The reviewer's handle on one item, so they can talk about it afterwards — their words: "IDs that I
+ * can copy paste to you to give feedback about a specific item".
+ *
+ * `user-select: all` makes a single click take the whole line, which is the entire point of it being
+ * on screen. The case is pinned to `none` because these are hashes: a hash displayed in capitals and
+ * copied in lower case is a hash that starts an argument. Monospace it already inherits from body. */
+.oracle-item-id {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	font-size: 11px;
+	user-select: all;
+	overflow-wrap: anywhere;
+}
+
+/* The per-item failure explanation — the entire point of the endorsement-recheck round, and the one
+ * thing the reviewer could not find on it: "i don't know what the failure is on each artwork, so i
+ * cannot answer."
+ *
+ * It was drawn with `.oracle-preamble`, and that was the mistake. In every OTHER round that class
+ * holds a STANDING preamble — the same referent definition on every item of the pass, there to be
+ * read once and then skimmed past. The reviewer has correctly learned to ignore it. Here the text
+ * changes with every palette and IS the question, so it gets its own class, a rule down its side and
+ * a label that says what it is. Same served words either way; what changes is that they no longer
+ * look like chrome. */
+.recheck-failure-label {
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.recheck-failure {
+	text-transform: none;
+	letter-spacing: 0.02em;
+	font-size: 13px;
+	line-height: 1.5;
+	max-width: 92ch;
+	border-left: 3px solid var(--ink);
+	padding: 2px 0 2px 10px;
+	/* Bounded like the preamble it replaces, so no amount of explanation can push the palette off a
+	 * 100vh grid — but taller, because this one has to be read rather than acknowledged. */
+	max-height: 30vh;
+	overflow-y: auto;
+}
+
+.recheck-failure-label:empty,
+.recheck-failure:empty {
+	display: none;
+}
+
 .oracle-keys {
 	text-transform: none;
 	letter-spacing: 0.04em;
@@ -1297,4 +1346,53 @@ summary {
 	flex-direction: column;
 	gap: 1.5rem;
 	align-items: center;
+}
+
+/* Per-item note box and the copyable item id — kit standard on every round. */
+.round-notebox {
+	border: 1px solid #fff;
+	padding: 0.75rem 1rem;
+	margin-top: 1rem;
+	max-width: 34rem;
+}
+
+.round-note-label {
+	display: block;
+	font-size: 0.85rem;
+	opacity: 0.75;
+	margin-bottom: 0.4rem;
+}
+
+.round-note-input {
+	width: 100%;
+	background: #000;
+	color: #fff;
+	border: 1px solid #fff;
+	padding: 0.5rem;
+	font: inherit;
+	line-height: 1.5;
+	resize: vertical;
+}
+
+.round-note-input:focus {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+
+.round-notemark {
+	margin: 0;
+	font-size: 0.85rem;
+	opacity: 0.7;
+	min-height: 1.2em;
+}
+
+/* Monospace and user-selectable: this string exists to be copied into a message. */
+.round-itemref {
+	margin: 0;
+	font-family: ui-monospace, monospace;
+	font-size: 0.8rem;
+	opacity: 0.6;
+	user-select: all;
+	cursor: pointer;
+	word-break: break-all;
 }

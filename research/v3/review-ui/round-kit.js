@@ -331,6 +331,8 @@ export async function startRound(config) {
 	let busy = false
 	let saveTimer = null
 	let widgetState = null
+	/** True while the per-item note box is open. Only ever open on the item currently on screen. */
+	let noteOpen = false
 
 	const status = (text) => {
 		if (nodes.status != null) nodes.status.textContent = text
@@ -372,7 +374,80 @@ export async function startRound(config) {
 					{ key: config.undoKey ?? "u", label: "undo one", kind: "nav" },
 					{ key: "r", label: "release when finished", kind: "release" },
 				]
-		return [...own, ...navigation]
+		// The note key is on every round of every kind, and it is advertised like any other binding —
+		// an affordance nobody can discover is an affordance that does not exist.
+		const note = config.itemNotes === false ? [] : [{ key: widget.ownsTextEntry ? "esc then f" : "f", label: "note on this item", kind: "note" }]
+		return [...own, ...note, ...navigation]
+	}
+
+	/**
+	 * The item's short, stable, copyable name.
+	 *
+	 * The reviewer, 2026-08-04: *"i often want to give feedback about a specific thing and we
+	 * currently have no way of doing that, which prevents accidental discovery of information."* A
+	 * reviewer who cannot name what is in front of them cannot report anything about it. One click
+	 * selects the whole string so it can go straight into a message.
+	 */
+	function renderItemRef(item) {
+		const target = nodes.itemref
+		if (target == null) return
+		target.textContent = item.itemRef ?? ""
+		target.title = "click to select — paste this to name this exact item"
+		if (target.dataset === undefined) target.dataset = {}
+		if (target.dataset.wired !== "yes") {
+			target.dataset.wired = "yes"
+			target.addEventListener?.("click", () => {
+				const selection = globalThis.getSelection?.()
+				const range = document.createRange?.()
+				if (selection == null || range == null) return
+				range.selectNodeContents(target)
+				selection.removeAllRanges()
+				selection.addRange(range)
+				status("item id selected — copy it into your message")
+			})
+		}
+	}
+
+	/**
+	 * The per-item note box.
+	 *
+	 * Optional on every item of every round, never required, and it never blocks an answer or an
+	 * advance. Enter saves; Escape closes without saving. An empty note is never recorded — a blank
+	 * row would make "had nothing to say" indistinguishable from "said nothing".
+	 */
+	function renderNote(item) {
+		if (nodes.notebox != null) nodes.notebox.hidden = !noteOpen
+		if (nodes.noteinput != null && noteOpen) {
+			nodes.noteinput.value = item.note ?? ""
+			nodes.noteinput.focus()
+		}
+		// The indicator is on the item whether or not the box is open, so a reviewer scanning back
+		// through a round can see which items they have already said something about.
+		if (nodes.notemark != null) nodes.notemark.textContent = item.note ? "note saved on this item" : ""
+	}
+
+	async function saveNote() {
+		const item = batch.items[index]
+		const text = (nodes.noteinput?.value ?? "").trim()
+		if (text.length === 0) {
+			noteOpen = false
+			status("empty note — nothing recorded")
+			await render()
+			return
+		}
+		try {
+			await api(`${config.notePath ?? `/api/oracle-validation/${encodeURIComponent(batch.batchId)}/items`}/${encodeURIComponent(item.token)}/note`, {
+				method: "PUT",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify({ note: text }),
+			})
+			item.note = text
+			noteOpen = false
+			status(`note saved on ${item.itemRef ?? "this item"}`)
+		} catch (error) {
+			status(`note NOT saved: ${error.message}`)
+		}
+		await render()
 	}
 
 	function renderKeymap() {
@@ -445,6 +520,8 @@ export async function startRound(config) {
 		if (nodes.framing != null) nodes.framing.textContent = question?.framing ?? ""
 		if (nodes.progress != null) nodes.progress.textContent = progressText()
 
+		renderItemRef(item)
+		renderNote(item)
 		config.renderContext?.({ item, question, nodes, el })
 		const stimulus = await renderStimulus({ item, question, nodes, config, el })
 		if (nodes.stage != null && stimulus != null && !nodes.stage.contains?.(stimulus)) {
@@ -618,7 +695,51 @@ export async function startRound(config) {
 	function onKey(event) {
 		if (batch === null) return
 		const { key, letter, shift } = readKey(event)
+
+		/*
+		 * THE NOTE BOX COMES FIRST, and that is what resolves the free-text edge.
+		 *
+		 * On a free-text ANSWER round there are two textareas on screen, and Escape means something in
+		 * both. They never collide because only one can hold the keyboard at a time and the note box,
+		 * while open, holds it: Escape closes the note and hands focus back to the answer field, where
+		 * Escape then does its own job of leaving the field. One key, two scopes, disambiguated by
+		 * which box is open rather than by a rule anyone has to remember.
+		 *
+		 * They stay DISTINCT rather than merged, because they are different records about different
+		 * things: the answer is the round's datum, the note is commentary the round never asked for —
+		 * "this rendition looks corrupted", "this question does not fit this cover". Merging them would
+		 * put the second kind of statement into the first kind's column, which is the exact confusion
+		 * `none_discernible` already cost this project once.
+		 */
+		if (noteOpen) {
+			if (key === "Enter" && !shift) {
+				event.preventDefault()
+				void saveNote()
+				return
+			}
+			if (key === "Escape") {
+				event.preventDefault()
+				noteOpen = false
+				status("note closed — nothing recorded")
+				void render()
+				return
+			}
+			// Everything else belongs to the note textarea, including plain arrows and Shift+Enter.
+			return
+		}
+
 		const inField = widget.hasFocus?.({ nodes }) === true
+
+		// `f` opens the note, and only when no text field owns the keyboard — otherwise it is a letter
+		// the reviewer is typing. On a free-text round that means Escape first, the same shape as
+		// `esc then r` and `esc then j/k`, and the footer says so.
+		if (!inField && letter === "f" && config.itemNotes !== false && index < batch.items.length) {
+			event.preventDefault()
+			noteOpen = true
+			status("note box open — enter saves, esc closes without saving")
+			void render()
+			return
+		}
 		const handled = widget.onKey?.({ key, letter, shift, inField, nodes, question: batch.items[index] === undefined ? null : questionOf(batch.items[index]), state: widgetState, shell })
 		if (handled === true) {
 			event.preventDefault()
