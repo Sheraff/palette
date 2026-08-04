@@ -2,18 +2,18 @@
 
 **Generated file. Do not edit by hand** — regenerate with `node --experimental-strip-types src/honesty/cli.ts` from `research/v3`.
 
-Measured at **2026-08-04T21:09:41.794Z**. Body hash `d771bcd2c21e0c75`.
+Measured at **2026-08-04T21:26:31.975Z**. Body hash `2cc3f16d0c4c447a`.
 
 Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1). It exists because v2-3 carried roughly 900 tunable sites against 11 human-anchored values — quantified overfitting. This page counts the first number and the provenance behind it. It does **not** measure the third number, the reviewed-vs-unseen perturbation-stability ratio; that needs a pipeline and belongs at the Phase 2 entry condition.
 
 ## Headline
 
-- **Tunable sites: 7069**
+- **Tunable sites: 7085**
 - **Documented: 744 (10.5%)** — carries a provenance tag or a resolved decision record.
 - **Anchored: 465 (6.6%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
-- **Untagged: 6325** — no provenance of any kind. This is the dishonesty measure.
+- **Untagged: 6341** — no provenance of any kind. This is the dishonesty measure.
 
-Scanned 238 files, 104402 lines, 11522 numeric literals, of which 4453 were excluded by a named rule (listed below, none silent).
+Scanned 238 files, 104550 lines, 11530 numeric literals, of which 4445 were excluded by a named rule (listed below, none silent).
 
 **Read the fraction as a lower bound.** Exclusion rules are deliberately narrow: when it is unclear whether a number is structural or tunable it is counted, which inflates the denominator and pushes the fraction down. The tree is at least this honest, never less.
 
@@ -22,7 +22,7 @@ Scanned 238 files, 104402 lines, 11522 numeric literals, of which 4453 were excl
 | language | files | lines | parser fidelity |
 |---|---:|---:|---|
 | py | 98 | 38538 | lexical |
-| ts | 140 | 65864 | ast |
+| ts | 140 | 66012 | ast |
 
 ## Provenance of the tunable sites
 
@@ -37,7 +37,7 @@ Scanned 238 files, 104402 lines, 11522 numeric literals, of which 4453 were excl
 | `[HELD]` | 18 | weak |
 | decision record, resolved | 1 | anchored |
 | decision record, dangling | 0 | unanchored |
-| **untagged** | **6325** | unanchored |
+| **untagged** | **6341** | unanchored |
 
 Decision citations resolve to 3 machine-recheckable records (non-empty `fundedBy`) and 0 reviewer-conversational ones (empty `fundedBy`, which `CONVENTIONS.md` calls the honest form for a verbal ruling). Both are human-anchored; only the first can ever be re-verified.
 
@@ -54,7 +54,7 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `oracle/ladder` | INFORMATIONAL | oracle — ladder | 7 | 368 | 88 | 280 | 23.9% |
 | `oracle/premise` | INFORMATIONAL | oracle — premise | 20 | 675 | 59 | 616 | 8.7% |
 | `oracle/sam` | INFORMATIONAL | oracle — SAM | 57 | 1460 | 174 | 1286 | 11.9% |
-| `prototypes/p5-fieldfit` ⚠️ | INFORMATIONAL | unassigned | 18 | 1080 | 18 | 1062 | 1.7% |
+| `prototypes/p5-fieldfit` | INFORMATIONAL | phase-2 prototype orchestrators | 18 | 1096 | 18 | 1078 | 1.6% |
 | `src/adjudication` | INFORMATIONAL | adjudication | 7 | 74 | 0 | 74 | 0.0% |
 | `src/calibration-consequence` | INFORMATIONAL | calibration consequence | 5 | 96 | 18 | 78 | 18.8% |
 | `src/contract` | INFORMATIONAL | contract schema + gates | 18 | 717 | 52 | 665 | 7.2% |
@@ -70,8 +70,6 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `src/tagging` | INFORMATIONAL | tagging | 5 | 43 | 0 | 43 | 0.0% |
 | `src/warehouse` | INFORMATIONAL | warehouse + query CLI | 4 | 48 | 10 | 38 | 20.8% |
 
-⚠️ 1 area(s) are not listed in `src/honesty/areas.ts`: `prototypes/p5-fieldfit`. A directory appeared under a scan root without anyone deciding which workstream owns it or whether it should be gated.
-
 ## Exclusions — every rule, every count
 
 No literal is dropped silently. A site records exactly one rule, so these sum to the excluded total.
@@ -85,7 +83,7 @@ No literal is dropped silently. A site records exactly one rule, so these sum to
 | `http-status` | 29 | An HTTP status code. Fixed by RFC 9110; the choice of which status to send is logic, but the number itself is not tunable. Covers the review server's own respond(res, status, ...) helper as well as the writeHead/statusCode shapes the scanner recognises directly. |
 | `emptiness-comparison` | 405 | A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`. |
 | `not-found-sentinel` | 0 | A -1 compared against the result of indexOf/findIndex/.index() — the language's not-found sentinel, not a bound anyone chose. |
-| `index-access` | 1674 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
+| `index-access` | 1666 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
 | `loop-header` | 424 | An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy. |
 | `accumulator-init` | 361 | A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted. |
 | `counter-increment` | 374 | A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous. |
@@ -110,8 +108,8 @@ Ranked by a documented heuristic (`suspicion` in `classify.ts`): threshold shape
 | 5 | `prototypes/p5-fieldfit/src/ramp.ts:159` | `1e-24` | `dominantDirection` | 8 | `if (!(mxx + myy > 1e-24)) return null` |
 | 6 | `prototypes/p5-fieldfit/tests/fieldfit.test.ts:155` | `0.001` | `assert.ok` | 8 | `assert.ok(move < 1e-3, `recovered coefficients must be within 1e-3 of truth, worst move ${` |
 | 7 | `prototypes/p5-fieldfit/tests/fieldfit.test.ts:358` | `0.001` | `assert.ok` | 8 | `assert.ok(move < 1e-3, `subsampled fit must stay within 1e-3 of truth, worst move ${move}`` |
-| 8 | `prototypes/p5-fieldfit/tests/overlay.test.ts:203` | `1e-12` | `assert.ok` | 8 | `assert.ok(okLabDistance(reading.foreground!.localField, rampField(-0.25)) < 1e-12)` |
-| 9 | `prototypes/p5-fieldfit/tests/overlay.test.ts:207` | `0.001` | `assert.ok` | 8 | `assert.ok(Math.hypot(reading.foreground!.deltaC, reading.foreground!.deltaH) < 1e-3)` |
+| 8 | `prototypes/p5-fieldfit/tests/overlay.test.ts:205` | `1e-12` | `assert.ok` | 8 | `assert.ok(okLabDistance(reading.foreground!.localField, rampField(-0.25)) < 1e-12)` |
+| 9 | `prototypes/p5-fieldfit/tests/overlay.test.ts:209` | `0.001` | `assert.ok` | 8 | `assert.ok(Math.hypot(reading.foreground!.deltaC, reading.foreground!.deltaH) < 1e-3)` |
 | 10 | `prototypes/p5-fieldfit/tests/ramp.test.ts:228` | `0.001` | `assert.ok` | 8 | `assert.ok(Math.abs(reading.direction[0] - truth[0]) < 1e-3, `dx = ${reading.direction[0]}`` |
 
 ## Where the untagged sites are
@@ -121,7 +119,7 @@ Files with at least one untagged tunable site, worst first.
 | file | tunable | documented | untagged |
 |---|---:|---:|---:|
 | `prototypes/p5-fieldfit/tests/core.test.ts` | 225 | 2 | 223 |
-| `prototypes/p5-fieldfit/tests/overlay.test.ts` | 199 | 0 | 199 |
+| `prototypes/p5-fieldfit/tests/overlay.test.ts` | 215 | 0 | 215 |
 | `src/review-server/bracketing.ts` | 214 | 35 | 179 |
 | `oracle/premise/analyze_b_unmapped_class.py` | 184 | 12 | 172 |
 | `src/stats/stats.py` | 156 | 4 | 152 |
@@ -151,7 +149,7 @@ Files with at least one untagged tunable site, worst first.
 | `src/review-server/server.ts` | 59 | 0 | 59 |
 | `prototypes/p5-fieldfit/src/fieldfit.ts` | 68 | 10 | 58 |
 
-Full list of all 6325 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
+Full list of all 6341 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
 
 ## What this instrument cannot see
 

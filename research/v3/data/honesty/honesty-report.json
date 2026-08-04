@@ -1,7 +1,7 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T21:09:41.794Z",
+		"generatedAt": "2026-08-04T21:26:31.975Z",
 		"roots": [
 			"oracle",
 			"prototypes",
@@ -10,10 +10,10 @@
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash.",
 		"provenance": {
 			"what": "Parameter-honesty census over the v3 source tree.",
-			"generatedAt": "2026-08-04T21:09:41.794Z",
+			"generatedAt": "2026-08-04T21:26:31.975Z",
 			"generatedBy": "research/v3/src/honesty/cli.ts",
 			"code": {
-				"gitCommit": "c2a16204639dcb26931b89234ec5beb73af27f58",
+				"gitCommit": "d72387fcec2cf5a36ba7db271a570e006fb4eedc",
 				"gitBranch": "proto/p5-fieldfit",
 				"gitDirty": true,
 				"node": "v25.8.1"
@@ -35,11 +35,11 @@
 			"note": "Provenance fingerprint (src/provenance/header.ts, build item 17). gitDirty true means this result cannot be reproduced from gitCommit alone. Producers that publish a body hash keep this header outside it, so a commit never changes the hash."
 		}
 	},
-	"bodyHash": "d771bcd2c21e0c7545ff8285a0737744c4d833d29908c4e43c5b0b4328c13e10",
+	"bodyHash": "2cc3f16d0c4c447abd75d83168cc67c1eed2b189854d03f6036ba02dc1a0bc7d",
 	"body": {
 		"corpus": {
 			"files": 238,
-			"lines": 104402,
+			"lines": 104550,
 			"byLanguage": {
 				"py": {
 					"files": 98,
@@ -48,23 +48,23 @@
 				},
 				"ts": {
 					"files": 140,
-					"lines": 65864,
+					"lines": 66012,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 11522,
-			"excluded": 4453,
-			"tunableSites": 7069,
+			"candidates": 11530,
+			"excluded": 4445,
+			"tunableSites": 7085,
 			"tagged": 743,
 			"decisionTraced": 1,
 			"decisionDangling": 0,
-			"untagged": 6325
+			"untagged": 6341
 		},
 		"headline": {
-			"documentedFraction": 0.1052,
-			"anchoredFraction": 0.0658
+			"documentedFraction": 0.105,
+			"anchoredFraction": 0.0656
 		},
 		"byTag": {
 			"REVIEWED": 279,
@@ -78,7 +78,7 @@
 		"byAnchorStrength": {
 			"anchored": 465,
 			"weak": 140,
-			"unanchored": 6464
+			"unanchored": 6480
 		},
 		"tagAttribution": {
 			"trailing": 1,
@@ -129,7 +129,7 @@
 			{
 				"id": "index-access",
 				"rationale": "An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes.",
-				"count": 1674
+				"count": 1666
 			},
 			{
 				"id": "loop-header",
@@ -261,16 +261,16 @@
 			{
 				"area": "prototypes/p5-fieldfit",
 				"gate": "INFORMATIONAL",
-				"configured": false,
-				"workstream": "unassigned",
+				"configured": true,
+				"workstream": "phase-2 prototype orchestrators",
 				"files": 18,
-				"tunableSites": 1080,
+				"tunableSites": 1096,
 				"tagged": 18,
 				"decisionTraced": 0,
 				"documented": 18,
-				"untagged": 1062,
+				"untagged": 1078,
 				"anchored": 0,
-				"documentedFraction": 0.0167,
+				"documentedFraction": 0.0164,
 				"anchoredFraction": 0
 			},
 			{
@@ -1189,9 +1189,9 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"tunableSites": 199,
+				"tunableSites": 215,
 				"documented": 0,
-				"untagged": 199
+				"untagged": 215
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/ramp.test.ts",
@@ -1910,7 +1910,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 203,
+				"line": 205,
 				"column": 78,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -1926,7 +1926,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 207,
+				"line": 209,
 				"column": 81,
 				"value": 0.001,
 				"text": "1e-3",
@@ -2073,7 +2073,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 203,
+				"line": 205,
 				"column": 78,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -2089,7 +2089,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 207,
+				"line": 209,
 				"column": 81,
 				"value": 0.001,
 				"text": "1e-3",
@@ -4446,7 +4446,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 206,
+				"line": 208,
 				"column": 41,
 				"value": 0.3,
 				"text": "0.3",
@@ -6136,7 +6136,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 201,
+				"line": 203,
 				"column": 58,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -6152,7 +6152,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 202,
+				"line": 204,
 				"column": 54,
 				"value": 1e-12,
 				"text": "1e-12",
@@ -9295,7 +9295,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 91,
+				"line": 93,
 				"column": 17,
 				"value": 0.5,
 				"text": "0.5",
@@ -9310,7 +9310,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 170,
+				"line": 172,
 				"column": 22,
 				"value": 255,
 				"text": "255",
@@ -9325,7 +9325,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 170,
+				"line": 172,
 				"column": 27,
 				"value": 255,
 				"text": "255",
@@ -9340,7 +9340,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 170,
+				"line": 172,
 				"column": 32,
 				"value": 255,
 				"text": "255",
@@ -9355,7 +9355,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 224,
+				"line": 226,
 				"column": 22,
 				"value": 240,
 				"text": "240",
@@ -9370,7 +9370,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 224,
+				"line": 226,
 				"column": 27,
 				"value": 240,
 				"text": "240",
@@ -9385,7 +9385,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 224,
+				"line": 226,
 				"column": 32,
 				"value": 240,
 				"text": "240",
@@ -9400,7 +9400,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 228,
+				"line": 230,
 				"column": 29,
 				"value": 241,
 				"text": "241",
@@ -9415,7 +9415,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 228,
+				"line": 230,
 				"column": 34,
 				"value": 240,
 				"text": "240",
@@ -9430,7 +9430,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 228,
+				"line": 230,
 				"column": 39,
 				"value": 240,
 				"text": "240",
@@ -9445,7 +9445,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 229,
+				"line": 231,
 				"column": 22,
 				"value": 200,
 				"text": "200",
@@ -9460,7 +9460,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 229,
+				"line": 231,
 				"column": 27,
 				"value": 30,
 				"text": "30",
@@ -9475,7 +9475,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 229,
+				"line": 231,
 				"column": 31,
 				"value": 30,
 				"text": "30",
@@ -9490,7 +9490,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 315,
+				"line": 317,
 				"column": 28,
 				"value": 255,
 				"text": "255",
@@ -9505,7 +9505,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 315,
+				"line": 317,
 				"column": 33,
 				"value": 0,
 				"text": "0",
@@ -9520,7 +9520,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 315,
+				"line": 317,
 				"column": 36,
 				"value": 0,
 				"text": "0",
@@ -9535,7 +9535,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 344,
+				"line": 346,
 				"column": 31,
 				"value": 10,
 				"text": "10",
@@ -9550,7 +9550,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 344,
+				"line": 346,
 				"column": 35,
 				"value": 10,
 				"text": "10",
@@ -9565,7 +9565,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 344,
+				"line": 346,
 				"column": 39,
 				"value": 30,
 				"text": "30",
@@ -9580,7 +9580,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 346,
+				"line": 348,
 				"column": 26,
 				"value": 90,
 				"text": "90",
@@ -9595,7 +9595,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 346,
+				"line": 348,
 				"column": 30,
 				"value": 90,
 				"text": "90",
@@ -9610,7 +9610,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 346,
+				"line": 348,
 				"column": 34,
 				"value": 90,
 				"text": "90",
@@ -9625,7 +9625,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 351,
+				"line": 353,
 				"column": 26,
 				"value": 0,
 				"text": "0",
@@ -9640,7 +9640,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 351,
+				"line": 353,
 				"column": 29,
 				"value": 0,
 				"text": "0",
@@ -9655,7 +9655,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 351,
+				"line": 353,
 				"column": 32,
 				"value": 200,
 				"text": "200",
@@ -9670,7 +9670,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 468,
+				"line": 470,
 				"column": 23,
 				"value": 128,
 				"text": "128",
@@ -9685,7 +9685,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 468,
+				"line": 470,
 				"column": 28,
 				"value": 128,
 				"text": "128",
@@ -9700,7 +9700,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 468,
+				"line": 470,
 				"column": 33,
 				"value": 128,
 				"text": "128",
@@ -9715,7 +9715,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 469,
+				"line": 471,
 				"column": 30,
 				"value": 132,
 				"text": "132",
@@ -9730,7 +9730,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 469,
+				"line": 471,
 				"column": 35,
 				"value": 132,
 				"text": "132",
@@ -9745,7 +9745,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 469,
+				"line": 471,
 				"column": 40,
 				"value": 132,
 				"text": "132",
@@ -9760,7 +9760,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 470,
+				"line": 472,
 				"column": 25,
 				"value": 136,
 				"text": "136",
@@ -9775,7 +9775,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 470,
+				"line": 472,
 				"column": 30,
 				"value": 136,
 				"text": "136",
@@ -9790,7 +9790,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 470,
+				"line": 472,
 				"column": 35,
 				"value": 136,
 				"text": "136",
@@ -9805,7 +9805,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 471,
+				"line": 473,
 				"column": 25,
 				"value": 250,
 				"text": "250",
@@ -9820,7 +9820,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 471,
+				"line": 473,
 				"column": 30,
 				"value": 250,
 				"text": "250",
@@ -9835,7 +9835,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 471,
+				"line": 473,
 				"column": 35,
 				"value": 250,
 				"text": "250",
@@ -9850,7 +9850,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 510,
+				"line": 512,
 				"column": 23,
 				"value": 128,
 				"text": "128",
@@ -9865,7 +9865,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 510,
+				"line": 512,
 				"column": 28,
 				"value": 128,
 				"text": "128",
@@ -9880,7 +9880,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 510,
+				"line": 512,
 				"column": 33,
 				"value": 128,
 				"text": "128",
@@ -9895,7 +9895,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 511,
+				"line": 513,
 				"column": 22,
 				"value": 150,
 				"text": "150",
@@ -9910,7 +9910,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 511,
+				"line": 513,
 				"column": 27,
 				"value": 150,
 				"text": "150",
@@ -9925,7 +9925,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 511,
+				"line": 513,
 				"column": 32,
 				"value": 150,
 				"text": "150",
@@ -9940,7 +9940,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 512,
+				"line": 514,
 				"column": 26,
 				"value": 10,
 				"text": "10",
@@ -9955,7 +9955,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 512,
+				"line": 514,
 				"column": 30,
 				"value": 10,
 				"text": "10",
@@ -9970,7 +9970,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 512,
+				"line": 514,
 				"column": 34,
 				"value": 10,
 				"text": "10",
@@ -9985,7 +9985,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 547,
+				"line": 549,
 				"column": 23,
 				"value": 128,
 				"text": "128",
@@ -10000,7 +10000,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 547,
+				"line": 549,
 				"column": 28,
 				"value": 128,
 				"text": "128",
@@ -10015,7 +10015,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 547,
+				"line": 549,
 				"column": 33,
 				"value": 128,
 				"text": "128",
@@ -10030,88 +10030,13 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 548,
+				"line": 550,
 				"column": 33,
 				"value": 255,
 				"text": "255",
 				"name": "FOREGROUND_MARK",
 				"functionName": null,
 				"snippet": "const FOREGROUND_MARK: Rgb8 = [255, 255, 255]",
-				"suspicion": 4,
-				"flags": [
-					"in-numeric-sequence",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 548,
-				"column": 38,
-				"value": 255,
-				"text": "255",
-				"name": "FOREGROUND_MARK",
-				"functionName": null,
-				"snippet": "const FOREGROUND_MARK: Rgb8 = [255, 255, 255]",
-				"suspicion": 4,
-				"flags": [
-					"in-numeric-sequence",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 548,
-				"column": 43,
-				"value": 255,
-				"text": "255",
-				"name": "FOREGROUND_MARK",
-				"functionName": null,
-				"snippet": "const FOREGROUND_MARK: Rgb8 = [255, 255, 255]",
-				"suspicion": 4,
-				"flags": [
-					"in-numeric-sequence",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 549,
-				"column": 33,
-				"value": 235,
-				"text": "235",
-				"name": "NEAR_FOREGROUND",
-				"functionName": null,
-				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
-				"suspicion": 4,
-				"flags": [
-					"in-numeric-sequence",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 549,
-				"column": 38,
-				"value": 235,
-				"text": "235",
-				"name": "NEAR_FOREGROUND",
-				"functionName": null,
-				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
-				"suspicion": 4,
-				"flags": [
-					"in-numeric-sequence",
-					"screaming-case-name"
-				]
-			},
-			{
-				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 549,
-				"column": 43,
-				"value": 235,
-				"text": "235",
-				"name": "NEAR_FOREGROUND",
-				"functionName": null,
-				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
 				"suspicion": 4,
 				"flags": [
 					"in-numeric-sequence",
@@ -10121,6 +10046,81 @@
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
 				"line": 550,
+				"column": 38,
+				"value": 255,
+				"text": "255",
+				"name": "FOREGROUND_MARK",
+				"functionName": null,
+				"snippet": "const FOREGROUND_MARK: Rgb8 = [255, 255, 255]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 550,
+				"column": 43,
+				"value": 255,
+				"text": "255",
+				"name": "FOREGROUND_MARK",
+				"functionName": null,
+				"snippet": "const FOREGROUND_MARK: Rgb8 = [255, 255, 255]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 551,
+				"column": 33,
+				"value": 235,
+				"text": "235",
+				"name": "NEAR_FOREGROUND",
+				"functionName": null,
+				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 551,
+				"column": 38,
+				"value": 235,
+				"text": "235",
+				"name": "NEAR_FOREGROUND",
+				"functionName": null,
+				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 551,
+				"column": 43,
+				"value": 235,
+				"text": "235",
+				"name": "NEAR_FOREGROUND",
+				"functionName": null,
+				"snippet": "const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 552,
 				"column": 23,
 				"value": 220,
 				"text": "220",
@@ -10135,7 +10135,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 550,
+				"line": 552,
 				"column": 28,
 				"value": 20,
 				"text": "20",
@@ -10150,7 +10150,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 550,
+				"line": 552,
 				"column": 32,
 				"value": 60,
 				"text": "60",
@@ -10165,7 +10165,187 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 590,
+				"line": 601,
+				"column": 23,
+				"value": 1,
+				"text": "1",
+				"name": "FIELD",
+				"functionName": null,
+				"snippet": "const FIELD: Rgb8 = [1, 0, 0]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 601,
+				"column": 26,
+				"value": 0,
+				"text": "0",
+				"name": "FIELD",
+				"functionName": null,
+				"snippet": "const FIELD: Rgb8 = [1, 0, 0]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 601,
+				"column": 29,
+				"value": 0,
+				"text": "0",
+				"name": "FIELD",
+				"functionName": null,
+				"snippet": "const FIELD: Rgb8 = [1, 0, 0]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 602,
+				"column": 33,
+				"value": 235,
+				"text": "235",
+				"name": "FOREGROUND_MARK",
+				"functionName": null,
+				"snippet": "const FOREGROUND_MARK: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 602,
+				"column": 38,
+				"value": 235,
+				"text": "235",
+				"name": "FOREGROUND_MARK",
+				"functionName": null,
+				"snippet": "const FOREGROUND_MARK: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 602,
+				"column": 43,
+				"value": 235,
+				"text": "235",
+				"name": "FOREGROUND_MARK",
+				"functionName": null,
+				"snippet": "const FOREGROUND_MARK: Rgb8 = [235, 235, 235]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 603,
+				"column": 27,
+				"value": 0,
+				"text": "0",
+				"name": "INVISIBLE",
+				"functionName": null,
+				"snippet": "const INVISIBLE: Rgb8 = [0, 0, 11]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 603,
+				"column": 30,
+				"value": 0,
+				"text": "0",
+				"name": "INVISIBLE",
+				"functionName": null,
+				"snippet": "const INVISIBLE: Rgb8 = [0, 0, 11]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 603,
+				"column": 33,
+				"value": 11,
+				"text": "11",
+				"name": "INVISIBLE",
+				"functionName": null,
+				"snippet": "const INVISIBLE: Rgb8 = [0, 0, 11]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 604,
+				"column": 25,
+				"value": 220,
+				"text": "220",
+				"name": "VISIBLE",
+				"functionName": null,
+				"snippet": "const VISIBLE: Rgb8 = [220, 220, 220]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 604,
+				"column": 30,
+				"value": 220,
+				"text": "220",
+				"name": "VISIBLE",
+				"functionName": null,
+				"snippet": "const VISIBLE: Rgb8 = [220, 220, 220]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 604,
+				"column": 35,
+				"value": 220,
+				"text": "220",
+				"name": "VISIBLE",
+				"functionName": null,
+				"snippet": "const VISIBLE: Rgb8 = [220, 220, 220]",
+				"suspicion": 4,
+				"flags": [
+					"in-numeric-sequence",
+					"screaming-case-name"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 662,
 				"column": 22,
 				"value": 255,
 				"text": "255",
@@ -10180,7 +10360,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 590,
+				"line": 662,
 				"column": 27,
 				"value": 255,
 				"text": "255",
@@ -10195,7 +10375,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 590,
+				"line": 662,
 				"column": 32,
 				"value": 255,
 				"text": "255",
@@ -10210,7 +10390,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 591,
+				"line": 663,
 				"column": 29,
 				"value": 254,
 				"text": "254",
@@ -10225,7 +10405,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 591,
+				"line": 663,
 				"column": 34,
 				"value": 255,
 				"text": "255",
@@ -10240,7 +10420,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 591,
+				"line": 663,
 				"column": 39,
 				"value": 255,
 				"text": "255",
@@ -16672,7 +16852,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 189,
+				"line": 191,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -16686,7 +16866,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 396,
+				"line": 398,
 				"column": 29,
 				"value": 2,
 				"text": "2",
@@ -16700,7 +16880,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 401,
+				"line": 403,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -17690,7 +17870,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 239,
+				"line": 241,
 				"column": 47,
 				"value": 0,
 				"text": "0",
@@ -17704,7 +17884,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 325,
+				"line": 327,
 				"column": 30,
 				"value": 256,
 				"text": "256",
@@ -17719,7 +17899,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 599,
+				"line": 671,
 				"column": 34,
 				"value": 0,
 				"text": "0",
@@ -33461,7 +33641,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 202,
+				"line": 204,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -33475,7 +33655,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 203,
+				"line": 205,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -33489,7 +33669,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 204,
+				"line": 206,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -33503,7 +33683,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 283,
+				"line": 285,
 				"column": 18,
 				"value": 1,
 				"text": "1",
@@ -33866,7 +34046,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 95,
+				"line": 97,
 				"column": 52,
 				"value": 0,
 				"text": "0",
@@ -33880,7 +34060,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 95,
+				"line": 97,
 				"column": 61,
 				"value": 0,
 				"text": "0",
@@ -33894,7 +34074,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 95,
+				"line": 97,
 				"column": 70,
 				"value": 0,
 				"text": "0",
@@ -33908,7 +34088,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 120,
+				"line": 122,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -33922,7 +34102,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 121,
+				"line": 123,
 				"column": 16,
 				"value": 0,
 				"text": "0",
@@ -33936,7 +34116,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 169,
+				"line": 171,
 				"column": 15,
 				"value": 16,
 				"text": "16",
@@ -33950,7 +34130,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 223,
+				"line": 225,
 				"column": 15,
 				"value": 20,
 				"text": "20",
@@ -33964,7 +34144,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 354,
+				"line": 356,
 				"column": 15,
 				"value": 20,
 				"text": "20",
@@ -33978,7 +34158,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 355,
+				"line": 357,
 				"column": 24,
 				"value": 40,
 				"text": "40",
@@ -33992,7 +34172,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 589,
+				"line": 661,
 				"column": 15,
 				"value": 12,
 				"text": "12",
@@ -34006,7 +34186,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 623,
+				"line": 695,
 				"column": 15,
 				"value": 12,
 				"text": "12",
@@ -34020,7 +34200,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 654,
+				"line": 726,
 				"column": 15,
 				"value": 8,
 				"text": "8",
@@ -42362,7 +42542,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 136,
+				"line": 138,
 				"column": 32,
 				"value": 20,
 				"text": "20",
@@ -42376,7 +42556,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 136,
+				"line": 138,
 				"column": 36,
 				"value": 20,
 				"text": "20",
@@ -42390,7 +42570,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 136,
+				"line": 138,
 				"column": 40,
 				"value": 20,
 				"text": "20",
@@ -42404,7 +42584,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 137,
+				"line": 139,
 				"column": 30,
 				"value": 120,
 				"text": "120",
@@ -42418,7 +42598,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 137,
+				"line": 139,
 				"column": 35,
 				"value": 120,
 				"text": "120",
@@ -42432,7 +42612,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 137,
+				"line": 139,
 				"column": 40,
 				"value": 120,
 				"text": "120",
@@ -42446,7 +42626,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 201,
+				"line": 203,
 				"column": 50,
 				"value": -0.25,
 				"text": "0.25",
@@ -42461,7 +42641,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 203,
+				"line": 205,
 				"column": 69,
 				"value": -0.25,
 				"text": "0.25",
@@ -42477,7 +42657,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 270,
+				"line": 272,
 				"column": 48,
 				"value": 241,
 				"text": "241",
@@ -42491,7 +42671,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 270,
+				"line": 272,
 				"column": 53,
 				"value": 240,
 				"text": "240",
@@ -42505,7 +42685,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 270,
+				"line": 272,
 				"column": 58,
 				"value": 240,
 				"text": "240",
@@ -42519,7 +42699,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 271,
+				"line": 273,
 				"column": 52,
 				"value": 241,
 				"text": "241",
@@ -42533,7 +42713,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 271,
+				"line": 273,
 				"column": 57,
 				"value": 240,
 				"text": "240",
@@ -42547,7 +42727,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 271,
+				"line": 273,
 				"column": 62,
 				"value": 240,
 				"text": "240",
@@ -42561,7 +42741,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 272,
+				"line": 274,
 				"column": 52,
 				"value": 241,
 				"text": "241",
@@ -42575,7 +42755,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 272,
+				"line": 274,
 				"column": 57,
 				"value": 240,
 				"text": "240",
@@ -42589,7 +42769,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 272,
+				"line": 274,
 				"column": 62,
 				"value": 240,
 				"text": "240",
@@ -42603,7 +42783,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 273,
+				"line": 275,
 				"column": 52,
 				"value": 240,
 				"text": "240",
@@ -42617,7 +42797,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 273,
+				"line": 275,
 				"column": 57,
 				"value": 240,
 				"text": "240",
@@ -42631,7 +42811,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 273,
+				"line": 275,
 				"column": 62,
 				"value": 240,
 				"text": "240",
@@ -42645,7 +42825,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 295,
+				"line": 297,
 				"column": 61,
 				"value": 240,
 				"text": "240",
@@ -42659,7 +42839,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 295,
+				"line": 297,
 				"column": 66,
 				"value": 240,
 				"text": "240",
@@ -42673,7 +42853,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 295,
+				"line": 297,
 				"column": 71,
 				"value": 240,
 				"text": "240",
@@ -42687,7 +42867,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 296,
+				"line": 298,
 				"column": 57,
 				"value": 200,
 				"text": "200",
@@ -42701,7 +42881,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 296,
+				"line": 298,
 				"column": 62,
 				"value": 30,
 				"text": "30",
@@ -42715,7 +42895,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 296,
+				"line": 298,
 				"column": 66,
 				"value": 30,
 				"text": "30",
@@ -42729,7 +42909,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 323,
+				"line": 325,
 				"column": 20,
 				"value": 0,
 				"text": "0",
@@ -42743,7 +42923,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 323,
+				"line": 325,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -42757,7 +42937,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 323,
+				"line": 325,
 				"column": 26,
 				"value": 0,
 				"text": "0",
@@ -66326,7 +66506,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 187,
+				"line": 189,
 				"column": 86,
 				"value": 1,
 				"text": "1",
@@ -66338,7 +66518,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 188,
+				"line": 190,
 				"column": 20,
 				"value": 1,
 				"text": "1",
@@ -66350,7 +66530,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 424,
+				"line": 426,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -66362,7 +66542,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 467,
+				"line": 469,
 				"column": 69,
 				"value": 0,
 				"text": "0",
@@ -66374,7 +66554,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 472,
+				"line": 474,
 				"column": 24,
 				"value": -1,
 				"text": "1",
@@ -66389,7 +66569,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/src/overlay.ts",
-				"line": 523,
+				"line": 539,
 				"column": 24,
 				"value": -1,
 				"text": "1",
@@ -69299,7 +69479,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 66,
+				"line": 68,
 				"column": 9,
 				"value": 0,
 				"text": "0",
@@ -69311,7 +69491,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 66,
+				"line": 68,
 				"column": 13,
 				"value": 1,
 				"text": "1",
@@ -69323,7 +69503,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 70,
+				"line": 72,
 				"column": 44,
 				"value": 3,
 				"text": "3",
@@ -69335,7 +69515,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 85,
+				"line": 87,
 				"column": 16,
 				"value": 3,
 				"text": "3",
@@ -69347,7 +69527,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 86,
+				"line": 88,
 				"column": 16,
 				"value": 3,
 				"text": "3",
@@ -69359,7 +69539,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 86,
+				"line": 88,
 				"column": 20,
 				"value": 1,
 				"text": "1",
@@ -69371,7 +69551,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 87,
+				"line": 89,
 				"column": 16,
 				"value": 3,
 				"text": "3",
@@ -69383,7 +69563,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 87,
+				"line": 89,
 				"column": 20,
 				"value": 2,
 				"text": "2",
@@ -69395,7 +69575,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 113,
+				"line": 115,
 				"column": 35,
 				"value": 9,
 				"text": "9",
@@ -69407,7 +69587,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 139,
+				"line": 141,
 				"column": 44,
 				"value": 1,
 				"text": "1",
@@ -69419,7 +69599,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 139,
+				"line": 141,
 				"column": 49,
 				"value": 2,
 				"text": "2",
@@ -69431,7 +69611,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 154,
+				"line": 156,
 				"column": 36,
 				"value": 1,
 				"text": "1",
@@ -69443,7 +69623,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 158,
+				"line": 160,
 				"column": 63,
 				"value": -1,
 				"text": "1",
@@ -69458,7 +69638,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 158,
+				"line": 160,
 				"column": 77,
 				"value": 1,
 				"text": "1",
@@ -69472,7 +69652,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 173,
+				"line": 175,
 				"column": 75,
 				"value": 4,
 				"text": "4",
@@ -69486,7 +69666,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 173,
+				"line": 175,
 				"column": 78,
 				"value": 7,
 				"text": "7",
@@ -69500,7 +69680,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 173,
+				"line": 175,
 				"column": 81,
 				"value": 6,
 				"text": "6",
@@ -69514,7 +69694,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 173,
+				"line": 175,
 				"column": 84,
 				"value": 9,
 				"text": "9",
@@ -69528,7 +69708,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 180,
+				"line": 182,
 				"column": 43,
 				"value": 0,
 				"text": "0",
@@ -69540,7 +69720,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 180,
+				"line": 182,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -69552,7 +69732,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 182,
+				"line": 184,
 				"column": 3,
 				"value": 1,
 				"text": "1",
@@ -69566,7 +69746,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 195,
+				"line": 197,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -69580,7 +69760,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 198,
+				"line": 200,
 				"column": 48,
 				"value": 16,
 				"text": "16",
@@ -69594,7 +69774,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 199,
+				"line": 201,
 				"column": 48,
 				"value": 1,
 				"text": "1",
@@ -69608,7 +69788,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 202,
+				"line": 204,
 				"column": 49,
 				"value": 0,
 				"text": "0",
@@ -69620,7 +69800,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 231,
+				"line": 233,
 				"column": 75,
 				"value": 4,
 				"text": "4",
@@ -69634,7 +69814,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 231,
+				"line": 233,
 				"column": 78,
 				"value": 7,
 				"text": "7",
@@ -69648,7 +69828,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 231,
+				"line": 233,
 				"column": 81,
 				"value": 4,
 				"text": "4",
@@ -69662,7 +69842,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 231,
+				"line": 233,
 				"column": 84,
 				"value": 7,
 				"text": "7",
@@ -69676,7 +69856,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 232,
+				"line": 234,
 				"column": 75,
 				"value": 12,
 				"text": "12",
@@ -69690,7 +69870,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 232,
+				"line": 234,
 				"column": 79,
 				"value": 14,
 				"text": "14",
@@ -69704,7 +69884,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 232,
+				"line": 234,
 				"column": 83,
 				"value": 12,
 				"text": "12",
@@ -69718,7 +69898,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 232,
+				"line": 234,
 				"column": 87,
 				"value": 13,
 				"text": "13",
@@ -69732,7 +69912,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 239,
+				"line": 241,
 				"column": 41,
 				"value": 2,
 				"text": "2",
@@ -69744,7 +69924,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 244,
+				"line": 246,
 				"column": 66,
 				"value": 0,
 				"text": "0",
@@ -69756,7 +69936,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 244,
+				"line": 246,
 				"column": 70,
 				"value": 1,
 				"text": "1",
@@ -69768,7 +69948,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 246,
+				"line": 248,
 				"column": 3,
 				"value": 1,
 				"text": "1",
@@ -69782,7 +69962,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 272,
+				"line": 274,
 				"column": 77,
 				"value": 8,
 				"text": "8",
@@ -69796,7 +69976,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 273,
+				"line": 275,
 				"column": 77,
 				"value": 8,
 				"text": "8",
@@ -69810,7 +69990,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 276,
+				"line": 278,
 				"column": 44,
 				"value": 2,
 				"text": "2",
@@ -69824,7 +70004,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 306,
+				"line": 308,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -69838,7 +70018,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 307,
+				"line": 309,
 				"column": 56,
 				"value": 2,
 				"text": "2",
@@ -69852,7 +70032,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 356,
+				"line": 358,
 				"column": 39,
 				"value": 20,
 				"text": "20",
@@ -69864,7 +70044,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 357,
+				"line": 359,
 				"column": 35,
 				"value": 12,
 				"text": "12",
@@ -69876,7 +70056,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 372,
+				"line": 374,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -69888,7 +70068,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 372,
+				"line": 374,
 				"column": 57,
 				"value": 1,
 				"text": "1",
@@ -69900,7 +70080,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 374,
+				"line": 376,
 				"column": 3,
 				"value": 0,
 				"text": "0",
@@ -69914,7 +70094,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 389,
+				"line": 396,
 				"column": 28,
 				"value": 3,
 				"text": "3",
@@ -69928,7 +70108,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 398,
+				"line": 405,
 				"column": 40,
 				"value": 4,
 				"text": "4",
@@ -69942,7 +70122,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 453,
+				"line": 455,
 				"column": 53,
 				"value": 0,
 				"text": "0",
@@ -69954,7 +70134,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 453,
+				"line": 455,
 				"column": 57,
 				"value": 1,
 				"text": "1",
@@ -69966,7 +70146,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 455,
+				"line": 457,
 				"column": 3,
 				"value": 0,
 				"text": "0",
@@ -69980,7 +70160,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 473,
+				"line": 475,
 				"column": 26,
 				"value": 12,
 				"text": "12",
@@ -69994,7 +70174,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 473,
+				"line": 475,
 				"column": 53,
 				"value": 6,
 				"text": "6",
@@ -70006,7 +70186,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 473,
+				"line": 475,
 				"column": 67,
 				"value": 4,
 				"text": "4",
@@ -70018,7 +70198,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 473,
+				"line": 475,
 				"column": 81,
 				"value": 6,
 				"text": "6",
@@ -70030,7 +70210,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 487,
+				"line": 489,
 				"column": 36,
 				"value": 2,
 				"text": "2",
@@ -70044,7 +70224,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 514,
+				"line": 516,
 				"column": 26,
 				"value": 14,
 				"text": "14",
@@ -70058,7 +70238,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 514,
+				"line": 516,
 				"column": 45,
 				"value": 60,
 				"text": "60",
@@ -70070,7 +70250,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 514,
+				"line": 516,
 				"column": 61,
 				"value": 8,
 				"text": "8",
@@ -70082,7 +70262,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 531,
+				"line": 533,
 				"column": 54,
 				"value": 5,
 				"text": "5",
@@ -70094,7 +70274,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 552,
+				"line": 554,
 				"column": 26,
 				"value": 16,
 				"text": "16",
@@ -70108,7 +70288,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 552,
+				"line": 554,
 				"column": 56,
 				"value": 20,
 				"text": "20",
@@ -70120,7 +70300,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 552,
+				"line": 554,
 				"column": 79,
 				"value": 40,
 				"text": "40",
@@ -70132,7 +70312,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 552,
+				"line": 554,
 				"column": 92,
 				"value": 12,
 				"text": "12",
@@ -70144,7 +70324,57 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 592,
+				"line": 606,
+				"column": 26,
+				"value": 16,
+				"text": "16",
+				"name": "flatScene",
+				"functionName": null,
+				"snippet": "const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 606,
+				"column": 56,
+				"value": 30,
+				"text": "30",
+				"name": "flatScene",
+				"functionName": null,
+				"snippet": "const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 606,
+				"column": 73,
+				"value": 20,
+				"text": "20",
+				"name": "flatScene",
+				"functionName": null,
+				"snippet": "const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 606,
+				"column": 88,
+				"value": 10,
+				"text": "10",
+				"name": "flatScene",
+				"functionName": null,
+				"snippet": "const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
+				"line": 664,
 				"column": 75,
 				"value": 2,
 				"text": "2",
@@ -70158,7 +70388,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 592,
+				"line": 664,
 				"column": 78,
 				"value": 6,
 				"text": "6",
@@ -70172,7 +70402,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 592,
+				"line": 664,
 				"column": 81,
 				"value": 2,
 				"text": "2",
@@ -70186,7 +70416,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 592,
+				"line": 664,
 				"column": 84,
 				"value": 6,
 				"text": "6",
@@ -70200,7 +70430,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 599,
+				"line": 671,
 				"column": 28,
 				"value": 2,
 				"text": "2",
@@ -70212,7 +70442,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 601,
+				"line": 673,
 				"column": 43,
 				"value": 0,
 				"text": "0",
@@ -70224,7 +70454,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 601,
+				"line": 673,
 				"column": 47,
 				"value": 1,
 				"text": "1",
@@ -70236,7 +70466,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 603,
+				"line": 675,
 				"column": 3,
 				"value": 0,
 				"text": "0",
@@ -70250,7 +70480,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 615,
+				"line": 687,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -70264,7 +70494,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 616,
+				"line": 688,
 				"column": 49,
 				"value": 2,
 				"text": "2",
@@ -70278,7 +70508,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 624,
+				"line": 696,
 				"column": 79,
 				"value": 2,
 				"text": "2",
@@ -70292,7 +70522,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 624,
+				"line": 696,
 				"column": 82,
 				"value": 6,
 				"text": "6",
@@ -70306,7 +70536,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 624,
+				"line": 696,
 				"column": 85,
 				"value": 2,
 				"text": "2",
@@ -70320,7 +70550,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 624,
+				"line": 696,
 				"column": 88,
 				"value": 6,
 				"text": "6",
@@ -70334,7 +70564,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 633,
+				"line": 705,
 				"column": 47,
 				"value": 0,
 				"text": "0",
@@ -70346,7 +70576,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 633,
+				"line": 705,
 				"column": 51,
 				"value": 1,
 				"text": "1",
@@ -70358,7 +70588,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 635,
+				"line": 707,
 				"column": 3,
 				"value": 0,
 				"text": "0",
@@ -70372,7 +70602,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 646,
+				"line": 718,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -70386,7 +70616,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 647,
+				"line": 719,
 				"column": 49,
 				"value": 25,
 				"text": "25",
@@ -70400,7 +70630,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 659,
+				"line": 731,
 				"column": 9,
 				"value": 1,
 				"text": "1",
@@ -70412,7 +70642,7 @@
 			},
 			{
 				"file": "prototypes/p5-fieldfit/tests/overlay.test.ts",
-				"line": 661,
+				"line": 733,
 				"column": 3,
 				"value": 0,
 				"text": "0",
