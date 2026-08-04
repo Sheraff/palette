@@ -37,6 +37,31 @@ tos {3 acceptable, 3 weak, 2 unacceptable}.
 runnable for comparison, no further investment. Reviewer evidence, robustness, and
 reachability agree; no instrument dissents.
 
+## CORRECTION OF RECORD (2026-08-04, this orchestrator's error — appended, not edited away)
+
+The robustness table above is **inverted**. The harness topline is the **agreement** rate
+(`check.ts:336` `agreementRate(agreed, compared)`, printed `agreed/compared`; its docstring
+anchors the incumbent at "JPEG re-encode agreement 72.8%"). I read it as disagreement. Worker
+G's independent per-trial re-derivation caught it. Corrected picture:
+
+| | p2-alpha | p2-tos |
+|---|---|---|
+| overall AGREEMENT (600 trials) | **37.8%** [34.0–41.8] | **12.0%** [9.6–14.8] |
+| rendition-pair agreement | 22.0% | 6.0% |
+| jpeg-q92 agreement (incumbent: 72.8%) | 64.0% | 12.0% |
+| dither-lsb1 agreement (pre-reg: >10% moved fires) | 37.0% → 63% moved, **fired** | 34.0% → 66% moved, **fired** |
+
+Three claims above are therefore **false as written**: "no instrument dissents" (robustness
+favours alpha, strongly); "re-encode healthy" for tos (it is the worst cell); "the weakest-on-
+robustness suspicion not confirmed where predicted" (it is confirmed, and worst for the tree
+of shapes). The family decision is **re-affirmed on its two surviving legs** — reviewer
+preference 5–3 and endorsed-colour reachability 86.6% vs 57.4% — with the robustness dissent
+now **stated, not absent**: tos's instability is localised by worker G's Q1 to role-assignment
+identity swaps (82% of dither failures; representatives held in 58/76 role failures; the
+SPEC's shared representative rule is **exonerated** — 7.6% churn, flat across node area, my
+"small-node repr churn" hypothesis also refuted), i.e. exactly the stage cycle 2 is rebuilding.
+Both pre-registered dither falsifications stand, worse than first reported.
+
 ## Cycle-2 obligations from the reviewer's notes (via the main orchestrator)
 
 1. **Foreground readability is the dominant failure class** (7 of 10 unacceptables across

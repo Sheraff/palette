@@ -1,0 +1,4371 @@
+{
+	"what": "Where the p2-tos dither-lsb1 churn lives: every published disagreement charged to a pipeline stage.",
+	"studyVersion": "p2-tos-q1-dither-0.1.0",
+	"candidate": "p2-tos",
+	"arm": "dither-lsb1",
+	"measurementState": {
+		"pinnedCommit": "4d7c9d89e316c4ac006917a3aedf1d9f428444c9",
+		"files": [
+			{
+				"file": "pipeline.ts",
+				"pinnedBlob": "99706e2b3e79",
+				"workingBlob": "2c5fd8cc5295",
+				"changedSincePin": true
+			},
+			{
+				"file": "tree.ts",
+				"pinnedBlob": "dc33d16c2d26",
+				"workingBlob": "dc33d16c2d26",
+				"changedSincePin": false
+			},
+			{
+				"file": "constants.ts",
+				"pinnedBlob": "edb5268011e3",
+				"workingBlob": "edb5268011e3",
+				"changedSincePin": false
+			},
+			{
+				"file": "candidate.ts",
+				"pinnedBlob": "52f80a911dfc",
+				"workingBlob": "4ecd8e5671fa",
+				"changedSincePin": true
+			}
+		],
+		"anyChanged": true,
+		"note": "Measurements were taken against the pinned blobs. `q1-dither/trace.ts` asserts its re-derivation of the role stage against the pipeline's own published pools on every image, so a run against a rewritten role stage fails loudly instead of producing a plausible wrong number — the 100/100 clean traces are the proof that the pinned code is what ran."
+	},
+	"inputs": {
+		"traces": "research/v3/prototypes/p2-tree/tos/stability/q1-dither/out/traces.jsonl",
+		"robustnessReport": "research/v3/data/robustness/reports/p2-tos.json",
+		"perturbationSet": "research/v3/data/robustness/perturbation-set-1.json"
+	},
+	"correction": {
+		"briefSaid": "34 covers where p2-tos disagreed under dither-lsb1",
+		"measured": "34 is the AGREEMENT count in byPairType.dither-lsb1 (agreed 34 / compared 100). The disagreements list holds 66 dither-lsb1 covers, and those 66 are what this study attributes.",
+		"byPairType": {
+			"group": "dither-lsb1",
+			"agreed": 34,
+			"compared": 100,
+			"errored": 0,
+			"rate": 0.34,
+			"interval": [
+				0.25461520797348164,
+				0.43722271145275377
+			]
+		}
+	},
+	"covers": {
+		"traced": 100,
+		"failing": 66,
+		"agreeing": 34
+	},
+	"nodeMatching": [
+		{
+			"setting": {
+				"name": "tight",
+				"areaRatio": 0.02,
+				"centroid": 0.005
+			},
+			"nodes": {
+				"left": 71132,
+				"right": 71080,
+				"matched": 62086
+			},
+			"unmatchedLeft": {
+				"successes": 9046,
+				"trials": 71132,
+				"rate": 0.127172018219648,
+				"interval": [
+					0.12474377254845559,
+					0.1296405306062443
+				]
+			},
+			"unmatchedRight": {
+				"successes": 8994,
+				"trials": 71080,
+				"rate": 0.12653348339898707,
+				"interval": [
+					0.1241096540816495,
+					0.1289976779024851
+				]
+			},
+			"jaccard": 0.7748546039987021,
+			"reprMovedAmongMatched": {
+				"successes": 3890,
+				"trials": 62086,
+				"rate": 0.0626550268981735,
+				"interval": [
+					0.06077570611542292,
+					0.06458846418912716
+				]
+			},
+			"byAreaBin": [
+				{
+					"areaFractionBelow": 0.0005,
+					"successes": 0,
+					"trials": 0,
+					"rate": null,
+					"interval": null
+				},
+				{
+					"areaFractionBelow": 0.001,
+					"successes": 1250,
+					"trials": 21214,
+					"rate": 0.05892335250306401,
+					"interval": [
+						0.055833702603554525,
+						0.06217271495242446
+					]
+				},
+				{
+					"areaFractionBelow": 0.005,
+					"successes": 1718,
+					"trials": 26343,
+					"rate": 0.06521656607068291,
+					"interval": [
+						0.06229789859335165,
+						0.06826201934605093
+					]
+				},
+				{
+					"areaFractionBelow": 0.02,
+					"successes": 611,
+					"trials": 8735,
+					"rate": 0.06994848311390955,
+					"interval": [
+						0.06478652635941913,
+						0.07548852778848465
+					]
+				},
+				{
+					"areaFractionBelow": 0.1,
+					"successes": 205,
+					"trials": 3537,
+					"rate": 0.05795872208085948,
+					"interval": [
+						0.050726937797675814,
+						0.0661496475109467
+					]
+				},
+				{
+					"areaFractionBelow": 1,
+					"successes": 106,
+					"trials": 2257,
+					"rate": 0.046964997784669914,
+					"interval": [
+						0.03898008969419506,
+						0.056489434709733985
+					]
+				}
+			],
+			"byKind": {
+				"field": {
+					"successes": 106,
+					"trials": 2257,
+					"rate": 0.046964997784669914,
+					"interval": [
+						0.03898008969419506,
+						0.056489434709733985
+					]
+				},
+				"mark": {
+					"successes": 3784,
+					"trials": 59829,
+					"rate": 0.06324692038977753,
+					"interval": [
+						0.061324418833426764,
+						0.06522550382129694
+					]
+				}
+			}
+		},
+		{
+			"setting": {
+				"name": "default",
+				"areaRatio": 0.1,
+				"centroid": 0.02
+			},
+			"nodes": {
+				"left": 71132,
+				"right": 71080,
+				"matched": 65800
+			},
+			"unmatchedLeft": {
+				"successes": 5332,
+				"trials": 71132,
+				"rate": 0.07495923072597424,
+				"interval": [
+					0.07304697677357529,
+					0.07691739055595699
+				]
+			},
+			"unmatchedRight": {
+				"successes": 5280,
+				"trials": 71080,
+				"rate": 0.0742824985931345,
+				"interval": [
+					0.07237764236735408,
+					0.07623336742093464
+				]
+			},
+			"jaccard": 0.8611212898497618,
+			"reprMovedAmongMatched": {
+				"successes": 5013,
+				"trials": 65800,
+				"rate": 0.0761854103343465,
+				"interval": [
+					0.0741830143986267,
+					0.078237288679006
+				]
+			},
+			"byAreaBin": [
+				{
+					"areaFractionBelow": 0.0005,
+					"successes": 0,
+					"trials": 0,
+					"rate": null,
+					"interval": null
+				},
+				{
+					"areaFractionBelow": 0.001,
+					"successes": 1691,
+					"trials": 22816,
+					"rate": 0.07411465638148668,
+					"interval": [
+						0.07078681809585037,
+						0.07758588050224698
+					]
+				},
+				{
+					"areaFractionBelow": 0.005,
+					"successes": 2206,
+					"trials": 27852,
+					"rate": 0.07920436593422375,
+					"interval": [
+						0.07609050054115,
+						0.08243429094123426
+					]
+				},
+				{
+					"areaFractionBelow": 0.02,
+					"successes": 745,
+					"trials": 9124,
+					"rate": 0.08165278386672511,
+					"interval": [
+						0.07620845898004848,
+						0.08744923222385605
+					]
+				},
+				{
+					"areaFractionBelow": 0.1,
+					"successes": 254,
+					"trials": 3697,
+					"rate": 0.06870435488233703,
+					"interval": [
+						0.06099019827259962,
+						0.07731387784665524
+					]
+				},
+				{
+					"areaFractionBelow": 1,
+					"successes": 117,
+					"trials": 2311,
+					"rate": 0.05062743401125054,
+					"interval": [
+						0.04241111120865772,
+						0.06033521637242037
+					]
+				}
+			],
+			"byKind": {
+				"field": {
+					"successes": 117,
+					"trials": 2311,
+					"rate": 0.05062743401125054,
+					"interval": [
+						0.04241111120865772,
+						0.06033521637242037
+					]
+				},
+				"mark": {
+					"successes": 4896,
+					"trials": 63489,
+					"rate": 0.07711572083353022,
+					"interval": [
+						0.0750660878987155,
+						0.07921652465657839
+					]
+				}
+			}
+		},
+		{
+			"setting": {
+				"name": "loose",
+				"areaRatio": 0.25,
+				"centroid": 0.05
+			},
+			"nodes": {
+				"left": 71132,
+				"right": 71080,
+				"matched": 67128
+			},
+			"unmatchedLeft": {
+				"successes": 4004,
+				"trials": 71132,
+				"rate": 0.056289714896249225,
+				"interval": [
+					0.054619801718778775,
+					0.05800755032377921
+				]
+			},
+			"unmatchedRight": {
+				"successes": 3952,
+				"trials": 71080,
+				"rate": 0.055599324704558244,
+				"interval": [
+					0.05393865189314598,
+					0.05730802944170084
+				]
+			},
+			"jaccard": 0.894038676682116,
+			"reprMovedAmongMatched": {
+				"successes": 5881,
+				"trials": 67128,
+				"rate": 0.08760874746752473,
+				"interval": [
+					0.08549352408079056,
+					0.08977116705751345
+				]
+			},
+			"byAreaBin": [
+				{
+					"areaFractionBelow": 0.0005,
+					"successes": 0,
+					"trials": 0,
+					"rate": null,
+					"interval": null
+				},
+				{
+					"areaFractionBelow": 0.001,
+					"successes": 2062,
+					"trials": 23401,
+					"rate": 0.08811589248322721,
+					"interval": [
+						0.08455131492384875,
+						0.09181567590103958
+					]
+				},
+				{
+					"areaFractionBelow": 0.005,
+					"successes": 2564,
+					"trials": 28390,
+					"rate": 0.09031349066572737,
+					"interval": [
+						0.08703451397684438,
+						0.09370332194678106
+					]
+				},
+				{
+					"areaFractionBelow": 0.02,
+					"successes": 829,
+					"trials": 9258,
+					"rate": 0.08954417800820912,
+					"interval": [
+						0.08389695717686843,
+						0.09553188170085711
+					]
+				},
+				{
+					"areaFractionBelow": 0.1,
+					"successes": 284,
+					"trials": 3738,
+					"rate": 0.07597645799892991,
+					"interval": [
+						0.06791103233458169,
+						0.08491250792470208
+					]
+				},
+				{
+					"areaFractionBelow": 1,
+					"successes": 142,
+					"trials": 2341,
+					"rate": 0.060657838530542504,
+					"interval": [
+						0.051689274100368415,
+						0.07106591591187818
+					]
+				}
+			],
+			"byKind": {
+				"field": {
+					"successes": 142,
+					"trials": 2341,
+					"rate": 0.060657838530542504,
+					"interval": [
+						0.051689274100368415,
+						0.07106591591187818
+					]
+				},
+				"mark": {
+					"successes": 5739,
+					"trials": 64787,
+					"rate": 0.08858258601262599,
+					"interval": [
+						0.08641895990737833,
+						0.09079499811975023
+					]
+				}
+			}
+		}
+	],
+	"perStageRatesOverAllCovers": {
+		"verdictChanged": {
+			"successes": 11,
+			"trials": 100,
+			"rate": 0.11,
+			"interval": [
+				0.06254196354238989,
+				0.186312965103864
+			]
+		},
+		"parseLevelRoleMoved": {
+			"background": {
+				"successes": 12,
+				"trials": 100,
+				"rate": 0.12,
+				"interval": [
+					0.06999406433989024,
+					0.1981209943410751
+				]
+			},
+			"surface": {
+				"successes": 11,
+				"trials": 100,
+				"rate": 0.11,
+				"interval": [
+					0.06254196354238989,
+					0.186312965103864
+				]
+			},
+			"foreground": {
+				"successes": 35,
+				"trials": 100,
+				"rate": 0.35,
+				"interval": [
+					0.2636424823679767,
+					0.4474555671113517
+				]
+			},
+			"accent": {
+				"successes": 45,
+				"trials": 100,
+				"rate": 0.45,
+				"interval": [
+					0.3561453797236609,
+					0.547553970102782
+				]
+			}
+		},
+		"roleSupplyingNodeIdentityChanged": {
+			"background": {
+				"successes": 13,
+				"trials": 100,
+				"rate": 0.13,
+				"interval": [
+					0.07757167424012741,
+					0.2098035144755494
+				]
+			},
+			"surface": {
+				"successes": 17,
+				"trials": 100,
+				"rate": 0.17,
+				"interval": [
+					0.10893566110108874,
+					0.2554800477534338
+				]
+			},
+			"foreground": {
+				"successes": 35,
+				"trials": 100,
+				"rate": 0.35,
+				"interval": [
+					0.2636424823679767,
+					0.4474555671113517
+				]
+			},
+			"accent": {
+				"successes": 48,
+				"trials": 100,
+				"rate": 0.48,
+				"interval": [
+					0.3846455175070573,
+					0.5768342224235198
+				]
+			}
+		},
+		"roleStageMechanisms": {
+			"markNodeLimitSurvival": {
+				"constant": "MARK_NODE_LIMIT",
+				"value": 64,
+				"note": "share of the left side's top-MARK_NODE_LIMIT marks whose matched counterpart is also inside the right side's top-MARK_NODE_LIMIT — the truncation's own churn",
+				"successes": 5750,
+				"trials": 6381,
+				"rate": 0.9011126782635951,
+				"interval": [
+					0.8935453182850621,
+					0.9081973769737381
+				]
+			},
+			"groundChainMembershipSurvival": {
+				"note": "share of the left ground chain's nodes whose counterpart is on the right ground chain — decides which nodes are excluded from the mark population",
+				"successes": 1819,
+				"trials": 1932,
+				"rate": 0.9415113871635611,
+				"interval": [
+					0.9301451086272975,
+					0.9511254066936364
+				]
+			},
+			"groundChainLengthChanged": {
+				"successes": 69,
+				"trials": 100,
+				"rate": 0.69,
+				"interval": [
+					0.5937394427244838,
+					0.7722030279350336
+				]
+			},
+			"fieldMarkClassFlip": {
+				"constant": "FIELD_AREA_FRACTION",
+				"note": "matched nodes that cross the field/mark boundary between the two sides",
+				"successes": 4,
+				"trials": 65800,
+				"rate": 0.000060790273556231004,
+				"interval": [
+					0.000023640396099089072,
+					0.00015631047856675095
+				]
+			}
+		}
+	},
+	"attribution": {
+		"denominator": 66,
+		"marginalShares": {
+			"c-winner": {
+				"covers": 54,
+				"share": 0.8181818181818182
+			},
+			"e-repair": {
+				"covers": 19,
+				"share": 0.2878787878787879
+			},
+			"a-node-set": {
+				"covers": 17,
+				"share": 0.25757575757575757
+			},
+			"b-repr": {
+				"covers": 10,
+				"share": 0.15151515151515152
+			}
+		},
+		"combinations": {
+			"c-winner": {
+				"covers": 26,
+				"share": 0.3939393939393939
+			},
+			"c-winner+e-repair": {
+				"covers": 13,
+				"share": 0.19696969696969696
+			},
+			"a-node-set": {
+				"covers": 7,
+				"share": 0.10606060606060606
+			},
+			"a-node-set+c-winner": {
+				"covers": 7,
+				"share": 0.10606060606060606
+			},
+			"b-repr": {
+				"covers": 4,
+				"share": 0.06060606060606061
+			},
+			"a-node-set+c-winner+e-repair": {
+				"covers": 3,
+				"share": 0.045454545454545456
+			},
+			"b-repr+c-winner": {
+				"covers": 3,
+				"share": 0.045454545454545456
+			},
+			"b-repr+c-winner+e-repair": {
+				"covers": 2,
+				"share": 0.030303030303030304
+			},
+			"b-repr+e-repair": {
+				"covers": 1,
+				"share": 0.015151515151515152
+			}
+		},
+		"roleLevelStageCounts": {
+			"a-node-set": {
+				"accent": 6,
+				"background": 4,
+				"foreground": 7,
+				"surface": 5
+			},
+			"b-repr": {
+				"background": 3,
+				"foreground": 6,
+				"surface": 1
+			},
+			"c-winner": {
+				"accent": 35,
+				"background": 5,
+				"foreground": 31,
+				"surface": 5
+			}
+		},
+		"repairWalkInvolved": {
+			"successes": 19,
+			"trials": 66,
+			"rate": 0.2878787878787879,
+			"interval": [
+				0.19271949973348665,
+				0.4063724941866015
+			]
+		}
+	},
+	"failures": [
+		{
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"sourcePath": "00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 464,
+				"right": 457,
+				"matched": 423
+			},
+			"worstRoleBarRatio": 20.5164247052447,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#202020",
+					"right": "#373736",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 103,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 37,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#737373",
+					"right": "#1b1b1a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 190,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 4,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 119,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 3,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000032e13011a9fa582ddae9",
+			"sourcePath": "00/ab67616d0000b273000032e13011a9fa582ddae9.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 698,
+				"right": 684,
+				"matched": 635
+			},
+			"worstRoleBarRatio": 6.303220731475325,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#46663d",
+					"right": "#70906a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 195,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 396,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#673a37",
+					"right": "#6d3f40",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 159,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 165,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "000050c638f9c59f77f3057b",
+			"sourcePath": "00/ab67616d00001e02000050c638f9c59f77f3057b.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 655,
+				"right": 655,
+				"matched": 611
+			},
+			"worstRoleBarRatio": 5.741861504086968,
+			"stages": [
+				"b-repr",
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#121315",
+					"right": "#151516",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 18,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 23,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #121315->#151516",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#545452",
+					"right": "#636360",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 338,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 396,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "00009a5acf9fb19544298ce4",
+			"sourcePath": "00/ab67616d00001e0200009a5acf9fb19544298ce4.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 825,
+				"right": 840,
+				"matched": 802
+			},
+			"worstRoleBarRatio": 30.22625611053316,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#444444",
+					"right": "#414142",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 300,
+						"detail": "cluster:textness-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 308,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#b5b5b5",
+					"right": "#29292a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 626,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 202,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00015083990110d3b1a4ea8a",
+			"sourcePath": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1391,
+				"right": 1411,
+				"matched": 1298
+			},
+			"worstRoleBarRatio": 6.435417160570211,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#b9a9b6",
+					"right": "#99889b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 727,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 441,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0002875c482df56c656a8605",
+			"sourcePath": "02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 639,
+				"right": 611,
+				"matched": 570
+			},
+			"worstRoleBarRatio": 1.3492575724688882,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#dbd2c1",
+					"right": "#e5d8c6",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 560,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 555,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"sourcePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 2307,
+				"right": 2313,
+				"matched": 2225
+			},
+			"worstRoleBarRatio": 15.731565833091729,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#2a2a2a",
+					"right": "#505051",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 1332,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 1402,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0003a265ad51246f00035a87",
+			"sourcePath": "03/ab67616d00001e020003a265ad51246f00035a87.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1570,
+				"right": 1593,
+				"matched": 1511
+			},
+			"worstRoleBarRatio": 26.92857671803555,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#767676",
+					"right": "#090701",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 786,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 142,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#0327b9",
+					"right": "#867c24",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 445,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 821,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0003b47953afcf59a8fd8ec1",
+			"sourcePath": "03/ab67616d0000b2730003b47953afcf59a8fd8ec1.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 836,
+				"right": 822,
+				"matched": 769
+			},
+			"worstRoleBarRatio": 1.0169263690198778,
+			"stages": [
+				"b-repr"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#846354",
+					"right": "#8b604c",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 119,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 117,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #846354->#8b604c",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0003e50500c5d762da89643a",
+			"sourcePath": "03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 256,
+				"right": 251,
+				"matched": 238
+			},
+			"worstRoleBarRatio": 15.600405053697607,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#384939",
+					"right": "#2a3113",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 156,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 99,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#a9b18a",
+					"right": "#3d4a1d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 238,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 156,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00040defaf772cad7a1738ce",
+			"sourcePath": "04/ab67616d0000b27300040defaf772cad7a1738ce",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 401,
+				"right": 407,
+				"matched": 362
+			},
+			"worstRoleBarRatio": 2.1500503201465953,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#886794",
+					"right": "#735e84",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 267,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 228,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "0004331eeb10a918e94a8158",
+			"sourcePath": "04/ab67616d0000b2730004331eeb10a918e94a8158",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 526,
+				"right": 534,
+				"matched": 485
+			},
+			"worstRoleBarRatio": 17.47460375983682,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#e6ab9b",
+					"right": "#593c4f",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 478,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 176,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#ad6364",
+					"right": "#d09785",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 358,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 453,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000442caec7ec8cb724bf265",
+			"sourcePath": "04/ab67616d0000b273000442caec7ec8cb724bf265",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 357,
+				"right": 356,
+				"matched": 342
+			},
+			"worstRoleBarRatio": 7.596368730207592,
+			"stages": [
+				"a-node-set",
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#0e240f",
+					"right": "#21431d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 8,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 33,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#49d915",
+					"right": "#46d01c",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 285,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 270,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"sourcePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 804,
+				"right": 803,
+				"matched": 721
+			},
+			"worstRoleBarRatio": 2.2821885012190863,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#517c35",
+					"right": "#597029",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 492,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 493,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000535cf7b987bd9309aad76",
+			"sourcePath": "05/ab67616d0000b273000535cf7b987bd9309aad76",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "laminar",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 313,
+				"right": 312,
+				"matched": 299
+			},
+			"worstRoleBarRatio": 13.102614552791152,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#e9a78d",
+					"right": "#27798d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 278,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 149,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0005a54a9ea60f48619788f1",
+			"sourcePath": "05/ab67616d00001e020005a54a9ea60f48619788f1",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "partitioned",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 196,
+				"right": 192,
+				"matched": 187
+			},
+			"worstRoleBarRatio": 9.499297647998407,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#8b0303",
+					"right": "#810305",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 8,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#760807",
+					"right": "#b70101",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 2,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 22,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#9a0000",
+					"right": "#ba064f",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 12,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 25,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "00060491ade88c8893373d9f",
+			"sourcePath": "06/ab67616d00001e0200060491ade88c8893373d9f",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 957,
+				"right": 974,
+				"matched": 909
+			},
+			"worstRoleBarRatio": 6.175726803092364,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#422215",
+					"right": "#5e3920",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 287,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 169,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#9a99a1",
+					"right": "#93939e",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 802,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 754,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0006b216e59acf2101a3a108",
+			"sourcePath": "06/ab67616d0000b2730006b216e59acf2101a3a108",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 326,
+				"right": 335,
+				"matched": 300
+			},
+			"worstRoleBarRatio": 11.13116021324507,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#809f9a",
+					"right": "#8ea39b",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 111,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#d5c0af",
+					"right": "#779791",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 169,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 5,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0006e4c44b252d14cbeea729",
+			"sourcePath": "06/ab67616d0000b2730006e4c44b252d14cbeea729",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 1090,
+				"right": 1093,
+				"matched": 1009
+			},
+			"worstRoleBarRatio": 3.2381469846518183,
+			"stages": [
+				"b-repr",
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#1b5352",
+					"right": "#1b5637",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 217,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 210,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #1b5352->#1b5637",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#69d206",
+					"right": "#7be005",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 874,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 954,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0007960724fb77c8041c6c13",
+			"sourcePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1233,
+				"right": 1259,
+				"matched": 1116
+			},
+			"worstRoleBarRatio": 14.543754604466711,
+			"stages": [
+				"b-repr"
+			],
+			"roles": [
+				{
+					"role": "surface",
+					"left": "#24626f",
+					"right": "#992263",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 12,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 10,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #24626f->#992263",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00087b1314ac8e17bc1c6916",
+			"sourcePath": "08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 926,
+				"right": 923,
+				"matched": 865
+			},
+			"worstRoleBarRatio": 1.4130415279692636,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#c0724b",
+					"right": "#b36a49",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 660,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 603,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00088460068752fad04f8541",
+			"sourcePath": "08/ab67616d0000b27300088460068752fad04f8541",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "partitioned",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 759,
+				"right": 752,
+				"matched": 707
+			},
+			"worstRoleBarRatio": 26.932588075106597,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#000000",
+					"right": "#000100",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#e23dd5",
+					"right": "#030302",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 433,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 5,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#f4f2f5",
+					"right": "#f388ef",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 744,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 523,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0008c1c08433aa880aad7f30",
+			"sourcePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 1011,
+				"right": 1007,
+				"matched": 937
+			},
+			"worstRoleBarRatio": 26.33372959645524,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#8a5f4f",
+					"right": "#534f4d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 440,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 579,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#595451",
+					"right": "#c7dcd6",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 559,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 924,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0008d17e6d90b6ea6f205ca5",
+			"sourcePath": "08/ab67616d0000b2730008d17e6d90b6ea6f205ca5",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "laminar",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 287,
+				"right": 286,
+				"matched": 249
+			},
+			"worstRoleBarRatio": 47.66261202418289,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#5a676d",
+					"right": "#000101",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 132,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#000000",
+					"right": "#010100",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 7,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00091553804dd4afd867f92d",
+			"sourcePath": "09/ab67616d0000b27300091553804dd4afd867f92d",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 198,
+				"right": 202,
+				"matched": 181
+			},
+			"worstRoleBarRatio": 26.49306233042257,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#000000",
+					"right": "#000101",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#bf816c",
+					"right": "#000101",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 60,
+						"detail": "partitioned:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000955ccfc1e8da97a09b32d",
+			"sourcePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "partitioned",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 1159,
+				"right": 1161,
+				"matched": 1128
+			},
+			"worstRoleBarRatio": 1.2862322231548495,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#b4913f",
+					"right": "#a58e31",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 974,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 977,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00096caf5834cc57c8b2ec6a",
+			"sourcePath": "09/ab67616d0000b27300096caf5834cc57c8b2ec6a",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 613,
+				"right": 629,
+				"matched": 580
+			},
+			"worstRoleBarRatio": 10.516427937117836,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#2f221a",
+					"right": "#2c1f16",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 28,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 37,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#91918f",
+					"right": "#655d5b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 376,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 219,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00097e55f9a93ceb03afa4b2",
+			"sourcePath": "09/ab67616d0000b27300097e55f9a93ceb03afa4b2",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1304,
+				"right": 1309,
+				"matched": 1191
+			},
+			"worstRoleBarRatio": 3.3829390713379994,
+			"stages": [
+				"b-repr",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#57869a",
+					"right": "#2b84c7",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 10,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 10,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #57869a->#2b84c7",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#1c8df5",
+					"right": "#20a1fb",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 604,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 844,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00099f4221cf6ed5f2440904",
+			"sourcePath": "09/ab67616d0000b27300099f4221cf6ed5f2440904",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 446,
+				"right": 434,
+				"matched": 378
+			},
+			"worstRoleBarRatio": 4.9568818219993025,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "surface",
+					"left": "#4b3730",
+					"right": "#4e3b34",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 15,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 7,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#232732",
+					"right": "#1d232e",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 140,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 141,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#496684",
+					"right": "#6a87a8",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 250,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 336,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000a2927c0f27657e4a2aeaa",
+			"sourcePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 433,
+				"right": 436,
+				"matched": 366
+			},
+			"worstRoleBarRatio": 1.074010998601925,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#100000",
+					"right": "#0e0001",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 167,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 143,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000a8aa1dafa651976a7bb44",
+			"sourcePath": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 307,
+				"right": 301,
+				"matched": 299
+			},
+			"worstRoleBarRatio": 13.877417791939918,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#0a0501",
+					"right": "#100701",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 0,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 9,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#47220f",
+					"right": "#090401",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 27,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 3,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#ad3b05",
+					"right": "#551d01",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 105,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 24,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "000a8f5a7c2d213002fcd591",
+			"sourcePath": "0a/ab67616d0000b273000a8f5a7c2d213002fcd591",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 309,
+				"right": 309,
+				"matched": 274
+			},
+			"worstRoleBarRatio": 9.940950657749143,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#1d3b53",
+					"right": "#44666e",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 69,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 41,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000ad40f7a92f3abf74f4683",
+			"sourcePath": "0a/ab67616d00001e02000ad40f7a92f3abf74f4683",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 463,
+				"right": 452,
+				"matched": 419
+			},
+			"worstRoleBarRatio": 13.904110803729665,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#746d5a",
+					"right": "#b1b1b0",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 116,
+						"detail": "cluster:textness-rank",
+						"poolRank": 5,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 14,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#7b4e37",
+					"right": "#845137",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 173,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 161,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "000b096d3b136724b642aa5f",
+			"sourcePath": "0b/ab67616d0000b273000b096d3b136724b642aa5f",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 689,
+				"right": 691,
+				"matched": 650
+			},
+			"worstRoleBarRatio": 2.2144503328505447,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#15689a",
+					"right": "#115d9a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 569,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 571,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000b096f0b03b7745c8e8aab",
+			"sourcePath": "0b/ab67616d00001e02000b096f0b03b7745c8e8aab",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 953,
+				"right": 967,
+				"matched": 916
+			},
+			"worstRoleBarRatio": 19.437560642762605,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#041704",
+					"right": "#68956f",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 144,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 642,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "000b18d965d30345a2754191",
+			"sourcePath": "0b/ab67616d00001e02000b18d965d30345a2754191",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 490,
+				"right": 499,
+				"matched": 445
+			},
+			"worstRoleBarRatio": 4.3531429806560915,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#23210c",
+					"right": "#312911",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 64,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 51,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000b480364ef6c3aff386053",
+			"sourcePath": "0b/ab67616d0000b273000b480364ef6c3aff386053",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "partitioned",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 1043,
+				"right": 1042,
+				"matched": 999
+			},
+			"worstRoleBarRatio": 6.377179462374085,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#a8867d",
+					"right": "#e0afa1",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 906,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 1030,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000b75c06d09ada3ace2444f",
+			"sourcePath": "0b/ab67616d00001e02000b75c06d09ada3ace2444f",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 199,
+				"right": 192,
+				"matched": 171
+			},
+			"worstRoleBarRatio": 3.6549686484574,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#5b6f78",
+					"right": "#4e6671",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 91,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 86,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000bbde870e72bad18fe5294",
+			"sourcePath": "0b/ab67616d00001e02000bbde870e72bad18fe5294",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1222,
+				"right": 1224,
+				"matched": 1125
+			},
+			"worstRoleBarRatio": 3.396933963994073,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#ad85ff",
+					"right": "#8286e2",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 1073,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 1066,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000c42c61ba60f69e5a40a29",
+			"sourcePath": "0c/ab67616d0000b273000c42c61ba60f69e5a40a29",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 147,
+				"right": 151,
+				"matched": 142
+			},
+			"worstRoleBarRatio": 26.443011852002762,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#aeacb1",
+					"right": "#522700",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 111,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 2,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 22,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "000c5e69af1d6ce16e2b1a61",
+			"sourcePath": "0c/ab67616d0000b273000c5e69af1d6ce16e2b1a61",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1261,
+				"right": 1284,
+				"matched": 1166
+			},
+			"worstRoleBarRatio": 9.019233995292728,
+			"stages": [
+				"b-repr",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#4c150e",
+					"right": "#2a2b27",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 237,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 237,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #4c150e->#2a2b27",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#212d45",
+					"right": "#622c1f",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 221,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 486,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000d41c621d332f12577e297",
+			"sourcePath": "0d/ab67616d0000b273000d41c621d332f12577e297",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 812,
+				"right": 797,
+				"matched": 740
+			},
+			"worstRoleBarRatio": 8.040601534183772,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#594230",
+					"right": "#8c593b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 164,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 25,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000da5eb20908c039d6bed4b",
+			"sourcePath": "0d/ab67616d00001e02000da5eb20908c039d6bed4b",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 315,
+				"right": 318,
+				"matched": 293
+			},
+			"worstRoleBarRatio": 14.060907848358962,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#8f2235",
+					"right": "#145c58",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 133,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 135,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000ec9e3bb9ee4fc008b018e",
+			"sourcePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 597,
+				"right": 594,
+				"matched": 564
+			},
+			"worstRoleBarRatio": 4.212654995556796,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#795c6e",
+					"right": "#7c6a79",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 335,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 489,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#37353a",
+					"right": "#333237",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 430,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 420,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "000f58de113c422ff527621a",
+			"sourcePath": "0f/ab67616d0000b273000f58de113c422ff527621a",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 841,
+				"right": 817,
+				"matched": 781
+			},
+			"worstRoleBarRatio": 1.738804121908062,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#020202",
+					"right": "#010301",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 7,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 9,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "both-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#010300",
+					"right": "#000400",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 5,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 23,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#48972e",
+					"right": "#3b8d2c",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 539,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 479,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00103a3729bf589e0dc913ab",
+			"sourcePath": "10/ab67616d0000b27300103a3729bf589e0dc913ab",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 750,
+				"right": 746,
+				"matched": 694
+			},
+			"worstRoleBarRatio": 30.410322293780283,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#5a401b",
+					"right": "#654716",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 38,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 6,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#90a8b2",
+					"right": "#0c1d28",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 630,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 216,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "001063830a2e597293293797",
+			"sourcePath": "10/ab67616d0000b273001063830a2e597293293797",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 108,
+				"right": 99,
+				"matched": 83
+			},
+			"worstRoleBarRatio": 3.7450421162847434,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#6e92a0",
+					"right": "#5e7f8f",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 106,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 93,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "00106c3252a4c133c0abde36",
+			"sourcePath": "10/ab67616d00001e0200106c3252a4c133c0abde36",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "flat",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 243,
+				"right": 265,
+				"matched": 238
+			},
+			"worstRoleBarRatio": 39.10981420363292,
+			"stages": [
+				"a-node-set",
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#000000",
+					"right": "#010100",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 21,
+						"detail": "flat:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "surface",
+					"left": "#000000",
+					"right": "#010100",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 21,
+						"detail": "flat:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 1,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#888888",
+					"right": "#fefeff",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 176,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 13,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#cfcfcf",
+					"right": "#1a1a1b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 215,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 90,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "0010b864b2a925ec6bfaa30e",
+			"sourcePath": "10/ab67616d00001e020010b864b2a925ec6bfaa30e",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 806,
+				"right": 808,
+				"matched": 693
+			},
+			"worstRoleBarRatio": 1.0334456136125552,
+			"stages": [
+				"b-repr"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#44327e",
+					"right": "#4b2f7a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 51,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 52,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #44327e->#4b2f7a",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0010c158d73707fcc525c6fa",
+			"sourcePath": "10/ab67616d0000b2730010c158d73707fcc525c6fa",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1806,
+				"right": 1819,
+				"matched": 1669
+			},
+			"worstRoleBarRatio": 2.728864694257229,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#e9c1b9",
+					"right": "#dbaba0",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 1605,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 1484,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00112616baa5515c8c43aee1",
+			"sourcePath": "11/ab67616d0000b27300112616baa5515c8c43aee1",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 322,
+				"right": 331,
+				"matched": 299
+			},
+			"worstRoleBarRatio": 12.54532077422974,
+			"stages": [
+				"a-node-set",
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#0b2420",
+					"right": "#152926",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 51,
+						"detail": "cluster:textness-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 44,
+						"detail": "cluster:textness-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#5f7d75",
+					"right": "#b1b3b3",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 278,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 200,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00116380305ae5fd3607c43b",
+			"sourcePath": "11/ab67616d0000b27300116380305ae5fd3607c43b",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 383,
+				"right": 381,
+				"matched": 352
+			},
+			"worstRoleBarRatio": 2.298854934643592,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#55d1b7",
+					"right": "#61beb4",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 216,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 210,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0011a326091e7dd7df58b175",
+			"sourcePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 700,
+				"right": 692,
+				"matched": 612
+			},
+			"worstRoleBarRatio": 11.985467344435444,
+			"stages": [
+				"a-node-set",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#34677c",
+					"right": "#18353c",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 478,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 212,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "left-unmatched",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#2682a9",
+					"right": "#438da7",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 564,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 598,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "001253d4cf85e9c5b8a03c30",
+			"sourcePath": "12/ab67616d00001e02001253d4cf85e9c5b8a03c30",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 123,
+				"right": 122,
+				"matched": 109
+			},
+			"worstRoleBarRatio": 10.899427853769401,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#59545a",
+					"right": "#3b3b3a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 80,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 105,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 4,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "00127e4552b22c761d50c8f5",
+			"sourcePath": "12/ab67616d0000b27300127e4552b22c761d50c8f5",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 754,
+				"right": 738,
+				"matched": 687
+			},
+			"worstRoleBarRatio": 3.5042893773105086,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#c2b1aa",
+					"right": "#ca937e",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 608,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 493,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#a75339",
+					"right": "#a04b36",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 355,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 340,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "00139c3eeb59e40dba08f5a1",
+			"sourcePath": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "laminar",
+				"right": "laminar"
+			},
+			"nodes": {
+				"left": 380,
+				"right": 359,
+				"matched": 333
+			},
+			"worstRoleBarRatio": 3.96541083294606,
+			"stages": [
+				"b-repr"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#000000",
+					"right": "#000001",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 375,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 312,
+						"detail": "laminar:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #000000->#000001",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "001451433a69e4375a672eef",
+			"sourcePath": "14/ab67616d0000b273001451433a69e4375a672eef",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 269,
+				"right": 265,
+				"matched": 242
+			},
+			"worstRoleBarRatio": 10.443292719418677,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#413f40",
+					"right": "#5b595d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 64,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 36,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#5d585e",
+					"right": "#47444a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 40,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 2,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 54,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0014aa98ded28b8d90e69570",
+			"sourcePath": "14/ab67616d00001e020014aa98ded28b8d90e69570",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1076,
+				"right": 1049,
+				"matched": 966
+			},
+			"worstRoleBarRatio": 1.524229373277248,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "accent",
+					"left": "#ce0533",
+					"right": "#c4002b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 770,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 717,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "0014cb7f2229ff8195e3ba04",
+			"sourcePath": "14/ab67616d0000b2730014cb7f2229ff8195e3ba04",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 132,
+				"right": 121,
+				"matched": 109
+			},
+			"worstRoleBarRatio": 43.31024801484059,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#050402",
+					"right": "#606673",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 30,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 84,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#1f0d03",
+					"right": "#2b1308",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 13,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 7,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, a repr also moved",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "2471aa05e380a0446bde926a1a53146b",
+			"sourcePath": "music-artworks/2/4/7/2471aa05e380a0446bde926a1a53146b.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 854,
+				"right": 826,
+				"matched": 770
+			},
+			"worstRoleBarRatio": 3.157041612744053,
+			"stages": [
+				"b-repr",
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "background",
+					"left": "#070101",
+					"right": "#020205",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 33,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 22,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #070101->#020205",
+					"repaired": false
+				},
+				{
+					"role": "foreground",
+					"left": "#5d4016",
+					"right": "#664e1d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 460,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 475,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "266c6365bde8d74f42e9f603845c7491",
+			"sourcePath": "music-artworks/2/6/6/266c6365bde8d74f42e9f603845c7491.jpeg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1570,
+				"right": 1591,
+				"matched": 1436
+			},
+			"worstRoleBarRatio": 9.961955581721197,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#444245",
+					"right": "#535155",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 154,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 89,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#232323",
+					"right": "#0e0e0d",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 328,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 491,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "354da14706eda8162aa16e1b8e3a30f5",
+			"sourcePath": "music-artworks/3/5/4/354da14706eda8162aa16e1b8e3a30f5.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1113,
+				"right": 1131,
+				"matched": 1066
+			},
+			"worstRoleBarRatio": 1.0214976577909265,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#c1c3c2",
+					"right": "#c9c7c7",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 910,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 941,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "3871a29a60651eb65e6ba7f31f7f899f",
+			"sourcePath": "music-artworks/3/8/7/3871a29a60651eb65e6ba7f31f7f899f.jpg",
+			"reviewedness": "reviewed",
+			"verdict": {
+				"left": "partitioned",
+				"right": "partitioned"
+			},
+			"nodes": {
+				"left": 213,
+				"right": 207,
+				"matched": 200
+			},
+			"worstRoleBarRatio": 2.0756105479788123,
+			"stages": [
+				"b-repr",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#524535",
+					"right": "#50402a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 126,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 120,
+						"detail": "cluster:textness-rank",
+						"poolRank": 1,
+						"repaired": true
+					},
+					"stage": "b-repr",
+					"note": "same-region repr #524535->#50402a",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "4115082eec18ceb6f02800d6f88523ba",
+			"sourcePath": "music-artworks/4/1/1/4115082eec18ceb6f02800d6f88523ba.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1033,
+				"right": 1027,
+				"matched": 947
+			},
+			"worstRoleBarRatio": 12.467348313606568,
+			"stages": [
+				"c-winner"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#a7685f",
+					"right": "#3a2a2b",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 636,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 123,
+						"detail": "cluster:textness-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				},
+				{
+					"role": "accent",
+					"left": "#90514a",
+					"right": "#9b554e",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 513,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 1,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 552,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 0,
+						"repaired": false
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": false
+				}
+			]
+		},
+		{
+			"artworkId": "8cb054bbb6f33407425c93e120a9b193",
+			"sourcePath": "music-artworks/8/c/b/8cb054bbb6f33407425c93e120a9b193.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 622,
+				"right": 621,
+				"matched": 561
+			},
+			"worstRoleBarRatio": 16.221186195694283,
+			"stages": [
+				"c-winner",
+				"e-repair"
+			],
+			"roles": [
+				{
+					"role": "foreground",
+					"left": "#afafaf",
+					"right": "#b6b6b5",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 490,
+						"detail": "cluster:textness-rank",
+						"poolRank": 2,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 514,
+						"detail": "cluster:textness-rank",
+						"poolRank": 3,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				},
+				{
+					"role": "accent",
+					"left": "#979797",
+					"right": "#4b4b4a",
+					"leftSource": {
+						"tag": "cluster",
+						"nodeId": 396,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 3,
+						"repaired": true
+					},
+					"rightSource": {
+						"tag": "cluster",
+						"nodeId": 110,
+						"detail": "cluster:chroma-rank",
+						"poolRank": 4,
+						"repaired": true
+					},
+					"stage": "c-winner",
+					"note": "identity-swap, both reprs held",
+					"repaired": true
+				}
+			]
+		},
+		{
+			"artworkId": "b3fae10d59aa74b6c3699562966e1bc1",
+			"sourcePath": "music-artworks/b/3/f/b3fae10d59aa74b6c3699562966e1bc1.jpg",
+			"reviewedness": "unseen",
+			"verdict": {
+				"left": "unreadable",
+				"right": "unreadable"
+			},
+			"nodes": {
+				"left": 1589,
+				"right": 1595,
+				"matched": 1483
+			},
+			"worstRoleBarRatio": 4.860987305301193,
+			"stages": [
+				"a-node-set"
+			],
+			"roles": [
+				{
+					"role": "surface",
+					"left": "#442b24",
+					"right": "#2f3035",
+					"leftSource": {
+						"tag": "node",
+						"nodeId": 115,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"rightSource": {
+						"tag": "node",
+						"nodeId": 97,
+						"detail": "unreadable:field-role",
+						"poolRank": null,
+						"repaired": false
+					},
+					"stage": "a-node-set",
+					"note": "right-unmatched",
+					"repaired": false
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,5726 @@
+{
+	"what": "Is the p2-tos laminarity cut publishing phantom gradients? A 77-cell sweep against the legacy gradient labels, plus the verdict-distribution shift.",
+	"studyVersion": "p2-tos-q2-laminarity-0.1.0",
+	"measurementState": {
+		"pinnedCommit": "4d7c9d89e316c4ac006917a3aedf1d9f428444c9",
+		"files": [
+			{
+				"file": "pipeline.ts",
+				"pinnedBlob": "99706e2b3e79",
+				"workingBlob": "2c5fd8cc5295",
+				"changedSincePin": true
+			},
+			{
+				"file": "tree.ts",
+				"pinnedBlob": "dc33d16c2d26",
+				"workingBlob": "dc33d16c2d26",
+				"changedSincePin": false
+			},
+			{
+				"file": "constants.ts",
+				"pinnedBlob": "edb5268011e3",
+				"workingBlob": "edb5268011e3",
+				"changedSincePin": false
+			},
+			{
+				"file": "candidate.ts",
+				"pinnedBlob": "52f80a911dfc",
+				"workingBlob": "9166e0cd24bb",
+				"changedSincePin": true
+			}
+		],
+		"anyChanged": true,
+		"note": "Measurements were taken against the pinned blobs. `q1-dither/trace.ts` asserts its re-derivation of the role stage against the pipeline's own published pools on every image, so a run against a rewritten role stage fails loudly instead of producing a plausible wrong number — the 100/100 clean traces are the proof that the pinned code is what ran."
+	},
+	"inputs": {
+		"geometry": "research/v3/prototypes/p2-tree/tos/stability/q2-laminarity/out/geometry.jsonl",
+		"labels": "research/v3/prototypes/p2-tree/tos/stability/q2-laminarity/out/labels.json",
+		"legacyFile": "/Users/Flo/GitHub/palette/.worktrees/p2-tree/research/v3/data/legacy/endorsements.json"
+	},
+	"labelAvailability": {
+		"endorsedArtworks": 173,
+		"unanimousLabel": 137,
+		"usableAfterRecencyResolution": 144,
+		"noGradientStateRecorded": 29,
+		"contested": 7,
+		"joinedToARunnableCover": 144,
+		"legacyRampCount": 68,
+		"legacyFlatCount": 76,
+		"majorityClassBaseline": 0.5277777777777778,
+		"note": "`palette.gradient: null` in the legacy source means *not recorded* (the entry's own paletteSignature spells it `g?`), never *no gradient*. src/adjudication/evidence.ts deliberately drops the field, so the boolean is read from data/legacy/endorsements.json joined on entryId; see labels.ts."
+	},
+	"coverageGate": {
+		"constant": "UNREADABLE_COVERAGE_FRACTION",
+		"value": 0.5,
+		"note": "Not swept (the brief names only the two laminarity constants). It runs BEFORE the laminarity test, so these covers are unreachable by any cell of this grid.",
+		"coversGatedOut": 124,
+		"coversTotal": 192,
+		"labelledCoversGatedOut": 93,
+		"labelledRampsGatedOut": 52
+	},
+	"currentPoint": {
+		"laminarityCut": 0.15,
+		"monotoneMigrationFraction": 0.8
+	},
+	"reviewerFlaggedPhantom": {
+		"found": true,
+		"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+		"reviewerVerdict": "flat, not a gradient (round-1-tree-families, p2-tos side)",
+		"laminarity": 0.023364051846283596,
+		"monotonicity": 0.8158094093228095,
+		"coverage": 0.9191777777777778,
+		"chainLength": 18,
+		"readsAsGradientAt": [
+			"lc=0.04|mm=0.5",
+			"lc=0.04|mm=0.6",
+			"lc=0.04|mm=0.7",
+			"lc=0.04|mm=0.8",
+			"lc=0.06|mm=0.5",
+			"lc=0.06|mm=0.6",
+			"lc=0.06|mm=0.7",
+			"lc=0.06|mm=0.8",
+			"lc=0.08|mm=0.5",
+			"lc=0.08|mm=0.6",
+			"lc=0.08|mm=0.7",
+			"lc=0.08|mm=0.8",
+			"lc=0.1|mm=0.5",
+			"lc=0.1|mm=0.6",
+			"lc=0.1|mm=0.7",
+			"lc=0.1|mm=0.8",
+			"lc=0.125|mm=0.5",
+			"lc=0.125|mm=0.6",
+			"lc=0.125|mm=0.7",
+			"lc=0.125|mm=0.8",
+			"lc=0.15|mm=0.5",
+			"lc=0.15|mm=0.6",
+			"lc=0.15|mm=0.7",
+			"lc=0.15|mm=0.8",
+			"lc=0.175|mm=0.5",
+			"lc=0.175|mm=0.6",
+			"lc=0.175|mm=0.7",
+			"lc=0.175|mm=0.8",
+			"lc=0.2|mm=0.5",
+			"lc=0.2|mm=0.6",
+			"lc=0.2|mm=0.7",
+			"lc=0.2|mm=0.8",
+			"lc=0.25|mm=0.5",
+			"lc=0.25|mm=0.6",
+			"lc=0.25|mm=0.7",
+			"lc=0.25|mm=0.8",
+			"lc=0.3|mm=0.5",
+			"lc=0.3|mm=0.6",
+			"lc=0.3|mm=0.7",
+			"lc=0.3|mm=0.8"
+		],
+		"note": "Its straightness residual is far inside every LAMINARITY_CUT on the grid, so no value of that constant refuses it. Its centroid monotonicity sits just above the current MONOTONE_MIGRATION_FRACTION — the reviewer's phantom is a monotonicity call, not a laminarity call."
+	},
+	"grid": {
+		"laminarityCut": [
+			0.02,
+			0.04,
+			0.06,
+			0.08,
+			0.1,
+			0.125,
+			0.15,
+			0.175,
+			0.2,
+			0.25,
+			0.3
+		],
+		"monotoneMigrationFraction": [
+			0.5,
+			0.6,
+			0.7,
+			0.8,
+			0.9,
+			0.95,
+			1
+		],
+		"size": 77
+	},
+	"multiplicity": {
+		"ok": true,
+		"cells": [
+			{
+				"id": "lc=0.02|mm=0.5",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=0.6",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=0.7",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=0.8",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=0.9",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=0.95",
+				"rawPValue": 0.6621691101102664,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.02|mm=1",
+				"rawPValue": 0.5338507270889798,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.5",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.6",
+				"rawPValue": 0.8207545898341747,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.7",
+				"rawPValue": 0.8207545898341747,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.8",
+				"rawPValue": 0.8207545898341747,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.9",
+				"rawPValue": 0.8610052137943106,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=0.95",
+				"rawPValue": 0.7207370606208435,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.04|mm=1",
+				"rawPValue": 0.5338507270889798,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.5",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.6",
+				"rawPValue": 0.8207545898341747,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.7",
+				"rawPValue": 0.8610052137943106,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.8",
+				"rawPValue": 0.8610052137943106,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.9",
+				"rawPValue": 0.8610052137943106,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=0.95",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.06|mm=1",
+				"rawPValue": 0.5338507270889798,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.5",
+				"rawPValue": 0.9878544858458443,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.6",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.7",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.8",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.9",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=0.95",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.08|mm=1",
+				"rawPValue": 0.4673734886907455,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.5",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.6",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.7",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.8",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.9",
+				"rawPValue": 0.8946180155575144,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=0.95",
+				"rawPValue": 0.6621691101102664,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.1|mm=1",
+				"rawPValue": 0.33876827001360743,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.5",
+				"rawPValue": 0.9878544858458443,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.6",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.7",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.8",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.9",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=0.95",
+				"rawPValue": 0.7207370606208435,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.125|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.5",
+				"rawPValue": 0.9814843940355182,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.6",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.7",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.8",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.9",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=0.95",
+				"rawPValue": 0.7207370606208435,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.15|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.5",
+				"rawPValue": 0.9878544858458443,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.6",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.7",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.8",
+				"rawPValue": 0.9600790384890059,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.9",
+				"rawPValue": 0.9219225975992289,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=0.95",
+				"rawPValue": 0.7207370606208435,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.175|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.5",
+				"rawPValue": 0.9922334128861903,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.6",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.7",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.8",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.9",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=0.95",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.2|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.5",
+				"rawPValue": 0.9922334128861903,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.6",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.7",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.8",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.9",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=0.95",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.25|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.5",
+				"rawPValue": 0.9922334128861903,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.6",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.7",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.8",
+				"rawPValue": 0.9724737586530809,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.9",
+				"rawPValue": 0.9434975099985615,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=0.95",
+				"rawPValue": 0.7738677818077031,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			},
+			{
+				"id": "lc=0.3|mm=1",
+				"rawPValue": 0.4017595910509283,
+				"adjustedPValue": 1,
+				"survivesCorrection": false
+			}
+		],
+		"best": {
+			"id": "lc=0.1|mm=1",
+			"rawPValue": 0.33876827001360743,
+			"adjustedPValue": 1,
+			"survivesCorrection": false,
+			"rankOutOf": 77
+		},
+		"survivorCount": 0,
+		"comparisonsRun": 77,
+		"cellsReported": 77,
+		"correction": "holm",
+		"alpha": 0.05,
+		"summary": "best of 77: lc=0.1|mm=1 raw p=0.3388, Holm p=1.0000 — does not survive at alpha=0.05; 0 of 77 survive",
+		"provenance": {
+			"method": "sweep of 77 comparisons, Holm, alpha=0.05",
+			"n": 77,
+			"inputs": {
+				"comparisonsRun": 77,
+				"cellsReported": 77,
+				"correction": "holm",
+				"alpha": 0.05,
+				"familyDefinition": "11 LAMINARITY_CUT values x 7 MONOTONE_MIGRATION_FRACTION values, declared in constants.ts before the grid was evaluated"
+			},
+			"corrections": [
+				"Holm across a family of 77"
+			],
+			"caveats": [
+				"family: 11 LAMINARITY_CUT values x 7 MONOTONE_MIGRATION_FRACTION values, declared in constants.ts before the grid was evaluated"
+			]
+		}
+	},
+	"cells": [
+		{
+			"id": "lc=0.02|mm=0.5",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 5,
+				"falseNegative": 67,
+				"trueNegative": 71
+			},
+			"phantomRate": {
+				"successes": 5,
+				"trials": 6,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.4364971775233289,
+					0.9699466302860857
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 3
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.02|mm=0.6",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 5,
+				"falseNegative": 67,
+				"trueNegative": 71
+			},
+			"phantomRate": {
+				"successes": 5,
+				"trials": 6,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.4364971775233289,
+					0.9699466302860857
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 3
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.02|mm=0.7",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 5,
+				"falseNegative": 67,
+				"trueNegative": 71
+			},
+			"phantomRate": {
+				"successes": 5,
+				"trials": 6,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.4364971775233289,
+					0.9699466302860857
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 3
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.02|mm=0.8",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 5,
+				"falseNegative": 67,
+				"trueNegative": 71
+			},
+			"phantomRate": {
+				"successes": 5,
+				"trials": 6,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.4364971775233289,
+					0.9699466302860857
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 23,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 2
+			},
+			"gradientsPublished": 2,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.02|mm=0.9",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 5,
+				"falseNegative": 67,
+				"trueNegative": 71
+			},
+			"phantomRate": {
+				"successes": 5,
+				"trials": 6,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.4364971775233289,
+					0.9699466302860857
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 23,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 2
+			},
+			"gradientsPublished": 2,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.02|mm=0.95",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 74,
+				"trials": 144,
+				"rate": 0.5138888888888888,
+				"interval": [
+					0.432961093360541,
+					0.5940949167176854
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 71,
+				"trials": 137,
+				"rate": 0.5182481751824818,
+				"interval": [
+					0.4352281581164903,
+					0.6002727522095355
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 3,
+				"falseNegative": 67,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 4,
+				"rate": 0.75,
+				"interval": [
+					0.3006418423283629,
+					0.9544127392428686
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 23,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 2
+			},
+			"gradientsPublished": 2,
+			"pValue": 0.6621691101102664
+		},
+		{
+			"id": "lc=0.02|mm=1",
+			"laminarityCut": 0.02,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 76,
+				"trials": 144,
+				"rate": 0.5277777777777778,
+				"interval": [
+					0.44658004384104516,
+					0.6075319763154079
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 73,
+				"trials": 137,
+				"rate": 0.5328467153284672,
+				"interval": [
+					0.4495485155974557,
+					0.6143531229893906
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 1,
+				"falseNegative": 67,
+				"trueNegative": 75
+			},
+			"phantomRate": {
+				"successes": 1,
+				"trials": 2,
+				"rate": 0.5,
+				"interval": [
+					0.0945312056223091,
+					0.9054687943776909
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 24,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 1
+			},
+			"gradientsPublished": 1,
+			"pValue": 0.5338507270889798
+		},
+		{
+			"id": "lc=0.04|mm=0.5",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 10,
+				"falseNegative": 66,
+				"trueNegative": 66
+			},
+			"phantomRate": {
+				"successes": 10,
+				"trials": 12,
+				"rate": 0.8333333333333334,
+				"interval": [
+					0.5519691375059329,
+					0.9530348578597824
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 17,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 8
+			},
+			"gradientsPublished": 8,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.04|mm=0.6",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 71,
+				"trials": 144,
+				"rate": 0.4930555555555556,
+				"interval": [
+					0.4126463654777684,
+					0.5738256294831184
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 68,
+				"trials": 137,
+				"rate": 0.49635036496350365,
+				"interval": [
+					0.41387623957788644,
+					0.5790235783569084
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 7,
+				"falseNegative": 66,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 9,
+				"rate": 0.7777777777777778,
+				"interval": [
+					0.45258896886017774,
+					0.936774892941156
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 5
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.8207545898341747
+		},
+		{
+			"id": "lc=0.04|mm=0.7",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 71,
+				"trials": 144,
+				"rate": 0.4930555555555556,
+				"interval": [
+					0.4126463654777684,
+					0.5738256294831184
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 68,
+				"trials": 137,
+				"rate": 0.49635036496350365,
+				"interval": [
+					0.41387623957788644,
+					0.5790235783569084
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 7,
+				"falseNegative": 66,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 9,
+				"rate": 0.7777777777777778,
+				"interval": [
+					0.45258896886017774,
+					0.936774892941156
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 5
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.8207545898341747
+		},
+		{
+			"id": "lc=0.04|mm=0.8",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 71,
+				"trials": 144,
+				"rate": 0.4930555555555556,
+				"interval": [
+					0.4126463654777684,
+					0.5738256294831184
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 68,
+				"trials": 137,
+				"rate": 0.49635036496350365,
+				"interval": [
+					0.41387623957788644,
+					0.5790235783569084
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 7,
+				"falseNegative": 66,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 9,
+				"rate": 0.7777777777777778,
+				"interval": [
+					0.45258896886017774,
+					0.936774892941156
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 4
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.8207545898341747
+		},
+		{
+			"id": "lc=0.04|mm=0.9",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 70,
+				"trials": 144,
+				"rate": 0.4861111111111111,
+				"interval": [
+					0.4059050832823145,
+					0.5670389066394589
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 67,
+				"trials": 137,
+				"rate": 0.48905109489051096,
+				"interval": [
+					0.4067931780750782,
+					0.5719062757293064
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 7,
+				"falseNegative": 67,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 8,
+				"rate": 0.875,
+				"interval": [
+					0.5291118174965437,
+					0.9775825085755041
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 3
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.8610052137943106
+		},
+		{
+			"id": "lc=0.04|mm=0.95",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 73,
+				"trials": 144,
+				"rate": 0.5069444444444444,
+				"interval": [
+					0.4261743705168817,
+					0.5873536345222317
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 70,
+				"trials": 137,
+				"rate": 0.5109489051094891,
+				"interval": [
+					0.42809372427069364,
+					0.5932068219249219
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 4,
+				"falseNegative": 67,
+				"trueNegative": 72
+			},
+			"phantomRate": {
+				"successes": 4,
+				"trials": 5,
+				"rate": 0.8,
+				"interval": [
+					0.37553462948323696,
+					0.9637758914091483
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 23,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 2
+			},
+			"gradientsPublished": 2,
+			"pValue": 0.7207370606208435
+		},
+		{
+			"id": "lc=0.04|mm=1",
+			"laminarityCut": 0.04,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 76,
+				"trials": 144,
+				"rate": 0.5277777777777778,
+				"interval": [
+					0.44658004384104516,
+					0.6075319763154079
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 73,
+				"trials": 137,
+				"rate": 0.5328467153284672,
+				"interval": [
+					0.4495485155974557,
+					0.6143531229893906
+				]
+			},
+			"confusion": {
+				"truePositive": 1,
+				"falsePositive": 1,
+				"falseNegative": 67,
+				"trueNegative": 75
+			},
+			"phantomRate": {
+				"successes": 1,
+				"trials": 2,
+				"rate": 0.5,
+				"interval": [
+					0.0945312056223091,
+					0.9054687943776909
+				]
+			},
+			"missedRampRate": {
+				"successes": 67,
+				"trials": 68,
+				"rate": 0.9852941176470589,
+				"interval": [
+					0.9212902686362451,
+					0.9973993164268317
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 24,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 1
+			},
+			"gradientsPublished": 1,
+			"pValue": 0.5338507270889798
+		},
+		{
+			"id": "lc=0.06|mm=0.5",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 13,
+				"falseNegative": 63,
+				"trueNegative": 63
+			},
+			"phantomRate": {
+				"successes": 13,
+				"trials": 18,
+				"rate": 0.7222222222222222,
+				"interval": [
+					0.49127343421232195,
+					0.8750024662852911
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 10
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.06|mm=0.6",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 71,
+				"trials": 144,
+				"rate": 0.4930555555555556,
+				"interval": [
+					0.4126463654777684,
+					0.5738256294831184
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 68,
+				"trials": 137,
+				"rate": 0.49635036496350365,
+				"interval": [
+					0.41387623957788644,
+					0.5790235783569084
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 10,
+				"falseNegative": 63,
+				"trueNegative": 66
+			},
+			"phantomRate": {
+				"successes": 10,
+				"trials": 15,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4171354771997914,
+					0.8482367557010192
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 18,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 7
+			},
+			"gradientsPublished": 7,
+			"pValue": 0.8207545898341747
+		},
+		{
+			"id": "lc=0.06|mm=0.7",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 70,
+				"trials": 144,
+				"rate": 0.4861111111111111,
+				"interval": [
+					0.4059050832823145,
+					0.5670389066394589
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 67,
+				"trials": 137,
+				"rate": 0.48905109489051096,
+				"interval": [
+					0.4067931780750782,
+					0.5719062757293064
+				]
+			},
+			"confusion": {
+				"truePositive": 4,
+				"falsePositive": 10,
+				"falseNegative": 64,
+				"trueNegative": 66
+			},
+			"phantomRate": {
+				"successes": 10,
+				"trials": 14,
+				"rate": 0.7142857142857143,
+				"interval": [
+					0.4535091565006326,
+					0.8827862136379143
+				]
+			},
+			"missedRampRate": {
+				"successes": 64,
+				"trials": 68,
+				"rate": 0.9411764705882353,
+				"interval": [
+					0.8582831155805667,
+					0.9768892344767758
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 18,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 7
+			},
+			"gradientsPublished": 7,
+			"pValue": 0.8610052137943106
+		},
+		{
+			"id": "lc=0.06|mm=0.8",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 70,
+				"trials": 144,
+				"rate": 0.4861111111111111,
+				"interval": [
+					0.4059050832823145,
+					0.5670389066394589
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 67,
+				"trials": 137,
+				"rate": 0.48905109489051096,
+				"interval": [
+					0.4067931780750782,
+					0.5719062757293064
+				]
+			},
+			"confusion": {
+				"truePositive": 4,
+				"falsePositive": 10,
+				"falseNegative": 64,
+				"trueNegative": 66
+			},
+			"phantomRate": {
+				"successes": 10,
+				"trials": 14,
+				"rate": 0.7142857142857143,
+				"interval": [
+					0.4535091565006326,
+					0.8827862136379143
+				]
+			},
+			"missedRampRate": {
+				"successes": 64,
+				"trials": 68,
+				"rate": 0.9411764705882353,
+				"interval": [
+					0.8582831155805667,
+					0.9768892344767758
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 19,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 6
+			},
+			"gradientsPublished": 6,
+			"pValue": 0.8610052137943106
+		},
+		{
+			"id": "lc=0.06|mm=0.9",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 70,
+				"trials": 144,
+				"rate": 0.4861111111111111,
+				"interval": [
+					0.4059050832823145,
+					0.5670389066394589
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 67,
+				"trials": 137,
+				"rate": 0.48905109489051096,
+				"interval": [
+					0.4067931780750782,
+					0.5719062757293064
+				]
+			},
+			"confusion": {
+				"truePositive": 3,
+				"falsePositive": 9,
+				"falseNegative": 65,
+				"trueNegative": 67
+			},
+			"phantomRate": {
+				"successes": 9,
+				"trials": 12,
+				"rate": 0.75,
+				"interval": [
+					0.46769466484688005,
+					0.9110583316774064
+				]
+			},
+			"missedRampRate": {
+				"successes": 65,
+				"trials": 68,
+				"rate": 0.9558823529411765,
+				"interval": [
+					0.8781280480886049,
+					0.9848833803039825
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 5
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.8610052137943106
+		},
+		{
+			"id": "lc=0.06|mm=0.95",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 6,
+				"falseNegative": 66,
+				"trueNegative": 70
+			},
+			"phantomRate": {
+				"successes": 6,
+				"trials": 8,
+				"rate": 0.75,
+				"interval": [
+					0.40927543006661404,
+					0.9285207873147511
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 2,
+				"unreadable": 41,
+				"textured": 1,
+				"laminar": 3
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.06|mm=1",
+			"laminarityCut": 0.06,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 76,
+				"trials": 144,
+				"rate": 0.5277777777777778,
+				"interval": [
+					0.44658004384104516,
+					0.6075319763154079
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 73,
+				"trials": 137,
+				"rate": 0.5328467153284672,
+				"interval": [
+					0.4495485155974557,
+					0.6143531229893906
+				]
+			},
+			"confusion": {
+				"truePositive": 2,
+				"falsePositive": 2,
+				"falseNegative": 66,
+				"trueNegative": 74
+			},
+			"phantomRate": {
+				"successes": 2,
+				"trials": 4,
+				"rate": 0.5,
+				"interval": [
+					0.15003898900822643,
+					0.8499610109917736
+				]
+			},
+			"missedRampRate": {
+				"successes": 66,
+				"trials": 68,
+				"rate": 0.9705882352941176,
+				"interval": [
+					0.8989536862635059,
+					0.9918968204643261
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 23,
+				"flat": 3,
+				"unreadable": 41,
+				"laminar": 2
+			},
+			"gradientsPublished": 2,
+			"pValue": 0.5338507270889798
+		},
+		{
+			"id": "lc=0.08|mm=0.5",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 63,
+				"trials": 144,
+				"rate": 0.4375,
+				"interval": [
+					0.3591424293547205,
+					0.51910552529326
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 61,
+				"trials": 137,
+				"rate": 0.44525547445255476,
+				"interval": [
+					0.3646556905101523,
+					0.5288415785117706
+				]
+			},
+			"confusion": {
+				"truePositive": 6,
+				"falsePositive": 19,
+				"falseNegative": 62,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 25,
+				"rate": 0.76,
+				"interval": [
+					0.5657031662804799,
+					0.8850368631344132
+				]
+			},
+			"missedRampRate": {
+				"successes": 62,
+				"trials": 68,
+				"rate": 0.9117647058823529,
+				"interval": [
+					0.8205623086768037,
+					0.9589318847100494
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9878544858458443
+		},
+		{
+			"id": "lc=0.08|mm=0.6",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 6,
+				"falsePositive": 16,
+				"falseNegative": 62,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 22,
+				"rate": 0.7272727272727273,
+				"interval": [
+					0.518482659705005,
+					0.8684923971983209
+				]
+			},
+			"missedRampRate": {
+				"successes": 62,
+				"trials": 68,
+				"rate": 0.9117647058823529,
+				"interval": [
+					0.8205623086768037,
+					0.9589318847100494
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"laminar": 10,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.08|mm=0.7",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 14,
+				"falseNegative": 63,
+				"trueNegative": 62
+			},
+			"phantomRate": {
+				"successes": 14,
+				"trials": 19,
+				"rate": 0.7368421052631579,
+				"interval": [
+					0.5120844908386559,
+					0.8819358766085195
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"laminar": 10,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.08|mm=0.8",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 14,
+				"falseNegative": 63,
+				"trueNegative": 62
+			},
+			"phantomRate": {
+				"successes": 14,
+				"trials": 19,
+				"rate": 0.7368421052631579,
+				"interval": [
+					0.5120844908386559,
+					0.8819358766085195
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 16,
+				"flat": 2,
+				"laminar": 9,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 9,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.08|mm=0.9",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 4,
+				"falsePositive": 13,
+				"falseNegative": 64,
+				"trueNegative": 63
+			},
+			"phantomRate": {
+				"successes": 13,
+				"trials": 17,
+				"rate": 0.7647058823529411,
+				"interval": [
+					0.5273820186078956,
+					0.904449556847314
+				]
+			},
+			"missedRampRate": {
+				"successes": 64,
+				"trials": 68,
+				"rate": 0.9411764705882353,
+				"interval": [
+					0.8582831155805667,
+					0.9768892344767758
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 17,
+				"flat": 2,
+				"laminar": 8,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 8,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.08|mm=0.95",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 3,
+				"falsePositive": 7,
+				"falseNegative": 65,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 10,
+				"rate": 0.7,
+				"interval": [
+					0.3967781472449562,
+					0.8922087326805669
+				]
+			},
+			"missedRampRate": {
+				"successes": 65,
+				"trials": 68,
+				"rate": 0.9558823529411765,
+				"interval": [
+					0.8781280480886049,
+					0.9848833803039825
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 2,
+				"laminar": 4,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.08|mm=1",
+			"laminarityCut": 0.08,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 77,
+				"trials": 144,
+				"rate": 0.5347222222222222,
+				"interval": [
+					0.4534123229462531,
+					0.6142277022493133
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 74,
+				"trials": 137,
+				"rate": 0.5401459854014599,
+				"interval": [
+					0.4567345142896362,
+					0.6213674884276204
+				]
+			},
+			"confusion": {
+				"truePositive": 3,
+				"falsePositive": 2,
+				"falseNegative": 65,
+				"trueNegative": 74
+			},
+			"phantomRate": {
+				"successes": 2,
+				"trials": 5,
+				"rate": 0.4,
+				"interval": [
+					0.11762077412107175,
+					0.7692757189147998
+				]
+			},
+			"missedRampRate": {
+				"successes": 65,
+				"trials": 68,
+				"rate": 0.9558823529411765,
+				"interval": [
+					0.8781280480886049,
+					0.9848833803039825
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 22,
+				"flat": 3,
+				"laminar": 3,
+				"unreadable": 41
+			},
+			"gradientsPublished": 3,
+			"pValue": 0.4673734886907455
+		},
+		{
+			"id": "lc=0.1|mm=0.5",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 10,
+				"falsePositive": 21,
+				"falseNegative": 58,
+				"trueNegative": 55
+			},
+			"phantomRate": {
+				"successes": 21,
+				"trials": 31,
+				"rate": 0.6774193548387096,
+				"interval": [
+					0.5014100929388151,
+					0.8143057344223222
+				]
+			},
+			"missedRampRate": {
+				"successes": 58,
+				"trials": 68,
+				"rate": 0.8529411764705882,
+				"interval": [
+					0.7500260573707426,
+					0.9181118226751316
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 9,
+				"flat": 2,
+				"laminar": 16,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 16,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.1|mm=0.6",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 10,
+				"falsePositive": 18,
+				"falseNegative": 58,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 28,
+				"rate": 0.6428571428571429,
+				"interval": [
+					0.45830306499996215,
+					0.7929417050180649
+				]
+			},
+			"missedRampRate": {
+				"successes": 58,
+				"trials": 68,
+				"rate": 0.8529411764705882,
+				"interval": [
+					0.7500260573707426,
+					0.9181118226751316
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.1|mm=0.7",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 16,
+				"falseNegative": 60,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 24,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4670631682245362,
+					0.8202780968198774
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 13,
+				"flat": 2,
+				"laminar": 12,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 12,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.1|mm=0.8",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 16,
+				"falseNegative": 60,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 24,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4670631682245362,
+					0.8202780968198774
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 14,
+				"flat": 2,
+				"laminar": 11,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 11,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.1|mm=0.9",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 69,
+				"trials": 144,
+				"rate": 0.4791666666666667,
+				"interval": [
+					0.3991789622146474,
+					0.5602370226680129
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 66,
+				"trials": 137,
+				"rate": 0.48175182481751827,
+				"interval": [
+					0.39972724779046453,
+					0.5647718418835097
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 14,
+				"falseNegative": 61,
+				"trueNegative": 62
+			},
+			"phantomRate": {
+				"successes": 14,
+				"trials": 21,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4537345195774468,
+					0.8280524740440093
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 16,
+				"flat": 2,
+				"laminar": 9,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 9,
+			"pValue": 0.8946180155575144
+		},
+		{
+			"id": "lc=0.1|mm=0.95",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 74,
+				"trials": 144,
+				"rate": 0.5138888888888888,
+				"interval": [
+					0.432961093360541,
+					0.5940949167176854
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 71,
+				"trials": 137,
+				"rate": 0.5182481751824818,
+				"interval": [
+					0.4352281581164903,
+					0.6002727522095355
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 7,
+				"falseNegative": 63,
+				"trueNegative": 69
+			},
+			"phantomRate": {
+				"successes": 7,
+				"trials": 12,
+				"rate": 0.5833333333333334,
+				"interval": [
+					0.3195113123750667,
+					0.8067396864663622
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"laminar": 5,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.6621691101102664
+		},
+		{
+			"id": "lc=0.1|mm=1",
+			"laminarityCut": 0.1,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 79,
+				"trials": 144,
+				"rate": 0.5486111111111112,
+				"interval": [
+					0.4671226829609539,
+					0.627573352312839
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 76,
+				"trials": 137,
+				"rate": 0.5547445255474452,
+				"interval": [
+					0.4711584214882294,
+					0.6353443094898477
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 2,
+				"falseNegative": 63,
+				"trueNegative": 74
+			},
+			"phantomRate": {
+				"successes": 2,
+				"trials": 7,
+				"rate": 0.2857142857142857,
+				"interval": [
+					0.08221892392691244,
+					0.6410655484026206
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.33876827001360743
+		},
+		{
+			"id": "lc=0.125|mm=0.5",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 63,
+				"trials": 144,
+				"rate": 0.4375,
+				"interval": [
+					0.3591424293547205,
+					0.51910552529326
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 62,
+				"trials": 137,
+				"rate": 0.45255474452554745,
+				"interval": [
+					0.37163542770213914,
+					0.536062205450194
+				]
+			},
+			"confusion": {
+				"truePositive": 10,
+				"falsePositive": 23,
+				"falseNegative": 58,
+				"trueNegative": 53
+			},
+			"phantomRate": {
+				"successes": 23,
+				"trials": 33,
+				"rate": 0.696969696969697,
+				"interval": [
+					0.5266186484021114,
+					0.8262446858400212
+				]
+			},
+			"missedRampRate": {
+				"successes": 58,
+				"trials": 68,
+				"rate": 0.8529411764705882,
+				"interval": [
+					0.7500260573707426,
+					0.9181118226751316
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 8,
+				"flat": 2,
+				"laminar": 17,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 17,
+			"pValue": 0.9878544858458443
+		},
+		{
+			"id": "lc=0.125|mm=0.6",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 10,
+				"falsePositive": 20,
+				"falseNegative": 58,
+				"trueNegative": 56
+			},
+			"phantomRate": {
+				"successes": 20,
+				"trials": 30,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.48780051630248344,
+					0.8076950192521088
+				]
+			},
+			"missedRampRate": {
+				"successes": 58,
+				"trials": 68,
+				"rate": 0.8529411764705882,
+				"interval": [
+					0.7500260573707426,
+					0.9181118226751316
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.125|mm=0.7",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 13,
+				"flat": 2,
+				"laminar": 12,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 12,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.125|mm=0.8",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 14,
+				"flat": 2,
+				"laminar": 11,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 11,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.125|mm=0.9",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 65,
+				"trials": 137,
+				"rate": 0.4744525547445255,
+				"interval": [
+					0.3926784700688364,
+					0.5576202554747276
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 15,
+				"falseNegative": 61,
+				"trueNegative": 61
+			},
+			"phantomRate": {
+				"successes": 15,
+				"trials": 22,
+				"rate": 0.6818181818181818,
+				"interval": [
+					0.47318597724591827,
+					0.8363940682767425
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 16,
+				"flat": 2,
+				"laminar": 9,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 9,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.125|mm=0.95",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 73,
+				"trials": 144,
+				"rate": 0.5069444444444444,
+				"interval": [
+					0.4261743705168817,
+					0.5873536345222317
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 70,
+				"trials": 137,
+				"rate": 0.5109489051094891,
+				"interval": [
+					0.42809372427069364,
+					0.5932068219249219
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 8,
+				"falseNegative": 63,
+				"trueNegative": 68
+			},
+			"phantomRate": {
+				"successes": 8,
+				"trials": 13,
+				"rate": 0.6153846153846154,
+				"interval": [
+					0.35522891494653575,
+					0.8229029221369812
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"laminar": 5,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.7207370606208435
+		},
+		{
+			"id": "lc=0.125|mm=1",
+			"laminarityCut": 0.125,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		},
+		{
+			"id": "lc=0.15|mm=0.5",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 64,
+				"trials": 144,
+				"rate": 0.4444444444444444,
+				"interval": [
+					0.3657768278149538,
+					0.5259991318721401
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 23,
+				"falseNegative": 57,
+				"trueNegative": 53
+			},
+			"phantomRate": {
+				"successes": 23,
+				"trials": 34,
+				"rate": 0.6764705882352942,
+				"interval": [
+					0.5084289458028332,
+					0.8086835644440876
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 8,
+				"flat": 2,
+				"laminar": 17,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 17,
+			"pValue": 0.9814843940355182
+		},
+		{
+			"id": "lc=0.15|mm=0.6",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 65,
+				"trials": 137,
+				"rate": 0.4744525547445255,
+				"interval": [
+					0.3926784700688364,
+					0.5576202554747276
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 20,
+				"falseNegative": 57,
+				"trueNegative": 56
+			},
+			"phantomRate": {
+				"successes": 20,
+				"trials": 31,
+				"rate": 0.6451612903225806,
+				"interval": [
+					0.4694795405050373,
+					0.788833409154075
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.15|mm=0.7",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 13,
+				"flat": 2,
+				"laminar": 12,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 12,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.15|mm=0.8",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": true,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 14,
+				"flat": 2,
+				"laminar": 11,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 11,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.15|mm=0.9",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 65,
+				"trials": 137,
+				"rate": 0.4744525547445255,
+				"interval": [
+					0.3926784700688364,
+					0.5576202554747276
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 15,
+				"falseNegative": 61,
+				"trueNegative": 61
+			},
+			"phantomRate": {
+				"successes": 15,
+				"trials": 22,
+				"rate": 0.6818181818181818,
+				"interval": [
+					0.47318597724591827,
+					0.8363940682767425
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 16,
+				"flat": 2,
+				"laminar": 9,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 9,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.15|mm=0.95",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 73,
+				"trials": 144,
+				"rate": 0.5069444444444444,
+				"interval": [
+					0.4261743705168817,
+					0.5873536345222317
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 70,
+				"trials": 137,
+				"rate": 0.5109489051094891,
+				"interval": [
+					0.42809372427069364,
+					0.5932068219249219
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 8,
+				"falseNegative": 63,
+				"trueNegative": 68
+			},
+			"phantomRate": {
+				"successes": 8,
+				"trials": 13,
+				"rate": 0.6153846153846154,
+				"interval": [
+					0.35522891494653575,
+					0.8229029221369812
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"laminar": 5,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.7207370606208435
+		},
+		{
+			"id": "lc=0.15|mm=1",
+			"laminarityCut": 0.15,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		},
+		{
+			"id": "lc=0.175|mm=0.5",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 63,
+				"trials": 144,
+				"rate": 0.4375,
+				"interval": [
+					0.3591424293547205,
+					0.51910552529326
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 62,
+				"trials": 137,
+				"rate": 0.45255474452554745,
+				"interval": [
+					0.37163542770213914,
+					0.536062205450194
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 24,
+				"falseNegative": 57,
+				"trueNegative": 52
+			},
+			"phantomRate": {
+				"successes": 24,
+				"trials": 35,
+				"rate": 0.6857142857142857,
+				"interval": [
+					0.5202023637440589,
+					0.8144915533392174
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 7,
+				"flat": 2,
+				"laminar": 18,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 18,
+			"pValue": 0.9878544858458443
+		},
+		{
+			"id": "lc=0.175|mm=0.6",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 21,
+				"falseNegative": 57,
+				"trueNegative": 55
+			},
+			"phantomRate": {
+				"successes": 21,
+				"trials": 32,
+				"rate": 0.65625,
+				"interval": [
+					0.4831108796516515,
+					0.7958956208454218
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 11,
+				"flat": 2,
+				"laminar": 14,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 14,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.175|mm=0.7",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.175|mm=0.8",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 66,
+				"trials": 144,
+				"rate": 0.4583333333333333,
+				"interval": [
+					0.3790918232056376,
+					0.5397401465596827
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 18,
+				"falseNegative": 60,
+				"trueNegative": 58
+			},
+			"phantomRate": {
+				"successes": 18,
+				"trials": 26,
+				"rate": 0.6923076923076923,
+				"interval": [
+					0.5001174166230568,
+					0.8349868441307661
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 13,
+				"flat": 2,
+				"laminar": 12,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 12,
+			"pValue": 0.9600790384890059
+		},
+		{
+			"id": "lc=0.175|mm=0.9",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 68,
+				"trials": 144,
+				"rate": 0.4722222222222222,
+				"interval": [
+					0.39246802368459205,
+					0.5534199561589548
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 65,
+				"trials": 137,
+				"rate": 0.4744525547445255,
+				"interval": [
+					0.3926784700688364,
+					0.5576202554747276
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 15,
+				"falseNegative": 61,
+				"trueNegative": 61
+			},
+			"phantomRate": {
+				"successes": 15,
+				"trials": 22,
+				"rate": 0.6818181818181818,
+				"interval": [
+					0.47318597724591827,
+					0.8363940682767425
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 16,
+				"flat": 2,
+				"laminar": 9,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 9,
+			"pValue": 0.9219225975992289
+		},
+		{
+			"id": "lc=0.175|mm=0.95",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 73,
+				"trials": 144,
+				"rate": 0.5069444444444444,
+				"interval": [
+					0.4261743705168817,
+					0.5873536345222317
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 70,
+				"trials": 137,
+				"rate": 0.5109489051094891,
+				"interval": [
+					0.42809372427069364,
+					0.5932068219249219
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 8,
+				"falseNegative": 63,
+				"trueNegative": 68
+			},
+			"phantomRate": {
+				"successes": 8,
+				"trials": 13,
+				"rate": 0.6153846153846154,
+				"interval": [
+					0.35522891494653575,
+					0.8229029221369812
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 20,
+				"flat": 2,
+				"laminar": 5,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 5,
+			"pValue": 0.7207370606208435
+		},
+		{
+			"id": "lc=0.175|mm=1",
+			"laminarityCut": 0.175,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		},
+		{
+			"id": "lc=0.2|mm=0.5",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 62,
+				"trials": 144,
+				"rate": 0.4305555555555556,
+				"interval": [
+					0.3525235274103789,
+					0.5121964221984885
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 61,
+				"trials": 137,
+				"rate": 0.44525547445255476,
+				"interval": [
+					0.3646556905101523,
+					0.5288415785117706
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 25,
+				"falseNegative": 57,
+				"trueNegative": 51
+			},
+			"phantomRate": {
+				"successes": 25,
+				"trials": 36,
+				"rate": 0.6944444444444444,
+				"interval": [
+					0.5314372713607174,
+					0.81995548413125
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 6,
+				"flat": 2,
+				"laminar": 19,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 19,
+			"pValue": 0.9922334128861903
+		},
+		{
+			"id": "lc=0.2|mm=0.6",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 22,
+				"falseNegative": 57,
+				"trueNegative": 54
+			},
+			"phantomRate": {
+				"successes": 22,
+				"trials": 33,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4960789441408937,
+					0.8024977232947568
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 10,
+				"flat": 2,
+				"laminar": 15,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 15,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.2|mm=0.7",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 11,
+				"flat": 2,
+				"laminar": 14,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 14,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.2|mm=0.8",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.2|mm=0.9",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 16,
+				"falseNegative": 61,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 23,
+				"rate": 0.6956521739130435,
+				"interval": [
+					0.4913424371488492,
+					0.8439597555540429
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"laminar": 10,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.2|mm=0.95",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 9,
+				"falseNegative": 63,
+				"trueNegative": 67
+			},
+			"phantomRate": {
+				"successes": 9,
+				"trials": 14,
+				"rate": 0.6428571428571429,
+				"interval": [
+					0.38764423085549504,
+					0.836552682570203
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 19,
+				"flat": 2,
+				"laminar": 6,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 6,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.2|mm=1",
+			"laminarityCut": 0.2,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		},
+		{
+			"id": "lc=0.25|mm=0.5",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 62,
+				"trials": 144,
+				"rate": 0.4305555555555556,
+				"interval": [
+					0.3525235274103789,
+					0.5121964221984885
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 61,
+				"trials": 137,
+				"rate": 0.44525547445255476,
+				"interval": [
+					0.3646556905101523,
+					0.5288415785117706
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 25,
+				"falseNegative": 57,
+				"trueNegative": 51
+			},
+			"phantomRate": {
+				"successes": 25,
+				"trials": 36,
+				"rate": 0.6944444444444444,
+				"interval": [
+					0.5314372713607174,
+					0.81995548413125
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 6,
+				"flat": 2,
+				"laminar": 19,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 19,
+			"pValue": 0.9922334128861903
+		},
+		{
+			"id": "lc=0.25|mm=0.6",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 22,
+				"falseNegative": 57,
+				"trueNegative": 54
+			},
+			"phantomRate": {
+				"successes": 22,
+				"trials": 33,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4960789441408937,
+					0.8024977232947568
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 10,
+				"flat": 2,
+				"laminar": 15,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 15,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.25|mm=0.7",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 11,
+				"flat": 2,
+				"laminar": 14,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 14,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.25|mm=0.8",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.25|mm=0.9",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 16,
+				"falseNegative": 61,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 23,
+				"rate": 0.6956521739130435,
+				"interval": [
+					0.4913424371488492,
+					0.8439597555540429
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"laminar": 10,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.25|mm=0.95",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 9,
+				"falseNegative": 63,
+				"trueNegative": 67
+			},
+			"phantomRate": {
+				"successes": 9,
+				"trials": 14,
+				"rate": 0.6428571428571429,
+				"interval": [
+					0.38764423085549504,
+					0.836552682570203
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 19,
+				"flat": 2,
+				"laminar": 6,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 6,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.25|mm=1",
+			"laminarityCut": 0.25,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		},
+		{
+			"id": "lc=0.3|mm=0.5",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.5,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 62,
+				"trials": 144,
+				"rate": 0.4305555555555556,
+				"interval": [
+					0.3525235274103789,
+					0.5121964221984885
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 61,
+				"trials": 137,
+				"rate": 0.44525547445255476,
+				"interval": [
+					0.3646556905101523,
+					0.5288415785117706
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 25,
+				"falseNegative": 57,
+				"trueNegative": 51
+			},
+			"phantomRate": {
+				"successes": 25,
+				"trials": 36,
+				"rate": 0.6944444444444444,
+				"interval": [
+					0.5314372713607174,
+					0.81995548413125
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 6,
+				"flat": 2,
+				"laminar": 19,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 19,
+			"pValue": 0.9922334128861903
+		},
+		{
+			"id": "lc=0.3|mm=0.6",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.6,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 11,
+				"falsePositive": 22,
+				"falseNegative": 57,
+				"trueNegative": 54
+			},
+			"phantomRate": {
+				"successes": 22,
+				"trials": 33,
+				"rate": 0.6666666666666666,
+				"interval": [
+					0.4960789441408937,
+					0.8024977232947568
+				]
+			},
+			"missedRampRate": {
+				"successes": 57,
+				"trials": 68,
+				"rate": 0.8382352941176471,
+				"interval": [
+					0.7330997238969782,
+					0.9071990778136511
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 10,
+				"flat": 2,
+				"laminar": 15,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 15,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.3|mm=0.7",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.7,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 11,
+				"flat": 2,
+				"laminar": 14,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 14,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.3|mm=0.8",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.8,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 65,
+				"trials": 144,
+				"rate": 0.4513888888888889,
+				"interval": [
+					0.372426647687161,
+					0.5328773170390461
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 63,
+				"trials": 137,
+				"rate": 0.45985401459854014,
+				"interval": [
+					0.37863251157237965,
+					0.5432654857103638
+				]
+			},
+			"confusion": {
+				"truePositive": 8,
+				"falsePositive": 19,
+				"falseNegative": 60,
+				"trueNegative": 57
+			},
+			"phantomRate": {
+				"successes": 19,
+				"trials": 27,
+				"rate": 0.7037037037037037,
+				"interval": [
+					0.5151931702047767,
+					0.8414695953843139
+				]
+			},
+			"missedRampRate": {
+				"successes": 60,
+				"trials": 68,
+				"rate": 0.8823529411764706,
+				"interval": [
+					0.7846509627077964,
+					0.9391650740085671
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 12,
+				"flat": 2,
+				"laminar": 13,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 13,
+			"pValue": 0.9724737586530809
+		},
+		{
+			"id": "lc=0.3|mm=0.9",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.9,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 67,
+				"trials": 144,
+				"rate": 0.4652777777777778,
+				"interval": [
+					0.3857722977506867,
+					0.546587677053747
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 64,
+				"trials": 137,
+				"rate": 0.46715328467153283,
+				"interval": [
+					0.3856468770106094,
+					0.5504514844025443
+				]
+			},
+			"confusion": {
+				"truePositive": 7,
+				"falsePositive": 16,
+				"falseNegative": 61,
+				"trueNegative": 60
+			},
+			"phantomRate": {
+				"successes": 16,
+				"trials": 23,
+				"rate": 0.6956521739130435,
+				"interval": [
+					0.4913424371488492,
+					0.8439597555540429
+				]
+			},
+			"missedRampRate": {
+				"successes": 61,
+				"trials": 68,
+				"rate": 0.8970588235294118,
+				"interval": [
+					0.802420886813238,
+					0.9492342282383704
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 15,
+				"flat": 2,
+				"laminar": 10,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 10,
+			"pValue": 0.9434975099985615
+		},
+		{
+			"id": "lc=0.3|mm=0.95",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 0.95,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 72,
+				"trials": 144,
+				"rate": 0.5,
+				"interval": [
+					0.4194027959792577,
+					0.5805972040207423
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 69,
+				"trials": 137,
+				"rate": 0.5036496350364964,
+				"interval": [
+					0.4209764216430917,
+					0.5861237604221136
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 9,
+				"falseNegative": 63,
+				"trueNegative": 67
+			},
+			"phantomRate": {
+				"successes": 9,
+				"trials": 14,
+				"rate": 0.6428571428571429,
+				"interval": [
+					0.38764423085549504,
+					0.836552682570203
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 19,
+				"flat": 2,
+				"laminar": 6,
+				"unreadable": 41,
+				"textured": 1
+			},
+			"gradientsPublished": 6,
+			"pValue": 0.7738677818077031
+		},
+		{
+			"id": "lc=0.3|mm=1",
+			"laminarityCut": 0.3,
+			"monotoneMigrationFraction": 1,
+			"isCurrent": false,
+			"agreement": {
+				"successes": 78,
+				"trials": 144,
+				"rate": 0.5416666666666666,
+				"interval": [
+					0.4602598534403172,
+					0.6209081767943624
+				]
+			},
+			"agreementStrictLabels": {
+				"successes": 75,
+				"trials": 137,
+				"rate": 0.5474452554744526,
+				"interval": [
+					0.463937794549806,
+					0.6283645722978608
+				]
+			},
+			"confusion": {
+				"truePositive": 5,
+				"falsePositive": 3,
+				"falseNegative": 63,
+				"trueNegative": 73
+			},
+			"phantomRate": {
+				"successes": 3,
+				"trials": 8,
+				"rate": 0.375,
+				"interval": [
+					0.1368442857127547,
+					0.6942576055965628
+				]
+			},
+			"missedRampRate": {
+				"successes": 63,
+				"trials": 68,
+				"rate": 0.9264705882352942,
+				"interval": [
+					0.8391481159526345,
+					0.9681851557694633
+				]
+			},
+			"verdictDistribution": {
+				"partitioned": 21,
+				"flat": 3,
+				"laminar": 4,
+				"unreadable": 41
+			},
+			"gradientsPublished": 4,
+			"pValue": 0.4017595910509283
+		}
+	],
+	"staging": [
+		{
+			"role": "current",
+			"why": "the [UNCALIBRATED] status quo, on the wall so the round is a comparison and not a proposal",
+			"cell": {
+				"id": "lc=0.15|mm=0.8",
+				"laminarityCut": 0.15,
+				"monotoneMigrationFraction": 0.8,
+				"isCurrent": true,
+				"agreement": {
+					"successes": 66,
+					"trials": 144,
+					"rate": 0.4583333333333333,
+					"interval": [
+						0.3790918232056376,
+						0.5397401465596827
+					]
+				},
+				"agreementStrictLabels": {
+					"successes": 64,
+					"trials": 137,
+					"rate": 0.46715328467153283,
+					"interval": [
+						0.3856468770106094,
+						0.5504514844025443
+					]
+				},
+				"confusion": {
+					"truePositive": 8,
+					"falsePositive": 18,
+					"falseNegative": 60,
+					"trueNegative": 58
+				},
+				"phantomRate": {
+					"successes": 18,
+					"trials": 26,
+					"rate": 0.6923076923076923,
+					"interval": [
+						0.5001174166230568,
+						0.8349868441307661
+					]
+				},
+				"missedRampRate": {
+					"successes": 60,
+					"trials": 68,
+					"rate": 0.8823529411764706,
+					"interval": [
+						0.7846509627077964,
+						0.9391650740085671
+					]
+				},
+				"verdictDistribution": {
+					"partitioned": 14,
+					"flat": 2,
+					"laminar": 11,
+					"unreadable": 41,
+					"textured": 1
+				},
+				"gradientsPublished": 11,
+				"pValue": 0.9600790384890059
+			}
+		},
+		{
+			"role": "monotone-only",
+			"why": "LAMINARITY_CUT held at its current value; MONOTONE_MIGRATION_FRACTION moved to the value maximising agreement — one constant, and it is the one NOTES.md deviation 2 relaxed away from arm-b′ §2.5's literal wording",
+			"cell": {
+				"id": "lc=0.15|mm=1",
+				"laminarityCut": 0.15,
+				"monotoneMigrationFraction": 1,
+				"isCurrent": false,
+				"agreement": {
+					"successes": 78,
+					"trials": 144,
+					"rate": 0.5416666666666666,
+					"interval": [
+						0.4602598534403172,
+						0.6209081767943624
+					]
+				},
+				"agreementStrictLabels": {
+					"successes": 75,
+					"trials": 137,
+					"rate": 0.5474452554744526,
+					"interval": [
+						0.463937794549806,
+						0.6283645722978608
+					]
+				},
+				"confusion": {
+					"truePositive": 5,
+					"falsePositive": 3,
+					"falseNegative": 63,
+					"trueNegative": 73
+				},
+				"phantomRate": {
+					"successes": 3,
+					"trials": 8,
+					"rate": 0.375,
+					"interval": [
+						0.1368442857127547,
+						0.6942576055965628
+					]
+				},
+				"missedRampRate": {
+					"successes": 63,
+					"trials": 68,
+					"rate": 0.9264705882352942,
+					"interval": [
+						0.8391481159526345,
+						0.9681851557694633
+					]
+				},
+				"verdictDistribution": {
+					"partitioned": 21,
+					"flat": 3,
+					"laminar": 4,
+					"unreadable": 41
+				},
+				"gradientsPublished": 4,
+				"pValue": 0.4017595910509283
+			}
+		},
+		{
+			"role": "best-agreement",
+			"why": "highest agreement with the legacy gradient labels in the declared 77-cell family; see `multiplicity` before quoting it as a finding",
+			"cell": {
+				"id": "lc=0.1|mm=1",
+				"laminarityCut": 0.1,
+				"monotoneMigrationFraction": 1,
+				"isCurrent": false,
+				"agreement": {
+					"successes": 79,
+					"trials": 144,
+					"rate": 0.5486111111111112,
+					"interval": [
+						0.4671226829609539,
+						0.627573352312839
+					]
+				},
+				"agreementStrictLabels": {
+					"successes": 76,
+					"trials": 137,
+					"rate": 0.5547445255474452,
+					"interval": [
+						0.4711584214882294,
+						0.6353443094898477
+					]
+				},
+				"confusion": {
+					"truePositive": 5,
+					"falsePositive": 2,
+					"falseNegative": 63,
+					"trueNegative": 74
+				},
+				"phantomRate": {
+					"successes": 2,
+					"trials": 7,
+					"rate": 0.2857142857142857,
+					"interval": [
+						0.08221892392691244,
+						0.6410655484026206
+					]
+				},
+				"missedRampRate": {
+					"successes": 63,
+					"trials": 68,
+					"rate": 0.9264705882352942,
+					"interval": [
+						0.8391481159526345,
+						0.9681851557694633
+					]
+				},
+				"verdictDistribution": {
+					"partitioned": 21,
+					"flat": 3,
+					"laminar": 4,
+					"unreadable": 41
+				},
+				"gradientsPublished": 4,
+				"pValue": 0.33876827001360743
+			}
+		}
+	],
+	"flips": [
+		{
+			"role": "current",
+			"point": {
+				"laminarityCut": 0.15,
+				"monotoneMigrationFraction": 0.8
+			},
+			"flippedCount": 0,
+			"flipped": []
+		},
+		{
+			"role": "monotone-only",
+			"point": {
+				"laminarityCut": 0.15,
+				"monotoneMigrationFraction": 1
+			},
+			"flippedCount": 22,
+			"flipped": [
+				{
+					"imagePath": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.003593131381793685,
+					"monotonicity": 0.9966685233225391,
+					"coverage": 0.7136111111111111,
+					"legacyGradient": null,
+					"legacyBasis": null
+				},
+				{
+					"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.023364051846283596,
+					"monotonicity": 0.8158094093228095,
+					"coverage": 0.9191777777777778,
+					"legacyGradient": null,
+					"legacyBasis": null
+				},
+				{
+					"imagePath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.038528037472428195,
+					"monotonicity": 0.9057395425997636,
+					"coverage": 0.6716333333333333,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06226031784927058,
+					"monotonicity": 0.9423193210070108,
+					"coverage": 0.61077392578125,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "02/ab67616d00001e02000200344e34f02b55e8292a.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.05427451229085678,
+					"monotonicity": 0.943922436514862,
+					"coverage": 0.5288,
+					"legacyGradient": null,
+					"legacyBasis": "no-state-recorded"
+				},
+				{
+					"imagePath": "03/ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.07324165908785903,
+					"monotonicity": 0.9442539584699483,
+					"coverage": 0.5429777777777778,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "03/ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.09271190123896328,
+					"monotonicity": 0.8630288339503307,
+					"coverage": 0.67377685546875,
+					"legacyGradient": false,
+					"legacyBasis": "contested"
+				},
+				{
+					"imagePath": "08/ab67616d0000b273000895e0c9e4ceba053fa99d",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06478647791986866,
+					"monotonicity": 0.9708713911991599,
+					"coverage": 0.7594140625,
+					"legacyGradient": null,
+					"legacyBasis": "no-state-recorded"
+				},
+				{
+					"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.010570665354751707,
+					"monotonicity": 0.9435660711416713,
+					"coverage": 0.7212555555555555,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.055701883796003576,
+					"monotonicity": 0.9157144227084715,
+					"coverage": 0.5066,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0b/ab67616d0000b273000ba4a828abadcf3f4642f6",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.008674251842262483,
+					"monotonicity": 0.9955990805548839,
+					"coverage": 0.5738427734375,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0c/ab67616d0000b273000c42c61ba60f69e5a40a29",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.03400845268769037,
+					"monotonicity": 0.8716674882978087,
+					"coverage": 0.65237060546875,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.10628387275766556,
+					"monotonicity": 0.8503096491860324,
+					"coverage": 0.6324222222222222,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0d/ab67616d0000b273000d5cdbc67ed815efc360ad",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.03884891912859107,
+					"monotonicity": 0.9898087532502007,
+					"coverage": 0.615751953125,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.004536097210711154,
+					"monotonicity": 0.9769921264388641,
+					"coverage": 0.7774888888888889,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0e/ab67616d0000b273000e5109c484324cc95a2222",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.005325899782696437,
+					"monotonicity": 0.9353877792389139,
+					"coverage": 0.89326171875,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.04495149367874058,
+					"monotonicity": 0.8156604778922661,
+					"coverage": 0.6133666666666666,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06378236140457987,
+					"monotonicity": 0.9123721190836724,
+					"coverage": 0.70281494140625,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/disney.avif",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.08013979594567716,
+					"monotonicity": 0.9017439296798389,
+					"coverage": 0.7107579011440746,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/doja.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.09251797209764763,
+					"monotonicity": 0.9408044685620032,
+					"coverage": 0.57296875,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/meteora.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06418976983125138,
+					"monotonicity": 0.9815326556098621,
+					"coverage": 0.706474609375,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/vvbrown.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.04443448845044793,
+					"monotonicity": 0.9577911616871196,
+					"coverage": 0.663727,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				}
+			]
+		},
+		{
+			"role": "best-agreement",
+			"point": {
+				"laminarityCut": 0.1,
+				"monotoneMigrationFraction": 1
+			},
+			"flippedCount": 23,
+			"flipped": [
+				{
+					"imagePath": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.003593131381793685,
+					"monotonicity": 0.9966685233225391,
+					"coverage": 0.7136111111111111,
+					"legacyGradient": null,
+					"legacyBasis": null
+				},
+				{
+					"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.023364051846283596,
+					"monotonicity": 0.8158094093228095,
+					"coverage": 0.9191777777777778,
+					"legacyGradient": null,
+					"legacyBasis": null
+				},
+				{
+					"imagePath": "01/ab67616d00001e0200015a7a9909e03141e001e3.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.038528037472428195,
+					"monotonicity": 0.9057395425997636,
+					"coverage": 0.6716333333333333,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06226031784927058,
+					"monotonicity": 0.9423193210070108,
+					"coverage": 0.61077392578125,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "02/ab67616d00001e02000200344e34f02b55e8292a.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.05427451229085678,
+					"monotonicity": 0.943922436514862,
+					"coverage": 0.5288,
+					"legacyGradient": null,
+					"legacyBasis": "no-state-recorded"
+				},
+				{
+					"imagePath": "03/ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.07324165908785903,
+					"monotonicity": 0.9442539584699483,
+					"coverage": 0.5429777777777778,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "03/ab67616d0000b273000323957b88112ca49b8ee0.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.09271190123896328,
+					"monotonicity": 0.8630288339503307,
+					"coverage": 0.67377685546875,
+					"legacyGradient": false,
+					"legacyBasis": "contested"
+				},
+				{
+					"imagePath": "08/ab67616d0000b273000895e0c9e4ceba053fa99d",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06478647791986866,
+					"monotonicity": 0.9708713911991599,
+					"coverage": 0.7594140625,
+					"legacyGradient": null,
+					"legacyBasis": "no-state-recorded"
+				},
+				{
+					"imagePath": "09/ab67616d00001e020009657a5122a7b3d40458b0",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.010570665354751707,
+					"monotonicity": 0.9435660711416713,
+					"coverage": 0.7212555555555555,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0a/ab67616d00001e02000a8aa1dafa651976a7bb44",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.055701883796003576,
+					"monotonicity": 0.9157144227084715,
+					"coverage": 0.5066,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0b/ab67616d0000b273000ba4a828abadcf3f4642f6",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.008674251842262483,
+					"monotonicity": 0.9955990805548839,
+					"coverage": 0.5738427734375,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0c/ab67616d0000b273000c42c61ba60f69e5a40a29",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.03400845268769037,
+					"monotonicity": 0.8716674882978087,
+					"coverage": 0.65237060546875,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0d/ab67616d00001e02000d457f4b8829a59481e78b",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.10628387275766556,
+					"monotonicity": 0.8503096491860324,
+					"coverage": 0.6324222222222222,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0d/ab67616d0000b273000d5cdbc67ed815efc360ad",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.03884891912859107,
+					"monotonicity": 0.9898087532502007,
+					"coverage": 0.615751953125,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.004536097210711154,
+					"monotonicity": 0.9769921264388641,
+					"coverage": 0.7774888888888889,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0e/ab67616d0000b273000e5109c484324cc95a2222",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.005325899782696437,
+					"monotonicity": 0.9353877792389139,
+					"coverage": 0.89326171875,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "0f/ab67616d00001e02000f0a78a1791248aec707e3",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.04495149367874058,
+					"monotonicity": 0.8156604778922661,
+					"coverage": 0.6133666666666666,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "10/ab67616d0000b2730010bcd17e41331debec2bd5",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.11252114897689752,
+					"monotonicity": 1,
+					"coverage": 0.791416015625,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "13/ab67616d0000b27300139c3eeb59e40dba08f5a1",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06378236140457987,
+					"monotonicity": 0.9123721190836724,
+					"coverage": 0.70281494140625,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/disney.avif",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.08013979594567716,
+					"monotonicity": 0.9017439296798389,
+					"coverage": 0.7107579011440746,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/doja.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.09251797209764763,
+					"monotonicity": 0.9408044685620032,
+					"coverage": 0.57296875,
+					"legacyGradient": true,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/meteora.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.06418976983125138,
+					"monotonicity": 0.9815326556098621,
+					"coverage": 0.706474609375,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				},
+				{
+					"imagePath": "images/vvbrown.jpg",
+					"direction": "ramp->flat",
+					"currentVerdict": "laminar",
+					"newVerdict": "partitioned",
+					"laminarity": 0.04443448845044793,
+					"monotonicity": 0.9577911616871196,
+					"coverage": 0.663727,
+					"legacyGradient": false,
+					"legacyBasis": "unanimous"
+				}
+			]
+		}
+	],
+	"verdictSet": {
+		"covers": 69,
+		"definition": "demo-20 union the first 50 endorsed covers by sorted repo-relative path"
+	}
+}
