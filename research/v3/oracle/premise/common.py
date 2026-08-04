@@ -129,6 +129,13 @@ PROMPT_SETS: dict[str, tuple[str, str]] = {
     # Supersedes the nine-question `group-bcd.v1`, which was drafted the same day, never
     # registered against a run and never produced a row; its identities are kept in §15.2.
     "group-bcde.v1": ("group-bcde.v1", "group-bcde.v1.variant-*.json"),
+    # The first FREE-TEXT set: one question, one open-vocabulary noun, no enum anywhere.
+    # PROBE5_NOTES.md §Granularity recommends a dual SAM prompt — the species noun the VLM would
+    # use in a caption PLUS the `subject_kind` class word — and RESIDUAL_EXPERIMENT_NOTES.md §3
+    # records that only the class half existed, which is why `object` masked 0 of 24 covers. This
+    # set is the missing species half. It does not supersede `group-bcde.v1`: the class word is
+    # still read from there, and the two are joined per cover on the SAM side.
+    "subject-noun.v1": ("subject-noun.v1", "subject-noun.v1.variant-*.json"),
 }
 # [REVIEWED] Run 1's set. Default so nothing that worked before needs a flag.
 DEFAULT_PROMPT_SET = "group-a.v1"
@@ -249,6 +256,13 @@ class PromptVariant:
     # every group-A variant, which is why every assertion and every validation branch that
     # reads it is a no-op for A/B, C/D and the probe arm.
     multi_select_fields: tuple[str, ...] = ()
+    # [REVIEWED] Per-variant decode budget, read from the prompt document. None everywhere it is
+    # absent, which is every prompt file written before `subject-noun.v1`, and None falls back to
+    # the module constant MAX_TOKENS — so no existing variant's decode budget moves. It exists
+    # because MAX_TOKENS 256 is sized for a thirteen-key enum document, and a one-or-two-word
+    # free-text answer wants a cap tight enough that a runaway decode costs a second rather than
+    # a minute. A cap is not a cost: greedy decoding stops at the grammar's closing brace.
+    max_tokens: int | None = None
     # Probe-arm metadata. Absent (None / empty) on every non-probe variant.
     presentation_mode: str | None = None      # 'bundled' | 'separate'
     probe_order: tuple[str, ...] = ()
@@ -295,6 +309,7 @@ def load_prompt_variant(path: Path, expected_schema_version: str | None = None) 
         canonical_fields=canonical_fields,
         vocabularies=vocabularies,
         multi_select_fields=tuple(doc.get("multi_select_fields") or ()),
+        max_tokens=doc.get("max_tokens"),
         presentation_mode=doc.get("presentation_mode"),
         probe_order=tuple(doc.get("probe_order") or ()),
         derivation_schema_version=doc.get("derivation_schema_version"),
@@ -789,7 +804,7 @@ class Oracle:
         ]
         formatted = apply_chat_template(self.processor, self.config, messages, num_images=1)
         kwargs: dict[str, Any] = dict(
-            max_tokens=MAX_TOKENS,
+            max_tokens=variant.max_tokens or MAX_TOKENS,
             temperature=TEMPERATURE,
             verbose=False,
         )
@@ -886,6 +901,10 @@ def provenance(run_id: str, variant: PromptVariant, oracle: Oracle,
         "python_version": platform.python_version(),
         "constrained_decoding": USE_CONSTRAINED_DECODING,
         "temperature": TEMPERATURE,
+        # The decode budget actually in force for this variant, resolved rather than implied, so a
+        # reader never has to know which prompt file carried an override. Additive: rows written
+        # before this key existed simply ran at MAX_TOKENS.
+        "max_tokens": variant.max_tokens or MAX_TOKENS,
         "repo_head": GIT_HEAD,
     }
 

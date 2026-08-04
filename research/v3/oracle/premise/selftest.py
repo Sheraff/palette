@@ -213,9 +213,12 @@ def check_prompt_sets(v1_variants) -> None:
           and all(v.vocabularies == VOCABULARIES for v in v1_variants),
           "A/B fall back to the module constants")
 
+    # `subject-noun.v1` is deliberately 1, not 2: it is the only set here without a variant pair,
+    # because a second variant is a second full pass over the eval set and the run's budget bought
+    # one. The count is asserted so that fact stays visible rather than looking like an omission.
     expected_counts = {"group-a.v1": 2, "group-a.v2": 2,
                        "group-a.probes.bundled": 2, "group-a.probes.solo": 6,
-                       "group-bcde.v1": 2}
+                       "group-bcde.v1": 2, "subject-noun.v1": 1}
     for name in sorted(PROMPT_SETS):
         try:
             loaded = default_variants(name)
@@ -524,8 +527,13 @@ def check_prompt_files_unchanged() -> None:
                if on_disk.get(name) != expected}
     check("every pre-existing prompt file is byte-identical",
           not changed, str(changed) or f"{len(PRE_EXISTING_PROMPT_FILES)} files unchanged")
+    # Same treatment group-bcde.v1 got when it was the new set: named as known-new rather than
+    # added to PRE_EXISTING_PROMPT_FILES, which means what it says. These files are not left
+    # unguarded by that — `row_key` includes `prompt_hash`, so changing one character of a prompt
+    # invalidates every row it produced and forces the work to be redone.
     unexpected = sorted(set(on_disk) - set(PRE_EXISTING_PROMPT_FILES)
-                        - {"group-bcde.v1.variant-e.json", "group-bcde.v1.variant-f.json"})
+                        - {"group-bcde.v1.variant-e.json", "group-bcde.v1.variant-f.json",
+                           "subject-noun.v1.variant-g.json"})
     check("prompts/ holds no file this selftest does not know about", not unexpected, str(unexpected))
     # §15.2: the nine-question draft was deleted, not frozen — it produced no row anywhere, and a
     # loadable superset-minus-four schema in prompts/ is a hazard with no offsetting benefit.

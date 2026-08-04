@@ -1,0 +1,171 @@
+{
+	"eval_set": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/eval-set.json",
+	"prompt_set": "subject-noun.v1",
+	"schema_version": "subject-noun.v1",
+	"presentation_mode": null,
+	"item_set": null,
+	"included_images": 142,
+	"variants": [
+		"subject-noun.v1/G"
+	],
+	"already_done": 0,
+	"queued": 142,
+	"poisoned_over_attempt_cap": 0,
+	"out": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/subject-noun-1.jsonl",
+	"long_edge_cap": 640,
+	"constrained_decoding": true
+}
+loading mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit @ f31102655767 ...
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files: 100%|██████████| 18/18 [00:00<00:00, 4065.78it/s]
+model loaded in 4.4s
+canary baseline: NONE inherited (subject-noun-1.jsonl holds no ok canary row for variant G) — this run will rebase on its own first canary answer, so only WITHIN-run stability is checked, not drift against an earlier run
+canary baseline set: {'subject_noun': 'person'}
+[1/142] ab67616d00001e020000269ead63cf2376a6b67d.jpg G ok 0.8s (3.4s/item avg) {'subject_noun': 'none'}
+[2/142] ab67616d00001e02000060b6aa68cdd9e02567b1.jpg G ok 0.8s (2.1s/item avg) {'subject_noun': 'lotus'}
+[3/142] ab67616d00001e020000e692a330542f8ed14132.jpg G ok 0.8s (1.7s/item avg) {'subject_noun': 'heart'}
+[4/142] ab67616d00001e020000ff9a99b8761b17336fa2.jpg G ok 0.8s (1.5s/item avg) {'subject_noun': 'person'}
+[5/142] ab67616d0000b27300002947b898e4bd572ac4aa.jpg G ok 1.3s (1.4s/item avg) {'subject_noun': 'car'}
+[6/142] ab67616d0000b27300009f60aeb150a5db45b47b.jpg G ok 1.3s (1.4s/item avg) {'subject_noun': 'couple'}
+[7/142] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg G ok 1.3s (1.4s/item avg) {'subject_noun': 'none'}
+[8/142] ab67616d00001e0200015a7a9909e03141e001e3.jpg G ok 0.8s (1.3s/item avg) {'subject_noun': 'woman'}
+[9/142] ab67616d00001e020001738a49a69ed70ffcbe42.jpg G ok 0.8s (1.3s/item avg) {'subject_noun': 'woman'}
+[10/142] ab67616d00001e0200018a1e2daf68a53f504cb9.jpg G ok 0.9s (1.2s/item avg) {'subject_noun': 'butterfly'}
+[11/142] ab67616d0000b27300014fb430dd1b693e653121.jpg G ok 1.3s (1.2s/item avg) {'subject_noun': 'man'}
+[12/142] ab67616d0000b27300015083990110d3b1a4ea8a.jpg G ok 1.3s (1.2s/item avg) {'subject_noun': 'man'}
+[13/142] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg G ok 1.4s (1.3s/item avg) {'subject_noun': 'plant'}
+[14/142] ab67616d0000b2730001c404b8a04a8789db8dab.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'woman'}
+[15/142] ab67616d00001e020002881a851f1e14c374562b.jpg G ok 0.9s (1.3s/item avg) {'subject_noun': 'car'}
+[16/142] ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'street'}
+[17/142] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'logo'}
+[18/142] ab67616d00001e02000300752f338b6aedff856c.jpg G ok 0.9s (1.3s/item avg) {'subject_noun': 'pool'}
+[19/142] ab67616d00001e0200034fd1f86970643e18bf98.jpg G ok 0.9s (1.2s/item avg) {'subject_noun': 'woman'}
+[20/142] ab67616d00001e020003e50500c5d762da89643a.jpg G ok 0.9s (1.2s/item avg) {'subject_noun': 'person'}
+[21/142] ab67616d0000b273000323957b88112ca49b8ee0.jpg G ok 1.4s (1.3s/item avg) {'subject_noun': 'woman'}
+[22/142] ab67616d0000b27300034b1c66ddd55a5337f66a.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'person'}
+[23/142] ab67616d0000b27300034b60105d8937440211da.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'woman'}
+[24/142] ab67616d0000b2730003580bd2766859c4d81e13.jpg G ok 1.5s (1.3s/item avg) {'subject_noun': 'none'}
+[25/142] ab67616d0000b27300038e79a0efbc7325db6444.jpg G ok 1.6s (1.3s/item avg) {'subject_noun': 'none'}
+[26/142] ab67616d0000b273000390c07f75da30b4e8aba8.jpg G ok 1.6s (1.4s/item avg) {'subject_noun': 'lips'}
+[27/142] ab67616d00001e0200044a28a45b7b23d4be2f79 G ok 1.0s (1.3s/item avg) {'subject_noun': 'woman'}
+[28/142] ab67616d00001e020004ccf0ae91364130886c02 G ok 1.0s (1.3s/item avg) {'subject_noun': 'leaf'}
+[29/142] ab67616d0000b27300040defaf772cad7a1738ce G ok 1.6s (1.3s/item avg) {'subject_noun': 'silhouette'}
+[30/142] ab67616d0000b273000442caec7ec8cb724bf265 G ok 1.7s (1.3s/item avg) {'subject_noun': 'none'}
+[31/142] ab67616d0000b2730004515066668684295c41a7 G ok 1.8s (1.4s/item avg) {'subject_noun': 'statue'}
+[32/142] ab67616d00001e02000564718f605c1f326b2ca2 G ok 1.1s (1.4s/item avg) {'subject_noun': 'statue'}
+[33/142] ab67616d00001e020005a54a9ea60f48619788f1 G ok 1.0s (1.3s/item avg) {'subject_noun': 'none'}
+[34/142] ab67616d00001e020005fa7c7e0e067474967e41 G ok 1.0s (1.3s/item avg) {'subject_noun': 'person'}
+[35/142] ab67616d0000b2730005230fae1822525e5a5ff6 G ok 1.7s (1.3s/item avg) {'subject_noun': 'people'}
+[36/142] ab67616d0000b2730005597105ba1e2d38f62cfc G ok 1.7s (1.4s/item avg) {'subject_noun': 'people'}
+[37/142] ab67616d0000b2730005a91812c85db291ea5d85 G ok 1.7s (1.4s/item avg) {'subject_noun': 'man'}
+[38/142] ab67616d00001e0200060491ade88c8893373d9f G ok 1.0s (1.4s/item avg) {'subject_noun': 'man'}
+[39/142] ab67616d00001e0200066a61bbcbeadd632f7f38 G ok 1.0s (1.3s/item avg) {'subject_noun': 'none'}
+[40/142] ab67616d00001e020006eb2197bdb0a7b9392108 G ok 1.0s (1.3s/item avg) {'subject_noun': 'fire'}
+[41/142] ab67616d0000b273000626fb25df8b60c4b97ca4 G ok 1.7s (1.4s/item avg) {'subject_noun': 'car'}
+[42/142] ab67616d0000b273000637ffe82ad17bfa0f1073 G ok 1.6s (1.4s/item avg) {'subject_noun': 'band'}
+[43/142] ab67616d0000b2730006a059abb2a6b7dd4ad461 G ok 1.6s (1.4s/item avg) {'subject_noun': 'man'}
+[44/142] ab67616d0000b2730006c5d727b329e4477f4a81 G ok 1.6s (1.4s/item avg) {'subject_noun': 'man'}
+[45/142] ab67616d00001e0200079d5a7d92f2bff88570db G ok 1.0s (1.4s/item avg) {'subject_noun': 'basketball player'}
+[46/142] ab67616d0000b27300075841f68d8cd71db368d8 G ok 1.7s (1.4s/item avg) {'subject_noun': 'acoustic guitar'}
+[47/142] ab67616d0000b2730007960724fb77c8041c6c13 G ok 1.6s (1.4s/item avg) {'subject_noun': 'dragon'}
+[48/142] ab67616d0000b2730007cc8b341c11227aa7b461 G ok 1.6s (1.4s/item avg) {'subject_noun': 'woman'}
+[49/142] ab67616d0000b2730007d42f64cb70acce41c71d G ok 1.6s (1.4s/item avg) {'subject_noun': 'skulls'}
+[50/142] ab67616d00001e0200083a2d455755e4c1116825 G ok 1.0s (1.4s/item avg) {'subject_noun': 'woman'}
+[51/142] ab67616d00001e0200087b1314ac8e17bc1c6916 G ok 1.0s (1.4s/item avg) {'subject_noun': 'dog'}
+[52/142] ab67616d0000b27300081dec93652e6af2582192 G ok 1.6s (1.4s/item avg) {'subject_noun': 'man'}
+[53/142] ab67616d0000b27300083cc5b8d8d2e7ca7147cd G ok 1.6s (1.4s/item avg) {'subject_noun': 'person'}
+[54/142] ab67616d0000b27300088460068752fad04f8541 G ok 1.6s (1.4s/item avg) {'subject_noun': 'doll'}
+[55/142] ab67616d0000b2730008c1c08433aa880aad7f30 G ok 1.6s (1.4s/item avg) {'subject_noun': 'thatched roof'}
+[56/142] ab67616d00001e020009657a5122a7b3d40458b0 G ok 1.0s (1.4s/item avg) {'subject_noun': 'none'}
+[57/142] ab67616d0000b273000913b3e9ae2c7173d1a8b2 G ok 1.6s (1.4s/item avg) {'subject_noun': 'hand'}
+[58/142] ab67616d0000b27300092c140fe03d08e0dc906a G ok 1.6s (1.4s/item avg) {'subject_noun': 'number'}
+[59/142] ab67616d0000b27300093ce40fe3f073dcd87ab5 G ok 1.6s (1.4s/item avg) {'subject_noun': 'woman'}
+[60/142] ab67616d0000b2730009448702be55dfc86fde67 G ok 1.6s (1.4s/item avg) {'subject_noun': 'hand'}
+[61/142] ab67616d0000b273000955ccfc1e8da97a09b32d G ok 1.6s (1.5s/item avg) {'subject_noun': 'shield'}
+[62/142] ab67616d0000b27300097e55f9a93ceb03afa4b2 G ok 1.6s (1.5s/item avg) {'subject_noun': 'map'}
+[63/142] ab67616d0000b27300099f4221cf6ed5f2440904 G ok 1.6s (1.5s/item avg) {'subject_noun': 'smartphone'}
+[64/142] ab67616d0000b2730009d178a401f9433fdddff2 G ok 1.7s (1.5s/item avg) {'subject_noun': 'speaker'}
+[65/142] ab67616d00001e02000a8aa1dafa651976a7bb44 G ok 1.0s (1.5s/item avg) {'subject_noun': 'lettering'}
+[66/142] ab67616d0000b273000a24cc32b3d8b6e31bc161 G ok 1.6s (1.5s/item avg) {'subject_noun': 'black hole'}
+[67/142] ab67616d0000b273000a2927c0f27657e4a2aeaa G ok 1.9s (1.5s/item avg) {'subject_noun': 'person'}
+[68/142] ab67616d0000b273000a392cb5a08d9801562845 G ok 1.9s (1.5s/item avg) {'subject_noun': 'man'}
+[69/142] ab67616d0000b273000a8097d86930fb02f5a76d G ok 1.8s (1.5s/item avg) {'subject_noun': 'person'}
+[70/142] ab67616d0000b273000a8f5a7c2d213002fcd591 G ok 1.7s (1.5s/item avg) {'subject_noun': 'flower'}
+[71/142] ab67616d0000b273000a9e0be9521986cc08839e G ok 1.9s (1.5s/item avg) {'subject_noun': 'person'}
+[72/142] ab67616d0000b273000aa22923f3a9064c0e525b G ok 1.8s (1.5s/item avg) {'subject_noun': 'cross'}
+[73/142] ab67616d00001e02000b096f0b03b7745c8e8aab G ok 1.1s (1.5s/item avg) {'subject_noun': 'buildings'}
+[74/142] ab67616d0000b273000ba4a828abadcf3f4642f6 G ok 1.7s (1.5s/item avg) {'subject_noun': 'mountain'}
+[75/142] ab67616d0000b273000bc98f315aba36374f9f93 G ok 1.7s (1.5s/item avg) {'subject_noun': 'record'}
+[76/142] ab67616d00001e02000c3523d80259b49a06ee45 G ok 1.1s (1.5s/item avg) {'subject_noun': 'ocean'}
+[77/142] ab67616d00001e02000c4d52300a016ee65f1622 G ok 1.1s (1.5s/item avg) {'subject_noun': 'buddha statue'}
+[78/142] ab67616d00001e02000c5e69af1d6ce16e2b1a61 G ok 1.1s (1.5s/item avg) {'subject_noun': 'temple'}
+[79/142] ab67616d00001e02000cd48fb26f462cd33760f6 G ok 1.0s (1.5s/item avg) {'subject_noun': 'person'}
+[80/142] ab67616d0000b273000c42c61ba60f69e5a40a29 G ok 1.6s (1.5s/item avg) {'subject_noun': 'person'}
+[81/142] ab67616d00001e02000d457f4b8829a59481e78b G ok 1.3s (1.5s/item avg) {'subject_noun': 'teddy bear'}
+[82/142] ab67616d0000b273000d5cdbc67ed815efc360ad G ok 1.8s (1.5s/item avg) {'subject_noun': 'face'}
+[83/142] ab67616d0000b273000d8049603d6ab7f5d759bb G ok 1.7s (1.5s/item avg) {'subject_noun': 'man'}
+[84/142] ab67616d0000b273000dd322ab822869dc34b72a G ok 1.7s (1.5s/item avg) {'subject_noun': 'man'}
+[85/142] ab67616d00001e02000e007955ee2f8b29f5b2b4 G ok 1.0s (1.5s/item avg) {'subject_noun': 'man'}
+[86/142] ab67616d00001e02000e229142cb6dbae156341c G ok 1.0s (1.5s/item avg) {'subject_noun': 'woman'}
+[87/142] ab67616d00001e02000ec9e3bb9ee4fc008b018e G ok 1.0s (1.5s/item avg) {'subject_noun': 'none'}
+[88/142] ab67616d0000b273000e440b3d59e91eb43040ee G ok 1.7s (1.5s/item avg) {'subject_noun': 'cassette tape'}
+[89/142] ab67616d0000b273000e5109c484324cc95a2222 G ok 1.7s (1.5s/item avg) {'subject_noun': 'person'}
+[90/142] ab67616d0000b273000e91d6c3b44e900d334a78 G ok 1.8s (1.5s/item avg) {'subject_noun': 'person'}
+[91/142] ab67616d0000b273000efaac56201fc13ee0724b G ok 1.7s (1.5s/item avg) {'subject_noun': 'man'}
+[92/142] ab67616d00001e02000f0a78a1791248aec707e3 G ok 1.1s (1.5s/item avg) {'subject_noun': 'microphone'}
+[93/142] ab67616d00001e02000f723f36271de0ed3aa893 G ok 1.1s (1.5s/item avg) {'subject_noun': 'man'}
+[94/142] ab67616d0000b273000f815611cd5966187e2051 G ok 1.8s (1.5s/item avg) {'subject_noun': 'men'}
+[95/142] ab67616d0000b273000fa9b53f161dc999ef557d G ok 1.8s (1.5s/item avg) {'subject_noun': 'people'}
+[96/142] ab67616d00001e0200102a1cdfa1c0f12d6528ea G ok 1.2s (1.5s/item avg) {'subject_noun': 'couple'}
+[97/142] ab67616d00001e02001031d1e10290f8e446bd68 G ok 1.2s (1.5s/item avg) {'subject_noun': 'living room'}
+[98/142] ab67616d00001e0200106c3252a4c133c0abde36 G ok 1.2s (1.5s/item avg) {'subject_noun': 'none'}
+[99/142] ab67616d00001e020010b864b2a925ec6bfaa30e G ok 1.2s (1.5s/item avg) {'subject_noun': 'person'}
+[100/142] ab67616d0000b27300100a3e9c764acf01c16db8 G ok 1.9s (1.5s/item avg) {'subject_noun': 'woman'}
+[101/142] ab67616d0000b27300103a3729bf589e0dc913ab G ok 2.0s (1.5s/item avg) {'subject_noun': 'person'}
+[102/142] ab67616d0000b27300103a4dcd62e3dd6f76d123 G ok 2.0s (1.5s/item avg) {'subject_noun': 'coyote'}
+[103/142] ab67616d0000b273001063830a2e597293293797 G ok 2.0s (1.5s/item avg) {'subject_noun': 'woman'}
+[104/142] ab67616d0000b2730010bcd17e41331debec2bd5 G ok 2.1s (1.5s/item avg) {'subject_noun': 'none'}
+[105/142] ab67616d0000b2730010def2c33a308e8bd193f8 G ok 2.1s (1.5s/item avg) {'subject_noun': 'drinks'}
+[106/142] ab67616d00001e0200117a3fb2444ed7e04c4721 G ok 1.3s (1.5s/item avg) {'subject_noun': 'boat'}
+[107/142] ab67616d0000b273001102263870e8b11c13ec31 G ok 2.1s (1.5s/item avg) {'subject_noun': 'person'}
+[108/142] ab67616d0000b27300116380305ae5fd3607c43b G ok 2.2s (1.5s/item avg) {'subject_noun': 'graffiti'}
+[109/142] ab67616d0000b2730011c1dcb3a4a0cd92bdf203 G ok 2.2s (1.5s/item avg) {'subject_noun': 'people'}
+[110/142] ab67616d00001e0200124d0597059e8987bc4577 G ok 1.4s (1.5s/item avg) {'subject_noun': 'sign'}
+[111/142] ab67616d0000b27300127e4552b22c761d50c8f5 G ok 2.3s (1.6s/item avg) {'subject_noun': 'man'}
+[112/142] ab67616d0000b2730012eb9ade9c1bf4a5411c5d G ok 2.4s (1.6s/item avg) {'subject_noun': 'artwork'}
+[113/142] ab67616d00001e020013bebcaee941ebcc13437c G ok 1.5s (1.6s/item avg) {'subject_noun': 'record'}
+[114/142] ab67616d0000b27300139c3eeb59e40dba08f5a1 G ok 2.4s (1.6s/item avg) {'subject_noun': 'person'}
+[115/142] ab67616d0000b2730013e7782db25f28b59084ec G ok 2.5s (1.6s/item avg) {'subject_noun': 'mountain'}
+[116/142] ab67616d00001e020014adcd67767097b6fb42e0 G ok 1.5s (1.6s/item avg) {'subject_noun': 'horse'}
+[117/142] ab67616d0000b2730014cb7f2229ff8195e3ba04 G ok 2.6s (1.6s/item avg) {'subject_noun': 'man'}
+[118/142] artofficial.jpg G ok 2.6s (1.6s/item avg) {'subject_noun': 'person'}
+[119/142] birdsofprey.jpg G ok 2.6s (1.6s/item avg) {'subject_noun': 'woman'}
+[120/142] disney.avif G ok 2.0s (1.6s/item avg) {'subject_noun': 'mouse'}
+[121/142] doja.jpg G ok 2.8s (1.6s/item avg) {'subject_noun': 'woman'}
+[122/142] elephunk.jpg G ok 2.4s (1.6s/item avg) {'subject_noun': 'elephant'}
+[123/142] franz.jpg G ok 3.0s (1.7s/item avg) {'subject_noun': 'none'}
+[124/142] greenday.jpg G ok 3.0s (1.7s/item avg) {'subject_noun': 'hand'}
+[125/142] havana.jpg G ok 3.1s (1.7s/item avg) {'subject_noun': 'man'}
+[126/142] horsley.jpg G ok 3.2s (1.7s/item avg) {'subject_noun': 'silhouette'}
+[127/142] infected.jpg G ok 3.4s (1.7s/item avg) {'subject_noun': 'mushroom'}
+[128/142] johns.jpg G ok 3.4s (1.7s/item avg) {'subject_noun': 'boat'}
+[129/142] knuckles.jpg G ok 2.3s (1.7s/item avg) {'subject_noun': 'car'}
+[130/142] krafty.jpg G ok 3.7s (1.7s/item avg) {'subject_noun': 'none'}
+[131/142] loups.jpg G ok 3.1s (1.7s/item avg) {'subject_noun': 'wolf'}
+[132/142] meteora.jpg G ok 4.0s (1.8s/item avg) {'subject_noun': 'man'}
+[133/142] muse.jpg G ok 4.2s (1.8s/item avg) {'subject_noun': 'woman'}
+[134/142] nobs.jpg G ok 4.6s (1.8s/item avg) {'subject_noun': 'instruments'}
+[135/142] once.jpg G ok 4.9s (1.8s/item avg) {'subject_noun': 'statue'}
+[136/142] orelsan.jpg G ok 3.4s (1.8s/item avg) {'subject_noun': 'man'}
+[137/142] placebo.jpg G ok 5.5s (1.9s/item avg) {'subject_noun': 'person'}
+[138/142] skap.jpg G ok 5.7s (1.9s/item avg) {'subject_noun': 'bus'}
+[139/142] slim.jpg G ok 6.8s (1.9s/item avg) {'subject_noun': 'person'}
+[140/142] slipknot.jpg G ok 7.2s (2.0s/item avg) {'subject_noun': 'none'}
+[141/142] toxicity.jpg G ok 13.8s (2.1s/item avg) {'subject_noun': 'hill'}
+[142/142] vvbrown.jpg G ok 17.7s (2.2s/item avg) {'subject_noun': 'woman'}
+{
+	"processed_this_process": 142,
+	"elapsed_seconds": 318.4,
+	"seconds_per_inference": 2.24,
+	"run_id": "8c4b7e51-d176-4db4-b5c1-3e5205fce0a1",
+	"exit_code": 0
+}
