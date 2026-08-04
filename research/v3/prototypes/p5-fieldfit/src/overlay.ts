@@ -5,11 +5,12 @@
  * module reads what the fit *rejected*. Nothing here segments, thresholds an area, or looks at
  * shape. A pixel's contribution to the overlay is `1 − w(x)` and nothing else.
  *
- * Implements SPEC decisions 6 (bar-neighbourhood agglomeration), 7 (foreground), 8 (accent Pareto
- * front) and the foreground half of 10 (escape), **as amended by the round-1 rulings of
- * 2026-08-04**: comparisons on published representatives, the foreground ranked by minimum |raw
- * APCA| over the rendered ramp, and the accent's front winner ranked by distance from everything
- * already published. Design sources: `phase-1/proposals/arm-f-r3.md`
+ * Implements SPEC decisions 6 (bar-neighbourhood agglomeration), 7 (foreground), 8 (accent) and the
+ * foreground half of 10 (escape), **as amended by the rulings of 2026-08-04**: every comparison on
+ * published representatives; the foreground ranked by minimum |raw APCA| over the rendered ramp; the
+ * accent floored by the caller's `minAccentContrast` over that same ramp and ranked by its distance
+ * from everything already published, with the Pareto front removed. Design sources:
+ * `phase-1/proposals/arm-f-r3.md`
  * §2.5 (overlay mass, the Pareto front, `accentChromaOnly`) and `arm-e-r3.md` §2.4
  * (bar-neighbourhood agglomeration, descending-mass order, packed-int tie-break) — **§2.4 only**.
  * Arm E's five-level lexicographic role ranking is excluded by SPEC decision 12 and is not here.
@@ -27,10 +28,11 @@
  *    **every distinctness and feasibility comparison runs on the representative** — the contract
  *    judges published pairs, so this module must judge the same pairs.
  *
- *    Centres survive where the question is genuinely about the mark rather than the palette: the
- *    per-cluster deltas (`deltaL`, `deltaC`, `deltaH`) and hence Pareto-front membership, which ask
- *    how a mark departs from the field beneath it. Every gate and every ranking uses the
- *    representative.
+ *    Centres survive only where the question is genuinely about the mark rather than the palette:
+ *    the per-cluster deltas (`deltaL`, `deltaC`, `deltaH`), which describe how a mark departs from
+ *    the field beneath it. Since decision 8's ruling (b) removed the Pareto front, nothing *selects*
+ *    on them at all — they are description and diagnostics (`accentChromaOnly`). Every gate and every
+ *    ranking uses the representative.
  * 2. **When a triple is inside the bar of more than one cluster, it joins the nearest one**
  *    (OKLab distance to the running centre; ties to the cluster created first, and creation order
  *    is itself total). Arm E §2.4 says "merge into an existing cluster if it lies within the bar of
@@ -53,7 +55,8 @@ import {
 	sameColorBar,
 } from "../../../src/contract/color.ts"
 import { decompose } from "../../../src/contract/perception-model-spaces.ts"
-import { minRawContrastOverRamp } from "../../../src/contract/ramp.ts"
+import { ACCENT_FUNCTIONAL_DISTANCE } from "../../../src/contract/constants.ts"
+import { firstInvisibleAccentOnRamp, minRawContrastOverRamp } from "../../../src/contract/ramp.ts"
 import type {
 	GradientStop,
 	OkLab,
@@ -364,45 +367,11 @@ function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
 // ---------------------------------------------------------------------------------------------
 // SPEC decision 8 — accent
 // ---------------------------------------------------------------------------------------------
-
-type AccentCandidate = {
-	cluster: OverlayCluster
-	/** Lightness departure from the local field. Front membership only. */
-	lightness: number
-	/** Chromatic departure from the local field, √(ΔC² + ΔH²). Front membership only. */
-	chromatic: number
-	/**
-	 * Minimum OKLab distance from this candidate's **published** colour to everything already
-	 * published — the foreground and both field ends. The winner on the front maximizes it
-	 * (decision 8's round-1 ruling); it plays no part in front membership.
-	 */
-	separation: number
-}
-
-/**
- * The Pareto front on (|ΔL|, √(ΔC² + ΔH²)), both maximized.
- *
- * A front and not a weighted sum, on purpose (arm-f-r3 §2.5): the perception work found lightness
- * departure works about twice as often at matched distance, but the brief is explicit that this is
- * *a direction and not a coefficient*. A weight would invent the constant two rounds have refused
- * to measure. The front honours the direction structurally — a chroma-only candidate reaches it
- * only when nothing dominates it — and SPEC decision 12 excludes hand-weighted multi-term scores
- * for the same reason.
- *
- * Dominance is strict: `q` dominates `p` when it is at least as far on both axes and strictly
- * further on one. Exact duplicates therefore both survive, and the mass tie-break below settles
- * them.
- */
-function paretoFront(candidates: readonly AccentCandidate[]): AccentCandidate[] {
-	return candidates.filter((candidate) =>
-		!candidates.some((other) =>
-			other !== candidate &&
-			other.lightness >= candidate.lightness &&
-			other.chromatic >= candidate.chromatic &&
-			(other.lightness > candidate.lightness || other.chromatic > candidate.chromatic)
-		)
-	)
-}
+//
+// Nothing lives here any more. The Pareto front on (|ΔL|, √(ΔC² + ΔH²)) and its `AccentCandidate`
+// row were deleted by decision 8's ruling (b) of 2026-08-04; the accent is now selected inside
+// `readOverlay` by one criterion — maximum minimum OKLab distance to everything already published —
+// and needs no structure of its own. The history is in `readOverlay`'s accent block.
 
 // ---------------------------------------------------------------------------------------------
 // Entry point
@@ -524,61 +493,89 @@ export function readOverlay(
 		return { clusters, foreground: null, accent: null, accentChromaOnly: false }
 	}
 
-	// --- accent (SPEC decision 8, re-ranked by round-1 evidence) ----------------------------------
+	// --- accent (SPEC decision 8, as amended twice on 2026-08-04) ---------------------------------
+	//
+	// **The Pareto front is gone**, and so is mass as a ranking. What is left is one question asked of
+	// every feasible cluster: *how far is this colour from everything the palette has already
+	// published?* Two rulings got here, both from measurement rather than from taste:
+	//
+	//  - *(a) the accent gets a contrast floor.* v0.2 published `#00000b` on a `#010000` background —
+	//    |raw APCA| 0.615, two invariant-4 failures — because distance was maximized with no floor at
+	//    all. The floor is the caller's own `minAccentContrast`, over the published ramp, using the
+	//    contract's own accent machinery: no new constant, and no second definition of "legible".
+	//
+	//    **Reading, stated because it is a choice.** The ruling says "the contract's accent contrast
+	//    floor … same machinery as foreground's text floor". The foreground's floor is a plain minimum
+	//    of |raw APCA|; the *accent's* floor in the contract is not — invariant 4 makes it a pointwise
+	//    **conjunction**, failing only where `|raw| < floor` **and** the pair is closer than
+	//    `ACCENT_FUNCTIONAL_DISTANCE` at the same ramp point, because an accent is icons and can be
+	//    read by hue where a paragraph cannot. So "the same machinery" is read as
+	//    `firstInvisibleAccentOnRamp` — the contract's accent equivalent of
+	//    `minRawContrastOverRamp` — rather than as reusing the foreground's `legibility` number.
+	//
+	//    Measured reason to prefer it: a saturated red `#c81e1e` mark on a dark-to-mid grey ramp has
+	//    min |raw| = 0.901, so the |raw|-only reading rejects it, while its OKLab distance there is
+	//    0.203 — well clear of 0.146 — so the contract accepts it and always would have. A filter
+	//    stricter than the invariant it exists to satisfy would throw away exactly the vivid,
+	//    artwork-reflecting accents ruling (b) was written to recover. The v0.2 offender is rejected
+	//    either way: `#00000b` on `#010000` fails both halves at once.
+	//  - *(b) front membership is dropped.* Displacement from the *local field* is a statement about
+	//    the ground a mark sits on, and it excluded the artwork's white on `2376a6b67d` — min-distance
+	//    0.2181, the largest in a 223-cluster set — because a near-black family with |ΔL| ≈ 0.74
+	//    dominated it. Every reviewer accent note asks for a colour that stands apart from what is
+	//    already published, which is the min-distance criterion, not the displacement one.
+	//
+	// `deltaL`/`deltaC`/`deltaH` stay on `OverlayCluster` — they are the module's description of a
+	// mark and `accentChromaOnly` still reports off `deltaL` — but nothing selects on them any more,
+	// and `paretoFront` is **deleted** rather than kept as a dead diagnostic: a function that used to
+	// decide the answer is the last thing that should sit unused next to the code that replaced it.
 	const resolvedForeground = foreground
 	const foregroundColor = published.get(resolvedForeground)!
-	// Everything already published, which is what the accent has to be a *different colour from* and
-	// what it is now ranked by its distance to.
+	// Everything already published, and therefore everything the accent is ranked by its distance to.
 	const alreadyPublished = [foregroundColor, ...publishedEnds] as const
+	const accentFloor = contrast.minAccentContrast.effectiveRawMagnitude
 
-	const candidates: AccentCandidate[] = []
+	let winner: OverlayCluster | null = null
+	let bestSeparation = -1
 	for (const cluster of feasible) {
 		if (cluster === resolvedForeground) continue
 		const color = published.get(cluster)!
+		// Distinctness from the two ends came with `feasible`; this is the third published colour.
 		if (sameColor(color, foregroundColor)) continue
-		// Distinctness from the ends was already established by `feasible`.
-		candidates.push({
-			cluster,
-			// Front membership is unchanged and stays on the centres: it is a statement about how the
-			// mark departs from the field beneath it, which is a selection question, not a published
-			// pair. Only the distinctness tests and the winner's ranking moved to representatives.
-			lightness: Math.abs(cluster.deltaL),
-			chromatic: Math.hypot(cluster.deltaC, cluster.deltaH),
-			separation: Math.min(
-				...alreadyPublished.map((other) => colorDistance(color, other)),
-			),
-		})
+		// Invisible anywhere on the ramp ⇒ not an accent. `null` means no such point exists. Same
+		// selection-density budget as the foreground's ranking, and for the same reason: at the
+		// contract's default 2048/4096 this call alone took the demo-20 run from 0.8 s to 6.8 s.
+		if (
+			firstInvisibleAccentOnRamp(
+				color,
+				publishedRamp,
+				accentFloor,
+				ACCENT_FUNCTIONAL_DISTANCE,
+				SELECTION_RAMP_SAMPLES_PER_SEGMENT,
+				SELECTION_RAMP_REFINEMENT_SAMPLES,
+			) !== null
+		) continue
+		const separation = Math.min(...alreadyPublished.map((other) => colorDistance(color, other)))
+		// Ties fall through to the incumbent, and `feasible` preserves `clusters`' descending-mass,
+		// ascending-packed order, so the two tie-breaks are the iteration order itself.
+		if (separation > bestSeparation) {
+			winner = cluster
+			bestSeparation = separation
+		}
 	}
 
-	if (candidates.length === 0) {
+	if (winner === null) {
+		// Nothing both legible and distinct: decision 8's terminal clause. `candidate.ts` turns this
+		// into the declared collapse onto the foreground.
 		return { clusters, foreground: resolvedForeground, accent: null, accentChromaOnly: false }
 	}
 
-	// Was: max overlay mass on the front. Round 1 graded items 3, 5 and 6 down for the same reason —
-	// mass-heavy dull clusters won the front while the artwork's vivid colours lost — against the
-	// reviewer's principle that *the palette must reflect the artwork*. Now the winner is the
-	// candidate that is **furthest from everything already published**, measured as the minimum OKLab
-	// distance to the foreground and both ends. One measured quantity, no exchange rates; mass and
-	// the packed integer remain the tie-breaks.
-	const front = paretoFront(candidates)
-	let winner = front[0]!
-	for (const candidate of front) {
-		if (
-			candidate.separation > winner.separation ||
-			(candidate.separation === winner.separation &&
-				(candidate.cluster.overlayMass > winner.cluster.overlayMass ||
-					(candidate.cluster.overlayMass === winner.cluster.overlayMass &&
-						candidate.cluster.representative < winner.cluster.representative)))
-		) winner = candidate
-	}
-
 	// The known-fragile case made visible rather than silent (arm-f-r3 §2.5): an accent that moves
-	// only in chroma/hue, by less than the pair's own bar in lightness. Diagnostics, never a veto —
-	// vetoing it would be the coefficient the front exists to avoid.
-	const accentChromaOnly = winner.lightness < sameColorBar(
-		published.get(winner.cluster)!,
-		paletteColorOfLab(winner.cluster.localField),
+	// only in chroma/hue, by less than the pair's own bar in lightness. Diagnostics, never a veto.
+	const accentChromaOnly = Math.abs(winner.deltaL) < sameColorBar(
+		published.get(winner)!,
+		paletteColorOfLab(winner.localField),
 	)
 
-	return { clusters, foreground: resolvedForeground, accent: winner.cluster, accentChromaOnly }
+	return { clusters, foreground: resolvedForeground, accent: winner, accentChromaOnly }
 }

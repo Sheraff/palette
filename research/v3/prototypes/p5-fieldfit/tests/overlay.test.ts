@@ -31,6 +31,8 @@ import {
 	resolveContrastParameters,
 } from "../../../src/contract/invariants.ts"
 import type { GradientStop, OkLab, Rgb8 } from "../../../src/contract/types.ts"
+import { ACCENT_FUNCTIONAL_DISTANCE } from "../../../src/contract/constants.ts"
+import { firstInvisibleAccentOnRamp } from "../../../src/contract/ramp.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "../src/decode.ts"
 import { readOverlay } from "../src/overlay.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "../src/types.ts"
@@ -376,16 +378,21 @@ function paretoScene(lightnessPatchSize: number): Scene {
 }
 
 /**
- * **This scene's expected winners changed at round 1, and the change is the point.**
+ * **This scene's expected winners have now changed twice, and both changes are the point.**
  *
- * The constants are untouched; only the rules moved. Under the pre-round-1 rules the foreground was
- * the heaviest feasible cluster (`BLUE_MARK`, 40 px) and the accent was the heaviest member of the
- * Pareto front (`CHROMA_ONLY`). Under decision 7's and 8's round-1 rulings the foreground is the
- * *most legible* feasible cluster and the accent is the front member *furthest from everything
- * already published*, and on this scene both answers move. The old expectations are asserted as
- * losers below rather than deleted, so the test records the reversal instead of hiding it.
+ * The constants have never moved; the rules have, twice, on measurement:
+ *
+ *  - *pre-round-1*: foreground = heaviest feasible cluster (`BLUE_MARK`, 40 px); accent = heaviest
+ *    member of the Pareto front (`CHROMA_ONLY`).
+ *  - *v0.2*: foreground = most legible feasible cluster (`LIGHTNESS_ONLY`); accent = front member
+ *    furthest from what is published.
+ *  - *v0.3*: **the front is gone entirely** (decision 8, ruling b). The accent is the feasible,
+ *    floor-clearing candidate furthest from `{foreground, background, surface}` — full stop.
+ *
+ * `BLUE_MARK` wins the accent under both v0.2 and v0.3, but for a materially different reason, so the
+ * assertions below check the *criterion* and not just the answer.
  */
-test("accent Pareto: the dominated candidate never wins, and legibility outranks mass", () => {
+test("accent selection: furthest from everything published, with no front and no mass", () => {
 	const scene = paretoScene(3)
 	const reading = readOverlay(
 		scene.fit,
@@ -403,17 +410,7 @@ test("accent Pareto: the dominated candidate never wins, and legibility outranks
 	const chroma = byTriple.get(pack(CHROMA_ONLY))!
 	const blue = byTriple.get(pack(BLUE_MARK))!
 
-	// --- the construction is still what the test claims it is ---
-	const axes = (cluster: typeof dominated) =>
-		[Math.abs(cluster.deltaL), Math.hypot(cluster.deltaC, cluster.deltaH)] as const
-	assert.ok(axes(lightness)[0] > axes(dominated)[0])
-	assert.ok(axes(lightness)[1] > axes(dominated)[1])
-	assert.ok(axes(chroma)[1] > axes(lightness)[1])
-	assert.ok(axes(lightness)[0] > axes(chroma)[0])
-
-	// --- foreground: legibility, not mass ---
-	// `BLUE_MARK` carries the most overlay mass and used to win on that alone; `LIGHTNESS_ONLY` is a
-	// three-pixel patch that is far more readable on this field, and now wins.
+	// --- foreground: legibility, not mass (decision 7's round-1 ruling) ---
 	assert.ok(blue.overlayMass > lightness.overlayMass)
 	const rawAgainstField = (rgb: Rgb8) => Math.abs(apcaRaw(rgb, FLAT_FIELD_RGB))
 	assert.ok(
@@ -422,16 +419,21 @@ test("accent Pareto: the dominated candidate never wins, and legibility outranks
 	)
 	assert.equal(reading.foreground?.representative, pack(LIGHTNESS_ONLY))
 
-	// `CHROMA_ONLY` sits below the text floor against this field (|raw| ≈ 2.29 < 2.5), so it is not a
-	// foreground at any mass — but it remains a perfectly good accent candidate, which is the whole
-	// reason the two roles are ranked by different quantities.
+	// `CHROMA_ONLY` sits below the *text* floor against this field (|raw| ≈ 2.29 < 2.5), so it is not
+	// a foreground at any mass — while remaining a legitimate accent candidate, which is the whole
+	// reason the two roles are held to different floors.
 	assert.ok(rawAgainstField(CHROMA_ONLY) < DEFAULT_CONTRAST.minTextContrast.effectiveRawMagnitude)
 
-	// --- accent: the dominated candidate still never wins ---
-	// With `LIGHTNESS_ONLY` promoted to foreground the front is `BLUE_MARK` alone: it dominates
-	// `DOMINATED` and `CHROMA_ONLY` on both axes. Mass would have picked it too; the point preserved
-	// here is only that the dominated candidate cannot win despite carrying more mass than the front.
+	// --- accent: max min-distance to {foreground, both ends} ---
+	const published = [colorFromRgb(LIGHTNESS_ONLY), colorFromRgb(FLAT_FIELD_RGB)]
+	const minDistance = (rgb: Rgb8) =>
+		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
+	assert.ok(minDistance(BLUE_MARK) > minDistance(CHROMA_ONLY))
+	assert.ok(minDistance(CHROMA_ONLY) > minDistance(DOMINATED))
+	// `DOMINATED` still carries more mass than either, and still loses — but under v0.3 it loses on
+	// distance rather than on front membership, which no longer exists.
 	assert.ok(dominated.overlayMass > chroma.overlayMass)
+
 	assert.equal(reading.accent?.representative, pack(BLUE_MARK))
 	assert.notEqual(reading.accent?.representative, pack(DOMINATED))
 	assert.equal(reading.accentChromaOnly, false)
@@ -579,6 +581,76 @@ test("accent ranking: a near-foreground massive cluster loses to a separated viv
 	assert.ok(minDistance(VIVID) > minDistance(NEAR_FOREGROUND))
 
 	assert.equal(reading.accent?.representative, pack(VIVID))
+})
+
+/**
+ * **Regression, decision 8's ruling (a): the accent has a contrast floor.**
+ *
+ * This is the `16a8247378` class, and v0.2 got it wrong: it published accent `#00000b` on background
+ * `#010000`, |raw APCA| 0.615, and earned two `I4.below-contrast-floor` rows. The mechanism is that
+ * OKLab distances **inflate near black** — `#00000b` sits 0.0638 from the near-black field, further
+ * than a perfectly visible pale grey sits from the published foreground — so a pure max-min-distance
+ * rule reaches for a colour nobody can see.
+ *
+ * The floor is the contract's own accent clause, which is a *conjunction*: invisible only where
+ * `|raw| < minAccentContrast` **and** the pair is closer than `ACCENT_FUNCTIONAL_DISTANCE` at the
+ * same ramp point. `INVISIBLE` fails both at once; `VISIBLE` fails neither, and wins despite being
+ * the nearer candidate.
+ */
+test("accent floor: a near-background invisible candidate loses to a visible nearer one", () => {
+	const FIELD: Rgb8 = [1, 0, 0]
+	const FOREGROUND_MARK: Rgb8 = [235, 235, 235]
+	const INVISIBLE: Rgb8 = [0, 0, 11]
+	const VISIBLE: Rgb8 = [220, 220, 220]
+
+	const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 30], [INVISIBLE, 20], [VISIBLE, 10]])
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		stops,
+	)
+
+	assert.equal(reading.foreground?.representative, pack(FOREGROUND_MARK))
+
+	// The fixture is the trap it claims to be: the invisible candidate is *further* from everything
+	// published than the visible one, and carries more mass, so both pre-(a) rules would take it.
+	const published = [colorFromRgb(FOREGROUND_MARK), colorFromRgb(FIELD)]
+	const minDistance = (rgb: Rgb8) =>
+		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
+	assert.ok(
+		minDistance(INVISIBLE) > minDistance(VISIBLE),
+		`the trap needs the invisible candidate to be further: ${minDistance(INVISIBLE)} vs ${minDistance(VISIBLE)}`,
+	)
+	const invisible = reading.clusters.find((c) => c.representative === pack(INVISIBLE))!
+	const visible = reading.clusters.find((c) => c.representative === pack(VISIBLE))!
+	assert.ok(invisible.overlayMass > visible.overlayMass)
+	// ...and it is genuinely distinct by the bar, so distinctness alone would not have caught it.
+	assert.ok(!sameColor(colorFromRgb(INVISIBLE), colorFromRgb(FIELD)))
+
+	// The contract's own accent clause is what rejects it.
+	assert.notEqual(
+		firstInvisibleAccentOnRamp(
+			colorFromRgb(INVISIBLE),
+			stops,
+			DEFAULT_CONTRAST.minAccentContrast.effectiveRawMagnitude,
+			ACCENT_FUNCTIONAL_DISTANCE,
+		),
+		null,
+	)
+	assert.equal(
+		firstInvisibleAccentOnRamp(
+			colorFromRgb(VISIBLE),
+			stops,
+			DEFAULT_CONTRAST.minAccentContrast.effectiveRawMagnitude,
+			ACCENT_FUNCTIONAL_DISTANCE,
+		),
+		null,
+	)
+
+	assert.equal(reading.accent?.representative, pack(VISIBLE))
 })
 
 // ---------------------------------------------------------------------------------------------
