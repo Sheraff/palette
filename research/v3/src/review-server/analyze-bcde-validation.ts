@@ -36,6 +36,11 @@ import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
+import {
+	cohensKappa as sharedCohensKappa,
+	MIN_KAPPA_N as SHARED_MIN_KAPPA_N,
+	roundFourPlaces,
+} from "../stats/index.ts"
 import { DEFAULT_WAREHOUSE_PATH } from "../warehouse/cli.ts"
 import type { OracleLabelRecord, WarehouseRecord } from "../warehouse/records.ts"
 import { readAll, resolve } from "../warehouse/warehouse.ts"
@@ -64,8 +69,12 @@ export const BCDE_VALIDATION_ANALYSIS_PATH = fileURLToPath(
  * reviewer-vs-model join here is far smaller than 20. The counts are always reported; the
  * coefficient is null with its reason attached.
  * [REVIEWED] — PREMISE_NEXT.md §15.9's own noise statement, applied to a smaller n.
+ *
+ * Migrated 2026-08-04: the value now comes from `src/stats/kappa.ts`, which enforces the same floor
+ * for every analyzer instead of once here. The reasoning above is why the floor is 10; it is
+ * restated in the shared module and this line is a re-export so the two cannot drift.
  */
-export const MIN_KAPPA_N = 10
+export const MIN_KAPPA_N = SHARED_MIN_KAPPA_N
 
 /**
  * The two prompt orderings the pilot ran. E is the wording this round's questions were parsed from.
@@ -770,24 +779,33 @@ const RULE_SPECIFIC_CONSISTENT: Readonly<Record<number, (conditional: string | r
  * `null` is also returned when both raters used exactly one value: the expected-agreement term is
  * then 1 and kappa is 0/0. That is a degenerate table, not a coefficient of zero, and reporting it
  * as zero would say the raters agreed by chance when in fact they agreed completely.
+ *
+ * Migrated 2026-08-04 to `src/stats/kappa.ts`. The arithmetic, the n=10 floor, the degenerate-table
+ * guard and all three reason strings now live in the shared module; this function stays as the
+ * adapter to the published shape (`{ kappa, n, raw, reason }`, both numbers at four places), because
+ * that shape is embedded in `data/oracle-validation/bcde-validation-1-analysis.json`. The shared
+ * module returns a type with no `kappa` field when it refuses, which is the property this wrapper
+ * flattens back to `null` for the artifact and which every new caller should use directly instead.
  */
 export function cohenKappa(
 	pairs: readonly (readonly [string, string])[],
 	minimum = MIN_KAPPA_N,
 ): { kappa: number | null; n: number; raw: number | null; reason: string | null } {
-	const n = pairs.length
-	if (n === 0) return { kappa: null, n, raw: null, reason: "no comparable rows" }
-	const agreed = pairs.filter(([a, b]) => a === b).length
-	const raw = Number((agreed / n).toFixed(4))
-	if (n < minimum) return { kappa: null, n, raw, reason: `n=${n} is below the ${minimum}-row floor for a kappa` }
-	const values = [...new Set(pairs.flatMap(([a, b]) => [a, b]))]
-	const left = new Map(values.map((value) => [value, pairs.filter(([a]) => a === value).length / n]))
-	const right = new Map(values.map((value) => [value, pairs.filter(([, b]) => b === value).length / n]))
-	const expected = values.reduce((sum, value) => sum + left.get(value)! * right.get(value)!, 0)
-	if (Math.abs(1 - expected) < 1e-12) {
-		return { kappa: null, n, raw, reason: "both raters used one value only; kappa is 0/0 on that table" }
+	const result = sharedCohensKappa(pairs, minimum)
+	if (result.ok) {
+		return {
+			kappa: roundFourPlaces(result.kappa),
+			n: result.n,
+			raw: roundFourPlaces(result.rawAgreement),
+			reason: null,
+		}
 	}
-	return { kappa: Number(((agreed / n - expected) / (1 - expected)).toFixed(4)), n, raw, reason: null }
+	return {
+		kappa: null,
+		n: result.n,
+		raw: result.rawAgreement === null ? null : roundFourPlaces(result.rawAgreement),
+		reason: result.detail,
+	}
 }
 
 /* ------------------------------------------------------------------------------------------- */

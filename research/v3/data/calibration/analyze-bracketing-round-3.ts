@@ -28,6 +28,7 @@ import {
 	type BracketingAnswer,
 	type Observation,
 } from "../../src/review-server/analyze-bracketing.ts"
+import { exactBinomialTest, wilsonInterval } from "../../src/stats/index.ts"
 
 const FIXTURE_PATH = fileURLToPath(new URL("./bracketing-round-3.json", import.meta.url))
 const OUT_PATH = fileURLToPath(new URL("./bracketing-round-3-analysis.json", import.meta.url))
@@ -37,40 +38,42 @@ const PREREGISTRATION_PATH = "research/v3/data/calibration/bracketing-round-3-pr
 /* Statistics — exact binomial against p = 0.5, and the Wilson interval                            */
 /* --------------------------------------------------------------------------------------------- */
 
-/** log n! by lgamma, so n = 42 never overflows and the tails stay accurate. */
-function logFactorial(n: number): number {
-	let acc = 0
-	for (let i = 2; i <= n; i++) acc += Math.log(i)
-	return acc
-}
-
-function binomialPmf(k: number, n: number, p: number): number {
-	const logC = logFactorial(n) - logFactorial(k) - logFactorial(n - k)
-	return Math.exp(logC + k * Math.log(p) + (n - k) * Math.log(1 - p))
-}
-
 /**
- * Two-sided exact binomial test against p = 0.5. Under the null the distribution is symmetric, so
- * the "sum of outcomes no more likely than the observed one" definition coincides exactly with
- * doubling the smaller tail (capped at 1).
+ * Two-sided exact binomial test against p = 0.5, and the 95% Wilson interval.
+ *
+ * Migrated 2026-08-04 to `src/stats/`. Both were hand-rolled here; the arithmetic now lives in one
+ * place shared with every other analyzer, and these two functions are the adapters that keep this
+ * round's published shapes (`number`, and `{ low, high } | null`).
+ *
+ * Two differences from the code this replaces, both verified to change nothing in the published
+ * artifact, and both pinned by `tests/stats-migration.test.ts`:
+ *
+ *  1. **The two-sided rule.** This file doubled the smaller tail; the shared module sums every
+ *     outcome no more likely than the observed one. Against `p = 0.5` the binomial is symmetric and
+ *     the two definitions coincide exactly — which is why the doubling was correct here and is *not*
+ *     correct in general. The shared module uses the general rule so it stays right at other nulls.
+ *  2. **Clamping.** The Wilson interval here was unclamped; the shared one clamps to [0, 1]. It
+ *     cannot move a published bound: `decisiveCuts` reads `low` only when searching upward from
+ *     `ceil(n/2)` and `high` only when searching downward from `floor(n/2)`, and neither of those
+ *     bounds leaves the unit interval on that side. The test asserts the cuts and every published
+ *     bound are unchanged rather than resting on the argument.
  */
 function exactBinomialTwoSided(k: number, n: number): number {
-	if (n === 0) return 1
-	let tail = 0
-	if (k * 2 <= n) for (let i = 0; i <= k; i++) tail += binomialPmf(i, n, 0.5)
-	else for (let i = k; i <= n; i++) tail += binomialPmf(i, n, 0.5)
-	return Math.min(1, 2 * tail)
+	const result = exactBinomialTest({
+		successes: k,
+		trials: n,
+		nullProbability: 0.5,
+		alternative: "two-sided",
+		// The 42 straddle items are 42 distinct pairs; the six silent repeats are analysed apart, in
+		// the `repeats` block, and never enter this count.
+		trialsAreDistinctUnits: true,
+	})
+	return result.ok ? result.pValue : 1
 }
 
-/** 95% Wilson score interval for k/n. */
 function wilson(k: number, n: number): { low: number; high: number } | null {
-	if (n === 0) return null
-	const z = 1.959963984540054
-	const phat = k / n
-	const denom = 1 + (z * z) / n
-	const centre = (phat + (z * z) / (2 * n)) / denom
-	const half = (z * Math.sqrt((phat * (1 - phat)) / n + (z * z) / (4 * n * n))) / denom
-	return { low: centre - half, high: centre + half }
+	const result = wilsonInterval(k, n, 0.95)
+	return result.ok ? { low: result.low, high: result.high } : null
 }
 
 /**

@@ -29,6 +29,7 @@ global Python upgrade) is the reviewer's call, never an agent's or the orchestra
 | calibration consequence | `research/v3/src/calibration-consequence/`, `research/v3/data/calibration-consequence/` |
 | tagging | `research/v3/src/tagging/`, `research/v3/data/tagging/`, `research/v3/tests/tagging-*.test.ts` |
 | coverage set | `research/v3/src/coverage-set/`, `research/v3/data/coverage-set/` |
+| shared statistics | `research/v3/src/stats/`, `research/v3/tests/stats-*.test.ts` |
 | oracle — premise / ladder / bakeoff / SAM | `research/v3/oracle/<name>/`, `research/v3/data/oracle-*`, `research/v3/data/sam/`, `research/v3/tests/sam-*.test.ts` |
 | housekeeping + reconciliation | `research/v3/data/decisions/`, `research/v3/PHASE_0_LOOSE_ENDS.md`, and doc edits to `V3_PLAN.md` / `PHASE_0_DECISIONS.md` / `CONVENTIONS.md` / `REVIEW_UI.md` / `ORACLE_QUESTION_SET.md` |
 
