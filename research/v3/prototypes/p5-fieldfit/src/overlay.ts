@@ -46,7 +46,6 @@
  */
 
 import {
-	colorDistance,
 	colorFromRgb,
 	okLabDistance,
 	okLabToRgb,
@@ -374,6 +373,36 @@ function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
 // and needs no structure of its own. The history is in `readOverlay`'s accent block.
 
 // ---------------------------------------------------------------------------------------------
+// SPEC decision 13 — the foreground experiment (temporary)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * **Two candidate foreground rules, both implemented, one shipped. This is temporary.**
+ *
+ * SPEC decision 13 (round-2 items 1 and 7) states the open question: the foreground principle is *the
+ * artwork's own ink, provided it registers* — not maximum contrast. Item 7 wants the white title on a
+ * light field, where `apca-max` picks the black shadows instead; item 1's black is *also* the
+ * artwork's ink, and `apca-max` gets that one right. The two rules therefore disagree in a way no
+ * argument settles, so both exist here and `fg-compare.ts` measures them.
+ *
+ * The gates are **identical** for both — representative-level distinctness from both published ends,
+ * and the caller's text floor over the published ramp. Only the ranking among survivors differs:
+ *
+ *  - `apca-max`: argmax `min|raw APCA|` over the ramp. Legibility first.
+ *  - `mass-led`: argmax overlay mass. Presence first, legibility as a gate.
+ *
+ * `DEFAULT_FOREGROUND_RULE` is what `candidate.ts` ships and it is deliberately **not** a parameter
+ * anywhere in the candidate: `src/devloop/types.ts` is explicit that a candidate with a knob is two
+ * candidates. This option exists for the comparison script and is expected to be deleted, along with
+ * the losing branch, once the orchestrator has picked from the table.
+ */
+export type ForegroundRule = "apca-max" | "mass-led"
+
+export const DEFAULT_FOREGROUND_RULE: ForegroundRule = "apca-max"
+
+export type OverlayOptions = Readonly<{ foregroundRule?: ForegroundRule }>
+
+// ---------------------------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------------------------
 
@@ -394,7 +423,9 @@ export function readOverlay(
 	inventory: Inventory,
 	contrast: ResolvedContrastFloors,
 	publishedRamp: readonly GradientStop[],
+	options: OverlayOptions = {},
 ): OverlayReading {
+	const foregroundRule = options.foregroundRule ?? DEFAULT_FOREGROUND_RULE
 	if (publishedRamp.length < 2) {
 		throw new RangeError(`readOverlay needs at least two published stops, got ${publishedRamp.length}`)
 	}
@@ -474,16 +505,20 @@ export function readOverlay(
 	let bestLegibility = -1
 	for (const cluster of feasible) {
 		const raw = legibility.get(cluster)!
+		// The gate, identical under both rules: below the caller's floor is not a foreground at all.
 		if (raw < textFloor) continue
-		if (foreground === null || raw > bestLegibility) {
+		if (foreground === null) {
 			foreground = cluster
 			bestLegibility = raw
 			continue
 		}
-		if (raw !== bestLegibility) continue
-		// `clusters` is in descending-mass, ascending-packed order and `feasible` preserves it, so the
-		// incumbent already wins both tie-breaks. Nothing to do — stated so the omission reads as a
-		// decision rather than a missing branch.
+		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so under
+		// `mass-led` the first survivor is already the answer and under `apca-max` the incumbent
+		// already holds both tie-breaks. Only a strict improvement in legibility can displace it.
+		if (foregroundRule === "apca-max" && raw > bestLegibility) {
+			foreground = cluster
+			bestLegibility = raw
+		}
 	}
 
 	if (foreground === null) {
@@ -493,50 +528,45 @@ export function readOverlay(
 		return { clusters, foreground: null, accent: null, accentChromaOnly: false }
 	}
 
-	// --- accent (SPEC decision 8, as amended twice on 2026-08-04) ---------------------------------
+	// --- accent (SPEC decision 8, third and current ruling) --------------------------------------
 	//
-	// **The Pareto front is gone**, and so is mass as a ranking. What is left is one question asked of
-	// every feasible cluster: *how far is this colour from everything the palette has already
-	// published?* Two rulings got here, both from measurement rather than from taste:
+	// **Argmax overlay mass among feasible candidates.** Mass is back, and the two gates that were
+	// missing the last time it led are now in force — that is the whole content of the v0.4 ruling.
 	//
-	//  - *(a) the accent gets a contrast floor.* v0.2 published `#00000b` on a `#010000` background —
-	//    |raw APCA| 0.615, two invariant-4 failures — because distance was maximized with no floor at
-	//    all. The floor is the caller's own `minAccentContrast`, over the published ramp, using the
-	//    contract's own accent machinery: no new constant, and no second definition of "legible".
+	// The path here is worth keeping, because each step was refuted by evidence rather than by taste:
 	//
-	//    **Reading, stated because it is a choice.** The ruling says "the contract's accent contrast
-	//    floor … same machinery as foreground's text floor". The foreground's floor is a plain minimum
-	//    of |raw APCA|; the *accent's* floor in the contract is not — invariant 4 makes it a pointwise
-	//    **conjunction**, failing only where `|raw| < floor` **and** the pair is closer than
-	//    `ACCENT_FUNCTIONAL_DISTANCE` at the same ramp point, because an accent is icons and can be
-	//    read by hue where a paragraph cannot. So "the same machinery" is read as
-	//    `firstInvisibleAccentOnRamp` — the contract's accent equivalent of
-	//    `minRawContrastOverRamp` — rather than as reusing the foreground's `legibility` number.
+	//  1. *max overlay mass on a Pareto front* (v0.1) — round 1 items 3/5/6: mass-heavy dull clusters
+	//     won while the artwork's vivid colours lost.
+	//  2. *max min-distance to everything published, on the front* (v0.2) — fixed the dull winners,
+	//     but published `#00000b` on `#010000`: distance with no floor at all.
+	//  3. *the front dropped, floor added, still max min-distance* (v0.3) — legal everywhere (zero
+	//     invariant violations on demo-20) and still wrong: round 2 refuted it on both covers where
+	//     its pick differed from the reviewer's. Item 2's dark olive — *"doesn't feel like a part of
+	//     this artwork… missing the white"*; item 6's obsidian — *"Black is not part of the
+	//     identity… only small shadows"*. **Maximising distance from what is published rewards
+	//     precisely the colours least like the artwork**, which is the identity principle inverted.
+	//  4. *argmax overlay mass, above the gates* (v0.4, here). Overlay mass is this mechanism's own
+	//     measure of salient presence — how much of the image the fit rejected in this colour — so it
+	//     is the reading of "part of the artwork" that P5 already computes. The gates are what v0.2
+	//     lacked: representative-level distinctness (its twins failed it) and the contract's accent
+	//     floor (its I4 rows failed it). Both are above this line, so mass never has to be trusted to
+	//     produce legibility or distinctness on its own.
 	//
-	//    Measured reason to prefer it: a saturated red `#c81e1e` mark on a dark-to-mid grey ramp has
-	//    min |raw| = 0.901, so the |raw|-only reading rejects it, while its OKLab distance there is
-	//    0.203 — well clear of 0.146 — so the contract accepts it and always would have. A filter
-	//    stricter than the invariant it exists to satisfy would throw away exactly the vivid,
-	//    artwork-reflecting accents ruling (b) was written to recover. The v0.2 offender is rejected
-	//    either way: `#00000b` on `#010000` fails both halves at once.
-	//  - *(b) front membership is dropped.* Displacement from the *local field* is a statement about
-	//    the ground a mark sits on, and it excluded the artwork's white on `2376a6b67d` — min-distance
-	//    0.2181, the largest in a 223-cluster set — because a near-black family with |ΔL| ≈ 0.74
-	//    dominated it. Every reviewer accent note asks for a colour that stands apart from what is
-	//    already published, which is the min-distance criterion, not the displacement one.
+	// The floor is the contract's own accent clause and is a pointwise **conjunction** — invisible
+	// only where `|raw| < minAccentContrast` **and** the pair is closer than
+	// `ACCENT_FUNCTIONAL_DISTANCE` at the same ramp point — because an accent is icons and can be read
+	// by hue where a paragraph cannot. Endorsed reading (SPEC decision 8a): a filter must never be
+	// stricter than the invariant it exists to satisfy. A saturated red `#c81e1e` on a dark-to-mid
+	// grey ramp has min |raw| = 0.901 but distance 0.203 there, so the contract accepts it and a plain
+	// |raw| minimum would not.
 	//
-	// `deltaL`/`deltaC`/`deltaH` stay on `OverlayCluster` — they are the module's description of a
-	// mark and `accentChromaOnly` still reports off `deltaL` — but nothing selects on them any more,
-	// and `paretoFront` is **deleted** rather than kept as a dead diagnostic: a function that used to
-	// decide the answer is the last thing that should sit unused next to the code that replaced it.
+	// `deltaL`/`deltaC`/`deltaH` stay on `OverlayCluster` as description and as `accentChromaOnly`'s
+	// input; nothing selects on them. `paretoFront` was deleted in v0.3 and stays deleted.
 	const resolvedForeground = foreground
 	const foregroundColor = published.get(resolvedForeground)!
-	// Everything already published, and therefore everything the accent is ranked by its distance to.
-	const alreadyPublished = [foregroundColor, ...publishedEnds] as const
 	const accentFloor = contrast.minAccentContrast.effectiveRawMagnitude
 
 	let winner: OverlayCluster | null = null
-	let bestSeparation = -1
 	for (const cluster of feasible) {
 		if (cluster === resolvedForeground) continue
 		const color = published.get(cluster)!
@@ -555,13 +585,11 @@ export function readOverlay(
 				SELECTION_RAMP_REFINEMENT_SAMPLES,
 			) !== null
 		) continue
-		const separation = Math.min(...alreadyPublished.map((other) => colorDistance(color, other)))
-		// Ties fall through to the incumbent, and `feasible` preserves `clusters`' descending-mass,
-		// ascending-packed order, so the two tie-breaks are the iteration order itself.
-		if (separation > bestSeparation) {
-			winner = cluster
-			bestSeparation = separation
-		}
+		// `feasible` preserves `clusters`' descending-mass, ascending-packed order, so the first
+		// survivor *is* argmax mass with the packed int as tie-break. Written as a break rather than
+		// as a scan so the ordering the answer depends on is impossible to miss.
+		winner = cluster
+		break
 	}
 
 	if (winner === null) {

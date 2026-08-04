@@ -378,21 +378,23 @@ function paretoScene(lightnessPatchSize: number): Scene {
 }
 
 /**
- * **This scene's expected winners have now changed twice, and both changes are the point.**
+ * **This scene's expected winners have now changed three times, and every change was evidence.**
  *
- * The constants have never moved; the rules have, twice, on measurement:
+ * The constants have never moved. The rules have:
  *
- *  - *pre-round-1*: foreground = heaviest feasible cluster (`BLUE_MARK`, 40 px); accent = heaviest
- *    member of the Pareto front (`CHROMA_ONLY`).
+ *  - *v0.1*: foreground = heaviest feasible cluster (`BLUE_MARK`, 40 px); accent = heaviest member of
+ *    the Pareto front (`CHROMA_ONLY`).
  *  - *v0.2*: foreground = most legible feasible cluster (`LIGHTNESS_ONLY`); accent = front member
  *    furthest from what is published.
- *  - *v0.3*: **the front is gone entirely** (decision 8, ruling b). The accent is the feasible,
- *    floor-clearing candidate furthest from `{foreground, background, surface}` — full stop.
+ *  - *v0.3*: the front dropped; accent = feasible, floor-clearing candidate furthest from
+ *    `{foreground, background, surface}`.
+ *  - *v0.4*: **distance retired entirely** (round 2 refuted it on both covers where it disagreed with
+ *    the reviewer). Accent = argmax overlay mass above the gates.
  *
- * `BLUE_MARK` wins the accent under both v0.2 and v0.3, but for a materially different reason, so the
- * assertions below check the *criterion* and not just the answer.
+ * `BLUE_MARK` has won the accent since v0.2, but never twice for the same reason, so the assertions
+ * check the criterion rather than the answer: here it wins because it is the *heaviest* survivor.
  */
-test("accent selection: furthest from everything published, with no front and no mass", () => {
+test("accent selection: mass leads, above the gates", () => {
 	const scene = paretoScene(3)
 	const reading = readOverlay(
 		scene.fit,
@@ -410,7 +412,7 @@ test("accent selection: furthest from everything published, with no front and no
 	const chroma = byTriple.get(pack(CHROMA_ONLY))!
 	const blue = byTriple.get(pack(BLUE_MARK))!
 
-	// --- foreground: legibility, not mass (decision 7's round-1 ruling) ---
+	// --- foreground: legibility, not mass (decision 7's round-1 ruling, still in force) ---
 	assert.ok(blue.overlayMass > lightness.overlayMass)
 	const rawAgainstField = (rgb: Rgb8) => Math.abs(apcaRaw(rgb, FLAT_FIELD_RGB))
 	assert.ok(
@@ -424,18 +426,10 @@ test("accent selection: furthest from everything published, with no front and no
 	// reason the two roles are held to different floors.
 	assert.ok(rawAgainstField(CHROMA_ONLY) < DEFAULT_CONTRAST.minTextContrast.effectiveRawMagnitude)
 
-	// --- accent: max min-distance to {foreground, both ends} ---
-	const published = [colorFromRgb(LIGHTNESS_ONLY), colorFromRgb(FLAT_FIELD_RGB)]
-	const minDistance = (rgb: Rgb8) =>
-		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
-	assert.ok(minDistance(BLUE_MARK) > minDistance(CHROMA_ONLY))
-	assert.ok(minDistance(CHROMA_ONLY) > minDistance(DOMINATED))
-	// `DOMINATED` still carries more mass than either, and still loses — but under v0.3 it loses on
-	// distance rather than on front membership, which no longer exists.
+	// --- accent: the heaviest survivor of the gates ---
+	assert.ok(blue.overlayMass > dominated.overlayMass)
 	assert.ok(dominated.overlayMass > chroma.overlayMass)
-
 	assert.equal(reading.accent?.representative, pack(BLUE_MARK))
-	assert.notEqual(reading.accent?.representative, pack(DOMINATED))
 	assert.equal(reading.accentChromaOnly, false)
 })
 
@@ -537,50 +531,70 @@ test("foreground ranking: a dull massive cluster loses to a legible small one", 
 })
 
 /**
- * **Regression, decision 8's round-1 ruling: the front's winner is the furthest from what is
- * already published.**
+ * **Regression, decision 8's v0.4 ruling: the artwork's own colour beats a distant manufactured one.**
  *
- * Round 1 graded items 3, 5 and 6 down because mass-heavy dull clusters won the front while the
- * artwork's vivid colours lost. `NEAR_FOREGROUND` is a big pale patch a hair from the published
- * foreground; `VIVID` is a smaller crimson one far from both the foreground and the field. Neither
- * dominates the other on the front's axes, so the winner is decided by the new rule alone.
+ * This is the round-2 item-2 class, built from that cover's measured colours: published background
+ * `#fad107` and surface `#f81107`, foreground `#000000`, and the two accent candidates v0.3 had to
+ * choose between. `#fbfaff` is the artwork's white — the reviewer's *"missing the white"* — carrying
+ * real mass. `#453907` is the dark olive v0.3 published because it maximised minimum distance from
+ * everything already in the palette: *"doesn't feel like a part of this artwork"*.
+ *
+ * The measured min-distances are the olive's 0.3539 against the white's 0.2181, so the v0.3 rule
+ * genuinely preferred the olive and this fixture reproduces that. Mass-led inverts it, and both
+ * candidates still pass both gates — so the test is about the ranking, not about a filter.
  */
-test("accent ranking: a near-foreground massive cluster loses to a separated vivid one", () => {
-	const FIELD: Rgb8 = [128, 128, 128]
-	const FOREGROUND_MARK: Rgb8 = [255, 255, 255]
-	const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]
-	const VIVID: Rgb8 = [220, 20, 60]
+test("accent identity: the artwork's white beats a more distant dark", () => {
+	const BACKGROUND: Rgb8 = [0xfa, 0xd1, 0x07]
+	const SURFACE: Rgb8 = [0xf8, 0x11, 0x07]
+	const INK: Rgb8 = [0, 0, 0]
+	const WHITE: Rgb8 = [0xfb, 0xfa, 0xff]
+	const DISTANT_DARK: Rgb8 = [0x45, 0x39, 0x07]
 
-	const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 20], [NEAR_FOREGROUND, 40], [VIVID, 12]])
+	// The field is the background block; the surface block is published but the marks sit on one
+	// ground, which is all `readOverlay` needs — the ramp it measures against is passed in.
+	const scene = flatScene(20, BACKGROUND, [[INK, 40], [WHITE, 60], [DISTANT_DARK, 20]])
+	const stops: GradientStop[] = [
+		{ color: colorFromRgb(BACKGROUND), position: 0 },
+		{ color: colorFromRgb(SURFACE), position: 1 },
+	]
 	const reading = readOverlay(
 		scene.fit,
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD)),
+		stops,
 	)
 
-	assert.equal(reading.foreground?.representative, pack(FOREGROUND_MARK))
+	assert.equal(reading.foreground?.representative, pack(INK))
 
-	const near = reading.clusters.find((cluster) => cluster.representative === pack(NEAR_FOREGROUND))!
-	const vivid = reading.clusters.find((cluster) => cluster.representative === pack(VIVID))!
+	const white = reading.clusters.find((c) => c.representative === pack(WHITE))!
+	const dark = reading.clusters.find((c) => c.representative === pack(DISTANT_DARK))!
 
-	// Neither dominates the other, so both are on the front and the tie-break is the whole decision.
-	const axes = (cluster: typeof near) =>
-		[Math.abs(cluster.deltaL), Math.hypot(cluster.deltaC, cluster.deltaH)] as const
-	assert.ok(axes(near)[0] > axes(vivid)[0])
-	assert.ok(axes(vivid)[1] > axes(near)[1])
-	// The old rule would have taken the heavier one.
-	assert.ok(near.overlayMass > vivid.overlayMass)
-	// The new rule takes the one furthest from everything published.
-	const minDistance = (rgb: Rgb8) =>
-		Math.min(
-			colorDistance(colorFromRgb(rgb), colorFromRgb(FOREGROUND_MARK)),
-			colorDistance(colorFromRgb(rgb), colorFromRgb(FIELD)),
+	// Both clear both gates, so neither is filtered out and the ranking decides alone.
+	const accentFloor = DEFAULT_CONTRAST.minAccentContrast.effectiveRawMagnitude
+	for (const rgb of [WHITE, DISTANT_DARK]) {
+		assert.equal(
+			firstInvisibleAccentOnRamp(colorFromRgb(rgb), stops, accentFloor, ACCENT_FUNCTIONAL_DISTANCE),
+			null,
+			`${JSON.stringify(rgb)} must clear the accent floor`,
 		)
-	assert.ok(minDistance(VIVID) > minDistance(NEAR_FOREGROUND))
+		assert.ok(!sameColor(colorFromRgb(rgb), colorFromRgb(INK)))
+		assert.ok(!sameColor(colorFromRgb(rgb), colorFromRgb(BACKGROUND)))
+		assert.ok(!sameColor(colorFromRgb(rgb), colorFromRgb(SURFACE)))
+	}
 
-	assert.equal(reading.accent?.representative, pack(VIVID))
+	// The v0.3 rule preferred the dark: it is further from everything published.
+	const published = [colorFromRgb(INK), colorFromRgb(BACKGROUND), colorFromRgb(SURFACE)]
+	const minDistance = (rgb: Rgb8) =>
+		Math.min(...published.map((other) => colorDistance(colorFromRgb(rgb), other)))
+	assert.ok(
+		minDistance(DISTANT_DARK) > minDistance(WHITE),
+		`the fixture must reproduce the v0.3 preference: ${minDistance(DISTANT_DARK)} vs ${minDistance(WHITE)}`,
+	)
+	// The v0.4 rule prefers the white: it is more of the artwork.
+	assert.ok(white.overlayMass > dark.overlayMass)
+
+	assert.equal(reading.accent?.representative, pack(WHITE))
 })
 
 /**

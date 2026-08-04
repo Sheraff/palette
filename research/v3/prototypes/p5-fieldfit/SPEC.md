@@ -112,6 +112,17 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    mass floor), argmax min OKLab distance to {foreground, background, surface}; tie by overlay
    mass, then packed int. arm-f-r3's front honoured the perception-4 direction without a
    coefficient; the min-dist criterion needs neither. `accentChromaOnly` stays as a diagnostic.
+   *Ruling 2026-08-04 (v0.4, round-2 batch phase2-cal-004, decode re-verified from warehouse):*
+   **min-dist-to-published is retired** — refuted on both covers where its pick differed from the
+   reviewer's (item 2 dark olive: "doesn't feel like a part of this artwork… missing the white";
+   item 6 obsidian: "Black is not part of the *identity*… only small shadows"). Max-min-distance
+   rewards exactly the colours least like the artwork. Accent = **argmax overlay mass** among
+   feasible candidates (contract accent floor over ramp + representative-distinctness from
+   foreground and both ends + negligible-mass floor); tie by packed int. Overlay mass is the
+   mechanism's own measure of salient presence; the two gates are what was missing when mass last
+   led (v0.2's twins failed rep-distinctness, its floors failed I4 — both now in force). The
+   identity principle ("every colour must feel like it fits the artwork", Phase-0 ruling) is the
+   frame; abstract distance criteria do not re-enter without new reviewer evidence.
 9. **No-field detector** (obligation #1, built in v0, never deferred) — verdict `noField` when
    `fieldExplainedFraction < 0.5`, where `fieldExplainedFraction` = fraction of full-res pixels
    whose residual norm against the kept field is below 4 × `POOLED_SAME_COLOR_BAR`. Principle: **a
@@ -144,9 +155,44 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
     `src/contract/color.ts`. Scalar scale (loss scale, ball radius on unpaired targets) uses
     `POOLED_SAME_COLOR_BAR` (`[INHERITED]` from contract). Nothing here depends on the bar's value.
 12. **Excluded** — arm-e-r3's five-level lexicographic F/A ranking (revives the recorded main
-    failure comparator; PRIOR_ART_CHECK §P1 erratum). arm-f's recursive field-like component pool
-    and scale-space mark grouping (v0 scope cut; E2). Any hand-weighted multi-term score (P6's
-    failure shape, not ours).
+    failure comparator; PRIOR_ART_CHECK §P1 erratum). arm-f's scale-space mark grouping (still
+    deferred). Any hand-weighted multi-term score (P6's failure shape, not ours).
+    *E2 is no longer excluded — pulled forward 2026-08-04 by round-2 evidence* (item 3 "we would
+    expect such a gorgeous gradient" on a sunset the global fit cannot explain; item 5 black
+    field on an autumn-sky painting; item 8 near-white field on a vivid cover; item 4 "there is
+    literally a surface… a polaroid"). **v0.5 field reading:** recursive field-like component
+    extraction per arm-f §2.2 — the largest coherent field-like component carries the field
+    roles, its own ramp carries the gradient; a second extensive component may carry the surface
+    (arm-f §2.5 two-component reading, item 4's polaroid); the noField retreat fires only when no
+    component is field-like. Global explained-fraction stays as the trigger for the component
+    search, not as a terminal verdict.
+
+13. **Foreground experiment (v0.4, from round-2 items 1 + 7)** — the fg principle is *the
+    artwork's own ink, provided it registers*, not max contrast: item 7 wants the white title on
+    a light field (APCA-max picked black shadows, ACCEPTABLE with correction); item 1's STRONG
+    black is also the artwork's ink. Implement mass-led-above-gates (argmax overlay mass among
+    rep-distinct, text-floor-clearing candidates) beside the current APCA-max; decide by
+    measurement on the two evidence covers plus a no-regression diff over demo-20. Not a
+    flip-flop: a pick between two stated rules on reviewer-stated preferences.
+    *Resolved 2026-08-04 (pass-7 table, 22 covers, 15 differ):* **foreground = argmax overlay
+    mass among candidates clearing a raised legibility floor of |raw APCA| ≥ 15 over the ramp**
+    (`FOREGROUND_MIN_RAW_APCA = 15`, `[UNCALIBRATED]`, bracketed by reviewer evidence: mass-led's
+    reviewer-endorsed win sits at 28.9, its four reviewer-refuted picks at 3.7–10.6 — any floor
+    in (10.6, 28.9] honours all current evidence; 15 chosen inside the bracket, round 3 may
+    tighten). Rationale: mass finds the ink (apca-max published mass-1–38 specks on six covers);
+    the floor enforces "registers" (mass-led alone re-published the round-1 UNACCEPTABLE
+    `#e4e4e4` at raw 4.9). The apca-max path and the experiment scaffolding are deleted.
+
+14. **Accent twin-exclusion (v0.5, from pass-7 caution + round-1 items 3/7)** — mass-led accent
+    reaches the foreground's visual twin (`#fed078`/`#febf6f`, `#fffce1`/`#fee2ba`,
+    `#000000`/`#000100`); the formula's `sameColor` passes these pairs while the reviewer calls
+    them indistinguishable (twice-evidenced; reported upward as calibration input). In-prototype
+    remedy per the reviewer's own words ("they should be collapsed"): accent candidates within
+    `ACCENT_FG_EXCLUSION_MULTIPLE × sameColorBar(candidate, fg)` of the foreground are its
+    family — excluded from selection; if none survives, accent collapses, declared. The
+    multiple's value is **measured, not chosen**: the smallest integer excluding all three
+    evidenced twin pairs with ≥20% margin; provenance records the three pairs and their measured
+    ratios. Superseded automatically by any future formula recalibration.
 
 ## Verification obligations (designed overlap)
 
