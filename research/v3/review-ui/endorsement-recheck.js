@@ -76,12 +76,17 @@ function renderMapping(question, chosen) {
 	nodes.mapping.replaceChildren()
 	if (question === null) return
 	for (const answer of question.answers) {
+		// `oracle-map` and its two label classes are the ONLY styled shape for this list
+		// (`styles.css`). An earlier revision of this page invented `oracle-answer`, which matches no
+		// rule in the stylesheet, so the footer rendered as one unstyled run-on line and the hotkeys
+		// stopped reading as hotkeys — the reviewer reported having "no way to answer". The hotkey's
+		// own 1.5em column is what makes this list say "press this".
 		const row = el(
 			"li",
-			{ class: answer.key === chosen ? "oracle-answer oracle-answer-chosen" : "oracle-answer" },
+			{ class: answer.key === chosen ? "oracle-map is-selected" : "oracle-map" },
 			el("b", { text: answer.hotkey }),
-			el("span", { class: "oracle-answer-label", text: answer.label }),
-			el("span", { class: "oracle-answer-gloss", text: answer.gloss }),
+			el("span", { class: "oracle-map-label", text: answer.label }),
+			el("span", { class: "oracle-map-gloss", text: answer.gloss }),
 		)
 		nodes.mapping.append(row)
 	}
@@ -197,6 +202,31 @@ function undo() {
 	render()
 }
 
+/**
+ * Move between palettes WITHOUT answering.
+ *
+ * The reviewer's report: "nor does it have a way for me to go to the 2nd palette". They were right,
+ * and it was a real hole rather than a discoverability one: `index` advanced only inside `answer()`,
+ * so at the first item no key reached the second. That is fine for a 40-item by-question pass where
+ * every item is a five-second judgement and auto-advance is the point; it is wrong here, where there
+ * are two heavyweight rulings and seeing BOTH before committing to either is part of the task —
+ * these two palettes fail under the same ruling, and the reviewer may well want to weigh them
+ * against each other.
+ *
+ * Movement never records anything and never clears an answer. `batch.items.length` is a valid
+ * position: it is the release screen.
+ */
+function move(delta) {
+	const target = Math.min(Math.max(index + delta, 0), batch.items.length)
+	if (target === index) {
+		status(delta < 0 ? "already at the first palette" : "already at the last screen")
+		return
+	}
+	index = target
+	status(index < batch.items.length ? `palette ${index + 1} of ${batch.items.length}` : "all answered")
+	render()
+}
+
 async function release() {
 	try {
 		const result = await api(`/api/batches/${encodeURIComponent(batch.batchId)}/release`, { method: "POST" })
@@ -220,8 +250,19 @@ function onKey(event) {
 		answer(chosen.key)
 		return
 	}
-	// No answer in this round binds `u`, so undo keeps all three of its keys.
-	if (key === "u" || event.key === "Backspace" || event.key === "ArrowLeft") {
+	// Movement, which records nothing — the reviewer can read both palettes before ruling on either.
+	if (key === "j" || event.key === "ArrowLeft") {
+		event.preventDefault()
+		move(-1)
+		return
+	}
+	if (key === "k" || event.key === "ArrowRight") {
+		event.preventDefault()
+		move(1)
+		return
+	}
+	// No answer in this round binds `u`, so undo keeps both of its keys.
+	if (key === "u" || event.key === "Backspace") {
 		event.preventDefault()
 		undo()
 		return

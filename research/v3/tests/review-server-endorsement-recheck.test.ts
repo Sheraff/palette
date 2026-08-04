@@ -13,6 +13,7 @@
  * the ones that would have caught that.
  */
 import assert from "node:assert/strict"
+import { readFileSync } from "node:fs"
 import { after, before, describe, it } from "node:test"
 import { fileURLToPath } from "node:url"
 import {
@@ -26,6 +27,21 @@ import { batchReviewPaths } from "../src/review-server/server.ts"
 import { call, openPage, startHarness, type FakePage, type Harness } from "../src/review-server/test-support.ts"
 
 const PAGE = fileURLToPath(new URL("../review-ui/endorsement-recheck.js", import.meta.url))
+const MARKUP = fileURLToPath(new URL("../review-ui/endorsement-recheck.html", import.meta.url))
+const STYLESHEET = fileURLToPath(new URL("../review-ui/styles.css", import.meta.url))
+
+/**
+ * Every class name the stylesheet defines a rule for.
+ *
+ * The harness has no CSS engine, so a class that matches no rule renders identically here and
+ * catastrophically in the browser — which is exactly what happened: the first revision of this page
+ * invented `oracle-answer`, the footer lost its hotkey column, and the reviewer reported having "no
+ * way to answer" while every assertion in this file passed. Reading the stylesheet is how the
+ * harness is made to match the behaviour that broke.
+ */
+const STYLED_CLASSES = new Set(
+	[...readFileSync(STYLESHEET, "utf8").matchAll(/\.([a-zA-Z][\w-]*)/gu)].map((match) => match[1]),
+)
 
 /** Every node the page writes to. A missing id here is a silent no-op on the real page. */
 const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "stage", "mapping", "status"] as const
@@ -114,6 +130,46 @@ describe("the endorsement-recheck page, executing", () => {
 		assert.ok(stage.byClass("swatches").length > 0, "no swatches under the mock")
 		// Every colour is named, never hex alone (CONVENTIONS.md).
 		assert.match(stage.textContent, /Polar Bear in a Blizzard|Toile/u)
+	})
+
+	it("draws every element with a class the stylesheet actually styles", () => {
+		// The reviewer-facing failure this file exists to prevent, generalised: an invented class name
+		// is invisible to a textContent assertion and fatal on screen.
+		const drawn = [...page.stage().descendants(), ...page.nodes.mapping.descendants()]
+		const unstyled = new Set<string>()
+		for (const node of drawn) {
+			for (const token of node.className.split(" ").filter(Boolean)) {
+				if (!STYLED_CLASSES.has(token)) unstyled.add(token)
+			}
+		}
+		assert.deepEqual([...unstyled], [], "these classes match no rule in styles.css, so they render unstyled")
+	})
+
+	it("puts the answer keys in the styled hotkey grid, not a run-on line", () => {
+		const rows = page.nodes.mapping.byClass("oracle-map")
+		assert.equal(rows.length, 3, "the three answers are not in the styled mapping grid")
+		// The hotkey is its own element, which is what gives it the grid's 1.5em column.
+		assert.match(page.nodes.mapping.textContent, /1.*keep the endorsement/su)
+	})
+
+	it("advertises every key it binds in the markup, so the affordance survives a dead fetch", () => {
+		const footer = readFileSync(MARKUP, "utf8")
+		for (const key of ["1", "2", "3", "j", "k", "u", "r"]) {
+			assert.match(footer, new RegExp(`<b>${key}</b>`, "u"), `the footer never mentions the ${key} key`)
+		}
+	})
+
+	it("moves to the second palette WITHOUT answering the first", async () => {
+		// The reviewer's exact words: "nor does it have a way for me to go to the 2nd palette". Before
+		// the fix, `index` advanced only inside answer(), so this was unreachable.
+		assert.match(page.nodes.progress.textContent, /^0 of 2 answered/u)
+		await page.press("k")
+		assert.match(page.nodes.status.textContent, /palette 2 of 2/u, "STUCK: k did not reach the second palette")
+		assert.match(page.nodes.preamble.textContent, /accent/iu, "the second palette's failure line is not on screen")
+		// Nothing was recorded by moving.
+		assert.match(page.nodes.progress.textContent, /^0 of 2 answered/u, "moving recorded an answer")
+		await page.press("j")
+		assert.match(page.nodes.status.textContent, /palette 1 of 2/u, "j did not go back")
 	})
 
 	it("records an answer on its hotkey and advances", async () => {
