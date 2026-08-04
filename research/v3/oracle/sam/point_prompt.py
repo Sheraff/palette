@@ -103,7 +103,42 @@ SELECT_POINT_LOGIT = "point_logit"
 #: falls back to SELECT_POINT_LOGIT when none does. The default.
 SELECT_CONTAINING = "containing"
 
-SELECTIONS = (SELECT_IOU, SELECT_POINT_LOGIT, SELECT_CONTAINING)
+# --- the ground band, and the selection built on it -------------------------
+# Added 2026-08-04 by the wash diagnosis (POINTING_PROBE_NOTES.md §14,
+# data/sam/pointing-wash-diagnosis.json). `pointing-ground-1` failed its bar on the wash,
+# not the dot: on the six covers with an answer key the pointer missed zero times and four
+# of six grown masks were wrong. The two failure shapes, both measured:
+#
+#   under-coverage — the mask is one region of a ground the reviewer describes as several
+#     (`000f0a78`: three stacked bands, we returned the bottom one at 0.63 and covered 31%
+#     of the top quarter; `00014fb4`: two side-by-side fields, we returned 0.21 of one).
+#   over-coverage — the mask is the whole frame, subject included (`00066a61`: every
+#     recorded mask is >= 0.87 of the frame and leaves out at most 19% of the logo the
+#     reviewer names as the subject).
+#
+# `SELECT_CONTAINING` cannot see either, because predicted IoU is the only thing it ranks
+# by and §2.4 already measured that ranking to be poor. A plausibility band on area is a
+# prior rather than a better ranker, which is the honest thing to reach for when the
+# ranker is known-bad.
+
+#: A ground occupying more than this much of the frame has swallowed the subject.
+GROUND_MAX_AREA = 0.85
+#: A ground occupying less than this is a detail, not a field.
+GROUND_MIN_AREA = 0.05
+
+#: Largest candidate that contains every foreground point and lies inside the ground band.
+#: Falls back to the largest containing candidate under GROUND_MAX_AREA, then to
+#: SELECT_CONTAINING. NOT the default — see DEFAULT_SELECTION.
+SELECT_GROUND = "ground"
+
+SELECTIONS = (SELECT_IOU, SELECT_POINT_LOGIT, SELECT_CONTAINING, SELECT_GROUND)
+
+#: Deliberately UNCHANGED. `SELECT_GROUND` beats `SELECT_CONTAINING` 3/6 vs 1/6 on the
+#: `pointing-ground-1` covers, but that comparison is IN-SAMPLE: the band was chosen after
+#: looking at the failures it repairs, on n=6, on the hard stratum, against predicates the
+#: analyst wrote rather than the reviewer. Promoting a default on that evidence is the
+#: exact error §13 was written to prevent. The default moves when the typical-strata probe
+#: (§13.8) says it should, and not before.
 DEFAULT_SELECTION = SELECT_CONTAINING
 
 
@@ -237,12 +272,54 @@ class PointSegmentation:
             if ok.size:
                 return int(ok[int(np.argmax(self.iou_scores[ok]))])
             return int(np.argmax(self.point_logits.mean(axis=1)))
+        if selection == SELECT_GROUND:
+            areas = np.asarray(self.area_fractions, dtype=np.float64)
+            contains = np.asarray(self.contains_points, dtype=bool)
+            band = np.flatnonzero(contains & (areas >= GROUND_MIN_AREA)
+                                  & (areas <= GROUND_MAX_AREA))
+            if band.size:
+                return int(band[int(np.argmax(areas[band]))])
+            under = np.flatnonzero(contains & (areas <= GROUND_MAX_AREA))
+            if under.size:
+                return int(under[int(np.argmax(areas[under]))])
+            return self.select(SELECT_CONTAINING)
         raise ValueError(f"unknown selection {selection!r}; want one of {SELECTIONS}")
 
     def with_selection(self, selection: str) -> "PointSegmentation":
         import dataclasses
         return dataclasses.replace(self, best_index=self.select(selection),
                                    selection=selection)
+
+    def candidate_records(self, rle_encode=None) -> list[dict]:
+        """Every candidate, in a shape that can be written to disk.
+
+        **This exists because its absence blocked a whole repair.** §13.6 recommendation 1
+        said to work the wash on CPU from masks already recorded, and that turned out not
+        to be executable: `pointing_phrasing_sweep.py` persisted `seg.best_mask` and
+        nothing else, so the three unselected candidates were gone on every cover, on every
+        run, for the entire campaign. The counterfactual the round most needed — *was a
+        better candidate available from the shipped point* — is the one question the stored
+        evidence cannot answer, and it costs three extra RLE strings per call to keep.
+
+        Pass `common.rle_encode` to include mask pixels; omit it for scalars only.
+        """
+        out = []
+        for k in range(self.masks.shape[0]):
+            row = {
+                "candidate": k,
+                "is_selected": bool(k == self.best_index),
+                "iou_pred": float(self.iou_scores[k]),
+                "area_fraction": float(self.area_fractions[k]),
+                "contains_points": bool(self.contains_points[k]),
+                "point_logits": [float(v) for v in self.point_logits[k]],
+                "picked_by": sorted(s for s in SELECTIONS if self.select(s) == k),
+            }
+            if rle_encode is not None:
+                row["mask_rle"] = rle_encode(self.masks[k])
+                row["mask_height"] = int(self.masks[k].shape[0])
+                row["mask_width"] = int(self.masks[k].shape[1])
+            out.append(row)
+        return out
 
 
 def interactive_features(model, pixel_values):
@@ -413,3 +490,83 @@ def segment_from_points(
     )
     seg.best_index = seg.select(selection)
     return seg
+
+
+@dataclass
+class GroundUnion:
+    """A ground assembled from several points, for grounds that are several regions."""
+
+    mask: np.ndarray                    # (H, W) uint8
+    area_fraction: float
+    segmentations: list                 # the per-point PointSegmentation, in order
+    admitted: list                      # indices of the points whose mask was unioned
+    strategy: str                       # "union" | "largest-admissible" | "smallest"
+    note: str
+
+
+def segment_ground_union(
+    runtime,
+    image,
+    points_xy: Sequence[Sequence[float]],
+    *,
+    selection: str = SELECT_GROUND,
+    min_area: float = GROUND_MIN_AREA,
+    max_area: float = GROUND_MAX_AREA,
+    encoded: Optional[EncodedImage] = None,
+    **kwargs,
+) -> GroundUnion:
+    """Grow one mask per point and union the plausible ones.
+
+    Why this is separate from `segment_from_points`. Handing SAM several points as one
+    prompt asks it for *one object containing all of them*; a ground that is a black bar
+    plus a champagne bar plus a red field is not one object, and the multi-point prompt
+    will either return their convex-ish hull or collapse to whichever region dominates.
+    Segmenting each point independently and unioning afterwards asks the question the
+    ground actually poses. The backbone runs once (`encode_image`), so K points cost K
+    decoder calls, which is milliseconds — see `EncodedImage`.
+
+    Measured behaviour, and it is the reason for the cap. On `pointing-ground-1`, unioning
+    every admissible recorded mask **recovered two covers and broke one**: `00030075` is a
+    single 30% wall the reviewer names, and the other phrasings' points landed on the
+    floor and the ceiling, so their union is the whole room at 0.80. The cap and the
+    fallback are what stop that, and they do not stop it perfectly — a rule that assembles
+    a multi-region ground and a rule that leaves a single-region ground alone are in
+    genuine tension, and no combination rule tested reached better than 3/6 in-sample.
+    **This is a candidate for the typical-strata probe, not a settled repair.**
+    """
+    if encoded is None:
+        encoded = encode_image(runtime, image, fpn=kwargs.get("fpn", FPN_INTERACTIVE))
+
+    pts = np.asarray(points_xy, dtype=np.float64).reshape(-1, 2)
+    segs = [segment_from_points(runtime, image, [pt], selection=selection,
+                                encoded=encoded, **kwargs) for pt in pts]
+
+    admitted = [i for i, s in enumerate(segs)
+                if min_area <= s.best_area_fraction <= max_area]
+
+    if not admitted:
+        i = int(np.argmin([s.best_area_fraction for s in segs]))
+        return GroundUnion(mask=segs[i].best_mask, area_fraction=segs[i].best_area_fraction,
+                           segmentations=segs, admitted=[i], strategy="smallest",
+                           note=(f"no point produced a mask inside "
+                                 f"[{min_area}, {max_area}]; took the smallest. Every "
+                                 f"candidate has swallowed the subject or missed the "
+                                 f"field — this is the over-coverage failure and a union "
+                                 f"cannot repair it."))
+
+    acc = np.zeros_like(segs[admitted[0]].best_mask)
+    for i in admitted:
+        acc = np.logical_or(acc, segs[i].best_mask).astype(np.uint8)
+    area = float(acc.mean())
+
+    if area > max_area:
+        i = max(admitted, key=lambda i: segs[i].best_area_fraction)
+        return GroundUnion(mask=segs[i].best_mask, area_fraction=segs[i].best_area_fraction,
+                           segmentations=segs, admitted=[i], strategy="largest-admissible",
+                           note=(f"union reached {area:.3f} > {max_area}; the points "
+                                 f"disagree about which surface is ground, so fell back "
+                                 f"to the largest single admissible mask."))
+
+    return GroundUnion(mask=acc, area_fraction=area, segmentations=segs,
+                       admitted=admitted, strategy="union",
+                       note=f"union of {len(admitted)}/{len(segs)} admissible point masks")

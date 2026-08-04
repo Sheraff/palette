@@ -1029,3 +1029,171 @@ and it now has a human number behind it rather than a proxy.
 **Also standing:** n = 8. Every rate here carries a confidence interval far wider than the one-tile
 margin by which the composite failed. The fail is a fail — a lenient ceiling below the bar is not an
 artifact of margin — but the 7/8 dot rate is not a precise number either.
+
+# 14. The wash, diagnosed on CPU — 2026-08-04
+
+**§13.6 recommendation 1, executed: work the wash from masks already on disk, no GPU.** It
+turned out to be executable only in part, and *why* is the most useful thing this section has
+to say.
+
+## 14.1 The one-page answer
+
+**The wash has two distinct failure shapes, not one, and they want opposite repairs.**
+
+| | |
+|---|---|
+| under-coverage — the mask is one region of a ground the reviewer describes as several | `00014fb4`, `000f0a78`, `00075841` |
+| over-coverage — the mask is the whole frame, subject included | `00066a61` |
+| under-coverage the recorded points cannot reach at all | `artofficial` |
+
+**And the counterfactual the round most needed cannot be answered from disk.** §13.6 assumed
+"the point, the candidates and the chosen mask are all already recorded." The first and third
+are. **The candidates are not.** `pointing_phrasing_sweep.py:198` writes
+`common.rle_encode(seg.best_mask)` and nothing else; `pointing_probe.py:267-275` writes scalars
+and no mask at all. Across every pointing run ever made, on every cover, the three unselected
+candidate masks were discarded. So *"was a better candidate available from the shipped point"* —
+the question that decides selection-defect versus model-limit — **is not answerable without new
+inference**, and this pass ran none.
+
+What replaced it: the recorded set holds 3-10 *different points* per cover, each with its own
+selected mask. That bounds what the current pipeline can reach at the **point** level, which is
+a weaker claim than candidate-level and is labelled as such everywhere below.
+
+## 14.2 The answer key, and its honest status
+
+The six decidable covers have the reviewer's own prose (`GROUND_FREETEXT_SYNTHESIS.md`). I turned
+each description into one machine-checkable predicate — e.g. `00014fb4` "green on the left and red
+on the right" becomes *covers >= 25% of the left half AND >= 25% of the right half*. All six are in
+`data/sam/pointing-wash-prereg.json`, written before anything was scored.
+
+**These predicates are mine, not the reviewer's.** He never saw them and has not ratified them.
+Their one validation is that they reproduce his wash verdict on **5 of 6** covers. The single
+disagreement is `artofficial`: he passed a mask covering 0.289 of a frame whose ground he describes
+as *everything except one face* (~0.87 by the figure-complement proxy). That is §13.2's lenient
+criterion visible in one number, and it is exactly the direction §13.2 predicted — so I report the
+mismatch rather than loosening the predicate to absorb it.
+
+## 14.3 Per cover — the diagnosis table
+
+`plain` is the shipped mask; area is the fraction of frame.
+
+| cover | reviewer wash | shipped `plain` | why it fails | best single recorded mask | classification |
+|---|---|---|---|---|---|
+| `00030075` | ✓ | 0.306 | — (passes) | — | **already-passing** |
+| `00014fb4` | ✗ | 0.206 (L 0.17 / R 0.24) | took one patch of the green field; the red field is absent | `fg_minimal` 0.589 (L 0.52 / R 0.66) **passes** | **better-candidate-existed** |
+| `000f0a78` | ✗ | 0.630 (top¼ 0.31 / bottom½ 0.97) | took the red band only; the black and champagne bars are absent | `backdrop` 0.683 (top¼ 0.65 / bottom½ 0.71) **passes** | **better-candidate-existed** |
+| `00066a61` | ✗ | 0.896, leaves out 2% of the logo | swallowed the subject | none — **all four** recorded masks are >= 0.87 | **over-coverage, no point-level escape** |
+| `00075841` | ✗ | 0.406 (top 15% 0.47 / bottom 20% 0.08) | took the banner, missed the floor | none passes, but MolmoPoint finds the banner (0.47) and Qwen finds the floor (0.76) — **different regions, different pointers** | **multi-region, not reachable** |
+| `artofficial` | ✓ (lenient) | 0.289 | ground is ~0.87 of the frame; every recorded mask is <= 0.345 | none — union of all seven reaches 0.499 | **no good candidate** |
+
+**Counts:** already-passing 1 · better-candidate-existed 2 · over-coverage-no-escape 1 ·
+no-good-candidate 2 (of which `00075841` is multi-region and near). n = 6.
+
+**The two `better-candidate-existed` covers are the load-bearing finding.** On both, a mask that
+satisfies the reviewer's own description was produced by this exact pipeline, on this exact cover,
+on the same day — from a different point, and thrown away. The ground was reachable and the policy
+did not reach it.
+
+## 14.4 What the four candidates look like, from the one file that kept them
+
+`point-smoke-synthetic.json` stored `candidate_areas[4]`, `candidate_ious[4]`,
+`candidate_contains[4]` — scalars, no pixels — for 1000 rows over four covers. It is the only
+candidate-level evidence in the campaign. **Caveat first: synthetic probe points, and only
+`0002dfdc` of the four is in the round. No correctness claim can come out of it.** What it does
+show:
+
+- the candidate family spans a **mean 0.204 area range** — the four masks are a nested
+  part/field/whole-frame ladder, so *which rung you take is most of the answer*;
+- `SELECT_CONTAINING` and the new `SELECT_GROUND` **pick different rungs on 43.5% of rows**;
+- median area picked moves **0.147 -> 0.270**.
+
+That is a mechanism argument for the band, not a measurement of it. It is written down as such.
+
+## 14.5 What changed in `point_prompt.py`
+
+1. **`SELECT_GROUND`** — among candidates containing every foreground point *and* inside
+   `[GROUND_MIN_AREA 0.05, GROUND_MAX_AREA 0.85]`, take the **largest**; fall back to the largest
+   containing candidate under the cap, then to `SELECT_CONTAINING`. §2.4 already measured that
+   predicted IoU ranks these candidates badly, so this replaces a known-bad ranker with a prior
+   rather than with another ranker.
+2. **`segment_ground_union()`** — one mask per point, drop the inadmissible, union the rest; if the
+   union breaks the cap, fall back to the largest admissible single mask. Segmenting each point
+   separately is deliberate: a multi-point prompt asks SAM for *one object containing all the
+   points*, and a black bar plus a champagne bar plus a red field is not one object. The backbone
+   runs once, so K points cost K decoder calls.
+3. **`PointSegmentation.candidate_records()`** — serialises all K candidates, with pixels when
+   handed an encoder. **This is the change that matters most**, and it is pure instrumentation: its
+   absence is what made §13.6's own recommendation only half-executable. Three extra RLE strings
+   per call would have bought the counterfactual this section had to work around.
+
+**`DEFAULT_SELECTION` is deliberately unchanged, and stays `containing`.** See below for why.
+
+## 14.6 In-sample before/after — and it is in-sample, flatly
+
+The band and the predicates were both written **after** looking at the eight shipped masks'
+geometry, on n=6, on the hard stratum, against an answer key I wrote. This is a repair fitted to
+the failures it repairs.
+
+| policy | covers passing | |
+|---|---|---|
+| R0 shipped (`plain`, `SELECT_CONTAINING`) | **1/6** | the incumbent |
+| R1 union of all admissible masks *(pre-registered)* | 2/6 | +`00014fb4` +`000f0a78`, **−`00030075`** |
+| R2 greedy union under the cap *(post-hoc)* | 2/6 | |
+| R3 pixel majority vote *(post-hoc)* | 2/6 | |
+| R4 largest admissible single mask *(post-hoc)* | **3/6** | the point-level analogue of `SELECT_GROUND` |
+
+**No rule cleared 4/6, which would have been §13's bar.** And the pre-registered one, R1, **broke a
+cover that was already passing**: `00030075` is a single 30% wall, the other phrasings' points landed
+on the floor and the ceiling, and their union is the whole room at 0.802. That is not a tuning
+detail — *a rule that assembles a multi-region ground and a rule that leaves a single-region ground
+alone are in genuine tension*, and nothing in a point or in a candidate ranking says which case you
+are in. This is the same gap `GROUND_FREETEXT_SYNTHESIS.md` §6 names as the deepest one, arriving
+from the other direction, and it is an argument for the residual route rather than for more
+point-prompt engineering.
+
+**An oracle bound, to separate "needs more points" from "unreachable":** allowing the best union of
+*any two* recorded masks, chosen with knowledge of the answer, `00014fb4`, `00030075` and `000f0a78`
+become reachable and `00066a61`, `00075841`, `artofficial` **do not**. Half the failures are not a
+point-count problem.
+
+**Why the default did not move.** Promoting `SELECT_GROUND` on 3/6-vs-1/6, in-sample, n=6, hard
+stratum, analyst-authored key, is precisely the error §13 exists to prevent. The default moves when
+the typical-strata probe says so.
+
+## 14.7 The probe spec, refined — still SPECIFIED, NOT RUN
+
+§13.8 stands unchanged in sampling, n=16, phrasing `plain`, panel, question and answer keys. Three
+additions, all forced by what is above:
+
+1. **Persist every candidate.** `candidate_records(rle_encode=common.rle_encode)` on every call.
+   Without it the next round inherits the same blind spot and the candidate-level counterfactual
+   stays unanswerable. Non-negotiable, and it is why the helper was written.
+2. **>= 3 points per cover** — repeat the `plain` call, or take the pointer's own multiple points
+   where it emits them (MolmoPoint returned exactly one point on every answer in the sweep:
+   `mean_points_per_answer` 1.0, so repetition is the realistic route). Three of six grounds here
+   are several disjoint regions and one point provably cannot cover them.
+3. **Score the washes as separate tiles: `SELECT_CONTAINING` vs `SELECT_GROUND` vs
+   `segment_ground_union`, on identical points.** The dot is then constant across the three and the
+   reviewer's keypress separates *the policies* rather than the pointer — which is the comparison
+   §13's dot/wash split was built to make and could not.
+
+**Pre-register before pushing, and carry §13.8's own warning forward:** this round's rates are
+lenient ceilings, the new round's must be strict ("is this correct", stated in the framing text),
+so the comparison is biased against the new round and a tie reads as an improvement.
+
+## 14.8 What would change my mind
+
+- **A candidate-level counterfactual that comes back empty.** If, with candidates persisted, the
+  four masks from the *shipped* point never contain a better ground on the failing covers, then
+  `SELECT_GROUND` is treating a model limit as a selection defect and the whole §14 framing is
+  wrong. This is the check that has never been run and the one addition 1 exists to enable.
+- **`00030075` breaking on the typical strata.** If the union rule costs more single-region covers
+  than the multi-region covers it buys, the union is a loss and should be dropped rather than
+  tuned.
+- **The residual route producing a ground with purity.** If it does, none of this is worth
+  continuing: it answers *which pixels are ground* directly, which is the question §14.6 shows the
+  point prompt cannot reach.
+
+**The anchor from §13 stands unmoved: "it wasn't amazing."** Nothing here raises it. Two covers of
+six had a better mask sitting in the recorded set, and that is a real defect worth fixing; it is
+not a working route.

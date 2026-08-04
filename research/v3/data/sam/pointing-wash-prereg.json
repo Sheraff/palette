@@ -1,0 +1,75 @@
+{
+  "prereg": "pointing-wash-1",
+  "date": "2026-08-04",
+  "written_before": "any scoring of any candidate/union mask against any ground proxy. Only the eight `plain` masks' row/column coverage profiles and their area fractions had been looked at when this file was written; no alternative selection policy had been evaluated on any cover.",
+  "question": "The pointing-ground-1 round failed its bar on the wash, not the dot (POINTING_PROBE_NOTES.md 13). Four of six decidable covers are dot-right/wash-wrong. Is the wash failure a selection defect (a better mask was reachable), a model limit (no reachable mask covers the ground), or a multi-region-ground problem (the ground is several disjoint regions and no single point-grown mask can cover it)?",
+
+  "evidence_available_on_disk": {
+    "per_cover_masks": "pointing-phrasing-sweep-{molmo,qwen}.json store ONE mask per (cover, phrasing) row: `mask_rle` = seg.best_mask, the mask the CURRENT selection policy chose. Up to 8 phrasings x 2 pointers per cover, each grown from that phrasing's own point.",
+    "per_candidate_masks": "NOT STORED. pointing_phrasing_sweep.py line 198 and pointing_probe.py lines 266-272 persist `seg.best_mask` only, plus the scalar `sam_candidate` (best_index), `sam_iou_pred` and `sam_area_fraction` of that one candidate. The other three multimask candidates were never written to disk.",
+    "consequence": "A counterfactual over the decoder's four candidates is NOT TESTABLE from disk without new inference, and this run is CPU-only / no-new-inference. Every claim below about candidate-level selection is therefore an argument from mechanism, explicitly labelled, and NOT a measurement. What IS testable offline is the multi-point / multi-prompt combination policy, because those masks exist.",
+    "ground_proxies": [
+      "the reviewer's own prose, oracle/premise/GROUND_FREETEXT_SYNTHESIS.md, for the six decidable covers",
+      "instance masks from the v4-noun run, data/sam/sam-eval-142-v4-nouns.jsonl, whose figure-concept union has a complement that estimates the ground"
+    ]
+  },
+
+  "ground_predicates": {
+    "authorship": "CONSTRUCTED BY THE ANALYST from the reviewer's verbatim prose in GROUND_FREETEXT_SYNTHESIS.md. The reviewer did not write these thresholds and has not ratified them. They are a machine-checkable restatement, not a human label.",
+    "validation_rule": "The predicate set is validated against the seven reviewer wash judgements that exist (six decidable + 0002dfdc). If it does not reproduce the reviewer's wash-right/wash-wrong split, the mismatch is REPORTED, not tuned away. A predicate stricter than the reviewer's is expected on the passes, because 13.2 records that the reviewer answered 'could this be considered correct', not 'is this correct'.",
+    "00014fb4": {
+      "prose": "green on the left and red on the right - two fields, both populated",
+      "predicate": "mask covers >= 25% of the left half AND >= 25% of the right half",
+      "shape": "two-field ground, side by side"
+    },
+    "00030075": {
+      "prose": "one wall, green, occupies maybe 30% of the entire picture",
+      "predicate": "0.20 <= area_fraction <= 0.45",
+      "shape": "single plane, area named by the reviewer"
+    },
+    "00066a61": {
+      "prose": "many pink squares, taken together one coherent background; the logo is the subject",
+      "predicate": "area_fraction >= 0.50 AND the mask leaves out >= 50% of the logo (union of the emblem/display-text/words instances)",
+      "shape": "one large patterned field with a subject cut out of it"
+    },
+    "00075841": {
+      "prose": "a banner on top, about maybe 15% of the height, flat white; and behind the objects a hardwood floor, sometimes fully black",
+      "predicate": "mask covers >= 50% of the top 15% of rows AND >= 25% of the bottom 20% of rows",
+      "shape": "two disjoint regions separated by an object scene"
+    },
+    "000f0a78": {
+      "prose": "a black bar at the top and then a champagne bar, and then a red field with some gradients and shapes",
+      "predicate": "mask covers >= 40% of the top 25% of rows AND >= 40% of the bottom 50% of rows",
+      "shape": "three stacked bands spanning the frame"
+    },
+    "artofficial": {
+      "prose": "one specific face close to the middle is the subject, everything else is background",
+      "predicate": "area_fraction >= 0.60 AND the mask leaves out >= 50% of the central face instance",
+      "shape": "near-full-frame ground with one small subject"
+    },
+    "0002dfdc": {"prose": "no ground-freetext prose exists (control cover)", "predicate": "NOT SCORED — no answer key"},
+    "elephunk": {"prose": "no ground-freetext prose exists (control cover)", "predicate": "NOT SCORED — no answer key; and the dot was wrong, so the wash is not diagnostic"}
+  },
+
+  "classification": {
+    "better-candidate-existed": "some mask already recorded for this cover (any phrasing, any pointer) satisfies the predicate while the shipped `plain` mask does not, AND that mask is a single point-grown mask. The reachable set contained the answer and the policy did not take it.",
+    "multi-region-ground": "no single recorded mask satisfies the predicate, but the union of the admissible recorded masks does. One point cannot cover this ground; several can.",
+    "no-good-candidate": "neither any single recorded mask nor their union satisfies the predicate. On the recorded evidence this is not reachable by point prompting at all.",
+    "note": "`better-candidate-existed` is scoped to the recorded set, which is point-level, not decoder-candidate-level. It therefore proves reachability, not that the four candidates from the shipped point contained the answer."
+  },
+
+  "policy_under_test": {
+    "name": "SELECT_GROUND + union_ground",
+    "admissible_band": {"min_area_fraction": 0.05, "max_area_fraction": 0.85},
+    "band_rationale": "A mask covering more than 85% of the frame cannot be the ground of a cover that has a subject — it has swallowed the subject. A mask under 5% is a detail, not a field. Both bounds are set from the shape of the failure, not from a sweep, and neither is fitted to a score.",
+    "SELECT_GROUND": "over the decoder's K candidates: among those containing every foreground point AND inside the band, take the LARGEST by area. If none is in band, take the largest containing candidate below max. If none contains the points, fall back to the incumbent SELECT_CONTAINING behaviour. RATIONALE, and it is a mechanism argument not a measurement: SAM's multimask head emits a nested part/sub-object/whole-object family, and argmax-predicted-IoU on this path is measured (2.4) to rank candidates poorly, so ranking by area inside a plausibility band replaces a bad ranker with a prior rather than with another bad ranker.",
+    "union_ground": "given several points on one cover, segment from each, drop inadmissible masks, union the rest. If the union exceeds max_area_fraction, return the largest admissible single mask instead of the union.",
+    "what_is_evaluated_offline": "union_ground only, over the recorded per-phrasing masks. SELECT_GROUND cannot be evaluated without the unstored candidates."
+  },
+
+  "honesty_conditions": [
+    "Any before/after computed on these eight tiles is IN-SAMPLE. The policy's band and the predicates were both written after seeing the eight plain masks' geometry. It is a repair fitted to the failures it repairs and cannot be quoted as a generalisation.",
+    "The typical-strata probe (13.8) stays specified-not-run and is the only thing that can generalise.",
+    "The reviewer's anchor sentence, 'it wasn't amazing', outranks every number produced here."
+  ]
+}
