@@ -103,6 +103,23 @@ BEFORE our first emitter run so later reads are attributable:
    artwork never buys one. Read the M1 λ-sweep with this in hand; the λ review round (if the
    sweep isn't flat) should include flat-artwork items.
 
+Third-round addendum (relayed 2026-08-04, after the above was committed):
+
+5. **Accent readability is graded down too, against both surface and background.** Position
+   unchanged (bounded, never rewarded — the contract's accent floor and its one escape are in
+   the feasible set), but the M2 report-only diagnostic covers BOTH inks: min-|APCA| over the
+   rendered ramp for foreground AND accent, per palette.
+6. **The reviewer notices fg/accent ordering errors specifically** (one round asked for a role
+   swap of correctly extracted colours). This is evidence for the joint mechanism's central
+   claim — assignment is decided inside the one minimisation — and it stresses deferred
+   decision 3. Concrete: M2 emits the F/A-swapped runner-up's energy delta as a per-palette
+   diagnostic (arm A §8's runner-up list), so near-tied assignments are visible before a
+   reviewer has to ask. If swap requests land on palettes where the delta was near-zero, the
+   ordering (not the currency) is the weak part and decision 3's deferral gets revisited.
+7. **Gradient-wrongness pricing is unpredictable round-to-round** (a hedged false-gradient note
+   cost zero once). Calibrate λ on the direction (flat artwork must not buy ramps), never on
+   per-verdict grade arithmetic.
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),
