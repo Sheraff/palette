@@ -318,7 +318,7 @@ into v3 — it is built fresh (`CONVENTIONS.md`; `d-2026-08-04-no-v2-3-code-ente
 
 ## 6. Show your work
 
-**One line in your proposal. Nothing enforces it.**
+**Two lines in your proposal. Nothing enforces either.**
 
 > **Expected failures and falsifier.** What do you expect this approach to be bad at, and what result
 > would tell you the paradigm itself is wrong (as opposed to under-tuned)?
@@ -330,8 +330,19 @@ prototype exists is occasionally worth a great deal and costs one line
 whether it is worth anything at all; if Phase 1 produces nothing useful from it, the line gets
 deleted.
 
-*A known failure mode, stated so you can avoid it: an unfalsifiable prediction filled in to satisfy
-the template is worse than a blank, because someone will later cite it as if it had been a real
+> **Exposable intermediate work.** What could your approach expose for inspection *mid*-computation —
+> what intermediate products does it produce that a reviewer or an instrument could look at, other
+> than the final palette?
+
+Answer it if it is useful to you. **No proposal is rejected for omitting it** either, no instrument
+reads it, and it is not a gate. It is here because Phase 2 judges **trajectory and ceiling** rather
+than first-round scores (§1), so a paradigm that can show its working mid-computation is a paradigm
+whose trajectory can be read early; a paradigm that exposes nothing but a final palette can only ever
+be judged on the palette.
+
+*A known failure mode, stated so you can avoid it, and it applies to both lines: an answer filled in
+to satisfy the template — an unfalsifiable prediction, or an intermediate product nothing could
+actually inspect — is worse than a blank, because someone will later cite it as if it had been a real
 pre-registration.*
 
 ## 7. What you do not receive, and why
