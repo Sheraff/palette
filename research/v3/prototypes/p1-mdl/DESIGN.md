@@ -60,9 +60,19 @@ Shared machinery, two energies, two candidateIds:
    mass-weighted sum of logs** (decided 2026-08-04 after implementation). The literal §2.3 form
    double-counts: mass the field explains still enters the ink term at weight 1−π, so an ink
    colour adjacent to a large field colour harvests the leak — measured to invert the arm's own
-   vivid-accent prediction (test d) by 2.6e-3 nats. The mixture is the genuine code length; the
-   split form is its Jensen upper bound. Same mechanism, correct arithmetic. Not escalated, per
-   the principles-bind-numbers-don't standard.
+   vivid-accent prediction (test d) — implementer measured 2.6e-3 nats; the independent verifier
+   measured 1.03e-3 under a stated ε-profiling convention. Direction confirmed, magnitude
+   corrected for the record 2026-08-04. The mixture is the genuine code length; the split form is
+   its Jensen upper bound. Same mechanism, correct arithmetic. Not escalated, per the
+   principles-bind-numbers-don't standard.
+9. **Known defect awaiting fix (verifier finding, 2026-08-04): arm A's ink term prices no
+   support.** On a clean diptych, "flat + second band as foreground" (Ω=0) undercuts two-flat at
+   every λ; 62% of a solid band's mass lands in ink at the finest profiled s*. Arm A′ prices
+   support and is immune. Fix in arm A's own vocabulary (§2.2: ink is small/high-frequency/
+   marks-like ⇒ broad ink must pay), applied AFTER the M1 falsifier lands so M1's arm-A numbers
+   correspond to one committed energy; falsifier re-runs after. Also owed in that fix:
+   MIXTURE_WEIGHT_FLOOR is load-bearing (profiled ε pins to it on 3/4 fixtures) with a
+   justification comment about quantities it does not govern — restate honestly.
 8. **Ramp direction is profiled per evaluation** (the measurement's axis sign is a
    measurement-side convention); the renderer's 135° rule governs presentation, not the energy.
 
