@@ -1,0 +1,171 @@
+{
+	"eval_set": "/Users/Flo/GitHub/palette/research/v3/data/oracle-premise/eval-set.json",
+	"prompt_set": "subject-nouns-all.v1",
+	"schema_version": "subject-nouns-all.v1",
+	"presentation_mode": null,
+	"item_set": null,
+	"included_images": 142,
+	"variants": [
+		"subject-nouns-all.v1/J"
+	],
+	"already_done": 0,
+	"queued": 142,
+	"poisoned_over_attempt_cap": 0,
+	"out": "../../data/oracle-premise/subject-nouns-all-1.jsonl",
+	"long_edge_cap": 640,
+	"constrained_decoding": true
+}
+loading mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit @ f31102655767 ...
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files: 100%|██████████| 18/18 [00:00<00:00, 4630.61it/s]
+model loaded in 1.4s
+canary baseline: NONE inherited (subject-nouns-all-1.jsonl holds no ok canary row for variant J) — this run will rebase on its own first canary answer, so only WITHIN-run stability is checked, not drift against an earlier run
+canary baseline set: {'subject_nouns_all': ['person', 'horse', 'grass', 'tree', 'sky']}
+[1/142] ab67616d00001e020000269ead63cf2376a6b67d.jpg J ok 1.1s (3.9s/item avg) {'subject_nouns_all': ['splatter', 'stripes', 'tassels', 'text']}
+[2/142] ab67616d00001e02000060b6aa68cdd9e02567b1.jpg J ok 1.0s (2.4s/item avg) {'subject_nouns_all': ['lotus']}
+[3/142] ab67616d00001e020000e692a330542f8ed14132.jpg J ok 1.2s (2.0s/item avg) {'subject_nouns_all': ['heart', 'apple', 'leaf', 'electrocardiogram', 'text', 'logo']}
+[4/142] ab67616d00001e020000ff9a99b8761b17336fa2.jpg J ok 1.2s (1.8s/item avg) {'subject_nouns_all': ['person', 'money', 'balaclava', 'sweatshirt', 'wall']}
+[5/142] ab67616d0000b27300002947b898e4bd572ac4aa.jpg J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['car', 'smoke', 'light', 'grille', 'headlight', 'wheel', 'tire', 'logo']}
+[6/142] ab67616d0000b27300009f60aeb150a5db45b47b.jpg J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['man', 'woman', 'motorcycle', 'tree', 'glass', 'shirt', 'dress', 'pants']}
+[7/142] ab67616d0000b2730000cb591a0d52d8b88692d9.jpg J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['text', 'painting', 'frame']}
+[8/142] ab67616d00001e0200015a7a9909e03141e001e3.jpg J ok 1.3s (1.7s/item avg) {'subject_nouns_all': ['woman', 'shirt', 'earring', 'necklace', 'hair', 'background', 'logo']}
+[9/142] ab67616d00001e020001738a49a69ed70ffcbe42.jpg J ok 1.3s (1.7s/item avg) {'subject_nouns_all': ['woman', 'dress', 'box', 'hill', 'sky', 'bush', 'ground', 'hair']}
+[10/142] ab67616d00001e0200018a1e2daf68a53f504cb9.jpg J ok 1.2s (1.6s/item avg) {'subject_nouns_all': ['butterfly', 'triangle', 'cloud', 'lightning', 'sky']}
+[11/142] ab67616d0000b27300014fb430dd1b693e653121.jpg J ok 1.8s (1.6s/item avg) {'subject_nouns_all': ['man', 'bass', 'dragon', 'woman', 'jacket', 'text', 'logo', 'background']}
+[12/142] ab67616d0000b27300015083990110d3b1a4ea8a.jpg J ok 1.8s (1.7s/item avg) {'subject_nouns_all': ['man', 'church', 'suit', 'tie', 'handkerchief', 'building', 'arch', 'dome']}
+[13/142] ab67616d0000b27300018a0a56bae40350d9fa8e.jpg J ok 1.6s (1.7s/item avg) {'subject_nouns_all': ['plant', 'background']}
+[14/142] ab67616d0000b2730001c404b8a04a8789db8dab.jpg J ok 2.0s (1.7s/item avg) {'subject_nouns_all': ['woman', 'dress', 'earrings', 'jewelry', 'hair', 'makeup', 'ring', 'logo']}
+[15/142] ab67616d00001e020002881a851f1e14c374562b.jpg J ok 1.5s (1.7s/item avg) {'subject_nouns_all': ['car', 'road', 'tree', 'mountain', 'sky', 'cloud', 'forest', 'tunnel']}
+[16/142] ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg J ok 2.0s (1.7s/item avg) {'subject_nouns_all': ['street', 'car', 'neon_sign', 'building', 'person', 'tree', 'lantern', 'fire']}
+[17/142] ab67616d0000b2730002dfdcde2cb0a75822168c.jpg J ok 1.6s (1.7s/item avg) {'subject_nouns_all': ['logo', 'text', 'background']}
+[18/142] ab67616d00001e02000300752f338b6aedff856c.jpg J ok 1.4s (1.7s/item avg) {'subject_nouns_all': ['pool', 'cushion', 'towel', 'chair', 'wall', 'window', 'plant', 'floor']}
+[19/142] ab67616d00001e0200034fd1f86970643e18bf98.jpg J ok 1.4s (1.7s/item avg) {'subject_nouns_all': ['woman', 'hair', 'lipstick', 'ear', 'nail', 'top', 'background']}
+[20/142] ab67616d00001e020003e50500c5d762da89643a.jpg J ok 1.3s (1.6s/item avg) {'subject_nouns_all': ['person', 'trampoline', 'shoes', 'jeans', 't-shirt', 'shadow']}
+[21/142] ab67616d0000b273000323957b88112ca49b8ee0.jpg J ok 2.0s (1.7s/item avg) {'subject_nouns_all': ['woman', 'dress', 'necklace', 'ring', 'hair', 'window', 'chair', 'floor']}
+[22/142] ab67616d0000b27300034b1c66ddd55a5337f66a.jpg J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['person', 'rose', 'coat', 'flower', 'hair', 'eye', 'leaf', 'background']}
+[23/142] ab67616d0000b27300034b60105d8937440211da.jpg J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['woman', 'shirt', 'bracelet', 'light', 'door', 'wall', 'parental advisory label']}
+[24/142] ab67616d0000b2730003580bd2766859c4d81e13.jpg J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['wood', 'sticker', 'barcode']}
+[25/142] ab67616d0000b27300038e79a0efbc7325db6444.jpg J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['room', 'ceiling', 'window', 'wall', 'floor', 'debris', 'pipe', 'sign']}
+[26/142] ab67616d0000b273000390c07f75da30b4e8aba8.jpg J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['lips', 'roses', 'flowers']}
+[27/142] ab67616d00001e0200044a28a45b7b23d4be2f79 J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['woman', 'bed', 'sheet', 'tattoo', 'hand', 'finger', 'nipple', 'breast']}
+[28/142] ab67616d00001e020004ccf0ae91364130886c02 J ok 1.3s (1.8s/item avg) {'subject_nouns_all': ['leaf', 'water droplet', 'stem']}
+[29/142] ab67616d0000b27300040defaf772cad7a1738ce J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['person', 'person']}
+[30/142] ab67616d0000b273000442caec7ec8cb724bf265 J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['text', 'background', 'light', 'particles']}
+[31/142] ab67616d0000b2730004515066668684295c41a7 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['tree', 'statue', 'column', 'bush', 'flower', 'moon', 'forest', 'figure']}
+[32/142] ab67616d00001e02000564718f605c1f326b2ca2 J ok 1.2s (1.8s/item avg) {'subject_nouns_all': ['statue', 'water']}
+[33/142] ab67616d00001e020005a54a9ea60f48619788f1 J ok 1.1s (1.7s/item avg) {'subject_nouns_all': ['none']}
+[34/142] ab67616d00001e020005fa7c7e0e067474967e41 J ok 1.5s (1.7s/item avg) {'subject_nouns_all': ['woman', 'man', 't-shirt', 'sunglasses', 'earring', 'hair', 'sky', 'cloud']}
+[35/142] ab67616d0000b2730005230fae1822525e5a5ff6 J ok 2.2s (1.7s/item avg) {'subject_nouns_all': ['person', 'keyboard', 'dinosaur', 'sign', 'sneaker', 'glasses', 'jacket', 'hoodie']}
+[36/142] ab67616d0000b2730005597105ba1e2d38f62cfc J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['water', 'people', 'sky', 'clouds', 'sailboats', 'mountains', 'sun', 'horizon']}
+[37/142] ab67616d0000b2730005a91812c85db291ea5d85 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['person', 'baseball_cap', 'jersey', 'watch', 'bracelet', 'beard', 'hat', 'text']}
+[38/142] ab67616d00001e0200060491ade88c8893373d9f J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['man', 'sunglasses', 'jacket', 'shirt', 'beard', 'trees', 'building', 'hand']}
+[39/142] ab67616d00001e0200066a61bbcbeadd632f7f38 J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['text', 'logo', 'square', 'background', 'text', 'text', 'text', 'text']}
+[40/142] ab67616d00001e020006eb2197bdb0a7b9392108 J ok 1.5s (1.7s/item avg) {'subject_nouns_all': ['fire', 'person', 'tree', 'clothing', 'ground', 'flame', 'bonfire', 'sign']}
+[41/142] ab67616d0000b273000626fb25df8b60c4b97ca4 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['car', 'sky', 'light', 'road', 'mirror', 'window', 'cloud', 'sign']}
+[42/142] ab67616d0000b273000637ffe82ad17bfa0f1073 J ok 2.2s (1.8s/item avg) {'subject_nouns_all': ['band', 'guitar', 'microphone', 'drum', 'speaker', 'amplifier', 'cans', 'clothing']}
+[43/142] ab67616d0000b2730006a059abb2a6b7dd4ad461 J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['man', 'guitar', 'necklace']}
+[44/142] ab67616d0000b2730006c5d727b329e4477f4a81 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['person', 'rose', 'shirt', 'chain', 'tattoo', 'lightning', 'cloud', 'text']}
+[45/142] ab67616d00001e0200079d5a7d92f2bff88570db J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['person', 'basketball', 'jersey', 'shorts', 'wristband', 'basketball court', 'text', 'logo']}
+[46/142] ab67616d0000b27300075841f68d8cd71db368d8 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['acoustic guitar', 'cowboy hat', 'boots', 'floor']}
+[47/142] ab67616d0000b2730007960724fb77c8041c6c13 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['dragon', 'mountain', 'tree', 'flower', 'sun', 'water', 'CD case', 'grid']}
+[48/142] ab67616d0000b2730007cc8b341c11227aa7b461 J ok 2.2s (1.8s/item avg) {'subject_nouns_all': ['woman', 'child', 'dress', 'vest', 'headscarf', 'skirt', 'shoes', 'yarn']}
+[49/142] ab67616d0000b2730007d42f64cb70acce41c71d J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['skull', 'shelf', 'wall', 'ceiling', 'curtain', 'window', 'light', 'socket']}
+[50/142] ab67616d00001e0200083a2d455755e4c1116825 J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['woman', 'building', 'wall', 'clothing', 'hair', 'window', 'graffiti', 'floor']}
+[51/142] ab67616d00001e0200087b1314ac8e17bc1c6916 J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['man', 'dog', 'sunglasses', 'chain', 'hoodie', 'hat', 't-shirt', 'microphone']}
+[52/142] ab67616d0000b27300081dec93652e6af2582192 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['man', 'sky', 'cloud', 'shirt', 'vest', 'hands', 'hair', 'prayer']}
+[53/142] ab67616d0000b27300083cc5b8d8d2e7ca7147cd J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['moon', 'person', 'cloud', 'sky']}
+[54/142] ab67616d0000b27300088460068752fad04f8541 J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['doll', 'onesie', 'devil horns', 'bow', 'text']}
+[55/142] ab67616d0000b2730008c1c08433aa880aad7f30 J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['thatched roof', 'sky']}
+[56/142] ab67616d00001e020009657a5122a7b3d40458b0 J ok 1.1s (1.8s/item avg) {'subject_nouns_all': ['figure', 'square']}
+[57/142] ab67616d0000b273000913b3e9ae2c7173d1a8b2 J ok 1.7s (1.8s/item avg) {'subject_nouns_all': ['hand', 'smoke']}
+[58/142] ab67616d0000b27300092c140fe03d08e0dc906a J ok 1.7s (1.8s/item avg) {'subject_nouns_all': ['number', 'text']}
+[59/142] ab67616d0000b27300093ce40fe3f073dcd87ab5 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['woman', 'microphone', 'guitar', 'dress', 'jacket', 'stage', 'light', 'text']}
+[60/142] ab67616d0000b2730009448702be55dfc86fde67 J ok 1.7s (1.8s/item avg) {'subject_nouns_all': ['hand', 'glass']}
+[61/142] ab67616d0000b273000955ccfc1e8da97a09b32d J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['shield', 'sword', 'text', 'number', 'line', 'dot', 'rectangle']}
+[62/142] ab67616d0000b27300097e55f9a93ceb03afa4b2 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['water', 'map', 'sky', 'clouds', 'ocean', 'land', 'surface', 'reflection']}
+[63/142] ab67616d0000b27300099f4221cf6ed5f2440904 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['hand', 'smartphone', 'ring', 'sweater', 'person', 'building', 'phone screen', 'text']}
+[64/142] ab67616d0000b2730009d178a401f9433fdddff2 J ok 2.0s (1.9s/item avg) {'subject_nouns_all': ['speaker', 'paint', 'splatter', 'mouth', 'teeth', 'lips', 'speaker grille', 'speaker cone']}
+[65/142] ab67616d00001e02000a8aa1dafa651976a7bb44 J ok 1.1s (1.8s/item avg) {'subject_nouns_all': ['light', 'floor']}
+[66/142] ab67616d0000b273000a24cc32b3d8b6e31bc161 J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['black hole', 'accretion disk', 'stars', 'logo']}
+[67/142] ab67616d0000b273000a2927c0f27657e4a2aeaa J ok 1.7s (1.8s/item avg) {'subject_nouns_all': ['person', 'moon', 'stars', 'space']}
+[68/142] ab67616d0000b273000a392cb5a08d9801562845 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['person', 'microphone', 'table', 'chair', 'cabinet', 'shoe', 'screen', 'ceiling']}
+[69/142] ab67616d0000b273000a8097d86930fb02f5a76d J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['person', 'hoodie', 'digital display', 'parental advisory label', 'logo']}
+[70/142] ab67616d0000b273000a8f5a7c2d213002fcd591 J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['flower', 'background']}
+[71/142] ab67616d0000b273000a9e0be9521986cc08839e J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['person', 'cup', 'planet', 'cookie', 'shoe', 'hoodie', 'pants', 'star']}
+[72/142] ab67616d0000b273000aa22923f3a9064c0e525b J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['cross', 'guitar', 'shield', 'path', 'tree', 'rock', 'sky', 'text']}
+[73/142] ab67616d00001e02000b096f0b03b7745c8e8aab J ok 1.1s (1.8s/item avg) {'subject_nouns_all': ['building', 'tree', 'sky']}
+[74/142] ab67616d0000b273000ba4a828abadcf3f4642f6 J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['mountain', 'cloud', 'sky', 'tree', 'building', 'tower', 'fog']}
+[75/142] ab67616d0000b273000bc98f315aba36374f9f93 J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['record', 'text']}
+[76/142] ab67616d00001e02000c3523d80259b49a06ee45 J ok 1.4s (1.8s/item avg) {'subject_nouns_all': ['ocean', 'sky', 'cloud', 'sun', 'sand', 'wave', 'star', 'horizon']}
+[77/142] ab67616d00001e02000c4d52300a016ee65f1622 J ok 1.2s (1.8s/item avg) {'subject_nouns_all': ['Buddha', 'flower', 'lotus']}
+[78/142] ab67616d00001e02000c5e69af1d6ce16e2b1a61 J ok 1.3s (1.8s/item avg) {'subject_nouns_all': ['temple', 'tree', 'stairs', 'door', 'sky', 'rock', 'sign']}
+[79/142] ab67616d00001e02000cd48fb26f462cd33760f6 J ok 1.0s (1.8s/item avg) {'subject_nouns_all': ['person']}
+[80/142] ab67616d0000b273000c42c61ba60f69e5a40a29 J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['person', 'light', 'doorway', 'building', 'floor']}
+[81/142] ab67616d00001e02000d457f4b8829a59481e78b J ok 1.2s (1.8s/item avg) {'subject_nouns_all': ['teddy bear', 'string', 'spaghetti']}
+[82/142] ab67616d0000b273000d5cdbc67ed815efc360ad J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['face', 'hood', 'gold', 'text', 'name', 'person', 'background', 'liquid']}
+[83/142] ab67616d0000b273000d8049603d6ab7f5d759bb J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['man', 'suit', 'cigar', 'wreath', 'building', 'stairs', 'smoke', 'parental advisory label']}
+[84/142] ab67616d0000b273000dd322ab822869dc34b72a J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['man', 'field', 'mountain', 'sky', 'tree', 'telephone pole', 'boot', 'jacket']}
+[85/142] ab67616d00001e02000e007955ee2f8b29f5b2b4 J ok 1.3s (1.8s/item avg) {'subject_nouns_all': ['man', 'jacket', 'light', 'background']}
+[86/142] ab67616d00001e02000e229142cb6dbae156341c J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['woman', 'person', 'bush', 'tree', 'statue', 'clothing', 'picture', 'postcard']}
+[87/142] ab67616d00001e02000ec9e3bb9ee4fc008b018e J ok 1.2s (1.8s/item avg) {'subject_nouns_all': ['circle', 'record', 'logo']}
+[88/142] ab67616d0000b273000e440b3d59e91eb43040ee J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['cassette_tape', 'paper', 'text']}
+[89/142] ab67616d0000b273000e5109c484324cc95a2222 J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['person', 'microphone', 'light', 'text']}
+[90/142] ab67616d0000b273000e91d6c3b44e900d334a78 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['person', 'child', 'headscarf', 'window', 'bracelet', 'wall', 'tree', 'hand']}
+[91/142] ab67616d0000b273000efaac56201fc13ee0724b J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['man', 'guitar', 'microphone', 'chair', 'sneaker', 'city', 'sky', 'cloud']}
+[92/142] ab67616d00001e02000f0a78a1791248aec707e3 J ok 1.4s (1.8s/item avg) {'subject_nouns_all': ['microphone', 'text', 'lightning', 'background']}
+[93/142] ab67616d00001e02000f723f36271de0ed3aa893 J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['man', 'jacket', 'necklace', 'tag', 'parental advisory label', 'background text', 'face', 'hair']}
+[94/142] ab67616d0000b273000f815611cd5966187e2051 J ok 2.2s (1.8s/item avg) {'subject_nouns_all': ['person', 'person', 'bed', 'plant', 'window', 'shorts', 't-shirt', 'pillow']}
+[95/142] ab67616d0000b273000fa9b53f161dc999ef557d J ok 2.2s (1.8s/item avg) {'subject_nouns_all': ['person', 'sign', 'plant', 'table', 'chair', 'drum', 'microphone', 'guitar']}
+[96/142] ab67616d00001e0200102a1cdfa1c0f12d6528ea J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['man', 'woman', 'shirt', 'saree', 'necklace', 'sky', 'cloud', 'tree']}
+[97/142] ab67616d00001e02001031d1e10290f8e446bd68 J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['sofa', 'armchair', 'table', 'lamp', 'plant', 'window', 'building', 'tree']}
+[98/142] ab67616d00001e0200106c3252a4c133c0abde36 J ok 1.3s (1.8s/item avg) {'subject_nouns_all': ['none']}
+[99/142] ab67616d00001e020010b864b2a925ec6bfaa30e J ok 1.6s (1.8s/item avg) {'subject_nouns_all': ['person', 'guitar', 'hat', 'cloak', 'flower', 'snake', 'moon', 'planet']}
+[100/142] ab67616d0000b27300100a3e9c764acf01c16db8 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['woman', 'top', 'hair', 'shoulder', 'background']}
+[101/142] ab67616d0000b27300103a3729bf589e0dc913ab J ok 2.3s (1.8s/item avg) {'subject_nouns_all': ['person', 'building', 'sky', 'cloud', 'hat', 'plaid shirt', 'sneaker', 'rooftop']}
+[102/142] ab67616d0000b27300103a4dcd62e3dd6f76d123 J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['fox', 'sunglasses', 'background', 'sparkles']}
+[103/142] ab67616d0000b273001063830a2e597293293797 J ok 2.0s (1.8s/item avg) {'subject_nouns_all': ['person', 'smoke']}
+[104/142] ab67616d0000b2730010bcd17e41331debec2bd5 J ok 1.9s (1.8s/item avg) {'subject_nouns_all': ['none']}
+[105/142] ab67616d0000b2730010def2c33a308e8bd193f8 J ok 2.2s (1.8s/item avg) {'subject_nouns_all': ['glass', 'mug', 'wine glass', 'parental advisory', 'text']}
+[106/142] ab67616d00001e0200117a3fb2444ed7e04c4721 J ok 1.5s (1.8s/item avg) {'subject_nouns_all': ['water', 'boat', 'rock', 'coastline']}
+[107/142] ab67616d0000b273001102263870e8b11c13ec31 J ok 2.5s (1.8s/item avg) {'subject_nouns_all': ['person', 'hot_air_balloon', 'turntable', 'speaker', 'mountain', 'sky', 'ground', 'text']}
+[108/142] ab67616d0000b27300116380305ae5fd3607c43b J ok 2.1s (1.8s/item avg) {'subject_nouns_all': ['wall', 'graffiti', 'symbol']}
+[109/142] ab67616d0000b2730011c1dcb3a4a0cd92bdf203 J ok 2.5s (1.8s/item avg) {'subject_nouns_all': ['man', 'clock', 'jacket', 'hat', 'sunglasses', 'necklace', 'bracelet', 'ring']}
+[110/142] ab67616d00001e0200124d0597059e8987bc4577 J ok 1.8s (1.8s/item avg) {'subject_nouns_all': ['sign', 'plant', 'table', 'chair', 'light', 'ceiling', 'floor', 'pole']}
+[111/142] ab67616d0000b27300127e4552b22c761d50c8f5 J ok 2.6s (1.9s/item avg) {'subject_nouns_all': ['man', 'ocean', 'sky', 'beach', 'rocks', 'coat', 'boot', 'beard']}
+[112/142] ab67616d0000b2730012eb9ade9c1bf4a5411c5d J ok 2.3s (1.9s/item avg) {'subject_nouns_all': ['rose', 'sculpture', 'table', 'vase', 'frame']}
+[113/142] ab67616d00001e020013bebcaee941ebcc13437c J ok 1.9s (1.9s/item avg) {'subject_nouns_all': ['record', 'sky', 'cloud', 'UFO', 'logo', 'sun', 'text', 'signature']}
+[114/142] ab67616d0000b27300139c3eeb59e40dba08f5a1 J ok 2.3s (1.9s/item avg) {'subject_nouns_all': ['person', 'horse', 'grass', 'tree', 'sky']}
+[115/142] ab67616d0000b2730013e7782db25f28b59084ec J ok 2.6s (1.9s/item avg) {'subject_nouns_all': ['mountain', 'sky', 'plant', 'rock', 'tree', 'hill', 'city', 'sun']}
+[116/142] ab67616d00001e020014adcd67767097b6fb42e0 J ok 1.6s (1.9s/item avg) {'subject_nouns_all': ['horse', 'shield', 'crossed swords', 'logo']}
+[117/142] ab67616d0000b2730014cb7f2229ff8195e3ba04 J ok 2.7s (1.9s/item avg) {'subject_nouns_all': ['man', 't-shirt', 'jeans', 'laptop', 'mirror', 'wall', 'floor']}
+[118/142] artofficial.jpg J ok 2.7s (1.9s/item avg) {'subject_nouns_all': ['person', 'armadillo', 'map', 'bird', 'candle', 'tree', 'pipe', 'rat']}
+[119/142] birdsofprey.jpg J ok 2.8s (1.9s/item avg) {'subject_nouns_all': ['woman', 'bird', 'necklace', 'hair', 'earring', 'clothing', 'text', 'DC logo']}
+[120/142] disney.avif J ok 1.9s (1.9s/item avg) {'subject_nouns_all': ['Mickey Mouse', 'text']}
+[121/142] doja.jpg J ok 2.9s (1.9s/item avg) {'subject_nouns_all': ['woman', 'glove', 'earring', 'hair', 'necklace', 'background', 'text', 'lightning']}
+[122/142] elephunk.jpg J ok 2.5s (1.9s/item avg) {'subject_nouns_all': ['elephant', 'person', 'hat', 'bandana', 'headband', 'earring', 'banner', 'record']}
+[123/142] franz.jpg J ok 2.3s (1.9s/item avg) {'subject_nouns_all': ['text', 'logo']}
+[124/142] greenday.jpg J ok 2.5s (1.9s/item avg) {'subject_nouns_all': ['hand', 'grenade', 'parental advisory label']}
+[125/142] havana.jpg J ok 2.9s (1.9s/item avg) {'subject_nouns_all': ['person', 'building', 'car', 'piano', 'cello', 'tree', 'reflection', 'sky']}
+[126/142] horsley.jpg J ok 2.8s (1.9s/item avg) {'subject_nouns_all': ['person', 'car', 'building', 'water', 'sky', 'boat', 'glasses', 'rock']}
+[127/142] infected.jpg J ok 2.9s (2.0s/item avg) {'subject_nouns_all': ['mushroom', 'moon', 'person', 'fishing rod', 'boat', 'city', 'tree', 'water']}
+[128/142] johns.jpg J ok 2.9s (2.0s/item avg) {'subject_nouns_all': ['wave', 'sailboat', 'lighthouse', 'sun', 'bird', 'water', 'sky', 'building']}
+[129/142] knuckles.jpg J ok 2.2s (2.0s/item avg) {'subject_nouns_all': ['person', 'car', 'building', 'statue', 'bicycle', 'tree', 'sign', 'street']}
+[130/142] krafty.jpg J ok 2.6s (2.0s/item avg) {'subject_nouns_all': ['flower', 'trumpet', 'record', 'text']}
+[131/142] loups.jpg J ok 2.2s (2.0s/item avg) {'subject_nouns_all': ['wolf', 'planet', 'text']}
+[132/142] meteora.jpg J ok 3.1s (2.0s/item avg) {'subject_nouns_all': ['person', 'ladder', 'can', 'mask', 'wall', 'floor', 'cable', 'canister']}
+[133/142] muse.jpg J ok 3.0s (2.0s/item avg) {'subject_nouns_all': ['woman', 'planet', 'dress', 'ground', 'hair', 'light', 'sky', 'text']}
+[134/142] nobs.jpg J ok 3.2s (2.0s/item avg) {'subject_nouns_all': ['instrument', 'saxophone', 'trumpet', 'trombone', 'bugle', 'horn', 'musician', 'band']}
+[135/142] once.jpg J ok 3.0s (2.0s/item avg) {'subject_nouns_all': ['angel', 'tombstone', 'frame', 'wreath', 'text', 'background']}
+[136/142] orelsan.jpg J ok 2.3s (2.0s/item avg) {'subject_nouns_all': ['man', 'hand', 'shirt', 'hair', 'window', 'person', 'shoulder', 'head']}
+[137/142] placebo.jpg J ok 2.5s (2.0s/item avg) {'subject_nouns_all': ['person', 'jeans']}
+[138/142] skap.jpg J ok 3.3s (2.0s/item avg) {'subject_nouns_all': ['bus', 'guitar', 'drum', 'piano', 'suitcase', 'bird', 'tiger', 'box']}
+[139/142] slim.jpg J ok 2.8s (2.0s/item avg) {'subject_nouns_all': ['person', 'jacket', 'zipper', 'parental advisory label']}
+[140/142] slipknot.jpg J ok 2.1s (2.0s/item avg) {'subject_nouns_all': ['none']}
+[141/142] toxicity.jpg J ok 2.9s (2.0s/item avg) {'subject_nouns_all': ['hill', 'tower', 'antenna', 'vegetation', 'sky']}
+[142/142] vvbrown.jpg J ok 2.6s (2.1s/item avg) {'subject_nouns_all': ['woman', 'earring', 'hat']}
+{
+	"processed_this_process": 142,
+	"elapsed_seconds": 291.7,
+	"seconds_per_inference": 2.05,
+	"run_id": "8054b073-4a4c-4b88-af10-af4a1cad52d0",
+	"exit_code": 0
+}

@@ -1,0 +1,122 @@
+RESIDUAL PURITY PROXY ACROSS CUTS — sam-eval-142-v4-nouns (ONE noun) vs sam-eval-142-v5-allnouns (EVERY noun)
+v4 covers 142   v5 covers 142
+
+====================================================================================================
+CALIBRATION — READ BEFORE ANY NUMBER BELOW
+  PROXY, NOT A MEASUREMENT. Checked against humans once (residual-purity-1, 50 answers): the proxy
+   called 82.4% of v4's residuals clean; the reviewer called 24.24% pure field. It over-claims by 
+  0.582 and the gap is structural, not an offset — the proxy counts only the causes it can name, a
+  nd it cannot name a flame, a cello or an ornament. A v5 proxy number above v4's means the NAMED 
+  causes went quieter. The real test is a human round with the escape answer; none has been run on
+   v5.
+====================================================================================================
+
+VALIDITY CHECK — did adding prompts perturb the shared static concepts?
+  shared concepts   : barcode, display-text, emblem, face, letter, lettering, parental-advisory, person, sticker, words
+  regions v4 / v5   : 4867 / 4867   matched 4867
+  only in v4        : 0
+  only in v5        : 0
+  score/mask diffs  : 0
+  UNPERTURBED       : True
+
+CUT VARIANTS
+  precision   : pooled 0.578, per-group {'text_like': 0.697295, 'cjk_script': 0.392655}  (config default, unchanged)
+  subtraction : min(pooled, group cut) per group -> {'text_like': 0.578, 'mark_like': 0.578, 'person_like': 0.578, 'cjk_script': 0.392655}
+                cjk_script's 0.392655 is PROVISIONAL (n=21, one negative answer)
+
+residual_field_fraction (what is LEFT after subtracting the kept masks)
+run   arm      cut          guard                 mean   median      min      max
+v4    static   precision    guard_on_uniform    0.8445   0.8835   0.4987   1.0000
+v4    dynamic  precision    guard_on_uniform    0.8211   0.8541   0.4731   1.0000
+v4    static   precision    guard_on_exempt     0.8261   0.8758   0.2469   1.0000
+v4    dynamic  precision    guard_on_exempt     0.8056   0.8428   0.2469   1.0000
+v4    static   precision    guard_off           0.8210   0.8739   0.2193   1.0000
+v4    dynamic  precision    guard_off           0.7714   0.8197   0.0853   1.0000
+v4    static   subtraction  guard_on_uniform    0.8286   0.8734   0.3822   1.0000
+v4    dynamic  subtraction  guard_on_uniform    0.8054   0.8406   0.3822   1.0000
+v4    static   subtraction  guard_on_exempt     0.8102   0.8646   0.2469   1.0000
+v4    dynamic  subtraction  guard_on_exempt     0.7899   0.8311   0.2469   1.0000
+v4    static   subtraction  guard_off           0.8052   0.8600   0.2193   1.0000
+v4    dynamic  subtraction  guard_off           0.7558   0.8050   0.0853   1.0000
+v5    static   precision    guard_on_uniform    0.8443   0.8835   0.4987   1.0000
+v5    dynamic  precision    guard_on_uniform    0.7055   0.7118   0.0293   1.0000
+v5    static   precision    guard_on_exempt     0.8259   0.8758   0.2469   1.0000
+v5    dynamic  precision    guard_on_exempt     0.6969   0.7024   0.0293   1.0000
+v5    static   precision    guard_off           0.8209   0.8739   0.2193   1.0000
+v5    dynamic  precision    guard_off           0.6098   0.6476   0.0107   1.0000
+v5    static   subtraction  guard_on_uniform    0.8284   0.8734   0.3822   1.0000
+v5    dynamic  subtraction  guard_on_uniform    0.6904   0.7004   0.0293   1.0000
+v5    static   subtraction  guard_on_exempt     0.8100   0.8646   0.2469   1.0000
+v5    dynamic  subtraction  guard_on_exempt     0.6818   0.6932   0.0293   1.0000
+v5    static   subtraction  guard_off           0.8051   0.8600   0.2193   1.0000
+v5    dynamic  subtraction  guard_off           0.5963   0.6328   0.0107   1.0000
+
+v4 -> v5: the same cover, same cut, how much MORE was subtracted (positive = v5 removed more)
+  precision    guard_on_uniform  mean +0.1156  median +0.0244  max +0.9325  covers moved >0.001: 94
+  precision    guard_on_exempt   mean +0.1087  median +0.0160  max +0.9325  covers moved >0.001: 93
+  precision    guard_off         mean +0.1616  median +0.0294  max +0.9861  covers moved >0.001: 95
+  subtraction  guard_on_uniform  mean +0.1151  median +0.0244  max +0.9325  covers moved >0.001: 94
+  subtraction  guard_on_exempt   mean +0.1081  median +0.0160  max +0.9325  covers moved >0.001: 93
+  subtraction  guard_off         mean +0.1595  median +0.0294  max +0.9740  covers moved >0.001: 95
+
+THE HEADLINE — v4 `subject_unmasked` covers that now carry a subject mask
+cut          guard              v4 unmasked  closed in v5  still open  newly open
+precision    guard_on_uniform            12             6           6           0
+precision    guard_on_exempt             12             6           6           0
+precision    guard_off                    9             4           5           0
+subtraction  guard_on_uniform            12             6           6           0
+subtraction  guard_on_exempt             12             6           6           0
+subtraction  guard_off                    9             4           5           0
+
+THE FLAME/CELLO CLASS — covers where a noun BEYOND RANK 1 fired (subtraction, guard off)
+  covers: 98 of 142
+  residual closed by v5 on those covers: mean +0.2207  median +0.0786  max +0.9740
+  rank tags firing beyond 1: dyn-noun-2x75, dyn-noun-3x75, dyn-noun-4x57, dyn-noun-5x54, dyn-noun-6x37, dyn-noun-7x24, dyn-noun-8x10
+
+CONTAMINATION RECOUNT (proxy — see calibration block)
+run/cut/guard                       flagged   clean  clean rate  causes
+v4_precision_guard_on_uniform            38     104      0.7324  text_below_cut=26, subject_unmasked=12, text_below_pooled_cut_too=11, no_subject_prompt_at_all=2
+v4_precision_guard_on_exempt             38     104      0.7324  text_below_cut=26, subject_unmasked=12, text_below_pooled_cut_too=11, no_subject_prompt_at_all=2
+v4_precision_guard_off                   35     107      0.7535  text_below_cut=26, text_below_pooled_cut_too=11, subject_unmasked=9, no_subject_prompt_at_all=2
+v4_subtraction_guard_on_uniform          28     114      0.8028  text_below_cut=15, subject_unmasked=12, text_below_pooled_cut_too=11, no_subject_prompt_at_all=2
+v4_subtraction_guard_on_exempt           28     114      0.8028  text_below_cut=15, subject_unmasked=12, text_below_pooled_cut_too=11, no_subject_prompt_at_all=2
+v4_subtraction_guard_off                 25     117      0.8239  text_below_cut=15, text_below_pooled_cut_too=11, subject_unmasked=9, no_subject_prompt_at_all=2
+v5_precision_guard_on_uniform            31     111      0.7817  text_below_cut=26, text_below_pooled_cut_too=11, subject_unmasked=6
+v5_precision_guard_on_exempt             31     111      0.7817  text_below_cut=26, text_below_pooled_cut_too=11, subject_unmasked=6
+v5_precision_guard_off                   30     112      0.7887  text_below_cut=26, text_below_pooled_cut_too=11, subject_unmasked=5
+v5_subtraction_guard_on_uniform          21     121      0.8521  text_below_cut=15, text_below_pooled_cut_too=11, subject_unmasked=6
+v5_subtraction_guard_on_exempt           21     121      0.8521  text_below_cut=15, text_below_pooled_cut_too=11, subject_unmasked=6
+v5_subtraction_guard_off                 20     122      0.8592  text_below_cut=15, text_below_pooled_cut_too=11, subject_unmasked=5
+
+PER-STRATUM PROXY CLEAN RATE, against the human rates the v4 round measured
+  (human column is residual-purity-1 on the V4 run; there is NO human round on v5)
+  --- v4_precision ---
+  stratum               pool  proxy clean  human (v4)  gap (v4)
+  class-only               2       1.0000       0.000    -1.000
+  contaminated            35       0.0000       0.167    +0.167
+  noun-fired              72       1.0000       0.250    -0.750
+  noun-silent              7       1.0000       0.400    -0.600
+  static-only-clean       26       1.0000       0.250    -0.750
+  --- v4_subtraction ---
+  stratum               pool  proxy clean  human (v4)  gap (v4)
+  class-only               2       1.0000       0.000    -1.000
+  contaminated            25       0.0000       0.167    +0.167
+  noun-fired              77       1.0000       0.250    -0.750
+  noun-silent             10       1.0000       0.400    -0.600
+  static-only-clean       28       1.0000       0.250    -0.750
+  --- v5_precision ---
+  stratum               pool  proxy clean  human (v4)  gap (v4)
+  class-only               1       1.0000       0.000    -1.000
+  contaminated            30       0.0000       0.167    +0.167
+  noun-fired              93       1.0000       0.250    -0.750
+  noun-silent             11       1.0000       0.400    -0.600
+  static-only-clean        7       1.0000       0.250    -0.750
+  --- v5_subtraction ---
+  stratum               pool  proxy clean  human (v4)  gap (v4)
+  class-only               1       1.0000       0.000    -1.000
+  contaminated            20       0.0000       0.167    +0.167
+  noun-fired             102       1.0000       0.250    -0.750
+  noun-silent             12       1.0000       0.400    -0.600
+  static-only-clean        7       1.0000       0.250    -0.750
+
+REMINDER: every 'proxy clean' number above over-claims. Measured once, aggregate over-claim 0.582.
