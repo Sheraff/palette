@@ -44,7 +44,14 @@ export type FigureGroundField = Readonly<{
 	inkEnergy: Float32Array
 	/** Ladder-aggregated √(ΔC²+ΔH²) (mark energy density) per pixel. */
 	markEnergy: Float32Array
-	/** Coarsest-scale surround colour per pixel (the "sitting on" colour), OKLab planes. */
+	/**
+	 * Habitual-ground surround colour per pixel (the "sitting on" colour), OKLab planes.
+	 * Interpretation correction (2026-08-04, W7 counterfactual): NOT the coarsest rung — at
+	 * σ≈shortEdge/2 the surround is ≈ the global mean and habitual-ground coincidence measured
+	 * dead (<1e-3) on 10/18 real covers. The rung is the coarsest one that survives W6's
+	 * geometric criterion (±2σ must not span the short edge): "what v sits on" must be local
+	 * enough to be a surround at all. Anchors at the constant's definition site.
+	 */
 	ground: Readonly<{ L: Float32Array; a: Float32Array; b: Float32Array }>
 }>
 
