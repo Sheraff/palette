@@ -21,6 +21,11 @@ Three tiers: main orchestrator (Phase 2) → **you** → many Opus workers. Rule
   not verification.
 - **Absorb worker completions.** Report to the main orchestrator once per milestone, never per
   worker.
+- **One fresh worker per task, collected within your own turn.** Never keep a long-lived worker
+  that you re-message across passes — such agents end up parented to the main session and route
+  their full reports into main-tier context (this happened; reviewer-corrected 2026-08-05). Spawn,
+  stay in-turn while it runs, read its output yourself, act, then stop. If a pass is too long to
+  supervise in one turn, split the pass, not the supervision.
 
 ## 2. Path ownership
 
