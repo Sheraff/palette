@@ -48,6 +48,12 @@ concentrated near the designated ends, the paradigm is wrong** — tuning moves 
 what the order is. A stable-but-wrong palette is under-tuned; mid-ordering endorsed colours are a
 refutation, reported as MECHANISM-FALSIFIED.
 
+*Claim scope:* legacy endorsements are weak evidence by construction — produced under different
+priors (PHASE_2_HANDOFF.md §5). The falsifier therefore tests only whether those colours are
+*rankable in this paradigm's orderings* (a structural property), never that matching them is
+success. Run 2026-08-04: not refuted (fg/accent concentrated; bg/surface mixed, edge-degeneracy
+traced). See `falsifier/REPORT.md`.
+
 ## Structure
 
 - `src/` — field machinery and the selection cascade (devloop candidate at `src/candidate.ts`).
