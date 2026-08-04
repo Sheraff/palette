@@ -1,0 +1,2009 @@
+{
+	"fixtureVersion": "oracle-validation-1",
+	"batchId": "accent-real-1",
+	"purpose": "oracle-validation",
+	"labelSchemaVersion": "accent-real.v1",
+	"seed": 202608042,
+	"generatedBy": "research/v3/src/review-server/accent-real.ts",
+	"builtFrom": [
+		"research/v3/data/legacy/endorsements.json",
+		"research/v3/data/calibration/accent-functional-round-1.json"
+	],
+	"selection": {
+		"rule": "One distinct cover per item, drawn from the full-palette endorsement corpus and assigned to a (rung x lightness band x accent hue third x governing field role) cell by cellFor(); the first cover in seeded order that ADMITS an isoluminant accent in that cell takes it. Selection depends on the field colour and the gamut, never on any answer. Six anchors are accent-functional-1 panels replayed unchanged, chosen by nearness to six pre-registered probe distances and never by how they were answered. The Sunshine item is the endorsement 22e959d5164750bd carried unmodified.",
+		"counts": {
+			"ladder": 30,
+			"anchors": 6,
+			"sunshine": 1,
+			"controls": 4,
+			"repeats": 4,
+			"distinctCovers": 41
+		}
+	},
+	"questions": [
+		{
+			"key": "accent_real_09841fc9",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_5f4ad9db",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_fe42e36c",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_0aae3b20",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_d0f946df",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_3ff90325",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_12657ef8",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_9f6b4ebc",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_695e2d62",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_35f6824b",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_af38f4a6",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_4bf668c8",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_6cc7a9c0",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_7133b161",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_3d431fc0",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_52a70b79",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_6f137b5e",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_118bd984",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_1fd228c2",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_63ece911",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_f1551d76",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_a0506870",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_a17bd89f",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_60c420b4",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_282bb882",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_0bec5499",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_dbdca989",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_c439c4a5",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_15f027f9",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_f63b0d3d",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_8feb6e5c",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_e88513a3",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_44e47c40",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_e2d78654",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_a8b11abb",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_7fb7476f",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_d03444ab",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_bcc95add",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_6f46f00e",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_d14f095f",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_b05af37e",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_12afef9a",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_2c2c1da2",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_78a3ebfe",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		},
+		{
+			"key": "accent_real_518e0e61",
+			"kind": "enum",
+			"question": "Does this work as an accent at a glance?",
+			"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+			"answers": [
+				{
+					"key": "works",
+					"label": "yes — it works as an accent",
+					"gloss": "at a glance, it picks these elements out",
+					"hotkey": "1"
+				},
+				{
+					"key": "does_not_work",
+					"label": "no — it does not",
+					"gloss": "you only find it by looking for it, or it reads as a difference rather than an accent",
+					"hotkey": "2"
+				},
+				{
+					"key": "cant_tell",
+					"label": "I can't tell",
+					"gloss": "Genuinely undecidable from what is on screen. Not a way of skipping a hard one — this answer's share is reported as a result of the round.",
+					"hotkey": "3"
+				}
+			]
+		}
+	],
+	"items": [
+		{
+			"itemId": "ar-ladder-00",
+			"questionKey": "accent_real_09841fc9",
+			"imagePath": "10/ab67616d0000b273001063830a2e597293293797",
+			"sha256": "89ab247d72c98acf7ddf1dec87f63d2f156aff6009ab6226b98f35e9929aa731",
+			"imageId": "ab67616d0000b273001063830a2e597293293797",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "d7ef763045a9c84b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-dark"
+		},
+		{
+			"itemId": "ar-ladder-01",
+			"questionKey": "accent_real_5f4ad9db",
+			"imagePath": "06/ab67616d00001e0200060491ade88c8893373d9f",
+			"sha256": "9ae81cd12e4bd2a4fc8b92f169647174f67cb4c2f4d1d45244fed0d6b3f83ccd",
+			"imageId": "ab67616d00001e0200060491ade88c8893373d9f",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e8d2a986b18eb1d5",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-mid"
+		},
+		{
+			"itemId": "ar-ladder-02",
+			"questionKey": "accent_real_fe42e36c",
+			"imagePath": "images/loups.jpg",
+			"sha256": "ac5784abcef2493024b69ce3d7295cd6c1d7e942386830c848e0b9243be629fa",
+			"imageId": "loups.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "13d692cd730368d0",
+				"longEdgePx": 500,
+				"width": 500,
+				"height": 500
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-03",
+			"questionKey": "accent_real_0aae3b20",
+			"imagePath": "01/ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+			"sha256": "da210c5b793f7ac3b225ff541be00050621f2733fa1604743b92c17763163cde",
+			"imageId": "ab67616d00001e020001738a49a69ed70ffcbe42.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "458f416feb7c17cf",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-mid"
+		},
+		{
+			"itemId": "ar-ladder-04",
+			"questionKey": "accent_real_d0f946df",
+			"imagePath": "images/once.jpg",
+			"sha256": "26fb272d7128b9ed89ac19b8fc0c2810d10cae4ace1a06a37663b20b2bb61fc9",
+			"imageId": "once.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b9985d18c36d1d76",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 980
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-05",
+			"questionKey": "accent_real_3ff90325",
+			"imagePath": "08/ab67616d00001e0200083a2d455755e4c1116825",
+			"sha256": "29f1763b1608c0adc395996bfdca56075b8b2ae6a8a4e05909453f8aaf179a7c",
+			"imageId": "ab67616d00001e0200083a2d455755e4c1116825",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "8d5b08cf7bcccfe3",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-06",
+			"questionKey": "accent_real_12657ef8",
+			"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+			"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+			"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b20bb6cc9e79e384",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-07",
+			"questionKey": "accent_real_9f6b4ebc",
+			"imagePath": "06/ab67616d0000b2730006c5d727b329e4477f4a81",
+			"sha256": "e2783ef2ee0c4885684521d41221988c5fc2512e639f7d35456c8d2295405807",
+			"imageId": "ab67616d0000b2730006c5d727b329e4477f4a81",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "7903ccd604858a64",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-08",
+			"questionKey": "accent_real_695e2d62",
+			"imagePath": "images/knuckles.jpg",
+			"sha256": "057be6b5a93708db128db9752b66b3d7631fec5d5611f3c5e318a03f6ee0c0d2",
+			"imageId": "knuckles.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "6803c6dc44c787c9",
+				"longEdgePx": 350,
+				"width": 350,
+				"height": 350
+			},
+			"stratum": "ladder-surface-mid"
+		},
+		{
+			"itemId": "ar-ladder-09",
+			"questionKey": "accent_real_35f6824b",
+			"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+			"sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+			"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "4623df3e8507f916",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-10",
+			"questionKey": "accent_real_af38f4a6",
+			"imagePath": "03/ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"sha256": "96ce2811c9d801137cb691ade093b9db3c57f746be4e9587496160c8601e7d56",
+			"imageId": "ab67616d00001e02000300752f338b6aedff856c.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "25c7f0aa82856981",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-surface-mid"
+		},
+		{
+			"itemId": "ar-ladder-11",
+			"questionKey": "accent_real_4bf668c8",
+			"imagePath": "02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"sha256": "303e5c49d86b22bc06f08160bbfd80b9da162749cd956af8f949104c0d482a22",
+			"imageId": "ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "ea9e8706790c5e50",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-light"
+		},
+		{
+			"itemId": "ar-ladder-12",
+			"questionKey": "accent_real_6cc7a9c0",
+			"imagePath": "14/ab67616d0000b2730014cb7f2229ff8195e3ba04",
+			"sha256": "494beb233becabbba6e229340d5e29f85ceb6ff291e781e29c27777b2509da8f",
+			"imageId": "ab67616d0000b2730014cb7f2229ff8195e3ba04",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "59b2306022c2147d",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-mid"
+		},
+		{
+			"itemId": "ar-ladder-13",
+			"questionKey": "accent_real_7133b161",
+			"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"sha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+			"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "ae1c9fcc17150433",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-light"
+		},
+		{
+			"itemId": "ar-ladder-14",
+			"questionKey": "accent_real_3d431fc0",
+			"imagePath": "11/ab67616d0000b2730011c1dcb3a4a0cd92bdf203",
+			"sha256": "19b74248fd34196bce366809e5d82adb571b5c89d0982788101359ed1eef274f",
+			"imageId": "ab67616d0000b2730011c1dcb3a4a0cd92bdf203",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "d1e2de70ad2c800a",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-dark"
+		},
+		{
+			"itemId": "ar-ladder-15",
+			"questionKey": "accent_real_52a70b79",
+			"imagePath": "08/ab67616d0000b2730008c1c08433aa880aad7f30",
+			"sha256": "fc36ed741bc8c8d65b6088e6d37800e9038b832be64c9e309c845ec15ca8d3c5",
+			"imageId": "ab67616d0000b2730008c1c08433aa880aad7f30",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "49704bcef2e51625",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-light"
+		},
+		{
+			"itemId": "ar-ladder-16",
+			"questionKey": "accent_real_6f137b5e",
+			"imagePath": "images/krafty.jpg",
+			"sha256": "3afaf90cd911c134fe26708b3da3fdad181eb38cd8455a8a4538de88a4894091",
+			"imageId": "krafty.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "d7fd1e683b9e0aa7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-dark"
+		},
+		{
+			"itemId": "ar-ladder-17",
+			"questionKey": "accent_real_118bd984",
+			"imagePath": "01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+			"sha256": "2e4a6d27cee4b46cdba4a2e5f0a26f71d373b6284855d4a4500a0a08732dda28",
+			"imageId": "ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "7835550e3f108a87",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-mid"
+		},
+		{
+			"itemId": "ar-ladder-18",
+			"questionKey": "accent_real_1fd228c2",
+			"imagePath": "images/johns.jpg",
+			"sha256": "3c519a67314f999a0e52b005eef4b146a9e43ab70819ce00f6e197c62f01dac1",
+			"imageId": "johns.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "96841f1c143dfe2a",
+				"longEdgePx": 700,
+				"width": 700,
+				"height": 700
+			},
+			"stratum": "ladder-surface-dark"
+		},
+		{
+			"itemId": "ar-ladder-19",
+			"questionKey": "accent_real_63ece911",
+			"imagePath": "09/ab67616d0000b27300097e55f9a93ceb03afa4b2",
+			"sha256": "3001315d6e34b3d7d7f231a245acd0a0e9052813fa225b6c9ced0df179f7b214",
+			"imageId": "ab67616d0000b27300097e55f9a93ceb03afa4b2",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "a427cf168614e1b6",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-mid"
+		},
+		{
+			"itemId": "ar-ladder-20",
+			"questionKey": "accent_real_f1551d76",
+			"imagePath": "images/placebo.jpg",
+			"sha256": "5a45dc54f71a6064d3ee8920a4a2e4b9e27bbbd1ae4e661e836beabed4145905",
+			"imageId": "placebo.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "c06573716f6fab72",
+				"longEdgePx": 1400,
+				"width": 1400,
+				"height": 1400
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-21",
+			"questionKey": "accent_real_a0506870",
+			"imagePath": "images/horsley.jpg",
+			"sha256": "3b32f2f95f2ce01af5ecd0ca8383b2b292ba160a874aac5f8480ae6e26634acb",
+			"imageId": "horsley.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "384b881c94850d47",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "ladder-background-mid"
+		},
+		{
+			"itemId": "ar-ladder-22",
+			"questionKey": "accent_real_a17bd89f",
+			"imagePath": "05/ab67616d00001e02000564718f605c1f326b2ca2",
+			"sha256": "09a7609d09d6ede5243d256c4bc2d677de53ecdb205177e8635121b95fcae4b2",
+			"imageId": "ab67616d00001e02000564718f605c1f326b2ca2",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "c15a32c411582a19",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-23",
+			"questionKey": "accent_real_60c420b4",
+			"imagePath": "03/ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+			"sha256": "e65869a61aa43a1633e7954e762267b7ea43b42e3b835377e5d108479f58ecec",
+			"imageId": "ab67616d00001e0200034fd1f86970643e18bf98.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b2a972dd2d4b51bd",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-24",
+			"questionKey": "accent_real_282bb882",
+			"imagePath": "09/ab67616d0000b273000955ccfc1e8da97a09b32d",
+			"sha256": "ecf1191eb98aa2bb6b04b8fceb4be93029c7bd0b6b9a650c1bfc8d41f8b4a029",
+			"imageId": "ab67616d0000b273000955ccfc1e8da97a09b32d",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "f5e25294d8e134ee",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-light"
+		},
+		{
+			"itemId": "ar-ladder-25",
+			"questionKey": "accent_real_0bec5499",
+			"imagePath": "08/ab67616d0000b27300083cc5b8d8d2e7ca7147cd",
+			"sha256": "ec132ae701771befb08d0283ff702fedd7caf04be1eb17f932988b1fb17b71b2",
+			"imageId": "ab67616d0000b27300083cc5b8d8d2e7ca7147cd",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "e15c85e191a92dc7",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-26",
+			"questionKey": "accent_real_dbdca989",
+			"imagePath": "images/muse.jpg",
+			"sha256": "c1ed7ef0e2d6254738ad265103e67ce018b01a68c06c2f24077df618fa3c0f35",
+			"imageId": "muse.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "8eb8704de97fed7c",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-mid"
+		},
+		{
+			"itemId": "ar-ladder-27",
+			"questionKey": "accent_real_c439c4a5",
+			"imagePath": "05/ab67616d0000b2730005a91812c85db291ea5d85",
+			"sha256": "a6e03aa683b38ca8f739c026312fd10ebc9710f41ceb60561a4fc73e1deadd72",
+			"imageId": "ab67616d0000b2730005a91812c85db291ea5d85",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "c5527285046d8e41",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-background-dark"
+		},
+		{
+			"itemId": "ar-ladder-28",
+			"questionKey": "accent_real_15f027f9",
+			"imagePath": "0a/ab67616d0000b273000a9e0be9521986cc08839e",
+			"sha256": "829283cd0334c178f39ea48870bd293aba54918c9656699cd72d20092af56b50",
+			"imageId": "ab67616d0000b273000a9e0be9521986cc08839e",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "d67b8e45303efdf0",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "ladder-surface-mid"
+		},
+		{
+			"itemId": "ar-ladder-29",
+			"questionKey": "accent_real_f63b0d3d",
+			"imagePath": "01/ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+			"sha256": "edae061633702f5e33a877a85550fc30e249dfb29209631c63f2f4223e69012f",
+			"imageId": "ab67616d00001e0200018a1e2daf68a53f504cb9.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "4791ac96cb9a5f19",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "ladder-background-light"
+		},
+		{
+			"itemId": "ar-anchor-00-af-ladder-r00-h1-mid",
+			"questionKey": "accent_real_8feb6e5c",
+			"imagePath": "images/meteora.jpg",
+			"sha256": "26ab93c9c2e806f79e9930f060d39597b1f9ef9811aa19e7ee048903d7e7cb7f",
+			"imageId": "meteora.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "4a6994e9c4630fef",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-anchor-01-af-ladder-r02-h1-mid",
+			"questionKey": "accent_real_e88513a3",
+			"imagePath": "10/ab67616d0000b2730010def2c33a308e8bd193f8",
+			"sha256": "352f43c89e4b8c3294a96c0ffc448577f9c92a4c679b2404bd68e2f0caa59e76",
+			"imageId": "ab67616d0000b2730010def2c33a308e8bd193f8",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "87dfc61be65f1d16",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-anchor-02-af-ladder-r03-h1-dark",
+			"questionKey": "accent_real_44e47c40",
+			"imagePath": "12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"sha256": "4dc30c99f155a47f04f6b584abb9137ad972e9be5e2aedfd8d903e11e19d438c",
+			"imageId": "ab67616d0000b2730012eb9ade9c1bf4a5411c5d",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "d2880e354037334e",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-anchor-03-af-anchor-p2-ladder-08",
+			"questionKey": "accent_real_e2d78654",
+			"imagePath": "0e/ab67616d0000b273000e91d6c3b44e900d334a78",
+			"sha256": "636d42743272eaae15ac7cfce2e67cf5d70a4b9690f33bed41f56d2dc3574c04",
+			"imageId": "ab67616d0000b273000e91d6c3b44e900d334a78",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "6509e2920dc44881",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-anchor-04-af-ladder-r06-h0-mid",
+			"questionKey": "accent_real_a8b11abb",
+			"imagePath": "02/ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+			"sha256": "f0703ac121ea455ebb30f0014a3deff767e126d959be4d6de0a44a5b74351316",
+			"imageId": "ab67616d0000b2730002dc280ccc28cadb7d4ae4.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "9103cd8e1c57007a",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-anchor-05-af-ladder-r08-h1-dark",
+			"questionKey": "accent_real_7fb7476f",
+			"imagePath": "images/nobs.jpg",
+			"sha256": "d0d5e570f961094da6d2a0744660bddd1811eb8116d176dcc0750c55651d723c",
+			"imageId": "nobs.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b471059d406c9336",
+				"longEdgePx": 1200,
+				"width": 1200,
+				"height": 1200
+			},
+			"stratum": "anchor-replay"
+		},
+		{
+			"itemId": "ar-sunshine",
+			"questionKey": "accent_real_d03444ab",
+			"imagePath": "13/ab67616d0000b2730013e7782db25f28b59084ec",
+			"sha256": "f7e7ef7b8f20c96baded61acd37a65b52afedbab86a67d9f6c28571859210fd7",
+			"imageId": "ab67616d0000b2730013e7782db25f28b59084ec",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "22e959d5164750bd",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "sunshine-known-verdict"
+		},
+		{
+			"itemId": "ar-control-obvious-0",
+			"questionKey": "accent_real_bcc95add",
+			"imagePath": "06/ab67616d0000b273000637ffe82ad17bfa0f1073",
+			"sha256": "b768973dceefe1015bc72c8266ec3ce5640b8464e7a82a942447703100cf33a4",
+			"imageId": "ab67616d0000b273000637ffe82ad17bfa0f1073",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "6366391a41b49d83",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "control-obvious"
+		},
+		{
+			"itemId": "ar-control-obvious-1",
+			"questionKey": "accent_real_6f46f00e",
+			"imagePath": "09/ab67616d0000b2730009448702be55dfc86fde67",
+			"sha256": "a7206ff9631b4b550ef8f74d479b188212ea0f4c4ef4f02653ae2a39b9ca0ac8",
+			"imageId": "ab67616d0000b2730009448702be55dfc86fde67",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "0a4880fd107f1ea1",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "control-obvious"
+		},
+		{
+			"itemId": "ar-control-identical-0",
+			"questionKey": "accent_real_d14f095f",
+			"imagePath": "0a/ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"sha256": "8efa4c384ea95b34db145bc9a7354c77b73a00aa5cc5712c92c6eae09d568c7e",
+			"imageId": "ab67616d0000b273000a2927c0f27657e4a2aeaa",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "1a049b516553579b",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "control-identical"
+		},
+		{
+			"itemId": "ar-control-identical-1",
+			"questionKey": "accent_real_b05af37e",
+			"imagePath": "images/skap.jpg",
+			"sha256": "0eb0e60d862f1703cbf6cf2b01e0d3edd14fe6ff0f7abf48eabf7fbb5863af3d",
+			"imageId": "skap.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b9e2494938eff535",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 894
+			},
+			"stratum": "control-identical"
+		},
+		{
+			"itemId": "ar-repeat-00",
+			"questionKey": "accent_real_12afef9a",
+			"imagePath": "images/horsley.jpg",
+			"sha256": "3b32f2f95f2ce01af5ecd0ca8383b2b292ba160a874aac5f8480ae6e26634acb",
+			"imageId": "horsley.jpg",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "384b881c94850d47",
+				"longEdgePx": 1000,
+				"width": 1000,
+				"height": 1000
+			},
+			"stratum": "repeat"
+		},
+		{
+			"itemId": "ar-repeat-01",
+			"questionKey": "accent_real_2c2c1da2",
+			"imagePath": "07/ab67616d0000b2730007960724fb77c8041c6c13",
+			"sha256": "eeef27ece2ed7347ec2bcbfb5d7de57a28303df02e4009881092f4cd009286b1",
+			"imageId": "ab67616d0000b2730007960724fb77c8041c6c13",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "4623df3e8507f916",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "repeat"
+		},
+		{
+			"itemId": "ar-repeat-02",
+			"questionKey": "accent_real_78a3ebfe",
+			"imagePath": "0e/ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"sha256": "e2c28658a90ae88ee4222e77706b5d8c8549a890a5e08746c066a1c2774650cb",
+			"imageId": "ab67616d00001e02000ec9e3bb9ee4fc008b018e",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "ae1c9fcc17150433",
+				"longEdgePx": 300,
+				"width": 300,
+				"height": 300
+			},
+			"stratum": "repeat"
+		},
+		{
+			"itemId": "ar-repeat-03",
+			"questionKey": "accent_real_518e0e61",
+			"imagePath": "10/ab67616d0000b27300100a3e9c764acf01c16db8",
+			"sha256": "3b82cee640a22a1d5ec34249f44207168ed44336282abb411dbf1b3b4964401d",
+			"imageId": "ab67616d0000b27300100a3e9c764acf01c16db8",
+			"artworkId": null,
+			"collection": "sharded-corpus",
+			"rendition": {
+				"source": "research/v3/data/legacy/endorsements.json",
+				"sourceEntryId": "b20bb6cc9e79e384",
+				"longEdgePx": 640,
+				"width": 640,
+				"height": 640
+			},
+			"stratum": "repeat"
+		}
+	],
+	"serveOrder": [
+		"ar-control-identical-1",
+		"ar-ladder-05",
+		"ar-anchor-04-af-ladder-r06-h0-mid",
+		"ar-anchor-02-af-ladder-r03-h1-dark",
+		"ar-ladder-06",
+		"ar-ladder-12",
+		"ar-ladder-07",
+		"ar-ladder-03",
+		"ar-ladder-25",
+		"ar-ladder-21",
+		"ar-ladder-09",
+		"ar-ladder-22",
+		"ar-ladder-19",
+		"ar-ladder-01",
+		"ar-anchor-03-af-anchor-p2-ladder-08",
+		"ar-ladder-10",
+		"ar-ladder-15",
+		"ar-sunshine",
+		"ar-ladder-27",
+		"ar-ladder-17",
+		"ar-anchor-00-af-ladder-r00-h1-mid",
+		"ar-ladder-29",
+		"ar-repeat-00",
+		"ar-ladder-24",
+		"ar-ladder-02",
+		"ar-ladder-04",
+		"ar-ladder-08",
+		"ar-repeat-03",
+		"ar-ladder-28",
+		"ar-ladder-13",
+		"ar-control-identical-0",
+		"ar-anchor-01-af-ladder-r02-h1-mid",
+		"ar-ladder-26",
+		"ar-control-obvious-1",
+		"ar-ladder-14",
+		"ar-anchor-05-af-ladder-r08-h1-dark",
+		"ar-ladder-00",
+		"ar-control-obvious-0",
+		"ar-ladder-23",
+		"ar-ladder-16",
+		"ar-repeat-01",
+		"ar-ladder-20",
+		"ar-repeat-02",
+		"ar-ladder-18",
+		"ar-ladder-11"
+	]
+}

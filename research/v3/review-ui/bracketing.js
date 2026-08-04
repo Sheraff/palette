@@ -10,6 +10,10 @@
  * see which pair is the control is no longer measuring anything.
  */
 
+// Relative: a relative specifier resolves against the importing MODULE's URL — `/bracketing.js` —
+// which is this directory, whatever route the document was served from.
+import { renderAccentPanel } from "./accent-panel.js"
+
 /*
  * The wording is served with the batch, never hardcoded here: the reviewer's first pass was
  * abandoned because the criterion was ambiguous on screen, and the fix only holds if the words on
@@ -62,16 +66,13 @@ function renderPair(item) {
 	return pair
 }
 
+/**
+ * The accent panel now lives in `accent-panel.js`, so that `accent-real-1`'s pixel-identical replays
+ * of these stimuli are drawn by this code and not by a copy of it. Behaviour is unchanged: `first` is
+ * the field, `second` is the accent, exactly as before.
+ */
 function renderAccent(item) {
-	const stage = el("div", { class: "accent-stage" })
-	stage.style.background = item.first
-	for (const shape of ["accent-circle", "accent-triangle", "accent-ring"]) {
-		const node = el("div", { class: `accent-shape ${shape}` })
-		if (shape === "accent-ring") node.style.borderColor = item.second
-		else node.style.background = item.second
-		stage.append(node)
-	}
-	return stage
+	return renderAccentPanel({ fieldHex: item.first, accentHex: item.second }, el)
 }
 
 function render() {

@@ -1,0 +1,1015 @@
+{
+	"schema": "accent-real-round-1-analysis/v1",
+	"batchId": "accent-real-1",
+	"analyzedAt": "2026-08-04T09:44:18.740Z",
+	"analyzer": "research/v3/data/calibration/analyze-accent-real-round-1.ts",
+	"fixture": "/Users/Flo/GitHub/palette/research/v3/data/calibration/accent-real-round-1.json",
+	"truth": "/Users/Flo/GitHub/palette/research/v3/data/calibration/accent-real-round-1-truth.json",
+	"preregistration": "research/v3/data/calibration/accent-real-round-1-preregistration.md",
+	"warehouse": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"criterion": "functional-visibility on real stimuli — does this work as an accent at a glance; the same criterion and the same wording as accent-functional-1, asked of the whole mock player over a real cover instead of a synthetic flat panel",
+	"question": "Does this work as an accent at a glance?",
+	"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
+	"verdict": "incomplete",
+	"verdictReason": "G3: 0 of 30 real ladder items answered (27 required) and 0 of 4 controls answered. Nothing is wrong — the round is not finished.",
+	"proposal": null,
+	"preRegisteredRule": {
+		"source": "research/v3/data/calibration/accent-real-round-1-preregistration.md §6",
+		"evaluation": "Evaluated in the order given; the first gate that trips decides the verdict.",
+		"gates": {
+			"G1": "controls — every control that has been ANSWERED must be answered correctly: control-obvious `works`, control-identical `does_not_work`. Any wrong answer => `void`. `cant_tell` on a control is a wrong answer. A control that is merely unanswered is G3's business.",
+			"G2": "repeat consistency — at least 3 of 4 repeats must agree with their twin. At <= 2 of 4 => `noise-dominated`: the fit is reported as exploratory only and the constant is not changed on it. Repeats with only one of the pair answered are not counted either way.",
+			"G3": "coverage — at least 27 of the 30 real ladder items answered AND all 4 controls answered. Below either => `incomplete`, no adoption.",
+			"G4": "escape share — if `cant_tell` exceeds half (0.5) of the answered real ladder items => `no-reliable-rate` and no threshold is adopted. The share is reported per stratum whether or not it fires, and it is never subtracted from anything."
+		},
+		"primaryFit": {
+			"population": "the 30 `ladder` items and nothing else — anchors, the Sunshine item and repeats are never pooled; `cant_tell` items are excluded from the fit and counted in G4",
+			"estimator": "fitLogistic from src/review-server/analyze-bracketing.ts, unchanged, direction `increasing`, on the ACHIEVED governing-pair okLabDistance",
+			"wrapper": "fitWithDeclaredSupport from src/stats",
+			"declaredSupport": {
+				"variableUnderTest": "OKLab distance between the accent and its governing field",
+				"claimDomain": {
+					"min": 0.06,
+					"max": 0.3
+				},
+				"selectionRule": "One distinct cover per item, drawn from the full-palette endorsement corpus and assigned to a (rung x lightness band x accent hue third x governing field role) cell by cellFor(); the first cover in seeded order that ADMITS an isoluminant accent in that cell takes it. Selection depends on the field colour and the gamut, never on any answer. Six anchors are accent-functional-1 panels replayed unchanged, chosen by nearness to six pre-registered probe distances and never by how they were answered. The Sunshine item is the endorsement 22e959d5164750bd carried unmodified.",
+				"selectionRelationToVariable": "independent-of-the-variable"
+			},
+			"calibratedValue": "round(fit.threshold, 5); under complete separation fitLogistic reports the geometric midpoint of the separation interval and sets `separated: true` — used as-is, and `separated` is reported in the headline, because a bracket is not a measurement"
+		},
+		"adoptionWindow": {
+			"low": 0.04554,
+			"high": 0.30244
+		},
+		"adoptionWindowNote": "A VALUE ABOVE THE PLACEHOLDER 0.14591 IS INSIDE THE WINDOW. The real-cover evidence points up: the reviewer called 0.121 unreadable, and if the realism diagnosis is right the real threshold sits above the placeholder and the constant should RISE. That outcome is pre-registered as an ordinary adoptable result — and equally, a rise cannot be claimed as a prediction confirmed if the number in fact lands low. Both directions were writable before any answer existed.",
+		"refusals": {
+			"1": "threshold < 0.04554 => `contradicts-realism-diagnosis` — a finding, not a failure",
+			"2": "threshold > 0.30244 => `refuses-endorsed` — the repair is a wider ladder, not adoption",
+			"3": "any per-band, per-hue-third or per-governing-role threshold outside the pooled 95% interval => `stratum-dependent`, and no single scalar is adopted",
+			"4": "`separated: true` with a separation interval wider than 1.5x round 1 part 2's pooled interval width (0.05353) => `bracketed-only`",
+			"5": "threshold <= 0.12117 while the Sunshine item is answered `does_not_work` => `contradicts-sunshine`; and if the Sunshine item is answered `works`, that is a retraction of the chat ruling and is reported loudly",
+			"6": "`assessSupport` returns anything other than `supports-the-claim` AND the fitted threshold is `extrapolatedBeyondSample` => `unsupported-claim`"
+		},
+		"adoption": "Adoption is the reviewer's act, not an agent's. The analysis writes `DECISION PENDING` and proposes; it does not edit the constant.",
+		"comparisonConstants": {
+			"round1SyntheticFit": 0.04554,
+			"round1DetectionThreshold": 0.07444,
+			"placeholder": 0.14591,
+			"sunshine": 0.12117,
+			"ladderMaxAchieved": 0.30244
+		}
+	},
+	"validityGates": {
+		"G1_controls": {
+			"required": 4,
+			"answered": 0,
+			"passed": 0,
+			"failed": [],
+			"checks": [
+				{
+					"itemId": "ar-control-obvious-0",
+					"role": "control-obvious",
+					"governingRole": "surface",
+					"okLabDistance": 0.70389,
+					"apcaLc": -103.3803,
+					"expected": "works",
+					"answered": false,
+					"answer": null,
+					"passed": false
+				},
+				{
+					"itemId": "ar-control-obvious-1",
+					"role": "control-obvious",
+					"governingRole": "background",
+					"okLabDistance": 0.94005,
+					"apcaLc": 94.2036,
+					"expected": "works",
+					"answered": false,
+					"answer": null,
+					"passed": false
+				},
+				{
+					"itemId": "ar-control-identical-0",
+					"role": "control-identical",
+					"governingRole": "surface",
+					"okLabDistance": 0,
+					"apcaLc": 0,
+					"expected": "does_not_work",
+					"answered": false,
+					"answer": null,
+					"passed": false
+				},
+				{
+					"itemId": "ar-control-identical-1",
+					"role": "control-identical",
+					"governingRole": "background",
+					"okLabDistance": 0,
+					"apcaLc": 0,
+					"expected": "does_not_work",
+					"answered": false,
+					"answer": null,
+					"passed": false
+				}
+			]
+		},
+		"G2_repeats": {
+			"repeats": 4,
+			"comparable": 0,
+			"agreed": 0,
+			"disagreed": 0,
+			"required": "3 of 4",
+			"tripped": false,
+			"pairs": [
+				{
+					"itemId": "ar-repeat-00",
+					"repeatOf": "ar-ladder-21",
+					"rung": 7,
+					"okLabDistance": 0.21075,
+					"answer": null,
+					"twinAnswer": null,
+					"comparable": false,
+					"agreed": false
+				},
+				{
+					"itemId": "ar-repeat-01",
+					"repeatOf": "ar-ladder-09",
+					"rung": 3,
+					"okLabDistance": 0.10238,
+					"answer": null,
+					"twinAnswer": null,
+					"comparable": false,
+					"agreed": false
+				},
+				{
+					"itemId": "ar-repeat-02",
+					"repeatOf": "ar-ladder-13",
+					"rung": 4,
+					"okLabDistance": 0.12315,
+					"answer": null,
+					"twinAnswer": null,
+					"comparable": false,
+					"agreed": false
+				},
+				{
+					"itemId": "ar-repeat-03",
+					"repeatOf": "ar-ladder-06",
+					"rung": 2,
+					"okLabDistance": 0.08766,
+					"answer": null,
+					"twinAnswer": null,
+					"comparable": false,
+					"agreed": false
+				}
+			]
+		},
+		"G3_coverage": {
+			"ladderAnswered": 0,
+			"ladderTotal": 30,
+			"ladderRequired": 27,
+			"ladderDecided": 0,
+			"controlsAnswered": 0,
+			"controlsRequired": 4,
+			"answeredIncludesCantTell": true
+		},
+		"G4_escapeShare": {
+			"stratum": "pooled (30 ladder items)",
+			"answered": 0,
+			"cantTell": 0,
+			"share": null,
+			"interval": null,
+			"reliableRate": null,
+			"threshold": 0.5,
+			"tripped": false,
+			"neverSubtracted": true
+		}
+	},
+	"primary": {
+		"population": "role == ladder (30 real-cover items); anchors, sunshine and repeats excluded",
+		"fit": {
+			"n": 0,
+			"yesCount": 0,
+			"intercept": null,
+			"slope": null,
+			"threshold": null,
+			"fittedThreshold": null,
+			"confidenceInterval": null,
+			"separated": false,
+			"separationInterval": null,
+			"converged": false,
+			"note": "nothing answered here yet"
+		},
+		"threshold": null,
+		"headline": {
+			"threshold": null,
+			"separated": false,
+			"separationInterval": null,
+			"separationWidth": null,
+			"confidenceInterval": null,
+			"supportVerdict": "range-restricted",
+			"supportsClaimDomain": false,
+			"extrapolatedBeyondSample": false
+		},
+		"support": {
+			"verdict": "range-restricted",
+			"supportsClaimDomain": false,
+			"observedMin": null,
+			"observedMax": null,
+			"domainCoverage": 0,
+			"n": 0,
+			"annotations": [
+				"the sample is empty; there is no support for any claim"
+			],
+			"summary": "range-restricted: the sample is empty; there is no support for any claim"
+		},
+		"summary": "fit over OKLab distance between the accent and its governing field: range-restricted: the sample is empty; there is no support for any claim",
+		"provenance": {
+			"method": "fit over OKLab distance between the accent and its governing field with declared sample support",
+			"n": 0,
+			"inputs": {
+				"variableUnderTest": "OKLab distance between the accent and its governing field",
+				"claimDomainMin": 0.06,
+				"claimDomainMax": 0.3,
+				"observedMin": "none",
+				"observedMax": "none",
+				"domainCoverage": 0,
+				"selectionRule": "One distinct cover per item, drawn from the full-palette endorsement corpus and assigned to a (rung x lightness band x accent hue third x governing field role) cell by cellFor(); the first cover in seeded order that ADMITS an isoluminant accent in that cell takes it. Selection depends on the field colour and the gamut, never on any answer. Six anchors are accent-functional-1 panels replayed unchanged, chosen by nearness to six pre-registered probe distances and never by how they were answered. The Sunshine item is the endorsement 22e959d5164750bd carried unmodified.",
+				"selectionRelationToVariable": "independent-of-the-variable",
+				"verdict": "range-restricted"
+			},
+			"corrections": [],
+			"caveats": [
+				"the sample is empty; there is no support for any claim"
+			]
+		},
+		"honestLine": "fit over OKLab distance between the accent and its governing field: range-restricted: the sample is empty; there is no support for any claim | n=0 | fit over OKLab distance between the accent and its governing field with declared sample support | CAVEAT: the sample is empty; there is no support for any claim"
+	},
+	"bridges": {
+		"note": "§6.3 — three measurements, reported separately, always, and never pooled into the fit.",
+		"labVersusReal": {
+			"what": "the six anchors' answers here against the same panels' answers in accent-functional-1, paired on identical pixels",
+			"prediction": "if the realism diagnosis is right, anchors should be answered MORE favourably than real items at the same distance — the flat panel flatters. A null result here is a real finding and would put the diagnosis itself back on the table.",
+			"arms": {
+				"first": "accent-functional-1 (the lab round)",
+				"second": "accent-real-1 (this round)"
+			},
+			"pairs": 0,
+			"escapesExcluded": 0,
+			"unansweredHere": 6,
+			"missingLabAnswer": 0,
+			"test": {
+				"ok": false,
+				"reason": "no-pairs",
+				"detail": "McNemar not computed: there are no pairs.",
+				"summary": "McNemar not computed: there are no pairs.",
+				"provenance": {
+					"method": "McNemar exact (sign test on discordant pairs), two-sided",
+					"n": 0,
+					"inputs": {
+						"bothSucceeded": 0,
+						"onlyFirstSucceeded": 0,
+						"onlySecondSucceeded": 0,
+						"neitherSucceeded": 0,
+						"totalPairs": 0,
+						"discordantPairs": 0,
+						"alternative": "two-sided"
+					},
+					"corrections": [],
+					"caveats": []
+				}
+			},
+			"honestLine": "McNemar not computed: there are no pairs. | n=0 | McNemar exact (sign test on discordant pairs), two-sided",
+			"anchors": [
+				{
+					"itemId": "ar-anchor-00-af-ladder-r00-h1-mid",
+					"replays": "af-ladder-r00-h1-mid",
+					"okLabDistance": 0.06057,
+					"apcaLc": 0,
+					"labAnswer": "does_not_work",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				},
+				{
+					"itemId": "ar-anchor-01-af-ladder-r02-h1-mid",
+					"replays": "af-ladder-r02-h1-mid",
+					"okLabDistance": 0.08989,
+					"apcaLc": 0,
+					"labAnswer": "works",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				},
+				{
+					"itemId": "ar-anchor-02-af-ladder-r03-h1-dark",
+					"replays": "af-ladder-r03-h1-dark",
+					"okLabDistance": 0.11147,
+					"apcaLc": 0,
+					"labAnswer": "works",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				},
+				{
+					"itemId": "ar-anchor-03-af-anchor-p2-ladder-08",
+					"replays": "af-anchor-p2-ladder-08",
+					"okLabDistance": 0.14813,
+					"apcaLc": 0,
+					"labAnswer": "works",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				},
+				{
+					"itemId": "ar-anchor-04-af-ladder-r06-h0-mid",
+					"replays": "af-ladder-r06-h0-mid",
+					"okLabDistance": 0.20043,
+					"apcaLc": 0,
+					"labAnswer": "works",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				},
+				{
+					"itemId": "ar-anchor-05-af-ladder-r08-h1-dark",
+					"replays": "af-ladder-r08-h1-dark",
+					"okLabDistance": 0.28867,
+					"apcaLc": 0,
+					"labAnswer": "works",
+					"realRoundAnswer": null,
+					"escaped": false,
+					"paired": false
+				}
+			]
+		},
+		"realVsSynthetic": {
+			"what": "realThreshold - the synthetic round's fitted threshold, with sign",
+			"syntheticThreshold": 0.04554,
+			"realThreshold": null,
+			"difference": null,
+			"sign": null,
+			"realThreshold95": null,
+			"predictedPositiveBy": "d-2026-08-04-accent-calibration-is-a-stimulus-realism-problem",
+			"intervalContainsZeroNote": "an interval on the real threshold that contains 0.04554 means the round did not separate the two stimulus classes"
+		},
+		"sunshine": {
+			"itemId": "ar-sunshine",
+			"okLabDistance": 0.12117,
+			"apcaLc": 0,
+			"priorVerdict": "does_not_work",
+			"priorVerdictSource": "d-2026-08-04-endorsement-recheck-1-resolved-by-chat-two-endorsements-retired — reviewer, in conversation: \"item 2: accent on surface *is unreadable*\"",
+			"answer": null,
+			"reproducesPriorVerdict": null,
+			"retractsChatRuling": false,
+			"note": "one item, one known prior answer, reported on its own and never pooled into the fit"
+		}
+	},
+	"exploratory": {
+		"note": "§6.5 — reported, never used to pick the headline. None of these can change the verdict.",
+		"bandFits": [
+			{
+				"stratum": "band:dark",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			{
+				"stratum": "band:light",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			{
+				"stratum": "band:mid",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			}
+		],
+		"hueThirdFits": [
+			{
+				"stratum": "hue-third:0",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			{
+				"stratum": "hue-third:1",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			{
+				"stratum": "hue-third:2",
+				"items": 10,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			}
+		],
+		"governingRoleFits": [
+			{
+				"stratum": "governing-role:background",
+				"items": 15,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			},
+			{
+				"stratum": "governing-role:surface",
+				"items": 15,
+				"n": 0,
+				"yesCount": 0,
+				"intercept": null,
+				"slope": null,
+				"threshold": null,
+				"fittedThreshold": null,
+				"confidenceInterval": null,
+				"separated": false,
+				"separationInterval": null,
+				"converged": false,
+				"note": "nothing answered here yet"
+			}
+		],
+		"disagreeingStrata": [],
+		"escapeShareByStratum": [
+			{
+				"stratum": "pooled (30 ladder items)",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "band:dark",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "band:light",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "band:mid",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "hue-third:0",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "hue-third:1",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "hue-third:2",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "governing-role:background",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "governing-role:surface",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			},
+			{
+				"stratum": "anchors",
+				"answered": 0,
+				"cantTell": 0,
+				"share": null,
+				"interval": null,
+				"reliableRate": null
+			}
+		],
+		"distanceAtNinetyPercent": null,
+		"placementProfile": {
+			"what": "how much contrast the NON-governing placements carried, per ladder item — the round's own measure of how much a `yes` could have leaked from somewhere other than the pair under test",
+			"flatFieldNote": "the field is rendered flat (§3.5), so the `field` placement is the background colour; a placement is counted as non-governing only when its hex differs from the governing field's",
+			"itemsWithAnyNonGoverningLuminanceContrast": 30,
+			"maxNonGoverningAbsLc": {
+				"min": 25.5194,
+				"median": 64.3835,
+				"max": 98.9733
+			},
+			"items": [
+				{
+					"itemId": "ar-ladder-00",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.0601,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.24596,
+					"maxNonGoverningAbsLc": 25.5194,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-01",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.05997,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.20114,
+					"maxNonGoverningAbsLc": 30.3369,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-02",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.06028,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.24669,
+					"maxNonGoverningAbsLc": 31.8999,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-03",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.07315,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.43315,
+					"maxNonGoverningAbsLc": 34.721,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-04",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.07221,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.57749,
+					"maxNonGoverningAbsLc": 80.3825,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-05",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.07259,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.57019,
+					"maxNonGoverningAbsLc": 83.2654,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-06",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.08766,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.73232,
+					"maxNonGoverningAbsLc": 80.2602,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-07",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.08306,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.79719,
+					"maxNonGoverningAbsLc": 98.9733,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-08",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.08622,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.24765,
+					"maxNonGoverningAbsLc": 37.9785,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-09",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.10238,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.52413,
+					"maxNonGoverningAbsLc": 66.8017,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-10",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.10274,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.43571,
+					"maxNonGoverningAbsLc": 71.0728,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-11",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.10419,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.81152,
+					"maxNonGoverningAbsLc": 87.1789,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-12",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.12297,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.37331,
+					"maxNonGoverningAbsLc": 26.4107,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-13",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.12315,
+					"nonGoverningRoles": [
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.56114,
+					"maxNonGoverningAbsLc": 70.2543,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-14",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.12056,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.71667,
+					"maxNonGoverningAbsLc": 84.3733,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-15",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.14857,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.37419,
+					"maxNonGoverningAbsLc": 47.4371,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-16",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.14752,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.47672,
+					"maxNonGoverningAbsLc": 54.4886,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-17",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.14618,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.39636,
+					"maxNonGoverningAbsLc": 63.6371,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-18",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.1754,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.51393,
+					"maxNonGoverningAbsLc": 79.7857,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-19",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.17537,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.4927,
+					"maxNonGoverningAbsLc": 25.6033,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-20",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.17043,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.36136,
+					"maxNonGoverningAbsLc": 49.7877,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-21",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.21075,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.45669,
+					"maxNonGoverningAbsLc": 36.1993,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-22",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.20939,
+					"nonGoverningRoles": [
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.56252,
+					"maxNonGoverningAbsLc": 56.6524,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-23",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.21162,
+					"nonGoverningRoles": [
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.50069,
+					"maxNonGoverningAbsLc": 65.1299,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-24",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.24185,
+					"nonGoverningRoles": [
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.67475,
+					"maxNonGoverningAbsLc": 71.7033,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-25",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.25045,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.51934,
+					"maxNonGoverningAbsLc": 66.2024,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-26",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.25083,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.61518,
+					"maxNonGoverningAbsLc": 63.0841,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-27",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.29685,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.51995,
+					"maxNonGoverningAbsLc": 76.8928,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-28",
+					"answer": null,
+					"governingRole": "surface",
+					"governingDistance": 0.30244,
+					"nonGoverningRoles": [
+						"field",
+						"background",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.47161,
+					"maxNonGoverningAbsLc": 73.7527,
+					"anyNonGoverningLuminanceContrast": true
+				},
+				{
+					"itemId": "ar-ladder-29",
+					"answer": null,
+					"governingRole": "background",
+					"governingDistance": 0.30233,
+					"nonGoverningRoles": [
+						"surface",
+						"foreground"
+					],
+					"maxNonGoverningDistance": 0.38999,
+					"maxNonGoverningAbsLc": 50.7981,
+					"anyNonGoverningLuminanceContrast": true
+				}
+			]
+		}
+	},
+	"answerHygiene": {
+		"thisRound": {
+			"otherBatch": 1150,
+			"machineAuthored": 0,
+			"retracted": 0,
+			"superseded": 0,
+			"nonString": 0
+		},
+		"round1AnchorSource": {
+			"otherLabelSchema": 825,
+			"otherBatch": 286,
+			"unknownItem": 0,
+			"questionKeyMismatch": 0,
+			"nonBooleanAnswer": 0,
+			"retracted": 0,
+			"superseded": 0
+		},
+		"unexpectedAnswers": [],
+		"truthItemsWithoutFixtureRow": [],
+		"answeredItems": 0,
+		"totalItems": 45
+	},
+	"fundedBy": [
+		"research/v3/data/calibration/accent-real-round-1-preregistration.md"
+	]
+}

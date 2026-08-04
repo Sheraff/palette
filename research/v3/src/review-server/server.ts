@@ -69,6 +69,7 @@ import {
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
 import { DROPPED_COLORS_LABEL_SCHEMA_VERSION } from "./dropped-colors.ts"
+import { ACCENT_REAL_LABEL_SCHEMA_VERSION } from "./accent-real.ts"
 import { ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION } from "./endorsement-recheck.ts"
 import { TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION } from "./toolbox-adjudication.ts"
 import { FREETEXT_LABEL_SCHEMA_VERSION, FREETEXT_MIN_LENGTH, GROUND_FREETEXT_BATCH_ID, GROUND_FREETEXT_FIXTURE_PATH } from "./freetext.ts"
@@ -340,8 +341,12 @@ export function batchReviewPaths(
 				// artwork goes, above a question about a tool. Same reason as the two lines below it.
 				// A dropped-colors round judges one ROLE COLOUR of a palette on the mock player, and
 				// needs the whole palette drawn to do it — same reason as the recheck line below it.
+				// An accent-real round draws TWO stimulus kinds — a real cover in the mock player, and
+				// round 1's synthetic flat panel for its replayed anchors — and `/oracle` draws neither.
 				page:
-					entry.labelSchemaVersion === TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION
+					entry.labelSchemaVersion === ACCENT_REAL_LABEL_SCHEMA_VERSION
+						? `/accent-real${query}`
+						: entry.labelSchemaVersion === TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION
 						? `/toolbox-adjudication${query}`
 						: entry.labelSchemaVersion === DROPPED_COLORS_LABEL_SCHEMA_VERSION
 							? `/dropped-colors${query}`
