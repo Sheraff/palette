@@ -1,0 +1,42 @@
+# Spread-wording mini-pilot probe set — 19 covers, repo-root-relative paths.
+#
+# SCHEMA_V2_PROPOSAL.md §4: "~20 covers, hand-picked and confirmed by eye, in three groups".
+# EVERY image in this file was opened and looked at on 2026-08-04 before it was listed, and the
+# group it sits in is what the picker saw, not what the pilot's model rows said. Where the pilot
+# rows were used at all it was only to build a CANDIDATE POOL to look through (covers where the
+# two renderings E and F named different carriers are enriched for two-carrier covers); the pool
+# is a search heuristic and never the label.
+#
+# THIS IS A PROBE SET, NOT A SAMPLE. §4 is explicit: it measures whether the model understands a
+# wording. It says nothing whatever about how often spread colours occur in the corpus, and no
+# rate computed over these 19 covers may ever be quoted as a corpus rate.
+#
+# Format: <group>\t<repo-relative path>\t<what the eye saw>
+# Groups: multi = one colour clearly carried by two nameable things (the reviewer's case)
+#         single = one obvious carrier
+#         none = no single signature colour
+
+# ---- multi (9) — the motivating case -------------------------------------------------------
+multi	0e/ab67616d00001e02000e007955ee2f8b29f5b2b4	MOTIVATING COVER 1 of 2. Electric cyan on the big diagonal lettering AND as rim-light on the figure's collar and tie.
+multi	09/ab67616d0000b2730009d178a401f9433fdddff2	Teal on the BASSDRUM HIT title AND on the speaker-face body, eye ring and scattered blocks.
+multi	images/greenday.jpg	Red on the "american idiot" lettering AND on the heart-grenade the hand holds.
+multi	images/nobs.jpg	Red on the "no bs" lettering AND on the splatter strokes throughout the horn pile.
+multi	0a/ab67616d0000b273000a2927c0f27657e4a2aeaa	The same red on the moon AND on the "I Hate it" gothic lettering.
+multi	0a/ab67616d0000b273000a8097d86930fb02f5a76d	Steel blue on the matrix background AND on the hooded figure.
+multi	images/johns.jpg	Red on the sun disc, the sail, AND the "BETWEEN WIND AND WATER" subtitle.
+multi	12/ab67616d0000b27300127e4552b22c761d50c8f5	Black on the OKAN TOK lettering AND on the subject's coat and clothing — the reviewer's exact wording, text and main subject the same colour.
+multi	09/ab67616d00001e020009657a5122a7b3d40458b0	Green on the "tempus" lettering, the "Hualun" lettering AND the green square panel.
+
+# ---- single (5) — one obvious carrier ------------------------------------------------------
+single	00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg	Deep red/maroon, carried by the two people's clothing and nothing else.
+single	0a/ab67616d0000b273000a24cc32b3d8b6e31bc161	Warm gold, carried by the accretion disc alone on black.
+single	images/placebo.jpg	Teal-grey, carried by the ground behind the figures; the only other colour is the small red wordmark.
+single	images/toxicity.jpg	Red, carried by the TOXICITY title alone; the hillside is sepia.
+single	06/ab67616d0000b273000626fb25df8b60c4b97ca4	Blue, carried by the sky and motion-blur field. Listed with a caveat: the blue is pervasive, so this control is the one most entitled to attract a spread answer.
+
+# ---- none (5) — no single signature colour -------------------------------------------------
+none	0a/ab67616d0000b273000ad9116781016bd6e6c21c	MOTIVATING COVER 2 of 2. Greyscale line illustration — no colour at all. See SPREAD_WORDING_PILOT.md: on reconciliation the reviewer moved this cover's gate to "no", so it is NOT a two-carrier cover and is listed where the eye puts it.
+none	images/knuckles.jpg	Pastel pointillist noise; no colour a person would name.
+none	00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg	Black-and-white smoke and headlights; greyscale.
+none	0b/ab67616d0000b273000bc98f315aba36374f9f93	Five saturated rainbow bands of equal weight; no one of them is the cover's colour.
+none	12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d	Red, blue and green cubist panels in equal measure; no single colour stands for it.

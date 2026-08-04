@@ -1,0 +1,136 @@
+{
+	"list": "/Users/Flo/GitHub/palette/research/v3/oracle/premise/spread-pilot-19.txt",
+	"images": 19,
+	"arms": [
+		"A",
+		"B",
+		"C",
+		"N"
+	],
+	"groups": {
+		"multi": 9,
+		"single": 5,
+		"none": 5
+	},
+	"already_done": 0,
+	"queued": 76,
+	"out": "../../data/oracle-premise/spread-wording-pilot-1.jsonl",
+	"carrier_vocabularies": {
+		"A": [
+			"text",
+			"subject",
+			"background",
+			"small_element",
+			"several_places",
+			"no_single_colour"
+		],
+		"B": [
+			"text",
+			"subject",
+			"background",
+			"small_element",
+			"spread_throughout",
+			"no_single_colour"
+		],
+		"C": [
+			"text",
+			"subject",
+			"background",
+			"small_element",
+			"all_over",
+			"no_single_colour"
+		],
+		"N": [
+			"text",
+			"subject",
+			"background",
+			"small_element",
+			"no_single_colour"
+		]
+	}
+}
+loading mlx-community/Qwen3-VL-30B-A3B-Instruct-6bit @ f31102655767 ...
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files: 100%|██████████| 18/18 [00:00<00:00, 4430.34it/s]
+model loaded in 4.4s
+[1/76] 0e/ab67616d00001e02000e007955ee2f8b29f5b2b4          arm=A multi  ok   5.1s (5.2s/item) carrier=['text', 'subject', 'background']
+[2/76] 0e/ab67616d00001e02000e007955ee2f8b29f5b2b4          arm=B multi  ok   3.9s (4.5s/item) carrier=['text', 'subject', 'background']
+[3/76] 0e/ab67616d00001e02000e007955ee2f8b29f5b2b4          arm=C multi  ok   3.9s (4.3s/item) carrier=['text', 'subject', 'background']
+[4/76] 0e/ab67616d00001e02000e007955ee2f8b29f5b2b4          arm=N multi  ok   3.9s (4.2s/item) carrier=['text', 'subject', 'background']
+[5/76] 09/ab67616d0000b2730009d178a401f9433fdddff2          arm=A multi  ok   4.5s (4.3s/item) carrier=['text', 'subject', 'background']
+[6/76] 09/ab67616d0000b2730009d178a401f9433fdddff2          arm=B multi  ok   4.5s (4.3s/item) carrier=['text', 'subject', 'background']
+[7/76] 09/ab67616d0000b2730009d178a401f9433fdddff2          arm=C multi  ok   4.6s (4.4s/item) carrier=['text', 'subject', 'background']
+[8/76] 09/ab67616d0000b2730009d178a401f9433fdddff2          arm=N multi  ok   4.8s (4.4s/item) carrier=['text', 'subject', 'background']
+[9/76] images/greenday.jpg                                  arm=A multi  ok   5.0s (4.5s/item) carrier=['text', 'subject', 'background']
+[10/76] images/greenday.jpg                                  arm=B multi  ok   5.1s (4.6s/item) carrier=['text', 'subject', 'background']
+[11/76] images/greenday.jpg                                  arm=C multi  ok   5.2s (4.6s/item) carrier=['text', 'subject', 'background']
+[12/76] images/greenday.jpg                                  arm=N multi  ok   5.2s (4.7s/item) carrier=['text', 'subject', 'background']
+[13/76] images/nobs.jpg                                      arm=A multi  ok   4.9s (4.7s/item) carrier=['text', 'subject', 'background']
+[14/76] images/nobs.jpg                                      arm=B multi  ok   4.9s (4.7s/item) carrier=['text', 'subject', 'background']
+[15/76] images/nobs.jpg                                      arm=C multi  ok   4.9s (4.7s/item) carrier=['text', 'subject', 'background']
+[16/76] images/nobs.jpg                                      arm=N multi  ok   4.9s (4.7s/item) carrier=['text', 'subject', 'background']
+[17/76] 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa          arm=A multi  ok   4.9s (4.7s/item) carrier=['text', 'background', 'subject']
+[18/76] 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa          arm=B multi  ok   4.8s (4.7s/item) carrier=['text', 'background', 'subject']
+[19/76] 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa          arm=C multi  ok   4.8s (4.7s/item) carrier=['text', 'background']
+[20/76] 0a/ab67616d0000b273000a2927c0f27657e4a2aeaa          arm=N multi  ok   4.9s (4.7s/item) carrier=['text', 'background', 'subject']
+[21/76] 0a/ab67616d0000b273000a8097d86930fb02f5a76d          arm=A multi  ok   5.0s (4.8s/item) carrier=['text', 'background', 'subject']
+[22/76] 0a/ab67616d0000b273000a8097d86930fb02f5a76d          arm=B multi  ok   5.0s (4.8s/item) carrier=['text', 'subject', 'background']
+[23/76] 0a/ab67616d0000b273000a8097d86930fb02f5a76d          arm=C multi  ok   4.9s (4.8s/item) carrier=['text', 'subject', 'background']
+[24/76] 0a/ab67616d0000b273000a8097d86930fb02f5a76d          arm=N multi  ok   5.0s (4.8s/item) carrier=['text', 'subject', 'background']
+[25/76] images/johns.jpg                                     arm=A multi  ok   4.8s (4.8s/item) carrier=['subject', 'background']
+[26/76] images/johns.jpg                                     arm=B multi  ok   4.9s (4.8s/item) carrier=['text', 'subject', 'background']
+[27/76] images/johns.jpg                                     arm=C multi  ok   4.9s (4.8s/item) carrier=['text', 'subject', 'background']
+[28/76] images/johns.jpg                                     arm=N multi  ok   4.9s (4.8s/item) carrier=['text', 'subject', 'background']
+[29/76] 12/ab67616d0000b27300127e4552b22c761d50c8f5          arm=A multi  ok   4.9s (4.8s/item) carrier=['text', 'background', 'subject']
+[30/76] 12/ab67616d0000b27300127e4552b22c761d50c8f5          arm=B multi  ok   4.8s (4.8s/item) carrier=['text', 'background']
+[31/76] 12/ab67616d0000b27300127e4552b22c761d50c8f5          arm=C multi  ok   4.8s (4.8s/item) carrier=['text', 'background']
+[32/76] 12/ab67616d0000b27300127e4552b22c761d50c8f5          arm=N multi  ok   4.8s (4.8s/item) carrier=['text', 'background']
+[33/76] 09/ab67616d00001e020009657a5122a7b3d40458b0          arm=A multi  ok   4.6s (4.8s/item) carrier=['text', 'subject', 'background']
+[34/76] 09/ab67616d00001e020009657a5122a7b3d40458b0          arm=B multi  ok   4.5s (4.8s/item) carrier=['text', 'subject', 'background']
+[35/76] 09/ab67616d00001e020009657a5122a7b3d40458b0          arm=C multi  ok   4.6s (4.8s/item) carrier=['text', 'subject', 'background']
+[36/76] 09/ab67616d00001e020009657a5122a7b3d40458b0          arm=N multi  ok   4.6s (4.8s/item) carrier=['text', 'subject', 'background']
+[37/76] 00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg      arm=A single ok   5.5s (4.8s/item) carrier=['text', 'subject', 'background']
+[38/76] 00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg      arm=B single ok   5.6s (4.8s/item) carrier=['text', 'subject', 'background']
+[39/76] 00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg      arm=C single ok   5.8s (4.9s/item) carrier=['text', 'subject', 'background']
+[40/76] 00/ab67616d0000b27300009f60aeb150a5db45b47b.jpg      arm=N single ok   6.0s (4.9s/item) carrier=['text', 'subject', 'background']
+[41/76] 0a/ab67616d0000b273000a24cc32b3d8b6e31bc161          arm=A single ok   6.1s (4.9s/item) carrier=['background', 'subject', 'text']
+[42/76] 0a/ab67616d0000b273000a24cc32b3d8b6e31bc161          arm=B single ok   6.2s (4.9s/item) carrier=['background', 'subject']
+[43/76] 0a/ab67616d0000b273000a24cc32b3d8b6e31bc161          arm=C single ok   6.4s (5.0s/item) carrier=['background', 'subject']
+[44/76] 0a/ab67616d0000b273000a24cc32b3d8b6e31bc161          arm=N single ok   6.8s (5.0s/item) carrier=['background', 'subject']
+[45/76] images/placebo.jpg                                   arm=A single ok   6.8s (5.1s/item) carrier=['background', 'subject']
+[46/76] images/placebo.jpg                                   arm=B single ok   7.2s (5.1s/item) carrier=['background', 'subject']
+[47/76] images/placebo.jpg                                   arm=C single ok   7.6s (5.2s/item) carrier=['background', 'subject']
+[48/76] images/placebo.jpg                                   arm=N single ok   8.2s (5.2s/item) carrier=['background', 'subject']
+[49/76] images/toxicity.jpg                                  arm=A single ok   9.5s (5.3s/item) carrier=['background', 'text', 'subject']
+[50/76] images/toxicity.jpg                                  arm=B single ok  10.3s (5.4s/item) carrier=['background', 'text']
+[51/76] images/toxicity.jpg                                  arm=C single ok  11.1s (5.5s/item) carrier=['background', 'text']
+[52/76] images/toxicity.jpg                                  arm=N single ok  12.7s (5.7s/item) carrier=['background', 'text']
+[53/76] 06/ab67616d0000b273000626fb25df8b60c4b97ca4          arm=A single ok  14.0s (5.8s/item) carrier=['text', 'background', 'subject']
+[54/76] 06/ab67616d0000b273000626fb25df8b60c4b97ca4          arm=B single ok  16.6s (6.0s/item) carrier=['text', 'background', 'subject', 'small_element']
+[55/76] 06/ab67616d0000b273000626fb25df8b60c4b97ca4          arm=C single ok  18.0s (6.2s/item) carrier=['text', 'background']
+[56/76] 06/ab67616d0000b273000626fb25df8b60c4b97ca4          arm=N single ok  17.0s (6.4s/item) carrier=['text', 'background']
+[57/76] 0a/ab67616d0000b273000ad9116781016bd6e6c21c          arm=A none   ok  14.1s (6.6s/item) carrier=['background']
+[58/76] 0a/ab67616d0000b273000ad9116781016bd6e6c21c          arm=B none   ok  12.8s (6.7s/item) carrier=['background', 'subject', 'text', 'small_element', 'spread_throughout']
+[59/76] 0a/ab67616d0000b273000ad9116781016bd6e6c21c          arm=C none   ok   9.9s (6.7s/item) carrier=['background']
+[60/76] 0a/ab67616d0000b273000ad9116781016bd6e6c21c          arm=N none   ok   9.6s (6.8s/item) carrier=['background']
+[61/76] images/knuckles.jpg                                  arm=A none   ok   8.4s (6.8s/item) carrier=['text', 'subject', 'background']
+[62/76] images/knuckles.jpg                                  arm=B none   ok   8.1s (6.8s/item) carrier=['text', 'subject', 'background']
+[63/76] images/knuckles.jpg                                  arm=C none   ok   7.7s (6.8s/item) carrier=['text', 'subject', 'background']
+[64/76] images/knuckles.jpg                                  arm=N none   ok   7.6s (6.8s/item) carrier=['text', 'subject', 'background']
+[65/76] 00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg      arm=A none   ok   8.1s (6.9s/item) carrier=['text', 'subject', 'background']
+[66/76] 00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg      arm=B none   ok   7.8s (6.9s/item) carrier=['text', 'subject', 'background']
+[67/76] 00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg      arm=C none   ok   7.9s (6.9s/item) carrier=['text', 'subject', 'background']
+[68/76] 00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg      arm=N none   ok   7.5s (6.9s/item) carrier=['text', 'subject', 'background']
+[69/76] 0b/ab67616d0000b273000bc98f315aba36374f9f93          arm=A none   ok   7.5s (6.9s/item) carrier=['text', 'background', 'small_element']
+[70/76] 0b/ab67616d0000b273000bc98f315aba36374f9f93          arm=B none   ok   7.2s (6.9s/item) carrier=['text', 'background', 'spread_throughout']
+[71/76] 0b/ab67616d0000b273000bc98f315aba36374f9f93          arm=C none   ok   6.9s (6.9s/item) carrier=['text', 'background']
+[72/76] 0b/ab67616d0000b273000bc98f315aba36374f9f93          arm=N none   ok   6.9s (6.9s/item) carrier=['text', 'background']
+[73/76] 12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d          arm=A none   ok   6.7s (6.9s/item) carrier=['subject', 'background', 'text', 'small_element']
+[74/76] 12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d          arm=B none   ok   7.1s (6.9s/item) carrier=['text', 'subject', 'background']
+[75/76] 12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d          arm=C none   ok   6.6s (6.9s/item) carrier=['text', 'subject', 'background']
+[76/76] 12/ab67616d0000b2730012eb9ade9c1bf4a5411c5d          arm=N none   ok   6.6s (6.9s/item) carrier=['text', 'subject', 'background']
+{
+	"processed": 76,
+	"elapsed_seconds": 524.9,
+	"seconds_per_inference": 6.91,
+	"run_id": "c1bcbf6d-bbf5-469a-9d4c-6dae91ca8e34"
+}
