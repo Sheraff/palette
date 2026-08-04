@@ -533,7 +533,11 @@ def check_prompt_files_unchanged() -> None:
     # invalidates every row it produced and forces the work to be redone.
     unexpected = sorted(set(on_disk) - set(PRE_EXISTING_PROMPT_FILES)
                         - {"group-bcde.v1.variant-e.json", "group-bcde.v1.variant-f.json",
-                           "subject-noun.v1.variant-g.json"})
+                           "subject-noun.v1.variant-g.json",
+                           # 2026-08-04: the all-nouns elicitation (RESIDUAL_V5_NOTES §12.10 owed
+                           # this line) and the two DRAFT — NOT SIGNED OFF schema-v2 prompts.
+                           "subject-nouns-all.v1.variant-J.json",
+                           "group-bcde.v2.variant-e.json", "group-bcde.v2.variant-f.json"})
     check("prompts/ holds no file this selftest does not know about", not unexpected, str(unexpected))
     # §15.2: the nine-question draft was deleted, not frozen — it produced no row anywhere, and a
     # loadable superset-minus-four schema in prompts/ is a hazard with no offsetting benefit.
