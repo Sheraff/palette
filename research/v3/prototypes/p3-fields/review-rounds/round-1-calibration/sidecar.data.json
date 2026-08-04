@@ -1,0 +1,272 @@
+{
+	"item-00": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#e9e6df",
+				"name": "Ivory",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#f83902",
+				"name": "Flame Scarlet",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#d9004b",
+				"name": "Signal",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#9b2116",
+				"name": "Ripasso",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#e9e6df"
+	},
+	"item-02": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#dedede",
+				"name": "Ivory",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#c8c8c8",
+				"name": "Dim",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#010000",
+				"name": "Pitch Black",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#ffffff",
+					"name": "Snow",
+					"publishedPosition": 0,
+					"displayPosition": 0.35
+				},
+				{
+					"hex": "#dedede",
+					"name": "Ivory",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #ffffff 35%, #dedede 100%)"
+	},
+	"item-05": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#070cea",
+				"name": "Ulysses",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#fff571",
+				"name": "Lemon Chiffon",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#d69a8f",
+				"name": "Blush Beige",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#e21232",
+				"name": "Ketchup",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#070cea"
+	},
+	"item-07": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#f5f5f5",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#ededed",
+				"name": "Linen",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#df525a",
+				"name": "Spritz",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#e4e8cd",
+				"name": "Feta",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#f5f5f5"
+	},
+	"item-11": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#01090c",
+				"name": "Onyx",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#1b2024",
+				"name": "Jaguar",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#d2e5ec",
+				"name": "Mist",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#71b4bc",
+				"name": "Ether",
+				"collapsed": false
+			}
+		],
+		"gradient": {
+			"stops": [
+				{
+					"hex": "#01090c",
+					"name": "Onyx",
+					"publishedPosition": 0,
+					"displayPosition": 0.35
+				},
+				{
+					"hex": "#1b2024",
+					"name": "Jaguar",
+					"publishedPosition": 1,
+					"displayPosition": 1
+				}
+			]
+		},
+		"fieldCss": "linear-gradient(135deg in oklab, #01090c 35%, #1b2024 100%)"
+	},
+	"item-12": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": true
+			},
+			{
+				"role": "foreground",
+				"hex": "#70ba25",
+				"name": "Lively Grass",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#fc0003",
+				"name": "Torch Red",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#ffffff"
+	},
+	"item-14": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#ffffff",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#040404",
+				"name": "Jet Black",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#9c9c9c",
+				"name": "Cool Grey",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#717171",
+				"name": "Ash",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#ffffff"
+	},
+	"item-19": {
+		"roles": [
+			{
+				"role": "background",
+				"hex": "#fdd001",
+				"name": "Taxi Yellow",
+				"collapsed": false
+			},
+			{
+				"role": "surface",
+				"hex": "#fe0000",
+				"name": "Torch Red",
+				"collapsed": false
+			},
+			{
+				"role": "foreground",
+				"hex": "#f9f9f7",
+				"name": "Snow",
+				"collapsed": false
+			},
+			{
+				"role": "accent",
+				"hex": "#000000",
+				"name": "Pitch Black",
+				"collapsed": false
+			}
+		],
+		"gradient": null,
+		"fieldCss": "#fdd001"
+	}
+}
