@@ -1,0 +1,92 @@
+{
+ "what": "PROPOSED decision record for reviewer round accent-functional-1. NOT PLACED. The orchestrator splices this into research/v3/data/decisions/decisions.json. DECISION PENDING: adoption - and the choice between the two readings in the decision text - is the reviewer's act, not this scoring pass's. The analyzer proposed nothing (proposal: null) because its refusal condition 1 fired.",
+ "proposedAt": "2026-08-04",
+ "proposedBy": "scoring pass over accent-functional-1, accent-functional-round-1-preregistration.md sec 8",
+ "decisions": [
+  {
+   "id": "d-2026-08-04-accent-functional-round-1-refuses-its-own-fit-and-excludes-the-placeholder",
+   "ts": "2026-08-04T07:04:34Z",
+   "kind": "instrument-design",
+   "draftedAs": "verdict - accent-functional-round-1-preregistration.md sec 6 froze the gates, the estimator, the fitting population and all four refusal conditions BEFORE the batch was pushed and therefore before any answer to it could exist. The analyzer was run UNMODIFIED (it did not crash; nothing in it was touched). Refusal condition 1 fired. The record transcribes the pre-registered consequence rather than composing a new one, and sec 6.3's straddles-zero clause is quoted verbatim in the decision because that clause was written in advance and is the one that fired.",
+   "scope": "The value and tag of ACCENT_FUNCTIONAL_DISTANCE (research/v3/src/contract/constants.ts:371) and the standing of PHASE_0_LOOSE_ENDS.md A16. NO CODE CHANGE AND NO CONSTANT MOVES: 0.14591 stays, [UNCALIBRATED] stays, the declaration and its provenance are untouched, and NO constants.ts diff is proposed. It does NOT settle the constant - it refuses one candidate value and excludes the incumbent at 95% without supplying a replacement. It does NOT resolve endorsement-recheck item 2 (the Sunshine #fac751 on Beige #d5cebe accent at OKLab 0.121): the escape rule (escapeDenied = pair.distance < ACCENT_FUNCTIONAL_DISTANCE, research/v3/src/review-server/endorsement-recheck.ts:289) is unchanged, 0.121 < 0.14591 still denies the escape, and that item's premise stands as a live reviewer question. It does NOT touch the foreground, which gets no escape at any distance, nor B31 (the foreground-accent bar), nor anything above the epsilon. It does not retire A16; it repairs A16's dangling citation in one direction and moves the open question from the CITATION to the PREDICTION.",
+   "decision": "THE FUNCTIONAL-VISIBILITY ROUND RAN CLEANLY AND ITS FIT IS REFUSED BY ITS OWN PRE-REGISTERED GUARDRAIL. ACCENT_FUNCTIONAL_DISTANCE STAYS 0.14591 AND STAYS [UNCALIBRATED]. Verdict `contradicts-retraction` (preregistration sec 6.4 refusal condition 1): the fitted threshold is 0.04554, below the 0.08804 lower anchor the reviewer retracted as \"hardly perceptible\", so no value is proposed. THE ROUND IS NOT INVALID - IT IS THE CLEANEST ROUND THIS REPOSITORY HAS RUN. All three validity gates pass with no slack: 39 of 39 items answered in one pass, controls 4/4 correct (both obvious yes, both identical no), repeats 4/4 agreed (agreement 1.00), coverage 31/31 fitted against a floor of 28, and answer hygiene clean on every counter (0 unknown-item, 0 question-key-mismatch, 0 non-boolean, 0 retracted, 0 superseded). The refusal is a finding about colour, not about the pass. THE CRITERION GAP IS NEGATIVE AND ITS INTERVAL STRADDLES ZERO: gap = 0.04554 - 0.07444 = -0.02890, and the functional threshold's 95% CI [0.01826, 0.11356] CONTAINS the detection threshold 0.07444. Sec 6.3 pre-registered this exact outcome, before any answer existed, as meaning \"the reviewer does not in fact distinguish the two criteria on these stimuli - a real and publishable outcome, and one that would put the entire two-tier semantics back on the table rather than merely re-tuning a digit\". THAT IS THE CLAUSE THAT FIRED. The refinement of 2026-08-04 predicted a POSITIVE gap; the round measured a negative one. THE ANCHOR 2x2 COLLAPSED ONTO ITS DIAGONAL. Four round-1 stimuli were replayed PIXEL FOR PIXEL with one word of the question changed: 0.06339 no/no, 0.08804 yes/yes, 0.14813 yes/yes, 0.24181 yes/yes. ZERO OFF-DIAGONAL CELLS, flippedYesToNo = 0. The pre-registered crux - sec 3.3 nominated p2-ladder-06 at 0.08804 as the cell where detection's yes would become function's no - DID NOT FLIP. On identical pixels the reviewer gave the same answer 4 times out of 4. TWO READINGS SURVIVE AND THIS ROUND CANNOT SEPARATE THEM, WHICH IS THE REVIEWER'S CALL AND THE MOST VALUABLE THING THEY COULD SAY NEXT: (1) THE WORDING DID NOT LAND - the reviewer answered the detection question anyway; the repair is a re-worded round. (2) THE WORDING LANDED AND THE RETRACTION WAS A PRIORI - the retraction was prose about a CLASS of accents, written not in front of the stimulus; shown the actual 0.08804 stimulus and asked whether it does an accent's job, the reviewer said yes, and the thing to revise is the PREDICTION, not the number. Perfect controls prove ATTENTION, not CRITERION ADOPTION, so the gates cannot decide this. Reading 1 costs a re-worded round; reading 2 reopens the two-tier semantics itself. WHAT THE ROUND DOES SETTLE, IN THE NEGATIVE DIRECTION: THE PLACEHOLDER 0.14591 IS EXCLUDED AT 95% - it lies OUTSIDE the pooled CI [0.01826, 0.11356]. The round cannot say what the number is; it can say the number IN FORCE TODAY is not supported by the only stimuli ever graded against the criterion it is named for, and that the evidence points DOWNWARD. Its own placeholder record already flagged every verdict turning on this digit as provisional; this is the first evidence that the flag was warranted. AND IN THE POSITIVE DIRECTION: THE ISOLUMINANT ACCENT CLASS IS REAL AND WANTED - 28 of 31 stimuli carrying EXACTLY ZERO luminance contrast (apcaLc == 0 on every item) were called working accents, across all three lightness bands and all three hue thirds. An escape clause of some kind is warranted; sec 5's refusal to extend any of this to the FOREGROUND is untouched and nothing here licenses a foreground escape at any distance. REFUSAL CONDITIONS 2, 3 AND 4 DID NOT FIRE, and condition 3's pass is WEAK rather than clean: three of the six strata (band dark, band light, hue third 0) produced NO threshold to compare at all, and hue third 2's interval [0.00067, 3.08650] could not have disagreed with anything. Absence of evidence is not agreement. The two strata that separate cleanly agree closely (band mid 0.06664, hue third 1 0.06672) and both land near the empirical switch rather than near the pooled fit. The light band RAN BACKWARDS (slope -0.0410, no threshold) - the only cut where more distance did not buy more yeses, and where the round's lone high-distance no (0.13564) sits. n=9 with one dissenter: a hint, labelled exploratory by sec 6.5, changing no verdict. THE POOLED 0.04554 IS PARTLY AN ESTIMATOR ARTEFACT AND THE REFUSAL IS ROBUST TO IT. The single no at 0.13564 flattens the pooled slope to 2.76 (against 18.9 and 22.3 in the two clean strata) and drags the fitted 50% point BELOW EVERY OBSERVED NO. The empirical switch sits between 0.06339 (no) and 0.07332 (yes), geometric midpoint 0.06817. THAT CHANGES NOTHING: 0.06817 is still below 0.08804 and still below 0.07444, so the verdict AND the sign of the gap hold under the most favourable reading of the answers available. The headline stays fit.threshold = 0.04554 because that is what sec 6.2 pre-registered. CONSEQUENCE FOR A REPAIR ROUND, IF ONE IS BUILT: DO NOT SIMPLY RE-WORD AND RE-RUN. 26 of 31 items bought no information - they were answered yes and were never in doubt. The informative region is now known to be BELOW 0.075, not the 0.06-0.30 span this round spent 27 items on. Concentrate rungs in 0.04-0.10, and adjudicate the two readings above FIRST, because a round built on reading 1 is wasted effort if reading 2 is the truth.",
+   "fundedBy": [
+    "o-mseb9cd4-b15d0c6a",
+    "o-mseb9eeu-5d061074",
+    "o-mseb9fg9-bbe57399",
+    "o-mseb9g7y-50a73da8",
+    "o-mseb9gs7-395f1bd5",
+    "o-mseb9h7s-1439ab1b",
+    "o-mseb9hvx-6f81433b",
+    "o-mseb9ibz-45072b89",
+    "o-mseb9iv2-8952666b",
+    "o-mseb9jr0-61ba5c24",
+    "o-mseb9v9e-4f67d280",
+    "o-mseb9yww-1f2c0cba",
+    "o-mseba1sw-4113e5a0",
+    "o-mseba3ra-5d4cd6a2",
+    "o-mseba49u-632b8c9b",
+    "o-mseba9b1-90eb315b",
+    "o-mseba9wg-a0ecdc42",
+    "o-msebaaqy-71d1e497",
+    "o-msebabzt-bc7f91f1",
+    "o-msebaci3-b4dac478",
+    "o-msebaczp-a77add32",
+    "o-msebadcf-c73d379c",
+    "o-msebadr7-c954865f",
+    "o-msebaevq-d4dff842",
+    "o-msebagk4-13b05228",
+    "o-msebah80-3be48304",
+    "o-msebahs1-915c52d4",
+    "o-msebaibn-92dbd8b3",
+    "o-msebaiu8-7a38c44b",
+    "o-msebaj80-f98cbfc4",
+    "o-msebajmc-aed82be2",
+    "o-mseban4b-98dbe01d",
+    "o-msebaoag-5f6b5364",
+    "o-msebaonc-cd60a95e",
+    "o-msebarw8-c0c54bfe",
+    "o-msebaswq-1e9b12e1",
+    "o-msebb0p5-71a0afbf",
+    "o-msebb1f5-f579d1e6",
+    "o-msebb1w2-f68e5d37",
+    "bc-msebb32w-50bf1dcb"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-analysis.json",
+     "what": "The scored round, schema accent-functional-round-1-analysis/v1: verdict, the three gates, the pooled fit with its CI, the anchor 2x2, the per-band and per-hue fits, and answerHygiene."
+    },
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1-preregistration.md",
+     "what": "Sec 1-7 the pre-registered design, criterion wording and fitting rule; sec 8 the dated results write-up appended by this scoring pass."
+    },
+    {
+     "ref": "research/v3/data/calibration/analyze-accent-functional-round-1.ts",
+     "what": "The analyzer, run as committed and unmodified. The gate order, the guardrail constants and the DECISION PENDING convention are in the code, not in this record's discretion."
+    },
+    {
+     "ref": "research/v3/data/calibration/accent-functional-round-1.json",
+     "what": "The fixture: the 9-rung 0.05915-0.30218 ladder, the 3x3 stratification, the four pixel-identical anchor replays of bracketing-round-1-clarified, 4 repeats and 4 controls; and the isoluminance budget (apcaLc == 0 on every fitted item)."
+    },
+    {
+     "ref": "research/v3/data/calibration/bracketing-round-1.json",
+     "what": "Stratum accent-equal-luminance - round 1 part 2's detection answers, the other half of the anchor 2x2 and the source of the 0.07444 the gap is measured against."
+    },
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "The declaration at line 371 that this record leaves untouched, and the [UNCALIBRATED] tag naming the round that has now run."
+    }
+   ],
+   "fundingCaveats": [
+    "THIS IS ONE REVIEWER, ONE PASS, n=31 FITTED ITEMS. The gap's sign rests on a 31-item logistic whose 95% CI is 0.0953 wide - 1.78x round 1 part 2's pooled interval. The round can say the two criteria were NOT SEPARATED on these stimuli; it cannot say they are identical, and a wider or better-placed ladder could still find a positive gap.",
+    "THE POOLED THRESHOLD 0.04554 SITS BELOW EVERY OBSERVED NO and is dragged there by a single dissenting answer at 0.13564 flattening the slope. It is reported as the headline only because sec 6.2 pre-registered fit.threshold and a scoring pass may not substitute a nicer statistic after seeing the data. The empirical switch (0.06817) and the two clean strata (~0.0666) are the better description of where the answers actually turn, and the verdict is unchanged under all three.",
+    "THE CENTRAL AMBIGUITY IS UNRESOLVED AND IS NOT A DETAIL: this round cannot distinguish 'the substituted question did not change the reviewer's behaviour' from 'the question landed and the a priori retraction was wrong'. Perfect controls and 4/4 repeats prove attention, not criterion adoption. Every downstream reading of this record depends on which is true, and only the reviewer can say.",
+    "THE THREE STRATUM PASSES ARE NOT EVIDENCE OF HOMOGENEITY. Guardrail 3 did not fire largely because half the strata could not produce a threshold (two were all-yes degenerate, one ran backwards) and a fourth had an effectively unbounded interval. Stratum independence is UNTESTED by this round, not confirmed by it.",
+    "THE LIGHT-BAND REVERSAL is n=9 resting on one answer. Reported because sec 6.5 requires the exploratory cuts be reported in full and because suppressing the one cut that disagrees would be the exact bias the pre-registration exists to prevent - not because it is a result.",
+    "THE 0.121 EVIDENCE FOR ENDORSEMENT-RECHECK ITEM 2 IS DIRECTIONAL, NOT A RULING. The three ladder items nearest 0.121 (0.10916, 0.10977, 0.11147) were all answered yes, and every reading of this round puts 0.121 above the functional bar - but NO VALUE IS ADOPTED, so the item's premise is unchanged and it remains a live reviewer question."
+   ],
+   "recordedAt": "2026-08-04"
+  }
+ ]
+}
