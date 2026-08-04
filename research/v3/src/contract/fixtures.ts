@@ -16,6 +16,7 @@ import { CONTRACT_VERSION } from "./constants.ts"
 import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters } from "./invariants.ts"
 import type {
 	GradientStop,
+	NonSourceColorEscape,
 	Palette,
 	PaletteColor,
 	PaletteMetadata,
@@ -67,6 +68,7 @@ export type FixtureSpec = Readonly<{
 	stops?: readonly (readonly [hex: string, position: number])[]
 	surfaceCollapsed?: boolean
 	accentCollapsed?: boolean
+	escape?: NonSourceColorEscape | null
 }>
 
 export function makePalette(spec: FixtureSpec): Palette {
@@ -87,6 +89,7 @@ export function makePalette(spec: FixtureSpec): Palette {
 			surfaceCollapsed: spec.surfaceCollapsed ?? spec.surface === spec.background,
 			accentCollapsed: spec.accentCollapsed ?? spec.accent === spec.foreground,
 		},
+		escape: spec.escape ?? null,
 		contrast: DEFAULT_RESOLVED_CONTRAST,
 		metadata: fixtureMetadata(),
 	}
@@ -119,15 +122,21 @@ export const validCollapsed: Palette = makePalette({
 })
 
 /**
- * A three-stop gradient whose first stop is *exactly* the background colour, plus opportunistic
- * geometry. Both exercise contract clauses that are easy to get wrong: stops are decoupled from role
- * colours, so a field role coinciding with a stop is the natural case and is exempt from
- * distinctness — while the foreground and accent get no such exemption.
+ * A three-stop gradient that **begins at the background and ends at the surface**, with a genuine
+ * third colour between them, plus opportunistic geometry.
+ *
+ * The endpoints are the reviewer's ruling of 2026-08-04 — *"when the field is a gradient, the first
+ * stop is the `background` and the last stop is the `surface`"* — so this fixture is the natural
+ * case and not a coincidence: `#101820` → `#2b3f57` → `#4a6b8a`, with `#101820` published as the
+ * background and `#4a6b8a` as the surface. What it exercises is the pair of clauses that are easy to
+ * get wrong together — invariant 1 pins the two ends to the field roles, and invariant 3 exempts the
+ * field roles from stop distinctness so those mandatory coincidences are legal. The **interior**
+ * stop stays decoupled from every role, and the foreground and accent get no exemption at all.
  */
 export const validGradient: Palette = {
 	...makePalette({
 		background: "#101820",
-		surface: "#1e2a38",
+		surface: "#4a6b8a",
 		foreground: "#f2f5f7",
 		accent: "#e0533a",
 		stops: [["#101820", 0], ["#2b3f57", 0.5], ["#4a6b8a", 1]],
@@ -148,22 +157,27 @@ export const validPalettes: readonly Palette[] = [validFlat, validCollapsed, val
 // Violating fixtures — one per invariant, each tripping only its own
 // ---------------------------------------------------------------------------------------------
 
-/** I1: a fifth stop. The contract allows two to four. */
+/**
+ * I1: a fifth stop. The contract allows two to four.
+ *
+ * Endpoints are the field roles, so the *only* thing wrong here is the count — the three surplus
+ * colours sit in the interior, where extra stops would go if they were allowed.
+ */
 export const schemaTooManyStops: Palette = makePalette({
 	background: "#101820",
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#101820", 0], ["#2b3f57", 0.3], ["#4a6b8a", 0.6], ["#7fa3c2", 0.8], ["#c3d8e8", 1]],
+	stops: [["#101820", 0], ["#2b3f57", 0.3], ["#4a6b8a", 0.6], ["#7fa3c2", 0.8], ["#1e2a38", 1]],
 })
 
-/** I1: positions that do not increase. */
+/** I1: positions that do not increase. The colours are the correct field-role endpoints. */
 export const schemaUnorderedStops: Palette = makePalette({
 	background: "#101820",
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#2b3f57", 0.7], ["#4a6b8a", 0.2]],
+	stops: [["#101820", 0.7], ["#1e2a38", 0.2]],
 })
 
 /**
@@ -176,7 +190,7 @@ export const schemaStopSpanIncomplete: Palette = makePalette({
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#2b3f57", 0.2], ["#4a6b8a", 0.8]],
+	stops: [["#101820", 0.2], ["#1e2a38", 0.8]],
 })
 
 /** I1: a position outside [0,1]. */
@@ -185,7 +199,36 @@ export const schemaStopOutOfRange: Palette = makePalette({
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#2b3f57", 0], ["#4a6b8a", 1.4]],
+	stops: [["#101820", 0], ["#1e2a38", 1.4]],
+})
+
+/**
+ * I1: a ramp whose ends are not the field roles — reviewer's ruling of 2026-08-04.
+ *
+ * Both ends are wrong at once, so the fixture proves the two codes are reported independently:
+ * `#2b3f57` where the background `#101820` should be, `#4a6b8a` where the surface `#1e2a38` should
+ * be. Everything else about it is clean — the positions span [0,1], the stops are mutually distinct,
+ * and the foreground and accent clear every pair — so it trips these two codes and nothing else.
+ *
+ * Before the ruling this palette was **valid**: stops were decoupled from role colours, and a ramp
+ * that started somewhere else entirely was the ordinary case. It is the fixture that would notice a
+ * silent revert.
+ */
+export const schemaGradientEndpointsNotFieldRoles: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#2b3f57", 0], ["#4a6b8a", 1]],
+})
+
+/** I1: the first stop is the background, and only the last end is wrong. */
+export const schemaLastStopNotSurface: Palette = makePalette({
+	background: "#101820",
+	surface: "#1e2a38",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	stops: [["#101820", 0], ["#4a6b8a", 1]],
 })
 
 /**
@@ -231,25 +274,35 @@ export const schemaHexRgbMismatch: Palette = {
  * Both stops are dark-neutral, where the reviewer's bar is the tightest of the four (0.00876); this
  * pair sits at 0.00752. Under the pre-bracketing scalar bar of 0.012 the old fixture used a pair at
  * 0.01127, which the measurement has since reclassified as genuinely *distinct* in this region.
+ *
+ * **Three stops since the endpoint ruling of 2026-08-04**, and it has to be. With the ends pinned to
+ * the background and the surface, a two-stop degenerate ramp is no longer a statement about stops at
+ * all — it is a background and a surface that are the same colour, which invariant 3 already caught
+ * as a *role* pair. The defect that stays stop-specific is an **interior** stop indistinguishable
+ * from an end, which is what this is: `#2d4159` sitting on top of the background `#2b3f57`.
  */
 export const distinctnessIndistinctStops: Palette = makePalette({
-	background: "#101820",
+	background: "#2b3f57",
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#2b3f57", 0], ["#2d4159", 1]],
+	stops: [["#2b3f57", 0], ["#2d4159", 0.5], ["#1e2a38", 1]],
 })
 
 /**
  * I3: the foreground sits on top of a gradient stop. "White on white" — the field roles are exempt
  * from stop distinctness, the foreground is emphatically not.
+ *
+ * The offending stop is the **interior** one, for the same reason as the fixture above: since the
+ * endpoint ruling the two ends are the background and the surface by construction, so the only stop
+ * a foreground can collide with is one in the middle.
  */
 export const distinctnessForegroundMatchesStop: Palette = makePalette({
 	background: "#101820",
 	surface: "#1e2a38",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
-	stops: [["#101820", 0], ["#f2f5f7", 1]],
+	stops: [["#101820", 0], ["#f2f5f7", 0.5], ["#1e2a38", 1]],
 })
 
 /**
@@ -290,20 +343,28 @@ export const distinctnessNearCollapse: Palette = makePalette({
  * survives the measurement's own uncertainty rather than depending on the point estimates. It also
  * clears dark-neutral's 8-bit quantisation floor (±0.00075) by six times.
  */
+/*
+ * Both carry the judged pair as **stops[0] and stops[1]** rather than as the two stops of a 2-stop
+ * ramp. Since the endpoint ruling of 2026-08-04 the ends of a ramp are the background and the
+ * surface, so a 2-stop ramp's pair is also a role pair and would be reported twice — once as
+ * `roles.background ↔ roles.surface` and once as the stop pair. A third stop moves the judged pair
+ * into the position `background ↔ interior stop`, where the field-role exemption suppresses the
+ * duplicate and the stop pair is judged alone. The distance under test is untouched.
+ */
 export const regionalBarDistinctInDarkNeutral: Palette = makePalette({
-	background: "#101820",
+	background: "#1e2a38",
 	surface: "#f2f5f7",
 	foreground: "#e0533a",
 	accent: "#4a6b8a",
-	stops: [["#1e2a38", 0], ["#162a34", 1]],
+	stops: [["#1e2a38", 0], ["#162a34", 0.5], ["#f2f5f7", 1]],
 })
 
 export const regionalBarSameInLightSaturated: Palette = makePalette({
-	background: "#101820",
+	background: "#bc4758",
 	surface: "#f2f5f7",
 	foreground: "#4a6b8a",
 	accent: "#e0533a",
-	stops: [["#bc4758", 0], ["#b74b60", 1]],
+	stops: [["#bc4758", 0], ["#b74b60", 0.5], ["#f2f5f7", 1]],
 })
 
 /**
@@ -316,11 +377,11 @@ export const regionalBarSameInLightSaturated: Palette = makePalette({
  * so this is a violation. See that function for why.
  */
 export const regionalBarStraddlingPair: Palette = makePalette({
-	background: "#f2f5f7",
+	background: "#0e152e",
 	surface: "#e0533a",
 	foreground: "#4a6b8a",
 	accent: "#9e7397",
-	stops: [["#0e152e", 0], ["#111830", 1]],
+	stops: [["#0e152e", 0], ["#111830", 0.5], ["#e0533a", 1]],
 })
 
 /**
@@ -476,7 +537,7 @@ export const foregroundInvisibleOverStop: Palette = makePalette({
 	surface: "#eeeeee",
 	foreground: "#111111",
 	accent: "#e0533a",
-	stops: [["#000000", 0], ["#ffffff", 1]],
+	stops: [["#ffffff", 0], ["#000000", 0.5], ["#eeeeee", 1]],
 })
 
 /**
@@ -503,8 +564,8 @@ export const foregroundInvisibleOverStop: Palette = makePalette({
  * not a defect in this fixture, and it is recorded here because the fixture used to promise isolation.
  */
 export const foregroundInvisibleMidRamp: Palette = makePalette({
-	background: "#101820",
-	surface: "#1e2a38",
+	background: "#303030",
+	surface: "#d0d0d0",
 	foreground: "#808080",
 	accent: "#e0533a",
 	stops: [["#303030", 0], ["#d0d0d0", 1]],
@@ -531,8 +592,8 @@ export const foregroundInvisibleMidRamp: Palette = makePalette({
  * Isolated to the accent: the foreground `#f2f5f7` bottoms out at |raw APCA| 41.33 over the same ramp.
  */
 export const accentInvisibleMidRamp: Palette = makePalette({
-	background: "#101820",
-	surface: "#1e2a38",
+	background: "#16202c",
+	surface: "#9fb6cc",
 	foreground: "#f2f5f7",
 	accent: "#4a6b8a",
 	stops: [["#16202c", 0], ["#9fb6cc", 1]],
@@ -556,8 +617,8 @@ export const accentInvisibleMidRamp: Palette = makePalette({
  * never crosses the ramp and bottoms out at |raw APCA| 41.33.
  */
 export const accentEscapesMidRampByColor: Palette = makePalette({
-	background: "#101820",
-	surface: "#1e2a38",
+	background: "#16202c",
+	surface: "#9fb6cc",
 	foreground: "#f2f5f7",
 	accent: "#e0533a",
 	stops: [["#16202c", 0], ["#9fb6cc", 1]],
@@ -583,8 +644,8 @@ export const accentEscapesMidRampByColor: Palette = makePalette({
  * Isolated to the accent: sole violation, and the foreground never crosses the ramp.
  */
 export const accentInvisibleMidRampAtDetectableDistance: Palette = makePalette({
-	background: "#101820",
-	surface: "#1e2a38",
+	background: "#16202c",
+	surface: "#9fb6cc",
 	foreground: "#f2f5f7",
 	accent: "#2a531e",
 	stops: [["#16202c", 0], ["#9fb6cc", 1]],
@@ -893,6 +954,100 @@ export function sparseSource(
 		},
 	}
 }
+
+// ---------------------------------------------------------------------------------------------
+// The one sanctioned non-source colour — reviewer's ruling, 2026-08-04
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * The escape taken legally, at the background: pure white over a surface collapsed onto it.
+ *
+ * This is the shape the ruling grants — *"pure white (`#ffffff`) or pure black (`#000000`) only,
+ * used as background or foreground only (with surface or accent collapsed correspondingly), only
+ * when there is genuinely no other way to produce a 2-color palette"*. The foreground and the accent
+ * are ordinary source pixels; only the field is invented, and the field is one colour because the
+ * surface collapsed onto it.
+ *
+ * Valid **against `escapeBackgroundSource`**, which does not contain white. Against
+ * `escapeUnnecessarySource`, which does, the same palette is a violation — see `I2.escape-not-needed`.
+ * That pair is the whole point: the escape is a claim about the artwork, not a property of the
+ * palette, so the identical palette is legal over one image and illegal over another.
+ */
+export const escapeWhiteBackground: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#ffffff",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#ffffff").hex },
+})
+
+/** The escape taken legally at the **foreground**: pure black text with the accent collapsed onto it. */
+export const escapeBlackForeground: Palette = makePalette({
+	background: "#f2f5f7",
+	surface: "#e0533a",
+	foreground: "#000000",
+	accent: "#000000",
+	escape: { role: "foreground", color: colorFromHex("#000000").hex },
+})
+
+/** I1: near-white is not white. The permitted set is two literals and nothing rounds into it. */
+export const escapeColorNotPermitted: Palette = makePalette({
+	background: "#fefefe",
+	surface: "#fefefe",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#fefefe").hex },
+})
+
+/**
+ * I1: the escape at a role it may not occupy. A surface or an accent is a *second* colour of its
+ * kind, and inventing one of those is inventing a palette rather than rescuing one.
+ */
+export const escapeRoleNotPermitted: Palette = makePalette({
+	background: "#101820",
+	surface: "#ffffff",
+	foreground: "#f2f5f7",
+	accent: "#e0533a",
+	escape: { role: "surface" as "background", color: colorFromHex("#ffffff").hex },
+})
+
+/**
+ * I1: a legal colour at a legal role, with the partner **not** collapsed.
+ *
+ * Four distinct roles and an invented colour among them: the escape was granted for the case where
+ * there is no other way to produce a *two-colour* palette, and this palette plainly had another way.
+ */
+export const escapePartnerNotCollapsed: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#1e2a38",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#ffffff").hex },
+})
+
+/** I1: the declaration describes a colour the named role does not publish. */
+export const escapeRoleColorMismatch: Palette = makePalette({
+	background: "#ffffff",
+	surface: "#ffffff",
+	foreground: "#101820",
+	accent: "#e0533a",
+	escape: { role: "background", color: colorFromHex("#000000").hex },
+})
+
+/** Every colour `escapeWhiteBackground` publishes **except** the escape itself. */
+export const escapeBackgroundSource = bandedSource(["#101820", "#e0533a"])
+
+/** The same image with white in it, which makes the escape a claim the artwork refutes. */
+export const escapeUnnecessarySource = bandedSource(["#101820", "#e0533a", "#ffffff"])
+
+/**
+ * White absent *and* the accent absent. The escape covers exactly one colour, so the accent must
+ * still be reported — this is the fixture that stops the declaration becoming a blanket opt-out.
+ */
+export const escapeBackgroundMissingAccentSource = bandedSource(["#101820", "#c0c8d0"])
+
+/** Every colour `escapeBlackForeground` publishes except the escape itself. */
+export const escapeForegroundSource = bandedSource(["#f2f5f7", "#e0533a"])
 
 /** Every colour `validFlat` publishes, present in quantity. */
 export const validFlatSource = bandedSource(["#101820", "#1e2a38", "#f2f5f7", "#e0533a"])

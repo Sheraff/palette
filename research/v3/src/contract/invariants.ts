@@ -77,6 +77,8 @@ import {
 	CONTRAST_FLOOR_TOLERANCE,
 	EPSILON_ACCENT_RAW,
 	EPSILON_TEXT_RAW,
+	ESCAPE_COLORS,
+	ESCAPE_ROLE_PARTNERS,
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	MAX_GRADIENT_STOPS,
 	MIN_GRADIENT_STOPS,
@@ -409,6 +411,42 @@ export function validateSchema(palette: Palette): Violation[] {
 					))
 				}
 			}
+
+			// The ramp's ends are the field roles themselves — reviewer's ruling, 2026-08-04, verbatim:
+			// "when the field is a gradient, the first stop is the `background` and the last stop is the
+			// `surface`." Exact hex equality, the same exactness the collapse flags are held to: a
+			// gradient that starts *near* its background is a field carrying five colours, not four.
+			//
+			// Checked here rather than in invariant 3 because it is a structural relation between two
+			// published fields, which is what invariant 1 owns — collapse-flag consistency above is the
+			// same kind of check. Invariant 3's background/surface-versus-stop exemption is what makes
+			// the resulting coincidences legal; this clause is what makes them mandatory.
+			//
+			// Interior stops are untouched and stay decoupled from the role colours.
+			if (Array.isArray(stops) && stops.length > 0) {
+				for (
+					const [index, role, code] of [
+						[0, "background", "I1.first-stop-not-background"],
+						[stops.length - 1, "surface", "I1.last-stop-not-surface"],
+					] as const
+				) {
+					const stopHex = stops[index]?.color?.hex
+					const roleHex = palette?.roles?.[role]?.hex
+					// A malformed colour on either side is already reported by `colorProblems`; re-reporting
+					// it as an endpoint mismatch would be one defect counted twice.
+					if (!isHexColor(stopHex) || !isHexColor(roleHex)) continue
+					if (stopHex === roleHex) continue
+					violations.push(violation(
+						"I1",
+						code,
+						`gradient.stops[${index}] is ${stopHex} but roles.${role} is ${roleHex}; the ${
+							index === 0 ? "first" : "last"
+						} stop must be exactly the ${role}`,
+						[`gradient.stops[${index}]`, `roles.${role}`],
+						{ stop: stopHex, role: roleHex },
+					))
+				}
+			}
 		}
 
 		const geometry = palette.gradient?.geometry
@@ -472,6 +510,74 @@ export function validateSchema(palette: Palette): Violation[] {
 					[`collapse.${flag}`, `roles.${first}`, `roles.${second}`],
 					{ flag: value, exactlyEqual: equal },
 				))
+			}
+		}
+	}
+
+	// --- the one sanctioned non-source colour ---
+	// Reviewer's ruling, 2026-08-04: a palette may introduce "EXACTLY ONE color not present in the
+	// artwork: pure white (#ffffff) or pure black (#000000) only, used as background or foreground
+	// only (with surface or accent collapsed correspondingly), only when there is genuinely no other
+	// way to produce a 2-color palette."
+	//
+	// Three of the four conditions are structural and are checked here; the fourth — that the colour
+	// is genuinely absent from the artwork — needs the pixels and belongs to invariant 2. The
+	// unquantifiable fifth ("no other way") is deliberately not faked; see `NonSourceColorEscape`.
+	//
+	// Absent means "no escape", which is safe: the default is that invariant 2 refuses an invented
+	// colour, so forgetting to declare buys nothing. Only a *declaration* can weaken a check, which is
+	// why every condition on it is enforced and none is inferred.
+	const escape = palette?.escape
+	if (escape !== undefined && escape !== null) {
+		if (typeof escape !== "object") {
+			violations.push(violation("I1", "I1.escape-malformed", "escape is not an object", ["escape"]))
+		} else {
+			const partner = ESCAPE_ROLE_PARTNERS[escape.role as keyof typeof ESCAPE_ROLE_PARTNERS]
+			if (partner === undefined) {
+				violations.push(violation(
+					"I1",
+					"I1.escape-role-not-permitted",
+					`escape.role ${String(escape.role)} is not a role the escape may occupy; only ${
+						Object.keys(ESCAPE_ROLE_PARTNERS).join(" or ")
+					}`,
+					["escape"],
+				))
+			}
+			if (!(ESCAPE_COLORS as readonly string[]).includes(escape.color)) {
+				violations.push(violation(
+					"I1",
+					"I1.escape-color-not-permitted",
+					`escape.color ${String(escape.color)} is not one of the two permitted escape colours (${
+						ESCAPE_COLORS.join(", ")
+					}); near-white and near-black are inventions like any other`,
+					["escape"],
+					{ color: String(escape.color) },
+				))
+			}
+			if (partner !== undefined) {
+				// The escape colour has to be the colour actually published in that role, or the
+				// declaration describes a different palette than the one being validated.
+				const published = palette?.roles?.[escape.role as "background" | "foreground"]?.hex
+				if (isHexColor(published) && published !== escape.color) {
+					violations.push(violation(
+						"I1",
+						"I1.escape-role-color-mismatch",
+						`escape declares ${String(escape.color)} at roles.${escape.role}, which publishes ${published}`,
+						["escape", `roles.${escape.role}`],
+						{ declared: String(escape.color), published },
+					))
+				}
+				// "with surface or accent collapsed correspondingly" — the clause that keeps the escape to
+				// the two-colour case it was granted for. An invented colour alongside four distinct roles
+				// is a colour the palette did not need.
+				if (palette?.collapse?.[partner.flag] !== true) {
+					violations.push(violation(
+						"I1",
+						"I1.escape-partner-not-collapsed",
+						`escape at roles.${escape.role} requires collapse.${partner.flag}: the escape is granted only when there is no other way to produce a 2-colour palette, so ${partner.partner} must be collapsed onto it`,
+						["escape", `collapse.${partner.flag}`],
+					))
+				}
 			}
 		}
 	}
@@ -1201,6 +1307,41 @@ export type SourceSupportResult = Readonly<{
 }>
 
 /**
+ * The escape declaration invariant 2 will actually honour, or `null`.
+ *
+ * **Every structural condition invariant 1 checks is re-checked here**, and that duplication is on
+ * purpose: the two functions answer different questions. Invariant 1 asks "is this declaration
+ * well-formed?" and reports each way it is not, so a palette author can fix it. This asks "may this
+ * declaration weaken the existence rule?", and the answer must be no unless *all* of them hold —
+ * otherwise a palette with a broken escape block would trip invariant 1 for the block and quietly
+ * dodge invariant 2 for the invented colour, which is the one combination that must not happen.
+ *
+ * `validateSourceSupport` is also callable on its own (the scorecard and the corpus gate do), so it
+ * cannot assume invariant 1 ran at all.
+ */
+function sanctionedEscape(palette: Palette): { hex: string; paths: ReadonlySet<string> } | null {
+	const escape = palette?.escape
+	if (escape === undefined || escape === null || typeof escape !== "object") return null
+
+	const partner = ESCAPE_ROLE_PARTNERS[escape.role as keyof typeof ESCAPE_ROLE_PARTNERS]
+	if (partner === undefined) return null
+	if (!(ESCAPE_COLORS as readonly string[]).includes(escape.color)) return null
+	if (palette?.collapse?.[partner.flag] !== true) return null
+
+	// The declaration must describe the palette it is attached to: the escape colour has to be what
+	// the role publishes, and — since the partner is collapsed onto it — what the partner publishes.
+	const published = palette?.roles?.[escape.role as "background" | "foreground"]?.hex
+	const partnerHex = palette?.roles?.[partner.partner]?.hex
+	if (!isHexColor(published) || published !== escape.color) return null
+	if (!isHexColor(partnerHex) || partnerHex !== escape.color) return null
+
+	return {
+		hex: escape.color,
+		paths: new Set([`roles.${escape.role}`, `roles.${partner.partner}`]),
+	}
+}
+
+/**
  * **Invariant 2.** Every published colour is an exact pixel of the input. The population floor is
  * measured and reported, and is **not** a validity verdict.
  *
@@ -1208,6 +1349,20 @@ export type SourceSupportResult = Readonly<{
  * is the invariant that makes the whole contract falsifiable against the artwork — a palette colour
  * that is not in the image is an invention, whatever it looks like. That half is **hard** and
  * unchanged.
+ *
+ * ## One exception, granted by the reviewer on 2026-08-04 and bounded to two literals
+ *
+ * A palette may publish *"EXACTLY ONE color not present in the artwork: pure white (`#ffffff`) or
+ * pure black (`#000000`) only, used as background or foreground only (with surface or accent
+ * collapsed correspondingly), only when there is genuinely no other way to produce a 2-color
+ * palette."* It has to **declare** it (`palette.escape`), the declaration has to be legal in every
+ * checkable respect (`sanctionedEscape`), and the colour has to be genuinely absent — an escape
+ * declared over a colour the artwork contains is `I2.escape-not-needed`, a violation, because it
+ * describes an escape that was not taken.
+ *
+ * The exception is *narrow by construction rather than by threshold*: two permitted colours, two
+ * permitted roles, one per palette, and a partner that must be collapsed. There is nothing here to
+ * calibrate and nothing to drift. Everything else absent from the artwork remains an invention.
  *
  * ## The population floor stopped being a verdict — reviewer's ruling, 2026-08-04
  *
@@ -1310,8 +1465,50 @@ export function validateSourceSupport(
 		))
 	}
 
+	// The one sanctioned non-source colour, if this palette declared one and declared it *legally*.
+	// A malformed declaration buys no exemption — same principle as invariant 3's treatment of a
+	// lying collapse flag: the flag cannot launder what it describes. Invariant 1 reports why.
+	const escapeExemption = sanctionedEscape(palette)
+
 	for (const [key, paths] of pathsByHex) {
 		const count = counts.get(key) ?? 0
+
+		// --- THE ESCAPE, if it applies to this colour. ---
+		// The exemption is granted per *colour*, and only when every path publishing that colour is one
+		// the escape covers (the escaped role and its collapsed partner). A gradient stop that happens
+		// to be the same pure black does not ride along: it is a fifth published colour and the ruling
+		// granted exactly one.
+		const escaped = escapeExemption !== null && key === escapeExemption.hex &&
+			paths.every((path) => escapeExemption.paths.has(path))
+
+		if (escaped) {
+			// Condition 4 of the escape, and the clause that stops it becoming a blanket opt-out: an
+			// escape declared over a colour the artwork *does* contain was never an escape. The palette
+			// should have published the source pixel and said nothing.
+			if (count > 0) {
+				violations.push(violation(
+					"I2",
+					"I2.escape-not-needed",
+					`${key} is declared as the non-source escape but occurs ${count} time(s) in the input; the escape is only for a colour the artwork genuinely does not contain`,
+					[...paths, "escape"],
+					{ hex: key, occurrences: count },
+				))
+				continue
+			}
+			// Genuinely absent, legally declared: the existence rule yields, once, and says so.
+			observe?.({
+				invariant: "I2",
+				check: "I2.color-absent-from-source",
+				subjects: paths,
+				quantity: "source-occurrences",
+				measured: 0,
+				bar: 0,
+				margin: 0,
+				passed: true,
+				reportOnly: true,
+			})
+			continue
+		}
 
 		// --- EXISTENCE: hard. A colour that is not in the image is an invention. ---
 		if (count === 0) {

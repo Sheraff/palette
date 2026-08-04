@@ -5,11 +5,13 @@
  * `invariants.ts` enforces at runtime what the types can only describe. Nothing here computes.
  *
  * The shape in one paragraph: four role colours, each an **exact pixel of the source image**; an
- * optional gradient of two to four stops whose colours are **decoupled from the role colours** and
- * are themselves exact source pixels; two explicit collapse flags so collapse is countable rather
- * than inferred from hex equality; the two always-set minimum-contrast parameters as resolved; and
- * a metadata block that makes every verdict about a palette permanently scopable to the exact file,
- * decoder and algorithm that produced it.
+ * optional gradient of two to four stops that **begins at the background and ends at the surface**,
+ * whose interior stops are decoupled from the role colours, and whose colours are themselves exact
+ * source pixels; two explicit collapse flags so collapse is countable rather than inferred from hex
+ * equality; an optional declaration that the palette used the one sanctioned non-source colour; the
+ * two always-set minimum-contrast parameters as resolved; and a metadata block that makes every
+ * verdict about a palette permanently scopable to the exact file, decoder and algorithm that
+ * produced it.
  */
 
 import type { COLOR_REGIONS, ROLE_NAMES } from "./constants.ts"
@@ -75,8 +77,12 @@ export type PaletteRoles = Readonly<Record<RoleName, PaletteColor>>
 /**
  * One stop on the published colour path.
  *
- * `position` is the t-parameter in [0,1]. Stop colours are exact source pixels and are decoupled
- * from the role colours — the already-agreed contract change of `V3_PLAN.md` §2.
+ * `position` is the t-parameter in [0,1]. Stop colours are exact source pixels.
+ *
+ * **The endpoints are not free** — reviewer's ruling, 2026-08-04, verbatim: *"when the field is a
+ * gradient, the first stop is the `background` and the last stop is the `surface`."* Interior stops
+ * remain decoupled from the role colours (the change `V3_PLAN.md` §2 already agreed); the two ends
+ * are the field roles themselves. See `GradientSpec`.
  */
 export type GradientStop = Readonly<{
 	color: PaletteColor
@@ -109,13 +115,50 @@ export type GradientGeometry = Readonly<{
 /**
  * A published gradient: a colour path, nothing more.
  *
+ * ## The endpoints are the field roles — reviewer's ruling, 2026-08-04
+ *
+ * Verbatim: *"when the field is a gradient, the first stop is the `background` and the last stop is
+ * the `surface`. A gradient can have 2 or 3 stops (4 is negociable if proven utility)."*
+ *
+ * So `stops[0].color.hex === roles.background.hex` and
+ * `stops[stops.length - 1].color.hex === roles.surface.hex`, **exactly** — the same exactness the
+ * collapse flags are held to, for the same reason: a near-match is a different colour, and a field
+ * whose gradient starts *near* its background is a field with five colours in it. Enforced by
+ * invariant 1 (`I1.first-stop-not-background`, `I1.last-stop-not-surface`), because a TypeScript type
+ * cannot say "this field equals that field".
+ *
+ * This narrows the decoupling `V3_PLAN.md` §2 agreed: **interior** stops stay decoupled from the role
+ * colours, the two ends no longer are. It also makes the existing invariant-3 exemption of
+ * background/surface against stop colours *load-bearing* rather than merely permissive — under this
+ * ruling those coincidences are mandatory, not incidental.
+ *
+ * **Consequence, stated because it is not obvious.** A palette with `surfaceCollapsed` set cannot
+ * publish a gradient: the first and last stop would be the same colour, which invariant 3 refuses as
+ * a degenerate ramp. A field that collapsed to one colour is a flat field, and says so with
+ * `gradient: null`.
+ *
+ * ## Stop count
+ *
  * Stop count is 2..4 (`MIN_GRADIENT_STOPS`..`MAX_GRADIENT_STOPS`). The tuple type pins the first
  * two; the upper bound and the ordering of positions are enforced by invariant 1, because a type
  * cannot express "at most four" without making every consumer's life miserable.
  *
- * Stops 3–4 carry **guide semantics**: a third stop is legitimate when the artwork genuinely has a
- * three-colour ramp, and otherwise stops beyond the second exist only to pull the rendered OKLab
- * interpolation back onto the artwork. Never to expand colourspace coverage, never to fit a metric.
+ * **The acceptable reasons for adding a stop are recorded**, and the reviewer's ruling requires them
+ * to travel with the constraint. `PHASE_0_DECISIONS.md` §2, verbatim:
+ *
+ * > **Guide-stop semantics for stops 3–4.** A 3rd stop is allowed when the artwork genuinely has a
+ * > 3-color linear gradient. Stops 3–4 are otherwise *guides*: they exist only to pull the rendered
+ * > OKLab interpolation onto the artwork when the 2-stop straight line demonstrably passes through
+ * > off-artwork colors. Never to expand colorspace coverage or fit a metric. Curvature carries a
+ * > banding cost when rendered, so the winning gradient is the **flattest path that stays
+ * > on-artwork** — excursion reduction justifies a stop; meandering is forbidden.
+ *
+ * So there is exactly one admissible reason to add a stop — **excursion reduction** — plus the
+ * genuine three-colour ramp, and three named inadmissible ones: colourspace coverage, metric fitting,
+ * and meandering. The fourth stop is additionally **negotiable on proven utility** rather than
+ * granted (the reviewer's parenthesis above), so a fitter that reaches for it owes evidence that
+ * three could not do the job. `MAX_GRADIENT_STOPS` stays 4 and the ceiling is unchanged; what the
+ * ruling adds is that reaching it is an argument, not an option.
  */
 export type GradientSpec = Readonly<{
 	stops: readonly [GradientStop, GradientStop, ...GradientStop[]]
@@ -138,6 +181,60 @@ export type CollapseFlags = Readonly<{
 	surfaceCollapsed: boolean
 	/** accent → foreground. */
 	accentCollapsed: boolean
+}>
+
+// ---------------------------------------------------------------------------------------------
+// The one sanctioned non-source colour
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * The roles the escape colour may occupy. **Field or text, never both, never the others** — a
+ * background or a foreground can honestly be "the flat thing behind/on top of everything"; a surface
+ * or an accent is a *second* colour of its kind and inventing one is inventing a palette.
+ */
+export type EscapeRole = "background" | "foreground"
+
+/**
+ * A palette's declaration that it used the **one** colour the existence rule otherwise forbids.
+ *
+ * `[REVIEWED — reviewer's ruling, 2026-08-04]`, verbatim: a palette may introduce *"EXACTLY ONE
+ * color not present in the artwork: pure white (`#ffffff`) or pure black (`#000000`) only, used as
+ * background or foreground only (with surface or accent collapsed correspondingly), only when there
+ * is genuinely no other way to produce a 2-color palette."*
+ *
+ * **Declared, not inferred** — the same design as `CollapseFlags`, for the same reason: an escape
+ * that has to be reconstructed by re-reading the artwork is an escape nobody can count. And the
+ * default is fail-safe rather than fail-open, which is why this field may be absent: a palette that
+ * *forgets* to declare its escape does not get a quiet pass, it fails invariant 2's existence clause
+ * exactly as an invented colour should. Absent, `null` and "no escape" are therefore the same
+ * statement, and the only thing the field can do is *weaken* a check — never skip one.
+ *
+ * Four strict conditions, all checked (invariant 1 for the first three, invariant 2 for the fourth):
+ *
+ * 1. `color` is **exactly** `#ffffff` or `#000000`. Not near-white, not the artwork's brightest
+ *    pixel rounded up. `ESCAPE_COLORS` is the whole permitted set.
+ * 2. `role` is `background` or `foreground`, and the palette actually publishes `color` there.
+ * 3. The corresponding partner is **collapsed**: `surfaceCollapsed` when the escape is the
+ *    background, `accentCollapsed` when it is the foreground. This is what makes the ruling's "with
+ *    surface or accent collapsed correspondingly" checkable, and it is what keeps the escape to the
+ *    two-colour case it was granted for — an escape plus four distinct roles would be a palette that
+ *    invented a colour it did not need.
+ * 4. The colour is **genuinely absent** from the artwork. An escape declared over a colour the
+ *    artwork actually contains is not an escape; the palette should simply have published the source
+ *    pixel and said nothing. That case is `I2.escape-not-needed`, and it is the clause that stops
+ *    this from becoming a blanket opt-out of the existence rule.
+ *
+ * The remaining condition — *"only when there is genuinely no other way to produce a 2-color
+ * palette"* — is **not computable here** and is deliberately not faked. The validator cannot see the
+ * search an algorithm did or did not do. Conditions 3 and 4 are the checkable shadow of it: the
+ * palette must be genuinely two-colour, and the colour must genuinely not be there.
+ *
+ * There is at most one, structurally: this is a single optional field, not a list.
+ */
+export type NonSourceColorEscape = Readonly<{
+	role: EscapeRole
+	/** Exactly `#ffffff` or `#000000`. */
+	color: HexColor
 }>
 
 // ---------------------------------------------------------------------------------------------
@@ -234,6 +331,11 @@ export type Palette = Readonly<{
 	/** `null` means the algorithm published no gradient — a decision, not an absence of one. */
 	gradient: GradientSpec | null
 	collapse: CollapseFlags
+	/**
+	 * The one sanctioned non-source colour, when the palette used it. Absent and `null` both mean it
+	 * did not — see `NonSourceColorEscape` for why absence is safe here and is not for `collapse`.
+	 */
+	escape?: NonSourceColorEscape | null
 	contrast: ResolvedContrastFloors
 	metadata: PaletteMetadata
 }>

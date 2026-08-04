@@ -28,6 +28,7 @@ import {
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
 	SAME_COLOR_BAR_BY_REGION,
 	SOURCE_POPULATION_FLOOR,
+	ESCAPE_COLORS,
 } from "../src/contract/constants.ts"
 import {
 	DEFAULT_CONTRAST_PARAMETERS,
@@ -65,6 +66,16 @@ import {
 	distinctnessIndistinctStops,
 	distinctnessInvisibleAccent,
 	distinctnessNearCollapse,
+	escapeBackgroundMissingAccentSource,
+	escapeBackgroundSource,
+	escapeBlackForeground,
+	escapeColorNotPermitted,
+	escapeForegroundSource,
+	escapePartnerNotCollapsed,
+	escapeRoleColorMismatch,
+	escapeRoleNotPermitted,
+	escapeUnnecessarySource,
+	escapeWhiteBackground,
 	fixtureMetadata,
 	foregroundAccentJustOverSeparation,
 	foregroundAccentJustUnderSeparation,
@@ -84,7 +95,9 @@ import {
 	schemaBadMetadata,
 	schemaCollapseUnflagged,
 	schemaFlagWithoutEquality,
+	schemaGradientEndpointsNotFieldRoles,
 	schemaHexRgbMismatch,
+	schemaLastStopNotSurface,
 	schemaStopOutOfRange,
 	schemaStopSpanIncomplete,
 	schemaTooManyStops,
@@ -758,8 +771,12 @@ test("I4 holds the foreground to minTextContrast against every published stop", 
 	// PHASE_0_DECISIONS.md §2 defines the parameter as "foreground vs background, surface, and every
 	// published stop". The stop half was enforced nowhere, and this exact palette published clean:
 	// `{ valid: true, violations: [] }` (`reviews/phase-0-adversarial/contract.md` finding 2).
+	// The offending stop is the interior one: since the endpoint ruling of 2026-08-04 the two ends of
+	// a ramp are the background and the surface, so a stop that collides with the foreground has to be
+	// in the middle. The fixture's substance is unchanged — same colour, same |raw| — and so is this
+	// clause's; only the index moved.
 	const foreground = foregroundInvisibleOverStop.roles.foreground
-	const stop = foregroundInvisibleOverStop.gradient!.stops[0].color
+	const stop = foregroundInvisibleOverStop.gradient!.stops[1].color
 	assert.equal(stop.hex, "#000000")
 	assert.ok(Math.abs(apcaRawBetween(foreground, stop)) < EPSILON_TEXT_RAW, "luminance says invisible")
 	assert.equal(apcaLc(foreground.rgb, stop.rgb), 0, "APCA's public scale reports nothing")
@@ -783,11 +800,11 @@ test("I4 holds the foreground to minTextContrast against every published stop", 
 
 	// The reviewer's ruling shows up even on the fixture built for the per-stop clause: the worst
 	// point of this palette is NOT the `#000000` stop that motivated it. The ramp crosses the
-	// foreground's own luminance at t = 0.180176, rendering `#121212` — one 8-bit step away, |raw|
+	// foreground's own luminance at t = 0.407959, rendering `#121212` — one 8-bit step away, |raw|
 	// 0.4145, nearly three times deeper than the stop the adversarial review found. Reporting the
 	// stop would have understated the defect by pointing at the second-worst colour on the ramp.
 	assert.equal(violations[0].code, "I4.ramp-below-contrast-floor")
-	assert.deepEqual([...violations[0].subjects].sort(), ["gradient.ramp@0.180176", "roles.foreground"])
+	assert.deepEqual([...violations[0].subjects].sort(), ["gradient.ramp@0.407959", "roles.foreground"])
 	assert.equal(violations[0].measured?.rampColor, "#121212")
 	assert.ok(
 		Math.abs(violations[0].measured!.rawAsNumber ?? (violations[0].measured!.raw as number)) <
@@ -1508,4 +1525,237 @@ test("the ruler used by invariant 3 is the one from color.ts, not a private copy
 	assert.equal(violations[0].measured?.bar, SAME_COLOR_BAR_BY_REGION["dark-neutral"])
 	assert.equal(violations[0].measured?.firstRegion, "dark-neutral")
 	assert.equal(violations[0].measured?.secondRegion, "dark-neutral")
+})
+
+// ---------------------------------------------------------------------------------------------
+// The gradient's ends are the field roles — reviewer's ruling, 2026-08-04
+// ---------------------------------------------------------------------------------------------
+
+test("I1 pins the first stop to the background and the last to the surface", () => {
+	// Verbatim: "when the field is a gradient, the first stop is the `background` and the last stop is
+	// the `surface`." Before this ruling `schemaGradientEndpointsNotFieldRoles` was a *valid* palette —
+	// stops were decoupled from role colours and a ramp that started elsewhere was ordinary. This is
+	// the test that would notice a silent revert.
+	const violations = validateSchema(schemaGradientEndpointsNotFieldRoles)
+	assert.deepEqual(codes(violations), ["I1.first-stop-not-background", "I1.last-stop-not-surface"])
+
+	const first = violations.find((entry) => entry.code === "I1.first-stop-not-background")!
+	assert.deepEqual([...first.subjects].sort(), ["gradient.stops[0]", "roles.background"])
+	assert.equal(first.measured?.stop, "#2b3f57")
+	assert.equal(first.measured?.role, "#101820")
+
+	// Each end is reported independently, so a palette that gets one right is told only about the other.
+	assert.deepEqual(codes(validateSchema(schemaLastStopNotSurface)), ["I1.last-stop-not-surface"])
+	const last = validateSchema(schemaLastStopNotSurface)[0]
+	assert.deepEqual([...last.subjects].sort(), ["gradient.stops[1]", "roles.surface"])
+})
+
+test("the endpoint clause is exact, not approximate: one 8-bit step is a different colour", () => {
+	// The same exactness the collapse flags are held to. A ramp that starts *near* its background is a
+	// field carrying five colours, which is the thing the ruling closed.
+	const offByOne = makePalette({
+		background: "#101820",
+		surface: "#1e2a38",
+		foreground: "#f2f5f7",
+		accent: "#e0533a",
+		stops: [["#101821", 0], ["#1e2a38", 1]],
+	})
+	assert.deepEqual(codes(validateSchema(offByOne)), ["I1.first-stop-not-background"])
+})
+
+test("the endpoint clause holds at every legal stop count, and says nothing without a gradient", () => {
+	// 2 stops: the ends are the whole ramp. 3: one interior stop, still decoupled from every role.
+	for (
+		const stops of [
+			[["#101820", 0], ["#1e2a38", 1]],
+			[["#101820", 0], ["#2b3f57", 0.5], ["#1e2a38", 1]],
+			[["#101820", 0], ["#2b3f57", 0.4], ["#4a6b8a", 0.7], ["#1e2a38", 1]],
+		] as const
+	) {
+		const palette = makePalette({
+			background: "#101820",
+			surface: "#1e2a38",
+			foreground: "#f2f5f7",
+			accent: "#e0533a",
+			stops,
+		})
+		assert.deepEqual(validateSchema(palette), [], `stops: ${stops.length}`)
+	}
+
+	// A flat palette has no ends to pin, and neither clause may invent a complaint about `null`.
+	assert.deepEqual(validateSchema(validFlat), [])
+	assert.equal(validFlat.gradient, null)
+})
+
+test("the interior of a ramp stays decoupled from the role colours", () => {
+	// The ruling narrows the decoupling of `V3_PLAN.md` §2 to the two ends; it does not repeal it. An
+	// interior stop that matches no role is the ordinary case and must stay silent.
+	assert.deepEqual(validateSchema(validGradient), [])
+	assert.equal(validGradient.gradient!.stops[1].color.hex, "#2b3f57")
+	assert.equal(
+		Object.values(validGradient.roles).some((role) => role.hex === "#2b3f57"),
+		false,
+		"the interior stop is deliberately not any role's colour",
+	)
+})
+
+test("a malformed endpoint colour is reported once, as a colour, not twice", () => {
+	// `colorProblems` already condemns it; re-reporting it as an endpoint mismatch would count one
+	// defect twice and inflate the census.
+	const broken: Palette = {
+		...validGradient,
+		gradient: {
+			stops: [
+				{ color: { rgb: [16, 24, 32], hex: "#nonsense" } as never, position: 0 },
+				{ color: validGradient.gradient!.stops[1].color, position: 0.5 },
+				{ color: validGradient.gradient!.stops[2].color, position: 1 },
+			],
+		},
+	}
+	const violations = validateSchema(broken)
+	assert.ok(hasCode(violations, "I1.color-invalid-hex"), codes(violations).join(", "))
+	assert.equal(hasCode(violations, "I1.first-stop-not-background"), false, codes(violations).join(", "))
+})
+
+test("a collapsed surface leaves no room for a gradient, and the contract says so through I3", () => {
+	// Documented consequence of the ruling: with both ends pinned, `surfaceCollapsed` would make the
+	// first and last stop the same colour — a degenerate ramp. A field that collapsed to one colour is
+	// flat, and publishes `gradient: null`.
+	const collapsedWithRamp = makePalette({
+		background: "#101820",
+		surface: "#101820",
+		foreground: "#f2f5f7",
+		accent: "#e0533a",
+		stops: [["#101820", 0], ["#101820", 1]],
+	})
+	assert.deepEqual(validateSchema(collapsedWithRamp), [], "the endpoints are honestly the field roles")
+	assert.ok(
+		validateDistinctness(collapsedWithRamp).some((entry) =>
+			entry.subjects.includes("gradient.stops[0]") && entry.subjects.includes("gradient.stops[1]")
+		),
+		"the degenerate ramp is caught as a stop pair",
+	)
+})
+
+// ---------------------------------------------------------------------------------------------
+// The one sanctioned non-source colour — reviewer's ruling, 2026-08-04
+// ---------------------------------------------------------------------------------------------
+
+test("the permitted escape set is exactly pure white and pure black", () => {
+	assert.deepEqual([...ESCAPE_COLORS], ["#ffffff", "#000000"])
+})
+
+test("I1 accepts a legally declared escape at either permitted role", () => {
+	assert.deepEqual(validateSchema(escapeWhiteBackground), [])
+	assert.deepEqual(validateSchema(escapeBlackForeground), [])
+	// And the collapse the ruling requires is genuinely set, not merely absent-and-assumed.
+	assert.equal(escapeWhiteBackground.collapse.surfaceCollapsed, true)
+	assert.equal(escapeBlackForeground.collapse.accentCollapsed, true)
+})
+
+test("I2 lets the escape colour through, once, when the artwork genuinely lacks it", () => {
+	const result = validatePalette(escapeWhiteBackground, {
+		source: escapeBackgroundSource,
+		transparency: opaqueJpegReport,
+	})
+	assert.deepEqual(result.violations, [], JSON.stringify(result.violations, null, 2))
+	assert.equal(result.valid, true)
+
+	const black = validatePalette(escapeBlackForeground, {
+		source: escapeForegroundSource,
+		transparency: opaqueJpegReport,
+	})
+	assert.deepEqual(black.violations, [], JSON.stringify(black.violations, null, 2))
+})
+
+test("without the declaration the same palette fails the existence rule — the default is fail-safe", () => {
+	// This is why the field may be absent at all: forgetting to declare buys nothing. Only a
+	// declaration can weaken a check.
+	const undeclared: Palette = { ...escapeWhiteBackground, escape: null }
+	const violations = validateSourceSupport(undeclared, escapeBackgroundSource).violations
+	assert.ok(hasCode(violations, "I2.color-absent-from-source"), codes(violations).join(", "))
+	assert.deepEqual(
+		[...violations[0].subjects].sort(),
+		["roles.background", "roles.surface"],
+	)
+})
+
+test("I2 refuses an escape the artwork refutes — a colour that is there was never escaped", () => {
+	// The identical palette, over an image that contains white. `I2.escape-not-needed` is the clause
+	// that stops the declaration becoming a blanket opt-out of the existence rule: the palette should
+	// have published the source pixel and said nothing.
+	const violations = validateSourceSupport(escapeWhiteBackground, escapeUnnecessarySource).violations
+	assert.deepEqual(codes(violations), ["I2.escape-not-needed"])
+	assert.equal(violations[0].measured?.hex, "#ffffff")
+	assert.ok((violations[0].measured?.occurrences as number) > 0)
+	assert.ok(violations[0].subjects.includes("escape"))
+})
+
+test("the escape covers exactly one colour: a second absent colour is still an invention", () => {
+	const violations =
+		validateSourceSupport(escapeWhiteBackground, escapeBackgroundMissingAccentSource).violations
+	assert.deepEqual(codes(violations), ["I2.color-absent-from-source"])
+	assert.deepEqual([...violations[0].subjects], ["roles.accent"])
+})
+
+test("I1 rejects an escape colour that is not one of the two literals", () => {
+	assert.deepEqual(codes(validateSchema(escapeColorNotPermitted)), ["I1.escape-color-not-permitted"])
+})
+
+test("I1 rejects the escape at a role it may not occupy", () => {
+	assert.deepEqual(codes(validateSchema(escapeRoleNotPermitted)), ["I1.escape-role-not-permitted"])
+})
+
+test("I1 rejects an escape whose partner is not collapsed — the escape is for the 2-colour case", () => {
+	assert.deepEqual(codes(validateSchema(escapePartnerNotCollapsed)), ["I1.escape-partner-not-collapsed"])
+})
+
+test("I1 rejects a declaration that describes a colour the role does not publish", () => {
+	assert.ok(hasCode(validateSchema(escapeRoleColorMismatch), "I1.escape-role-color-mismatch"))
+})
+
+test("a malformed escape buys no exemption from I2 — the declaration cannot launder itself", () => {
+	// The one combination that must not happen: invariant 1 complains about the block while invariant 2
+	// quietly waves the invented colour through. Every structural condition is re-checked where the
+	// exemption is granted, precisely so that a broken declaration is worth nothing.
+	for (
+		const [label, palette, source] of [
+			["colour not permitted", escapeColorNotPermitted, bandedSource(["#101820", "#e0533a"])],
+			["partner not collapsed", escapePartnerNotCollapsed, bandedSource(["#101820", "#1e2a38", "#e0533a"])],
+			["role/colour mismatch", escapeRoleColorMismatch, bandedSource(["#101820", "#e0533a"])],
+		] as const
+	) {
+		const violations = validateSourceSupport(palette, source).violations
+		assert.ok(
+			hasCode(violations, "I2.color-absent-from-source"),
+			`${label}: ${codes(violations).join(", ")}`,
+		)
+	}
+})
+
+test("the escape never reaches a colour published anywhere else in the palette", () => {
+	// The exemption is granted per colour and only when every path publishing it is one the escape
+	// covers. A gradient stop that happens to be the same pure white does not ride along: the ruling
+	// granted exactly one colour, not one hex value used freely.
+	const withWhiteStop: Palette = {
+		...escapeWhiteBackground,
+		roles: { ...escapeWhiteBackground.roles, surface: escapeWhiteBackground.roles.surface },
+		gradient: {
+			stops: [
+				{ color: escapeWhiteBackground.roles.background, position: 0 },
+				{ color: escapeWhiteBackground.roles.surface, position: 1 },
+			],
+		},
+	}
+	const violations = validateSourceSupport(withWhiteStop, escapeBackgroundSource).violations
+	assert.ok(hasCode(violations, "I2.color-absent-from-source"), codes(violations).join(", "))
+	assert.ok(violations[0].subjects.includes("gradient.stops[0]"))
+})
+
+test("the escape changes nothing for a palette that did not declare one", () => {
+	// Every pre-existing fixture keeps its verdict: the field defaults to no-escape and the existence
+	// rule is untouched.
+	assert.equal(validFlat.escape, null)
+	const violations = validateSourceSupport(validFlat, missingAccentSource).violations
+	assert.deepEqual(codes(violations), ["I2.color-absent-from-source"])
 })

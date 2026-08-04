@@ -44,6 +44,28 @@ export const MIN_GRADIENT_STOPS = 2
 export const MAX_GRADIENT_STOPS = 4
 
 /**
+ * The **entire** set of colours a palette may publish without the artwork containing them.
+ *
+ * `[REVIEWED — reviewer's ruling, 2026-08-04]`, verbatim: a palette may introduce *"EXACTLY ONE
+ * color not present in the artwork: pure white (`#ffffff`) or pure black (`#000000`) only"*. Two
+ * literals, no threshold, nothing to calibrate — which is why this constant needs no provenance
+ * beyond the ruling itself and can never drift. See `NonSourceColorEscape` in `types.ts` for the
+ * three other conditions the escape is held to.
+ *
+ * Anything else absent from the artwork is an invention and fails invariant 2.
+ */
+export const ESCAPE_COLORS = ["#ffffff", "#000000"] as const
+
+/**
+ * The roles the escape colour may occupy. Same ruling: *"used as background or foreground only (with
+ * surface or accent collapsed correspondingly)"*, and the collapse partner each one implies.
+ */
+export const ESCAPE_ROLE_PARTNERS = {
+	background: { partner: "surface", flag: "surfaceCollapsed" },
+	foreground: { partner: "accent", flag: "accentCollapsed" },
+} as const
+
+/**
  * The four colour regions the same-colour bar is measured per.
  *
  * `[REVIEWED]` — the strata of the bracketing round

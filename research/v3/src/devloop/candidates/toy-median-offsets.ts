@@ -76,16 +76,19 @@ export const ROLE_OFFSETS: Readonly<Record<"background" | "surface" | "foregroun
 }
 
 /**
- * The two ends of the toy's gradient, again as OKLab offsets from the median.
+ * The toy's gradient has **no offsets of its own any more** — reviewer's ruling, 2026-08-04.
  *
- * **[UNCALIBRATED] — made up**, same as above. A gradient is published mainly so the loop exercises
- * the pinned display mapping and the viewer's field rendering on real data; a flat-field-only toy
- * would leave that path untested until a real candidate arrived.
+ * *"when the field is a gradient, the first stop is the `background` and the last stop is the
+ * `surface`."* The two ends are role colours, so a second pair of made-up offsets would be two
+ * `[UNCALIBRATED]` numbers that the contract now forbids from mattering. The toy publishes
+ * `background → surface`, which is both the ruling and one fewer invented constant.
+ *
+ * A gradient is published mainly so the loop exercises the pinned display mapping and the viewer's
+ * field rendering on real data; a flat-field-only toy would leave that path untested until a real
+ * candidate arrived. That still happens — and when the two ends snap to the same pixel the toy
+ * publishes `gradient: null` instead, because a collapsed surface leaves no ramp to draw.
  */
-export const GRADIENT_OFFSETS: readonly OkLab[] = [
-	[-0.16, +0.02, +0.02],
-	[+0.06, -0.02, -0.02],
-]
+export const GRADIENT_ENDPOINT_ROLES = ["background", "surface"] as const
 
 /** Thrown when the input is one the contract refuses. Surfaces as a failed row, never a silent skip. */
 export class ToyCandidateError extends Error {
@@ -224,17 +227,20 @@ export const paletteOf: CandidatePalette = async (imagePath) => {
 	const foreground = colorFromRgb(snap(ROLE_OFFSETS.foreground))
 	const accent = colorFromRgb(snap(ROLE_OFFSETS.accent))
 
-	const stops = GRADIENT_OFFSETS.map((offset, index): GradientStop => ({
-		color: colorFromRgb(snap(offset)),
-		// Evenly spaced across the full span. The contract requires the first stop at 0 and the last
-		// at 1; with two stops that is the whole of it.
-		position: index / (GRADIENT_OFFSETS.length - 1),
-	}))
+	// The ends are the field roles themselves, per the endpoint ruling. Positions span the full
+	// parameter, which with two stops is the whole of it.
+	const stops: GradientStop[] = [
+		{ color: background, position: 0 },
+		{ color: surface, position: 1 },
+	]
+	// A collapsed surface has no ramp: both ends would be the same colour, which invariant 3 refuses
+	// as degenerate. A flat field says so with `gradient: null` rather than drawing a line to itself.
+	const collapsedField = surface.hex === background.hex
 
 	return {
 		contractVersion: CONTRACT_VERSION,
 		roles: { background, surface, foreground, accent },
-		gradient: { stops: stops as unknown as [GradientStop, GradientStop] },
+		gradient: collapsedField ? null : { stops: stops as unknown as [GradientStop, GradientStop] },
 		collapse: {
 			// Stated, not inferred — but the statement has to be true, and with snapping two offsets can
 			// genuinely land on the same pixel. So it is measured against the colours actually published.
