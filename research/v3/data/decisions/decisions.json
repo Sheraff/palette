@@ -3651,6 +3651,30 @@
     "The ruling names runtime masking as the costly case because SAM is what was measured. Whether some other seconds-scale runtime tool would face the same bar was not asked; the cold-runtime half of the statement, however, is stated generally and does bind every paradigm."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-the-algorithm-never-reads-a-table",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-design",
+   "decision": "THE ALGORITHM NEVER READS A TABLE, AND THE PRE-COMPUTED DATASETS ARE FOR THE AGENTS. Reviewer ruling, verbatim: \"yes, the algorithm *never reads a table*, this must be very clear. Those pre-computed datasets are for the agents, to be able to test, evaluate, ideate, find holes in their coverage... They are development-time tools for efficient iteration.\" The shipped algorithm consults NO lookup table: no committed label file, no oracle output, no cached mask, no embedding index, no artifact any earlier pass produced. Every pre-computed dataset in this repo exists for a different consumer than the runtime - it exists FOR THE AGENTS doing development, and the reviewer named what for: to TEST, to EVALUATE, to IDEATE, and to FIND HOLES IN THEIR COVERAGE. They are DEVELOPMENT-TIME TOOLS FOR EFFICIENT ITERATION. That is the whole of their status. The corollary is the one that has actually gone wrong in this repo: the existence of a committed dataset is NEVER evidence that the runtime may consult it, and a sentence describing the development-time algorithm working over the known corpus must not be read as a description of what ships.",
+   "scope": "Binds every Phase 1 proposal and every later design. It COMPLEMENTS `d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`, which ruled that runtime is COLD and PER-FILE and that SAM's measured 2.7-4.3 s/image counts as slow; that record states the constraint, this one states WHY the pre-computed datasets exist and WHO they are for. Nothing is overturned and no `supersedes` is set - read the two together. It does NOT restrict dev-time use of any pre-computed dataset: it AFFIRMS it, and an agent using the oracle output, SAM masks, embedding tables, devloop warm artifacts or stored robustness runs to test, evaluate, ideate or find coverage holes is doing exactly what they are for. It does NOT deprecate the semantic oracle pipeline or any committed label file, and it does not make any of them a runtime input they never were. It sets no numeric budget and rules on no specific paradigm. Recorded at `ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md` non-goal 1 (as a dated clarification beneath the original sentence, which is preserved) and in the Phase 1 constraint sheet 3.1 (as the leading, memorable form of the cold-runtime constraint).",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
+     "what": "non-goal 1, the dated clarification note recording this ruling directly beneath the original `the algorithm reads a table` sentence"
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "3.1, where the reviewer's sentence now leads the runtime-cold constraint a proposal author is held to"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when any code landed, per the README rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The verbatim quote in `decision` is the whole of the evidence.",
+    "The original sentence this ruling corrects - `the pipeline runs offline, its output is committed, and the algorithm reads a table`, in the oracle pipeline's non-goal 1 - was NOT deleted, per the doc-preservation convention. It stands with a dated clarification beneath it saying it describes the DEVELOPMENT-TIME algorithm over the known corpus. Anyone grepping this repo will still find the original phrasing, and this record is what explains why it is still there.",
+    "The ruling was given as a clarification, so it names no mechanism for enforcing itself. Nothing in the contract gates or the honesty scanner currently detects a paradigm that quietly assumes a lookup table; catching that is a reviewer-at-proposal-time judgement, exactly as with `very good reasons` on the sibling record."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

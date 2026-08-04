@@ -149,7 +149,15 @@ have been **exhausted**, or SAM is **demonstrably more reliable** than them. A p
 SAM at runtime should say which of these it can already argue and which it would have to establish.
 The oracle's dev-time use of SAM is a separate thing and is not affected.
 
-**Runtime is cold. Nothing is precomputed.** Reviewer, 2026-08-04, verbatim:
+**The algorithm never reads a table.** That is the reviewer's own sentence and the form to remember
+it in. Reviewer, 2026-08-04, verbatim:
+
+> yes, the algorithm *never reads a table*, this must be very clear. Those pre-computed datasets are
+> for the agents, to be able to test, evaluate, ideate, find holes in their coverage... They are
+> development-time tools for efficient iteration.
+
+**Runtime is cold. Nothing is precomputed.** The same ruling, stated as the constraint. Reviewer,
+2026-08-04, verbatim:
 
 > At runtime we *will not* have anything pre-computed. Pre-computed is only while we develop on a
 > known corpus.

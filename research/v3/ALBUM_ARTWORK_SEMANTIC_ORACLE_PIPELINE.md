@@ -34,6 +34,23 @@
    path. The pipeline runs offline, its output is committed, and the algorithm
    reads a table. If this ever changes it is a different project with a different
    design.
+
+   *Clarification added 2026-08-04 (reviewer ruling; the sentence above is kept as
+   written, per the doc-preservation convention). "The algorithm reads a table"
+   describes the **development-time** algorithm working over the **known corpus** —
+   it is not a description of what ships. The shipped algorithm **never reads a
+   table**. Reviewer, 2026-08-04, verbatim:*
+
+   > yes, the algorithm *never reads a table*, this must be very clear. Those
+   > pre-computed datasets are for the agents, to be able to test, evaluate, ideate,
+   > find holes in their coverage... They are development-time tools for efficient
+   > iteration.
+
+   *So the committed output of this pipeline is an instrument for agents during
+   development, not an input the runtime consults. Read alongside
+   `d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow` (runtime is cold and
+   per-file) and `d-2026-08-04-the-algorithm-never-reads-a-table`, which records this
+   ruling. The non-goal itself is unchanged: no model runs in the extraction path.*
 2. **This is not a source of colorimetry.** The models are never asked for hex
    values, luminance ordering, contrast ratios, or region areas in pixels. Anything
    numeric that can be computed is computed. Models are asked only for structure
