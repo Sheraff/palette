@@ -6,9 +6,12 @@ exact pathspec + message, flushed in order on unlock.
 
 ## Owed
 
-*(none — vault unlocked 2026-08-04, backlog flushed)*
+*(none — second unlock 2026-08-04, W4 flushed as `0030818`)*
+
 
 ## Landed from this ledger
+
+- `0030818` (G) — W4 energy module, verified 16/16 fresh; committed from staged index (see commit body)
 
 - `68e1dca` (G) — integration directives + BuildFieldHypotheses rates argument
 - `3f40b90` (G) — W1 substrate module, verified 16/16 before commit
