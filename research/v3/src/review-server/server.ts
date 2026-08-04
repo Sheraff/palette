@@ -69,6 +69,7 @@ import {
 export { BRACKETING_ACTIVE_BATCH_ID, BRACKETING_ROUND_2_BATCH_ID }
 import { analyzeOracleValidation, type OracleValidationAnalysis } from "./analyze-oracle-validation.ts"
 import { ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION } from "./endorsement-recheck.ts"
+import { TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION } from "./toolbox-adjudication.ts"
 import { FREETEXT_LABEL_SCHEMA_VERSION, FREETEXT_MIN_LENGTH, GROUND_FREETEXT_BATCH_ID, GROUND_FREETEXT_FIXTURE_PATH } from "./freetext.ts"
 import {
 	BCDE_VALIDATION_BATCH_ID,
@@ -300,12 +301,17 @@ export function batchReviewPaths(
 				// draw — it serves an item as image, question and token, and renders no palette at all.
 				// Same reason as the free-text line below it: `kind` alone cannot tell two instruments
 				// apart, and the schema is what the server already knows at dashboard-build time.
+				// A toolbox-adjudication round has no stimulus to look at at all: the item IS the words,
+				// and `/oracle` would render its carrier panel — a flat grey rectangle — where the
+				// artwork goes, above a question about a tool. Same reason as the two lines below it.
 				page:
-					entry.labelSchemaVersion === ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION
-						? `/endorsement-recheck${query}`
-						: entry.labelSchemaVersion === FREETEXT_LABEL_SCHEMA_VERSION
-							? `/freetext${query}`
-							: `/oracle${query}`,
+					entry.labelSchemaVersion === TOOLBOX_ADJUDICATION_LABEL_SCHEMA_VERSION
+						? `/toolbox-adjudication${query}`
+						: entry.labelSchemaVersion === ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION
+							? `/endorsement-recheck${query}`
+							: entry.labelSchemaVersion === FREETEXT_LABEL_SCHEMA_VERSION
+								? `/freetext${query}`
+								: `/oracle${query}`,
 				payload: `/api/oracle-validation/${id}`,
 				afterRelease:
 					entry.labelSchemaVersion === ORACLE_LABEL_SCHEMA_VERSION ? `/oracle-review${query}` : null,

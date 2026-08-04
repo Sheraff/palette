@@ -1,0 +1,433 @@
+{
+  "batch": "toolbox-adjudication-1",
+  "title": "Toolbox adjudication — point by point",
+  "date": "2026-08-04",
+  "sources": [
+    "research/v3/reviews/toolbox-review/gap-scan.md",
+    "research/v3/reviews/toolbox-review/bias-audit.md",
+    "orchestrator triage (already seen)"
+  ],
+  "answers": ["build-now", "defer", "drop", "discuss"],
+  "items": [
+    {
+      "id": "TB-01",
+      "title": "Let a method hand back its working-out, not just its final colours",
+      "source": "gap-scan (1a) — tier MUST",
+      "plain": "The program that runs a colour-picking method across all the test pictures currently accepts exactly one thing back from it: the finished list of colours. Some of the approaches we want to compare also produce useful halfway results — for instance a map of which parts of the picture are which object, or the list of colours they considered before choosing. Right now there is nowhere to put those, so they would be invisible when we compare approaches.",
+      "serves": "Phase 1 (divergence): the approaches are written against this slot, so it has to be widened before anyone writes them — retrofitting five approaches later costs five times as much.",
+      "cost": "About a day.",
+      "recommendation": "build-now",
+      "reason": "It is the one item on the list whose cost multiplies if it happens late."
+    },
+    {
+      "id": "TB-02",
+      "title": "Reuse the old evaluation harness instead of writing a new one",
+      "source": "gap-scan (1) — already built in part",
+      "plain": "A 'harness' here is the plumbing that takes a colour-picking method, runs it over every test picture, remembers the results so it does not redo work, and prints a comparison. We already have about 1,600 lines of exactly this from the previous version of the project. The proposal is to move that across and adapt it, rather than treat it as something to build from scratch.",
+      "serves": "Phase 2 (bake-off): this is the machine every prototype is run through.",
+      "cost": "About a day of moving and adapting; several days if treated as a fresh build.",
+      "recommendation": "build-now",
+      "reason": "Scoping this as a new build is the single largest way to waste the budget here."
+    },
+    {
+      "id": "TB-03",
+      "title": "Sort the change report by how big each change was",
+      "source": "gap-scan (1b) — tier HIGH",
+      "plain": "When we change a method, a report tells us which pictures came out different. Today it only says yes-or-no per picture, listed alphabetically. The proposal adds a number for how far each colour moved and sorts the biggest movers first. The recurring problem in the previous version was that a fix meant to touch fourteen pictures quietly changed a hundred and forty-eight, and an alphabetical yes/no list hides that.",
+      "serves": "Phase 2 (bake-off) and every iteration after it — this is the report a person actually reads after each change.",
+      "cost": "A couple of hours (roughly thirty lines).",
+      "recommendation": "build-now",
+      "reason": "Cheapest item on the list, aimed at the most frequent failure in the project record."
+    },
+    {
+      "id": "TB-04",
+      "title": "Run the test pictures several at a time instead of one after another",
+      "source": "gap-scan (1c) — tier HIGH, blocks Phase 2 throughput",
+      "plain": "The runner processes pictures strictly one at a time, at roughly five seconds each. Over the two hundred pictures we test on, that is about seventeen minutes for every single change, per approach. The proposal is to run several in parallel using the result-remembering cache that already exists.",
+      "serves": "Phase 2 (bake-off): with five approaches and repeated rounds, this waiting time is the main tax on iteration speed.",
+      "cost": "About a day.",
+      "recommendation": "build-now",
+      "reason": "Seventeen minutes per change per approach compounds into days across the bake-off."
+    },
+    {
+      "id": "TB-05",
+      "title": "Check that results survive harmless changes to the picture",
+      "source": "gap-scan (2) — tier HIGH, blocks Phase 2 entry",
+      "plain": "If we re-save a picture at a slightly different quality, shrink it, crop a single pixel off, or use the other size of the same cover art that the source provides, a person would call it the same picture and expect the same colours. We have a small working prototype that tests two of those changes; the proposal is to extend it to cover quality, size, and the matched pairs of the same artwork we already have on disk but have never compared. We already know the starting numbers to beat: re-saving agrees only 73% of the time, and a one-unit brightness jitter changed all 114 test results.",
+      "serves": "Phase 2 (bake-off): a prototype that cannot survive a re-save is not a candidate, so this is an entry check.",
+      "cost": "Two to three days, most of it extending a prototype rather than writing new logic.",
+      "recommendation": "build-now",
+      "reason": "The plan already names this as its biggest acknowledged hole, and the inputs are sitting unused."
+    },
+    {
+      "id": "TB-06",
+      "title": "Compare stability on pictures you tuned against versus pictures you have never seen",
+      "source": "gap-scan (2, sub-item) — the piece most likely to be dropped",
+      "plain": "Take the same harmless-change test above and run it separately on the pictures we tuned the method against and on pictures we have never looked at. If the method is genuinely general, both groups wobble about the same amount. In the previous version the tuned pictures were 1.6 times more stable than the unseen ones — the clearest number we ever got that we had tailored the method to specific pictures — and nothing currently measures it.",
+      "serves": "Phase 2 (bake-off): it is one of the three numbers the project's stated success criteria name, and it needs no machinery beyond the item above plus a split of the picture list.",
+      "cost": "A couple of hours once the item above exists.",
+      "recommendation": "build-now",
+      "reason": "It is nearly free on top of TB-05 and it is the only over-tailoring alarm we have ever had."
+    },
+    {
+      "id": "TB-07",
+      "title": "Test rules of the form 'change the input this way and the output must change that way'",
+      "source": "gap-scan (4) — tier HIGH, blocks Phase 2 entry",
+      "plain": "Some expectations do not need a human to judge them. If you shift every colour in a picture round the colour wheel by thirty degrees, every colour the method picks should shift by thirty degrees too, staying equally light and equally vivid. Same for flipping the picture left-to-right, or brightening the whole thing. These are strong automatic checks that need no reference answer. Important caveat: a method that uses learned knowledge about the world — sky is blue, skin looks like this — will legitimately fail the colour-wheel one, so it must report a finding, never block anything.",
+      "serves": "Phase 2 (bake-off): it is the cheapest way to see structural defects in a prototype before any human looks at it.",
+      "cost": "About a day on top of TB-05.",
+      "recommendation": "build-now",
+      "reason": "It would have identified the previous version's root defect on day one, and nothing like it exists anywhere in the tree."
+    },
+    {
+      "id": "TB-08",
+      "title": "One shared statistics module, built so the common mistakes cannot be typed",
+      "source": "gap-scan (5) — tier MUST, best-evidenced item on the list",
+      "plain": "Statistics are currently re-written by hand in at least eight unrelated files, and a review found ten distinct kinds of error, each of which changed or would have changed a published conclusion — for example counting twenty-four identical repeated rows as twenty-four independent observations, which moved two frozen settings by more than 10%. The proposal is one shared module where the mistakes are structurally impossible: you cannot ask for a result without stating whether your measurements are paired, and you must declare whether your count is 'things' or 'attempts'.",
+      "serves": "Phase 1 and Phase 2 both: the first comparison between two things happens the moment two proposals exist, and every number that follows flows through this.",
+      "cost": "Two to three days. It is self-contained code with no dependency on anything else, so it can start immediately.",
+      "recommendation": "build-now",
+      "reason": "Ten measured errors, each one having moved a published conclusion."
+    },
+    {
+      "id": "TB-09",
+      "title": "Hand-made test pictures where the right answer is a property, not a palette",
+      "source": "gap-scan (3a) — tier HIGH; the original 'generate ground truth' version is rejected",
+      "plain": "We cannot generate pictures with a known correct palette, because the correct palette is your judgement and no generator has it — building one would just select whichever method matches the generator author's taste. What we can generate is pictures where one fact is forced to be true: a two-colour poster has exactly two large colour areas; a pure black frame has no accent colour; a smooth top-to-bottom fade is a gradient even after the file format adds visible steps to it. We already have roughly sixty-five such pictures written, but they are locked inside one version's tests. The work is lifting them out into something any method can be run against.",
+      "serves": "Phase 2 (bake-off): it is what makes the automatic rule-checks above actually testable, and it covers the odd cases (all one colour, extreme shapes, greyscale).",
+      "cost": "About a day, mostly moving code that exists.",
+      "recommendation": "build-now",
+      "reason": "It is promotion of existing fixtures, and it carries none of the invented-answer risk the original proposal had."
+    },
+    {
+      "id": "TB-10",
+      "title": "A way to snap any proposed palette onto the nearest legal one — after closing a known hole in the rules",
+      "source": "gap-scan (7) — tier MUST, plus its blocking prerequisite F2",
+      "plain": "The output rules say things like 'text must be readable on its background' and 'these two colours must not be near-identical'. Today each method would have to satisfy those in its own ad-hoc way, which means a comparison between methods secretly becomes a comparison between their patch-up strategies. The proposal is one shared component that, given a picture's colours, either samples legal palettes or nudges an illegal one to the nearest legal one. Blocking prerequisite: one rule — text must stay readable against a gradient background — is written down but enforced nowhere, so a palette with invisible text passes today. Shipping the snapper first would mass-produce that hole across every method.",
+      "serves": "Phase 1 and Phase 2: every candidate approach needs it, for a different reason each.",
+      "cost": "Two to three days, plus a couple of hours for the rule fix that must come first.",
+      "recommendation": "build-now",
+      "reason": "Without it the bake-off compares patch-up strategies rather than approaches."
+    },
+    {
+      "id": "TB-11",
+      "title": "Bring back the random-palette attack on the output rules",
+      "source": "gap-scan (7, sub-item) — cost XS, it exists in history",
+      "plain": "Someone previously wrote a program that generated three million random palettes and hunted for one that passes all our output rules while being obviously bad. It found the holes it was meant to find, and then it was left in a temporary folder and never committed. The proposal is to recover it and run it as a standing check whenever the rules change.",
+      "serves": "Phase 1 and Phase 2: the rules are the shared language everything is judged in, and each edit to them can open a new hole.",
+      "cost": "A couple of hours.",
+      "recommendation": "build-now",
+      "reason": "The work is already done; only the committing was skipped."
+    },
+    {
+      "id": "TB-12",
+      "title": "Check that our two programming languages read the same picture the same way",
+      "source": "gap-scan (6a) — tier HIGH, cost XS",
+      "plain": "The colour side of the project reads image files with one library in one language; the labelling and machine-learning side reads them with a different library in a different language. Nobody has ever checked that the two produce the same pixels. There are three specific reasons to expect they do not: neither side applies embedded colour profiles, picture rotation is implemented twice independently, and two versions of the same image library are installed side by side. If they disagree, every label we have is attached to different pixels than the colour code ever saw — and it would look like a modelling failure, not a plumbing one.",
+      "serves": "Phase 1 and Phase 2: it silently invalidates the whole evaluation of any approach that uses the labels.",
+      "cost": "A couple of hours: decode two hundred files both ways and report the largest disagreement.",
+      "recommendation": "build-now",
+      "reason": "Two hours to permanently close a landmine that no other instrument can detect."
+    },
+    {
+      "id": "TB-13",
+      "title": "Study how see-through pictures should be flattened onto a background",
+      "source": "gap-scan (6b) — tier NICE",
+      "plain": "Some picture files have see-through regions. To read colours from them you must first paint them onto something — white, black, or a blend — and the choice changes the answer. The proposal is a small study of which choice to standardise on.",
+      "serves": "Phase 2 (bake-off), marginally: the affected files are already mostly excluded from the picture set we test on.",
+      "cost": "About a day.",
+      "recommendation": "drop",
+      "reason": "The files it would matter for are already outside the candidate set."
+    },
+    {
+      "id": "TB-14",
+      "title": "Show how palettes look to colour-blind viewers, as a diagnostic",
+      "source": "gap-scan (8) — tier NICE; the accessibility-threshold version is rejected",
+      "plain": "About 8% of men see red and green as similar. Our rule that an accent colour must be clearly distinct from its background measures distance in normal colour vision, so a red accent on a green background can pass comfortably while being nearly invisible to a colour-blind viewer. The proposal is three small pieces of arithmetic that re-render a palette as such a viewer sees it, shown as an extra column in the comparison sheets. It is explicitly not proposed as a rule and explicitly not proposed as a way to justify our contrast thresholds — those are a product decision already made.",
+      "serves": "Phase 2 (bake-off): a cheap extra failure category to look for in the review sheets.",
+      "cost": "A couple of hours.",
+      "recommendation": "drop",
+      "reason": "Nothing depends on it; revisit only if the first review sheets actually show accent colours collapsing."
+    },
+    {
+      "id": "TB-15",
+      "title": "Label each cover by how noisy or banded it is, so failures can be grouped",
+      "source": "gap-scan (9a) — tier HIGH",
+      "plain": "Compressed pictures show visible steps in smooth fades and grainy speckle in dark areas, and these are the conditions where our results are least stable — a one-unit brightness jitter moved all 114 test results. The proposal is a descriptor that tags every cover with how banded, noisy and coarsely-quantised it is, so that a stability failure can be reported as 'we fail on banded fades' rather than as one undifferentiated percentage. It labels inputs; it does not fix anything.",
+      "serves": "Phase 2 (bake-off): it turns the stability score from a number into a diagnosis, which is what the 'how does it fail?' question needs.",
+      "cost": "About a day.",
+      "recommendation": "defer",
+      "reason": "Only pays off once TB-05 is producing failures that need grouping; build it then."
+    },
+    {
+      "id": "TB-16",
+      "title": "Detect the large flat areas of a picture",
+      "source": "gap-scan (9b) — tier HIGH",
+      "plain": "Two separate things in the project are waiting on the same missing piece: one of our output rules is supposed to check that a background colour is actually spread out across the picture rather than concentrated in one corner, and that half of the rule was never implemented; and the fade-detection code needs to know which parts of a picture are vague rather than crisp. Both need the same 'find the large uniform regions' component.",
+      "serves": "Phase 2 (bake-off): it completes a rule that currently reports itself as unchecked.",
+      "cost": "One to three days.",
+      "recommendation": "defer",
+      "reason": "Real, but it is a gap in an existing rule rather than something Phase 1 or the bake-off is blocked on."
+    },
+    {
+      "id": "TB-17",
+      "title": "Deliberately withhold the existing region-splitting code from the people writing proposals",
+      "source": "gap-scan (9c) — nothing to build; a rule to adopt",
+      "plain": "We already have mature code that chops a picture into small uniform patches. Phase 1 asks its authors to reason from the problem statement and the raw verdicts, not from our existing machinery. Handing them ready-made region-splitting steers them towards a region-shaped answer, which is exactly what the rule against anchoring is meant to prevent. The proposal is simply not to put it in the pack — whichever approach concludes it wants it will find it waiting.",
+      "serves": "Phase 1 (divergence): it is the anchoring rule applied to a specific, concrete temptation.",
+      "cost": "Free — it is a decision, not code.",
+      "recommendation": "build-now",
+      "reason": "Costless, and withholding is only free before the briefs go out."
+    },
+    {
+      "id": "TB-18",
+      "title": "Remember expensive per-picture work so five approaches do not redo it five times",
+      "source": "gap-scan (E) — tier HIGH, blocks Phase 2 throughput",
+      "plain": "Decoded pixels, object outlines from the segmentation model, and machine-learning fingerprints get computed for roughly seven and a half thousand covers. A shared store keyed on the picture's content plus exactly which operation and settings produced the result means each is computed once. Our palette runner already does exactly this trick for palettes, so this is generalising a proven local design. Without it, an approach that needs object outlines is simply not runnable at full scale — which would eliminate it on logistics rather than on merit.",
+      "serves": "Phase 2 (bake-off): it decides whether one of the candidate approaches can be evaluated at all.",
+      "cost": "About a day.",
+      "recommendation": "build-now",
+      "reason": "Otherwise a paradigm dies of slowness rather than of being wrong."
+    },
+    {
+      "id": "TB-19",
+      "title": "Stamp every result file with what produced it, and one command to re-derive and diff",
+      "source": "gap-scan (F) — tier HIGH, including its Python prerequisite",
+      "plain": "No analysis output currently records which pictures went in, how many, which version of the code ran, or which decisions it relied on, so 're-run this and see if it still holds' is not possible. The cost of that is on the record: an audit voided because a dependency was not recorded, four stored facts found wrong on re-check, and three of the most-quoted numbers in our own field guide living only on branches that were never merged. Prerequisite found while inventorying: the Python half of the project has no list of its own dependencies anywhere — the model weights are pinned immaculately while the interpreter and libraries under them are pinned nowhere — so 'which code ran' is not computable there until four environments are frozen, about an hour's work.",
+      "serves": "Phase 1 and Phase 2: it is the cheapest fix for the largest documented category of wasted work in the whole project.",
+      "cost": "About a day, plus an hour for the dependency freeze.",
+      "recommendation": "build-now",
+      "reason": "Every wasted-work incident in the record traces back to a missing header."
+    },
+    {
+      "id": "TB-20",
+      "title": "Make it impossible to write an unexplained number into the code",
+      "source": "gap-scan (K) — tier MUST",
+      "plain": "We have a tool that counts how many tuning numbers in the code have a recorded justification. But it counts after the fact — it cannot stop an unexplained number being written. The proposal is a small helper that a number must be declared through, carrying its justification with it, plus an automatic check that refuses new undeclared ones. The stated goal is constants 'each carrying provenance from birth', and birth is an authoring-time event that only an authoring-time tool can catch. Retrofitting justifications across 908 sites is something nobody does twice.",
+      "serves": "Phase 1 (divergence) and after: Phase 1 is exactly when the new numbers get written.",
+      "cost": "A couple of hours to about a day.",
+      "recommendation": "build-now",
+      "reason": "Cheap now, and structurally impossible to add after the numbers exist."
+    },
+    {
+      "id": "TB-21",
+      "title": "Point the existing speed profiler at the new interface",
+      "source": "gap-scan (H) — tier HIGH, cost XS–S",
+      "plain": "We already have a careful speed-measuring harness from the previous version: it measures processor time rather than wall-clock time because the development machine is busy, times the image decoding separately, alternates the two things being compared, and has a check that catches numeric drift a plain comparison would hide. It is currently wired to the old code. The work is repointing it. Worth doing carefully rather than letting each approach time itself: a previous ad-hoc profiling attempt misattributed cost by a factor of four.",
+      "serves": "Phase 2 (bake-off): the candidate approaches differ in cost by orders of magnitude, and a search over all legal palettes is not a fraction-of-a-second operation.",
+      "cost": "A couple of hours to about a day.",
+      "recommendation": "build-now",
+      "reason": "The instrument exists and uses the right method; only the wiring is missing."
+    },
+    {
+      "id": "TB-22",
+      "title": "Somebody has to state how slow is too slow",
+      "source": "gap-scan (H, blocking sub-item) — not an agent's decision",
+      "plain": "There is no stated speed or memory target anywhere in the project — not one mention of a time budget in any planning document. The previous version landed at about seven tenths of a second per picture and reasonably treated cost as a non-issue, but the approaches now on the table are not all in that league. A profiler without a target measures without deciding: if cost is not one of the axes the bake-off scores on, Phase 2 can pick an unshippable approach and we would find out in Phase 3, after committing.",
+      "serves": "Phase 2 (bake-off): it is a scoring axis, and it cannot be set after the results are in without looking like it was set to suit them.",
+      "cost": "Free, but only you can do it — one sentence naming an acceptable per-picture time.",
+      "recommendation": "discuss",
+      "reason": "This is the one gap on the list that no amount of agent time closes."
+    },
+    {
+      "id": "TB-23",
+      "title": "Fix the failing test suite, and test the four irreversible steps that have no tests",
+      "source": "gap-scan (G, prerequisite) — cost XS",
+      "plain": "The committed test suite currently fails. Separately, the project has 43 test files and roughly 17,000 lines of test code, and the four pieces with zero tests are precisely the four whose outputs are hardest to undo: the freezing of the never-look-at-it picture set, the building of the canonical tuning set, the distillation of your past verdicts into the 554-entry record, and the consequence analysis for the colour-distance ruler. Redoing any of them means a new file rather than an edit, which is good discipline — but it also means a silent defect is inherited forever.",
+      "serves": "Phase 1 (divergence): this is the state Phase 1 inherits, and one of these four is the input to the automatic adjudication.",
+      "cost": "A couple of hours for the failing suite; a couple of hours to a day for each of the four.",
+      "recommendation": "build-now",
+      "reason": "A phase declared complete should not hand over a red suite."
+    },
+    {
+      "id": "TB-24",
+      "title": "A consistency check over the evidence store",
+      "source": "gap-scan (G) — tier HIGH",
+      "plain": "The store of past decisions and evidence is the asset the rewrite carries over. Nothing currently checks it end to end: nothing recomputes the fingerprints attached to evidence, the rule about which amendments are allowed is only checked at one entry point, and one calibration file that other documents refer to does not exist on disk. The proposal is a single pass that walks the whole store and reports every internal contradiction.",
+      "serves": "Phase 1 and Phase 2: everything downstream stands on this store.",
+      "cost": "About a day.",
+      "recommendation": "defer",
+      "reason": "Worth doing, but the failing-suite half above is the urgent part; this can follow during Phase 1."
+    },
+    {
+      "id": "TB-25",
+      "title": "A browsable page of past verdicts with the artwork next to them",
+      "source": "gap-scan (L) — tier NICE, cost XS",
+      "plain": "Phase 1 authors are allowed to look at exactly one thing: the raw record of what you approved and rejected. Today that record is 554 entries of machine-readable data keyed by artwork identifier. Pairing each entry with its picture on a simple static page lets them actually look at what was endorsed, which makes the permission real rather than nominal.",
+      "serves": "Phase 1 (divergence): it is the only input the anti-anchoring rule allows, and it is currently inconvenient to use.",
+      "cost": "A couple of hours.",
+      "recommendation": "build-now",
+      "reason": "Cheap, and it strengthens the one rule Phase 1 depends on."
+    },
+    {
+      "id": "TB-26",
+      "title": "Measure whether a method's output changes smoothly or jumps",
+      "source": "gap-scan (B) — tier HIGH; orchestrator triage says defer",
+      "plain": "Slide an input slowly along a path — brighten a picture step by step, rotate its colours gradually, blend one cover into another — and plot how far the output palette moves at each step. A method whose output slides smoothly is structurally different from one that jumps between answers, even if both score the same on a given day. This is the stated goal of the rewrite — decisions that are few, global, and made over smooth quantities — and no instrument measures it. Its distinctive property is that it works on an immature prototype: an approach can lose every head-to-head while showing that it is an order of magnitude smoother, and today that fact would be invisible.",
+      "serves": "Phase 2 (bake-off): the plan says to judge trajectory and ceiling rather than first-round scores, and this is the only proposed way to see either.",
+      "cost": "One to three days.",
+      "recommendation": "defer",
+      "reason": "I put it below the entry checks for budget reasons — but flagging that the source calls it the only instrument that can stop the incumbent winning by default."
+    },
+    {
+      "id": "TB-27",
+      "title": "Measure your reviewing time, and price a round before running it",
+      "source": "gap-scan (C) — tier MUST; orchestrator triage says defer",
+      "plain": "Your attention is named as the binding constraint on the whole project, and nothing measures it — the review interface documentation says outright that there is no timing of the reviewer. One round asked 160 questions in a single sitting at a median of under three seconds each, and produced a 45% self-contradiction rate against a pre-registered 10% ceiling; the causes were named as wording, ambiguity and fatigue, explicitly not competence. That round's data is now under a standing ban. The proposal records how long each item takes and where in the round it sat, and — the half that changes decisions — estimates before a round runs how many items it would take to detect the effect we are looking for.",
+      "serves": "Phase 2 (bake-off): it decides whether a round is worth running at all, and every bake-off verdict comes from a round.",
+      "cost": "About a day.",
+      "recommendation": "defer",
+      "reason": "Triage put it below the build items — but the source ranks it MUST and one round has already been lost for want of it, so this is a genuine disagreement worth your call."
+    },
+    {
+      "id": "TB-28",
+      "title": "Try to unmask which method produced which sample, automatically",
+      "source": "gap-scan (D) — tier MUST; orchestrator triage says a documentation sentence is enough",
+      "plain": "When we show you two results side by side without saying which method produced which, that only works if the samples do not give it away. It was measured: 24 out of 24 assignments were recovered by the rule 'the side with a gradient is the second method'. Stop counts, layout geometry and raw numbers all leak. The proposal is to build the attacker — a small program that tries to guess which method produced each served sample from the served data alone — and refuse to run a round where it guesses better than chance. The concern is sharper for the bake-off than it was before, because genuinely different approaches carry far more conspicuous signatures than two variants of one method did.",
+      "serves": "Phase 2 (bake-off): it is the round whose verdicts decide the rewrite, and the check has to exist before the samples are designed.",
+      "cost": "About a day for the checker; free for the documentation-sentence version.",
+      "recommendation": "drop",
+      "reason": "Recommending the cheap version — write down what leaks and design samples around it — but noting the source calls this a MUST and the failure mode is discovering after the bake-off that its verdicts are void."
+    },
+    {
+      "id": "TB-29",
+      "title": "Track named failure types across versions, with a 'moved' column next to 'fixed'",
+      "source": "gap-scan (I) — tier HIGH; orchestrator triage says defer",
+      "plain": "The defining pathology of the previous version was that repairs relocated defects rather than removing them — 13 out of 15 in one pass, 290 out of 298 in another, and one composition change destroyed seven already-approved results to gain two. The proposal is a table of named failure categories, counted before and after each change, with an explicit column separating 'this category shrank' from 'this category moved somewhere else'.",
+      "serves": "Phase 2 (bake-off) and beyond: it is the direct instrument for the failure mode that cost the previous version the most rounds.",
+      "cost": "Two to three days.",
+      "recommendation": "defer",
+      "reason": "The most expensive of the process instruments, and TB-03's sorted diff catches much of the same thing sooner."
+    },
+    {
+      "id": "TB-30",
+      "title": "Check that the sample you just reviewed represents the whole collection",
+      "source": "gap-scan (J) — tier HIGH; orchestrator triage says defer",
+      "plain": "The sharpest lesson from the previous version, in tool form: a panel of 63 artworks showed zero fade-detection regressions, while the full collection showed 24 fades destroyed against 1 allowed. The proposal reweights what a reviewed sample says into an estimate for the whole collection, using the picture-grouping we already have, and reports that estimate with its uncertainty. It answers 'is the slice I just reviewed representative of the collection on the axis I just changed?'",
+      "serves": "Phase 2 (bake-off): every human round is a sample, and every decision from one is an extrapolation.",
+      "cost": "One to three days.",
+      "recommendation": "defer",
+      "reason": "It would have caught the single most expensive error in the record — but it is only needed once bake-off rounds start producing decisions."
+    },
+    {
+      "id": "TB-31",
+      "title": "Stop requiring a published colour to be an exact pixel value that covers a thousandth of the picture",
+      "source": "bias-audit B1 — MEASURED, highest expected distortion",
+      "plain": "One hard rule says every colour we publish must be an exact pixel of the artwork, and that colour must cover at least a thousandth of it. Measured against 351 of your own approved palettes, that rule would refuse 340 of them — 96.9%. The reason is that image compression shatters one visually uniform area into hundreds of near-identical values, so counting exact values measures how spiky the histogram is, not how much of the picture a colour accounts for. The rule also fails to tell good from bad: it refuses 96.9% of approved, 98.8% of acceptable and 94.6% of known-bad palettes. Proposed fix: count all pixels within our existing same-colour threshold instead of exact matches, which takes refusals from 96.9% to 17.7% using a ruler we already have.",
+      "serves": "Phase 1 (divergence) above all: as written the rule forces every approach to publish histogram spikes, which is the previous version's whole way of thinking promoted into an unappealable rule, and it hits the accent colour hardest — the role you most often corrected.",
+      "cost": "Hours. No new setting and no new calibration; it reuses a threshold that is already frozen and reviewed.",
+      "recommendation": "build-now",
+      "reason": "Your own standing rule says a rule that ever blocks an approved palette gets demoted, and this one blocks 97% of them."
+    },
+    {
+      "id": "TB-32",
+      "title": "Write down, per candidate approach, what we cannot yet measure about it",
+      "source": "bias-audit B2 — DOCUMENTED",
+      "plain": "Our tools can score the halfway working-out of exactly one of the four kinds of approach on the table. The others would be judged on their final output alone, which quietly favours the one we happen to be able to look inside. Proposed: one page per candidate approach naming what its halfway output is, the cheapest instrument that could score it, and what that would cost. Then either fund one equal-cost instrument per surviving approach, or — the free floor — write into the rules that 'no instrument exists for this' counts as a debt to be priced, never as evidence against the approach.",
+      "serves": "Phase 1 and Phase 2: it is a scoring rule, and scoring rules stop being credible once proposals exist and can be identified with them.",
+      "cost": "Half a day for the four pages and the scoring-rule sentence; one to two days per approach for the fully-funded version.",
+      "recommendation": "build-now",
+      "reason": "The floor version is nearly free and its whole value is in being written before there is anyone to favour."
+    },
+    {
+      "id": "TB-33",
+      "title": "Write down what Phase 1 authors may and may not read — and run one arm blind to our own tooling",
+      "source": "bias-audit B3 — DOCUMENTED, highest ratio of distortion-avoided to effort",
+      "plain": "Phase 1 forbids its authors one document — the field guide — so they reason freshly. But the rest of our machinery is not on the forbidden list: the question sets, the label schema, the concept list and the tag vocabulary all encode the same way of carving up the problem, and reading them anchors the authors just as effectively. Proposed: write the reading list down as a decision before the briefs go out — in: the problem statement, the output rules, the raw verdicts, the collection, the stability numbers; out: the label and tag vocabularies and the mock-up. Then run one arm deliberately blind to all our tooling and compare the vocabulary its proposal reaches for against the others'.",
+      "serves": "Phase 1 (divergence): if the blind arm converges on the same vocabulary, the concern is closed with evidence; if it does not, that divergence is exactly what Phase 1 exists to produce.",
+      "cost": "Hours for the decision record, plus one extra subagent arm.",
+      "recommendation": "build-now",
+      "reason": "It is a paragraph, it is load-bearing, and it is currently unwritten."
+    },
+    {
+      "id": "TB-34",
+      "title": "Make the 'do not get worse' gates advisory for prototypes, and have each proposal state its own ceiling first",
+      "source": "bias-audit B4 — MEASURED",
+      "plain": "Every measurement we have is a snapshot, and one gate hard-blocks anything that scores worse than the current version on any picture. Applied to an immature prototype of a genuinely different approach, that gate guarantees the current version wins by default — which is the exact outcome the plan says to avoid. Two changes: first, record now that these gates only report, never block, for bake-off prototypes; second, make each proposal state up front which failures it expects, which of those it claims it can fix from the inside, and what observation would prove it wrong. Then score it on how many of the failures we actually see were predicted and are internally fixable.",
+      "serves": "Phase 2 (bake-off): it is the cheapest honest way to judge direction rather than starting position.",
+      "cost": "Hours: one decision record, plus one page written by each proposal before any numbers exist.",
+      "recommendation": "build-now",
+      "reason": "Only credible before proposals exist; afterwards, changing a gate reads as moving the goalposts for or against someone."
+    },
+    {
+      "id": "TB-35",
+      "title": "Let you say 'none of these options fit' about the question itself",
+      "source": "bias-audit B5 — MEASURED",
+      "plain": "The review questions offer fixed lists of answers, plus an 'unsure' escape. The escapes are effectively dead — used once in 180 and zero times in 284 — which reads as 'the categories fit well' but is also what you would see if the escape were the wrong escape. You objected in words that none of the options fit, which is a complaint about the list, not about your certainty. Proposed: add a separate field asking whether the option list fitted at all — fits, forced, or no word for it — and publish the forced share alongside every agreement rate rather than the rate alone.",
+      "serves": "Phase 2 (bake-off): every human verdict flows through these lists, and an agreement rate computed over forced answers is not an agreement rate.",
+      "cost": "The field itself is quick; it needs one small re-pilot round of your time before the bulk run starts. Publishing the forced share is free.",
+      "recommendation": "discuss",
+      "reason": "It costs your time rather than mine, and the bulk run has not started, so this is the last moment it is cheap."
+    },
+    {
+      "id": "TB-36",
+      "title": "Do not let the colour-distance ruler block a change that is mostly a hue shift",
+      "source": "bias-audit B6 — DOCUMENTED",
+      "plain": "We compare colours with a single distance number that treats a shift in hue, in lightness and in vividness as interchangeable. It is known to be the wrong shape for this: a pair that differs mainly in hue can read as 'basically the same colour' to the ruler while looking clearly different to you. Because one gate blocks anything the ruler calls worse-than-before, this biases against any approach that moves hues. Proposed: when a near-match is mostly a hue difference, the gate reports instead of blocking, or requires a human look before it blocks.",
+      "serves": "Phase 2 (bake-off): it removes a systematic thumb on the scale against a whole family of approaches.",
+      "cost": "Near-free: a decision record plus a query on the match.",
+      "recommendation": "build-now",
+      "reason": "Costs almost nothing and removes a known directional bias from a blocking gate."
+    },
+    {
+      "id": "TB-37",
+      "title": "Offer the colour-picking grid in a second order, by hue spread",
+      "source": "bias-audit B6 (second half) — DOCUMENTED",
+      "plain": "When you correct a palette by hand, the grid of candidate colours is ordered by how common each colour is in the picture. That buries small signature colours — the single vivid element on an otherwise muted cover — many rows down. Proposed: a second ordering by hue spread, one keypress away, so a rare but distinctive colour is reachable without hunting.",
+      "serves": "Phase 2 (bake-off) and any correction round: it widens what you can express, which widens what the record can teach.",
+      "cost": "Half a day of interface work.",
+      "recommendation": "defer",
+      "reason": "A real ergonomics gain, but nothing in Phase 1 or Phase 2 entry depends on it."
+    },
+    {
+      "id": "TB-38",
+      "title": "Grade forty items in a second layout to check the layout is not changing your verdicts",
+      "source": "bias-audit B7 — DOCUMENTED and measured",
+      "plain": "Every verdict you will give in the bake-off comes through one review layout, which has been revised four times to make the thing being judged more prominent — and which has never had a real palette rendered in it, only a mock-up. If the layout is influencing grades, every bake-off verdict inherits that influence and we have no way to tell. Proposed: one round of about forty items in a second layout — artwork-dominant, ideally a compact row — with the layout recorded on each verdict, and measure the disagreement against the roughly 12% noise band we already know. Inside the band, the concern is closed with a number and the single layout stays.",
+      "serves": "Phase 2 (bake-off): the timing is the entire point — after the bake-off the question cannot be answered without re-grading everything.",
+      "cost": "About a day of interface work, plus one round of your time.",
+      "recommendation": "discuss",
+      "reason": "It buys a real guarantee but spends the scarcest resource, so the call is yours."
+    },
+    {
+      "id": "TB-39",
+      "title": "Count how many knobs an approach really has, not how many numbers appear in its source",
+      "source": "bias-audit B8 — MEASURED",
+      "plain": "One of the rewrite's success criteria is having fewer tunable knobs, and our tool measures that by counting numeric literals typed into source files. That scores coding style: an approach storing its settings in a data file scores as having none, and an approach with a trained model scores as clean while carrying thousands of fitted values. Proposed: each proposal declares its own free parameters in a form that does not depend on where they are written, the literal count becomes one input to that rather than the measurement, and a new tag marks a number as fitted-to-data with the held-out number that justifies it.",
+      "serves": "Phase 1 and Phase 2: it is one of the criteria the approaches are compared on, and as written it rewards hiding parameters rather than not having them.",
+      "cost": "Half a day.",
+      "recommendation": "build-now",
+      "reason": "Cheap only before proposals exist, and as written the criterion measures the wrong thing."
+    },
+    {
+      "id": "TB-40",
+      "title": "Give reviewers a way to object to the output shape itself",
+      "source": "bias-audit B9 — DOCUMENTED",
+      "plain": "Our output rules are also the language every judgement is expressed in: four named roles — background, surface, foreground, accent. If a cover simply does not have those four things, there is nowhere in the vocabulary to say so, and the objection becomes noise instead of a count. Proposed: add one opposed pair of tags meaning 'the roles do not fit this cover' and 'the roles fit cleanly', which the tagging pass files from your free-text remarks at no extra cost to you, plus a category in the failure census for a cover the rules cannot express at all.",
+      "serves": "Phase 2 (bake-off): it turns the campaign's largest unquantified risk — that the output shape itself is wrong — into a rate we can read.",
+      "cost": "Under a day.",
+      "recommendation": "build-now",
+      "reason": "Zero reviewer cost, and it is currently the one objection the system cannot record."
+    },
+    {
+      "id": "TB-41",
+      "title": "Keep the artworks you have already seen many times out of the bake-off",
+      "source": "bias-audit B10 — MEASURED",
+      "plain": "Fifty-seven artworks have been shown to you five or more times across previous rounds. Familiarity with a specific cover is the kind of thing that can quietly shift a judgement, and the bake-off is the round where judgements matter most. Proposed: exclude those 57 from bake-off batches. It is a database query — the exposure count is already recorded on every row.",
+      "serves": "Phase 2 (bake-off): it removes a possible contaminant from the decisive round at no cost.",
+      "cost": "Free.",
+      "recommendation": "build-now",
+      "reason": "A query, and the data to run it already exists."
+    },
+    {
+      "id": "TB-42",
+      "title": "Decide whether we are allowed to use your answer timestamps",
+      "source": "bias-audit B10 (second half) — policy conflict",
+      "plain": "One document says timestamps must never be used to infer anything about you; a review then used them to argue that fatigue explained a bad round. The current state is the worst of both — forbidden on paper, used in practice. Proposed: settle it one way. Either timestamps are off limits, and the fatigue reading gets withdrawn, or order and session effects get a small named analysis on data already collected.",
+      "serves": "Phase 2 (bake-off): round design decisions currently rest on a reading the policy forbids.",
+      "cost": "A decision record; a few hours more if the analysis is chosen.",
+      "recommendation": "discuss",
+      "reason": "It is a policy about you, so it is not mine to settle."
+    }
+  ]
+}
