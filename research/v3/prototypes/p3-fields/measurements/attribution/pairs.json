@@ -1,0 +1,1989 @@
+[
+	{
+		"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00002947b898e4bd572ac4aa",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/0d149b97cfa25534.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 6.963734823137721,
+		"worstRole": "surface",
+		"worstMove": 0.06490200855164356,
+		"worstFrom": "#141414",
+		"worstTo": "#232323"
+	},
+	{
+		"trialId": "perturb|00002947b898e4bd572ac4aa|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00002947b898e4bd572ac4aa",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b27300002947b898e4bd572ac4aa.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/0d149b97cfa25534.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 8.739771288810015,
+		"worstRole": "accent",
+		"worstMove": 0.08145466841170934,
+		"worstFrom": "#6e6e6e",
+		"worstTo": "#575757"
+	},
+	{
+		"trialId": "perturb|00002947b898e4bd572ac4aa|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00002947b898e4bd572ac4aa",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/0d149b97cfa25534.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.4071532706971075,
+		"worstRole": "surface",
+		"worstMove": 0.013114668482897041,
+		"worstFrom": "#141414",
+		"worstTo": "#171716"
+	},
+	{
+		"trialId": "perturb|000032e13011a9fa582ddae9|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "000032e13011a9fa582ddae9",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b273000032e13011a9fa582ddae9.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/2d2f0d6d57a4b711.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"foreground"
+		],
+		"worstRoleBarRatio": 4.677809172832644,
+		"worstRole": "foreground",
+		"worstMove": 0.07026069377594632,
+		"worstFrom": "#2b3433",
+		"worstTo": "#1e380b"
+	},
+	{
+		"trialId": "perturb|000032e13011a9fa582ddae9|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "000032e13011a9fa582ddae9",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b273000032e13011a9fa582ddae9.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/2d2f0d6d57a4b711.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 3.4413754702292687,
+		"worstRole": "foreground",
+		"worstMove": 0.032073619382536785,
+		"worstFrom": "#2b3433",
+		"worstTo": "#2a2d22"
+	},
+	{
+		"trialId": "perturb|000032e13011a9fa582ddae9|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000032e13011a9fa582ddae9",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d0000b273000032e13011a9fa582ddae9.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/2d2f0d6d57a4b711.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 4.001742957101779,
+		"worstRole": "accent",
+		"worstMove": 0.053593483127615506,
+		"worstFrom": "#506c55",
+		"worstTo": "#457136"
+	},
+	{
+		"trialId": "perturb|000032e13011a9fa582ddae9|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "000032e13011a9fa582ddae9",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/2d2f0d6d57a4b711.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/2d2f0d6d57a4b711.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.6107387536869053,
+		"worstRole": "accent",
+		"worstMove": 0.02763666028604478,
+		"worstFrom": "#506c55",
+		"worstTo": "#496f47"
+	},
+	{
+		"trialId": "perturb|000050c638f9c59f77f3057b|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "000050c638f9c59f77f3057b",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e02000050c638f9c59f77f3057b.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/5cf156ab8e8ede20.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 11.471415090483655,
+		"worstRole": "surface",
+		"worstMove": 0.10691358864330766,
+		"worstFrom": "#232323",
+		"worstTo": "#0a0b0d"
+	},
+	{
+		"trialId": "perturb|000050c638f9c59f77f3057b|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "000050c638f9c59f77f3057b",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e02000050c638f9c59f77f3057b.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/5cf156ab8e8ede20.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 1.7282840496543401,
+		"worstRole": "foreground",
+		"worstMove": 0.01610760734277845,
+		"worstFrom": "#1b1b1b",
+		"worstTo": "#161817"
+	},
+	{
+		"trialId": "perturb|000050c638f9c59f77f3057b|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000050c638f9c59f77f3057b",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e02000050c638f9c59f77f3057b.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/5cf156ab8e8ede20.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 5.314560486787666,
+		"worstRole": "foreground",
+		"worstMove": 0.049531703736861055,
+		"worstFrom": "#1b1b1b",
+		"worstTo": "#0f1012"
+	},
+	{
+		"trialId": "perturb|00009a5acf9fb19544298ce4|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00009a5acf9fb19544298ce4",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/ad5bc620f24b472c.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/ad5bc620f24b472c.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 61.46281459579268,
+		"worstRole": "accent",
+		"worstMove": 0.9999999934735468,
+		"worstFrom": "#ffffff",
+		"worstTo": "#000000"
+	},
+	{
+		"trialId": "perturb|0000e692a330542f8ed14132|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0000e692a330542f8ed14132",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/4c926a8c067fc5f0.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.470993200115513,
+		"worstRole": "foreground",
+		"worstMove": 0.05665987407864871,
+		"worstFrom": "#da211e",
+		"worstTo": "#d64c4a"
+	},
+	{
+		"trialId": "perturb|0000e692a330542f8ed14132|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0000e692a330542f8ed14132",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/4c926a8c067fc5f0.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.8601399356838817,
+		"worstRole": "foreground",
+		"worstMove": 0.0655830087252314,
+		"worstFrom": "#da211e",
+		"worstTo": "#cd524a"
+	},
+	{
+		"trialId": "perturb|0000e692a330542f8ed14132|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0000e692a330542f8ed14132",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/00/ab67616d00001e020000e692a330542f8ed14132.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/4c926a8c067fc5f0.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.282434584384952,
+		"worstRole": "foreground",
+		"worstMove": 0.05233622501994695,
+		"worstFrom": "#da211e",
+		"worstTo": "#d14a46"
+	},
+	{
+		"trialId": "perturb|0000e692a330542f8ed14132|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0000e692a330542f8ed14132",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/4c926a8c067fc5f0.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/4c926a8c067fc5f0.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 1.8382680638840012,
+		"worstRole": "foreground",
+		"worstMove": 0.042151486704860144,
+		"worstFrom": "#da211e",
+		"worstTo": "#d14341"
+	},
+	{
+		"trialId": "perturb|00015083990110d3b1a4ea8a|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00015083990110d3b1a4ea8a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/2e4a6d27cee4b46c.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 2.617283777398664,
+		"worstRole": "accent",
+		"worstMove": 0.06001431701575137,
+		"worstFrom": "#977ba4",
+		"worstTo": "#a07c7e"
+	},
+	{
+		"trialId": "perturb|00015083990110d3b1a4ea8a|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00015083990110d3b1a4ea8a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/2e4a6d27cee4b46c.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 13.347854898662677,
+		"worstRole": "accent",
+		"worstMove": 0.3060663128263352,
+		"worstFrom": "#977ba4",
+		"worstTo": "#53212d"
+	},
+	{
+		"trialId": "perturb|00015083990110d3b1a4ea8a|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00015083990110d3b1a4ea8a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/01/ab67616d0000b27300015083990110d3b1a4ea8a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/2e4a6d27cee4b46c.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.9735250823427313,
+		"worstRole": "foreground",
+		"worstMove": 0.06818293013811882,
+		"worstFrom": "#b593cf",
+		"worstTo": "#b29ca9"
+	},
+	{
+		"trialId": "perturb|00015083990110d3b1a4ea8a|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00015083990110d3b1a4ea8a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/2e4a6d27cee4b46c.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/2e4a6d27cee4b46c.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.918848210402,
+		"worstRole": "foreground",
+		"worstMove": 0.06692918946451785,
+		"worstFrom": "#b593cf",
+		"worstTo": "#b19caa"
+	},
+	{
+		"trialId": "perturb|0001c404b8a04a8789db8dab|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0001c404b8a04a8789db8dab",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/ac7ca45674c6b77c.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.267771643858227,
+		"worstRole": "foreground",
+		"worstMove": 0.03406193009075057,
+		"worstFrom": "#032809",
+		"worstTo": "#023107"
+	},
+	{
+		"trialId": "perturb|0001c404b8a04a8789db8dab|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0001c404b8a04a8789db8dab",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/01/ab67616d0000b2730001c404b8a04a8789db8dab.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/ac7ca45674c6b77c.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 4.725243569203405,
+		"worstRole": "foreground",
+		"worstMove": 0.07097315840943515,
+		"worstFrom": "#032809",
+		"worstTo": "#003c15"
+	},
+	{
+		"trialId": "perturb|000241edffbc59ed2fe08dd3|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "000241edffbc59ed2fe08dd3",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b273000241edffbc59ed2fe08dd3.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/df58faaf07d8b84f.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 4.948289783600855,
+		"worstRole": "foreground",
+		"worstMove": 0.07432331254968484,
+		"worstFrom": "#562214",
+		"worstTo": "#703227"
+	},
+	{
+		"trialId": "perturb|000241edffbc59ed2fe08dd3|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000241edffbc59ed2fe08dd3",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b273000241edffbc59ed2fe08dd3.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/df58faaf07d8b84f.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 12.266498032143266,
+		"worstRole": "surface",
+		"worstMove": 0.28127079987704506,
+		"worstFrom": "#ded4bb",
+		"worstTo": "#b46c46"
+	},
+	{
+		"trialId": "perturb|0002875c482df56c656a8605|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0002875c482df56c656a8605",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/f1acbebe48f75407.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 5.365279120955754,
+		"worstRole": "accent",
+		"worstMove": 0.05000440140730763,
+		"worstFrom": "#372b2b",
+		"worstTo": "#2a2118"
+	},
+	{
+		"trialId": "perturb|0002875c482df56c656a8605|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0002875c482df56c656a8605",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/f1acbebe48f75407.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 1.4121616364755318,
+		"worstRole": "accent",
+		"worstMove": 0.013161346451951958,
+		"worstFrom": "#372b2b",
+		"worstTo": "#312d2a"
+	},
+	{
+		"trialId": "perturb|0002875c482df56c656a8605|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0002875c482df56c656a8605",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b2730002875c482df56c656a8605.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/f1acbebe48f75407.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 6.387403581057073,
+		"worstRole": "accent",
+		"worstMove": 0.05953060137545192,
+		"worstFrom": "#372b2b",
+		"worstTo": "#271d1e"
+	},
+	{
+		"trialId": "perturb|0002875c482df56c656a8605|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0002875c482df56c656a8605",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/f1acbebe48f75407.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/f1acbebe48f75407.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 6.873112532522509,
+		"worstRole": "accent",
+		"worstMove": 0.06405740880310978,
+		"worstFrom": "#372b2b",
+		"worstTo": "#271d15"
+	},
+	{
+		"trialId": "perturb|0002d9c78b43ee73dd572586|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0002d9c78b43ee73dd572586",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d00001e020002d9c78b43ee73dd572586.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/4690101dedc9644c.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 47.43619700667209,
+		"worstRole": "foreground",
+		"worstMove": 0.7717869252985549,
+		"worstFrom": "#3e0005",
+		"worstTo": "#fffdfe"
+	},
+	{
+		"trialId": "perturb|0002d9c78b43ee73dd572586|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0002d9c78b43ee73dd572586",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d00001e020002d9c78b43ee73dd572586.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/4690101dedc9644c.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 47.55326223665213,
+		"worstRole": "foreground",
+		"worstMove": 0.7736915765903302,
+		"worstFrom": "#3e0005",
+		"worstTo": "#fcfffd"
+	},
+	{
+		"trialId": "perturb|0002d9c78b43ee73dd572586|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0002d9c78b43ee73dd572586",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d00001e020002d9c78b43ee73dd572586.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/4690101dedc9644c.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 6.978622132831094,
+		"worstRole": "background",
+		"worstMove": 0.10481890443512304,
+		"worstFrom": "#7c4048",
+		"worstTo": "#a40211"
+	},
+	{
+		"trialId": "perturb|0002d9c78b43ee73dd572586|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0002d9c78b43ee73dd572586",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/4690101dedc9644c.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/4690101dedc9644c.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.6545397065584684,
+		"worstRole": "surface",
+		"worstMove": 0.024851186392508197,
+		"worstFrom": "#160100",
+		"worstTo": "#1e0200"
+	},
+	{
+		"trialId": "perturb|0002dfdcde2cb0a75822168c|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0002dfdcde2cb0a75822168c",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/303e5c49d86b22bc.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 28.534746983145016,
+		"worstRole": "accent",
+		"worstMove": 0.6543017483235152,
+		"worstFrom": "#1b191a",
+		"worstTo": "#f9c61b"
+	},
+	{
+		"trialId": "perturb|0002dfdcde2cb0a75822168c|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0002dfdcde2cb0a75822168c",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/02/ab67616d0000b2730002dfdcde2cb0a75822168c.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/303e5c49d86b22bc.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 4.809485742670335,
+		"worstRole": "accent",
+		"worstMove": 0.04482440712168752,
+		"worstFrom": "#1b191a",
+		"worstTo": "#110f10"
+	},
+	{
+		"trialId": "perturb|00034b60105d8937440211da|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00034b60105d8937440211da",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300034b60105d8937440211da.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/dca149beb8a54b73.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.1201637986460935,
+		"worstRole": "accent",
+		"worstMove": 0.03305128785189978,
+		"worstFrom": "#a87847",
+		"worstTo": "#b76e41"
+	},
+	{
+		"trialId": "perturb|00034b60105d8937440211da|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00034b60105d8937440211da",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300034b60105d8937440211da.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/dca149beb8a54b73.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 13.076150573699595,
+		"worstRole": "foreground",
+		"worstMove": 0.2998361326549317,
+		"worstFrom": "#603c30",
+		"worstTo": "#b4976d"
+	},
+	{
+		"trialId": "perturb|00034b60105d8937440211da|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00034b60105d8937440211da",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300034b60105d8937440211da.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/dca149beb8a54b73.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 1.624348177419003,
+		"worstRole": "accent",
+		"worstMove": 0.037246303708217736,
+		"worstFrom": "#a87847",
+		"worstTo": "#9f7964"
+	},
+	{
+		"trialId": "perturb|00034b60105d8937440211da|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00034b60105d8937440211da",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/dca149beb8a54b73.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/dca149beb8a54b73.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.0153566819021969,
+		"worstRole": "surface",
+		"worstMove": 0.01651985321454874,
+		"worstFrom": "#e7dfd4",
+		"worstTo": "#ead9ca"
+	},
+	{
+		"trialId": "perturb|00038e79a0efbc7325db6444|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00038e79a0efbc7325db6444",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300038e79a0efbc7325db6444.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/dcc6be4c99b9f844.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 14.00877831860245,
+		"worstRole": "foreground",
+		"worstMove": 0.3212212868455542,
+		"worstFrom": "#cac3b9",
+		"worstTo": "#f20000"
+	},
+	{
+		"trialId": "perturb|00038e79a0efbc7325db6444|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00038e79a0efbc7325db6444",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300038e79a0efbc7325db6444.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/dcc6be4c99b9f844.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 13.948763963794454,
+		"worstRole": "foreground",
+		"worstMove": 0.3198451576898068,
+		"worstFrom": "#cac3b9",
+		"worstTo": "#f40000"
+	},
+	{
+		"trialId": "perturb|00038e79a0efbc7325db6444|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00038e79a0efbc7325db6444",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b27300038e79a0efbc7325db6444.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/dcc6be4c99b9f844.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 13.591682125795723,
+		"worstRole": "foreground",
+		"worstMove": 0.31165727114449593,
+		"worstFrom": "#cac3b9",
+		"worstTo": "#ff0601"
+	},
+	{
+		"trialId": "perturb|00038e79a0efbc7325db6444|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00038e79a0efbc7325db6444",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/dcc6be4c99b9f844.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/dcc6be4c99b9f844.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 29.611519825048713,
+		"worstRole": "background",
+		"worstMove": 0.678992149588367,
+		"worstFrom": "#000000",
+		"worstTo": "#ff0203"
+	},
+	{
+		"trialId": "perturb|0003a265ad51246f00035a87|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0003a265ad51246f00035a87",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003a265ad51246f00035a87.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/62ff3afc762f141a.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 4.176501565422977,
+		"worstRole": "accent",
+		"worstMove": 0.09576718089514887,
+		"worstFrom": "#9c8b46",
+		"worstTo": "#836d22"
+	},
+	{
+		"trialId": "perturb|0003a265ad51246f00035a87|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0003a265ad51246f00035a87",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003a265ad51246f00035a87.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/62ff3afc762f141a.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 56.25310755481901,
+		"worstRole": "surface",
+		"worstMove": 0.9152380599169053,
+		"worstFrom": "#fefefe",
+		"worstTo": "#020200"
+	},
+	{
+		"trialId": "perturb|0003a265ad51246f00035a87|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0003a265ad51246f00035a87",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003a265ad51246f00035a87.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/62ff3afc762f141a.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 56.25310755481901,
+		"worstRole": "surface",
+		"worstMove": 0.9152380599169053,
+		"worstFrom": "#fefefe",
+		"worstTo": "#020200"
+	},
+	{
+		"trialId": "perturb|0003a265ad51246f00035a87|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0003a265ad51246f00035a87",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/62ff3afc762f141a.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/62ff3afc762f141a.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 55.38050180614421,
+		"worstRole": "background",
+		"worstMove": 0.9010407643859663,
+		"worstFrom": "#040300",
+		"worstTo": "#fefff9"
+	},
+	{
+		"trialId": "perturb|0003b47953afcf59a8fd8ec1|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0003b47953afcf59a8fd8ec1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b2730003b47953afcf59a8fd8ec1.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/c39f52151bb66708.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.3202261657010155,
+		"worstRole": "foreground",
+		"worstMove": 0.053202785979524284,
+		"worstFrom": "#d38b72",
+		"worstTo": "#cf9c63"
+	},
+	{
+		"trialId": "perturb|0003b47953afcf59a8fd8ec1|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0003b47953afcf59a8fd8ec1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b2730003b47953afcf59a8fd8ec1.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/c39f52151bb66708.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 23.17674900895945,
+		"worstRole": "accent",
+		"worstMove": 0.5314428547754402,
+		"worstFrom": "#2d1910",
+		"worstTo": "#e3a365"
+	},
+	{
+		"trialId": "perturb|0003b47953afcf59a8fd8ec1|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0003b47953afcf59a8fd8ec1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d0000b2730003b47953afcf59a8fd8ec1.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/c39f52151bb66708.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 3.5522516014781202,
+		"worstRole": "foreground",
+		"worstMove": 0.0814531292218933,
+		"worstFrom": "#d38b72",
+		"worstTo": "#d8ac85"
+	},
+	{
+		"trialId": "perturb|0003b47953afcf59a8fd8ec1|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0003b47953afcf59a8fd8ec1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/c39f52151bb66708.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/c39f52151bb66708.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 28.88811501482973,
+		"worstRole": "accent",
+		"worstMove": 0.6624044772900457,
+		"worstFrom": "#2d1910",
+		"worstTo": "#fdd798"
+	},
+	{
+		"trialId": "perturb|0003e50500c5d762da89643a|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0003e50500c5d762da89643a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/33d63ad96631b232.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 21.44028919168159,
+		"worstRole": "accent",
+		"worstMove": 0.4916258311652588,
+		"worstFrom": "#adb085",
+		"worstTo": "#182714"
+	},
+	{
+		"trialId": "perturb|0003e50500c5d762da89643a|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0003e50500c5d762da89643a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/33d63ad96631b232.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 15.408528430309186,
+		"worstRole": "accent",
+		"worstMove": 0.3533175569069896,
+		"worstFrom": "#adb085",
+		"worstTo": "#374d26"
+	},
+	{
+		"trialId": "perturb|0003e50500c5d762da89643a|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0003e50500c5d762da89643a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/03/ab67616d00001e020003e50500c5d762da89643a.jpg",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/33d63ad96631b232.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 15.051106010205872,
+		"worstRole": "accent",
+		"worstMove": 0.34512186081402063,
+		"worstFrom": "#adb085",
+		"worstTo": "#3a4f28"
+	},
+	{
+		"trialId": "perturb|0003e50500c5d762da89643a|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0003e50500c5d762da89643a",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/33d63ad96631b232.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/33d63ad96631b232.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.408454542868552,
+		"worstRole": "surface",
+		"worstMove": 0.039185555412471346,
+		"worstFrom": "#d2d8cc",
+		"worstTo": "#c9cdb5"
+	},
+	{
+		"trialId": "perturb|00040defaf772cad7a1738ce|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00040defaf772cad7a1738ce",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b27300040defaf772cad7a1738ce",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/d2a2b519a6eee73a.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 7.403375939248264,
+		"worstRole": "accent",
+		"worstMove": 0.16975941028696268,
+		"worstFrom": "#b9b19e",
+		"worstTo": "#f9cefc"
+	},
+	{
+		"trialId": "perturb|00040defaf772cad7a1738ce|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00040defaf772cad7a1738ce",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b27300040defaf772cad7a1738ce",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/d2a2b519a6eee73a.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.154549734424073,
+		"worstRole": "accent",
+		"worstMove": 0.42553452417907967,
+		"worstFrom": "#b9b19e",
+		"worstTo": "#35364b"
+	},
+	{
+		"trialId": "perturb|00040defaf772cad7a1738ce|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00040defaf772cad7a1738ce",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b27300040defaf772cad7a1738ce",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/d2a2b519a6eee73a.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 7.372604281995867,
+		"worstRole": "accent",
+		"worstMove": 0.16905381618616522,
+		"worstFrom": "#b9b19e",
+		"worstTo": "#f7d0fc"
+	},
+	{
+		"trialId": "perturb|00040defaf772cad7a1738ce|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00040defaf772cad7a1738ce",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/d2a2b519a6eee73a.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/d2a2b519a6eee73a.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.72346366971732,
+		"worstRole": "background",
+		"worstMove": 0.6127690219466181,
+		"worstFrom": "#201a24",
+		"worstTo": "#f2abf6"
+	},
+	{
+		"trialId": "perturb|0004331eeb10a918e94a8158|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0004331eeb10a918e94a8158",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004331eeb10a918e94a8158",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/36db8b0a4a6c4147.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 28.292654460422842,
+		"worstRole": "background",
+		"worstMove": 0.6487505667774958,
+		"worstFrom": "#e5a091",
+		"worstTo": "#0f0112"
+	},
+	{
+		"trialId": "perturb|0004331eeb10a918e94a8158|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0004331eeb10a918e94a8158",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004331eeb10a918e94a8158",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/36db8b0a4a6c4147.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 2.01740084727656,
+		"worstRole": "surface",
+		"worstMove": 0.030301360726093927,
+		"worstFrom": "#0f0112",
+		"worstTo": "#070512"
+	},
+	{
+		"trialId": "perturb|0004331eeb10a918e94a8158|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0004331eeb10a918e94a8158",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004331eeb10a918e94a8158",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/36db8b0a4a6c4147.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 27.990854461561668,
+		"worstRole": "background",
+		"worstMove": 0.641830292803609,
+		"worstFrom": "#e5a091",
+		"worstTo": "#100213"
+	},
+	{
+		"trialId": "perturb|0004331eeb10a918e94a8158|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0004331eeb10a918e94a8158",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/36db8b0a4a6c4147.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/36db8b0a4a6c4147.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 28.286934897003384,
+		"worstRole": "surface",
+		"worstMove": 0.6486194171882875,
+		"worstFrom": "#0f0112",
+		"worstTo": "#e4a186"
+	},
+	{
+		"trialId": "perturb|00043614a29a0bc16a6cb9e1|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00043614a29a0bc16a6cb9e1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b27300043614a29a0bc16a6cb9e1",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/b8b17a042cd9f9a0.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 6.5180813656153855,
+		"worstRole": "foreground",
+		"worstMove": 0.1494596057135608,
+		"worstFrom": "#a79162",
+		"worstTo": "#d7c08a"
+	},
+	{
+		"trialId": "perturb|00043614a29a0bc16a6cb9e1|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00043614a29a0bc16a6cb9e1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b27300043614a29a0bc16a6cb9e1",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/b8b17a042cd9f9a0.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 1.9893849886911514,
+		"worstRole": "surface",
+		"worstMove": 0.0456165977906881,
+		"worstFrom": "#eb3800",
+		"worstTo": "#d63000"
+	},
+	{
+		"trialId": "perturb|000442caec7ec8cb724bf265|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "000442caec7ec8cb724bf265",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b273000442caec7ec8cb724bf265",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/5551794235729a34.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 14.197172421768768,
+		"worstRole": "surface",
+		"worstMove": 0.21324152977496688,
+		"worstFrom": "#028014",
+		"worstTo": "#0a3f13"
+	},
+	{
+		"trialId": "perturb|000442caec7ec8cb724bf265|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "000442caec7ec8cb724bf265",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b273000442caec7ec8cb724bf265",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/5551794235729a34.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.94482389824796,
+		"worstRole": "foreground",
+		"worstMove": 0.6178448119868257,
+		"worstFrom": "#47c82f",
+		"worstTo": "#0e0c0f"
+	},
+	{
+		"trialId": "perturb|000442caec7ec8cb724bf265|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000442caec7ec8cb724bf265",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b273000442caec7ec8cb724bf265",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/5551794235729a34.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 34.210267072319695,
+		"worstRole": "background",
+		"worstMove": 0.7844414239682905,
+		"worstFrom": "#cafa58",
+		"worstTo": "#0f0d0e"
+	},
+	{
+		"trialId": "perturb|000442caec7ec8cb724bf265|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "000442caec7ec8cb724bf265",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/5551794235729a34.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/5551794235729a34.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.737075862888176,
+		"worstRole": "foreground",
+		"worstMove": 0.6130811495360259,
+		"worstFrom": "#47c82f",
+		"worstTo": "#0e0d0a"
+	},
+	{
+		"trialId": "perturb|0004515066668684295c41a7|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0004515066668684295c41a7",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004515066668684295c41a7",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/fb518ecb88417f06.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 3.546952351003788,
+		"worstRole": "accent",
+		"worstMove": 0.033057595911355306,
+		"worstFrom": "#17282f",
+		"worstTo": "#0f2027"
+	},
+	{
+		"trialId": "perturb|0004515066668684295c41a7|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0004515066668684295c41a7",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004515066668684295c41a7",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/fb518ecb88417f06.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.1782183672875306,
+		"worstRole": "surface",
+		"worstMove": 0.019169612835768124,
+		"worstFrom": "#8ea1a7",
+		"worstTo": "#8fa8ad"
+	},
+	{
+		"trialId": "perturb|0004515066668684295c41a7|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0004515066668684295c41a7",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d0000b2730004515066668684295c41a7",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/fb518ecb88417f06.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 4.34417623615566,
+		"worstRole": "surface",
+		"worstMove": 0.07067974736225259,
+		"worstFrom": "#8ea1a7",
+		"worstTo": "#708e96"
+	},
+	{
+		"trialId": "perturb|0004ccf0ae91364130886c02|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0004ccf0ae91364130886c02",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d00001e020004ccf0ae91364130886c02",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/6e3ed0aa2c701178.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 1.4785630579935738,
+		"worstRole": "surface",
+		"worstMove": 0.033903450919792646,
+		"worstFrom": "#60ad11",
+		"worstTo": "#68b800"
+	},
+	{
+		"trialId": "perturb|0004ccf0ae91364130886c02|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0004ccf0ae91364130886c02",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/04/ab67616d00001e020004ccf0ae91364130886c02",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/6e3ed0aa2c701178.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.679448227544988,
+		"worstRole": "foreground",
+		"worstMove": 0.06143974785760657,
+		"worstFrom": "#98cc6a",
+		"worstTo": "#8fd42c"
+	},
+	{
+		"trialId": "perturb|0004ccf0ae91364130886c02|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0004ccf0ae91364130886c02",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/6e3ed0aa2c701178.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/6e3ed0aa2c701178.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 1.6700480284958872,
+		"worstRole": "foreground",
+		"worstMove": 0.03829420129341069,
+		"worstFrom": "#98cc6a",
+		"worstTo": "#96ca89"
+	},
+	{
+		"trialId": "perturb|0005165a15d80c563a8d1ec2|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0005165a15d80c563a8d1ec2",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/35db4e822f134f93.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.047927000890504,
+		"worstRole": "surface",
+		"worstMove": 0.017049772304488498,
+		"worstFrom": "#76777b",
+		"worstTo": "#7b7c80"
+	},
+	{
+		"trialId": "perturb|0005165a15d80c563a8d1ec2|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0005165a15d80c563a8d1ec2",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/35db4e822f134f93.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 12.608398131876726,
+		"worstRole": "surface",
+		"worstMove": 0.20513863760563433,
+		"worstFrom": "#76777b",
+		"worstTo": "#3e3e40"
+	},
+	{
+		"trialId": "perturb|000535cf7b987bd9309aad76|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "000535cf7b987bd9309aad76",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b273000535cf7b987bd9309aad76",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/7c7402acff8682f7.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"foreground"
+		],
+		"worstRoleBarRatio": 16.05613977758086,
+		"worstRole": "background",
+		"worstMove": 0.24116321945926453,
+		"worstFrom": "#352d20",
+		"worstTo": "#0a728f"
+	},
+	{
+		"trialId": "perturb|000535cf7b987bd9309aad76|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000535cf7b987bd9309aad76",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b273000535cf7b987bd9309aad76",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/7c7402acff8682f7.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 12.623707026821142,
+		"worstRole": "surface",
+		"worstMove": 0.28946160212500877,
+		"worstFrom": "#d74a1f",
+		"worstTo": "#0d7592"
+	},
+	{
+		"trialId": "perturb|0005597105ba1e2d38f62cfc|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0005597105ba1e2d38f62cfc",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/fbd59ef749935555.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"accent"
+		],
+		"worstRoleBarRatio": 5.126482271795489,
+		"worstRole": "accent",
+		"worstMove": 0.11755023849227057,
+		"worstFrom": "#fccca4",
+		"worstTo": "#ceaba9"
+	},
+	{
+		"trialId": "perturb|0005597105ba1e2d38f62cfc|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0005597105ba1e2d38f62cfc",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d0000b2730005597105ba1e2d38f62cfc",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/fbd59ef749935555.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 5.183854260738984,
+		"worstRole": "accent",
+		"worstMove": 0.11886577819874491,
+		"worstFrom": "#fccca4",
+		"worstTo": "#cfabaf"
+	},
+	{
+		"trialId": "perturb|0005597105ba1e2d38f62cfc|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0005597105ba1e2d38f62cfc",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/fbd59ef749935555.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/fbd59ef749935555.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background"
+		],
+		"worstRoleBarRatio": 1.2649065598121363,
+		"worstRole": "surface",
+		"worstMove": 0.01729453208389409,
+		"worstFrom": "#eaa178",
+		"worstTo": "#eca87c"
+	},
+	{
+		"trialId": "perturb|0005a54a9ea60f48619788f1|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0005a54a9ea60f48619788f1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005a54a9ea60f48619788f1",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/842e59bf627f01ac.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 33.67287614503481,
+		"worstRole": "foreground",
+		"worstMove": 0.5478576948797164,
+		"worstFrom": "#fffefb",
+		"worstTo": "#b50100"
+	},
+	{
+		"trialId": "perturb|0005a54a9ea60f48619788f1|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0005a54a9ea60f48619788f1",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005a54a9ea60f48619788f1",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/842e59bf627f01ac.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 41.40526197502039,
+		"worstRole": "foreground",
+		"worstMove": 0.6736636123335817,
+		"worstFrom": "#fffefb",
+		"worstTo": "#690b0b"
+	},
+	{
+		"trialId": "perturb|0005ab1795e9ac7793fe109d|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0005ab1795e9ac7793fe109d",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005ab1795e9ac7793fe109d",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/bdb2fb1379f9b1ba.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 4.755653048052859,
+		"worstRole": "accent",
+		"worstMove": 0.07142990878175394,
+		"worstFrom": "#722c50",
+		"worstTo": "#8f1136"
+	},
+	{
+		"trialId": "perturb|0005ab1795e9ac7793fe109d|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0005ab1795e9ac7793fe109d",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005ab1795e9ac7793fe109d",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/bdb2fb1379f9b1ba.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 13.816313786084821,
+		"worstRole": "surface",
+		"worstMove": 0.3168080751149249,
+		"worstFrom": "#d724a6",
+		"worstTo": "#2a3e87"
+	},
+	{
+		"trialId": "perturb|0005ab1795e9ac7793fe109d|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0005ab1795e9ac7793fe109d",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/05/ab67616d00001e020005ab1795e9ac7793fe109d",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/bdb2fb1379f9b1ba.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 18.437169901093256,
+		"worstRole": "accent",
+		"worstMove": 0.42276430583206837,
+		"worstFrom": "#722c50",
+		"worstTo": "#b6ba31"
+	},
+	{
+		"trialId": "perturb|0005ab1795e9ac7793fe109d|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0005ab1795e9ac7793fe109d",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/bdb2fb1379f9b1ba.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/bdb2fb1379f9b1ba.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 12.3746942988341,
+		"worstRole": "surface",
+		"worstMove": 0.2837517402722659,
+		"worstFrom": "#d724a6",
+		"worstTo": "#641d3c"
+	},
+	{
+		"trialId": "perturb|00060491ade88c8893373d9f|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00060491ade88c8893373d9f",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e0200060491ade88c8893373d9f",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/9ae81cd12e4bd2a4.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.60129233197568,
+		"worstRole": "accent",
+		"worstMove": 0.43280302624124434,
+		"worstFrom": "#111015",
+		"worstTo": "#83818e"
+	},
+	{
+		"trialId": "perturb|00060491ade88c8893373d9f|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00060491ade88c8893373d9f",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e0200060491ade88c8893373d9f",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/9ae81cd12e4bd2a4.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 20.09555159544455,
+		"worstRole": "foreground",
+		"worstMove": 0.3269546244578828,
+		"worstFrom": "#fdfdfd",
+		"worstTo": "#9592a3"
+	},
+	{
+		"trialId": "perturb|00060491ade88c8893373d9f|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00060491ade88c8893373d9f",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e0200060491ade88c8893373d9f",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/9ae81cd12e4bd2a4.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 15.54922071959855,
+		"worstRole": "foreground",
+		"worstMove": 0.3565436311003947,
+		"worstFrom": "#fdfdfd",
+		"worstTo": "#a98660"
+	},
+	{
+		"trialId": "perturb|00060491ade88c8893373d9f|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00060491ade88c8893373d9f",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/9ae81cd12e4bd2a4.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/9ae81cd12e4bd2a4.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 1.3079681610268223,
+		"worstRole": "accent",
+		"worstMove": 0.012190263260769984,
+		"worstFrom": "#111015",
+		"worstTo": "#150f10"
+	},
+	{
+		"trialId": "perturb|000606d3a5c7da73c3887268|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "000606d3a5c7da73c3887268",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b273000606d3a5c7da73c3887268",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/661805cbbb6159b4.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 5.0339208792594965,
+		"worstRole": "foreground",
+		"worstMove": 0.07560949160647763,
+		"worstFrom": "#001c55",
+		"worstTo": "#260050"
+	},
+	{
+		"trialId": "perturb|000606d3a5c7da73c3887268|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "000606d3a5c7da73c3887268",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b273000606d3a5c7da73c3887268",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/661805cbbb6159b4.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 22.39003755857527,
+		"worstRole": "foreground",
+		"worstMove": 0.5134035612181309,
+		"worstFrom": "#001c55",
+		"worstTo": "#f968a1"
+	},
+	{
+		"trialId": "perturb|000606d3a5c7da73c3887268|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "000606d3a5c7da73c3887268",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b273000606d3a5c7da73c3887268",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/661805cbbb6159b4.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 6.35378099311764,
+		"worstRole": "foreground",
+		"worstMove": 0.09543379051662695,
+		"worstFrom": "#001c55",
+		"worstTo": "#042c84"
+	},
+	{
+		"trialId": "perturb|000606d3a5c7da73c3887268|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "000606d3a5c7da73c3887268",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/661805cbbb6159b4.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/661805cbbb6159b4.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 60.595018109985006,
+		"worstRole": "background",
+		"worstMove": 0.9858809446494561,
+		"worstFrom": "#000000",
+		"worstTo": "#fefbe9"
+	},
+	{
+		"trialId": "perturb|00066a61bbcbeadd632f7f38|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00066a61bbcbeadd632f7f38",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e0200066a61bbcbeadd632f7f38",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/c6d19597ab9d7184.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 29.47168131533401,
+		"worstRole": "accent",
+		"worstMove": 0.4795042550004843,
+		"worstFrom": "#f7f9f8",
+		"worstTo": "#c61f71"
+	},
+	{
+		"trialId": "perturb|00066a61bbcbeadd632f7f38|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00066a61bbcbeadd632f7f38",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/c6d19597ab9d7184.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/c6d19597ab9d7184.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 1.1562996026148522,
+		"worstRole": "accent",
+		"worstMove": 0.018812994534543645,
+		"worstFrom": "#f7f9f8",
+		"worstTo": "#e9fdfc"
+	},
+	{
+		"trialId": "perturb|0006b216e59acf2101a3a108|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0006b216e59acf2101a3a108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b2730006b216e59acf2101a3a108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/8ab91f323caee0bf.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 2.3654494839327196,
+		"worstRole": "accent",
+		"worstMove": 0.022045989190252947,
+		"worstFrom": "#0d200d",
+		"worstTo": "#101f18"
+	},
+	{
+		"trialId": "perturb|0006b216e59acf2101a3a108|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0006b216e59acf2101a3a108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b2730006b216e59acf2101a3a108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/8ab91f323caee0bf.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.762943907436791,
+		"worstRole": "surface",
+		"worstMove": 0.04495309737399659,
+		"worstFrom": "#87a6a1",
+		"worstTo": "#709ba2"
+	},
+	{
+		"trialId": "perturb|0006b216e59acf2101a3a108|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0006b216e59acf2101a3a108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b2730006b216e59acf2101a3a108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/8ab91f323caee0bf.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.6381539137413297,
+		"worstRole": "surface",
+		"worstMove": 0.04292276417657143,
+		"worstFrom": "#87a6a1",
+		"worstTo": "#739ba3"
+	},
+	{
+		"trialId": "perturb|0006b216e59acf2101a3a108|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0006b216e59acf2101a3a108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/8ab91f323caee0bf.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/8ab91f323caee0bf.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 1.7343173834767829,
+		"worstRole": "accent",
+		"worstMove": 0.016163838014003618,
+		"worstFrom": "#0d200d",
+		"worstTo": "#0f1f15"
+	},
+	{
+		"trialId": "perturb|0006e4c44b252d14cbeea729|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0006e4c44b252d14cbeea729",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b2730006e4c44b252d14cbeea729",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/046d3ab75175e644.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface"
+		],
+		"worstRoleBarRatio": 14.327934147103376,
+		"worstRole": "surface",
+		"worstMove": 0.21520557088949271,
+		"worstFrom": "#1a436f",
+		"worstTo": "#001020"
+	},
+	{
+		"trialId": "perturb|0006e4c44b252d14cbeea729|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0006e4c44b252d14cbeea729",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d0000b2730006e4c44b252d14cbeea729",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/046d3ab75175e644.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 9.981397469130544,
+		"worstRole": "surface",
+		"worstMove": 0.14992058998634078,
+		"worstFrom": "#1a436f",
+		"worstTo": "#4f291e"
+	},
+	{
+		"trialId": "perturb|0006eb2197bdb0a7b9392108|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0006eb2197bdb0a7b9392108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e020006eb2197bdb0a7b9392108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/61c43a39a8ba9605.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 7.475718626296328,
+		"worstRole": "accent",
+		"worstMove": 0.1714182281009748,
+		"worstFrom": "#eae9e7",
+		"worstTo": "#feeb47"
+	},
+	{
+		"trialId": "perturb|0006eb2197bdb0a7b9392108|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0006eb2197bdb0a7b9392108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e020006eb2197bdb0a7b9392108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/61c43a39a8ba9605.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 16.919747210869378,
+		"worstRole": "foreground",
+		"worstMove": 0.38796980354523486,
+		"worstFrom": "#fdf04a",
+		"worstTo": "#7e7623"
+	},
+	{
+		"trialId": "perturb|0006eb2197bdb0a7b9392108|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0006eb2197bdb0a7b9392108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/06/ab67616d00001e020006eb2197bdb0a7b9392108",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/61c43a39a8ba9605.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 8.391480143845337,
+		"worstRole": "accent",
+		"worstMove": 0.19241663969837358,
+		"worstFrom": "#eae9e7",
+		"worstTo": "#feb72b"
+	},
+	{
+		"trialId": "perturb|0006eb2197bdb0a7b9392108|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0006eb2197bdb0a7b9392108",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/61c43a39a8ba9605.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/61c43a39a8ba9605.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 7.49479741330871,
+		"worstRole": "accent",
+		"worstMove": 0.1718557046871687,
+		"worstFrom": "#eae9e7",
+		"worstTo": "#faee4b"
+	},
+	{
+		"trialId": "perturb|00076fa70bc8b8077122d823|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00076fa70bc8b8077122d823",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b27300076fa70bc8b8077122d823",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/1855f9a55509beca.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 2.8725372770781408,
+		"worstRole": "surface",
+		"worstMove": 0.02678898269994138,
+		"worstFrom": "#744d2c",
+		"worstTo": "#814721"
+	},
+	{
+		"trialId": "perturb|00076fa70bc8b8077122d823|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00076fa70bc8b8077122d823",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b27300076fa70bc8b8077122d823",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/1855f9a55509beca.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 27.301835878511415,
+		"worstRole": "foreground",
+		"worstMove": 0.6260310966942667,
+		"worstFrom": "#1e2118",
+		"worstTo": "#e5d19e"
+	},
+	{
+		"trialId": "perturb|00076fa70bc8b8077122d823|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00076fa70bc8b8077122d823",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b27300076fa70bc8b8077122d823",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/1855f9a55509beca.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 3.7912170014806974,
+		"worstRole": "foreground",
+		"worstMove": 0.0353341424538001,
+		"worstFrom": "#1e2118",
+		"worstTo": "#302011"
+	},
+	{
+		"trialId": "perturb|00076fa70bc8b8077122d823|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00076fa70bc8b8077122d823",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/1855f9a55509beca.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/1855f9a55509beca.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"surface"
+		],
+		"worstRoleBarRatio": 1.9922430012445886,
+		"worstRole": "surface",
+		"worstMove": 0.029923489878693723,
+		"worstFrom": "#744d2c",
+		"worstTo": "#71583a"
+	},
+	{
+		"trialId": "perturb|0007960724fb77c8041c6c13|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "0007960724fb77c8041c6c13",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b2730007960724fb77c8041c6c13",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/eeef27ece2ed7347.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.199325491932814,
+		"worstRole": "foreground",
+		"worstMove": 0.6007505335300194,
+		"worstFrom": "#860027",
+		"worstTo": "#fdf8a4"
+	},
+	{
+		"trialId": "perturb|0007960724fb77c8041c6c13|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0007960724fb77c8041c6c13",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b2730007960724fb77c8041c6c13",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/eeef27ece2ed7347.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.48585412091562,
+		"worstRole": "foreground",
+		"worstMove": 0.6073206349925951,
+		"worstFrom": "#860027",
+		"worstTo": "#ebfead"
+	},
+	{
+		"trialId": "perturb|0007960724fb77c8041c6c13|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "0007960724fb77c8041c6c13",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d0000b2730007960724fb77c8041c6c13",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/eeef27ece2ed7347.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 26.135214709341774,
+		"worstRole": "foreground",
+		"worstMove": 0.5992804732852068,
+		"worstFrom": "#860027",
+		"worstTo": "#fdf797"
+	},
+	{
+		"trialId": "perturb|0007960724fb77c8041c6c13|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0007960724fb77c8041c6c13",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/eeef27ece2ed7347.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/eeef27ece2ed7347.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"accent"
+		],
+		"worstRoleBarRatio": 15.373155671103513,
+		"worstRole": "surface",
+		"worstMove": 0.35250645953840354,
+		"worstFrom": "#d10962",
+		"worstTo": "#11acaf"
+	},
+	{
+		"trialId": "perturb|0007bcee5dd53c80d8eb53c4|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "0007bcee5dd53c80d8eb53c4",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/07/ab67616d00001e020007bcee5dd53c80d8eb53c4",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/fd2d953301c7f20d.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 31.844788377604768,
+		"worstRole": "accent",
+		"worstMove": 0.5181147069036296,
+		"worstFrom": "#244903",
+		"worstTo": "#cdd2e6"
+	},
+	{
+		"trialId": "perturb|0007bcee5dd53c80d8eb53c4|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "0007bcee5dd53c80d8eb53c4",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/fd2d953301c7f20d.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/fd2d953301c7f20d.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"foreground"
+		],
+		"worstRoleBarRatio": 11.133936807930448,
+		"worstRole": "foreground",
+		"worstMove": 0.25530117100584515,
+		"worstFrom": "#2c6202",
+		"worstTo": "#7daf3d"
+	},
+	{
+		"trialId": "perturb|00080ad3d81e4338042e2d8e|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00080ad3d81e4338042e2d8e",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/08/ab67616d0000b27300080ad3d81e4338042e2d8e",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/cf55c0c2929c71ce.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 11.125126830821541,
+		"worstRole": "surface",
+		"worstMove": 0.2550991582307379,
+		"worstFrom": "#964a66",
+		"worstTo": "#b38dfc"
+	},
+	{
+		"trialId": "perturb|00080ad3d81e4338042e2d8e|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00080ad3d81e4338042e2d8e",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/08/ab67616d0000b27300080ad3d81e4338042e2d8e",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/cf55c0c2929c71ce.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 12.736385018642858,
+		"worstRole": "surface",
+		"worstMove": 0.2920453084774807,
+		"worstFrom": "#964a66",
+		"worstTo": "#f59a31"
+	},
+	{
+		"trialId": "perturb|00080ad3d81e4338042e2d8e|jpeg-q75",
+		"arm": "jpeg-q75",
+		"artworkId": "00080ad3d81e4338042e2d8e",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/08/ab67616d0000b27300080ad3d81e4338042e2d8e",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q75/cf55c0c2929c71ce.jpeg-q75.perturbed.jpg",
+		"disagreeingRoles": [
+			"surface",
+			"foreground"
+		],
+		"worstRoleBarRatio": 7.667317521894239,
+		"worstRole": "foreground",
+		"worstMove": 0.11516310917885146,
+		"worstFrom": "#94507f",
+		"worstTo": "#7f4537"
+	},
+	{
+		"trialId": "perturb|00080ad3d81e4338042e2d8e|dither-lsb1",
+		"arm": "dither-lsb1",
+		"artworkId": "00080ad3d81e4338042e2d8e",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/cf55c0c2929c71ce.dither-lsb1.baseline.png",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/dither-lsb1/cf55c0c2929c71ce.dither-lsb1.perturbed.png",
+		"disagreeingRoles": [
+			"background",
+			"surface",
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 13.119617937702099,
+		"worstRole": "surface",
+		"worstMove": 0.3008328393115091,
+		"worstFrom": "#964a66",
+		"worstTo": "#f69f39"
+	},
+	{
+		"trialId": "perturb|00087b1314ac8e17bc1c6916|jpeg-q92",
+		"arm": "jpeg-q92",
+		"artworkId": "00087b1314ac8e17bc1c6916",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q92/9cffcbc77286e03e.jpeg-q92.perturbed.jpg",
+		"disagreeingRoles": [
+			"accent"
+		],
+		"worstRoleBarRatio": 10.969404350777404,
+		"worstRole": "accent",
+		"worstMove": 0.17847220878714837,
+		"worstFrom": "#f7f6f2",
+		"worstTo": "#c0bbb5"
+	},
+	{
+		"trialId": "perturb|00087b1314ac8e17bc1c6916|jpeg-q85",
+		"arm": "jpeg-q85",
+		"artworkId": "00087b1314ac8e17bc1c6916",
+		"leftPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/08/ab67616d00001e0200087b1314ac8e17bc1c6916",
+		"rightPath": "/Users/Flo/GitHub/palette/.worktrees/p3-fields/research/v3/data/robustness/cache/jpeg-q85/9cffcbc77286e03e.jpeg-q85.perturbed.jpg",
+		"disagreeingRoles": [
+			"foreground",
+			"accent"
+		],
+		"worstRoleBarRatio": 2.3203650622875065,
+		"worstRole": "foreground",
+		"worstMove": 0.03775233956341773,
+		"worstFrom": "#f7f6f2",
+		"worstTo": "#f6e8dd"
+	}
+]

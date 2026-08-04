@@ -198,6 +198,15 @@ export type ForegroundChoice = Readonly<{
 	populationSize: number
 	/** The ordering's polarity record, carried through for the exposed intermediates. */
 	polarity: ForegroundPolarity | null
+	/**
+	 * The top-τ window this choice was the cascade pixel of — the same `subarray` the cascade ran over,
+	 * handed back rather than copied.
+	 *
+	 * Pixel indices, never colours. It is returned so a diagnostic run can read the window's own
+	 * L-distribution: the 0.2.0 hypothesis is that the remaining instability lives in *the cascade over
+	 * this window*, and a hypothesis about a population cannot be tested from a summary of it.
+	 */
+	window: Int32Array
 }>
 
 /**
@@ -228,6 +237,18 @@ export type ForegroundPolarity = Readonly<{
 	trimmed: Readonly<Record<ForegroundBand, number>>
 	/** Which step of the three-step cascade decided it. */
 	decidedBy: "only-population" | "trimmed-contrast" | "darker-convention"
+	/**
+	 * How many pixels each lightness band held, before rankability was tested.
+	 *
+	 * A returned count, not a new computation — the three arrays exist either way. It is here because
+	 * step 1 of the cascade ("a band with no population worth taking a rank of is out") is a threshold
+	 * on exactly these numbers, and a band that crosses `ceil(1/τ)` under a dither changes which bands
+	 * are compared at all. Without the counts that transition is invisible in the record.
+	 */
+	bandSizes: Readonly<Record<ForegroundBand, number>>
+	/** The ramp's own lightness extremes, which cut the bands. */
+	darkestAnchorL: number
+	lightestAnchorL: number
 }>
 
 /**
@@ -354,20 +375,27 @@ export function luminanceOrdering(
 	}
 	const usable = FOREGROUND_BANDS.filter((band) => sortedOf[band] !== undefined)
 
+	// Diagnostic-only, and free: the three counts already exist as array lengths.
+	const bandSizes: Record<ForegroundBand, number> = {
+		below: members.below.length,
+		between: members.between.length,
+		above: members.above.length,
+	}
+
 	if (usable.length === 0) {
 		// No band is a population of its own; rank the whole thing and make no polarity decision. This is
 		// the 0.1.0 shape, reached only where the polarity question has no answer to give.
 		return {
 			regime: "luminance",
 			sorted: orderingOf(population),
-			polarity: { band: "unsplit", trimmed, decidedBy: "only-population" },
+			polarity: { band: "unsplit", trimmed, decidedBy: "only-population", bandSizes, darkestAnchorL, lightestAnchorL },
 		}
 	}
 	if (usable.length === 1) {
 		return {
 			regime: "luminance",
 			sorted: sortedOf[usable[0]] as Int32Array,
-			polarity: { band: usable[0], trimmed, decidedBy: "only-population" },
+			polarity: { band: usable[0], trimmed, decidedBy: "only-population", bandSizes, darkestAnchorL, lightestAnchorL },
 		}
 	}
 
@@ -380,7 +408,14 @@ export function luminanceOrdering(
 	return {
 		regime: "luminance",
 		sorted: sortedOf[band] as Int32Array,
-		polarity: { band, trimmed, decidedBy: band === best && tied.length === 1 ? "trimmed-contrast" : "darker-convention" },
+		polarity: {
+			band,
+			trimmed,
+			decidedBy: band === best && tied.length === 1 ? "trimmed-contrast" : "darker-convention",
+			bandSizes,
+			darkestAnchorL,
+			lightestAnchorL,
+		},
 	}
 }
 
@@ -397,5 +432,6 @@ export function chooseForeground(
 		regime: ordering.regime,
 		populationSize: window.length,
 		polarity: ordering.polarity,
+		window,
 	}
 }

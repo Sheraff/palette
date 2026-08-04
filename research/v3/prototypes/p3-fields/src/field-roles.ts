@@ -94,6 +94,23 @@ export type FieldEnds = Readonly<{
 	projection: Float64Array
 	/** How many pixels of F sit within the bar of each end, in `[background, surface]` order. */
 	prevalence: readonly [number, number]
+	/**
+	 * The prevalence comparison as it was actually decided, in `far`/`near` terms rather than in
+	 * `background`/`surface` terms.
+	 *
+	 * Recorded because the published `prevalence` pair is already re-ordered by the answer, so it cannot
+	 * say *how close the comparison was* or *which rule settled it* — and those are the two things the
+	 * attribution of a whole-palette flip needs. Every one of these numbers was computed anyway; this is
+	 * a return, not a computation, and it changes nothing about the choice above it.
+	 */
+	farPrevalence: number
+	nearPrevalence: number
+	/** `|far − near| / max(far, near)`, the quantity δ_bs is compared against. */
+	prevalenceRelativeGap: number
+	/** True when the gap fell inside δ_bs and the darker-end convention decided instead of the count. */
+	prevalenceTieBandFired: boolean
+	/** Which end became the background. */
+	farIsBackground: boolean
 }>
 
 function prevalenceOf(image: DecodedImage, fieldSet: Int32Array, end: number): number {
@@ -145,6 +162,11 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 			collapsed: true,
 			projection,
 			prevalence: [n, n],
+			farPrevalence: n,
+			nearPrevalence: n,
+			prevalenceRelativeGap: 0,
+			prevalenceTieBandFired: false,
+			farIsBackground: true,
 		}
 	}
 
@@ -195,6 +217,7 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 	const larger = Math.max(farPrevalence, nearPrevalence)
 	const relativeGap = larger === 0 ? 0 : Math.abs(farPrevalence - nearPrevalence) / larger
 	let farIsBackground: boolean
+	const tieBandFired = relativeGap < BACKGROUND_PREVALENCE_TIE_BAND
 	if (relativeGap >= BACKGROUND_PREVALENCE_TIE_BAND) {
 		farIsBackground = farPrevalence > nearPrevalence
 	} else {
@@ -219,5 +242,10 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 		collapsed,
 		projection,
 		prevalence: farIsBackground ? [farPrevalence, nearPrevalence] : [nearPrevalence, farPrevalence],
+		farPrevalence,
+		nearPrevalence,
+		prevalenceRelativeGap: relativeGap,
+		prevalenceTieBandFired: tieBandFired,
+		farIsBackground,
 	}
 }

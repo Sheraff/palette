@@ -35,6 +35,7 @@ import {
 	ACCENT_FUNCTIONAL_DISTANCE,
 	CONTRACT_VERSION,
 	FOREGROUND_ACCENT_SEPARATION_DISTANCE,
+	SOURCE_POPULATION_FLOOR,
 } from "../../../src/contract/constants.ts"
 import { apcaRaw, colorFromRgb, colorFromHex, sameColorBar } from "../../../src/contract/color.ts"
 import { DEFAULT_CONTRAST_PARAMETERS, resolveContrastParameters, validatePalette } from "../../../src/contract/invariants.ts"
@@ -47,7 +48,19 @@ import type {
 } from "../../../src/contract/types.ts"
 import { hashFileBytes } from "../../../src/devloop/code-version.ts"
 import { computeAccentTiers, chooseAccent, type AccentChoice } from "./accent.ts"
-import { ALGORITHM_VERSION, MAX_RANK_STEPS, PREPROCESSING_VERSION } from "./constants.ts"
+import {
+	ALGORITHM_VERSION,
+	BACKGROUND_PREVALENCE_TIE_BAND,
+	edgeRankInUse,
+	FIELD_DEPTH_QUANTILE,
+	FOREGROUND_POLARITY_TIE_BAND,
+	GRADIENT_RANK_CORRELATION,
+	INK_REGIME_SUPPORT_MARGIN,
+	MAX_RANK_STEPS,
+	PREPROCESSING_VERSION,
+	TRIM_LEVEL,
+} from "./constants.ts"
+import { deciles, diagnosticsEnabled, writeDiagnostics } from "./diagnostics.ts"
 import { decodeImage, pixelRgb, type DecodedImage } from "./decode.ts"
 import { chooseFieldEnds, computeFieldSet, type FieldEnds } from "./field-roles.ts"
 import { computeDepthField, computeEdgeField } from "./fields.ts"
@@ -349,6 +362,60 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 	const depth = computeDepthField(image, edges)
 	const field = computeFieldSet(image, depth)
 
+	// ---------------------------------------------------------------------------------------
+	// The dev-only decision-chain record (`P3_DIAG`). Nothing below reads it back; every value in it
+	// is a scalar or the index of a pixel the pipeline has already chosen, and with the variable unset
+	// the only cost is one boolean test per stage. See `diagnostics.ts`.
+	// ---------------------------------------------------------------------------------------
+	const DIAG = diagnosticsEnabled()
+	const chain: Record<string, unknown> = {}
+	const lOf = (pixel: number): number | null => (pixel >= 0 ? image.lab[pixel * 3] : null)
+	const hexOf = (pixel: number): string | null =>
+		pixel >= 0 ? colorFromRgb(pixelRgb(image, pixel)).hex : null
+	const record = (stage: string, value: unknown): void => {
+		if (DIAG) chain[stage] = value
+	}
+	const finish = async (result: P3Result): Promise<P3Result> => {
+		if (!DIAG) return result
+		chain.published = {
+			background: result.palette.roles.background.hex,
+			surface: result.palette.roles.surface.hex,
+			foreground: result.palette.roles.foreground.hex,
+			accent: result.palette.roles.accent.hex,
+			gradientStops: result.palette.gradient === null ? 0 : result.palette.gradient.stops.length,
+			surfaceCollapsed: result.palette.collapse.surfaceCollapsed,
+			accentCollapsed: result.palette.collapse.accentCollapsed,
+		}
+		chain.steps = {
+			endsStep: result.intermediates.endsStep,
+			foregroundCursor: result.intermediates.foregroundStep,
+			accentCursor: result.intermediates.accentStep,
+			repairs: result.intermediates.repairs,
+			escaped: result.intermediates.escaped,
+		}
+		await writeDiagnostics(imagePath, chain)
+		return result
+	}
+
+	record("decode", {
+		width: image.width,
+		height: image.height,
+		eligiblePixels: image.eligibleIndices.length,
+		contentHash,
+	})
+	record("edges", {
+		k: edgeRankInUse(),
+		edgePixels: edges.edgeCount,
+		edgeFraction: edges.edgeCount / Math.max(1, image.eligibleIndices.length),
+		seedlessDepth: depth.seedless,
+	})
+	record("fieldSet", {
+		beta: FIELD_DEPTH_QUANTILE,
+		size: field.indices.length,
+		depthThreshold: field.threshold,
+		sizeFraction: field.indices.length / Math.max(1, image.eligibleIndices.length),
+	})
+
 	const support: Record<string, number> = {}
 	const spread: Record<string, number> = {}
 	const intermediates: P3Intermediates = {
@@ -407,9 +474,11 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		intermediates.accentCollapsed = true
 		intermediates.foregroundRegime = "escape"
 
+		record("escape", { taken: true, cascadePixel: imageCascade, cascadeL: lOf(imageCascade), options: options.length })
+
 		if (options.length > 0) {
 			const chosen = options[0]
-			return {
+			return await finish({
 				palette: assemblePalette(imagePath, image, contentHash, {
 					background: imageCascade,
 					surface: null,
@@ -421,7 +490,7 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 					escapeColor: chosen.color,
 				}),
 				intermediates,
-			}
+			})
 		}
 		// Both literals occur in an image that is one colour — arithmetically unreachable, since white and
 		// black are far outside any regional bar of each other. Falling through publishes the honest
@@ -450,6 +519,43 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 
 		const endsVerified = backgroundVerdict.passes && surfaceVerdict.passes &&
 			(ends.collapsed || distinctPixels(image, ends.background, ends.surface))
+
+		record("ends", {
+			endsStep,
+			median: ends.median,
+			medianL: lOf(ends.median),
+			// The cascade pixel of F, as a colour: `e1` is the rank-(1−τ) pixel of distance *from this*, so
+			// a divergence at `e1-colour` splits into "the field median moved" and "the rank moved under a
+			// fixed median", and only the second is a statement about the rank.
+			medianHex: hexOf(ends.median),
+			e1DistanceFromMedian: labDistance(image.lab, ends.median, ends.farEnd),
+			e1: ends.farEnd,
+			e1L: lOf(ends.farEnd),
+			e1Hex: hexOf(ends.farEnd),
+			e2: ends.nearEnd,
+			e2L: lOf(ends.nearEnd),
+			e2Hex: hexOf(ends.nearEnd),
+			collapsed: ends.collapsed,
+			endsVerified,
+			backgroundSupport: backgroundVerdict.support,
+			surfaceSupport: surfaceVerdict.support,
+		})
+		record("prevalence", {
+			far: ends.farPrevalence,
+			near: ends.nearPrevalence,
+			relativeGap: ends.prevalenceRelativeGap,
+			tieBand: BACKGROUND_PREVALENCE_TIE_BAND,
+			tieBandFired: ends.prevalenceTieBandFired,
+			farIsBackground: ends.farIsBackground,
+			order: ends.farIsBackground ? "far-is-background" : "near-is-background",
+			background: ends.background,
+			backgroundL: lOf(ends.background),
+			backgroundHex: hexOf(ends.background),
+			surface: ends.surface,
+			surfaceL: lOf(ends.surface),
+			surfaceHex: hexOf(ends.surface),
+		})
+
 		if (!endsVerified && endsStep < MAX_RANK_STEPS) continue
 
 		// The gradient. Computed before the text roles because the ramp is a field fact, and because the
@@ -467,6 +573,17 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 				{ pixel: ends.surface, position: 1 },
 			]
 		}
+
+		record("gradient", {
+			isGradient: parameterisation.isGradient,
+			bestSpearmanRho: parameterisation.bestCorrelation,
+			rhoStar: GRADIENT_RANK_CORRELATION,
+			geometry: parameterisation.geometry === undefined ? null : parameterisation.geometry.kind,
+			geometryDetail: parameterisation.geometry ?? null,
+			stops: stops === null ? 0 : stops.length,
+			maxExcursion: intermediates.maxExcursion,
+			excursionBar: intermediates.excursionBar,
+		})
 
 		if (ink === inkPlaceholder) {
 			ink = computeInkField(image, depth.depth, field.threshold)
@@ -499,6 +616,17 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		const luminance = luminanceOrdering(image, depth.depth, rampAnchors)
 		if (luminance !== null) orderings.push(luminance)
 		const tiers = computeAccentTiers(image, ends.background, ends.surface)
+
+		record("ink", {
+			bandSize: ink.bandSize,
+			candidates: ink.candidates.length,
+			inkOrderingExists: ranked !== null,
+			luminanceOrderingExists: luminance !== null,
+			rampAnchors: rampAnchors.length,
+			rampAnchorL: rampAnchors.map(lOf),
+			marginFactor: 1 + INK_REGIME_SUPPORT_MARGIN,
+		})
+		record("accentTiers", { tier1: tiers.tier1.length, tier2: tiers.tier2.length })
 
 		let foregroundFrom = 0
 		let accentFrom = 0
@@ -533,6 +661,49 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			intermediates.accentStep = accent === null ? 0 : accent.cursor
 			intermediates.accentCollapsed = accent === null
 
+			if (DIAG) {
+				const polarity = foreground.choice.polarity
+				const windowL: number[] = []
+				for (let i = 0; i < foreground.choice.window.length; i += 1) {
+					windowL.push(image.lab[foreground.choice.window[i] * 3])
+				}
+				record("foreground", {
+					regime: foreground.choice.regime,
+					cursor: foreground.cursor,
+					stepWithinRegime: foreground.cursor % (MAX_RANK_STEPS + 1),
+					verified: foreground.verified,
+					pixel: foreground.choice.pixel,
+					L: lOf(foreground.choice.pixel),
+					hex: hexOf(foreground.choice.pixel),
+					populationSize: foreground.choice.populationSize,
+					supportAtChoice: support[`foreground:${foreground.choice.regime}:${foreground.cursor % (MAX_RANK_STEPS + 1)}`] ?? null,
+					// The regime test's two numbers, side by side: what the ink population's rank-0 support was,
+					// and the level the 0.2.0 margin makes it clear. A regime divergence is one of these crossing.
+					inkStep0Support: support["foreground:ink:0"] ?? null,
+					inkMarginThreshold: SOURCE_POPULATION_FLOOR * (1 + INK_REGIME_SUPPORT_MARGIN),
+					sourcePopulationFloor: SOURCE_POPULATION_FLOOR,
+					tau: TRIM_LEVEL,
+					topTauDeciles: deciles(windowL),
+					polarityBand: polarity === null ? null : polarity.band,
+					polarityDecidedBy: polarity === null ? null : polarity.decidedBy,
+					polarityTrimmed: polarity === null ? null : polarity.trimmed,
+					polarityBandSizes: polarity === null ? null : polarity.bandSizes,
+					polarityTieBand: FOREGROUND_POLARITY_TIE_BAND,
+					darkestAnchorL: polarity === null ? null : polarity.darkestAnchorL,
+					lightestAnchorL: polarity === null ? null : polarity.lightestAnchorL,
+				})
+				record("accent", {
+					collapsed: accent === null,
+					tier: accent === null ? null : accent.choice.tier,
+					cursor: accent === null ? null : accent.cursor,
+					fragile: accent !== null && accent.choice.fragile,
+					pixel: accent === null ? null : accent.choice.pixel,
+					L: accent === null ? null : lOf(accent.choice.pixel),
+					hex: accent === null ? null : hexOf(accent.choice.pixel),
+					populationSize: accent === null ? null : accent.choice.populationSize,
+				})
+			}
+
 			// Guide stops must also be distinct from the text roles — invariant 3 judges stop-against-role
 			// pairs for everything except the two field ends. A stop that is not is dropped, never moved.
 			const publishedStops = stops === null ? null : stops.filter((stop, index) => {
@@ -558,7 +729,8 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			intermediates.repairs = repair
 
 			const result = validatePalette(palette)
-			if (result.valid) return { palette, intermediates }
+			record("validation", { valid: result.valid, violations: result.violations.map((v) => v.subjects.join("+")) })
+			if (result.valid) return await finish({ palette, intermediates })
 
 			// Step whichever role the contract named, and re-run everything downstream of it.
 			const subjects = result.violations.flatMap((violation) => violation.subjects)
@@ -583,5 +755,5 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 	}
 	// Every rank has been stepped and the contract is still unhappy. The palette is published anyway and
 	// scores as failing: a failure is a row, never an omission.
-	return { palette: lastPalette, intermediates }
+	return await finish({ palette: lastPalette, intermediates })
 }

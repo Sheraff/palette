@@ -41,7 +41,7 @@
  * edges.
  */
 
-import { EDGE_RANK } from "./constants.ts"
+import { edgeRankInUse } from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import { labDistance } from "./primitives.ts"
 
@@ -66,11 +66,12 @@ export type EdgeField = Readonly<{
  * The sort is an insertion sort over at most eight values: for n = 8 it beats every asymptotically
  * better algorithm and, more to the point, it is obviously a total order with no tie-break to get wrong.
  *
- * `rank` defaults to `EDGE_RANK` and exists so `src/tools/measure-edge-rank.ts` can run arm-d §4 row 2's
- * anchoring measurement against **this** function rather than a re-implementation of it. The pipeline
- * never passes it.
+ * `rank` defaults to `edgeRankInUse()` and exists so `src/tools/measure-edge-rank.ts` can run arm-d §4
+ * row 2's anchoring measurement against **this** function rather than a re-implementation of it. The
+ * pipeline never passes it. The default is `EDGE_RANK` unless the dev-only `P3_EDGE_RANK` variable is
+ * set — see `constants.ts`; with it unset the shipped behaviour is exactly what it was.
  */
-export function computeEdgeField(image: DecodedImage, rank: number = EDGE_RANK): EdgeField {
+export function computeEdgeField(image: DecodedImage, rank: number = edgeRankInUse()): EdgeField {
 	const { width, height, lab, eligible, bar } = image
 	const count = width * height
 	const isEdge = new Uint8Array(count)

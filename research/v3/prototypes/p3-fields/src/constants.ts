@@ -110,6 +110,29 @@ export const TRIM_LEVEL = 0.05
 export const EDGE_RANK = 3
 
 /**
+ * **Dev-only override of k**, read from the `P3_EDGE_RANK` environment variable.
+ *
+ * The open decision recorded above ("re-running the harness at k = 5 is a one-line change") is the
+ * whole reason this exists: comparing two k on the robustness harness needs the harness to be able to
+ * ask for a different k without the shipped constant moving. **The shipped default is `EDGE_RANK` and
+ * nothing in `src/` passes an override** — with the variable unset this function is `EDGE_RANK` and the
+ * published palette is unchanged, which is the property the k comparison is read against.
+ *
+ * Dev-only, in the sense that no product build ever sets the variable; a value outside 1…8 throws
+ * rather than being clamped, because a typo in a measurement's environment must not quietly produce a
+ * different measurement.
+ */
+export function edgeRankInUse(): number {
+	const override = process.env.P3_EDGE_RANK
+	if (override === undefined || override.length === 0) return EDGE_RANK
+	const parsed = Number(override)
+	if (!Number.isInteger(parsed) || parsed < 1 || parsed > 8) {
+		throw new Error(`P3_EDGE_RANK must be an integer in 1..8 (the 8-neighbourhood's size); got ${override}`)
+	}
+	return parsed
+}
+
+/**
  * **β** — the depth quantile separating field from non-field (arm-d §2.3).
  *
  * [UNCALIBRATED] — provisional 0.75, chosen here. **Anchoring plan (arm-d §4 row 3):** a review round
