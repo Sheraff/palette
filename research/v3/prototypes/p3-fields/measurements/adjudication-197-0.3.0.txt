@@ -1,0 +1,58 @@
+AUTO-ADJUDICATION — candidate run against standing reviewer evidence
+==============================================================================
+
+The three principles this tool is built on (reviewer, 2026-08-04):
+  1. There can be many valid palettes: matching an endorsement is a WIN signal; differing from one is NO SIGNAL, never a penalty; only matching a known-bad is a LOSS signal.
+  2. The reviewer can contradict himself: where the evidence corpus conflicts, the conflict is surfaced per item and never averaged away. Recency decides standing; the disagreement is still reported.
+  3. We are rewriting from scratch and old truths might be invalid now: every verdict enters as a DATED PRIOR with an era tag, results split by era, and nothing here gates anything — it informs.
+
+  Gating: none. Nothing below blocks anything. It informs.
+
+INPUT
+  prototypes/p3-fields/measurements/adjudication-input-197-0.3.0.jsonl
+  197 candidate palettes parsed · 197 carried the full contract · 0 lines refused
+
+MATCH SEMANTICS
+  bar: regional  ·  roles: background, surface, foreground, accent  ·  partial entries: compare-present
+  as-of: (not set — prior ages not computed)  ·  reachability: on
+
+EVIDENCE (dated priors, not ground truth)
+  v2-3  endorsement   351 entries  research/v3/data/legacy/endorsements.json  sha256:7d7ea50a60d2
+  v2-3  known-bad      37 entries  research/v3/data/legacy/known-bad.json  sha256:81386caa7cd0
+  v2-3  acceptable    166 entries  research/v3/data/legacy/acceptable.json  sha256:b8bb04249e08
+  v3    endorsement     0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:dbe648cc382b
+  v3    known-bad       0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:dbe648cc382b
+  v3    acceptable      0 entries  research/v3/data/warehouse/warehouse.jsonl  sha256:dbe648cc382b
+
+RESULTS BY ERA
+  era v2-3 — 197 candidate palettes had evidence in this era
+    WIN      endorsement matches:    1 candidates · 1 distinct entries · 1 artworks
+    LOSS     known-bad matches:      0 candidates · 0 distinct entries · 0 artworks
+    (base)   acceptable matches:     0 candidates · 0 distinct entries — not-rejected baseline, not an endorsement
+    NO SIGNAL differed from this era's evidence: 196 · never seen in this era: 0
+             (differing is not a miss and costs nothing — principle 1)
+
+  era v3 — 0 candidate palettes had evidence in this era
+    WIN      endorsement matches:    0 candidates · 0 distinct entries · 0 artworks
+    LOSS     known-bad matches:      0 candidates · 0 distinct entries · 0 artworks
+    (base)   acceptable matches:     0 candidates · 0 distinct entries — not-rejected baseline, not an endorsement
+    NO SIGNAL differed from this era's evidence: 0 · never seen in this era: 197
+             (differing is not a miss and costs nothing — principle 1)
+
+BY ARM
+  p3-fields                  197 candidates ·    1 win ·    0 loss ·   196 no signal
+
+REACHABILITY — could the candidate's colour set have produced the prior at all?
+  assessed: 0 entry comparisons · reachable 0 · unreachable 0 · not assessed 418
+  (not assessed = the run did not carry `availableColors`. Silence is not a pass.)
+
+CONFLICTS IN THE EVIDENCE (0) — surfaced per item, never averaged
+  none touched by this run
+
+SIGNAL-CARRYING CANDIDATES (1 of 197) — --verbose for all
+
+  line  195 [p3-fields] /Users/Flo/GitHub/palette/.worktrees/p3-fields/images/slipknot.jpg
+    outcome: endorsement-match   signals: win=true loss=false baseline=false
+    era v2-3  endorsement-match
+    era v3    unseen
+    WIN  matches endorsement 5cd3c20c508accc0 (v2-3, 2026-07-30T18:16:37.291Z, basis all-four-roles)

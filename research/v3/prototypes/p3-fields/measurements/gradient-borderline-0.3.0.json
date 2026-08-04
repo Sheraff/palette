@@ -1,0 +1,594 @@
+{
+	"what": "The 20 artworks whose best rank correlation sits closest to rho* from either side — the draw pool for the flat-vs-gradient pairwise round.",
+	"generatedBy": "W9 measurement pass, p3-fields-0.3.0 coverage-set-1 run",
+	"candidateId": "p3-fields-0.3.0",
+	"codeVersion": "1cc28c1efb1f38de1806daab20029d1565c5f6b5eb930337f3bc0dd6e91b4849",
+	"run": "run-coverage-220-0.3.0.jsonl",
+	"set": "coverage-set-1 (220 artworks)",
+	"rhoStar": 0.62,
+	"selection": "10 nearest with bestRho >= rho* (gradient side) + 10 nearest with bestRho < rho* (flat side), written in descending rho",
+	"distribution": {
+		"artworksWithRhoRecorded": 220,
+		"min": 0,
+		"p10": 0.15597083010287355,
+		"median": 0.566982010338636,
+		"p90": 0.7819977896409063,
+		"max": 0.9765191516739203,
+		"withinPoint02OfRhoStar": 15,
+		"withinPoint05OfRhoStar": 38,
+		"withinPoint10OfRhoStar": 78
+	},
+	"artworks": [
+		{
+			"artworkId": "e20395f585b3e41dbbf98a3674f45bb1",
+			"imagePath": "music-artworks/e/2/0/e20395f585b3e41dbbf98a3674f45bb1.jpg",
+			"bestRho": 0.6547169384012861,
+			"distanceFromRhoStar": 0.03471693840128609,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "radial",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							34,
+							35,
+							27
+						],
+						"hex": "#22231b"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							213,
+							64,
+							31
+						],
+						"hex": "#d5401f"
+					},
+					"position": 0.5
+				},
+				{
+					"color": {
+						"rgb": [
+							142,
+							137,
+							37
+						],
+						"hex": "#8e8925"
+					},
+					"position": 0.53125
+				},
+				{
+					"color": {
+						"rgb": [
+							206,
+							236,
+							236
+						],
+						"hex": "#ceecec"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "edd28ba0f4a489a0b3f1f5851003ede1",
+			"imagePath": "music-artworks/e/d/d/edd28ba0f4a489a0b3f1f5851003ede1.jpg",
+			"bestRho": 0.649799091523588,
+			"distanceFromRhoStar": 0.02979909152358795,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							11,
+							3,
+							16
+						],
+						"hex": "#0b0310"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							4,
+							146,
+							160
+						],
+						"hex": "#0492a0"
+					},
+					"position": 0.59375
+				},
+				{
+					"color": {
+						"rgb": [
+							254,
+							0,
+							0
+						],
+						"hex": "#fe0000"
+					},
+					"position": 0.65625
+				},
+				{
+					"color": {
+						"rgb": [
+							133,
+							214,
+							208
+						],
+						"hex": "#85d6d0"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "0012db16a41f984c378a6071",
+			"imagePath": "12/ab67616d0000b2730012db16a41f984c378a6071",
+			"bestRho": 0.6384654645588301,
+			"distanceFromRhoStar": 0.018465464558830136,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							24,
+							57,
+							102
+						],
+						"hex": "#183966"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							37,
+							125,
+							189
+						],
+						"hex": "#257dbd"
+					},
+					"position": 0.40625
+				},
+				{
+					"color": {
+						"rgb": [
+							170,
+							125,
+							120
+						],
+						"hex": "#aa7d78"
+					},
+					"position": 0.53125
+				},
+				{
+					"color": {
+						"rgb": [
+							255,
+							199,
+							221
+						],
+						"hex": "#ffc7dd"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "d76d845e33b98c986bb8b1297e49487b",
+			"imagePath": "music-artworks/d/7/6/d76d845e33b98c986bb8b1297e49487b.jpg",
+			"bestRho": 0.636525760198517,
+			"distanceFromRhoStar": 0.016525760198517037,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "radial",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							12,
+							14,
+							13
+						],
+						"hex": "#0c0e0d"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							16,
+							28,
+							54
+						],
+						"hex": "#101c36"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "0009e00f495b4584cfdd4ef7",
+			"imagePath": "09/ab67616d0000b2730009e00f495b4584cfdd4ef7",
+			"bestRho": 0.6340633009405902,
+			"distanceFromRhoStar": 0.014063300940590162,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							234,
+							236,
+							235
+						],
+						"hex": "#eaeceb"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							126,
+							126,
+							126
+						],
+						"hex": "#7e7e7e"
+					},
+					"position": 0.625
+				},
+				{
+					"color": {
+						"rgb": [
+							215,
+							63,
+							58
+						],
+						"hex": "#d73f3a"
+					},
+					"position": 0.75
+				},
+				{
+					"color": {
+						"rgb": [
+							144,
+							64,
+							57
+						],
+						"hex": "#904039"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "0003f2b6590090abe420d104",
+			"imagePath": "03/ab67616d0000b2730003f2b6590090abe420d104.jpg",
+			"bestRho": 0.632260054597054,
+			"distanceFromRhoStar": 0.012260054597054038,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "radial",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							183,
+							178,
+							158
+						],
+						"hex": "#b7b29e"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							117,
+							130,
+							139
+						],
+						"hex": "#75828b"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "0002881a851f1e14c374562b",
+			"imagePath": "02/ab67616d00001e020002881a851f1e14c374562b.jpg",
+			"bestRho": 0.6306514333455268,
+			"distanceFromRhoStar": 0.010651433345526762,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							40,
+							37,
+							68
+						],
+						"hex": "#282544"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							251,
+							253,
+							250
+						],
+						"hex": "#fbfdfa"
+					},
+					"position": 0.96875
+				},
+				{
+					"color": {
+						"rgb": [
+							238,
+							185,
+							81
+						],
+						"hex": "#eeb951"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "000c4ff9e01aba5eae6cbec4",
+			"imagePath": "0c/ab67616d00001e02000c4ff9e01aba5eae6cbec4",
+			"bestRho": 0.6227808866360137,
+			"distanceFromRhoStar": 0.002780886636013724,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							222,
+							179,
+							85
+						],
+						"hex": "#deb355"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							252,
+							223,
+							153
+						],
+						"hex": "#fcdf99"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "0011a326091e7dd7df58b175",
+			"imagePath": "11/ab67616d0000b2730011a326091e7dd7df58b175",
+			"bestRho": 0.6220793008102783,
+			"distanceFromRhoStar": 0.002079300810278295,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							11,
+							8,
+							0
+						],
+						"hex": "#0b0800"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							38,
+							33,
+							29
+						],
+						"hex": "#26211d"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "001398589df77e24a722fe6a",
+			"imagePath": "13/ab67616d0000b273001398589df77e24a722fe6a",
+			"bestRho": 0.621748139816955,
+			"distanceFromRhoStar": 0.0017481398169549855,
+			"side": "gradient",
+			"isGradientByCorrelation": true,
+			"publishedGradient": true,
+			"geometry": "linear",
+			"gradientStops": [
+				{
+					"color": {
+						"rgb": [
+							225,
+							248,
+							238
+						],
+						"hex": "#e1f8ee"
+					},
+					"position": 0
+				},
+				{
+					"color": {
+						"rgb": [
+							242,
+							140,
+							56
+						],
+						"hex": "#f28c38"
+					},
+					"position": 0.3125
+				},
+				{
+					"color": {
+						"rgb": [
+							53,
+							175,
+							198
+						],
+						"hex": "#35afc6"
+					},
+					"position": 0.375
+				},
+				{
+					"color": {
+						"rgb": [
+							9,
+							79,
+							89
+						],
+						"hex": "#094f59"
+					},
+					"position": 1
+				}
+			]
+		},
+		{
+			"artworkId": "8cd594ad97ce7682b53c3dd5ae2a5bbe",
+			"imagePath": "music-artworks/8/c/d/8cd594ad97ce7682b53c3dd5ae2a5bbe.jpg",
+			"bestRho": 0.6166830676210098,
+			"distanceFromRhoStar": -0.0033169323789902228,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "00011a71dc82a914663aa5ce",
+			"imagePath": "01/ab67616d00001e0200011a71dc82a914663aa5ce.jpg",
+			"bestRho": 0.6153998639727438,
+			"distanceFromRhoStar": -0.004600136027256174,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "00133fe10d39cafd71ab8a6b",
+			"imagePath": "13/ab67616d0000b27300133fe10d39cafd71ab8a6b",
+			"bestRho": 0.6151785538080082,
+			"distanceFromRhoStar": -0.004821446191991763,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "0010403dcc48ac67e0a1b97f",
+			"imagePath": "10/ab67616d0000b2730010403dcc48ac67e0a1b97f",
+			"bestRho": 0.6134131845787759,
+			"distanceFromRhoStar": -0.006586815421224079,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "00121f288d1d52703e36cd3a",
+			"imagePath": "12/ab67616d00001e0200121f288d1d52703e36cd3a",
+			"bestRho": 0.6128717079240047,
+			"distanceFromRhoStar": -0.007128292075995302,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "00026b0642433bd2ffbcef38",
+			"imagePath": "02/ab67616d0000b27300026b0642433bd2ffbcef38.jpg",
+			"bestRho": 0.6098749115884499,
+			"distanceFromRhoStar": -0.010125088411550132,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "0004365ce7b2f02c5401b0f5",
+			"imagePath": "04/ab67616d0000b2730004365ce7b2f02c5401b0f5",
+			"bestRho": 0.6012160340258321,
+			"distanceFromRhoStar": -0.01878396597416787,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "0006c376b34af7b7417b2b12",
+			"imagePath": "06/ab67616d00001e020006c376b34af7b7417b2b12",
+			"bestRho": 0.5975182827833372,
+			"distanceFromRhoStar": -0.02248171721666281,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "0005165a15d80c563a8d1ec2",
+			"imagePath": "05/ab67616d0000b2730005165a15d80c563a8d1ec2",
+			"bestRho": 0.5974381171251597,
+			"distanceFromRhoStar": -0.02256188287484029,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		},
+		{
+			"artworkId": "0000c775567afe4972b0332b",
+			"imagePath": "00/ab67616d0000b2730000c775567afe4972b0332b.jpg",
+			"bestRho": 0.5959207626802425,
+			"distanceFromRhoStar": -0.024079237319757474,
+			"side": "flat",
+			"isGradientByCorrelation": false,
+			"publishedGradient": false,
+			"geometry": null,
+			"gradientStops": null
+		}
+	]
+}
