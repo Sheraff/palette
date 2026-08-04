@@ -76,6 +76,13 @@ images; `tools/sensitivity.ts`. Nothing in wave 2 starts until wave 1 reports.
    ~660 ms, adversarial full-gamut noise → 1.6 s. Under the 2 s defect line, over the proposal's
    price; integration measures the real demo-20/coverage distribution and reports the tail.
 
+7. **Robustness harness field notes (from P3, via the main orchestrator, 2026-08-04).**
+   `src/robustness/check.ts` emits JSON only — no `.disagreements.txt` despite its docs — and has
+   no `--repo-root` flag: run it from this worktree's `research/v3` (image symlinks at the
+   worktree root make repo-relative paths resolve). Heavy candidates budget ~10.8 s/palette at
+   640 px — a full 600-trial run can be hours. First runs use `--limit` and `--skip-pairs` to
+   size the cost before committing to the full set.
+
 ## Performance envelope
 
 Proposal §5 prices 1000×1000 at ≈0.4 s single-threaded. Treat >2 s at that size as a defect to
