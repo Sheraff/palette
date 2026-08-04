@@ -1,0 +1,788 @@
+{
+  "generated": "2026-08-04",
+  "batch": "pointing-typical-1",
+  "scored_against": "research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md sec 6 (committed bafcc53, before inference)",
+  "criterion": "STRICT -- 'is this correct', per prereg sec 5 framing text; first strict pointing measurement",
+  "answer_key": null,
+  "answer_key_note": "Typical covers have no ground-freetext-1 prose. This measures REVIEWER JUDGEMENT ONLY. sec 13.9's caveat is not retired.",
+  "provenance": {
+    "labels_latest": 48,
+    "labels_raw": 50,
+    "regraded": [
+      {
+        "imageId": "0012eb9ade9c1bf4a5411c5d|union",
+        "revision": 2,
+        "supersedes": "o-mseabsf3-35d85ab4",
+        "answer": "dot_right_wash_wrong",
+        "ts": "2026-08-04T06:36:38.686Z",
+        "previous_answer": "cant_tell"
+      },
+      {
+        "imageId": "00124d0597059e8987bc4577|containing",
+        "revision": 2,
+        "supersedes": "o-mseag0ju-42bd50cd",
+        "answer": "dot_right_wash_right",
+        "ts": "2026-08-04T06:39:57.451Z",
+        "previous_answer": "cant_tell"
+      }
+    ],
+    "revisions": {
+      "1": 48,
+      "2": 2
+    },
+    "authors": {
+      "flo": 48
+    },
+    "first_answer_ts": "2026-08-04T06:35:49.441Z",
+    "last_answer_ts": "2026-08-04T06:41:13.799Z",
+    "run_git_head": "e4e15536c3c1e104bc12abafbcf5ba45c46d5544",
+    "supersession": "respected -- --latest --no-retracted, as in sec 13.4"
+  },
+  "tile_answer_counts": {
+    "dot_right_wash_right": 5,
+    "cant_tell": 8,
+    "dot_wrong": 2,
+    "dot_right_wash_wrong": 33
+  },
+  "duplicates": {
+    "duplicate_tiles": 8,
+    "distinct_images": 40,
+    "total_tiles": 48,
+    "ground_differs_from_containing_on": 9,
+    "covers_with_all_three_identical": [
+      "0000cb591a0d52d8b88692d9"
+    ],
+    "consistency_check": {
+      "identical_image_pairs_or_groups": 7,
+      "answered_identically": 5,
+      "answered_differently": [
+        {
+          "cover": "0010b864b2a925ec6bfaa30e",
+          "policies": [
+            "containing",
+            "ground"
+          ],
+          "answers": {
+            "containing": "dot_right_wash_wrong",
+            "ground": "dot_right_wash_right"
+          }
+        },
+        {
+          "cover": "00124d0597059e8987bc4577",
+          "policies": [
+            "containing",
+            "ground"
+          ],
+          "answers": {
+            "containing": "dot_right_wash_right",
+            "ground": "cant_tell"
+          }
+        }
+      ],
+      "note": "Read as the round's own noise floor, per sec 15.3. Not designed as a consistency check."
+    }
+  },
+  "per_cover": [
+    {
+      "cover": "0000cb591a0d52d8b88692d9",
+      "n_distinct_points": 1,
+      "points_shortfall": true,
+      "answers": {
+        "containing": "cant_tell",
+        "ground": "cant_tell",
+        "union": "cant_tell"
+      },
+      "areas": {
+        "containing": 0.1724,
+        "ground": 0.1724,
+        "union": 0.1724
+      },
+      "dot_tally": {
+        "right": 0,
+        "wrong": 0,
+        "cant_tell": 3
+      },
+      "dot_verdict": "dot-wrong",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 1,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground",
+          "union"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "00034b60105d8937440211da",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.2453,
+        "ground": 0.6472,
+        "union": 0.6379
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "0004515066668684295c41a7",
+      "n_distinct_points": 2,
+      "points_shortfall": true,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.7135,
+        "ground": 0.7135,
+        "union": 0.5818
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "0005597105ba1e2d38f62cfc",
+      "n_distinct_points": 2,
+      "points_shortfall": true,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_right",
+        "union": "dot_right_wash_right"
+      },
+      "areas": {
+        "containing": 0.4323,
+        "ground": 0.7761,
+        "union": 0.8088
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": true,
+        "union": true
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "000564718f605c1f326b2ca2",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.6776,
+        "ground": 0.7136,
+        "union": 0.7715
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "00060491ade88c8893373d9f",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.3845,
+        "ground": 0.3845,
+        "union": 0.5584
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "0007cc8b341c11227aa7b461",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.635,
+        "ground": 0.7205,
+        "union": 0.7679
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "00083a2d455755e4c1116825",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.686,
+        "ground": 0.7317,
+        "union": 0.6592
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "000955ccfc1e8da97a09b32d",
+      "n_distinct_points": 2,
+      "points_shortfall": true,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.4387,
+        "ground": 0.4387,
+        "union": 0.579
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "00103a3729bf589e0dc913ab",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "cant_tell",
+        "ground": "cant_tell",
+        "union": "cant_tell"
+      },
+      "areas": {
+        "containing": 0.2071,
+        "ground": 0.7,
+        "union": 0.5899
+      },
+      "dot_tally": {
+        "right": 0,
+        "wrong": 0,
+        "cant_tell": 3
+      },
+      "dot_verdict": "dot-wrong",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "001063830a2e597293293797",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.9573,
+        "ground": 0.4819,
+        "union": 0.7999
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "0010b864b2a925ec6bfaa30e",
+      "n_distinct_points": 2,
+      "points_shortfall": true,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_right",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.3399,
+        "ground": 0.3399,
+        "union": 0.3281
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": true,
+        "union": false
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "00117a3fb2444ed7e04c4721",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_wrong",
+        "ground": "cant_tell",
+        "union": "dot_wrong"
+      },
+      "areas": {
+        "containing": 0.0186,
+        "ground": 0.5351,
+        "union": 0.2137
+      },
+      "dot_tally": {
+        "right": 0,
+        "wrong": 2,
+        "cant_tell": 1
+      },
+      "dot_verdict": "dot-wrong",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    },
+    {
+      "cover": "00124d0597059e8987bc4577",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_right",
+        "ground": "cant_tell",
+        "union": "dot_right_wash_right"
+      },
+      "areas": {
+        "containing": 0.3735,
+        "ground": 0.3735,
+        "union": 0.3441
+      },
+      "dot_tally": {
+        "right": 2,
+        "wrong": 0,
+        "cant_tell": 1
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": true,
+        "ground": false,
+        "union": true
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "0012eb9ade9c1bf4a5411c5d",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.8458,
+        "ground": 0.8458,
+        "union": 0.8157
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 2,
+      "identical_policy_groups": [
+        [
+          "containing",
+          "ground"
+        ]
+      ],
+      "policy_comparison_has_content": false
+    },
+    {
+      "cover": "0014adcd67767097b6fb42e0",
+      "n_distinct_points": 3,
+      "points_shortfall": false,
+      "answers": {
+        "containing": "dot_right_wash_wrong",
+        "ground": "dot_right_wash_wrong",
+        "union": "dot_right_wash_wrong"
+      },
+      "areas": {
+        "containing": 0.8635,
+        "ground": 0.6069,
+        "union": 0.7805
+      },
+      "dot_tally": {
+        "right": 3,
+        "wrong": 0,
+        "cant_tell": 0
+      },
+      "dot_verdict": "dot-right",
+      "dot_verdict_by_tie": false,
+      "both_right": {
+        "containing": false,
+        "ground": false,
+        "union": false
+      },
+      "distinct_masks": 3,
+      "identical_policy_groups": [],
+      "policy_comparison_has_content": true
+    }
+  ],
+  "B1": {
+    "criterion": "dot-right >= 12/16 (cover-level majority, tie=dot-wrong)",
+    "n": 13,
+    "bar": 12,
+    "pass": true,
+    "dot_right_covers": [
+      "00034b60105d8937440211da",
+      "0004515066668684295c41a7",
+      "0005597105ba1e2d38f62cfc",
+      "000564718f605c1f326b2ca2",
+      "00060491ade88c8893373d9f",
+      "0007cc8b341c11227aa7b461",
+      "00083a2d455755e4c1116825",
+      "000955ccfc1e8da97a09b32d",
+      "001063830a2e597293293797",
+      "0010b864b2a925ec6bfaa30e",
+      "00124d0597059e8987bc4577",
+      "0012eb9ade9c1bf4a5411c5d",
+      "0014adcd67767097b6fb42e0"
+    ],
+    "dot_wrong_covers": [
+      "0000cb591a0d52d8b88692d9",
+      "00103a3729bf589e0dc913ab",
+      "00117a3fb2444ed7e04c4721"
+    ],
+    "detail": {
+      "tile_level_dot_right": 38,
+      "tile_level_total": 48,
+      "covers_all_cant_tell_scored_dot_wrong_by_tie_rule": [
+        "0000cb591a0d52d8b88692d9",
+        "00103a3729bf589e0dc913ab"
+      ],
+      "covers_with_a_genuine_dot_wrong_answer": [
+        "00117a3fb2444ed7e04c4721"
+      ],
+      "dot_right_among_covers_with_any_decidable_tile": "13/14",
+      "note": "2 of the 3 B1 failures are covers answered `can't tell` on all three tiles and scored dot-wrong by the pre-registered tie rule, not by a pointer miss. B1 cleared anyway, so the conservative direction of the tie rule did not manufacture the pass."
+    }
+  },
+  "B2": {
+    "criterion": "dot-right-and-wash-right >= 8/16 per policy",
+    "per_policy": {
+      "containing": {
+        "n": 1,
+        "bar": 8,
+        "pass": false,
+        "covers": [
+          "00124d0597059e8987bc4577"
+        ]
+      },
+      "ground": {
+        "n": 2,
+        "bar": 8,
+        "pass": false,
+        "covers": [
+          "0005597105ba1e2d38f62cfc",
+          "0010b864b2a925ec6bfaa30e"
+        ]
+      },
+      "union": {
+        "n": 2,
+        "bar": 8,
+        "pass": false,
+        "covers": [
+          "0005597105ba1e2d38f62cfc",
+          "00124d0597059e8987bc4577"
+        ]
+      }
+    },
+    "any_pass": [],
+    "pass": false,
+    "split_by_information_content": {
+      "note": "sec 15.3: the policy comparison has content only on the 9 covers where `ground` picked a different candidate than `containing`. On the other 7 the two tiles are byte-identical images, so any per-policy difference there is answer noise, not policy.",
+      "informative_covers": 9,
+      "duplicate_covers": 7,
+      "both_right_on_informative": {
+        "containing": 0,
+        "ground": 1,
+        "union": 1
+      },
+      "both_right_on_duplicates": {
+        "containing": 1,
+        "ground": 1,
+        "union": 1
+      },
+      "policy_changed_the_keypress_on": [
+        "0005597105ba1e2d38f62cfc",
+        "00117a3fb2444ed7e04c4721"
+      ],
+      "finding": "On 8 of the 9 informative covers all three policies drew the SAME keypress. The whole containing-1 / ground-2 / union-2 spread rests on one genuine cover (0005597105ba1e2d38f62cfc) plus two inconsistent answers to byte-identical images. The between-policy signal is smaller than the round's own noise floor."
+    }
+  },
+  "B3": {
+    "criterion": "B1 AND at least one policy clears B2",
+    "pass": false,
+    "route_verdict": {
+      "status": "route-not-carried-forward",
+      "supersedes_status": "route-alive-pending-typical-strata-probe (sec 13.6)",
+      "resolved": "sec 13.6 left the route 'alive' ONLY pending this probe. This round IS that probe. It resolves against the route: pointing->SAM does not carry forward as a ground route under ANY of the three policies.",
+      "per_policy": {
+        "containing": {
+          "both_right": "1/16",
+          "bar": "8/16",
+          "carries_forward": false
+        },
+        "ground": {
+          "both_right": "2/16",
+          "bar": "8/16",
+          "carries_forward": false
+        },
+        "union": {
+          "both_right": "2/16",
+          "bar": "8/16",
+          "carries_forward": false
+        }
+      },
+      "pointer_half": "CONFIRMED on ordinary covers: B1 13/16 clears 12/16. This is the one thing sec 13's lenient 7/8 could not establish. The pointer is not the defect.",
+      "wash_half": "FAILS on ordinary covers, for all three policies. Per prereg sec 6.4 branch 2, verbatim: 'the wash is a route-level defect, not a hard-tail artifact.'",
+      "not_route_dead": "sec 6.4's route-dead branch requires B1 to FAIL, and it did not. The pointer half is sound; the route fails on mask growth, at route level, on typical artwork."
+    }
+  },
+  "B4": {
+    "criterion": "clears B2 AND beats containing by >=3/16 AND breaks <=1 already-passing cover",
+    "per_challenger": {
+      "ground": {
+        "clears_b2": false,
+        "margin_over_containing": 1,
+        "margin_bar": 3,
+        "margin_ok": false,
+        "breaks_already_passing": [
+          "00124d0597059e8987bc4577"
+        ],
+        "n_broken": 1,
+        "breaks_ok": true,
+        "gains_over_containing": [
+          "0005597105ba1e2d38f62cfc",
+          "0010b864b2a925ec6bfaa30e"
+        ],
+        "qualifies": false
+      },
+      "union": {
+        "clears_b2": false,
+        "margin_over_containing": 1,
+        "margin_bar": 3,
+        "margin_ok": false,
+        "breaks_already_passing": [],
+        "n_broken": 0,
+        "breaks_ok": true,
+        "gains_over_containing": [
+          "0005597105ba1e2d38f62cfc"
+        ],
+        "qualifies": false
+      }
+    },
+    "promoted": [],
+    "DEFAULT_SELECTION": "containing",
+    "moved": false
+  },
+  "prereg_branch_fired": "B1 pass, B2 fail for all three",
+  "shortfall_covers": {
+    "0000cb591a0d52d8b88692d9": 1,
+    "0004515066668684295c41a7": 2,
+    "0005597105ba1e2d38f62cfc": 2,
+    "000955ccfc1e8da97a09b32d": 2,
+    "0010b864b2a925ec6bfaa30e": 2
+  },
+  "cross_round_pointing_ground_1": {
+    "pointing_ground_1": {
+      "criterion": "LENIENT -- 'could this be considered correct' (sec 13.2, disclosed after answering)",
+      "stratum": "misfit tail -- exactly the covers already called 'none discernible'",
+      "dot_right": "7/8",
+      "both_right": "3/8",
+      "n": 8
+    },
+    "pointing_typical_1": {
+      "criterion": "STRICT -- 'is this correct' (prereg sec 5 framing text)",
+      "stratum": "typical, drawn from eval-142 minus all 15 pointing covers",
+      "dot_right": "13/16",
+      "both_right_best_policy": "2/16",
+      "n": 16
+    },
+    "comparison": "NOT PERFORMED NUMERICALLY -- criterion-confounded",
+    "why": "This is the first strict pointing measurement; round 1 was answered leniently, so its rates are ceilings and no delta between the two rounds separates the criterion change from the stratum change. Prereg sec 6.3 licenses reading only a GAIN, and only as a floor. The dot half is level to the eye and the composite direction is down; neither is interpretable across the criterion change, and NEITHER IS LOAD-BEARING: B2 fails against its own absolute pre-registered bar of 8/16, by six covers, with no reference to round 1 at all.",
+    "anchor": "sec 13's qualitative anchor stands unmoved: 'it wasn't amazing.'"
+  }
+}
