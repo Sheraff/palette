@@ -65,8 +65,12 @@ export type EdgeField = Readonly<{
  *
  * The sort is an insertion sort over at most eight values: for n = 8 it beats every asymptotically
  * better algorithm and, more to the point, it is obviously a total order with no tie-break to get wrong.
+ *
+ * `rank` defaults to `EDGE_RANK` and exists so `src/tools/measure-edge-rank.ts` can run arm-d §4 row 2's
+ * anchoring measurement against **this** function rather than a re-implementation of it. The pipeline
+ * never passes it.
  */
-export function computeEdgeField(image: DecodedImage): EdgeField {
+export function computeEdgeField(image: DecodedImage, rank: number = EDGE_RANK): EdgeField {
 	const { width, height, lab, eligible, bar } = image
 	const count = width * height
 	const isEdge = new Uint8Array(count)
@@ -99,8 +103,8 @@ export function computeEdgeField(image: DecodedImage): EdgeField {
 			if (found === 0) continue
 
 			// The k-th largest, or the smallest available when the neighbourhood is shorter than k.
-			const rank = Math.min(EDGE_RANK, found) - 1
-			const difference = distances[rank]
+			const slot = Math.min(rank, found) - 1
+			const difference = distances[slot]
 			localDifference[index] = difference
 			if (difference > bar[index]) {
 				isEdge[index] = 1

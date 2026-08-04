@@ -1,0 +1,1125 @@
+{
+	"what": "arm-d §4 row 2 — the smallest k for which a ±1-LSB dither creates no new edge pixels",
+	"measuredAt": "2026-08-04T18:01:54.830Z",
+	"arm": "dither-lsb1",
+	"setFile": "data/robustness/perturbation-set-1.json",
+	"covers": 20,
+	"tiers": [
+		"401-640",
+		"<=400"
+	],
+	"summary": [
+		{
+			"rank": 3,
+			"covers": 20,
+			"newEdgesTotal": 154031,
+			"lostEdgesTotal": 12640,
+			"baselineEdgesTotal": 3448518,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.009443359375,
+			"newEdgeFractionMax": 0.5059444444444444,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 93598,
+					"newEdgeFractionMedian": 0.0055859375,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 60433,
+					"newEdgeFractionMedian": 0.02662222222222222,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		},
+		{
+			"rank": 4,
+			"covers": 20,
+			"newEdgesTotal": 186324,
+			"lostEdgesTotal": 14032,
+			"baselineEdgesTotal": 3051619,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.01114501953125,
+			"newEdgeFractionMax": 0.5190444444444444,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 121888,
+					"newEdgeFractionMedian": 0.00659423828125,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 64436,
+					"newEdgeFractionMedian": 0.023155555555555554,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		},
+		{
+			"rank": 5,
+			"covers": 20,
+			"newEdgesTotal": 113760,
+			"lostEdgesTotal": 18320,
+			"baselineEdgesTotal": 2701982,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.01513671875,
+			"newEdgeFractionMax": 0.08578857421875,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 94764,
+					"newEdgeFractionMedian": 0.0066845703125,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 18996,
+					"newEdgeFractionMedian": 0.017733333333333334,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		},
+		{
+			"rank": 6,
+			"covers": 20,
+			"newEdgesTotal": 113714,
+			"lostEdgesTotal": 23682,
+			"baselineEdgesTotal": 2288347,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.014844444444444445,
+			"newEdgeFractionMax": 0.08470458984375,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 96884,
+					"newEdgeFractionMedian": 0.00766357421875,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 16830,
+					"newEdgeFractionMedian": 0.016455555555555557,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		},
+		{
+			"rank": 7,
+			"covers": 20,
+			"newEdgesTotal": 110608,
+			"lostEdgesTotal": 29479,
+			"baselineEdgesTotal": 1677981,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.0165625,
+			"newEdgeFractionMax": 0.0698876953125,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 95812,
+					"newEdgeFractionMedian": 0.00933349609375,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 14796,
+					"newEdgeFractionMedian": 0.023077777777777777,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		},
+		{
+			"rank": 8,
+			"covers": 20,
+			"newEdgesTotal": 100894,
+			"lostEdgesTotal": 34763,
+			"baselineEdgesTotal": 985998,
+			"eligibleTotal": 6274400,
+			"newEdgeFractionMedian": 0.013333333333333334,
+			"newEdgeFractionMax": 0.0668017578125,
+			"coversWithZeroNewEdges": 0,
+			"perTier": {
+				"401-640": {
+					"covers": 14,
+					"newEdgesTotal": 88621,
+					"newEdgeFractionMedian": 0.00870361328125,
+					"coversWithZeroNewEdges": 0
+				},
+				"<=400": {
+					"covers": 6,
+					"newEdgesTotal": 12273,
+					"newEdgeFractionMedian": 0.024022222222222223,
+					"coversWithZeroNewEdges": 0
+				}
+			}
+		}
+	],
+	"perCover": [
+		{
+			"artworkId": "00002947b898e4bd572ac4aa",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 2731,
+					"lostEdges": 155,
+					"baselineEdges": 352535,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 4565,
+					"lostEdges": 311,
+					"baselineEdges": 326643,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 6606,
+					"lostEdges": 398,
+					"baselineEdges": 285950,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 7751,
+					"lostEdges": 430,
+					"baselineEdges": 224654,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 6784,
+					"lostEdges": 317,
+					"baselineEdges": 142079,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 3565,
+					"lostEdges": 170,
+					"baselineEdges": 57356,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "000032e13011a9fa582ddae9",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 9632,
+					"lostEdges": 2071,
+					"baselineEdges": 121859,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 10350,
+					"lostEdges": 1400,
+					"baselineEdges": 92640,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 6200,
+					"lostEdges": 1359,
+					"baselineEdges": 73677,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 4612,
+					"lostEdges": 1058,
+					"baselineEdges": 56062,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 2667,
+					"lostEdges": 759,
+					"baselineEdges": 29757,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 1271,
+					"lostEdges": 499,
+					"baselineEdges": 14675,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "000050c638f9c59f77f3057b",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 2396,
+					"lostEdges": 21,
+					"baselineEdges": 31575,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 2084,
+					"lostEdges": 16,
+					"baselineEdges": 26258,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 1596,
+					"lostEdges": 18,
+					"baselineEdges": 23096,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 1336,
+					"lostEdges": 19,
+					"baselineEdges": 20055,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 1266,
+					"lostEdges": 16,
+					"baselineEdges": 15718,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 1200,
+					"lostEdges": 21,
+					"baselineEdges": 9486,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "00009a5acf9fb19544298ce4",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 45535,
+					"lostEdges": 0,
+					"baselineEdges": 34114,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 46714,
+					"lostEdges": 0,
+					"baselineEdges": 30673,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 5860,
+					"lostEdges": 0,
+					"baselineEdges": 27611,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 4962,
+					"lostEdges": 0,
+					"baselineEdges": 24418,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 4353,
+					"lostEdges": 0,
+					"baselineEdges": 19157,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 3230,
+					"lostEdges": 2,
+					"baselineEdges": 12998,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "0000e692a330542f8ed14132",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 112,
+					"lostEdges": 89,
+					"baselineEdges": 29011,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 143,
+					"lostEdges": 103,
+					"baselineEdges": 25077,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 158,
+					"lostEdges": 131,
+					"baselineEdges": 21964,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 148,
+					"lostEdges": 126,
+					"baselineEdges": 18721,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 194,
+					"lostEdges": 148,
+					"baselineEdges": 14308,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 164,
+					"lostEdges": 128,
+					"baselineEdges": 8950,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "00015083990110d3b1a4ea8a",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 1450,
+					"lostEdges": 656,
+					"baselineEdges": 388488,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 2701,
+					"lostEdges": 1422,
+					"baselineEdges": 371963,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 4429,
+					"lostEdges": 2714,
+					"baselineEdges": 344539,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 6766,
+					"lostEdges": 4776,
+					"baselineEdges": 298045,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 8852,
+					"lostEdges": 6673,
+					"baselineEdges": 223307,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 7881,
+					"lostEdges": 6404,
+					"baselineEdges": 116651,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0001c404b8a04a8789db8dab",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 6107,
+					"lostEdges": 702,
+					"baselineEdges": 171423,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 9469,
+					"lostEdges": 801,
+					"baselineEdges": 139066,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 7708,
+					"lostEdges": 1016,
+					"baselineEdges": 121421,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 7043,
+					"lostEdges": 1538,
+					"baselineEdges": 103196,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 8570,
+					"lostEdges": 1359,
+					"baselineEdges": 70781,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 8794,
+					"lostEdges": 1292,
+					"baselineEdges": 41776,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "000241edffbc59ed2fe08dd3",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 1103,
+					"lostEdges": 676,
+					"baselineEdges": 49056,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 997,
+					"lostEdges": 484,
+					"baselineEdges": 34815,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 776,
+					"lostEdges": 455,
+					"baselineEdges": 26815,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 396,
+					"lostEdges": 410,
+					"baselineEdges": 20363,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 233,
+					"lostEdges": 145,
+					"baselineEdges": 8183,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 101,
+					"lostEdges": 62,
+					"baselineEdges": 5022,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0002875c482df56c656a8605",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 2288,
+					"lostEdges": 420,
+					"baselineEdges": 125600,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 2488,
+					"lostEdges": 339,
+					"baselineEdges": 107490,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 2385,
+					"lostEdges": 337,
+					"baselineEdges": 92601,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 2174,
+					"lostEdges": 333,
+					"baselineEdges": 75125,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 2005,
+					"lostEdges": 337,
+					"baselineEdges": 48700,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 1071,
+					"lostEdges": 199,
+					"baselineEdges": 24016,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0002d9c78b43ee73dd572586",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 5474,
+					"lostEdges": 399,
+					"baselineEdges": 39647,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 7272,
+					"lostEdges": 209,
+					"baselineEdges": 29895,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 3800,
+					"lostEdges": 287,
+					"baselineEdges": 26398,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 3165,
+					"lostEdges": 341,
+					"baselineEdges": 22781,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 2418,
+					"lostEdges": 293,
+					"baselineEdges": 12048,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 2162,
+					"lostEdges": 277,
+					"baselineEdges": 6419,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "0002dfdcde2cb0a75822168c",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 1336,
+					"lostEdges": 659,
+					"baselineEdges": 213432,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 1643,
+					"lostEdges": 587,
+					"baselineEdges": 175490,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 1830,
+					"lostEdges": 499,
+					"baselineEdges": 146771,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 1884,
+					"lostEdges": 498,
+					"baselineEdges": 121777,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 3823,
+					"lostEdges": 588,
+					"baselineEdges": 89805,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 4691,
+					"lostEdges": 1006,
+					"baselineEdges": 61803,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "00034b60105d8937440211da",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 3868,
+					"lostEdges": 1198,
+					"baselineEdges": 170533,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 3555,
+					"lostEdges": 1045,
+					"baselineEdges": 124394,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 2738,
+					"lostEdges": 920,
+					"baselineEdges": 89288,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 2012,
+					"lostEdges": 699,
+					"baselineEdges": 59013,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 1292,
+					"lostEdges": 494,
+					"baselineEdges": 28160,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 596,
+					"lostEdges": 196,
+					"baselineEdges": 11161,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "00038e79a0efbc7325db6444",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 45524,
+					"lostEdges": 228,
+					"baselineEdges": 338102,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 62208,
+					"lostEdges": 363,
+					"baselineEdges": 311527,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 35139,
+					"lostEdges": 753,
+					"baselineEdges": 292404,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 34695,
+					"lostEdges": 1315,
+					"baselineEdges": 266118,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 28626,
+					"lostEdges": 2388,
+					"baselineEdges": 218918,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 27362,
+					"lostEdges": 4119,
+					"baselineEdges": 139684,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0003a265ad51246f00035a87",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 1740,
+					"lostEdges": 200,
+					"baselineEdges": 72969,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 2026,
+					"lostEdges": 185,
+					"baselineEdges": 67343,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 1404,
+					"lostEdges": 309,
+					"baselineEdges": 62996,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 1481,
+					"lostEdges": 447,
+					"baselineEdges": 58151,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 2077,
+					"lostEdges": 686,
+					"baselineEdges": 48678,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 2700,
+					"lostEdges": 1128,
+					"baselineEdges": 34646,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "0003b47953afcf59a8fd8ec1",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 2047,
+					"lostEdges": 1074,
+					"baselineEdges": 163230,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 2182,
+					"lostEdges": 952,
+					"baselineEdges": 131348,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 2127,
+					"lostEdges": 1029,
+					"baselineEdges": 108006,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 1688,
+					"lostEdges": 855,
+					"baselineEdges": 84156,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 1738,
+					"lostEdges": 618,
+					"baselineEdges": 37187,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 854,
+					"lostEdges": 341,
+					"baselineEdges": 17699,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0003e50500c5d762da89643a",
+			"tier": "<=400",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 5176,
+					"lostEdges": 212,
+					"baselineEdges": 65359,
+					"eligible": 90000
+				},
+				{
+					"rank": 4,
+					"newEdges": 6197,
+					"lostEdges": 254,
+					"baselineEdges": 53347,
+					"eligible": 90000
+				},
+				{
+					"rank": 5,
+					"newEdges": 6178,
+					"lostEdges": 301,
+					"baselineEdges": 42522,
+					"eligible": 90000
+				},
+				{
+					"rank": 6,
+					"newEdges": 5738,
+					"lostEdges": 336,
+					"baselineEdges": 32083,
+					"eligible": 90000
+				},
+				{
+					"rank": 7,
+					"newEdges": 4488,
+					"lostEdges": 366,
+					"baselineEdges": 21137,
+					"eligible": 90000
+				},
+				{
+					"rank": 8,
+					"newEdges": 2817,
+					"lostEdges": 417,
+					"baselineEdges": 11239,
+					"eligible": 90000
+				}
+			]
+		},
+		{
+			"artworkId": "00040defaf772cad7a1738ce",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 10243,
+					"lostEdges": 1299,
+					"baselineEdges": 321921,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 11747,
+					"lostEdges": 1741,
+					"baselineEdges": 288786,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 12570,
+					"lostEdges": 2422,
+					"baselineEdges": 251266,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 12602,
+					"lostEdges": 2918,
+					"baselineEdges": 205063,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 11705,
+					"lostEdges": 3285,
+					"baselineEdges": 148138,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 8612,
+					"lostEdges": 2873,
+					"baselineEdges": 77451,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "0004331eeb10a918e94a8158",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 6715,
+					"lostEdges": 2418,
+					"baselineEdges": 326361,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 9154,
+					"lostEdges": 3418,
+					"baselineEdges": 295177,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 10705,
+					"lostEdges": 4520,
+					"baselineEdges": 259587,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 12047,
+					"lostEdges": 5730,
+					"baselineEdges": 214862,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 12318,
+					"lostEdges": 6382,
+					"baselineEdges": 157857,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 9333,
+					"lostEdges": 5233,
+					"baselineEdges": 85871,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "00043614a29a0bc16a6cb9e1",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 355,
+					"lostEdges": 42,
+					"baselineEdges": 25690,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 247,
+					"lostEdges": 47,
+					"baselineEdges": 16395,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 142,
+					"lostEdges": 41,
+					"baselineEdges": 11432,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 75,
+					"lostEdges": 35,
+					"baselineEdges": 8314,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 65,
+					"lostEdges": 33,
+					"baselineEdges": 5849,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 57,
+					"lostEdges": 48,
+					"baselineEdges": 3719,
+					"eligible": 409600
+				}
+			]
+		},
+		{
+			"artworkId": "000442caec7ec8cb724bf265",
+			"tier": "401-640",
+			"readings": [
+				{
+					"rank": 3,
+					"newEdges": 199,
+					"lostEdges": 121,
+					"baselineEdges": 407613,
+					"eligible": 409600
+				},
+				{
+					"rank": 4,
+					"newEdges": 582,
+					"lostEdges": 355,
+					"baselineEdges": 403292,
+					"eligible": 409600
+				},
+				{
+					"rank": 5,
+					"newEdges": 1409,
+					"lostEdges": 811,
+					"baselineEdges": 393638,
+					"eligible": 409600
+				},
+				{
+					"rank": 6,
+					"newEdges": 3139,
+					"lostEdges": 1818,
+					"baselineEdges": 375390,
+					"eligible": 409600
+				},
+				{
+					"rank": 7,
+					"newEdges": 7134,
+					"lostEdges": 4592,
+					"baselineEdges": 338214,
+					"eligible": 409600
+				},
+				{
+					"rank": 8,
+					"newEdges": 14433,
+					"lostEdges": 10348,
+					"baselineEdges": 245376,
+					"eligible": 409600
+				}
+			]
+		}
+	]
+}

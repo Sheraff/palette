@@ -15,8 +15,12 @@
  *    draws that line explicitly rather than quietly, and so does this file.
  * 4. **e₂**, the pixel of F at the τ quantile of the projection of F's colours onto u — the opposite end
  *    of the same progression.
- * 5. **Prevalence rank.** Count, for each end, the pixels of F within the same-colour bar of it. Larger
- *    count is the background; the other is the surface.
+ * 5. **Prevalence rank, with a tie band (0.2.0).** Count, for each end, the pixels of F within the
+ *    same-colour bar of it. Larger count is the background; the other is the surface. When the two
+ *    counts sit within `BACKGROUND_PREVALENCE_TIE_BAND` relative of each other the count is declared
+ *    to carry no information and a **fixed convention** decides instead: the darker end (lower OKLab
+ *    L) is the background. See the comment at the site for why L is the right quantity to fall back
+ *    to and why "darker" is defensible only as a convention.
  *
  * If e₁ and e₂ are within the same-colour bar, the field is one colour: surface collapses to background
  * *exactly*, the flag is set, and no gradient is publishable — the contract's own consequence, arrived
@@ -31,7 +35,12 @@
  * and if the ends turn out to move under re-encode, this is the first line to look at.
  */
 
-import { FIELD_DEPTH_QUANTILE, RANK_STEP_FRACTION, TRIM_LEVEL } from "./constants.ts"
+import {
+	BACKGROUND_PREVALENCE_TIE_BAND,
+	FIELD_DEPTH_QUANTILE,
+	RANK_STEP_FRACTION,
+	TRIM_LEVEL,
+} from "./constants.ts"
 import type { DecodedImage } from "./decode.ts"
 import type { DepthField } from "./fields.ts"
 import { cascadePixel, labDistance, quantileIndex, sortByKey } from "./primitives.ts"
@@ -161,14 +170,41 @@ export function chooseFieldEnds(image: DecodedImage, fieldSet: Int32Array, step:
 	const endsBar = Math.max(bar[farEnd], bar[nearEnd])
 	const collapsed = labDistance(lab, farEnd, nearEnd) < endsBar
 
-	// Step 5 — prevalence rank. Larger count is the background.
+	// Step 5 — prevalence rank, **with a tie band** (0.2.0).
+	//
+	// Prevalence stays primary: when the two counts are plainly different, the more prevalent end is the
+	// background and nothing below runs. But W4's baseline measured that on balanced bimodal covers the
+	// two counts land within a fraction of a percent of each other, and that this single comparison
+	// flips the whole palette — background and surface swap, the gradient's orientation swaps with them,
+	// and the foreground's ordering (built against the background) swaps downstream. 114 of 491
+	// disagreements moved all four roles at once, and 68 of the large role-moves were grey→grey.
+	//
+	// At that distance the count is not evidence. Two counts within `BACKGROUND_PREVALENCE_TIE_BAND`
+	// relative of each other are therefore declared tied, and the case is decided by a **fixed
+	// convention: the darker end is the background** — lower OKLab L. The point of choosing L is that it
+	// is a *far-apart* quantity on exactly the covers that flip: a balanced bimodal near-neutral cover
+	// has its two ends at opposite ends of the lightness axis by construction, so ΔL there is enormous
+	// while Δprevalence is nil. The cliff is moved from a quantity that ties to one that does not.
+	//
+	// Why darker and not lighter: it is a convention and is defended as one, not as a measurement. Dark
+	// backgrounds are the album-artwork norm the corpus is drawn from, and — the reason that survives if
+	// that norm does not — it agrees with the foreground's own tie convention in `foreground.ts`, so the
+	// two stated conventions cannot pull a palette in opposite directions.
 	const farPrevalence = prevalenceOf(image, fieldSet, farEnd)
 	const nearPrevalence = prevalenceOf(image, fieldSet, nearEnd)
-	// A tie goes to the *near* end being the background: the near end sits at the τ rank of the
-	// progression and the far end at the (1 − τ) rank of distance from the median, so on equal
-	// prevalence the near end is the one the field's own median sits closer to. Stated so the tie-break
-	// is a decision on the record rather than an accident of which comparison was written first.
-	const farIsBackground = farPrevalence > nearPrevalence
+	const larger = Math.max(farPrevalence, nearPrevalence)
+	const relativeGap = larger === 0 ? 0 : Math.abs(farPrevalence - nearPrevalence) / larger
+	let farIsBackground: boolean
+	if (relativeGap >= BACKGROUND_PREVALENCE_TIE_BAND) {
+		farIsBackground = farPrevalence > nearPrevalence
+	} else {
+		// Tied. The darker end — lower OKLab L — is the background. An exact L tie between two pixels
+		// that also tied on prevalence falls back to 0.1.0's convention (the near end), which keeps the
+		// answer a function of the field rather than of which comparison was written first.
+		const farL = lab[farEnd * 3]
+		const nearL = lab[nearEnd * 3]
+		farIsBackground = farL < nearL
+	}
 
 	const background = farIsBackground ? farEnd : nearEnd
 	const surface = collapsed ? background : farIsBackground ? nearEnd : farEnd

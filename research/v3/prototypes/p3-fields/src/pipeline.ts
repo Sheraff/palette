@@ -53,11 +53,13 @@ import { chooseFieldEnds, computeFieldSet, type FieldEnds } from "./field-roles.
 import { computeDepthField, computeEdgeField } from "./fields.ts"
 import {
 	chooseForeground,
+	clearsInkRegimeMargin,
 	computeInkField,
 	inkOrdering,
 	luminanceOrdering,
 	type ForegroundChoice,
 	type ForegroundOrdering,
+	type ForegroundPolarity,
 } from "./foreground.ts"
 import { insertGuideStops, parameteriseField, type GradientParameterisation } from "./gradient.ts"
 import { cascadePixel, labDistance } from "./primitives.ts"
@@ -84,6 +86,10 @@ export type P3Intermediates = {
 	maxExcursion: number
 	excursionBar: number
 	foregroundRegime: "ink" | "luminance" | "escape"
+	/** Which contrast polarity the luminance regime took, and which cascade step decided it (0.2.0). */
+	foregroundPolarity: ForegroundPolarity | null
+	/** How many pixels of the published field ramp the foreground ordering minimised against (0.2.0). */
+	rampAnchors: number
 	foregroundStep: number
 	inkBandSize: number
 	inkCandidates: number
@@ -238,6 +244,15 @@ function searchForeground(
 			support[`foreground:${choice.regime}:${step}`] = verdict.support
 			spread[`foreground:${choice.regime}:${step}`] = verdict.spread
 			if (!verdict.passes) continue
+			// The regime's **stability margin** (0.2.0). §2.5's regime test is "does the ink population
+			// survive verification", and at 0.1.0 that boundary was ≥ 1 pixel wide: a ±1-LSB dither could
+			// push the ink population across the source-support floor and swap the foreground into an
+			// entirely different ordering. The ink regime is now taken only when it clears the floor by
+			// `INK_REGIME_SUPPORT_MARGIN`; below that the luminance regime is the honest answer, and the
+			// search reaches it exactly as it does for an empty ink population. The margin gates the ink
+			// regime alone — see `clearsInkRegimeMargin` for why the asymmetry is what makes this a guard
+			// rather than a second flippable threshold.
+			if (choice.regime === "ink" && !clearsInkRegimeMargin(verdict.support)) continue
 			if (!distinctPixels(image, choice.pixel, background)) continue
 			if (!distinctPixels(image, choice.pixel, surface)) continue
 
@@ -352,6 +367,8 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 		maxExcursion: 0,
 		excursionBar: 0,
 		foregroundRegime: "luminance",
+		foregroundPolarity: null,
+		rampAnchors: 0,
 		foregroundStep: 0,
 		inkBandSize: 0,
 		inkCandidates: 0,
@@ -459,10 +476,27 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 
 		// The two orderings and the two tiers depend on the field ends, so they are built once per ends
 		// step and redeemed at as many ranks as the repair loop asks for.
+		// The **published field ramp** as pixel indices, in ramp order: the two field roles and whatever
+		// guide stops the excursion machinery inserted between them. This is what the foreground ordering
+		// minimises |raw APCA| against at 0.2.0, and it is why the ordering is built here rather than
+		// earlier — the ramp is a field fact that has to exist before the text roles can be ranked
+		// against it. A collapsed field publishes one pixel and the ramp is that one pixel.
+		//
+		// `stops` is used before the stop-vs-text-role filter below, deliberately: dropping a stop can
+		// only *remove* an anchor, and removing an anchor can only raise the minimum. Ranking against the
+		// unfiltered ramp is therefore the conservative direction, and it keeps the ordering independent
+		// of the foreground it is being used to choose.
+		const rampAnchors = ends.collapsed
+			? [ends.background]
+			: stops !== null
+			? stops.map((stop) => stop.pixel)
+			: [ends.background, ends.surface]
+		intermediates.rampAnchors = rampAnchors.length
+
 		const orderings: ForegroundOrdering[] = []
 		const ranked = inkOrdering(ink)
 		if (ranked !== null) orderings.push(ranked)
-		const luminance = luminanceOrdering(image, depth.depth, ends.background)
+		const luminance = luminanceOrdering(image, depth.depth, rampAnchors)
 		if (luminance !== null) orderings.push(luminance)
 		const tiers = computeAccentTiers(image, ends.background, ends.surface)
 
@@ -481,6 +515,7 @@ export async function extractPalette(imagePath: string): Promise<P3Result> {
 			)
 			if (foreground === null) break
 			intermediates.foregroundRegime = foreground.choice.regime
+			intermediates.foregroundPolarity = foreground.choice.polarity
 			intermediates.foregroundStep = foreground.cursor
 
 			const accent = searchAccent(

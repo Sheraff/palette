@@ -41,17 +41,12 @@ export function labDistance(lab: Float64Array, first: number, second: number): n
 	return Math.hypot(lab[a] - lab[b], lab[a + 1] - lab[b + 1], lab[a + 2] - lab[b + 2])
 }
 
-/** The one ruler, from a row of a plane to a loose OKLab point. */
-export function labDistanceToPoint(
-	lab: Float64Array,
-	index: number,
-	l: number,
-	a: number,
-	b: number,
-): number {
-	const at = index * 3
-	return Math.hypot(lab[at] - l, lab[at + 1] - a, lab[at + 2] - b)
-}
+// Deleted at 0.2.0: `labDistanceToPoint(lab, index, l, a, b)` — distance from a pixel to a *loose*
+// OKLab point. `LINE_AUDIT.md`'s first non-blocking recommendation: it had zero call sites in `src/`
+// and in `falsifier/`, and it was the prototype's only affordance for measuring a pixel against a
+// created colour. An unused affordance for the one thing the discipline line forbids is a hazard with
+// no benefit, so it is gone rather than merely unused. Every distance in this prototype is now
+// pixel-to-pixel by the shape of the API, not by convention.
 
 /**
  * Prove, at load, that the plane-form ruler is the contract's ruler.

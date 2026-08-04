@@ -241,19 +241,29 @@ export function insertGuideStops(
 				? 0
 				: (position - left.position) / (right.position - left.position)
 
-			// **AUDIT NOTE — the one interpolated point in this prototype.** The three numbers below are a
-			// point on the chord between two published pixels. It is the *rendered ramp*, which the
-			// contract itself defines and which §2.4 measures excursion against; it is never published,
-			// never compared to a pixel as a proxy for one, and never rounded back to 8 bits. Flagged here
-			// rather than left for a verifier to find, because "no created colour" would otherwise read as
-			// contradicted by this expression.
+			// §2.4's excursion, **in explicit difference form** (0.2.0; `LINE_AUDIT.md` ruling (a),
+			// finding 3, and its non-blocking recommendation). No chord point is materialised. The
+			// identity
+			//
+			//     ‖c − (A + local·(B − A))‖  ≡  ‖(c − A) − local·(B − A)‖
+			//
+			// makes this a norm over two **pixel-to-pixel difference vectors** — c − A and B − A, each the
+			// difference of two actual pixels — one of them scaled by a scalar. That is precisely the
+			// object arm-d §2.3(3) rules non-colour-bearing, so this site no longer needs the AUDIT NOTE
+			// it carried at 0.1.0, and the prototype now materialises no OKLab triple anywhere.
+			//
+			// Stated rather than smoothed: this is the same *measurement* but not the same floating-point
+			// *expression*, because addition is not associative. Differences of order 1e-16 in the
+			// excursion can in principle move a guide-stop arg-max on a field where two grid samples tie
+			// to sixteen digits.
 			const a = left.pixel * 3
 			const b = right.pixel * 3
-			const l = image.lab[a] + local * (image.lab[b] - image.lab[a])
-			const chromaA = image.lab[a + 1] + local * (image.lab[b + 1] - image.lab[a + 1])
-			const chromaB = image.lab[a + 2] + local * (image.lab[b + 2] - image.lab[a + 2])
 			const at = pixel * 3
-			const excursion = Math.hypot(image.lab[at] - l, image.lab[at + 1] - chromaA, image.lab[at + 2] - chromaB)
+			const excursion = Math.hypot(
+				(image.lab[at] - image.lab[a]) - local * (image.lab[b] - image.lab[a]),
+				(image.lab[at + 1] - image.lab[a + 1]) - local * (image.lab[b + 1] - image.lab[a + 1]),
+				(image.lab[at + 2] - image.lab[a + 2]) - local * (image.lab[b + 2] - image.lab[a + 2]),
+			)
 
 			if (excursion > worst.excursion) worst = { excursion, position, pixel }
 		}

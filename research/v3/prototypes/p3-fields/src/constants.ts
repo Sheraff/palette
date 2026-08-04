@@ -1,11 +1,16 @@
 /**
  * P3's constants, every one of them with a provenance tag (`CONVENTIONS.md`).
  *
- * **All five of arm-d's free parameters are `[UNCALIBRATED]` at birth.** That is the honest state:
- * arm-d §4 names an anchoring plan for each and none of those plans has run. The provisional values
- * below were chosen here, by this author, so the candidate could be executed at all — they are
- * declared-provisional operating points, not findings, and no number in this file should be quoted as
- * a measurement of anything.
+ * **Four of arm-d's five free parameters are `[UNCALIBRATED]`, and the fifth is `[MEASURED]` in the
+ * only sense its anchor allows.** At 0.1.0 all five were uncalibrated: arm-d §4 names an anchoring plan
+ * for each and none had run. At 0.2.0 **k**'s plan has been executed (`src/tools/measure-edge-rank.ts`)
+ * and its result is that *the criterion selects no k at all* — see `EDGE_RANK` for the full curve and
+ * the open decision it leaves. The other four remain declared-provisional operating points chosen by
+ * this author so the candidate could be executed at all. They are not findings, and no number in this
+ * file except the k curve should be quoted as a measurement of anything.
+ *
+ * 0.2.0 adds **three tie bands** — δ_fg, δ_bs and m_ink — under their own heading below. They are
+ * `[UNCALIBRATED]` on the same terms, each with an anchor plan that has not run.
  *
  * Three quantities are **inherited** from the contract and are used unchanged: the regional
  * same-colour bar (`SAME_COLOR_BAR_BY_REGION`), the population floor
@@ -15,7 +20,7 @@
  */
 
 /** The name this candidate is known by in run ids, cache paths and the viewer. */
-export const CANDIDATE_ID = "p3-fields-0.1.0"
+export const CANDIDATE_ID = "p3-fields-0.2.0"
 
 /**
  * What this candidate calls itself in `PaletteMetadata.algorithmVersion`.
@@ -23,7 +28,7 @@ export const CANDIDATE_ID = "p3-fields-0.1.0"
  * [UNCALIBRATED] — a label, not a measurement. The cache keys on measured source hashes, so a
  * forgotten bump here cannot serve a stale palette.
  */
-export const ALGORITHM_VERSION = "p3-fields-0.1.0"
+export const ALGORITHM_VERSION = "p3-fields-0.2.0"
 
 /**
  * The decoder and preprocessing this candidate used.
@@ -54,15 +59,53 @@ export const TRIM_LEVEL = 0.05
 /**
  * **k** — the rank order of the local difference filter (arm-d §2.1).
  *
- * [UNCALIBRATED] — provisional 3, chosen here. **Anchoring plan (arm-d §4 row 2):** the smallest k for
- * which a ±1-LSB dither creates no new edge pixels on the perturbation set, measured per resolution
- * tier. No human taste enters. Not run.
+ * **[MEASURED — the anchor ran, and it does not select a k. Value unchanged at 3.]**
  *
- * 3 is the operating point because a ±1-LSB checkerboard perturbs an alternating half of a 3×3
- * neighbourhood, so the largest and second-largest of the eight distances are the ones a dither can
- * own; reading the third ignores it by construction. In near-black regions one LSB is a genuinely
- * large OKLab step and this is not free — which is exactly why the parameter is measured and not
- * argued.
+ * Script: `src/tools/measure-edge-rank.ts`. Report:
+ * `measurements/edge-rank-k.json`. Command and protocol are in the script's docstring; 20 covers, the
+ * `dither-lsb1` arm of `perturbation-set-1.json`, `computeEdgeField` at k = 3…8 on both sides, counting
+ * pixels the dither turned into edges that were not edges before.
+ *
+ * ### The curve, in full
+ *
+ * | k | new edges (20 covers) | new/eligible, median | new/eligible, worst cover | covers with zero |
+ * |---|---|---|---|---|
+ * | 3 | 154 031 | 0.944% | **50.59%** | 0/20 |
+ * | 4 | 186 324 | 1.115% | **51.90%** | 0/20 |
+ * | 5 | 113 760 | 1.514% | 8.58% | 0/20 |
+ * | 6 | 113 714 | 1.484% | 8.47% | 0/20 |
+ * | 7 | 110 608 | 1.656% | 6.99% | 0/20 |
+ * | 8 | 100 894 | 1.333% | 6.68% | 0/20 |
+ *
+ * ### What it says, stated as measured rather than as hoped
+ *
+ * 1. **arm-d §4 row 2's criterion is unreachable.** "No new edge pixels" is met by **no k, on no
+ *    cover, in either resolution tier** — not approximately, not on a majority. The anchoring plan
+ *    presumed a k exists at which a ±1-LSB dither is invisible to a rank filter, and on this corpus
+ *    none does. Per the falling-back rule, k stays at **3** and the curve is recorded instead of a
+ *    finding.
+ * 2. **There is nonetheless a knee, and it is at k = 5, not k = 3.** The worst-cover new-edge fraction
+ *    falls **six-fold** between k = 4 and k = 5 (51.9% → 8.6%) and is flat after. The knee has a
+ *    geometric explanation that also shows 0.1.0's stated reason for choosing 3 was **wrong**: the
+ *    dither is `(x+y) % 2` alternating ±1 on blue, so of a pixel's eight neighbours the four
+ *    *orthogonal* ones shift by 2 LSB relative to it and the four *diagonal* ones (same parity, same
+ *    shift) do not move at all. A dither can therefore own the **four** largest neighbour distances,
+ *    not the two this docstring used to claim — and immunity, such as it is, begins at the fifth.
+ * 3. **The median moves the other way.** k = 3 has the *lowest* median new-edge fraction of the six.
+ *    High k tames the pathological covers and costs a little on the typical one, which is why the
+ *    pooled totals barely move while the maximum collapses. The 50%-new-edge cover at k = 3 is
+ *    `00009a5acf9fb19544298ce4` — the same greyscale cover that produced the **worst disagreement in
+ *    the whole 0.1.0 robustness baseline** (`measurements/BASELINE.md`, rank 1, `#ffffff` → `#000000`).
+ * 4. **`lostEdges` rises monotonically with k** (12 640 → 34 763), so the improvement at high k is
+ *    partly the edge test going blind rather than going stable. That is why the criterion is
+ *    one-directional in arm-d and why both columns are reported.
+ *
+ * **Open decision, for the reviewer and not for this worker.** Points 2 and 3 disagree about which k to
+ * ship, and the anchor that was supposed to settle it does not. Keeping 3 is the conservative reading
+ * of the instruction, not a finding that 3 is right; the case for 5 is that its knee matches the
+ * geometry exactly and that it is the covers at the tail — the near-neutral greyscale ones — that this
+ * prototype's robustness failure actually lives on. Re-running the harness at k = 5 is a one-line
+ * change and roughly half an hour, and it is the obvious next measurement.
  */
 export const EDGE_RANK = 3
 
@@ -206,6 +249,100 @@ export const RANK_STEP_FRACTION = 0.02
  * search rather than by rank.
  */
 export const MAX_RANK_STEPS = 6
+
+// ---------------------------------------------------------------------------------------------
+// 0.2.0 — the three tie bands, and why a "tie band" is the right shape of fix
+// ---------------------------------------------------------------------------------------------
+//
+// W4's baseline measured robustness 18.2% overall, and diagnosed the dominant mode as **whole-palette
+// black↔white polarity inversion on near-neutral covers**: 114 of 491 disagreements moved all four
+// roles at once, and 68 of the 155 role-moves over 0.5 OKLab were grey→grey — a coin-flip between two
+// lightness extremes, not a hue drift.
+//
+// The mechanism's robustness claim is about **order statistics of large populations**, and that claim
+// is not what failed. What failed is a small number of **discrete near-tied choices sitting on top of
+// those statistics**: two prevalence counts within a fraction of a percent of each other, an ink
+// population one pixel either side of a verification floor, an |APCA|-against-the-background ordering
+// whose two ends are equally good answers. Each is a cliff, and a ±1-LSB dither is enough to walk a
+// cover across it.
+//
+// So each of the three constants below does the same thing in a different place: it declares how close
+// two quantities have to be before the difference between them stops being evidence, and names the
+// **fixed convention** that decides the case instead. A convention is not a better answer than the
+// near-tied count; it is a *stable* one, and the count was not carrying information at that distance.
+// Every one of them is `[UNCALIBRATED]` with an anchor plan, exactly like arm-d §4's five.
+//
+// ## What the three bands bought, measured before anyone quotes the reasoning above as a result
+//
+// **At these provisional values: nothing on robustness.** A 150-trial perturbation smoke
+// (`measurements/robustness-p3-fields-0.2.0-smoke150.json`) against the *same 150 trials* re-scored
+// from the 0.1.0 report reads:
+//
+// | | 0.1.0 | 0.2.0 |
+// |---|---|---|
+// | agreement, all four arms | 22.0% (33/150) | **18.7% (28/150)** |
+// | `jpeg-q92` | 31.6% (12/38) | 23.7% (9/38) |
+// | `dither-lsb1` | 27.0% (10/37) | 27.0% (10/37) |
+// | disagreements moving all four roles | 19 | 19 |
+// | role-moves over 0.5 OKLab | 24 | **41** |
+// | of those, grey→grey | 6 | **10** |
+//
+// Every arm's Wilson interval overlaps its counterpart at n ≈ 38, so this is not a measurement that
+// 0.2.0 is worse. It is a measurement that **the targeted failure mode did not move**: the polarity
+// inversions are still there, in the same numbers, and the large grey→grey moves went up rather than
+// down. The scorecard did improve (demo-20 17/20 → 19/20; the two recovered rows both failed invariant
+// 4 against a field end, which is exactly what the ramp-minimum ordering was built to see), so the
+// foreground objective is better *aimed* — it is simply not more *stable*.
+//
+// The most likely reading, recorded as a hypothesis and not as a finding: the ramp minimum makes the
+// winning population a broad mid-tone band on precisely the bimodal covers that flip, and the cascade
+// pixel of a broad sparse band is not obviously steadier than the cascade pixel of a tight extreme one.
+// If that is right, the remaining instability is in the *cascade over the window*, one layer below
+// every tie band here, and no amount of tie-band calibration reaches it. Testing it needs the τ sweep
+// (arm-d §4 row 1) and the k = 5 re-run flagged in `EDGE_RANK`, in that order.
+
+/**
+ * **δ_fg** — the foreground's contrast-polarity tie band, in raw-APCA magnitude units.
+ *
+ * [UNCALIBRATED] — provisional 2.0, chosen here. **Anchor plan:** sweep δ_fg over the robustness
+ * harness's `dither-lsb1` and `jpeg-q92` arms and take the smallest value at which foreground agreement
+ * plateaus — the same one-dimensional knee arm-d §4 row 1 specifies for τ, needing no reviewer. Not
+ * run.
+ *
+ * 2.0 raw units is the operating point because the contract's own default text floor
+ * (`DEFAULT_CONTRAST_PARAMETERS`) resolves to 2.5 raw units, so a band of 2.0 is strictly inside the
+ * smallest contrast difference the contract is willing to call a contrast at all. That is a reason,
+ * not a measurement.
+ */
+export const FOREGROUND_POLARITY_TIE_BAND = 2
+
+/**
+ * **δ_bs** — the background/surface prevalence tie band, as a *relative* difference between the two
+ * ends' counts (`|a − b| / max(a, b)`).
+ *
+ * [UNCALIBRATED] — provisional 0.10, chosen here. **Anchor plan:** the robustness plateau — sweep δ_bs
+ * and take the smallest value at which background/surface agreement on the perturbation arms stops
+ * rising. Relative rather than absolute because prevalence is a count over the field set, whose size
+ * varies by two orders of magnitude across the corpus; an absolute band would mean different things on
+ * a 300² and a 1024² cover, which `CONVENTIONS.md`'s scale-free rule forbids. Not run.
+ */
+export const BACKGROUND_PREVALENCE_TIE_BAND = 0.1
+
+/**
+ * **m_ink** — the stability margin on the ink regime's source-support test, as a fraction of
+ * `SOURCE_POPULATION_FLOOR`.
+ *
+ * [UNCALIBRATED] — provisional 0.25, chosen here. **Anchor plan:** the regime *label* is recorded in
+ * the exposed intermediates, so the measurement is direct — run the perturbation set and take the
+ * smallest m_ink at which the ink/luminance label agrees between a cover and its ±1-LSB dither on
+ * ≥ 99% of covers. Needs no reviewer and no palette comparison. Not run.
+ *
+ * 0.25 is the operating point because arm-d §3(4) already names the regime test *"a decision wearing a
+ * predicate's clothes"*: a boundary a single pixel can cross decides which of two entirely different
+ * orderings the foreground comes out of, which is the largest discrete lever in the pipeline sitting on
+ * the smallest margin. A quarter of the floor is a guess at how much slack that lever needs.
+ */
+export const INK_REGIME_SUPPORT_MARGIN = 0.25
 
 /**
  * The fixed dictionary of linear spatial parameterisations, in degrees (arm-d §2.4).
