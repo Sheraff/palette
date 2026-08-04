@@ -215,6 +215,26 @@ function oracleAnswerKey(batchId: string, questionKey: string, imageId: string):
 export const BATCH_KINDS = ["pairwise", "calibration", "bracketing", "oracle-validation"] as const
 export type BatchKind = (typeof BATCH_KINDS)[number]
 
+/**
+ * The marker that turns a `batch-complete` record into a retirement.
+ *
+ * A sentinel in `note` rather than a schema field: `records.ts` belongs to the warehouse workstream,
+ * and this needs no change there to work. It is greppable in the log, it survives validation
+ * untouched, and any reader that does not know about it simply sees a completed batch with an
+ * explanatory note — which is what a retirement is.
+ */
+export const RETIRED_NOTE_PREFIX = "RETIRED: "
+
+/** Whether a `batch-complete` record is a retirement rather than a completion. */
+export function isRetirement(record: { note?: string | null }): boolean {
+	return typeof record.note === "string" && record.note.startsWith(RETIRED_NOTE_PREFIX)
+}
+
+/** The reason a batch was retired, or null when the record is an ordinary release. */
+export function retirementReason(record: { note?: string | null }): string | null {
+	return isRetirement(record) ? (record.note as string).slice(RETIRED_NOTE_PREFIX.length) : null
+}
+
 /** One row of `/api/queue`: what the server can say about a batch without opening it. */
 export type QueueEntry = Readonly<{
 	batchId: string
@@ -225,6 +245,19 @@ export type QueueEntry = Readonly<{
 	judgedCount: number
 	released: boolean
 	releasedAt: string | null
+	/**
+	 * Retired: closed WITHOUT being completed, by the orchestrator rather than the reviewer.
+	 *
+	 * A distinct state from released, and the distinction is the point. Released means the reviewer
+	 * worked through every item and said so. Retired means the round stopped mattering — the question
+	 * got answered somewhere else, or a verdict made the rest moot — and nobody is going to finish it.
+	 * Collapsing the two would either claim a half-answered round was completed, or leave it sitting
+	 * in the open queue forever as work the reviewer is silently failing to do.
+	 */
+	retired: boolean
+	retiredAt: string | null
+	/** Why it was retired. Required at retirement, so a retired round always says what happened. */
+	retiredReason: string | null
 	/**
 	 * The question set a batch's answers are filed under, for the modes that have one
 	 * (`oracle-validation`); `null` everywhere else.
@@ -394,6 +427,15 @@ export class ReviewService {
 	readonly #itemNotes = new Map<string, { record: NoteRecord; recordId: string }>()
 	readonly #endorsements = new Map<string, EndorsementState[]>()
 	readonly #releases = new Map<string, BatchCompleteRecord>()
+	/**
+	 * Batches closed without completion, by batch id.
+	 *
+	 * A retired batch is ALSO in `#releases`, deliberately: `batch-complete` is what a watcher waits
+	 * for and what every terminal check reads, and a retired round is terminal. This map is the extra
+	 * fact — that the completion was a retirement — which the dashboard needs and the refusal messages
+	 * read so they can say something true rather than "already released".
+	 */
+	readonly #retired = new Map<string, BatchCompleteRecord>()
 	readonly #releaseIds = new Map<string, string>()
 	/** Post-release joins for the adjudication view. Frozen data, so computed once per batch. */
 	readonly #adjudicationCache = new Map<string, OracleValidationAnalysis>()
@@ -490,6 +532,7 @@ export class ReviewService {
 				this.#itemNotes.set(itemKey(record.batch.id, record.itemId), { record, recordId: entry.original.id })
 			} else if (record.type === "batch-complete") {
 				this.#releases.set(record.batchId, record)
+				if (isRetirement(record)) this.#retired.set(record.batchId, record)
 				this.#releaseIds.set(record.batchId, entry.original.id)
 			}
 		}
@@ -644,8 +687,11 @@ export class ReviewService {
 				pushedAt: stored.pushedAt,
 				itemCount: stored.items.length,
 				judgedCount: judged,
-				released: release !== undefined,
-				releasedAt: release?.ts ?? null,
+				released: release !== undefined && !isRetirement(release),
+				releasedAt: release !== undefined && !isRetirement(release) ? release.ts : null,
+				retired: release !== undefined && isRetirement(release),
+				retiredAt: release !== undefined && isRetirement(release) ? release.ts : null,
+				retiredReason: release === undefined ? null : retirementReason(release),
 				labelSchemaVersion: null,
 			}
 		})
@@ -659,8 +705,11 @@ export class ReviewService {
 				pushedAt: stored.pushedAt,
 				itemCount: stored.fixture.items.length,
 				judgedCount: judged,
-				released: release !== undefined,
-				releasedAt: release?.ts ?? null,
+				released: release !== undefined && !isRetirement(release),
+				releasedAt: release !== undefined && !isRetirement(release) ? release.ts : null,
+				retired: release !== undefined && isRetirement(release),
+				retiredAt: release !== undefined && isRetirement(release) ? release.ts : null,
+				retiredReason: release === undefined ? null : retirementReason(release),
 				labelSchemaVersion: null,
 			}
 		})
@@ -674,8 +723,11 @@ export class ReviewService {
 				pushedAt: stored.pushedAt,
 				itemCount: stored.fixture.items.length,
 				judgedCount: judged,
-				released: release !== undefined,
-				releasedAt: release?.ts ?? null,
+				released: release !== undefined && !isRetirement(release),
+				releasedAt: release !== undefined && !isRetirement(release) ? release.ts : null,
+				retired: release !== undefined && isRetirement(release),
+				retiredAt: release !== undefined && isRetirement(release) ? release.ts : null,
+				retiredReason: release === undefined ? null : retirementReason(release),
 				labelSchemaVersion: stored.fixture.labelSchemaVersion,
 			}
 		})
@@ -693,8 +745,11 @@ export class ReviewService {
 				pushedAt: stored.pushedAt,
 				itemCount: stored.items.length,
 				judgedCount: judged,
-				released: release !== undefined,
-				releasedAt: release?.ts ?? null,
+				released: release !== undefined && !isRetirement(release),
+				releasedAt: release !== undefined && !isRetirement(release) ? release.ts : null,
+				retired: release !== undefined && isRetirement(release),
+				retiredAt: release !== undefined && isRetirement(release) ? release.ts : null,
+				retiredReason: release === undefined ? null : retirementReason(release),
 				labelSchemaVersion: null,
 			}
 		})
@@ -709,7 +764,7 @@ export class ReviewService {
 	 * done — are all answered from this one payload. The server computes the links rather than the
 	 * page guessing them, so `verify-live.ts` crawls exactly the URLs the reviewer will click.
 	 */
-	dashboard(): { open: DashboardEntry[]; released: DashboardEntry[]; generatedAt: string } {
+	dashboard(): { open: DashboardEntry[]; released: DashboardEntry[]; retired: DashboardEntry[]; generatedAt: string } {
 		const entries = this.queue().map((entry) => ({
 			...entry,
 			...batchReviewPaths(entry),
@@ -718,10 +773,14 @@ export class ReviewService {
 		return {
 			// Oldest first among the open ones: the batch that has been waiting longest is the one the
 			// reviewer is most likely late on. Released, newest first: it is a history, not a queue.
-			open: entries.filter((entry) => !entry.released).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),
+			// A retired batch is in neither of the first two. It is not open — nobody is going to finish
+			// it — and it is not released, because releasing asserts the reviewer worked through every
+			// item and a retirement asserts the opposite.
+			open: entries.filter((entry) => !entry.released && !entry.retired).sort((a, b) => (a.pushedAt < b.pushedAt ? -1 : 1)),
 			released: entries
 				.filter((entry) => entry.released)
 				.sort((a, b) => ((a.releasedAt ?? "") > (b.releasedAt ?? "") ? -1 : 1)),
+			retired: entries.filter((entry) => entry.retired).sort((a, b) => ((a.retiredAt ?? "") > (b.retiredAt ?? "") ? -1 : 1)),
 			generatedAt: new Date().toISOString(),
 		}
 	}
@@ -745,6 +804,24 @@ export class ReviewService {
 	 * release without racing the reviewer (REVIEW_UI.md §1). So this is not "no more edits" — it is
 	 * "edits change shape", and the message says where they go.
 	 */
+	/**
+	 * A closed round takes no more answers, and says which kind of closed it is.
+	 *
+	 * "Batch X is released" on a retired round is a small lie that costs a real minute: the reviewer
+	 * goes looking for a release they never performed. A retirement says so, and says why, because the
+	 * reason is the only thing that explains why the round stopped mattering.
+	 */
+	#refuseWhenClosed(batchId: string): void {
+		const retired = this.#retired.get(batchId)
+		if (retired !== undefined) {
+			throw new Conflict(
+				`Batch ${batchId} was retired — ${retirementReason(retired)}. ` +
+					"Answers already recorded stay valid; this round is simply not being finished.",
+			)
+		}
+		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
+	}
+
 	#refuseWhenReleased(batchId: string, what: string): void {
 		if (!this.#releases.has(batchId)) return
 		throw new Conflict(
@@ -1546,7 +1623,7 @@ export class ReviewService {
 		submitted: string | readonly string[],
 	): Promise<{ recordId: string; revision: number }> {
 		const stored = this.#oracleBatch(batchId)
-		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is released`)
+		this.#refuseWhenClosed(batchId)
 		const itemId = stored.answerTokens[token]
 		if (itemId === undefined) throw new NotFound(`Unknown item token in batch ${batchId}`)
 		const item = stored.fixture.items.find((entry) => entry.itemId === itemId)
@@ -1935,6 +2012,70 @@ export class ReviewService {
 			}
 		}
 		return ids
+	}
+
+	/**
+	 * Retire a batch: close it WITHOUT completing it, with a reason.
+	 *
+	 * **Why this exists.** Two rounds needed it on the same day. `toolbox-adjudication-1` was
+	 * adjudicated in conversation instead — the reviewer's words: *"this review is deprecated now,
+	 * right?"* — and `dropped-colors-1` was abandoned mid-round because a chat verdict made the rest
+	 * moot. Neither can be released: `release` refuses a round with unjudged items, and rightly, since
+	 * releasing one would assert the reviewer worked through every item. Neither can be left open
+	 * either, because an open round is a standing request the reviewer is now silently failing.
+	 *
+	 * **Nothing is deleted and nothing is altered.** Answers already given stay exactly where they
+	 * are and stay valid — `dropped-colors-1`'s partial answers are real colour-level labels and the
+	 * round stopping does not make them less so. This appends one record; it never touches another.
+	 *
+	 * It is an ORCHESTRATOR action. No reviewer key binds it, because retiring is a judgement about
+	 * whether a round still matters to the campaign, which is not a judgement the review UI asks for.
+	 *
+	 * The record is a `batch-complete` carrying `RETIRED_NOTE_PREFIX` in its note. It is that type
+	 * because a watcher waits for `batch-complete` and a retired round is terminal — a separate type
+	 * would leave every watcher hanging on a round nobody will ever finish. The prefix is a sentinel
+	 * in `note` rather than a new field because `records.ts` belongs to the warehouse workstream; it
+	 * is greppable, it survives validation unchanged, and no reader that ignores it breaks.
+	 */
+	async retire(batchId: string, reason: string): Promise<BatchCompleteRecord> {
+		const answersOnly = this.#bracketing.get(batchId) ?? this.#oracle.get(batchId)
+		const calibration = this.#calibration.get(batchId)
+		const stored = answersOnly === undefined && calibration === undefined ? this.#batch(batchId) : null
+		const trimmed = typeof reason === "string" ? reason.trim() : ""
+		// Required, and required loudly. A retired round with no reason is a round nobody can later
+		// tell from an abandoned one, and the reason is the only part of this that carries information.
+		if (trimmed.length === 0) throw new BadRequest("a retirement needs a reason; a retired round with no reason is indistinguishable from an abandoned one")
+		if (this.#retired.has(batchId)) throw new Conflict(`Batch ${batchId} is already retired`)
+		if (this.#releases.has(batchId)) throw new Conflict(`Batch ${batchId} is already released; a released round was completed, not retired`)
+		const palettes = calibration ?? stored
+		const record = append<BatchCompleteRecord>(this.warehousePath, {
+			type: "batch-complete",
+			author: this.author,
+			batchId,
+			purpose: answersOnly?.purpose ?? palettes!.batch.purpose,
+			itemCount: answersOnly?.fixture.items.length ?? palettes!.items.length,
+			fundedBy: [...(answersOnly?.fundedBy ?? palettes!.batch.fundedBy)],
+			// The items that were actually ANSWERED, not every item the round contained. A retirement
+			// makes no claim about the ones nobody reached, and listing them here would read as one.
+			releasedItemIds: (answersOnly?.fixture.items ?? palettes!.items).map((item) => item.itemId).filter((itemId) => this.#isJudged(batchId, itemId)),
+			note: `${RETIRED_NOTE_PREFIX}${trimmed}`,
+		} satisfies RecordInput<BatchCompleteRecord>)
+		this.#retired.set(batchId, record)
+		this.#releases.set(batchId, record)
+		this.#releaseIds.set(batchId, record.id)
+		return record
+	}
+
+	/** Whether one item of a batch carries a standing answer, across every mode's bookkeeping. */
+	#isJudged(batchId: string, itemId: string): boolean {
+		const oracle = this.#oracle.get(batchId)
+		if (oracle !== undefined) {
+			const item = oracle.fixture.items.find((entry) => entry.itemId === itemId)
+			return item !== undefined && this.#answers.has(this.#oracleKey(oracle, item))
+		}
+		if (this.#bracketing.has(batchId)) return this.#answers.has(itemKey(batchId, itemId))
+		const key = itemKey(batchId, itemId)
+		return this.#standing(key) !== null || this.#vetoes.get(key)?.active === true
 	}
 
 	/** The explicit reviewer action that completes a batch. Appends `batch-complete`. */
@@ -2580,6 +2721,25 @@ export async function createReviewServer(options: ReviewServerOptions = {}): Pro
 					200,
 					await service.amendReleaseNote(decodeURIComponent(releaseNoteMatch[1]), body.note, reason),
 				)
+				return
+			}
+
+			// Orchestrator-side only. No reviewer key binds it: retiring is a judgement about whether a
+			// round still matters to the campaign, which is not something the review UI asks anyone.
+			const retireMatch = /^\/api\/batches\/([^/]+)\/retire$/u.exec(path)
+			if (method === "POST" && retireMatch) {
+				const batchId = decodeURIComponent(retireMatch[1])
+				const body = (await requestBody(request)) as Record<string, unknown>
+				const record = await service.retire(batchId, typeof body.reason === "string" ? body.reason : "")
+				respondJson(response, 200, {
+					recordId: record.id,
+					retiredAt: record.ts,
+					batchId: record.batchId,
+					reason: retirementReason(record),
+					/** Items that carried an answer when the round was retired. They stay valid. */
+					answeredItemIds: record.releasedItemIds ?? [],
+					itemCount: record.itemCount,
+				})
 				return
 			}
 

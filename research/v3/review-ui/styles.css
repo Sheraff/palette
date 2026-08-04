@@ -1396,3 +1396,9 @@ summary {
 	cursor: pointer;
 	word-break: break-all;
 }
+
+/* A retired round's reason, on the dashboard. It is the only part that says what happened. */
+.dash-retired-why {
+	opacity: 0.7;
+	font-style: italic;
+}

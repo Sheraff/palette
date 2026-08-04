@@ -28,6 +28,9 @@ const nodes = {
 	open: document.querySelector("#open"),
 	released: document.querySelector("#released"),
 	releasedSummary: document.querySelector("#released-summary"),
+	retired: document.querySelector("#retired"),
+	retiredSummary: document.querySelector("#retired-summary"),
+	retiredWrap: document.querySelector("#retired-wrap"),
 	status: document.querySelector("#status"),
 }
 
@@ -103,6 +106,26 @@ function releasedRow(entry) {
 	)
 }
 
+/**
+ * A round closed without being completed, and why.
+ *
+ * Its own section, not folded in with the released ones: released means the reviewer worked through
+ * every item, retired means the round stopped mattering and nobody is going to finish it. The reason
+ * is shown rather than hidden behind the id, because it is the only part that says what happened —
+ * and because the answers a retired round did collect are still valid data somebody may cite.
+ */
+function retiredRow(entry) {
+	return el(
+		"p",
+		{ class: "dash-released-row" },
+		el("b", { text: entry.batchId }),
+		el("span", { class: "dash-kind", text: entry.kind }),
+		el("span", { class: "dash-age", text: `retired ${since(entry.retiredAt)}` }),
+		el("span", { class: "dash-count", text: `${entry.judgedCount} of ${entry.itemCount} answered — kept` }),
+		el("span", { class: "dash-retired-why", text: entry.retiredReason ?? "" }),
+	)
+}
+
 function render(data) {
 	const open = data.open
 	const waiting = open.reduce((sum, entry) => sum + entry.remaining, 0)
@@ -117,6 +140,12 @@ function render(data) {
 	)
 	nodes.releasedSummary.textContent = `released rounds (${data.released.length})`
 	nodes.released.replaceChildren(...data.released.map(releasedRow))
+	// Hidden entirely when nothing is retired: an empty section implies a state the campaign has not
+	// been in, and the dashboard is the one page that has to be readable at a glance.
+	const retired = data.retired ?? []
+	if (nodes.retiredWrap != null) nodes.retiredWrap.hidden = retired.length === 0
+	if (nodes.retiredSummary != null) nodes.retiredSummary.textContent = `retired rounds (${retired.length})`
+	if (nodes.retired != null) nodes.retired.replaceChildren(...retired.map(retiredRow))
 }
 
 async function refresh() {
