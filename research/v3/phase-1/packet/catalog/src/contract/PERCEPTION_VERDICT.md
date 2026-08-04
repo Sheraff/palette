@@ -5,12 +5,12 @@
      This file is a verbatim copy of the source above, assembled for a Phase 1 author packet.
      
      Included because PHASE_1_AUTHOR_BRIEF.md §3.1 names this file as the "Canonical text" for
-     open question 3, and §3.1 is normative for every arm.
+     open question 3, and §3.1 is normative for every author.
      
      READ THIS BEFORE FOLLOWING ANY POINTER BELOW. The body cites files under data/calibration/,
      data/decisions/ and data/contract/. Those paths are DELIBERATELY OUTSIDE your packet. You
-     are confined to this directory: opening any of them voids your arm, because you are the
-     experiment and reading around it silently invalidates your own result. The citations are
+     are confined to this directory: opening any of them voids your own result, because you are
+     the experiment and reading around it silently invalidates it. The citations are
      left in place because the body is verbatim and was not edited. If you need something one
      of them holds, use the same route the packet stubs describe — name it in your proposal,
      say why your design turns on it, and it will be adjudicated.

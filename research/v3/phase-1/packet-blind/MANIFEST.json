@@ -1,14 +1,20 @@
 {
 	"packet": "phase-1/packet-blind",
-	"description": "The blind Phase 1 author packet (arm F): §2 and §3 of the author brief, and nothing else.",
+	"description": "A Phase 1 author packet. You receive exactly this directory and read nothing outside it.",
 	"commit": "71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2",
 	"builtOn": "2026-08-04",
 	"notes": [
 		"Every file carries a prepended provenance header (an HTML comment). `kind` describes the body below that header.",
 		"MANIFEST.json is not listed among its own files.",
 		"Extract line ranges in research/v3/PHASE_1_AUTHOR_BRIEF.md at the commit above: 1 (title), 11-14 (\"Who this is for\"), 38-252 (§2 through the end of §3, §3.1 included).",
-		"§3.1 names `src/contract/PERCEPTION_VERDICT.md` as its \"Canonical text\" for open question 3. That file is deliberately NOT in this packet. It is 25,809 bytes against this extract's 16,525, so including it would make 61% of arm F's packet by bytes one perception-round document — and arm F is the control on the brief, so a control that is mostly one campaign artifact measures that artifact. \"Canonical text:\" is a provenance citation, not a reading instruction, and §3.1 is self-contained on the question: it gives the three thresholds, the 2.9x ratio, the provisional/report-only status, the dark-neutral-only caveat, the opposite-anisotropy warning, and the instruction not to depend on the bar's value. An author who follows the pointer and finds nothing loses nothing they needed."
+		"§3.1 names `src/contract/PERCEPTION_VERDICT.md` as its \"Canonical text\" for open question 3. That file is not in this packet: the pointer is a provenance citation and §3.1 is self-contained. If you need it, name it in your proposal — which part you wanted and why your design turns on it — and it will be adjudicated."
 	],
+	"selfCheck": {
+		"auditedFor": "content disclosure — whether any field in this file describes what a withheld document says, or describes the design of the exercise this packet belongs to",
+		"date": "2026-08-04",
+		"check": "String-match of this file against every disclosure marker enumerated in the Phase 1 confinement audit, plus a scan for terms that would describe how this packet was produced rather than what it contains. Zero matches required.",
+		"rule": "A manifest inside a packet describes files, never findings, and never the experiment."
+	},
 	"files": [
 		{
 			"path": "PHASE_1_AUTHOR_BRIEF_SECTIONS_2_AND_3.md",

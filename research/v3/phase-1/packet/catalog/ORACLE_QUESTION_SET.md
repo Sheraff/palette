@@ -32,8 +32,9 @@ shelf is an anchor."* Withholding it is the design of Phase 1, not an administra
 ids, their closed vocabularies, and the wording of every question that has wording — pulled out of
 this document byte-for-byte, with every accuracy, agreement rate, variant comparison, replication
 verdict and reliability grade removed. **What the oracle can label is a thing you are entitled to
-know**, and that file is it. Nothing else from this document is reproduced or paraphrased anywhere
-in the packet.
+know**, and that file is it. Apart from that inventory, no part of this document is quoted or
+paraphrased anywhere in the packet: the manifest beside it records this file's hash, its size and
+the category of what was withheld, never what it says.
 
 **If you need something from it, ask — this is a real offer.** Name it in your proposal: which part
 you wanted, and why your design turns on it. It will be adjudicated, and handed to you if it is not
