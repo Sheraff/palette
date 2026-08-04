@@ -20,6 +20,14 @@ the verdicts", which is the documented relapse.
 | 6 | The reviewer notices ROLE-ASSIGNMENT errors specifically (asked for a fg↔accent swap of colours already in the palette — ordering, not extraction, was the error) | Role assignment IS P6's constrained readout — this evidence targets the mechanism's core claim. A correct answer with a fragile ordering is invisible to the energy but visible to the reviewer | Per cover: the energy gap between the winning (fg, accent) assignment and the swapped one, holding everything else fixed. Small or negative-margin gaps enumerated — they are the covers where the ordering is one verdict away from wrong |
 | 7 | A hedged false-gradient note cost zero grade once — gradient-wrongness pricing is unpredictable | Nothing to build. Explicitly recorded so nobody reads round-to-round gradient pricing as a signal to tune toward (or away from) | none — a caution, not a check |
 
+## Addendum 2 — P1 measurement + P5 round-2 principles, relayed 2026-08-04
+
+| # | evidence | where P6's design answers it | the check |
+|---|---|---|---|
+| 8 | Legacy warehouse contradicts itself at configuration level (27/128 paired comparisons are exact ties filed under different tiers, 9 across good/known-bad) | Adjudication was already a dev aid gating nothing; this prices its W/L counts lower still | Procedural: every W/L count quoted in a P6 report carries this caveat inline. No code |
+| 9 | SALIENCE gates identity: colours present only as "accidental shadows" are ineligible for identity roles — presence ≠ eligibility (a spatial-support notion) | P6's unary terms are all spatial-support integrals (presence mass, field-likeness, spread, border affinity, ink/mark energy over the surround ladder) — salience-like by construction. But belonging is deliberately cutoff-free (open question 2), so eligibility is priced, not gated — the design bets the price suffices | On demo-20 survivor tables: find covers with low-mass shadow/shading colours near the top of any role ranking; report whether the energy's existing terms already demote them. If shadow colours WIN roles, that is a mechanism finding (the cutoff-free bet failing), reported — not patched with a gate |
+| 10 | Surface may be sourced from a depicted object; and identity outranked legibility once (white fg demanded on a light field) | No per-role source restriction exists in P6 (whole artwork feasible for every role — structural). The identity-vs-legibility tension is the reviewer's to arbitrate case by case; P6 keeps barriers at contract floors + ink-preferring fitness | none — compatibility noted; the legibility/identity trade is explicitly NOT a tuning signal in either direction (see row 7's caution) |
+
 If any check fails, the report says *which principle failed and why*, with the measurement. The
 sensitivity harness (README falsifier 3) stays the only process that ever moves a rate, and it
 moves rates to *measure* them, not to improve verdict agreement.

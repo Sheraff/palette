@@ -95,6 +95,17 @@ images; `tools/sensitivity.ts`. Nothing in wave 2 starts until wave 1 reports.
    ramps (W6's analytic account: edge-clamp bias ∝ σ·slope). Not currently load-bearing after
    the scale-band repair; revisit only if gradient-end fidelity shows up in review verdicts.
 
+10. **Released-round analysis (reviewer ruling 2026-08-04, brief `735024a`).** When a P6 round
+    releases, the main tier sends a content-free "batch <id> released" signal only. This
+    orchestrator then spawns its own Opus analyst: fetch the released payload, de-blind via
+    `data/review-server/batches.jsonl` (readable only post-release) joined with P6's private
+    mapping, verify the decode (item counts, token↔variant join is total, no orphans), act on
+    verdicts. Consequence for staging: every round staged under `review-rounds/<round>/` MUST
+    include a `private-mapping.json` (item token ↔ candidate/variant identity ↔ cover), written
+    at fixture-build time and never included in the payload or side-car. Cross-arm evidence goes
+    upward only in §7 reports (turn-final messages — the harness forbids standalone report
+    files); single-prototype verdicts never travel raw to the main tier.
+
 ## Performance envelope
 
 Proposal §5 prices 1000×1000 at ≈0.4 s single-threaded. Treat >2 s at that size as a defect to
