@@ -476,8 +476,19 @@ Recorded so it is visible whether the files moved between sign-off and running.
 | file | `prompts/group-bcde.v2.variant-e.json` | `prompts/group-bcde.v2.variant-f.json` |
 | `prompt_hash` | `be4722015f4cdbf6…` | `77c494042acc1718…` |
 | `schema_hash` | `20176c5364fb63d9…` | `bb9b25f5ca7e8755…` |
-| `file_hash` | `af1cfa1de058cc69…` | `f053777b8f9be43e…` |
+| `file_hash` | `e211c334babc830d…` | `cc83e45a76a18a02…` |
 | prompt length | 6 965 chars | 6 564 chars |
+
+**Both files moved once since drafting, and only once.** `multi_select_fields` declared its two
+entries by **prompt-key** name (`lettering_kinds`/`signature_source` in E,
+`word_kinds`/`defining_colour_where` in F) where `common.load_prompt_variant` reads that list as
+**canonical** names; the array property therefore fell through to the single-enum branch and load
+raised `KeyError: 'enum'` on both files. Found by the spread-wording pilot
+(`SPREAD_WORDING_PILOT.md` §5) and corrected to `["text_roles", "signature_carrier"]`, which is
+v1's convention. The pre-fix `file_hash`es were `af1cfa1de058cc69…` and `f053777b8f9be43e…`.
+`prompt_hash` and `schema_hash` are **unchanged** by the correction — the prompt text and the
+grammar are byte-for-byte what was drafted, and the rows above still carry their drafted values.
+**This changed the load defect and nothing else. The files remain DRAFT — NOT SIGNED OFF.**
 
 Checked on both files: valid JSON; the eight shared blocks byte-identical between them; no prompt
 line shared outside those blocks; JSON key names disjoint; schema property order equal to the stated
