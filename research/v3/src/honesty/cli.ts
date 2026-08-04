@@ -27,13 +27,19 @@ import type { ScannedFile } from "./types.ts"
 export const V3_ROOT = fileURLToPath(new URL("../..", import.meta.url)).replace(/\/$/, "")
 
 /**
- * The two trees the honesty criterion covers.
+ * The trees the honesty criterion covers.
  *
  * `[REVIEWED]` — the instrument's scope as briefed: `research/v3/src` and `research/v3/oracle`.
  * `tests/` is deliberately outside it. Test constants are assertions about behaviour, not the
  * behaviour itself, and counting them would let a workstream improve its score by deleting tests.
+ *
+ * `prototypes/` was added 2026-08-04: Phase 2 prototypes live in worktrees under
+ * `research/v3/prototypes/<slug>/`, and every constant they introduce was outside the census —
+ * a whole phase of new code that could never be flagged. A root that does not exist in the
+ * current checkout contributes nothing and is not an error: the walk returns silently, so the
+ * same scan roots are correct on `main` and inside a prototype worktree.
  */
-export const SCAN_ROOTS = ["src", "oracle"] as const
+export const SCAN_ROOTS = ["src", "oracle", "prototypes"] as const
 
 /**
  * Directory names never descended into.
