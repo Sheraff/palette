@@ -1,7 +1,7 @@
 {
 	"schema": "accent-real-round-1-analysis/v1",
 	"batchId": "accent-real-1",
-	"analyzedAt": "2026-08-04T09:44:18.740Z",
+	"analyzedAt": "2026-08-04T10:12:58.160Z",
 	"analyzer": "research/v3/data/calibration/analyze-accent-real-round-1.ts",
 	"fixture": "/Users/Flo/GitHub/palette/research/v3/data/calibration/accent-real-round-1.json",
 	"truth": "/Users/Flo/GitHub/palette/research/v3/data/calibration/accent-real-round-1-truth.json",
@@ -10,8 +10,8 @@
 	"criterion": "functional-visibility on real stimuli — does this work as an accent at a glance; the same criterion and the same wording as accent-functional-1, asked of the whole mock player over a real cover instead of a synthetic flat panel",
 	"question": "Does this work as an accent at a glance?",
 	"instruction": "Not \"can you see the difference\" — assume you can. At a glance, without hunting: is this colour doing an accent's job here — does it pick these elements out as something the eye lands on? If you only find it by looking for it, or it reads as a difference rather than as an accent, answer no.",
-	"verdict": "incomplete",
-	"verdictReason": "G3: 0 of 30 real ladder items answered (27 required) and 0 of 4 controls answered. Nothing is wrong — the round is not finished.",
+	"verdict": "stratum-dependent",
+	"verdictReason": "refusal 3: band:mid=0.13437, hue-third:0=0.13417, hue-third:2=0.26385 fell outside the pooled 95% interval, so NO SINGLE SCALAR IS ADOPTED. If the governing-role cut is among them, that is the surface-role rival of §5 showing itself — a finding about what the constant is a function of.",
 	"proposal": null,
 	"preRegisteredRule": {
 		"source": "research/v3/data/calibration/accent-real-round-1-preregistration.md §6",
@@ -62,8 +62,8 @@
 	"validityGates": {
 		"G1_controls": {
 			"required": 4,
-			"answered": 0,
-			"passed": 0,
+			"answered": 4,
+			"passed": 4,
 			"failed": [],
 			"checks": [
 				{
@@ -73,9 +73,9 @@
 					"okLabDistance": 0.70389,
 					"apcaLc": -103.3803,
 					"expected": "works",
-					"answered": false,
-					"answer": null,
-					"passed": false
+					"answered": true,
+					"answer": "works",
+					"passed": true
 				},
 				{
 					"itemId": "ar-control-obvious-1",
@@ -84,9 +84,9 @@
 					"okLabDistance": 0.94005,
 					"apcaLc": 94.2036,
 					"expected": "works",
-					"answered": false,
-					"answer": null,
-					"passed": false
+					"answered": true,
+					"answer": "works",
+					"passed": true
 				},
 				{
 					"itemId": "ar-control-identical-0",
@@ -95,9 +95,9 @@
 					"okLabDistance": 0,
 					"apcaLc": 0,
 					"expected": "does_not_work",
-					"answered": false,
-					"answer": null,
-					"passed": false
+					"answered": true,
+					"answer": "does_not_work",
+					"passed": true
 				},
 				{
 					"itemId": "ar-control-identical-1",
@@ -106,16 +106,16 @@
 					"okLabDistance": 0,
 					"apcaLc": 0,
 					"expected": "does_not_work",
-					"answered": false,
-					"answer": null,
-					"passed": false
+					"answered": true,
+					"answer": "does_not_work",
+					"passed": true
 				}
 			]
 		},
 		"G2_repeats": {
 			"repeats": 4,
-			"comparable": 0,
-			"agreed": 0,
+			"comparable": 4,
+			"agreed": 4,
 			"disagreed": 0,
 			"required": "3 of 4",
 			"tripped": false,
@@ -125,59 +125,62 @@
 					"repeatOf": "ar-ladder-21",
 					"rung": 7,
 					"okLabDistance": 0.21075,
-					"answer": null,
-					"twinAnswer": null,
-					"comparable": false,
-					"agreed": false
+					"answer": "works",
+					"twinAnswer": "works",
+					"comparable": true,
+					"agreed": true
 				},
 				{
 					"itemId": "ar-repeat-01",
 					"repeatOf": "ar-ladder-09",
 					"rung": 3,
 					"okLabDistance": 0.10238,
-					"answer": null,
-					"twinAnswer": null,
-					"comparable": false,
-					"agreed": false
+					"answer": "does_not_work",
+					"twinAnswer": "does_not_work",
+					"comparable": true,
+					"agreed": true
 				},
 				{
 					"itemId": "ar-repeat-02",
 					"repeatOf": "ar-ladder-13",
 					"rung": 4,
 					"okLabDistance": 0.12315,
-					"answer": null,
-					"twinAnswer": null,
-					"comparable": false,
-					"agreed": false
+					"answer": "does_not_work",
+					"twinAnswer": "does_not_work",
+					"comparable": true,
+					"agreed": true
 				},
 				{
 					"itemId": "ar-repeat-03",
 					"repeatOf": "ar-ladder-06",
 					"rung": 2,
 					"okLabDistance": 0.08766,
-					"answer": null,
-					"twinAnswer": null,
-					"comparable": false,
-					"agreed": false
+					"answer": "does_not_work",
+					"twinAnswer": "does_not_work",
+					"comparable": true,
+					"agreed": true
 				}
 			]
 		},
 		"G3_coverage": {
-			"ladderAnswered": 0,
+			"ladderAnswered": 30,
 			"ladderTotal": 30,
 			"ladderRequired": 27,
-			"ladderDecided": 0,
-			"controlsAnswered": 0,
+			"ladderDecided": 30,
+			"controlsAnswered": 4,
 			"controlsRequired": 4,
 			"answeredIncludesCantTell": true
 		},
 		"G4_escapeShare": {
 			"stratum": "pooled (30 ladder items)",
-			"answered": 0,
+			"answered": 30,
 			"cantTell": 0,
-			"share": null,
-			"interval": null,
-			"reliableRate": null,
+			"share": 0,
+			"interval": {
+				"low": 0,
+				"high": 0.1135
+			},
+			"reliableRate": true,
 			"threshold": 0.5,
 			"tripped": false,
 			"neverSubtracted": true
@@ -186,62 +189,64 @@
 	"primary": {
 		"population": "role == ladder (30 real-cover items); anchors, sunshine and repeats excluded",
 		"fit": {
-			"n": 0,
-			"yesCount": 0,
-			"intercept": null,
-			"slope": null,
-			"threshold": null,
-			"fittedThreshold": null,
-			"confidenceInterval": null,
+			"n": 30,
+			"yesCount": 10,
+			"intercept": 5.927702496034349,
+			"slope": 3.5275498975602844,
+			"threshold": 0.18629903743662596,
+			"fittedThreshold": 0.18629903743662596,
+			"confidenceInterval": {
+				"low": 0.14051639851228206,
+				"high": 0.24699844087435607
+			},
 			"separated": false,
 			"separationInterval": null,
-			"converged": false,
-			"note": "nothing answered here yet"
+			"converged": true,
+			"note": null
 		},
-		"threshold": null,
+		"threshold": 0.1863,
 		"headline": {
-			"threshold": null,
+			"threshold": 0.1863,
 			"separated": false,
 			"separationInterval": null,
 			"separationWidth": null,
-			"confidenceInterval": null,
-			"supportVerdict": "range-restricted",
-			"supportsClaimDomain": false,
+			"confidenceInterval": {
+				"low": 0.14051639851228206,
+				"high": 0.24699844087435607
+			},
+			"supportVerdict": "supports-the-claim",
+			"supportsClaimDomain": true,
 			"extrapolatedBeyondSample": false
 		},
 		"support": {
-			"verdict": "range-restricted",
-			"supportsClaimDomain": false,
-			"observedMin": null,
-			"observedMax": null,
-			"domainCoverage": 0,
-			"n": 0,
-			"annotations": [
-				"the sample is empty; there is no support for any claim"
-			],
-			"summary": "range-restricted: the sample is empty; there is no support for any claim"
+			"verdict": "supports-the-claim",
+			"supportsClaimDomain": true,
+			"observedMin": 0.05997125627194323,
+			"observedMax": 0.3024409031587368,
+			"domainCoverage": 1,
+			"n": 30,
+			"annotations": [],
+			"summary": "sample supports claims about OKLab distance between the accent and its governing field over 0.06..0.3 (n=30)"
 		},
-		"summary": "fit over OKLab distance between the accent and its governing field: range-restricted: the sample is empty; there is no support for any claim",
+		"summary": "fitted OKLab distance between the accent and its governing field = 0.186299 — sample supports claims about OKLab distance between the accent and its governing field over 0.06..0.3 (n=30)",
 		"provenance": {
 			"method": "fit over OKLab distance between the accent and its governing field with declared sample support",
-			"n": 0,
+			"n": 30,
 			"inputs": {
 				"variableUnderTest": "OKLab distance between the accent and its governing field",
 				"claimDomainMin": 0.06,
 				"claimDomainMax": 0.3,
-				"observedMin": "none",
-				"observedMax": "none",
-				"domainCoverage": 0,
+				"observedMin": 0.05997125627194323,
+				"observedMax": 0.3024409031587368,
+				"domainCoverage": 1,
 				"selectionRule": "One distinct cover per item, drawn from the full-palette endorsement corpus and assigned to a (rung x lightness band x accent hue third x governing field role) cell by cellFor(); the first cover in seeded order that ADMITS an isoluminant accent in that cell takes it. Selection depends on the field colour and the gamut, never on any answer. Six anchors are accent-functional-1 panels replayed unchanged, chosen by nearness to six pre-registered probe distances and never by how they were answered. The Sunshine item is the endorsement 22e959d5164750bd carried unmodified.",
 				"selectionRelationToVariable": "independent-of-the-variable",
-				"verdict": "range-restricted"
+				"verdict": "supports-the-claim"
 			},
 			"corrections": [],
-			"caveats": [
-				"the sample is empty; there is no support for any claim"
-			]
+			"caveats": []
 		},
-		"honestLine": "fit over OKLab distance between the accent and its governing field: range-restricted: the sample is empty; there is no support for any claim | n=0 | fit over OKLab distance between the accent and its governing field with declared sample support | CAVEAT: the sample is empty; there is no support for any claim"
+		"honestLine": "fitted OKLab distance between the accent and its governing field = 0.186299 — sample supports claims about OKLab distance between the accent and its governing field over 0.06..0.3 (n=30) | n=30 | fit over OKLab distance between the accent and its governing field with declared sample support"
 	},
 	"bridges": {
 		"note": "§6.3 — three measurements, reported separately, always, and never pooled into the fit.",
@@ -252,32 +257,42 @@
 				"first": "accent-functional-1 (the lab round)",
 				"second": "accent-real-1 (this round)"
 			},
-			"pairs": 0,
+			"pairs": 6,
 			"escapesExcluded": 0,
-			"unansweredHere": 6,
+			"unansweredHere": 0,
 			"missingLabAnswer": 0,
 			"test": {
-				"ok": false,
-				"reason": "no-pairs",
-				"detail": "McNemar not computed: there are no pairs.",
-				"summary": "McNemar not computed: there are no pairs.",
+				"ok": true,
+				"counts": {
+					"bothSucceeded": 4,
+					"onlyFirstSucceeded": 1,
+					"onlySecondSucceeded": 1,
+					"neitherSucceeded": 0
+				},
+				"discordantPairs": 2,
+				"totalPairs": 6,
+				"pValue": 1,
+				"alternative": "two-sided",
+				"summary": "paired: first arm won 1, second won 1, of 2 discordant anchor panels (6 compared): p=1.0000",
 				"provenance": {
 					"method": "McNemar exact (sign test on discordant pairs), two-sided",
-					"n": 0,
+					"n": 2,
 					"inputs": {
-						"bothSucceeded": 0,
-						"onlyFirstSucceeded": 0,
-						"onlySecondSucceeded": 0,
+						"bothSucceeded": 4,
+						"onlyFirstSucceeded": 1,
+						"onlySecondSucceeded": 1,
 						"neitherSucceeded": 0,
-						"totalPairs": 0,
-						"discordantPairs": 0,
+						"totalPairs": 6,
+						"discordantPairs": 2,
 						"alternative": "two-sided"
 					},
 					"corrections": [],
-					"caveats": []
+					"caveats": [
+						"the n is 2 discordant anchor panels, not the 6 anchor panels compared; the 4 concordant anchor panels carry no information about which arm is better and are excluded by the test"
+					]
 				}
 			},
-			"honestLine": "McNemar not computed: there are no pairs. | n=0 | McNemar exact (sign test on discordant pairs), two-sided",
+			"honestLine": "paired: first arm won 1, second won 1, of 2 discordant anchor panels (6 compared): p=1.0000 | n=2 | McNemar exact (sign test on discordant pairs), two-sided | CAVEAT: the n is 2 discordant anchor panels, not the 6 anchor panels compared; the 4 concordant anchor panels carry no information about which arm is better and are excluded by the test",
 			"anchors": [
 				{
 					"itemId": "ar-anchor-00-af-ladder-r00-h1-mid",
@@ -285,9 +300,9 @@
 					"okLabDistance": 0.06057,
 					"apcaLc": 0,
 					"labAnswer": "does_not_work",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "works",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				},
 				{
 					"itemId": "ar-anchor-01-af-ladder-r02-h1-mid",
@@ -295,9 +310,9 @@
 					"okLabDistance": 0.08989,
 					"apcaLc": 0,
 					"labAnswer": "works",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "does_not_work",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				},
 				{
 					"itemId": "ar-anchor-02-af-ladder-r03-h1-dark",
@@ -305,9 +320,9 @@
 					"okLabDistance": 0.11147,
 					"apcaLc": 0,
 					"labAnswer": "works",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "works",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				},
 				{
 					"itemId": "ar-anchor-03-af-anchor-p2-ladder-08",
@@ -315,9 +330,9 @@
 					"okLabDistance": 0.14813,
 					"apcaLc": 0,
 					"labAnswer": "works",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "works",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				},
 				{
 					"itemId": "ar-anchor-04-af-ladder-r06-h0-mid",
@@ -325,9 +340,9 @@
 					"okLabDistance": 0.20043,
 					"apcaLc": 0,
 					"labAnswer": "works",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "works",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				},
 				{
 					"itemId": "ar-anchor-05-af-ladder-r08-h1-dark",
@@ -335,19 +350,22 @@
 					"okLabDistance": 0.28867,
 					"apcaLc": 0,
 					"labAnswer": "works",
-					"realRoundAnswer": null,
+					"realRoundAnswer": "works",
 					"escaped": false,
-					"paired": false
+					"paired": true
 				}
 			]
 		},
 		"realVsSynthetic": {
 			"what": "realThreshold - the synthetic round's fitted threshold, with sign",
 			"syntheticThreshold": 0.04554,
-			"realThreshold": null,
-			"difference": null,
-			"sign": null,
-			"realThreshold95": null,
+			"realThreshold": 0.1863,
+			"difference": 0.14076,
+			"sign": "positive",
+			"realThreshold95": {
+				"low": 0.14051639851228206,
+				"high": 0.24699844087435607
+			},
 			"predictedPositiveBy": "d-2026-08-04-accent-calibration-is-a-stimulus-realism-problem",
 			"intervalContainsZeroNote": "an interval on the real threshold that contains 0.04554 means the round did not separate the two stimulus classes"
 		},
@@ -357,8 +375,8 @@
 			"apcaLc": 0,
 			"priorVerdict": "does_not_work",
 			"priorVerdictSource": "d-2026-08-04-endorsement-recheck-1-resolved-by-chat-two-endorsements-retired — reviewer, in conversation: \"item 2: accent on surface *is unreadable*\"",
-			"answer": null,
-			"reproducesPriorVerdict": null,
+			"answer": "does_not_work",
+			"reproducesPriorVerdict": true,
 			"retractsChatRuling": false,
 			"note": "one item, one known prior answer, reported on its own and never pooled into the fit"
 		}
@@ -369,212 +387,282 @@
 			{
 				"stratum": "band:dark",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 10,
+				"yesCount": 2,
+				"intercept": 5.42334492410336,
+				"slope": 3.8682904359852657,
+				"threshold": 0.2461041526333748,
+				"fittedThreshold": 0.2461041526333748,
+				"confidenceInterval": {
+					"low": 0.14088653176209345,
+					"high": 0.42990095068610035
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			},
 			{
 				"stratum": "band:light",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 10,
+				"yesCount": 3,
+				"intercept": 6.014792382442878,
+				"slope": 3.7088516800267,
+				"threshold": 0.1975546942290668,
+				"fittedThreshold": 0.1975546942290668,
+				"confidenceInterval": {
+					"low": 0.12167281709652134,
+					"high": 0.3207606936640567
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			},
 			{
 				"stratum": "band:mid",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 10,
+				"yesCount": 5,
+				"intercept": 9.82966790294935,
+				"slope": 4.89723136559795,
+				"threshold": 0.13436587481047452,
+				"fittedThreshold": 0.13436587481047452,
+				"confidenceInterval": {
+					"low": 0.09206939279858965,
+					"high": 0.1960932701389627
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			}
 		],
 		"hueThirdFits": [
 			{
 				"stratum": "hue-third:0",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
-				"separated": false,
-				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"n": 10,
+				"yesCount": 5,
+				"intercept": 45.56971622529043,
+				"slope": 22.68668169800082,
+				"threshold": 0.1341723616293239,
+				"fittedThreshold": 0.13416901305539403,
+				"confidenceInterval": {
+					"low": 0.11180301835487878,
+					"high": 0.16100928516187024
+				},
+				"separated": true,
+				"separationInterval": {
+					"low": 0.12314893614764433,
+					"high": 0.1461825265271236
+				},
+				"converged": true,
+				"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap"
 			},
 			{
 				"stratum": "hue-third:1",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 10,
+				"yesCount": 3,
+				"intercept": 4.212788465907325,
+				"slope": 2.689242183969507,
+				"threshold": 0.2087675839920803,
+				"fittedThreshold": 0.2087675839920803,
+				"confidenceInterval": {
+					"low": 0.1083911011211694,
+					"high": 0.402098545683822
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			},
 			{
 				"stratum": "hue-third:2",
 				"items": 10,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 10,
+				"yesCount": 2,
+				"intercept": 3.870239152478997,
+				"slope": 2.9047508093771914,
+				"threshold": 0.2638478936016129,
+				"fittedThreshold": 0.2638478936016129,
+				"confidenceInterval": {
+					"low": 0.11932723334056324,
+					"high": 0.5834017014315824
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			}
 		],
 		"governingRoleFits": [
 			{
 				"stratum": "governing-role:background",
 				"items": 15,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 15,
+				"yesCount": 5,
+				"intercept": 5.362985863543409,
+				"slope": 3.273001353947376,
+				"threshold": 0.1942609538171622,
+				"fittedThreshold": 0.1942609538171622,
+				"confidenceInterval": {
+					"low": 0.12723072946655162,
+					"high": 0.29660537463062014
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			},
 			{
 				"stratum": "governing-role:surface",
 				"items": 15,
-				"n": 0,
-				"yesCount": 0,
-				"intercept": null,
-				"slope": null,
-				"threshold": null,
-				"fittedThreshold": null,
-				"confidenceInterval": null,
+				"n": 15,
+				"yesCount": 5,
+				"intercept": 6.635634007593893,
+				"slope": 3.851549383675592,
+				"threshold": 0.17855689976629424,
+				"fittedThreshold": 0.17855689976629424,
+				"confidenceInterval": {
+					"low": 0.12302349551803003,
+					"high": 0.2591583527999967
+				},
 				"separated": false,
 				"separationInterval": null,
-				"converged": false,
-				"note": "nothing answered here yet"
+				"converged": true,
+				"note": null
 			}
 		],
-		"disagreeingStrata": [],
-		"escapeShareByStratum": [
-			{
-				"stratum": "pooled (30 ladder items)",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
-			},
-			{
-				"stratum": "band:dark",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
-			},
-			{
-				"stratum": "band:light",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
-			},
+		"disagreeingStrata": [
 			{
 				"stratum": "band:mid",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"threshold": 0.13437
 			},
 			{
 				"stratum": "hue-third:0",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
-			},
-			{
-				"stratum": "hue-third:1",
-				"answered": 0,
-				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"threshold": 0.13417
 			},
 			{
 				"stratum": "hue-third:2",
-				"answered": 0,
+				"threshold": 0.26385
+			}
+		],
+		"escapeShareByStratum": [
+			{
+				"stratum": "pooled (30 ladder items)",
+				"answered": 30,
 				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.1135
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "band:dark",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "band:light",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "band:mid",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "hue-third:0",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "hue-third:1",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
+			},
+			{
+				"stratum": "hue-third:2",
+				"answered": 10,
+				"cantTell": 0,
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2775
+				},
+				"reliableRate": true
 			},
 			{
 				"stratum": "governing-role:background",
-				"answered": 0,
+				"answered": 15,
 				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2039
+				},
+				"reliableRate": true
 			},
 			{
 				"stratum": "governing-role:surface",
-				"answered": 0,
+				"answered": 15,
 				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.2039
+				},
+				"reliableRate": true
 			},
 			{
 				"stratum": "anchors",
-				"answered": 0,
+				"answered": 6,
 				"cantTell": 0,
-				"share": null,
-				"interval": null,
-				"reliableRate": null
+				"share": 0,
+				"interval": {
+					"low": 0,
+					"high": 0.3903
+				},
+				"reliableRate": true
 			}
 		],
-		"distanceAtNinetyPercent": null,
+		"distanceAtNinetyPercent": 0.34731,
 		"placementProfile": {
 			"what": "how much contrast the NON-governing placements carried, per ladder item — the round's own measure of how much a `yes` could have leaked from somewhere other than the pair under test",
 			"flatFieldNote": "the field is rendered flat (§3.5), so the `field` placement is the background colour; a placement is counted as non-governing only when its hex differs from the governing field's",
@@ -587,7 +675,7 @@
 			"items": [
 				{
 					"itemId": "ar-ladder-00",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.0601,
 					"nonGoverningRoles": [
@@ -601,7 +689,7 @@
 				},
 				{
 					"itemId": "ar-ladder-01",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.05997,
 					"nonGoverningRoles": [
@@ -614,7 +702,7 @@
 				},
 				{
 					"itemId": "ar-ladder-02",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.06028,
 					"nonGoverningRoles": [
@@ -628,7 +716,7 @@
 				},
 				{
 					"itemId": "ar-ladder-03",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.07315,
 					"nonGoverningRoles": [
@@ -641,7 +729,7 @@
 				},
 				{
 					"itemId": "ar-ladder-04",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.07221,
 					"nonGoverningRoles": [
@@ -655,7 +743,7 @@
 				},
 				{
 					"itemId": "ar-ladder-05",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.07259,
 					"nonGoverningRoles": [
@@ -668,7 +756,7 @@
 				},
 				{
 					"itemId": "ar-ladder-06",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.08766,
 					"nonGoverningRoles": [
@@ -682,7 +770,7 @@
 				},
 				{
 					"itemId": "ar-ladder-07",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.08306,
 					"nonGoverningRoles": [
@@ -695,7 +783,7 @@
 				},
 				{
 					"itemId": "ar-ladder-08",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.08622,
 					"nonGoverningRoles": [
@@ -709,7 +797,7 @@
 				},
 				{
 					"itemId": "ar-ladder-09",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.10238,
 					"nonGoverningRoles": [
@@ -722,7 +810,7 @@
 				},
 				{
 					"itemId": "ar-ladder-10",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.10274,
 					"nonGoverningRoles": [
@@ -736,7 +824,7 @@
 				},
 				{
 					"itemId": "ar-ladder-11",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.10419,
 					"nonGoverningRoles": [
@@ -749,7 +837,7 @@
 				},
 				{
 					"itemId": "ar-ladder-12",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "surface",
 					"governingDistance": 0.12297,
 					"nonGoverningRoles": [
@@ -763,7 +851,7 @@
 				},
 				{
 					"itemId": "ar-ladder-13",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.12315,
 					"nonGoverningRoles": [
@@ -775,7 +863,7 @@
 				},
 				{
 					"itemId": "ar-ladder-14",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.12056,
 					"nonGoverningRoles": [
@@ -789,7 +877,7 @@
 				},
 				{
 					"itemId": "ar-ladder-15",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "background",
 					"governingDistance": 0.14857,
 					"nonGoverningRoles": [
@@ -802,7 +890,7 @@
 				},
 				{
 					"itemId": "ar-ladder-16",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.14752,
 					"nonGoverningRoles": [
@@ -816,7 +904,7 @@
 				},
 				{
 					"itemId": "ar-ladder-17",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "background",
 					"governingDistance": 0.14618,
 					"nonGoverningRoles": [
@@ -829,7 +917,7 @@
 				},
 				{
 					"itemId": "ar-ladder-18",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "surface",
 					"governingDistance": 0.1754,
 					"nonGoverningRoles": [
@@ -843,7 +931,7 @@
 				},
 				{
 					"itemId": "ar-ladder-19",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.17537,
 					"nonGoverningRoles": [
@@ -856,7 +944,7 @@
 				},
 				{
 					"itemId": "ar-ladder-20",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.17043,
 					"nonGoverningRoles": [
@@ -870,7 +958,7 @@
 				},
 				{
 					"itemId": "ar-ladder-21",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "background",
 					"governingDistance": 0.21075,
 					"nonGoverningRoles": [
@@ -883,7 +971,7 @@
 				},
 				{
 					"itemId": "ar-ladder-22",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "surface",
 					"governingDistance": 0.20939,
 					"nonGoverningRoles": [
@@ -895,7 +983,7 @@
 				},
 				{
 					"itemId": "ar-ladder-23",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.21162,
 					"nonGoverningRoles": [
@@ -907,7 +995,7 @@
 				},
 				{
 					"itemId": "ar-ladder-24",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "surface",
 					"governingDistance": 0.24185,
 					"nonGoverningRoles": [
@@ -919,7 +1007,7 @@
 				},
 				{
 					"itemId": "ar-ladder-25",
-					"answer": null,
+					"answer": "does_not_work",
 					"governingRole": "background",
 					"governingDistance": 0.25045,
 					"nonGoverningRoles": [
@@ -932,7 +1020,7 @@
 				},
 				{
 					"itemId": "ar-ladder-26",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "surface",
 					"governingDistance": 0.25083,
 					"nonGoverningRoles": [
@@ -946,7 +1034,7 @@
 				},
 				{
 					"itemId": "ar-ladder-27",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "background",
 					"governingDistance": 0.29685,
 					"nonGoverningRoles": [
@@ -959,7 +1047,7 @@
 				},
 				{
 					"itemId": "ar-ladder-28",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "surface",
 					"governingDistance": 0.30244,
 					"nonGoverningRoles": [
@@ -973,7 +1061,7 @@
 				},
 				{
 					"itemId": "ar-ladder-29",
-					"answer": null,
+					"answer": "works",
 					"governingRole": "background",
 					"governingDistance": 0.30233,
 					"nonGoverningRoles": [
@@ -992,11 +1080,11 @@
 			"otherBatch": 1150,
 			"machineAuthored": 0,
 			"retracted": 0,
-			"superseded": 0,
+			"superseded": 29,
 			"nonString": 0
 		},
 		"round1AnchorSource": {
-			"otherLabelSchema": 825,
+			"otherLabelSchema": 899,
 			"otherBatch": 286,
 			"unknownItem": 0,
 			"questionKeyMismatch": 0,
@@ -1006,10 +1094,694 @@
 		},
 		"unexpectedAnswers": [],
 		"truthItemsWithoutFixtureRow": [],
-		"answeredItems": 0,
+		"answeredItems": 45,
 		"totalItems": 45
 	},
 	"fundedBy": [
 		"research/v3/data/calibration/accent-real-round-1-preregistration.md"
-	]
+	],
+	"roundConditionsAddendum": {
+		"what": "ADDENDUM — round-conditions disclosure and order stability. NOT pre-registered; cannot change the verdict.",
+		"addedOn": "2026-08-04",
+		"addedBy": "research/v3/data/calibration/accent-real-round-1-order-stability.ts",
+		"roundConditions": {
+			"whatHappened": "Mid-round the reviewer asked which of three readings of the question to judge under. The orchestrator clarified in chat; the wording ON SCREEN was left unchanged, deliberately, to preserve anchor comparability (prereg §2).",
+			"clarificationAsGiven": [
+				"Judge ONLY whether the accent does its visual job against its field — the eye lands on the accented elements without hunting.",
+				"Aesthetic fit to the artwork is EXPLICITLY EXCLUDED — yes even if the colour looks wrong for the artwork.",
+				"The accent's relation to the FOREGROUND is EXCLUDED — that is a separate rule."
+			],
+			"caveat": "Some unknown prefix of the answers may predate the clarification. Answer ordering versus the question's timestamp is NOT available: timestamps mean nothing under the standing ruling, and this file reads none.",
+			"howStabilityWasCheckedInstead": "By fixture.serveOrder and by the revision structure of the warehouse records. No clock is read anywhere."
+		},
+		"revisionStructure": {
+			"what": "How many oracle-label revisions each item accumulated, by served position. Reported as a structural observation. NO CAUSAL CLAIM is made that the re-pass was caused by the clarification.",
+			"totalLabelRecords": 74,
+			"distinctItems": 45,
+			"itemsRevised": 23,
+			"itemsNotRevised": 22,
+			"revisedServedPositionRange": {
+				"min": 0,
+				"max": 23
+			},
+			"unrevisedServedPositionRange": {
+				"min": 19,
+				"max": 44
+			},
+			"itemsWhoseAnswerMoved": [
+				"ar-ladder-05",
+				"ar-ladder-06",
+				"ar-ladder-12",
+				"ar-ladder-21",
+				"ar-ladder-09",
+				"ar-ladder-22",
+				"ar-ladder-15",
+				"ar-sunshine",
+				"ar-ladder-27",
+				"ar-ladder-29",
+				"ar-repeat-00"
+			],
+			"byServedPosition": [
+				{
+					"servedAt": 0,
+					"itemId": "ar-control-identical-1",
+					"role": "control-identical",
+					"revisions": 3,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 1,
+					"itemId": "ar-ladder-05",
+					"role": "ladder",
+					"revisions": 3,
+					"firstAnswer": "works",
+					"finalAnswer": "does_not_work",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 2,
+					"itemId": "ar-anchor-04-af-ladder-r06-h0-mid",
+					"role": "anchor",
+					"revisions": 3,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 3,
+					"itemId": "ar-anchor-02-af-ladder-r03-h1-dark",
+					"role": "anchor",
+					"revisions": 3,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 4,
+					"itemId": "ar-ladder-06",
+					"role": "ladder",
+					"revisions": 3,
+					"firstAnswer": "works",
+					"finalAnswer": "does_not_work",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 5,
+					"itemId": "ar-ladder-12",
+					"role": "ladder",
+					"revisions": 3,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 6,
+					"itemId": "ar-ladder-07",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 7,
+					"itemId": "ar-ladder-03",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 8,
+					"itemId": "ar-ladder-25",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 9,
+					"itemId": "ar-ladder-21",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 10,
+					"itemId": "ar-ladder-09",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "works",
+					"finalAnswer": "does_not_work",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 11,
+					"itemId": "ar-ladder-22",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 12,
+					"itemId": "ar-ladder-19",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 13,
+					"itemId": "ar-ladder-01",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 14,
+					"itemId": "ar-anchor-03-af-anchor-p2-ladder-08",
+					"role": "anchor",
+					"revisions": 2,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 15,
+					"itemId": "ar-ladder-10",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 16,
+					"itemId": "ar-ladder-15",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 17,
+					"itemId": "ar-sunshine",
+					"role": "sunshine",
+					"revisions": 2,
+					"firstAnswer": "works",
+					"finalAnswer": "does_not_work",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 18,
+					"itemId": "ar-ladder-27",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 19,
+					"itemId": "ar-ladder-17",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 20,
+					"itemId": "ar-anchor-00-af-ladder-r00-h1-mid",
+					"role": "anchor",
+					"revisions": 2,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 21,
+					"itemId": "ar-ladder-29",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 22,
+					"itemId": "ar-repeat-00",
+					"role": "repeat",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "works",
+					"answerMoved": true
+				},
+				{
+					"servedAt": 23,
+					"itemId": "ar-ladder-24",
+					"role": "ladder",
+					"revisions": 2,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 24,
+					"itemId": "ar-ladder-02",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 25,
+					"itemId": "ar-ladder-04",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 26,
+					"itemId": "ar-ladder-08",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 27,
+					"itemId": "ar-repeat-03",
+					"role": "repeat",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 28,
+					"itemId": "ar-ladder-28",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 29,
+					"itemId": "ar-ladder-13",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 30,
+					"itemId": "ar-control-identical-0",
+					"role": "control-identical",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 31,
+					"itemId": "ar-anchor-01-af-ladder-r02-h1-mid",
+					"role": "anchor",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 32,
+					"itemId": "ar-ladder-26",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 33,
+					"itemId": "ar-control-obvious-1",
+					"role": "control-obvious",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 34,
+					"itemId": "ar-ladder-14",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 35,
+					"itemId": "ar-anchor-05-af-ladder-r08-h1-dark",
+					"role": "anchor",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 36,
+					"itemId": "ar-ladder-00",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 37,
+					"itemId": "ar-control-obvious-0",
+					"role": "control-obvious",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 38,
+					"itemId": "ar-ladder-23",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 39,
+					"itemId": "ar-ladder-16",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 40,
+					"itemId": "ar-repeat-01",
+					"role": "repeat",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 41,
+					"itemId": "ar-ladder-20",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 42,
+					"itemId": "ar-repeat-02",
+					"role": "repeat",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 43,
+					"itemId": "ar-ladder-18",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "works",
+					"finalAnswer": "works",
+					"answerMoved": false
+				},
+				{
+					"servedAt": 44,
+					"itemId": "ar-ladder-11",
+					"role": "ladder",
+					"revisions": 1,
+					"firstAnswer": "does_not_work",
+					"finalAnswer": "does_not_work",
+					"answerMoved": false
+				}
+			]
+		},
+		"orderStabilityFits": {
+			"what": "fitLogistic UNCHANGED, direction increasing, on the governing-pair achieved distance — the same estimator as the primary fit.",
+			"cannotChangeTheVerdict": true,
+			"fits": [
+				{
+					"cut": "pooledFinal (reproduction check of the primary fit)",
+					"n": 30,
+					"yesCount": 10,
+					"threshold": 0.1863,
+					"confidenceInterval": {
+						"low": 0.14052,
+						"high": 0.247
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				{
+					"cut": "firstHalfServed (served positions 1..19)",
+					"n": 15,
+					"yesCount": 6,
+					"threshold": 0.15213,
+					"confidenceInterval": {
+						"low": 0.1027,
+						"high": 0.22535
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				{
+					"cut": "secondHalfServed (served positions 21..44)",
+					"n": 15,
+					"yesCount": 4,
+					"threshold": 0.221,
+					"confidenceInterval": {
+						"low": 0.16791,
+						"high": 0.29089
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				{
+					"cut": "revisedOnly (ladder items with more than one recorded revision)",
+					"n": 16,
+					"yesCount": 6,
+					"threshold": 0.18236,
+					"confidenceInterval": {
+						"low": 0.11654,
+						"high": 0.28535
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				{
+					"cut": "unrevisedOnly (ladder items with exactly one recorded revision)",
+					"n": 14,
+					"yesCount": 4,
+					"threshold": 0.18477,
+					"confidenceInterval": {
+						"low": 0.13435,
+						"high": 0.2541
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				},
+				{
+					"cut": "allFirstRevision (COUNTERFACTUAL: every item's first recorded answer, before any re-pass)",
+					"n": 30,
+					"yesCount": 7,
+					"threshold": 4.29594,
+					"confidenceInterval": {
+						"low": 0,
+						"high": 76182429.27507
+					},
+					"separated": false,
+					"separationInterval": null,
+					"converged": true,
+					"note": null
+				}
+			]
+		}
+	},
+	"twoTierConsequence": {
+		"what": "Consequence for the reviewer-mandated two-tier accent semantics (2026-08-04). Prose: preregistration §8.8.",
+		"tier1detection": {
+			"question": "can you see the difference",
+			"constant": "ACCENT_VISIBILITY_COLOR_DISTANCE (aliased FOREGROUND_ACCENT_SEPARATION_DISTANCE)",
+			"value": 0.07444,
+			"status": "[REVIEWED] as a number; retired from the accent escape, on loan to foreground-accent (loose end B31)"
+		},
+		"tier2functional": {
+			"question": "does this work as an accent at a glance",
+			"constant": "ACCENT_FUNCTIONAL_DISTANCE",
+			"value": 0.14591,
+			"status": "[UNCALIBRATED] — unchanged by this round",
+			"bindsAt": "invariant 4, the accent's one escape from its APCA epsilon floor; escapeDenied = pair.distance < ACCENT_FUNCTIONAL_DISTANCE, evaluated per pair"
+		},
+		"criterionGap": {
+			"what": "functionalThreshold - 0.07444, the quantity accent-functional-1 pre-registered as the two-tier semantics' own existential test",
+			"syntheticRound": {
+				"threshold": 0.04554,
+				"gap": -0.0289,
+				"gapIsPositive": false,
+				"clauseFired": true
+			},
+			"realRound": {
+				"threshold": 0.1863,
+				"gap": 0.11186,
+				"gapIsPositive": true,
+				"excludes07444AtNinetyFive": true,
+				"ratio": 2.5027
+			},
+			"reading": "accent-functional-1 fired the clause that puts the two-tier semantics back on the table. On real stimuli the gap is positive and the 95% interval [0.14052, 0.24700] excludes 0.07444 outright, so this round takes it back off. THE SCHEME IS SUPPORTED EVEN THOUGH THE NUMBER IS REFUSED."
+		},
+		"whatTheRefusalCosts": {
+			"governingRoleAgrees": true,
+			"governingRoleNote": "surface 0.17856 and background 0.19426 both inside the pooled interval — tier 2 does NOT need to split by field role, and §5's surface-role rival is answered against.",
+			"openQuestionChangedShape": "from 'what is the number' to 'is it a number': band:mid and hue-third:0 want ~0.134, hue-third:2 wants ~0.264. If replicated, tier 2 is a function of the pair rather than a scalar, and escapeDenied changes shape rather than digits. Ten items per cell cannot settle it."
+		},
+		"adoptionCostIfEverAdopted": {
+			"note": "NOT a proposal. Recorded because a two-line constants diff is not what adoption costs here.",
+			"breaksAtAnyValueAtOrAbove": 0.15362,
+			"items": [
+				"tests/contract-invariants.test.ts:701 asserts colorDistance(foreground, background) > ACCENT_FUNCTIONAL_DISTANCE * 2; measured 0.30724 vs 0.1863*2 = 0.3726 — hard failure",
+				"tier-2 straddle fixtures accentFunctionalJustUnder/OverDistance (0.14511 / 0.14672) both fall below 0.1863, collapsing the bracket at tests/contract-invariants.test.ts:1066-1090; re-pinning needs the 16.7M-colour search",
+				"every '1.96x' claim becomes 2.50x across constants.ts, invariants.ts, PHASE_0_DECISIONS.md, PHASE_0_LOOSE_ENDS.md, endorsement-recheck.ts, fixtures.ts",
+				"the band of condemned reviewer-endorsed palettes widens monotonically by an amount this round did not measure"
+			],
+			"ceilingFlag": "this round's refusal 2 uses 0.30244; round 1's used 0.24181 (the top rung the reviewer endorsed and never retracted). The upper end of this round's CI, 0.24700, sits just above round 1's ceiling. Nothing tripped, but the two ceilings should be reconciled."
+		}
+	},
+	"proposedDecisionRecord": {
+		"status": "PROPOSED — not written into PHASE_0_DECISIONS.md. Accepting, amending or refusing it is the reviewer's act.",
+		"id": "d-2026-08-04-accent-real-1-refused-its-fit-on-stratum-dependence",
+		"prose": "research/v3/data/calibration/accent-real-round-1-preregistration.md §8.10",
+		"verdict": "stratum-dependent — refused under the round's own pre-registered §6.4 condition 3",
+		"constantUnchanged": {
+			"name": "ACCENT_FUNCTIONAL_DISTANCE",
+			"staysAt": 0.14591,
+			"staysTagged": "[UNCALIBRATED]",
+			"refusedValue": 0.1863,
+			"diffProposedForAdoption": false,
+			"note": "§8.9 records the diff the refused value would have taken. It must not be applied."
+		},
+		"fundedBy": {
+			"oracleLabels": [
+				"o-mseh9upy-84dbd31f",
+				"o-mseh9yr5-4a69c200",
+				"o-mseha3nt-a3cd1eca",
+				"o-msehayeo-7f6c1da3",
+				"o-msehbq65-1c5b120a",
+				"o-msehbw1g-f9243107",
+				"o-msehbxc2-66fe343e",
+				"o-msehc2lq-2367d903",
+				"o-msehc4z0-b6223518",
+				"o-msehc7bi-ef96da89",
+				"o-msehcdwt-743f3c8e",
+				"o-msehcf9g-a4a6b5de",
+				"o-msehcja1-21730264",
+				"o-msehcq2f-b604b9ad",
+				"o-msehcrap-f8c3e633",
+				"o-msehcu1q-68680f76",
+				"o-msehcv7t-561358a5",
+				"o-msehcws6-7d03b217",
+				"o-msehcyz5-f3e6cc47",
+				"o-msehddbt-4ecf109f",
+				"o-msehdexg-1fd5a3f9",
+				"o-msehdfuq-f2a616ee",
+				"o-msehdhb9-047c24c8",
+				"o-msehdymo-1a5900c5",
+				"o-msehe2sh-d7902376",
+				"o-msehe3ot-3b28719c",
+				"o-msehe4im-12aae4fb",
+				"o-msehe5me-e91902a1",
+				"o-msehe7fm-aedf43fb",
+				"o-msehiuql-9fde267e",
+				"o-msehivu4-bcb055c3",
+				"o-msehiwsp-d6a9adbc",
+				"o-msehixp3-b763f541",
+				"o-msehj0b8-bb061c61",
+				"o-msehj11j-f2518423",
+				"o-msehj1tr-b1733e97",
+				"o-msehj9fp-10677fa2",
+				"o-msehjj9h-bc9335a3",
+				"o-msehjlge-553bf98f",
+				"o-msehjmae-a81fddc1",
+				"o-msehjn1c-a37bf1c0",
+				"o-msehjoqd-8d2257ca",
+				"o-msehjpje-3271e0de",
+				"o-msehjqai-c1e570de",
+				"o-msehjrkl-7ed64311",
+				"o-msehjxgi-d32b3a47",
+				"o-msehk1vs-f7d95b61",
+				"o-msehk2px-1e42d9db",
+				"o-msehk6ml-a032ca42",
+				"o-msehk7fd-95256383",
+				"o-msehk89x-ba3e65a0",
+				"o-msehk9ax-bc4e2622",
+				"o-msehkafc-01f52e24",
+				"o-msehkb70-62e58b74",
+				"o-msehkbyj-45e08393",
+				"o-msehkgrn-a588bbf6",
+				"o-msehkihg-77424335",
+				"o-msehkk1c-fe8d3ed7",
+				"o-msehkkq4-b0ebdfb2",
+				"o-msehkll1-e953efd7",
+				"o-msehkmrc-d53ca734",
+				"o-msehknln-744c55f5",
+				"o-msehkoi0-86b5e571",
+				"o-msehkpah-ef137ab5",
+				"o-msehkq7m-bee1c8cb",
+				"o-msehkrbf-1ab324d9",
+				"o-msehksbl-a8d50fae",
+				"o-msehktrb-9da60b03",
+				"o-msehkzsf-2abb8fc1",
+				"o-msehl0vm-59275c57",
+				"o-msehl1z4-f0d9176b",
+				"o-msehl2lu-f4657017",
+				"o-msehl6al-4209bfe5",
+				"o-msehl7t2-a50df329"
+			],
+			"oracleLabelCount": 74,
+			"labelSchemaVersion": "accent-real.v1",
+			"batchComplete": "bc-msehle3f-5b16136d"
+		}
+	}
 }
