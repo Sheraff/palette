@@ -7,8 +7,9 @@ vault-unlocked signal. Signature verified `G`.
 If signing blocks again: continue working uncommitted, record each intended commit here (pathspec +
 message), flush on the next unlock signal.
 
-## OPEN — pass-4 state (signing failed again 2026-08-04 ~17:40, "1Password: failed to fill whole
-buffer", two attempts; different error from the earlier lock — possibly re-locked or transient)
+## CLOSED — pass-4 state (signing failed twice ~17:40 with "1Password: failed to fill whole
+buffer"; a later retry succeeded — transient, not a re-lock. Flushed as signed commit `3e2d826`,
+including the verifier artifacts and round-1 design)
 
 Pathspec: `research/v3/prototypes/p5-fieldfit`
 
