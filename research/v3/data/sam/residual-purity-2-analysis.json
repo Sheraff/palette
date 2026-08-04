@@ -80,7 +80,7 @@
 		"weightsNote": "v5 pools, which differ from v4's (77/10/25/2/28): the all-nouns elicitation prompts almost every cover, so static-only-clean collapsed 28->7 and class-only 2->1 while noun-fired grew 77->102 (\u00a712.8). Same weighting RULE, different population shape."
 	},
 	"escapeRule": {
-		"source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md \u00a712.9, built at commit b2a6069",
+		"source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md \u00a712.9, built at commit 3926344",
 		"answer": "cant_tell",
 		"label": "can't tell what is field here",
 		"scoring": "cant_tell is NOT counted as pure, NOT counted as not-pure, and NOT dropped. It leaves both the numerator and the denominator of the pure-field rate. Its share is reported per stratum as a first-class result \u2014 figure/ground ambiguity is a property of the covers, not noise.",

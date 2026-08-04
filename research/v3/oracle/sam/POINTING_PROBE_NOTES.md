@@ -1218,7 +1218,7 @@ orphaned:
 | `oracle/sam/build-pointing-typical-fixture.ts` | complete and correct — step 3, the fixture builder |
 
 `POINTING_PROBE_NOTES.md` was **byte-identical to HEAD** before this section, so nothing it had
-written was lost. The pre-registration and the probe were already safe in `bafcc53`.
+written was lost. The pre-registration and the probe were already safe in `e4e1553`.
 
 **Neither builder was half-written.** Both were read end to end before being run and **neither was
 edited** — no fix was needed and none was invented. The two `.get()` calls in
@@ -1234,7 +1234,7 @@ file can evidence:
 | clause | prereg | on disk | ✓ |
 |---|---|---|---|
 | batch id | `pointing-typical-1` | same | ✓ |
-| run pinned to the prereg commit | after `bafcc53` | `git_head` = `bafcc53` | ✓ |
+| run pinned to the prereg commit | after `e4e1553` | `git_head` = `e4e1553` | ✓ |
 | draw seed | `random.Random(20260804)` | `seed` 20260804, method string verbatim | ✓ |
 | frame | eval-142 `included` | `frame_size` 142 | ✓ |
 | exclusion | all 15 `pointing_covers.COVERS` by id | 15 excluded, **all 15 hit in frame**, `eligible_size` 127 | ✓ |
@@ -1339,5 +1339,5 @@ Unchanged by the recovery, and worth restating where the numbers will land next 
   needs the persisted candidates to be *analysed*; this round only makes them exist. That analysis
   is CPU work and is not done here.
 - **The anchor from §13 stands unmoved: "it wasn't amazing."** Nothing in the recovery raises it,
-  and the bar in `POINTING_TYPICAL_PREREG.md` §6 was fixed in `bafcc53` before the run produced a
+  and the bar in `POINTING_TYPICAL_PREREG.md` §6 was fixed in `e4e1553` before the run produced a
   single point.

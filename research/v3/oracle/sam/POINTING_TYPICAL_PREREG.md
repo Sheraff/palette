@@ -1,7 +1,7 @@
 # Typical-strata pointing probe — pre-registration
 
 **Written before any inference was run.** 2026-08-04. **For:** the reviewer and the orchestrator.
-**Implements:** `POINTING_PROBE_NOTES.md` §13.8 as refined by §14.7 (commits `2d5322c`, `293e6f1`).
+**Implements:** `POINTING_PROBE_NOTES.md` §13.8 as refined by §14.7 (commits `2d5322c`, `b7ecbe6`).
 **GPU:** single-owner slot held. `pgrep` confirmed no MLX process running before this was written.
 
 Everything below — the sampling frame, the draw, the point protocol, the three policies, the

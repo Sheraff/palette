@@ -135,7 +135,7 @@ def main() -> int:
         "tileOrder": order,
         "preRegisteredBar": {
             "source": "research/v3/oracle/sam/POINTING_TYPICAL_PREREG.md §6",
-            "fixedBefore": "the GPU run — committed in bafcc53 before any inference",
+            "fixedBefore": "the GPU run — committed in e4e1553 before any inference",
             "B1_dotRightMin": 12,
             "B2_dotRightAndWashRightMinPerPolicy": 8,
             "of": 16,

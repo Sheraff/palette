@@ -38,7 +38,7 @@ measurement its revival condition names.
 | section | items | open | closed |
 |---|---|---|---|
 | **A — sharp** (something downstream is already leaning on them) | A1–A18 = 18 | 9 | 9 — A1, A5, A7, A8, A9, A13, A14, A15, A18 |
-| **B — standing** (parked with a clear trigger) | B1–B35 = 35 | 29 | 6 — B4, B8, B16, B18, B21, B27 |
+| **B — standing** (parked with a clear trigger) | B1–B35 = 35 | 28 | 7 — B4, B8, B16, B18, B21, B27, B34 |
 | **C — latent** (harmless today, harmful under one specific move) | C1–C13 = 13 | 12 | 1 — C11 (resolved by ruling, never a defect) |
 | **L — review-server and round hygiene** (added 2026-08-03) | L-a–L-i = 9 | 8 | 1 — L-b |
 
@@ -53,6 +53,9 @@ ran, the measured answer is in), **A14** (SAM's point path is called and returne
 100), **A15** (the coordinate convention is feature-grid, settled in one CPU run, 8/8 against 0/8 and
 0/8), **A18** (the premise selftest's inventory guard is green again), **B27** (the pointing
 specialist was tried end to end, and its pre-registered bar failed).
+**Counts moved once more on 2026-08-04, in the re-sign pass: 75 items, 57 open, 18 closed.** Exactly
+one row moved — **B34**, closed by re-signing the unsigned run. Every commit on the branch now
+carries a `gpgsig` header. Nothing else in this table changed.
 Added: **A16** (the functional-visibility round a live `[UNCALIBRATED]` constant already
 forward-references — the citation was dangling until this row existed), **A17** (the source-support
 invariant refuses 96.9% of the reviewer's own endorsed palettes, measured), **A18** (opened and
@@ -759,7 +762,7 @@ audit, not by the invariant's own workstream.*
 
 ### A18. ~~`oracle/premise/selftest.py` has one known failure and its one-line fix is owed~~ CLOSED 2026-08-04
 **Resolution: the parked staged set landed, and the fix landed with it, within the hour** — commit
-`c1f6b11`, *"premise selftest knows the three new prompt files"*, five lines. Verified rather than
+`e6e78f1`, *"premise selftest knows the three new prompt files"*, five lines. Verified rather than
 assumed: `oracle/premise/selftest.py` now runs to **`all checks passed`** in its own venv
 (`oracle/premise/.venv`), and the inventory guard is green. *A trap for whoever checks this next: run
 it under the venv. Under the system interpreter it fails on `llguidance is importable`, which is a
@@ -1268,7 +1271,7 @@ reviewer's and is unmade; this closes off one arm's *evidence*, not the choice. 
 reviewer must decide alongside it, per the verdict: whether a **corpus-level** purity number is
 wanted at all — eval-142 cannot give one, and the prescribed re-run is on `coverage-set-1` — and
 whether the paired, cheaper re-run on eval-142 (`residual-purity-2`) is worth having first. **That
-round is now BUILT and still NOT PUSHED** (`b2a6069`; fixture `data/sam/residual-purity-2.json`, 24
+round is now BUILT and still NOT PUSHED** (`3926344`; fixture `data/sam/residual-purity-2.json`, 24
 sheets × 2 panels = 48 items, server support and 57/57 tests) — the warehouse holds no
 `residual-purity-2` batch, and the bar is **held** at §11.11's, not moved, because the last round is
 precisely the evidence that a proxy improvement is not evidence about purity. **Pushing it is the
@@ -1356,7 +1359,7 @@ must persist every candidate.
 from the general corpus with the misfit set excluded by id — because this round's sample was the
 misfit tail and **nothing in it generalizes**.*
 **Update, hours later on 2026-08-04:** that successor is now **pre-registered and part-built**
-(`bafcc53`; `oracle/sam/POINTING_TYPICAL_PREREG.md`, `oracle/sam/pointing_typical_probe.py`), with
+(`e4e1553`; `oracle/sam/POINTING_TYPICAL_PREREG.md`, `oracle/sam/pointing_typical_probe.py`), with
 its bar fixed before any number exists — **dot-right ≥ 12/16**, dot-right-and-wash-right ≥ 8/16 per
 policy, the conjunction, and a **separate and stricter** bar for moving `DEFAULT_SELECTION`. It
 carries this row's three carry-forwards explicitly: it is answered **strictly**, so the comparison is
@@ -1571,32 +1574,60 @@ cost.**
 worth much less afterwards, and three of them are worth nothing.* **Blast radius:** the reports
 themselves are read-only; what is at stake is the instruments Phase 1 will be judged through.
 
-### B34. An unsigned run of commits, because 1Password stayed locked — and the count grew while this row was being written
-*Added 2026-08-04.* `commit.gpgsign` is `true` with an SSH signing key, and the working convention is
-that commits are signed. **Six consecutive commits carry no signature**, because the 1Password SSH
-agent was locked and unreachable throughout — `ssh-add -l` reports *"The agent has no identities"*.
-In order: **`293e6f1`** (pointing wash diagnosis), **`fd586dc`** (v5 all-nouns round), **`bafcc53`**
-(the parked staged set + pointing typical-strata pre-registration), **`b2a6069`** (`residual-purity-2`
-built), **`c1f6b11`** (premise selftest fix) and this pass's own ledger commit. The last signed commit
-is **`7d6f570`** (toolbox gap scan). **The row was drafted naming three and had to be corrected to
-six before it was committed**, which is the honest measure of how fast this accumulates: an unlocked
-keychain is not a state anyone notices returning to.
-Verified by reading each commit object for a `gpgsig` header rather than by `git log %G?`,
-which reports `N` for *every* commit on this machine because `gpg.ssh.allowedSignersFile` is not
-configured — **a check that returns the same answer for a signed and an unsigned commit is not a
-check**, and that is the second reason this row exists.
-**Why it is standing and not sharp.** Nothing depends on these signatures today; the repo is local and
-single-author. What it protects is the ability to say later *which* commits were made by an agent run
-and which by a person, which is exactly the distinction an unsigned gap erases.
-**The fix is mechanical and must be done deliberately:** unlock 1Password, then
-`git rebase --exec 'git commit --amend --no-edit -S' 7d6f570` over the run, or amend each by hash.
-**It rewrites history**, so it is not an agent's to run unprompted, and it should be done before
-anything is pushed or branched from. **Every hour it waits, the rebase gets longer** — the range is
-defined by the last signed commit and nothing stops the run growing.
-*Owner: **reviewer** (it rewrites history) + orchestrator (running the amend). **Revives when:**
-1Password is unlocked — or immediately, if anything is pushed, since amending after a push is a
-different and worse problem.* **A cheap rider worth doing at the same time:** configure
-`gpg.ssh.allowedSignersFile` so `git log --show-signature` stops reporting every commit as unsigned.
+### B34. ~~An unsigned run of commits, because 1Password stayed locked~~ CLOSED 2026-08-04 by a re-sign rebase
+*Added 2026-08-04. **Closed 2026-08-04**, the same day, by the mechanical fix this row specified.*
+Six consecutive commits carried no signature because the 1Password SSH agent was locked and
+unreachable throughout — `ssh-add -l` reported *"The agent has no identities"*. With the vault
+unlocked and on the reviewer's ruling — *"yes fully signed history please"* — the run was re-signed
+with `git rebase --autostash --exec 'git commit --amend --no-edit -S' 7d6f570`.
+
+**A rebase replays the whole tail above its base, so eight commits changed hash — the six unsigned
+ones and the two already-signed commits sitting on top of them.** Old → new, oldest first:
+
+| # | old | new | was signed? | subject |
+|---|---|---|---|---|
+| 1 | `293e6f1` | `b7ecbe6` | no | pointing wash diagnosed on CPU |
+| 2 | `fd586dc` | `f31af74` | no | v5 list-ALL-things elicitation + SAM re-run |
+| 3 | `bafcc53` | `e4e1553` | no | pointing typical-strata pre-registration + GPU probe |
+| 4 | `b2a6069` | `3926344` | no | `residual-purity-2` built |
+| 5 | `c1f6b11` | `e6e78f1` | no | premise selftest knows the three new prompt files |
+| 6 | `4ced023` | `7e1627c` | no | ledger pass 3 — this row's own commit |
+| 7 | `f194cc8` | `842c939` | **yes** | `residual-purity-2` NOT-ADOPT |
+| 8 | `84e4975` | `0d73c7f` | **yes** | pointing typical-strata round recovered and built |
+
+Rows 7 and 8 are in the table only because a rebase rewrites them too. **A re-sign is never confined
+to the unsigned commits; it is confined to the tail above the base** — which is the one fact that
+makes this operation bigger than it looks. The base `7d6f570` (toolbox gap scan) is untouched.
+**This row's earlier draft named seven commits as unsigned, including `f194cc8`. It was six**;
+`f194cc8` carried a signature and was replayed, not repaired.
+
+**Verified three ways.** Every commit in the replayed range carries a `gpgsig` header, read from the
+commit object rather than from `git log %G?` (see the rider below). The new HEAD's tree is
+`d390f109…` — **byte-identical to the pre-rebase HEAD's tree**, so the rewrite moved no content —
+and `git diff` between the pre-surgery ref and the new HEAD is empty. The pre-surgery HEAD is kept
+at **`refs/backup/pre-resign`** = `84e4975`, and should be deleted only once someone is satisfied.
+
+**Nothing published was touched and no force-push is owed.** The branch does have an upstream —
+`origin/research/palette-0.9-checkpoint`, also open as PR #5 — but it sits at `4d99a9c`, *below* the
+rebase base, and none of the eight rewritten commits had ever been pushed. `4d99a9c` remains an
+ancestor of the new HEAD, so the next push is an ordinary fast-forward. This row's own warning —
+*"it should be done before anything is pushed or branched from"* — was satisfied by the timing of
+the push, not by anyone's design.
+
+**The citation sweep this forced.** Rewriting hashes dangles every record citing them: **21 citations
+across 10 files** were repointed in the same pass. **One file was deliberately left alone.**
+`data/warehouse/warehouse.jsonl` was being appended to by a live labelling session throughout the
+surgery — it grew by 15 rows while the sweep ran — and its *committed* revision contains no old-hash
+citation at all, so the committed record is already correct. The dangling references are in
+uncommitted rows, and rewriting a file under an active append is how someone's labels get lost.
+*Owed: re-run the sweep across the warehouse once the session is idle.*
+
+**The rider is still open, and it is the reason this row could not check itself.**
+`gpg.ssh.allowedSignersFile` is still unconfigured, so `git log --show-signature` and `%G?` report
+`N` for signed and unsigned commits alike — **a check that returns the same answer for both is not a
+check**. Every signature claim above had to be made by reading commit objects for a `gpgsig` header.
+*Owner: orchestrator (one line of config). **Revives when:** anyone verifies a signature on this
+machine and believes the answer.*
 
 ### B35. Invariant 3 still judges contrast pairs by distance, and the contract workstream flagged it rather than deciding it
 *Added 2026-08-04, from the contract workstream's own note in `src/contract/invariants.ts`.* The

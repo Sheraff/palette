@@ -23,7 +23,7 @@
  *    for, so the plural is explained in the framing instead.
  *
  * **The bar is not in this file's gift.** `POINTING_TYPICAL_PREREG.md` §6 fixed it, and it was
- * committed in `bafcc53` before the GPU run produced a single point. It is carried in
+ * committed in `e4e1553` before the GPU run produced a single point. It is carried in
  * `selection.rule` so the fixture records what it was designed to decide.
  */
 
@@ -299,7 +299,7 @@ async function main(): Promise<void> {
 				fundedBy: [
 					"POINTING_PROBE_NOTES.md §13.8 — pointing-ground-1 measured the misfit tail and only the misfit tail; whether the wash failure generalises to ordinary covers is undecided by construction",
 					"POINTING_PROBE_NOTES.md §14.7 — three selection policies on identical points, so the reviewer's keypress separates the policy from the pointer",
-					"POINTING_TYPICAL_PREREG.md §6 — the bar (dot-right >= 12/16 AND, for one policy, dot-right-and-wash-right >= 8/16) was committed in bafcc53 before the GPU run made a single point",
+					"POINTING_TYPICAL_PREREG.md §6 — the bar (dot-right >= 12/16 AND, for one policy, dot-right-and-wash-right >= 8/16) was committed in e4e1553 before the GPU run made a single point",
 				],
 			}),
 		})

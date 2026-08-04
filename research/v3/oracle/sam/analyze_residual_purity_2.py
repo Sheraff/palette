@@ -532,7 +532,7 @@ def main() -> int:
         },
 
         "escapeRule": {
-            "source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md §12.9, built at commit b2a6069",
+            "source": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md §12.9, built at commit 3926344",
             "answer": ESCAPE,
             "label": "can't tell what is field here",
             "scoring": (
