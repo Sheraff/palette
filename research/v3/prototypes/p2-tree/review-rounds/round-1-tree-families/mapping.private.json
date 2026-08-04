@@ -1,0 +1,94 @@
+{
+	"_note": "NOT SERVABLE. Decodes the blinded sides of round-1-tree-families after release.",
+	"_roundId": "p2-round-1-tree-families",
+	"_variants": {
+		"p2-tree-cycle1-v1": {
+			"candidateId": "p2-alpha",
+			"family": "quasi-flat-zone (alpha-tree)",
+			"algorithmVersion": "p2-alpha-0.1.0",
+			"runFile": "p2-alpha-demo-20-20260804T171812541Z.jsonl",
+			"codeVersion": "a6b0a962fa8baeee4a85c334d509b57c380679744cf7eb644dadc9b29dd77eec"
+		},
+		"p2-tree-cycle1-v2": {
+			"candidateId": "p2-tos",
+			"family": "tree of shapes",
+			"algorithmVersion": "p2-tos-0.1.0-cycle-1",
+			"runFile": "p2-tos-demo-20-20260804T171511526Z.jsonl",
+			"codeVersion": "a51c1309ca0d2b7a059033450c4e4307f7f365a81f1a59e78713dfaecf1d5dff"
+		}
+	},
+	"_itemClass": {
+		"00007e976f2fb1819d1ec7e0cc2869f39d397ba3": {
+			"imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+			"verdict": "partitioned",
+			"coverage": 0.6974666666666667
+		},
+		"ab67616d00001e02000000d8bc25fbca2eff2a4a": {
+			"imagePath": "00/ab67616d00001e02000000d8bc25fbca2eff2a4a.jpg",
+			"verdict": "flat",
+			"coverage": 0.9346777777777778
+		},
+		"ab67616d00001e02000001335fe604d859a69094": {
+			"imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+			"verdict": "laminar",
+			"coverage": 0.5944888888888888
+		},
+		"ab67616d00001e0200000bbc3367a621256ce593": {
+			"imagePath": "00/ab67616d00001e0200000bbc3367a621256ce593.jpg",
+			"verdict": "unreadable",
+			"coverage": 0.28705555555555556
+		},
+		"ab67616d00001e0200000f92552b0935b967964d": {
+			"imagePath": "00/ab67616d00001e0200000f92552b0935b967964d.jpg",
+			"verdict": "textured",
+			"coverage": 0.6536333333333333
+		},
+		"ab67616d00001e02000013cdd885595a94002abc": {
+			"imagePath": "00/ab67616d00001e02000013cdd885595a94002abc.jpg",
+			"verdict": "laminar",
+			"coverage": 0.5843222222222222
+		},
+		"ab67616d00001e0200001448e1c8dadd225466f4": {
+			"imagePath": "00/ab67616d00001e0200001448e1c8dadd225466f4.jpg",
+			"verdict": "laminar",
+			"coverage": 0.7136111111111111
+		},
+		"ab67616d00001e02000018e9b0ec8fc5ac790164": {
+			"imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+			"verdict": "laminar",
+			"coverage": 0.9191777777777778
+		}
+	},
+	"00007e976f2fb1819d1ec7e0cc2869f39d397ba3": {
+		"A": "p2-alpha",
+		"B": "p2-tos"
+	},
+	"ab67616d00001e02000000d8bc25fbca2eff2a4a": {
+		"A": "p2-tos",
+		"B": "p2-alpha"
+	},
+	"ab67616d00001e02000001335fe604d859a69094": {
+		"A": "p2-alpha",
+		"B": "p2-tos"
+	},
+	"ab67616d00001e0200000bbc3367a621256ce593": {
+		"A": "p2-tos",
+		"B": "p2-alpha"
+	},
+	"ab67616d00001e0200000f92552b0935b967964d": {
+		"A": "p2-alpha",
+		"B": "p2-tos"
+	},
+	"ab67616d00001e02000013cdd885595a94002abc": {
+		"A": "p2-tos",
+		"B": "p2-alpha"
+	},
+	"ab67616d00001e0200001448e1c8dadd225466f4": {
+		"A": "p2-alpha",
+		"B": "p2-tos"
+	},
+	"ab67616d00001e02000018e9b0ec8fc5ac790164": {
+		"A": "p2-tos",
+		"B": "p2-alpha"
+	}
+}
