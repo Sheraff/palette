@@ -3384,6 +3384,80 @@
     "Retiring an endorsement removes evidence FOR a palette; it does not create evidence against it. Neither palette becomes known-bad, and neither belongs in the known-worse gate."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-robustness-standing-samples",
+   "ts": "2026-08-04T10:30:00Z",
+   "kind": "instrument-freeze",
+   "scope": "The two standing samples the robustness harness runs on, and their seeds. Binds any run of research/v3/src/robustness/check.ts and any number quoted from it. It does NOT bind the adjudication corpus, the coverage set, or the holdout, and it does NOT decide what counts as a good palette - this instrument is blind to quality.",
+   "decision": "THE ROBUSTNESS HARNESS RUNS ON TWO FROZEN SAMPLES. (1) pair-set-1.json: 200 rendition pairs, seed 0x57ab1e, drawn from the near-duplicate census at cosine >= 0.95 on the canonical arm dinov2-vitl14, held-out and quarantined artworks excluded by joining ids against holdout.json v2.0.0 (NEVER via the census `side` field, which was computed against holdout 1.0.0 and is superseded for 23.05% of music-artworks endpoints). (2) perturbation-set-1.json: 100 covers, seed 0xc0ffee, allocated 50 reviewed / 50 unseen by construction, run against four arms - jpeg-q92 (the v2-3 anchor setting, quality 92 chroma 4:4:4), jpeg-q85, jpeg-q75, and dither-lsb1 (a +-1 LSB checkerboard on the blue channel, both sides written as lossless PNG). Both samples apply the same album-artwork candidate filter as the coverage set and the holdout freeze (musicArtworkDropReason). Changing a seed, a threshold, or an input re-rolls a sample: that is a NEW set file with a new setId, never an edit to an existing one. `--verify` distinguishes an input that moved (expected; the warehouse grows) from a draw that changed under identical inputs (a bug).",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/src/robustness/README.md",
+    "research/v3/data/robustness/pair-set-1.json",
+    "research/v3/data/robustness/perturbation-set-1.json",
+    "research/v3/reviews/toolbox-review/adjudication-items.json (TB-05)"
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty and must stay empty. The reviewer approved this instrument conversationally. The 42-item round that carries TB-05 was RETIRED unanswered - warehouse batch-complete `bc-msed38na-4bebd09c`: 'RETIRED: superseded by conversational adjudication 2026-08-04, chat rulings canonical' - and the four toolbox rulings that were ported to the warehouse as notes cover other items, not TB-05. So there is no record id to cite, and that absence is itself checkable against `bc-msed38na-4bebd09c`.",
+    "The sample sizes (~200 pairs, ~100 covers) are the reviewer's, sized to run in minutes. They are not a power calculation, which is why every rate in the report carries a Wilson interval."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-robustness-same-palette-is-the-regional-bar",
+   "ts": "2026-08-04T10:30:00Z",
+   "kind": "metric-freeze",
+   "scope": "What 'the same palette' means when the robustness harness compares two renderings of one artwork. It does NOT redefine the contract's distinctness invariant, and it does NOT bind adjudication's match semantics - it deliberately REUSES them.",
+   "decision": "TWO PALETTES ARE THE SAME PALETTE WHEN EVERY ROLE IS WITHIN ITS REGIONAL SAME-COLOUR BAR. The bar function is imported from src/adjudication/match.ts (`barFor`) rather than reimplemented, so 'within the bar' cannot come to mean two different things in two instruments; the verdict is strictly `colorDistance < bar`, over all four contract roles. Collapse-flag agreement and gradient-presence agreement are reported alongside the verdict and deliberately NOT folded into it, because the reviewer's definition is about colour and widening it silently would make this harness's number incomparable with the definition it was approved under. Trials the candidate could not complete are counted in their own bucket and never enter a denominator. v2-3 judged the same question by mean OKLab role distance <= 0.04, so v2-3's numbers and v3's compare in magnitude and direction, not in decimal places.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/src/robustness/compare.ts",
+    "research/v3/tests/robustness-compare.test.ts",
+    "research/v3/src/adjudication/match.ts",
+    "research/ALBUM_ARTWORK_UI_PALETTE_FIELD_GUIDE.md"
+   ],
+   "fundingCaveats": [
+    "An analysis of instruments rather than of reviewer answers: no warehouse record states this, and none could.",
+    "The regional bar itself is calibrated elsewhere (contract SAME_COLOR_BAR_BY_REGION); this record decides only that the robustness harness uses it, per role, and nothing else."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-robustness-artwork-pairs-not-file-pairs",
+   "ts": "2026-08-04T10:30:00Z",
+   "kind": "instrument-design",
+   "scope": "How census pairs become sample members. Binds pair-set-1.json and any successor. It does NOT change the census, which remains a file-level record and is correct as such.",
+   "decision": "THE PAIR SAMPLE IS A SAMPLE OF ARTWORK PAIRS, AND EACH ENDPOINT IS THE ARTWORK'S CANONICAL RENDITION. The near-duplicate census records FILE-level pairs, so two artworks can appear in it several times over (.jpg against .jpg, _147x147.avif against _482x482.avif). Sampling those directly double-counts, and over-weights whichever artworks carry the most derived renditions - a property of the CDN, not of the artwork. Measured: the first committed draw held 200 rows carrying only 165 distinct artwork pairs, and 3,374 eligible file-level pairs collapse to 1,143 artwork pairs. Census records are therefore grouped by artwork pair; the reported cosine is the strongest the census recorded for that pair and the found-by arms are unioned; each endpoint is the artwork's canonical rendition per isBetterRendition, the same choice the holdout freeze and coverage set make.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/src/robustness/pair-set.ts",
+    "research/v3/tests/robustness-pair-set.test.ts",
+    "research/v3/src/coverage-set/corpus.ts"
+   ],
+   "fundingCaveats": [
+    "An analysis of the census's structure, not of reviewer answers. The 165-of-200 and 3,374-to-1,143 figures were measured on 2026-08-04 and are re-derivable by rebuilding the set."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-robustness-membership-frozen-labels-live",
+   "ts": "2026-08-04T10:30:00Z",
+   "kind": "instrument-design",
+   "scope": "How the reviewed-vs-unseen axis is determined at run time. Binds the robustness harness's stability ratios. It does NOT define reviewedness for any other instrument.",
+   "decision": "SAMPLE MEMBERSHIP IS FROZEN; THE REVIEWED/UNSEEN LABEL IS RECOMPUTED LIVE. An artwork is `reviewed` when the warehouse holds at least one live (non-retracted, non-superseded) oracle-label naming it, for ANY question kind - including SAM mask grades, which are not palette grades but do mean the artwork has been in front of the reviewer. Because the warehouse is append-only and grows every review round, a label frozen with the sample would silently count a recently-graded artwork as unseen, which is the direction that flatters the ratio; so check.ts recomputes labels from today's warehouse and reports how many members changed label since the draw (`--frozen-labels` reproduces a historical report). The reviewed stratum of the PAIR set is taken whole rather than sampled - only 10 eligible artwork pairs touch a graded artwork and none touch two - and its ratio is always reported flagged `underpowered`. The reportable reviewed-vs-unseen ratio is the PERTURBATION set's, which is allocated 50/50 by construction. The two bases are never averaged into one number.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    "research/v3/src/robustness/check.ts",
+    "research/v3/src/robustness/perturbation-set.ts",
+    "research/v3/PHASE_0_LOOSE_ENDS.md (B30)",
+    "research/v3/reviews/toolbox-review/adjudication-items.json (TB-06)"
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty: this is a definitional choice about an instrument, which no reviewer answer states and no machine can re-check. TB-06 named the missing measurement; it was never graded, for the same reason recorded on `bc-msed38na-4bebd09c`.",
+    "The definition counts a SAM mask grade as exposure to the artwork. That is deliberate and debatable; it is stated in the set files' `reviewednessDefinition` field so a reader never has to infer it."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

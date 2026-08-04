@@ -15,3 +15,12 @@ oracle/**/__pycache__/
 # review-server runtime state (never committed)
 data/review-server/server.pid
 data/review-server/server.log
+# Robustness perturbation cache: re-encoded and dithered copies of corpus covers.
+# Same policy as the embeddings vectors — the SET FILES (pair-set-1.json,
+# perturbation-set-1.json) ARE committed, the derived pixels are not. Every byte
+# regenerates byte-identically from the corpus via
+# `build-perturbation-set.ts --materialize` (verified 2026-08-04).
+data/robustness/cache/
+# The diff-viewer export (`check.ts --emit-diff-set`) is a convenience list of image paths
+# regenerated on every run; the committed JSON report already carries the disagreeing trials.
+data/robustness/reports/*.disagreements.txt
