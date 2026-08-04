@@ -26,8 +26,9 @@ measures, which is the thing you are entitled to know.
 **Why the document itself is withheld.** Alongside describing the instrument, it states what this
 campaign *found* — its results and its failure analyses. `PHASE_1_AUTHOR_BRIEF.md` §7 says you do
 not receive those, and gives the reason: *"a conclusion is an answer, and an answer sitting on the
-shelf is an anchor."* Withholding it is the design of Phase 1, not an administrative choice. Nothing
-from the document has been summarised or paraphrased here; this page is a closed door, not a digest.
+shelf is an anchor."* Withholding it is the design of Phase 1, not an administrative choice.
+Nothing from the document has been summarised or paraphrased here; this page is a closed door,
+not a digest.
 
 **If you need something from it, ask — this is a real offer.** Name it in your proposal: which part
 you wanted, and why your design turns on it. It will be adjudicated, and handed to you if it is not

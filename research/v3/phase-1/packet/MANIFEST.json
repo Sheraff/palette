@@ -90,8 +90,8 @@
 			"path": "catalog/src/contract/PERCEPTION_VERDICT.md",
 			"sourcePath": "research/v3/src/contract/PERCEPTION_VERDICT.md",
 			"kind": "verbatim-whole-file",
-			"bytes": 25735,
-			"sha256": "882d7fe3cafac32aefe2b7de0a3336bba2209802681991fef7dfbcd0d2dc55e7",
+			"bytes": 26375,
+			"sha256": "18ef4a20fe668ad4640077ff82963bb336747ea4b5d28a523ad442520d9a6200",
 			"sourceBytes": 25294,
 			"sourceSha256": "e1f23f8bca84b3eb39ce7b76d009071e49d22066a5541eb64eee6d515b5b6edd",
 			"mayContainCampaignConclusions": true,
@@ -102,7 +102,7 @@
 			"sourcePath": "research/v3/REVIEW_UI.md",
 			"kind": "assembled",
 			"bytes": 2926,
-			"sha256": "a7e6a4dc9b015a038e0c1ea87515a9988e75e633ecefc396442cf247f489fca9",
+			"sha256": "dc972788460112c13a8b741908334f8c502a26cbdabc563825b215a01f5093db",
 			"sourceBytes": 21246,
 			"sourceSha256": "db28e3fa8db1ae75a9e2030c3bbc2bfd5ea7ef391b64762e1e99adb5a582fa42",
 			"mayContainCampaignConclusions": false,
@@ -113,7 +113,7 @@
 			"sourcePath": "research/v3/src/review-server/README.md",
 			"kind": "assembled",
 			"bytes": 2971,
-			"sha256": "c90b605577e36ffa87efdcbf8f5279ac4d408df9ff4db7d78e5d288195747a5e",
+			"sha256": "040f6e32e382147aba212b4cd5160f940b0cce9803ca529acfed6551a1d28151",
 			"sourceBytes": 72706,
 			"sourceSha256": "d36fdf6ff391eea504cbfa5b6cc8e50620c3c197bfa77ff5e27cf42c78410087",
 			"mayContainCampaignConclusions": false,
@@ -123,8 +123,8 @@
 			"path": "catalog/ORACLE_QUESTION_SET.md",
 			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
 			"kind": "assembled",
-			"bytes": 2817,
-			"sha256": "cceeee1483cb00b29ed1a576b2e2b8c7c2dc9e03aee465652ac6fbc032f572d7",
+			"bytes": 3162,
+			"sha256": "d61616d03759be6ed6e95e91dc134aea2c2872662f08497ba55c53307955918d",
 			"sourceBytes": 80966,
 			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
 			"mayContainCampaignConclusions": false,
@@ -135,11 +135,22 @@
 			"sourcePath": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md",
 			"kind": "assembled",
 			"bytes": 2874,
-			"sha256": "3c4370cb089194451662e45dcb9624fa557420184ae9400738ac6a3f00f57671",
+			"sha256": "4fbcea9d81e55ac6f45ab67df80fecc2a656932a380579ebe1b4e5022cce8311",
 			"sourceBytes": 53251,
 			"sourceSha256": "0659f162c4afd4001de3f8619e8b72e59f2ba8ad62543793af96683510e2d981",
 			"mayContainCampaignConclusions": false,
 			"stubFor": "research/v3/ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md"
+		},
+		{
+			"path": "catalog/ORACLE_QUESTION_INVENTORY.md",
+			"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+			"kind": "verbatim-extract",
+			"bytes": 11210,
+			"sha256": "f13b5f0d554c492dcd84b1cc641768a7914e7cdca4a4659c4f108b1514331b7d",
+			"sourceBytes": 80966,
+			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
+			"mayContainCampaignConclusions": false,
+			"extractedFrom": "research/v3/ORACLE_QUESTION_SET.md"
 		}
 	],
 	"trim": [
@@ -176,7 +187,7 @@
 			"packetPath": "catalog/ORACLE_QUESTION_SET.md",
 			"action": "replaced-by-stub",
 			"removed": "the whole document",
-			"reason": "Reports measured oracle accuracy and agreement as findings: ground_type exact match 23% (variant A) against 53% (variant B), κ 0.21-0.31, and a pre-registered replication recorded FAILED. One arm is seated on a parse-then-assign route; telling that author the semantic route measures weak could kill the paradigm before it is written, which is the precise failure mode Phase 1 exists to prevent. This is a real cost and the stub says so.",
+			"reason": "Reports measured oracle accuracy and agreement as findings: ground_type exact match 23% (variant A) against 53% (variant B), κ 0.21-0.31, and a pre-registered replication recorded FAILED. One arm is seated on a parse-then-assign route; telling that author the semantic route measures weak could kill the paradigm before it is written, which is the precise failure mode Phase 1 exists to prevent. This is a real cost and the stub says so. PARTIALLY RESTORED: catalog/ORACLE_QUESTION_INVENTORY.md carries the ids, vocabularies and question wording extracted from this document, with everything on the what-it-found side removed — see oracleQuestionInventory.",
 			"sourceSha256": "424413053ab275b964641d5a70c0bbcd99eb9156a01ad47a941031466326d9ad",
 			"sourceBytes": 80966
 		},
@@ -190,6 +201,32 @@
 			"sourceBytes": 53251
 		}
 	],
+	"oracleQuestionInventory": {
+		"packetPath": "catalog/ORACLE_QUESTION_INVENTORY.md",
+		"sourcePath": "research/v3/ORACLE_QUESTION_SET.md",
+		"why": "The §5 catalog row describes the oracle as 'a VLM question set' without saying what it asks. Which questions exist is on the WHAT IT MEASURES side of the brief's own line, so a bare stub was withholding something the brief promised. This file restores that and nothing else.",
+		"questionsRetainedWithWording": 28,
+		"retainedByGroup": {
+			"A single-question": 4,
+			"A probes": 6,
+			"B": 3,
+			"C": 2,
+			"D": 5,
+			"E": 3,
+			"F": 3,
+			"Meta": 2
+		},
+		"questionsListedByIdOnly": 4,
+		"idOnly": [
+			"ground_type (as a derived output of the probe instrument)",
+			"field_texture (as a derived output of the probe instrument)",
+			"shading_geometry (as a derived output of the probe instrument)",
+			"shading_direction (the source states its vocabulary only by reference to another field)"
+		],
+		"stripped": "Everything on the what-it-found side: per-question accuracy and exact-match rates, inter-variant and human agreement, kappas, the A/B/C/D prompt-variant comparisons and their replication verdict, per-field reliability grades and [UNCALIBRATED]/[MEASURED] tags, resolution-tier floors, unmapped-answer shares, sign-off and adoption status, the derivation table for the probe arm, the changelog, both appendices, and every design rule the source says was earned by a measurement. The whole \"decision it feeds\" column of every group table was dropped rather than filtered, because six of its cells carry v2-3 failure analyses or measured findings and cutting was safer than judging cell by cell.",
+		"method": "Built by programmatic extraction from the source at build time, never retyped: every table cell and quoted block is asserted to be a byte-exact substring of ORACLE_QUESTION_SET.md, and a length tripwire rejects any single extracted run over 2,500 bytes (which is how one anchor collision that would have swallowed 37,776 bytes of measurements was caught before it shipped).",
+		"verbatimQuotedRuns": 67
+	},
 	"keptDespiteFlag": {
 		"rule": "These files are flagged `mayContainCampaignConclusions: true` and kept anyway. The asymmetry against `trim` is deliberate and is recorded here so it is defensible on the record rather than looking like an oversight.",
 		"files": [
