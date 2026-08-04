@@ -348,3 +348,305 @@ Three, for your approval. None is recorded yet.
    decide the `person`/`dyn-noun` exemption on both, not on this round's thin two-sheet margin.
 5. **A re-run of this exact round** — same bar, same strata, plus the escape answer, on
    `coverage-set-1` — is the clean test of whether the three fixes above actually move purity.
+
+---
+
+# Residual purity round 2 — verdict (2026-08-04)
+
+**Round:** `residual-purity-2`, 48 answers over 24 sheets × 2 guard passes, released
+2026-08-04T06:04Z. Analysed 2026-08-04.
+**Bar:** pre-registered in `RESIDUAL_V5_NOTES.md` §12.9, held unchanged from §11.11, fixed before
+any answer was seen.
+**Numbers:** `data/sam/residual-purity-2-analysis.json`. **Script:** `oracle/sam/analyze_residual_purity_2.py`.
+**Label schema:** `residual-purity.v2` — four answers. Round 1's answers are **never pooled with
+these** and no combined rate appears anywhere below.
+
+---
+
+## The one-line answer
+
+**NOT-ADOPT again, in both guard variants — but by a much narrower margin, and for a different
+reason than last time.**
+
+The bar asked for a stratum-reweighted "pure field" rate of **0.75**. Guard ON came in at **0.40**,
+guard OFF at **0.56**. Last round both were 0.24. So the all-nouns subtraction moved the number a
+long way — it roughly doubled — and it still is not enough. R-3's structural claim is **not adopted
+on this evidence**: the residual is still a **field-enriched prior**, not a background isolator.
+
+The floor clause fails too, in both variants. Under guard ON three strata sit below 0.50
+(`noun-silent` 0.20, `contaminated` 0.00, `class-only` 0.00); under guard OFF two do (`noun-silent`
+0.20, `class-only` 0.00). Note that `noun-fired` and `static-only-clean` land at exactly 0.50, which
+the bar counts as passing — "no stratum **below** 0.50". They pass on the knife edge.
+
+---
+
+## Read this first: you asked for the escape answer, and then you never used it
+
+After round 1 you told us the forced three-way choice was unreliable on covers where figure and
+ground do not separate. This round added the fourth answer you asked for — *"can't tell what is
+field here"* — on every one of the 48 panels, with its own framing text telling you it counts as a
+real answer rather than a skip.
+
+**You chose it zero times. 0 of 48.**
+
+That is the most informative single number in the round, and it is worth being careful about what it
+does and does not mean.
+
+**What it does mean.** The rate rise from 0.24 to 0.40/0.56 is **not** an artefact of the new answer.
+The pre-registered scoring takes escapes out of both the numerator and the denominator, so if you had
+escaped on the hard covers, the rate would have risen mechanically — the hardest cases would simply
+have left the sample. That explanation is now unavailable: the denominator never shrank. Every one of
+the 48 panels was scored, and the rise is a rise in answers, not in bookkeeping. It also means no
+stratum lost its purity rate to the >0.50-escape rule, so every cell in the table below is a real
+rate.
+
+**What it does not mean.** It does not mean figure/ground ambiguity was imagined. The free-text arm
+found **3 of 9 covers ambiguous in prose** (`GROUND_FREETEXT_SYNTHESIS.md`, covers 5, 7 and 9) — a
+prior of 0.33 against an observed 0.00 here. The two are not measuring the same thing. In prose you
+were describing a whole artwork's ground from scratch, with no panel in front of you. Here you were
+looking at the untouched artwork on the left and a specific subtraction beside it, and the question
+named the panel. **The artwork panel appears to resolve the ambiguity**: with the original in view
+you could evidently always say what the field was, even on covers that would have been hard to
+describe cold. If that reading is right, it is a finding about the *instrument* — showing the source
+image next to the residual is what makes the question answerable — and it is cheap to keep doing.
+
+The alternative reading is less comfortable and cannot be ruled out from 48 answers: that the escape
+was under-used because it was the fourth option, listed last, on a panel where "mostly field" was
+already an easy landing spot. The round cannot separate those. What it can say is that the escape
+was available, framed, and declined.
+
+---
+
+## The table
+
+Rates are over the escape-excluded denominator, which here is the whole denominator. "ceiling" is the
+charitable reallocation: every *mostly field* counted as pure.
+
+### Guard ON
+
+| stratum | pool | sheets | pure | mostly | not | can't tell | **pure rate** | escape share | ceiling |
+|---|---|---|---|---|---|---|---|---|---|
+| noun-fired | 102 | 8 | 4 | 3 | 1 | 0 | **0.500** | 0.00 | 0.875 |
+| noun-silent | 12 | 5 | 1 | 3 | 1 | 0 | **0.200** | 0.00 | 0.800 |
+| contaminated | 20 | 6 | 0 | 3 | 3 | 0 | **0.000** | 0.00 | 0.500 |
+| class-only | 1 | 1 | 0 | 1 | 0 | 0 | **0.000** | 0.00 | 1.000 |
+| static-only-clean | 7 | 4 | 2 | 1 | 1 | 0 | **0.500** | 0.00 | 0.750 |
+| **reweighted** | 142 | 24 | 7 | 11 | 6 | **0** | **0.4007** | **0.0000** | 0.8106 |
+
+### Guard OFF
+
+| stratum | pool | sheets | pure | mostly | not | can't tell | **pure rate** | escape share | ceiling |
+|---|---|---|---|---|---|---|---|---|---|
+| noun-fired | 102 | 8 | 5 | 3 | 0 | 0 | **0.625** | 0.00 | 1.000 |
+| noun-silent | 12 | 5 | 1 | 3 | 1 | 0 | **0.200** | 0.00 | 0.800 |
+| contaminated | 20 | 6 | 3 | 2 | 1 | 0 | **0.500** | 0.00 | 0.833 |
+| class-only | 1 | 1 | 0 | 1 | 0 | 0 | **0.000** | 0.00 | 1.000 |
+| static-only-clean | 7 | 4 | 2 | 1 | 1 | 0 | **0.500** | 0.00 | 0.750 |
+| **reweighted** | 142 | 24 | 11 | 10 | 3 | **0** | **0.5609** | **0.0000** | 0.9473 |
+
+Two cells carry almost no weight and should not be read as rates. `class-only` is **one cover** —
+the entire v5 pool — so its rate can only be 0.000 or 1.000, and it is a floor-clause failure decided
+by a single answer. `static-only-clean` is 4 sheets from a pool that collapsed from 28 to 7 when the
+all-nouns elicitation started prompting nearly every cover.
+
+---
+
+## The honest part: the verdict is no longer safe against the pure/mostly line
+
+Round 1's NOT-ADOPT was robust. Its charitable ceiling was 0.7412 and 0.6127 — below the bar in both
+variants — so no reallocation of the soft answers could have overturned it.
+
+**That is no longer true.** Round 2's ceiling is **0.8106 (ON) and 0.9473 (OFF)**, and at the ceiling
+every stratum also clears the 0.50 floor. In other words: *if every "mostly field" you gave were
+counted as pure, this round would clear the entire bar in both variants.*
+
+It is still a NOT-ADOPT. The bar asks for pure field, "mostly field" is not pure field, and the
+ceiling is a sensitivity check rather than a result — nobody may quote 0.9473 as the purity of the
+residual. But the verdict now rests entirely on where you drew the line between "pure" and "mostly",
+and **"mostly field" was the modal answer of the round** (21 of 48). That line has never been
+calibrated. If a future round is going to decide this question, calibrating it is probably the next
+thing worth spending your attention on — because it, rather than the pixels, is now what the verdict
+turns on.
+
+---
+
+## Guard ON vs guard OFF — the clearest signal in the round (A6 evidence)
+
+**Turning the area guard off makes the residual purer, unanimously in direction.**
+
+Of the 24 sheets, the two settings got the same answer on 18. On the 6 where they differed, **guard
+OFF was the purer answer all 6 times. Guard ON was purer zero times.** Reweighted: 0.5609 OFF vs
+0.4007 ON, a gap of **+0.16**. Four of the six disagreements are in `contaminated`, where guard OFF
+scores 0.500 against guard ON's 0.000.
+
+This is a real change from round 1, which saw essentially nothing here — 2 sheets favouring ON, 1
+favouring OFF, a tie. The mechanism is straightforward: the guard discards masks above an area
+fraction, and **a discarded subject mask leaves its subject sitting in the residual.** With eight
+noun prompts per cover instead of one main noun, far more large masks get proposed, so the guard now
+bites often enough to see. Round 1 could not see it because a single-noun list rarely produced a mask
+big enough to trip the guard.
+
+**This is evidence for A6's person exemption, and it says the same question now applies to
+`dyn-noun-N`.** The exposure grew by roughly eight times when the noun list did.
+
+**It is not permission to turn the guard off.** The guard exists to stop a runaway mask eating the
+whole image, and this round measured only what *remains* — you were explicitly told "whether too much
+was removed is not this question." The over-removal side is unmeasured. A one-sided measurement
+cannot change a two-sided setting.
+
+---
+
+## Round 1 vs round 2 — two instrument readings, not one trend
+
+| | round 1 | round 2 |
+|---|---|---|
+| subtraction | v4, the one main noun | v5, every noun a J list named (cap 8) |
+| answers offered | 3 | 4 (escape added) |
+| pools (nf/ns/cont/cls/soc) | 77/10/25/2/28 | 102/12/20/1/7 |
+| reweighted pure, guard ON | 0.2424 | **0.4007** (+0.158) |
+| reweighted pure, guard OFF | 0.2424 | **0.5609** (+0.319) |
+| ceiling ON / OFF | 0.7412 / 0.6127 | 0.8106 / 0.9473 |
+| verdict | NOT-ADOPT | NOT-ADOPT |
+
+**Three things changed at once, and this round cannot separate them.**
+
+1. **The subtraction got better** (v4 → v5). This is the change expected to raise purity, and it is
+   the one that targets exactly what you named in your round-1 feedback: the flame, the cello, the
+   second object a single-main-noun question never prompts for. If the movement is real, this is the
+   likeliest cause.
+2. **The escape was added.** This *could* have raised the rate mechanically by draining the hardest
+   covers out of the denominator — but it demonstrably did not, because it was used zero times. **This
+   explanation is ruled out**, which is the cleanest thing the escape bought us.
+3. **The sample was redrawn**, under a different seed, over pools that moved hard. With 8/5/6/1/4
+   sheets per stratum, one cover moves a stratum rate by 0.125 to 1.000. Sampling noise is large
+   relative to the movement in every small stratum.
+
+### The five covers both rounds judged — and they point the other way
+
+Only **5 covers** appear in both rounds (the draws were independent, under different seeds, over
+pools that changed size). §12.9's "paired question" means paired at the *population* level — both
+draws come from eval-142 — not at the cover level. There is no cover-level paired design here.
+
+On those 5 covers, across both guard passes, **9 of 10 judgments are identical to round 1.** One
+improved by a single step (`not field` → `mostly field`). **Zero new "pure field" answers.**
+
+That is uncomfortable and it is reported because it points against the headline. On the only covers
+where a genuine before/after is visible, almost nothing moved. That is consistent with the aggregate
+rise coming from the *redrawn sample* rather than from the *better subtraction* — and it is equally
+consistent with 5 covers being far too few to show anything at all. It settles nothing on its own.
+But anyone who wants to claim "all-nouns fixed the residual" has to explain why it did not visibly
+fix these five.
+
+---
+
+## The proxy said 85% clean. You said 40–56%.
+
+`analyze_residual_cuts_v5.py` calls **0.8521 / 0.8592** of v5 residuals clean at the subtraction cut.
+You said 0.4007 / 0.5609.
+
+| | proxy | you | gap |
+|---|---|---|---|
+| guard ON | 0.852 | 0.401 | **−0.451** |
+| guard OFF | 0.859 | 0.561 | **−0.298** |
+
+The proxy still over-claims purity, in the same direction, for the same structural reason: its 85% is
+the rate at which *its own named causes stayed silent*, and it cannot count an object nobody proposed.
+The measured offset was **−0.582** on v4. It is now −0.451 / −0.298. **The offset shrank but did not
+close**, which is about what you would expect if a longer noun list lets the proxy see more of what it
+was previously blind to without letting it see all of it. This is the second time this proxy has been
+checked against a human, and both times it was wrong in the optimistic direction. It should keep
+carrying its calibration block.
+
+---
+
+## What this means for the vocabulary-vs-pixels ruling
+
+**The ruling is yours. This is the pixel arm, and the pixel arm returns a second NOT-ADOPT.**
+
+The honest summary of the two arms is now:
+
+- **Pixels** ("everything but the masks" isolates the field): 0.40–0.56 pure, against a 0.75 bar, on
+  a corpus-unrepresentative set, with a charitable ceiling that would clear the bar. Better than
+  round 1, not good enough, and no longer robust to a definitional line nobody has calibrated.
+- **Vocabulary** (prose descriptions of the ground): 6 of 9 covers palette-decidable, 3 ambiguous.
+
+The escape result adds one genuinely new thing to this comparison. The 3-of-9 prose ambiguity was the
+strongest argument that some covers *have no ground fact to compute* — that the vocabulary arm was
+hitting a property of the covers rather than a limitation of the description. **This round did not
+reproduce that when the artwork was in view.** With the source image beside the residual, you always
+had an opinion about what the field was. That weakens "some covers are simply undecidable" as an
+argument against the pixel route, and it strengthens the more mundane diagnosis: the residual is not
+pure because **the subtraction misses things**, not because there is nothing to subtract toward.
+
+Which is a more tractable problem than the one round 1 suggested. It is still an unsolved one.
+
+### If you rule "vocabulary stays"
+
+Nothing here blocks that, and the pixel arm has now failed the same pre-registered bar twice. The two
+guard findings still matter for mask quality regardless, and the A6 question needs deciding either
+way.
+
+### If you rule "pixels, eventually"
+
+The route is now specific rather than vague. In rough order of expected value:
+
+1. **Calibrate the pure/mostly boundary.** It is what the verdict turns on. A short round of
+   side-by-side panels where you fix what counts as a "trace" would cost little and would tell us
+   whether 0.56 is really 0.56.
+2. **Decide A6, including `dyn-noun-N`** — and measure the over-removal side before touching the
+   guard, so the decision is not made on this round's one-sided evidence.
+3. **The other two round-1 fixes are still undone**: the `text_below_cut` leak and the ornament
+   policy. This round did one of the three (list-all-things). A third round against a still-leaking
+   text arm will keep paying the same tax.
+4. **Then, and only then, the corpus re-run on `coverage-set-1`.** eval-142 cannot produce a corpus
+   number and never could.
+
+### Either way
+
+**No number in this document is a corpus estimate.** eval-142 was never a sample of this corpus
+(cluster-mix total-variation distance 0.2273 against `coverage-set-1`'s 0.0851). The sample is
+deliberately enriched for hard cases. Reweighting fixes the enrichment; it cannot fix the population.
+
+---
+
+## Proposed decision records
+
+Both are **proposed, not recorded**. Both are funded by the same evidence: the **48 released
+`oracle-label` ids of batch `residual-purity-2` plus its batch-complete record
+`bc-mse9775m-9656ec48`** (49 ids, listed in full in `proposedDecisionRecords[].fundedBy` of
+`data/sam/residual-purity-2-analysis.json`). None is superseded, amended or retracted.
+
+### 1. `d-2026-08-04-r3-not-adopted-on-v5-allnouns`
+
+**R-3 not adopted: the all-nouns residual is still a field-enriched prior.** Stratum-reweighted
+pure-field 0.4007 (guard ON) / 0.5609 (guard OFF) against a pre-registered 0.75; `noun-silent` (0.20)
+and `class-only` (0.00) below the 0.50 floor in both variants, `contaminated` (0.00) below it under
+guard ON. Succeeds — and confirms — round 1's verdict with a corrected instrument. **The bar was held,
+not moved.** Also records that the escape answer was offered on all 48 items and chosen 0 times, so
+the rate rise is not denominator shrinkage. Scope: eval-142 only. Known weakness: the charitable
+ceiling clears the whole bar in both variants, so this NOT-ADOPT is boundary-sensitive in a way round
+1's was not.
+
+### 2. `d-2026-08-04-area-guard-off-wins-on-purity`
+
+**The uniform area guard costs residual purity (A6 evidence).** 6 disagreements in 24 sheets, guard
+OFF purer on all 6 and guard ON on none; reweighted +0.1602, concentrated in `contaminated`. Mechanism:
+a discarded subject mask leaves its subject in the residual, and eight noun prompts propose far more
+large masks than one did. Evidence for A6's person exemption and for extending the question to
+`dyn-noun-N`. **Explicitly does not authorise turning the guard off** — the over-removal side was never
+measured and this round told the reviewer not to judge it.
+
+---
+
+## Follow-ups this round opens
+
+1. **The pure/mostly boundary is now the deciding variable and is uncalibrated.** New, and top of the
+   list.
+2. **The escape's zero rate wants one confirmation.** If showing the artwork panel is what makes
+   ambiguity answerable, that is a reusable instrument finding worth one deliberate test — e.g. the
+   three prose-ambiguous covers (5, 7, 9) put through this panel format.
+3. **The five shared covers did not move.** Any claim that all-nouns improved purity should be checked
+   against a design that actually pairs covers.
+4. **A6 needs the over-removal arm** before the guard can change.
+5. **`text_below_cut` and the ornament policy are still open** — two of the three round-1 fixes.
+6. **The corpus question is still unanswered** and still needs `coverage-set-1`.
