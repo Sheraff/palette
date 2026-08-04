@@ -4352,6 +4352,172 @@
     "The date is the statement's date. No artifact was frozen at this boundary and no instrument changed because of it, so there is no seal here to verify against."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-phase-1-commissioned-as-six-arms",
+   "ts": "2026-08-04T13:22:57Z",
+   "kind": "process",
+   "draftedAs": "commissioning spec - research/v3/phase-1/COMMISSIONING.md proposes no record under a label of its own; it is a spec document, and this is the ledger entry for the roster it fixes.",
+   "decision": "PHASE 1 IS COMMISSIONED AS SIX INDEPENDENT PROPOSAL ARMS, A-F, AND THE ROSTER WAS FIXED BEFORE ANY PROPOSAL EXISTED. Each arm is one fresh subagent, launched in parallel, with no knowledge of the others' output; each returns ONE document at phase-1/proposals/arm-<letter>.md and NO CODE. FOUR ARMS CARRY STRUCTURAL SEATS, each stated as a bare one-sentence direction: (A) ONE GLOBAL OBJECTIVE - the palette is chosen by optimising a single objective over the whole image at once, no staged pipeline and no stage that eliminates candidates before a later stage sees them; (B) PARSE, THEN ASSIGN - first produce a structural description of what the image is made of, then read the roles off that description; (C) A PORTFOLIO AND A SELECTOR - several small independently legible methods plus the machinery that decides which one spoke, and the selector is allowed to be the only complex part; (D) PIXELS ONLY - no intermediate summary of the image stands between the pixel array and the published colours. (E) IS THE FREE ARM: no direction at all, and it is the CONTROL ON THE SEATS - if E lands somewhere none of A-D would have reached, the seats cost us a paradigm; if it lands on top of one of them, the seats bought spread for free. (F) IS THE BLIND ARM: it receives SECTIONS 2 AND 3 OF PHASE_1_AUTHOR_BRIEF.md ONLY, as that document's section 8 specifies, and it is the control on the brief itself. THIS DECIDES WHAT d-2026-08-04-phase-1-authors-receive-a-tool-catalog EXPLICITLY LEFT OPEN - that record's own scope field says it 'does NOT decide ... how many authors there are'. THE SEATS CARRY NO JUSTIFICATION, DELIBERATELY: the justification for each seat would be a failure analysis, and authors do not receive failure analyses (PHASE_1_AUTHOR_BRIEF.md section 7), so a seat is a direction and never a design. An author may reshape a seat and must say so; an author may not abandon it, because then the roster no longer covers the space. Authors are told other seats exist and are NOT told what they are. THE ONLY PROPERTY THAT MAKES THIS ROSTER LEGITIMATE IS ITS DATE: a roster, a seat assignment or a reading rule invented after seeing the proposals would be indistinguishable from moving the goalposts. It is committed at 51d6f56859a96a94b07fe9ecb7b4de37b6a94f1c, before any author was launched.",
+   "scope": "Binds how many Phase 1 authors there are, what framing each receives, and how the anti-anchoring rule is enforced rather than merely requested - a packet directory at phase-1/packet/ and a blind packet at phase-1/packet-blind/, both built before any author is launched, with a MANIFEST.json recording every packet file and its sha256. Does NOT decide how proposals are judged, which two or three go to Phase 2, what the blind arm is compared against or by whom, or whether the seats worked; all four of those are answered after the six land, and answering any of them now would be the same goalpost move this roster exists to avoid. Does NOT bind Phase 2's entry condition, which is deliberately still open. Does NOT settle the incumbent-arm question - see the caveats.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/phase-1/COMMISSIONING.md",
+     "sha256": "2e1597cabd234ada04332537dd30a4db6031680348a9b5507e7d440012aa277f",
+     "what": "The commissioning spec this record files: the roster table with all six seats verbatim, the packet and blind-packet enforcement, and the two items in section 6 flagged for the reviewer rather than settled."
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "sha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd",
+     "what": "Section 1 (distinctness is the deliverable), section 7 (what authors do not receive, which is why seats carry no justification) and section 8 (the blind arm and its one-arm limitation, which arm F implements)."
+    },
+    {
+     "ref": "research/v3/V3_PLAN.md",
+     "what": "Section 4's candidate list, which includes 'v2-3's evidence pipeline, rebuilt clean' competing on equal footing - the arm this roster structurally cannot contain."
+    }
+   ],
+   "fundingCaveats": [
+    "E AND F ARE SINGLE ARMS AND THEREFORE PRODUCE ANECDOTES, NOT MEASUREMENTS. This is the same honest limitation PHASE_1_AUTHOR_BRIEF.md section 8 states about the blind arm, and it applies to E for exactly the same reason: one draw from a distribution nobody has characterised. Whatever E and F land on, no number can come out of either.",
+    "THERE IS STRUCTURALLY NO INCUMBENT ARM, AND THIS IS THE REVIEWER'S CALL - OPEN, AND NOT BLOCKING. V3_PLAN.md section 4 lists 'v2-3's evidence pipeline, rebuilt clean' as a legitimate candidate that competes on equal footing, and NO AUTHOR CAN WRITE IT: doing so requires exactly the field guide and the failure analyses that PHASE_1_AUTHOR_BRIEF.md section 7 withholds. So the bake-off as commissioned has no baseline paradigm derived from what the previous system learned. COMMISSIONING.md section 6(a) names three ways out - leave it out, commission it after the six land as a deliberately-anchored seventh arm marked as such, or drop it entirely as a recorded decision - AND TAKES NONE. Tracked as PHASE_0_LOOSE_ENDS.md row B46; revives any time before Phase 2.",
+    "fundedBy is EMPTY and cannot be otherwise: a roster is an orchestrator's construction, not a reviewer answer. There is no sentence to port and recheck can never flag this record, however the judgement behind it later moves. The reviewer outranks every line of the spec this record files.",
+    "CONFINEMENT IS BY INSTRUCTION, NOT BY SANDBOX. COMMISSIONING.md section 3 says so plainly: an author is told to read nothing outside its packet, and nothing in the repository prevents it from reading the field guide anyway. The MANIFEST.json plus the author's own tool calls make it AUDITABLE AFTER THE FACT; they do not make it PREVENTED. A single author that reads around its packet voids its own arm silently.",
+    "The tool catalog is itself a hole in the blind - naming the instruments tells an author what this campaign thinks is worth measuring. That caveat is already recorded on d-2026-08-04-phase-1-authors-receive-a-tool-catalog; this record inherits it and repairs nothing.",
+    "SIX ARMS IS NOT A POWERED DESIGN AND MUST NOT BE READ AS ONE. Distinctness is the deliverable and it is assessed by reading six documents; no statistic is planned over six proposals and none would mean anything."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-brief-gains-a-second-template-line-exposable-intermediate-work",
+   "ts": "2026-08-04T13:23:53Z",
+   "kind": "process",
+   "draftedAs": "amendment - phase-1/COMMISSIONING.md section 5 records it as an amendment to the brief and asks that it be recorded in the decision ledger with its timing stated; it proposes no kind of its own.",
+   "decision": "PHASE_1_AUTHOR_BRIEF.md SECTION 6 GAINS A SECOND TEMPLATE LINE, 'EXPOSABLE INTERMEDIATE WORK', ON 2026-08-04, IN COMMIT 71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2. It asks: what could your approach expose for inspection MID-computation - what intermediate products does it produce that a reviewer or an instrument could look at, other than the final palette? WHY IT WAS OWED: PHASE_1_HANDOFF.md section 2 requires that each proposal state what intermediate work it could expose, in the weak form, and THE BRIEF DID NOT CONTAIN THAT LINE - verified 2026-08-04 by search, before any author was launched. WHY IT IS LEGITIMATE: IT LANDED BEFORE ANY AUTHOR WAS LAUNCHED, which is the same timing standard the brief holds itself to and the only property that separates an amendment from a goalpost move. IT IS THE WEAK FORM, EXACTLY LIKE THE FIRST TEMPLATE LINE (d-2026-08-04-show-your-work-is-a-template-line-not-a-gate): answered if useful, NO PROPOSAL IS REJECTED FOR OMITTING IT, no instrument reads it, and nothing enforces it. ITS RATIONALE IS TRAJECTORY, NOT SCORE: Phase 2 judges TRAJECTORY AND CEILING rather than first-round scores, so a paradigm that can show its working mid-computation is a paradigm whose trajectory can be read early, and a paradigm that exposes nothing but a final palette can only ever be judged on the palette.",
+   "scope": "Binds the content of PHASE_1_AUTHOR_BRIEF.md section 6 and, through it, the author packet built from the brief. Does NOT create a gate, a check or a rejection condition, and does NOT bind what a proposal must contain to be considered. Does NOT reach the blind arm, which receives sections 2 and 3 only and therefore never sees either template line. Does NOT settle how the answers are read in Phase 2, or whether either template line is worth anything - that stays open, with the same stated exit as the first line.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "sha256": "d287c3f75a753970d04528dc9a5342b6ea459b3006a4570d90a890f9f3385dcd",
+     "what": "Section 6 carrying both template lines in the form this record specifies, including the shared failure-mode note that a template answer filled in to satisfy the template is worse than a blank."
+    },
+    {
+     "ref": "research/v3/phase-1/COMMISSIONING.md",
+     "sha256": "2e1597cabd234ada04332537dd30a4db6031680348a9b5507e7d440012aa277f",
+     "what": "Section 5 - the amendment, its verified-by-search justification, and the statement that it lands before any author is launched."
+    },
+    {
+     "ref": "research/v3/PHASE_1_HANDOFF.md",
+     "what": "Section 2, which is where the requirement comes from: each proposal states what intermediate work it could expose, weak form, a template line."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is EMPTY: the requirement is a line in a handoff document written by the previous orchestrator, not a reviewer answer, so there is nothing to port and recheck can never flag this.",
+    "THE FIRST TEMPLATE LINE'S KNOWN FAILURE MODE APPLIES UNCHANGED. An intermediate product named to satisfy the template - one nothing could actually inspect - is WORSE THAN A BLANK, because someone will later cite it as if the author had pre-registered a real capability. The brief says this; nothing prevents it.",
+    "THE EXIT IS THE SAME AS THE FIRST LINE'S: if Phase 1 produces nothing useful from it, delete the line. It is stated here so that keeping it in Phase 2 is a choice rather than an inheritance.",
+    "THE VERIFICATION IS A SEARCH, AND THE SEARCH ITSELF IS NOT PRESERVED. 'The brief did not contain that line' was established by the commissioning orchestrator and recorded in COMMISSIONING.md section 5; the only check available after the fact is the diff of 71a1d62d51006dd8f353e8c0bc6e4434bdb0c4b2, which shows the line being added and does not show what was searched for.",
+    "'Before any author was launched' is a claim about a commit ordering, not about a sandbox. It is checkable in the log and it is the whole of the amendment's legitimacy - if a future amendment lands after a launch, this record's argument does not transfer to it."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-challenger-counter-first-run-keeps-the-round-deferred",
+   "ts": "2026-08-04T13:32:25Z",
+   "kind": "process",
+   "draftedAs": "verdict - reviews/challenger-counter/FIRST_REVIEW.md states it as a verdict on a pre-registered rule, not as a decision record under a kind of its own.",
+   "decision": "THE CHALLENGER DISAGREEMENT COUNTER HAS RUN FOR THE FIRST TIME, AND THE PRE-REGISTERED RULE RETURNS: KEEP THE DEFERRED CONFIRMING ROUND DEFERRED. THE RULE, PRE-REGISTERED AND COMMITTED BEFORE THE RUN at f47b25e51a23f1445811b736eb36d1adf7807b5a: a challenger is HIGH iff BOTH its pooled disagreement rate is >= 0.10 (H1) AND the cluster-bootstrap 95% lower bound is >= 0.05 (H2, clustered on palette, 10,000 resamples, seed 20260804); it is CONCENTRATED iff EITHER the top region holds >= 0.60 of all disagreements while holding < 0.40 of the judged pairs (C-region) OR the top decile of palettes by disagreement count holds >= 0.50 of all disagreements (C-palette); the round is proposed to the reviewer only if some challenger is HIGH AND CONCENTRATED, and every other case keeps it deferred. THE POPULATION ACTUALLY RUN: 492 DISTINCT PALETTES, de-duplicated on roleSignature from the 554 legacy fixture entries (endorsements 351, acceptable 166, known-bad 37; 31 signatures appear in more than one tier), yielding 2,857 JUDGED PAIRS, of which 0 ARE STOP PAIRS - the legacy fixtures carry a gradient BOOLEAN and never a v3 stop list, so only the six role pairs per palette can be judged. 80 role pairs were exempt as exact flagged sanctioned collapses and are not judgments; 2 single-role palettes judge nothing and are excluded from every denominator; 0 images were decoded, because no pair invariant reads pixels. THE RESULT: 0 DISAGREEMENTS OUT OF 2,857 JUDGED PAIRS, FOR BOTH CHALLENGERS - direction-aware-oklab at bar 0.02063 and ictcp-global at bar 0.01026 - with both directional counts (challengerSaysSameIncumbentDistinct, incumbentSaysSameChallengerDistinct) also zero. H1, H2, C-region and C-palette are all false for both challengers, so the verdict is mechanical and unanimous. Results committed at 6a482afdf4f75845b2b480544aa0d21f8fc19d13. Nothing here moved a bar, a threshold or a constant, and nothing could: the run's only output is a recommendation about whether to PROPOSE the round, and the reviewer decides.",
+   "scope": "Binds the standing of the deferred confirming round for the direction-aware identity bar (PHASE_0_LOOSE_ENDS.md B42, opened by d-2026-08-04-perception-4-package-signed-off): it stays deferred, and no proposal goes to the reviewer on this evidence. Binds the reading of data/contract/challenger-disagreements.json as of this run. Does NOT move SAME_COLOR_BAR_BY_REGION, either challenger bar, or the provisional status of the direction-aware shape. Does NOT establish that the frozen scalar is harmless - see the caveats, which are the point of this record. Does NOT discharge PHASE_1_HANDOFF.md section 5(b)'s trigger in substance: it is RE-ARMED, not spent. Does NOT settle invariant 3's shape under a direction-aware rule, which PERCEPTION_VERDICT.md names as the real cost and requires decided before any constant lands enforced.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/reviews/challenger-counter/PRE_REGISTRATION.md",
+     "sha256": "112815f33921dedd69e47b658ea442ad0463914146328d260d4231bb81cfc8e7",
+     "what": "The rule, its thresholds and their one-line justifications, the declared unit of count, the declared scope limits, and the C-palette degeneracy accepted in advance. Committed at f47b25e before the run."
+    },
+    {
+     "ref": "research/v3/reviews/challenger-counter/FIRST_REVIEW.md",
+     "sha256": "9202ce886a73d53ff60a6129d2390be56e73c3247572d5e03d397320a407638a",
+     "what": "The verdict, the population table, the per-region breakdown, the distance structure that explains the zero, the positive control, and section 6's list of what the run does not show."
+    },
+    {
+     "ref": "research/v3/reviews/challenger-counter/run-summary.json",
+     "sha256": "8ca8dfb43b4bf7e36e8589a0230bf7b0530028c551e065cf41d0b92e4d4cd29c",
+     "what": "Every number quoted above, machine-readable, including the judged-pair counts by region that the ledger itself cannot express, the distance-over-bar quantiles and the closest judged pairs."
+    },
+    {
+     "ref": "research/v3/data/contract/challenger-disagreements.json",
+     "sha256": "22e9b2f2f2bc49ea4f8041d8976aab87a6ccbe2d3804e98af758e905a26e6bc6",
+     "what": "The ledger itself, 492 entries, every row labelled 'legacy:' in its subject so it cannot later be mistaken for a v3 run."
+    },
+    {
+     "ref": "research/v3/src/contract/run-legacy-challenger-counter.ts",
+     "sha256": "71fd3e36ba91c4c20d59e1a7e513497341edd2933b62fd319105bdf65c472dcb",
+     "what": "The runner - a new file; no contract logic was modified, no bar and no invariant changed behaviour."
+    }
+   ],
+   "fundingCaveats": [
+    "THE REASON FOR THE ZERO IS THE POPULATION, NOT THE BAR, AND THIS IS THE POINT OF THE RECORD. The closest judged pair in the whole corpus sits at 1.30x its regional bar (#fa7b34 against #fc8831, light-saturated, distance 0.0297 against a 0.02293 bar); exactly ONE judged pair in 2,857 is under 2x; four are under 3x. The legacy palettes are bimodal by construction - a role pair is either EXACTLY equal (80 pairs, all sanctioned collapses, exempt and therefore not judgments) or it is far away. THERE IS ESSENTIALLY NO MASS IN THE BAND BETWEEN 0.00932 AND 0.02063 WHERE THE FROZEN AND DIRECTION-AWARE RULES CAN DIFFER AT ALL.",
+    "THE PRE-REGISTRATION'S LOW-RATE BRANCH READS 'the frozen scalar does no harm where it actually gets used'. THIS RUN DOES NOT ESTABLISH THAT. It establishes something weaker and different: on this population the scalar was NEVER EXERCISED ANYWHERE NEAR ITS OWN EDGE. A rule cannot be shown harmless in a regime that never occurred, and the two statements must not be conflated later. The rule was not patched to fit the result; it returns 'keep deferred', which is also the right operational answer, but the REASON is the population.",
+    "THE INSTRUMENT COUNTS - that reading is excluded, not assumed. The positive control (the tests/contract-challengers.test.ts palette with dark-neutral field roles #202020 and #232323) was run through the IDENTICAL code path in this run and produced 1 DISAGREEMENT OUT OF 6 JUDGED PAIRS for each challenger, in dark-neutral. It is not in the ledger. So the zero is a property of the population, not of the wiring.",
+    "dark-neutral - THE ONLY REGION EITHER CHALLENGER BAR WAS EVER MEASURED IN - CARRIES JUST 4.2% OF THE JUDGED EXPOSURE HERE: 120 of 2,857 pairs, Wilson interval reaching 3.1%. The other 96% is light-saturated 52.2%, light-neutral 32.4% and dark-saturated 11.2%, all unmeasured regions where a disagreement would have been a difference between two rules rather than evidence about the frozen bar. This run is nearly silent about the one region anybody measured.",
+    "THE CLUSTER BOOTSTRAP IS DEGENERATE BY CONSTRUCTION HERE (0.0000, 95% CI 0.0000-0.0000, 490 palettes, 10,000 resamples). With zero events in every cluster that is the honest reading of a zero count and NOT a tight measurement. The pooled Wilson interval is reported beside it only as the naive-independence comparison - six pairs from one palette share four colours and are not six facts.",
+    "IT IS A LEGACY-FIXTURE RUN, NOT A V3-PIPELINE RUN, declared as such before the data was seen. Not one stop pair was judged, and stop-to-stop and role-to-stop pairs are precisely where near-identity lives - a degenerate ramp is the canonical case invariant 3 exists for. The run therefore UNDER-SAMPLES the near-identical regime the challengers dispute, in the direction that understates disagreement. v2-3 role semantics are also not v3 role semantics.",
+    "THE POPULATION IS NOT A SAMPLE OF ANY CORPUS. These are palettes shown to a reviewer in v2-3 A/B rounds and graded; selection ran through what happened to get reviewed.",
+    "RECOMMENDATION, RECORDED SO IT CANNOT BE LOST: THE HANDOFF'S TRIGGER IS RE-ARMED, NOT SPENT. The counter should be read again on the first genuine v3 corpus run. Note that it will not populate itself - see d-2026-08-04-challenger-accumulation-was-never-wired.",
+    "fundedBy is EMPTY: no reviewer has been shown any pair this run counted, and nothing here rests on a reviewer answer. A disagreement is two rules parting company; the counter is an instrument for pricing a round, never evidence about perception."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-challenger-accumulation-was-never-wired",
+   "ts": "2026-08-04T13:32:25Z",
+   "kind": "process",
+   "draftedAs": "correction of record - no source document proposes this record; reviews/challenger-counter/PRE_REGISTRATION.md section 0 and FIRST_REVIEW.md establish the finding, and this is the ledger entry that makes the correction citable.",
+   "corrects": [
+    "research/v3/PHASE_1_HANDOFF.md section 5(b) - two of its claims about the challenger counter were false when written",
+    "d-2026-08-04-perception-4-package-signed-off, clause (3) - 'the disagreement counter that accumulates into data/contract/challenger-disagreements.json' describes an accumulation nothing performed",
+    "research/v3/PHASE_0_LOOSE_ENDS.md B42 - 'their disagreements ... accumulate into data/contract/challenger-disagreements.json', same wording, same error"
+   ],
+   "decision": "CORRECTION OF RECORD. PHASE_1_HANDOFF.md SECTION 5(b) SAYS THE CHALLENGERS 'run report-only beside the frozen OKLab bars, counting disagreements on every pair invariant 3 judges and accumulating into data/contract/challenger-disagreements.json', AND INSTRUCTS THE NEXT ORCHESTRATOR TO WAIT FOR 'a real corpus run' TO POPULATE THAT FILE. TWO HALVES OF THAT CLAIM ARE FALSE, AND WERE FALSE WHEN WRITTEN - the change it describes is 1753c6d1c0fb7c1041eb20624e9783f44714f56c, and neither property was ever true of it. (1) THE ACCUMULATION WAS NEVER WIRED. accumulate() and saveLedger() are exported from src/contract/challenger-ledger.ts:86 and :118 and, at 1753c6d, had NO CALLER ANYWHERE IN THE CODEBASE EXCEPT tests/contract-challengers.test.ts (:286, :291, :303, :311, :321, :326, :347). No corpus run could ever have populated that file. THE EMPTINESS HAD NOTHING TO DO WITH WHETHER PALETTES HAD BEEN RUN - waiting for a corpus run would have waited forever. (2) CHALLENGERS ARE NOT EVALUATED AT ALL UNLESS AN OBSERVATION SINK IS PASSED. src/contract/invariants.ts:878 is the only site that computes them, via the challengers field of its observation object at :887; because the call is observe?.({...}), the optional-chain short-circuits ITS WHOLE ARGUMENT LIST, so a validatePalette call without observe does not merely discard the challenger verdict - it never computes one. BOTH CLAIMS VERIFIED AGAINST THE CODE 2026-08-04. THE CONSEQUENCE, WHICH IS THE PART THAT MATTERS GOING FORWARD: the counter is populated by AN EXPLICIT RUNNER INVOCATION - src/contract/run-legacy-challenger-counter.ts, added by the challenger run at 6a482af, which calls accumulate at :211 and saveLedger at :218 - AND NOT AUTOMATICALLY. So the first genuine v3 corpus run must CALL IT DELIBERATELY, or the re-armed trigger silently never fires again and the file goes on looking like an answer. THIS IS EXACTLY THE FAILURE CLASS THE PHASE-0 ADVERSARIAL REVIEW NAMED: every number was re-derived exactly by independent code, and the failures were all in ENFORCEMENT, PROVENANCE, CLAIM-SCOPING AND DOC-SYNC AROUND CORRECT NUMBERS. The challengers' arithmetic is right, the report-only guarantee is a real property of the code, and the thing that was wrong was the sentence describing how any of it gets recorded.",
+   "scope": "Corrects two factual claims about the challenger wiring, wherever they appear - PHASE_1_HANDOFF.md section 5(b), clause (3) of d-2026-08-04-perception-4-package-signed-off, and PHASE_0_LOOSE_ENDS.md B42 all carry the same wrong verb. Binds how the counter must be populated from here on: deliberately, by invoking a runner. Does NOT set the supersedes field, and that is deliberate - supersedes in this file means one DECISION replaces another, and no decision is replaced here: the perception-4 sign-off stands unchanged, the challengers are still report-only, the frozen scalar still decides every verdict, and B42's deferral is still the standing position. What is superseded is a CLAIM, in a document that carries no decision id. This record is the forward link a reader of the sign-off would otherwise not have. Does NOT change any bar, constant, invariant or verdict, and does NOT re-open the deferred confirming round - see d-2026-08-04-challenger-counter-first-run-keeps-the-round-deferred. Does NOT edit PHASE_1_HANDOFF.md, which is append-only history like everything else here.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "Line 878 - the sole observe?.({...}) site that computes challengers, at line 887, inside an argument list the optional chain short-circuits. This is why no sink means no challenger verdict, and it is what makes report-only a property of the code rather than a promise in a comment."
+    },
+    {
+     "ref": "research/v3/src/contract/challenger-ledger.ts",
+     "what": "accumulate at line 86 and saveLedger at line 118 - exported, and callerless outside the test suite until 6a482af."
+    },
+    {
+     "ref": "research/v3/tests/contract-challengers.test.ts",
+     "what": "The only caller of accumulate/saveLedger at 1753c6d - lines 286, 291, 303, 311, 321, 326, 347."
+    },
+    {
+     "ref": "research/v3/src/contract/run-legacy-challenger-counter.ts",
+     "sha256": "71fd3e36ba91c4c20d59e1a7e513497341edd2933b62fd319105bdf65c472dcb",
+     "what": "The explicit runner that supplies the missing caller - accumulate at line 211, saveLedger at line 218. Absent from the tree at 1753c6d; added by 6a482af."
+    },
+    {
+     "ref": "research/v3/reviews/challenger-counter/PRE_REGISTRATION.md",
+     "sha256": "112815f33921dedd69e47b658ea442ad0463914146328d260d4231bb81cfc8e7",
+     "what": "Section 0, which states both findings BEFORE the run and before any data was seen (committed f47b25e), and section 3, which states the judgedByRegion gap."
+    },
+    {
+     "ref": "research/v3/PHASE_1_HANDOFF.md",
+     "what": "Section 5(b) - the corrected text, kept as written."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is EMPTY: this is a code reading, not a reviewer answer. recheck can never flag it. It is however the one class of record in this file that a reader CAN check mechanically - every claim above is a file and a line number.",
+    "A PER-REGION DISAGREEMENT RATE IS NOT COMPUTABLE FROM THE LEDGER ALONE. ChallengerTally (src/contract/challengers.ts:321-333) carries disagreedByRegion at :332 and has NO judgedByRegion field, so the denominator a per-region rate needs is not stored. The first run worked around this by recording judged-pair counts by region into a side file, reviews/challenger-counter/run-summary.json, from the same observation stream. That workaround is analysis material and is not in the ledger; a second run that does not repeat it will leave a ledger from which the region split cannot be read as a rate - which matters precisely because the standing instruction is to read disagreedByRegion BEFORE quoting a total. Tracked as PHASE_0_LOOSE_ENDS.md row B44.",
+    "src/contract/README.md DOES NOT EXIST, AND PHASE_1_AUTHOR_BRIEF.md SECTION 5 DEPENDS ON IT. The catalog's preamble defines its 'built' label as meaning 'the instrument has a README of its own, which is the authority on what it currently does; this brief does not restate status for code another workstream owns', and the contract row is labelled built. The brief does not name the path - unlike the adjudication, honesty and review-server rows, which do - so this is an authority asserted by a label rather than a broken link, and src/warehouse/README.md is missing on the same terms. The author packet substituted src/contract/PERCEPTION_VERDICT.md for the contract row and included nothing for warehouse. Tracked as PHASE_0_LOOSE_ENDS.md row B45.",
+    "THE CORRECTION IS ABOUT DOC-SYNC, NOT ABOUT THE CHALLENGERS BEING WRONG. Nothing here impugns the arithmetic, the report-only guarantee, or the perception-4 sign-off. A reader who takes this record as evidence that the challenger wiring is broken has misread it: the wiring does what it says, and what nothing did was record it.",
+    "'False when written' is a claim about the tree at 1753c6d and is checkable there: git cat-file -e 1753c6d:research/v3/src/contract/run-legacy-challenger-counter.ts fails, so the runner did not exist, and the test file was the only caller.",
+    "THE FIX IS NOT IN PLACE. Nothing today calls the runner automatically, no CI step invokes it, and no test asserts that a corpus run populates the ledger. This record makes the requirement citable; it does not discharge it. Tracked as PHASE_0_LOOSE_ENDS.md row B43, revived by the first v3 corpus run."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

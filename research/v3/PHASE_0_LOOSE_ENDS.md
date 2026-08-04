@@ -161,6 +161,29 @@ replaced, so the pass swept this file for the same claim in any other wording. *
 row here ever asserted that SAM's determinism was untested, so nothing needed retiring. The stale
 sentence was in §6.1 alone, which is where it was already known to be.
 
+**Counts moved again on 2026-08-04, in the Phase 1 opening pass: 88 items, 70 open, 18 closed.** Four
+rows added, none closed — **B43** (nothing calls the challenger ledger, and no challenger is
+evaluated without an observation sink), **B44** (`ChallengerTally` has no `judgedByRegion`, so a
+per-region *rate* is not computable from the ledger), **B45** (`src/contract/README.md` does not
+exist while the author brief's catalog treats it as the authority) and **B46** (there is no incumbent
+arm in Phase 1 and there structurally cannot be one — the reviewer's call). The per-section split is
+now A1–A19 = 19 (9 open, 10 closed) · B1–B46 = 46 (40 open, 6 closed) · C1–C13 = 13 (12 open, 1
+closed) · L-a–L-j = 10 (9 open, 1 closed).
+**These counts were GENERATED, not hand-typed**, which is the fix this file's own §C trivia row asks
+for and which three recorded hand-recount errors earned. The rule, stated so the next pass can rerun
+it rather than reinvent it: **count `###` headings in sections A, B, C and L; skip any heading whose
+row id is immediately followed by a parenthesis** — `(original)`, `(original text of …)`,
+`(closure text of …)` are historical duplicates, not rows, and there are three of them (A6, B33,
+B34); **a row is closed iff its heading contains a `~~` strikethrough**. That rule gives 88 / 70 / 18
+here and **84 / 66 / 18 immediately before this pass** — so the 83 / 65 / 18 above was already one
+row stale when this pass opened, and the perception-4 paragraph's un-re-derived split was the reason.
+**Three of the four new rows are the price of one verification.** B43, B44 and B45 were all found
+while checking a single claim in `PHASE_1_HANDOFF.md` §5(b) against the code — and that claim turned
+out to be false in two of its halves (`d-2026-08-04-challenger-accumulation-was-never-wired`). The
+arithmetic in the challenger path was correct throughout; what was wrong was the documentation of how
+any of it gets recorded, which is the failure class Phase 0's adversarial review named and the reason
+this pass read code rather than documents.
+
 Closed rows are kept, **struck through, with their original text** — a ledger that deletes its
 closed rows cannot be audited, and in A6's case the closure text is exactly what a later reader
 needs in order to understand why artifacts on disk look the way they do.
@@ -2211,6 +2234,111 @@ shape). **Blast radius:** the same-colour bar, and — by accident if nobody sto
 excursion bar, which is 2.5× the same-colour bar and would inherit every dependence the bar acquires.
 §7.1 named that in advance; it needs its own round with ramp stimuli and must not move as a side
 effect (see the excursion row).*
+
+### B43. Nothing calls the challenger ledger, and nothing evaluates a challenger without an observation sink
+*Added 2026-08-04 by the Phase 1 ledger pass, from the challenger counter's first run
+(`reviews/challenger-counter/PRE_REGISTRATION.md` §0, `FIRST_REVIEW.md` §6). Recorded as
+`d-2026-08-04-challenger-accumulation-was-never-wired`, which is a **correction of record**:
+`PHASE_1_HANDOFF.md` §5(b) said the counter accumulates on every judged pair and told the next
+orchestrator to wait for a corpus run to populate it. Both halves were false when written.*
+- **What, half one.** `accumulate()` and `saveLedger()` (`src/contract/challenger-ledger.ts:86`
+  and `:118`) had **no caller anywhere in the codebase** at `1753c6d` except
+  `tests/contract-challengers.test.ts` (`:286, :291, :303, :311, :321, :326, :347`). No corpus run
+  could ever have populated `data/contract/challenger-disagreements.json`. **The emptiness had
+  nothing to do with whether palettes had been run** — waiting for a corpus run would have waited
+  forever.
+- **What, half two.** Challengers are **not evaluated at all** unless an observation sink is
+  passed. `src/contract/invariants.ts:878` is the only site that computes them (the `challengers`
+  field at `:887`), and because the call is `observe?.({…})` the optional chain short-circuits its
+  **whole argument list** — a `validatePalette` call without `observe` does not discard the
+  challenger verdict, it never computes one. This is also exactly what makes report-only a property
+  of the code; it is not a defect, it is an undocumented precondition.
+- **What is true now.** The ledger is populated by an **explicit runner invocation** —
+  `src/contract/run-legacy-challenger-counter.ts` (`accumulate` at `:211`, `saveLedger` at `:218`),
+  added by the challenger run at `6a482af` — and **not automatically**. Nothing calls that runner on
+  a schedule, no CI step invokes it, and no test asserts that a corpus run populates the ledger.
+- **Why this is the phase-0 failure class, again.** Every number in the challenger path is right and
+  the report-only guarantee is real. What was wrong was the sentence describing how any of it gets
+  recorded — **enforcement, provenance and doc-sync around correct arithmetic**, which the phase-0
+  adversarial review named as the campaign's whole failure mode.
+- *Owner: **contract workstream** (the wiring), **orchestrator** (calling it). **Revives when:** the
+  **first genuine v3 corpus run** — which must invoke the runner deliberately, or the re-armed
+  trigger silently never fires again.*
+- **Blast radius.** The deferred confirming round's trigger. An empty or stale
+  `challenger-disagreements.json` reads as "the rules agree" to anyone who does not know nothing
+  wrote it, and `B42`'s revival condition is stated in exactly the wording that invites that
+  misreading.
+
+### B44. `ChallengerTally` has no `judgedByRegion`, so a per-region disagreement *rate* is not computable from the ledger
+*Added 2026-08-04 by the Phase 1 ledger pass; stated in advance by
+`reviews/challenger-counter/PRE_REGISTRATION.md` §3 and carried as a caveat on
+`d-2026-08-04-challenger-accumulation-was-never-wired`.*
+- **What.** `ChallengerTally` (`src/contract/challengers.ts:321`–`:333`) carries
+  `disagreedByRegion` at `:332` and **no `judgedByRegion`**. The numerator of a per-region rate is
+  stored; the denominator is not. So the ledger alone can say *where* disagreements fell and never
+  *how often, there*.
+- **Why that bites.** The standing instruction on this instrument — in `challengers.ts` itself, in
+  `B42`, and in the sign-off record — is **read `disagreedByRegion` before quoting a total**,
+  because both challenger bars were measured in `dark-neutral` alone and are applied to four
+  regions. A split that cannot be turned into a rate cannot do that job on its own.
+- **The workaround, and why it is not a fix.** The first run recorded judged-pair counts by region
+  from the same observation stream into `reviews/challenger-counter/run-summary.json` — a side file,
+  analysis material, deliberately not in the ledger. It made the first review's per-region table
+  possible (`dark-neutral` 120 of 2,857 judged pairs, 4.2%). **A second run that does not repeat the
+  workaround leaves a ledger whose region split cannot be read as a rate.**
+- *Owner: **contract workstream**. **Revives when:** the second run of the counter — or sooner, if
+  anyone wants a per-region rate out of the ledger alone. The fix is one field and a fold; the
+  reason it is a row and not a patch is that this file is not owned by this pass.*
+- **Blast radius.** Any per-region reading of the counter. Worst case is a total quoted without a
+  region split because the split was not usable — which is the precise misreading three separate
+  documents already exist to prevent.
+
+### B45. `src/contract/README.md` does not exist, and the author brief's catalog treats it as the authority
+*Added 2026-08-04 by the Phase 1 ledger pass, found while verifying
+`d-2026-08-04-challenger-accumulation-was-never-wired`.*
+- **What.** `PHASE_1_AUTHOR_BRIEF.md` §5's preamble defines its **built** label: "*Built* means the
+  instrument has a README of its own, which is the authority on what it currently does; this brief
+  does not restate status for code another workstream owns." The **Contract invariants
+  (`src/contract/`)** row is labelled **built**. `src/contract/README.md` **does not exist**.
+  `src/warehouse/README.md` does not exist either, on the same terms and in the same table.
+- **The precise shape of the error, because it is not a broken link.** The brief does **not** name
+  the path — unlike the adjudication, honesty and review-server rows, which each cite their README
+  explicitly. So the authority is asserted by a **label**, and an author who follows the label finds
+  nothing. Two of the ten catalog rows are in this state.
+- **What the packet did about it.** `phase-1/packet/MANIFEST.json` substitutes
+  `src/contract/PERCEPTION_VERDICT.md` for the contract row and includes nothing at all for
+  warehouse. That is a sensible substitution and it is undocumented in the brief, so an author
+  reading the catalog and an author reading the packet see two different authorities.
+- *Owner: **contract workstream** (write it) or **Phase 1 orchestrator** (change the label / name the
+  substitute). **Revives when:** any author asks what the contract module currently does, or the
+  brief is amended for any other reason — whichever is first. **Note the timing rule**: an amendment
+  after an author has launched is not the same act as one before, and only the second kind is free.*
+- **Blast radius.** One arm's understanding of the output contract, and — more quietly — the brief's
+  own claim to be the complete statement of what an author receives. A catalog whose "built" label
+  is unreliable in two rows out of ten is not usable as the index it says it is.
+
+### B46. There is no incumbent arm in Phase 1, and there structurally cannot be one — the reviewer's call
+*Added 2026-08-04 by the Phase 1 ledger pass. Flagged, not settled, by `phase-1/COMMISSIONING.md`
+§6(a); recorded as a caveat on `d-2026-08-04-phase-1-commissioned-as-six-arms`.*
+- **What.** `V3_PLAN.md` §4 lists "v2-3's evidence pipeline, rebuilt clean" as a legitimate
+  candidate that **competes on equal footing**. **No Phase 1 author can write it.** Doing so requires
+  exactly the field guide and the failure analyses that `PHASE_1_AUTHOR_BRIEF.md` §7 withholds — the
+  withholding is the entire design of the phase, not an oversight. So the bake-off as commissioned
+  has **no baseline paradigm derived from what the previous system learned**.
+- **Three ways out, none taken.** (1) Leave it out — Phase 3 brings the field guide back as the
+  winner's audit checklist anyway. (2) Commission it **after** the six land, as a deliberately
+  anchored seventh arm that is marked as such wherever it is compared. (3) Drop it entirely, as a
+  recorded decision, so that a later reader knows it was considered rather than forgotten.
+- **Why this is a row and not a decision.** `COMMISSIONING.md` names it and declines to settle it,
+  because the reviewer outranks the commissioning spec and this is a question about what the bake-off
+  is *for*. **It does not block the phase**: the six arms are launchable without it and nothing about
+  them changes whichever way it goes.
+- *Owner: **reviewer** — no agent and no orchestrator can close this. **Revives when:** any time
+  before Phase 2. It is cheapest to answer before the six land (option 2 stays available); after
+  Phase 2's judging rules exist, adding an anchored arm starts to look like moving the goalposts.*
+- **Blast radius.** What the six proposals are compared *against*. If the answer is "we should have
+  had one", the cost is a seventh arm and a marked asymmetry; if it is never asked, Phase 2 picks a
+  winner from a field that never contained the thing it is replacing, and no artifact records that.
 
 ## C. Latent — harmless today, harmful under one specific move
 
