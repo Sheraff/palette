@@ -44,3 +44,29 @@ is chosen to make one calibration question readable from its grade + note.
 Payload and side-car carry palette + render data only — no prototype name, no arm labels, no
 diagnostics, no explF values. The mapping from item to the table above stays in this file, which
 never reaches the server.
+
+---
+
+## Item 8, resolved at staging (appended by the staging worker, 2026-08-04)
+
+Run scored: `data/devloop/runs/p5-fieldfit-demo-20-20260804T174914272Z.jsonl`
+(`prototypes/p5-fieldfit/scorecard-run.ts`, default options). Seven covers fail
+`I3.foreground-accent-not-separated`, exactly the seven the row anticipated:
+
+| cover | d (foreground ↔ accent) | already in rows 1–7? |
+|---|---|---|
+| `f39d397ba3` | 0.03996 | no |
+| `ca2eff2a4a` | 0.02685 | **yes — row 7** |
+| `d859a69094` | 0.04562 | no |
+| `dd225466f4` | 0.02797 | no |
+| `16a8247378` | 0.03909 | no |
+| `20cac4b472` | 0.05389 | no |
+| `908479200b` | 0.04050 | **yes — row 5** |
+
+**Chosen: `f39d397ba3`, d = 0.03996** (bar 0.07444). It is the preferred candidate and it is
+eligible: it is not one of rows 1–7. It is also the strongest form of the question the row asks —
+foreground `#f03e00` and accent `#ed1500` are two saturated reds on a near-white field
+(`#eae7e0`, a declared flat retreat), so if sameColor-only separation is too loose anywhere in this
+set, it is here, and a "the accent is invisible next to the foreground" note has nothing else to
+blame it on. Five of the seven were eligible; the other four (`d859a69094`, `dd225466f4`,
+`16a8247378`, `20cac4b472`) are the fallbacks if this one is ever vetoed on the artwork.
