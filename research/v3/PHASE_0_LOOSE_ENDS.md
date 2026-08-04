@@ -131,6 +131,22 @@ from "recommendation pending the reviewer" to closed, `dropped-colors-1` went fr
 retired one, and the toolbox round went from pushed to deprecated. **Re-read the log and re-ask for
 the current rulings immediately before committing a ledger pass.**
 
+**Counts moved again on 2026-08-04, applying the `sam-determinism-1` results: 83 items, 65 open, 18
+closed.** Two rows added, none closed — **B40** (the distinct-file count for a SAM precompute pass is
+unmeasured) and **B41** (whether concurrent MLX processes help or thrash is unmeasured). Both are the
+price of a *result* rather than of an audit: the determinism round measured what it pre-registered
+and named, in its own report, the two things it did not measure. **Re-derived by counting the `###`
+headings and the struck-through ones, not by adding to the previous number — and the previous
+paragraphs' totals did not survive that count.** The last two headline readings (77 and 79) were both
+wrong before this pass touched anything; the true figure immediately before it was **81 / 63 / 18**.
+The per-section split is now A1–A19 = 19 (9 open, 10 closed) · B1–B41 = 41 (35 open, 6 closed) ·
+C1–C13 = 13 (12 open, 1 closed) · L-a–L-j = 10 (9 open, 1 closed).
+**One thing this pass looked for and did not find.** `PHASE_0_DECISIONS.md` §6.1 condition 2 used to
+say SAM-at-runtime was inadmissible on determinism *until a test exists and passes*; that text is now
+replaced, so the pass swept this file for the same claim in any other wording. **There is none** — no
+row here ever asserted that SAM's determinism was untested, so nothing needed retiring. The stale
+sentence was in §6.1 alone, which is where it was already known to be.
+
 Closed rows are kept, **struck through, with their original text** — a ledger that deletes its
 closed rows cannot be audited, and in A6's case the closure text is exactly what a later reader
 needs in order to understand why artifacts on disk look the way they do.
@@ -2056,6 +2072,46 @@ contract's own docstrings say the gap out loud, and a stated gap still needs an 
 - **Blast radius.** An escape used as a shortcut looks identical to an escape used as a last resort,
   in every instrument this repository has. Overuse would be invisible until someone looks at the
   pictures.
+
+### B40. The distinct-file count for a SAM precompute pass is unmeasured, so the 19.4 h figure is an over-count of unknown size
+*Added 2026-08-04, proposed by `sam-determinism-1` (`data/decisions/proposed-sam-determinism-1.json`
+→ `proposedLooseEnds`) and written here by the housekeeping workstream, which owns this file.*
+- **What.** The one-time corpus projection in `oracle/sam/DETERMINISM_TEST.md` §5.1 — 16,216 files,
+  ≈ 19.4 h at the 4.3 s/file planning figure — counts **files**, not distinct images.
+  `music-artworks/` (8,595 of those files) holds multiple `_WxH` renditions of the same artwork, so
+  the count of distinct files **by content hash** is lower and the real projection is smaller by an
+  unknown factor. Nobody has run the hash.
+- **Why content hash is the right key, and why that is newly settled.** `sam-determinism-1`
+  established that identical bytes cannot produce different masks (`PHASE_0_DECISIONS.md` §6.1
+  condition 2), so a content-hash cache is sound rather than merely convenient. Before that round it
+  would have been an assumption.
+- **What this is NOT about.** It is a **dev-time** number only. Under the cold-runtime ruling
+  (`d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`) a corpus sweep buys the shipped pipeline
+  nothing, and no de-duplication improves the ~6.2 s cold per-call cost that condition 3 turns on.
+  A row that shrank the sweep would not move SAM one step closer to admissible.
+- *Owner: **oracle/SAM workstream**. **Revives when:** any proposal budgets a corpus-wide SAM pass,
+  or any decision turns on the 19.4 h figure — at which point the honest first move is one hashing
+  pass over `music-artworks/`, which needs no GPU.*
+- **Blast radius.** A dev-time schedule quoted higher than reality. Cheap to be wrong about in one
+  direction only: the figure over-states, so a plan built on it is over-budgeted, never
+  under-budgeted.
+
+### B41. Whether concurrent MLX processes help or thrash is unmeasured, and no agent may find out casually
+*Added 2026-08-04, proposed by `sam-determinism-1` (`data/decisions/proposed-sam-determinism-1.json`
+→ `proposedLooseEnds`) and written here by the housekeeping workstream.*
+- **What.** Every speed number in `oracle/sam/DETERMINISM_TEST.md` §5 is **single-process**. Whether
+  two concurrent SAM processes would roughly halve a corpus pass or thrash the GPU into being slower
+  than one is unknown, and unknowable from anything measured so far.
+- **Why it stays unmeasured.** The standing **single-owner GPU rule** (`CONVENTIONS.md`) forbids an
+  agent from trying it on its own initiative, and the measured consequence of violating that rule is
+  a poisoned Metal context. This needs an **orchestrator-scheduled slot**, not an agent's curiosity.
+- **What this is NOT about.** Like B40, concurrency touches only the **dev-time** sweep. Runtime is
+  cold and per-file: one image, one call, nothing to parallelise across.
+- *Owner: **orchestrator** (it is the only party that can schedule the exclusive slot).
+  **Revives when:** any plan's feasibility depends on beating the single-process corpus figure.*
+- **Blast radius.** A corpus-sweep schedule that assumes a speed-up nobody has demonstrated — or,
+  worse, an agent that tries it unscheduled and poisons the GPU context for whatever else was
+  running.
 
 ---
 

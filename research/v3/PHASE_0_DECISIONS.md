@@ -505,10 +505,37 @@ approved for use.
 
 1. **No upstream model feeds it.** No VLM nouns, no model-derived prompts, nothing that would make
    the pipeline transitively depend on a second model.
-2. **Provably deterministic** — the same file yields **byte-identical masks across runs**. This is a
-   property to be **tested before anything relies on it**, not assumed. Until that test exists and
-   passes, SAM-at-runtime is not admissible on this criterion.
+
+2. **Provably deterministic — MEASURED AND SATISFIED for a pinned stack** (`sam-determinism-1`,
+   2026-08-04). The same file yields **byte-identical masks across runs**. This was tested before
+   anything relied on it, as this condition required: 12 covers × 12 passes = 144 inferences and
+   5,148 regions, comparing every region's mask RLE, score, bbox and area on exact IEEE-754 bit
+   patterns, with **zero differing bytes** across repeated inference in one process (24/24 image
+   comparisons), fresh process restarts with a cold Metal context (36/36), and permuted image
+   processing order (36/36). Image decoding was checked the same way and is byte-identical too.
+   Evidence: `oracle/sam/DETERMINISM_TEST.md`, `oracle/sam/DETERMINISM_PREREG.md`,
+   `data/sam/determinism-1-analysis.json`.
+
+   **One boundary is documented, and it is cosmetic.** Permuting **concept** order changes the
+   order in which regions are emitted and nothing else: over 36 comparisons the row-keyed digest
+   (`concept`, `instance_idx`) and the order-free content digest are identical **36/36**, with
+   zero regions differing in any field. Since stored rows are keyed on (image, concept, instance),
+   the **row set** is byte-identical under concept permutation while the **file's line order** is
+   not. A proposal must pin the concept order to get file-level byte-identity — which `config.py`
+   already requires by making concept order part of `CONCEPT_SET_HASH`.
+
+   **Scope, which is part of the finding.** This holds for one model revision (`a992e302…`), one
+   concept set (v2.2, `d49a63c4…`), one runtime (mlx 0.32.0 / mlx-vlm 0.6.8) and one machine
+   (Apple M3 Max, macOS 15.7.7). Determinism across machines, GPU families, MLX versions or model
+   revisions was **not** tested and is **not** claimed. The condition is satisfied **for a pinned
+   deployment**, and any proposal that changes a pin owes this measurement again.
+
+   **This satisfies condition 2 only.** The four conditions are conjunctive and SAM at runtime
+   remains inadmissible until 1, 3 and 4 are argued.
+
 3. **Fast enough** — and as of 2026-08-04 the reviewer has ruled on the measurement. See below.
+   **~6.2 s per cold call** is the row to quote.
+
 4. **Plain-code methods are exhausted, or SAM is demonstrably more reliable than them.** "We reached
    for it first" does not satisfy this.
 
@@ -528,6 +555,18 @@ principle, but the measured cost is now a **standing debt against any proposal t
 masking**: it must carry *"very good reasons"*, and that phrase is the reviewer's bar, not a
 paraphrase. A proposal that reaches for runtime masking without arguing the cost has not met the
 condition — silence on speed now reads as a failure to answer, because the number is known.
+
+**Amended 2026-08-04 (`sam-determinism-1`) — the number a proposal must quote is the COLD one, and
+it is ~6.2 s.** The 2.7–4.3 s band the ruling was given on is the **warm** inference cost, and this
+round reproduced it independently on a different sample, a different script and six fresh processes
+(min **2.68 s**, cold-machine median **2.75 s**, 144-inference mean **4.11 s**), so the ruling's
+premise stands on its own feet rather than being inherited. But that band is not the runtime figure.
+Under the cold frame stated below there is no resident process to hide behind, so **the model load is
+paid on every call**: **≈ 6.2 s per cold call** — 4.3 s inference plus ~1.9 s model load, or
+**6.8 s** with weight verification — against ≈ 4.3 s warm, which stays as **context** and is not the
+row to quote (`oracle/sam/DETERMINISM_TEST.md` §5.1). **A proposal that wants runtime masking quotes
+6.2 s.** The correction moves the cost the reviewer called slow *upward*, so the ruling and its
+*"very good reasons"* bar are strengthened by it, not disturbed.
 
 **The frame this ruling corrects — runtime is cold.** The reviewer's second sentence is the
 architectural half, and it is broader than SAM:
@@ -549,15 +588,18 @@ the shipped system and never did. The correct frame:
   available to the shipped pipeline.
 - **So per-image cost is the whole cost.** There is nothing to amortise it against. A tool that
   takes seconds per image takes those seconds on **every** call, for **every** user, on a file
-  nobody has ever seen. That is why 2.7–4.3 s reads as slow here and would have read as free under
-  the frame this ruling corrects.
+  nobody has ever seen — **model load included**, which is why the quotable figure is **~6.2 s cold**
+  and not the 4.3 s warm inference. That is why it reads as slow here and would have read as nearly
+  free under the frame this ruling corrects.
 
 This binds every paradigm, not only ones that want SAM: **no proposal may depend on a precomputed
 artifact at runtime.** If a design's cost story requires a prior pass over the corpus, it does not
 have a runtime cost story.
 
 Recorded as `data/decisions/decisions.json` →
-`d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`.
+`d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`. Condition 2's measurement is recorded in the
+same file as `d-2026-08-04-sam-determinism-measured-and-satisfied-for-a-pinned-stack` and
+`d-2026-08-04-sam-cross-run-identity-priors-agree-with-the-dedicated-test`.
 
 ## 7. Measured resolution floors (ladder-sample-1, 2026-08-03)
 

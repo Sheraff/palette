@@ -147,7 +147,12 @@ these hold: (1) **nothing upstream feeds it** — no VLM nouns, no model-derived
 must be **tested before anything relies on it**; (3) it is **fast enough**; and (4) plain-code methods
 have been **exhausted**, or SAM is **demonstrably more reliable** than them. A proposal that wants
 SAM at runtime should say which of these it can already argue and which it would have to establish.
-The oracle's dev-time use of SAM is a separate thing and is not affected.
+The oracle's dev-time use of SAM is a separate thing and is not affected. **Condition (2) is settled
+as of 2026-08-04** — SAM's determinism is **measured and satisfied for the pinned stack**
+(`sam-determinism-1`: 144 inferences, 5,148 regions, zero differing bytes; scope and one cosmetic
+concept-order boundary in `PHASE_0_DECISIONS.md` §6.1) — and **(3) is the number to quote: ~6.2 s per
+cold call**, because runtime is cold and the model load is paid every time; the reviewer's ruling
+that this "counts as slow" and needs *"very good reasons"* stands unchanged.
 
 **The algorithm never reads a table.** That is the reviewer's own sentence and the form to remember
 it in. Reviewer, 2026-08-04, verbatim:
