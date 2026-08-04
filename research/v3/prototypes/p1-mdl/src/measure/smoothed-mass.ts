@@ -8,11 +8,18 @@
  * reviewer is responding to. So every mass the energy ever sees comes through this function, and
  * nothing downstream may count an exact bin.
  *
- * Two paths compute the same quantity:
+ * **The kernel is truncated by definition.** `κ(δ, h) = 0` for `δ ≥ KERNEL_TRUNCATION_BANDWIDTHS·h`,
+ * on *every* path. That cutoff is a property of the object `m(c)` names, not a shortcut one path
+ * takes and the other does not — see `KERNEL_TRUNCATION_BANDWIDTHS` in `constants.ts` for the
+ * convention and for what it costs against the untruncated Gaussian. Both paths below therefore
+ * compute the same mathematical quantity, and comparing them is a test of the lattice and of nothing
+ * else.
  *
- * - **exact** — the full O(K²) double sum, no truncation, used below
- *   `SMOOTHED_MASS_EXACT_MAX_COLORS`. Hand-checkable, and the reference the lattice is tested
- *   against.
+ * Two paths compute that quantity:
+ *
+ * - **exact** — the full O(K²) double sum over pairs, with the truncation applied pair by pair at the
+ *   pair bandwidth, used below `SMOOTHED_MASS_EXACT_MAX_COLORS`. Hand-checkable, and the reference
+ *   the lattice is tested against.
  * - **lattice** — colours accumulated onto a coarse OKLab lattice and the sum taken over cells. See
  *   `SMOOTHED_MASS_LATTICE_CELLS_PER_BAR` in `constants.ts` for the lattice constant and the
  *   refinement-invariance claim it is chosen to satisfy: refining the lattice must not change any
@@ -45,8 +52,11 @@ export type SmoothedMass = Readonly<{
 	cellsPerBar: number | null
 	/** Occupied lattice cells; `null` on the exact path. */
 	occupiedCells: number | null
-	/** Kernel truncation radius in bandwidths; `null` on the exact path, which does not truncate. */
-	truncationBandwidths: number | null
+	/**
+	 * Kernel truncation radius in bandwidths. Never `null`: the cutoff is part of the kernel's
+	 * definition, so both paths apply it and both report it.
+	 */
+	truncationBandwidths: number
 	/** `m(c)` in pixels, per triple, in the table's canonical order. */
 	mass: Float64Array
 	/** `m(c) / N` — the scale-free form, which is what the energy reads. */
@@ -66,8 +76,16 @@ export type SmoothedMass = Readonly<{
  * nothing else: `kappa` in `kernel.ts` remains the definition, the exact path uses it unmodified,
  * and `tests/measure/smoothed-mass.test.ts` checks the two agree.
  */
+/**
+ * The truncation, in the units both paths actually test in: `u = (δ/h)²`. `κ` is zero at and above
+ * this value of `u` — the single definitional cutoff, shared by the exact loop and the lattice's
+ * table, so neither can drift from the other.
+ */
+const KERNEL_TRUNCATION_SQUARED_RATIO =
+	KERNEL_TRUNCATION_BANDWIDTHS * KERNEL_TRUNCATION_BANDWIDTHS
+
 const KERNEL_TABLE_STEPS = 4096
-const KERNEL_TABLE_MAX_U = KERNEL_TRUNCATION_BANDWIDTHS * KERNEL_TRUNCATION_BANDWIDTHS
+const KERNEL_TABLE_MAX_U = KERNEL_TRUNCATION_SQUARED_RATIO
 const KERNEL_TABLE_SCALE = KERNEL_TABLE_STEPS / KERNEL_TABLE_MAX_U
 const KERNEL_TABLE = (() => {
 	const table = new Float64Array(KERNEL_TABLE_STEPS + 2)
@@ -101,9 +119,14 @@ function exactSmoothedMass(table: TripleTable, bandwidths: Float64Array): Float6
 			const deltaL = lab[baseI] - lab[baseJ]
 			const deltaA = lab[baseI + 1] - lab[baseJ + 1]
 			const deltaB = lab[baseI + 2] - lab[baseJ + 2]
-			const distance = Math.sqrt(deltaL * deltaL + deltaA * deltaA + deltaB * deltaB)
+			const squared = deltaL * deltaL + deltaA * deltaA + deltaB * deltaB
 			const bandwidth = bandwidths[i] > bandwidths[j] ? bandwidths[i] : bandwidths[j]
-			const weight = kappa(distance, bandwidth)
+			// The definitional cutoff, applied here exactly as the lattice's kernel table applies it:
+			// zero at and above `u = KERNEL_TRUNCATION_BANDWIDTHS²`, with `u` measured at the *pair*
+			// bandwidth. This is what makes the two paths the same object rather than two objects that
+			// happen to agree to a few parts in a thousand.
+			if (squared >= KERNEL_TRUNCATION_SQUARED_RATIO * bandwidth * bandwidth) continue
+			const weight = kappa(Math.sqrt(squared), bandwidth)
 			mass[i] += counts[j] * weight
 			mass[j] += counts[i] * weight
 		}
@@ -288,7 +311,7 @@ export function computeSmoothedMass(
 			cellSide: null,
 			cellsPerBar: null,
 			occupiedCells: null,
-			truncationBandwidths: null,
+			truncationBandwidths: KERNEL_TRUNCATION_BANDWIDTHS,
 			mass,
 			massFraction: scaleByPixelCount(mass, table.pixelCount),
 		}

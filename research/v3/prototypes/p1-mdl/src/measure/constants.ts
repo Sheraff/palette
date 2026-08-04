@@ -83,11 +83,38 @@ export const EXTENT_WEIGHT_SUM = Array.from(
 ).reduce((total, weight) => total + weight, 0)
 
 /**
- * Where the Gaussian kernel is truncated, in bandwidths, on the approximate (lattice) paths.
+ * Where the Gaussian kernel is truncated, in bandwidths.
  *
- * Derived-and-stated: `exp(-4²/2) = 3.35e-4`. Contributions past four bandwidths are three and a
- * half orders of magnitude below the kernel's own peak and are dropped so the lattice sum is local.
- * The exact path does not truncate at all, which is what makes the two comparable in a test.
+ * **This is part of the kernel's definition, not a shortcut one path takes.** The kernel this layer
+ * means by `κ` is the compactly supported one: `κ(δ, h) = exp(-δ²/2h²)` for `δ < 4h` and exactly `0`
+ * at and beyond it, with `h` the *pair* bandwidth. The exact O(K²) path and the lattice path both
+ * apply that cutoff, at the same threshold, in the same units (`u = (δ/h)² ≥ 16`), so `m(c)` names one
+ * mathematical object and a test comparing the two paths tests the lattice and nothing else. Both
+ * paths report the radius in `SmoothedMass.truncationBandwidths`; neither reports `null`.
+ *
+ * *Why a cutoff at all.* `exp(-4²/2) = 3.35e-4` — a single pair past four bandwidths contributes
+ * three and a half orders of magnitude below the kernel's own peak — and without a cutoff the sum is
+ * not local, so no lattice, tree or bound in this prototype can be written against it.
+ *
+ * *What the cutoff costs, measured rather than asserted* (`tests/verify-measure/exact-mass.ts`,
+ * against an independent untruncated O(K²) reference; demo-20 covers):
+ *
+ * - worst single row, truncated vs untruncated: **2.44%** at K=1727, **23.1%** at K=24615, **24.5%**
+ *   at K=32720. The tail is not negligible for every colour: a row with thousands of near-duplicate
+ *   neighbours spread past 4h accumulates a real amount of 3.35e-4-scale weight.
+ * - the error is **one-sided** — truncation only ever removes mass, so no row is overstated.
+ * - it is **refinement-independent**: the truncated-vs-untruncated gap is bit-identical at 4 and at 8
+ *   lattice cells per bar (0.23127680854845412 at K=24615 both times). It is a property of the
+ *   definition, not of the approximation, which is exactly why it belongs here and not below.
+ * - **pixel-weighted mean relative error 0.032%** (K=24615; measured for the whole shipped path
+ *   against the untruncated reference, so truncation plus lattice together, and dominated here by the
+ *   truncation), and the top-10 ranking by smoothed mass is unchanged on every image measured. The
+ *   rows that move most are rare colours; the rows the energy actually reads are the massive ones,
+ *   and those move by a thousandth of a percent.
+ *
+ * So the honest statement is not "the truncation is invisible" but "the truncated kernel is the
+ * kernel, its worst-row departure from the untruncated Gaussian is tens of percent on sparse rows,
+ * and that departure has never moved a ranking this prototype reads."
  */
 export const KERNEL_TRUNCATION_BANDWIDTHS = 4
 
@@ -106,18 +133,37 @@ export const SMOOTHED_MASS_EXACT_MAX_COLORS = 4096
  * Lattice cells per tightest bar, for the smoothed-mass accumulation. Cell side is
  * `TIGHTEST_SAME_COLOR_BAR / SMOOTHED_MASS_LATTICE_CELLS_PER_BAR`.
  *
+ * **What is being approximated.** The target is the *truncated* kernel defined at
+ * `KERNEL_TRUNCATION_BANDWIDTHS` above — the same object the exact O(K²) path computes. The lattice's
+ * only error is the cell-centroid substitution. The truncation is not part of this error budget and
+ * must not be counted into it; its own materiality is documented, and measured, up there.
+ *
  * **The refinement-invariance claim.** Refining this constant — making the lattice finer — must not
  * change any downstream argmin. The bound behind the claim: replacing a cell's members by their
  * centroid perturbs a Gaussian kernel value by at most second order in (cell spread / bandwidth). A
  * cell of side `a` has per-axis RMS spread `a/√12`, so `E‖Δ‖² = a²/4` in three dimensions, and the
- * relative kernel error is `≈ ‖Δ‖²/(2h²) ≤ a²/(8h²)`. At `a = h/4` that is 0.78%, and it *shrinks
- * quadratically* as the lattice refines. So the map `c ↦ m(c)` is reproduced to under 1% uniformly,
- * and an argmin can only move if two candidates were already within 1% of each other in smoothed
- * mass — in which case they are within the identity bar of one another and the choice between them
- * was never the lattice's to make.
+ * relative kernel error is `≈ ‖Δ‖²/(2h²)`. At `a = h/4` that is 0.78%, and it *shrinks quadratically*
+ * as the lattice refines. Note what kind of number that is: `E‖Δ‖² = a²/4` is the **RMS** displacement
+ * over a cell, so 0.78% is a typical error and not a ceiling. A member at a cell corner sits at
+ * `‖Δ‖ = a√3/2`, three times the RMS in squared terms, so the honest per-cell worst case at `a = h/4`
+ * is **2.34%**.
+ *
+ * **Measured, not just bounded** (`tests/verify-measure/refine.ts`, K=24615 demo-20 cover): the worst
+ * single-row move on refining 4 → 8 cells per bar is **0.225%**, and 8 → 16 is **0.021%** — an order
+ * of magnitude per halving, faster than the quadratic estimate, with the top-10 ranking identical at
+ * every setting. Against the exact truncated sum directly (`tests/verify-measure/exact-mass.ts`) the
+ * lattice's worst single row is 0.22% at K=24615, 0.62% at K=32720 and **2.06% at K=55697** — above
+ * the 0.78% typical figure on the busiest cover in demo-20, under the 2.34% worst case, and always on
+ * a sparse row.
+ *
+ * So an argmin can only move if two candidates were already within a couple of percent of each other
+ * in smoothed mass — in which case they are within the identity bar of one another and the choice
+ * between them was never the lattice's to make. The claim this constant may carry is that, not
+ * "reproduced to under 1% uniformly", which the corpus contradicts.
  *
  * Derived-and-stated (the 0.78% above is the derivation); `tests/measure/smoothed-mass.test.ts`
- * checks it empirically by halving the constant and comparing both the ranking and the values.
+ * checks it empirically by halving the constant and comparing both the ranking and the values, and by
+ * comparing a forced lattice against the exact path on the identical truncated definition.
  */
 export const SMOOTHED_MASS_LATTICE_CELLS_PER_BAR = 4
 

@@ -17,25 +17,43 @@
  *
  * ## The code being counted
  *
- * A decoder that has the artwork and reads this message must be able to reconstruct the
- * configuration exactly. Field order is the order below:
+ * What follows is a **cost model over a declared configuration**, not a self-delimiting bitstream.
+ * The distinction matters and is stated because an earlier draft of this comment overclaimed it. The
+ * partition below assigns a length to each part of a `Configuration` that is already in hand; it is
+ * not a format a decoder could parse from bits alone.
  *
  * ```
  *   collapse flags          2 bits   (surfaceCollapsed, accentCollapsed)
  *   gradient flag           1 bit
- *   background             24 bits   — always named
- *   surface                24 bits   — only if not collapsed; a collapse is a reference
- *   foreground             24 bits   — always named
+ *   background             24 bits   — unless the escape names it
+ *   surface                24 bits   — only if not collapsed; a collapse is priced as a reference
+ *   foreground             24 bits   — unless the escape names it
  *   accent                 24 bits   — only if not collapsed
  *   stop count              2 bits   — only if gradient; a fixed-width field over {2,3,4}
  *   per interior stop      32 bits   — 24 colour + 8 position; only if gradient
- *   escape             +1024 bits   — only if declared, and it replaces the escaping role's 24
+ *   escape             +1024 bits   — only if declared, replacing the escaping role's 24
  * ```
  *
- * **Collapsed roles are references, not names.** That is the whole reason the flags are transmitted
- * first: reading `surfaceCollapsed = 1` tells the decoder there is no surface field to read, it is a
- * back-reference to the background. Two bits buy up to forty-eight. This is where arm A′'s prior
- * gets its preference for simple palettes, and it is derived rather than asserted.
+ * **Where the analogy is exact.** The conditional parts — surface and accent present only when not
+ * collapsed, stop fields present only under the gradient flag — are genuinely prefix-decodable: the
+ * flags precede the fields whose presence they govern, so reading `surfaceCollapsed = 1` is enough to
+ * know there is no surface field and that surface is a back-reference to the background. Two bits buy
+ * up to forty-eight, and *that* is where arm A′'s prior gets its preference for simple palettes. It is
+ * derived, not asserted, and it does not depend on the stream reading claim.
+ *
+ * **Where it is not.** The escape partition is **not** uniquely decodable as written. There is no
+ * escape-present flag, and the 1024-bit escape blob is listed after the role fields — so a reader
+ * arriving at the role fields has nothing telling it whether one of them is absent, nor which. A
+ * single bit before the role fields, saying an escape follows and stating which role it names, would
+ * close it: prefix the roles with 1 bit (escape present) and, when set, 2 bits for the role, and every
+ * configuration becomes parseable left to right.
+ *
+ * **Why that bit is not taken.** It would add 1 bit to escape configurations, which already carry
+ * `ESCAPE_COST_BITS = 1024` — a barrier chosen at nine times the entire 114-bit in-artwork span
+ * precisely so that no in-artwork configuration can be outranked by an escape one. A 1-bit correction
+ * next to a 1024-bit barrier changes no comparison this prototype can make, and adding it would buy a
+ * property (self-delimitation) that nothing here consumes. So the code is left as it is and the claim
+ * is narrowed to what the code does.
  *
  * **Gradient endpoints are free.** The reviewer's 2026-08-04 ruling pins `stops[0].color` to the
  * background and `stops[last].color` to the surface, and invariant 1 pins their positions to exactly
