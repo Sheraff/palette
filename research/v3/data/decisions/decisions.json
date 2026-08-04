@@ -4518,6 +4518,93 @@
     "THE FIX IS NOT IN PLACE. Nothing today calls the runner automatically, no CI step invokes it, and no test asserts that a corpus run populates the ledger. This record makes the requirement citable; it does not discharge it. Tracked as PHASE_0_LOOSE_ENDS.md row B43, revived by the first v3 corpus run."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-sam-at-runtime-downgraded-to-unwanted-not-banned",
+   "ts": "2026-08-04T14:30:00Z",
+   "kind": "instrument-selection",
+   "draftedAs": "expectation downgrade - the commissioning brief for this ledger pass calls it 'a downgrade of expectation, not a prohibition'. There is no such kind in this file's vocabulary and inventing one would have made a stated preference look like a new class of ruling, so it is filed as instrument-selection beside the record that states the conditions it leaves standing.",
+   "decision": "SAM AT RUNTIME IS DOWNGRADED FROM A LIVE OPTION TO A THING NOBODY IS EXPECTED TO WANT - AND IT IS NOT BANNED. Reviewer, 2026-08-04, verbatim, emphasis the reviewer's own: \"TBH it's even better if we don't need SAM at runtime, let it just be a dev tool to help with iteration autonomy. I'm *open* to having it at runtime if any agent has a brilliant idea of how it would improve accuracy, but it's not a requirement\". READ THE EMPHASIS ON *open*: IT IS LOAD-BEARING AND IT IS WHY THIS IS NOT A PROHIBITION. What moved is the EXPECTATION, not the rule. Before this, a design that wanted SAM at runtime faced four conjunctive conditions and had to argue them; after this it faces the same four conditions AND the standing fact that the reviewer would rather not need it at all. WHAT DID NOT MOVE: the four conditions of PHASE_0_DECISIONS.md 6.1 are UNCHANGED AND STILL BIND ANYTHING THAT WANTS SAM AT RUNTIME - (1) no upstream model feeds it; (2) provably deterministic, MEASURED AND SATISFIED for the pinned stack (sam-determinism-1); (3) fast enough, NOT SATISFIED - the reviewer ruled the measured cost \"counts as slow\" and requires \"very good reasons\", and the number a proposal must quote is the ~6.2 s COLD per-call figure, not the 2.7-4.3 s warm band; (4) plain-code methods exhausted, or SAM demonstrably more reliable than them. THE DOOR THIS RULING LEAVES OPEN IS NARROW AND NAMED: \"a brilliant idea of how it would improve accuracy\". AN ACCURACY ARGUMENT IS THE ADMISSIBLE KIND. Convenience, developer speed, familiarity, 'it was the obvious tool' and silence are not, and none of them was admissible before either - what is new is that the reviewer has now said in their own words which kind of argument they would listen to. AND THE DEV-TIME USE IS ENDORSED BY NAME, NOT MERELY TOLERATED: \"let it just be a dev tool to help with iteration autonomy\" is the reviewer positively wanting the oracle's SAM masks spent on iteration autonomy, which is what the oracle was built for and what V3_PLAN.md 5 already says it is for.",
+   "scope": "Binds how Phase 1 and every later proposal should READ the SAM runtime exception: as a door nobody is expected to walk through, not as a closed one, and as one whose only named key is a demonstrated accuracy gain. Does NOT amend, weaken or strengthen any of the four conditions - it changes none of their text and supersedes no record: d-2026-08-04-sam-at-runtime-is-conditionally-admissible still states the conditions, and d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow still supplies condition 3's ~6.2 s cold figure and the reviewer's standing \"very good reasons\" bar. Does NOT ban SAM at runtime; a reader who cites this record as a ban is citing the opposite of what it says. Does NOT relax the outright ban on every OTHER model at runtime, which is untouched. Does NOT touch the oracle's dev-time use of SAM, which it endorses. Does NOT adjudicate any Phase 1 proposal - the reviewer cited none, and none is judged here. Does NOT define what counts as 'brilliant' or as an accuracy improvement; that judgement is the reviewer's and is not delegable to a threshold. Does NOT edit PHASE_0_DECISIONS.md 6.1, PHASE_1_AUTHOR_BRIEF.md 3.1 or V3_PLAN.md - all three are normative and owned elsewhere, and whether any of them wants a cross-reference to this record is the reviewer's call, not this ledger's.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "6.1 - the four conjunctive conditions this ruling leaves standing, and the condition-3 sub-section carrying the reviewer's 'counts as slow' / 'very good reasons' ruling and the ~6.2 s cold correction. NOT EDITED by this pass and not proposed for edit here."
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "3.1 - how the exception was put to the six proposal authors: 'A proposal that wants SAM at runtime should say which of these it can already argue and which it would have to establish.' That is the sentence this ruling re-weights; it does not falsify it."
+    },
+    {
+     "ref": "research/v3/V3_PLAN.md",
+     "what": "5 - 'The dev-time VLM oracle ... is **never a runtime component**.' The sentence that makes the dev-tool half of the ruling a restatement rather than a change."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-a.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 5, declines: '**No model runs at runtime**, so 6.1's four conjunctive conditions do not apply; the only one I engage is condition 4, on the side that says plain code should be exhausted first.'"
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-b.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 5, declines: '**I am not asking for the model exception.**' Its condition-4 framing runs the OPPOSITE way from the others - 'this proposal claims they are not remotely exhausted ... If this arm is prototyped and *fails*, that failure is itself the evidence condition 4 asks for.' 9 asks for SAM at development time only, as the reference its mark detector's recall is measured against."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-c.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 5, declines: 'It needs no exceptional justification because it asks for none: no model runs, at runtime or anywhere else.' Names no condition."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-d.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 5, declines by never asking: 'at that end this design is in seconds-scale territory despite containing no model', priced against 'SAM's flat ~6.2 s'. Names no condition."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-e.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 5, declines: 'No model runs; condition 4 - that plain-code methods be exhausted - is what this proposal is *for*.' 8 adds 'this proposal is the plain-code exhaustion that condition demands, so reaching for SAM first would have been out of order.' This is the ONE arm that frames its own approach as the exhaustion evidence. 9 asks for SAM's mask schema for a dev-time validation, 'without SAM ever entering the runtime'."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-f.md",
+     "what": "CONTEXT, NOT JUSTIFICATION. 8, declines: '**Learned or model-based segmentation** is banned at runtime, and the one exception is slow, cold, and owes justification I would rather not spend.' Names no condition."
+    },
+    {
+     "ref": "research/v3/phase-1/proposals/arm-b-prime.md",
+     "what": "A SEVENTH proposal file that did not exist when this pass was commissioned - it appeared at 16:38 local, mid-verification. It also declines, in 9: 'This is a dev-time comparison and nothing about it enters the runtime.' Noted for completeness; whose arm it is and how it relates to arm-b.md is not this ledger's to say."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY AND CORRECTLY SO. This is a conversational reviewer ruling. No warehouse record states it, nothing was ported, and `warehouse recheck` can never flag it however the judgement behind it later moves. The verbatim quote in `decision` is the whole of the evidence, and the emphasis inside it is the reviewer's own.",
+    "THE SIX-OF-SIX DECLINE IS CONTEXT, NOT JUSTIFICATION, AND THE DISTINCTION IS THE POINT OF THIS CAVEAT. The ruling arrived in response to a report that all six Phase 1 proposal authors had independently declined the exception. THE REVIEWER DID NOT CITE THE PROPOSALS, did not name an arm, and gave no reason of any kind - they stated a preference. Reading the decline as the ruling's cause would manufacture a causal chain nobody stated, and would also make the ruling look contingent on Phase 1 going a particular way, which nothing said. The proposals are recorded in fundedByArtifacts because a later reader is entitled to know what was on the table when the preference was voiced - not because they establish it.",
+    "THE SIX-OF-SIX CLAIM ITSELF WAS VERIFIED AND HOLDS; ONE HALF OF THE CLAIM AROUND IT DOES NOT. Checked against arm-a.md through arm-f.md on 2026-08-04: all six decline the SAM runtime exception, five of them in their own 5 and arm-f in its alternatives-considered section. But the accompanying claim that 'three of them explicitly framed their own approach as the plain-code-has-been-exhausted evidence condition 4 demands' is NOT accurate as stated. THREE NAME CONDITION 4 (a, b, e) and they say three different things: arm-e claims to BE the exhaustion ('what this proposal is *for*'); arm-a engages condition 4 only 'on the side that says plain code should be exhausted first', without claiming the exhaustion is complete; and arm-b runs the argument BACKWARDS - it says plain code is 'not remotely exhausted' and offers its own prototype's FAILURE as the evidence condition 4 would need. Arms c, d and f decline without naming a condition at all. So: 6/6 decline, 3/6 engage condition 4, 1/6 claims to be the exhaustion evidence.",
+    "THE PROPOSAL FILES WERE BEING WRITTEN WHILE THEY WERE BEING READ, so no sha256 is recorded for any of them and none should be inferred. A seventh file, arm-b-prime.md, appeared between the directory listing that opened this check and the check itself. Every quotation above is from the tree as of 2026-08-04 16:38 local; a later reading may find different words in the same sections.",
+    "THE TIMESTAMP IS APPROXIMATE TO THE HALF HOUR. Only the DATE is asserted. `ts` is set to 14:30Z (16:30 local) because the ruling followed a report on proposals whose last write before it was 16:08 local; nobody recorded the minute. This matters only for `recheck`, which compares amendment times against `ts`, and this record cites no warehouse ids for it to compare.",
+    "'IT IS NOT A REQUIREMENT' IS NOT 'IT IS NOT ALLOWED', and the most likely way this record gets misread is by an agent quoting the first clause of the ruling without the third. The reviewer wrote the word *open* with their own emphasis. A proposal that wants SAM at runtime is still entitled to argue for it and still owes exactly four conditions - no more than before this ruling, and no fewer.",
+    "NOTHING HERE MAKES SAM AT RUNTIME EASIER TO ARGUE, EITHER. Condition 3 remains unsatisfied on a measured number, and this ruling adds a preference on top of it. The net effect on a hypothetical SAM-at-runtime proposal is strictly negative even though no rule changed - which is exactly what 'downgrade of expectation' means."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-v3-plan-4-oracle-evaluability-is-dev-time-and-not-in-conflict",
+   "ts": "2026-08-04T14:30:00Z",
+   "kind": "process",
+   "draftedAs": "documentation-consistency check. No source document proposes this record; the commissioning brief for the SAM-downgrade pass raised an apparent conflict, retracted it before the check was run, and asked for the check to be made and recorded either way. It is filed as `process` because it settles how two normative sentences are to be read, not what any instrument does.",
+   "decision": "EXAMINED AND DISMISSED: V3_PLAN.md 4's SENTENCE ABOUT SAM IS ABOUT DEV-TIME EVALUABILITY AND IS NOT IN CONFLICT WITH THE RUNTIME DOWNGRADE. The sentence checked, V3_PLAN.md 4, scene-parse-first: \"The oracle (and SAM masks specifically) is what makes this paradigm evaluable at all.\" READ ALONE IT CAN LOOK LIKE A PARADIGM DEPENDING ON SAM. IT IS NOT, AND THE TEXT THAT SETTLES IT IS TWENTY LINES BELOW IT IN THE SAME DOCUMENT - V3_PLAN.md 5, first sentence: \"The dev-time VLM oracle (see pipeline doc) is the enabling investment. It is **never a runtime component**.\" AND ITS FIRST BULLET, WHICH IS 4's SENTENCE RESTATED WITH ITS SCOPE VISIBLE: \"**Makes scene-parse-first evaluable** - intermediate representations scored directly, not just final palettes.\" WHAT IS EVALUABLE IS THE INTERMEDIATE REPRESENTATION, AT DEV TIME, BY SCORING IT AGAINST ORACLE LABELS AND MASKS. Nothing in 4 says the shipped scene-parse-first algorithm calls SAM, and the enclosing sentence describes what makes a candidate paradigm ASSESSABLE during divergence, not what its runtime contains. So the ruling of 2026-08-04 does not contradict 4 - IT ENDORSES EXACTLY THE USE 4 DESCRIBES, by name: \"let it just be a dev tool to help with iteration autonomy\". A THIRD PIECE OF THE SAME DOCUMENT POINTS THE SAME WAY: 5's closing emphasis correction calls `artwork_regions` \"a co-equal deliverable with `artwork_labels`\" whose \"mask quality goes into the human validation\" - deliverables and validation, both dev-time. NO EDIT TO V3_PLAN.md IS OWED OR PROPOSED.",
+   "scope": "Settles one reading question about V3_PLAN.md 4 and 5 so that it is not re-raised: the two sections are consistent with each other and with d-2026-08-04-sam-at-runtime-downgraded-to-unwanted-not-banned. Does NOT edit V3_PLAN.md, and deliberately so - the document is normative and owned elsewhere, and an agent that finds a possible problem in a normative document is not the agent who should silently resolve it. Does NOT clear any OTHER sentence in V3_PLAN.md; exactly one was checked. Does NOT bless scene-parse-first, which is a candidate paradigm and nothing more. Does NOT claim the sentence is well phrased - it is checked, not defended, and a reader who trips on it in isolation is making an understandable mistake, which is the reason this record exists at all.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/V3_PLAN.md",
+     "what": "4, scene-parse-first bullet - the sentence checked. And 5, whose opening ('never a runtime component'), first bullet ('intermediate representations scored directly') and closing emphasis correction ('mask quality goes into the human validation') are jointly the text that settles it."
+    },
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "6.1 - 'The oracle's **dev-time** use of SAM is a separate matter and is untouched by this', the same separation stated in the normative decisions document."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY: this is a reading of two documents, not a reviewer answer and not a measurement. `recheck` can never flag it. It is however checkable by anyone in about a minute - two named sections of one file.",
+    "THIS IS A NEGATIVE RESULT AND IS RECORDED AS ONE. Nothing was found and nothing was fixed. It is written down only so the next reader who trips on 4's sentence finds an answer instead of re-opening the question, and so that 'this was checked' is a citable fact rather than a memory.",
+    "THE CHECK WAS PROMPTED BY A CLAIM THAT WAS RETRACTED BEFORE IT WAS TESTED. The commissioning brief raised the tension and then withdrew it in the same paragraph, asking for the check anyway. The check confirms the withdrawal. Recording the sequence matters because the alternative - dropping a retracted worry - would leave no trace that it was ever verified.",
+    "ONLY V3_PLAN.md WAS SWEPT FOR THIS PHRASING, and only 4 and 5. If a similar sentence exists in ALBUM_ARTWORK_SEMANTIC_ORACLE_PIPELINE.md or elsewhere, it was not examined here and no claim is made about it."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }
