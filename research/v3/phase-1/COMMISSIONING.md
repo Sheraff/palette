@@ -79,6 +79,36 @@ its own path. F′ reads from `phase-1/packet-two/`, a byte-identical copy under
 nothing. F's own exposure is recorded as none and nothing already measured changes; the rename
 protects the second control, and any future one.
 
+### 2.2 Round 3 — E and F only, because the unseated arms are the diversity engine
+
+**Reviewer, 2026-08-04, after round 2 landed:** *"let's run E and F again, they produced different
+ideas, let's see if they can produce one more."*
+
+Round 2 answered the seat question cleanly: **all four seated pairs reproduced their paradigm
+family, and both unseated pairs diverged completely.** E went to component-tree persistence and E′
+to a joint continuous figure–ground measure — E′ rejecting persistence by name, having never seen
+E. F went to a robust affine field-plus-marks and F′ to the tree of shapes. Seats determine the
+paradigm; the free framing generates new ones.
+
+So round 3 re-runs **E and F alone**, prompts unchanged again. The reviewer's purpose is the idea
+pool. The measurement it also produces is the one round 2 could not: **whether the free framing
+keeps generating novel paradigms, or starts repeating.** Two divergences could be luck; a third
+novel paradigm from each is a property of the framing, and a repeat is equally informative and
+arrives just as cheaply. `arm-e-r3.md` and `arm-f-r3.md`.
+
+**The confinement rule is tightened a third time**, and the history is worth stating because it is
+the honest measure of what instruction-based confinement is worth. Round 1: two arms ran `ls` on
+the proposals directory, both self-disclosing. Round 2 named that directory explicitly — *"not even
+to check your output path"* — and one arm ran `ls -la` there anyway, **with the directory as its
+working directory rather than as an argument**, then disclosed it. Round 3 closes that specific
+form: *"and not as the working directory of any command you run"*.
+
+Three rounds, three incidents, three self-disclosures, **zero content reads and zero undisclosed
+breaches across fourteen author-runs.** The rule keeps failing at the edges and the culture keeps
+catching it. That is the actual finding, and it should be read as a caution about confinement by
+instruction rather than as reassurance: what makes this survivable is that agents report
+themselves, which is not a property anyone can enforce.
+
 **Seats are directions, not designs.** Each seat is stated above in full — one sentence, with no
 justification attached, because the justification would be a failure analysis and authors do not
 receive those (`PHASE_1_AUTHOR_BRIEF.md` §7). An author may reshape a seat and must say so if they
