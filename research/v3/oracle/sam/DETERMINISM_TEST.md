@@ -101,8 +101,13 @@ been the interesting outcome.
 
 ## 5. Speed, for the record
 
-Not gated — §6.1 condition 3 ("fast enough") is not this round's question and no threshold is set
-here. Numbers are the `segment_concepts` call only; decode and RLE encoding are reported separately.
+Not gated by this round. §6.1 condition 3 ("fast enough") **was ruled on by the reviewer on
+2026-08-04, while these passes were running**: SAM's measured cost "counts as slow… not slow enough
+to fully disqualify it as a runtime tool, but slow enough that there will have to be very good
+reasons to include runtime masking." Condition 3 is therefore **not satisfied and not failed** — it
+is a standing debt. Nothing below sets a threshold; the numbers exist for a proposal to argue
+against. Numbers are the `segment_concepts` call only; decode and RLE encoding are reported
+separately.
 
 **Per-image inference, all 144 inferences: median 3.65 s, p95 7.82 s, min 2.68 s, max 8.55 s.**
 
@@ -148,10 +153,27 @@ machine-wide action an agent does not take. These load numbers are a floor.
 **Decode:** median 0.4 ms, p95 7.0 ms (CPU, measured separately). **RLE encode:** median 3.2 ms,
 p95 53 ms. Both negligible against a ~4 s inference, but non-zero and included below.
 
-### 5.1 Projections under the precompute architecture
+### 5.1 Projections — and the frame correction that landed mid-run
 
-The precompute architecture is the one in which masks are computed **once per file** and stored, so
-the shipped pipeline reads a table and never loads a model. Two numbers matter.
+**Read this paragraph before the numbers.** This round was commissioned to project
+"one-time-corpus + per-new-file **under the precompute architecture**". While its GPU passes were
+running, the reviewer ruled that frame out (`PHASE_0_DECISIONS.md` §6.1, commit `9f23978`,
+`d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`):
+
+> At runtime we *will not* have anything pre-computed. Pre-computed is only while we develop on a
+> known corpus.
+
+So the two numbers below are **not** two halves of one runtime cost story, and presenting them as
+one would repeat exactly the error that ruling corrects. They are two different things:
+
+- the **corpus sweep** is a **dev-time** cost, which is the only thing precompute is now for;
+- the **per-file** number is the **whole runtime cost**, because at runtime nothing amortises it.
+
+**This round's measurements independently confirm the number the ruling rests on.** The reviewer
+ruled on "roughly 2.7–4.3 s per image", taken from the five eval-142 runs. Measured here on a
+different sample, a different script and six fresh processes: minimum **2.68 s**, cold-machine
+median **2.75 s**, 144-inference mean **4.11 s**. That is the same bracket, reproduced
+independently — so the ruling's premise is not an artifact of how the eval-142 runs were driven.
 
 **Planning figure: 4.3 s/image.** Not the 2.75 s cold-machine best case, which is not achievable
 sustained, and not the 7.49 s hot median, which is a transient. 4.3 s is what three independent
@@ -160,7 +182,9 @@ sustained runs agree on: this round's 144-inference mean is **4.11 s**, and the 
 (`sam-eval-142-v5-allnouns`, the first full run under the v2.2 hash). A 142-image consecutive run is
 a better model of corpus work than any pass in this round.
 
-**One-time corpus cost**, single process, one pass over every file:
+**One-time corpus cost — DEV-TIME ONLY**, single process, one pass over every file. This is the
+cost of the offline sweep over the known corpus that the ruling still permits as a development
+affordance. It buys the shipped pipeline nothing:
 
 | collection | files | at 4.3 s/file |
 |---|---|---|
@@ -181,12 +205,19 @@ entries in `data/decisions/proposed-sam-determinism-1.json` → `proposedLooseEn
 here:** `PHASE_0_LOOSE_ENDS.md` is the housekeeping workstream's file and this workstream does not
 edit it.
 
-**Per-new-file cost** (a file arriving after the corpus pass):
+**Per-file cost — this is the RUNTIME cost, and it is the whole of it.** A runtime call is cold and
+per-file: one image nobody has seen, no companions, no warm artifact. Nothing amortises these
+seconds, so they are paid on every call by every user:
 
 | path | cost |
 |---|---|
-| resident service, model already loaded | 0.4 ms decode + **4.3 s** inference + 3 ms RLE ≈ **4.3 s** |
-| cold CLI invocation | + **1.9 s** model load ≈ **6.2 s** (**6.8 s** with weight verification) |
+| model already resident in a warm process | 0.4 ms decode + **4.3 s** inference + 3 ms RLE ≈ **4.3 s** |
+| cold process (the honest runtime case) | + **1.9 s** model load ≈ **6.2 s** (**6.8 s** with weight verification) |
+
+The second row is the one a runtime proposal must quote. Under the corrected frame there is no
+resident service warmed by a prior corpus pass to hide behind, and **6.2 s per call** is what
+"runtime masking" costs before any argument about whether it is worth it. Condition 3 is ruled
+**not satisfied** and this number is the standing debt against it.
 
 ## 6. What this does and does not establish
 
@@ -203,9 +234,12 @@ order — and, at the row grain, across concept order too. Condition 2 has a tes
    This is a property of a **pin**, not of SAM.
 3. **One model revision and one concept set.** Both are part of run identity by construction.
 4. **Not the other three conditions.** §6.1's conditions are conjunctive. Condition 1 (no upstream
-   model) is an architecture question; condition 3 (fast enough) has no threshold set; condition 4
-   (plain code exhausted) is untouched. **SAM at runtime remains inadmissible.** This round moves
-   exactly one condition from "unsatisfied by default" to "satisfied, with scope".
+   model) is an architecture question and untouched; condition 4 (plain code exhausted) is
+   untouched; and **condition 3 was ruled on mid-run and is not satisfied** — SAM's cost "counts as
+   slow", carrying a standing debt of "very good reasons" against any runtime-masking proposal.
+   **SAM at runtime remains inadmissible.** This round moves exactly one condition from
+   "unsatisfied by default" to "satisfied, with scope", and the round's own speed numbers
+   independently confirm the measurement that made condition 3 a debt rather than a pass.
 5. **Determinism is not correctness.** Nothing here says the masks are good. Mask quality is
    `MASK_REVIEW_NOTES.md`'s business.
 
