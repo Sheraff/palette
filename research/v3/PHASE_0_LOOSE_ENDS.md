@@ -37,16 +37,42 @@ measurement its revival condition names.
 
 | section | items | open | closed |
 |---|---|---|---|
-| **A — sharp** (something downstream is already leaning on them) | A1–A15 = 15 | 10 | 5 — A1, A5, A7, A8, A9 |
-| **B — standing** (parked with a clear trigger) | B1–B30 = 30 | 25 | 5 — B4, B8, B16, B18, B21 |
+| **A — sharp** (something downstream is already leaning on them) | A1–A18 = 18 | 9 | 9 — A1, A5, A7, A8, A9, A13, A14, A15, A18 |
+| **B — standing** (parked with a clear trigger) | B1–B35 = 35 | 29 | 6 — B4, B8, B16, B18, B21, B27 |
 | **C — latent** (harmless today, harmful under one specific move) | C1–C13 = 13 | 12 | 1 — C11 (resolved by ruling, never a defect) |
 | **L — review-server and round hygiene** (added 2026-08-03) | L-a–L-i = 9 | 8 | 1 — L-b |
 
 **A6 is REOPENED**, not closed — it was closed on 2026-08-03 and reopened the same day, because its
 closing argument turned out to be circular. It is counted as open above.
 
-**Counts are UNCHANGED on 2026-08-04, and re-derived by counting the headings: 67 items, 55 open,
-12 closed.** Mask round 3 resolved **half** of A6 — the area guard is scoped off for `person_like`
+**Counts moved on 2026-08-04 (late), re-derived by counting the headings: 75 items, 58 open, 17
+closed** — against 67 / 55 / 12 earlier the same day. **Eight rows added, five closed**, and the
+shape is the reverse of 2026-08-03's: the closures are all *results arriving*, and the additions are
+mostly *the price of those results*. Closed: **A13** (the free-form subject noun exists, both halves
+ran, the measured answer is in), **A14** (SAM's point path is called and returned a mask 98 times in
+100), **A15** (the coordinate convention is feature-grid, settled in one CPU run, 8/8 against 0/8 and
+0/8), **A18** (the premise selftest's inventory guard is green again), **B27** (the pointing
+specialist was tried end to end, and its pre-registered bar failed).
+Added: **A16** (the functional-visibility round a live `[UNCALIBRATED]` constant already
+forward-references — the citation was dangling until this row existed), **A17** (the source-support
+invariant refuses 96.9% of the reviewer's own endorsed palettes, measured), **A18** (opened and
+closed in this same pass — see below), **B31** (0.07444 on loan to a pair nobody measured), **B32**
+(the 8-noun cap binds on 72 of 142 covers), **B33** (two toolbox-review reports, ~30 findings, no
+prioritizer), **B34** (an unsigned run of six commits), **B35** (invariant 3 still judges contrast
+pairs by distance, flagged and not decided).
+**Three of the five closures were opened on 2026-08-03 or later and closed within a day** — A14 and
+A15, both from the same paper-only scout, and A18, opened and closed inside this pass. It is worth
+naming what they have in common: each closing condition was *one action needing no download, no GPU
+and no reviewer*. **Not one reviewer-owned row moved.** That is the ledger's real bottleneck stated
+as a measurement rather than as the standing complaint in §D.
+**A warning this pass earned, for whoever writes the next one.** Three rows went stale **while being
+written** — the parked staged set landed, `residual-purity-2` was built, and the pointing successor
+was pre-registered, all between drafting and committing. Each had to be corrected before the commit,
+and B34's own count went from three to six in the same window. **Re-read the git log immediately
+before committing a ledger pass**; on a night when several agents are landing results, a ledger
+compiled over an hour is describing an hour-old repository.
+**Earlier on 2026-08-04, before this pass, the counts were unchanged at 67 / 55 / 12.** Mask round 3
+resolved **half** of A6 — the area guard is scoped off for `person_like`
 — but `mark_like` and `dynamic_subject` came back undecided under the same pre-registered rule, so
 the row stays open and no total moved. **A12 has since resolved its own half the same way**: round
 3b was released, answered and its pre-registered rule APPLIED, so the concept-adoption half is done
@@ -271,6 +297,18 @@ computed under it.)*
   mean residual moves **0.8445 → 0.8261** static / **0.8362 → 0.8178** dynamic; guard-off is
   unchanged to the digit. Every regenerated file states its rule in
   `calibrated_cut.guard_exempt_groups`, and an absent key means it predates the exemption.
+- **AMENDED 2026-08-04 — the `dynamic_subject` half's EXPOSURE grew eightfold while its evidence did
+  not.** The v5 all-nouns round replaced one `dyn-noun` tag with **eight rank tags**,
+  `dyn-noun-1` … `dyn-noun-8`, firing on 134 / 120 / 107 / 90 / 80 / 70 / 52 / 25 covers respectively.
+  Like every `dyn-*` tag they sit in **no** `CONCEPT_GROUPS` group, so `config.group_of()` returns
+  `None` and they are cut at the **pooled** threshold — never `text_like`'s raised cut, never
+  `cjk_script`'s lowered one — and **no mask-quality round has ever graded one.** `dyn-noun-N` is
+  **not** guard-exempt and R-2's proposed extension is still not carried out. So the row's revival
+  condition is unchanged (a third decided `dynamic_subject` answer over the guard), but what turns on
+  it is now eight times larger. `residual-purity-1` supplies a *thin* second reading and no more: the
+  guard's whole reweighted soft-margin advantage came from two `noun-fired` sheets, with pure-field
+  tied to four decimals — which is why that round's own verdict says **A6 must be decided on both
+  readings together, not on either alone.**
 
 ### A6 (closure text of 2026-08-03, superseded by the reopen above)
 ~~**Resolution:** calibrated against the same round as A5 (`sam-mask-quality-1`, 60 reviewer
@@ -513,7 +551,24 @@ Original entry kept below for the record.
   (`d-2026-08-04-sam-text-like-cut-discards-correct-text-on-a12-covers`; the shape it does support
   is a per-cover rescue rule, unfitted). **Revives when:** round 3b is released and answered.
 
-### A13. The oracle collects no free-form subject noun, and the residual route needs one
+### A13. ~~The oracle collects no free-form subject noun, and the residual route needs one~~ CLOSED 2026-08-04
+**Resolution:** the noun exists, both halves ran, and the measured answer this row was waiting for is
+in. `subject-noun.v1` collected one free-form caption noun per cover (`sam-eval-142-v4-nouns`), and
+`subject-nouns-all.v1` variant J then collected **every** thing per cover — 830 entries over 142
+covers, mean 5.85, 314 distinct raw nouns — feeding `sam-eval-142-v5-allnouns`
+(`oracle/sam/RESIDUAL_V5_NOTES.md` §12). The `subject_unmasked` contamination cause the row is
+named for drops **9 → 5** at the subtraction cut with `no_subject_prompt_at_all` going **2 → 0**,
+and **98 of 142 covers now fire a mask from a noun ranked below first**. Recorded as
+`d-2026-08-04-allnouns-elicitation-closes-the-single-noun-limit`. The row's blocker on B24's
+option (b) is discharged: a purity measurement was had, and it returned NOT-ADOPT
+(`d-2026-08-04-r3-residual-not-adopted`) — which is an answer, not a further block.
+**Three things this closure does NOT carry**, each now a row of its own or an existing one: the
+8-entry cap binds on 72 of 142 covers (**B32**); `"object"` was **not** retired from the class half,
+for the third round running, and the row's own "cheap and separable" suggestion is therefore
+still owed; and no human has yet seen a v5 residual, so nothing here says purity improved.
+Original entry kept below for the record.
+
+### A13 (original). The oracle collects no free-form subject noun, and the residual route needs one
 *Added 2026-08-03, out of the residual-isolation retry.*
 - **What.** Probe 5 recommended a **dual** prompt for dynamic SAM prompting — the species/artefact
   noun a caption would use, **plus** the `subject_kind` class word as a fallback — and its evidence
@@ -548,7 +603,20 @@ Original entry kept below for the record.
   It is 0/24 and every call is wasted GPU. Dynamic prompting itself costs **~0.04 s per extra
   prompt**, so adding nouns is close to free — the fixed per-image term dominates.
 
-### A14. SAM's point-prompt weights are loaded on every run and never called
+### A14. ~~SAM's point-prompt weights are loaded on every run and never called~~ CLOSED 2026-08-04
+**Resolution:** they are called now, and they work. The interactive path was wired in
+`oracle/sam/` as the scout costed it — interactive-FPN features, prompt encoder, the **interactive**
+decoder, mask post-processing — and then exercised for real: the point path returned a mask on
+**98 of 100** attempts across the pointing probe, and a whole reviewer round
+(`pointing-ground-1`) was served off masks it produced. The row's sharp half is discharged with
+it: "SAM can only do text/concept prompts" was a statement about mlx-vlm's exposed API and is now
+false in this repo as well as in the weights. **Gated by A15, which closed first.** What the round
+found is not a point-path defect — the pointer missed zero of six on the stratum with an answer
+key — but SAM's mask growth from a correct point, carried as
+`d-2026-08-04-pointing-route-alive-pending-typical-strata-probe` and in **B27**'s closure.
+Original entry kept below for the record.
+
+### A14 (original). SAM's point-prompt weights are loaded on every run and never called
 *Added 2026-08-03, from the pointing-model scout (paper only — no GPU, no download, nothing loaded).*
 - **What.** The pinned `mlx-community/sam3.1-bf16` snapshot carries **145 interactive point-prompt
   tensors** — `tracker_model.interactive_sam_prompt_encoder.*` (14),
@@ -576,7 +644,24 @@ Original entry kept below for the record.
 - **Blast radius.** Read-only today: nothing currently calls the path, so nothing is wrong on disk.
   What it changes is the option set every future design note is choosing from.
 
-### A15. The MLX point-prompt coordinate convention is untested and ambiguous
+### A15. ~~The MLX point-prompt coordinate convention is untested and ambiguous~~ CLOSED 2026-08-04
+**Resolution: the caller owes FEATURE-GRID coordinates**, and the reading that "cannot be
+separated by reading" was separated by measurement in one run, on CPU, with no download.
+`data/sam/point-gate-coord-convention.json`: over 8 probe targets, the feature-grid convention put
+**8 of 8** argmaxes within 1.5 cells (median cell error 1.0, max 1.0), while normalizing by
+`input_image_size` scored **0 of 8** (median error 30.09 cells) and treating the coordinates as
+original-image pixels scored **0 of 8** (median 39.15). The gap is two orders of magnitude and
+needs no judgement call. `verdict: "feature"`, against `mlx-community/sam3.1-bf16` at a pinned
+revision, with a numpy-vs-MLX cross-check agreeing to 6e-08. **One rider recorded with the
+closure**, and it is the one thing a later reader could be bitten by: the dense positional
+embedding builds its grid with `arange(H)/H` (cell **corners**) where upstream SAM uses
+`(arange(H)+0.5)/H` (cell **centres**), so the dense frame sits half a feature cell — 7 px of 1008
+— off the sparse one. That is inside the 1.5-cell tolerance this gate used and it is not what the
+gate was asking about; it is written down here because "half a cell" is exactly the size of error
+that reads as a model result. A14 unblocked on this and has since closed too.
+Original entry kept below for the record.
+
+### A15 (original). The MLX point-prompt coordinate convention is untested and ambiguous
 *Added 2026-08-03, same scout. This is A14's gate and it must be settled first.*
 - **What.** `SAMPromptEncoder._embed_points` normalizes coordinates by **`image_embedding_size`**
   (the feature grid, e.g. 72×72). Upstream SAM normalizes by **`input_image_size`** (1024). Either
@@ -592,6 +677,134 @@ Original entry kept below for the record.
   deferred, since it retires the hardest open question in the scout for the price of one image.
 - **Blast radius.** Everything downstream of A14. A wrong convention produces confident masks in the
   wrong place, which is the failure shape that looks like a model result.
+
+### A16. The functional-visibility calibration round is proposed, unrun, and a live constant depends on it
+*Added 2026-08-04, from the contract workstream's 2026-08-04 change
+(`d-2026-08-04-accent-functional-distance-is-a-bracketed-placeholder`).*
+- **What.** `ACCENT_FUNCTIONAL_DISTANCE = 0.14591` is **in force** in invariant 4's accent escape and
+  is `[UNCALIBRATED]`. Its own provenance tag names the round that would replace it — *"calibrate via
+  a functional-visibility round, criterion `does this work as an accent at a glance`, NOT the identity
+  criterion"* — and `constants.ts` then forward-references *"the proposed functional-visibility round
+  in the loose-end ledger"*. **There was no such row.** This is that row; until this pass the citation
+  was dangling, which is the `decision-dangling` shape B29 calls a sharper defect than an untagged
+  site, because a broken citation reads as provenance and is not.
+- **Why it is sharp, not standing.** The constant is not parked — it decides verdicts today. It is
+  **1.96×** the threshold it replaced, so the escape is narrower and the floor stricter, and the
+  change already fails **two reviewer-endorsed palettes** on the roles matrix plus 5 more endorsements
+  on the advisory reconstructed-gradient matrix. Those are verdicts against human answers, resting on
+  a digit no stimulus was ever graded against.
+- **The round, as far as the constant specifies it.** The criterion is **functional, not detection**:
+  *does this work as an accent at a glance*, which is the thing the reviewer's own refinement asks for
+  and which no round has ever asked. The stimulus family already exists — bracketing round 1 part 2's
+  equal-luminance accent ladder, rungs 0.01267 … 0.24181 — and the two anchors are pinned by the
+  reviewer's own answers: **0.08804**, the lowest rung they called clearly visible and have since
+  retracted as *"hardly perceptible"*, and **0.24181**, the top rung they called visible and do **not**
+  retract. So the round's job is to place a threshold inside a bracket both of whose ends the reviewer
+  has already spoken to, which is the cheapest shape a calibration round can have.
+- **What is NOT specified and is the reviewer's to fix before it runs.** The wording of the functional
+  question; whether the accent is shown on a field, on a ramp, or both (the escape is enforced over the
+  whole rendered ramp, so a field-only stimulus would under-specify it); the item count and the
+  stratification; and whether the same round should also settle **B31**, the foreground↔accent bar,
+  which is a different pair on a different criterion and would need its own stimulus.
+- **Owner.** **reviewer** (the criterion wording and the go-ahead) + contract workstream (the fixture).
+  **Revives when:** immediately — the constant is live. It is the only `[UNCALIBRATED]` value in the
+  contract that changes reviewer-visible verdicts today.
+- **Blast radius.** Every accent verdict on an isoluminant pair; the two endorsed palettes above; and
+  any Phase 1 paradigm whose accents are chromatic rather than luminance-driven, which is the class
+  `V3_PLAN.md` §1 criterion 3 says v2-3 made structurally unpublishable.
+
+### A17. The source-support invariant's population floor refuses 96.9% of the reviewer's own endorsed palettes
+*Added 2026-08-04, from `reviews/toolbox-review/bias-audit.md` finding **B1** — measured by that
+audit, not by the invariant's own workstream.*
+- **What, measured.** Invariant 2 (`validateSourceSupport`) requires every published colour to be an
+  exact 8-bit triple of the input **meeting a population floor**, `SOURCE_POPULATION_FLOOR = 0.001`.
+  Against `data/legacy/endorsements.json` — 351 reviewer-endorsed v2-3 palettes, 1,397 role colours,
+  each artwork decoded at its own native rendition — **340 of 351 (96.9%)** have at least one role
+  colour below the floor. `acceptable.json` 164/166 (98.8%); `known-bad.json` 35/37 (94.6%).
+- **The provenance is not the problem; the AREA is.** Colours **absent** from the source: **1 of
+  1,397**. v2-3 already published source pixels. But 1,052 of 1,397 endorsed role colours (75.3%) sit
+  below 0.001, and the median endorsed role colour's area is **8.89e-5** — **the floor is 11× above
+  the median colour the reviewer endorsed.**
+- **Why the rationale runs backwards.** The floor is justified against a JPEG noise argument, but
+  JPEG ringing does not *inflate* a colour's exact-triple count, it **shatters** it: a uniform field
+  covering 40% of a cover is spread across hundreds of near-identical triples, none of which
+  individually occupies 40%. Counting exact triples measures **how much of a histogram spike a colour
+  sits on**, not how much of the artwork it accounts for — so the only colours that reliably clear the
+  floor are histogram modes.
+- **It does not discriminate quality**, which is the finding's sharpest edge: endorsed 96.9%,
+  acceptable 98.8%, known-bad 94.6% — uniformly hostile to the whole human-endorsed distribution and
+  very slightly *harsher* on the endorsements than on the known-bad set. Per role, it bites hardest on
+  **accent** (311/350 below floor), the role `V3_PLAN.md` §1 criterion 3 names by name.
+- **The campaign's own rule already speaks to this.** `PHASE_0_DECISIONS.md` §4: *"an invariant that
+  ever blocks an endorsed palette is demoted — the reviewer outranks the rule."* **DECISION PENDING:**
+  applying that rule is the reviewer's act, not an agent's, and nothing is demoted here.
+- **The proposed fix and its measured effect**, so the pending decision is a choice between two
+  numbers rather than between a number and a hope: measure population **within the same-colour bar**
+  instead of within the exact triple — the campaign's own frozen `[REVIEWED]` ruler, already
+  implemented. Refusals move **340/351 (96.9%) → 62/351 (17.7%)**, colour pass rate 24.6% → 94.8%,
+  median measured area 8.89e-5 → 1.91e-2 (**215×**, which is the codec-shattering effect quantified).
+  The residual 62 are not waste — they are the first honest review batch this invariant has ever had.
+- **Two things not to do by accident.** Do not read this as touching invariant 2's **spatial-spread**
+  half, which is permanently `deferred` (**A4**) and stays so. And do not let a synthesis paradigm's
+  only route through the gate be snapping to the nearest modal triple — that is the naive
+  pixel-snapping the design constraints rule out, and §4's own meta-rule warns that v2-3's first
+  repair relocated the defect in 13 of 15 cases.
+- **Owner.** **reviewer** (demote, recalibrate, or keep) + contract workstream (the measure).
+  **Revives when:** immediately, and **before Phase 1 briefs go out** — the audit's own shortlist puts
+  it first of three, because it is a hard gate that is measurably wrong and every Phase 1 proposal will
+  be judged through it.
+- **Blast radius.** Every Phase 1 paradigm, differentially: a reconstruction/MDL framing produces
+  *representative* colours and is hit hardest, so the gate does not merely refuse palettes, it selects
+  among architectures.
+
+### A18. ~~`oracle/premise/selftest.py` has one known failure and its one-line fix is owed~~ CLOSED 2026-08-04
+**Resolution: the parked staged set landed, and the fix landed with it, within the hour** — commit
+`c1f6b11`, *"premise selftest knows the three new prompt files"*, five lines. Verified rather than
+assumed: `oracle/premise/selftest.py` now runs to **`all checks passed`** in its own venv
+(`oracle/premise/.venv`), and the inventory guard is green. *A trap for whoever checks this next: run
+it under the venv. Under the system interpreter it fails on `llguidance is importable`, which is a
+missing dependency and not this row.*
+**This row was written open and closed in the same ledger pass**, which is worth leaving visible
+rather than tidying away: the row's whole content was *"a good guard is red because someone else's
+work is parked in the index"*, and the moment the index cleared, the fix was one line and took
+minutes. The delay was never technical.
+**Two riders it named are NOT discharged and have not moved**, both still blocked on nothing but
+someone doing them: `_validate_with_free_text_arrays` is still **monkey-patched** onto
+`common.validate_and_canonicalize` at `run_premise_allnouns.py:147` rather than folded into
+`common.py`; and `RESIDUAL_V5_NOTES.md` §12 is still **not folded** into
+`RESIDUAL_EXPERIMENT_NOTES.md`, which now carries §11 from the landed parked set and has no §12.
+Both are mechanical, neither is urgent, and neither is a guard — which is why this row closes rather
+than being kept open on them. *If a third thing ends up deferred to "when the parked set lands",
+re-open this as a row about that phrase.*
+Original entry kept below for the record.
+
+### A18 (original). `oracle/premise/selftest.py` has one known failure and its one-line fix is owed
+*Added 2026-08-04, from `oracle/sam/RESIDUAL_V5_NOTES.md` §12.10, where the round that caused it
+declared it rather than leaving it to be found.*
+- **What.** The premise selftest's inventory guard — *"`prompts/` holds no file this selftest does not
+  know about"* — fails on `subject-nouns-all.v1.variant-J.json`. **The guard is correct and is doing
+  its job**: a new prompt file is additive or it is a regression, and the guard exists to make the
+  author say which. The fix is one line, adding the filename to the known-new literal at
+  `selftest.py:534-536`.
+- **Why it was not written.** `selftest.py` and `common.py` were **carrying another agent's parked
+  staged work** when the v5 round finished, and editing a file whose index copy is someone else's
+  in-progress change either commits their work under the wrong message or silently drops it. The
+  round routed around it instead — the two additions it needed live in `run_premise_allnouns.py`, and
+  everything the guard would have covered plus the one thing it could not (the free-text **array**
+  answer shape) is covered by `oracle/premise/selftest_allnouns.py`, 32 checks, all passing.
+  `oracle/sam/selftest.py` is unaffected and passes.
+- **Why it is sharp rather than housekeeping.** A red selftest that everyone knows is red stops being
+  a selftest. This one is red for a *good* reason, which is exactly the state in which it is most
+  likely to be normalized — and the guard it disables is the one that would catch the **next**
+  undeclared prompt file.
+- **Two follow-on moves owed at the same time**, both mechanical once the parked set lands: folding
+  `_validate_with_free_text_arrays` into `common.validate_and_canonicalize`, which is the right end
+  state; and folding `RESIDUAL_V5_NOTES.md` into `RESIDUAL_EXPERIMENT_NOTES.md` as **§12**, which is
+  where that section belongs and is not, for the same parked-file reason.
+- **Owner.** whoever lands the parked staged set — **not** the v5 round, which correctly declined.
+  **Revives when:** the parked set lands. It is already revived in the weaker sense that the selftest
+  is red now.
+- **Blast radius.** The premise workstream's own regression guard, and nothing else today.
 
 ## B. Standing — parked with a clear trigger
 
@@ -743,6 +956,23 @@ fired in form and not in substance: **anisotropy remains unmeasured, and its own
 owed.** Round 3's items are deliberately stratified lightness-dominant vs chroma-dominant (its main
 confound control), so it will yield *incidental* evidence on the same axis; that is a by-product of
 a differently-aimed round and must not be quoted as the anisotropy measurement this row asks for.
+**AMENDED 2026-08-04 — the by-product was not incidental after all, and it decided the round.**
+Round 3's stratification was backed by a **pre-registered anisotropy veto**, and the veto **fired**:
+lightness-dominant in-band items came in at **15/21** same (favouring `max`), chroma-dominant at
+**2/21** (favouring `average`, exact p **0.000221**, individually decisive). Opposite sides of one
+half, one subgroup decisive — so the round returned `anisotropy-confounded` and **no rule**
+(`d-2026-08-04-straddle-rule-anisotropy-confounded`, B13). The finding, in the pre-registration's own
+words, is that *the straddle bar depends on the direction of the difference, which neither candidate
+rule can express* — which is this row's claim, arrived at from a different direction and now
+**pre-registered rather than post-hoc**. One of the two band controls also fell on the wrong side in
+the chroma direction, consistent with the same effect.
+**The row nonetheless stays OPEN, and the distinction matters.** This measures anisotropy *of the
+straddle rule*, over pairs spanning two ruler regions, at band fractions between two bars. B9's own
+question is different and remains unmeasured: whether **a single scalar bar at a fixed distance** is
+the wrong shape — the 4/4 · 2/4 · 1/4 reading at 0.01500. Round 3 corroborates the direction and does
+not substitute for that measurement, and the tripwire in `tests/contract-color.test.ts` stays.
+*Revives when: unchanged — a round aimed at anisotropy itself. It is now the best-evidenced unrun
+round in this ledger, and the cheapest thing that could retire the tripwire.*
 
 ### B10. The light-saturated hue split is unencoded and tripwired
 0.01516 / 0.02074 / 0.03805 by hue third — a 2.5× spread, and the single 0.02293 is "a deliberate
@@ -753,6 +983,15 @@ a fitted crossing. Same tripwire as B9.
 ### B11. The accent visibility distance is bracketed, not pinned
 0.07444 was measured under **complete separation** — the logistic curve alone cannot pin it, and
 the reported value is the middle of a 0.06300–0.08796 band.
+**AMENDED 2026-08-04 — the number is still bracketed, but it no longer does the job this row was
+worried about.** By reviewer ruling (`d-2026-08-04-reviewer-metric-follows-the-pair`),
+`ACCENT_VISIBILITY_COLOR_DISTANCE` **no longer gates the accent against any field, surface or ramp**:
+that clause now runs on `ACCENT_FUNCTIONAL_DISTANCE` (**A16**), because the reviewer ruled a
+*detection* criterion the wrong instrument for a contrast escape. So this row's bracketing worry
+transfers with the number to its new home — the foreground↔accent pair, **B31** — and what stays here
+is only the historical statement about how 0.07444 was obtained, which the new record cites.
+*The row is kept open rather than closed because the bracket is still the reason both live constants
+are placeholders: 0.07444's band is why 0.14591 is a geometric midpoint and not a fit.*
 
 ### B12. The P1 excursion bar is still inherited
 2.5× the same-color bar, carried over from v2-3; the bracketing round was supposed to recalibrate
@@ -796,6 +1035,28 @@ settles a rule, not a corpus behaviour, and the write-up must say so.** Gradient
 principle sit closer, but the distilled legacy files carry no stops, so they cannot be measured here.
 *Owner unchanged: **reviewer.** Closes on the round's answers plus a ruling — the round alone is not
 the ruling.*
+
+**ANSWERED 2026-08-04, AND THE ROW STAYS OPEN — the round returned no rule, on purpose.**
+`bracketing-round-3` was released, answered 58/58 and scored against its pre-registration:
+`d-2026-08-04-straddle-rule-anisotropy-confounded`. The **pre-registered anisotropy veto fired**
+(lightness-dominant 15/21 favouring `max`, chroma-dominant 2/21 favouring `average` at exact
+p 0.000221), and the primary count is **independently unresolved** — k = 17 of n = 42, exact binomial
+p = 0.2800, against decisive cuts of 28 and 14. Both roads lead to the same place, and the
+pre-registration fixed that place in advance: **any outcome other than `max` or `average` means no
+code change, and this row stays open with the round cited as the attempt.** So `Math.max` is
+unchanged, `CONTRACT_VERSION` did not bump, nothing was re-validated, and the docstring's `[HELD]`
+tag did **not** become `[REVIEWED]`.
+**What is genuinely new, and it is not nothing:** the rule's justification was withdrawn as
+unreproducible in 2026-08-03's amendment above, and `Math.max` has stood on the safety argument alone
+since. It still does — but we now know **why** a round cannot rescue it: the right bar depends on the
+*direction* of the colour difference, and neither `max` nor `average` can express a direction. **A
+third option is on the table that was not before**, and it is the reviewer's to want or refuse: a
+direction-aware straddle rule, which is a redesign and not a tuning. The round was valid (attention
+checks 6/6, controls interpretable, repeat agreement 0.8333 against a 0.625 baseline, sensitivity
+re-run agreeing), so the null is a result and not a failure.
+*Owner unchanged: **reviewer.** **Revives when:** the reviewer rules on the safety argument, takes
+`midpoint`, or asks for a direction-aware rule. **A fourth bracketing round is no longer the thing
+standing in the way** — round 3 is the attempt, and repeating it would repeat the veto.*
 
 ### B14. Where the contrast parameters act is deliberately undecided
 "Winner-stage repair" presumes v2-3's shape. Deferred on purpose to become a **Phase 2 bake-off
@@ -985,6 +1246,36 @@ stratum-reweighted ≥ 0.75 "pure field" bar fixed before any answer is seen) bu
 — by design, since the adoption call is the reviewer's. So option (b) still cannot be evaluated on
 evidence, and A13 is now the thing standing between it and one.
 
+**THE REVIVAL CONDITION FIRED 2026-08-04, AND THE PIXEL ARM CAME BACK NOT-ADOPT.** A13 closed, the
+noun was collected, the residual sheets were pushed as `residual-purity-1`, and 50 reviewer answers
+were scored against a bar fixed before any of them was seen. **Option (b) can now be evaluated on
+evidence, and the evidence is adverse:** stratum-reweighted pure-field **0.2424** against a 0.75 bar,
+in *both* guard variants, with **all five strata below the 0.50 floor** in both, and unreachable even
+at the charitable pure+mostly ceiling (0.7412 ON / 0.6127 OFF). *"Everything but the masks"* does not
+isolate backgrounds; it yields a residual that is usually *mostly* background with a flame, a cello, a
+caption or an ornament still in it. Record: `d-2026-08-04-r3-residual-not-adopted`. **R-3 is not
+adopted on this evidence — which is different from refuted**, and the verdict names exactly what
+would have to be fixed first (list-ALL-things elicitation, the `text_below_cut` leak, the ornament
+policy). One of the three is done (**A13**); the other two are not.
+**The two arms now read against each other, and they fail on the same covers for the same reason.**
+Pixel arm: failed decisively. Vocabulary arm (`GROUND_FREETEXT_SYNTHESIS.md`): 6 of 9 covers
+palette-decidable in prose, the 3 failures being figure/ground ambiguity — which is also what made
+this round's forced answers unreliable. So the honest reading is not "pixels lost, vocabulary won"
+but **figure/ground ambiguity is real, and vocabulary at least lets it be *stated* while subtraction
+silently gets it wrong.**
+**THE ROW STAYS OPEN, AND ITS OWNER HAS NOT CHANGED.** The pick between (a), (b) and (c) is the
+reviewer's and is unmade; this closes off one arm's *evidence*, not the choice. Two things the
+reviewer must decide alongside it, per the verdict: whether a **corpus-level** purity number is
+wanted at all — eval-142 cannot give one, and the prescribed re-run is on `coverage-set-1` — and
+whether the paired, cheaper re-run on eval-142 (`residual-purity-2`) is worth having first. **That
+round is now BUILT and still NOT PUSHED** (`b2a6069`; fixture `data/sam/residual-purity-2.json`, 24
+sheets × 2 panels = 48 items, server support and 57/57 tests) — the warehouse holds no
+`residual-purity-2` batch, and the bar is **held** at §11.11's, not moved, because the last round is
+precisely the evidence that a proxy improvement is not evidence about purity. **Pushing it is the
+reviewer's act**, and it is the cheaper of the two questions rather than the corpus one.
+*Revival condition, restated for the next reader: **fired and discharged.** The row now closes on a
+**ruling**, not on a measurement.*
+
 ### B25. The calibrated cut is one number serving two opposite consumers
 *Added 2026-08-03, out of the residual-isolation retry.* `text_like`'s per-group cut is **0.697295**,
 calibrated for **precision** — at its own cut it reaches precision 1.000 / recall 0.4783, which is
@@ -1004,6 +1295,22 @@ error costs appears.
 *Owner: **reviewer** (any cut change) + oracle/SAM workstream (the analysis).
 **Revives when:** the residual route is evaluated at all — the purity round in B24's option (b), or
 any subtractive consumer of SAM masks.*
+**TRIGGER FIRED 2026-08-04 — the residual route was evaluated, twice, and this row is now the
+sharpest of the residual follow-ups rather than the cheapest.** `residual-purity-1` ran at the
+**subtraction** cut (deliberately and pre-registered: 11 of the 26 text gaps sit between the two
+thresholds, and rendering at the precision cut would have asked the reviewer to judge a threshold
+choice while believing they were judging an instrument). Text still leaked at that cut, and the v5
+round measured that the leak is **pinned**: `text_below_cut` is 15 in both v4 and v5 and
+`text_below_pooled_cut_too` is 11 in both, because v5 changed the *subject* elicitation and touched
+nothing about text. **The subtraction cut is no longer a hypothetical second consumer — it is the cut
+two reviewer-facing rounds were rendered at, and it is still losing text.**
+*Two riders added with the trigger.* The subtraction cut is now defined as `min(pooled, group cut)`
+per group rather than a flat 0.578, because `cjk_script`'s provisional cut (0.392655) sits *below*
+pooled and a flat rule would make the recall-oriented cut stricter than the precision one; on the v4
+run the two definitions coincide, so no v4 number moved. And the reviewer-owned half is unchanged:
+**lowering a reviewer-calibrated cut is still not an agent's call**, and nothing here proposes it.
+*Owner and revival unchanged. It closes on a reviewer ruling about which consumer the cut serves, not
+on another measurement — the measurement exists.*
 
 ### B26. The capped ladder key is a CDN rendition, not a true downscale
 *Added 2026-08-03, with `d-2026-08-03-ladder-capped-reference-key`.* §7.1's capped answer key is a
@@ -1024,7 +1331,44 @@ cheap, or any argument leans on a capped floor more heavily than "the two floors
 move".* **Blast radius:** the capped column only — the published floors are unaffected, and the
 transfer check never touched the contaminated key.
 
-### B27. A pointing specialist is available on this stack and has never been tried
+### B27. ~~A pointing specialist is available on this stack and has never been tried~~ CLOSED 2026-08-04
+**Resolution: it was tried, end to end, and the answer is on record.** The row asked for a
+pre-registered probe and got the whole line — the coordinate gate (**A15**), the interactive point
+path (**A14**, 98/100), a 240-call phrasing sweep across both heads, and finally a reviewer round,
+`pointing-ground-1`, scored against a bar committed to git **16 min 52 s before the first answer**.
+**The bar failed.** Dot-right 7/8 clears its half; dot-right-and-wash-right 3/8 misses its half by one
+tile; the conjunction is not cleared, so the pre-registration's consequence clause stands and
+**pointing is not carried forward as a ground route.** Record and full reading:
+`d-2026-08-04-pointing-route-alive-pending-typical-strata-probe`.
+**What closes and what does not.** This row closes because its question — *has anyone tried?* — is
+answered. Four of its own claims were confirmed on contact: MolmoPoint-8B is the pointer to use,
+`plain` phrasing survived the sweep and **must not be revisited**, the two heads' disagreement is
+informative, and the whole thing fit in one GPU slot. **Three things it did not anticipate are
+carried forward and are the reason the route reads `route-alive-pending` rather than `route-dead`:**
+(1) the failure is **SAM's mask growth, not the pointer** — the pointer missed zero of six on the
+stratum with an answer key; (2) the reviewer answered *"could this be considered correct"* rather than
+*"is this correct"* and disclosed it afterwards, so **every rate is a ceiling** and a future round's
+framing text must state the strict criterion; (3) **no pointing run ever persisted its candidate
+masks** — only `seg.best_mask` was serialised, so the question that would separate a selection defect
+from a model limit *cannot be answered from disk on any run ever made*, and any future pointing run
+must persist every candidate.
+*The one unrun successor is specified rather than open-ended: a typical-strata probe, n ≥ 16, drawn
+from the general corpus with the misfit set excluded by id — because this round's sample was the
+misfit tail and **nothing in it generalizes**.*
+**Update, hours later on 2026-08-04:** that successor is now **pre-registered and part-built**
+(`bafcc53`; `oracle/sam/POINTING_TYPICAL_PREREG.md`, `oracle/sam/pointing_typical_probe.py`), with
+its bar fixed before any number exists — **dot-right ≥ 12/16**, dot-right-and-wash-right ≥ 8/16 per
+policy, the conjunction, and a **separate and stricter** bar for moving `DEFAULT_SELECTION`. It
+carries this row's three carry-forwards explicitly: it is answered **strictly**, so the comparison is
+biased against itself and a tie reads as an improvement; and **every candidate mask is persisted with
+pixels**, which closes the campaign-wide gap that made the candidate-level counterfactual
+unanswerable. **No inference has run.** So the round's own recommendation — *do not spend the next
+GPU slot on it* — is not overridden; the CPU-side half was simply done first, which is the right
+order and leaves the slot decision genuinely open. *This does not reopen the row: B27 asked whether
+anyone had tried, and the answer is still yes, and it failed its bar.*
+Original entry kept below for the record.
+
+### B27 (original). A pointing specialist is available on this stack and has never been tried
 *Added 2026-08-03, from `oracle/sam/POINTING_SCOUT_NOTES.md` (paper only).*
 **It was never on any list, so there is no prior rejection to overturn.** Measured across all file
 types and all 508 commits: `molmo`, `pixmo`, `allenai`, `ai2` — **zero hits** in the working tree,
@@ -1099,6 +1443,20 @@ figure/ground signal on the photographic subset would be a second independent ro
 *Owner: orchestrator (the probe) + **reviewer** (adoption). **Revives when:** the scout reports.*
 *The §8.3 paragraph stands until a probe says otherwise — this row does not overturn it, it schedules
 a test of it.*
+**AMENDED 2026-08-04 — the scout reported, and it argued the probe DOWN rather than up.**
+`oracle/sam/GROUND_ROUTES.md` (paper only, no GPU, nothing downloaded) places depth **last of five
+ground routes**, at ~15 min and 0.099 GB, and calls it "lowest expected value by a wide margin". Its
+reasons are new evidence rather than a restatement of §8.3: the oracle's own `depicted_place` answers
+put an **applicability ceiling of 13.3%** on this corpus (n=30 reviewer gold — 4 yes, 26 no, 0 unsure),
+and the literature corroborates the failure mode on exactly our content (Depth-Anything-V2 wrong on
+**61.45%** of pixels over printed-picture regions; a 63k-painting study agreeing). So the scout's
+recommendation is **run it to CLOSE the question, not to open a route.**
+*The row stays open and its trigger has moved: it was "revives when the scout reports" and the scout
+has reported. **Revives when:** a GPU slot is spare and the reviewer wants the §8.3 rejection
+converted from an argument into a measurement — which is worth doing precisely because §8.3 is this
+campaign's only written rejection of a model class, and it has still never been tested on these
+images. It is explicitly NOT the next slot: the pointing line ahead of it returned a fail and the
+purity line ahead of that has a reviewer decision outstanding.*
 
 ### B29. The parameter-honesty census's untagged backlog — a **Phase 1** obligation, by ruling
 *Added 2026-08-03, with the instrument.* The census counts the numbers in `src/` and `oracle/` that
@@ -1138,6 +1496,127 @@ than counting as Phase 0 debt — recorded here so that the carve-out is three i
 that nobody claims criterion 2 is measured when two thirds of it is.
 *Owner: whoever builds the perturbation gates. **Revives when:** the first prototype emits palettes —
 same trigger as rows 4 and 5, and it must land in the same pass, not after it.*
+
+### B31. 0.07444 is on loan to the foreground↔accent pair, and nobody has measured that pair
+*Added 2026-08-04, with `d-2026-08-04-reviewer-metric-follows-the-pair`.* The reviewer's ruling sends
+colour distance to two pairs: background↔surface, which was **already** on the measured regional
+same-colour bars and needed no change, and **foreground↔accent, which had no bar at all.** The value
+now standing there is `FOREGROUND_ACCENT_SEPARATION_DISTANCE`, written as an assignment from
+`ACCENT_VISIBILITY_COLOR_DISTANCE` rather than as a repeated literal precisely so that no reader can
+mistake it for a second measurement. **There is one measurement and it is not of this pair:**
+bracketing round 1 part 2, 2026-08-02, question *"are the icons clearly visible on this background?"*,
+asked about an **accent sitting on a field** at equal luminance. Nobody has ever been shown a
+foreground and an accent side by side and asked how far apart they must be to read as two roles.
+**Why this is standing rather than sharp.** The loan is **better collateralised than the one it
+replaced**: foreground-versus-accent separation is itself a *detection*-class question — "are these
+two roles the same colour?" — which is exactly the class the number was measured on. Contrast A16,
+where a detection number was doing a *functional* job, which is why that one is sharp and this one is
+not. The tag says so at the point of use: `[INHERITED — calibrated for accent-vs-field visibility,
+relocated by reviewer ruling 2026-08-04; re-measure for this pair]`.
+**Two properties worth knowing before anyone re-measures.** The bar is applied as
+`Math.max(sameColorBar, separation)`, not as a replacement — a region whose same-colour bar exceeded
+the separation distance would still bind, because two colours a region calls identical cannot be two
+roles whatever this number says. And the elevated band gets its **own** violation code
+(`I3.foreground-accent-not-separated`), while below the same-colour bar the pair keeps its old code —
+so the census stays countable across the change and the new refusals can be counted separately.
+*Owner: **reviewer** (whether to spend a round) + contract workstream (the fixture). **Revives when:**
+anyone needs the foreground↔accent verdict to be defensible on its own terms — or when A16's round is
+designed, since the two are the same protocol on a different stimulus and running them together is
+most of the saving.* **Blast radius:** one endorsed palette already fails on this code.
+
+### B32. The 8-noun cap binds on 72 of 142 covers, and eight is an untested constant
+*Added 2026-08-04, with `d-2026-08-04-allnouns-elicitation-closes-the-single-noun-limit`.* The
+all-nouns instrument asks for every distinct thing in a cover, `minItems` 1, **`maxItems` 8**. Over
+eval-142 it returned 830 entries, mean 5.85 per cover — and **72 covers returned exactly eight**, the
+maximum the grammar allows. A list truncated at the cap is a list we know is incomplete, so **"every
+distinct thing" is measurably not what was elicited on half the corpus**, and any claim that the
+elicitation is now exhaustive is false there. Eight is the number the PROBE5 rules proposed and
+nothing measured it.
+**Why it is standing and not sharp:** A13 closed on the *structural* cause of the flame and the cello
+being gone, which is true at any cap ≥ 2 — 98 of 142 covers fire a mask from a noun ranked below
+first, and the recovery is real. The cap limits how far the fix goes, not whether it works.
+**Why it is cheap:** the cost model is ~2.8 s + **0.037 s per extra prompt**, so raising the cap is
+close to free in GPU; the reason not to do it quietly is that it changes what a `dyn-noun-N` tag
+space means and would make v5-vs-v6 a comparison of two instruments rather than of two elicitations.
+*Owner: oracle/premise workstream (the change) + orchestrator (the slot). **Revives when:** any claim
+depends on the noun list being exhaustive — including any future purity round read as a test of the
+elicitation, since a residual contaminated by a 9th unnamed object is indistinguishable from one
+contaminated by a masking failure.* **A sibling follow-up rides with it:** a second variant (K) for an
+agreement signal, ~5 minutes of GPU, still absent — a J list is one reading, not a corroborated one.
+
+### B33. The toolbox review's two reports are unprioritized, and the review itself is not on any plan
+*Added 2026-08-04.* `reviews/toolbox-review/` holds two reports, both dated 2026-08-04, neither
+commissioned by any row in this ledger: **`bias-audit.md`** (10 findings, B1–B10, answering the
+reviewer's question *"are the tools we are providing introducing bias in the following phases?"*) and
+**`gap-scan.md`** (~22 addressable items — nine adjudicated starting-list proposals with sub-items,
+plus twelve areas nobody had named, A–L, tiered MUST/HIGH/NICE with agent-hour costs and
+`⟨blocks Phase 2 entry⟩` markers).
+**The sharp item is carried separately as A17** — B1, the source-support invariant refusing 96.9% of
+endorsed palettes. **This row is the remainder**, and its defect is not any single finding: **both
+reports rank and cost their own contents and neither assigns a prioritizer.** The only authorities
+they name are the reviewer (for anything reviewer-owned) and the orchestrator (as an executor of
+scoring rules). `gap-scan.md` §4(H) is explicit that one item is not an agent's to decide at all —
+*"somebody must state the budget"* — and leaves it unattributed.
+**One finding argues its own way onto this list and should not be lost in the pile:** `gap-scan.md`
+§4(A), the auto-adjudication consumer, is **"untracked rather than deferred"** — not in this ledger,
+not in the Phase 2 entry condition, so *no status check will ever surface it*. Rows 4 and 5 of the
+Phase 0 table at least announce their own absence; that one does not.
+**A timing argument runs through `bias-audit.md` and it is the reason this row is not "review it
+sometime":** several of its cheap mitigations are decision records that *stop being credible the
+moment Phase 1 proposals exist* — writing down the anti-anchoring reading list, or making a gate
+report-only, after seeing the proposals looks like moving the goalposts. **Timing is most of the
+cost.**
+*Owner: **reviewer** (which findings are worth acting on, and in what order) + orchestrator
+(scheduling whatever is picked). **Revives when:** Phase 1 briefs are drafted — several items are
+worth much less afterwards, and three of them are worth nothing.* **Blast radius:** the reports
+themselves are read-only; what is at stake is the instruments Phase 1 will be judged through.
+
+### B34. An unsigned run of commits, because 1Password stayed locked — and the count grew while this row was being written
+*Added 2026-08-04.* `commit.gpgsign` is `true` with an SSH signing key, and the working convention is
+that commits are signed. **Six consecutive commits carry no signature**, because the 1Password SSH
+agent was locked and unreachable throughout — `ssh-add -l` reports *"The agent has no identities"*.
+In order: **`293e6f1`** (pointing wash diagnosis), **`fd586dc`** (v5 all-nouns round), **`bafcc53`**
+(the parked staged set + pointing typical-strata pre-registration), **`b2a6069`** (`residual-purity-2`
+built), **`c1f6b11`** (premise selftest fix) and this pass's own ledger commit. The last signed commit
+is **`7d6f570`** (toolbox gap scan). **The row was drafted naming three and had to be corrected to
+six before it was committed**, which is the honest measure of how fast this accumulates: an unlocked
+keychain is not a state anyone notices returning to.
+Verified by reading each commit object for a `gpgsig` header rather than by `git log %G?`,
+which reports `N` for *every* commit on this machine because `gpg.ssh.allowedSignersFile` is not
+configured — **a check that returns the same answer for a signed and an unsigned commit is not a
+check**, and that is the second reason this row exists.
+**Why it is standing and not sharp.** Nothing depends on these signatures today; the repo is local and
+single-author. What it protects is the ability to say later *which* commits were made by an agent run
+and which by a person, which is exactly the distinction an unsigned gap erases.
+**The fix is mechanical and must be done deliberately:** unlock 1Password, then
+`git rebase --exec 'git commit --amend --no-edit -S' 7d6f570` over the run, or amend each by hash.
+**It rewrites history**, so it is not an agent's to run unprompted, and it should be done before
+anything is pushed or branched from. **Every hour it waits, the rebase gets longer** — the range is
+defined by the last signed commit and nothing stops the run growing.
+*Owner: **reviewer** (it rewrites history) + orchestrator (running the amend). **Revives when:**
+1Password is unlocked — or immediately, if anything is pushed, since amending after a push is a
+different and worse problem.* **A cheap rider worth doing at the same time:** configure
+`gpg.ssh.allowedSignersFile` so `git log --show-signature` stops reporting every commit as unsigned.
+
+### B35. Invariant 3 still judges contrast pairs by distance, and the contract workstream flagged it rather than deciding it
+*Added 2026-08-04, from the contract workstream's own note in `src/contract/invariants.ts`.* The
+2026-08-04 ruling assigns APCA to the contrast pairs and distance to the sibling pairs
+(`d-2026-08-04-reviewer-metric-follows-the-pair`). But **invariant 3's distinctness matrix covers
+every pair of published colours at the same-colour bar, including foreground↔background and
+accent↔stops** — which are contrast pairs the ruling says are APCA's.
+**The workstream's reading, stated in the file and not confirmed by anyone:** that matrix is not a
+contrast limit, it is the **degeneracy rule** — *a palette must not publish one colour twice* —
+separately `[REVIEWED]` on 2026-08-02, with §4 invariant 3 naming its clauses explicitly (invisible
+accent, white-on-white, black-on-black). The 2026-08-04 ruling is about *limits*, so it was not read
+as demoting those clauses. The comment ends: *"Flagged for the reviewer rather than decided here."*
+**Why that is the right call and still a loose end.** Demoting them on an agent's reading of a
+conversational ruling would delete three named pathologies the census counts, and the reviewer said
+nothing about them. But nothing else records that the question was asked, and a reader comparing the
+ruling to the code will find what looks like a contradiction with no note attached.
+*Owner: **reviewer** (one sentence either way). **Revives when:** anyone reads the metric-follows-the-
+pair ruling against invariant 3's matrix and cannot tell whether the overlap is intended — which is
+the first thing an adversarial reader will do.* **Blast radius:** three violation codes and the
+pathology census's countability across them.
 
 ---
 

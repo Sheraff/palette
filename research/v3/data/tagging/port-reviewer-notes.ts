@@ -178,6 +178,45 @@ const OBSERVATIONS: Observation[] = [
 			'choice won. The reviewer also reported that where they voted differently from the ' +
 			'oracle, they could see its point of view.',
 	},
+
+	// --- residual purity round 1, post-release, 2026-08-04 --------------------------
+	// One paragraph of post-release prose, split at its own sentence boundary so the
+	// ornament policy and the escape-answer request can be cited separately.
+	// Transcription of record: `data/sam/residual-purity-1-analysis.json` →
+	// `reviewerFeedback.verbatim`. The same words are quoted in
+	// `oracle/sam/RESIDUAL_PURITY_VERDICT.md`, the reviewer-facing round document,
+	// which is therefore the `doc`.
+	{
+		doc: 'research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md',
+		key: 'post-release-misses',
+		text:
+			'Residual purity round 1, post-release, on what survived subtraction: ' +
+			'"objects that were not masked out during the everything-but-the-masks round — a flame — ' +
+			'some residual text — a cello — decorations above/below the main text (that would be ' +
+			'considered part of the main text)."',
+	},
+	{
+		doc: 'research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md',
+		key: 'post-release-escape',
+		text:
+			'Residual purity round 1, post-release, on the answer set the round offered: ' +
+			'"sometimes it\'s hard to tell what is field and what is subject, so answers for those ' +
+			'cases are not reliable (even with human feedback) unless we add an escape answer choice."',
+	},
+
+	// --- pointing-ground-1, disclosed after answering, 2026-08-04 -------------------
+	// The criterion the reviewer actually applied, disclosed after the batch completed.
+	// Byte-identical in `data/sam/pointing-ground-1-analysis.json` →
+	// `reviewer_disclosure.verbatim` and in `oracle/sam/POINTING_PROBE_NOTES.md` §13.2.
+	{
+		doc: 'research/v3/oracle/sam/POINTING_PROBE_NOTES.md',
+		key: 'pointing-ground-1-lenience',
+		text:
+			'Pointing round `pointing-ground-1`, disclosed after answering: ' +
+			'"i reviewed the pointing-ground-1 set, since it ran on mostly \'extremely hard ' +
+			"background' artworks, i answered as 'could this be considered correct' and not 'is this " +
+			'correct\', results might be way better in other artworks but here it wasn\'t amazing."',
+	},
 ]
 
 /** The `itemId` value for an observation — source document plus observation key. */

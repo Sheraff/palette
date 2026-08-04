@@ -2089,6 +2089,444 @@
     "THIS IS AN ARGUMENT ABOUT COVERAGE, NOT ABOUT PROMPT WORDING. It does not establish that no Latin-glyph phrasing could ever reach CJK script; it establishes that the one in the concept set does not, on the covers where the question arises."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-r3-residual-not-adopted",
+   "ts": "2026-08-04T00:10:00Z",
+   "kind": "question-set-ruling",
+   "scope": "Ruling R-3 (d-2026-08-03-reviewer-background-via-residual-isolation) and the ground-vocabulary question it was meant to retire. CHANGES NO INSTRUMENT: no threshold moves, no config.py value moves, no concept is added or removed. It does NOT refute R-3; it declines to adopt it on this evidence. It does NOT make the vocabulary-vs-pixels pick — that is the reviewer's, carried as loose end B24 — and it does NOT settle the area-guard question A6, for which this round is one thin reading among two.",
+   "decision": "The pre-registered bar of RESIDUAL_EXPERIMENT_NOTES.md §11.11 — stratum-reweighted pure-field >= 0.75 in at least one guard variant, with no stratum below 0.50 — is NOT MET, and both clauses fail in both guard variants. Reweighted pure-field is 0.2424 with the area guard ON and 0.2424 with it OFF; all five strata fall below the 0.50 floor in both. Counting every `mostly_field` answer as pure — the charitable ceiling the round could possibly reach — gives 0.7412 (ON) and 0.6127 (OFF), still short of 0.75, so THE VERDICT IS NOT BOUNDARY-SENSITIVE and no reallocation of the soft answers turns this round into an ADOPT. THE RESIDUAL REMAINS A FIELD-ENRICHED PRIOR, NOT A BACKGROUND ISOLATOR: the typical residual is mostly background with something identifiable still in it. Background structure does not become a pixel computation on this evidence. Corollary that must travel with the number: the proxy in residual-cuts-analysis.json called 82.4% of the same residuals clean against the reviewer's 24.24%, a structural gap of -0.582 running almost entirely one way, and in the four strata the proxy declared clean three-quarters of the residuals had something left in them. The proxy counts its own NAMED causes going silent; it was never a measurement of purity, and no later proxy improvement may be read as evidence about purity.",
+   "fundedBy": [
+    "o-msdt3unm-8739ba71",
+    "o-msdt5jom-078cbf3f",
+    "o-msdt5rw0-0d4746ed",
+    "o-msdt6la7-b23c3e6e",
+    "o-msdt7zfr-1e53f99f",
+    "o-msdt83c9-c033a024",
+    "o-msdt88r8-ffa08bc9",
+    "o-msdt8ked-b543ee6f",
+    "o-msdt8pvo-f240fb2c",
+    "o-msdt8rlf-b5f7ebf6",
+    "o-msdt8xp4-b5b7d398",
+    "o-msdt903y-0b74aa45",
+    "o-msdt93gw-d709b5cf",
+    "o-msdt96cy-88bd382b",
+    "o-msdt999w-bbee1914",
+    "o-msdt9kc4-f1b4c6e9",
+    "o-msdt9od2-1186034f",
+    "o-msdt9r3a-6d220c26",
+    "o-msdt9unu-279dcf65",
+    "o-msdt9y25-6cc203ff",
+    "o-msdta50y-210730eb",
+    "o-msdta8bm-b26456c7",
+    "o-msdtaa02-58556eb7",
+    "o-msdtagem-6637e5bb",
+    "o-msdtaiab-b6a0da85",
+    "o-msdtaqak-5d5185a4",
+    "o-msdtatqu-962593b0",
+    "o-msdtavff-f19170d4",
+    "o-msdtax2w-5e6fa354",
+    "o-msdtayaf-4a81bddd",
+    "o-msdtb0fz-fb4ddba4",
+    "o-msdtb1kd-05e8f0a9",
+    "o-msdtb395-8fe52490",
+    "o-msdtb6df-f531ad07",
+    "o-msdtb82w-0bf78109",
+    "o-msdtb9es-749ab1c4",
+    "o-msdtbbv7-87d7e1a0",
+    "o-msdtbdd9-4e3974f8",
+    "o-msdtbelv-012505e5",
+    "o-msdtbgal-dd7cf7ce",
+    "o-msdtbi7x-5ed5e299",
+    "o-msdtbjs2-b15b147f",
+    "o-msdtbkr6-a01375fb",
+    "o-msdtbll0-96842e4c",
+    "o-msdtbtic-f462afae",
+    "o-msdtbvoq-e467056b",
+    "o-msdtbzcm-f917cee1",
+    "o-msdtc4iu-2a20146a",
+    "o-msdtcaj4-b6886f94",
+    "o-msdtcc3p-7c21cabd",
+    "bc-msdtcdh0-d97140ce",
+    "n-msdxbyjq-f8bcc261"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/residual-purity-1-analysis.json",
+     "what": "The scored round: per-stratum counts, the inverse-probability reweighting against eval-142 pool sizes, the bar applied clause by clause, the charitable ceiling, the guard comparison and the proxy-vs-human table."
+    },
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md",
+     "what": "The verdict write-up this record is drawn from, including the three proposed decision records and the scope section."
+    },
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_EXPERIMENT_NOTES.md",
+     "what": "§11.11 — the bar, fixed before any answer was seen."
+    },
+    {
+     "ref": "research/v3/oracle/premise/GROUND_FREETEXT_SYNTHESIS.md",
+     "what": "The vocabulary arm the pixel arm is read against: 6 of 9 covers palette-decidable in prose, 3 ambiguous even in unconstrained prose."
+    }
+   ],
+   "fundingCaveats": [
+    "THE ROUND OFFERED NO ESCAPE ANSWER. The reviewer states that on covers where figure and ground are not separable the forced answers are not reliable EVEN WITH HUMAN FEEDBACK (note n-msdxbyjq-f8bcc261). Every rate here is ANSWERS AS GIVEN. The verdict is robust to this because the charitable ceiling also fails the bar; the individual per-stratum rates are not robust to it and must not be quoted as purity estimates.",
+    "THE POPULATION IS eval-142, WHICH WAS NEVER A SAMPLE OF THE CORPUS. COVERAGE_SET.md measures its cluster-mix total-variation distance at 0.2273 against coverage-set-1's 0.0851 — 2.67x worse — and 25 of its 142 covers are not in the embedded corpus at all. The reweighting corrects the round's deliberate enrichment WITHIN eval-142; it corrects nothing about eval-142's own drift. NO NUMBER HERE IS A CORPUS-LEVEL PURITY ESTIMATE.",
+    "SMALL CELLS. class-only is n=2 per variant (the entire pool), static-only-clean n=4, noun-silent n=5; their rates move in steps of 0.50 / 0.25 / 0.20. In this round it happens not to matter — every stratum failed the floor, including the two largest — but a future round with the same quotas inherits the same fragility.",
+    "PANELS WERE RENDERED AT THE SUBTRACTION CUT, NOT THE SHIPPED PRECISION CUT. Pre-registered and deliberate: 11 of the 26 text gaps sit between the two thresholds, and rendering at the precision cut would have asked the reviewer to judge a threshold choice while believing they were judging an instrument. This record is NOT a proposal to change any cut.",
+    "THE GUARD COMPARISON IN THIS ROUND IS NOT A6 EVIDENCE ON ITS OWN. On the bar's own quantity the two variants are a dead tie (0.2424 both, 6 pure answers each); the whole +0.1285 soft-margin difference comes from two noun-fired sheets. A6 is to be decided on this reading AND mask round 3's together."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-text-adjacent-ornament-is-text",
+   "ts": "2026-08-04T00:10:00Z",
+   "kind": "instrument-design",
+   "scope": "A LABELLING RULE for text_like mask judgment and for any future ornament or decoration prompt. It moves no threshold and adds no concept. It does not say how ornaments are to be MASKED — no prompt string, no group membership, no cut is decided here — only that they are in scope for text masking rather than unowned. It says nothing about ornaments that stand alone, away from a text block.",
+   "decision": "DECORATIONS ABOVE AND BELOW THE MAIN TEXT BLOCK COUNT AS PART OF THE MAIN TEXT for masking purposes. Reviewer, post-release on residual-purity-1: \"decorations above/below the main text (that would be considered part of the main text)\". The class exists because residual-purity-1 found it: such ornaments are neither a depicted subject nor part of any current text_like mask, so nothing removes them and they contaminate the residual silently while no proxy can name them. The rule makes them in-scope for text masking and gives future review rounds a defined answer where they previously had none.",
+   "fundedBy": [
+    "n-msdxbyjh-969a0e05"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md",
+     "what": "Proposed decision record 2, and the three-way split of what survived subtraction that isolates the ornament class from the elicitation limit and from the text leak."
+    },
+    {
+     "ref": "research/v3/data/sam/residual-purity-1-analysis.json",
+     "what": "reviewerFeedback.missClasses — the text-adjacent-decoration class, its cause and this policy as embeddedPolicy; and the round that surfaced it."
+    }
+   ],
+   "fundingCaveats": [
+    "DELIBERATE DEVIATION FROM THE DRAFT'S CITATION LIST. RESIDUAL_PURITY_VERDICT.md proposed citing the 50 residual-purity-1 labels alongside the note. They are NOT cited here: this is a labelling rule the reviewer stated in prose, it was not FITTED to those answers, and README.md's reason for listing a whole batch — 'an amendment to any single answer flags the decision that was fitted to it' — does not apply. The round is the occasion and is named in fundedByArtifacts. The single note is the evidence and is the only thing whose amendment should flag this record.",
+    "THE STATEMENT IS ONE PARENTHETICAL CLAUSE IN A POST-RELEASE PARAGRAPH, GIVEN IN PASSING RATHER THAN ASKED FOR. It was not elicited by a question, no alternative was put to the reviewer, and no round has tested whether the rule is answerable in practice — whether a grader can tell an ornament that belongs to a text block from one that does not.",
+    "NOTHING IMPLEMENTS THIS YET. RESIDUAL_V5_NOTES.md §12.10 records the ornament policy as follow-up 3 of the verdict's three fixes and explicitly untouched by the v5 round. A residual measured after this record is recorded is still measured under an unowned ornament class until something masks them."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-purity-rounds-need-escape-answer",
+   "ts": "2026-08-04T00:10:00Z",
+   "kind": "instrument-design",
+   "scope": "The answer set for residual-purity questions and for any future figure/ground question. It does NOT amend residual-purity-1's released answers, which stand as given, and it does not move that round's bar. It does not extend to purity questions that are not about figure/ground.",
+   "decision": "FUTURE PURITY ROUNDS ADD A FOURTH ANSWER — \"can't tell what is field here\" — alongside pure field / mostly field / not field. Required by the question set's DESIGN RULE 8: a slot must be able to record the answer, and on genuinely ambiguous figure/ground covers no existing slot could. Reviewer, post-release on residual-purity-1: \"sometimes it's hard to tell what is field and what is subject, so answers for those cases are not reliable (even with human feedback) unless we add an escape answer choice.\" HOW IT SCORES, fixed in advance so the escape cannot be quietly absorbed: `cant_tell` is NOT counted as pure, NOT counted as not-pure, and NOT dropped — it leaves both the numerator and the denominator of the pure-field rate, and ITS SHARE IS REPORTED PER STRATUM AS A FIRST-CLASS RESULT. A stratum whose escape share exceeds 0.50 has NO reliable purity rate and must be reported as having none rather than as having a low one. THE ESCAPE SHARE IS ITSELF A MEASUREMENT — figure/ground ambiguity is a property of the covers, not reviewer noise — corroborated independently by GROUND_FREETEXT_SYNTHESIS.md finding 3 of 9 covers ambiguous in unconstrained prose with no answer slots constraining the reviewer at all.",
+   "fundedBy": [
+    "n-msdxbyjq-f8bcc261"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md",
+     "what": "Proposed decision record 3, and the 'Read this first: the round had no escape answer' section that establishes the verdict survives the gap while the rates do not."
+    },
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md",
+     "what": "§12.9 — the pre-registered (unpushed) residual-purity-2 spec that carries this fourth answer and the scoring rule above."
+    },
+    {
+     "ref": "research/v3/oracle/premise/GROUND_FREETEXT_SYNTHESIS.md",
+     "what": "The independent corroboration: 3 of 9 covers ambiguous in free prose."
+    },
+    {
+     "ref": "research/v3/ORACLE_QUESTION_SET.md",
+     "what": "Design rule 8 — a slot must be able to record the answer — which is the ground this rule stands on."
+    }
+   ],
+   "fundingCaveats": [
+    "SAME DELIBERATE DEVIATION AS THE ORNAMENT RECORD: the draft proposed citing the 50 residual-purity-1 labels as 'the round that exposed the gap'. They are not cited, because this rule was not fitted to them; the round is named in fundedByArtifacts instead and the note is the only evidence whose amendment should flag this record.",
+    "NO ROUND HAS RUN WITH THIS ANSWER. The escape's share is unmeasured, and the scoring rule above is a pre-commitment rather than a calibrated procedure. Nobody knows whether the escape will be used at the rate free-text ambiguity predicts (3 of 9), far less, or as a general-purpose refuge — which is the failure mode to watch for, and is the same worry ORACLE_QUESTION_SET.md Appendix R records about the signature_carrier spread value.",
+    "ADDING AN ANSWER CHANGES THE INSTRUMENT. residual-purity-1's rates and any future round's are not strictly comparable, because a `cant_tell` answer in round 2 would have been forced into one of three slots in round 1. RESIDUAL_V5_NOTES.md §12.9 holds the BAR fixed for exactly this reason — a moving bar on top of a moving answer set would leave nothing to compare — but the comparison is still weaker than a repeat."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-pointing-route-alive-pending-typical-strata-probe",
+   "ts": "2026-08-04T00:21:22Z",
+   "kind": "instrument-selection",
+   "draftedAs": "route state — POINTING_PROBE_NOTES.md §13.6 and pointing-ground-1-analysis.json call the value `route-alive-pending-typical-strata-probe`. No decision record was drafted anywhere in the pointing line; §9, §12.8 and GROUND_ROUTES.md §3 propose LEDGER items and say explicitly that the orchestrator places them. Recorded here under the README's existing kind vocabulary.",
+   "scope": "Whether the pointing route (MolmoPoint-8B or Qwen3-VL point_2d into SAM) is carried forward as a route to the figure/ground line. It binds the route's status and the next GPU slot's priority. It does NOT change DEFAULT_SELECTION, which stays `containing`; it does NOT retire pointing; it does NOT settle B24's vocabulary-vs-pixels pick; and it says NOTHING about typical covers, by construction — the round's sample is the misfit tail only.",
+   "decision": "THE PRE-REGISTERED BAR FAILED, AND THE FAILURE IS THE WASH, NOT THE POINTER. Bar (POINTING_PHRASING_PREREG.md §5, committed 16 min 52 s before the first answer): carry pointing forward as a ground route only if dot-right >= 6/8 AND dot-right-and-wash-right >= 4/8. Measured on 8 answered tiles: dot-right 7/8 (clears its half), dot-right-and-wash-right 3/8 (misses its half by one tile). The conjunction is NOT CLEARED, so the pre-registration's consequence clause is unmet and stands: POINTING IS NOT CARRIED FORWARD AS A GROUND ROUTE, and the next GPU slot is not to be spent on it. THE ROUTE STATE IS `route-alive-pending-typical-strata-probe` — 'alive' means ONLY 'not killable on this evidence'. Not `route-dead`, because the pointer missed zero of six on the stratum with an answer key and every decidable failure is SAM's mask growth; recording pointing as dead for a SAM candidate-selection defect would blame the wrong component. Not `unresolved`, because the round is fully answered (8/8, no can't-tells, no supersession) against a bar that provably predates it. WHAT THE WASH DIAGNOSIS ADDS (CPU only, no inference): the wash has TWO failure shapes wanting opposite repairs — under-coverage (the mask is one region of a ground the reviewer describes as several) and over-coverage (the mask is the whole frame, subject included) — and on 2 of 6 covers a mask satisfying the reviewer's own description WAS produced by this exact pipeline on this exact cover on the same day, from a different point, and thrown away. AND THE COUNTERFACTUAL THAT WOULD DECIDE SELECTION-DEFECT VERSUS MODEL-LIMIT CANNOT BE ANSWERED FROM DISK: across every pointing run ever made, only seg.best_mask was ever serialised, so the three unselected candidate masks were discarded on every cover. Any future pointing run MUST persist every candidate.",
+   "fundedBy": [
+    "o-msdvjad8-381ae5a2",
+    "o-msdvji9a-d02e0cce",
+    "o-msdvjr4q-8eac9428",
+    "o-msdvk39o-209aff23",
+    "o-msdvk7c8-f8e4c337",
+    "o-msdvkdqo-c440f0ce",
+    "o-msdvkr61-da76de3e",
+    "o-msdvkyby-aac94398",
+    "n-msdxbyjv-d7ba5a0f"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/sam/pointing-ground-1-analysis.json",
+     "what": "The pre-registered scoring: the bar quoted verbatim with its commit hash and timestamp margin, the per-cover answers, the two half-criteria, the conjunctive verdict and the reviewer disclosure."
+    },
+    {
+     "ref": "research/v3/oracle/sam/POINTING_PHRASING_PREREG.md",
+     "what": "§5 — the bar, fixed and committed before any answer was recorded."
+    },
+    {
+     "ref": "research/v3/oracle/sam/POINTING_PROBE_NOTES.md",
+     "what": "§13 (the scored round, the disclosures, the verdict) and §14 (the CPU wash diagnosis: the two failure shapes, the missing candidates, the in-sample policy comparison, the oracle pair bound)."
+    },
+    {
+     "ref": "research/v3/data/sam/pointing-wash-diagnosis.json",
+     "what": "The per-cover classification, the policy scores, and the standing statement that no candidate masks are on disk."
+    }
+   ],
+   "fundingCaveats": [
+    "THE CRITERION WAS LENIENT AND THE LENIENCE WAS UNDECLARED UNTIL AFTERWARDS. The reviewer answered 'could this be considered correct', not 'is this correct' (note n-msdxbyjv-d7ba5a0f), while the bar was written for the strict reading. EVERY RATE IS A CEILING. This cuts asymmetrically and it is why the verdict survives: A FAIL UNDER A LENIENT CRITERION IS A ROBUST FAIL — the strict rate can only be lower — WHILE THE 7/8 DOT PASS IS NOT A ROBUST PASS.",
+    "THE SAMPLE IS THE HARD STRATUM AND NOTHING GENERALISES. The six decidable tiles are exactly the covers where this same reviewer had earlier pressed `none_discernible` in cascade-ground-truth-1. The round measures the misfit tail and only the misfit tail; the reviewer says plainly that other artworks may be better and this round has no evidence either way.",
+    "n = 8. Every rate carries a confidence interval far wider than the one-tile margin by which the composite failed. The qualitative anchor is the reviewer's own: 'it wasn't amazing', and no reading of these numbers is to be carried above that sentence.",
+    "THE WASH DIAGNOSIS IS IN-SAMPLE ON EVERY TILE IT REPAIRS. Its admissibility predicates and area band were written after looking at the eight shipped masks' geometry, they are the analyst's and not the reviewer's, and their one validation is that they reproduce his wash verdict on 5 of 6 covers — the disagreement being artofficial, which is §13.2's lenience visible in a single number. No policy change may be fitted to it: R4 (largest admissible single mask) scored 3/6 in-sample against the shipped rule's 1/6, and promoting it on that would be precisely the error the pre-registration exists to prevent.",
+    "HALF THE FAILURES ARE NOT A POINT-COUNT PROBLEM. Allowing the best union of any two recorded masks, chosen with knowledge of the answer, makes 3 of 6 covers reachable and leaves 3 unreachable."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-allnouns-elicitation-closes-the-single-noun-limit",
+   "ts": "2026-08-04T00:25:59Z",
+   "kind": "instrument-design",
+   "draftedAs": "round finding — RESIDUAL_V5_NOTES.md §12 states it as a measured verdict rather than as a proposed record; §12.10 says explicitly that no decision record was written by that round. Recorded here under the README's existing kind vocabulary.",
+   "scope": "The subject-noun elicitation instrument feeding dynamic SAM prompts: the prompt set, the tag space, and the claim that a second depicted object can now be proposed at all. It does NOT adopt v5 as the shipped elicitation, does NOT move any threshold or config.py value, does NOT make dyn-noun-N area-guard-exempt, and does NOT reopen the R-3 verdict — nobody has yet looked at a v5 residual, so this record is about the CAUSE being closed and not about purity having improved.",
+   "decision": "THE SINGLE-NOUN ELICITATION LIMIT IS CLOSED AS A CAUSE. The flame and the cello the reviewer found in residual-purity-1's residuals were one failure with one cause: the noun question asked for THE main thing, so a second depicted object was never named, never prompted, never masked. Under all-nouns elicitation (subject-nouns-all.v1 variant J, a free-text array of at most 8 entries), 98 OF 142 COVERS FIRE A MASK FROM A NOUN RANKED BELOW FIRST, and on those covers the residual closed by a mean of 0.2207 (median 0.0786, max 0.9740). The v4 covers the proxy called subject_unmasked drop 12 -> 6 closed with 0 newly opened, and no_subject_prompt_at_all goes 2 -> 0. THE COMPARISON IS VALID BECAUSE THE STATIC ARM IS BYTE-IDENTICAL: measured region for region over the 10 shared static concepts, 4,867 regions in v4, 4,867 in v5, 4,867 matched, 0 present in only one run, 0 differing in score, area or mask RLE — so v5-vs-v4 compares elicitations and not instruments. TAGS ARE EIGHT RANKS, NOT EIGHT NOUNS (dyn-noun-1 … dyn-noun-8, largest-first), so the tag space stays closed while the prompt space stays open and dyn-noun-1 remains a like-for-like pair with v4's single dyn-noun.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md",
+     "what": "§12 in full — what ran, the instrument, the derivation, the validity check, what the nouns removed, the honesty section, and §12.10's list of what was deliberately not done."
+    },
+    {
+     "ref": "research/v3/data/sam/residual-cuts-v5-analysis.json",
+     "what": "The paired residual-fraction tables, the rank-tag firing counts, the contamination recount, and the calibration block carried in meta.calibration."
+    },
+    {
+     "ref": "research/v3/oracle/premise/prompts/subject-nouns-all.v1.variant-J.json",
+     "what": "The instrument: one free-text question, JSON array envelope, minItems 1 / maxItems 8, grammar constraining only the envelope and never a noun."
+    },
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_PURITY_VERDICT.md",
+     "what": "The round that named the limit — the flame and the cello as the single-noun elicitation failure, and list-ALL-things as its proposed fix."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY BECAUSE NO HUMAN HAS SEEN A v5 RESIDUAL. Every number in this record is machine-measured over two runs. The one time this proxy was checked against a reviewer it OVER-CLAIMED BY 0.582 (82.4% clean against 24.24% pure field), the gap is structural and runs almost entirely one way, and there is no reason to expect the offset to be smaller on v5 — and no evidence either way. THE PROXY'S 0.8239 -> 0.8592 IMPROVEMENT IS NOT EVIDENCE ABOUT PURITY; it is a report that the proxy's own NAMED causes went quieter.",
+    "THE 8-ENTRY CAP BINDS ON 72 OF 142 COVERS — exactly half the corpus returned the maximum the grammar allows. Eight is the number the PROBE5 rules proposed and NOTHING MEASURED IT. So 'every distinct thing' is measurably not what was elicited, and any claim that the elicitation is now exhaustive is false on half the covers. Carried as a loose end.",
+    "ONE VARIANT, NO AGREEMENT SIGNAL. A J list is a single reading, not a corroborated one; NOUNS_AGREEMENT_RULE records this in the table's meta so no analysis can pool a J entry with an E==F class word by accident. A second variant is ~5 minutes of GPU and is still absent.",
+    "THE TEXT LEAK DID NOT CLOSE AND WAS NEVER GOING TO: text_below_cut is 15 in both runs and text_below_pooled_cut_too is 11 in both. This round changed the subject elicitation and touched nothing about text. Of the verdict's three named fixes — list-ALL-things, the text_below_cut leak, the ornament policy — THIS ROUND DID ONE.",
+    "THE WATCHLISTS ARE UNREVIEWED. 15 part-noun and 23 non-thing words were USED as SAM prompts, flag-only. `light`, `shadow`, `reflection`, `fog`, `smoke`, `sky` and `surface` are the ones most likely to be subtracting field rather than subject — a weaker form of the circularity the ground-word bar catches in its plainest form, and nobody has measured it.",
+    "THE STRATA MOVED, so v5 per-stratum proxy rates are not paired with v4's human column: static-only-clean collapsed 28 -> 7, class-only 2 -> 1, noun-fired grew 77 -> 102. A repeat round can no longer fill class-only's quota at all.",
+    "TWO RUNS CROSS A CONCEPT-SET HASH BOUNDARY (v2.1 9c78298f3c993678 -> v2.2 d49a63c479d4e672). config.py forbids a single analysis reading two hashes at once; analyze_residual_cuts_v5.py does so ON PURPOSE, because saying where they differ is the job, and the byte-identical static arm above is what makes that readable."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-ground-words-barred-from-dynamic-sam-prompts",
+   "ts": "2026-08-04T00:25:59Z",
+   "kind": "instrument-design",
+   "draftedAs": "round finding — RESIDUAL_V5_NOTES.md §12.4 states it as the module's most important line rather than as a proposed record. Recorded here under the README's existing kind vocabulary because it is a standing bar that later work is entitled to assume.",
+   "scope": "The derivation of dynamic SAM prompts from free-text noun answers (dynamic_concepts_v3.py, rules version sam-dynamic-concepts.v3). It bars a specific short list of GROUND words from ever becoming a SAM subject prompt. It does NOT bar them from the VLM's answers, which still record them; it does NOT bar `sky`, `wall`, `space` or `void`, which are deliberately left through; and it is not a vocabulary judgment about what a cover may depict.",
+   "decision": "GROUND WORDS ARE BARRED FROM BECOMING DYNAMIC SAM SUBJECT PROMPTS, AND THE REASON IS CIRCULARITY, NOT VOCABULARY. The all-nouns run emits `background` as a list entry on 16 of 142 covers. Handing that word to SAM as a subject prompt would make the instrument answer its own question: the residual is DEFINED as what survives after every mask is subtracted, and R-3 asks whether that residual is cleanly the background. A prompt literally named 'background' would subtract the background, drive the residual toward zero, and register in the purity proxy as an improvement, with nothing in the numbers to say the improvement was tautological. This is the same defect the Phase 0 adversarial review found in the area-guard verdict, where a quantity was computed over a force-included subset alone and could not have produced a counterexample. WITHOUT THIS BAR, EVERY RESIDUAL NUMBER THE v5 ROUND PRODUCED WOULD BE WORTHLESS. `sky`, `wall`, `space` and `void` are deliberately NOT barred — a sky and a wall are things a cover really depicts — and are flagged on a watchlist instead, which is the reviewer's call and not the module's.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/oracle/sam/RESIDUAL_V5_NOTES.md",
+     "what": "§12.4 — the bar table with the words each bar caught, the head-final matching rule and why it is applied to exactly one bar, and the watchlists printed rather than guessed at."
+    },
+    {
+     "ref": "research/v3/oracle/sam/dynamic_concepts_v3.py",
+     "what": "GROUND_WORDS_BARRED and the sibling bars, with every barred word quoted from the prompt itself so the bar holds whether or not the model obeyed."
+    },
+    {
+     "ref": "research/v3/reviews/phase-0-adversarial/",
+     "what": "The area-guard finding this bar is named against: a quantity computed over a force-included subset alone could not have produced a counterexample."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY: this is an analysis of an instrument's own failure mode, not of reviewer answers. No machine can re-check it.",
+    "THE BAR LIST IS SHORT AND WAS NOT MEASURED — it is the words the prompt itself names, plus `background`. THE WEAKER FORM OF THE SAME CIRCULARITY IS UNBARRED AND UNMEASURED: `light`, `shadow`, `reflection`, `fog`, `smoke`, `sky`, `surface` were used as prompts and can subtract field rather than subject. Probe 5 said in as many words that the real list is the reviewer's call, and inventing a longer bar in code would be making that call silently.",
+    "HEAD-FINAL MATCHING IS APPLIED TO ONE BAR ONLY (the lettering vocabulary, where `background text` IS a kind of text and English compounds are head-final). It is deliberately NOT applied elsewhere: it would turn the non-thing bar's `field` into a bar on `corn field` and `football field`, which are places a cover really can depict.",
+    "THE BAR CANNOT DISTINGUISH A COVER WHOSE SUBJECT REALLY IS ITS BACKGROUND. It is a blunt instrument justified by the measurement it protects, and the cost — a genuine `background`-as-subject cover going unmasked — is unmeasured and is accepted on purpose."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-straddle-rule-anisotropy-confounded",
+   "ts": "2026-08-03T22:36:54Z",
+   "kind": "instrument-design",
+   "draftedAs": "verdict — bracketing-round-3-analysis.json carries the value `anisotropy-confounded` in a `verdict` field, and bracketing-round-3-preregistration.md §8 specified the SHAPE of this record before any answer was seen without writing one. Recorded here under the README's existing kind vocabulary; the round's own vocabulary of six permitted verdicts (max / average / unresolved / anisotropy-confounded / not interpretable / void) is preserved verbatim in the decision text.",
+   "scope": "The straddle rule inside `sameColorBar()` — what happens when a pair spans two ruler regions — and loose end B13. NO CODE CHANGES BY THIS RECORD: `Math.max` stays, CONTRACT_VERSION does not bump, no palette is re-validated, and the docstring's `[HELD]` tag does NOT become `[REVIEWED]`. It does not settle the anisotropy question of loose end B9 on that row's own terms, and it does not touch the P1 excursion bar (B12), which round 3 again did not measure.",
+   "decision": "THE PRE-REGISTERED ANISOTROPY VETO FIRED, SO THE ROUND HAS NO WINNER AND `Math.max` STANDS UNCHANGED ON THE SAFETY ARGUMENT ALONE. The veto, quoted from the pre-registration: if the lightness-dominant and chroma-dominant in-band subgroups fall on opposite sides of 0.5 and at least one is individually decisive at alpha = 0.05, the round reports `anisotropy-confounded` — no global winner, and the finding is that THE STRADDLE BAR DEPENDS ON THE DIRECTION OF THE DIFFERENCE, WHICH NEITHER CANDIDATE RULE CAN EXPRESS. Measured: lightness-dominant 15/21 same (rate 0.7143, exact p 0.0784, favours `max`); chroma-dominant 2/21 same (rate 0.0952, exact p 0.000221, DECISIVE, favours `average`). Opposite sides of one half, one subgroup decisive, veto triggered. THE PRIMARY COUNT IS INDEPENDENTLY UNRESOLVED — k = 17 of n = 42, two-sided exact binomial p = 0.2800, Wilson 95% 0.2704-0.5551, against pre-registered decisive cuts of 28 for `max` and 14 for `average` — so both roads lead to no rule change and the veto is what says WHY. Per the pre-registration's own consequence table, any outcome other than `max` or `average` means no code change and B13 stays open with this round cited as the attempt. THE ROUND IS VALID, WHICH IS WHAT MAKES THE NULL WORTH RECORDING: attention checks 6/6, both band controls interpretable, 58/58 answered with 0 unanswered, 0 superseded and 0 retracted, silent-repeat agreement 0.8333 against a rounds-1-2 baseline of 0.625, and a sensitivity re-run agreeing with the primary (k=18, p 0.4408, unresolved).",
+   "fundedBy": [
+    "o-msdsw2m5-4fb5187e",
+    "o-msdsw504-f42643e1",
+    "o-msdsw5qs-13afa3ab",
+    "o-msdsw6uq-dd12f742",
+    "o-msdsw7kn-e1ba4482",
+    "o-msdsw9dj-6e2d845d",
+    "o-msdswaho-fab41d17",
+    "o-msdswb9g-235bbde8",
+    "o-msdswccx-47e1450c",
+    "o-msdswd1d-76dbeadb",
+    "o-msdswf1z-4c7849b4",
+    "o-msdswi68-82c12d7b",
+    "o-msdswj10-4f14fdb0",
+    "o-msdswjqz-44e1629c",
+    "o-msdswlwr-1440a09e",
+    "o-msdswmyj-d11fefb6",
+    "o-msdswnp7-d4539ece",
+    "o-msdswojg-d401c60e",
+    "o-msdswsgz-8cc01c2c",
+    "o-msdswxf5-6fbff04a",
+    "o-msdswz0d-06d6b2f9",
+    "o-msdsx1fy-e8510fce",
+    "o-msdsx25v-8210dc92",
+    "o-msdsx2w3-b6471388",
+    "o-msdsx3ov-a5dd3dec",
+    "o-msdsx4vr-8f5ee531",
+    "o-msdsx5rr-4060f914",
+    "o-msdsx88l-33129f25",
+    "o-msdsx9ci-4a5adfca",
+    "o-msdsxa7m-1812a48a",
+    "o-msdsxaxz-f1dde46a",
+    "o-msdsxekh-05aca253",
+    "o-msdsxg9k-980cc87e",
+    "o-msdsxhw0-fbea0bbb",
+    "o-msdsxil6-b8ccfffd",
+    "o-msdsxjcw-27585db7",
+    "o-msdsxki5-16b12ae3",
+    "o-msdsxn2j-73737f67",
+    "o-msdsxoal-f229cded",
+    "o-msdsxp5e-e5cdfbb8",
+    "o-msdsxpsp-f8a7c149",
+    "o-msdsxqh2-af15272e",
+    "o-msdsxrdf-71cfc253",
+    "o-msdsxsc1-53afbe44",
+    "o-msdsxu1x-bbd39b96",
+    "o-msdsxvjm-edd2e2c9",
+    "o-msdsxw3j-f8d3d703",
+    "o-msdsxwq7-7d2d97a7",
+    "o-msdsxz6p-7103b9f5",
+    "o-msdsy0q9-eaa760ac",
+    "o-msdsy1f0-4130839a",
+    "o-msdsy21r-b8d7c6a8",
+    "o-msdsy2z1-f633eae0",
+    "o-msdsy3vx-240076b9",
+    "o-msdsy5hd-6da368d6",
+    "o-msdsy7cl-ba308754",
+    "o-msdsy871-dddd0c1a",
+    "o-msdsyaoj-1f131c24",
+    "bc-msdsybvi-d9223987"
+   ],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/data/calibration/bracketing-round-3-analysis.json",
+     "what": "The scored round: the pre-registered rule, the primary count and its exact binomial, the anisotropy subgroups, the validity gates, the repeats, the sensitivity re-run, the direction-by-band-fraction breakdown, the exploratory logistic and the dormancy block."
+    },
+    {
+     "ref": "research/v3/data/calibration/bracketing-round-3-preregistration.md",
+     "what": "The pre-registration, written before the generator existed and before any answer did: the rule, the six permitted verdicts, the anisotropy veto, the power table, the per-outcome code consequences, and §8's specification of this record's shape."
+    },
+    {
+     "ref": "research/v3/src/contract/color.ts",
+     "what": "sameColorBar() and the straddle rule the round was aimed at — unchanged by this record, and still carrying its [HELD] tag."
+    }
+   ],
+   "fundingCaveats": [
+    "THE ROUND SETTLES A RULE, NOT A CORPUS BEHAVIOUR, AND ON TODAY'S CORPUS THE RULE IS DORMANT. Over the distilled v2-3 corpus, 2,582 of 3,309 role pairs (78.0%) are cross-region and ZERO land in any disagreement band; the closest cross-region pair sits at OKLab distance 0.04664, about twice the largest bar. Whichever rule won, no verdict on today's corpus would have changed. The corpus is also v2-3 output that was reviewed and largely endorsed, so it is selected AGAINST the degenerate near-collisions the invariant exists to catch.",
+    "THE ANISOTROPY SUBGROUPS ARE n=21 EACH AND ONLY ONE IS DECISIVE. The lightness subgroup's p is 0.0784 — it does not individually clear alpha, and the veto fires on the CONJUNCTION of opposite sides plus one decisive subgroup, which is a weaker condition than both being decisive. The pre-registered power table gives 0.74 power at a true rate of 0.70 and 0.24 at 0.60, so an unresolved primary at n=42 is an expected outcome for a small true effect and is not evidence of no effect.",
+    "ONE BAND CONTROL WAS ANSWERED ON THE WRONG SIDE (r3-ds-ls-control-below-1, distance 0.0166, chroma direction, answered 'not same' where the band predicts 'same'). The analysis reads this as the anisotropy showing up in the controls too rather than as a misplaced band. Both readings are consistent with the data; the gate was scored as passed and the alternative reading is not refuted.",
+    "THE EXPLORATORY LOGISTIC DOES NOT SUPPORT AN INTERMEDIATE BAR: threshold 0.015343, CI 0.01257-0.018729, against a pooled average bar of 0.015926 and a pooled max bar of 0.01958. It is exploratory, it was not pre-registered as decisive, and it must not be quoted as a fitted straddle bar.",
+    "228 SAME-SCHEMA LABELS FROM ROUNDS 1 AND 2 ARE EXCLUDED ON BATCH ID. The criterion is byte-identical across the three rounds by design, which is what makes the exclusion safe, but it also means this round's n is 42 and not 270."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-reviewer-metric-follows-the-pair",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-design",
+   "scope": "Which ruler judges which pair of published colours, in invariants 3 and 4. It binds src/contract/invariants.ts, PHASE_0_DECISIONS.md §2's statement of the two contrast parameters, and any consumer counting I3/I4 violation codes. It does NOT change the whole-ramp SCOPE of the floors (d-2026-08-03-reviewer-whole-ramp-contrast-floors, which stands), does NOT change either contrast parameter's default or minimum, and does NOT settle where in a pipeline the parameters act (B14). It does not decide what value the foreground-accent bar should take — only which metric governs that pair.",
+   "decision": "THE METRIC FOLLOWS THE PAIR. Reviewer ruling, 2026-08-04, verbatim: \"the contrast limit between foreground and background/surface/gradient, and between accent and background/surface/gradient should be about APCA contrast, not APCA *and* color distance. Color distance is used between background and surface, or between foreground and accent.\" And, the same day, refining what that means for the accent, verbatim: \"yes, we want to keep that class of accents [isoluminant], but then the color distance must be something else than the bracketing calibration tests we've been running. Because if APCA says 0 (or close to it) and then we use 'minimal OKLab distance at which I can see the difference' those accents will still be hardly perceptible (could *sometimes* be fine for accents, will not be fine at all for foreground).\" SO THE ASSIGNMENT IS: foreground vs background/surface/rendered ramp — raw APCA ALONE, no escape at any distance and at any floor level. Accent vs background/surface/rendered ramp — raw APCA with ONE escape, and the escape runs on a FUNCTIONAL distance rather than a detection one. Background vs surface — OKLab distance at the regional same-colour bar, unchanged. Foreground vs accent — OKLab distance at an elevated bar, which is where the retired detection threshold RELOCATES, as the ruling directs. THE CHANGE IS NOT 'DROP THE ACCENT'S SECOND DIMENSION' BUT 'THE SECOND DIMENSION WAS MEASURED AGAINST THE WRONG CRITERION': the old escape ran on a DETECTION criterion (\"can you see the difference\"), and the reviewer ruled detection the wrong instrument for a contrast escape. MEASURED CONSEQUENCE, WHICH THE REVIEWER ASKED TO BE TOLD ABOUT: over the 554 real reviewer-verdicted palettes in data/legacy, the roles matrix newly fails 3 — TWO OF THEM ENDORSEMENTS (one I3.foreground-accent-not-separated, one I4.below-contrast-floor accent-vs-surface) and one known-bad; on the advisory reconstructed-gradient matrix 11 more (5 endorsements, 5 acceptable, 1 known-bad), all accent-vs-ramp. Under §4's standing rule that the reviewer outranks the rule, those two endorsements are theirs to overrule.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "The ruling transcribed verbatim with the pair-to-ruler table, the two escape clauses, SEPARATED_ROLE_PAIR, validateDistinctness's elevated bar applied as Math.max, and the new I3.foreground-accent-not-separated code."
+    },
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "FOREGROUND_ACCENT_SEPARATION_DISTANCE, written as an assignment from ACCENT_VISIBILITY_COLOR_DISTANCE rather than a repeated literal so no reader mistakes it for a second measurement, with the [INHERITED] tag and the relocation argument at the point of use."
+    },
+    {
+     "ref": "research/v3/src/contract/fixtures.ts",
+     "what": "The LSB brackets pinning both new digits, found by search over the 16.7M 8-bit colours, plus accentEscapesMidRampByColor — the fixture that fails if anyone minimises the accent's two dimensions separately."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY BECAUSE BOTH RULINGS WERE CONVERSATIONAL. No machine can re-check them.",
+    "THE FOREGROUND-ACCENT BAR IS A NUMBER NOBODY MEASURED FOR THAT PAIR. The ruling says which metric governs the pair; it does not, and could not, say what value the threshold takes. The digits in force are ACCENT_VISIBILITY_COLOR_DISTANCE = 0.07444, calibrated on 2026-08-02 for an ACCENT SITTING ON A FIELD at equal luminance, question \"are the icons clearly visible on this background?\". NOBODY HAS EVER BEEN SHOWN A FOREGROUND AND AN ACCENT SIDE BY SIDE AND ASKED HOW FAR APART THEY MUST BE TO READ AS TWO ROLES. The loan is better collateralised than the one it replaces — this pair is itself a detection-class question, which is the class the number was measured on — but it is still a loan. Carried as a loose end.",
+    "TWO ENDORSED PALETTES NOW FAIL THE ROLES MATRIX AND THE REVIEWER HAS NOT YET RULED ON THEM. PHASE_0_DECISIONS.md §4's meta-rule is that an invariant which ever blocks an endorsed palette is demoted. That rule is not applied here — the count is reported for the reviewer to overrule or accept, which is a different act from demotion, and until they do, the gate is stricter than the only human verdicts we have.",
+    "ONE PLACE STILL JUDGES A CONTRAST PAIR BY DISTANCE, DELIBERATELY, AND IT IS FLAGGED RATHER THAN DECIDED. Invariant 3's distinctness matrix covers EVERY pair of published colours at the same-colour bar, including foreground-background and accent-stops. The contract workstream reads that as the degeneracy rule ('a palette must not publish one colour twice'), separately [REVIEWED] on 2026-08-02, and reads the 2026-08-04 ruling as being about LIMITS — so it did not demote those clauses. That reading is the contract workstream's and the reviewer has not confirmed it. Carried as a loose end.",
+    "EXACTLY ONE FIXTURE VERDICT FLIPPED — accentJustOverVisibilityDistance, valid to invalid: an isoluminant accent one LSB above the detection threshold, which is precisely the reviewer's stated worry. No valid fixture flipped for any other reason."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-accent-functional-distance-is-a-bracketed-placeholder",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-design",
+   "scope": "The value of the accent's contrast escape in invariant 4: ACCENT_FUNCTIONAL_DISTANCE = 0.14591, [UNCALIBRATED]. It binds the escape clause only — the accent, only at the epsilon, and no other pair. It does NOT apply to the foreground, which gets no escape of any kind at any distance. It does NOT apply above the epsilon: a caller who raises minAccentContrast is asking for luminance contrast specifically, so above the epsilon the accent clause is one-dimensional too. It fixes no value permanently; it is explicitly a placeholder awaiting a round.",
+   "decision": "THE ACCENT'S CONTRAST ESCAPE RUNS ON A NEW, DELIBERATELY UNCALIBRATED CONSTANT, AND ITS DIGITS ARE A BRACKET MIDPOINT RATHER THAN A MEASUREMENT. ACCENT_FUNCTIONAL_DISTANCE = 0.14591 replaces ACCENT_VISIBILITY_COLOR_DISTANCE = 0.07444 in that clause, tagged [UNCALIBRATED — reviewer-mandated two-tier semantics 2026-08-04; must be well above the JND bars; calibrate via a functional-visibility round, criterion \"does this work as an accent at a glance\", NOT the identity criterion]. WHERE THE DIGITS COME FROM, so nobody reads them as a result: they are bracketed by the reviewer's OWN answers on bracketing round 1 part 2's equal-luminance accent ladder and then interpolated. Lower anchor 0.08804 — the lowest rung they called clearly visible, and precisely the answer the 2026-08-04 refinement retracts as \"hardly perceptible\", so the functional threshold is strictly ABOVE it. Upper anchor 0.24181 — the top rung, called clearly visible and NOT retracted, and a threshold above it would refuse an accent they plainly endorse. sqrt(0.08804 x 0.24181) = 0.14590302…, rounded to five decimals — the GEOMETRIC midpoint, chosen because it is the same estimator 0.07444 itself is, for the same reason, so the two placeholders are at least wrong in the same documented way. IT IS 1.96x THE THRESHOLD IT REPLACES, so the escape is narrower and the floor stricter — the direction the reviewer's refinement asks for.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/constants.ts",
+     "what": "The declaration, the [UNCALIBRATED] tag naming the round that would replace it, the two anchors with the answers behind them, the geometric-midpoint argument, and the 'what this is not' paragraph."
+    },
+    {
+     "ref": "research/v3/data/calibration/bracketing-round-1.json",
+     "what": "Stratum accent-equal-luminance — the ten rungs (0.01267 … 0.24181) and the completely separated answer pattern the anchors are read off."
+    },
+    {
+     "ref": "research/v3/src/contract/ramp.ts",
+     "what": "The pointwise search the threshold is fed into; the 2026-08-04 refinement changed which distance it is given and nothing about its shape."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY AND THIS IS NOT A MEASUREMENT OF FUNCTIONAL VISIBILITY. NO STIMULUS WAS EVER GRADED AGAINST THE CRITERION THE CONSTANT IS NAMED FOR. Its two anchors come from a DETECTION round, and one of them is an answer the reviewer has since partly retracted. 'Well above the JND bars' is satisfied — it is 6.4-15.7x the regional same-colour bars — but well above is a DIRECTION and a direction is not a number.",
+    "TREAT ANY VERDICT THAT TURNS ON THIS DIGIT AS PROVISIONAL, including the two endorsed palettes the accompanying ruling newly fails.",
+    "THE CONSTANT'S OWN COMMENT CONTAINS ONE ARITHMETIC SLIP THAT DOES NOT MOVE THE VALUE: it says the midpoint 'lands between rungs 08 (0.14813) and 09 (0.24181)', but 0.14591 is just BELOW 0.14813. The sentence's intent — that the carve-out admits the rungs called visible by a wide margin and refuses the two nearest the boundary the reviewer has now doubted — is unaffected, and the computed sqrt is correct. Recorded rather than silently corrected because the comment is another workstream's to fix.",
+    "THE ROUND THAT WOULD REPLACE IT DOES NOT EXIST. The constant forward-references 'the proposed functional-visibility round in the loose-end ledger'; no such row existed when this record was written, and one is being added by the same pass that writes this. Until it runs, the escape's width is an interpolation between one retracted answer and one standing one."
+   ],
+   "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-whole-ramp-record-stands-only-the-accent-distance-changed",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "process",
+   "draftedAs": "documentation consistency — no wording was proposed by the contract workstream; the substance is stated in src/contract/ramp.ts and invariants.ts and is transcribed into PHASE_0_DECISIONS.md §2 by this pass. Recorded because a reader comparing the two records needs to know that the earlier one is NOT superseded.",
+   "scope": "The relationship between d-2026-08-03-reviewer-whole-ramp-contrast-floors and d-2026-08-04-reviewer-metric-follows-the-pair, and the wording of PHASE_0_DECISIONS.md §2's minimum-contrast bullet. It changes no code and no constant.",
+   "decision": "THE WHOLE-RAMP RECORD IS NOT SUPERSEDED, AND CARRIES NO `supersedes` LINK IN EITHER DIRECTION. Of its five consequences, four are untouched by the 2026-08-04 ruling: both floors still hold over the WHOLE INTERPOLATED RAMP rather than at the stop points; '§2's and every published stop' still names the gradient and not four colours; the interpolation space is still OKLab, declared once as RAMP_INTERPOLATION_SPACE; and the violation codes still say WHERE, one per role. ONLY CONSEQUENCE (3) CHANGED, AND ONLY IN ONE INPUT: the accent's two dimensions are still minimised POINTWISE AS A CONJUNCTION — it violates only where |raw APCA| and an OKLab distance both undershoot AT THE SAME RAMP POINT, and minimising them separately would still condemn a ramp that is isoluminant at one end and same-hued at the other while being visible throughout — but the distance fed to that search is now ACCENT_FUNCTIONAL_DISTANCE and no longer ACCENT_VISIBILITY_COLOR_DISTANCE. THE SHAPE OF THE ARGUMENT IS UNTOUCHED; THE THRESHOLD IN IT IS NOT. PHASE_0_DECISIONS.md §2 is reworded to name the functional distance and to stop calling 0.0744 the distance at which an accent becomes 'functional', which is now precisely the wrong word.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/src/contract/ramp.ts",
+     "what": "'Which distance changed on 2026-08-04, and the shape did not' — the statement this record makes standing."
+    },
+    {
+     "ref": "research/v3/src/contract/invariants.ts",
+     "what": "'The whole-ramp scope of the floors … is untouched by any of this.'"
+    },
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "§2's minimum-contrast bullet, reworded by this pass, and §3's accent-visibility line, corrected in the same pass."
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy IS EMPTY: this is a reading of two records and of the code that implements them, not of reviewer answers.",
+    "THE CONTRACT WORKSTREAM PROPOSED NO WORDING. It shipped six TypeScript files, no markdown, and no README; the substance recorded here is read off TSDoc comments and the commit message. The §2 sentence now in PHASE_0_DECISIONS.md is this pass's transcription of that substance, not the contract workstream's own text, and that workstream is entitled to say it reads wrong.",
+    "APPEND-ONLY MEANS THE OLD RECORD STILL SAYS WHAT IT SAID. d-2026-08-03-reviewer-whole-ramp-contrast-floors' consequence (3) names 'OKLab distance' without naming which one, and it must not be edited. A reader who opens only that record will not learn which threshold is in force; this record is the only thing that tells them, and nothing mechanically links the two."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

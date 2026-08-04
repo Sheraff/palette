@@ -90,7 +90,28 @@ chaotic → ~0.
   being visible throughout). A minimum landing on a published stop still reports
   `I4.stop-below-contrast-floor` and names the stop, so the existing census stays countable; an
   interior minimum reports `I4.ramp-below-contrast-floor` and names the position. One violation per
-  role, because a minimum has one location. **The interpolation space is OKLab** — reviewer ruling,
+  role, because a minimum has one location.
+  **Reworded 2026-08-04, and only one clause moved.** The accent's second dimension is still a
+  pointwise conjunction and the sentence above still describes its shape — but **which distance**
+  it uses changed, by a later reviewer ruling: *"the contrast limit between foreground and
+  background/surface/gradient, and between accent and background/surface/gradient should be about
+  APCA contrast, not APCA **and** color distance. Color distance is used between background and
+  surface, or between foreground and accent."* So the **foreground gets no escape of any kind, at
+  any distance, at any floor level** — stated explicitly here for the first time, though it is
+  unchanged in behaviour — and the accent keeps exactly one escape, running on
+  **`ACCENT_FUNCTIONAL_DISTANCE` (0.14591, `[UNCALIBRATED]`)** rather than on the retired
+  `ACCENT_VISIBILITY_COLOR_DISTANCE` (0.07444) it used from 2026-08-02 to 2026-08-04. The reason is
+  the reviewer's own refinement: the old threshold came from a **detection** criterion ("can you
+  see the difference"), and *"if APCA says 0 … those accents will still be hardly perceptible"* —
+  so a contrast escape needs a **functional** criterion, which no round has run. The retired number
+  relocates to foreground↔accent (§3, loose end **B31**). **The whole-ramp scope above is untouched
+  by this**, and `d-2026-08-03-reviewer-whole-ramp-contrast-floors` is **not superseded** — only the
+  identity of the distance in its consequence (3) changed. Records:
+  `d-2026-08-04-reviewer-metric-follows-the-pair`,
+  `d-2026-08-04-accent-functional-distance-is-a-bracketed-placeholder`,
+  `d-2026-08-04-whole-ramp-record-stands-only-the-accent-distance-changed`; the calibration this
+  places on the critical path is loose end **A16**.
+  **The interpolation space is OKLab** — reviewer ruling,
   *"sampled in the interpolation space the player actually renders"* — declared once as
   `RAMP_INTERPOLATION_SPACE` and read by the CSS emitter so the two cannot drift; the pinned emitter
   already produced `linear-gradient(135deg in oklab, …)`, and a missing hint would have mattered
@@ -125,17 +146,27 @@ chaotic → ~0.
   eyes discriminate dark neutrals ~2× finer than OKLab distance predicts — v2-3's dark-toe
   complaint, quantified. Full data: `research/v3/data/calibration/`.
 - **Accent visibility is two-dimensional** (same round, part 2): at equal luminance a
-  chromatic accent becomes functional at OKLab distance ≈0.0744 — the **middle of the
-  0.06300–0.08796 separation band**, which is the honest bracket to quote. (The logistic
+  chromatic accent becomes **detectable** at OKLab distance ≈0.0744 — the **middle of the
+  0.06300–0.08796 separation band**, which is the honest bracket to quote. (**"Functional" was the
+  wrong word and is corrected here, 2026-08-04.** The round asked *"are the icons clearly visible on
+  this background?"*, which is a detection question; the reviewer has since ruled that detection is
+  the wrong criterion for a contrast escape and retracted the lowest rung they had called visible as
+  *"hardly perceptible"*. The distance at which an accent becomes **functional** is a different and
+  **unmeasured** quantity — `ACCENT_FUNCTIONAL_DISTANCE`, placeholder 0.14591, `[UNCALIBRATED]`,
+  loose end **A16**.) (The logistic
   fit's 95% CI of 0.052–0.106 is a **ridge artifact**: the data are completely separated, so
   the curve cannot pin the crossing and its interval describes the ridge rather than the
   uncertainty. Same fit object, different statistic — do not cite the CI as the bracket.
-  0.0744 is the geometric mean of the band, exact to five digits.) The threshold itself
-  stands — hue
-  rescues, at ~5× the same-color bar. Invariant 4's accent clause is accordingly: violation
-  requires BOTH |raw APCA| < ε_accent AND color distance < 0.0744 `[REVIEWED]`. The
-  foreground clause is unchanged — text is luminance-driven, no color rescue (v2-3 reviewer
-  verdict).
+  0.0744 is the geometric mean of the band, exact to five digits.) **The measurement stands; what
+  it gates does not.** Hue still rescues, and invariant 4's accent clause is still a conjunction —
+  violation requires BOTH |raw APCA| < ε_accent AND a colour distance below a threshold — but as of
+  2026-08-04 that threshold is `ACCENT_FUNCTIONAL_DISTANCE` (0.14591, `[UNCALIBRATED]`, 1.96× the
+  old one, so the escape is **narrower** and the floor **stricter**), and 0.0744 `[REVIEWED]` has
+  moved to the **foreground↔accent** pair as `FOREGROUND_ACCENT_SEPARATION_DISTANCE`
+  `[INHERITED]` — a pair it was never measured on, though a detection-class pair, which is the
+  class it *was* measured on (loose end **B31**). The
+  foreground clause is unchanged and is now stated positively — text is luminance-driven, **no
+  colour rescue at any distance** (v2-3 reviewer verdict, restated by the 2026-08-04 ruling).
 - **Gates** (binary, block integration): determinism (same buffer → byte-identical);
   invariance (relabeling, iteration order → zero changes); degenerate sweep (zero crashes);
   known-worse (zero outputs matching reviewed-bad palettes); contract-invariant validation

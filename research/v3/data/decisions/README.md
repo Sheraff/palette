@@ -4,13 +4,32 @@
 were made between 2026-08-02 and 2026-08-03, this file was not. Every record says so via
 `recordedAt`.
 
-**Counts in this document are as of 2026-08-04 and are re-derived, not remembered.** The file
-holds **48 decisions**, of which **12** carry a non-empty `fundedBy`. The 48th, appended 2026-08-04,
-is `d-2026-08-04-embedding-canonical-model-warehouse-funded` — a **funding amendment**: it changes no
-instrument and no number, and exists only because the reviewer's four embedding-gallery observations
-were ported into the warehouse and can now be cited by id. It is the first record in this file whose
-entire purpose is to move a decision from unfundable to re-checkable. The first 47 arrived in four
-waves:
+**Counts in this document are as of 2026-08-04 (late) and are re-derived, not remembered.** The file
+holds **63 decisions**, of which **22** carry a non-empty `fundedBy`. **The most recent 10 were
+appended in the third batched ledger pass**, and their shape is worth reading before the history
+below, because it is the first pass where the *ported-note* mechanism did real work rather than
+demonstrating itself: three reviewer statements — the residual-purity post-release feedback, its
+escape-answer request, and the pointing round's lenience disclosure — were ported to the warehouse
+**first**, and four records then cite them by id. Two of those four (the ornament policy and the
+escape-answer rule) would otherwise have had an empty `fundedBy`, and their drafts said so. **Of the
+ten, four are funded and six are not**, which is the expected split: the six are two conversational
+reviewer rulings, three analyses of instruments rather than of answers, and one documentation-
+consistency record.
+
+**One deliberate deviation from two of those drafts is recorded in the records themselves**, and it
+is a rule worth generalising: the drafts proposed citing all 50 `residual-purity-1` labels alongside
+the note, and the labels are **not** cited. A labelling rule stated in prose was not *fitted* to those
+answers, and this README's own reason for listing a whole batch — "an amendment to any single answer
+flags the decision that was fitted to it" — does not apply. **Cite the batch when the decision was
+fitted to the batch; cite the note when the decision came from the note.** The round goes in
+`fundedByArtifacts` either way.
+
+Earlier the same day the file held **48 decisions**, of which **12** were funded. The 48th was
+`d-2026-08-04-embedding-canonical-model-warehouse-funded` — a **funding amendment**: it changed no
+instrument and no number, and existed only because the reviewer's four embedding-gallery observations
+were ported into the warehouse and could then be cited by id. It is the first record in this file
+whose entire purpose was to move a decision from unfundable to re-checkable. The first 47 arrived in
+four waves:
 15 written on 2026-08-03, **20 appended the same evening** from the Phase 0 adversarial review's six
 fix arms and three reviewer rulings, **5 more** in the consolidated post-review pass, and **7 in the
 second batched ledger pass** — the ladder's capped-reference key, the census-aware re-score's
@@ -62,9 +81,20 @@ list of **warehouse record ids** and not a list of prose citations.
   // optional, and in practice always present:
   "fundedByArtifacts": [ … ],     // object or bare string — see below
   "fundingCaveats":    [ "…" ],   // see "The honest part" below
-  "supersedes":        "<decision id>"           // when one replaces another
+  "supersedes":        "<decision id>",          // when one replaces another
+  "draftedAs":         "…"        // see below — in use, and documented late
 }
 ```
+
+**`draftedAs` — added by the second batched ledger pass, documented here 2026-08-04, in use on 10
+records.** When a source document proposed a record under a label that is *not* in the `kind`
+vocabulary below — "measurement", "verdict", "round finding", "route state", "documentation
+consistency" — the record is filed under an **existing** `kind` and `draftedAs` preserves what the
+source called it, and where. It exists so that reusing the vocabulary is not the same as quietly
+rewriting the proposal: a reader who goes back to the analysis will find a different word there, and
+this field is what tells them the difference is a filing decision rather than a disagreement. It is
+read by no tool. **Reach for it whenever you file a proposal under a `kind` its author did not
+use** — and do that in preference to inventing a `kind`, which is the rule the next section states.
 
 The file is `decisions.json`, shaped
 `{ "what": …, "recordedAt": …, "consumedBy": …, "decisions": [ … ] }`. Extra fields are ignored by
@@ -94,11 +124,14 @@ is a label for humans grepping the file, so the list below is a **description, n
 constraint** — but reach for an existing value before inventing one.
 
 In use on 2026-08-03 **across the first 15 records** — every later append reuses these labels and
-invents none, so the vocabulary is unchanged and only the counts below have moved. Across all **47**
-records the distribution is `instrument-design` 17 · `process` 11 · `instrument-selection` 6 ·
-`corpus-policy` 5 · `question-set-ruling` 4 · one each of `metric-freeze`, `instrument-freeze`,
-`instrument` and `fixture-policy` (measured 2026-08-03, late). Re-derive with
-`jq -r '.decisions[].kind' … | sort | uniq -c`:
+invents none, so **the vocabulary has not changed in 48 records**, which is the strongest evidence
+that it is the right size. Across all **63** records the distribution is `instrument-design` 29 ·
+`process` 12 · `instrument-selection` 8 · `question-set-ruling` 5 · `corpus-policy` 5 · one each of
+`metric-freeze`, `instrument-freeze`, `instrument` and `fixture-policy` (measured 2026-08-04, late;
+the earlier reading over 47 records was 17 · 11 · 6 · 4 · 5 and the same four singletons). Note what
+the singletons are doing: **four labels have been used exactly once each and never again**, across
+two days and 63 records — they are not a vocabulary, they are four records that wanted a word. Prefer
+one of the top five. Re-derive with `jq -r '.decisions[].kind' … | sort | uniq -c`:
 
 | kind | records | means |
 |---|---|---|
@@ -174,6 +207,14 @@ list is a new decision record. Recorded as
 `d-2026-08-03-recheck-covers-supersession-and-retraction`. The rule that makes the check worth
 anything: open every flag, *then* decide whether the conclusion moved.
 
+**It is still those same two, at 63 decisions (checked 2026-08-04, late).** Fifteen records have been
+appended since that reading, ten of them in one pass, citing 807 ids of which 712 are distinct — and
+**not one added a flag.** That is the expected result and it is worth stating as a *prediction* rather
+than a reassurance: a new record dated today, citing evidence recorded today, cannot be stale, cannot
+have been superseded, and cannot be missing. **So a fresh append that DOES add a flag is a real
+signal — investigate it before committing**, because it means the record is citing something that had
+already moved when it was written.
+
 Because `missing` is a real signal, `fundedBy` must never be used for prose or for file paths —
 those would show up as missing evidence forever and train everyone to ignore the output. File
 references go in `fundedByArtifacts`, which no tool checks and which is therefore honest about
@@ -201,14 +242,19 @@ numbers. Quote the right-hand column.
 
 ## The honest part
 
-**36 of the 48 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
-that evening, the exceptions being the two SAM threshold records; then 2 of 5, and all 7 of the
-second batched ledger pass; the 2026-08-04 funding amendment is funded, so the absolute count of
-empties is unchanged and only the denominator moved). This is not an oversight and must not be
-quietly filled in — and the ratio keeps
-getting *worse*, not better, because the records that keep arriving are conversational reviewer
-rulings and definitional choices, which is exactly the class the empty field was designed to make
-visible. **Two of the empties are now empty for a subtler reason worth naming**
+**41 of the 63 decisions have an empty `fundedBy`** (10 of the original 15; 18 of the 20 appended
+that evening, the exceptions being the two SAM threshold records; then 2 of 5, all 7 of the second
+batched ledger pass, 5 of the 5 SAM records appended 2026-08-04, and 6 of the 10 in the third batched
+pass; the 2026-08-04 funding amendment is funded). This is not an oversight and must not be quietly
+filled in.
+**The ratio stopped getting worse on 2026-08-04, and how it stopped is the point.** It had been
+sliding — from 10/15 to 36/48 empty — because the records that kept arriving were conversational
+rulings and definitional choices, exactly the class the empty field exists to make visible. The third
+batched pass is the first to move it the other way (41/63 empty, against 36/48), and it did not do so
+by relaxing anything: **it ported three reviewer statements into the warehouse first, and then wrote
+records that cite them.** That is the only mechanism that has ever converted an empty `fundedBy` into
+a full one in this file, it costs a deliberate port every time, and it works only for things the
+reviewer actually *said*. Nothing can fund a decision the reviewer merely made. **Two of the empties are now empty for a subtler reason worth naming**
 (`d-2026-08-03-schema-v2-split-gated-pairs` and the signature_carrier ruling that completes it): the
 records that would fund them are **mechanically superseded** by a later reconciliation round, so
 citing them by id would make `recheck` report the decision as standing on drafts — the precise
@@ -235,9 +281,14 @@ never flag either record.
 Every **no** row above is a load-bearing decision that `recheck` can never flag, however the reviewer
 later revises the judgement behind them. Recording the gap is the point of the field being empty
 rather than absent. **The table is a sample, not a census** — it names the original ten and has not
-been extended row by row as the file grew to 48 records; the query below is the census. The canonical
+been extended row by row as the file grew to 63 records; the query below is the census. The canonical
 embedding model's row is the one **no** that has since become a **yes**, and it took a deliberate
 port to do it — which is the measure of how much work discharging one of these costs.
+**Two more rows would have been born as **no** and were born as **yes** instead** (2026-08-04): the
+text-adjacent ornament policy and the escape-answer rule, whose own drafts predicted an empty
+`fundedBy` and asked for the port *first*. That is the mechanism working as designed rather than
+being demonstrated — it is cheaper to port a reviewer's words before writing the record than to
+amend an unfundable record afterwards, and the difference is one script run.
 
 Re-derive the split rather than trusting this table:
 

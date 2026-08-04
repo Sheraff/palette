@@ -854,12 +854,19 @@ questions*, never as their source.
 
 ## Appendix R — candidate refinements surfaced during use
 
-*The record of what was decided, when, and by whom. **Six dated entries as of 2026-08-03**; re-derive
-rather than quoting that number —* `awk '/^## Appendix R/,/^## Appendix V1/' ORACLE_QUESTION_SET.md |
-grep -cE '^- \*\*2026-'`*. The first two are kept verbatim from v1 and are folded into §A.2; the
-sentence "both entries" applied when there were two and applies to those two only. **Not every entry
-is applied** — the last two are signed rulings whose v2 fixes are gated on sign-off of the rewrite,
-and the sixth applies nothing at all.*
+*The record of what was decided, when, and by whom. **Nine dated entries as of 2026-08-04**;
+re-derive rather than quoting that number —* `awk '/^## Appendix R/,/^## Appendix V1/'
+ORACLE_QUESTION_SET.md | grep -cE '^- \*\*2026-'`*. The first two are kept verbatim from v1 and are
+folded into §A.2; the sentence "both entries" applied when there were two and applies to those two
+only. **Not every entry is applied** — two are signed rulings whose v2 fixes are gated on sign-off of
+the rewrite, and several apply nothing at all.*
+
+***What earns an entry, made explicit 2026-08-04 because it was about to be applied loosely:* a
+reviewer STATEMENT made during or about a round — a ruling, a disclosure, or a complaint that names
+something the question set cannot express. Reviewer *answers* do not earn one, however striking the
+result; a scored round with no accompanying statement belongs to its own analysis and not here. Three
+of the nine entries are disclosures rather than refinements, and they are the load-bearing ones,
+because each is a **reading key without which a whole round's numbers are misread.***
 
 - **2026-08-03, premise disambiguation round (reviewer):** `ground_type` has a gap for
   "one flat field + one shaded field with a blurry meeting line". Resolution applied
@@ -1012,6 +1019,74 @@ the reviewer notes did not show the forced choice losing information — what th
   instead of naming carriers. If it does, the value is doing harm and half of this ruling goes back
   to the reviewer. Recorded single answers on multi-carrier covers stay forced choices and carry
   that noise; nothing already collected is corrected by this.
+
+- **2026-08-04, residual purity round 1 (reviewer), post-release: the answer set could not hold the
+  answer, and a labelling rule arrived with the complaint.** Two rulings in one paragraph of
+  post-release prose, ported to the warehouse as human `note` records so they can be cited by id
+  (`RESIDUAL_PURITY_VERDICT.md#post-release-misses`, `#post-release-escape`) — **no question is
+  edited by this entry**, and the round's 50 released answers stand exactly as given.
+
+  1. **A fourth answer for figure/ground questions — `can't tell what is field here`.** Reviewer,
+     verbatim: *"sometimes it's hard to tell what is field and what is subject, so answers for those
+     cases are not reliable (even with human feedback) unless we add an escape answer choice."* The
+     round offered **pure field / mostly field / not field** and nothing else, so on covers where
+     figure and ground genuinely are not separable the reviewer was forced to pick one of three
+     anyway. **This is design rule 8's exact shape** — a slot that cannot hold the answer it asks
+     for — and it is the same defect the `signature_carrier` entry above records on a different
+     question. **How the escape scores is fixed in advance, because an escape that is quietly
+     absorbed is worse than no escape:** `cant_tell` leaves both the numerator and the denominator,
+     and its **share is a first-class per-stratum result**; a stratum whose escape share exceeds 0.50
+     has *no* reliable rate and must be reported as having none rather than as having a low one.
+     Corroboration that this is a property of the covers and not of the reviewer:
+     `GROUND_FREETEXT_SYNTHESIS.md` found **3 of 9** covers ambiguous in unconstrained prose, with no
+     answer slots constraining them at all. Record:
+     `d-2026-08-04-purity-rounds-need-escape-answer`.
+  2. **Decorations above and below the main text count as part of the main text.** Given in passing
+     while listing what survived subtraction — *"decorations above/below the main text (that would be
+     considered part of the main text)"* — and it settles a class that previously had **no defined
+     answer**: such ornaments are neither a depicted subject nor part of any `text_like` mask, so
+     nothing removed them and nothing could name them. A labelling rule for mask judgment rather than
+     a question edit, but it belongs here because it is what a future round's question will *mean*.
+     Record: `d-2026-08-04-text-adjacent-ornament-is-text`.
+
+  *The reading key for the round itself, and it applies to every rate in it:* because the escape did
+  not exist when the round ran, **residual-purity-1's rates are answers as given** and are not
+  reliable on the ambiguous covers. The round's NOT-ADOPT verdict survives that — it fails its bar
+  even at the charitable ceiling — but no individual per-stratum rate should be quoted as a purity
+  estimate. Full reading: `oracle/sam/RESIDUAL_PURITY_VERDICT.md`.
+
+- **2026-08-04, pointing round `pointing-ground-1` (reviewer), disclosed AFTER answering: the
+  criterion applied was not the criterion the bar was written for.** Verbatim: *"i reviewed the
+  pointing-ground-1 set, since it ran on mostly 'extremely hard background' artworks, i answered as
+  'could this be considered correct' and not 'is this correct', results might be way better in other
+  artworks but here it wasn't amazing."* Ported as
+  `POINTING_PROBE_NOTES.md#pointing-ground-1-lenience`. **No question is edited by this entry**;
+  like the `cascade-ground-truth-1` disclosure above, it is a **reading key**, and it is the second
+  time an undeclared answering criterion has governed a whole round.
+
+  **It cuts asymmetrically, which is the only reason the round is still interpretable.** Every rate
+  is a **ceiling**: a **fail** under a lenient criterion is a **robust fail**, since the strict rate
+  can only be lower — but the round's one passing half (dot-right 7/8) is **not** a robust pass,
+  because it was bought at the generous reading. The sample compounds it: the six decidable tiles are
+  *exactly* the covers where this same reviewer had earlier pressed `none_discernible` in
+  `cascade-ground-truth-1`, so the round measures the misfit tail and only the misfit tail, and the
+  reviewer says plainly that other artworks may be better. **The qualitative anchor is theirs:
+  "it wasn't amazing", and no number from that round is to be carried above that sentence.**
+
+  **The standing consequence for every future round, and it is a question-set obligation rather than
+  a SAM one:** a round's own framing text must tell the reviewer explicitly to answer **"is this
+  correct"** and *not* "could this be considered correct". This round's lenience went undeclared
+  until afterwards and cost it its comparability — a strict successor is biased *against* itself
+  relative to this one, so a tie would read as an improvement. Record and full reading:
+  `d-2026-08-04-pointing-route-alive-pending-typical-strata-probe`,
+  `oracle/sam/POINTING_PROBE_NOTES.md` §13.2.
+
+*One 2026-08-04 finding is deliberately NOT an Appendix R entry.* `bracketing-round-3` returned
+`anisotropy-confounded` on the straddle rule — a real result, recorded as
+`d-2026-08-04-straddle-rule-anisotropy-confounded` — but **no ruling was issued during it and no
+disclosure accompanied it.** It is a scored calibration round about the contract's colour ruler, not
+a refinement surfaced by using the question set, and this appendix is not a results log. Reviewer
+answers alone do not earn an entry here; a reviewer *statement* does.
 
 ## Appendix V1 — group A as written in v1
 

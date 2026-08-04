@@ -120,6 +120,26 @@ gradient notes asked for *more* gradient; three arms were misdirected).
 - **Artwork veto**, note-only records with tags, and idle-time fresh-artwork rounds — kept
   verbatim from v2-3.
 - **No timing of the reviewer.** ("Humans are weak.")
+- **A round's framing text states the answering CRITERION, not just the question** (added
+  2026-08-04, and it is the more expensive of two lessons learned the same day). Two rounds have now
+  been governed by a criterion the reviewer chose for themselves and disclosed only afterwards:
+  `cascade-ground-truth-1`, where `none_discernible` turned out to mean *"the list does not contain
+  the right word"*, and `pointing-ground-1`, where the reviewer answered *"could this be considered
+  correct"* rather than *"is this correct"* — verbatim, disclosed after the batch completed. **Both
+  disclosures were volunteered.** Neither instrument asked, and nothing in the served page could have
+  revealed it. The cost is not a wrong answer; it is that **every rate becomes a ceiling of unknown
+  height**, and a strictly-framed successor is then biased against itself so that a tie reads as an
+  improvement. So: say which reading is wanted, in the round's own text, where the reviewer will see
+  it while answering.
+- **A forced choice must have somewhere to put "I can't tell"** (added 2026-08-04). Design rule 8 of
+  the question set already says a slot must be able to record the answer; what two rounds added is
+  the reviewer's own reason — *"answers for those cases are not reliable (even with human feedback)
+  unless we add an escape answer choice"*. The escape is not a way of discarding hard items:
+  **its share is a first-class result**, reported per stratum, because ambiguity is a property of
+  the artwork. A stratum whose escape share exceeds half has no reliable rate and is reported as
+  having none. Recorded as `d-2026-08-04-purity-rounds-need-escape-answer`; the counterpart risk —
+  an escape used as a general refuge — is real and is why the share is reported rather than
+  subtracted.
 
 ## 5. Calibration mode
 
