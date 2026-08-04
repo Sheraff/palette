@@ -31,6 +31,7 @@ import { normalizeKey } from "./keys.js"
 const PAGE_DATA_URL = "/endorsement-recheck-1.data.json"
 
 const nodes = {
+	failureLabel: document.querySelector("#failure-label"),
 	preamble: document.querySelector("#preamble"),
 	framing: document.querySelector("#framing"),
 	question: document.querySelector("#question"),
@@ -149,6 +150,17 @@ function renderStage(item) {
 	// heading, mock above, swatches under it. The same call the calibration page makes.
 	const side = renderSide(item.media, null, page.side)
 	const extras = el("div", { class: "side-body" })
+	// The line the reviewer quotes back when they want to talk about THIS item. Three parts, coarse to
+	// fine: which round, which question, and the endorsement's own content hash — the last being the
+	// id everything upstream already keys on (`data/legacy/endorsements.json`, and the ruling that
+	// named these two palettes). The opaque answer token is deliberately NOT here: it is regenerated
+	// on every push, so it would be a handle that stops resolving the moment the round is re-pushed.
+	extras.append(
+		el("p", {
+			class: "oracle-item-id",
+			text: `${batch.batchId} · ${item.questionKey} · ${page.entryId}`,
+		}),
+	)
 	if (page.gradientNote !== null) extras.append(el("p", { class: "oracle-instruction", text: page.gradientNote }))
 	extras.append(renderMeasurements(page))
 	nodes.stage.replaceChildren(el("div", { class: "sides" }, side, extras))
@@ -157,6 +169,9 @@ function renderStage(item) {
 function render() {
 	const item = currentItem()
 	const question = item === null ? null : questionOf(item)
+	// The label is drawn only when there is a failure line to label, so the release screen stays clean
+	// (both elements collapse on `:empty`).
+	nodes.failureLabel.textContent = question?.preamble ? "what newly fails on this palette" : ""
 	nodes.preamble.textContent = question?.preamble ?? ""
 	nodes.framing.textContent = question?.framing ?? ""
 	nodes.question.textContent = question?.question ?? "done"

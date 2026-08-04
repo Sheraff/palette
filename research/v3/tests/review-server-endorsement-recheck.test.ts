@@ -44,7 +44,17 @@ const STYLED_CLASSES = new Set(
 )
 
 /** Every node the page writes to. A missing id here is a silent no-op on the real page. */
-const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "stage", "mapping", "status"] as const
+const NODE_IDS = [
+	"failure-label",
+	"preamble",
+	"framing",
+	"question",
+	"instruction",
+	"progress",
+	"stage",
+	"mapping",
+	"status",
+] as const
 
 describe("the endorsement-recheck fixture", () => {
 	it("carries both endorsements, one question each, with the criterion and the failure line on screen", async () => {
@@ -93,11 +103,15 @@ describe("the endorsement-recheck fixture", () => {
 describe("the endorsement-recheck page, executing", () => {
 	let harness: Harness
 	let page: FakePage
+	/** The opaque per-push tokens, so the id-line test can prove none of them is used as a handle. */
+	let answerTokens: string[] = []
 
 	before(async () => {
 		harness = await startHarness()
 		const { fixture } = await buildEndorsementRecheckFixture()
 		await harness.handle.service.pushOracleValidation(fixture, [])
+		const { body } = await call(harness.base, "GET", `/api/oracle-validation/${ENDORSEMENT_RECHECK_BATCH_ID}`)
+		answerTokens = (body.items as { token: string }[]).map((item) => item.token)
 		page = await openPage(
 			harness.base,
 			PAGE,
@@ -117,6 +131,35 @@ describe("the endorsement-recheck page, executing", () => {
 		// The criterion and the failure line are both on screen while the reviewer answers.
 		assert.ok(page.nodes.instruction.textContent.length > 0, "no criterion on screen")
 		assert.match(page.nodes.preamble.textContent, /2026-08-04/u)
+	})
+
+	it("shows the per-item failure line, labelled and set apart from the chrome, on BOTH palettes", async () => {
+		const markup = readFileSync(MARKUP, "utf8")
+		// Every class in the markup has to be a real rule too — the harness builds its nodes from ids
+		// alone, so a class named only in the HTML is never seen by any other assertion here.
+		for (const match of markup.matchAll(/class="([^"]+)"/gu)) {
+			for (const token of match[1].split(" ").filter(Boolean)) {
+				assert.ok(STYLED_CLASSES.has(token), `${token} is in the markup but matches no rule in styles.css`)
+			}
+		}
+		const preamble = /<p id="preamble"[^>]*class="([^"]+)"/u.exec(markup)
+		assert.ok(preamble, "no #preamble element in the markup")
+		// The regression, in one line: `.oracle-preamble` is the class every OTHER round uses for a
+		// STANDING preamble — identical on every item, read once, skimmed thereafter. A per-item
+		// explanation drawn in it reads as chrome, and the reviewer reported not finding it at all:
+		// "i don't know what the failure is on each artwork, so i cannot answer."
+		assert.ok(
+			!preamble[1].split(" ").includes("oracle-preamble"),
+			"the failure line is drawn as a standing preamble again — the reviewer will skim past it",
+		)
+
+		// And it reaches the screen, under its label, on both palettes.
+		assert.match(page.nodes["failure-label"].textContent, /what newly fails/iu)
+		assert.match(page.nodes.preamble.textContent, /separation floor/u, "palette 1's failure line is not on screen")
+		await page.press("k")
+		assert.match(page.nodes["failure-label"].textContent, /what newly fails/iu)
+		assert.match(page.nodes.preamble.textContent, /luminance contrast/u, "palette 2's failure line is not on screen")
+		await page.press("j")
 	})
 
 	it("renders the real mock player, not a bare artwork", () => {
@@ -143,6 +186,21 @@ describe("the endorsement-recheck page, executing", () => {
 			}
 		}
 		assert.deepEqual([...unstyled], [], "these classes match no rule in styles.css, so they render unstyled")
+	})
+
+	it("shows a copyable id line naming the round, the question and the endorsement hash", () => {
+		// "IDs that I can copy paste to you to give feedback about a specific item" — so all three
+		// parts have to be ON SCREEN, not merely in the payload. The class-vs-stylesheet guard above
+		// separately proves `oracle-item-id` is really styled.
+		const line = page.stage().byClass("oracle-item-id")
+		assert.equal(line.length, 1, "no id line on the item")
+		assert.match(line[0].textContent, new RegExp(ENDORSEMENT_RECHECK_BATCH_ID, "u"))
+		assert.match(line[0].textContent, new RegExp(`endorsement_recheck_${RECHECK_ENTRY_IDS[0]}`, "u"))
+		assert.match(line[0].textContent, new RegExp(RECHECK_ENTRY_IDS[0], "u"))
+		// The answer token is regenerated on every push, so it must never be offered as a handle.
+		for (const token of answerTokens) {
+			assert.ok(!line[0].textContent.includes(token), "the id line offers the per-push answer token")
+		}
 	})
 
 	it("puts the answer keys in the styled hotkey grid, not a run-on line", () => {
