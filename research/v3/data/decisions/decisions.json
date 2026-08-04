@@ -3617,6 +3617,40 @@
     "The four open questions are the ones known on 2026-08-04. The list is not claimed to be exhaustive; PHASE_0_LOOSE_ENDS.md is the authority on what is open."
    ],
    "recordedAt": "2026-08-04"
+  },
+  {
+   "id": "d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow",
+   "ts": "2026-08-04T00:00:00Z",
+   "kind": "instrument-selection",
+   "decision": "RUNTIME IS COLD, AND SAM'S MEASURED PER-IMAGE COST COUNTS AS SLOW. Two rulings in one reviewer statement, both verbatim. On SAM, measured at roughly 2.7-4.3 s per image: \"ok this counts as slow then. Not slow enough to fully disqualify it as a runtime tool, but slow enough that there will have to be very good reasons to include runtime masking.\" So condition 3 of the SAM-at-runtime conditional (`fast enough`) is NOT satisfied and is NOT failed outright: SAM stays admissible in principle, and any proposal wanting runtime masking now carries a standing debt it must discharge with VERY GOOD REASONS - the reviewer's phrase, not a paraphrase. On the architecture: \"At runtime we *will not* have anything pre-computed. Pre-computed is only while we develop on a known corpus.\" Runtime is COLD and PER-FILE - a single input arrives with no warm cache, no index, no prior pass, and no artifact computed earlier; whatever the algorithm needs it computes from that one file, then and there. Precompute is a DEVELOPMENT AFFORDANCE ONLY, available because we work on a known enumerable corpus, and none of it reaches the shipped pipeline. The consequence that makes the first ruling bite: per-image cost is the WHOLE cost, because there is nothing to amortise it against.",
+   "scope": "Binds every Phase 1 proposal and every later design, NOT only ones that want SAM: no paradigm may depend on a precomputed artifact at runtime, and a cost story that requires a prior pass over the corpus is not a runtime cost story. Recorded in PHASE_0_DECISIONS.md 6.1 and in the Phase 1 constraint sheet 3.1. It does NOT approve SAM at runtime and does not overturn `d-2026-08-04-sam-at-runtime-is-conditionally-admissible`, whose four conjunctive conditions all still stand - it rules on condition 3 only, leaving conditions 1, 2 and 4 exactly as they were. It does NOT touch the oracle's DEV-TIME use of SAM, nor any dev-time cache, devloop artifact or robustness harness, all of which remain legitimate precisely because they are development tools on a known corpus. It does NOT set a numeric runtime budget: no millisecond figure has been ruled, and the two rulings bracket the target qualitatively rather than naming a threshold.",
+   "fundedBy": [],
+   "fundedByArtifacts": [
+    {
+     "ref": "research/v3/PHASE_0_DECISIONS.md",
+     "what": "6.1, the ruling on condition 3 and the cold-runtime architecture as written"
+    },
+    {
+     "ref": "research/v3/PHASE_1_AUTHOR_BRIEF.md",
+     "what": "3.1, the runtime-cold constraint a proposal author is held to"
+    },
+    {
+     "ref": "research/v3/data/sam/run.eval142.log",
+     "what": "line 146, the FASTEST of the five eval-142 runs: `elapsed=391.2s per_image=2.75s` - the lower end of the 2.7-4.3 s band"
+    },
+    {
+     "ref": "research/v3/data/sam/run.eval142-v5-allnouns.log",
+     "what": "line 147, the SLOWEST of the five eval-142 runs: `elapsed=608.1s per_image=4.28s` - the upper end of the band"
+    }
+   ],
+   "fundingCaveats": [
+    "fundedBy is empty, and correctly so: this is a conversational ruling by the reviewer, recorded when the reviewer decided rather than when the code landed, per the README rules. No warehouse record states it and `warehouse recheck` cannot re-check it. The two verbatim quotes in `decision` are the whole of the evidence.",
+    "CORRECTION OF RECORD. This supersedes the ORCHESTRATOR's speed projection for SAM-at-runtime, which costed the tool through a PRECOMPUTE-THEN-SERVE frame - masks computed once over the corpus and amortised across later serves, under which a seconds-scale per-image tool looks nearly free. That frame does not describe the shipped system and never did. The `supersedes` field is deliberately NOT set: it takes a decision id, and the projection was never written as a decision record, so there is nothing to link. Recording the correction here is the only place it can be found.",
+    "The 2.7-4.3 s/image figure is the measurement the ruling was made ON, not a bar the ruling SET. Its provenance matters: it is the MIN AND MAX ACROSS FIVE eval-142 runs (2.75 s on `run.eval142.log`, 4.28 s on `run.eval142-v5-allnouns.log`), not one measurement with error bars - the spread is between different concept sets and prompt counts, on one GPU, at n=142. It is not a distribution over hardware and it is not a per-image variance. Nothing in the reviewer's statement says what would have been fast enough, and no numeric runtime budget exists anywhere in v3: PHASE_0_LOOSE_ENDS.md B33 records that the budget question is still unattributed and that nothing has named a runtime or memory budget. Anyone quoting a threshold from this record is inventing one.",
+    "`very good reasons` is not operationalised and deliberately so. Who judges the reasons sufficient, and against what, is the reviewer at proposal time. A proposal cannot discharge this condition by asserting its own reasons are good.",
+    "The ruling names runtime masking as the costly case because SAM is what was measured. Whether some other seconds-scale runtime tool would face the same bar was not asked; the cold-runtime half of the statement, however, is stated generally and does bind every paradigm."
+   ],
+   "recordedAt": "2026-08-04"
   }
  ]
 }

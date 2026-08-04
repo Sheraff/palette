@@ -508,13 +508,56 @@ approved for use.
 2. **Provably deterministic** — the same file yields **byte-identical masks across runs**. This is a
    property to be **tested before anything relies on it**, not assumed. Until that test exists and
    passes, SAM-at-runtime is not admissible on this criterion.
-3. **Fast enough.**
+3. **Fast enough** — and as of 2026-08-04 the reviewer has ruled on the measurement. See below.
 4. **Plain-code methods are exhausted, or SAM is demonstrably more reliable than them.** "We reached
    for it first" does not satisfy this.
 
 The conditions are conjunctive and the burden is on the proposal. A design that wants SAM at runtime
 should say which conditions it can already argue and which it would have to establish. The oracle's
 **dev-time** use of SAM is a separate matter and is untouched by this.
+
+#### Condition 3 has been ruled on: SAM's measured cost counts as slow (reviewer, 2026-08-04)
+
+SAM was measured at roughly **2.7–4.3 s per image**. The reviewer's ruling on that number, verbatim:
+
+> ok this counts as slow then. Not slow enough to fully disqualify it as a runtime tool, but slow
+> enough that there will have to be very good reasons to include runtime masking.
+
+So condition 3 is **not** satisfied, and it is not failed outright either. SAM stays admissible in
+principle, but the measured cost is now a **standing debt against any proposal that wants runtime
+masking**: it must carry *"very good reasons"*, and that phrase is the reviewer's bar, not a
+paraphrase. A proposal that reaches for runtime masking without arguing the cost has not met the
+condition — silence on speed now reads as a failure to answer, because the number is known.
+
+**The frame this ruling corrects — runtime is cold.** The reviewer's second sentence is the
+architectural half, and it is broader than SAM:
+
+> At runtime we *will not* have anything pre-computed. Pre-computed is only while we develop on a
+> known corpus.
+
+This overturns a projection made by the orchestrator, which had costed SAM-at-runtime through a
+**precompute-then-serve** frame — masks computed once over the corpus and amortised across later
+serves, which makes a seconds-scale per-image tool look nearly free. That frame does not describe
+the shipped system and never did. The correct frame:
+
+- **Runtime is cold and per-file.** A single input file arrives with no companions, no warm cache,
+  no index, no prior pass over it, and no artifact anyone computed earlier. Whatever the algorithm
+  needs at runtime, it computes **from that one file, then and there**.
+- **Precompute is a development affordance only.** It exists because we work on a *known corpus* —
+  a fixed, enumerable set of images we can sweep offline. Every cached mask, every embedding table,
+  every warm artifact on disk is a **dev-time** convenience for that corpus, and none of it is
+  available to the shipped pipeline.
+- **So per-image cost is the whole cost.** There is nothing to amortise it against. A tool that
+  takes seconds per image takes those seconds on **every** call, for **every** user, on a file
+  nobody has ever seen. That is why 2.7–4.3 s reads as slow here and would have read as free under
+  the frame this ruling corrects.
+
+This binds every paradigm, not only ones that want SAM: **no proposal may depend on a precomputed
+artifact at runtime.** If a design's cost story requires a prior pass over the corpus, it does not
+have a runtime cost story.
+
+Recorded as `data/decisions/decisions.json` →
+`d-2026-08-04-runtime-is-cold-and-sam-counts-as-slow`.
 
 ## 7. Measured resolution floors (ladder-sample-1, 2026-08-03)
 

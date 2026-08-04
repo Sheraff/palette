@@ -149,6 +149,40 @@ have been **exhausted**, or SAM is **demonstrably more reliable** than them. A p
 SAM at runtime should say which of these it can already argue and which it would have to establish.
 The oracle's dev-time use of SAM is a separate thing and is not affected.
 
+**Runtime is cold. Nothing is precomputed.** Reviewer, 2026-08-04, verbatim:
+
+> At runtime we *will not* have anything pre-computed. Pre-computed is only while we develop on a
+> known corpus.
+
+**This is the constraint most likely to invalidate an otherwise good paradigm, so design against it
+first.** Your algorithm receives **one image file**, cold. There is no warm cache, no index, no
+lookup table, no prior pass over that file, no companion images, and no artifact that anyone
+computed earlier. Whatever your paradigm needs at runtime, it computes **from that single file, then
+and there**.
+
+Everything precomputed that you will see referenced in this repo — cached masks, embedding tables,
+the devloop's warm artifacts, the robustness harness's stored runs — exists **only** because
+development happens on a *known corpus*: a fixed, enumerable set of images we can sweep offline.
+**None of it ships.** A paradigm may freely *use* those artifacts to argue for itself during
+development; it may not *depend* on them at runtime. If your cost story needs a prior pass over the
+corpus, you do not yet have a runtime cost story.
+
+**The cost bracket this implies.** Two rulings bound it from opposite ends, and neither names a
+number — so **neither do we, and neither should you**:
+
+- **The target end.** Runtime models are banned and plain code must be *exhausted* before a model is
+  even considered — so the assumed shape of a runtime is **ordinary per-file image code**, at the
+  cost such code naturally has.
+- **The exceptional end.** SAM measures at roughly **2.7–4.3 s per image**, and the reviewer ruled
+  that this **counts as slow** — admissible, but only with *"very good reasons"* (see
+  `PHASE_0_DECISIONS.md` §6.1). So a **seconds-scale** per-file tool is not forbidden; it is
+  **exceptional-justification territory**, and the justification is owed up front.
+
+Between those two ends there is **no ruled threshold** — no millisecond budget exists anywhere in
+v3, and a proposal that cites one is citing something invented. What you owe instead is an honest
+per-file cost estimate for a cold run, and an argument proportionate to where in that bracket it
+lands. Cheap plain code needs no defence; anything approaching seconds needs one.
+
 **Four questions are genuinely open.** They are stated plainly, on purpose — none of them has a
 settled technical name yet, and inventing one would make a live question look decided:
 
