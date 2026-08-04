@@ -1,37 +1,74 @@
 /**
  * # The solver — one constrained minimisation, searched exactly.
  *
- * Proposal §2.5, implemented as written: score every unary term for every distinct triple by
- * lattice reads (linear in the triple count), then prune by **admissible bound** — never by
- * filtering. The claim this file is responsible for is the one §1 makes and `README.md`
+ * Proposal §2.5, implemented as written: score every unary term for every distinct triple by lattice
+ * reads (linear in the triple count), seed an incumbent, then prune by **admissible bound** — never
+ * by filtering. The claim this file is responsible for is the one §1 makes and `README.md`
  * pre-registers as falsifier 2: *"every distinct 8-bit triple in the artwork is feasible for every
- * role at all times, and the only thing that ever removes one is an admissible bound inside an
- * exact search."*
+ * role at all times, and the only thing that ever removes one is an admissible bound inside an exact
+ * search."*
  *
- * ## Why the bound is admissible
+ * ## What "admissible bound" is allowed to mean, and why a barrier is one
  *
- * A tuple's total is `base + Σ unary + Σ collapse costs + rates.coverage · coverage`, where `base`
- * collects the hypothesis's description length and every role the hypothesis pins. Collapse costs
- * are non-negative by construction and the barriers of `./barriers.ts` are infinite cost, so both
- * can only increase a total. Coverage is bounded from below by the submodular inequality in
- * `./coverage.ts`: `coverage ≥ coverageBase − Σ gain(x)` over the free roles' colours. So
+ * A bound is admissible when it provably never exceeds the true cost of any completion. Two kinds
+ * appear below and both are bounds, not filters:
  *
- * > `bound = base + rates.coverage·coverageBase + Σ (unary(x) − rates.coverage·gain(x))`
+ * 1. **Cost bounds.** A tuple's total is `base + Σ unary + Σ collapse + rates.coverage · coverage`.
+ *    Collapse costs are non-negative and coverage is bounded from below (see "the coverage bound"),
+ *    so a partial sum plus each unassigned role's cheapest available cost is a lower bound on every
+ *    completion. Each role's list is sorted ascending by exactly the quantity the bound accumulates,
+ *    so exceeding the incumbent at position *k* means exceeding it at every later position — which is
+ *    what licenses the `break`.
+ * 2. **Barrier bounds.** `./barriers.ts` is infinite cost, so a candidate that violates a barrier
+ *    *no matter what the other roles are* has an infinite lower bound in that role, and dropping it
+ *    from that role's list is the `∞ > incumbent` prune written once instead of once per tuple. That
+ *    is not "filtering by fiat": nothing about the candidate's *statistics* is consulted, the test is
+ *    the contract's own, and the same colour stays in every role whose barriers it does clear.
+ *    Proposal §2.4 term 5 is explicit that this factorisation is available and load-bearing — *"the
+ *    ramp is fixed before foreground and accent are chosen, [so] the minimum over the whole ramp
+ *    factorises into a unary constraint on each"*.
  *
- * is a lower bound on every completion of a partial tuple. Each role's candidate list is sorted
- * ascending by exactly the quantity the bound accumulates, so exceeding the incumbent at position
- * *k* means exceeding it at every later position — which is what licenses the `break`.
+ * **Both are checked rather than argued.** `tests/energy.test.ts` runs the whole search twice on the
+ * same instance — once as written here, once with `exhaustive: true`, which disables the break, the
+ * incumbent seeding, the unary lists and the factorised predicates and decides feasibility with
+ * `violatedBarriers` on a fully materialised tuple — and asserts the two return the same palette with
+ * a bit-identical total.
  *
- * **The coverage half of that bound is not an optimisation, it is the difference between a search
- * that finishes and one that does not.** With `coverage ≥ 0` as the only admissible statement, the
- * search must visit every tuple whose unary cost sits within the *whole* coverage term of the
- * incumbent's total; measured on a 640×640 artwork with 15,890 distinct triples that does not
- * terminate. The gain bound closes the slack to the amount by which the winning roles' coverage
- * contributions overlap.
+ * ## What the previous shape got wrong, measured
  *
- * **Pruning is strict.** A partial bound *equal* to the incumbent's total is not pruned, because the
- * declared tie-break can still hand the palette to the later tuple. `tests/energy.test.ts` checks
- * the pruned search against exhaustive enumeration, that case included.
+ * The first version of this file bounded coverage from below by the submodular gain inequality alone
+ * and evaluated every surviving tuple through `violatedBarriers`. On a 640×640 cover (15,890 distinct
+ * triples) it did not terminate; at 304 triples it visited 64k tuples **with `coverage: 0`**, where
+ * the cost bound is exact. That measurement says the cost landscape is not what was expensive: the
+ * tuples being visited were the ones *cheaper than the optimum and infeasible*, each paying a
+ * full tuple materialisation to find out. Three changes follow from it, in the order they matter:
+ *
+ * - **Feasibility is decided per candidate where it factorises** (`./pairs.ts`), so an infeasible
+ *   colour costs one test for the whole hypothesis instead of one per tuple it appears in.
+ * - **The residual pair tests are index arithmetic**, allocation-free, ~20 ns instead of ~2 µs.
+ * - **Coverage is narrowed as the search descends.** `dsf` below is the per-quadrature-cell distance
+ *   to the fixed colours *and* the surface *and* the foreground; its mass sum is a far tighter
+ *   constant than `coverageBase − Σ gain`, and the accent's exact coverage then costs one pass over
+ *   the cells only for accents that survive an O(1) test.
+ *
+ * ## The coverage bound
+ *
+ * Two admissible statements are combined, and the search uses whichever is larger:
+ *
+ * - **The gain inequality** (`./coverage.ts`): `coverage(fixed ∪ free) ≥ coverageBase − Σ gain(x)`.
+ * - **The narrowed constant**: once the surface and foreground are chosen, `coverage ≥ Σ_c m_c·dsf[c]
+ *   − gain(accent)`, and `Σ_c m_c·dsf[c] ≥ coverageBase − gain(surface) − gain(foreground)` by the
+ *   same submodularity, so this is the tighter of the two wherever the two roles' coverage overlaps.
+ *
+ * Both are then clamped at zero, because coverage is a non-negative quantity: `max(0, …)` is still a
+ * lower bound. The clamp is used for *skipping* a node and the unclamped form for *breaking* out of a
+ * sorted list, since only the unclamped form is monotone along the sort key.
+ *
+ * A relaxation the directive asked for and measurement rejected: lower-bounding coverage by placing
+ * each unassigned role at its per-quadrature-node optimum. Every occupied cell contains at least one
+ * artwork triple by construction (the quadrature is built *from* the triples), so that relaxation
+ * lets every cell be covered at essentially zero cost and evaluates to ≈0 — weaker than `coverage ≥
+ * 0`. It is not implemented, and this paragraph is why.
  *
  * ## Which roles the field hypothesis pins, and which it does not
  *
@@ -41,23 +78,24 @@
  *
  * Under a **flat** hypothesis there is exactly one stop, which pins the background. The surface is
  * left **free** — it may collapse onto the background (paying `rates.collapse`) or be any other
- * triple, published with `gradient: null`. **This is a reading of the interface rather than
- * something it states, and it is reported as such.** The alternative reading, that a flat hypothesis
- * pins both field roles, makes the ordinary "flat background plus a distinct surface, no gradient"
- * palette unreachable, and `FieldHypothesis` has no third `kind` that could express it. Under this
- * reading collapse also stays a genuine competing move rather than a consequence of which hypothesis
- * won, which is what proposal §2.4 asks of it.
+ * triple, published with `gradient: null`. **This is a reading of the interface rather than something
+ * it states, and it is reported as such.** The alternative reading, that a flat hypothesis pins both
+ * field roles, makes the ordinary "flat background plus a distinct surface, no gradient" palette
+ * unreachable, and `FieldHypothesis` has no third `kind` that could express it. Under this reading
+ * collapse also stays a genuine competing move rather than a consequence of which hypothesis won,
+ * which is what proposal §2.4 asks of it.
  *
  * ## Collapse, and why there is no branch
  *
  * A collapsed tuple is not a fallback path: it is the member of the same feasible set whose accent
  * equals its foreground (or whose surface equals its background), scored by the same energy with
- * `rates.collapse` added and the contract's own exemptions applying. It is enumerated inside the
- * same loops as every other tuple and competes on total, so collapse *rates* are a readout of one
- * term rather than an artefact of a control-flow path.
+ * `rates.collapse` added and the contract's own exemptions applying. It is enumerated inside the same
+ * loops as every other tuple and competes on total, so collapse *rates* are a readout of one term
+ * rather than an artefact of a control-flow path.
  */
 
 import { colorFromRgb, rgbToOkLab } from "../../../../src/contract/color.ts"
+import { EPSILON_ACCENT_RAW, EPSILON_TEXT_RAW } from "../../../../src/contract/constants.ts"
 import {
 	DEFAULT_CONTRAST_PARAMETERS,
 	resolveContrastParameters,
@@ -80,8 +118,10 @@ import type {
 	Substrate,
 } from "../types.ts"
 import {
+	accentClearsRamp,
 	type BarrierContext,
 	buildRampProbe,
+	foregroundClearsRamp,
 	type PublishedTuple,
 	type RampProbe,
 	violatedBarriers,
@@ -93,7 +133,23 @@ import {
 	type CoverageQuadrature,
 	fixedCoverageDistances,
 } from "./coverage.ts"
-import { DEFAULT_EXCHANGE_RATES } from "./rates.ts"
+import {
+	accentContrastFromFact,
+	accentContrastIndexed,
+	apcaRawBetweenFacts,
+	apcaRawFieldIndexed,
+	buildColorFacts,
+	type ColorFact,
+	type ColorFacts,
+	colorFactOf,
+	distinctFacts,
+	distinctFromFact,
+	distinctIndexed,
+	separatedIndexed,
+	textContrastFromFact,
+	textContrastIndexed,
+} from "./pairs.ts"
+import { DEFAULT_EXCHANGE_RATES, ENERGY_ANCHORS } from "./rates.ts"
 import {
 	accentFitness,
 	belongingCost,
@@ -119,6 +175,25 @@ export class EnergyError extends Error {
 const ESCAPE_RGB: readonly Rgb8[] = [[255, 255, 255], [0, 0, 0]]
 const ESCAPE_ROLES = ["background", "foreground"] as const
 
+/** The empty free-colour list, hoisted so no leaf allocates one. */
+const EMPTY_POINTS: readonly OkLab[] = []
+
+/**
+ * How many candidates per role the **incumbent-seeding pass** looks at before the exact search runs.
+ *
+ * `[HELD — search control, provably cannot change the answer]` This is not a rate and does not belong
+ * in `./rates.ts`: it selects *when* work happens, never *what* wins. The seeding pass runs the same
+ * loops over the cheapest 24 candidates of each role, and whatever feasible tuple it finds becomes
+ * the starting incumbent for the exact pass — which then re-searches every candidate under bounds
+ * that are admissible with or without a seed, so the optimum is unchanged and only the node count
+ * moves. Setting it to 0 (or to ∞) yields the same palette; `tests/energy.test.ts` pins that by
+ * comparing against exhaustive enumeration, which seeds nothing.
+ *
+ * 24 rather than a larger number because the seeding pass is `24³` tuples and its whole job is to
+ * stop the exact pass from starting at `incumbent = null`, where nothing prunes at all.
+ */
+const SEED_SHORTLIST = 24
+
 /** The declared total order on an 8-bit triple — the tie-break, reachable only on exact ties. */
 export function packTriple(rgb: Rgb8): number {
 	return (rgb[0] << 16) | (rgb[1] << 8) | rgb[2]
@@ -139,6 +214,8 @@ type Scored = Readonly<{
 	/** `1 − fieldFitness`, the misfit background and surface are scored on. */
 	fieldMisfit: Float64Array
 	scales: FitnessScales
+	/** Per-colour barrier arithmetic, hoisted out of the search (`./pairs.ts`). */
+	facts: ColorFacts
 }>
 
 function scoreCandidates(lattice: Lattice, rates: ExchangeRates): Scored {
@@ -170,6 +247,7 @@ function scoreCandidates(lattice: Lattice, rates: ExchangeRates): Scored {
 		shared,
 		fieldMisfit,
 		scales: computeFitnessScales(stats, rates),
+		facts: buildColorFacts(triples.map((triple) => triple.rgb)),
 	}
 }
 
@@ -206,8 +284,6 @@ function beats(challenger: Incumbent, incumbent: Incumbent | null): boolean {
 	return false
 }
 
-type SurfaceOption = Readonly<{ index: number; collapsed: boolean; cost: number }>
-
 type SearchInput = Readonly<{
 	scored: Scored
 	statsAt: (lab: OkLab) => CandidateStats
@@ -216,7 +292,13 @@ type SearchInput = Readonly<{
 	floors: ResolvedContrastFloors
 	hypothesis: FieldHypothesis
 	escape?: EscapePin
-	/** Test hook: disables the bound-based `break` and nothing else. */
+	/** The best tuple found so far, across hypotheses — a legal starting incumbent, never a filter. */
+	incumbent?: Incumbent | null
+	/**
+	 * Test hook: the naive reference path. Disables the break, the seeding pass, the per-candidate
+	 * barrier lists and the factorised pair predicates, and decides feasibility with
+	 * `violatedBarriers` on a materialised tuple. Same answer, by construction and by test.
+	 */
 	exhaustive?: boolean
 }>
 
@@ -227,18 +309,33 @@ type SearchOutcome = Readonly<{
 	tuplesEvaluated: number
 }>
 
+/** The role paths the census names pairs by; `./barriers.ts` builds the same strings. */
+const PATH_BACKGROUND = "roles.background"
+const PATH_SURFACE = "roles.surface"
+const PATH_FOREGROUND = "roles.foreground"
+const PATH_ACCENT = "roles.accent"
+
+function pairKey(first: string, second: string): string {
+	return first < second ? `${first}|${second}` : `${second}|${first}`
+}
+
 /**
  * Search every tuple under one field hypothesis.
- *
- * `exhaustive` disables the bound-based `break` — nothing else changes: not a term, not an
- * ordering, not the tie-break — so `tests/energy.test.ts` can assert that the pruned search returns
- * the identical palette. That is THE admissibility test, and this flag exists for it.
  */
 function searchHypothesis(input: SearchInput): SearchOutcome {
 	const { scored, rates, hypothesis, escape } = input
+	const exhaustive = input.exhaustive === true
+	const facts = scored.facts
+	const quadrature = input.quadrature
+	const cellCount = quadrature.cellCount
 	const barriers = new Map<string, number>()
 	let tuplesEvaluated = 0
-	let incumbent: Incumbent | null = null
+	let incumbent: Incumbent | null = exhaustive ? null : (input.incumbent ?? null)
+
+	const note = (code: string, hits = 1): void => {
+		barriers.set(code, (barriers.get(code) ?? 0) + hits)
+	}
+	const nothing = (): SearchOutcome => ({ best: incumbent, barriers, tuplesEvaluated })
 
 	const stops = hypothesis.stops
 	if (stops.length === 0) throw new EnergyError("a field hypothesis needs at least one stop")
@@ -248,6 +345,7 @@ function searchHypothesis(input: SearchInput): SearchOutcome {
 
 	const backgroundTriple = escape?.role === "background" ? synthetic(escape.rgb) : stops[0].triple
 	const backgroundColor = colorFromRgb(backgroundTriple.rgb)
+	const backgroundFact = colorFactOf(backgroundTriple.rgb)
 
 	// A gradient is published only when the hypothesis is one and nothing overrode its background.
 	const publishesGradient = hypothesis.kind === "gradient" && stops.length >= 2 &&
@@ -274,6 +372,22 @@ function searchHypothesis(input: SearchInput): SearchOutcome {
 		? synthetic(escape.rgb)
 		: null
 	const accentForcedCollapse = foregroundPinned !== null
+
+	const surfacePinnedFact = surfacePinned === null ? null : colorFactOf(surfacePinned.rgb)
+	const foregroundPinnedFact = foregroundPinned === null ? null : colorFactOf(foregroundPinned.rgb)
+	const stopFacts: ColorFact[] = publishedStops === null
+		? []
+		: stops.map((stop) => colorFactOf(stop.triple.rgb))
+
+	// --- the inherited floors ------------------------------------------------------------------
+	// `[INHERITED — `./barriers.ts`, which reads them from `invariants.ts`]` Restated here because the
+	// per-candidate lists below apply exactly these floors; a second reading of the same two lines.
+	const textFloor = Math.max(input.floors.minTextContrast.effectiveRawMagnitude, EPSILON_TEXT_RAW)
+	const accentFloor = Math.max(
+		input.floors.minAccentContrast.effectiveRawMagnitude,
+		EPSILON_ACCENT_RAW,
+	)
+	const accentEscapeAvailable = accentFloor <= EPSILON_ACCENT_RAW
 
 	// --- unary costs ---------------------------------------------------------------------------
 	const scales = scored.scales
@@ -348,135 +462,381 @@ function searchHypothesis(input: SearchInput): SearchOutcome {
 		base += pinnedForegroundCost + pinnedAccentCost + rates.collapse
 	}
 
+	// --- barriers that no free role can repair --------------------------------------------------
+	// Everything here is a function of the hypothesis and the escape alone. If one fails, every tuple
+	// under this hypothesis is infeasible and the search is over before it starts — the `∞ > anything`
+	// prune, applied once. In `exhaustive` mode nothing is checked here: the reference path decides
+	// every tuple through `violatedBarriers`, which is the point of it.
+	if (!exhaustive) {
+		let pinnedInfeasible = false
+		// Stop against stop.
+		for (let i = 0; i < stopFacts.length; i++) {
+			for (let j = i + 1; j < stopFacts.length; j++) {
+				if (!distinctFacts(stopFacts[i], stopFacts[j])) {
+					note(`I3.pair-not-distinct:${pairKey(`gradient.stops[${i}]`, `gradient.stops[${j}]`)}`)
+					pinnedInfeasible = true
+				}
+			}
+		}
+		// Background against a pinned surface, unless the collapse is the sanctioned one.
+		if (surfacePinnedFact !== null && !surfaceForcedCollapse) {
+			if (!distinctFacts(backgroundFact, surfacePinnedFact)) {
+				note(`I3.pair-not-distinct:${pairKey(PATH_BACKGROUND, PATH_SURFACE)}`)
+				pinnedInfeasible = true
+			}
+		}
+		// A pinned foreground (the escape) against everything already fixed.
+		if (foregroundPinnedFact !== null) {
+			if (!distinctFacts(backgroundFact, foregroundPinnedFact)) {
+				note(`I3.pair-not-distinct:${pairKey(PATH_BACKGROUND, PATH_FOREGROUND)}`)
+				pinnedInfeasible = true
+			}
+			for (let i = 0; i < stopFacts.length; i++) {
+				if (!distinctFacts(stopFacts[i], foregroundPinnedFact)) {
+					note(`I3.pair-not-distinct:${pairKey(`gradient.stops[${i}]`, PATH_FOREGROUND)}`)
+					pinnedInfeasible = true
+				}
+			}
+			if (surfacePinnedFact !== null && !distinctFacts(surfacePinnedFact, foregroundPinnedFact)) {
+				note(`I3.pair-not-distinct:${pairKey(PATH_SURFACE, PATH_FOREGROUND)}`)
+				pinnedInfeasible = true
+			}
+			if (Math.abs(apcaRawBetweenFacts(foregroundPinnedFact, backgroundFact)) < textFloor) {
+				note(`I4.below-contrast-floor:${PATH_FOREGROUND}|${PATH_BACKGROUND}`)
+				pinnedInfeasible = true
+			}
+			if (
+				surfacePinnedFact !== null &&
+				Math.abs(apcaRawBetweenFacts(foregroundPinnedFact, surfacePinnedFact)) < textFloor
+			) {
+				note(`I4.below-contrast-floor:${PATH_FOREGROUND}|${PATH_SURFACE}`)
+				pinnedInfeasible = true
+			}
+			if (ramp !== null && !foregroundClearsRamp(colorFromRgb(foregroundPinned!.rgb), ramp, textFloor)) {
+				note(`I4.ramp-below-contrast-floor:${PATH_FOREGROUND}`)
+				pinnedInfeasible = true
+			}
+		}
+		if (pinnedInfeasible) return nothing()
+	}
+
+	// --- the per-candidate barrier lists --------------------------------------------------------
+	// Rule: a colour leaves a role's list only when it violates a barrier **against colours the
+	// hypothesis has already fixed**, which is an infinite lower bound on every completion that uses
+	// it there. It stays in every other role's list. See this file's header for why that is a bound.
+	const surfaceAllowed = new Uint8Array(count)
+	const foregroundAllowed = new Uint8Array(count)
+	const accentAllowed = new Uint8Array(count)
+	if (exhaustive) {
+		surfaceAllowed.fill(1)
+		foregroundAllowed.fill(1)
+		accentAllowed.fill(1)
+	} else {
+		let surfaceRejects = 0
+		let foregroundDistinctRejects = 0
+		let foregroundContrastRejects = 0
+		let foregroundRampRejects = 0
+		let accentDistinctRejects = 0
+		let accentContrastRejects = 0
+		let accentRampRejects = 0
+
+		for (let index = 0; index < count; index++) {
+			// --- surface -------------------------------------------------------------------------
+			// A free surface exists only when no gradient is published (a published gradient pins it),
+			// so the stop-exemption never applies here and the background is the only fixed field
+			// colour it must be distinct from. Equal-to-background is the sanctioned collapse.
+			if (surfacePinned === null) {
+				let ok = index === backgroundIndex ||
+					distinctFromFact(facts, index, backgroundFact)
+				if (ok && foregroundPinnedFact !== null) {
+					ok = distinctFromFact(facts, index, foregroundPinnedFact) &&
+						Math.abs(apcaRawFieldIndexed(facts, foregroundPinnedFact, index)) >= textFloor
+				}
+				if (ok) surfaceAllowed[index] = 1
+				else surfaceRejects++
+			}
+
+			// --- foreground ----------------------------------------------------------------------
+			if (foregroundPinned === null) {
+				let ok = distinctFromFact(facts, index, backgroundFact)
+				for (let s = 0; ok && s < stopFacts.length; s++) {
+					ok = distinctFromFact(facts, index, stopFacts[s])
+				}
+				if (ok && surfacePinnedFact !== null) ok = distinctFromFact(facts, index, surfacePinnedFact)
+				if (!ok) foregroundDistinctRejects++
+				if (ok) {
+					ok = textContrastFromFact(facts, index, backgroundFact, textFloor) &&
+						(surfacePinnedFact === null ||
+							textContrastFromFact(facts, index, surfacePinnedFact, textFloor))
+					if (!ok) foregroundContrastRejects++
+				}
+				if (ok && ramp !== null) {
+					ok = foregroundClearsRamp(scored.colors[index], ramp, textFloor)
+					if (!ok) foregroundRampRejects++
+				}
+				if (ok) foregroundAllowed[index] = 1
+			}
+
+			// --- accent (the non-collapsed move; a collapsed accent *is* the foreground) ----------
+			if (!accentForcedCollapse) {
+				let ok = distinctFromFact(facts, index, backgroundFact)
+				for (let s = 0; ok && s < stopFacts.length; s++) {
+					ok = distinctFromFact(facts, index, stopFacts[s])
+				}
+				if (ok && surfacePinnedFact !== null) ok = distinctFromFact(facts, index, surfacePinnedFact)
+				if (!ok) accentDistinctRejects++
+				if (ok) {
+					ok = accentContrastFromFact(
+						facts,
+						index,
+						backgroundFact,
+						accentFloor,
+						accentEscapeAvailable,
+					) &&
+						(surfacePinnedFact === null || accentContrastFromFact(
+							facts,
+							index,
+							surfacePinnedFact,
+							accentFloor,
+							accentEscapeAvailable,
+						))
+					if (!ok) accentContrastRejects++
+				}
+				if (ok && ramp !== null) {
+					ok = accentEscapeAvailable
+						? accentClearsRamp(
+							scored.colors[index],
+							ramp,
+							accentFloor,
+							ENERGY_ANCHORS.accentFunctionalDistance,
+						)
+						: foregroundClearsRamp(scored.colors[index], ramp, accentFloor)
+					if (!ok) accentRampRejects++
+				}
+				if (ok) accentAllowed[index] = 1
+			}
+		}
+
+		if (surfaceRejects > 0) {
+			note(`I3.pair-not-distinct:${pairKey(PATH_BACKGROUND, PATH_SURFACE)}`, surfaceRejects)
+		}
+		if (foregroundDistinctRejects > 0) {
+			note(
+				`I3.pair-not-distinct:${pairKey(PATH_BACKGROUND, PATH_FOREGROUND)}`,
+				foregroundDistinctRejects,
+			)
+		}
+		if (foregroundContrastRejects > 0) {
+			note(
+				`I4.below-contrast-floor:${PATH_FOREGROUND}|${PATH_BACKGROUND}`,
+				foregroundContrastRejects,
+			)
+		}
+		if (foregroundRampRejects > 0) {
+			note(`I4.ramp-below-contrast-floor:${PATH_FOREGROUND}`, foregroundRampRejects)
+		}
+		if (accentDistinctRejects > 0) {
+			note(`I3.pair-not-distinct:${pairKey(PATH_BACKGROUND, PATH_ACCENT)}`, accentDistinctRejects)
+		}
+		if (accentContrastRejects > 0) {
+			note(`I4.below-contrast-floor:${PATH_ACCENT}|${PATH_BACKGROUND}`, accentContrastRejects)
+		}
+		if (accentRampRejects > 0) {
+			note(`I4.ramp-below-contrast-floor:${PATH_ACCENT}`, accentRampRejects)
+		}
+	}
+
 	// --- coverage --------------------------------------------------------------------------------
 	const fixedLabs: OkLab[] = [backgroundTriple.lab]
 	if (publishedStops !== null) for (const stop of stops) fixedLabs.push(stop.triple.lab)
 	if (surfacePinned !== null) fixedLabs.push(surfacePinned.lab)
 	if (foregroundPinned !== null) fixedLabs.push(foregroundPinned.lab)
-	const fixedDistances = fixedCoverageDistances(input.quadrature, fixedLabs)
-	const coverageBase = coverageCost(input.quadrature, fixedDistances, [])
+	const fixedDistances = fixedCoverageDistances(quadrature, fixedLabs)
+	const coverageBase = coverageCost(quadrature, fixedDistances, [])
 	const coverageGain = coverageGains(
-		input.quadrature,
+		quadrature,
 		fixedDistances,
 		scored.triples.map((triple) => triple.lab),
 	)
 
 	/**
 	 * The **effective** cost a role's list is ordered and bounded by: its unary cost minus the
-	 * coverage the candidate is guaranteed to remove.
-	 *
-	 * `coverage(fixed ∪ free) ≥ coverageBase − Σ gain(x)` (`./coverage.ts` carries the proof), so
-	 * `boundBase + Σ effective` is still a lower bound on the total — the bound is *tighter*, not
-	 * weaker. Without it the only admissible statement about coverage is `≥ 0`, and the search then
-	 * has to visit every tuple whose unary cost is within the whole coverage term of the incumbent's,
-	 * which on a real artwork is not a search that finishes. Ordering by the same quantity the bound
-	 * accumulates is what keeps the `break` valid.
+	 * coverage the candidate is guaranteed to remove (`./coverage.ts` carries the proof). Ordering by
+	 * the same quantity the bound accumulates is what keeps the `break` valid.
 	 */
-	const effective = (unary: number, index: number): number =>
-		unary - (index >= 0 ? rates.coverage * coverageGain[index] : 0)
-
-	// --- the option lists, ascending by effective cost ---------------------------------------------
-	const surfaceOptions: SurfaceOption[] = []
-	if (surfacePinned !== null) {
-		surfaceOptions.push({ index: -1, collapsed: surfaceForcedCollapse, cost: 0 })
-	} else {
-		for (let index = 0; index < count; index++) {
-			const collapsed = index === backgroundIndex
-			surfaceOptions.push({
-				index,
-				collapsed,
-				cost: effective(surfaceUnary[index] + (collapsed ? rates.collapse : 0), index),
-			})
-		}
-		surfaceOptions.sort((first, second) =>
-			first.cost - second.cost || scored.packed[first.index] - scored.packed[second.index]
-		)
-	}
+	const surfaceEffective = new Float64Array(count)
 	const foregroundEffective = new Float64Array(count)
 	const accentEffective = new Float64Array(count)
 	for (let index = 0; index < count; index++) {
-		foregroundEffective[index] = effective(foregroundUnary[index], index)
-		accentEffective[index] = effective(accentUnary[index], index)
+		const collapseCost = index === backgroundIndex ? rates.collapse : 0
+		surfaceEffective[index] = surfaceUnary[index] + collapseCost -
+			rates.coverage * coverageGain[index]
+		foregroundEffective[index] = foregroundUnary[index] - rates.coverage * coverageGain[index]
+		accentEffective[index] = accentUnary[index] - rates.coverage * coverageGain[index]
 	}
-	const foregroundOrder = foregroundPinned !== null
-		? [-1]
-		: orderedIndices(count, foregroundEffective, scored.packed)
-	const accentOrder = orderedIndices(count, accentEffective, scored.packed)
 
-	/** The true unary sum of a tuple — what the bound approximates from below. */
-	const unarySumOf = (
-		surfaceOption: SurfaceOption,
-		foregroundIndex: number,
-		accentIndex: number,
-		accentCollapsed: boolean,
-	): number =>
-		base +
-		(surfaceOption.index >= 0 ? surfaceUnary[surfaceOption.index] : 0) +
-		(foregroundIndex >= 0 ? foregroundUnary[foregroundIndex] : 0) +
-		(accentCollapsed
-			? (foregroundIndex >= 0 ? accentUnary[foregroundIndex] : 0)
-			: accentUnary[accentIndex])
+	// --- the option lists, ascending by effective cost ------------------------------------------
+	const listOf = (allowed: Uint8Array, cost: Float64Array): Int32Array => {
+		const kept: number[] = []
+		for (let index = 0; index < count; index++) if (allowed[index] === 1) kept.push(index)
+		kept.sort((first, second) =>
+			cost[first] - cost[second] || scored.packed[first] - scored.packed[second]
+		)
+		return Int32Array.from(kept)
+	}
+	const PINNED = Int32Array.from([-1])
+	const surfaceList = surfacePinned !== null ? PINNED : listOf(surfaceAllowed, surfaceEffective)
+	const foregroundList = foregroundPinned !== null
+		? PINNED
+		: listOf(foregroundAllowed, foregroundEffective)
+	const accentList = accentForcedCollapse ? PINNED : listOf(accentAllowed, accentEffective)
 
-	// --- one tuple ---------------------------------------------------------------------------------
+	if (surfaceList.length === 0 || foregroundList.length === 0) return nothing()
+
+	// **The minimum cost the roles not yet assigned can possibly add.** A pinned role contributes
+	// **zero**, not its cheapest candidate: its cost is already inside `base`, so adding a minimum for
+	// it would inflate the bound and could prune the optimum.
+	const minForegroundEffective = foregroundPinned !== null
+		? 0
+		: foregroundEffective[foregroundList[0]]
+	// The accent has two moves and the bound must cover both: a free accent from `accentList`, or the
+	// collapse onto the foreground — whose accent-role cost is `accentEffective[foreground]` plus a
+	// non-negative collapse charge, and whose index need not be in `accentList` at all (a collapsed
+	// accent is exempt from the accent's own barriers, `./barriers.ts`). Taking the minimum over both
+	// is what keeps the bound admissible once the lists are barrier-restricted.
+	let minAccentEffective = accentForcedCollapse ? 0 : Number.POSITIVE_INFINITY
+	if (!accentForcedCollapse) {
+		if (accentList.length > 0) minAccentEffective = accentEffective[accentList[0]]
+		for (let i = 0; i < foregroundList.length; i++) {
+			const index = foregroundList[i]
+			if (index >= 0 && accentEffective[index] < minAccentEffective) {
+				minAccentEffective = accentEffective[index]
+			}
+		}
+		if (!Number.isFinite(minAccentEffective)) return nothing()
+	}
+
+	// --- the coverage scratch space ---------------------------------------------------------------
+	// One buffer per search level; the search is depth-first, so two are enough and nothing allocates
+	// inside the loops. `narrowInto` reproduces `coverageCost`'s own per-cell arithmetic exactly (same
+	// subtraction order, `Math.sqrt`, same `<` comparison), which is what makes the narrowed leaf
+	// coverage bit-identical to `coverageCost(quadrature, fixedDistances, [surface, foreground, accent])`
+	// — the property `tests/energy.test.ts` asserts by comparing totals against the exhaustive path.
+	const surfaceDistances = new Float64Array(cellCount)
+	const nodeDistances = new Float64Array(cellCount)
+	const narrowInto = (source: Float64Array, target: Float64Array, point: OkLab): void => {
+		const centroid = quadrature.centroid
+		for (let index = 0; index < cellCount; index++) {
+			const base3 = index * 3
+			const dl = centroid[base3] - point[0]
+			const da = centroid[base3 + 1] - point[1]
+			const db = centroid[base3 + 2] - point[2]
+			const distance = Math.sqrt(dl * dl + da * da + db * db)
+			target[index] = distance < source[index] ? distance : source[index]
+		}
+	}
+
+	// --- one tuple ----------------------------------------------------------------------------------
+	const triples = scored.triples
+	const better = (total: number, o0: number, o1: number, o2: number, o3: number): boolean => {
+		if (incumbent === null) return true
+		if (total < incumbent.total) return true
+		if (total > incumbent.total) return false
+		const order = incumbent.order
+		if (o0 !== order[0]) return o0 < order[0]
+		if (o1 !== order[1]) return o1 < order[1]
+		if (o2 !== order[2]) return o2 < order[2]
+		return o3 < order[3]
+	}
+
 	const consider = (
-		surfaceOption: SurfaceOption,
+		surfaceIndex: number,
 		foregroundIndex: number,
 		accentIndex: number,
 		accentCollapsed: boolean,
+		distances: Float64Array,
 	): void => {
-		const unarySum = unarySumOf(surfaceOption, foregroundIndex, accentIndex, accentCollapsed)
-		const surfaceTriple = surfaceOption.index >= 0
-			? scored.triples[surfaceOption.index]
-			: surfacePinned!
-		const foregroundTriple = foregroundIndex >= 0
-			? scored.triples[foregroundIndex]
-			: foregroundPinned!
-		const accentTriple = accentCollapsed ? foregroundTriple : scored.triples[accentIndex]
+		const surfaceTriple = surfaceIndex >= 0 ? triples[surfaceIndex] : surfacePinned!
+		const foregroundTriple = foregroundIndex >= 0 ? triples[foregroundIndex] : foregroundPinned!
+		const accentTriple = accentCollapsed ? foregroundTriple : triples[accentIndex]
 
-		const surfaceColor = surfaceOption.index >= 0
-			? scored.colors[surfaceOption.index]
+		tuplesEvaluated++
+
+		let coverageRaw: number
+		let tuple: PublishedTuple | null = null
+		const surfaceColor = surfaceIndex >= 0
+			? scored.colors[surfaceIndex]
 			: colorFromRgb(surfaceTriple.rgb)
 		const foregroundColor = foregroundIndex >= 0
 			? scored.colors[foregroundIndex]
 			: colorFromRgb(foregroundTriple.rgb)
+		const surfaceCollapsed = surfaceIndex >= 0
+			? surfaceIndex === backgroundIndex
+			: surfaceForcedCollapse
 
-		const tuple: PublishedTuple = {
-			background: backgroundColor,
-			surface: surfaceColor,
-			foreground: foregroundColor,
-			accent: accentCollapsed ? foregroundColor : scored.colors[accentIndex],
-			surfaceCollapsed: surfaceOption.collapsed,
-			accentCollapsed,
-			stops: publishedStops,
+		if (exhaustive) {
+			// The reference path: materialise the tuple and let the contract's own barrier scan decide.
+			tuple = {
+				background: backgroundColor,
+				surface: surfaceColor,
+				foreground: foregroundColor,
+				accent: accentCollapsed ? foregroundColor : scored.colors[accentIndex],
+				surfaceCollapsed,
+				accentCollapsed,
+				stops: publishedStops,
+			}
+			const violated = violatedBarriers(tuple, barrierContext, true)
+			if (violated.length > 0) {
+				for (const code of violated) note(code)
+				return
+			}
+			const free: OkLab[] = []
+			if (surfaceIndex >= 0) free.push(surfaceTriple.lab)
+			if (foregroundIndex >= 0) free.push(foregroundTriple.lab)
+			if (!accentCollapsed) free.push(accentTriple.lab)
+			coverageRaw = coverageCost(quadrature, fixedDistances, free)
+		} else {
+			coverageRaw = coverageCost(
+				quadrature,
+				distances,
+				accentCollapsed ? EMPTY_POINTS : [accentTriple.lab],
+			)
 		}
-		tuplesEvaluated++
 
-		const violated = violatedBarriers(tuple, barrierContext, true)
-		if (violated.length > 0) {
-			for (const code of violated) barriers.set(code, (barriers.get(code) ?? 0) + 1)
-			return
-		}
-
-		const free: OkLab[] = []
-		if (surfaceOption.index >= 0) free.push(surfaceTriple.lab)
-		if (foregroundIndex >= 0) free.push(foregroundTriple.lab)
-		if (!accentCollapsed) free.push(accentTriple.lab)
-		const coverage = rates.coverage * coverageCost(input.quadrature, fixedDistances, free)
-
-		const surfaceCollapseCost = surfaceOption.collapsed && !surfaceForcedCollapse
-			? rates.collapse
-			: 0
+		const unarySum = base +
+			(surfaceIndex >= 0 ? surfaceUnary[surfaceIndex] : 0) +
+			(foregroundIndex >= 0 ? foregroundUnary[foregroundIndex] : 0) +
+			(accentCollapsed
+				? (foregroundIndex >= 0 ? accentUnary[foregroundIndex] : 0)
+				: accentUnary[accentIndex])
+		const surfaceCollapseCost = surfaceCollapsed && !surfaceForcedCollapse ? rates.collapse : 0
 		const accentCollapseCost = accentCollapsed && !accentForcedCollapse ? rates.collapse : 0
+		const coverage = rates.coverage * coverageRaw
 		const total = unarySum + surfaceCollapseCost + accentCollapseCost + coverage
 
-		const challenger: Incumbent = {
+		const o0 = packTriple(backgroundTriple.rgb)
+		const o1 = packTriple(surfaceTriple.rgb)
+		const o2 = packTriple(foregroundTriple.rgb)
+		const o3 = packTriple(accentTriple.rgb)
+		if (!better(total, o0, o1, o2, o3)) return
+
+		if (tuple === null) {
+			tuple = {
+				background: backgroundColor,
+				surface: surfaceColor,
+				foreground: foregroundColor,
+				accent: accentCollapsed ? foregroundColor : scored.colors[accentIndex],
+				surfaceCollapsed,
+				accentCollapsed,
+				stops: publishedStops,
+			}
+		}
+		incumbent = {
 			total,
 			terms: {
 				"field.descriptionLength": hypothesis.descriptionLength,
 				"unary.background": backgroundUnaryCost,
-				"unary.surface": surfaceOption.index >= 0
-					? surfaceUnary[surfaceOption.index]
-					: pinnedSurfaceCost,
+				"unary.surface": surfaceIndex >= 0 ? surfaceUnary[surfaceIndex] : pinnedSurfaceCost,
 				"unary.foreground": foregroundIndex >= 0
 					? foregroundUnary[foregroundIndex]
 					: pinnedForegroundCost,
@@ -498,85 +858,189 @@ function searchHypothesis(input: SearchInput): SearchOutcome {
 			accent: accentTriple,
 			hypothesis,
 			...(escape === undefined ? {} : { escape }),
-			order: [
-				packTriple(backgroundTriple.rgb),
-				packTriple(surfaceTriple.rgb),
-				packTriple(foregroundTriple.rgb),
-				packTriple(accentTriple.rgb),
-			],
+			order: [o0, o1, o2, o3],
 		}
-		if (beats(challenger, incumbent)) incumbent = challenger
 	}
 
 	// --- the search ---------------------------------------------------------------------------------
-	const prune = (bound: number): boolean =>
-		input.exhaustive !== true && incumbent !== null && bound > incumbent.total
+	let surfaceForegroundRejects = 0
+	let surfaceAccentRejects = 0
+	let separationRejects = 0
 
-	// `boundBase` is the part of every completion's cost that is already settled: the hypothesis, the
-	// pinned roles, and the coverage the fixed colours alone leave uncovered. Each nested level adds
-	// one role's *effective* cost, which is its unary cost less the coverage it is guaranteed to
-	// remove — see `effective` above for why that stays a lower bound.
+	/**
+	 * Prune iff the bound is above the incumbent by more than the two expressions' shared rounding.
+	 *
+	 * **Strict, and slack, for two different reasons.** Strict, because a bound *equal* to the
+	 * incumbent's total is not pruned: the declared tie-break can still hand the palette to the later
+	 * tuple, and an exact tie is exactly where that matters. Slack, because "the bound never exceeds
+	 * the true completion cost" is a statement in real arithmetic and this code runs in binary64: the
+	 * bound and the total sum the *same* quantities in *different* orders (the bound reaches coverage
+	 * through `Σ m·dsf` minus a precomputed gain, the total through one pass over the cells), so they
+	 * can disagree in the last bits. Measured on the synthetic instances of `tests/energy.test.ts`: a
+	 * bound sitting **one ulp** above a tied incumbent, which silently dropped the tuple the tie-break
+	 * should have taken. Without the slack the search is exact in ℝ and not in ℝ⁶⁴, which is not a
+	 * property worth having.
+	 *
+	 * `[HELD — floating-point guard, not a threshold]` The slack counts roundings, not energy: the two
+	 * coverage passes contribute up to `cellCount` roundings each and the unary sums a few dozen more,
+	 * each at most one ulp of the running magnitude. Enlarging it can only make the search visit *more*
+	 * nodes — it can never remove a tuple — so the guard is conservative in the only direction that
+	 * could cost correctness, and its whole effect is a handful of extra evaluations.
+	 */
+	const pruneSlackFactor = (2 * cellCount + 64) * Number.EPSILON
+	const prune = (bound: number): boolean => {
+		if (exhaustive || incumbent === null) return false
+		return bound > incumbent.total + pruneSlackFactor * (Math.abs(incumbent.total) + 1)
+	}
+
 	const boundBase = base + rates.coverage * coverageBase
+	const lambda = rates.coverage
 
-	// **The minimum cost the roles not yet assigned can possibly add.** A partial bound that omits
-	// them is admissible but useless in practice: at the surface level it would compare a one-role
-	// cost against a three-role incumbent, so every surface within the *whole* cost of a foreground
-	// plus an accent survives the test — which on a real artwork is nearly all of them. Adding the
-	// cheapest available cost of each unassigned role is still a lower bound (no completion can beat
-	// its own minimum) and is what makes the outer loops terminate.
-	//
-	// A pinned role contributes **zero** here, not its cheapest candidate: its cost is already inside
-	// `base`, so adding a minimum for it would inflate the bound and could prune the optimum. That is
-	// the one way this tightening can go wrong, and it is why both minima are conditioned on whether
-	// the role is actually still free.
-	const minForegroundEffective = foregroundPinned !== null || foregroundOrder.length === 0
-		? 0
-		: foregroundEffective[foregroundOrder[0]]
-	const minAccentEffective = accentForcedCollapse || accentOrder.length === 0
-		? 0
-		: accentEffective[accentOrder[0]]
+	const runSearch = (limit: number): void => {
+		const surfaceLimit = Math.min(surfaceList.length, limit)
+		for (let si = 0; si < surfaceLimit; si++) {
+			const surfaceIndex = surfaceList[si]
+			const surfaceEff = surfaceIndex >= 0 ? surfaceEffective[surfaceIndex] : 0
+			const surfaceGain = surfaceIndex >= 0 ? coverageGain[surfaceIndex] : 0
+			if (prune(boundBase + surfaceEff + minForegroundEffective + minAccentEffective)) break
 
-	for (const surfaceOption of surfaceOptions) {
-		const boundSurface = boundBase + surfaceOption.cost
-		if (prune(boundSurface + minForegroundEffective + minAccentEffective)) break
-		for (const foregroundIndex of foregroundOrder) {
-			const boundForeground = boundSurface +
-				(foregroundIndex >= 0 ? foregroundEffective[foregroundIndex] : 0)
-			if (prune(boundForeground + minAccentEffective)) break
-
-			if (accentForcedCollapse) {
-				// The escape at the foreground pins the accent onto it; its cost is already in `base`.
-				consider(surfaceOption, foregroundIndex, foregroundIndex, true)
-				continue
+			let surfaceCells = fixedDistances
+			if (surfaceIndex >= 0 && !exhaustive) {
+				narrowInto(fixedDistances, surfaceDistances, triples[surfaceIndex].lab)
+				surfaceCells = surfaceDistances
 			}
+			const surfaceUnaryCost = surfaceIndex >= 0 ? surfaceUnary[surfaceIndex] : 0
+			const surfaceCollapseCost = surfaceIndex >= 0 && surfaceIndex === backgroundIndex
+				? rates.collapse
+				: 0
 
-			// The accent-collapse move: the same energy, the accent equal to the foreground. Its gain
-			// is subtracted a second time here, which can only lower the bound — safe, and looser
-			// exactly where the two roles publish one colour.
-			const collapsedBound = boundForeground + accentEffective[foregroundIndex]
-			if (!prune(collapsedBound)) {
-				consider(surfaceOption, foregroundIndex, foregroundIndex, true)
-			}
+			const foregroundLimit = Math.min(foregroundList.length, limit)
+			for (let fi = 0; fi < foregroundLimit; fi++) {
+				const foregroundIndex = foregroundList[fi]
+				const foregroundEff = foregroundIndex >= 0 ? foregroundEffective[foregroundIndex] : 0
+				if (prune(boundBase + surfaceEff + foregroundEff + minAccentEffective)) break
 
-			for (const accentIndex of accentOrder) {
-				const boundAccent = boundForeground + accentEffective[accentIndex]
-				if (prune(boundAccent)) break
-				// The equal-index tuple *is* the collapse move above; enumerating it again with the flag
-				// clear would be an "equal without flag" palette, which invariant 1 refuses anyway.
-				if (accentIndex === foregroundIndex) continue
-				consider(surfaceOption, foregroundIndex, accentIndex, false)
+				// The two pair barriers a free surface and a free foreground share.
+				if (!exhaustive && surfaceIndex >= 0 && foregroundIndex >= 0) {
+					if (!distinctIndexed(facts, surfaceIndex, foregroundIndex)) {
+						surfaceForegroundRejects++
+						continue
+					}
+					if (!textContrastIndexed(facts, foregroundIndex, surfaceIndex, textFloor)) {
+						surfaceForegroundRejects++
+						continue
+					}
+				}
+
+				const nodeUnary = base + surfaceUnaryCost + surfaceCollapseCost +
+					(foregroundIndex >= 0 ? foregroundUnary[foregroundIndex] : 0)
+				const foregroundGain = foregroundIndex >= 0 ? coverageGain[foregroundIndex] : 0
+				// A cheap constant to start from; replaced by the narrowed sum the moment it is worth
+				// paying one pass over the cells for it. Both are lower bounds on this node's coverage.
+				let nodeCoverage = coverageBase - surfaceGain - foregroundGain
+				let nodeCells = surfaceCells
+				let narrowed = exhaustive
+				const narrow = (): void => {
+					if (narrowed) return
+					narrowed = true
+					if (foregroundIndex >= 0) {
+						narrowInto(surfaceCells, nodeDistances, triples[foregroundIndex].lab)
+						nodeCells = nodeDistances
+					} else nodeCells = surfaceCells
+					nodeCoverage = coverageCost(quadrature, nodeCells, EMPTY_POINTS)
+				}
+
+				if (accentForcedCollapse) {
+					// The escape at the foreground pins the accent onto it; its cost is already in `base`.
+					narrow()
+					consider(surfaceIndex, foregroundIndex, foregroundIndex, true, nodeCells)
+					continue
+				}
+
+				// The accent-collapse move: the same energy, the accent equal to the foreground. It
+				// publishes no new colour, so this node's coverage *is* the tuple's coverage.
+				if (foregroundIndex >= 0) {
+					const collapsedUnary = nodeUnary + accentUnary[foregroundIndex] + rates.collapse
+					if (!prune(collapsedUnary + lambda * Math.max(0, nodeCoverage))) {
+						narrow()
+						if (!prune(collapsedUnary + lambda * nodeCoverage)) {
+							consider(surfaceIndex, foregroundIndex, foregroundIndex, true, nodeCells)
+						}
+					}
+				}
+
+				const accentLimit = Math.min(accentList.length, limit)
+				for (let ai = 0; ai < accentLimit; ai++) {
+					const accentIndex = accentList[ai]
+					// Monotone in the sort key, so this ends the whole remaining subtree.
+					if (prune(nodeUnary + lambda * nodeCoverage + accentEffective[accentIndex])) break
+					if (!narrowed) {
+						narrow()
+						if (prune(nodeUnary + lambda * nodeCoverage + accentEffective[accentIndex])) break
+					}
+					// The equal-index tuple *is* the collapse move above; enumerating it again with the
+					// flag clear would be an "equal without flag" palette, which invariant 1 refuses.
+					if (accentIndex === foregroundIndex) continue
+					// Coverage is non-negative, so the clamped form is a lower bound too — and a tighter
+					// one wherever the gains overlap. It cannot drive the `break`, only a skip.
+					if (
+						prune(
+							nodeUnary + accentUnary[accentIndex] +
+								lambda * Math.max(0, nodeCoverage - coverageGain[accentIndex]),
+						)
+					) continue
+
+					if (!exhaustive) {
+						if (surfaceIndex >= 0) {
+							if (!distinctIndexed(facts, surfaceIndex, accentIndex)) {
+								surfaceAccentRejects++
+								continue
+							}
+							if (
+								!accentContrastIndexed(
+									facts,
+									accentIndex,
+									surfaceIndex,
+									accentFloor,
+									accentEscapeAvailable,
+								)
+							) {
+								surfaceAccentRejects++
+								continue
+							}
+						}
+						if (foregroundIndex >= 0 && !separatedIndexed(facts, foregroundIndex, accentIndex)) {
+							separationRejects++
+							continue
+						}
+					}
+					consider(surfaceIndex, foregroundIndex, accentIndex, false, nodeCells)
+				}
 			}
 		}
 	}
 
-	return { best: incumbent, barriers, tuplesEvaluated }
-}
+	// The seeding pass is a strict prefix of the exact pass's own work: it visits the cheapest
+	// candidates of each role under the same bounds and the same barriers, and hands over whatever it
+	// found. It cannot change the answer (the exact pass re-searches everything under bounds that hold
+	// with or without a seed) and it is what stops the exact pass from starting at `incumbent = null`.
+	if (!exhaustive) runSearch(SEED_SHORTLIST)
+	runSearch(Number.POSITIVE_INFINITY)
 
-function orderedIndices(count: number, cost: Float64Array, packed: Int32Array): number[] {
-	const order: number[] = new Array(count)
-	for (let index = 0; index < count; index++) order[index] = index
-	order.sort((first, second) => cost[first] - cost[second] || packed[first] - packed[second])
-	return order
+	if (surfaceForegroundRejects > 0) {
+		note(`I3.pair-not-distinct:${pairKey(PATH_SURFACE, PATH_FOREGROUND)}`, surfaceForegroundRejects)
+	}
+	if (surfaceAccentRejects > 0) {
+		note(`I3.pair-not-distinct:${pairKey(PATH_SURFACE, PATH_ACCENT)}`, surfaceAccentRejects)
+	}
+	if (separationRejects > 0) {
+		note(
+			`I3.foreground-accent-not-separated:${pairKey(PATH_FOREGROUND, PATH_ACCENT)}`,
+			separationRejects,
+		)
+	}
+
+	return { best: incumbent, barriers, tuplesEvaluated }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -584,7 +1048,7 @@ function orderedIndices(count: number, cost: Float64Array, packed: Int32Array): 
 // ---------------------------------------------------------------------------------------------
 
 export type SolveOptions = Readonly<{
-	/** Test hook: enumerate exhaustively instead of pruning. Same answer, no `break`. */
+	/** Test hook: the naive reference path — no break, no seed, no lists, `violatedBarriers` as oracle. */
 	exhaustive?: boolean
 }>
 
@@ -625,7 +1089,11 @@ export function solveWithDiagnostics(
 		if (outcome.best !== null && beats(outcome.best, best)) best = outcome.best
 	}
 
-	for (const hypothesis of hypotheses) absorb(searchHypothesis({ ...shared, hypothesis }))
+	// The running best is handed to the next hypothesis as its starting incumbent: a legal upper bound
+	// on the optimum from a tuple that was actually evaluated, which is exactly what a bound wants.
+	for (const hypothesis of hypotheses) {
+		absorb(searchHypothesis({ ...shared, hypothesis, incumbent: best }))
+	}
 
 	if (best !== null) {
 		return {
@@ -648,7 +1116,7 @@ export function solveWithDiagnostics(
 		if (present.has(packTriple(rgb))) continue
 		for (const role of ESCAPE_ROLES) {
 			for (const hypothesis of hypotheses) {
-				absorb(searchHypothesis({ ...shared, hypothesis, escape: { role, rgb } }))
+				absorb(searchHypothesis({ ...shared, hypothesis, escape: { role, rgb }, incumbent: best }))
 			}
 		}
 	}
@@ -666,10 +1134,20 @@ export function solveWithDiagnostics(
 	}
 }
 
+/**
+ * The certificate lines.
+ *
+ * The count is *how many times the barrier was recorded*, which is now a mixture of two things and
+ * says so: a barrier that a whole candidate fails against the hypothesis's fixed colours is recorded
+ * once per candidate (it removes that colour from that role entirely), and a barrier that only a pair
+ * violates is recorded once per tuple. Both are "how much of the feasible set this barrier ate", and
+ * neither is a tuple count any more — the previous shape's per-tuple count was only meaningful
+ * because every tuple was materialised, which is the cost this rewrite removed.
+ */
 function certificateLines(barriers: ReadonlyMap<string, number>): string[] {
 	return [...barriers.entries()]
 		.sort((first, second) => second[1] - first[1] || (first[0] < second[0] ? -1 : 1))
-		.map(([code, hits]) => `${code} (violated by ${hits} tuples)`)
+		.map(([code, hits]) => `${code} (violated ${hits}×)`)
 }
 
 function toSolution(best: Incumbent, barriers?: ReadonlyMap<string, number>): Solution {

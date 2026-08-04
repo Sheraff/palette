@@ -11,5 +11,6 @@
 export * from "./rates.ts"
 export * from "./terms.ts"
 export * from "./barriers.ts"
+export * from "./pairs.ts"
 export * from "./coverage.ts"
 export * from "./solve.ts"
