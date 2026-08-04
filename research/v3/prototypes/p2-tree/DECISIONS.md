@@ -18,6 +18,31 @@ carries one pairwise item — …35b967964d with the two accents (all other role
 so the readability-vs-identity trade is priced by the judge on the exact cover where the two
 orders part. Until that verdict, contrast-first accent ranking is not to be re-introduced.
 
+## D3 — campaign evidence folded into P2 (2026-08-04, via main orchestrator)
+
+- **Adjudication caveat:** the legacy warehouse contradicts itself at configuration level
+  (27/128 paired comparisons are exact ties filed under different tiers, 9 across
+  good/known-bad — P1's measurement). W/NS/L counts are quoted with that caveat; they gate
+  nothing regardless.
+- **Salience gates identity (reviewer, P5 round 2):** presence ≠ eligibility — colours present
+  only as "accidental shadows" are ineligible for identity roles. P2 translation: node
+  attributes (stability, own-area, lane, depth) must carry an eligibility notion for
+  fg/accent identity claims; an incidental low-stability node may not carry identity even if
+  retained. Integration-pass design input, not a new constant — prefer ordering by existing
+  structural attributes over any new threshold.
+- **Surface may be a depicted object's surface** (reviewer: "literally a surface: a polaroid
+  with white borders"). P2 translation: enclosure/frame-class nodes are legitimate surface
+  candidates — do not demote frames categorically. Matches arm-b §2.3's enclosure reasoning;
+  keep it reachable in the surface order.
+- **Identity can outrank legibility** (white fg demanded on a light field because the
+  artwork's title is white). Validates the text-colour-leads foreground rule over pure
+  APCA-max ranking; APCA ranking applies among candidates only when the artwork's own text
+  colour does not claim the role. Aligns with D1's direction on the accent side.
+- **Round composition:** a fresh-cover overfitting flag fired campaign-wide (P5). P2 rounds
+  from round 3 on draw beyond demo-20 — fresh covers from coverage-set-1 / unreviewed shards;
+  demo-20 items only where a specific prior verdict is being re-tested (e.g. D1's accent
+  pairwise item).
+
 ## D2 — isoluminant foregrounds: deferred to the integration pass (2026-08-04)
 
 W-E's lanes feed the accent pool only; grafting lane nodes into the text-group foreground
