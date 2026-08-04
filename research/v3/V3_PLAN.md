@@ -264,7 +264,7 @@ the proven v2-3 arm machinery, kept verbatim: isolated Opus subagent worktrees, 
 default, byte-identity gates from committed states, corpus census → destination adjudication →
 sampled batch for big swings, composition batches before mechanisms stack, verdict-gated
 integration, every constant pinned with a provenance tag at birth
-(`[REVIEWED] [MEASURED] [n=1] [INHERITED] [UNCALIBRATED] [HELD]`), anonymous literals
+(`[REVIEWED] [MEASURED] [FITTED] [n=1] [INHERITED] [UNCALIBRATED] [HELD]`), anonymous literals
 forbidden.
 
 **A constants budget from day one:** review batches designed to move one axis at a time, so

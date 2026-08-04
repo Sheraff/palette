@@ -1,18 +1,18 @@
 {
 	"meta": {
 		"what": "Parameter-honesty census over the v3 source tree: how many numbers could be changed to change behaviour, and how many carry provenance. V3_PLAN.md §1, success criterion 2.",
-		"generatedAt": "2026-08-04T07:47:02.169Z",
+		"generatedAt": "2026-08-04T07:49:17.357Z",
 		"roots": [
 			"oracle",
 			"src"
 		],
 		"note": "meta is excluded from bodyHash. Two runs over an unchanged tree produce an identical bodyHash."
 	},
-	"bodyHash": "7fe988dd2630edfebcd453d6313416e6843ed1f5ecee196571a50c112b2d8338",
+	"bodyHash": "417ae5f434815a18318dc8bcf2f49158ec5797fe4927a4612d8fdf7cf2ee6634",
 	"body": {
 		"corpus": {
-			"files": 179,
-			"lines": 81835,
+			"files": 185,
+			"lines": 83084,
 			"byLanguage": {
 				"py": {
 					"files": 92,
@@ -20,41 +20,42 @@
 					"fidelity": "lexical"
 				},
 				"ts": {
-					"files": 87,
-					"lines": 45411,
+					"files": 93,
+					"lines": 46660,
 					"fidelity": "ast"
 				}
 			}
 		},
 		"totals": {
-			"candidates": 7964,
-			"excluded": 3055,
-			"tunableSites": 4909,
-			"tagged": 677,
+			"candidates": 8071,
+			"excluded": 3086,
+			"tunableSites": 4985,
+			"tagged": 699,
 			"decisionTraced": 0,
 			"decisionDangling": 0,
-			"untagged": 4232
+			"untagged": 4286
 		},
 		"headline": {
-			"documentedFraction": 0.1379,
-			"anchoredFraction": 0.0915
+			"documentedFraction": 0.1402,
+			"anchoredFraction": 0.0905
 		},
 		"byTag": {
-			"REVIEWED": 268,
+			"REVIEWED": 270,
 			"MEASURED": 181,
+			"FITTED": 0,
 			"n=1": 2,
-			"INHERITED": 108,
-			"UNCALIBRATED": 106,
+			"INHERITED": 110,
+			"UNCALIBRATED": 124,
 			"HELD": 12
 		},
 		"byAnchorStrength": {
-			"anchored": 449,
-			"weak": 122,
-			"unanchored": 4338
+			"anchored": 451,
+			"weak": 124,
+			"unanchored": 4410
 		},
 		"tagAttribution": {
 			"trailing": 1,
-			"leading": 559,
+			"leading": 581,
 			"shared-doc-block": 117
 		},
 		"decisionCitations": {
@@ -101,22 +102,22 @@
 			{
 				"id": "index-access",
 				"rationale": "An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes.",
-				"count": 1050
+				"count": 1059
 			},
 			{
 				"id": "loop-header",
 				"rationale": "An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy.",
-				"count": 194
+				"count": 201
 			},
 			{
 				"id": "accumulator-init",
 				"rationale": "A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted.",
-				"count": 234
+				"count": 239
 			},
 			{
 				"id": "counter-increment",
 				"rationale": "A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous.",
-				"count": 302
+				"count": 308
 			},
 			{
 				"id": "unit-conversion",
@@ -126,12 +127,12 @@
 			{
 				"id": "unit-clamp",
 				"rationale": "A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit.",
-				"count": 111
+				"count": 112
 			},
 			{
 				"id": "display-format",
 				"rationale": "A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes.",
-				"count": 293
+				"count": 296
 			},
 			{
 				"id": "display-interpolation",
@@ -295,14 +296,14 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "dev loop / code version (no CONVENTIONS row)",
-				"files": 3,
-				"tunableSites": 5,
-				"tagged": 2,
+				"files": 5,
+				"tunableSites": 55,
+				"tagged": 20,
 				"decisionTraced": 0,
-				"documented": 2,
-				"untagged": 3,
+				"documented": 20,
+				"untagged": 35,
 				"anchored": 0,
-				"documentedFraction": 0.4,
+				"documentedFraction": 0.3636,
 				"anchoredFraction": 0
 			},
 			{
@@ -370,7 +371,7 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "robustness comparison (no CONVENTIONS row)",
-				"files": 1,
+				"files": 2,
 				"tunableSites": 1,
 				"tagged": 0,
 				"decisionTraced": 0,
@@ -385,15 +386,15 @@
 				"gate": "INFORMATIONAL",
 				"configured": true,
 				"workstream": "shared statistics (no CONVENTIONS row)",
-				"files": 3,
-				"tunableSites": 108,
-				"tagged": 34,
+				"files": 6,
+				"tunableSites": 134,
+				"tagged": 38,
 				"decisionTraced": 0,
-				"documented": 34,
-				"untagged": 74,
-				"anchored": 1,
-				"documentedFraction": 0.3148,
-				"anchoredFraction": 0.0093
+				"documented": 38,
+				"untagged": 96,
+				"anchored": 3,
+				"documentedFraction": 0.2836,
+				"anchoredFraction": 0.0224
 			},
 			{
 				"area": "src/tagging",
@@ -1172,9 +1173,21 @@
 				"untagged": 1
 			},
 			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"tunableSites": 48,
+				"documented": 18,
+				"untagged": 30
+			},
+			{
 				"file": "src/devloop/code-version.ts",
 				"tunableSites": 3,
 				"documented": 1,
+				"untagged": 2
+			},
+			{
+				"file": "src/devloop/worker.ts",
+				"tunableSites": 2,
+				"documented": 0,
 				"untagged": 2
 			},
 			{
@@ -1370,10 +1383,28 @@
 				"untagged": 1
 			},
 			{
+				"file": "src/stats/agreement.ts",
+				"tunableSites": 5,
+				"documented": 0,
+				"untagged": 5
+			},
+			{
 				"file": "src/stats/binomial.ts",
 				"tunableSites": 25,
 				"documented": 2,
 				"untagged": 23
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"tunableSites": 14,
+				"documented": 2,
+				"untagged": 12
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"tunableSites": 7,
+				"documented": 2,
+				"untagged": 5
 			},
 			{
 				"file": "src/stats/numeric.ts",
@@ -4594,6 +4625,21 @@
 					"comparison-operand",
 					"exponential",
 					"float"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 75,
+				"column": 15,
+				"value": 0.95,
+				"text": "0.95",
+				"name": "confidence",
+				"functionName": "bucketedAgreement",
+				"snippet": "confidence = 0.95,",
+				"suspicion": 5,
+				"flags": [
+					"float",
+					"parameter-default"
 				]
 			},
 			{
@@ -12984,6 +13030,77 @@
 				]
 			},
 			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 126,
+				"column": 19,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "decode",
+				"snippet": "if (channels !== 3 && channels !== 4) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 126,
+				"column": 37,
+				"value": 4,
+				"text": "4",
+				"name": null,
+				"functionName": "decode",
+				"snippet": "if (channels !== 3 && channels !== 4) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 139,
+				"column": 20,
+				"value": 4,
+				"text": "4",
+				"name": null,
+				"functionName": "decode",
+				"snippet": "if (channels === 4 && data[offset + 3] !== 255) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 139,
+				"column": 46,
+				"value": 255,
+				"text": "255",
+				"name": null,
+				"functionName": "decode",
+				"snippet": "if (channels === 4 && data[offset + 3] !== 255) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 156,
+				"column": 31,
+				"value": 256,
+				"text": "256",
+				"name": null,
+				"functionName": "medianOf",
+				"snippet": "for (let value = 0; value < 256; value += 1) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand",
+					"loop-header"
+				]
+			},
+			{
 				"file": "src/holdout/freeze-holdout.ts",
 				"line": 360,
 				"column": 27,
@@ -13295,7 +13412,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 274,
+				"line": 275,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -13309,7 +13426,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 460,
+				"line": 461,
 				"column": 27,
 				"value": 0,
 				"text": "0",
@@ -13323,7 +13440,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 575,
+				"line": 576,
 				"column": 31,
 				"value": 0,
 				"text": "0",
@@ -17146,6 +17263,62 @@
 				]
 			},
 			{
+				"file": "src/stats/agreement.ts",
+				"line": 99,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "bucketedAgreement",
+				"snippet": "if (cantTell > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 104,
+				"column": 18,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "bucketedAgreement",
+				"snippet": "if (decided === 0 && total > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 104,
+				"column": 31,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "bucketedAgreement",
+				"snippet": "if (decided === 0 && total > 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/agreement.ts",
+				"line": 137,
+				"column": 25,
+				"value": 0,
+				"text": "0",
+				"name": "rate",
+				"functionName": "rateWithDenominator",
+				"snippet": "rate: denominator === 0 ? null : count / denominator,",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
 				"file": "src/stats/binomial.ts",
 				"line": 76,
 				"column": 18,
@@ -17294,6 +17467,160 @@
 				"name": null,
 				"functionName": "wilsonInterval",
 				"snippet": "if (trials === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 67,
+				"column": 43,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (!Number.isInteger(value) || value < 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 90,
+				"column": 16,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (total === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 97,
+				"column": 17,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (rowOne === 0 || rowTwo === 0 || columnOne === 0 || columnTwo === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 97,
+				"column": 33,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (rowOne === 0 || rowTwo === 0 || columnOne === 0 || columnTwo === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 97,
+				"column": 52,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (rowOne === 0 || rowTwo === 0 || columnOne === 0 || columnTwo === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 97,
+				"column": 71,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "fisherExact2x2",
+				"snippet": "if (rowOne === 0 || rowTwo === 0 || columnOne === 0 || columnTwo === 0) {",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 138,
+				"column": 25,
+				"value": 0,
+				"text": "0",
+				"name": "zeroCell",
+				"functionName": "fisherExact2x2",
+				"snippet": "const zeroCell = a === 0 || b === 0 || c === 0 || d === 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 138,
+				"column": 36,
+				"value": 0,
+				"text": "0",
+				"name": "zeroCell",
+				"functionName": "fisherExact2x2",
+				"snippet": "const zeroCell = a === 0 || b === 0 || c === 0 || d === 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 138,
+				"column": 47,
+				"value": 0,
+				"text": "0",
+				"name": "zeroCell",
+				"functionName": "fisherExact2x2",
+				"snippet": "const zeroCell = a === 0 || b === 0 || c === 0 || d === 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 138,
+				"column": 58,
+				"value": 0,
+				"text": "0",
+				"name": "zeroCell",
+				"functionName": "fisherExact2x2",
+				"snippet": "const zeroCell = a === 0 || b === 0 || c === 0 || d === 0",
+				"suspicion": 3,
+				"flags": [
+					"comparison-operand"
+				]
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"line": 106,
+				"column": 12,
+				"value": 0,
+				"text": "0",
+				"name": null,
+				"functionName": "cohensKappa",
+				"snippet": "if (n === 0) {",
 				"suspicion": 3,
 				"flags": [
 					"comparison-operand"
@@ -22215,8 +22542,36 @@
 				]
 			},
 			{
+				"file": "src/devloop/worker.ts",
+				"line": 77,
+				"column": 15,
+				"value": 0,
+				"text": "0",
+				"name": "computeMs",
+				"functionName": null,
+				"snippet": "computeMs: 0,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
+				"file": "src/devloop/worker.ts",
+				"line": 95,
+				"column": 15,
+				"value": 0,
+				"text": "0",
+				"name": "computeMs",
+				"functionName": null,
+				"snippet": "computeMs: 0,",
+				"suspicion": 2,
+				"flags": [
+					"named-constant"
+				]
+			},
+			{
 				"file": "src/honesty/report.ts",
-				"line": 200,
+				"line": 201,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -22230,7 +22585,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 201,
+				"line": 202,
 				"column": 11,
 				"value": 0,
 				"text": "0",
@@ -22244,7 +22599,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 210,
+				"line": 211,
 				"column": 39,
 				"value": 0,
 				"text": "0",
@@ -22258,7 +22613,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 210,
+				"line": 211,
 				"column": 48,
 				"value": 0,
 				"text": "0",
@@ -22272,7 +22627,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 210,
+				"line": 211,
 				"column": 63,
 				"value": 0,
 				"text": "0",
@@ -22286,7 +22641,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 212,
+				"line": 213,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -22300,7 +22655,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 213,
+				"line": 214,
 				"column": 12,
 				"value": 0,
 				"text": "0",
@@ -22314,7 +22669,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 214,
+				"line": 215,
 				"column": 23,
 				"value": 0,
 				"text": "0",
@@ -22328,7 +22683,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 289,
+				"line": 290,
 				"column": 56,
 				"value": 0,
 				"text": "0",
@@ -22342,7 +22697,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 289,
+				"line": 290,
 				"column": 67,
 				"value": 0,
 				"text": "0",
@@ -22356,7 +22711,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 289,
+				"line": 290,
 				"column": 86,
 				"value": 0,
 				"text": "0",
@@ -22370,7 +22725,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 289,
+				"line": 290,
 				"column": 99,
 				"value": 0,
 				"text": "0",
@@ -22384,7 +22739,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 305,
+				"line": 306,
 				"column": 19,
 				"value": 0,
 				"text": "0",
@@ -22398,7 +22753,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 306,
+				"line": 307,
 				"column": 13,
 				"value": 0,
 				"text": "0",
@@ -22412,7 +22767,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 307,
+				"line": 308,
 				"column": 21,
 				"value": 0,
 				"text": "0",
@@ -22426,7 +22781,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 308,
+				"line": 309,
 				"column": 15,
 				"value": 0,
 				"text": "0",
@@ -51999,6 +52354,306 @@
 				"flags": []
 			},
 			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 106,
+				"column": 21,
+				"value": 16,
+				"text": "16",
+				"name": null,
+				"functionName": "unpack",
+				"snippet": "return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 106,
+				"column": 27,
+				"value": 255,
+				"text": "0xff",
+				"name": null,
+				"functionName": "unpack",
+				"snippet": "return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 106,
+				"column": 44,
+				"value": 8,
+				"text": "8",
+				"name": null,
+				"functionName": "unpack",
+				"snippet": "return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 106,
+				"column": 49,
+				"value": 255,
+				"text": "0xff",
+				"name": null,
+				"functionName": "unpack",
+				"snippet": "return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 106,
+				"column": 64,
+				"value": 255,
+				"text": "0xff",
+				"name": null,
+				"functionName": "unpack",
+				"snippet": "return [(packed >> 16) & 0xff, (packed >> 8) & 0xff, packed & 0xff]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 130,
+				"column": 36,
+				"value": 256,
+				"text": "256",
+				"name": "Uint32Array",
+				"functionName": "decode",
+				"snippet": "const redCounts = new Uint32Array(256)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 131,
+				"column": 38,
+				"value": 256,
+				"text": "256",
+				"name": "Uint32Array",
+				"functionName": "decode",
+				"snippet": "const greenCounts = new Uint32Array(256)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 132,
+				"column": 37,
+				"value": 256,
+				"text": "256",
+				"name": "Uint32Array",
+				"functionName": "decode",
+				"snippet": "const blueCounts = new Uint32Array(256)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 139,
+				"column": 39,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "decode",
+				"snippet": "if (channels === 4 && data[offset + 3] !== 255) {",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 145,
+				"column": 31,
+				"value": 1,
+				"text": "1",
+				"name": "green",
+				"functionName": "decode",
+				"snippet": "const green = data[offset + 1]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 146,
+				"column": 30,
+				"value": 2,
+				"text": "2",
+				"name": "blue",
+				"functionName": "decode",
+				"snippet": "const blue = data[offset + 2]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 150,
+				"column": 20,
+				"value": 16,
+				"text": "16",
+				"name": "seen.add",
+				"functionName": "decode",
+				"snippet": "seen.add((red << 16) | (green << 8) | blue)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 150,
+				"column": 36,
+				"value": 8,
+				"text": "8",
+				"name": "seen.add",
+				"functionName": "decode",
+				"snippet": "seen.add((red << 16) | (green << 8) | blue)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 154,
+				"column": 29,
+				"value": 2,
+				"text": "2",
+				"name": "half",
+				"functionName": "medianOf",
+				"snippet": "const half = pixelCount / 2",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 160,
+				"column": 10,
+				"value": 255,
+				"text": "255",
+				"name": null,
+				"functionName": "medianOf",
+				"snippet": "return 255",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 183,
+				"column": 24,
+				"value": 3,
+				"text": "3",
+				"name": "base",
+				"functionName": "nearestPresentColor",
+				"snippet": "const base = index * 3",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 184,
+				"column": 75,
+				"value": 1,
+				"text": "1",
+				"name": "okLabDistance",
+				"functionName": "nearestPresentColor",
+				"snippet": "const distance = okLabDistance(target, [labCache[base], labCache[base + 1], labCache[base + 2]])",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 184,
+				"column": 95,
+				"value": 2,
+				"text": "2",
+				"name": "okLabDistance",
+				"functionName": "nearestPresentColor",
+				"snippet": "const distance = okLabDistance(target, [labCache[base], labCache[base + 1], labCache[base + 2]])",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 206,
+				"column": 64,
+				"value": 3,
+				"text": "3",
+				"name": "Float64Array",
+				"functionName": "paletteOf",
+				"snippet": "const labCache = new Float64Array(image.uniqueColors.length * 3)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 209,
+				"column": 20,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "paletteOf",
+				"snippet": "labCache[index * 3] = lab[0]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 210,
+				"column": 20,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "paletteOf",
+				"snippet": "labCache[index * 3 + 1] = lab[1]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 210,
+				"column": 24,
+				"value": 1,
+				"text": "1",
+				"name": null,
+				"functionName": "paletteOf",
+				"snippet": "labCache[index * 3 + 1] = lab[1]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 211,
+				"column": 20,
+				"value": 3,
+				"text": "3",
+				"name": null,
+				"functionName": "paletteOf",
+				"snippet": "labCache[index * 3 + 2] = lab[2]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 211,
+				"column": 24,
+				"value": 2,
+				"text": "2",
+				"name": null,
+				"functionName": "paletteOf",
+				"snippet": "labCache[index * 3 + 2] = lab[2]",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/devloop/candidates/toy-median-offsets.ts",
+				"line": 231,
+				"column": 48,
+				"value": 1,
+				"text": "1",
+				"name": "position",
+				"functionName": null,
+				"snippet": "position: index / (GRADIENT_OFFSETS.length - 1),",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/devloop/code-version.ts",
 				"line": 105,
 				"column": 53,
@@ -52662,7 +53317,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 209,
+				"line": 210,
 				"column": 50,
 				"value": 0,
 				"text": "0",
@@ -52674,7 +53329,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 281,
+				"line": 282,
 				"column": 47,
 				"value": 0,
 				"text": "0",
@@ -52686,7 +53341,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 281,
+				"line": 282,
 				"column": 52,
 				"value": 1,
 				"text": "1",
@@ -52698,7 +53353,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 312,
+				"line": 313,
 				"column": 41,
 				"value": 1,
 				"text": "1",
@@ -52710,7 +53365,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 318,
+				"line": 319,
 				"column": 35,
 				"value": 0,
 				"text": "0",
@@ -52722,7 +53377,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 338,
+				"line": 339,
 				"column": 40,
 				"value": 1,
 				"text": "1",
@@ -52734,7 +53389,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 343,
+				"line": 344,
 				"column": 49,
 				"value": 0,
 				"text": "0",
@@ -52748,7 +53403,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 541,
+				"line": 542,
 				"column": 83,
 				"value": 0,
 				"text": "0",
@@ -52760,7 +53415,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 541,
+				"line": 542,
 				"column": 88,
 				"value": 1,
 				"text": "1",
@@ -52772,7 +53427,7 @@
 			},
 			{
 				"file": "src/honesty/report.ts",
-				"line": 577,
+				"line": 578,
 				"column": 10,
 				"value": 0,
 				"text": "0",
@@ -58485,6 +59140,84 @@
 				"flags": []
 			},
 			{
+				"file": "src/stats/fisher.ts",
+				"line": 94,
+				"column": 23,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "fisherExact2x2",
+				"snippet": "provenance(method, 0, inputs),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/fisher.ts",
+				"line": 122,
+				"column": 33,
+				"value": 1,
+				"text": "1",
+				"name": "threshold",
+				"functionName": "fisherExact2x2",
+				"snippet": "const threshold = observed * (1 + EXTREMENESS_RELATIVE_SLACK)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"line": 108,
+				"column": 77,
+				"value": 0,
+				"text": "0",
+				"name": "provenance",
+				"functionName": "cohensKappa",
+				"snippet": "...refuse(\"no-comparable-rows\", KAPPA_NO_ROWS_REASON, provenance(method, 0, inputs)),",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"line": 138,
+				"column": 3,
+				"value": 0,
+				"text": "0",
+				"name": "categories.reduce",
+				"functionName": "cohensKappa",
+				"snippet": "0,",
+				"suspicion": 0,
+				"flags": [
+					"call-argument"
+				]
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"line": 141,
+				"column": 15,
+				"value": 1,
+				"text": "1",
+				"name": "Math.abs",
+				"functionName": "cohensKappa",
+				"snippet": "if (Math.abs(1 - expectedAgreement) < DEGENERATE_EXPECTED_TOLERANCE) {",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
+				"file": "src/stats/kappa.ts",
+				"line": 150,
+				"column": 54,
+				"value": 1,
+				"text": "1",
+				"name": "kappa",
+				"functionName": "cohensKappa",
+				"snippet": "const kappa = (rawAgreement - expectedAgreement) / (1 - expectedAgreement)",
+				"suspicion": 0,
+				"flags": []
+			},
+			{
 				"file": "src/stats/numeric.ts",
 				"line": 30,
 				"column": 85,
@@ -59201,6 +59934,7 @@
 			"Only numeric literals are counted. A tunable expressed as a string ('high' | 'low'), a boolean policy switch, or a choice of algorithm is invisible to this instrument — v2-3's worst free parameters included several of those.",
 			"Provenance is judged by proximity, not by meaning. A tag in an adjacent comment counts even if it documents the constant next door, and a correct provenance story written three lines away does not count. The tagAttribution block shows how much of the total rests on the weakest of those inferences (shared-doc-block).",
 			"The Python half is a lexical scan, not an AST parse: it can misread syntax a real parser would not. The TypeScript half uses the TypeScript compiler's own AST. Per-language fidelity is published in the corpus block so the two are never silently pooled.",
+			"[FITTED] is read as a label, never verified as a statistic. The tag is defined to cite n and the fitting artifact, but this instrument does not check that the citation is present, that the artifact exists, that n is adequate, or that the fit was ever tested against a holdout. A [FITTED] tag on a constant fitted to eleven points scores exactly as anchored as one fitted to nine hundred. The count is published separately in byTag so a reader can audit those sites specifically rather than take the anchored total on trust.",
 			"A site counted once may be one of several places the same value is written. Duplicated magic numbers inflate the count; a single named constant used in twelve places counts once, which is the incentive the metric should create.",
 			"The reviewed-vs-unseen perturbation-stability ratio — the third parameter-honesty number, and v2-3's 1.61x overfitting alarm — is NOT measured here. It needs a pipeline that emits palettes and belongs with the perturbation gates at the Phase 2 entry condition.",
 			"Known false-positive class, left in deliberately: colorimetric constants fixed by specification are only recognised when they are the sRGB transfer values or sit inside a matrix-shaped array literal. The OKLab coefficients written as arithmetic chains in src/contract/color.ts, and the CIE D65 white point, are therefore counted as untagged tunables. Filter body.untagged on those files for the current size. They are left counted rather than exempted by a widened heuristic, because broadening an exclusion is the one edit that improves this score without improving the code.",

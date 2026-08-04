@@ -2,18 +2,18 @@
 
 **Generated file. Do not edit by hand** — regenerate with `node --experimental-strip-types src/honesty/cli.ts` from `research/v3`.
 
-Measured at **2026-08-04T07:47:02.169Z**. Body hash `7fe988dd2630edfe`.
+Measured at **2026-08-04T07:49:17.357Z**. Body hash `417ae5f434815a18`.
 
 Parameter honesty is the second of v3's three success criteria (`V3_PLAN.md` §1). It exists because v2-3 carried roughly 900 tunable sites against 11 human-anchored values — quantified overfitting. This page counts the first number and the provenance behind it. It does **not** measure the third number, the reviewed-vs-unseen perturbation-stability ratio; that needs a pipeline and belongs at the Phase 2 entry condition.
 
 ## Headline
 
-- **Tunable sites: 4909**
-- **Documented: 677 (13.8%)** — carries a provenance tag or a resolved decision record.
-- **Anchored: 449 (9.2%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
-- **Untagged: 4232** — no provenance of any kind. This is the dishonesty measure.
+- **Tunable sites: 4985**
+- **Documented: 699 (14.0%)** — carries a provenance tag or a resolved decision record.
+- **Anchored: 451 (9.0%)** — the story is `[REVIEWED]`, `[MEASURED]`, or a decision record. Weak tags (`[n=1]`, `[INHERITED]`, `[HELD]`) do not count here.
+- **Untagged: 4286** — no provenance of any kind. This is the dishonesty measure.
 
-Scanned 179 files, 81835 lines, 7964 numeric literals, of which 3055 were excluded by a named rule (listed below, none silent).
+Scanned 185 files, 83084 lines, 8071 numeric literals, of which 3086 were excluded by a named rule (listed below, none silent).
 
 **Read the fraction as a lower bound.** Exclusion rules are deliberately narrow: when it is unclear whether a number is structural or tunable it is counted, which inflates the denominator and pushes the fraction down. The tree is at least this honest, never less.
 
@@ -22,25 +22,26 @@ Scanned 179 files, 81835 lines, 7964 numeric literals, of which 3055 were exclud
 | language | files | lines | parser fidelity |
 |---|---:|---:|---|
 | py | 92 | 36424 | lexical |
-| ts | 87 | 45411 | ast |
+| ts | 93 | 46660 | ast |
 
 ## Provenance of the tunable sites
 
 | tag | count | anchor strength |
 |---|---:|---|
-| `[REVIEWED]` | 268 | anchored |
+| `[REVIEWED]` | 270 | anchored |
 | `[MEASURED]` | 181 | anchored |
+| `[FITTED]` | 0 | anchored |
 | `[n=1]` | 2 | weak |
-| `[INHERITED]` | 108 | weak |
-| `[UNCALIBRATED]` | 106 | unanchored |
+| `[INHERITED]` | 110 | weak |
+| `[UNCALIBRATED]` | 124 | unanchored |
 | `[HELD]` | 12 | weak |
 | decision record, resolved | 0 | anchored |
 | decision record, dangling | 0 | unanchored |
-| **untagged** | **4232** | unanchored |
+| **untagged** | **4286** | unanchored |
 
 Decision citations resolve to 0 machine-recheckable records (non-empty `fundedBy`) and 0 reviewer-conversational ones (empty `fundedBy`, which `CONVENTIONS.md` calls the honest form for a verbal ruling). Both are human-anchored; only the first can ever be re-verified.
 
-**How the tags were attributed:** 559 from the site's own doc comment, 1 from a trailing same-line comment, 117 inherited from an adjacent declaration's doc block. That last number is the instrument's weakest inference — discount it if you are being strict.
+**How the tags were attributed:** 581 from the site's own doc comment, 1 from a trailing same-line comment, 117 inherited from an adjacent declaration's doc block. That last number is the instrument's weakest inference — discount it if you are being strict.
 
 ## Per working area
 
@@ -57,13 +58,13 @@ One row per top-level directory under a scan root — the granularity `CONVENTIO
 | `src/calibration-consequence` | INFORMATIONAL | calibration consequence | 5 | 96 | 18 | 78 | 18.8% |
 | `src/contract` | INFORMATIONAL | contract schema + gates | 9 | 285 | 48 | 237 | 16.8% |
 | `src/coverage-set` | INFORMATIONAL | coverage set | 5 | 163 | 26 | 137 | 16.0% |
-| `src/devloop` | INFORMATIONAL | dev loop / code version (no CONVENTIONS row) | 3 | 5 | 2 | 3 | 40.0% |
+| `src/devloop` | INFORMATIONAL | dev loop / code version (no CONVENTIONS row) | 5 | 55 | 20 | 35 | 36.4% |
 | `src/holdout` | INFORMATIONAL | holdout freeze | 1 | 80 | 21 | 59 | 26.3% |
 | `src/honesty` | INFORMATIONAL | parameter honesty | 8 | 235 | 34 | 201 | 14.5% |
 | `src/legacy` | INFORMATIONAL | legacy distillation | 1 | 45 | 4 | 41 | 8.9% |
 | `src/review-server` | INFORMATIONAL | review server | 25 | 823 | 82 | 741 | 10.0% |
-| `src/robustness` | INFORMATIONAL | robustness comparison (no CONVENTIONS row) | 1 | 1 | 0 | 1 | 0.0% |
-| `src/stats` | INFORMATIONAL | shared statistics (no CONVENTIONS row) | 3 | 108 | 34 | 74 | 31.5% |
+| `src/robustness` | INFORMATIONAL | robustness comparison (no CONVENTIONS row) | 2 | 1 | 0 | 1 | 0.0% |
+| `src/stats` | INFORMATIONAL | shared statistics (no CONVENTIONS row) | 6 | 134 | 38 | 96 | 28.4% |
 | `src/tagging` | INFORMATIONAL | tagging | 5 | 43 | 0 | 43 | 0.0% |
 | `src/warehouse` | INFORMATIONAL | warehouse + query CLI | 4 | 48 | 10 | 38 | 20.8% |
 
@@ -80,13 +81,13 @@ No literal is dropped silently. A site records exactly one rule, so these sum to
 | `http-status` | 28 | An HTTP status code. Fixed by RFC 9110; the choice of which status to send is logic, but the number itself is not tunable. Covers the review server's own respond(res, status, ...) helper as well as the writeHead/statusCode shapes the scanner recognises directly. |
 | `emptiness-comparison` | 335 | A 0 or 1 compared against a collection's length/size/shape — 'is it empty?', not a magnitude threshold. Listed before the comparison protection, which would otherwise rescue every `xs.length > 0`. |
 | `not-found-sentinel` | 0 | A -1 compared against the result of indexOf/findIndex/.index() — the language's not-found sentinel, not a bound anyone chose. |
-| `index-access` | 1050 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
-| `loop-header` | 194 | An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy. |
-| `accumulator-init` | 234 | A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted. |
-| `counter-increment` | 302 | A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous. |
+| `index-access` | 1059 | An integer subscript: xs[0], argv[2]. It selects a position in a structure. The structure's shape may be a design choice, but the index is not a value anyone tunes. |
+| `loop-header` | 201 | An integer in a for/while header — the counter's origin, bound, or step. Iteration mechanics, not policy. |
+| `accumulator-init` | 239 | A 0 or 1 initializing a mutable accumulator (`let n = 0`). The arithmetic identity a running total starts from. Restricted to 0 and 1 on purpose: `let threshold = 0.7` is a mutable knob and stays counted. |
+| `counter-increment` | 308 | A 1 in a compound assignment that steps a counter (n += 1, n -= 1). Nobody tunes an increment; it is the arithmetic of counting. Matched on the source line rather than a scanner flag, so it is restricted to the literal 1 to keep the match unambiguous. |
 | `unit-conversion` | 49 | A multiply or divide by a unit constant — ms per second, seconds per minute, the 8-bit channel maximum, bytes per KiB. An identity of the units, not a choice. |
-| `unit-clamp` | 111 | A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit. |
-| `display-format` | 293 | A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes. |
+| `unit-clamp` | 112 | A 0 or 1 acting as the bound of a clamp into the unit interval. The range is the quantity's definition, not a tuned limit. |
+| `display-format` | 296 | A digit count or width for output formatting: toFixed(2), padStart(3), a round() feeding a print. It changes what a human reads, never what the system computes. |
 | `display-interpolation` | 223 | A literal inside a template literal, f-string, or print — text assembly. Note this rule is narrow: a comparison inside an interpolation keeps its protection and stays counted. |
 | `slice-origin` | 34 | A 0 as the start argument of slice/substring/splice — 'from the beginning'. The LENGTH argument of the same call is not excluded: a hash prefix length is a real choice. |
 
@@ -146,13 +147,14 @@ Files with at least one untagged tunable site, worst first.
 | `oracle/ladder/build-manifest.ts` | 64 | 16 | 48 |
 | `oracle/sam/overlay.py` | 48 | 0 | 48 |
 
-Full list of all 4232 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
+Full list of all 4286 untagged sites with `file:line`: `data/honesty/honesty-report.json`, key `body.untagged`.
 
 ## What this instrument cannot see
 
 - Only numeric literals are counted. A tunable expressed as a string ('high' | 'low'), a boolean policy switch, or a choice of algorithm is invisible to this instrument — v2-3's worst free parameters included several of those.
 - Provenance is judged by proximity, not by meaning. A tag in an adjacent comment counts even if it documents the constant next door, and a correct provenance story written three lines away does not count. The tagAttribution block shows how much of the total rests on the weakest of those inferences (shared-doc-block).
 - The Python half is a lexical scan, not an AST parse: it can misread syntax a real parser would not. The TypeScript half uses the TypeScript compiler's own AST. Per-language fidelity is published in the corpus block so the two are never silently pooled.
+- [FITTED] is read as a label, never verified as a statistic. The tag is defined to cite n and the fitting artifact, but this instrument does not check that the citation is present, that the artifact exists, that n is adequate, or that the fit was ever tested against a holdout. A [FITTED] tag on a constant fitted to eleven points scores exactly as anchored as one fitted to nine hundred. The count is published separately in byTag so a reader can audit those sites specifically rather than take the anchored total on trust.
 - A site counted once may be one of several places the same value is written. Duplicated magic numbers inflate the count; a single named constant used in twelve places counts once, which is the incentive the metric should create.
 - The reviewed-vs-unseen perturbation-stability ratio — the third parameter-honesty number, and v2-3's 1.61x overfitting alarm — is NOT measured here. It needs a pipeline that emits palettes and belongs with the perturbation gates at the Phase 2 entry condition.
 - Known false-positive class, left in deliberately: colorimetric constants fixed by specification are only recognised when they are the sRGB transfer values or sit inside a matrix-shaped array literal. The OKLab coefficients written as arithmetic chains in src/contract/color.ts, and the CIE D65 white point, are therefore counted as untagged tunables. Filter body.untagged on those files for the current size. They are left counted rather than exempted by a widened heuristic, because broadening an exclusion is the one edit that improves this score without improving the code.

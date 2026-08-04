@@ -24,6 +24,7 @@
 export const PROVENANCE_TAGS = [
 	"REVIEWED",
 	"MEASURED",
+	"FITTED",
 	"n=1",
 	"INHERITED",
 	"UNCALIBRATED",
@@ -35,19 +36,42 @@ export type ProvenanceTag = (typeof PROVENANCE_TAGS)[number]
 /**
  * How strongly a tag anchors a value to something outside the author's judgment.
  *
- * `[REVIEWED]` and `[MEASURED]` are anchors: a human ruled, or data said so. `[n=1]`,
- * `[INHERITED]` and `[HELD]` are weak — real provenance, but the value is one observation, a
- * carry-over from v2-3, or a placeholder. `[UNCALIBRATED]` is the author admitting there is no
- * anchor at all, which is honest labelling of an unanchored value, not an anchor.
+ * `[REVIEWED]`, `[MEASURED]` and `[FITTED]` are anchors: a human ruled, data said so, or data said
+ * so through a model. `[n=1]`, `[INHERITED]` and `[HELD]` are weak — real provenance, but the value
+ * is one observation, a carry-over from v2-3, or a placeholder. `[UNCALIBRATED]` is the author
+ * admitting there is no anchor at all, which is honest labelling of an unanchored value, not an
+ * anchor.
  *
  * `[UNCALIBRATED]` scoring as unanchored is the one judgment call in this mapping. It is
  * deliberate: an instrument that let `[UNCALIBRATED]` count toward the headline would report a
  * system as honest for admitting it is untuned, and the headline is meant to fall when that
  * happens. Both numbers are published so a reader can re-slice.
+ *
+ * ## `[FITTED]` — why it exists and why it is anchored (build item 27)
+ *
+ * `[MEASURED]` covers a value read off data directly: this is the observed median, this is the
+ * bar 9 of 9 covers cleared. A **fitted** constant is not that. It is the output of an estimation
+ * procedure — a regression coefficient, a threshold chosen to optimise a score on a labelled set, a
+ * curve's parameter — and it carries a risk `[MEASURED]` does not: it can be fitted to noise, and
+ * the same procedure on a different sample would return a different number. v2-3's overfitting is
+ * exactly this failure at scale, so collapsing fitted values into `[MEASURED]` would hide the one
+ * class of constant this project most needs to see.
+ *
+ * A `[FITTED]` tag is only well-formed when it cites **n** and the **fitting artifact** — the
+ * experiment directory, results file, or notebook that produced the number, so a reader can re-run
+ * the fit or check it against a holdout.
+ *
+ * It scores `anchored` because the value does come from data rather than from the author's taste,
+ * which is what the anchored/unanchored split measures. The instrument cannot check that n is
+ * adequate, that the artifact exists, or that the fit generalises — it reads a label, not a
+ * statistic. That limit is published with the numbers (see `STANDING_LIMITATIONS` in `report.ts`)
+ * rather than quietly assumed away, and it is the reason `byTag` publishes the `[FITTED]` count
+ * separately instead of pooling it into the anchored total and leaving it there.
  */
 export const TAG_ANCHOR_STRENGTH: Record<ProvenanceTag, "anchored" | "weak" | "unanchored"> = {
 	REVIEWED: "anchored",
 	MEASURED: "anchored",
+	FITTED: "anchored",
 	"n=1": "weak",
 	INHERITED: "weak",
 	HELD: "weak",

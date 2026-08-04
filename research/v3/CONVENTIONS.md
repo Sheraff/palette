@@ -50,8 +50,17 @@ pass reports contradictions in them, it does not edit them.
 
 - **No git commands.** The orchestrator commits.
 - **Every constant** is named and carries a provenance tag comment:
-  `[REVIEWED] | [MEASURED] | [n=1] | [INHERITED] | [UNCALIBRATED] | [HELD]` — plus one line
-  saying where the value comes from. No anonymous literals.
+  `[REVIEWED] | [MEASURED] | [FITTED] | [n=1] | [INHERITED] | [UNCALIBRATED] | [HELD]` — plus one
+  line saying where the value comes from. No anonymous literals.
+  - *`[FITTED]` added 2026-08-04 (build item 27).* Use it for a constant produced by an **estimation
+    procedure** rather than read off data directly — a regression coefficient, a threshold optimised
+    against a labelled set, a curve parameter. A `[FITTED]` tag must cite **n** and the **fitting
+    artifact** (the experiment directory or results file that produced it), so the fit can be re-run
+    or checked against a holdout. `[MEASURED]` stays for values read off data directly. The split
+    exists because a fitted value can be fitted to noise and a measured one cannot, and v2-3's
+    overfitting was that failure at scale — pooling the two would hide the class of constant this
+    project most needs to see. The honesty scanner scores `[FITTED]` as anchored and publishes its
+    count separately; it reads the label and cannot verify the statistic.
 - **Scale-free statistics:** area fractions and normalized coordinates, never raw pixel
   counts, except genuinely pixel-scale phenomena (noise floors), individually justified
   (`PHASE_0_DECISIONS.md` §1).

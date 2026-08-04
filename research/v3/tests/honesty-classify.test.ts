@@ -18,6 +18,7 @@ import {
 	type DecisionIndex,
 } from "../src/honesty/classify.ts"
 import type { Candidate, CommentBlock, ContextFlag } from "../src/honesty/types.ts"
+import { PROVENANCE_TAGS, TAG_ANCHOR_STRENGTH } from "../src/honesty/types.ts"
 
 function candidate(overrides: Partial<Candidate> = {}): Candidate {
 	return {
@@ -247,6 +248,32 @@ describe("provenance", () => {
 		assert.equal(p.kind, "tagged")
 		assert.equal(p.tag, "MEASURED")
 		assert.equal(p.source, "leading")
+	})
+
+	test("recognises [FITTED] and scores it anchored (build item 27)", () => {
+		const p = provenanceOf(
+			candidate({
+				comments: comments([
+					"leading",
+					"/** `[FITTED]` — logistic fit, n=214, data/experiments/accent-fit-0.3.0/results.json */",
+				]),
+			}),
+			noDecisions,
+		)
+		assert.equal(p.kind, "tagged")
+		assert.equal(p.tag, "FITTED")
+		assert.equal(
+			TAG_ANCHOR_STRENGTH.FITTED,
+			"anchored",
+			"a fitted constant comes from data, not from the author's taste",
+		)
+	})
+
+	test("[FITTED] is in the vocabulary the tag regex is built from", () => {
+		assert.ok(
+			(PROVENANCE_TAGS as readonly string[]).includes("FITTED"),
+			"the tag regex derives from PROVENANCE_TAGS; membership is what makes it scannable",
+		)
 	})
 
 	test("reads a tag from a trailing comment", () => {

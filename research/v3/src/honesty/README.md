@@ -61,11 +61,17 @@ never pools the two silently.
 ### What it counts as provenance
 
 A site is **documented** when an adjacent comment carries a `CONVENTIONS.md` tag
-(`[REVIEWED] [MEASURED] [n=1] [INHERITED] [UNCALIBRATED] [HELD]`) or cites a decision-record id that
-resolves in `data/decisions/decisions.json`. It is **anchored** — the stricter number — only when
-that story is `[REVIEWED]`, `[MEASURED]`, or a resolved decision. `[UNCALIBRATED]` deliberately
-scores as unanchored: an instrument that let it count would report a system as honest for admitting
-it is untuned.
+(`[REVIEWED] [MEASURED] [FITTED] [n=1] [INHERITED] [UNCALIBRATED] [HELD]`) or cites a decision-record
+id that resolves in `data/decisions/decisions.json`. It is **anchored** — the stricter number — only
+when that story is `[REVIEWED]`, `[MEASURED]`, `[FITTED]`, or a resolved decision. `[UNCALIBRATED]`
+deliberately scores as unanchored: an instrument that let it count would report a system as honest
+for admitting it is untuned.
+
+`[FITTED]` (added 2026-08-04, build item 27) marks a constant produced by an estimation procedure
+rather than read off data directly, and is defined to cite n and the fitting artifact. It is
+anchored — the value comes from data, not from taste — but the instrument reads the label and cannot
+check that n is adequate or that the fit generalises, which is why its count is published separately
+in `byTag` and why that limit ships with the numbers.
 
 Decision citations are split by whether `fundedBy` is non-empty (machine-recheckable) or empty
 (a reviewer's conversational ruling, which `CONVENTIONS.md` calls the honest form). Both are
