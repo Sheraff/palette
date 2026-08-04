@@ -1,0 +1,1261 @@
+{
+	"purpose": "GLM-4.5V out-of-family probe: agreement triangles and error decorrelation.",
+	"generated_by": "research/v3/oracle/premise/analyze_glm_probe.py",
+	"generated_at": "2026-08-04T08:02:31.066Z",
+	"items": "research/v3/data/oracle-premise/glm-probe-items.json",
+	"n_covers": 30,
+	"population_caveat": "THIS IS NOT A RANDOM 30. It is conditioned on prior review attention, and prior review attention was itself partly conditioned on MODEL DISAGREEMENT \u2014 residual-purity strata are `noun-fired`/`noun-silent`, and bcde-gate-reconciliation-1 is an explicitly contradiction-conditioned population. PREMISE_NEXT.md \u00a73 and \u00a715.9 both require that a round conditioned on disagreement be reported as a different population. Any agreement rate measured here is therefore an estimate on a review-enriched slice of eval-142, not on eval-142 and not on the corpus.",
+	"model_model_agreement": {
+		"has_dominant_subject": {
+			"glm==qwenE": 23,
+			"glm==qwenF": 25,
+			"qwenE==qwenF": 26,
+			"glm==both": 22,
+			"n": 30
+		},
+		"subject_kind": {
+			"glm==qwenE": 22,
+			"glm==qwenF": 23,
+			"qwenE==qwenF": 25,
+			"glm==both": 21,
+			"n": 30
+		}
+	},
+	"family_contrast": {
+		"has_dominant_subject": {
+			"in_family_qwenE_vs_qwenF": "26/30",
+			"out_of_family_glm_vs_qwenE": "23/30",
+			"out_of_family_glm_vs_qwenF": "25/30"
+		},
+		"subject_kind": {
+			"in_family_qwenE_vs_qwenF": "25/30",
+			"out_of_family_glm_vs_qwenE": "22/30",
+			"out_of_family_glm_vs_qwenF": "23/30"
+		}
+	},
+	"noun_lists": {
+		"mean_jaccard": 0.291,
+		"covers_with_zero_overlap": 6,
+		"covers_identical": 2,
+		"mean_len_glm": 2.9,
+		"mean_len_qwen": 4.9,
+		"per_cover": [
+			{
+				"artworkId": "0002dfdcde2cb0a75822168c",
+				"glm_J": [
+					"mask",
+					"logo",
+					"text",
+					"symbol"
+				],
+				"qwen_J": [
+					"logo",
+					"text",
+					"background"
+				],
+				"qwen_G_single_noun": "logo",
+				"shared": [
+					"logo",
+					"text"
+				],
+				"glm_only": [
+					"mask",
+					"symbol"
+				],
+				"qwen_only": [
+					"background"
+				],
+				"jaccard": 0.4
+			},
+			{
+				"artworkId": "00075841f68d8cd71db368d8",
+				"glm_J": [
+					"guitar",
+					"hat",
+					"boots"
+				],
+				"qwen_J": [
+					"acoustic guitar",
+					"cowboy hat",
+					"boots",
+					"floor"
+				],
+				"qwen_G_single_noun": "acoustic guitar",
+				"shared": [
+					"boot"
+				],
+				"glm_only": [
+					"guitar",
+					"hat"
+				],
+				"qwen_only": [
+					"acoustic guitar",
+					"cowboy hat",
+					"floor"
+				],
+				"jaccard": 0.167
+			},
+			{
+				"artworkId": "00014fb430dd1b693e653121",
+				"glm_J": [
+					"man",
+					"cello",
+					"dragon"
+				],
+				"qwen_J": [
+					"man",
+					"bass",
+					"dragon",
+					"woman",
+					"jacket",
+					"text",
+					"logo",
+					"background"
+				],
+				"qwen_G_single_noun": "man",
+				"shared": [
+					"dragon",
+					"man"
+				],
+				"glm_only": [
+					"cello"
+				],
+				"qwen_only": [
+					"background",
+					"bass",
+					"jacket",
+					"logo",
+					"text",
+					"woman"
+				],
+				"jaccard": 0.222
+			},
+			{
+				"artworkId": "0012eb9ade9c1bf4a5411c5d",
+				"glm_J": [
+					"flower",
+					"abstract shapes"
+				],
+				"qwen_J": [
+					"rose",
+					"sculpture",
+					"table",
+					"vase",
+					"frame"
+				],
+				"qwen_G_single_noun": "artwork",
+				"shared": [],
+				"glm_only": [
+					"abstract shape",
+					"flower"
+				],
+				"qwen_only": [
+					"frame",
+					"rose",
+					"sculpture",
+					"table",
+					"vase"
+				],
+				"jaccard": 0.0
+			},
+			{
+				"artworkId": "00034b60105d8937440211da",
+				"glm_J": [
+					"person",
+					"parental advisory",
+					"text"
+				],
+				"qwen_J": [
+					"woman",
+					"shirt",
+					"bracelet",
+					"light",
+					"door",
+					"wall",
+					"parental advisory label"
+				],
+				"qwen_G_single_noun": "woman",
+				"shared": [],
+				"glm_only": [
+					"parental advisory",
+					"person",
+					"text"
+				],
+				"qwen_only": [
+					"bracelet",
+					"door",
+					"light",
+					"parental advisory label",
+					"shirt",
+					"wall",
+					"woman"
+				],
+				"jaccard": 0.0
+			},
+			{
+				"artworkId": "elephunk",
+				"glm_J": [
+					"elephant",
+					"person",
+					"hat",
+					"headwear"
+				],
+				"qwen_J": [
+					"elephant",
+					"person",
+					"hat",
+					"bandana",
+					"headband",
+					"earring",
+					"banner",
+					"record"
+				],
+				"qwen_G_single_noun": "elephant",
+				"shared": [
+					"elephant",
+					"hat",
+					"person"
+				],
+				"glm_only": [
+					"headwear"
+				],
+				"qwen_only": [
+					"bandana",
+					"banner",
+					"earring",
+					"headband",
+					"record"
+				],
+				"jaccard": 0.333
+			},
+			{
+				"artworkId": "placebo",
+				"glm_J": [
+					"person",
+					"jeans"
+				],
+				"qwen_J": [
+					"person",
+					"jeans"
+				],
+				"qwen_G_single_noun": "person",
+				"shared": [
+					"jean",
+					"person"
+				],
+				"glm_only": [],
+				"qwen_only": [],
+				"jaccard": 1.0
+			},
+			{
+				"artworkId": "000300752f338b6aedff856c",
+				"glm_J": [
+					"pool",
+					"bed",
+					"window",
+					"bamboo",
+					"basket",
+					"towel",
+					"wall",
+					"floor"
+				],
+				"qwen_J": [
+					"pool",
+					"cushion",
+					"towel",
+					"chair",
+					"wall",
+					"window",
+					"plant",
+					"floor"
+				],
+				"qwen_G_single_noun": "pool",
+				"shared": [
+					"floor",
+					"pool",
+					"towel",
+					"wall",
+					"window"
+				],
+				"glm_only": [
+					"bamboo",
+					"basket",
+					"bed"
+				],
+				"qwen_only": [
+					"chair",
+					"cushion",
+					"plant"
+				],
+				"jaccard": 0.455
+			},
+			{
+				"artworkId": "000e007955ee2f8b29f5b2b4",
+				"glm_J": [
+					"man"
+				],
+				"qwen_J": [
+					"man",
+					"jacket",
+					"light",
+					"background"
+				],
+				"qwen_G_single_noun": "man",
+				"shared": [
+					"man"
+				],
+				"glm_only": [],
+				"qwen_only": [
+					"background",
+					"jacket",
+					"light"
+				],
+				"jaccard": 0.25
+			},
+			{
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"glm_J": [
+					"woman"
+				],
+				"qwen_J": [
+					"woman",
+					"top",
+					"hair",
+					"shoulder",
+					"background"
+				],
+				"qwen_G_single_noun": "woman",
+				"shared": [
+					"woman"
+				],
+				"glm_only": [],
+				"qwen_only": [
+					"background",
+					"hair",
+					"shoulder",
+					"top"
+				],
+				"jaccard": 0.2
+			},
+			{
+				"artworkId": "000564718f605c1f326b2ca2",
+				"glm_J": [
+					"statue"
+				],
+				"qwen_J": [
+					"statue",
+					"water"
+				],
+				"qwen_G_single_noun": "statue",
+				"shared": [
+					"statue"
+				],
+				"glm_only": [],
+				"qwen_only": [
+					"water"
+				],
+				"jaccard": 0.5
+			},
+			{
+				"artworkId": "00092c140fe03d08e0dc906a",
+				"glm_J": [
+					"letter",
+					"text"
+				],
+				"qwen_J": [
+					"number",
+					"text"
+				],
+				"qwen_G_single_noun": "number",
+				"shared": [
+					"text"
+				],
+				"glm_only": [
+					"letter"
+				],
+				"qwen_only": [
+					"number"
+				],
+				"jaccard": 0.333
+			},
+			{
+				"artworkId": "0008c1c08433aa880aad7f30",
+				"glm_J": [
+					"thatch",
+					"beam"
+				],
+				"qwen_J": [
+					"thatched roof",
+					"sky"
+				],
+				"qwen_G_single_noun": "thatched roof",
+				"shared": [],
+				"glm_only": [
+					"beam",
+					"thatch"
+				],
+				"qwen_only": [
+					"sky",
+					"thatched roof"
+				],
+				"jaccard": 0.0
+			},
+			{
+				"artworkId": "0003e50500c5d762da89643a",
+				"glm_J": [
+					"person",
+					"jeans",
+					"shoes",
+					"floor",
+					"shadow"
+				],
+				"qwen_J": [
+					"person",
+					"trampoline",
+					"shoes",
+					"jeans",
+					"t-shirt",
+					"shadow"
+				],
+				"qwen_G_single_noun": "person",
+				"shared": [
+					"jean",
+					"person",
+					"shadow",
+					"shoe"
+				],
+				"glm_only": [
+					"floor"
+				],
+				"qwen_only": [
+					"t-shirt",
+					"trampoline"
+				],
+				"jaccard": 0.571
+			},
+			{
+				"artworkId": "000442caec7ec8cb724bf265",
+				"glm_J": [
+					"text",
+					"dots"
+				],
+				"qwen_J": [
+					"text",
+					"background",
+					"light",
+					"particles"
+				],
+				"qwen_G_single_noun": "none",
+				"shared": [
+					"text"
+				],
+				"glm_only": [
+					"dot"
+				],
+				"qwen_only": [
+					"background",
+					"light",
+					"particle"
+				],
+				"jaccard": 0.2
+			},
+			{
+				"artworkId": "0005a54a9ea60f48619788f1",
+				"glm_J": [
+					"none"
+				],
+				"qwen_J": [
+					"none"
+				],
+				"qwen_G_single_noun": "none",
+				"shared": [
+					"none"
+				],
+				"glm_only": [],
+				"qwen_only": [],
+				"jaccard": 1.0
+			},
+			{
+				"artworkId": "00116380305ae5fd3607c43b",
+				"glm_J": [
+					"graffiti"
+				],
+				"qwen_J": [
+					"wall",
+					"graffiti",
+					"symbol"
+				],
+				"qwen_G_single_noun": "graffiti",
+				"shared": [
+					"graffiti"
+				],
+				"glm_only": [],
+				"qwen_only": [
+					"symbol",
+					"wall"
+				],
+				"jaccard": 0.333
+			},
+			{
+				"artworkId": "artofficial",
+				"glm_J": [
+					"person",
+					"armadillo",
+					"mouse",
+					"map",
+					"plant",
+					"poster"
+				],
+				"qwen_J": [
+					"person",
+					"armadillo",
+					"map",
+					"bird",
+					"candle",
+					"tree",
+					"pipe",
+					"rat"
+				],
+				"qwen_G_single_noun": "person",
+				"shared": [
+					"armadillo",
+					"map",
+					"person"
+				],
+				"glm_only": [
+					"mouse",
+					"plant",
+					"poster"
+				],
+				"qwen_only": [
+					"bird",
+					"candle",
+					"pipe",
+					"rat",
+					"tree"
+				],
+				"jaccard": 0.273
+			},
+			{
+				"artworkId": "00083a2d455755e4c1116825",
+				"glm_J": [
+					"building",
+					"person",
+					"graffiti",
+					"window"
+				],
+				"qwen_J": [
+					"woman",
+					"building",
+					"wall",
+					"clothing",
+					"hair",
+					"window",
+					"graffiti",
+					"floor"
+				],
+				"qwen_G_single_noun": "woman",
+				"shared": [
+					"building",
+					"graffiti",
+					"window"
+				],
+				"glm_only": [
+					"person"
+				],
+				"qwen_only": [
+					"clothing",
+					"floor",
+					"hair",
+					"wall",
+					"woman"
+				],
+				"jaccard": 0.333
+			},
+			{
+				"artworkId": "000955ccfc1e8da97a09b32d",
+				"glm_J": [
+					"sword",
+					"badge"
+				],
+				"qwen_J": [
+					"shield",
+					"sword",
+					"text",
+					"number",
+					"line",
+					"dot",
+					"rectangle"
+				],
+				"qwen_G_single_noun": "shield",
+				"shared": [
+					"sword"
+				],
+				"glm_only": [
+					"badge"
+				],
+				"qwen_only": [
+					"dot",
+					"line",
+					"number",
+					"rectangle",
+					"shield",
+					"text"
+				],
+				"jaccard": 0.125
+			},
+			{
+				"artworkId": "0004ccf0ae91364130886c02",
+				"glm_J": [
+					"leaf",
+					"water droplet",
+					"text"
+				],
+				"qwen_J": [
+					"leaf",
+					"water droplet",
+					"stem"
+				],
+				"qwen_G_single_noun": "leaf",
+				"shared": [
+					"leaf",
+					"water droplet"
+				],
+				"glm_only": [
+					"text"
+				],
+				"qwen_only": [
+					"stem"
+				],
+				"jaccard": 0.5
+			},
+			{
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"glm_J": [
+					"record"
+				],
+				"qwen_J": [
+					"record",
+					"sky",
+					"cloud",
+					"UFO",
+					"logo",
+					"sun",
+					"text",
+					"signature"
+				],
+				"qwen_G_single_noun": "record",
+				"shared": [
+					"record"
+				],
+				"glm_only": [],
+				"qwen_only": [
+					"cloud",
+					"logo",
+					"signature",
+					"sky",
+					"sun",
+					"text",
+					"ufo"
+				],
+				"jaccard": 0.125
+			},
+			{
+				"artworkId": "000a24cc32b3d8b6e31bc161",
+				"glm_J": [
+					"black hole",
+					"accretion disk",
+					"stars",
+					"lettering",
+					"text"
+				],
+				"qwen_J": [
+					"black hole",
+					"accretion disk",
+					"stars",
+					"logo"
+				],
+				"qwen_G_single_noun": "black hole",
+				"shared": [
+					"accretion disk",
+					"black hole",
+					"star"
+				],
+				"glm_only": [
+					"lettering",
+					"text"
+				],
+				"qwen_only": [
+					"logo"
+				],
+				"jaccard": 0.5
+			},
+			{
+				"artworkId": "0000cb591a0d52d8b88692d9",
+				"glm_J": [
+					"abstract painting"
+				],
+				"qwen_J": [
+					"text",
+					"painting",
+					"frame"
+				],
+				"qwen_G_single_noun": "none",
+				"shared": [],
+				"glm_only": [
+					"abstract painting"
+				],
+				"qwen_only": [
+					"frame",
+					"painting",
+					"text"
+				],
+				"jaccard": 0.0
+			},
+			{
+				"artworkId": "0004515066668684295c41a7",
+				"glm_J": [
+					"tree",
+					"statue",
+					"fountain",
+					"plant",
+					"column"
+				],
+				"qwen_J": [
+					"tree",
+					"statue",
+					"column",
+					"bush",
+					"flower",
+					"moon",
+					"forest",
+					"figure"
+				],
+				"qwen_G_single_noun": "statue",
+				"shared": [
+					"column",
+					"statue",
+					"tree"
+				],
+				"glm_only": [
+					"fountain",
+					"plant"
+				],
+				"qwen_only": [
+					"bush",
+					"figure",
+					"flower",
+					"forest",
+					"moon"
+				],
+				"jaccard": 0.3
+			},
+			{
+				"artworkId": "0007cc8b341c11227aa7b461",
+				"glm_J": [
+					"woman",
+					"child",
+					"bag",
+					"grass",
+					"trees",
+					"hills"
+				],
+				"qwen_J": [
+					"woman",
+					"child",
+					"dress",
+					"vest",
+					"headscarf",
+					"skirt",
+					"shoes",
+					"yarn"
+				],
+				"qwen_G_single_noun": "woman",
+				"shared": [
+					"child",
+					"woman"
+				],
+				"glm_only": [
+					"bag",
+					"grass",
+					"hill",
+					"tree"
+				],
+				"qwen_only": [
+					"dress",
+					"headscarf",
+					"shoe",
+					"skirt",
+					"vest",
+					"yarn"
+				],
+				"jaccard": 0.167
+			},
+			{
+				"artworkId": "000fa9b53f161dc999ef557d",
+				"glm_J": [
+					"people",
+					"plant",
+					"sign",
+					"building",
+					"record label"
+				],
+				"qwen_J": [
+					"person",
+					"sign",
+					"plant",
+					"table",
+					"chair",
+					"drum",
+					"microphone",
+					"guitar"
+				],
+				"qwen_G_single_noun": "people",
+				"shared": [
+					"plant",
+					"sign"
+				],
+				"glm_only": [
+					"building",
+					"people",
+					"record label"
+				],
+				"qwen_only": [
+					"chair",
+					"drum",
+					"guitar",
+					"microphone",
+					"person",
+					"table"
+				],
+				"jaccard": 0.182
+			},
+			{
+				"artworkId": "0009657a5122a7b3d40458b0",
+				"glm_J": [
+					"abstract shape"
+				],
+				"qwen_J": [
+					"figure",
+					"square"
+				],
+				"qwen_G_single_noun": "none",
+				"shared": [],
+				"glm_only": [
+					"abstract shape"
+				],
+				"qwen_only": [
+					"figure",
+					"square"
+				],
+				"jaccard": 0.0
+			},
+			{
+				"artworkId": "000d457f4b8829a59481e78b",
+				"glm_J": [
+					"teddy bear",
+					"rope"
+				],
+				"qwen_J": [
+					"teddy bear",
+					"string",
+					"spaghetti"
+				],
+				"qwen_G_single_noun": "teddy bear",
+				"shared": [
+					"teddy bear"
+				],
+				"glm_only": [
+					"rope"
+				],
+				"qwen_only": [
+					"spaghetti",
+					"string"
+				],
+				"jaccard": 0.25
+			},
+			{
+				"artworkId": "vvbrown",
+				"glm_J": [
+					"person"
+				],
+				"qwen_J": [
+					"woman",
+					"earring",
+					"hat"
+				],
+				"qwen_G_single_noun": "woman",
+				"shared": [],
+				"glm_only": [
+					"person"
+				],
+				"qwen_only": [
+					"earring",
+					"hat",
+					"woman"
+				],
+				"jaccard": 0.0
+			}
+		]
+	},
+	"decorrelation": {
+		"n_scored_items": 19,
+		"matrix": {
+			"both_correct": 15,
+			"glm_correct_qwen_wrong": 0,
+			"glm_wrong_qwen_correct": 2,
+			"both_wrong": 2
+		},
+		"glm_accuracy": "15/19",
+		"qwen_accuracy": "17/19",
+		"errors_glm": 4,
+		"errors_qwen": 2,
+		"errors_shared": 2,
+		"shared_error_share_of_glm_errors": 0.5,
+		"reading": "`both_wrong` is the correlated-failure cell \u2014 the items where a second opinion would have changed nothing. `glm_correct_qwen_wrong` is the cell that pays for the 48.53 GB. Compare `shared_error_share_of_glm_errors` against A10's 97.7% correlated abstention: that is the in-family number this probe exists to beat.",
+		"by_item_type": {
+			"bcde:has_dominant_subject": {
+				"n": 3,
+				"glm_correct": 2,
+				"qwen_correct": 2,
+				"both_wrong": 1
+			},
+			"bcde:subject_kind": {
+				"n": 3,
+				"glm_correct": 2,
+				"qwen_correct": 2,
+				"both_wrong": 1
+			},
+			"derived:has_a_real_subject": {
+				"n": 7,
+				"glm_correct": 5,
+				"qwen_correct": 7,
+				"both_wrong": 0
+			},
+			"noun_present:face": {
+				"n": 1,
+				"glm_correct": 1,
+				"qwen_correct": 1,
+				"both_wrong": 0
+			},
+			"noun_present:person": {
+				"n": 5,
+				"glm_correct": 5,
+				"qwen_correct": 5,
+				"both_wrong": 0
+			}
+		},
+		"items": [
+			{
+				"artworkId": "00014fb430dd1b693e653121",
+				"item_type": "noun_present:person",
+				"reviewer": "person",
+				"glm": [
+					"man",
+					"cello",
+					"dragon"
+				],
+				"qwen_e": [
+					"man",
+					"bass",
+					"dragon",
+					"woman",
+					"jacket",
+					"text",
+					"logo",
+					"background"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "00034b60105d8937440211da",
+				"item_type": "noun_present:person",
+				"reviewer": "person",
+				"glm": [
+					"person",
+					"parental advisory",
+					"text"
+				],
+				"qwen_e": [
+					"woman",
+					"shirt",
+					"bracelet",
+					"light",
+					"door",
+					"wall",
+					"parental advisory label"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "00034b60105d8937440211da",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "placebo",
+				"item_type": "noun_present:person",
+				"reviewer": "person",
+				"glm": [
+					"person",
+					"jeans"
+				],
+				"qwen_e": [
+					"person",
+					"jeans"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "placebo",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "000300752f338b6aedff856c",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "single",
+				"qwen_e": "multiple",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "000e007955ee2f8b29f5b2b4",
+				"item_type": "bcde:has_dominant_subject",
+				"reviewer": "single",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": true
+			},
+			{
+				"artworkId": "000e007955ee2f8b29f5b2b4",
+				"item_type": "bcde:subject_kind",
+				"reviewer": "person",
+				"glm": "person",
+				"qwen_e": "person",
+				"qwen_f": "person",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": true
+			},
+			{
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"item_type": "noun_present:person",
+				"reviewer": "person",
+				"glm": [
+					"woman"
+				],
+				"qwen_e": [
+					"woman",
+					"top",
+					"hair",
+					"shoulder",
+					"background"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "00100a3e9c764acf01c16db8",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "0008c1c08433aa880aad7f30",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "none",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": false,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "00116380305ae5fd3607c43b",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "none",
+				"qwen_e": "single",
+				"qwen_f": "none",
+				"glm_correct": false,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			},
+			{
+				"artworkId": "00083a2d455755e4c1116825",
+				"item_type": "noun_present:face",
+				"reviewer": "person",
+				"glm": [
+					"building",
+					"person",
+					"graffiti",
+					"window"
+				],
+				"qwen_e": [
+					"woman",
+					"building",
+					"wall",
+					"clothing",
+					"hair",
+					"window",
+					"graffiti",
+					"floor"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "0004ccf0ae91364130886c02",
+				"item_type": "bcde:has_dominant_subject",
+				"reviewer": "none",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": false,
+				"qwen_correct": false,
+				"same_bytes": true
+			},
+			{
+				"artworkId": "0004ccf0ae91364130886c02",
+				"item_type": "bcde:subject_kind",
+				"reviewer": "not_applicable",
+				"glm": "object",
+				"qwen_e": "object",
+				"qwen_f": "object",
+				"glm_correct": false,
+				"qwen_correct": false,
+				"same_bytes": true
+			},
+			{
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"item_type": "bcde:has_dominant_subject",
+				"reviewer": "single",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": false
+			},
+			{
+				"artworkId": "0013bebcaee941ebcc13437c",
+				"item_type": "bcde:subject_kind",
+				"reviewer": "object",
+				"glm": "object",
+				"qwen_e": "object",
+				"qwen_f": "object",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": false
+			},
+			{
+				"artworkId": "vvbrown",
+				"item_type": "noun_present:person",
+				"reviewer": "person",
+				"glm": [
+					"person"
+				],
+				"qwen_e": [
+					"woman",
+					"earring",
+					"hat"
+				],
+				"qwen_f": null,
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null
+			},
+			{
+				"artworkId": "vvbrown",
+				"item_type": "derived:has_a_real_subject",
+				"reviewer": "has_subject",
+				"glm": "single",
+				"qwen_e": "single",
+				"qwen_f": "single",
+				"glm_correct": true,
+				"qwen_correct": true,
+				"same_bytes": null,
+				"one_sided": true
+			}
+		],
+		"excluded_dynamic_tags": {
+			"why": "The noun sent to SAM came from Qwen's own answer, so a reviewer verdict on that mask is conditioned on Qwen having said the word. Scoring GLM against it would hand Qwen the comparison.",
+			"count": 2,
+			"items": [
+				{
+					"artworkId": "000300752f338b6aedff856c",
+					"tag": "dyn-building",
+					"answer": "yes"
+				},
+				{
+					"artworkId": "0008c1c08433aa880aad7f30",
+					"tag": "dyn-building",
+					"answer": "yes"
+				}
+			]
+		},
+		"unscorable": {
+			"why": "Reviewer answers whose vocabulary does not map onto anything either model was asked. Listed rather than forced into a binary, because forcing them is how a correlated-failure cell gets invented.",
+			"count": 2,
+			"items": [
+				{
+					"artworkId": "elephunk",
+					"questionKey": "big_area_is_real_subject",
+					"answer": "whole-image",
+					"why": "'whole-image' is not evidence about has_dominant_subject; see the note in this file"
+				},
+				{
+					"artworkId": "000955ccfc1e8da97a09b32d",
+					"questionKey": "big_area_is_real_subject",
+					"answer": "whole-image",
+					"why": "'whole-image' is not evidence about has_dominant_subject; see the note in this file"
+				}
+			]
+		},
+		"small_n_caveat": "n = 19 judgements over at most 12 covers, and the items are NOT independent \u2014 several come from the same cover, and the covers were drawn to maximize review attention, which was itself partly conditioned on model disagreement. No confidence interval on a number this small and this conditioned would mean anything; the per-item list is the evidence, the rate is a summary of it."
+	}
+}
