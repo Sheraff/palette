@@ -1,0 +1,154 @@
+{
+	"batchId": "endorsement-recheck-1",
+	"items": [
+		{
+			"questionKey": "endorsement_recheck_e7c9419abc1df0dd",
+			"entryId": "e7c9419abc1df0dd",
+			"failureLine": "The foreground (Polar Bear in a Blizzard, #efe1ee) and the accent (Toile, #d5d5f1) are now closer than the new separation floor: OKLab distance 0.0504 against a floor of 0.07444. Nothing about this palette changed. Until 2026-08-04 this pair was only checked against the same-colour bar (0.0163), which it clears easily. The ruling of 2026-08-04 moved the foreground-accent pair onto colour distance at an elevated bar — and the number that bar borrowed, 0.07444, was measured on a different question (\"are the icons clearly visible on this background?\", for an accent sitting on a field). Nobody has ever been shown a foreground and an accent side by side and asked how far apart they must be to read as two roles.",
+			"violationCode": "I3.foreground-accent-not-separated",
+			"endorsedAs": "correction-endorsed-sample",
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#0041fd",
+						"name": "Nazar",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#6987f7",
+						"name": "Skinny Jeans",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#efe1ee",
+						"name": "Polar Bear in a Blizzard",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#d5d5f1",
+						"name": "Toile",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#0041fd"
+			},
+			"measurements": [
+				{
+					"from": "foreground",
+					"to": "accent",
+					"fromHex": "#efe1ee",
+					"toHex": "#d5d5f1",
+					"fromName": "Polar Bear in a Blizzard",
+					"toName": "Toile",
+					"distance": 0.050389083788638045,
+					"rawApca": -9.681858315949759,
+					"lc": 0,
+					"sameColorBar": 0.01627
+				},
+				{
+					"from": "background",
+					"to": "surface",
+					"fromHex": "#0041fd",
+					"toHex": "#6987f7",
+					"fromName": "Nazar",
+					"toName": "Skinny Jeans",
+					"distance": 0.18969505284572882,
+					"rawApca": 21.881016654899256,
+					"lc": 19.181016654899256,
+					"sameColorBar": 0.02293
+				}
+			],
+			"floors": {
+				"FOREGROUND_ACCENT_SEPARATION_DISTANCE": 0.07444,
+				"ACCENT_VISIBILITY_COLOR_DISTANCE": 0.07444
+			},
+			"gradientNote": null
+		},
+		{
+			"questionKey": "endorsement_recheck_22e959d5164750bd",
+			"entryId": "22e959d5164750bd",
+			"failureLine": "The accent (Sunshine, #fac751) has almost no luminance contrast against the surface (Beige, #d5cebe): |raw APCA| 0.47 against a floor of 2.5. On the public Lc scale it reads 0.0 — the scale saying it cannot see any contrast at all. This accent used to escape that floor on colour distance, and it is still 0.121 from the surface in OKLab — but the escape now requires 0.14591. The ruling of 2026-08-04 held that a *detection* distance (\"can you see the difference?\") is the wrong instrument for an escape from a contrast floor, so the escape moved to a functional distance 1.96x larger. That number is itself an uncalibrated placeholder — the geometric midpoint of two rungs of an old ladder — awaiting a functional-visibility round.",
+			"violationCode": "I4.below-contrast-floor",
+			"endorsedAs": "grade-strong",
+			"side": {
+				"roles": [
+					{
+						"role": "background",
+						"hex": "#18130f",
+						"name": "Iron Black",
+						"collapsed": false
+					},
+					{
+						"role": "surface",
+						"hex": "#d5cebe",
+						"name": "Beige",
+						"collapsed": false
+					},
+					{
+						"role": "foreground",
+						"hex": "#fcfcfc",
+						"name": "Snow",
+						"collapsed": false
+					},
+					{
+						"role": "accent",
+						"hex": "#fac751",
+						"name": "Sunshine",
+						"collapsed": false
+					}
+				],
+				"gradient": null,
+				"fieldCss": "#18130f"
+			},
+			"measurements": [
+				{
+					"from": "accent",
+					"to": "surface",
+					"fromHex": "#fac751",
+					"toHex": "#d5cebe",
+					"fromName": "Sunshine",
+					"toName": "Beige",
+					"distance": 0.12117273840045097,
+					"rawApca": 0.4676273654833851,
+					"lc": 0,
+					"sameColorBar": 0.02293
+				},
+				{
+					"from": "accent",
+					"to": "background",
+					"fromHex": "#fac751",
+					"toHex": "#18130f",
+					"fromName": "Sunshine",
+					"toName": "Iron Black",
+					"distance": 0.6759599830404743,
+					"rawApca": -79.0586527500489,
+					"lc": -76.3586527500489,
+					"sameColorBar": 0.02293
+				},
+				{
+					"from": "foreground",
+					"to": "accent",
+					"fromHex": "#fcfcfc",
+					"toHex": "#fac751",
+					"fromName": "Snow",
+					"toName": "Sunshine",
+					"distance": 0.19897561439772574,
+					"rawApca": -30.058670566045027,
+					"lc": -27.358670566045024,
+					"sameColorBar": 0.02293
+				}
+			],
+			"floors": {
+				"EPSILON_ACCENT_RAW": 2.5,
+				"ACCENT_FUNCTIONAL_DISTANCE": 0.14591,
+				"ACCENT_VISIBILITY_COLOR_DISTANCE": 0.07444
+			},
+			"gradientNote": "This endorsement carried a v2-3 gradient (background to surface, midpoint pinned at t=0.5). It is shown here as a flat field: v3 stops are decoupled from roles, endorsements.json marks v2-3 gradient comparison advisory-only, and the failure being adjudicated is on the roles matrix."
+		}
+	]
+}

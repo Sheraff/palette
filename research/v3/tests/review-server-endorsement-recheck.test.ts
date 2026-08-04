@@ -1,0 +1,154 @@
+/*
+ * The endorsement-recheck round, driven the way the reviewer drives it.
+ *
+ * **Why this file exists.** `PHASE_0_LOOSE_ENDS.md` L-i: "a review-UI page can crawl clean and be
+ * key-dead, and nothing checks that it is not", whose revival condition is "any new review-UI page
+ * or interaction mode is served to the reviewer — which is every round with a new answer shape".
+ * This is such a round, so it pays the down payment the same way `/freetext` did: the page is
+ * imported and executed, and every key it binds is pressed against a real server.
+ *
+ * `verify-live` establishes that a module is SERVED. It cannot establish that the module RUNS.
+ * `/freetext` loaded, rendered, crawled green and was completely unresponsive to the keyboard, and
+ * the reviewer was stuck on cover 1 with a working save path underneath. The assertions below are
+ * the ones that would have caught that.
+ */
+import assert from "node:assert/strict"
+import { after, before, describe, it } from "node:test"
+import { fileURLToPath } from "node:url"
+import {
+	buildEndorsementRecheckFixture,
+	ENDORSEMENT_RECHECK_BATCH_ID,
+	ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION,
+	RECHECK_ANSWERS,
+	RECHECK_ENTRY_IDS,
+} from "../src/review-server/endorsement-recheck.ts"
+import { batchReviewPaths } from "../src/review-server/server.ts"
+import { call, openPage, startHarness, type FakePage, type Harness } from "../src/review-server/test-support.ts"
+
+const PAGE = fileURLToPath(new URL("../review-ui/endorsement-recheck.js", import.meta.url))
+
+/** Every node the page writes to. A missing id here is a silent no-op on the real page. */
+const NODE_IDS = ["preamble", "framing", "question", "instruction", "progress", "stage", "mapping", "status"] as const
+
+describe("the endorsement-recheck fixture", () => {
+	it("carries both endorsements, one question each, with the criterion and the failure line on screen", async () => {
+		const { fixture, pageData } = await buildEndorsementRecheckFixture()
+		assert.equal(fixture.batchId, ENDORSEMENT_RECHECK_BATCH_ID)
+		assert.equal(fixture.labelSchemaVersion, ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION)
+		assert.equal(fixture.items.length, RECHECK_ENTRY_IDS.length)
+		for (const question of fixture.questions) {
+			assert.equal(question.kind, "enum")
+			// REVIEW_UI.md §4, 2026-08-04: the round's own text states the answering CRITERION.
+			assert.ok(question.instruction.length > 0, `${question.key} states no criterion`)
+			// The plain-language statement of what newly fails. It is served from the fixture, so the
+			// words the reviewer read travel with the answers.
+			assert.ok(question.preamble && question.preamble.length > 0, `${question.key} shows no failure line`)
+			assert.match(question.preamble, /2026-08-04/u, `${question.key} does not say which ruling moved`)
+			// §4's escape answer must exist and must not shadow undo.
+			assert.deepEqual(
+				question.answers.map((answer) => answer.hotkey),
+				["1", "2", "3"],
+			)
+			assert.ok(!question.answers.some((answer) => answer.hotkey === "u"), "an answer took the undo key")
+		}
+		// Every palette the page must draw is joinable on the one field the payload serves.
+		const keys = new Set(pageData.items.map((item) => item.questionKey))
+		for (const item of fixture.items) assert.ok(keys.has(item.questionKey), `no palette for ${item.questionKey}`)
+	})
+
+	it("refuses to build if either palette stops failing", async () => {
+		// Not a behaviour test — a statement that the builder re-derives the failure from the contract
+		// rather than restating it. `describeFailure` throws when a floor moves under it, so a round
+		// cannot outlive the ruling it adjudicates. Building at all is the assertion.
+		await assert.doesNotReject(buildEndorsementRecheckFixture())
+	})
+
+	it("is routed to its own page, because /oracle renders no palette", () => {
+		const paths = batchReviewPaths({
+			batchId: ENDORSEMENT_RECHECK_BATCH_ID,
+			kind: "oracle-validation",
+			labelSchemaVersion: ENDORSEMENT_RECHECK_LABEL_SCHEMA_VERSION,
+		})
+		assert.equal(paths.page, `/endorsement-recheck?batch=${ENDORSEMENT_RECHECK_BATCH_ID}`)
+		assert.equal(paths.payload, `/api/oracle-validation/${ENDORSEMENT_RECHECK_BATCH_ID}`)
+	})
+})
+
+describe("the endorsement-recheck page, executing", () => {
+	let harness: Harness
+	let page: FakePage
+
+	before(async () => {
+		harness = await startHarness()
+		const { fixture } = await buildEndorsementRecheckFixture()
+		await harness.handle.service.pushOracleValidation(fixture, [])
+		page = await openPage(
+			harness.base,
+			PAGE,
+			NODE_IDS,
+			`${harness.base}/endorsement-recheck?batch=${ENDORSEMENT_RECHECK_BATCH_ID}`,
+		)
+	})
+
+	after(async () => {
+		await harness?.stop()
+	})
+
+	it("gets past its loading state, on the first palette", () => {
+		assert.notEqual(page.nodes.question.textContent, "loading…", "STUCK: the page never left its loading state")
+		assert.match(page.nodes.question.textContent, /endorsement/iu)
+		assert.match(page.nodes.progress.textContent, /^0 of 2 answered/u)
+		// The criterion and the failure line are both on screen while the reviewer answers.
+		assert.ok(page.nodes.instruction.textContent.length > 0, "no criterion on screen")
+		assert.match(page.nodes.preamble.textContent, /2026-08-04/u)
+	})
+
+	it("renders the real mock player, not a bare artwork", () => {
+		const stage = page.stage()
+		// `mock.js` is the single renderer; these are its classes. A page that drew its own palette
+		// would produce a surface no verdict has ever been scoped to.
+		assert.equal(stage.byClass("mock").length, 1, "no mock player on the judging surface")
+		assert.equal(stage.byClass("mock-art").length, 1, "the artwork is not in the mock")
+		assert.ok(stage.byClass("mock-card").length > 0, "no surface card — the accent has no surface context")
+		// Swatches under the mock: the identity check REVIEW_UI.md §3 requires alongside it.
+		assert.ok(stage.byClass("swatches").length > 0, "no swatches under the mock")
+		// Every colour is named, never hex alone (CONVENTIONS.md).
+		assert.match(stage.textContent, /Polar Bear in a Blizzard|Toile/u)
+	})
+
+	it("records an answer on its hotkey and advances", async () => {
+		await page.press(RECHECK_ANSWERS[0].hotkey)
+		assert.match(page.nodes.progress.textContent, /^1 of 2 answered/u, "STUCK: the answer key did not advance")
+		assert.match(page.nodes.status.textContent, /recorded keep_the_endorsement/u)
+	})
+
+	it("answers the second palette on the AZERTY row too", async () => {
+		// `é` is the key printed `2` on the reviewer's French Mac. Both rows answer everywhere.
+		await page.press("é")
+		assert.match(page.nodes.progress.textContent, /^2 of 2 answered/u)
+		assert.match(page.nodes.status.textContent, /recorded the_rule_is_right/u)
+	})
+
+	it("steps back on undo and lets the answer be replaced", async () => {
+		await page.press("u")
+		assert.match(page.nodes.status.textContent, /stepped back/u)
+		// Undo deletes nothing: the answer is still standing until a new one supersedes it.
+		assert.match(page.nodes.progress.textContent, /^2 of 2 answered/u)
+		await page.press(RECHECK_ANSWERS[2].hotkey)
+		assert.match(page.nodes.status.textContent, /recorded cant_tell/u)
+	})
+
+	it("records the escape answer as an ordinary answer, so its share is countable", async () => {
+		const { body } = await call(harness.base, "GET", `/api/oracle-validation/${ENDORSEMENT_RECHECK_BATCH_ID}`)
+		const items = body.items as { questionKey: string; answer: string | null }[]
+		const answers = new Map(items.map((item) => [item.questionKey, item.answer]))
+		assert.equal(answers.get(`endorsement_recheck_${RECHECK_ENTRY_IDS[0]}`), "keep_the_endorsement")
+		// The replacement stands, and the superseded answer is history rather than a live second row.
+		assert.equal(answers.get(`endorsement_recheck_${RECHECK_ENTRY_IDS[1]}`), "cant_tell")
+	})
+
+	it("releases on r", async () => {
+		await page.press("r")
+		assert.match(page.nodes.status.textContent, /released at/u)
+	})
+})
