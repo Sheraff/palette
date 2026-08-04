@@ -489,24 +489,44 @@ function fieldMassRanking(
 }
 
 /**
- * SPEC decision 5's fallback: the two highest-field-mass colours **separated by their pairwise
+ * SPEC decision 5's two blocks: the two highest-field-mass colours **separated by their pairwise
  * `sameColorBar`**. Background is the heavier of the two (the larger field, consistent with
- * decision 3's principle). Surface collapses to background when no second separated colour exists.
+ * decision 3's principle). `surface` is `null` when no second separated colour exists at all, which
+ * is a one-colour image and not a two-block one.
+ *
+ * Split out of `twoBlockTargets` and exported for `candidate.ts`: SPEC decision 9's precedence
+ * ruling has the no-field path test *this* reading before it retreats, and it needs the two triples
+ * rather than their targets. There is deliberately one implementation — a second ranking-and-
+ * separating loop in the caller would be a second definition of "the two blocks".
  */
-function twoBlockTargets(ranking: readonly FieldMassEntry[], fallbackTarget: OkLab): {
-	background: OkLab
-	surface: OkLab
-} {
-	if (ranking.length === 0) return { background: fallbackTarget, surface: fallbackTarget }
+export function twoBlockCandidates(
+	fit: FieldFit,
+	raster: DecodedRaster,
+	inventory: Inventory,
+): { background: TripleStats; surface: TripleStats | null } | null {
+	const ranking = fieldMassRanking(fit, raster, inventory)
+	if (ranking.length === 0) return null
 	const first = ranking[0].triple
 	const firstColor = colorFromRgb(first.rgb)
 	for (let index = 1; index < ranking.length; index++) {
 		const candidate = ranking[index].triple
 		if (!sameColor(firstColor, colorFromRgb(candidate.rgb))) {
-			return { background: first.lab, surface: candidate.lab }
+			return { background: first, surface: candidate }
 		}
 	}
-	return { background: first.lab, surface: first.lab }
+	return { background: first, surface: null }
+}
+
+/** The same two blocks as OKLab targets, for `readRamp`'s own decision-5 fallback. */
+function twoBlockTargets(
+	blocks: { background: TripleStats; surface: TripleStats | null } | null,
+	fallbackTarget: OkLab,
+): { background: OkLab; surface: OkLab } {
+	if (blocks === null) return { background: fallbackTarget, surface: fallbackTarget }
+	return {
+		background: blocks.background.lab,
+		surface: (blocks.surface ?? blocks.background).lab,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -686,8 +706,7 @@ export function readRamp(fit: FieldFit, raster: DecodedRaster, inventory: Invent
 	}
 
 	// --- no polyline fixed it: two-block fallback (SPEC decision 5) --------------------------------
-	const ranking = fieldMassRanking(fit, raster, inventory)
-	const blocks = twoBlockTargets(ranking, backgroundTarget)
+	const blocks = twoBlockTargets(twoBlockCandidates(fit, raster, inventory), backgroundTarget)
 	return {
 		gradientCandidate: false,
 		direction,

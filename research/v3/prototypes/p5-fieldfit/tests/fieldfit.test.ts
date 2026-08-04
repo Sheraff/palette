@@ -215,51 +215,34 @@ test("±1-LSB dither moves the fitted coefficients far below the pooled bar", ()
 // ---------------------------------------------------------------------------------------------
 
 /**
- * **This test asserts the opposite of what it asserted before 2026-08-04, and the reason is a
- * finding, not a tolerance.**
+ * **The no-field detector, and the two clauses that were tried before this one.**
  *
- * SPEC decision 9 used to read `noField` when `inlierFraction < 0.5` **OR**
- * `σ̂ > 3 × POOLED_SAME_COLOR_BAR`. The ruling of 2026-08-04 removed the σ̂ clause, because on
- * demo-20 it fired on 11 of 20 covers at inlier fractions of 0.79–1.00 — ordinary textured
- * photographs, not structureless images. This test's original input tripped the verdict through
- * that clause and never through the inlier one, so it now records what the noise image actually
- * does: it is *not* `noField`.
+ * SPEC decision 9 has been ruled on three times in one day and this test carries the whole history,
+ * because two of the three rulings are only legible as things that were measured and found wanting:
  *
- * **The surviving clause cannot fire, and that is provable rather than empirical.** `updateWeights`
- * and `evaluateFullResolution` both take σ̂ = 1.4826 · median(‖r‖) — the MAD about zero, per the
- * reading stated in `fieldfit.ts`. A pixel is an inlier when its Tukey weight exceeds 0.5, i.e.
- * when ‖r‖ < 0.5412 · 4.685 · σ̂ = 3.759 · median(‖r‖). Every pixel at or below the median satisfies
- * that (when the median is 0, σ̂ is floored and the pixels at 0 are still inliers), and by definition
- * at least half the pixels are at or below the median. So `inlierFraction > 0.5` **identically**,
- * for every possible image, and `noField` is now unreachable.
+ *  1. `σ̂ > 3 × POOLED_SAME_COLOR_BAR` fired on 11 of 20 demo-20 covers — ordinary textured
+ *     photographs where the biweight had a large majority and was sitting on grain.
+ *  2. `inlierFraction < 0.5` replaced it and is **unreachable**. σ̂ is 1.4826 · median(‖r‖), the MAD
+ *     about zero (`updateWeights`), and a pixel is an inlier when its Tukey weight exceeds 0.5, i.e.
+ *     when ‖r‖ < 0.5412 · 4.685 · σ̂ = 3.759 · median(‖r‖). Every pixel at or below the median
+ *     satisfies that (median 0 ⇒ σ̂ floored ⇒ those pixels are still inliers), and at least half the
+ *     pixels are at or below the median. So `inlierFraction > 0.5` **identically, for every possible
+ *     image**. The first block below pins that, because a threshold that cannot fire is worse than a
+ *     wrong one: it reports a clean verdict on every input forever.
+ *  3. `fieldExplainedFraction < 0.5` is the current verdict, and it is a different *kind* of
+ *     quantity — an absolute count of pixels within 4 bars of the field, where the radius comes from
+ *     the contract and not from the residuals. That is what makes it able to fail. MAD-about-median
+ *     was considered and rejected on the way: it measures dispersion, so an image whose residuals are
+ *     all large but all similar would pass it.
  *
- * That is exactly obligation #1 — *"built in v0, never deferred"* — going quiet, so it is asserted
- * here rather than left to be rediscovered: the four pathologies below are the worst cases anyone
- * has proposed for "the biweight has no majority", and all four clear the floor. This test fails the
- * moment someone re-arms a verdict clause or changes how σ̂ is defined, which is when the
- * orchestrator wants to hear about it.
+ * The second block is the detector doing its job in both directions, on inputs whose right answer is
+ * not in dispute: structureless noise is not a field, a dithered flat is.
  */
-test("structureless input is no longer noField, and the inlier clause cannot fire", () => {
-	const noise = makeRaster(SIZE, SIZE, (_x, _y, index) => [
-		0.5 + 0.45 * signedNoise(index * 3),
-		0.25 * signedNoise(index * 3 + 1),
-		0.25 * signedNoise(index * 3 + 2),
-	])
-	const noiseFit = fitField(noise)
-
-	// The σ̂ the retired clause used to read is still published, and still enormous. It is evidence
-	// now, not a vote.
-	assert.ok(
-		noiseFit.residualScale > 3 * POOLED_SAME_COLOR_BAR,
-		`residualScale ${noiseFit.residualScale} must still exceed 3 bars (${3 * POOLED_SAME_COLOR_BAR})`,
-	)
-	assert.equal(
-		noiseFit.noField,
-		false,
-		"the σ̂ clause is retired: structureless noise no longer trips the verdict",
-	)
-
-	// Four shapes of "no majority", none of which can push the inlier fraction below the floor.
+test("noField reads the explained fraction; the inlier clause provably cannot fire", () => {
+	// --- 1. the retired clause, pinned unreachable ------------------------------------------------
+	//
+	// Four shapes of "the biweight has no majority" — the worst cases anyone proposed for the inlier
+	// reading. All four clear 0.5, which is the proof above showing up as data.
 	const pathologies: Readonly<Record<string, (index: number) => OkLab>> = {
 		"uniform noise": (index) => [
 			0.5 + 0.45 * signedNoise(index * 3),
@@ -273,14 +256,60 @@ test("structureless input is no longer noField, and the inlier clause cannot fir
 		// Ten equal blocks, so the largest agreeing set is a tenth of the pixels.
 		"ten equal colours": (index) => [Math.floor((signedNoise(index) + 1) * 5) / 10, 0, 0],
 	}
+	const fits = new Map<string, ReturnType<typeof fitField>>()
 	for (const [name, colorAt] of Object.entries(pathologies)) {
 		const fit = fitField(makeRaster(SIZE, SIZE, (_x, _y, index) => colorAt(index)))
+		fits.set(name, fit)
 		assert.ok(
 			fit.inlierFraction > 0.5,
 			`${name}: inlierFraction ${fit.inlierFraction} — the MAD-about-zero σ̂ makes < 0.5 unreachable`,
 		)
-		assert.equal(fit.noField, false, `${name}: noField cannot fire while the inlier clause holds`)
 	}
+
+	// --- 2. the live clause, both directions ------------------------------------------------------
+	const noiseFit = fits.get("uniform noise")!
+	assert.ok(
+		noiseFit.fieldExplainedFraction < 0.01,
+		`structureless noise must be almost wholly unexplained, got ${noiseFit.fieldExplainedFraction}`,
+	)
+	assert.equal(noiseFit.noField, true, "structureless noise must not be published as a field")
+	// The σ̂ the first retired clause read is still published, and still enormous. Evidence, not a vote.
+	assert.ok(
+		noiseFit.residualScale > 3 * POOLED_SAME_COLOR_BAR,
+		`residualScale ${noiseFit.residualScale} must still exceed 3 bars`,
+	)
+
+	const flat: OkLab = [0.52, 0.015, -0.028]
+	const flatFit = fitField(makeRaster(SIZE, SIZE, (_x, _y, index) => dithered(flat, index)))
+	assert.equal(
+		flatFit.fieldExplainedFraction,
+		1,
+		`a dithered flat is explained everywhere, got ${flatFit.fieldExplainedFraction}`,
+	)
+	assert.equal(flatFit.noField, false, "a dithered flat is a field")
+
+	// --- 3. where the checkerboard lands, recorded rather than forced ------------------------------
+	//
+	// Reported because the orchestrator asked which side it falls on, and the answer is not obvious.
+	// It is `noField`, and the explained fraction is *exactly* zero: an affine surface cannot sit on
+	// two far-apart colours at once, so it settles between them and is more than 4 bars from every
+	// pixel in the image. Note this is the one case where the two fractions disagree completely —
+	// inlierFraction 1.0 (σ̂ inflates until everything is "inlying"), explained 0.0. That contrast is
+	// the whole argument for the absolute reading, so it is asserted rather than described.
+	const checker = fits.get("50/50 checkerboard")!
+	assert.equal(checker.fieldExplainedFraction, 0, "the checkerboard's field explains no pixel at all")
+	assert.equal(checker.inlierFraction, 1, "…while every pixel counts as an inlier")
+	assert.equal(checker.noField, true, "so the checkerboard is noField under the explained reading")
+
+	// The 40/60 split is the opposite case and lands on the field side: the fit sits exactly on the
+	// 60% majority colour, so that majority is explained and the verdict is a field. Recorded because
+	// it is the closest thing in this file to the line the constants draw.
+	const split = fits.get("40/60 split")!
+	assert.ok(
+		split.fieldExplainedFraction > 0.5 && split.fieldExplainedFraction < 0.65,
+		`the 40/60 split should sit just above the floor, got ${split.fieldExplainedFraction}`,
+	)
+	assert.equal(split.noField, false)
 })
 
 // ---------------------------------------------------------------------------------------------

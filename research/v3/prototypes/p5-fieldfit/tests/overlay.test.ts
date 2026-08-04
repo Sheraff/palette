@@ -111,6 +111,9 @@ function buildScene(
 			fieldAt,
 			weights,
 			inlierFraction: inliers / pixelCount,
+			// These fixtures are built field-first, so every non-mark pixel sits exactly on the field.
+			// `readOverlay` reads neither of these two, but `FieldFit` requires both.
+			fieldExplainedFraction: inliers / pixelCount,
 			residualScale: 0,
 			marginBars: 0,
 			noField: false,

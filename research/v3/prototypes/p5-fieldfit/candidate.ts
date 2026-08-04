@@ -33,21 +33,26 @@
  * 4. **Collapses are measured on the published hex**, never asserted from upstream intent, because
  *    invariant 1 checks the flag against exact hex equality and nothing else.
  *
+ * ## The three no-field outcomes, and how a reader tells them apart
+ *
+ * SPEC decision 9's precedence ruling makes `noField` a fork rather than a verdict. In descending
+ * order of structure: an affine field (not `noField` at all), a **two-block rescue** (two flat
+ * colours that between them put half the image inside four bars), and only then the **retreat** to
+ * one colour. The two constants are the verdict's own — the ruling's "same two constants, no new
+ * ones" is why `NO_FIELD_EXPLAINED_FRACTION` and the radius live in `fieldfit.ts` and are imported
+ * here rather than restated.
+ *
+ * `Diagnostics` is frozen and carries no field for the fork, so it is read off two that it does
+ * carry: `noField && twoBlockFallback` is a rescue, `noField && !twoBlockFallback` is a retreat.
+ *
+ * Two things the ruling settled that would otherwise look like deviations here, and are not:
+ * the retreat ranks field mass on the **kept fit's weights** rather than a separate order-0 fit
+ * (*"on a noField image no weight map is meaningful, so this is pick-and-state"*), and overlay's
+ * `localField` stays the affine `fieldAt` even on a rescued two-block cover, where near a block's
+ * centre it approximates that block's colour. Both are revisited only on round-1 reviewer signal.
+ *
  * ## Deviations from `SPEC.md`, stated
  *
- * - **Decision 9's retreat is unreachable as of the 2026-08-04 ruling, and is kept anyway.** With the
- *   σ̂ clause removed the verdict is `inlierFraction < 0.5` alone, and that clause cannot fire: σ̂ is
- *   1.4826 · median(‖r‖), so every pixel at or below the median is an inlier and at least half the
- *   pixels are. See the proof in `tests/fieldfit.test.ts` test 3, which asserts it. The retreat below
- *   is therefore dead code today; deleting it would make re-arming the detector a rewrite instead of
- *   a one-line change, so it stays, and the fact that it never runs is reported rather than hidden.
- * - **Decision 9's retreat reads the kept fit's weights, not a separate order-0 fit.** The SPEC says
- *   "the highest-field-mass agglomerated colour of the order-0 fit"; `fitField` returns one fit and
- *   `noField` does not force its order to 0, so when the kept order is 1 the field-mass ranking this
- *   module ranks by is the order-1 weight map. Old: order-0 weights. New: the kept fit's weights.
- *   Nothing else about the retreat changes — flat background, surface collapsed, gradient null,
- *   overlay as usual — and `noField` plus the fit's order are both in diagnostics, so a run where
- *   this mattered is visible rather than inferred.
  * - **The accent is collapsed when the two published colours are the same colour.** `overlay.ts`
  *   guarantees its accent is separated from its foreground *at the cluster centres*; this module
  *   publishes representatives, which sit within a bar of their centres, so the published pair can be
@@ -80,9 +85,19 @@ import { hashFileBytes } from "../../src/devloop/code-version.ts"
 import type { CandidatePalette } from "../../src/devloop/types.ts"
 
 import { decodeAndInventory, packRgb, unpackRgb } from "./src/decode.ts"
-import { fitField } from "./src/fieldfit.ts"
+import {
+	explainedFractionByColors,
+	fitField,
+	NO_FIELD_EXPLAINED_FRACTION,
+} from "./src/fieldfit.ts"
 import { readOverlay } from "./src/overlay.ts"
-import { highestFieldMassTriple, pathExcursion, projectionFraction, readRamp } from "./src/ramp.ts"
+import {
+	highestFieldMassTriple,
+	pathExcursion,
+	projectionFraction,
+	readRamp,
+	twoBlockCandidates,
+} from "./src/ramp.ts"
 import { snapToArtwork } from "./src/snap.ts"
 import type { Diagnostics, Inventory } from "./src/types.ts"
 
@@ -160,13 +175,40 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const contrast = resolveContrastParameters(DEFAULT_CONTRAST_PARAMETERS)
 
 	// --- the field ends ---------------------------------------------------------------------------
+	//
 	// SPEC decision 9: `noField` never reads an endpoint off a surface it has just declared not to
-	// describe the image. The retreat is a flat field at the colour the fit still called field most.
-	const retreatTriple = fit.noField ? highestFieldMassTriple(fit, raster, inventory) : null
-	const backgroundTarget = retreatTriple ? retreatTriple.lab : ramp.backgroundTarget
-	const surfaceTarget = retreatTriple ? retreatTriple.lab : ramp.surfaceTarget
-	// A retreat is flat by construction, so it has no ramp to be a candidate for.
-	const gradientCandidate = fit.noField ? false : ramp.gradientCandidate
+	// describe the image. But it does not go straight to the retreat either — the precedence ruling
+	// puts a **structured two-colour reading ahead of a flat one**, and tests it by the very same
+	// principle the verdict itself used: does this model put half the image inside four bars of
+	// itself? A genuinely two-colour cover answers yes and keeps two distinct roles; only an image
+	// that neither an affine field nor two blocks can explain retreats to one colour.
+	let twoBlockRescue = false
+	let backgroundTarget = ramp.backgroundTarget
+	let surfaceTarget = ramp.surfaceTarget
+	// A no-field image has no ramp to be a candidate for, on either branch: the rescue publishes two
+	// flat blocks (decision 5: gradient null), and the retreat publishes one colour.
+	let gradientCandidate = ramp.gradientCandidate
+
+	if (fit.noField) {
+		gradientCandidate = false
+		const blocks = twoBlockCandidates(fit, raster, inventory)
+		const rescued = blocks !== null && blocks.surface !== null &&
+			explainedFractionByColors(raster, [blocks.background.lab, blocks.surface.lab]) >=
+				NO_FIELD_EXPLAINED_FRACTION
+		if (rescued && blocks?.surface) {
+			twoBlockRescue = true
+			backgroundTarget = blocks.background.lab
+			surfaceTarget = blocks.surface.lab
+		} else {
+			const retreatTriple = highestFieldMassTriple(fit, raster, inventory)
+			if (retreatTriple) {
+				backgroundTarget = retreatTriple.lab
+				surfaceTarget = retreatTriple.lab
+			} else {
+				surfaceTarget = backgroundTarget
+			}
+		}
+	}
 
 	const backgroundSnap = snapToArtwork(backgroundTarget, inventory, POOLED_SAME_COLOR_BAR)
 	// Identical targets snap identically; the call is skipped rather than repeated.
@@ -291,6 +333,7 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const diagnostics: Diagnostics = {
 		noField: fit.noField,
 		inlierFraction: fit.inlierFraction,
+		fieldExplainedFraction: fit.fieldExplainedFraction,
 		residualScale: fit.residualScale,
 		marginBars: fit.marginBars,
 		orientationMargin: ramp.orientationMargin,
@@ -298,7 +341,11 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		excursionMax: ramp.excursionMax,
 		thirdStopAccepted: interiorStop !== null,
 		residualExcursion,
-		twoBlockFallback: ramp.twoBlockFallback,
+		// True on both routes to a published two-block reading: `readRamp`'s decision-5 fallback (no
+		// polyline stayed on-artwork) and decision 9's precedence rescue. Together with `noField` this
+		// says which of the three no-field outcomes happened, with no new diagnostics field:
+		// `noField && twoBlockFallback` = rescued, `noField && !twoBlockFallback` = retreat.
+		twoBlockFallback: twoBlockRescue || ramp.twoBlockFallback,
 		accentChromaOnly: accentCollapses ? false : overlay.accentChromaOnly,
 		offArtwork: {
 			background: backgroundSnap.offArtwork,

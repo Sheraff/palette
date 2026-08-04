@@ -21,13 +21,23 @@
  */
 
 import assert from "node:assert/strict"
-import { readFile } from "node:fs/promises"
-import { dirname, isAbsolute, resolve } from "node:path"
-import test from "node:test"
+import { mkdtemp, readFile, rm } from "node:fs/promises"
+import { tmpdir } from "node:os"
+import { dirname, isAbsolute, join, resolve } from "node:path"
+import test, { after, before } from "node:test"
 import { fileURLToPath } from "node:url"
 
+import sharp from "sharp"
+
 import { hex } from "../../../src/contract/color.ts"
-import { ALGORITHM_VERSION, candidateId, paletteOf, PREPROCESSING_VERSION } from "../candidate.ts"
+import type { Rgb8 } from "../../../src/contract/types.ts"
+import {
+	ALGORITHM_VERSION,
+	analyzeImage,
+	candidateId,
+	paletteOf,
+	PREPROCESSING_VERSION,
+} from "../candidate.ts"
 import { decodeAndInventory, packRgb } from "../src/decode.ts"
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -139,4 +149,113 @@ test("paletteOf returns a contract-shaped palette on a real cover", async () => 
 			true,
 		)
 	}
+})
+
+// ---------------------------------------------------------------------------------------------
+// The no-field fork: rescue versus retreat (SPEC decision 9's precedence ruling)
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * `noField` is a fork, not a verdict, and these two fixtures take the two branches.
+ *
+ * Both images defeat the affine fit for the same reason — a plane cannot sit on colours this far
+ * apart, so `fieldExplainedFraction` collapses and `noField` fires. What separates them is whether
+ * *two* colours can do what one surface could not:
+ *
+ *  - **two blocks.** Every pixel is one of two far-apart colours, so the two highest-field-mass
+ *    colours put 100% of the image inside four bars of themselves. The rescue fires, both roles
+ *    survive, `surfaceCollapsed` is false.
+ *  - **sixteen blocks.** The best two colours cover an eighth of the image, far under the floor, so
+ *    there is nothing to rescue and the retreat takes one colour with `surfaceCollapsed` true.
+ *
+ * The images are written as PNG and read back through `paletteOf`'s own decoder, so the fixtures are
+ * exact 8-bit triples and the test exercises the real path rather than a hand-built raster. The
+ * diagnostics are read through `analyzeImage`, which `paletteOf` wraps, so the two agree by
+ * construction.
+ *
+ * Colours are laid out in vertical stripes rather than by pixel hash: a checkerboard of two colours
+ * would also defeat the fit, but stripes make "the image is genuinely two blocks" true in the
+ * spatial sense the reading is named for, not only in the histogram.
+ */
+const FIXTURE_SIZE = 64
+
+async function writeStripes(path: string, colors: readonly Rgb8[]): Promise<void> {
+	const data = Buffer.alloc(FIXTURE_SIZE * FIXTURE_SIZE * 3)
+	for (let row = 0; row < FIXTURE_SIZE; row += 1) {
+		for (let column = 0; column < FIXTURE_SIZE; column += 1) {
+			// Stripe index from the column, so each colour owns a contiguous vertical band.
+			const color = colors[Math.floor((column * colors.length) / FIXTURE_SIZE) % colors.length]
+			const offset = (row * FIXTURE_SIZE + column) * 3
+			data[offset] = color[0]
+			data[offset + 1] = color[1]
+			data[offset + 2] = color[2]
+		}
+	}
+	await sharp(data, { raw: { width: FIXTURE_SIZE, height: FIXTURE_SIZE, channels: 3 } })
+		.png()
+		.toFile(path)
+}
+
+let fixtureDirectory = ""
+before(async () => {
+	fixtureDirectory = await mkdtemp(join(tmpdir(), "p5-fieldfit-candidate-"))
+})
+after(async () => {
+	if (fixtureDirectory !== "") await rm(fixtureDirectory, { recursive: true, force: true })
+})
+
+test("a genuinely two-colour image is rescued into two blocks, not retreated", async () => {
+	const path = join(fixtureDirectory, "two-blocks.png")
+	await writeStripes(path, [[10, 20, 200], [250, 220, 30]])
+
+	const { palette, diagnostics } = await analyzeImage(path)
+
+	assert.equal(diagnostics.noField, true, "an affine plane cannot fit two far-apart colours")
+	assert.equal(diagnostics.twoBlockFallback, true, "noField + twoBlockFallback is the rescue")
+	assert.equal(diagnostics.gradient, false, "decision 5: a two-block reading publishes no ramp")
+	assert.equal(palette.gradient, null)
+
+	assert.equal(
+		palette.collapse.surfaceCollapsed,
+		false,
+		`the rescue keeps two roles, got ${palette.roles.background.hex} / ${palette.roles.surface.hex}`,
+	)
+	assert.notEqual(palette.roles.surface.hex, palette.roles.background.hex)
+
+	// Both blocks are in the image, and the heavier one leads — here the two stripes are equal in
+	// area, so all that is asserted is that both published colours are the two fixture colours.
+	const published = [palette.roles.background.hex, palette.roles.surface.hex].sort()
+	assert.deepEqual(published, ["#0a14c8", "#fadc1e"])
+})
+
+test("a many-colour collage retreats to one colour: nothing to rescue", async () => {
+	const path = join(fixtureDirectory, "sixteen-blocks.png")
+	// Sixteen mutually far-apart colours, equal area. The best two cover 2/16 = 0.125 of the image,
+	// well under NO_FIELD_EXPLAINED_FRACTION, so the rescue must decline.
+	const colors: Rgb8[] = []
+	for (let index = 0; index < 16; index += 1) {
+		colors.push([
+			(index % 4) * 85,
+			(Math.floor(index / 4) % 4) * 85,
+			((index * 7) % 4) * 85,
+		])
+	}
+	await writeStripes(path, colors)
+
+	const { palette, diagnostics } = await analyzeImage(path)
+
+	assert.equal(diagnostics.noField, true, "sixteen far-apart colours are not a field")
+	assert.equal(
+		diagnostics.twoBlockFallback,
+		false,
+		"noField without twoBlockFallback is the retreat — two colours cannot explain half of this",
+	)
+	assert.equal(diagnostics.gradient, false)
+	assert.equal(palette.gradient, null)
+	assert.equal(
+		palette.collapse.surfaceCollapsed,
+		true,
+		`the retreat is one flat colour, got ${palette.roles.background.hex} / ${palette.roles.surface.hex}`,
+	)
+	assert.equal(palette.roles.surface.hex, palette.roles.background.hex)
 })

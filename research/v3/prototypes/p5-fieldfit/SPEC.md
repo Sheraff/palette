@@ -77,11 +77,28 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    (arm-f-r3 §2.5 — a direction, never a coefficient). `accentChromaOnly` flag (diagnostics) when
    the winner's |ΔL| < the pair's bar. No candidate ⇒ accent collapses to foreground exactly.
 9. **No-field detector** (obligation #1, built in v0, never deferred) — verdict `noField` when
-   inlier fraction < 0.5 (`[UNCALIBRATED]`, expect retuning; σ̂ reported in diagnostics but no
-   longer part of the verdict — *ruling 2026-08-04: the original `OR σ̂ > 3×POOLED_SAME_COLOR_BAR`
-   clause fired on 11/20 demo-20 covers at inlier fractions 0.79–1.00, i.e. on textured-but-fittable
-   photographs; the arms' own principle is "the biweight has no majority", which is the inlier
-   fraction, not the residual scale*). Retreat: background = highest-field-mass agglomerated
+   `fieldExplainedFraction < 0.5`, where `fieldExplainedFraction` = fraction of full-res pixels
+   whose residual norm against the kept field is below 4 × `POOLED_SAME_COLOR_BAR`. Principle: **a
+   field must explain, in the contract's own perceptual units, at least half the image.** Both
+   constants `[UNCALIBRATED]`; round-1 covers are chosen to straddle the line so reviewer grades
+   inform them.
+   *Ruling history 2026-08-04:* (a) the original `σ̂ > 3×bar` clause fired on 11/20 demo-20 covers
+   incl. textured-but-fittable photographs; (b) the replacement inlier-fraction clause was proved
+   unreachable (σ̂ is MAD-about-zero, so `inlierFraction > 0.5` identically — see
+   `tests/fieldfit.test.ts` test 3, which pins this); (c) MAD-about-median was considered and
+   rejected — it measures dispersion, and a fieldless image with uniformly large residuals of
+   similar size would still pass; the failure is absolute residual *location*, hence the explained-
+   fraction form. The IRLS fit's own σ̂ definition is deliberately unchanged.
+   *Precedence ruling 2026-08-04 (from `2376a6b67d`, a genuinely two-colour cover):* a structured
+   two-colour reading outranks the retreat. When `noField` fires, first test the two-block reading
+   by the same principle: fraction of pixels within 4×bar of the **nearer** of the two candidate
+   block colours; ≥ 0.5 ⇒ publish the two-field reading (decision 5, surface distinct, gradient
+   null). Retreat only when **neither** the affine field **nor** the two-colour reading explains
+   half the image. Same two constants, no new ones.
+   *Retreat weights ruling 2026-08-04:* the retreat ranks field mass on the **kept fit's weights**
+   (as implemented — on a noField image no weight map is meaningful, so this is pick-and-state);
+   overlay's localField likewise stays the affine `fieldAt` even on two-block covers (near block
+   centres it approximates the block colour). Both revisited only on round-1 reviewer signal. Retreat: background = highest-field-mass agglomerated
    colour of the order-0 fit, surface collapsed, gradient null, foreground/accent from overlay
    against that flat field. The retreat is **declared** in diagnostics, never silent.
 10. **Escape** — only when no ledger colour is separated from the field by the bar: foreground =
@@ -107,6 +124,11 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
 - Wave-2 verifier independently re-runs everything from artifacts and additionally runs the
   early falsifier (arm-f-r3 §7): ±1-LSB dither must move the *fitted continuous endpoints* by less
   than the bar. If it does not, report it — that is the paradigm's main structural claim failing.
+  *Restated 2026-08-04 after the verifier ran it (4/5 pass):* the absolute-bar criterion is
+  ill-posed near black — OKLab lightness is a cube root of linear light, so one LSB at `#000000`
+  is 4.38 pooled bars and no pixel-reporting algorithm can pass. The criterion is now the
+  **amplification ratio**: Δendpoint / Δinput-LSB-in-OKLab ≤ ~1 (the fit may track its pixels,
+  never amplify them). Measured: 0.026–1.061 across five outcome classes — claim holds.
 
 ## Diagnostics (sidecar, never in the Palette)
 

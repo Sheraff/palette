@@ -97,22 +97,50 @@ const RESIDUAL_SCALE_FLOOR = 1e-6
 const INLIER_WEIGHT_THRESHOLD = 0.5
 
 /**
- * `noField` when the fit keeps less than this fraction of pixels.
+ * **How close to the field a pixel must sit to count as explained by it**, in pooled bars.
  *
- * `[UNCALIBRATED]` — `SPEC.md` decision 9 states the value and says to expect retuning. It is
- * reported on every run (`inlierFraction` in the diagnostics sidecar) precisely so the retune has
- * evidence.
+ * `[UNCALIBRATED]` — `SPEC.md` decision 9 states the value and says to expect retuning; round-1
+ * covers are chosen to straddle the line so the reviewer's grades inform it. The principle it
+ * encodes is the calibrated part: *a field must explain the image in the contract's own perceptual
+ * units*. Four bars is "a few just-noticeable steps away", which is the loosest reading of
+ * "explained" that is still a statement about perception rather than about arithmetic.
+ *
+ * `POOLED_SAME_COLOR_BAR` is `[INHERITED]`; what is uncalibrated here is only the multiple.
  */
-const NO_FIELD_INLIER_FRACTION_FLOOR = 0.5
+const NO_FIELD_EXPLAINED_BAR_MULTIPLE = 4
 
 /**
- * **The σ̂ clause is gone from the verdict** — SPEC decision 9, ruling 2026-08-04.
+ * `noField` when the field explains less than this fraction of the image.
  *
- * It read `noField` when `σ̂ > 3 × POOLED_SAME_COLOR_BAR`, and on demo-20 it fired on 11 of 20
- * covers at inlier fractions of 0.79–1.00: textured but perfectly fittable photographs, where the
- * biweight had a large majority and simply sat on grain. The arms' own principle is *"the biweight
- * has no majority"*, and that is the inlier fraction, not the residual scale. σ̂ stays on `FieldFit`
- * and in the diagnostics sidecar, where it is evidence; it is no longer a vote.
+ * `[UNCALIBRATED]` — `SPEC.md` decision 9. "At least half the image" is the principle; the exact
+ * half is the convention.
+ *
+ * Exported because decision 9's precedence ruling judges the two-block reading by the **same**
+ * threshold before it retreats, and the ruling's "same two constants, no new ones" only means
+ * anything if there is literally one of each.
+ */
+export const NO_FIELD_EXPLAINED_FRACTION = 0.5
+
+/**
+ * **Why the verdict reads an absolute distance and not a scale — two retired clauses, both recorded.**
+ *
+ * `SPEC.md` decision 9's ruling history, in the form that matters to this file:
+ *
+ *  1. The original clause was `σ̂ > 3 × POOLED_SAME_COLOR_BAR`. It fired on 11 of 20 demo-20 covers
+ *     at inlier fractions of 0.79–1.00 — textured but perfectly fittable photographs, where the
+ *     biweight had a large majority and was simply sitting on grain.
+ *  2. Its replacement, `inlierFraction < 0.5`, is **unreachable**. σ̂ here is 1.4826 · median(‖r‖) —
+ *     the MAD about zero (see `updateWeights`) — and a pixel is an inlier when
+ *     ‖r‖ < 0.5412 · 4.685 · σ̂ = 3.759 · median(‖r‖). Every pixel at or below the median satisfies
+ *     that, and at least half the pixels are, so `inlierFraction > 0.5` identically, for every
+ *     possible image. `tests/fieldfit.test.ts` test 3 pins this.
+ *  3. Redefining σ̂ as the MAD about the *median* was considered and **rejected**: that measures
+ *     dispersion, and an image of uniformly large residuals that all miss the field by about the
+ *     same amount would pass it while being exactly the case the detector exists to catch. The
+ *     failure being detected is absolute residual **location**, not spread — so the quantity is a
+ *     count of pixels inside a fixed perceptual radius, and the IRLS fit's own σ̂ is left alone.
+ *
+ * `inlierFraction` remains on `FieldFit` and in diagnostics as evidence; it is no longer a vote.
  */
 
 /**
@@ -172,6 +200,48 @@ export function fittedSpan(coefficients: Float64Array): number {
 // ---------------------------------------------------------------------------------------------
 
 /**
+ * **The same explained-fraction question, asked of a fixed set of colours instead of a surface.**
+ *
+ * SPEC decision 9's precedence ruling: when `noField` fires, the two-block reading is tested before
+ * the retreat, *"by the same principle: fraction of pixels within 4×bar of the **nearer** of the two
+ * candidate block colours"*. That is this function with `colors.length === 2`, and it shares
+ * `NO_FIELD_EXPLAINED_BAR_MULTIPLE` with `fieldExplainedFraction` rather than restating the radius —
+ * two numbers that were meant to be one is exactly how a threshold quietly forks.
+ *
+ * Every pixel is counted, not just the fit's inliers, for the reason the field version gives: a
+ * pixel a model does not cover is unexplained whether or not some earlier stage rejected it.
+ * Distance is to the **nearest** member of `colors`, so a set of *k* colours is judged as one model
+ * of the image and not as *k* separate ones. An empty set explains nothing.
+ */
+export function explainedFractionByColors(raster: DecodedRaster, colors: readonly OkLab[]): number {
+	const pixelCount = raster.width * raster.height
+	if (pixelCount === 0 || colors.length === 0) return 0
+	const radius = NO_FIELD_EXPLAINED_BAR_MULTIPLE * POOLED_SAME_COLOR_BAR
+	const radiusSquared = radius * radius
+	const lab = raster.lab
+
+	let explained = 0
+	for (let index = 0; index < pixelCount; index += 1) {
+		const offset = index * 3
+		const l = lab[offset]
+		const a = lab[offset + 1]
+		const b = lab[offset + 2]
+		for (const color of colors) {
+			const dl = l - color[0]
+			const da = a - color[1]
+			const db = b - color[2]
+			// Squared distance: the radius is fixed, so the square root would be per-pixel work for
+			// an answer that is only ever compared against it.
+			if (dl * dl + da * da + db * db < radiusSquared) {
+				explained += 1
+				break
+			}
+		}
+	}
+	return explained / pixelCount
+}
+
+/**
  * Fit the field. See the module docstring; the shape of the result is fixed by `types.ts`.
  *
  * Sequence: stratified lattice subsample → order-0 robust centre (IRLS) → order-1 affine (IRLS,
@@ -214,7 +284,7 @@ export function fitField(raster: DecodedRaster): FieldFit {
 	// same pixels.
 	const full = evaluateFullResolution(raster, coefficients)
 
-	const noField = full.inlierFraction < NO_FIELD_INLIER_FRACTION_FLOOR
+	const noField = full.fieldExplainedFraction < NO_FIELD_EXPLAINED_FRACTION
 
 	return {
 		order,
@@ -222,6 +292,7 @@ export function fitField(raster: DecodedRaster): FieldFit {
 		fieldAt: (x: number, y: number): OkLab => fieldAtCoefficients(coefficients, x, y),
 		weights: full.weights,
 		inlierFraction: full.inlierFraction,
+		fieldExplainedFraction: full.fieldExplainedFraction,
 		residualScale: full.residualScale,
 		marginBars,
 		noField,
@@ -523,13 +594,22 @@ type FullResolutionEvaluation = {
 	weights: Float32Array
 	residualScale: number
 	inlierFraction: number
+	fieldExplainedFraction: number
 }
 
 /**
  * Evaluates the converged model against every pixel: residual norms, σ̂ from their MAD, Tukey
- * weights, inlier fraction. The published `weights`, `residualScale` and `inlierFraction` all come
- * from this pass, so they describe the whole image rather than the solve lattice — the subsample
- * exists to make the *solve* cheap, not to make the *report* approximate.
+ * weights, inlier fraction, explained fraction. Every published number comes from this pass, so they
+ * describe the whole image rather than the solve lattice — the subsample exists to make the *solve*
+ * cheap, not to make the *report* approximate.
+ *
+ * The two fractions are deliberately different questions asked of the same residuals.
+ * `inlierFraction` is **self-normalized**: its threshold is a multiple of σ̂, which is itself read off
+ * these residuals, so it asks "did the biweight find a majority *relative to how far off things
+ * are*" — and the answer, provably, is always yes. `fieldExplainedFraction` is **absolute**: its
+ * threshold is a multiple of the contract's own bar and does not move when the image gets worse, so
+ * it asks "is the field actually near the pixels". Only the second can fail, which is why only the
+ * second is the verdict.
  */
 function evaluateFullResolution(raster: DecodedRaster, coefficients: Float64Array): FullResolutionEvaluation {
 	const { width, height, lab } = raster
@@ -556,9 +636,17 @@ function evaluateFullResolution(raster: DecodedRaster, coefficients: Float64Arra
 	const residualScale = MAD_TO_SIGMA * median(residual, pixelCount)
 	const cut = TUKEY_CUT_SIGMAS * Math.max(residualScale, RESIDUAL_SCALE_FLOOR)
 
+	// The explained radius, in OKLab, fixed by the contract's bar and never by these residuals.
+	const explainedRadius = NO_FIELD_EXPLAINED_BAR_MULTIPLE * POOLED_SAME_COLOR_BAR
+
 	const weights = new Float32Array(pixelCount)
 	let inliers = 0
+	let explained = 0
 	for (let index = 0; index < pixelCount; index += 1) {
+		// Counted over every pixel, including the ones the biweight zeroed: a mark that the fit
+		// rejected is still a pixel the field does not explain, and hiding it behind the weight map
+		// would make the two fractions the same question again.
+		if (residual[index] < explainedRadius) explained += 1
 		const u = residual[index] / cut
 		if (u >= 1) continue
 		const t = 1 - u * u
@@ -567,7 +655,12 @@ function evaluateFullResolution(raster: DecodedRaster, coefficients: Float64Arra
 		if (w > INLIER_WEIGHT_THRESHOLD) inliers += 1
 	}
 
-	return { weights, residualScale, inlierFraction: pixelCount > 0 ? inliers / pixelCount : 0 }
+	return {
+		weights,
+		residualScale,
+		inlierFraction: pixelCount > 0 ? inliers / pixelCount : 0,
+		fieldExplainedFraction: pixelCount > 0 ? explained / pixelCount : 0,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------

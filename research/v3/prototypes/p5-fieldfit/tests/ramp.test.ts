@@ -96,6 +96,9 @@ function affineFit(
 		fieldAt: (x: number, y: number) => fieldAtCoefficients(coefficients, x, y),
 		weights,
 		inlierFraction: 1,
+		// A synthetic ramp sits on its own field by construction. `readRamp` reads neither of these,
+		// but `FieldFit` requires both.
+		fieldExplainedFraction: 1,
 		residualScale: 0.001,
 		marginBars: 4,
 		noField: false,
@@ -110,6 +113,9 @@ function constantFit(color: OkLab, weights: Float32Array, noField = false): Fiel
 		fieldAt: (x: number, y: number) => fieldAtCoefficients(coefficients, x, y),
 		weights,
 		inlierFraction: 1,
+		// `noField` is passed in directly by these fixtures, so the fraction is set to agree with it
+		// rather than left to imply a different verdict from the one under test.
+		fieldExplainedFraction: noField ? 0 : 1,
 		residualScale: 0.001,
 		marginBars: 0,
 		noField,
