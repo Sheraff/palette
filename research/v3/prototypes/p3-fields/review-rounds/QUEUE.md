@@ -16,3 +16,9 @@
 
 Standing: rounds are 4–10 items; every forced choice carries an escape; blinded side-cars; the
 batch log is never read while a batch is open.
+
+**Verdict-ingestion protocol (reviewer ruling, main commit 735024a):** on release, main sends a
+content-free "batch <id> released" signal only. This orchestrator then spawns its own Opus
+analyst — released warehouse payload + server batch log (readable post-release) — verifies the
+decode against ROUND.md's outcome branches, and acts. Cross-arm evidence goes upward only through
+§7 reports. Multi-prototype rounds remain main-tier.
