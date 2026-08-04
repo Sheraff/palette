@@ -120,6 +120,22 @@ Third-round addendum (relayed 2026-08-04, after the above was committed):
    cost zero once). Calibrate λ on the direction (flat artwork must not buy ramps), never on
    per-verdict grade arithmetic.
 
+P5-round-2 addendum (relayed 2026-08-04, M2 emitter in flight):
+
+8. **Salience gating: a colour present only as accidental shadows is ineligible for identity
+   roles.** This mechanism has no salience notion — mass and extent are its only axes — and the
+   M1 attribution already showed coverage is not the reviewer's currency (genericBits culprit).
+   No patch bolted on; recorded as a candidate failure class for M3 reading: if our emitters
+   pick shadow/incidental colours for fg/accent, that is the same finding as M1's, from live
+   rounds, and it feeds the paradigm verdict rather than a term tweak.
+9. **Surface may be sourced from a depicted object.** Evidence FOR the no-candidacy-wall design:
+   every exact triple is admissible for every role here. Nothing to change.
+10. **Identity can outrank legibility** (a white foreground was demanded on a light field
+    because the artwork's title text is white). Direct evidence for the ink-recovery bet and
+    the no-contrast-reward stance (fold item 1). Also a warning for reading the min-APCA
+    diagnostic: a low value is not automatically a defect — the diagnostic reports, the
+    reviewer judges.
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),
