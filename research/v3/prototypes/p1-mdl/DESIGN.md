@@ -76,6 +76,33 @@ Shared machinery, two energies, two candidateIds:
 8. **Ramp direction is profiled per evaluation** (the measurement's axis sign is a
    measurement-side convention); the renderer's 135° rule governs presentation, not the energy.
 
+## Reviewer evidence from the first P5/P2 rounds (2026-08-04), folded in pre-M2
+
+Four verdict classes relayed by the main orchestrator, mapped onto this mechanism — recorded
+BEFORE our first emitter run so later reads are attributable:
+
+1. **Foreground readability is the dominant failure class.** This mechanism's position, held
+   deliberately: contrast is never rewarded, only bounded (arm A′ §2.4 — the foreground is
+   legible because it is the colour the artwork used for its ink, recovered by reconstruction).
+   We will NOT add an APCA reward term; that would abandon the mechanism under test. Instead:
+   (a) the emitter enforces the contract's whole-ramp APCA floors exactly as the contract states
+   them, and (b) every emitted palette carries min-|APCA|-over-the-rendered-ramp for fg and
+   accent as a REPORTED diagnostic. **Pre-registered consequence: if our foregrounds draw the
+   same "unreadable" verdicts, that falsifies the ink-recovery story, not the tuning.**
+2. **Indistinguishable sibling pairs are forbidden — collapse instead.** Priced structurally
+   already: two kernels within an identity bar explain no better than one, so the extra name
+   never repays λ and the model collapses; the contract bar additionally makes near-twins
+   infeasible. Tested (energy suites, case a). These verdicts say that price is real.
+3. **Identity (vivid accents mined from the artwork; shades must exist in it; black text →
+   black foreground).** The naming-gain mechanism is exactly this bet (isolated vivid cluster =
+   largest coding gain; tested, case d), and exact-triple sourcing is hard in the feasible set.
+   Supporting evidence for the currency, not a change.
+4. **A gradient on a flat artwork is a graded-down error.** The gradient boolean is priced (λ);
+   arm A′'s own pre-registered weak class is gradient over-publication on skies. This verdict
+   class is the calibration anchor for λ from above: λ must price ramps high enough that flat
+   artwork never buys one. Read the M1 λ-sweep with this in hand; the λ review round (if the
+   sweep isn't flat) should include flat-artwork items.
+
 ## Module layout (all under `research/v3/prototypes/p1-mdl/`)
 
 - `src/measure/` — decode (sharp 0.33.5, dims from header, refuse transparency loudly),
