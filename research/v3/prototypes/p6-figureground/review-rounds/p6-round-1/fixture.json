@@ -1,0 +1,144 @@
+{
+  "_comment": [
+    "Staged calibration round for the P6 figure/ground prototype. Absolute grading, one palette",
+    "per item, no comparison (REVIEW_UI.md §5).",
+    "imagePath entries are repo-root-relative so this directory is portable across worktrees;",
+    "the pusher rewrites them to absolute paths before POST /api/calibration, which requires",
+    "absolute paths.",
+    "variantId is an opaque per-round token. The true candidate identity is held by the staging",
+    "prototype and is deliberately not named here — this file is the payload, not the join.",
+    "fundedBy is empty until the orchestrator fills in the record ids that motivated the round."
+  ],
+  "imagePathsRelativeTo": "repo-root",
+  "batchId": "p6-round-1",
+  "purpose": "calibration",
+  "fundedBy": [],
+  "items": [
+    {
+      "itemId": "p6-round-1-01-d2b82cd5",
+      "imagePath": "00/00007e976f2fb1819d1ec7e0cc2869f39d397ba3.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#e9e6df",
+        "surface": "#ece0e0",
+        "foreground": "#f23704",
+        "accent": "#ebece7",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "p6-round-1-02-9dcfd80b",
+      "imagePath": "00/ab67616d00001e02000001335fe604d859a69094.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#e0e0e0",
+        "surface": "#dcdadb",
+        "foreground": "#fffeff",
+        "accent": "#e4e6e5",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "p6-round-1-03-066cdd5d",
+      "imagePath": "00/ab67616d00001e0200000ee5a62175fc8d58e0af.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#4b544f",
+        "surface": "#4c514b",
+        "foreground": "#5a605c",
+        "accent": "#454c45",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "p6-round-1-04-9619ff4e",
+      "imagePath": "00/ab67616d00001e02000018e9b0ec8fc5ac790164.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#ffffff",
+        "surface": "#fdfff3",
+        "foreground": "#70ba25",
+        "accent": "#f8faf9",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "p6-round-1-05-7d3d097f",
+      "imagePath": "00/ab67616d00001e02000022e7e9d11c908479200b.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#a36268",
+        "surface": "#965d66",
+        "foreground": "#211f20",
+        "accent": "#8d5b64",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    },
+    {
+      "itemId": "p6-round-1-06-22ea9268",
+      "imagePath": "00/ab67616d00001e020000269ead63cf2376a6b67d.jpg",
+      "artworkId": null,
+      "variantId": "p6-round-1-v-ea703cbc",
+      "fingerprint": {
+        "algorithmVersion": "p6-figureground-0.1.0",
+        "preprocessingVersion": "sharp-0.33.5/srgb/no-resample",
+        "gitCommit": "8b6a6b6675b2d0a325519c2f44cf8f54c38d5bfa",
+        "dirty": true
+      },
+      "palette": {
+        "background": "#fdd000",
+        "surface": "#f7d909",
+        "foreground": "#fd0100",
+        "accent": "#fafafa",
+        "gradient": null,
+        "surfaceCollapsed": false,
+        "accentCollapsed": false
+      }
+    }
+  ]
+}
