@@ -14,10 +14,9 @@ representatives of spatial parts. If that is true this paradigm is dead, and §7
 cheaply.
 
 A sharper commitment falls out of it. **The artwork usually contains a worked solution to our own
-problem.** Its title text already sits on its own field at a contrast a designer chose. A parse that
+problem:** its title text already sits on its own field at a contrast a designer chose. A parse that
 finds those marks does not have to *invent* a foreground — it can *read* one. No colour-statistics
-paradigm can do this, because the evidence is geometric: constant stroke width, collinear centroids,
-one colour shared across disconnected components.
+paradigm can do this, because the evidence is geometric.
 
 ## 2. Image to contract
 
@@ -44,10 +43,10 @@ contains colours the artwork does not and invariant 2 would then be satisfied by
 ### 2.2 The nesting hierarchy, and why chaining is the feature
 
 Build the pixel adjacency graph (4-connectivity), weight each edge by the OKLab distance across it,
-and take the hierarchy of **quasi-flat zones**: at dissimilarity level α, the α-zones are the
-connected components of "there is a path between these pixels whose every step is at most α".
-Computed once for all α by a Kruskal-style union-find over edges binned by weight — near-linear,
-deterministic, with a lexicographic tie-break on pixel index so iteration order cannot matter.
+and take the hierarchy of **quasi-flat zones**: at dissimilarity level α, the α-zones are the connected
+components of "there is a path between these pixels whose every step is at most α". Computed once for
+all α by a Kruskal-style union-find over weight-binned edges — near-linear, deterministic, with a
+lexicographic tie-break on pixel index so iteration order cannot matter.
 
 Set α to the same-colour bar, regionally: two adjacent pixels join iff they *read as the same colour*.
 This has a famous pathology — on a smooth gradient every step is below any bar, so the whole ramp
@@ -82,10 +81,10 @@ progression does."** A definition, not a heuristic, using no constant the campai
 Two structural cases are handled here rather than patched later. **Enclosure:** if the field is an
 annulus containing another large zone, it is typed `enclosure` and the carve re-runs inside — frames
 and bars stop being special, since what the UI sits on is the enclosed field and the frame becomes a
-mark whose colour stays eligible for every role. **Giant type touching the frame** leaks into the
-field and drags its colour in; detected by asking whether the field contains a stroke-width-coherent
-subset (§2.4) whose removal *reduces* the field's residual. If so, split it off and re-run the carve
-once — exactly one re-entry, bounded and declared.
+mark still eligible for every role. **Giant type touching the frame** leaks into the field and drags
+its colour in; detected by asking whether the field contains a stroke-width-coherent subset (§2.4)
+whose removal *reduces* the field's residual. If so, split it off and re-run the carve — exactly one
+re-entry, bounded and declared.
 
 ### 2.4 Marks
 
@@ -101,9 +100,8 @@ one colour a designer already validated against this field.
 
 Non-text groups are typed by size: large and compact is `subject`; small and high-chroma is an accent
 carrier; small, achromatic, axis-aligned, corner-anchored and colour-linked to nothing else is an
-**overlay** (advisory badges, barcodes, watermarks). Overlays are *not excluded* — candidacy walls are
-what made the reviewer's own corrections unpublishable. They sort last in §2.6 and can still win a
-role if nothing else can.
+**overlay** (advisory badges, barcodes, watermarks). Overlays are *not excluded* — candidacy walls made
+the reviewer's own corrections unpublishable — they merely sort last.
 
 ### 2.5 The representative: which exact pixel a region publishes
 
@@ -114,8 +112,8 @@ its modal triple. Find the **density mode** — the OKLab location maximizing th
 one bar, on a bar-scaled accumulator, one pass, no iteration. Take the **bar-mode centroid**, the mean
 of all region pixels within one bar of it; averaging over ~2% of a region's mass is what makes this
 immovable under a ±1 LSB dither. Publish the **exact 8-bit triple present in the region nearest that
-centroid**, ties broken lexicographically. Exact by construction, and stable because what is being
-argmaxed is an average over tens of thousands of pixels rather than the peak of a sparse histogram.
+centroid**, ties broken lexicographically. Exact by construction, and stable because the quantity
+driving it is an average over tens of thousands of pixels, not the peak of a sparse histogram.
 
 ### 2.6 Assignment: a lexicographic reading, never a weighted score
 
@@ -135,20 +133,18 @@ structural answer to the relabeling and re-encode failures.
   largest non-field node distinct from background above the bar; else collapsed.
 - **Foreground** — text-shaped groups first by total area fraction, then any mark group, then subject,
   then overlays; within a level, by luminance separation from the field. The contract gives the
-  foreground no colour rescue at any distance, so this order is luminance-ordered by construction.
+  foreground no colour rescue at any distance, so this order is luminance-driven by construction.
 - **Accent** — small high-chroma marks by chroma, then any mark distinct from foreground, then
   overlays. Open question 1 says an accent differing from its field only in hue and chroma is the
-  fragile case and no number says when. I do not invent one: within each level, candidates that
-  **also move in lightness** relative to the field sort ahead of those that do not. A preference costs
-  no constant; a threshold would cost one and be uncalibrated.
+  fragile case and no number says when; I do not invent one. Within each level, candidates that **also
+  move in lightness** relative to the field sort ahead of those that do not — a preference costs no
+  constant, a threshold would cost one and be uncalibrated.
 
 ### 2.7 The gradient, its stops, and the whole-ramp floors
 
 If §2.3 typed the field as a progression, publish a ramp. The ends are fixed by ruling —
 `stops[0] == background`, `stops[last] == surface`, exact equality — so the fitter has freedom only in
-the interior.
-
-Start at two stops. Compute the **excursion**: the rendered OKLab interpolation between the ends,
+the interior. Start at two stops. Compute the **excursion**: the rendered OKLab interpolation between the ends,
 sampled densely in `t`, against the artwork's occupied colour set (a bar-scaled occupancy structure
 built in one pass); the excursion at a sample is its distance to the nearest occupied colour. If the
 worst excursion is under the excursion bar, publish two stops. If not, the straight line demonstrably
@@ -160,40 +156,38 @@ contract makes it negotiable on proven utility and I do not have that evidence.
 
 The contrast floors are enforced as the contract states them — a minimum over the *whole* interpolated
 ramp in OKLab, not per stop: sample raw pre-clamp APCA densely in `t`, then refine the minimum
-locally, for foreground and, as its pointwise conjunction of both dimensions, for accent. At default ε
-they bind almost nothing; when a caller raises one, the repair is a *re-run of that role's order with
-the floor as a filter*, not a nudge of the winning colour. That satisfies the contract's parameter
-requirement for free — at defaults the output is byte-identical to the unparameterized run, and
-raising a floor can only change artworks whose order actually re-resolves.
+locally, for foreground and, as its pointwise conjunction of both dimensions, for accent. When a
+caller raises a floor, the repair is a *re-run of that role's order with the floor as a filter*, not a
+nudge of the winning colour — which satisfies the contract's parameter requirement for free: at
+defaults the output is byte-identical to the unparameterized run, and raising a floor can only change
+artworks whose order actually re-resolves.
 
 ### 2.8 Collapses, the escape, and what happens when the parse is wrong
 
 A parse is a claim and this one will often be wrong. Three properties bound the damage.
 
 **Wrongness is mostly confined to the gradient boolean.** Background is the representative of the
-largest border-connected zone under *every* field typing. Mistaking a shaded field for a flat one, or
-the reverse, changes whether a ramp is published and what `surface` is; it does not move `background`.
-The most likely parse error is also the least expensive one, and the one the review channel is best
-placed to catch.
+largest border-connected zone under *every* field typing, so mistaking a shaded field for a flat one
+changes whether a ramp is published and what `surface` is, but does not move `background`. The most
+likely parse error is also the least expensive one.
 
 **Inadequacy is declared, not guessed.** When no model in §2.3 is adequate, the field is typed `none`
 and a **degenerate branch** runs: the four roles are read from the whole image's bar-scaled colour
-modes by area, ordered by luminance, under the same representative rule and the same contract
-constraints. Dull, stable, valid. I would rather publish a dull palette honestly labelled `unparsed`
-than a confident one from a structure that was not there — and since the parse type ships as an
-intermediate product (§8), a census can separate "the parse failed" from "the parse succeeded and the
-reading was wrong".
+modes by area, ordered by luminance, under the same representative rule and contract constraints. Dull,
+stable, valid. I would rather publish a dull palette honestly labelled `unparsed` than a confident one
+from a structure that was not there — and since the parse type ships as an intermediate product (§8), a
+census can separate "the parse failed" from "the parse succeeded and the reading was wrong".
 
 **Collapses are structural events, not fallbacks.** `surface` collapses to `background` exactly when
 the carve found one field zone and no non-field node is distinct from it above the bar; `accent`
-collapses to `foreground` when no mark survives distinct from the foreground above the bar. Both are
-exact hex equality with the flag set. A collapsed surface makes both ramp ends identical and so forbids
-a gradient, which the parse gets right for free: a single field zone that is a progression does not
+collapses to `foreground` when no mark survives distinct from the foreground. Both are exact hex
+equality with the flag set. A collapsed surface makes both ramp ends identical and so forbids a
+gradient, which the parse gets right for free: a single field zone that is a progression does not
 collapse.
 
 The **escape** has one door: no node's representative can serve as a text colour at all — every
 candidate is within the bar of the background — and pure black or white is genuinely absent from the
-artwork. Then publish the absent literal at `foreground`, collapse `accent`, declare it. A derived
+artwork. Publish the absent literal at `foreground`, collapse `accent`, declare it. Derived
 consequence: an escape at `background` implies `surface` collapsed implies no gradient, so the escape
 and the ramp are mutually exclusive by construction.
 
@@ -216,7 +210,7 @@ artwork does not contain and would either violate invariant 2 or launder itself 
 The parse is what makes a content-derived matte computable at all. **Colour-vision deficiency:** no
 diagnostic, no new axis. The contract already denies the foreground any chromatic rescue, so text
 legibility is luminance-carried and CVD-safe by construction, and here the accent is a *spatial* object
-found by shape as much as by hue. The contract has made the choice.
+found by shape as much as by hue.
 
 ## 4. Free parameters
 
@@ -224,10 +218,9 @@ Independent decisions a human must make for the *paradigm* to be specified. Five
 inherited from quantities the campaign has already anchored and three are mine.
 
 1. **The same-colour ruler** — α for connectivity, the adequacy bar for every model, the indifference
-   band in every order, and the radius of the representative's density mode. *Anchor:* already
+   band in every order, the radius of the representative's density mode. *Anchor:* already
    reviewer-calibrated and frozen, regionally. Inherited — but load-bearing here in a way it is not
    elsewhere, so enforcing the direction-aware challenger would change my *parse*, not only my checks.
-   I depend on the ruler's shape, not its digits.
 2. **The structural area floor**, below which a node is grain. Scale-free. *Anchor:* the smallest
    region whose colour the reviewer has ever endorsed — computable at dev time by running the parse
    over the legacy endorsements and taking the area-fraction distribution of the nodes whose
@@ -247,7 +240,6 @@ inherited from quantities the campaign has already anchored and three are mine.
 Deliberately *not* parameters: every role order (lexicographic, no weights); the gradient boolean (a
 model-adequacy outcome); collapse conditions (bar equality); the escape (contract-defined); the
 contrast floors (contract user parameters with measured ε); tie-breaks (lexicographic on the triple).
-I claim no hidden weights in the assignment stage, and the honesty scanner would catch me lying.
 
 ## 5. Cost
 
@@ -259,22 +251,21 @@ Nothing is super-linear: the hierarchy's edge ordering is a counting sort into b
 comparison sort, and the one re-entry (§2.3) at worst doubles the carve, not the run.
 
 On a typical square cover this lands in the **tens of milliseconds**, single-threaded, with the JPEG
-decode a meaningful share; on the largest renditions, low hundreds. The brief's bracket asks nothing
-of cheap plain code and this sits two orders of magnitude below the ~6.2 s cold SAM figure, so I owe
-no cost defence and want none: **I am not asking for the model exception.** Condition 4 requires that
-plain-code methods be exhausted, and this proposal is a claim that they are not remotely exhausted —
-that a morphological nesting hierarchy plus a stroke-width mark detector recovers most of what a
-segmentation model would, with determinism that is a property of the algorithm rather than a
-measurement of a pinned stack. If this arm is prototyped and *fails*, that failure is itself evidence
-for condition 4, and the next proposal reaching for runtime masking could cite it.
+decode a meaningful share; on the largest renditions, low hundreds. That sits two orders of magnitude
+below the ~6.2 s cold SAM figure, so I owe no cost defence and want none: **I am not asking for the
+model exception.** Condition 4 requires that plain-code methods be exhausted, and this proposal claims
+they are not remotely exhausted — that a morphological nesting hierarchy plus a stroke-width mark
+detector recovers most of what a segmentation model would, with determinism that is a property of the
+algorithm rather than a measurement of a pinned stack. If this arm is prototyped and *fails*, that
+failure is itself the evidence condition 4 asks for.
 
 ## 6. Build cost
 
-A **walking skeleton** — decode, OKLab, the α-hierarchy, the border carve, flat-field typing, the
+A **walking skeleton** — decode, OKLab, the α-hierarchy, the carve, flat-field typing, the
 representative rule, roles by the degenerate branch, contract emission with collapses — is about three
 days and already emits contract-valid palettes for the flat-field stratum. Worth naming, because its
-robustness numbers are measurable before any of the interesting parts exist, and those parts should
-improve *quality* without touching *stability*.
+robustness numbers are measurable before the interesting parts exist, and those parts should improve
+*quality* without touching *stability*.
 
 Beyond that: attribute accumulation and grain folding is several days and the piece most likely to
 hide a determinism bug; field model fitting is about a day; marks (components, distance transform,
@@ -287,23 +278,22 @@ skeleton at day three, first robustness reading at day four.
 ## 7. Expected failures and falsifier
 
 **Expected bad at:** photographic and full-scene covers, where no field exists, the parse declares
-`none`, and the degenerate branch produces a valid but unremarkable palette — my largest expected
-bucket of mediocre-but-not-wrong results. **Dark, near-black artwork**, where one 8-bit step is a large
-OKLab step and the bar is tightest: α-connectivity is genuinely fragile there, and I expect the dark
-stratum to be my worst robustness cell, not my best. **Heavy grain and halftone**, where quasi-flat
-zones shatter and the area floor does all the work. **Artwork whose own type is deliberately
-illegible** — grunge and metal logos — where "the designer already solved it" misfires and yields a
-foreground faithful to the artwork and useless as UI text, which the default contrast floor will not
-catch.
+`none`, and the degenerate branch gives a valid but unremarkable palette — my largest expected bucket
+of mediocre-but-not-wrong results. **Dark, near-black artwork**, where one 8-bit step is a large OKLab
+step and the bar is tightest: α-connectivity is genuinely fragile there, and I expect the dark stratum
+to be my worst robustness cell, not my best. **Heavy grain and halftone**, where quasi-flat zones
+shatter and the area floor does all the work. **Deliberately illegible type** — grunge and metal
+logos — where "the designer already solved it" misfires and yields a foreground faithful to the artwork
+and useless as UI text, which the default contrast floor will not catch.
 
 **Falsifier for the paradigm, not its tuning:** run the parse over the endorsed legacy set, hand the
 *node representatives* to adjudication as `availableColors`, and read reachability. If a large share of
 endorsed palettes are unreachable from the parse's nodes **while remaining reachable from an
 unstructured whole-image colour set**, the endorsed colours do not live in spatial parts and §1's
 premise is false — no re-parsing fixes that. Second, independent: if the gradient boolean derived from
-field-model adequacy agrees with the reviewer's gradient endorsements at about chance, then "a gradient
-is a field with no single-colour representative and an adequate progression" is the wrong definition,
-and the ramp half of the contract needs a different paradigm even if the flat half survives.
+field-model adequacy agrees with the reviewer's gradient endorsements at about chance, then the
+definition in §2.3 is wrong, and the ramp half of the contract needs a different paradigm even if the
+flat half survives.
 
 ## 8. Exposable intermediate work
 
@@ -321,9 +311,8 @@ Everything before the palette — and mostly *pictures*, which is what the human
   check wants, so the ceiling question is answerable on day one.
 - **The excursion trace:** the rendered ramp against the artwork's occupied colours — the evidence any
   third stop must carry.
-- **The parse-type census:** one label per artwork, letting a corpus run separate "the parse failed"
-  from "the parse succeeded and the reading was wrong". A system that cannot tell those apart cannot
-  be steered.
+- **The parse-type census:** one label per artwork, separating "the parse failed" from "the parse
+  succeeded and the reading was wrong". A system that cannot tell those apart cannot be steered.
 
 ## 9. What I asked for
 
@@ -358,4 +347,4 @@ to 0.023. Two rulers govern one pair and neither text says which binds; I procee
 reading that both hold. Second, the perception verdict's challenger applies a `dark-neutral`-derived
 bar to pairs in every region, which the same document warns against twice. Nothing turns on it while
 it is report-only, but if the direction-aware shape is ever enforced my α-connectivity inherits that
-extrapolation directly, and would need the second region the verdict says is owed.
+extrapolation directly.
