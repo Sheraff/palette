@@ -67,6 +67,16 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    against **both snapped field ends** — local-field distinctness selects the mark, published-pair
    distinctness is a hard feasibility constraint (arm-f §2.7: roles assigned jointly with
    feasibility).
+   *Ruling 2026-08-04, round-1 evidence (batch phase2-cal-001, items 3 and 7 — fg/accent published
+   visually identical):* ALL distinctness and feasibility comparisons run on the **published
+   representatives**, never on cluster centres. Centres select; representatives publish; the
+   contract judges published pairs.
+   *Ruling 2026-08-04, round-1 evidence (item 1 UNACCEPTABLE — "foreground barely registers"):*
+   foreground selection is re-ranked: among clusters above the negligible-mass floor and feasible
+   per the above, **argmax of min|APCA| over the whole rendered ramp** (the contract's own pair
+   metric; P3 converged on the same move independently); overlay mass becomes tie-break only.
+   arm-f's mass-leads rationale is explicitly superseded by reviewer evidence on its motivating
+   case.
    *Ruling 2026-08-04 (I3.foreground-accent-not-separated ×5):* the inherited
    `FOREGROUND_ACCENT_SEPARATION_DISTANCE = 0.07444` is **not** adopted as a collapse guard — the
    reviewer ruled fg/accent "different or collapsed" is decided by the calibrated formula
@@ -76,6 +86,26 @@ frozen; change only via orchestrator). Contract imports from `../../../src/contr
    (|ΔL|, √(ΔC²+ΔH²)) of displacement from local field; winner = max overlay mass on the front
    (arm-f-r3 §2.5 — a direction, never a coefficient). `accentChromaOnly` flag (diagnostics) when
    the winner's |ΔL| < the pair's bar. No candidate ⇒ accent collapses to foreground exactly.
+   *Ruling 2026-08-04, round-1 evidence (items 3, 5, 6 — mass-heavy dull clusters won the front
+   while the artwork's vivid colours lost; reviewer principle "the palette must reflect the
+   artwork"):* the winner on the Pareto front is no longer max overlay mass; it is **argmax of the
+   minimum OKLab distance to everything already published** ({foreground, both field ends}), tie by
+   overlay mass, then packed int. One measured quantity, no exchange rates. Retreat covers get
+   their colour richness back through this same rule — no separate retreat mechanism.
+   *Rulings 2026-08-04 (v0.3, from pass-5 measurement + round-1 notes):*
+   (a) **Accent feasibility includes the contract's accent contrast floor over the published
+   ramp** (the resolved `minAccentContrast`, same machinery as foreground's text floor — no new
+   constant). Evidence: v0.2 published accent `#00000b` on background `#010000` (|raw| 0.615, two
+   I4 failures); the reviewer's whole round-1 lesson is that legibility outranks distance. No
+   surviving candidate ⇒ declared collapse to foreground.
+   (b) **The Pareto front is dropped.** Front membership — displacement vs local field — excluded
+   the artwork's white on `2376a6b67d` (min-dist 0.2181, largest in a 223-cluster set) because
+   displacement measures departure magnitude from the ground while every reviewer accent note
+   (white / pink / brown-or-green) asks for standing apart from everything published. Selection is
+   now the single criterion: among feasible candidates (contrast floor, representative-distinct,
+   mass floor), argmax min OKLab distance to {foreground, background, surface}; tie by overlay
+   mass, then packed int. arm-f-r3's front honoured the perception-4 direction without a
+   coefficient; the min-dist criterion needs neither. `accentChromaOnly` stays as a diagnostic.
 9. **No-field detector** (obligation #1, built in v0, never deferred) — verdict `noField` when
    `fieldExplainedFraction < 0.5`, where `fieldExplainedFraction` = fraction of full-res pixels
    whose residual norm against the kept field is below 4 × `POOLED_SAME_COLOR_BAR`. Principle: **a

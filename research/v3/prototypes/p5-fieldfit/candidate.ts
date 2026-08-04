@@ -105,7 +105,7 @@ import type { Diagnostics, Inventory } from "./src/types.ts"
 export const candidateId = "p5-fieldfit"
 
 /** `PaletteMetadata.algorithmVersion`. A label, not a measurement — the cache keys on source hashes. */
-export const ALGORITHM_VERSION = "p5-fieldfit-0.1.0"
+export const ALGORITHM_VERSION = "p5-fieldfit-0.2.0"
 
 /** `[INHERITED]` — the pinned decoder, and `PHASE_0_DECISIONS.md` §1's no-resample rule, stated. */
 export const PREPROCESSING_VERSION = "sharp-0.33.5/srgb/no-resample"
@@ -250,8 +250,24 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 		}
 	}
 
-	// --- the overlay, against the ends actually published ---------------------------------------------
-	const overlay = readOverlay(fit, raster, inventory, contrast, [backgroundSnap.lab, surfaceLab])
+	// --- the published ramp ---------------------------------------------------------------------------
+	//
+	// Built before the overlay is read, not after, because decision 7's round-1 ruling ranks
+	// foreground candidates by their minimum contrast **over this ramp**. Every colour in it is final
+	// by this point: the ends are the snapped, collapse-resolved roles, and the interior stop has
+	// already been re-earned. When no gradient is published the ramp is still the two ends — that is
+	// the field a viewer sees, whether or not it is drawn as a ramp, and on a collapsed surface the
+	// two ends are the same colour, which samples as a constant.
+	const stops: GradientStop[] = [
+		{ color: background, position: 0 },
+		...(publishGradient && interiorStop
+			? [{ color: interiorStop.color, position: interiorStop.position }]
+			: []),
+		{ color: surface, position: 1 },
+	]
+
+	// --- the overlay, against the field actually published ---------------------------------------------
+	const overlay = readOverlay(fit, raster, inventory, contrast, stops)
 
 	// --- foreground, and decision 10's escape ----------------------------------------------------------
 	let foreground: PaletteColor
@@ -280,14 +296,11 @@ export async function analyzeImage(imagePath: string): Promise<Analysis> {
 	const accent = accentCollapses ? foreground : accentCandidate
 
 	// --- assembly --------------------------------------------------------------------------------------
-	const stops: GradientStop[] = publishGradient
-		? [
-			{ color: background, position: 0 },
-			...(interiorStop ? [{ color: interiorStop.color, position: interiorStop.position }] : []),
-			{ color: surface, position: 1 },
-		]
-		: []
-
+	//
+	// `stops` was built above, for the overlay. It is the same array the palette publishes when
+	// `publishGradient` holds; when it does not, it was only ever a measurement of the field and the
+	// palette says `gradient: null`.
+	//
 	// Geometry is published only because the fit computed the direction anyway (`GradientGeometry`:
 	// "never computed for the sake of the output"). Normalized position runs left→right and top→down,
 	// so degrees clockwise from the positive x axis is `atan2(dy, dx)` unchanged.

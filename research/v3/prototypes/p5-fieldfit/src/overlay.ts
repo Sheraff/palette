@@ -6,20 +6,31 @@
  * shape. A pixel's contribution to the overlay is `1 − w(x)` and nothing else.
  *
  * Implements SPEC decisions 6 (bar-neighbourhood agglomeration), 7 (foreground), 8 (accent Pareto
- * front) and the foreground half of 10 (escape). Design sources: `phase-1/proposals/arm-f-r3.md`
+ * front) and the foreground half of 10 (escape), **as amended by the round-1 rulings of
+ * 2026-08-04**: comparisons on published representatives, the foreground ranked by minimum |raw
+ * APCA| over the rendered ramp, and the accent's front winner ranked by distance from everything
+ * already published. Design sources: `phase-1/proposals/arm-f-r3.md`
  * §2.5 (overlay mass, the Pareto front, `accentChromaOnly`) and `arm-e-r3.md` §2.4
  * (bar-neighbourhood agglomeration, descending-mass order, packed-int tie-break) — **§2.4 only**.
  * Arm E's five-level lexicographic role ranking is excluded by SPEC decision 12 and is not here.
  *
  * ## Three choices this file makes that the spec left open, stated rather than buried
  *
- * 1. **A cluster's colour is its overlay-mass-weighted OKLab centre, not its representative
- *    triple.** Every colour comparison in this file (distinctness against the local field, against
- *    the foreground, against the field ends) and every delta is measured on that centre. The
- *    representative — the highest-overlay-mass member triple — is the *exact source pixel* handle
- *    that `candidate.ts` publishes, because the contract only ever publishes exact pixels. The two
- *    are within a bar of each other by construction, so nothing turns on the choice; it is written
- *    down because it is the kind of thing that quietly diverges between modules otherwise.
+ * 1. **Centres select; representatives publish and are judged.** A cluster has two colours: its
+ *    overlay-mass-weighted OKLab centre, and its representative — the highest-overlay-mass member
+ *    triple, which is an exact source pixel and therefore the one `candidate.ts` can publish.
+ *
+ *    Until round 1 every comparison here ran on the centre, on the reasoning that the two are within
+ *    a bar of each other so nothing turns on the choice. **Round 1 refuted that**: `#000000` and
+ *    `#000009` were published as foreground and accent on `2376a6b67d` because their centres were a
+ *    bar apart while their representatives were not. Decision 7's ruling of 2026-08-04 is that
+ *    **every distinctness and feasibility comparison runs on the representative** — the contract
+ *    judges published pairs, so this module must judge the same pairs.
+ *
+ *    Centres survive where the question is genuinely about the mark rather than the palette: the
+ *    per-cluster deltas (`deltaL`, `deltaC`, `deltaH`) and hence Pareto-front membership, which ask
+ *    how a mark departs from the field beneath it. Every gate and every ranking uses the
+ *    representative.
  * 2. **When a triple is inside the bar of more than one cluster, it joins the nearest one**
  *    (OKLab distance to the running centre; ties to the cluster created first, and creation order
  *    is itself total). Arm E §2.4 says "merge into an existing cluster if it lies within the bar of
@@ -33,7 +44,7 @@
  */
 
 import {
-	apcaRaw,
+	colorDistance,
 	colorFromRgb,
 	okLabDistance,
 	okLabToRgb,
@@ -42,7 +53,9 @@ import {
 	sameColorBar,
 } from "../../../src/contract/color.ts"
 import { decompose } from "../../../src/contract/perception-model-spaces.ts"
+import { minRawContrastOverRamp } from "../../../src/contract/ramp.ts"
 import type {
+	GradientStop,
 	OkLab,
 	PaletteColor,
 	ResolvedContrastFloors,
@@ -76,6 +89,23 @@ import type {
  * role, that is a finding and belongs in diagnostics.
  */
 export const NEGLIGIBLE_OVERLAY_MASS_FRACTION = 1e-4
+
+/**
+ * Ramp sampling density for **selection**, which is not validation.
+ *
+ * `[UNCALIBRATED]` — a compute budget, not a perceptual quantity, and it is deliberately far below
+ * the contract's own `RAMP_SAMPLES_PER_SEGMENT` (2048) / `RAMP_REFINEMENT_SAMPLES` (4096).
+ * `minRawContrastOverRamp` is called once per surviving cluster here, and a cover with two hundred
+ * clusters would otherwise pay two million APCA evaluations to rank colours it is going to rank the
+ * same way at a hundredth of the density: the minimum of |raw APCA| along a two-segment OKLab
+ * interpolation is smooth, and the refinement pass around the coarse winner recovers the location.
+ *
+ * Nothing published depends on this. Invariant 4 re-measures the winner at full density, and if the
+ * two ever disagreed the invariant's number is the one that counts — this only decides which cluster
+ * is *offered* to it.
+ */
+const SELECTION_RAMP_SAMPLES_PER_SEGMENT = 64
+const SELECTION_RAMP_REFINEMENT_SAMPLES = 64
 
 // ---------------------------------------------------------------------------------------------
 // Small shared helpers
@@ -310,26 +340,26 @@ function readCluster(cluster: Agglomerate, fit: FieldFit): OverlayCluster {
 // ---------------------------------------------------------------------------------------------
 
 /**
- * Does this cluster clear the caller's contrast floor against the field beneath it?
+ * **The contrast floor moved onto the ramp, and became the ranking as well as the filter.**
+ *
+ * Until round 1 this module asked one `apcaRaw` question — cluster centre against the local field —
+ * and used it only as a pass/fail gate, ranking by overlay mass. Decision 7's round-1 ruling replaced
+ * the ranking with `min|raw APCA|` over the whole published ramp, and once that number is being
+ * computed there is no reason for the gate to be a *different* number: `readOverlay` now filters and
+ * ranks on the same quantity, via the contract's own `minRawContrastOverRamp`.
  *
  * The floor is `ResolvedContrastFloors.minTextContrast.effectiveRawMagnitude`, which is
- * `max(lcFloorToRawMagnitude(requestedLc), EPSILON_TEXT_RAW)` — and `EPSILON_TEXT_RAW` is **2.5,
- * not 0**, so the default floor is nonzero and APCA is genuinely evaluated. It is one `apcaRaw`
- * call per cluster, so there is no cost worth avoiding.
+ * `max(lcFloorToRawMagnitude(requestedLc), EPSILON_TEXT_RAW)` — and `EPSILON_TEXT_RAW` is **2.5, not
+ * 0**, so the default floor is nonzero and APCA is genuinely evaluated. What it filters is
+ * nonetheless close to nothing, by construction: two *identical* colours cannot exceed |raw| =
+ * 1.98152 (`APCA_RAW_IDENTICAL_CEILING`), so 2.5 rejects only pairs within a hair of identical, which
+ * the distinctness tests have already rejected. SPEC decision 7's "default filters nothing" is
+ * therefore true in practice rather than by definition, and this is the sentence that says which.
  *
- * What the default floor filters is nonetheless close to nothing, by construction: two *identical*
- * colours cannot exceed |raw| = 1.98152 (`APCA_RAW_IDENTICAL_CEILING`), so 2.5 rejects only pairs
- * that are within a hair of identical — which the distinctness test above it has already rejected.
- * SPEC decision 7's "default filters nothing" is therefore true in practice rather than by
- * definition, and this is the sentence that says which.
+ * Two consequences of measuring over the ramp rather than against the local field, both intended:
+ * a mark that is legible where it sits but would vanish against the *other* end of a gradient is now
+ * ranked by its worst case, and on a flat field the two measurements coincide.
  */
-function clearsContrastFloor(cluster: OverlayCluster, floorRawMagnitude: number): boolean {
-	const text = okLabToRgb(cluster.lab)
-	const field = okLabToRgb(cluster.localField)
-	const raw = apcaRaw(text, field)
-	if (!Number.isFinite(raw)) return false
-	return Math.abs(raw) >= floorRawMagnitude
-}
 
 // ---------------------------------------------------------------------------------------------
 // SPEC decision 8 — accent
@@ -337,10 +367,16 @@ function clearsContrastFloor(cluster: OverlayCluster, floorRawMagnitude: number)
 
 type AccentCandidate = {
 	cluster: OverlayCluster
-	/** Lightness departure from the local field. */
+	/** Lightness departure from the local field. Front membership only. */
 	lightness: number
-	/** Chromatic departure from the local field, √(ΔC² + ΔH²). */
+	/** Chromatic departure from the local field, √(ΔC² + ΔH²). Front membership only. */
 	chromatic: number
+	/**
+	 * Minimum OKLab distance from this candidate's **published** colour to everything already
+	 * published — the foreground and both field ends. The winner on the front maximizes it
+	 * (decision 8's round-1 ruling); it plays no part in front membership.
+	 */
+	separation: number
 }
 
 /**
@@ -388,8 +424,11 @@ export function readOverlay(
 	raster: DecodedRaster,
 	inventory: Inventory,
 	contrast: ResolvedContrastFloors,
-	fieldEnds: readonly [OkLab, OkLab],
+	publishedRamp: readonly GradientStop[],
 ): OverlayReading {
+	if (publishedRamp.length < 2) {
+		throw new RangeError(`readOverlay needs at least two published stops, got ${publishedRamp.length}`)
+	}
 	const { triples, totalMass } = accumulateOverlayMass(fit, raster, inventory)
 
 	if (totalMass <= 0) {
@@ -411,56 +450,103 @@ export function readOverlay(
 			first.representative - second.representative
 		)
 
-	// --- foreground (SPEC decision 7) ---
-	//
-	// Two different questions, and decision 7's 2026-08-04 ruling is that both must be answered.
-	//
-	//  - *Which mark is the foreground* is a question about the local field: a mark is text because it
-	//    departs from whatever the field is **beneath it**, and on a fitted field that is a different
-	//    colour in different places. This is the selector, and it is measured on cluster centres.
-	//  - *May this mark be published as the foreground* is a question about the contract, which knows
-	//    nothing about local fields: invariant 3 compares `roles.foreground` against the published
-	//    `roles.background` and `roles.surface`, globally. On demo-20 the gap between the two
-	//    questions was ten `I3.pair-not-distinct` rows — clusters legitimately distinct from the field
-	//    under them, landing within the bar of the *snapped* end the palette went on to publish.
-	//
-	// So the ends are a hard feasibility constraint, and it is measured the way the contract measures
-	// it: on the **published** colours. The cluster's published colour is its representative triple
-	// (header choice 1), not its centre, and `fieldEnds` are the snapped ends' exact triple labs, so
-	// both sides of this comparison are the 8-bit colours that will actually appear in the palette.
-	const textFloor = contrast.minTextContrast.effectiveRawMagnitude
-	const publishedEnds = [paletteColorOfLab(fieldEnds[0]), paletteColorOfLab(fieldEnds[1])] as const
-	let foreground: OverlayCluster | null = null
-	for (const cluster of clusters) {
+	// The published field, as the contract will see it: the ramp's ends are `roles.background` and
+	// `roles.surface` (the endpoint ruling), and the ramp itself is what a viewer actually looks at.
+	const publishedEnds = [
+		publishedRamp[0].color,
+		publishedRamp[publishedRamp.length - 1].color,
+	] as const
+	const published = new Map<OverlayCluster, PaletteColor>(
+		clusters.map((cluster) => [cluster, colorFromRgb(unpackRgb(cluster.representative))]),
+	)
+
+	/**
+	 * Feasible = publishable. Decision 7's round-1 ruling: every distinctness comparison runs on the
+	 * **representative**, because that is the colour that goes in the palette and the colour the
+	 * contract judges. Round 1 caught the cost of not doing this — `#000000` and `#000009` published
+	 * as foreground and accent on `2376a6b67d`, two clusters whose *centres* were a bar apart.
+	 */
+	const feasible = clusters.filter((cluster) => {
+		const color = published.get(cluster)!
 		// Distinct from the field *at its own mean position* — the whole point of a fitted field is
-		// that "the background" is a different colour in different places.
-		if (sameColorLab(cluster.lab, cluster.localField)) continue
-		const published = colorFromRgb(unpackRgb(cluster.representative))
-		if (publishedEnds.some((end) => sameColor(published, end))) continue
-		if (!clearsContrastFloor(cluster, textFloor)) continue
-		foreground = cluster // clusters are already in descending-mass order
-		break
+		// that "the background" is a different colour in different places. Measured on the
+		// representative too, per the ruling's "ALL comparisons".
+		if (sameColorLab(rgbToOkLab(color.rgb), cluster.localField)) return false
+		return !publishedEnds.some((end) => sameColor(color, end))
+	})
+
+	// --- foreground (SPEC decision 7, re-ranked by round-1 evidence) ------------------------------
+	//
+	// Was: max overlay mass among the feasible. Round 1 graded item 1 UNACCEPTABLE — *"foreground
+	// barely registers"* — because the heaviest mark on a cover is routinely a low-contrast one, and
+	// mass answers "how much of this colour is there", not "can this be read".
+	//
+	// Now: **argmax of min|raw APCA| over the whole rendered ramp**, which is the contract's own
+	// legibility question (invariant 4 enforces a floor on exactly this quantity, over exactly this
+	// ramp) asked as a preference instead of a threshold. The same number therefore filters and ranks:
+	// a cluster below the caller's floor is not merely last, it is not a foreground at all. Mass
+	// survives as the tie-break, then the packed integer, so the order is still total.
+	const textFloor = contrast.minTextContrast.effectiveRawMagnitude
+	const legibility = new Map<OverlayCluster, number>()
+	for (const cluster of feasible) {
+		const extremum = minRawContrastOverRamp(
+			published.get(cluster)!,
+			publishedRamp,
+			SELECTION_RAMP_SAMPLES_PER_SEGMENT,
+			SELECTION_RAMP_REFINEMENT_SAMPLES,
+		)
+		// A null extremum needs a malformed ramp, and a non-finite raw needs a colour APCA cannot
+		// score. Neither is a foreground; both are invariant 1's problem, not this module's.
+		const raw = extremum === null || !Number.isFinite(extremum.raw) ? 0 : Math.abs(extremum.raw)
+		legibility.set(cluster, raw)
+	}
+
+	let foreground: OverlayCluster | null = null
+	let bestLegibility = -1
+	for (const cluster of feasible) {
+		const raw = legibility.get(cluster)!
+		if (raw < textFloor) continue
+		if (foreground === null || raw > bestLegibility) {
+			foreground = cluster
+			bestLegibility = raw
+			continue
+		}
+		if (raw !== bestLegibility) continue
+		// `clusters` is in descending-mass, ascending-packed order and `feasible` preserves it, so the
+		// incumbent already wins both tie-breaks. Nothing to do — stated so the omission reads as a
+		// decision rather than a missing branch.
 	}
 
 	if (foreground === null) {
-		// No cluster is separated from its local field by the bar: SPEC decision 10's escape. The
-		// escape colour itself is assembled by `candidate.ts`, which owns the inventory-absence
-		// check; all this module can honestly say is that the overlay offers nothing.
+		// Nothing publishable and legible: SPEC decision 10's escape. The escape colour itself is
+		// assembled by `candidate.ts`, which owns the inventory-absence check; all this module can
+		// honestly say is that the overlay offers nothing.
 		return { clusters, foreground: null, accent: null, accentChromaOnly: false }
 	}
 
-	// --- accent (SPEC decision 8) ---
+	// --- accent (SPEC decision 8, re-ranked by round-1 evidence) ----------------------------------
 	const resolvedForeground = foreground
+	const foregroundColor = published.get(resolvedForeground)!
+	// Everything already published, which is what the accent has to be a *different colour from* and
+	// what it is now ranked by its distance to.
+	const alreadyPublished = [foregroundColor, ...publishedEnds] as const
+
 	const candidates: AccentCandidate[] = []
-	for (const cluster of clusters) {
+	for (const cluster of feasible) {
 		if (cluster === resolvedForeground) continue
-		if (sameColorLab(cluster.lab, resolvedForeground.lab)) continue
-		if (sameColorLab(cluster.lab, fieldEnds[0])) continue
-		if (sameColorLab(cluster.lab, fieldEnds[1])) continue
+		const color = published.get(cluster)!
+		if (sameColor(color, foregroundColor)) continue
+		// Distinctness from the ends was already established by `feasible`.
 		candidates.push({
 			cluster,
+			// Front membership is unchanged and stays on the centres: it is a statement about how the
+			// mark departs from the field beneath it, which is a selection question, not a published
+			// pair. Only the distinctness tests and the winner's ranking moved to representatives.
 			lightness: Math.abs(cluster.deltaL),
 			chromatic: Math.hypot(cluster.deltaC, cluster.deltaH),
+			separation: Math.min(
+				...alreadyPublished.map((other) => colorDistance(color, other)),
+			),
 		})
 	}
 
@@ -468,13 +554,21 @@ export function readOverlay(
 		return { clusters, foreground: resolvedForeground, accent: null, accentChromaOnly: false }
 	}
 
+	// Was: max overlay mass on the front. Round 1 graded items 3, 5 and 6 down for the same reason —
+	// mass-heavy dull clusters won the front while the artwork's vivid colours lost — against the
+	// reviewer's principle that *the palette must reflect the artwork*. Now the winner is the
+	// candidate that is **furthest from everything already published**, measured as the minimum OKLab
+	// distance to the foreground and both ends. One measured quantity, no exchange rates; mass and
+	// the packed integer remain the tie-breaks.
 	const front = paretoFront(candidates)
 	let winner = front[0]!
 	for (const candidate of front) {
 		if (
-			candidate.cluster.overlayMass > winner.cluster.overlayMass ||
-			(candidate.cluster.overlayMass === winner.cluster.overlayMass &&
-				candidate.cluster.representative < winner.cluster.representative)
+			candidate.separation > winner.separation ||
+			(candidate.separation === winner.separation &&
+				(candidate.cluster.overlayMass > winner.cluster.overlayMass ||
+					(candidate.cluster.overlayMass === winner.cluster.overlayMass &&
+						candidate.cluster.representative < winner.cluster.representative)))
 		) winner = candidate
 	}
 
@@ -482,7 +576,7 @@ export function readOverlay(
 	// only in chroma/hue, by less than the pair's own bar in lightness. Diagnostics, never a veto —
 	// vetoing it would be the coefficient the front exists to avoid.
 	const accentChromaOnly = winner.lightness < sameColorBar(
-		paletteColorOfLab(winner.cluster.lab),
+		published.get(winner.cluster)!,
 		paletteColorOfLab(winner.cluster.localField),
 	)
 

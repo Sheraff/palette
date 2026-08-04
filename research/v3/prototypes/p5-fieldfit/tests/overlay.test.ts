@@ -17,17 +17,20 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import {
+	apcaRaw,
+	colorDistance,
 	colorFromRgb,
 	okLabDistance,
 	okLabToRgb,
 	rgbToOkLab,
+	sameColor,
 	sameColorBar,
 } from "../../../src/contract/color.ts"
 import {
 	DEFAULT_CONTRAST_PARAMETERS,
 	resolveContrastParameters,
 } from "../../../src/contract/invariants.ts"
-import type { OkLab, Rgb8 } from "../../../src/contract/types.ts"
+import type { GradientStop, OkLab, Rgb8 } from "../../../src/contract/types.ts"
 import { normalizedX, normalizedY, packRgb, unpackRgb } from "../src/decode.ts"
 import { readOverlay } from "../src/overlay.ts"
 import type { DecodedRaster, FieldFit, Inventory, TripleStats } from "../src/types.ts"
@@ -135,7 +138,24 @@ const RAMP_END = rgbToOkLab([120, 120, 120])
 function rampField(x: number): OkLab {
 	return lerpLab(RAMP_START, RAMP_END, (x + 1) / 2)
 }
-const RAMP_ENDS: readonly [OkLab, OkLab] = [rampField(-1), rampField(1)]
+/**
+ * The **published ramp** `readOverlay` now takes, in place of the OKLab end pair it took before
+ * decision 7's round-1 ruling.
+ *
+ * The change is not cosmetic. The module used to receive continuous field values and quantize them
+ * itself to compare against; it now receives the two `PaletteColor`s the palette will actually
+ * publish, plus whatever interior stop the gradient carries, because both the feasibility tests and
+ * the foreground's new min-|APCA|-over-the-ramp ranking are statements about published colours.
+ * These helpers build that ramp from the end colours a scene was constructed around.
+ */
+function rampOf(...ends: readonly OkLab[]): GradientStop[] {
+	return ends.map((lab, index) => ({
+		color: colorFromRgb(quantize(lab)),
+		position: index / (ends.length - 1),
+	}))
+}
+
+const RAMP_STOPS: readonly GradientStop[] = rampOf(rampField(-1), rampField(1))
 
 function inRectangle(column: number, row: number, x0: number, x1: number, y0: number, y1: number) {
 	return column >= x0 && column <= x1 && row >= y0 && row <= y1
@@ -167,7 +187,7 @@ test("text on a ramp: the text colour is foreground and its local field is the r
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		RAMP_ENDS,
+		RAMP_STOPS,
 	)
 
 	// The field pixels carry weight 1, so they contribute no overlay mass at all: the only thing
@@ -236,14 +256,14 @@ test("dither idempotence: ±1 LSB on half a cluster's mass changes no choice", (
 		base.raster,
 		base.inventory,
 		DEFAULT_CONTRAST,
-		RAMP_ENDS,
+		RAMP_STOPS,
 	)
 	const ditheredReading = readOverlay(
 		dithered.fit,
 		dithered.raster,
 		dithered.inventory,
 		DEFAULT_CONTRAST,
-		RAMP_ENDS,
+		RAMP_STOPS,
 	)
 
 	// The dither really did split half the text mass into a second exact triple.
@@ -312,7 +332,8 @@ const FLAT_FIELD_RGB: Rgb8 = (() => {
 	return best
 })()
 const FLAT_FIELD_LAB = rgbToOkLab(FLAT_FIELD_RGB)
-const FLAT_ENDS: readonly [OkLab, OkLab] = [FLAT_FIELD_LAB, FLAT_FIELD_LAB]
+/** A collapsed field: both ends are the same published colour, so the ramp samples as a constant. */
+const FLAT_STOPS: readonly GradientStop[] = rampOf(FLAT_FIELD_LAB, FLAT_FIELD_LAB)
 
 /**
  * The lightness candidate. Deliberately **not** a pure grey: two neutrals differ in OKLab chroma
@@ -323,7 +344,11 @@ const FLAT_ENDS: readonly [OkLab, OkLab] = [FLAT_FIELD_LAB, FLAT_FIELD_LAB]
 const LIGHTNESS_ONLY: Rgb8 = [10, 10, 30]
 /** Dominated: strictly less lightness departure than `LIGHTNESS_ONLY` and strictly less chroma. */
 const DOMINATED: Rgb8 = [90, 90, 90]
-const FOREGROUND: Rgb8 = [0, 0, 200]
+/**
+ * A saturated blue patch, and the heaviest mark in the scene. Named for what it *is* rather than for
+ * the role it plays: before round 1 it won the foreground on mass alone, and it does not any more.
+ */
+const BLUE_MARK: Rgb8 = [0, 0, 200]
 
 function paretoScene(lightnessPatchSize: number): Scene {
 	const size = 20
@@ -333,7 +358,7 @@ function paretoScene(lightnessPatchSize: number): Scene {
 	const lightnessEnd = chromaEnd + lightnessPatchSize
 
 	const colourFor = (index: number): Rgb8 => {
-		if (index < foregroundEnd) return FOREGROUND
+		if (index < foregroundEnd) return BLUE_MARK
 		if (index < dominatedEnd) return DOMINATED
 		if (index < chromaEnd) return CHROMA_ONLY
 		if (index < lightnessEnd) return LIGHTNESS_ONLY
@@ -350,61 +375,210 @@ function paretoScene(lightnessPatchSize: number): Scene {
 	)
 }
 
-test("accent Pareto: the dominated candidate never wins, the front's heaviest member does", () => {
+/**
+ * **This scene's expected winners changed at round 1, and the change is the point.**
+ *
+ * The constants are untouched; only the rules moved. Under the pre-round-1 rules the foreground was
+ * the heaviest feasible cluster (`BLUE_MARK`, 40 px) and the accent was the heaviest member of the
+ * Pareto front (`CHROMA_ONLY`). Under decision 7's and 8's round-1 rulings the foreground is the
+ * *most legible* feasible cluster and the accent is the front member *furthest from everything
+ * already published*, and on this scene both answers move. The old expectations are asserted as
+ * losers below rather than deleted, so the test records the reversal instead of hiding it.
+ */
+test("accent Pareto: the dominated candidate never wins, and legibility outranks mass", () => {
 	const scene = paretoScene(3)
 	const reading = readOverlay(
 		scene.fit,
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		FLAT_ENDS,
+		FLAT_STOPS,
 	)
 
 	assert.equal(reading.clusters.length, 4)
-	assert.equal(reading.foreground?.representative, pack(FOREGROUND))
 
 	const byTriple = new Map(reading.clusters.map((cluster) => [cluster.representative, cluster]))
 	const dominated = byTriple.get(pack(DOMINATED))!
 	const lightness = byTriple.get(pack(LIGHTNESS_ONLY))!
 	const chroma = byTriple.get(pack(CHROMA_ONLY))!
+	const blue = byTriple.get(pack(BLUE_MARK))!
 
-	// The construction is what the test claims it is: `DOMINATED` really is dominated on both axes.
+	// --- the construction is still what the test claims it is ---
 	const axes = (cluster: typeof dominated) =>
 		[Math.abs(cluster.deltaL), Math.hypot(cluster.deltaC, cluster.deltaH)] as const
 	assert.ok(axes(lightness)[0] > axes(dominated)[0])
 	assert.ok(axes(lightness)[1] > axes(dominated)[1])
-	// ...and the front's two members dominate neither each other.
 	assert.ok(axes(chroma)[1] > axes(lightness)[1])
 	assert.ok(axes(lightness)[0] > axes(chroma)[0])
 
-	// It also carries the largest overlay mass of the three, so a mass-only rule would pick it.
-	assert.ok(dominated.overlayMass > chroma.overlayMass)
-	assert.ok(dominated.overlayMass > lightness.overlayMass)
-
-	// The front's heaviest member wins, and it is the chroma-only candidate.
-	assert.equal(reading.accent?.representative, pack(CHROMA_ONLY))
-	assert.notEqual(reading.accent?.representative, pack(DOMINATED))
-	assert.equal(reading.accentChromaOnly, true)
+	// --- foreground: legibility, not mass ---
+	// `BLUE_MARK` carries the most overlay mass and used to win on that alone; `LIGHTNESS_ONLY` is a
+	// three-pixel patch that is far more readable on this field, and now wins.
+	assert.ok(blue.overlayMass > lightness.overlayMass)
+	const rawAgainstField = (rgb: Rgb8) => Math.abs(apcaRaw(rgb, FLAT_FIELD_RGB))
 	assert.ok(
-		axes(chroma)[0] <
-			sameColorBar(colorFromRgb(CHROMA_ONLY), colorFromRgb(FLAT_FIELD_RGB)),
+		rawAgainstField(LIGHTNESS_ONLY) > rawAgainstField(BLUE_MARK),
+		"the fixture must make the small patch the more legible one",
 	)
+	assert.equal(reading.foreground?.representative, pack(LIGHTNESS_ONLY))
+
+	// `CHROMA_ONLY` sits below the text floor against this field (|raw| ≈ 2.29 < 2.5), so it is not a
+	// foreground at any mass — but it remains a perfectly good accent candidate, which is the whole
+	// reason the two roles are ranked by different quantities.
+	assert.ok(rawAgainstField(CHROMA_ONLY) < DEFAULT_CONTRAST.minTextContrast.effectiveRawMagnitude)
+
+	// --- accent: the dominated candidate still never wins ---
+	// With `LIGHTNESS_ONLY` promoted to foreground the front is `BLUE_MARK` alone: it dominates
+	// `DOMINATED` and `CHROMA_ONLY` on both axes. Mass would have picked it too; the point preserved
+	// here is only that the dominated candidate cannot win despite carrying more mass than the front.
+	assert.ok(dominated.overlayMass > chroma.overlayMass)
+	assert.equal(reading.accent?.representative, pack(BLUE_MARK))
+	assert.notEqual(reading.accent?.representative, pack(DOMINATED))
+	assert.equal(reading.accentChromaOnly, false)
 })
 
-test("accent Pareto: a heavier lightness candidate takes the front and clears the chroma-only flag", () => {
-	const scene = paretoScene(30)
+// ---------------------------------------------------------------------------------------------
+// 3b — the three round-1 regressions
+// ---------------------------------------------------------------------------------------------
+
+/** A flat-field scene from a per-index colour table; every listed pixel is a mark, the rest field. */
+function flatScene(size: number, field: Rgb8, marks: readonly (readonly [Rgb8, number])[]): Scene {
+	const table: Rgb8[] = []
+	for (const [rgb, count] of marks) for (let i = 0; i < count; i += 1) table.push(rgb)
+	const fieldLab = rgbToOkLab(field)
+	return buildScene(
+		size,
+		size,
+		(_column, _row, index) => table[index] ?? field,
+		(_column, _row, index) => (index < table.length ? 0 : 1),
+		() => fieldLab,
+		0,
+	)
+}
+
+/**
+ * **Regression, decision 7's round-1 ruling: comparisons run on representatives.**
+ *
+ * `NEAR_END_REP` is within the bar of the published end, so it may not be the foreground. Its
+ * cluster's *centre* is not — the second member drags the mass-weighted centre past the bar — so the
+ * pre-round-1 rule would have accepted it, and it carries the most overlay mass, so it would have
+ * won. That is exactly the shape round 1 caught on `2376a6b67d`.
+ */
+test("rep-level feasibility: a cluster whose centre clears the end but whose representative does not", () => {
+	const FIELD: Rgb8 = [128, 128, 128]
+	const NEAR_END_REP: Rgb8 = [132, 132, 132]
+	const DRAGGER: Rgb8 = [136, 136, 136]
+	const LEGIBLE: Rgb8 = [250, 250, 250]
+
+	const scene = flatScene(12, FIELD, [[NEAR_END_REP, 6], [DRAGGER, 4], [LEGIBLE, 6]])
+	const stops = rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD))
 	const reading = readOverlay(
 		scene.fit,
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		FLAT_ENDS,
+		stops,
 	)
 
-	assert.equal(reading.foreground?.representative, pack(FOREGROUND))
-	assert.equal(reading.accent?.representative, pack(LIGHTNESS_ONLY))
-	assert.notEqual(reading.accent?.representative, pack(DOMINATED))
-	assert.equal(reading.accentChromaOnly, false)
+	const suspect = reading.clusters.find((cluster) => cluster.representative === pack(NEAR_END_REP))!
+	const legible = reading.clusters.find((cluster) => cluster.representative === pack(LEGIBLE))!
+
+	// The fixture is the case it claims to be: rep inside the bar, centre outside it, more mass.
+	assert.equal(suspect.memberCount, 2, "the dragger must have agglomerated into the same cluster")
+	assert.ok(
+		sameColor(colorFromRgb(NEAR_END_REP), colorFromRgb(FIELD)),
+		"the representative must be the same colour as the end",
+	)
+	assert.ok(
+		okLabDistance(suspect.lab, rgbToOkLab(FIELD)) >=
+			sameColorBar(colorFromRgb(FIELD), colorFromRgb(FIELD)),
+		"...while the centre must be outside the bar, or the fixture proves nothing",
+	)
+	assert.ok(suspect.overlayMass > legible.overlayMass, "and it must be the heavier cluster")
+
+	assert.equal(reading.foreground?.representative, pack(LEGIBLE))
+})
+
+/**
+ * **Regression, decision 7's round-1 ruling: the foreground is ranked by legibility.**
+ *
+ * Round 1 graded item 1 UNACCEPTABLE with *"foreground barely registers"*. Here the massive cluster
+ * is a dull near-field grey that still clears every distinctness test and the contrast floor; the
+ * small one is plainly readable. Mass loses.
+ */
+test("foreground ranking: a dull massive cluster loses to a legible small one", () => {
+	const FIELD: Rgb8 = [128, 128, 128]
+	const DULL: Rgb8 = [150, 150, 150]
+	const READABLE: Rgb8 = [10, 10, 10]
+
+	const scene = flatScene(14, FIELD, [[DULL, 60], [READABLE, 8]])
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD)),
+	)
+
+	const dull = reading.clusters.find((cluster) => cluster.representative === pack(DULL))!
+	const readable = reading.clusters.find((cluster) => cluster.representative === pack(READABLE))!
+
+	// Both are legal foregrounds — distinct from the field and above the floor — so the test is about
+	// the ranking and not about a filter doing the work.
+	assert.ok(!sameColor(colorFromRgb(DULL), colorFromRgb(FIELD)))
+	const floor = DEFAULT_CONTRAST.minTextContrast.effectiveRawMagnitude
+	assert.ok(Math.abs(apcaRaw(DULL, FIELD)) >= floor)
+	assert.ok(dull.overlayMass > readable.overlayMass * 5, "the dull cluster must dominate on mass")
+	assert.ok(Math.abs(apcaRaw(READABLE, FIELD)) > Math.abs(apcaRaw(DULL, FIELD)))
+
+	assert.equal(reading.foreground?.representative, pack(READABLE))
+})
+
+/**
+ * **Regression, decision 8's round-1 ruling: the front's winner is the furthest from what is
+ * already published.**
+ *
+ * Round 1 graded items 3, 5 and 6 down because mass-heavy dull clusters won the front while the
+ * artwork's vivid colours lost. `NEAR_FOREGROUND` is a big pale patch a hair from the published
+ * foreground; `VIVID` is a smaller crimson one far from both the foreground and the field. Neither
+ * dominates the other on the front's axes, so the winner is decided by the new rule alone.
+ */
+test("accent ranking: a near-foreground massive cluster loses to a separated vivid one", () => {
+	const FIELD: Rgb8 = [128, 128, 128]
+	const FOREGROUND_MARK: Rgb8 = [255, 255, 255]
+	const NEAR_FOREGROUND: Rgb8 = [235, 235, 235]
+	const VIVID: Rgb8 = [220, 20, 60]
+
+	const scene = flatScene(16, FIELD, [[FOREGROUND_MARK, 20], [NEAR_FOREGROUND, 40], [VIVID, 12]])
+	const reading = readOverlay(
+		scene.fit,
+		scene.raster,
+		scene.inventory,
+		DEFAULT_CONTRAST,
+		rampOf(rgbToOkLab(FIELD), rgbToOkLab(FIELD)),
+	)
+
+	assert.equal(reading.foreground?.representative, pack(FOREGROUND_MARK))
+
+	const near = reading.clusters.find((cluster) => cluster.representative === pack(NEAR_FOREGROUND))!
+	const vivid = reading.clusters.find((cluster) => cluster.representative === pack(VIVID))!
+
+	// Neither dominates the other, so both are on the front and the tie-break is the whole decision.
+	const axes = (cluster: typeof near) =>
+		[Math.abs(cluster.deltaL), Math.hypot(cluster.deltaC, cluster.deltaH)] as const
+	assert.ok(axes(near)[0] > axes(vivid)[0])
+	assert.ok(axes(vivid)[1] > axes(near)[1])
+	// The old rule would have taken the heavier one.
+	assert.ok(near.overlayMass > vivid.overlayMass)
+	// The new rule takes the one furthest from everything published.
+	const minDistance = (rgb: Rgb8) =>
+		Math.min(
+			colorDistance(colorFromRgb(rgb), colorFromRgb(FOREGROUND_MARK)),
+			colorDistance(colorFromRgb(rgb), colorFromRgb(FIELD)),
+		)
+	assert.ok(minDistance(VIVID) > minDistance(NEAR_FOREGROUND))
+
+	assert.equal(reading.accent?.representative, pack(VIVID))
 })
 
 // ---------------------------------------------------------------------------------------------
@@ -434,7 +608,7 @@ test("collapse: nothing distinct from the foreground leaves the accent null", ()
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		FLAT_ENDS,
+		FLAT_STOPS,
 	)
 
 	// Both mark triples land in one bar-neighbourhood, so the only cluster is the foreground.
@@ -466,7 +640,7 @@ test("escape: no cluster distinct from its local field leaves the foreground nul
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		FLAT_ENDS,
+		FLAT_STOPS,
 	)
 
 	assert.equal(reading.clusters.length, 1)
@@ -491,7 +665,7 @@ test("an empty overlay yields no clusters and no roles", () => {
 		scene.raster,
 		scene.inventory,
 		DEFAULT_CONTRAST,
-		FLAT_ENDS,
+		FLAT_STOPS,
 	)
 	assert.deepEqual(reading, { clusters: [], foreground: null, accent: null, accentChromaOnly: false })
 })
