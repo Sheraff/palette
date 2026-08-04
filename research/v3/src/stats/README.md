@@ -15,11 +15,14 @@ shared statistics module, built so the common mistakes cannot be typed"* — who
 gap-scan §3(5)'s table of **ten distinct error classes, each of which changed or would have changed
 a published conclusion**.
 
-**No reviewer verdict exists yet.** Round `toolbox-adjudication-1` was pushed on
-2026-08-04T07:30:52Z and the warehouse holds **zero answers** for it. `TB-08` carries
-`recommendation: "build-now"`, which is the orchestrator's call on screen to be overruled, not a
-ruling. Anything here that a reviewer later disagrees with is a thing to change, and nothing in this
-module has been given a decision record claiming approval it does not have.
+**The reviewer's verdict exists: BUILD.** It is item 11 of
+`reviews/toolbox-review/chat-adjudication-map.md` — *"shared stats module | BUILD | "build""* — a
+ruling in chat, not an unanswered round. This paragraph previously read *"No reviewer verdict exists
+yet"* on the strength of the warehouse holding zero answers for round `toolbox-adjudication-1`
+(pushed 2026-08-04T07:30:52Z); that was the wrong place to look, since the adjudication came through
+the chat map rather than the labelling warehouse. `TB-08`'s `recommendation: "build-now"` is still
+only the orchestrator's call — but it now agrees with the reviewer's. Anything here the reviewer
+later disagrees with is still a thing to change.
 
 ## The surface
 

@@ -92,7 +92,10 @@ the totals have not moved in two days of results.**
 **Counts moved again on 2026-08-04, in the fourth batched ledger pass: 79 items, 61 open, 18
 closed** — against 75 / 57 / 18 earlier the same day. **B34 is REOPENED**, not closed: the vault
 locked again and this pass's own commit is unsigned, which is why one row closed and one reopened
-and the closed total did not move. Re-derived by counting the headings, not by
+and the closed total did not move. **The unsigned commit has since been re-signed — a second
+surgery, eight commits rewritten, mapping in B34 — and the counts still do not move, because the row
+was reopened against the *cause* and a re-sign does not touch it. That surgery did rewrite pushed
+history, so a force-push is owed and was left to the reviewer.** Re-derived by counting the headings, not by
 adding to the previous number. **Four rows added, one closed**, and the per-section split is now
 A1–A19 = 19 (9 open, 10 closed) · B1–B37 = 37 (31 open, 6 closed) · C1–C13 = 13 (12 open, 1 closed) ·
 L-a–L-j = 10 (9 open, 1 closed).
@@ -1800,6 +1803,57 @@ cannot sign.
 *Owner: **reviewer** (the vault) + orchestrator (the re-sign, and the pre-flight check if wanted).
 **Revives when:** it is live now. **Blast radius:** signature continuity on the branch, and the
 reviewer's stated preference — *"yes fully signed history please"*.*
+
+#### The second re-sign, 2026-08-04 — done, and this row still does not close
+With the vault unlocked, the single unsigned commit `43c7b13` was re-signed with the command this
+row specifies, base `43c7b13^` = `647e242`. **The row stays open**, exactly as the paragraph above
+demands: a re-sign is not a cure, and the pre-flight check still does not exist. What is now true is
+that the branch carries no unsigned commit — not that it cannot acquire another one tomorrow.
+
+**One unsigned commit, eight rewritten.** The tail above the base is replayed whole, so the seven
+already-signed commits sitting on top of `43c7b13` changed hash too. Old → new, oldest first:
+
+| # | old | new | was signed? | subject |
+|---|---|---|---|---|
+| 1 | `43c7b13` | `60cf8c7` | **no** | ledger pass 4 — this row's own commit, again |
+| 2 | `be3dc0c` | `aec1058` | yes | one shared statistics module |
+| 3 | `a341147` | `500cb59` | yes | chat-adjudication authoritative map |
+| 4 | `f85380b` | `989043c` | yes | GLM-4.5V out-of-family probe |
+| 5 | `dbfbc0b` | `0938e6e` | yes | v3 Phase 1: the dev loop |
+| 6 | `7e868cd` | `781826f` | yes | contract: report mode + population floor |
+| 7 | `a415208` | `f602f61` | yes | robustness harness |
+| 8 | `4b46513` | `bc76df3` | yes | TS vs Python decoder agreement |
+
+**Verified the same three ways as last time.** Every commit in the replayed range carries a `gpgsig`
+header, read from the commit object (the rider below is still open, so `%G?` still cannot be
+trusted). The new HEAD's tree is `7137f987…`, **byte-identical** to the pre-rebase HEAD's tree, and
+`git diff` between the pre-surgery ref and the new HEAD is empty. The pre-surgery HEAD is kept at
+**`refs/backup/pre-resign-2`** = `4b46513`.
+
+**Unlike the first surgery, this one rewrote published history — a force-push is owed.** The first
+surgery could say *"nothing published was touched"* because the upstream sat below the rebase base.
+It does not this time: `origin/research/palette-0.9-checkpoint` (PR #5) sits at **`be3dc0c`**, which
+is row 2 of the table above. Two rewritten commits — `43c7b13` and `be3dc0c` — had already been
+pushed, so the branch has **diverged**: 8 ahead, 2 behind, and the old tip is no longer an ancestor.
+**The push was deliberately not made here.** Force-pushing a shared branch is the reviewer's call,
+not an agent's, and the two orphaned commits stay reachable on the remote until someone decides.
+*Owed: `git push --force-with-lease`, or an explicit decision not to.* **This is the fact the first
+surgery's timing hid: the row's own warning — *"it should be done before anything is pushed or
+branched from"* — was satisfied by luck last time and is violated now.**
+
+**The citation sweep this forced: one citation, one file.** Swept in Python over the whole working
+tree rather than with `git grep` alone, matching any 7-to-40-character prefix of the eight old
+hashes. The only hit was `data/honesty/honesty-report.json`, whose `meta.provenance.code.gitCommit`
+recorded `a415208`; it now records `f602f61`. The edit is safe against that file's own fingerprint
+because `meta` is excluded from `bodyHash` by construction, as its `note` field says.
+**`data/warehouse/warehouse.jsonl` was checked and needed nothing** — it contains no old-hash
+citation at all, which also discharges the *"re-sweep the warehouse when the session is idle"* debt
+the first surgery left owing. It was **not edited**: it is append-only, and the convention from the
+first surgery is that the mapping lives in this row and in the commit message, never in the
+warehouse. `data/review-server/batches.jsonl` was likewise clean.
+*Two scopes were excluded deliberately, and neither can hold a citation:* `data/devloop-cache/`
+(86,176 files, content-addressed — the entries carry `inputContentHash` / `codeVersion`, no git
+commit) and `.claude/worktrees/` (agent scratch checkouts, not repository records).
 
 **Closure text of 2026-08-04 kept below, including its table, because eight commits changed hash
 under it and anyone reading old hashes needs the mapping.**
