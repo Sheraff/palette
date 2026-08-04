@@ -21,12 +21,16 @@
  *
  * - **`fieldWeight`** — `1 / (1 + (maxₖ‖dₖ‖ / bar)²)`, where `bar` is the pixel's own regional
  *   same-colour bar (see `FIELD_WEIGHT_SOFTNESS_BARS` for why the falloff is rational and not
- *   Gaussian — a Gaussian one measurably returns an all-zero plane on real artwork). The max over
- *   scales *is* "small at every scale": the weight is high only when no rung of the ladder disagrees
- *   with the pixel. Taking the max first rather than combining six weights is not an approximation —
- *   the weight is monotone decreasing in ‖d‖, so `minₖ w(‖dₖ‖) = w(maxₖ‖dₖ‖)` identically.
- * - **`inkEnergy`** — the ladder mean of `|ΔL|`, per `types.ts` ("ladder-aggregated |ΔL|").
- * - **`markEnergy`** — the ladder mean of `√(ΔC² + ΔH²)`, per `types.ts`.
+ *   Gaussian — a Gaussian one measurably returns an all-zero plane on real artwork) and `k` ranges
+ *   over the **fine and mid rungs only**, the coarsest `FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS` being
+ *   excluded. That exclusion is a recorded deviation from the proposal's "at every scale" and the
+ *   reason for it, with its measured anchors, lives at the constant. Taking the max first rather
+ *   than combining the rung weights is not an approximation — the weight is monotone decreasing in
+ *   ‖d‖, so `minₖ w(‖dₖ‖) = w(maxₖ‖dₖ‖)` identically.
+ * - **`inkEnergy`** — the ladder mean of `|ΔL|`, per `types.ts` ("ladder-aggregated |ΔL|"), over
+ *   **all** rungs. The rung exclusion above is field-likeness's alone: the coarse rungs are what
+ *   say a stroke is displaced from the page it sits on, which is the whole content of "ink".
+ * - **`markEnergy`** — the ladder mean of `√(ΔC² + ΔH²)`, per `types.ts`, over all rungs likewise.
  *
  * Both energies are plain unweighted means over the six rungs, in fixed level order. They are
  * **densities, not decisions**: nothing here decides that a pixel is ink rather than a mark, and
@@ -49,7 +53,7 @@ import {
 } from "../../../../src/contract/constants.ts"
 import type { ColorRegion } from "../../../../src/contract/types.ts"
 import type { FigureGroundField, ImagePlanes, SurroundLadder } from "../types.ts"
-import { FIELD_WEIGHT_SOFTNESS_BARS } from "./constants.ts"
+import { FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS, FIELD_WEIGHT_SOFTNESS_BARS } from "./constants.ts"
 
 /**
  * Which measured region an OKLab point falls in.
@@ -100,11 +104,25 @@ export function decomposeDisplacement(
  * The `ground` planes are the **coarsest** rung — `levels[0]`, σ ≈ shortEdge/2 — which is
  * `types.ts`'s "the colour this pixel is sitting on". They are returned by reference rather than
  * copied: the ladder outlives the substrate and nothing downstream writes to it.
+ *
+ * `excludedCoarseRungs` is a parameter only so the anchor measurement in `tests/substrate.test.ts`
+ * can sweep it; the pipeline never passes it and the default is the `[MEASURED]` constant. It is
+ * clamped to `levelCount − 1`, so the finest rung always survives and a hand-built one-rung ladder
+ * still measures that rung.
  */
-export function buildFigureGround(planes: ImagePlanes, ladder: SurroundLadder): FigureGroundField {
+export function buildFigureGround(
+	planes: ImagePlanes,
+	ladder: SurroundLadder,
+	excludedCoarseRungs: number = FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS,
+): FigureGroundField {
 	const count = planes.width * planes.height
 	const levelCount = ladder.levels.length
 	if (levelCount === 0) throw new Error("buildFigureGround: the ladder has no levels")
+	if (!Number.isInteger(excludedCoarseRungs) || excludedCoarseRungs < 0) {
+		throw new RangeError(`excludedCoarseRungs must be a non-negative integer, got ${excludedCoarseRungs}`)
+	}
+	// Levels are coarsest-first (`ladder.ts`), so the excluded rungs are the leading ones.
+	const firstFieldLevel = Math.min(excludedCoarseRungs, levelCount - 1)
 
 	const fieldWeight = new Float32Array(count)
 	const inkEnergy = new Float32Array(count)
@@ -129,8 +147,10 @@ export function buildFigureGround(planes: ImagePlanes, ladder: SurroundLadder): 
 			// ΔH (see the header). Math.sqrt of the sum rather than Math.hypot: same value here
 			// because no term can overflow in OKLab, and hypot is an order of magnitude slower.
 			const chromatic = Math.sqrt(deltaA * deltaA + deltaB * deltaB)
-			const displacement = Math.sqrt(deltaL * deltaL + chromatic * chromatic)
-			if (displacement > maxDisplacement[index]) maxDisplacement[index] = displacement
+			if (level >= firstFieldLevel) {
+				const displacement = Math.sqrt(deltaL * deltaL + chromatic * chromatic)
+				if (displacement > maxDisplacement[index]) maxDisplacement[index] = displacement
+			}
 			inkEnergy[index] += deltaL < 0 ? -deltaL : deltaL
 			markEnergy[index] += chromatic
 		}

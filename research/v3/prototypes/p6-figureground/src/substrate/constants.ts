@@ -117,6 +117,124 @@ export const MIN_BLUR_SIGMA = 0.5
  */
 export const FIELD_WEIGHT_SOFTNESS_BARS = 1
 
+/**
+ * How many of the **coarsest** ladder rungs are excluded from the field-likeness weight.
+ *
+ * `[MEASURED — 2026-08-04, `tests/substrate.test.ts` "the field-likeness scale band: both anchors,
+ * swept over every exclusion"]` **2**, i.e. `fieldWeight` reads rungs σ = shortEdge/8 … /64 and the
+ * two coarsest rungs (shortEdge/2, /4) are excluded from it alone.
+ *
+ * **Read the deviation section before the value.** One of the two anchors the SPEC directive names
+ * does not select a value — it is unreachable at every exclusion — so this constant is *not* the
+ * output of the directive's rule, and saying otherwise would be the undisclosed deviation SPEC rule
+ * 7 calls the campaign's worst failure mode.
+ *
+ * ## Why the exclusion exists at all — a recorded mechanism repair
+ *
+ * `arm-e-prime.md` §2.1 defines field as displacement near zero **at every scale**, and this module
+ * implemented that literally: `maxₖ‖dₖ‖` over all six rungs. Measured, that definition contradicts
+ * §2.3, which exists to model gradients. The coarse surround of a ramp is essentially the ramp's
+ * *mean*, which its ends are by construction far from, so `fieldWeight` was ≈0 **at the ends of
+ * exactly the gradients the field model is for** (W3: synthetic 256² ramp, rows 0/255 → 0; W1
+ * independently on dark fields, where the coarsest rung of a dark cover carrying 0.7% bright
+ * content sits ~20 dark-neutral bars off the field). SPEC "Integration directives — wave 2" item 1
+ * records the repair: field-likeness is a **fine/mid-scale** question. The coarse rungs are not
+ * discarded — they still supply `FigureGroundField.ground` (which *is* `levels[0]`), the habitual
+ * ground the energy scores "sits on the field" with, and both energy densities. They are excluded
+ * from this one weight and nowhere else. That much is a deviation from the proposal's words which
+ * the directive ordered, to save the proposal's mechanism.
+ *
+ * ## Anchor (b) — white-on-black text still gets ≈0. Passes, everywhere.
+ *
+ * The 192² white-lettering fixture (`tests/substrate.test.ts`), mean `fieldWeight` on the strokes,
+ * against the mean over the distant black field:
+ *
+ * | excluded | stroke (anchor b, must be ≈0) | distant dark field | separation |
+ * |---|---|---|---|
+ * | 0 | 3.88e-4 | 3.10e-3 |    8× |
+ * | 1 | 4.53e-4 | 4.92e-3 |   11× |
+ * | **2** | **5.77e-4** | **2.30e-1** | **399×** |
+ * | 3 | 7.71e-4 | 1.000 | 1297× |
+ * | 4 | 1.35e-3 | 1.000 |  742× |
+ * | 5 | 3.37e-3 | 1.000 |  297× |
+ *
+ * Anchor (b) holds at every exclusion — the strokes never come within two orders of magnitude of
+ * the 0.01 the semantics test pins them under — so it selects nothing on its own. What it does show
+ * is W1's dark-field defect closing: the separation this file's `FIELD_WEIGHT_SOFTNESS_BARS` claims
+ * as "about 6×" is 8× at exclusion 0 and **399× at 2**. Figure loses nothing; field gains a range.
+ *
+ * ## Anchor (a) — a full-frame ramp's ends within 2× of its middle. **Unreachable. Reported.**
+ *
+ * Ratio `mean fieldWeight over the middle two rows / mean over rows 0 and 255`, 256² full-frame
+ * grey ramps, six-rung ladder. The directive's bar is ≤ 2. Exclusion 5 keeps one rung — the
+ * degenerate end of the sweep, measured only to bound the anchor:
+ *
+ * | excluded | 0→255 | 30→230 | 60→200 | 100→180 | 128→200 |
+ * |---|---|---|---|---|---|
+ * | 0 |  8.46 | 12.94 | 22.06 | 26.61 | 17.66 |
+ * | 1 |  6.94 |  9.78 | 13.24 |  9.55 |  5.82 |
+ * | **2** | **12.82** | **11.44** | **7.84** | **3.62** | **2.27** |
+ * | 3 |  7.69 |  4.92 |  3.09 |  1.75 |  1.32 |
+ * | 4 |  3.48 |  2.19 |  1.62 |  1.21 |  1.08 |
+ * | 5 |  2.31 |  1.34 |  1.17 |  1.05 |  1.02 |
+ *
+ * No exclusion passes on a full-range 0→255 ramp — not even the one-rung degenerate case (2.31).
+ * And on the ramps where it does pass it selects a *different* value for each — 5, 4, 3, 3 as the
+ * ramp gets gentler, none of them 2. So the directive's rule ("the smallest exclusion such that (a)
+ * and (b)") **does not terminate**: read literally it asks for a ladder of one or two rungs, and
+ * which of those it asks for is a property of the fixture's own contrast, not of the ladder.
+ *
+ * The reason is analytic, and neither half of it is something a rung exclusion can remove.
+ *
+ * 1. **Clamp padding at the frame edge.** `blur.ts` pads by clamping (it must — a zero-padded blur
+ *    would mark every border pixel as figure). At the boundary row of a ramp the clamped half of
+ *    the kernel therefore averages the *end value* and the interior half averages inward, biasing
+ *    the surround by ≈`0.4·σ·(dL/drow)`. That bias is **proportional to σ**, so every rung has one,
+ *    and the finest rung's is not zero. Setting the bias to one same-colour bar gives the exclusion
+ *    the anchor asks for: `E ≥ log₂(0.4·ΔL_ramp / bar) − 1` — a function of the ramp's lightness
+ *    extent. That formula reproduces the table (30→230: E≥3.9, observed 4–5; 100→180: E≥2.6,
+ *    observed 3), which is what makes this an explanation rather than a story.
+ * 2. **OKLab's cube root at the 8-bit floor.** Between sRGB 0 and 1 the lightness step is 0.0672 —
+ *    **7.2 dark-neutral bars for one code value**. A ramp that reaches black therefore displaces
+ *    several bars at its dark end against *any* non-degenerate surround. This is why the 0→255
+ *    column never passes and never can.
+ *
+ * Recorded upward as a defect in the anchor, not worked around: if the reviewer wants ramp ends to
+ * weigh like ramp middles, the lever is the blur's padding convention (an antisymmetric extension
+ * preserves a linear ramp exactly, where clamping does not), not the number below.
+ *
+ * ## What actually selects 2 — geometry, stated so it can be checked without taste
+ *
+ * With anchor (a) unable to choose, the value is chosen by the one criterion available that
+ * introduces no digit: **a surround must be local to be a surround.** A rung's kernel reaches ±2σ,
+ * so rung k covers a span of `4σ_k = shortEdge/2^(k−1)`. Excluded are exactly the rungs whose reach
+ * spans the whole short edge or more:
+ *
+ * | rung | σ | ±2σ span | local? |
+ * |---|---|---|---|
+ * | 0 | S/2 | 2·S | no — twice the frame |
+ * | 1 | S/4 | 1·S | no — exactly the frame |
+ * | 2 | S/8 | S/2 | yes |
+ * | 3…5 | S/16 … S/64 | S/4 … S/16 | yes |
+ *
+ * Rungs 0 and 1 answer "how does this pixel differ from the whole image", which is a global
+ * question and is precisely what makes a gradient's own ends read as figure. Rung 2 is the coarsest
+ * whose surround is a *neighbourhood*. That is the SPEC's "fine/mid" band read as geometry, it
+ * keeps four of six rungs so the weight stays genuinely multi-scale (exclusion 5 would collapse
+ * field-likeness to a single scale and delete the "no rung disagrees" character the proposal is
+ * about), and it is the **smallest** exclusion the criterion permits, which is the directive's own
+ * preference for staying as close to the proposal's words as the repair allows.
+ *
+ * Held against the acceptance check rather than fitted to it: at this value the synthetic ramp
+ * reaches the 1-D model end-to-end (gradient ranked first, from exclusion 1 onward) and none of the
+ * three demo-20 covers sampled gains a gradient hypothesis at any exclusion in 0…4.
+ *
+ * A count rather than a fraction because `LADDER_LEVELS` is `[HELD]` at six; if the ladder's length
+ * or extent moves, the geometric criterion above re-derives this and the anchors must be re-run.
+ * `buildFigureGround` clamps the count to `levelCount − 1`, so the finest rung always survives.
+ */
+export const FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS = 2
+
 // ---------------------------------------------------------------------------------------------
 // Decode
 // ---------------------------------------------------------------------------------------------

@@ -87,7 +87,7 @@ export const DEFAULT_EXCHANGE_RATES: ExchangeRates = {
 	/**
 	 * **Field-model description-length rate** (proposal §4, free parameter 6).
 	 *
-	 * `[UNCALIBRATED — starting point, not a calibration]` **1.0 nats per parameter.**
+	 * `[UNCALIBRATED — starting point, not a calibration]` **0.33 nats per parameter.**
 	 *
 	 * **Where this rate is spent, which is not where it first looks.** It is *not* a weight the
 	 * energy multiplies `FieldHypothesis.descriptionLength` by. The field model consumes it directly
@@ -98,18 +98,35 @@ export const DEFAULT_EXCHANGE_RATES: ExchangeRates = {
 	 * the rate a second time there would both double-count it and scale the data cost, which is not
 	 * what free parameter 6 means. `./solve.ts` says so at the site.
 	 *
-	 * **Why 1.0.** A charge of one nat per parameter is Akaike's, the standard and least-committal
-	 * per-parameter price in nats; it asserts nothing about this problem. It also clears the field
-	 * model's own analytic floor by about sevenfold: `FIELD_DL_STEP_REJECTION_FLOOR` = `ln2 / 5` ≈
-	 * 0.1386 is the value the rate must exceed for two flat halves of a field to be structurally
-	 * incapable of being published as a ramp, and `tests/energy.test.ts` checks that the shipped
-	 * value clears it. Clearing a floor is not a calibration either — it is a lower bound the value
-	 * had to respect, and the value was not chosen by looking at any palette.
+	 * **Why 0.33 — the rate has a ceiling as well as a floor, and 1.0 was above the ceiling.**
+	 * The band is `(0.139, 0.797)` nats per parameter, both ends measured by W3 and re-derived in
+	 * `tests/fieldmodel.test.ts` ("the description-length rate has a reachable band, not just a
+	 * floor"):
+	 *
+	 * - **Floor 0.13863** = `FIELD_DL_STEP_REJECTION_FLOOR` = `ln2 / FIELD_1D_EXTRA_PARAMETERS`.
+	 *   Below it, two flat halves of a field can be published as a ramp — the proposal's own hard
+	 *   case, structurally rejected only above this value.
+	 * - **Ceiling 0.79645** = `½·ln(1 + 0.25/0.00932²) / 5` ≈ `3.982 / 5`. The 1-D model's data-cost
+	 *   gain is bounded by the largest variance any measure on OKLab can carry (half the pixels
+	 *   black, half white ⇒ 0.25) read against the tightest regional bar. Above the ceiling the
+	 *   parameter charge exceeds the largest gain any artwork can offer, so **no artwork can ever be
+	 *   a gradient** — the whole gradient arm of the design deleted, silently and with no error.
+	 *
+	 * **The shipped value was 1.0 and 1.0 is above the ceiling.** That is a defect, recorded as SPEC
+	 * "Integration directives — wave 2" item 2 and fixed here rather than argued with: Akaike's one
+	 * nat per parameter is the standard least-committal price *in general*, and in this particular
+	 * energy it happens to fall outside the reachable band, which no amount of standardness rescues.
+	 * 0.33 is `√(0.13863 × 0.79645) = 0.3323`, the **geometric mean of the band**, rounded to two
+	 * digits — the least-committal point on a scale whose two ends are both ratios, equidistant in
+	 * log-rate from "steps are free" and "gradients are impossible". It is a starting point in
+	 * exactly the sense this file's header describes: chosen from the shape of the band before any
+	 * harness data existed, never adjusted against an endorsement set, a palette or a reviewer.
+	 * `tools/sensitivity.ts` sweeps it across the band.
 	 *
 	 * The proposal's anchor is the gradient-rate neutrality census plus a round of borderline ramps.
 	 * Not run.
 	 */
-	fieldDescriptionLength: 1,
+	fieldDescriptionLength: 0.33,
 
 	/**
 	 * **Collapse cost** (proposal §4, free parameter 7).

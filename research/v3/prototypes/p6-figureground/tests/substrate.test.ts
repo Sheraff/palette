@@ -44,6 +44,7 @@ import {
 	buildSurroundLadder,
 	decodePlanes,
 	decomposeDisplacement,
+	FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS,
 	FIELD_WEIGHT_SOFTNESS_BARS,
 	GAUSSIAN_BOX_PASSES,
 	LADDER_COARSEST_SHORT_EDGE_FRACTION,
@@ -515,17 +516,27 @@ test("a flat field is its own surround: fieldWeight ≈ 1, ink and mark ≈ 0", 
 	)
 })
 
+/** The white-lettering fixture, shared with the scale-band anchor sweep below. */
+const INK_SIZE = 192
+const isInkStroke = (x: number, y: number) =>
+	y >= INK_SIZE / 2 - 8 && y < INK_SIZE / 2 + 8 &&
+	x >= INK_SIZE / 4 && x < (3 * INK_SIZE) / 4 && Math.floor(x / 4) % 6 === 0
+
 test("white lettering on black is ink: high inkEnergy on the strokes, low fieldWeight", async () => {
 	// Thin white bars on black — the geometry of lettering without the typography. The block is kept
-	// small (about 0.7% of the frame) on purpose: at the coarsest rung, σ = shortEdge/2, the surround
-	// is nearly one number for the whole image, so *every* pixel is displaced in lightness from it
-	// unless the field dominates the frame. That is not an artefact to be tuned away — a cover whose
-	// ink covers half the frame genuinely has an ambiguous field, and proposal §7 names exactly that
-	// case ("typography-heavy covers") as one this mechanism is expected to be bad at.
-	const size = 192
-	const isStroke = (x: number, y: number) =>
-		y >= size / 2 - 8 && y < size / 2 + 8 &&
-		x >= size / 4 && x < (3 * size) / 4 && Math.floor(x / 4) % 6 === 0
+	// small (about 0.7% of the frame) on purpose: a cover whose ink covers half the frame genuinely
+	// has an ambiguous field, and proposal §7 names exactly that case ("typography-heavy covers") as
+	// one this mechanism is expected to be bad at.
+	//
+	// This test used to carry a second reason for the small block: that at the coarsest rung,
+	// σ = shortEdge/2, the surround is nearly one number for the whole image, so *every* pixel of a
+	// dark cover is displaced in lightness from it and the dark field weighed almost nothing. That
+	// was W1's half of the defect SPEC directive 1 repairs, and it is gone — the coarse rungs no
+	// longer enter `fieldWeight` at all (`FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS`). The distant dark
+	// field now reads as field rather than as marginally-less-figure, and the assertion below is
+	// tightened to say so: 8× separation before the repair, 399× after.
+	const size = INK_SIZE
+	const isStroke = isInkStroke
 	const path = await writePng(
 		"ink.png",
 		size,
@@ -563,6 +574,12 @@ test("white lettering on black is ink: high inkEnergy on the strokes, low fieldW
 	assert.ok(strokeMark < strokeInk / 50, `stroke markEnergy ${strokeMark} vs ink ${strokeInk}`)
 	assert.ok(strokeField < 0.01, `stroke fieldWeight ${strokeField}`)
 	assert.ok(farField > strokeField, `distant field ${farField} should exceed stroke ${strokeField}`)
+	// The repair's dark-field half, pinned: the black field is now field, not merely less figure.
+	assert.ok(farField > 0.1, `distant dark field ${farField} must read as field after the repair`)
+	assert.ok(
+		farField > strokeField * 100,
+		`field/ink separation ${farField / strokeField} (8× before the scale-band repair, 399× after)`,
+	)
 })
 
 test("a saturated dot on an equal-lightness grey field is a mark: high markEnergy at the dot", async () => {
@@ -660,6 +677,230 @@ test("fieldWeight is the contract's bar: displacement of exactly one bar weighs 
 	assert.ok(far.fieldWeight[0] > 0, `ten bars must not underflow, got ${far.fieldWeight[0]}`)
 	assert.ok(far.fieldWeight[0] < field.fieldWeight[0], "and must still be ordered below one bar")
 	assert.ok(Math.abs(far.fieldWeight[0] - 1 / 101) < 1e-3, `weight at ten bars ${far.fieldWeight[0]}`)
+})
+
+// ---------------------------------------------------------------------------------------------
+// 3b. The field-likeness scale band (SPEC "Integration directives — wave 2" item 1)
+//
+// `FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS` is the constant this section is the provenance for. The
+// directive names two anchors and a rule ("the smallest exclusion such that both hold"); these
+// tests sweep every exclusion the six-rung ladder admits and record what each anchor actually says,
+// including the fact that one of them says nothing. Read the constant's doc comment beside them.
+// ---------------------------------------------------------------------------------------------
+
+/** A full-frame vertical grey ramp, `from` at row 0 to `to` at the last row. */
+async function rampSubstrateParts(from: number, to: number, size = 256) {
+	const path = await writePng(`ramp-${from}-${to}.png`, size, size, (_x, y) => {
+		const value = Math.round(from + ((to - from) * y) / (size - 1))
+		return [value, value, value]
+	})
+	const decoded = await decodePlanes(path)
+	return { decoded, ladder: buildSurroundLadder(decoded.linear, size, size), size }
+}
+
+function rowMean(weights: Float32Array, width: number, row: number): number {
+	let total = 0
+	for (let x = 0; x < width; x += 1) total += weights[row * width + x]
+	return total / width
+}
+
+/** Anchor (a) as the directive states it: middle-rows weight over end-rows weight, bar 2×. */
+function rampEndRatio(weights: Float32Array, size: number): number {
+	const ends = (rowMean(weights, size, 0) + rowMean(weights, size, size - 1)) / 2
+	const middle = (rowMean(weights, size, size / 2 - 1) + rowMean(weights, size, size / 2)) / 2
+	return middle / ends
+}
+
+/** Every exclusion the six-rung ladder admits, 5 being the degenerate one-rung end of the sweep. */
+const EXCLUSION_SWEEP = [0, 1, 2, 3, 4, 5] as const
+
+test("anchor (b): white-on-black text weighs ≈0 as field at every exclusion, and the dark field recovers", async () => {
+	const size = INK_SIZE
+	const path = await writePng(
+		"anchor-ink.png",
+		size,
+		size,
+		(x, y) => (isInkStroke(x, y) ? [255, 255, 255] : [0, 0, 0]),
+	)
+	const decoded = await decodePlanes(path)
+	const ladder = buildSurroundLadder(decoded.linear, size, size)
+	const at = (index: number) => ({ x: index % size, y: Math.floor(index / size) })
+
+	// Measured 2026-08-04. Quoted in `FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS`; asserted here so the
+	// quote cannot rot. Tolerances are wide enough to survive float32 drift and narrow enough that
+	// a changed mechanism fails.
+	const expected = [
+		{ stroke: 3.877e-4, field: 3.099e-3 },
+		{ stroke: 4.527e-4, field: 4.921e-3 },
+		{ stroke: 5.769e-4, field: 2.299e-1 },
+		{ stroke: 7.711e-4, field: 1.0 },
+		{ stroke: 1.348e-3, field: 1.0 },
+		{ stroke: 3.369e-3, field: 1.0 },
+	]
+
+	for (const excluded of EXCLUSION_SWEEP) {
+		const figureGround = buildFigureGround(decoded.planes, ladder, excluded)
+		const stroke = mean(figureGround.fieldWeight, (index) => {
+			const { x, y } = at(index)
+			return isInkStroke(x, y)
+		})
+		const field = mean(figureGround.fieldWeight, (index) => at(index).y < size / 8)
+
+		// (b) holds at every exclusion — so this anchor, on its own, selects nothing. Recorded as
+		// such: the directive's rule leans entirely on anchor (a), which the next test shows cannot
+		// carry it.
+		assert.ok(stroke < 0.01, `excluded ${excluded}: stroke fieldWeight ${stroke} is not ≈0`)
+		assert.ok(
+			Math.abs(stroke - expected[excluded].stroke) < expected[excluded].stroke * 0.05,
+			`excluded ${excluded}: stroke ${stroke} vs recorded ${expected[excluded].stroke}`,
+		)
+		assert.ok(
+			Math.abs(field - expected[excluded].field) < Math.max(expected[excluded].field * 0.05, 1e-4),
+			`excluded ${excluded}: dark field ${field} vs recorded ${expected[excluded].field}`,
+		)
+	}
+})
+
+test("anchor (a): a full-frame ramp's ends never come within 2× of its middle, at any exclusion", async () => {
+	// The directive's anchor (a), swept. It is measured here rather than assumed because the
+	// conclusion is negative and negative conclusions are the ones that rot silently: the anchor
+	// does not select a value, so the constant it was supposed to select is chosen by the geometric
+	// criterion in `constants.ts` instead, and this test is what keeps that disclosure honest.
+	//
+	// Recorded ratios (mean fieldWeight of the middle two rows / mean of rows 0 and 255), 2026-08-04:
+	//
+	//   excluded |  0→255 | 30→230 | 60→200 | 100→180 | 128→200
+	//          0 |   8.46 |  12.94 |  22.06 |   26.61 |   17.66
+	//          1 |   6.94 |   9.78 |  13.24 |    9.55 |    5.82
+	//          2 |  12.82 |  11.44 |   7.84 |    3.62 |    2.27
+	//          3 |   7.69 |   4.92 |   3.09 |    1.75 |    1.32
+	//          4 |   3.48 |   2.19 |   1.62 |    1.21 |    1.08
+	//          5 |   2.31 |   1.34 |   1.17 |    1.05 |    1.02
+	const recorded: Record<string, readonly number[]> = {
+		"0-255": [8.46, 6.94, 12.82, 7.69, 3.48, 2.31],
+		"30-230": [12.94, 9.78, 11.44, 4.92, 2.19, 1.34],
+		"60-200": [22.06, 13.24, 7.84, 3.09, 1.62, 1.17],
+		"100-180": [26.61, 9.55, 3.62, 1.75, 1.21, 1.05],
+		"128-200": [17.66, 5.82, 2.27, 1.32, 1.08, 1.02],
+	}
+
+	for (const [from, to] of [[0, 255], [30, 230], [60, 200], [100, 180], [128, 200]] as const) {
+		const { decoded, ladder, size } = await rampSubstrateParts(from, to)
+		const key = `${from}-${to}`
+		for (const excluded of EXCLUSION_SWEEP) {
+			const figureGround = buildFigureGround(decoded.planes, ladder, excluded)
+			const ratio = rampEndRatio(figureGround.fieldWeight, size)
+			assert.ok(
+				Math.abs(ratio - recorded[key][excluded]) < recorded[key][excluded] * 0.02,
+				`ramp ${key}, excluded ${excluded}: ratio ${ratio.toFixed(2)} vs recorded ${recorded[key][excluded]}`,
+			)
+		}
+	}
+
+	// The two facts that make the anchor unusable, asserted rather than narrated.
+	// 1. On a full-range ramp it fails at every exclusion, the one-rung degenerate case included.
+	for (const excluded of EXCLUSION_SWEEP) {
+		assert.ok(
+			recorded["0-255"][excluded] > 2,
+			`a 0→255 ramp is supposed to fail anchor (a) at every exclusion; excluded ${excluded} passed`,
+		)
+	}
+	// 2. Where it does pass, it selects a different exclusion per ramp — 3, 4 or 5 — so it is a
+	//    property of the fixture's contrast, not of the ladder. `constants.ts` gives the analytic
+	//    form, `E ≥ log₂(0.4·ΔL_ramp / bar) − 1`. Note that none of the passing values is the
+	//    shipped 2: taken literally the anchor asks for a ladder with at most one or two rungs.
+	const firstPassing = (key: string) => recorded[key].findIndex((ratio) => ratio <= 2)
+	assert.equal(firstPassing("0-255"), -1)
+	assert.equal(firstPassing("30-230"), 5)
+	assert.equal(firstPassing("60-200"), 4)
+	assert.equal(firstPassing("100-180"), 3)
+	assert.equal(firstPassing("128-200"), 3)
+
+	// And the repair is real even though the anchor cannot price it: at the shipped exclusion the
+	// ramp's end rows carry an order of magnitude more field weight than they did at exclusion 0,
+	// which is the difference between "the ends are in Φ" and W3's measured "rows 0/255 → 0".
+	const { decoded, ladder, size } = await rampSubstrateParts(0, 255)
+	const before = buildFigureGround(decoded.planes, ladder, 0)
+	const after = buildFigureGround(decoded.planes, ladder, FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS)
+	const endsBefore = (rowMean(before.fieldWeight, size, 0) + rowMean(before.fieldWeight, size, size - 1)) / 2
+	const endsAfter = (rowMean(after.fieldWeight, size, 0) + rowMean(after.fieldWeight, size, size - 1)) / 2
+	assert.ok(endsAfter > endsBefore * 10, `ramp ends ${endsBefore} → ${endsAfter} (want >10×)`)
+})
+
+test("the shipped exclusion is 2, and it is the rungs whose ±2σ reach exceeds the frame", () => {
+	// The geometric criterion `constants.ts` states, re-derived here from the ladder itself rather
+	// than quoted: a rung is excluded exactly when its kernel's ±2σ span reaches the whole short
+	// edge or more. Nothing about `fieldWeight` is measured here — this pins the *reason*.
+	const shortEdge = 512
+	const sigmas = ladderSigmas(shortEdge, shortEdge)
+	const excluded = sigmas.filter((sigma) => 4 * sigma >= shortEdge).length
+	assert.equal(excluded, FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS)
+	assert.equal(FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS, 2)
+	// Scale-free: the criterion is a ratio, so it cannot depend on the frame's pixel count.
+	for (const edge of [128, 300, 1000, 3000]) {
+		const count = ladderSigmas(edge, edge).filter((sigma) => 4 * sigma >= edge).length
+		assert.equal(count, FIELD_WEIGHT_EXCLUDED_COARSE_RUNGS, `short edge ${edge}`)
+	}
+})
+
+test("the exclusion touches fieldWeight only — ink and mark still read every rung", async () => {
+	// The directive's other half: "coarse rungs still serve ground/surround statistics". Perturbing
+	// an excluded rung must move the energies and not the weight; perturbing a retained rung must
+	// move all three. Built on a hand-made ladder so the perturbation is exact.
+	const size = 8
+	const path = await writePng("band.png", size, size, () => [128, 128, 128])
+	const decoded = await decodePlanes(path)
+	const lab = rgbToOkLab([128, 128, 128])
+	const count = size * size
+
+	const level = (offset: number) => ({
+		L: new Float32Array(count).fill(Math.fround(lab[0] - offset)),
+		a: new Float32Array(count).fill(Math.fround(lab[1])),
+		b: new Float32Array(count).fill(Math.fround(lab[2])),
+	})
+	const ladderWith = (offsets: readonly number[]) => ({
+		sigmas: offsets.map((_, index) => 2 ** (offsets.length - index)),
+		levels: offsets.map(level),
+	})
+
+	// Four rungs, exclusion 2: rungs 0 and 1 excluded from the weight, 2 and 3 retained.
+	const base = buildFigureGround(decoded.planes, ladderWith([0, 0, 0, 0]), 2)
+	const coarseMoved = buildFigureGround(decoded.planes, ladderWith([0.05, 0, 0, 0]), 2)
+	const fineMoved = buildFigureGround(decoded.planes, ladderWith([0, 0, 0, 0.05]), 2)
+
+	assert.equal(coarseMoved.fieldWeight[0], base.fieldWeight[0], "an excluded rung must not move the weight")
+	assert.ok(fineMoved.fieldWeight[0] < base.fieldWeight[0] * 0.5, "a retained rung must move the weight")
+	// Both perturbations move the energies identically: they are ladder means over every rung.
+	assert.ok(coarseMoved.inkEnergy[0] > base.inkEnergy[0], "an excluded rung must still feed inkEnergy")
+	assert.ok(
+		Math.abs(coarseMoved.inkEnergy[0] - fineMoved.inkEnergy[0]) < 1e-7,
+		`ink is a mean over all rungs: ${coarseMoved.inkEnergy[0]} vs ${fineMoved.inkEnergy[0]}`,
+	)
+})
+
+test("the exclusion is clamped so the finest rung always survives", async () => {
+	// A hand-built one-rung ladder must still measure that rung, not fall through to an empty max
+	// (which would return fieldWeight 1 everywhere — a silent all-field plane).
+	const size = 4
+	const path = await writePng("clamp.png", size, size, () => [128, 128, 128])
+	const decoded = await decodePlanes(path)
+	const lab = rgbToOkLab([128, 128, 128])
+	const bar = SAME_COLOR_BAR_BY_REGION[colorRegion(colorFromRgb([128, 128, 128]))]
+	const count = size * size
+	const single = {
+		sigmas: [1],
+		levels: [{
+			L: new Float32Array(count).fill(Math.fround(lab[0] - bar * FIELD_WEIGHT_SOFTNESS_BARS)),
+			a: new Float32Array(count).fill(Math.fround(lab[1])),
+			b: new Float32Array(count).fill(Math.fround(lab[2])),
+		}],
+	}
+	for (const excluded of [0, 1, 5, 99]) {
+		const field = buildFigureGround(decoded.planes, single, excluded)
+		assert.ok(Math.abs(field.fieldWeight[0] - 0.5) < 1e-4, `excluded ${excluded}: weight ${field.fieldWeight[0]}`)
+	}
+	assert.throws(() => buildFigureGround(decoded.planes, single, -1), RangeError)
+	assert.throws(() => buildFigureGround(decoded.planes, single, 1.5), RangeError)
 })
 
 // ---------------------------------------------------------------------------------------------
