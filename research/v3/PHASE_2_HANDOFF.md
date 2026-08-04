@@ -69,9 +69,11 @@ from disc means. **Pick one line, state it, and hold it** — the value of this 
 discipline, and a prototype that quietly relaxes it is testing nothing.
 **Prior art: not tried. The only genuine novelty of the six.** Measurement-maps were built three
 times before and always fed into clustering.
-**Instrument gap:** "could this method have produced the endorsed palette?" is **vacuous** here —
-every pixel is always available, so the answer is always yes. Both authors found this independently.
-Phase 2 owes this mechanism a second instrument or it gets a free pass.
+**One note on auto-adjudication:** "could this method have produced the endorsed palette?" is
+**vacuous** here — every pixel is always available, so the answer is always yes. Both authors found
+this independently. **This is not a gap and it earns nothing a free pass**, because auto-adjudication
+was never the gate (§5). It just means this mechanism gets less help from the warehouse while
+iterating, and reaches the reviewer on its palettes alone.
 
 ### P4 — a portfolio of rival extractors under a selector
 **Arms: `arm-c`, `arm-c-prime`.** Several small methods, each asserting one structure; machinery
@@ -144,32 +146,38 @@ between documents about specific constants. The reviewer's response was that the
 interesting. **Do not bring number-disagreements to the reviewer.** Resolve them by measurement, or
 pick one, state it, and move on. Bring things that change what a prototype does or how it is judged.
 
-## 5. What Phase 2 owes that no prototype provides
+## 5. What judges a prototype — and it is not an instrument
 
-Four gaps, all instrument-side. **These are the highest-value work in Phase 2 that is not a
-prototype**, because every prototype is judged through them.
+**The reviewer, 2026-08-04, verbatim, and this is the section that outranks the instruments:**
 
-1. **Three robustness arms are listed and do not exist** — resize, 1-pixel crop, ID relabeling.
-   Relabeling matters most: it produced the old system's worst number (renaming a file moved 55.85%
-   of the corpus). The reviewer has just named stability-under-imperceptible-change as *the*
-   principle, and a third of it is unmeasurable today.
-2. **The scrambled-twin test.** Cut an artwork into tiles, shuffle them, run both. Colour content
-   identical, arrangement destroyed. A method genuinely reading structure must change its answer;
-   one doing colour statistics in disguise will not. **Twelve authors asserted "the evidence is
-   geometric" and none proposed a way to check it.** Cheap — one more arm on an existing harness,
-   no reviewer time. The hard part is deciding *in advance* which outputs are supposed to be
-   invariant; get that wrong and it faults correct designs.
-3. **An overfitting detector.** No arm proposed one. The old system was 1.61× more perturbation-
-   stable on artwork it had seen than on artwork it had not, and nothing measures that today.
-   Minimum viable version is a process rule, not code: **every prototype declares, before tuning,
-   which parameters are set from artworks it will later be judged on.**
-4. **A second reachability instrument for P3** — see §2.
+> the real test is when a palette produced by an algorithm is judged by a human. That's all that
+> matters. The warehouse is there to provide past evidence that a palette has been accepted or
+> ranked low, to help with agent iteration autonomy. Past evidence is weak evidence because we were
+> working with different priors when it was produced. There is no free pass here, i'll be the judge.
 
-**One pending decision with an output consequence**, so it does not surprise you: adopting the
-direction-aware "same colour" shape measured in Phase 0 would make some background/surface pairs
-collapse, and a collapsed surface means **no gradient**. It changes output, not just checks. It is
-currently report-only and its disagreement counter reads zero — but that zero is a fact about the
-population tested, not about the bar (see `reviews/challenger-counter/FIRST_REVIEW.md`).
+So: **build palettes, put them in front of the reviewer.** Everything else exists to let a
+prototype iterate on its own between reviews, and none of it is a gate.
+
+- **Auto-adjudication against past verdicts is a development aid, not a score.** It is weak
+  evidence by construction — those verdicts were produced under different priors. A prototype it
+  cannot help (P3, §2) is not a prototype with a free pass; it just iterates with less scaffolding.
+- **The robustness harness measures the principle the reviewer named**: stay stable under changes
+  that should not matter — re-encode, quality, dither. That is what it does today and it is enough.
+  The catalog also lists resize, 1-pixel crop and ID relabeling, which do not exist. **Do not build
+  them and do not treat their absence as a gap** — the reviewer has ruled the relabeling result was
+  a bug, not a finding. Fix the catalog row so no future author reasons about arms that are not
+  there.
+- **The minimum distance between colours is in the specification.** Implementations must satisfy
+  it, including the consequence that two field colours too close together collapse and the artwork
+  therefore has no gradient. Reviewer: *"it's not a surprise, it's not silent, it's in the specs."*
+  This is a design constraint for every prototype, not an open question and not a defect.
+
+**A standing prohibition, earned:** this orchestrator brought the reviewer four items framed as
+instrument gaps, and all four were dismissed — three as restatements of things already specified or
+already known, one as a test not worth running. **Do not invent evaluation machinery to protect
+against failure modes the reviewer has not asked about.** The reviewer is the judge, they have said
+so plainly, and instrument-building that is not requested is overhead the campaign has already been
+warned about once (`PHASE_1_HANDOFF.md` §6, rule 12).
 
 ## 6. The orchestration plan
 
@@ -222,8 +230,16 @@ remote push was blocked by a permission prompt and is owed. Phase 1 documents ar
 `research/v3/phase-1/`; the decision ledger, loose ends and instruments are where
 `PHASE_1_HANDOFF.md` left them.
 
-**Nothing in Phase 1 is unfinished.** The open items are the four instrument gaps in §5, the
-reviewer's standing decision on whether to commission a deliberately-anchored incumbent arm (ledger
-row **B46** — no proposal represents what the previous system learned, because writing one requires
-exactly the material Phase 1 withheld), and the ordinary documentation defects in
-`CONTRACT_DEFECTS.md` that the reviewer has ruled are not worth their attention.
+**Nothing in Phase 1 is unfinished.** Two things are open, and neither blocks starting:
+
+- **Whether to commission a deliberately-anchored incumbent arm** (ledger row **B46**). No proposal
+  represents what the previous system learned, because writing one requires exactly the material
+  Phase 1 withheld from every author. The reviewer's call, any time before the prototypes are
+  compared.
+- **The documentation defects in `CONTRACT_DEFECTS.md`.** The reviewer has ruled these are not
+  worth their attention — they are disagreements between documents about specific constants. Where
+  one blocks an implementer, **resolve it by measurement or pick one, state it, and move on.**
+
+`CONTRACT_DEFECTS.md` should be read with §4's standard in hand: most of its 17 items were written
+before the reviewer made clear that principles bind and numbers do not. Several are already
+dissolved by the rulings recorded there and have not been re-scored.
