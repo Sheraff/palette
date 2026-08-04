@@ -406,10 +406,17 @@ test("violatedBarriers agrees with invariants 3 and 4 on every tuple, exception 
 // Collapse is a move with a price
 // ---------------------------------------------------------------------------------------------
 
-/** Every triple but the field is hopeless as a field: no surface can earn its coverage. */
+/**
+ * Every triple but the field is hopeless as a field: no surface can earn its coverage.
+ *
+ * `spatialSpread: 1` is "as spread out as a uniform fill of the frame" — the producer's convention
+ * (`../src/lattice/index.ts:36`), which is what a field *is*. It read `0.2` until 2026-08-04, when
+ * `0.2` still saturated the spread factor at full marks (SPEC integration directive 8, the double
+ * normalisation); the fixture's meaning is unchanged and only the number that expresses it moved.
+ */
 function noSecondFieldExists(index: number, _random: () => number, stats: CandidateStats): CandidateStats {
 	if (index === 0) {
-		return { ...stats, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }
+		return { ...stats, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }
 	}
 	return { ...stats, fieldLikeness: 0, spatialSpread: 0, borderAffinity: 0 }
 }
@@ -418,7 +425,7 @@ function noSecondFieldExists(index: number, _random: () => number, stats: Candid
 function secondFieldExists(index: number, random: () => number, stats: CandidateStats): CandidateStats {
 	const shaped = noSecondFieldExists(index, random, stats)
 	if (index === 5) {
-		return { ...shaped, fieldLikeness: 1, spatialSpread: 0.2, borderAffinity: 1.5, presence: 0.05 }
+		return { ...shaped, fieldLikeness: 1, spatialSpread: 1, borderAffinity: 1.5, presence: 0.05 }
 	}
 	return shaped
 }
@@ -680,10 +687,12 @@ test("field fitness re-derives as the product of its three scored factors", () =
 	const stats: CandidateStats = {
 		...ABSENT_STATS,
 		fieldLikeness: 0.8,
-		spatialSpread: 1 / 12, // exactly half the uniform-over-frame trace
+		spatialSpread: 0.5, // half a uniform frame-wide fill (the statistic arrives normalised)
 		borderAffinity: 0.5,
 	}
-	// By hand: 0.8 × (1/12)/(1/6) × 0.5 = 0.8 × 0.5 × 0.5 = 0.2
+	// By hand: 0.8 × 0.5/1.0 × 0.5/1.0 = 0.2. Both anchors are 1.0 because both statistics arrive
+	// already normalised against their own neutral value (SPEC integration directive 8: the spread
+	// anchor read 1/6 until 2026-08-04, which divided the producer's ratio a second time).
 	assert.ok(Math.abs(fieldFitness(stats) - 0.2) < 1e-12)
 	// Saturation, both factors: above the neutral value nothing further is earned.
 	const saturated: CandidateStats = {

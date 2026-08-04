@@ -214,15 +214,29 @@ export const ENERGY_ANCHORS = {
 	presenceFloor: 1e-30,
 
 	/**
-	 * The spatial spread of a colour spread uniformly over the frame.
+	 * The value `CandidateStats.spatialSpread` takes for a colour spread uniformly over the frame.
 	 *
-	 * `[HELD — geometry, an identity]` `CandidateStats.spatialSpread` is the trace of the normalised
-	 * second spatial moment. For mass distributed uniformly over the unit square that trace is
-	 * `1/12 + 1/12 = 1/6`. Field fitness scores spread as `min(1, spread / (1/6))`: reaching the
-	 * uniform value is full marks, and exceeding it (mass piled at two opposite corners) earns
-	 * nothing extra.
+	 * `[INHERITED — the statistic's own definition, `../lattice/index.ts:36`]` **1.0**, because the
+	 * producer has already divided by the geometric identity: `spatialSpread` is the trace of the
+	 * normalised second spatial moment **divided by `UNIFORM_FRAME_SPATIAL_SPREAD` (= 1/12 + 1/12 =
+	 * 1/6)**, so a uniform frame-wide fill reports 1.0 and a centred square of side *s* reports *s²*.
+	 * Field fitness scores spread as `min(1, spread / 1.0)`: reaching a uniform fill is full marks,
+	 * and exceeding it (mass piled at two opposite corners) earns nothing extra. Exactly the shape of
+	 * `borderNeutralAffinity` above, and for the same reason — both statistics arrive normalised
+	 * against their own neutral value and the anchor states what that value is.
+	 *
+	 * **This anchor read `1/6` until 2026-08-04 and that was a defect** — SPEC "Integration
+	 * directives — wave 2" item 8, found by W6 and pinned by `tests/semantics.test.ts`. The old value
+	 * encoded the *raw* trace, whose uniform-fill value is 1/6, so `terms.ts` divided a second time:
+	 * the spread factor saturated at one sixth of a uniform fill (a centred square of side 0.408 —
+	 * 16.7% of the frame's area), collapsing the upper five sixths of the scale to a single value and
+	 * scoring background and surface on two discriminating factors instead of three. Redefining the
+	 * anchor rather than deleting the division keeps rule 4 true (no bare `1` inline in a term file)
+	 * and keeps the two saturating factors written the same way. It is **not** a rate: nothing here
+	 * trades one term against another, and the value is checkable against `../lattice/index.ts:105`
+	 * without exercising taste.
 	 */
-	uniformSpatialSpread: 1 / 6,
+	uniformSpatialSpread: 1,
 
 	/**
 	 * Border affinity at no preference.

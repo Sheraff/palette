@@ -23,30 +23,37 @@
  * | `borderAffinity` | annulus share / annulus area share, 1.0 = chance | `ratio(·, 1.0)` | **confirmed** |
  * | `habitualGround` | mass-weighted mean surround | distance to field path | **confirmed** |
  * | `centroidDistance` | OKLab distance | divided by the pooled bar | **confirmed** |
- * | `spatialSpread` | trace **already divided by 1/6**, 1.0 = frame-wide | `ratio(·, 1/6)` — **divides again** | **MISMATCH** |
+ * | `spatialSpread` | trace **already divided by 1/6**, 1.0 = frame-wide | `ratio(·, 1.0)` | **confirmed (was a MISMATCH; fixed 2026-08-04)** |
  *
- * The mismatch is normalisation applied twice, in exactly the shape directive 5 predicted:
+ * ## The one mismatch this file found, and the fix that closed it
+ *
+ * As first measured, normalisation was applied twice, in exactly the shape directive 5 predicted:
  *
  * - `src/lattice/index.ts:105` — `spatialSpread: Math.max(variance, 0) / UNIFORM_FRAME_SPATIAL_SPREAD`,
  *   documented at `src/lattice/index.ts:36` as *"1.0 = as spread out as a uniform fill of the frame"*.
  * - `src/energy/terms.ts:181` — `ratio(stats.spatialSpread, ENERGY_ANCHORS.uniformSpatialSpread)`,
- *   whose anchor at `src/energy/rates.ts:208` reads *"`CandidateStats.spatialSpread` is the trace of
- *   the normalised second spatial moment. For mass distributed uniformly over the unit square that
- *   trace is 1/12 + 1/12 = 1/6"* — i.e. W4 assumed the **raw trace**, W2 shipped the **ratio**.
+ *   whose anchor then read *"`CandidateStats.spatialSpread` is the trace of the normalised second
+ *   spatial moment. For mass distributed uniformly over the unit square that trace is 1/12 + 1/12 =
+ *   1/6"* — i.e. W4 assumed the **raw trace**, W2 shipped the **ratio**.
  *
- * **Measured consequence.** The field-fitness spread factor is 6× its intended value and clips, so
- * it reaches full marks at one sixth of a uniform fill instead of at a uniform fill. A colour
- * confined to a centred square of side 0.41 of the frame — **17% of the frame's area** — already
- * scores a perfect spread. Field fitness is `fieldLikeness × spread × border`, so on the majority
- * of real candidates one of its three factors is pinned at 1 and contributes no discrimination at
- * all; background and surface are then scored on two factors, not three. That is a term silently
- * rescaled against the rest of the energy, which is the failure mode directive 5 exists to catch.
+ * **Measured consequence, while it stood.** The field-fitness spread factor was 6× its intended
+ * value and clipped, reaching full marks at one sixth of a uniform fill instead of at a uniform
+ * fill. A colour confined to a centred square of side 0.41 of the frame — **17% of the frame's
+ * area** — already scored a perfect spread. Field fitness is `fieldLikeness × spread × border`, so
+ * on the majority of real candidates one of its three factors was pinned at 1 and contributed no
+ * discrimination at all; background and surface were scored on two factors, not three.
  *
- * **Not fixed here.** `src/energy/terms.ts` is W4's file and `src/energy/solve.ts` is being
- * rewritten concurrently; this worker's paths do not include either. The tests below therefore
- * assert **what is**, with the intended behaviour written beside each as a comment, so that the fix
- * — deleting the second division at `terms.ts:181`, or removing the first at `lattice/index.ts:105`
- * and restating the anchor — flips a named assertion rather than silently changing a number.
+ * **Fixed on the consumer side (SPEC integration directive 8, W7, 2026-08-04):**
+ * `ENERGY_ANCHORS.uniformSpatialSpread` is **redefined to 1.0** — the value the *statistic* takes at
+ * a uniform fill, which is what the anchor's name always meant and what `borderNeutralAffinity`
+ * already did for the other saturating factor. `terms.ts` therefore consumes the producer's
+ * normalised value directly and the second division is gone. The producer side
+ * (`lattice/index.ts:105`) is untouched, so the alternative repair — deleting the *first* division —
+ * is the one this file rules out: the lattice's own tests and `../src/types.ts`'s documented
+ * convention both read the normalised form.
+ *
+ * The tests below assert **what is after the fix**, with the pre-fix behaviour recorded beside each
+ * so the flip is legible in the diff rather than silent.
  *
  * Run: NODE_NO_WARNINGS=1 node --experimental-strip-types --test \
  *   research/v3/prototypes/p6-figureground/tests/semantics.test.ts
@@ -341,14 +348,17 @@ test("PRODUCER: spatialSpread is already normalised — 1.0 is a uniform frame-w
 	assert.equal(ENERGY_ANCHORS.borderNeutralAffinity, 1, "and the consumer's anchor agrees, at 1.0")
 })
 
-test("CONSUMER: terms.ts divides by 1/6 a second time — a 6× rescale of one field-fitness factor", () => {
-	// The anchor W4 wrote, and the reading of `spatialSpread` it encodes: the RAW trace, whose
-	// uniform-fill value is 1/6. `src/energy/rates.ts:208`.
-	assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, 1 / 6)
-	// The value W2 ships at a uniform fill: 1.0, not 1/6. `src/lattice/index.ts:105`.
+test("CONSUMER: terms.ts reads the producer's convention — the anchor IS the uniform-fill value", () => {
+	// The anchor after directive 8's fix, and the reading of `spatialSpread` it encodes: the value the
+	// STATISTIC takes at a uniform fill, which the producer already normalised to. `src/energy/rates.ts`.
+	// (It read `1/6` — the raw trace — until 2026-08-04; that was the defect.)
+	assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, 1)
+	// The value W2 ships at a uniform fill: 1.0. `src/lattice/index.ts:105`.
 	assert.ok(close(spreadFixture().uniform.spatialSpread, 1, 0.02))
-	// Those two cannot both be right, and the ratio between them is the size of the defect.
-	assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 6)
+	// Producer and consumer now name the same number, so no rescale survives between them.
+	assert.equal(1 / ENERGY_ANCHORS.uniformSpatialSpread, 1)
+	// And it is written exactly like the other saturating factor, whose anchor was never wrong.
+	assert.equal(ENERGY_ANCHORS.uniformSpatialSpread, ENERGY_ANCHORS.borderNeutralAffinity)
 })
 
 /** A stats value with everything neutral except the one field under test. */
@@ -366,39 +376,37 @@ function statsWithSpread(spatialSpread: number): CandidateStats {
 	}
 }
 
-test("MISMATCH, measured: the field-fitness spread factor saturates at one sixth of a uniform fill", () => {
-	// WHAT IS. The spread factor reaches 1 at spatialSpread = 1/6 and stays there.
-	assert.equal(fieldFitness(statsWithSpread(1 / 6)), 1, "saturated at a sixth of a uniform fill")
-	assert.equal(fieldFitness(statsWithSpread(1)), 1, "and at a uniform fill — indistinguishable")
-	assert.equal(fieldFitness(statsWithSpread(0.25)), 1, "and for the centred half-frame block")
+test("FIXED, measured: the field-fitness spread factor IS the statistic, saturating at a uniform fill", () => {
+	// WHAT IS, after directive 8's fix: the factor is the producer's own value, clamped to [0,1].
+	// (WHAT WAS, before it: all three of these read exactly 1 — the pre-fix pins, kept as comments so
+	// the flip is legible. `assert.equal(fieldFitness(statsWithSpread(1 / 6)), 1)` etc.)
+	assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6), "a sixth of a uniform fill scores a sixth")
+	assert.equal(fieldFitness(statsWithSpread(1)), 1, "a uniform fill scores full marks")
+	assert.ok(close(fieldFitness(statsWithSpread(0.25)), 0.25), "the centred half-frame block scores 0.25")
 
-	// WHAT SHOULD BE, if the consumer read the producer's convention: the factor IS the statistic,
-	// clamped to [0,1]. Flip these four lines and delete the division at `terms.ts:181` to fix it.
-	//   assert.ok(close(fieldFitness(statsWithSpread(1 / 6)), 1 / 6))
-	//   assert.equal(fieldFitness(statsWithSpread(1)), 1)
-	//   assert.ok(close(fieldFitness(statsWithSpread(0.25)), 0.25))
-	// The band the defect destroys: every candidate between a sixth of a uniform fill and a uniform
-	// fill is scored identically, where it should span the whole [1/6, 1] range of the factor.
-	assert.equal(
-		fieldFitness(statsWithSpread(1 / 6)),
-		fieldFitness(statsWithSpread(1)),
-		"the entire upper five sixths of the spread scale is collapsed to one value",
+	// The band the defect destroyed, restored: the upper five sixths of the spread scale discriminate
+	// again, and the two ends of it are no longer the same number.
+	assert.ok(
+		fieldFitness(statsWithSpread(1 / 6)) < fieldFitness(statsWithSpread(1)),
+		"the upper five sixths of the spread scale discriminates again",
+	)
+	assert.ok(
+		close(fieldFitness(statsWithSpread(1)) / fieldFitness(statsWithSpread(1 / 6)), 6),
+		"and the size of the recovered band is exactly the size of the old defect: 6×",
 	)
 
-	// The physical size of the blind spot, so the report can quote it: a colour confined to a centred
-	// square of side s reads spatialSpread = s², so saturation begins at s = √(1/6) ≈ 0.408 — 16.7%
-	// of the frame's area.
+	// Saturation is still there, at the right place: beyond a uniform fill nothing further is earned
+	// (mass piled at two opposite corners is not more field-like than a field).
+	assert.equal(fieldFitness(statsWithSpread(10)), 1, "and above a uniform fill it saturates")
 	const saturatingSide = Math.sqrt(ENERGY_ANCHORS.uniformSpatialSpread)
-	assert.ok(Math.abs(saturatingSide - 0.4082) < 1e-3, `saturating side fraction ${saturatingSide}`)
-	assert.ok(Math.abs(saturatingSide ** 2 - 0.1667) < 1e-3, "…which is a sixth of the frame's area")
+	assert.equal(saturatingSide, 1, "a centred square reads s², so saturation begins at s = 1: the frame")
 
 	// And the measured candidate, end to end: the centred half-frame block from the fixture above,
-	// which covers a quarter of the frame, scores a perfect field spread.
+	// which covers a quarter of the frame, now scores a quarter rather than a perfect field spread.
 	const { block } = spreadFixture()
-	assert.equal(
-		fieldFitness({ ...statsWithSpread(block.spatialSpread) }),
-		1,
-		`a colour on 25% of the frame scores a perfect spread (spatialSpread ${block.spatialSpread})`,
+	assert.ok(
+		close(fieldFitness({ ...statsWithSpread(block.spatialSpread) }), BLOCK_SIDE_FRACTION ** 2, 0.05),
+		`a colour on 25% of the frame scores ${fieldFitness(statsWithSpread(block.spatialSpread))}`,
 	)
 })
 

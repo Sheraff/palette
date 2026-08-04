@@ -174,8 +174,15 @@ function ratio(value: number, scale: number): number {
  *
  * `fieldLikeness × spatialSpread × borderAffinity`, exactly as proposal §2.4 term 2 states it, with
  * the two unbounded factors expressed against their own neutral values (`ENERGY_ANCHORS`): spread
- * against the uniform-over-frame trace, border affinity against no-preference. All three factors
- * are in [0,1], so the product is, and the misfit is `1 −` it.
+ * against a uniform frame-wide fill, border affinity against no-preference. All three factors are
+ * in [0,1], so the product is, and the misfit is `1 −` it.
+ *
+ * **Both statistics arrive already normalised against those neutral values** — `spatialSpread` is
+ * `trace / (1/6)` and `borderAffinity` is `annulus share / annulus area share` — so both anchors are
+ * 1.0 and the `ratio` here is a clamp with its neutral value named rather than a rescale. Until
+ * 2026-08-04 `uniformSpatialSpread` was `1/6` and this line divided the producer's already-normalised
+ * value a second time (SPEC integration directive 8): the spread factor saturated at one sixth of a
+ * uniform fill, which is `tests/semantics.test.ts`'s pinned measurement.
  */
 export function fieldFitness(stats: CandidateStats): number {
 	const spread = ratio(stats.spatialSpread, ENERGY_ANCHORS.uniformSpatialSpread)
