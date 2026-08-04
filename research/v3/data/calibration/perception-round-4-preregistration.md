@@ -477,3 +477,235 @@ because a multiplier on a redefined quantity is a different number.
 ---
 
 *Pre-registered 2026-08-04, before the push. `perception-4`, 148 items, seed 20260804_44.*
+
+---
+
+# 9. Results — scored 2026-08-04
+
+**Added after the answers existed. Everything above this line is unchanged from `4c7c891`.**
+
+Artifact: `perception-round-4-analysis.json`, written by `analyze-perception-round-4.ts`.
+Answers: 148/148, all human, one revision each, none superseded or retracted.
+
+## 9.0 The analyzer was not committed before scoring — disclosed, not excused
+
+§8 asked for the analyzer to be committed before the round was scored and run as committed, the way
+`accent-real-1`'s was. **It was not.** The round was pushed and answered without it, and the analyzer
+was written afterwards, with the 148 answers on disk. No claim that it is blind to them is available.
+
+What stands in place of blindness: every rule it implements is quoted from §§5–6 above, which *are*
+frozen at `4c7c891` and which fix every threshold, critical value, family size, gate and refusal
+condition in advance; and every place this document left something open is listed in the analysis
+JSON under `ambiguityResolutions` rather than settled quietly. Those six resolutions are the honest
+attack surface of this scoring and they are named so they can be attacked. Two of them changed a
+number, and both are flagged at the point of use below.
+
+## 9.1 Gates (§6.1) — all pass; the round is valid
+
+| gate | result |
+|---|---|
+| 1. all 6 attention checks | **6/6 correct — not void** |
+| 2. repeat consistency | identity **4/4 (100%)** vs round 3's 83.3%; accent **1/2**; all six **5/6 (83.3%)** |
+| 3. escape share | **0.0% in every arm and every stratum** — no arm is uninterpretable, every n is full |
+| 4. degenerate ladders | **none** — all three arm-B ladders return both answers |
+| 5. repeat-substitution sensitivity | **no verdict differs** between the first-showing and later-answer runs |
+
+Gate 2 carries the caveat this document put on it in advance: **four identity repeats is a thin
+re-measurement**. 4/4 does not confirm 83.3% and nothing downstream re-derives the lapse rate from
+it. The one disagreement in the round is an *accent* repeat (`p4-c-iso-20`).
+
+**Ambiguity that changed a number (resolution 1).** "First showing" needed an order, and the
+`repeat`-role item is **not** reliably the later showing: by the fixture's `serveOrder`, the repeat
+was served *earlier* than its arm counterpart in **three of the six pairs**. Timestamps mean nothing
+under the standing ruling, so order comes from `serveOrder` alone. This is not cosmetic — the one
+inconsistent pair is one of the three, so `p4-c-iso-20`'s scored answer is `does_not_work` (its
+earlier showing), not the `works` its arm-role record carries. Gate 5 brackets the whole question:
+both readings were run end to end and no verdict moved.
+
+## 9.2 Arm A (§5.1, §5.2) — decisive at the arm level, not family-wise
+
+- **k′ = 28 of 40 for `ICtCp × one global constant`** — accuracy **0.700**, and therefore
+  **0.300** for the contract's `OKLab × four regional bars + Math.max`, exactly complementary by
+  construction.
+- Two-sided exact binomial **p = 0.0166**. The realised n is 40 (no escapes), so the pre-registered
+  critical values stand unrecomputed: **decisive iff k′ ≥ 27 or ≤ 13**. 28 ≥ 27.
+- **Arm-level verdict: decisive. ICtCp-with-one-constant is the better predictor on this arm.**
+- **Holm over the declared 13: adjusted p = 0.0995. Does not survive.**
+
+**Ambiguity that changed a verdict (resolution 3): §5.1 and §5.6 disagree here, and both are
+reported.** §5.1 fixes decisiveness at the arm's own uncorrected binomial; §5.6 puts that same
+binomial inside a 13-test Holm family. Neither has been dropped and neither has been softened. The
+arm is decisive on its own pre-registered rule **and** fails the pre-registered family-wise
+correction. The round did what it was built to do — it cut the family from 144 to 13 and moved the
+adjusted p from **1.000 to 0.0995** — and that is still not below 0.05.
+
+**The anisotropy veto (§5.2) does not fire.**
+
+| subgroup | k′ | rate | exact p |
+|---|---|---|---|
+| lightness-dominant | 16/20 | 0.800 | 0.0118 |
+| chroma-dominant | 12/20 | 0.600 | 0.5034 |
+
+Both rates are on the **same** side of 0.5, so the veto's first condition fails and the arm is not
+`anisotropy-confounded`. But the two subgroups are not alike: ICtCp's win is carried by the
+lightness-dominant half (0.800, individually decisive) and the chroma-dominant half is
+indistinguishable from a coin. **Where the two rules disagree about a chroma step, this reviewer
+sided with neither.**
+
+## 9.3 Arm B (§5.3) — the anisotropy is real, ~2.9×, and it is the only Holm-clean identity result
+
+Reported, never adopted from — declared under-powered in §3.4 before the round ran.
+
+| ladder | threshold | 95% CI | rank-sum p | smallest p this split can produce |
+|---|---|---|---|---|
+| lightness | **0.02063** | [0.01606, 0.02666] | 0.0606 | **0.0606** |
+| chroma | **0.00717** | [0.00530, 0.00970] | 0.0081 | **0.0081** |
+| hue | **0.00759** | [0.00460, 0.01253] | 0.0283 | 0.0081 |
+
+| ratio | estimate | 95% cluster-bootstrap CI | p vs 1 | Holm |
+|---|---|---|---|---|
+| lightness / chroma | **2.88** | [1.91, 4.39] | 0.0012 | **survives (adj 0.0150)** |
+| lightness / hue | **2.72** | [1.65, 5.90] | 0.0012 | **survives (adj 0.0150)** |
+
+Both ratio intervals exclude 1. **The direction-dependence the contract does not encode is measured
+and it is real.** §5.3's prediction was ≈4.2 and ≈3.8; the observed 2.88 and 2.72 sit below that,
+and both intervals contain the predicted values *and* contain 2 — which is precisely the resolution
+§3.4 said 12 rungs would have. **Confirmed, not pinned.** Ledger row **B9** moves from "unmeasured"
+to "measured, unencoded".
+
+**Read the middle column before reading the Holm column.** The lightness and chroma ladders are
+*perfectly ordered* — every "same" below every "different" — and their p-values **are the smallest
+their own yes/no splits can produce**. At 2 "same" among 12, an exact rank-sum cannot return below
+0.0606 no matter how clean the data. Those two Holm failures are facts about a 12-rung ladder with a
+lopsided split, not about noisy answers. The ratios, which pool both ladders, do not have that
+ceiling and they survive.
+
+**Clamp sensitivity (§3.2, resolution 6).** The two clamped bottom rungs were declared to
+`fitWithDeclaredSupport` as a left truncation at 0.004 and the required check was computed, not
+asserted: refitting with the clamped rung dropped moves the chroma threshold 0.007168 → 0.007160
+and the hue threshold 0.007592 → 0.007340. Under 4% on both. The clamp is not carrying the result.
+
+## 9.4 Arm C (§5.4) — refused again, and the lightness axis finally reads
+
+**Primary, 36 isoluminant items.** Pooled threshold **0.18401**, 95% CI **[0.12978, 0.26091]** —
+against `accent-real-1`'s pooled **0.18630** [0.14052, 0.24700]. *Carrying §2.2's note in the same
+sentence, as required: the two rounds' served strings are **not** byte-identical — round 4 puts
+`accent-real-1`'s mid-round chat clarification on screen — so these are comparable under the
+clarification that governed both, and not as identical instruments.*
+
+| hue third | threshold | outside the pooled interval? |
+|---|---|---|
+| 0 | 0.16026 | no |
+| 1 | 0.15336 | no |
+| 2 | **not identified inside [0.06, 0.30]** | **yes** |
+
+**Ambiguity that changed a number (resolution 5-adjacent).** Hue third 2's unconstrained fit returns
+1536.8 with an interval spanning ~180 orders of magnitude. That is not a large threshold; it is the
+fit reporting **no relation between distance and the answer anywhere in the sampled range** (its
+rank-sum p is exactly 1.000, and it answered "works" 3/12 non-monotonically). The analyzer reports it
+as unidentified rather than printing the number.
+
+**The §5.4 refusal condition fires. Verdict: `stratum-dependent`** — the same refusal
+`accent-real-1` returned, replicated on fresh covers under an on-screen clarification.
+**A replication of that refusal is a result**: tier 2 is a function of the pair, not a scalar, and
+the shape of `escapeDenied` is implicated. The refusal is stable under gate 5.
+
+**Secondary — the non-isoluminant stratum, never pooled with the above. These are the first
+observations ever taken on the functional criterion's lightness axis (§3.3).**
+
+| | n | works | rate |
+|---|---|---|---|
+| isoluminant | 36 | 13 | **0.361** |
+| non-isoluminant | 24 | 18 | **0.750** |
+| at d ≈ 0.09 | 6 iso / 12 non-iso | 2 / 7 | 0.333 vs **0.583** |
+| at d ≈ 0.20 | 5 iso / 12 non-iso | 3 / 11 | 0.600 vs **0.917** |
+
+**At matched OKLab distance, an accent that also moves in lightness does its job far more often.**
+The joint fit puts a number on it: **`w_C` = 0.0658**, likelihood-ratio p = **0.00149**,
+**survives Holm (adj 0.0164)** — a chromatic step is worth about **√0.0658 ≈ 0.26** of a lightness
+step of the same OKLab size. Chroma-only reading of ΔC (resolution 5): `w_C` = 0.1268, p = 0.051 —
+same side of 1, weaker.
+
+**This is the arm's exploratory half and §5.4 said so in advance, but it needs one more warning that
+§5.4 did not anticipate.** `w_C` is identified here almost entirely by the *between-strata* contrast:
+ΔL is ~0 by construction for all 36 isoluminant items and large for all 24 non-isoluminant ones, so
+"`w_C` is small" and "stratum predicts the answer" are very nearly the same statement in this design.
+The number is a real signal about the lightness axis and it is **not** a clean estimate of an
+anisotropy weight. It should be read as *"lightness contrast helps an accent, substantially"* and
+not as *"the functional bar's chroma weight is 0.066."*
+
+## 9.5 Multiplicity (§5.6) — 5 of the fixed 13 survive Holm
+
+The family was fixed above and was not extended. §5.6 names the thirteen cells but states a null only
+for arm A; the nulls used for the other ten are declared in the analysis JSON (resolution 2): a
+threshold cell is an exact two-sided Mann-Whitney rank-sum of distance against answer, a ratio cell
+is a seeded two-sided cluster bootstrap against 1, and `w_C` is a likelihood-ratio test against 1.
+
+| cell | raw p | adjusted | survives |
+|---|---|---|---|
+| arm B ratio lightness/chroma | 0.00116 | 0.01504 | **yes** |
+| arm B ratio lightness/hue | 0.00116 | 0.01504 | **yes** |
+| arm C joint `w_C` | 0.00149 | 0.01639 | **yes** |
+| arm C pooled isoluminant | 0.00406 | 0.04059 | **yes** |
+| arm C hue third 1 | 0.00505 | 0.04545 | **yes** |
+| arm B threshold chroma | 0.00808 | 0.06465 | no *(at its own floor)* |
+| arm A veto, lightness subgroup | 0.01182 | 0.08273 | no |
+| **arm A binomial** | **0.01659** | **0.09953** | **no** |
+| arm B threshold hue | 0.02828 | 0.14141 | no |
+| arm B threshold lightness | 0.06061 | 0.24242 | no *(at its own floor)* |
+| arm C hue third 0 | 0.10606 | 0.31818 | no |
+| arm A veto, chroma subgroup | 0.50344 | 1.00000 | no |
+| arm C hue third 2 | 1.00000 | 1.00000 | no |
+
+**Every surviving cell is about direction or about the lightness axis. The cell about *which colour
+space* is not among them.**
+
+## 9.6 The fitting plan's downstream integration (§5, and PART 2 of the study)
+
+Re-run of the study's held-out (space × shape) comparison with round 4 folded in —
+`perception-model-study.ts --include-round-4`, written to
+`data/contract/perception-model-study-with-perception-4.json`. The default run remains byte-identical
+to the committed artifact and the contract test suite passes unchanged.
+
+Identity grows 184 → **260** observations; functional-real grows 30 → **90**.
+
+| identity cell (held-out log-loss, lower better) | before | after |
+|---|---|---|
+| `ICtCp × global-constant` | 0.4913 | 0.4784 |
+| `Jzazbz × linear-in-position` | 0.4505 | 0.4427 |
+| `OKLab × per-region-constants` (incumbent) | 0.5743 | 0.5829 |
+| **leader** | Jzazbz × linear-in-position, 0.4505 | **ICtCp × direction-and-position, 0.4208** |
+
+**Does the plateau break? With arm A, yes — and almost entirely because of arm A.** The leader is now
+separable from **33 of 47** rivals, against **16 of 47** before. But arm A is 40 of the 76 new
+identity items and it is a sample **selected on exactly the disagreement the comparison measures**.
+Re-running with arm A dropped and only arm B's 36 unselected ladder items added: the leader is
+separable from **17 of 47** — one better than before. Likewise `ICtCp × global-constant` versus the
+incumbent flips to Holm-clean (adj p < 0.001) **only** with arm A in, and stays at adj p = 1.000
+without it. **The change in the *identity* of the leader survives dropping arm A; the change in
+*confidence* does not.** No adoption should rest on the enriched configuration.
+
+**The three candidates the round was framed around do not separate in the way the framing expected.**
+`ICtCp-global`, `Jzazbz-linear` and `OKLab-4-bar` are all beaten by a **direction-aware** ICtCp shape
+that was not one of the three. That is the same answer arm B gave from the other end, independently:
+the missing dimension is **direction**, not region and not the choice between two isotropic rulers.
+
+**Functional threshold: a hue-dependent escape does *not* separate from a single constant.** With
+arm C added, `oklab × linear-in-position` improves on the incumbent by +0.0156 (CI [−0.0563, 0.0843],
+p 0.681) and `direction-and-position` by +0.0104 (p 0.834) — neither excludes zero. What does move is
+the whole **`direction-aware`** column, which rises to the top (`cam16-ucs × direction-aware` 0.4995,
++0.0887, CI [−0.0033, 0.1784], p 0.058 — still not excluding zero). **So arm C's answer to "hue-
+dependent or single constant" is: neither, on this evidence — the axis reweighting is what moved.**
+And the non-isoluminant stratum has filled the previously-empty lightness column of the gap map,
+which is what §5.4 commissioned it to do.
+
+## 9.7 What this round did not settle
+
+Unchanged from §7 and restated because the results make it tempting to forget: **no constant is
+licensed to change by anything above**; the region-boundary *locations* were not tested; the P1
+excursion multiplier (§7.1) was not measured and becomes **more** open if the metric moves, not less;
+B31 was not asked; and it is one reviewer whose own measured repeatability is 83.3% at best.
+
+*Scored 2026-08-04. Proposals for the reviewer are in `src/contract/PERCEPTION_VERDICT.md` and
+`data/decisions/proposed-perception-4.json`. This round changed no constant and edited no decisions
+file.*

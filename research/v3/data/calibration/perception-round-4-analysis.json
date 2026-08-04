@@ -1,0 +1,1215 @@
+{
+	"schema": "perception-round-4-analysis/v1",
+	"batchId": "perception-4",
+	"preregistration": "research/v3/data/calibration/perception-round-4-preregistration.md",
+	"preregistrationCommit": "4c7c891",
+	"generatedBy": "research/v3/data/calibration/analyze-perception-round-4.ts",
+	"warehouse": "/Users/Flo/GitHub/palette/research/v3/data/warehouse/warehouse.jsonl",
+	"itemsInFixture": 148,
+	"itemsAnswered": 148,
+	"complete": true,
+	"answerSkips": {
+		"otherBatch": 1224,
+		"otherSchema": 0,
+		"machineAuthored": 0,
+		"retracted": 0,
+		"superseded": 0,
+		"nonString": 0
+	},
+	"criteria": {
+		"identity": "register-as-same, clarified 2026-08-02 after a false start under a detection criterion",
+		"functional": "functional-visibility on real stimuli, with accent-real-1's mid-round chat clarification now served on screen rather than given in conversation — the served strings are NOT byte-identical to accent-real-1's and no comparison here describes them as such (prereg §2.2)"
+	},
+	"analyzerNotCommittedBeforeScoring": {
+		"preregSection": "§8",
+		"stated": "The prereg asked for this analyzer to be committed before the round was scored and run as committed. It was not; it was written after the 148 answers existed. Every rule it implements is quoted from the prereg frozen at 4c7c891, and every open reading is listed in ambiguityResolutions."
+	},
+	"ambiguityResolutions": [
+		{
+			"id": "first-showing-by-serve-order",
+			"preregSection": "§5.1, §6.1 gate 5",
+			"ambiguity": "'each at its first showing' and 'each repeated item's later answer' need an order, and the repeat-role item is not reliably the later showing.",
+			"resolution": "Order comes from the fixture's serveOrder and never from timestamps (standing ruling). The repeat-role item was served EARLIER than its arm counterpart in 3 of the 6 pairs, so 'first showing' is not the same as 'the arm item's own answer'.",
+			"consequenceIfReadTheOtherWay": "Both readings are bracketed by gate 5: the primary run uses the first showing and the sensitivity run uses the later, and any verdict that differs between them is reported unresolved."
+		},
+		{
+			"id": "nulls-for-the-thirteen-holm-cells",
+			"preregSection": "§5.6",
+			"ambiguity": "The family is named but only arm A's null is stated.",
+			"resolution": "A threshold cell tests whether the answer depends on distance at all, by exact two-sided Mann-Whitney rank-sum (no logistic shape assumed, no separation pathology). A ratio cell tests the ratio against 1 by a seeded two-sided cluster bootstrap. The w_C cell is a likelihood-ratio test against w_C = 1 at 1 df."
+		},
+		{
+			"id": "arm-a-decisiveness-versus-holm",
+			"preregSection": "§5.1 against §5.6",
+			"ambiguity": "§5.1 fixes decisiveness at the arm's own uncorrected exact binomial (k' >= 27 or <= 13 at n = 40). §5.6 puts that binomial inside a 13-test Holm family. The two can disagree, and here they do.",
+			"resolution": "Both are reported, neither is dropped, and no wording softens either. `armA.decisiveAtArmLevel` is the §5.1 verdict; `holm` carries the §5.6 verdict; the verdict document states them in the same sentence."
+		},
+		{
+			"id": "arm-b-cluster-is-the-rung",
+			"preregSection": "§5.3",
+			"ambiguity": "'cluster-bootstrap intervals' does not say what the cluster is, and arm B has no shared unit.",
+			"resolution": "One rung per cluster, which makes it an item bootstrap. Said out loud in the provenance rather than implying a clustering that does not exist. Arm C clusters on the cover, where sharing is real (62 covers over 64 items)."
+		},
+		{
+			"id": "delta-c-in-the-joint-shape",
+			"preregSection": "§5.4",
+			"ambiguity": "`√(ΔL² + w_C·ΔC²)` does not say whether ΔC is chroma alone or the whole chromatic plane.",
+			"resolution": "Read as the chromatic plane, hypot(ΔC, ΔH), because §3.3 builds the non-isoluminant stratum by putting the remainder 'in the chromatic plane' without splitting chroma from hue. The chroma-only reading is reported beside it as `jointWeightChromaSensitivity`."
+		},
+		{
+			"id": "clamped-rungs-are-a-left-truncation",
+			"preregSection": "§3.2",
+			"ambiguity": "Two bottom rungs are clamped up to 0.004. The prereg declares the clamp but does not say how the fit should treat it.",
+			"resolution": "The chroma and hue ladders declare `left-truncated-at-a-run-floor` at 0.004 to fitWithDeclaredSupport, and the required sensitivity check is computed — each ladder refitted with the clamped rung dropped — rather than asserted."
+		}
+	],
+	"gates": {
+		"order": "§6.1, checked before any §5 quantity was computed",
+		"attentionChecks": {
+			"passed": true,
+			"voided": false,
+			"rows": [
+				{
+					"itemId": "p4-control-identical-identity-0",
+					"role": "control-identical",
+					"kind": "identity",
+					"expected": "same",
+					"observed": "same",
+					"correct": true
+				},
+				{
+					"itemId": "p4-control-identical-identity-1",
+					"role": "control-identical",
+					"kind": "identity",
+					"expected": "same",
+					"observed": "same",
+					"correct": true
+				},
+				{
+					"itemId": "p4-control-obvious-identity-0",
+					"role": "control-obvious",
+					"kind": "identity",
+					"expected": "different",
+					"observed": "different",
+					"correct": true
+				},
+				{
+					"itemId": "p4-control-obvious-identity-1",
+					"role": "control-obvious",
+					"kind": "identity",
+					"expected": "different",
+					"observed": "different",
+					"correct": true
+				},
+				{
+					"itemId": "p4-control-identical-accent-0",
+					"role": "control-identical",
+					"kind": "accent",
+					"expected": "does_not_work",
+					"observed": "does_not_work",
+					"correct": true
+				},
+				{
+					"itemId": "p4-control-obvious-accent-0",
+					"role": "control-obvious",
+					"kind": "accent",
+					"expected": "works",
+					"observed": "works",
+					"correct": true
+				}
+			]
+		},
+		"repeatConsistency": {
+			"comparedAgainst": 0.8333333333333334,
+			"identity": {
+				"consistent": 4,
+				"of": 4,
+				"rate": 1,
+				"interval": {
+					"ok": true,
+					"successes": 4,
+					"trials": 4,
+					"rate": 1,
+					"low": 0.5101091631424628,
+					"high": 1,
+					"confidence": 0.95,
+					"summary": "4/4 = 100.0% (95% CI 51.0%-100.0%)",
+					"provenance": {
+						"method": "Wilson score interval at 95%",
+						"n": 4,
+						"inputs": {
+							"successes": 4,
+							"trials": 4,
+							"confidence": 0.95,
+							"z": 1.959963986120195
+						},
+						"corrections": [],
+						"caveats": [
+							"denominator is 4; the interval spans 49.0% of the unit line, so it constrains very little"
+						]
+					}
+				},
+				"caveat": "Four is a thin re-measurement and the prereg says so (§6.1 gate 2): it can contradict 83.3% loudly and it cannot confirm it precisely. Nothing downstream re-derives the lapse rate from this number."
+			},
+			"accent": {
+				"consistent": 1,
+				"of": 2,
+				"rate": 0.5
+			},
+			"allSix": {
+				"consistent": 5,
+				"of": 6
+			},
+			"rows": [
+				{
+					"repeatItemId": "p4-repeat-00",
+					"originalItemId": "p4-a-37",
+					"kind": "identity",
+					"servedFirst": "p4-repeat-00",
+					"firstAnswer": "same",
+					"laterAnswer": "same",
+					"consistent": true
+				},
+				{
+					"repeatItemId": "p4-repeat-01",
+					"originalItemId": "p4-a-16",
+					"kind": "identity",
+					"servedFirst": "p4-a-16",
+					"firstAnswer": "different",
+					"laterAnswer": "different",
+					"consistent": true
+				},
+				{
+					"repeatItemId": "p4-repeat-02",
+					"originalItemId": "p4-b-03",
+					"kind": "identity",
+					"servedFirst": "p4-repeat-02",
+					"firstAnswer": "different",
+					"laterAnswer": "different",
+					"consistent": true
+				},
+				{
+					"repeatItemId": "p4-repeat-03",
+					"originalItemId": "p4-b-15",
+					"kind": "identity",
+					"servedFirst": "p4-b-15",
+					"firstAnswer": "different",
+					"laterAnswer": "different",
+					"consistent": true
+				},
+				{
+					"repeatItemId": "p4-repeat-04",
+					"originalItemId": "p4-c-iso-20",
+					"kind": "accent",
+					"servedFirst": "p4-repeat-04",
+					"firstAnswer": "does_not_work",
+					"laterAnswer": "works",
+					"consistent": false
+				},
+				{
+					"repeatItemId": "p4-repeat-05",
+					"originalItemId": "p4-c-iso-25",
+					"kind": "accent",
+					"servedFirst": "p4-c-iso-25",
+					"firstAnswer": "works",
+					"laterAnswer": "works",
+					"consistent": true
+				}
+			]
+		},
+		"escapeShare": {
+			"threshold": 0.25,
+			"neverSubtracted": "reported per arm and per stratum, never subtracted, never folded into either column (§6.1 gate 3)",
+			"groups": {
+				"arm-a": {
+					"answered": 40,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-b": {
+					"answered": 36,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-b:lightness": {
+					"answered": 12,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-b:chroma": {
+					"answered": 12,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-b:hue": {
+					"answered": 12,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c-isoluminant": {
+					"answered": 36,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:isoluminant:hue-third-0": {
+					"answered": 12,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:isoluminant:hue-third-2": {
+					"answered": 12,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:isoluminant:hue-third-1": {
+					"answered": 14,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c-non-isoluminant": {
+					"answered": 24,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:non-isoluminant:hue-third-0": {
+					"answered": 8,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:non-isoluminant:hue-third-1": {
+					"answered": 8,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:non-isoluminant:hue-third-2": {
+					"answered": 8,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"control-identical": {
+					"answered": 3,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"control-obvious": {
+					"answered": 3,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"arm-c:isoluminant:hue-third-null": {
+					"answered": 2,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				},
+				"repeat": {
+					"answered": 6,
+					"escapes": 0,
+					"share": 0,
+					"interpretable": true
+				}
+			},
+			"anyArmUninterpretable": false
+		},
+		"degenerateLadders": {
+			"rule": "§6.1 gate 4 — a ladder that returns all-same or all-different across all twelve rungs is degenerate; its threshold is not reported and its ratio is not computed",
+			"byDirection": {
+				"lightness": {
+					"degenerate": false,
+					"yesCount": 2,
+					"n": 12
+				},
+				"chroma": {
+					"degenerate": false,
+					"yesCount": 4,
+					"n": 12
+				},
+				"hue": {
+					"degenerate": false,
+					"yesCount": 4,
+					"n": 12
+				}
+			}
+		},
+		"repeatSubstitutionSensitivity": {
+			"rule": "§6.1 gate 5 — every scored quantity re-run with each repeated item's later answer substituted for its first; any verdict that differs is unresolved whatever the primary run said",
+			"verdictsCompared": 21,
+			"unstable": [],
+			"anyUnstable": false
+		}
+	},
+	"armA": {
+		"preregSection": "§5.1, §5.2",
+		"population": "the 40 items with role arm-a, each at its first showing; controls never scored; repeats are not independent trials",
+		"criticalValues": {
+			"n": 40,
+			"decisiveAtOrBelow": 13,
+			"decisiveAtOrAbove": 27
+		},
+		"primary": {
+			"successesForIctcp": 28,
+			"trials": 40,
+			"accuracyIctcpGlobal": 0.7,
+			"accuracyOkLabFourBar": 0.30000000000000004,
+			"pValue": 0.01658900337497478,
+			"decisiveAtArmLevel": true,
+			"winner": "ictcp-global",
+			"holm": {
+				"id": "arm-a-binomial",
+				"label": "arm A: k' against p = 0.5, exact binomial",
+				"rawPValue": 0.01658900337497478,
+				"adjustedPValue": 0.09953402024984867,
+				"survivesCorrection": false
+			},
+			"summary": "28/40 (70.0%) vs null p=0.5: p=0.0166",
+			"provenance": {
+				"method": "exact binomial, two-sided by the method of small p-values, null p=0.5",
+				"n": 40,
+				"inputs": {
+					"successes": 28,
+					"trials": 40,
+					"nullProbability": 0.5,
+					"alternative": "two-sided",
+					"distinctUnits": 40
+				},
+				"corrections": [],
+				"caveats": []
+			}
+		},
+		"anisotropyVeto": {
+			"rule": "§5.2 — if the two subgroups fall on opposite sides of 0.5 and at least one is individually decisive at α = 0.05, the arm reports anisotropy-confounded and there is no winner",
+			"lightness": {
+				"successes": 16,
+				"trials": 20,
+				"rate": 0.8,
+				"pValue": 0.011817932128906267
+			},
+			"chroma": {
+				"successes": 12,
+				"trials": 20,
+				"rate": 0.6,
+				"pValue": 0.5034446716308585
+			},
+			"oppositeSidesOfHalf": false,
+			"eitherSubgroupDecisive": true,
+			"fires": false
+		},
+		"sensitivity": {
+			"successesForIctcp": 28,
+			"trials": 40,
+			"pValue": 0.01658900337497478,
+			"decisiveAtArmLevel": true,
+			"winner": "ictcp-global",
+			"vetoFires": false
+		},
+		"whatADecisiveResultLicenses": "§5.1 and §7 — a proposed decision record naming the better predictor, and no constant change on its own. Changing the contract's ruler is a larger decision than one binomial funds.",
+		"whatItDoesNotSettle": "§5.1 — it does not test where REGION_LIGHTNESS_BOUNDARY (0.55) or REGION_CHROMA_BOUNDARY (0.05) sit, only whether a partition at those locations is needed at all. A boundary in the wrong place and a boundary that should not exist look similar here."
+	},
+	"armB": {
+		"preregSection": "§5.3",
+		"declaredUnderPoweredForAdoption": "§3.4 and §5.3, on the record before the round ran: at 12 rungs a direction ladder can confirm a ~4x anisotropy ratio and cannot pin it; 30 per ladder would be needed to tell a 2x ratio from no ratio. No adoption from arm B.",
+		"ladders": {
+			"lightness": {
+				"n": 12,
+				"sameCount": 2,
+				"degenerate": false,
+				"priorCentre": 0.04512,
+				"threshold": 0.020628436279922033,
+				"fittedThreshold": 0.02069357976357776,
+				"confidenceInterval": {
+					"low": 0.016064280379909143,
+					"high": 0.026656920403799442
+				},
+				"separated": true,
+				"separationInterval": {
+					"low": 0.01826256481765967,
+					"high": 0.023300800714657514
+				},
+				"converged": true,
+				"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap",
+				"clampSensitivity": {
+					"thresholdWithClampedRungDropped": 0.020628436279922033,
+					"check": "no rung was clamped on this ladder"
+				},
+				"support": {
+					"verdict": "range-restricted",
+					"supportsClaimDomain": false,
+					"observedMin": 0.014226742596873778,
+					"observedMax": 0.13432718853385292,
+					"domainCoverage": 0.9914161281071552,
+					"n": 12,
+					"annotations": [
+						"range-restricted: OKLab distance along a pure lightness step, inside dark-neutral was observed over 0.014227..0.134327, covering 99.1% of the claimed 0.01504..0.13536"
+					],
+					"summary": "range-restricted: range-restricted: OKLab distance along a pure lightness step, inside dark-neutral was observed over 0.014227..0.134327, covering 99.1% of the claimed 0.01504..0.13536"
+				},
+				"extrapolatedBeyondSample": false,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum of distance against answer",
+					"pValue": 0.06060606060606061,
+					"smallestAchievablePValue": 0.06060606060606061,
+					"atItsOwnFloor": true,
+					"note": "this ladder is perfectly ordered — every 'same' below every 'different' — and this p IS the smallest its own yes/no split can produce. A Holm failure here is a statement about the split, not about the ordering."
+				},
+				"holm": {
+					"id": "arm-b-threshold-lightness",
+					"label": "arm B: does the lightness ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.06060606060606061,
+					"adjustedPValue": 0.24242424242424243,
+					"survivesCorrection": false
+				},
+				"sensitivityThreshold": 0.020628436279922033
+			},
+			"chroma": {
+				"n": 12,
+				"sameCount": 4,
+				"degenerate": false,
+				"priorCentre": 0.010816692081510267,
+				"threshold": 0.007168031191323996,
+				"fittedThreshold": 0.007168031191323996,
+				"confidenceInterval": {
+					"low": 0.005296699036008649,
+					"high": 0.0097005079598617
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"clampSensitivity": {
+					"thresholdWithClampedRungDropped": 0.0071597211094512545,
+					"check": "refitted with the 1 clamped rung(s) dropped: threshold 0.007160 against 0.007168 on the full ladder"
+				},
+				"support": {
+					"verdict": "left-truncated-with-sensitivity-check",
+					"supportsClaimDomain": true,
+					"observedMin": 0.003843886980172722,
+					"observedMax": 0.03244526641998793,
+					"domainCoverage": 0.9915709173476966,
+					"n": 12,
+					"annotations": [
+						"left-truncated at a run floor of 0.004: items below it were never observed. This is not selection on the outcome, and the check offered that it cannot move the result is: refitted with the 1 clamped rung(s) dropped: threshold 0.007160 against 0.007168 on the full ladder",
+						"range-restricted: OKLab distance along a pure chroma step, inside dark-neutral was observed over 0.003844..0.032445, covering 99.2% of the claimed 0.003606..0.03245"
+					],
+					"summary": "left-truncated-with-sensitivity-check: left-truncated at a run floor of 0.004: items below it were never observed. This is not selection on the outcome, and the check offered that it cannot move the result is: refitted with the 1 clamped rung(s) dropped: threshold 0.007160 against 0.007168 on the full ladder"
+				},
+				"extrapolatedBeyondSample": false,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum of distance against answer",
+					"pValue": 0.00808080808080808,
+					"smallestAchievablePValue": 0.00808080808080808,
+					"atItsOwnFloor": true,
+					"note": "this ladder is perfectly ordered — every 'same' below every 'different' — and this p IS the smallest its own yes/no split can produce. A Holm failure here is a statement about the split, not about the ordering."
+				},
+				"holm": {
+					"id": "arm-b-threshold-chroma",
+					"label": "arm B: does the chroma ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.00808080808080808,
+					"adjustedPValue": 0.06464646464646465,
+					"survivesCorrection": false
+				},
+				"sensitivityThreshold": 0.007168031191323996
+			},
+			"hue": {
+				"n": 12,
+				"sameCount": 4,
+				"degenerate": false,
+				"priorCentre": 0.011748247326909546,
+				"threshold": 0.0075921593339122115,
+				"fittedThreshold": 0.0075921593339122115,
+				"confidenceInterval": {
+					"low": 0.004599926402806875,
+					"high": 0.01253082730113635
+				},
+				"separated": false,
+				"separationInterval": null,
+				"converged": true,
+				"note": null,
+				"clampSensitivity": {
+					"thresholdWithClampedRungDropped": 0.0073404136818920555,
+					"check": "refitted with the 1 clamped rung(s) dropped: threshold 0.007340 against 0.007592 on the full ladder"
+				},
+				"support": {
+					"verdict": "left-truncated-with-sensitivity-check",
+					"supportsClaimDomain": true,
+					"observedMin": 0.003739961051647168,
+					"observedMax": 0.03468443885591192,
+					"domainCoverage": 0.98211531763338,
+					"n": 12,
+					"annotations": [
+						"left-truncated at a run floor of 0.004: items below it were never observed. This is not selection on the outcome, and the check offered that it cannot move the result is: refitted with the 1 clamped rung(s) dropped: threshold 0.007340 against 0.007592 on the full ladder",
+						"range-restricted: OKLab distance along a pure hue step, inside dark-neutral was observed over 0.00374..0.034684, covering 98.2% of the claimed 0.003916..0.035245"
+					],
+					"summary": "left-truncated-with-sensitivity-check: left-truncated at a run floor of 0.004: items below it were never observed. This is not selection on the outcome, and the check offered that it cannot move the result is: refitted with the 1 clamped rung(s) dropped: threshold 0.007340 against 0.007592 on the full ladder"
+				},
+				"extrapolatedBeyondSample": false,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum of distance against answer",
+					"pValue": 0.028282828282828285,
+					"smallestAchievablePValue": 0.00808080808080808,
+					"atItsOwnFloor": false,
+					"note": null
+				},
+				"holm": {
+					"id": "arm-b-threshold-hue",
+					"label": "arm B: does the hue ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.028282828282828285,
+					"adjustedPValue": 0.14141414141414144,
+					"survivesCorrection": false
+				},
+				"sensitivityThreshold": 0.0075921593339122115
+			}
+		},
+		"ratios": {
+			"predictionOnTheRecord": "§5.3 — if the study's pooled shape-(d) weights are right, the ratios are ≈4.2 (lightness/chroma) and ≈3.8 (lightness/hue)",
+			"lightnessOverChroma": {
+				"pointEstimate": 2.877838520693126,
+				"interval": {
+					"ok": true,
+					"pointEstimate": 2.877838520693126,
+					"low": 1.9102510882417376,
+					"high": 4.393667080100883,
+					"confidence": 0.95,
+					"resamples": 2000,
+					"seed": 20260804,
+					"resamplingUnits": 24,
+					"resamplingUnitLabel": "one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as such",
+					"degenerateDraws": 272,
+					"summary": "2.8778 (95% percentile CI 1.9103-4.3937 over 24 one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs)",
+					"provenance": {
+						"method": "cluster percentile bootstrap, resampling whole one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs, 2000 resamples, seed 20260804",
+						"n": 24,
+						"inputs": {
+							"resamplingUnits": 24,
+							"observations": 24,
+							"resamples": 2000,
+							"seed": 20260804,
+							"confidence": 0.95,
+							"clusterBy": "one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as such"
+						},
+						"corrections": [],
+						"caveats": [
+							"the interval rests on the number of one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs, not on the number of observations inside them",
+							"272 of 2000 resamples produced no value and were dropped; the interval is over the remaining 1728"
+						]
+					}
+				},
+				"pValueAgainstOne": 0.001156737998843262,
+				"holm": {
+					"id": "arm-b-ratio-lightness-over-chroma",
+					"label": "arm B: lightness/chroma threshold ratio against 1",
+					"rawPValue": 0.001156737998843262,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				}
+			},
+			"lightnessOverHue": {
+				"pointEstimate": 2.71707104298775,
+				"interval": {
+					"ok": true,
+					"pointEstimate": 2.71707104298775,
+					"low": 1.6513364287253616,
+					"high": 5.896741840284238,
+					"confidence": 0.95,
+					"resamples": 2000,
+					"seed": 20260804,
+					"resamplingUnits": 24,
+					"resamplingUnitLabel": "one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as such",
+					"degenerateDraws": 277,
+					"summary": "2.7171 (95% percentile CI 1.6513-5.8967 over 24 one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs)",
+					"provenance": {
+						"method": "cluster percentile bootstrap, resampling whole one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs, 2000 resamples, seed 20260804",
+						"n": 24,
+						"inputs": {
+							"resamplingUnits": 24,
+							"observations": 24,
+							"resamples": 2000,
+							"seed": 20260804,
+							"confidence": 0.95,
+							"clusterBy": "one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as such"
+						},
+						"corrections": [],
+						"caveats": [
+							"the interval rests on the number of one ladder rung per cluster — every rung is a distinct pair and no unit is shared between rungs, so this reduces to an item bootstrap and is reported as suchs, not on the number of observations inside them",
+							"277 of 2000 resamples produced no value and were dropped; the interval is over the remaining 1723"
+						]
+					}
+				},
+				"pValueAgainstOne": 0.001160092807424594,
+				"holm": {
+					"id": "arm-b-ratio-lightness-over-hue",
+					"label": "arm B: lightness/hue threshold ratio against 1",
+					"rawPValue": 0.001160092807424594,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				}
+			}
+		},
+		"amendsLedgerRow": "B9 — from 'unmeasured' to 'measured, unencoded'"
+	},
+	"armC": {
+		"preregSection": "§5.4",
+		"wordingNote": "prereg §2.2 — arm C's answers are comparable with accent-real-1's under the clarification that governed both, but the two rounds' served strings are NOT byte-identical, and this note travels in the same sentence as any number compared against accent-real-1.",
+		"accentRealOneReference": {
+			"pooledThreshold": 0.1863,
+			"interval": [
+				0.14052,
+				0.247
+			],
+			"hueThird0": 0.13417,
+			"hueThird2": 0.26385,
+			"verdict": "stratum-dependent"
+		},
+		"pooledIsoluminant": {
+			"n": 36,
+			"worksCount": 13,
+			"threshold": 0.1840120551391527,
+			"confidenceInterval": {
+				"low": 0.12977795181892332,
+				"high": 0.260910547299894
+			},
+			"separated": false,
+			"note": null,
+			"identifiedWithinClaimDomain": true,
+			"support": {
+				"verdict": "range-restricted",
+				"supportsClaimDomain": false,
+				"observedMin": 0.06077212013811346,
+				"observedMax": 0.30009947787070634,
+				"domainCoverage": 0.9967828327578606,
+				"n": 36,
+				"annotations": [
+					"range-restricted: OKLab distance from the accent to its governing field (pooled over the 36 isoluminant items) was observed over 0.060772..0.300099, covering 99.7% of the claimed 0.06..0.3"
+				],
+				"summary": "range-restricted: range-restricted: OKLab distance from the accent to its governing field (pooled over the 36 isoluminant items) was observed over 0.060772..0.300099, covering 99.7% of the claimed 0.06..0.3"
+			},
+			"discriminationTest": {
+				"method": "exact two-sided Mann-Whitney rank-sum",
+				"pValue": 0.004058926005206184,
+				"smallestAchievablePValue": 1.7310100408968433e-9
+			},
+			"holm": {
+				"id": "arm-c-pooled",
+				"label": "arm C: pooled isoluminant fit (exact rank-sum)",
+				"rawPValue": 0.004058926005206184,
+				"adjustedPValue": 0.040589260052061836,
+				"survivesCorrection": true
+			}
+		},
+		"perHueThird": [
+			{
+				"hueThird": 0,
+				"n": 12,
+				"worksCount": 5,
+				"threshold": 0.16026313301439432,
+				"identifiedWithinClaimDomain": true,
+				"rawFittedThreshold": 0.16026313301439432,
+				"confidenceInterval": {
+					"low": 0.09449118537285561,
+					"high": 0.2718165901109305
+				},
+				"rawConfidenceInterval": {
+					"low": 0.09449118537285561,
+					"high": 0.2718165901109305
+				},
+				"separated": false,
+				"note": null,
+				"support": {
+					"verdict": "range-restricted",
+					"supportsClaimDomain": false,
+					"observedMin": 0.0614509125563923,
+					"observedMax": 0.30009220933405983,
+					"domainCoverage": 0.9939545310150321,
+					"n": 12,
+					"annotations": [
+						"range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 0) was observed over 0.061451..0.300092, covering 99.4% of the claimed 0.06..0.3"
+					],
+					"summary": "range-restricted: range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 0) was observed over 0.061451..0.300092, covering 99.4% of the claimed 0.06..0.3"
+				},
+				"extrapolatedBeyondSample": false,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum",
+					"pValue": 0.10606060606060605,
+					"smallestAchievablePValue": 0.005050505050505051
+				},
+				"holm": {
+					"id": "arm-c-hue-third-0",
+					"label": "arm C: isoluminant hue third 0 (exact rank-sum)",
+					"rawPValue": 0.10606060606060605,
+					"adjustedPValue": 0.3181818181818181,
+					"survivesCorrection": false
+				}
+			},
+			{
+				"hueThird": 1,
+				"n": 12,
+				"worksCount": 5,
+				"threshold": 0.15336404468684717,
+				"identifiedWithinClaimDomain": true,
+				"rawFittedThreshold": 0.15336404468684717,
+				"confidenceInterval": {
+					"low": 0.1333717811988633,
+					"high": 0.1764703182233982
+				},
+				"rawConfidenceInterval": {
+					"low": 0.1333717811988633,
+					"high": 0.1764703182233982
+				},
+				"separated": true,
+				"note": "every pair on one side of the gap was answered one way and every pair on the other side the other way, so the curve alone cannot pin the threshold down; the reported value is the middle of the gap",
+				"support": {
+					"verdict": "range-restricted",
+					"supportsClaimDomain": false,
+					"observedMin": 0.06077212013811346,
+					"observedMax": 0.2996837984904602,
+					"domainCoverage": 0.9954653264681114,
+					"n": 12,
+					"annotations": [
+						"range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 1) was observed over 0.060772..0.299684, covering 99.5% of the claimed 0.06..0.3"
+					],
+					"summary": "range-restricted: range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 1) was observed over 0.060772..0.299684, covering 99.5% of the claimed 0.06..0.3"
+				},
+				"extrapolatedBeyondSample": false,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum",
+					"pValue": 0.005050505050505051,
+					"smallestAchievablePValue": 0.005050505050505051
+				},
+				"holm": {
+					"id": "arm-c-hue-third-1",
+					"label": "arm C: isoluminant hue third 1 (exact rank-sum)",
+					"rawPValue": 0.005050505050505051,
+					"adjustedPValue": 0.045454545454545456,
+					"survivesCorrection": true
+				}
+			},
+			{
+				"hueThird": 2,
+				"n": 12,
+				"worksCount": 3,
+				"threshold": null,
+				"identifiedWithinClaimDomain": false,
+				"rawFittedThreshold": 1536.8241328514473,
+				"confidenceInterval": null,
+				"rawConfidenceInterval": {
+					"low": 2.909815622339677e-88,
+					"high": 8.116763128158217e+93
+				},
+				"separated": false,
+				"note": "no crossing anywhere in the claim domain [0.06, 0.3]: the unconstrained fit runs to 1536.8 with an interval spanning many orders of magnitude, which is this stratum reporting no relation between distance and the answer rather than reporting a large threshold",
+				"support": {
+					"verdict": "range-restricted",
+					"supportsClaimDomain": false,
+					"observedMin": 0.06170151105273977,
+					"observedMax": 0.30009947787070634,
+					"domainCoverage": 0.9929103706135842,
+					"n": 12,
+					"annotations": [
+						"range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 2) was observed over 0.061702..0.300099, covering 99.3% of the claimed 0.06..0.3"
+					],
+					"summary": "range-restricted: range-restricted: OKLab distance from the accent to its governing field (isoluminant, hue third 2) was observed over 0.061702..0.300099, covering 99.3% of the claimed 0.06..0.3"
+				},
+				"extrapolatedBeyondSample": true,
+				"discriminationTest": {
+					"method": "exact two-sided Mann-Whitney rank-sum",
+					"pValue": 0.9999999999999998,
+					"smallestAchievablePValue": 0.01818181818181818
+				},
+				"holm": {
+					"id": "arm-c-hue-third-2",
+					"label": "arm C: isoluminant hue third 2 (exact rank-sum)",
+					"rawPValue": 0.9999999999999998,
+					"adjustedPValue": 1,
+					"survivesCorrection": false
+				}
+			}
+		],
+		"refusalCondition": {
+			"rule": "§5.4 — if any stratum fit falls outside the pooled 95% interval, adoption is refused and the verdict is stratum-dependent, exactly as accent-real-1 refused",
+			"pooledInterval": {
+				"low": 0.12977795181892332,
+				"high": 0.260910547299894
+			},
+			"strata": [
+				{
+					"hueThird": 0,
+					"threshold": 0.16026313301439432,
+					"outsidePooledInterval": false
+				},
+				{
+					"hueThird": 1,
+					"threshold": 0.15336404468684717,
+					"outsidePooledInterval": false
+				},
+				{
+					"hueThird": 2,
+					"threshold": 1536.8241328514473,
+					"outsidePooledInterval": true
+				}
+			],
+			"refused": true,
+			"verdict": "stratum-dependent",
+			"sensitivityVerdict": "stratum-dependent"
+		},
+		"nonIsoluminantStratum": {
+			"neverPooledWithTheAbove": true,
+			"firstObservationsEverOnTheLightnessAxis": "prereg §3.3",
+			"n": 24,
+			"worksCount": 18,
+			"threshold": 0.07894845959926652,
+			"confidenceInterval": {
+				"low": 0.046148166039359034,
+				"high": 0.13506190620405395
+			},
+			"note": null,
+			"support": {
+				"verdict": "range-restricted",
+				"supportsClaimDomain": false,
+				"observedMin": 0.08868319742860707,
+				"observedMax": 0.20245386571507093,
+				"domainCoverage": 0.47404445119359945,
+				"n": 24,
+				"annotations": [
+					"range-restricted: OKLab distance from the accent to its governing field (non-isoluminant stratum, fitted separately and never pooled) was observed over 0.088683..0.202454, covering 47.4% of the claimed 0.06..0.3"
+				],
+				"summary": "range-restricted: range-restricted: OKLab distance from the accent to its governing field (non-isoluminant stratum, fitted separately and never pooled) was observed over 0.088683..0.202454, covering 47.4% of the claimed 0.06..0.3"
+			},
+			"lightnessAxisContrast": {
+				"overall": {
+					"isoluminant": {
+						"n": 36,
+						"works": 13,
+						"rate": 0.3611111111111111
+					},
+					"nonIsoluminant": {
+						"n": 24,
+						"works": 18,
+						"rate": 0.75
+					}
+				},
+				"bands": [
+					{
+						"targetDistance": 0.09,
+						"tolerance": 0.012,
+						"isoluminant": {
+							"n": 6,
+							"works": 2,
+							"rate": 0.3333333333333333
+						},
+						"nonIsoluminant": {
+							"n": 12,
+							"works": 7,
+							"rate": 0.5833333333333334
+						}
+					},
+					{
+						"targetDistance": 0.2,
+						"tolerance": 0.025,
+						"isoluminant": {
+							"n": 5,
+							"works": 3,
+							"rate": 0.6
+						},
+						"nonIsoluminant": {
+							"n": 12,
+							"works": 11,
+							"rate": 0.9166666666666666
+						}
+					}
+				]
+			}
+		},
+		"jointWeightChroma": {
+			"declaredExploratoryInAdvance": "§5.4 — under-identified at n = 60 with the strata this unbalanced, declared exploratory before the round ran; it may produce a directional read and it may not produce anything",
+			"chromaticReading": "chromatic-plane",
+			"weightChroma": 0.06580177710604958,
+			"logLikelihoodAtEstimate": -31.058576624102592,
+			"logLikelihoodAtIsotropic": -36.103975015462034,
+			"likelihoodRatioStatistic": 10.090796782718883,
+			"pValue": 0.0014901166871517638,
+			"converged": true,
+			"n": 60,
+			"interpretation": "below 1: a chromatic step buys less than a lightness step of the same OKLab size",
+			"holm": {
+				"id": "arm-c-joint-wc",
+				"label": "arm C: joint w_C against 1 (likelihood ratio, 1 df)",
+				"rawPValue": 0.0014901166871517638,
+				"adjustedPValue": 0.016391283558669402,
+				"survivesCorrection": true
+			}
+		},
+		"jointWeightChromaSensitivity": {
+			"chromaOnlyReading": {
+				"chromaticReading": "chroma-only",
+				"weightChroma": 0.12679486309574156,
+				"logLikelihoodAtEstimate": -31.539441527354825,
+				"logLikelihoodAtIsotropic": -33.445258773406195,
+				"likelihoodRatioStatistic": 3.8116344921027405,
+				"pValue": 0.050897755353964624,
+				"converged": true,
+				"n": 60,
+				"interpretation": "below 1: a chromatic step buys less than a lightness step of the same OKLab size"
+			},
+			"laterAnswerSubstitution": {
+				"chromaticReading": "chromatic-plane",
+				"weightChroma": 0.07694403951924442,
+				"logLikelihoodAtEstimate": -31.511744692838768,
+				"logLikelihoodAtIsotropic": -35.83024314412311,
+				"likelihoodRatioStatistic": 8.636996902568683,
+				"pValue": 0.0032940398045163345,
+				"converged": true,
+				"n": 60,
+				"interpretation": "below 1: a chromatic step buys less than a lightness step of the same OKLab size"
+			}
+		}
+	},
+	"multiplicity": {
+		"preregSection": "§5.6",
+		"familySize": 13,
+		"fixedBeforeAnswersWereRead": true,
+		"holm": {
+			"ok": true,
+			"cells": [
+				{
+					"id": "arm-a-binomial",
+					"label": "arm A: k' against p = 0.5, exact binomial",
+					"rawPValue": 0.01658900337497478,
+					"adjustedPValue": 0.09953402024984867,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-a-veto-lightness",
+					"label": "arm A veto: lightness-dominant subgroup",
+					"rawPValue": 0.011817932128906267,
+					"adjustedPValue": 0.08272552490234387,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-a-veto-chroma",
+					"label": "arm A veto: chroma-dominant subgroup",
+					"rawPValue": 0.5034446716308585,
+					"adjustedPValue": 1,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-lightness",
+					"label": "arm B: does the lightness ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.06060606060606061,
+					"adjustedPValue": 0.24242424242424243,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-chroma",
+					"label": "arm B: does the chroma ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.00808080808080808,
+					"adjustedPValue": 0.06464646464646465,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-hue",
+					"label": "arm B: does the hue ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.028282828282828285,
+					"adjustedPValue": 0.14141414141414144,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-ratio-lightness-over-chroma",
+					"label": "arm B: lightness/chroma threshold ratio against 1",
+					"rawPValue": 0.001156737998843262,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-b-ratio-lightness-over-hue",
+					"label": "arm B: lightness/hue threshold ratio against 1",
+					"rawPValue": 0.001160092807424594,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-hue-third-0",
+					"label": "arm C: isoluminant hue third 0 (exact rank-sum)",
+					"rawPValue": 0.10606060606060605,
+					"adjustedPValue": 0.3181818181818181,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-c-hue-third-1",
+					"label": "arm C: isoluminant hue third 1 (exact rank-sum)",
+					"rawPValue": 0.005050505050505051,
+					"adjustedPValue": 0.045454545454545456,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-hue-third-2",
+					"label": "arm C: isoluminant hue third 2 (exact rank-sum)",
+					"rawPValue": 0.9999999999999998,
+					"adjustedPValue": 1,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-c-pooled",
+					"label": "arm C: pooled isoluminant fit (exact rank-sum)",
+					"rawPValue": 0.004058926005206184,
+					"adjustedPValue": 0.040589260052061836,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-joint-wc",
+					"label": "arm C: joint w_C against 1 (likelihood ratio, 1 df)",
+					"rawPValue": 0.0014901166871517638,
+					"adjustedPValue": 0.016391283558669402,
+					"survivesCorrection": true
+				}
+			],
+			"best": {
+				"id": "arm-b-ratio-lightness-over-chroma",
+				"label": "arm B: lightness/chroma threshold ratio against 1",
+				"rawPValue": 0.001156737998843262,
+				"adjustedPValue": 0.015037593984962405,
+				"survivesCorrection": true,
+				"rankOutOf": 13
+			},
+			"survivorCount": 5,
+			"comparisonsRun": 13,
+			"cellsReported": 13,
+			"correction": "holm",
+			"alpha": 0.05,
+			"summary": "best of 13: arm-b-ratio-lightness-over-chroma raw p=0.0012, Holm p=0.0150 — survives at alpha=0.05; 5 of 13 survive",
+			"provenance": {
+				"method": "sweep of 13 comparisons, Holm, alpha=0.05",
+				"n": 13,
+				"inputs": {
+					"comparisonsRun": 13,
+					"cellsReported": 13,
+					"correction": "holm",
+					"alpha": 0.05,
+					"familyDefinition": "perception-round-4-preregistration.md §5.6, fixed before the answers were read: arm A's binomial, its two veto subgroups, arm B's three thresholds and two ratios, arm C's three per-hue-third fits, its pooled fit, and the joint w_C estimate. 13 tests. Not extensible."
+				},
+				"corrections": [
+					"Holm across a family of 13"
+				],
+				"caveats": [
+					"family: perception-round-4-preregistration.md §5.6, fixed before the answers were read: arm A's binomial, its two veto subgroups, arm B's three thresholds and two ratios, arm C's three per-hue-third fits, its pooled fit, and the joint w_C estimate. 13 tests. Not extensible."
+				]
+			}
+		},
+		"sensitivityHolm": {
+			"survivorCount": 5,
+			"cells": [
+				{
+					"id": "arm-a-binomial",
+					"label": "arm A: k' against p = 0.5, exact binomial",
+					"rawPValue": 0.01658900337497478,
+					"adjustedPValue": 0.09953402024984867,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-a-veto-lightness",
+					"label": "arm A veto: lightness-dominant subgroup",
+					"rawPValue": 0.011817932128906267,
+					"adjustedPValue": 0.08272552490234387,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-a-veto-chroma",
+					"label": "arm A veto: chroma-dominant subgroup",
+					"rawPValue": 0.5034446716308585,
+					"adjustedPValue": 1,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-lightness",
+					"label": "arm B: does the lightness ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.06060606060606061,
+					"adjustedPValue": 0.24242424242424243,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-chroma",
+					"label": "arm B: does the chroma ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.00808080808080808,
+					"adjustedPValue": 0.06464646464646465,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-threshold-hue",
+					"label": "arm B: does the hue ladder discriminate (exact rank-sum)",
+					"rawPValue": 0.028282828282828285,
+					"adjustedPValue": 0.14141414141414144,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-b-ratio-lightness-over-chroma",
+					"label": "arm B: lightness/chroma threshold ratio against 1",
+					"rawPValue": 0.001156737998843262,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-b-ratio-lightness-over-hue",
+					"label": "arm B: lightness/hue threshold ratio against 1",
+					"rawPValue": 0.001160092807424594,
+					"adjustedPValue": 0.015037593984962405,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-hue-third-0",
+					"label": "arm C: isoluminant hue third 0 (exact rank-sum)",
+					"rawPValue": 0.10606060606060605,
+					"adjustedPValue": 0.3181818181818181,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-c-hue-third-1",
+					"label": "arm C: isoluminant hue third 1 (exact rank-sum)",
+					"rawPValue": 0.004329004329004329,
+					"adjustedPValue": 0.039941909711389265,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-hue-third-2",
+					"label": "arm C: isoluminant hue third 2 (exact rank-sum)",
+					"rawPValue": 0.9999999999999998,
+					"adjustedPValue": 1,
+					"survivesCorrection": false
+				},
+				{
+					"id": "arm-c-pooled",
+					"label": "arm C: pooled isoluminant fit (exact rank-sum)",
+					"rawPValue": 0.003994190971138926,
+					"adjustedPValue": 0.039941909711389265,
+					"survivesCorrection": true
+				},
+				{
+					"id": "arm-c-joint-wc",
+					"label": "arm C: joint w_C against 1 (likelihood ratio, 1 df)",
+					"rawPValue": 0.0032940398045163345,
+					"adjustedPValue": 0.03623443784967968,
+					"survivesCorrection": true
+				}
+			]
+		}
+	},
+	"noCrossCriterionPooling": "§5.5 — identity and function are fitted separately end to end. Nothing in this file pools them, and the study's observation that ICtCp is the best space for identity and the worst for function is why.",
+	"outOfScope": {
+		"excursionBar": "§7.1 — this round selects the METRIC, not the 2.5x excursion multiplier. No item in it varies excursion magnitude and no answer it collects could. If arm A moves the metric, the excursion bar's magnitude becomes MORE open, not less.",
+		"regionBoundaryLocations": "§7 — not tested",
+		"foregroundToAccentBar": "§7 — B31 is not in this round; every constructed accent stays ≥ 0.07444 from its palette's foreground",
+		"oneReviewer": "§7 — one reviewer, whose own measured repeatability is 83.3% at best. No model can beat the observer's own repeatability."
+	}
+}

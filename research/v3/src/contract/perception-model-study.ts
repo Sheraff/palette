@@ -53,6 +53,8 @@
  *   - **Empty input throws** rather than returning a comfortable default.
  */
 import { readFile, writeFile } from "node:fs/promises"
+// Aliased: `resolve` is already the warehouse's supersession resolver in this module.
+import { resolve as resolvePath } from "node:path"
 import { fileURLToPath } from "node:url"
 import { parseArgs } from "node:util"
 
@@ -332,7 +334,181 @@ async function loadAccentReal(records: readonly WarehouseRecord[]): Promise<Obse
 	return observations
 }
 
-export async function loadObservations(): Promise<Map<CriterionId, Observation[]>> {
+// -------------------------------------------------------------------------------------------------
+// perception-4 — the shape round. Loaded only when explicitly asked for; see `loadObservations`.
+// -------------------------------------------------------------------------------------------------
+
+/** The identity roles perception-4 offers. Arm A is the SELECTED arm; see `ROUND_FOUR_ARM_A_CAVEAT`. */
+export const ROUND_FOUR_IDENTITY_ROLES = ["arm-a", "arm-b"] as const
+/** The functional-real roles perception-4 offers. Both strata of arm C. */
+const ROUND_FOUR_ACCENT_ROLES = ["arm-c-isoluminant", "arm-c-non-isoluminant"] as const
+
+/**
+ * Arm A of perception-4 is a SELECTED sample: every one of its 40 pairs was constructed so that
+ * `ICtCp x one global constant` and `OKLab x four regional bars` make OPPOSITE predictions. That is
+ * selection on the very disagreement this study measures. Folding arm A in enriches the comparison
+ * between those two rules and INFLATES the apparent separation between them; it does not make the
+ * separation false, but it does make it non-representative of the corpus. Arm B (36 items) is an
+ * unselected direction ladder and carries no such conditioning, which is why this script can be
+ * asked for arm B alone.
+ */
+export const ROUND_FOUR_ARM_A_CAVEAT =
+	"perception-4 arm A (40 identity items) was selected on ICtCp-vs-OKLab disagreement; it is not a " +
+	"representative identity sample and inflates the measured separation between those two rules."
+
+type RoundFourTruthItem = {
+	itemId: string
+	questionKey: string
+	arm: string
+	kind: "identity" | "accent"
+	role: string
+	stimulus: string
+	identity: {
+		firstHex: string
+		secondHex: string
+		region: string
+		ladderDirection: string | null
+		dominantDirection: string | null
+	} | null
+	accent: {
+		stratum: string
+		hueThird: number | null
+		band: string | null
+		governingRole: string
+		entryId: string
+		imageId: string
+		accentHex: string
+		governing: { fieldHex: string; okLabDistance: number }
+	} | null
+	repeatOf: string | null
+}
+
+/**
+ * The "first showing" rule.
+ *
+ * Six of perception-4's items are silent repeats: byte-identical pixels served a second time under a
+ * fresh question key. A repeat and its source are ONE stimulus, so only one of the two can enter the
+ * fit — and the one that enters must be the one the human saw FIRST, because the second showing is
+ * contaminated by the first.
+ *
+ * The fixture's `serveOrder` is the authority on which came first. Timestamps are not used, here or
+ * anywhere else in this repository: the standing ruling is that they mean nothing. In three of the
+ * six cases the repeat-role item was served BEFORE the arm item it repeats, so this is not a
+ * formality — reading the arm item's own answer would be reading the second showing.
+ *
+ * Returns, for each arm item that has a repeat, the question key of whichever showing came first.
+ */
+function firstShowingQuestionKeys(
+	items: readonly RoundFourTruthItem[],
+	serveOrder: readonly string[],
+): Map<string, string> {
+	const position = new Map(serveOrder.map((itemId, index) => [itemId, index]))
+	const byId = new Map(items.map((item) => [item.itemId, item]))
+	const chosen = new Map<string, string>()
+	for (const item of items) {
+		if (item.repeatOf === null) continue
+		const source = byId.get(item.repeatOf)
+		if (source === undefined) throw new Error(`firstShowingQuestionKeys: ${item.itemId} repeats an unknown item`)
+		const repeatAt = position.get(item.itemId)
+		const sourceAt = position.get(source.itemId)
+		if (repeatAt === undefined || sourceAt === undefined) {
+			throw new Error(`firstShowingQuestionKeys: ${item.itemId} or ${source.itemId} is missing from serveOrder`)
+		}
+		chosen.set(source.itemId, repeatAt < sourceAt ? item.questionKey : source.questionKey)
+	}
+	return chosen
+}
+
+/**
+ * perception-4: the shape round. Identity items from arms A and B, functional-real items from arm C.
+ *
+ * Controls (`control-identical`, `control-obvious`) are excluded for the same reason every other
+ * round excludes them — they measure attention, not location, and the identical control additionally
+ * carries a zero distance, which has no logarithm. Repeat-role items are never observations in their
+ * own right; they only ever supply the answer for the item they repeat, and only when they were
+ * served first.
+ */
+async function loadPerceptionFour(
+	records: readonly WarehouseRecord[],
+	identityRoles: readonly string[] = ROUND_FOUR_IDENTITY_ROLES,
+): Promise<{ identity: Observation[]; functionalReal: Observation[] }> {
+	const truth = await readJson<{ items: RoundFourTruthItem[] }>(
+		new URL("perception-round-4-truth.json", CALIBRATION),
+	)
+	const fixture = await readJson<{ serveOrder: string[] }>(new URL("perception-round-4.json", CALIBRATION))
+	const labels = latestLabels(records, "perception-4", (label) => label.questionKey)
+	const firstShowing = firstShowingQuestionKeys(truth.items, fixture.serveOrder)
+
+	const identity: Observation[] = []
+	const functionalReal: Observation[] = []
+	for (const item of truth.items) {
+		const isIdentity = item.kind === "identity" && identityRoles.includes(item.role)
+		const isAccent = item.kind === "accent" && (ROUND_FOUR_ACCENT_ROLES as readonly string[]).includes(item.role)
+		if (!isIdentity && !isAccent) continue
+		const label = labels.get(firstShowing.get(item.itemId) ?? item.questionKey)
+		if (label === undefined) continue
+
+		if (isIdentity) {
+			// `cant_tell` is an escape, not a judgement. It was used zero times in this round; the guard
+			// is here so a future round's escapes cannot silently become "different".
+			if (label.answer !== "same" && label.answer !== "different") continue
+			const pair = item.identity
+			if (pair === null) throw new Error(`loadPerceptionFour: identity item ${item.itemId} has no pair`)
+			identity.push({
+				criterion: "identity",
+				round: "perception-4",
+				itemId: item.itemId,
+				// Every pair in this round is its own stimulus — no colour pair is shared between items —
+				// so the cluster is the arm item, and a repeat never adds a second cluster member.
+				cluster: `perception-4:${item.itemId}`,
+				firstHex: pair.firstHex,
+				secondHex: pair.secondHex,
+				answer: label.answer === "same",
+				role: item.role,
+				stratum: pair.region,
+				declaredDirection: pair.ladderDirection ?? pair.dominantDirection,
+				hueThird: null,
+				band: null,
+				governingRole: null,
+			})
+			continue
+		}
+
+		if (label.answer !== "works" && label.answer !== "does_not_work") continue
+		const accent = item.accent
+		if (accent === null) throw new Error(`loadPerceptionFour: accent item ${item.itemId} has no accent`)
+		functionalReal.push({
+			criterion: "functional-real",
+			round: "perception-4",
+			itemId: item.itemId,
+			// Cover identity, as in `loadAccentReal`. Each arm-C item uses a distinct cover, so this is
+			// one observation per cluster either way.
+			cluster: `perception-4:${accent.entryId}`,
+			firstHex: accent.governing.fieldHex,
+			secondHex: accent.accentHex,
+			answer: label.answer === "works",
+			role: item.role,
+			// `loadAccentReal`'s stratum exactly: the governing role crossed with the lightness band.
+			stratum: `${accent.governingRole}-${accent.band ?? "?"}`,
+			declaredDirection: null,
+			hueThird: accent.hueThird,
+			band: accent.band,
+			governingRole: accent.governingRole,
+		})
+	}
+	return { identity, functionalReal }
+}
+
+export type LoadOptions = Readonly<{
+	/** Fold perception-4 in. Default false, so the committed artifact is reproduced byte for byte. */
+	includeRoundFour?: boolean
+	/** Which perception-4 identity arms to admit. Ignored unless `includeRoundFour`. */
+	roundFourIdentityRoles?: readonly string[]
+}>
+
+export async function loadObservations(options: LoadOptions = {}): Promise<Map<CriterionId, Observation[]>> {
+	const includeRoundFour = options.includeRoundFour ?? false
+	const roundFourIdentityRoles = options.roundFourIdentityRoles ?? ROUND_FOUR_IDENTITY_ROLES
 	const records = readAll(WAREHOUSE_PATH)
 	const byCriterion = new Map<CriterionId, Observation[]>()
 
@@ -389,6 +565,12 @@ export async function loadObservations(): Promise<Map<CriterionId, Observation[]
 	)
 
 	byCriterion.set("functional-real", await loadAccentReal(records))
+
+	if (includeRoundFour) {
+		const roundFour = await loadPerceptionFour(records, roundFourIdentityRoles)
+		byCriterion.set("identity", [...(byCriterion.get("identity") ?? []), ...roundFour.identity])
+		byCriterion.set("functional-real", [...(byCriterion.get("functional-real") ?? []), ...roundFour.functionalReal])
+	}
 
 	for (const [id, list] of byCriterion) {
 		if (list.length === 0) throw new Error(`loadObservations: criterion ${id} produced no observations`)
@@ -1054,7 +1236,29 @@ export function gapMap(criterion: CriterionId, observations: readonly Observatio
 // =================================================================================================
 
 async function main(): Promise<void> {
-	const { values } = parseArgs({ options: { write: { type: "boolean", default: false } } })
+	const { values } = parseArgs({
+		options: {
+			write: { type: "boolean", default: false },
+			// perception-4 is OPT-IN. The default run must reproduce the committed artifact byte for
+			// byte, so that folding a new round in is always a visible, deliberate act.
+			"include-round-4": { type: "boolean", default: false },
+			// Which perception-4 identity arms to admit, comma-separated. The default is both arms;
+			// `--round-4-identity-arms arm-b` drops the SELECTED arm A (see ROUND_FOUR_ARM_A_CAVEAT).
+			"round-4-identity-arms": { type: "string", default: ROUND_FOUR_IDENTITY_ROLES.join(",") },
+			out: { type: "string", default: OUTPUT_PATH },
+		},
+	})
+	const includeRoundFour = values["include-round-4"] === true
+	const roundFourIdentityRoles = String(values["round-4-identity-arms"])
+		.split(",")
+		.map((role) => role.trim())
+		.filter((role) => role.length > 0)
+	for (const role of roundFourIdentityRoles) {
+		if (!(ROUND_FOUR_IDENTITY_ROLES as readonly string[]).includes(role)) {
+			throw new Error(`main: unknown perception-4 identity arm ${role}`)
+		}
+	}
+	const outputPath = resolvePath(process.cwd(), String(values.out))
 
 	const selfChecks = runSpaceSelfChecks()
 	const failed = selfChecks.filter((check) => !check.passed)
@@ -1065,7 +1269,7 @@ async function main(): Promise<void> {
 		)
 	}
 
-	const observationsByCriterion = await loadObservations()
+	const observationsByCriterion = await loadObservations({ includeRoundFour, roundFourIdentityRoles })
 
 	const cells: CellResult[] = []
 	const comparisons: Comparison[] = []
@@ -1280,13 +1484,28 @@ async function main(): Promise<void> {
 		support: supports,
 		gapMap: gapCells,
 		audit: { counts: auditCounts(), rows: AUDIT_ROWS },
+		// Appended only when perception-4 is folded in, so the default run's JSON is byte-identical to
+		// the committed artifact — key order included.
+		...(includeRoundFour
+			? {
+					roundFour: {
+						included: true,
+						identityArms: roundFourIdentityRoles,
+						accentArms: ROUND_FOUR_ACCENT_ROLES,
+						firstShowingRule:
+							"a silent repeat and its source are one stimulus; the answer used is whichever " +
+							"showing came first in the fixture's serveOrder. Timestamps are never consulted.",
+						armACaveat: ROUND_FOUR_ARM_A_CAVEAT,
+					},
+				}
+			: {}),
 	}
 
 	printReport(output)
 
 	if (values.write) {
-		await writeFile(OUTPUT_PATH, `${JSON.stringify(output, null, "\t")}\n`, "utf8")
-		process.stdout.write(`\nwrote ${OUTPUT_PATH}\n`)
+		await writeFile(outputPath, `${JSON.stringify(output, null, "\t")}\n`, "utf8")
+		process.stdout.write(`\nwrote ${outputPath}\n`)
 	} else {
 		process.stdout.write("\n(dry run — pass --write to update the data file)\n")
 	}
